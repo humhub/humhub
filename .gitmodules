@@ -1,9 +1,0 @@
-[submodule "protected/modules/feedback"]
-	path = protected/modules/feedback
-	url = git@git.humhub.org:/home/git/humhub-modules-feedback.git
-[submodule "protected/modules/translation"]
-	path = protected/modules/translation
-	url = git@github.com:humhub/humhub-modules-translation.git
-[submodule "themes/enoa"]
-	path = themes/enoa
-	url = git@git.humhub.org:/home/git/humhub-themes-enoa.git

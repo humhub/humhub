@@ -1,1 +1,6 @@
 nbproject
+assets/*
+protected/runtime/*
+uploads/*
+.idea/*
+protected/config/_settings.php
