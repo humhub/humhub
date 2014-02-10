@@ -1,0 +1,69 @@
+# PhpStorm
+.idea
+
+# Eclipse
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.externalToolBuilders/
+*.launch
+.cproject
+.buildpath
+
+# SublimeText
+/*.sublime-project
+*.sublime-workspace
+
+# NetBeans
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Windows system files
+$RECYCLE.BIN/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# OSX system files
+.DS_?tore
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# SVN/CVS
+.svn
+/CVS/*
+*/CVS/*
+.cvsignore
+*/.cvsignore
+
+# temporary files/folders
+t*mp
+~*
+*.~*
+*.bak
+*.swp
+
+# YII
+assets/
+runtime/
+.local

@@ -1,0 +1,496 @@
+<?xml version="1.0"?>
+<!-- $Id: sql.xml,v 1.1 2007/06/03 02:35:28 ssttoo Exp $ -->
+
+<highlight lang="sql" case="no">
+
+  <authors>
+    <author name="Andrey Demenev" email="demenev@gmail.com"/>
+  </authors>
+
+
+  <comment>Based on SQL-99</comment>
+
+  <default innerClass="code" />
+
+  <region name="qidentifier" delimClass="quotes" innerClass="identifier" 
+          start="`" end="`" />
+
+  <region name="mlcomment" delimClass="comment" innerClass="comment" 
+          start="\/\*" end="\*\/" />
+
+  <block name="comment" match="(#|--\s).*" innerClass="comment" />
+
+  <block name="identifier" match="[a-z_]\w*" innerClass="identifier" />
+
+  <region name="strdouble" delimClass="quotes" innerClass="string" 
+          start="&quot;" end="&quot;" >
+  </region>
+  
+  <region name="brackets" delimClass="brackets" innerClass="code" 
+          start="\(" end="\)" >
+    <contains all="yes"/>
+  </region>
+
+  <region name="strsingle" delimClass="quotes" innerClass="string" 
+          start="'" end="'" />
+
+  <block name="escaped" match="\\." innerClass="special" contained="yes">
+    <onlyin region="strsingle"/>
+    <onlyin region="strdouble"/>
+  </block>
+
+  <block name="exponent" 
+         match="((\d+|((\d*\.\d+)|(\d+\.\d*)))[eE][+-]?\d+)" 
+         innerClass="number" />
+
+  <block name="float" match="(\d*\.\d+)|(\d+\.\d*)" innerClass="number"/>
+
+  <block name="integer" match="\d+l?|\b0l?\b" innerClass="number" />
+
+  <block name="hexinteger" match="0[xX][\da-f]+l?" innerClass="number" />
+
+  <keywords name="reserved" inherits="identifier" innerClass="reserved" case = "no">
+    <keyword match="ABSOLUTE" />
+    <keyword match="ACTION" />
+    <keyword match="ADD" />
+    <keyword match="ADMIN" />
+    <keyword match="AFTER" />
+    <keyword match="AGGREGATE" />
+    <keyword match="ALIAS" />
+    <keyword match="ALL" />
+    <keyword match="ALLOCATE" />
+    <keyword match="ALTER" />
+    <keyword match="AND" />
+    <keyword match="ANY" />
+    <keyword match="ARE" />
+    <keyword match="ARRAY" />
+    <keyword match="AS" />
+    <keyword match="ASC" />
+    <keyword match="ASSERTION" />
+    <keyword match="AT" />
+    <keyword match="AUTHORIZATION" />
+    <keyword match="BEFORE" />
+    <keyword match="BEGIN" />
+    <keyword match="BINARY" />
+    <keyword match="BIT" />
+    <keyword match="BLOB" />
+    <keyword match="BOOLEAN" />
+    <keyword match="BOTH" />
+    <keyword match="BREADTH" />
+    <keyword match="BY" />
+    <keyword match="CALL" />
+    <keyword match="CASCADE" />
+    <keyword match="CASCADED" />
+    <keyword match="CASE" />
+    <keyword match="CAST" />
+    <keyword match="CATALOG" />
+    <keyword match="CHAR" />
+    <keyword match="CHARACTER" />
+    <keyword match="CHECK" />
+    <keyword match="CLASS" />
+    <keyword match="CLOB" />
+    <keyword match="CLOSE" />
+    <keyword match="COLLATE" />
+    <keyword match="COLLATION" />
+    <keyword match="COLUMN" />
+    <keyword match="COMMIT" />
+    <keyword match="COMPLETION" />
+    <keyword match="CONNECT" />
+    <keyword match="CONNECTION" />
+    <keyword match="CONSTRAINT" />
+    <keyword match="CONSTRAINTS" />
+    <keyword match="CONSTRUCTOR" />
+    <keyword match="CONTINUE" />
+    <keyword match="CORRESPONDING" />
+    <keyword match="CREATE" />
+    <keyword match="CROSS" />
+    <keyword match="CUBE" />
+    <keyword match="CURRENT" />
+    <keyword match="CURRENT_DATE" />
+    <keyword match="CURRENT_PATH" />
+    <keyword match="CURRENT_ROLE" />
+    <keyword match="CURRENT_TIME" />
+    <keyword match="CURRENT_TIMESTAMP" />
+    <keyword match="CURRENT_USER" />
+    <keyword match="CURSOR" />
+    <keyword match="CYCLE" />
+    <keyword match="DATA" />
+    <keyword match="DATE" />
+    <keyword match="DAY" />
+    <keyword match="DEALLOCATE" />
+    <keyword match="DEC" />
+    <keyword match="DECIMAL" />
+    <keyword match="DECLARE" />
+    <keyword match="DEFAULT" />
+    <keyword match="DEFERRABLE" />
+    <keyword match="DEFERRED" />
+    <keyword match="DELETE" />
+    <keyword match="DEPTH" />
+    <keyword match="DEREF" />
+    <keyword match="DESC" />
+    <keyword match="DESCRIBE" />
+    <keyword match="DESCRIPTOR" />
+    <keyword match="DESTROY" />
+    <keyword match="DESTRUCTOR" />
+    <keyword match="DETERMINISTIC" />
+    <keyword match="DIAGNOSTICS" />
+    <keyword match="DICTIONARY" />
+    <keyword match="DISCONNECT" />
+    <keyword match="DISTINCT" />
+    <keyword match="DOMAIN" />
+    <keyword match="DOUBLE" />
+    <keyword match="DROP" />
+    <keyword match="DYNAMIC" />
+    <keyword match="EACH" />
+    <keyword match="ELSE" />
+    <keyword match="END" />
+    <keyword match="END-EXEC" />
+    <keyword match="EQUALS" />
+    <keyword match="ESCAPE" />
+    <keyword match="EVERY" />
+    <keyword match="EXCEPT" />
+    <keyword match="EXCEPTION" />
+    <keyword match="EXEC" />
+    <keyword match="EXECUTE" />
+    <keyword match="EXTERNAL" />
+    <keyword match="FALSE" />
+    <keyword match="FETCH" />
+    <keyword match="FIRST" />
+    <keyword match="FLOAT" />
+    <keyword match="FOR" />
+    <keyword match="FOREIGN" />
+    <keyword match="FOUND" />
+    <keyword match="FREE" />
+    <keyword match="FROM" />
+    <keyword match="FULL" />
+    <keyword match="FUNCTION" />
+    <keyword match="GENERAL" />
+    <keyword match="GET" />
+    <keyword match="GLOBAL" />
+    <keyword match="GO" />
+    <keyword match="GOTO" />
+    <keyword match="GRANT" />
+    <keyword match="GROUP" />
+    <keyword match="GROUPING" />
+    <keyword match="HAVING" />
+    <keyword match="HOST" />
+    <keyword match="HOUR" />
+    <keyword match="IDENTITY" />
+    <keyword match="IGNORE" />
+    <keyword match="IMMEDIATE" />
+    <keyword match="IN" />
+    <keyword match="INDICATOR" />
+    <keyword match="INITIALIZE" />
+    <keyword match="INITIALLY" />
+    <keyword match="INNER" />
+    <keyword match="INOUT" />
+    <keyword match="INPUT" />
+    <keyword match="INSERT" />
+    <keyword match="INT" />
+    <keyword match="INTEGER" />
+    <keyword match="INTERSECT" />
+    <keyword match="INTERVAL" />
+    <keyword match="INTO" />
+    <keyword match="IS" />
+    <keyword match="ISOLATION" />
+    <keyword match="ITERATE" />
+    <keyword match="JOIN" />
+    <keyword match="KEY" />
+    <keyword match="LANGUAGE" />
+    <keyword match="LARGE" />
+    <keyword match="LAST" />
+    <keyword match="LATERAL" />
+    <keyword match="LEADING" />
+    <keyword match="LEFT" />
+    <keyword match="LESS" />
+    <keyword match="LEVEL" />
+    <keyword match="LIKE" />
+    <keyword match="LIMIT" />
+    <keyword match="LOCAL" />
+    <keyword match="LOCALTIME" />
+    <keyword match="LOCALTIMESTAMP" />
+    <keyword match="LOCATOR" />
+    <keyword match="MAP" />
+    <keyword match="MATCH" />
+    <keyword match="MINUTE" />
+    <keyword match="MODIFIES" />
+    <keyword match="MODIFY" />
+    <keyword match="MODULE" />
+    <keyword match="MONTH" />
+    <keyword match="NAMES" />
+    <keyword match="NATIONAL" />
+    <keyword match="NATURAL" />
+    <keyword match="NCHAR" />
+    <keyword match="NCLOB" />
+    <keyword match="NEW" />
+    <keyword match="NEXT" />
+    <keyword match="NO" />
+    <keyword match="NONE" />
+    <keyword match="NOT" />
+    <keyword match="NULL" />
+    <keyword match="NUMERIC" />
+    <keyword match="OBJECT" />
+    <keyword match="OF" />
+    <keyword match="OFF" />
+    <keyword match="OLD" />
+    <keyword match="ON" />
+    <keyword match="ONLY" />
+    <keyword match="OPEN" />
+    <keyword match="OPERATION" />
+    <keyword match="OPTION" />
+    <keyword match="OR" />
+    <keyword match="ORDER" />
+    <keyword match="ORDINALITY" />
+    <keyword match="OUT" />
+    <keyword match="OUTER" />
+    <keyword match="OUTPUT" />
+    <keyword match="PAD" />
+    <keyword match="PARAMETER" />
+    <keyword match="PARAMETERS" />
+    <keyword match="PARTIAL" />
+    <keyword match="PATH" />
+    <keyword match="POSTFIX" />
+    <keyword match="PRECISION" />
+    <keyword match="PREFIX" />
+    <keyword match="PREORDER" />
+    <keyword match="PREPARE" />
+    <keyword match="PRESERVE" />
+    <keyword match="PRIMARY" />
+    <keyword match="PRIOR" />
+    <keyword match="PRIVILEGES" />
+    <keyword match="PROCEDURE" />
+    <keyword match="PUBLIC" />
+    <keyword match="READ" />
+    <keyword match="READS" />
+    <keyword match="REAL" />
+    <keyword match="RECURSIVE" />
+    <keyword match="REF" />
+    <keyword match="REFERENCES" />
+    <keyword match="REFERENCING" />
+    <keyword match="RELATIVE" />
+    <keyword match="RESTRICT" />
+    <keyword match="RESULT" />
+    <keyword match="RETURN" />
+    <keyword match="RETURNS" />
+    <keyword match="REVOKE" />
+    <keyword match="RIGHT" />
+    <keyword match="ROLE" />
+    <keyword match="ROLLBACK" />
+    <keyword match="ROLLUP" />
+    <keyword match="ROUTINE" />
+    <keyword match="ROW" />
+    <keyword match="ROWS" />
+    <keyword match="SAVEPOINT" />
+    <keyword match="SCHEMA" />
+    <keyword match="SCOPE" />
+    <keyword match="SCROLL" />
+    <keyword match="SEARCH" />
+    <keyword match="SECOND" />
+    <keyword match="SECTION" />
+    <keyword match="SELECT" />
+    <keyword match="SEQUENCE" />
+    <keyword match="SESSION" />
+    <keyword match="SESSION_USER" />
+    <keyword match="SET" />
+    <keyword match="SETS" />
+    <keyword match="SIZE" />
+    <keyword match="SMALLINT" />
+    <keyword match="SOME" />
+    <keyword match="SPACE" />
+    <keyword match="SPECIFIC" />
+    <keyword match="SPECIFICTYPE" />
+    <keyword match="SQL" />
+    <keyword match="SQLEXCEPTION" />
+    <keyword match="SQLSTATE" />
+    <keyword match="SQLWARNING" />
+    <keyword match="START" />
+    <keyword match="STATE" />
+    <keyword match="STATEMENT" />
+    <keyword match="STATIC" />
+    <keyword match="STRUCTURE" />
+    <keyword match="SYSTEM_USER" />
+    <keyword match="TABLE" />
+    <keyword match="TEMPORARY" />
+    <keyword match="TERMINATE" />
+    <keyword match="THAN" />
+    <keyword match="THEN" />
+    <keyword match="TIME" />
+    <keyword match="TIMESTAMP" />
+    <keyword match="TIMEZONE_HOUR" />
+    <keyword match="TIMEZONE_MINUTE" />
+    <keyword match="TO" />
+    <keyword match="TRAILING" />
+    <keyword match="TRANSACTION" />
+    <keyword match="TRANSLATION" />
+    <keyword match="TREAT" />
+    <keyword match="TRIGGER" />
+    <keyword match="TRUE" />
+    <keyword match="UNDER" />
+    <keyword match="UNION" />
+    <keyword match="UNIQUE" />
+    <keyword match="UNKNOWN" />
+    <keyword match="UNNEST" />
+    <keyword match="UPDATE" />
+    <keyword match="USAGE" />
+    <keyword match="USER" />
+    <keyword match="USING" />
+    <keyword match="VALUE" />
+    <keyword match="VALUES" />
+    <keyword match="VARCHAR" />
+    <keyword match="VARIABLE" />
+    <keyword match="VARYING" />
+    <keyword match="VIEW" />
+    <keyword match="WHEN" />
+    <keyword match="WHENEVER" />
+    <keyword match="WHERE" />
+    <keyword match="WITH" />
+    <keyword match="WITHOUT" />
+    <keyword match="WORK" />
+    <keyword match="WRITE" />
+    <keyword match="YEAR" />
+    <keyword match="ZONE" />
+  </keywords>
+  <keywords name="keyword" inherits="identifier" innerClass="var" case = "no">
+    <keyword match="ABS" />
+    <keyword match="ADA" />
+    <keyword match="ASENSITIVE" />
+    <keyword match="ASSIGNMENT" />
+    <keyword match="ASYMMETRIC" />
+    <keyword match="ATOMIC" />
+    <keyword match="AVG" />
+    <keyword match="BETWEEN" />
+    <keyword match="BITVAR" />
+    <keyword match="BIT_LENGTH" />
+    <keyword match="C" />
+    <keyword match="CALLED" />
+    <keyword match="CARDINALITY" />
+    <keyword match="CATALOG_NAME" />
+    <keyword match="CHAIN" />
+    <keyword match="CHARACTER_LENGTH" />
+    <keyword match="CHARACTER_SET_CATALOG" />
+    <keyword match="CHARACTER_SET_NAME" />
+    <keyword match="CHARACTER_SET_SCHEMA" />
+    <keyword match="CHAR_LENGTH" />
+    <keyword match="CHECKED" />
+    <keyword match="CLASS_ORIGIN" />
+    <keyword match="COALESCE" />
+    <keyword match="COBOL" />
+    <keyword match="COLLATION_CATALOG" />
+    <keyword match="COLLATION_NAME" />
+    <keyword match="COLLATION_SCHEMA" />
+    <keyword match="COLUMN_NAME" />
+    <keyword match="COMMAND_FUNCTION" />
+    <keyword match="COMMAND_FUNCTION_CODE" />
+    <keyword match="COMMITTED" />
+    <keyword match="CONDITION_NUMBER" />
+    <keyword match="CONNECTION_NAME" />
+    <keyword match="CONSTRAINT_CATALOG" />
+    <keyword match="CONSTRAINT_NAME" />
+    <keyword match="CONSTRAINT_SCHEMA" />
+    <keyword match="CONTAINS" />
+    <keyword match="CONVERT" />
+    <keyword match="COUNT" />
+    <keyword match="CURSOR_NAME" />
+    <keyword match="DATETIME_INTERVAL_CODE" />
+    <keyword match="DATETIME_INTERVAL_PRECISION" />
+    <keyword match="DEFINED" />
+    <keyword match="DEFINER" />
+    <keyword match="DISPATCH" />
+    <keyword match="DYNAMIC_FUNCTION" />
+    <keyword match="DYNAMIC_FUNCTION_CODE" />
+    <keyword match="EXISTING" />
+    <keyword match="EXISTS" />
+    <keyword match="EXTRACT" />
+    <keyword match="FINAL" />
+    <keyword match="FORTRAN" />
+    <keyword match="G" />
+    <keyword match="GENERATED" />
+    <keyword match="GRANTED" />
+    <keyword match="HIERARCHY" />
+    <keyword match="HOLD" />
+    <keyword match="IMPLEMENTATION" />
+    <keyword match="INFIX" />
+    <keyword match="INSENSITIVE" />
+    <keyword match="INSTANCE" />
+    <keyword match="INSTANTIABLE" />
+    <keyword match="INVOKER" />
+    <keyword match="K" />
+    <keyword match="KEY_MEMBER" />
+    <keyword match="KEY_TYPE" />
+    <keyword match="LENGTH" />
+    <keyword match="LOWER" />
+    <keyword match="M" />
+    <keyword match="MAX" />
+    <keyword match="MESSAGE_LENGTH" />
+    <keyword match="MESSAGE_OCTET_LENGTH" />
+    <keyword match="MESSAGE_TEXT" />
+    <keyword match="METHOD" />
+    <keyword match="MIN" />
+    <keyword match="MOD" />
+    <keyword match="MORE" />
+    <keyword match="MUMPS" />
+    <keyword match="NAME" />
+    <keyword match="NULLABLE" />
+    <keyword match="NULLIF" />
+    <keyword match="NUMBER" />
+    <keyword match="OCTET_LENGTH" />
+    <keyword match="OPTIONS" />
+    <keyword match="OVERLAPS" />
+    <keyword match="OVERLAY" />
+    <keyword match="OVERRIDING" />
+    <keyword match="PARAMETER_MODE" />
+    <keyword match="PARAMETER_NAME" />
+    <keyword match="PARAMETER_ORDINAL_POSITION" />
+    <keyword match="PARAMETER_SPECIFIC_CATALOG" />
+    <keyword match="PARAMETER_SPECIFIC_NAME" />
+    <keyword match="PARAMETER_SPECIFIC_SCHEMA" />
+    <keyword match="PASCAL" />
+    <keyword match="PLI" />
+    <keyword match="POSITION" />
+    <keyword match="REPEATABLE" />
+    <keyword match="RETURNED_LENGTH" />
+    <keyword match="RETURNED_OCTET_LENGTH" />
+    <keyword match="RETURNED_SQLSTATE" />
+    <keyword match="ROUTINE_CATALOG" />
+    <keyword match="ROUTINE_NAME" />
+    <keyword match="ROUTINE_SCHEMA" />
+    <keyword match="ROW_COUNT" />
+    <keyword match="SCALE" />
+    <keyword match="SCHEMA_NAME" />
+    <keyword match="SECURITY" />
+    <keyword match="SELF" />
+    <keyword match="SENSITIVE" />
+    <keyword match="SERIALIZABLE" />
+    <keyword match="SERVER_NAME" />
+    <keyword match="SIMILAR" />
+    <keyword match="SIMPLE" />
+    <keyword match="SOURCE" />
+    <keyword match="SPECIFIC_NAME" />
+    <keyword match="STYLE" />
+    <keyword match="SUBCLASS_ORIGIN" />
+    <keyword match="SUBLIST" />
+    <keyword match="SUBSTRING" />
+    <keyword match="SUM" />
+    <keyword match="SYMMETRIC" />
+    <keyword match="SYSTEM" />
+    <keyword match="TABLE_NAME" />
+    <keyword match="TRANSACTIONS_COMMITTED" />
+    <keyword match="TRANSACTIONS_ROLLED_BACK" />
+    <keyword match="TRANSACTION_ACTIVE" />
+    <keyword match="TRANSFORM" />
+    <keyword match="TRANSFORMS" />
+    <keyword match="TRANSLATE" />
+    <keyword match="TRIGGER_CATALOG" />
+    <keyword match="TRIGGER_NAME" />
+    <keyword match="TRIGGER_SCHEMA" />
+    <keyword match="TRIM" />
+    <keyword match="TYPE" />
+    <keyword match="UNCOMMITTED" />
+    <keyword match="UNNAMED" />
+    <keyword match="UPPER" />
+    <keyword match="USER_DEFINED_TYPE_CATALOG" />
+    <keyword match="USER_DEFINED_TYPE_NAME" />
+    <keyword match="USER_DEFINED_TYPE_SCHEMA" />
+  </keywords>
+
+</highlight>

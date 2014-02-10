@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Mime_HeaderSet</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Interface Swift_Mime_HeaderSet
+</h2> (line <span class="linenumber">21</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+<a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html">Swift_Mime_CharsetObserver</a>
+   |
+   --Swift_Mime_HeaderSet</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Mime---HeaderSet.php.html">/vendors/swiftMailer/classes/Swift/Mime/HeaderSet.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>A collection of MIME headers.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddDateHeader" title="details" class="method-name">addDateHeader</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$timestamp</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddIdHeader" title="details" class="method-name">addIdHeader</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">string|array</span>&nbsp;<span class="var-name">$ids</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddMailboxHeader" title="details" class="method-name">addMailboxHeader</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">array|string</span>&nbsp;<span class="var-name">$addresses</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddParameterizedHeader" title="details" class="method-name">addParameterizedHeader</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span> = <span class="var-default">null</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddPathHeader" title="details" class="method-name">addPathHeader</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddTextHeader" title="details" class="method-name">addTextHeader</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methoddefineOrdering" title="details" class="method-name">defineOrdering</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$sequence</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../../Swift/Mime/Swift_Mime_Header.html">Swift_Mime_Header</a></span>
+        <a href="#methodget" title="details" class="method-name">get</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$index</span> = <span class="var-default">0</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodgetAll" title="details" class="method-name">getAll</a>
+        ([<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">boolean</span>
+        <a href="#methodhas" title="details" class="method-name">has</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$index</span> = <span class="var-default">0</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../../Swift/Mime/Swift_Mime_HeaderSet.html">Swift_Mime_HeaderSet</a></span>
+        <a href="#methodnewInstance" title="details" class="method-name">newInstance</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodremove" title="details" class="method-name">remove</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$index</span> = <span class="var-default">0</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodremoveAll" title="details" class="method-name">removeAll</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodset" title="details" class="method-name">set</a>
+        (<span class="var-type"><a href="../../Swift/Mime/Swift_Mime_Header.html">Swift_Mime_Header</a></span>&nbsp;<span class="var-name">$header</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$index</span> = <span class="var-default">0</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetAlwaysDisplayed" title="details" class="method-name">setAlwaysDisplayed</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$names</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodtoString" title="details" class="method-name">toString</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodaddDateHeader" id="methodaddDateHeader"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addDateHeader</strong> (line <span class="linenumber">38</span>)
+ </h4> 
+<h4><i>void</i> <strong>addDateHeader(
+string
+$name, [int
+$timestamp = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a new Date header using $timestamp (UNIX time).</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>int $timestamp</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddIdHeader" id="methodaddIdHeader"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addIdHeader</strong> (line <span class="linenumber">64</span>)
+ </h4> 
+<h4><i>void</i> <strong>addIdHeader(
+string
+$name, [string|array
+$ids = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a new ID header for Message-ID or Content-ID.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>string|array $ids</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddMailboxHeader" id="methodaddMailboxHeader"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addMailboxHeader</strong> (line <span class="linenumber">30</span>)
+ </h4> 
+<h4><i>void</i> <strong>addMailboxHeader(
+string
+$name, [array|string
+$addresses = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a new Mailbox Header with a list of $addresses.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>array|string $addresses</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddParameterizedHeader" id="methodaddParameterizedHeader"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addParameterizedHeader</strong> (line <span class="linenumber">55</span>)
+ </h4> 
+<h4><i>void</i> <strong>addParameterizedHeader(
+string
+$name, [string
+$value = null], [array
+$params = array()])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a new ParameterizedHeader with $name, $value and $params.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>string $value</strong>: </li>
+			<li><strong>array $params</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddPathHeader" id="methodaddPathHeader"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addPathHeader</strong> (line <span class="linenumber">72</span>)
+ </h4> 
+<h4><i>void</i> <strong>addPathHeader(
+string
+$name, [string
+$path = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a new Path header with an address (path) in it.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>string $path</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddTextHeader" id="methodaddTextHeader"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addTextHeader</strong> (line <span class="linenumber">46</span>)
+ </h4> 
+<h4><i>void</i> <strong>addTextHeader(
+string
+$name, [string
+$value = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a new basic text header with $name and $value.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>string $value</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methoddefineOrdering" id="methoddefineOrdering"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method defineOrdering</strong> (line <span class="linenumber">152</span>)
+ </h4> 
+<h4><i>void</i> <strong>defineOrdering(
+
+$sequence)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Define a list of Header names as an array in the correct order.</h5>
+<div class="desc"><p>These Headers will be output in the given order where present.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $sequence</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodget" id="methodget"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method get</strong> (line <span class="linenumber">110</span>)
+ </h4> 
+<h4><i><a href="../../Swift/Mime/Swift_Mime_Header.html">Swift_Mime_Header</a></i> <strong>get(
+string
+$name, [int
+$index = 0])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the header with the given $name.</h5>
+<div class="desc"><p>If multiple headers match, the actual one may be specified by $index.  Returns NULL if none present.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>int $index</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetAll" id="methodgetAll"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getAll</strong> (line <span class="linenumber">119</span>)
+ </h4> 
+<h4><i>array</i> <strong>getAll(
+[string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get all headers with the given $name.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodhas" id="methodhas"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method has</strong> (line <span class="linenumber">84</span>)
+ </h4> 
+<h4><i>boolean</i> <strong>has(
+string
+$name, [int
+$index = 0])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns true if at least one header with the given $name exists.</h5>
+<div class="desc"><p>If multiple headers match, the actual one may be specified by $index.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>int $index</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodnewInstance" id="methodnewInstance"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method newInstance</strong> (line <span class="linenumber">143</span>)
+ </h4> 
+<h4><i><a href="../../Swift/Mime/Swift_Mime_HeaderSet.html">Swift_Mime_HeaderSet</a></i> <strong>newInstance(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Create a new instance of this HeaderSet.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodremove" id="methodremove"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method remove</strong> (line <span class="linenumber">129</span>)
+ </h4> 
+<h4><i>void</i> <strong>remove(
+string
+$name, [int
+$index = 0])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Remove the header with the given $name if it's set.</h5>
+<div class="desc"><p>If multiple headers match, the actual one may be specified by $index.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+			<li><strong>int $index</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodremoveAll" id="methodremoveAll"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method removeAll</strong> (line <span class="linenumber">136</span>)
+ </h4> 
+<h4><i>void</i> <strong>removeAll(
+string
+$name)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Remove all headers with the given $name.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodset" id="methodset"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method set</strong> (line <span class="linenumber">98</span>)
+ </h4> 
+<h4><i>void</i> <strong>set(
+<a href="../../Swift/Mime/Swift_Mime_Header.html">Swift_Mime_Header</a>
+$header, [int
+$index = 0])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set a header in the HeaderSet.</h5>
+<div class="desc"><p>The header may be a previously fetched header via <a href="../../Swift/Mime/Swift_Mime_HeaderSet.html#methodget">get()</a> or it may  be one that has been created separately.</p><p>If $index is specified, the header will be inserted into the set at this  offset.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Mime/Swift_Mime_Header.html">Swift_Mime_Header</a> $header</strong>: </li>
+			<li><strong>int $index</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetAlwaysDisplayed" id="methodsetAlwaysDisplayed"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setAlwaysDisplayed</strong> (line <span class="linenumber">161</span>)
+ </h4> 
+<h4><i>void</i> <strong>setAlwaysDisplayed(
+
+$names)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set a list of header names which must always be displayed when set.</h5>
+<div class="desc"><p>Usually headers without a field value won't be output unless set here.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $names</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtoString" id="methodtoString"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method toString</strong> (line <span class="linenumber">168</span>)
+ </h4> 
+<h4><i>string</i> <strong>toString(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns a string with a representation of all headers.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html">Swift_Mime_CharsetObserver</a></h4>
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html#methodcharsetChanged">Swift_Mime_CharsetObserver::charsetChanged()</a></strong> - Notify this observer that the entity's charset has changed.
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:22 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

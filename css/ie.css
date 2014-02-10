@@ -1,0 +1,39 @@
+.hideInIE8 {
+	display: none;
+}
+
+.navbar-inner {
+	filter: none;
+}
+
+.box,
+.discussions ul li {
+	border-top: none;
+	border-left: 1px solid #e4e6eb;
+	border-right: 1px solid #e4e6eb;
+	border-bottom: 2px solid #e4e6eb;
+}
+
+a.brand {
+    position: absolute;
+    left: 0px;
+}
+.container-fluid-full {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+}
+.container-fluid-full #content {
+    width: 85.578%;
+    padding: 28px;
+    margin: 0px 0px;
+    margin-left: 14.422% !important;
+}
+.container-fluid-full #sidebar-left {
+    margin-left: 0px !important;
+    position: absolute;
+    height: 100%;
+}
+footer {
+    position: relative;
+}

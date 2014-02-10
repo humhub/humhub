@@ -1,0 +1,121 @@
+adLDAP - PHP LDAP CLASS FOR MANIPULATING ACTIVE DIRECTORY
+
+Written by Scott Barnett, Richard Hyland
+email: scott@wiggumworld.com, adldap@richardhyland.com
+http://adldap.sourceforge.net/
+
+
+CHANGELOG
+-------------------------------------------------------------------------------------------
+
+Version 4.0.3
+-------------
+[+] New feature: Added support for homephone attribute to the adLDAP schema
+[+] New feature: Added getLastLogon($username) to the user model to return a Unix timestamp for the last logon of a user
+[-] Bug fix: Change strGuidToHex to public function to prevent errors when used with $isGUID = true
+[-] Bug fix: user()->find() function would cause an undefined array error if full error reporting was enabled
+[-] Bug fix: #11 If the array "$this->info[0][strtolower($attribute)]" contains a key with 0 (zero), it does not add to the array
+[-] Bug fix: #22 Typo in adLDAPFolders for listings
+
+Version 4.0.2
+-------------
+[-] Bug fix: #16 Typo Error in adLDAPGroups.php could cause an error when PHP strict mode error reporting enabled
+[-] Bug fix: #18 Typo in adLDAPContacts.php affecting info and infoCollection functions failing
+
+Version 4.0.1
+-------------
+[+] New feature: #13 allow binding over SASL where supported
+[+] New feature: #12 new $adldap->user()->find() function to find users by searching specific fields
+[+] New feature: exchange_altrecipient and exchange_deliverandredirect added to adldap_schema
+[-] Bug fix: $adldap->user()->usernameToGuid() function had invalid parameter in ldap_search function
+[-] Bug fix: #9 When a password change is attempted but fails due to the configured Active Directory Password Policy. Instead of the error an Exception is thrown.
+[-] Bug fix: #10 PHP Warning issued for missing array element. Assumes that element ["count"] exists which does not when the login only has one AD group.
+[-] Bug fix: #8 The ou_create function was giving naming violation errors
+[-] Bug fix: adldap_schema errors from the version 4.0 changes
+
+Version 4.0.0
+-------------
+[+] New feature: Version 4 is a complete re-write of the class and is backwards incompatible with version 3 and below.  Groups, users, contacts, etc have been seperated into seperate classes and can be called like this $adldap->user()->modify(); or $adldap->group()->create();
+
+Version 3.3.2
+-------------
+[+] New feature: Move the user to a new OU using user_move() function
+[-] Bug fix: Prevent an 'undefined index' error in recursive_groups() when full PHP E_ALL logging is enabled
+[-] Bug fix: user_groups() does not return primary group when objectsid is not given (Tracker ID:2931213)
+[-] Bug fix: Undefined index in function user_info for non-existent users (Tracker ID:2922729)
+[-] Bug fix: Force user_info to find objectCategory of person as if a sAMAccountName also exists in a group it will return that group. (Tracker ID:3006096)
+[-] Bug fix: Return false for user_info if the user does not exist
+[-] Bug fix: user_info, checks for for a "count" value that not exist in $entries array if "memberof" isn't passed in $fields array. (Tracker ID:2993172)
+[-] Bug fix: In authenticate() if user authentication fails function returns and does not rebind with admin credentials - so the other funcions don't work anymore as $this->_bind === false. (Tracker ID:2987887)
+[-] Bug fix: When calling $ldap->user_modify('user', array("expires"=>0)) the function fails due to the value being 0. Changed to isset (Tracker ID:3036726)
+[-] Bug fix: When calling user_info allow the username to be either a sAMAccountName or userPrincipalName attribute
+
+
+Version 3.3.1
+-------------
+[-] Bug fix: Prevent empty $username and $password in authenticate from falling through to the default administrator login
+
+Version 3.3
+-----------
+
+[+] New feature: Calling adLDAP without LDAP support in PHP will now throw an adLDAPException
+[+] New feature: Specifying a NULL $_base_dn will now automatically attempt to detect the base_dn from your domain controller
+[+] New feature: Most user objects can now be queried using a user's GUID as well as their username (samAccountName).  Set the $isGUID optional parameter to true. To obtain a user's GUID either use the username2guid() function or decodeGuid()
+[+] New function: username2guid($username) will return a string representation of the GUID for a given username
+[+] New function: decodeGuid($binaryGuid) will convert a binary GUID to a string
+[+] New function: find_base_dn() will return the base_dn from your domain controller
+[+] New function: get_root_dse($attributes) will return root domain controller configuration attributes such as the default naming context, current DC time, etc
+[+] New function: exchange_servers($attributes) will return a list of Exchange servers in your domain
+[+] New function: exchange_storage_groups($exchangeServer, $attributes, $recursive) will return a list of Storage groups on any given Exchange server.  Setting $recursive to true (or inheriting from the $_recursive_groups setting will automatically query the databases within a storage group)
+[+] New function: exchange_storage_databases($storageGroup, $attributes) will return a list of Databases in any given storage group on any given Exchange server
+[+] New function: exchange_add_X400($username, $country, $admd, $pdmd, $org, $surname, $givenname, $isGUID=false) will add an X400 address to the Exchange server
+[-] Bug fix: Null comparison error in contact_mailenable()
+
+Version 3.2
+-----------
+
+[+] New function: user_password_expiry($username) which will return the timestamp and formatted time of when a user's password expires based both on domain policy and user password expiry policy
+[+] New function: groups_in_group($group, $recursive = NULL) returns a list of groups within a group
+[+] New function: all_groups() function to list ALL types of group rather than just security groups alone
+[+] New function: folder_list($folder_name = NULL, $dn_type = ADLDAP_FOLDER, $recursive = NULL, $type = NULL) allows you to navigate the AD folder structure
+[+] New function: computer_ingroup()
+[+] New function: computer_groups()
+[+] New function: connect()
+[+] New function: disconnect()
+[+] New feature: Added recursive group lookups to group_members() to recursively get the username of users in a group
+[+] New feature: TLS support
+[+] New feature: Added getters and setters for core variables
+[-] Change: Renamed all_groups() to all_security_groups()
+[-] Change: Re-written ldap_slashes() function based on a port from Per's Net::LDAP::Util escape_filter_value
+[-] Bug fix: Attempt to deal with special char + in group_info()
+[-] Bug fix: user_ingroup() would not allow recursion to be disabled using the $recursive parameter and would only inherit from $_recursive_groups variable
+[-] Bug fix: Runtime overriding of $recursive group lookups failed due to changes in PHP 5.2
+
+
+Version 3.1
+-----------
+
+[+] New function: get_last_error() returns the last error returned by your domain controller
+[+] New feature: Automatically detect and encode 8bit characters when being added to an AD object
+[+] New feature: Exception handing added for connections or attempting methods that require SSL where it is not set
+[+] New feature: Added pager to the schema
+[+] New feature: New method to obtain a user's or contacts primary group that is far less intensive using get_primary_group().  The old group_cn() is now deprecated
+[-] Change: Only return primary group memberof if a user or contact is returned
+[-] Bug fix: Contact could not be added to a group
+[-] Bug fix: bool2str() function caused exchange mailbox creation to fail
+
+
+Version 3.0
+-----------
+
+[+] New function: user_delete()
+[+] New feature: Source code comments totally overhauled
+[+] New feature: Configuration options and functions now have their visibility defined.  adLDAP is now PHP 5 compatible only.
+[+] New feature: Exchange mailbox creation for users
+[+] New feature: Add new SMTP addresses to a user
+[+] New feature: Change the default SMTP address for a user
+[+] New feature: Remove an SMTP address for a user
+[+] New feature: Mail enable a contact
+[+] New feature: Create, query, delete contacts
+[+] New feature: Enable or disable a user with user_enable() or user_disable()
+[-] Bug fix: Disabling a user did not work

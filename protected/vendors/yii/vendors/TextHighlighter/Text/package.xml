@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.5.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Text_Highlighter</name>
+ <channel>pear.php.net</channel>
+ <summary>Syntax highlighting</summary>
+ <description>Text_Highlighter is a package for syntax highlighting.
+
+It provides a base class provining all the functionality,
+and a descendent classes geneator class.
+
+The main idea is to simplify creation of subclasses
+implementing syntax highlighting for particular language.
+Subclasses do not implement any new functioanality,
+they just provide syntax highlighting rules.
+The rules sources are in XML format.
+
+To create a highlighter for a language, there is no need
+to code a new class manually. Simply describe the rules
+in XML file and use Text_Highlighter_Generator to create
+a new class.</description>
+ <lead>
+  <name>Stoyan Stefanov</name>
+  <user>stoyan</user>
+  <email>ssttoo@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Andrey Demenev</name>
+  <user>blindman</user>
+  <email>demenev@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-06-06</date>
+ <time>11:28:05</time>
+ <version>
+  <release>0.7.0</release>
+  <api>0.7.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP License</license>
+ <notes>- added new renderer - Array
+- HTML renderer modified to extend Array
+- more new renderers - BB, HTMLTags, JSON, XML, all extending Array
+(feature requests #8704 and #9188 )
+- new syntax definition - ABAP programming language (feature request #8809)
+- linked elements to their online documentation option (request #7480)
+- option to output code as unordered list (request #4640)
+- option to set starting number when outputting code in ordered lists
+(request #7077)
+- option to set CSS class names mapping insead of using hardcoded
+class names (request #7077)
+- option to set a CSS style mappping instead of class names (request #7077)
+- fixed /= issue when highlighting javascript (bug #11160)
+- added sample CSS to the package (bug #11211)</notes>
+ <contents>
+  <dir name="/">
+   <file baseinstalldir="Text" md5sum="013c9c0ecdee58dbc4ca528dc15a34a2" name="Highlighter/Renderer/Array.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="a971bba378a46ed71dba3d041bd56f0b" name="Highlighter/Renderer/BB.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="acf2457b365cf36813d573ff6f8805b5" name="Highlighter/Renderer/Console.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="203dbdbb0082dc1e2d6364104c13b185" name="Highlighter/Renderer/Html.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="2c3f20ccfaa49beb1f52210dbe3dab96" name="Highlighter/Renderer/HtmlTags.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="c89a16a844d5ca566378a7413f930b39" name="Highlighter/Renderer/JSON.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="77497ce0df4f06685b6a490ae6c4f9b2" name="Highlighter/Renderer/XML.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="9eda0470e135719c006267d635b0f4da" name="Highlighter/ABAP.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="3542033429d49f7cae984b555f4b0e8b" name="Highlighter/CPP.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="f65969cad2155c3024b678211f9658c9" name="Highlighter/CSS.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="b122955b7d554cefcefd4eb20c720ab7" name="Highlighter/DIFF.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="64106222a94c953984d940e3c2c412df" name="Highlighter/DTD.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="243c07edbe16c13a751e21a7255d585e" name="Highlighter/Generator.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="7285f8e1eae5787c4736366e09fc92fa" name="Highlighter/HTML.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="e33a3c1b1c602954ef64be97c35da538" name="Highlighter/JAVA.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="87e889b7fa92c2cba0de2a0f8c827d4b" name="Highlighter/JAVASCRIPT.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="2c14a034318efc04f54a891f4d92efd5" name="Highlighter/MYSQL.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="36b6e4204bda4fd3f46f63d192edfb6c" name="Highlighter/PERL.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="a2298d02fd3712e63abda97f4459186d" name="Highlighter/PHP.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="5a84265037e4c802262b8453fa03f05d" name="Highlighter/PYTHON.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="733b468795b3ccaa82188d60ba42e0db" name="Highlighter/Renderer.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="741b76badb0510310efb053ffb38103c" name="Highlighter/RUBY.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="9612b29d18c0d18cd9a851ed6e49594b" name="Highlighter/SQL.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="d5ebca4d8fbadf6b93f582786a818ab3" name="Highlighter/XML.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="71e89de3fd80eb8c9fe2139bc786c739" name="abap.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="150e48565986dc85cbd5def048c861ff" name="cpp.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="80b88a5630616a43900e9f6255876d73" name="css.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="03bbb9f97dd557688082125fec184160" name="diff.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="2f0dc7366f5da77b875fead48dd1d992" name="dtd.xml" role="data" />
+   <file baseinstalldir="Text/Highlighter" md5sum="3864e523f21aa47f670935233daaf155" name="generate" role="script">
+    <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+   </file>
+   <file baseinstalldir="Text/Highlighter" md5sum="15a780d6a0e5f8e2f17e10f621d48a77" name="generate.bat" role="script">
+    <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+    <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
+   </file>
+   <file baseinstalldir="Text" md5sum="fb358f890eb689f066067ae7440c2e65" name="Highlighter.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="Text" md5sum="4724355723d91173e3fbff1a49cf6ed2" name="html.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="fca74bdc9fb76c5f4ebf25e13632d724" name="java.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="317d36bed5a22b1207d2903116dc211d" name="javascript.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="abd328d98009176bee09ccd40c195c28" name="mysql.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="e29d249c5868fba82b59cbf5a9a65b36" name="perl.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="9c94779edb325cc7b597f41e7911c87f" name="php.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="17b174ea131f4c9a33383bdac2ecd707" name="python.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="c1cddeb6c05c8a2c38f106dc9c0bf1b4" name="README" role="doc" />
+   <file baseinstalldir="Text" md5sum="77abf6bfda4e2f55e41b313c0a08e076" name="ruby.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="3fcc7d0e298ecfd1432bbd051e977e2d" name="sample.css" role="data" />
+   <file baseinstalldir="Text" md5sum="239d1d056dc1a02b6fc1e52f84fb451c" name="sql.xml" role="data" />
+   <file baseinstalldir="Text" md5sum="96a7618ad15217978ff1d5f70f76eb05" name="TODO" role="data" />
+   <file baseinstalldir="Text" md5sum="abd0b34519988975de481f81bd507ee7" name="xml.xml" role="data" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.3.3</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+    <min>1.0</min>
+   </package>
+   <package>
+    <name>XML_Parser</name>
+    <channel>pear.php.net</channel>
+    <min>1.0.1</min>
+   </package>
+   <package>
+    <name>Console_Getopt</name>
+    <channel>pear.php.net</channel>
+    <min>1.0</min>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease>
+  <installconditions>
+   <os>
+    <name>(*ix|*ux)</name>
+   </os>
+  </installconditions>
+  <filelist>
+   <ignore name="generate.bat" />
+  </filelist>
+ </phprelease>
+ <phprelease>
+  <installconditions>
+   <os>
+    <name>windows</name>
+   </os>
+  </installconditions>
+  <filelist>
+   <ignore name="generate" />
+  </filelist>
+ </phprelease>
+ <phprelease>
+  <filelist>
+   <ignore name="generate" />
+   <ignore name="generate.bat" />
+  </filelist>
+ </phprelease>
+ <changelog>
+  <release>
+   <version>
+    <release>0.7.0</release>
+    <api>0.7.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-06-06</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>- added new renderer - Array
+- HTML renderer modified to extend Array
+- more new renderers - BB, HTMLTags, JSON, XML, all extending Array
+(feature requests #8704 and #9188 )
+- new syntax definition - ABAP programming language (feature request #8809)
+- linked elements to their online documentation option (request #7480)
+- option to output code as unordered list (request #4640)
+- option to set starting number when outputting code in ordered lists
+(request #7077)
+- option to set CSS class names mapping insead of using hardcoded
+class names (request #7077)
+- option to set a CSS style mappping instead of class names (request #7077)
+- fixed /= issue when highlighting javascript (bug #11160)
+- added sample CSS to the package (bug #11211)</notes>
+  </release>
+ </changelog>
+</package>

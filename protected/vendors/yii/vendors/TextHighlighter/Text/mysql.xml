@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+<!-- $Id: mysql.xml,v 1.1 2007/06/03 02:35:28 ssttoo Exp $ -->
+
+<highlight lang="mysql" case="no">
+
+  <authors>
+    <author name="Andrey Demenev" email="demenev@gmail.com"/>
+  </authors>
+
+
+  <default innerClass="code" />
+
+  <region name="qidentifier" delimClass="quotes" innerClass="identifier" 
+          start="`" end="`" />
+
+  <region name="mlcomment" delimClass="comment" innerClass="comment" 
+          start="\/\*" end="\*\/" />
+
+  <block name="comment" match="(#|--\s).*" innerClass="comment" />
+
+  <block name="possiblefunction" match="[a-z_]\w*(?=\s*\()" innerClass="identifier" />
+
+  <block name="identifier" match="[a-z_]\w*" innerClass="identifier" />
+
+  <region name="strdouble" delimClass="quotes" innerClass="string" 
+          start="&quot;" end="&quot;" >
+  </region>
+  
+  <region name="brackets" delimClass="brackets" innerClass="code" 
+          start="\(" end="\)" >
+    <contains all="yes"/>
+  </region>
+
+  <region name="strsingle" delimClass="quotes" innerClass="string" 
+          start="'" end="'" />
+
+  <block name="escaped" match="\\." innerClass="special" contained="yes">
+    <onlyin region="strsingle"/>
+    <onlyin region="strdouble"/>
+  </block>
+
+  <block name="exponent" 
+         match="((\d+|((\d*\.\d+)|(\d+\.\d*)))[eE][+-]?\d+)" 
+         innerClass="number" />
+
+  <block name="float" match="(\d*\.\d+)|(\d+\.\d*)" innerClass="number"/>
+
+  <block name="integer" match="\d+l?|\b0l?\b" innerClass="number" />
+
+  <block name="hexinteger" match="0[xX][\da-f]+l?" innerClass="number" />
+
+  <keywords name="reserved" inherits="identifier" innerClass="reserved" 
+            case="no">
+    <keyword match="action" />
+    <keyword match="add" />
+    <keyword match="aggregate" />
+    <keyword match="all" />
+    <keyword match="alter" />
+    <keyword match="after" />
+    <keyword match="and" />
+    <keyword match="as" />
+    <keyword match="asc" />
+    <keyword match="avg" />
+    <keyword match="avg_row_length" />
+    <keyword match="auto_increment" />
+    <keyword match="between" />
+    <keyword match="bigint" />
+    <keyword match="bit" />
+
+    <keyword match="binary" />
+    <keyword match="blob" />
+    <keyword match="bool" />
+    <keyword match="both" />
+    <keyword match="by" />
+    <keyword match="cascade" />
+    <keyword match="case" />
+    <keyword match="char" />
+    <keyword match="character" />
+    <keyword match="change" />
+    <keyword match="check" />
+    <keyword match="checksum" />
+    <keyword match="column" />
+    <keyword match="columns" />
+    <keyword match="comment" />
+    <keyword match="constraint" />
+    <keyword match="create" />
+
+    <keyword match="cross" />
+    <keyword match="current_date" />
+    <keyword match="current_time" />
+    <keyword match="current_timestamp" />
+    <keyword match="data" />
+    <keyword match="database" />
+    <keyword match="databases" />
+    <keyword match="date" />
+    <keyword match="datetime" />
+    <keyword match="day" />
+    <keyword match="day_hour" />
+    <keyword match="day_minute" />
+    <keyword match="day_second" />
+    <keyword match="dayofmonth" />
+    <keyword match="dayofweek" />
+    <keyword match="dayofyear" />
+    <keyword match="dec" />
+
+    <keyword match="decimal" />
+    <keyword match="default" />
+    <keyword match="delayed" />
+    <keyword match="delay_key_write" />
+    <keyword match="delete" />
+    <keyword match="desc" />
+    <keyword match="describe" />
+    <keyword match="distinct" />
+    <keyword match="distinctrow" />
+    <keyword match="double" />
+    <keyword match="drop" />
+    <keyword match="end" />
+    <keyword match="else" />
+    <keyword match="escape" />
+    <keyword match="escaped" />
+    <keyword match="enclosed" />
+    <keyword match="enum" />
+
+    <keyword match="explain" />
+    <keyword match="exists" />
+    <keyword match="fields" />
+    <keyword match="file" />
+    <keyword match="first" />
+    <keyword match="float" />
+    <keyword match="float4" />
+    <keyword match="float8" />
+    <keyword match="flush" />
+    <keyword match="foreign" />
+    <keyword match="from" />
+    <keyword match="for" />
+    <keyword match="full" />
+    <keyword match="function" />
+    <keyword match="global" />
+    <keyword match="grant" />
+    <keyword match="grants" />
+
+    <keyword match="group" />
+    <keyword match="having" />
+    <keyword match="heap" />
+    <keyword match="high_priority" />
+    <keyword match="hour" />
+    <keyword match="hour_minute" />
+    <keyword match="hour_second" />
+    <keyword match="hosts" />
+    <keyword match="identified" />
+    <keyword match="ignore" />
+    <keyword match="in" />
+    <keyword match="index" />
+    <keyword match="infile" />
+    <keyword match="inner" />
+    <keyword match="insert" />
+    <keyword match="insert_id" />
+    <keyword match="int" />
+
+    <keyword match="integer" />
+    <keyword match="interval" />
+    <keyword match="int1" />
+    <keyword match="int2" />
+    <keyword match="int3" />
+    <keyword match="int4" />
+    <keyword match="int8" />
+    <keyword match="into" />
+    <keyword match="if" />
+    <keyword match="is" />
+    <keyword match="isam" />
+    <keyword match="join" />
+    <keyword match="key" />
+    <keyword match="keys" />
+    <keyword match="kill" />
+    <keyword match="last_insert_id" />
+    <keyword match="leading" />
+
+    <keyword match="left" />
+    <keyword match="length" />
+    <keyword match="like" />
+    <keyword match="lines" />
+    <keyword match="limit" />
+    <keyword match="load" />
+    <keyword match="local" />
+    <keyword match="lock" />
+    <keyword match="logs" />
+    <keyword match="long" />
+    <keyword match="longblob" />
+    <keyword match="longtext" />
+    <keyword match="low_priority" />
+    <keyword match="max" />
+    <keyword match="max_rows" />
+    <keyword match="match" />
+    <keyword match="mediumblob" />
+
+    <keyword match="mediumtext" />
+    <keyword match="mediumint" />
+    <keyword match="middleint" />
+    <keyword match="min_rows" />
+    <keyword match="minute" />
+    <keyword match="minute_second" />
+    <keyword match="modify" />
+    <keyword match="month" />
+    <keyword match="monthname" />
+    <keyword match="myisam" />
+    <keyword match="natural" />
+    <keyword match="numeric" />
+    <keyword match="no" />
+    <keyword match="not" />
+    <keyword match="null" />
+    <keyword match="on" />
+    <keyword match="optimize" />
+
+    <keyword match="option" />
+    <keyword match="optionally" />
+    <keyword match="or" />
+    <keyword match="order" />
+    <keyword match="outer" />
+    <keyword match="outfile" />
+    <keyword match="pack_keys" />
+    <keyword match="partial" />
+    <keyword match="password" />
+    <keyword match="precision" />
+    <keyword match="primary" />
+    <keyword match="procedure" />
+    <keyword match="process" />
+    <keyword match="processlist" />
+    <keyword match="privileges" />
+    <keyword match="read" />
+    <keyword match="real" />
+
+    <keyword match="references" />
+    <keyword match="reload" />
+    <keyword match="regexp" />
+    <keyword match="rename" />
+    <keyword match="replace" />
+    <keyword match="restrict" />
+    <keyword match="returns" />
+    <keyword match="revoke" />
+    <keyword match="rlike" />
+    <keyword match="row" />
+    <keyword match="rows" />
+    <keyword match="second" />
+    <keyword match="select" />
+    <keyword match="set" />
+    <keyword match="show" />
+    <keyword match="shutdown" />
+    <keyword match="smallint" />
+
+    <keyword match="soname" />
+    <keyword match="sql_big_tables" />
+    <keyword match="sql_big_selects" />
+    <keyword match="sql_low_priority_updates" />
+    <keyword match="sql_log_off" />
+    <keyword match="sql_log_update" />
+    <keyword match="sql_select_limit" />
+    <keyword match="sql_small_result" />
+    <keyword match="sql_big_result" />
+    <keyword match="sql_warnings" />
+    <keyword match="straight_join" />
+    <keyword match="starting" />
+    <keyword match="status" />
+    <keyword match="string" />
+    <keyword match="table" />
+    <keyword match="tables" />
+    <keyword match="temporary" />
+
+    <keyword match="terminated" />
+    <keyword match="text" />
+    <keyword match="then" />
+    <keyword match="time" />
+    <keyword match="timestamp" />
+    <keyword match="tinyblob" />
+    <keyword match="tinytext" />
+    <keyword match="tinyint" />
+    <keyword match="trailing" />
+    <keyword match="to" />
+    <keyword match="type" />
+    <keyword match="use" />
+    <keyword match="using" />
+    <keyword match="unique" />
+    <keyword match="unlock" />
+    <keyword match="unsigned" />
+    <keyword match="update" />
+
+    <keyword match="usage" />
+    <keyword match="values" />
+    <keyword match="varchar" />
+    <keyword match="variables" />
+    <keyword match="varying" />
+    <keyword match="varbinary" />
+    <keyword match="with" />
+    <keyword match="write" />
+    <keyword match="when" />
+    <keyword match="where" />
+    <keyword match="year" />
+    <keyword match="year_month" />
+    <keyword match="zerofill" />
+  </keywords> 
+
+  <keywords name="function" inherits="possiblefunction" innerClass="reserved"
+            case="no" otherwise="identifier">
+    <keyword match="ABS" />
+    <keyword match="ACOS" />
+    <keyword match="ADDDATE" />
+    <keyword match="ASCII" />
+    <keyword match="ASIN" />
+    <keyword match="ATAN" />
+    <keyword match="ATAN2" />
+    <keyword match="AVG" />
+    <keyword match="BENCHMARK" />
+    <keyword match="BIN" />
+    <keyword match="CEILING" />
+    <keyword match="CHAR" />
+    <keyword match="COALESCE" />
+    <keyword match="CONCAT" />
+    <keyword match="CONV" />
+    <keyword match="COS" />
+    <keyword match="COT" />
+    <keyword match="COUNT" />
+    <keyword match="CURDATE" />
+    <keyword match="CURTIME" />
+    <keyword match="DATABASE" />
+    <keyword match="DAYNAME" />
+    <keyword match="DAYOFMONTH" />
+    <keyword match="DAYOFWEEK" />
+    <keyword match="DAYOFYEAR" />
+    <keyword match="DECODE" />
+    <keyword match="DEGREES" />
+    <keyword match="ELT" />
+
+    <keyword match="ENCODE" />
+    <keyword match="ENCRYPT" />
+    <keyword match="EXP" />
+    <keyword match="EXTRACT" />
+
+    <keyword match="EXTRACT" />
+    <keyword match="FIELD" />
+    <keyword match="FLOOR" />
+    <keyword match="FORMAT" />
+    <keyword match="GREATEST" />
+    <keyword match="HEX" />
+    <keyword match="HOUR" />
+    <keyword match="IF" />
+    <keyword match="IFNULL" />
+    <keyword match="INSERT" />
+    <keyword match="INSTR" />
+    <keyword match="INTERVAL" />
+
+    <keyword match="ISNULL" />
+    <keyword match="LCASE" />
+    <keyword match="LEAST" />
+    <keyword match="LEFT" />
+    <keyword match="LENGTH" />
+    <keyword match="LOCATE" />
+
+    <keyword match="LOCATE" />
+    <keyword match="LOG" />
+    <keyword match="LOG10" />
+    <keyword match="LOWER" />
+    <keyword match="LPAD" />
+    <keyword match="LTRIM" />
+    <keyword match="MAX" />
+    <keyword match="MD5" />
+    <keyword match="MID" />
+    <keyword match="MIN" />
+
+    <keyword match="MINUTE" />
+    <keyword match="MOD" />
+    <keyword match="MONTH" />
+    <keyword match="MONTHNAME" />
+    <keyword match="NOW" />
+    <keyword match="NULLIF" />
+    <keyword match="OCT" />
+    <keyword match="ORD" />
+    <keyword match="PASSWORD" />
+    <keyword match="PI" />
+    <keyword match="POSITION" />
+
+    <keyword match="POW" />
+    <keyword match="POWER" />
+    <keyword match="prepare" />
+    <keyword match="QUARTER" />
+    <keyword match="RADIANS" />
+    <keyword match="RAND" />
+    <keyword match="REPEAT" />
+    <keyword match="REPLACE" />
+    <keyword match="REVERSE" />
+    <keyword match="RIGHT" />
+    <keyword match="ROUND" />
+
+    <keyword match="ROUND" />
+    <keyword match="RPAD" />
+
+    <keyword match="RTRIM" />
+    <keyword match="SECOND" />
+    <keyword match="SIGN" />
+    <keyword match="SIN" />
+    <keyword match="SOUNDEX" />
+    <keyword match="SPACE" />
+    <keyword match="SQRT" />
+    <keyword match="STD" />
+    <keyword match="STDDEV" />
+    <keyword match="STRCMP" />
+    <keyword match="SUBDATE" />
+    <keyword match="SUBSTRING" />
+
+    <keyword match="SUBSTRING" />
+    <keyword match="SUM" />
+    <keyword match="SYSDATE" />
+    <keyword match="TAN" />
+
+    <keyword match="TRIM" />
+    <keyword match="TRUNCATE" />
+    <keyword match="UCASE" />
+    <keyword match="UPPER" />
+    <keyword match="USER" />
+    <keyword match="VERSION" />
+    <keyword match="WEEK" />
+    <keyword match="WEEKDAY" />
+    <keyword match="YEAR" />
+  </keywords> 
+
+</highlight>

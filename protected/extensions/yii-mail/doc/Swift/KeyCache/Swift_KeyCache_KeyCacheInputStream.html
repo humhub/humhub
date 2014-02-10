@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_KeyCache_KeyCacheInputStream</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Interface Swift_KeyCache_KeyCacheInputStream
+</h2> (line <span class="linenumber">20</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+<a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>
+   |
+   --Swift_KeyCache_KeyCacheInputStream</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---KeyCache---KeyCacheInputStream.php.html">/vendors/swiftMailer/classes/Swift/KeyCache/KeyCacheInputStream.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Writes data to a KeyCache using a stream.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetItemKey" title="details" class="method-name">setItemKey</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetKeyCache" title="details" class="method-name">setKeyCache</a>
+        (<span class="var-type"><a href="../../Swift/KeyCache/Swift_KeyCache.html">Swift_KeyCache</a></span>&nbsp;<span class="var-name">$keyCache</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetNsKey" title="details" class="method-name">setNsKey</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$nsKey</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetWriteThroughStream" title="details" class="method-name">setWriteThroughStream</a>
+        (<span class="var-type"><a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a></span>&nbsp;<span class="var-name">$is</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#method__clone" title="details" class="method-name">__clone</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodsetItemKey" id="methodsetItemKey"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setItemKey</strong> (line <span class="linenumber">39</span>)
+ </h4> 
+<h4><i>void</i> <strong>setItemKey(
+string
+$itemKey)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the itemKey which will be written to.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $itemKey</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetKeyCache" id="methodsetKeyCache"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setKeyCache</strong> (line <span class="linenumber">27</span>)
+ </h4> 
+<h4><i>void</i> <strong>setKeyCache(
+<a href="../../Swift/KeyCache/Swift_KeyCache.html">Swift_KeyCache</a>
+$keyCache)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the KeyCache to wrap.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/KeyCache/Swift_KeyCache.html">Swift_KeyCache</a> $keyCache</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetNsKey" id="methodsetNsKey"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setNsKey</strong> (line <span class="linenumber">33</span>)
+ </h4> 
+<h4><i>void</i> <strong>setNsKey(
+string
+$nsKey)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the nsKey which will be written to.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $nsKey</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetWriteThroughStream" id="methodsetWriteThroughStream"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setWriteThroughStream</strong> (line <span class="linenumber">45</span>)
+ </h4> 
+<h4><i>void</i> <strong>setWriteThroughStream(
+<a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>
+$is)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify a stream to write through for each write().</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a> $is</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="method__clone" id="method__clone"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method __clone</strong> (line <span class="linenumber">51</span>)
+ </h4> 
+<h4><i>void</i> <strong>__clone(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Any implementation should be cloneable, allowing the clone to access a  separate $nsKey and $itemKey.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a></h4>
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/ByteStream/Swift_InputByteStream.html#methodbind">Swift_InputByteStream::bind()</a></strong> - Attach $is to this stream.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/ByteStream/Swift_InputByteStream.html#methodcommit">Swift_InputByteStream::commit()</a></strong> - For any bytes that are currently buffered inside the stream, force them  off the buffer.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/ByteStream/Swift_InputByteStream.html#methodflushBuffers">Swift_InputByteStream::flushBuffers()</a></strong> - Flush the contents of the stream (empty it) and set the internal pointer  to the beginning.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/ByteStream/Swift_InputByteStream.html#methodunbind">Swift_InputByteStream::unbind()</a></strong> - Remove an already bound stream.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/ByteStream/Swift_InputByteStream.html#methodwrite">Swift_InputByteStream::write()</a></strong> - Writes $bytes to the end of the stream.
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:23 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

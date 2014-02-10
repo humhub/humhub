@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Encoder_Rfc2231Encoder</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Swift_Encoder_Rfc2231Encoder
+</h2> (line <span class="linenumber">20</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Encoder---Rfc2231Encoder.php.html">/vendors/swiftMailer/classes/Swift/Encoder/Rfc2231Encoder.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Handles RFC 2231 specified Encoding in Swift Mailer.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">Swift_Encoder_Rfc2231Encoder</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        (<span class="var-type"><a href="../../Swift/CharacterStream/Swift_CharacterStream.html">Swift_CharacterStream</a></span>&nbsp;<span class="var-name">$charStream</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodcharsetChanged" title="details" class="method-name">charsetChanged</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodencodeString" title="details" class="method-name">encodeString</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$string</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$firstLineOffset</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$maxLineLength</span> = <span class="var-default">0</span>], <span class="var-type">int</span>&nbsp;<span class="var-name">$maxLineLength,</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">34</span>)
+ </h4> 
+<h4><i>Swift_Encoder_Rfc2231Encoder</i> <strong>__construct(
+<a href="../../Swift/CharacterStream/Swift_CharacterStream.html">Swift_CharacterStream</a>
+$charStream)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Creates a new Rfc2231Encoder using the given character stream instance.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/CharacterStream/Swift_CharacterStream.html">Swift_CharacterStream</a> $charStream</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodcharsetChanged" id="methodcharsetChanged"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method charsetChanged</strong> (line <span class="linenumber">84</span>)
+ </h4> 
+<h4><i>void</i> <strong>charsetChanged(
+string
+$charset)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html#methodcharsetChanged">Swift_Mime_CharsetObserver::charsetChanged()</a></dt>
+						<dd>Notify this observer that the entity's charset has changed.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Updates the charset used.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $charset</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodencodeString" id="methodencodeString"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method encodeString</strong> (line <span class="linenumber">47</span>)
+ </h4> 
+<h4><i>string</i> <strong>encodeString(
+string
+$string, [int
+$firstLineOffset = 0], [
+$maxLineLength = 0], int
+$maxLineLength,)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Encoder/Swift_Encoder.html#methodencodeString">Swift_Encoder::encodeString()</a></dt>
+						<dd>Encode a given string to produce an encoded string.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Takes an unencoded string and produces a string encoded according to  RFC 2231 from it.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $string</strong>: to encode</li>
+			<li><strong>int $firstLineOffset</strong>: </li>
+			<li><strong>int $maxLineLength,</strong>: optional, 0 indicates the default of 75 bytes</li>
+			<li><strong> $maxLineLength</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:28 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

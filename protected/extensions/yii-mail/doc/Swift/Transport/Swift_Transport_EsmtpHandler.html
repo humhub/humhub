@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Transport_EsmtpHandler</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Interface Swift_Transport_EsmtpHandler
+</h2> (line <span class="linenumber">19</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Transport---EsmtpHandler.php.html">/vendors/swiftMailer/classes/Swift/Transport/EsmtpHandler.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>An ESMTP handler.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodafterEhlo" title="details" class="method-name">afterEhlo</a>
+        (<span class="var-type"><a href="../../Swift/Transport/Swift_Transport_SmtpAgent.html">Swift_Transport_SmtpAgent</a></span>&nbsp;<span class="var-name">$agent</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodexposeMixinMethods" title="details" class="method-name">exposeMixinMethods</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">boolean</span>
+        <a href="#methodgetHandledKeyword" title="details" class="method-name">getHandledKeyword</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetMailParams" title="details" class="method-name">getMailParams</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetPriorityOver" title="details" class="method-name">getPriorityOver</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$esmtpKeyword</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetRcptParams" title="details" class="method-name">getRcptParams</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodonCommand" title="details" class="method-name">onCommand</a>
+        (<span class="var-type"><a href="../../Swift/Transport/Swift_Transport_SmtpAgent.html">Swift_Transport_SmtpAgent</a></span>&nbsp;<span class="var-name">$agent</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$command</span>, [<span class="var-type">int[]</span>&nbsp;<span class="var-name">$codes</span> = <span class="var-default">array()</span>], [<span class="var-type">string[]</span>&nbsp;<span class="var-name">&$failedRecipients</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">&$stop</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodresetState" title="details" class="method-name">resetState</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetKeywordParams" title="details" class="method-name">setKeywordParams</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$parameters</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodafterEhlo" id="methodafterEhlo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method afterEhlo</strong> (line <span class="linenumber">38</span>)
+ </h4> 
+<h4><i>void</i> <strong>afterEhlo(
+<a href="../../Swift/Transport/Swift_Transport_SmtpAgent.html">Swift_Transport_SmtpAgent</a>
+$agent)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Runs immediately after a EHLO has been issued.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Transport/Swift_Transport_SmtpAgent.html">Swift_Transport_SmtpAgent</a> $agent</strong>: to read/write</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodexposeMixinMethods" id="methodexposeMixinMethods"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method exposeMixinMethods</strong> (line <span class="linenumber">75</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>exposeMixinMethods(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns an array of method names which are exposed to the Esmtp class.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetHandledKeyword" id="methodgetHandledKeyword"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getHandledKeyword</strong> (line <span class="linenumber">26</span>)
+ </h4> 
+<h4><i>boolean</i> <strong>getHandledKeyword(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the name of the ESMTP extension this handles.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetMailParams" id="methodgetMailParams"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getMailParams</strong> (line <span class="linenumber">44</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getMailParams(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get params which are appended to MAIL FROM:&lt;&gt;.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetPriorityOver" id="methodgetPriorityOver"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getPriorityOver</strong> (line <span class="linenumber">69</span>)
+ </h4> 
+<h4><i>int</i> <strong>getPriorityOver(
+string
+$esmtpKeyword)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns +1, -1 or 0 according to the rules for usort().</h5>
+<div class="desc"><p>This method is called to ensure extensions can be execute in an appropriate order.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $esmtpKeyword</strong>: to compare with</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetRcptParams" id="methodgetRcptParams"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getRcptParams</strong> (line <span class="linenumber">50</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getRcptParams(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get params which are appended to RCPT TO:&lt;&gt;.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodonCommand" id="methodonCommand"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method onCommand</strong> (line <span class="linenumber">60</span>)
+ </h4> 
+<h4><i>void</i> <strong>onCommand(
+<a href="../../Swift/Transport/Swift_Transport_SmtpAgent.html">Swift_Transport_SmtpAgent</a>
+$agent, string
+$command, [int[]
+$codes = array()], [string[]
+&$failedRecipients = null], [boolean
+&$stop = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Runs when a command is due to be sent.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Transport/Swift_Transport_SmtpAgent.html">Swift_Transport_SmtpAgent</a> $agent</strong>: to read/write</li>
+			<li><strong>string $command</strong>: to send</li>
+			<li><strong>int[] $codes</strong>: expected in response</li>
+			<li><strong>string[] &$failedRecipients</strong>: </li>
+			<li><strong>boolean &$stop</strong>: to be set true if the command is now sent</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodresetState" id="methodresetState"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method resetState</strong> (line <span class="linenumber">80</span>)
+ </h4> 
+<h4><i>void</i> <strong>resetState(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Tells this handler to clear any buffers and reset its state.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetKeywordParams" id="methodsetKeywordParams"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setKeywordParams</strong> (line <span class="linenumber">32</span>)
+ </h4> 
+<h4><i>void</i> <strong>setKeywordParams(
+
+$parameters)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the parameters which the EHLO greeting indicated.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string[] $parameters</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:20 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

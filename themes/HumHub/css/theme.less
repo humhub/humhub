@@ -1,0 +1,939 @@
+//
+// Color variables
+// --------------------------------------------------
+@colorBackground1: #f7f7f7;
+@colorBackground2: #ededed;
+@colorBackground3: #d7d7d7;
+@colorBackground4: #b2b2b2;
+
+@colorDanger1: #ff8989;
+
+@colorInfo1: #8de1d2;
+@colorInfo2: #4cd9c0;
+@colorInfo3: #41c0a9;
+@colorInfo4: #ebf6f3;
+
+//@colorWarning1: #fad587;
+@colorWarning1: #fdd198;
+@colorWarning2: #e8e0c5;
+@colorPrimary1: #99b5c9;
+@colorPrimary2: #7191a8;
+@colorPrimary3: #526e82;
+@colorPrimary4: #3b5060;
+
+// blue touch
+@colorFont1: #bac2c7;
+// title
+@colorFont2: #7a7a7a;
+// body
+//@colorFont3: #9d9d9d;
+@colorFont3: #555555;
+// body light
+@colorFont4: #bebebe;
+// dark topbar font
+@colorFont5: #aeaeae;
+
+//
+// x) General
+// --------------------------------------------------
+
+body {
+  background-color: @colorBackground2;
+  color: #777777;
+  font-family: 'Open Sans', sans-serif;
+
+  a, a:hover {
+    color: @colorFont3;
+  }
+}
+
+h4 {
+  font-weight: 300;
+  //color: @colorFont4;
+  font-size: 150%;
+}
+
+// Mixins
+.heading {
+  font-size: 16px;
+  font-weight: 300;
+  color: @colorFont4;
+  background-color: white;
+  border: none;
+  padding: 10px;
+}
+
+//
+// x) Topbar
+// --------------------------------------------------
+
+#topbar-first {
+  background-color: @colorPrimary3;
+  color: white;
+
+  a {
+    color: white;
+  }
+
+  .caret {
+    border-top-color: @colorFont4;
+  }
+
+  .btn-group > a {
+    background-color: lighten(@colorPrimary3, 5%);
+  }
+
+  .media-list {
+
+    a {
+      color: @colorFont3;
+    }
+
+    li {
+
+      i.accepted {
+        color: @colorInfo2 !important;
+      }
+
+      i.declined {
+        color: @colorDanger1 !important;
+      }
+    }
+
+    .media .media-body {
+      .label {
+        padding: .1em .5em .1em;
+      }
+    }
+  }
+
+  .account .user-title {
+    text-align: right;
+
+    span {
+      color: @colorFont4;
+    }
+  }
+
+  .nav > .dropdown a:hover, .nav > .open > a {
+    //background-color: @colorPrimary3;
+  }
+
+  .dropdown.account > a, .dropdown.account.open > a, .dropdown.account > a:hover, .dropdown.account.open > a:hover {
+    background-color: @colorPrimary3;
+  }
+
+}
+
+#topbar-second {
+  background-color: #ffffff;
+  background-image: none;
+  -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #d4d4d4;
+
+  .nav > li > a {
+    padding: 15px 20px 11px 20px;
+    text-decoration: none;
+    text-shadow: none;
+    font-weight: 600;
+    font-size: 12px;
+
+    .caret {
+      border-top-color: @colorFont2;
+    }
+  }
+
+  .nav > li > a:hover, .nav .open > a, .nav > li.active {
+    border-bottom: 3px solid @colorInfo2;
+    background-color: @colorBackground1;
+    color: @colorFont3;
+  }
+
+  .nav > li.active > a:hover {
+    border-bottom: none;
+  }
+
+  #space-menu-dropdown li > ul > li > a > .media .media-body p {
+    color: @colorFont4;
+    font-size: 11px;
+    margin: 0;
+    font-weight: 400;
+  }
+}
+
+//
+// x) Media-Object
+// --------------------------------------------------
+.media-list {
+
+  li {
+    border-bottom: 1px solid #eee;
+    border-left: 3px solid white;
+    font-size: 12px;
+
+    a {
+      color: @colorFont3;
+    }
+  }
+
+  li.new {
+    border-left: 3px solid @colorInfo4;
+    background-color: @colorInfo4;
+  }
+
+  li:hover, li.selected {
+    background-color: @colorBackground1;
+    border-left: 3px solid @colorInfo2;
+  }
+
+}
+
+.media {
+
+  .media-body {
+    h4.media-heading {
+
+      font-size: 14px;
+      font-weight: 500;
+      a {
+        //color: @colorInfo3;
+
+      }
+
+      small {
+        font-size: 11px;
+        color: @colorFont4;
+      }
+    }
+
+    .content {
+      //color: @colorFont1;
+      font-size: 13px;
+
+      a {
+        color: @colorInfo2;
+      }
+    }
+
+    h5 {
+      color: @colorFont5;
+      font-weight: 300;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .time {
+      font-size: 11px;
+      color: @colorFont4;
+    }
+  }
+}
+
+//
+// x) Dropdowns
+// --------------------------------------------------
+.modal, .panel, .nav-tabs,  {
+
+  .dropdown-menu {
+    border: 1px solid @colorBackground3;
+
+    li.divider {
+      background-color: @colorBackground1;
+      border-bottom: none;
+      margin: 9px 1px !important;
+    }
+
+    li {
+      border-left: 3px solid white;
+
+      a {
+        color: @colorFont3;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 4px 15px;
+
+        i {
+          margin-right: 5px;
+        }
+      }
+
+      a:hover {
+        background: none;
+      }
+    }
+
+    li:hover, li.selected {
+      border-left: 3px solid @colorInfo2;
+      background-color: @colorBackground1 !important;
+    }
+  }
+}
+
+//
+// x) Panels
+// --------------------------------------------------
+
+.panel {
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 0 3px #dadada;
+  -webkit-box-shadow: 0 0 3px #dadada;
+  -moz-box-shadow: 0 0 3px #dadada;
+  border-radius: 4px;
+
+  .panel-heading {
+    .heading;
+  }
+
+  .panel-body {
+    padding: 10px;
+  }
+
+  .statistics {
+    .entry {
+      margin-left: 20px;
+      font-size: 12px;
+
+
+
+      .count {
+        color: @colorInfo2;
+        font-weight: 600;
+      }
+    }
+  }
+
+  h3.media-heading {
+
+    small {
+      font-size: 75%;
+    }
+    small a {
+      color: @colorInfo2;
+      
+    }
+  }
+
+}
+
+//
+// Well
+// --------------------------------------------------
+.well-small {
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.well {
+  border: none;
+  box-shadow: none;
+  background-color: @colorBackground2;
+  margin-bottom: 1px;
+
+  hr {
+    margin: 5px 0 10px 0;
+    border-top: 1px solid darken(@colorBackground2, 8%);
+  }
+
+  table > thead {
+    font-size: 11px;
+  }
+}
+
+//
+// x) Thumbnails
+// --------------------------------------------------
+.img-rounded {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+//
+// x) Navs
+// --------------------------------------------------
+
+.nav-pills, .account {
+
+  .dropdown-menu {
+    background-color: @colorPrimary3;
+    border: none;
+
+    li.divider {
+      background-color: darken(@colorPrimary3, 5%);
+      border-bottom: none;
+      margin: 9px 1px !important;
+    }
+
+    li {
+      border-left: 3px solid @colorPrimary3;
+
+      a {
+        color: white;
+        font-weight: 400;
+        font-size: 14px;
+        padding: 4px 15px;
+
+        i {
+          margin-right: 5px;
+        }
+      }
+
+      a:hover {
+        background: none;
+      }
+    }
+
+    li:hover, li.selected {
+      border-left: 3px solid @colorInfo2;
+      color: #ffffff !important;
+      background-color: darken(@colorPrimary3, 5%) !important;
+    }
+  }
+
+}
+
+.nav-pills.preferences {
+  right: 10px;
+  top: 10px;
+
+  .dropdown .dropdown-toggle {
+    padding: 5px 10px;
+    color: @colorFont4;
+  }
+
+  .dropdown.open {
+
+    .dropdown-toggle, .dropdown-toggle:hover {
+      background-color: @colorPrimary3;
+      color: white;
+    }
+  }
+
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+  background-color: @colorPrimary3;
+}
+
+// Nav-Tabs
+.nav-tabs {
+  border-bottom-width: 2px;
+}
+
+.nav .caret, .nav .caret:hover, .nav .caret:active {
+  border-top-color: @colorPrimary3;
+  border-bottom-color: @colorPrimary3;
+}
+
+.nav-tabs > li {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+  border-color: #ededed;
+  color: @colorPrimary3;
+}
+
+//
+// x) Buttons
+// --------------------------------------------------
+.btn {
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  background-image: none;
+  text-shadow: none;
+  border-radius: 3px;
+  outline: none !important;
+  margin-bottom: 0;
+  /*  padding: 8px 16px;
+    font-weight: 600;
+    font-size: 14px;*/
+  padding: 4px 12px;
+}
+
+.input.btn {
+  outline: none;
+}
+
+.btn-small {
+  padding: 2px 10px;
+}
+
+.btn-large {
+  padding: 11px 19px;
+}
+
+.btn-xs {
+  padding: 1px 5px;
+}
+
+.btn-default {
+  background: @colorBackground2;
+  color: @colorFont2;
+
+  &:hover,
+  &:focus {
+    background: darken(@colorBackground2, 2%);
+    text-decoration: none;
+    color: @colorFont2;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@colorBackground2, 5%);
+  }
+}
+
+.btn-primary {
+  background: @colorPrimary3;
+  color: white !important;
+
+  &:hover,
+  &:focus {
+    background: darken(@colorPrimary3, 5%);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@colorPrimary3, 5%);
+  }
+}
+
+.btn-info {
+  background: @colorInfo2;
+  color: white !important;
+
+  &:hover,
+  &:focus {
+    background: darken(@colorInfo2, 5%);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@colorInfo2, 5%);
+  }
+}
+
+.btn-danger {
+  background: @colorDanger1;
+  color: white !important;
+
+  &:hover,
+  &:focus {
+    background: darken(@colorDanger1, 5%);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@colorDanger1, 5%);
+  }
+}
+
+.btn-success {
+  background: @colorInfo2;
+  color: white !important;
+
+  &:hover,
+  &:focus {
+    background: darken(@colorInfo2, 5%);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@colorInfo2, 5%);
+  }
+}
+
+.btn-warning {
+  background: @colorWarning1;
+  color: white !important;
+
+  &:hover,
+  &:focus {
+    background: darken(@colorWarning1, 2%);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@colorWarning1, 2%);
+  }
+}
+
+//
+// Forms
+// --------------------------------------------------
+
+.radio, .checkbox {
+  margin-top: 5px !important;
+  margin-bottom: 0;
+}
+
+.form-control {
+  border: 2px solid @colorBackground2;
+  box-shadow: none;
+
+  &:focus {
+    //border-color: @colorInfo2;
+    border: 2px solid @colorInfo2;
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+textarea {
+  resize: none;
+}
+
+// Placeholder text
+::-webkit-input-placeholder { color:@colorFont4 !important; }
+::-moz-placeholder { color:@colorFont4 !important; } /* firefox 19+ */
+:-ms-input-placeholder { color:@colorFont4 !important; } /* ie */
+input:-moz-placeholder { color:@colorFont4 !important; }
+
+//
+// x) Labels
+// --------------------------------------------------
+
+.label {
+  text-transform: uppercase;
+}
+
+.label {
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 3px 5px 4px 5px;
+  font-weight: 600;
+  font-size: 10px !important;
+  color: white !important;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+.label-info {
+  background-color: @colorInfo2;
+}
+
+a.label-info:hover {
+  background: darken(@colorInfo2, 5%) !important;
+}
+
+.label-danger {
+  background-color: @colorDanger1;
+}
+
+a.label-danger:hover {
+  background: darken(@colorDanger1, 5%) !important;
+}
+
+.label-success {
+  background-color: @colorInfo2;
+}
+
+a.label-success:hover {
+  background: darken(@colorInfo2, 5%) !important;
+}
+
+.label-warning {
+  background-color: @colorWarning1;
+}
+
+a.label-warning:hover {
+  background: darken(@colorWarning1, 5%) !important;
+}
+
+//
+// Badges
+// --------------------------------------------------
+.badge-space {
+  margin-top: 6px;
+}
+
+.badge {
+  padding: 3px 5px;
+  border-radius: 2px;
+  font-weight: normal;
+  font-family: Arial, sans-serif;
+  font-size: 10px !important;
+  text-transform: uppercase;
+  color: #ffffff;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: none;
+  background-color: @colorBackground3;
+  line-height: 1;
+}
+
+//
+// List-Group
+// --------------------------------------------------
+
+.list-group {
+  box-shadow: 0 0 3px #dadada;
+  -webkit-box-shadow: 0 0 3px #dadada;
+  -moz-box-shadow: 0 0 3px #dadada;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item {
+  background-color: white;
+  border: none;
+  padding: 6px 15px;
+  line-height: 20px;
+  font-weight: 600;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+a.list-group-item {
+  color: @colorFont3;
+}
+
+a.list-group-item:hover, a.list-group-item.active:hover {
+  background: @colorBackground1;
+  color: @colorFont3;
+  padding-left: 12px;
+  border-left: 3px solid @colorInfo2;
+}
+
+a.list-group-item.active:hover {
+  padding-left: 13px;
+}
+
+a.list-group-item.active {
+  background: @colorBackground1;
+  color: @colorFont3;
+  border: none;
+  padding-left: 13px;
+  border-left: 3px solid @colorInfo2;
+}
+
+//
+// Modal
+// --------------------------------------------------
+.modal {
+  border: none;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 200;
+  color: @colorFont4;
+}
+
+.modal-dialog {
+  margin-top: 10%;
+}
+
+.modal-content {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  border: none;
+
+  .modal-header {
+    padding: 10px;
+    //border-bottom: none;
+
+  }
+
+  .modal-body {
+
+    padding: 10px;
+
+    ul.medialist {
+      li > a {
+
+      }
+    }
+
+  }
+
+  .modal-footer {
+    margin-top: 0;
+    text-align: left;
+    padding: 10px;
+
+    .modal-loader {
+      float: right;
+    }
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+//
+// Progressbar
+// --------------------------------------------------
+.progress {
+  height: 10px;
+  margin-bottom: 15px;
+  box-shadow: none;
+  background: @colorBackground2;
+  border-radius: 10px;
+}
+
+.progress-bar-info {
+  background-color: @colorInfo2;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+//
+// Tooltips
+// --------------------------------------------------
+.tooltip-inner {
+  background-color: @colorPrimary3;
+  max-width: 400px;
+  text-align: left;
+  font-weight: 300;
+  padding: 2px 8px 4px 8px;
+}
+
+.tooltip {
+  &.top .tooltip-arrow {
+    border-top-color: @colorPrimary3;
+  }
+  &.top-left .tooltip-arrow {
+    border-top-color: @colorPrimary3;
+  }
+  &.top-right .tooltip-arrow {
+    border-top-color: @colorPrimary3;
+  }
+  &.right .tooltip-arrow {
+    border-right-color: @colorPrimary3;
+  }
+  &.left .tooltip-arrow {
+    border-left-color: @colorPrimary3;
+  }
+  &.bottom .tooltip-arrow {
+    border-bottom-color: @colorPrimary3;
+  }
+  &.bottom-left .tooltip-arrow {
+    border-bottom-color: @colorPrimary3;
+  }
+  &.bottom-right .tooltip-arrow {
+    border-bottom-color: @colorPrimary3;
+  }
+}
+
+.tooltip.in {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+//
+// x) HumHub Components
+// --------------------------------------------------
+
+// Ajax loader
+.loader {
+  height: 60px;
+  background: url('../img/loader.gif') no-repeat center center;
+}
+
+.loader-small {
+  height: 32px;
+  width: 32px;
+}
+
+// User- & Space picker
+.userInput, .spaceInput {
+  background-color: @colorInfo2;
+  font-weight: 600;
+}
+
+// Wall-Entries
+.wall-entry {
+  position: relative;
+
+  .media .img-space {
+    position: absolute;
+    top: 55px;
+    left: 55px;
+  }
+
+  .wall-entry-controls, .wall-entry-controls a {
+    font-size: 11px;
+    color: @colorFont5;
+  }
+}
+
+// Space > Admin
+.space-owner {
+  text-align: center;
+  margin: 14px 0;
+  font-size: 13px;
+  color: #999;
+}
+
+.placeholder {
+  padding: 10px;
+}
+
+ul.tag_input {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 2px solid @colorBackground2;
+}
+
+ul.tag_input.focus {
+  border: 2px solid @colorInfo2;
+  outline: 0;
+  box-shadow: none;
+}
+
+// Member sign for directory list
+.space-member-sign {
+  color: @colorInfo2;
+}
+
+
+//
+// 7) Yii Components
+// --------------------------------------------------
+
+// Errror handling
+.errorMessage {
+  color: @colorDanger1;
+}
+
+
+// Errror handling
+.error {
+  border-color: @colorDanger1 !important;
+}
+
+
+//
+// x) Third Party Tools
+// --------------------------------------------------
+.highlight {
+  background-color: #f9f0d2;
+}
+
+

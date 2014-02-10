@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class YiiMail</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class YiiMail
+</h2> (line <span class="linenumber">45</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+CApplicationComponent
+   |
+   --YiiMail</pre>
+<p>
+	<b><i>Located in File: <a href="_YiiMail.php.html">/YiiMail.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>YiiMail is an application component used for sending email.</h5>
+<div class="desc"><p>You may configure it as below.  Check the public attributes and setter  methods of this class for more options.  <pre> return array(
+ 	...
+ 	'import => array(
+ 		...
+ 		'ext.mail.YiiMailMessage',
+ 	),
+ 	'components' => array(
+ 		'mail' => array(
+ 			'class' => 'ext.yii-mail.YiiMail',
+ 			'transportType' => 'php',
+ 			'viewPath' => 'application.views.mail',
+ 			'logging' => true,
+ 			'dryRun' => false
+ 		),
+ 		...
+ 	)
+ );</pre></p><p>Example usage:  <pre> $message = new YiiMailMessage;
+ $message->setBody('Message content here with HTML', 'text/html');
+ $message->subject = 'My Subject';
+ $message->addTo('johnDoe@domain.com');
+ $message->from = Yii::app()->params['adminEmail'];
+ Yii::app()->mail->send($message);</pre></p></div>
+<ul>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="var-title">
+    <span class="var-type">bool</span>
+    <a href="#var$dryRun" title="details" class="property"><strong>$dryRun</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">bool</span>
+    <a href="#var$logging" title="details" class="property"><strong>$logging</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$mailer" title="details" class="property"><strong>$mailer</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$transport" title="details" class="property"><strong>$transport</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">string</span>
+    <a href="#var$transportOptions" title="details" class="property"><strong>$transportOptions</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">string</span>
+    <a href="#var$transportType" title="details" class="property"><strong>$transportType</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">string</span>
+    <a href="#var$viewPath" title="details" class="property"><strong>$viewPath</strong></a>
+</div>
+<hr />
+<a name="var$dryRun" id="var$dryRun"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$dryRun =  false</strong> (line <span class="linenumber">57</span>)
+ </h4>
+<h4>Data type : bool</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - whether to disable actually sending mail.  Defaults to false.</li>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<a name="var$logging" id="var$logging"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$logging =  true</strong> (line <span class="linenumber">51</span>)
+ </h4>
+<h4>Data type : bool</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - whether to log messages using Yii::log().  Defaults to true.</li>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<a name="var$mailer" id="var$mailer"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$mailer</strong> (line <span class="linenumber">98</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - Holds the SwiftMailer mailer</li>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$transport" id="var$transport"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$transport</strong> (line <span class="linenumber">93</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - Holds the SwiftMailer transport</li>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$transportOptions" id="var$transportOptions"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$transportOptions</strong> (line <span class="linenumber">88</span>)
+ </h4>
+<h4>Data type : string</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - options specific to the transport type being used.  To set options for STMP, set this attribute to an array where the keys  are the option names and the values are their values.  Possible options for SMTP are:  <ul><li>host</li><li>username</li><li>password</li><li>port</li><li>encryption</li><li>timeout</li><li>extensionHandlers</li></ul>  See the SwiftMailer documentaion for the option meanings.</li>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<a name="var$transportType" id="var$transportType"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$transportType =  'php'</strong> (line <span class="linenumber">64</span>)
+ </h4>
+<h4>Data type : string</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - the delivery type.  Can be either 'php' or 'smtp'.  When  using 'php', PHP's <a href="http://www.php.net/mail">http://www.php.net/mail</a> function will be used.  Defaults to 'php'.</li>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<a name="var$viewPath" id="var$viewPath"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$viewPath =  'application.views.mail'</strong> (line <span class="linenumber">70</span>)
+ </h4>
+<h4>Data type : string</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>var:</strong> - the path to the location where mail views are stored.  Defaults to 'application.views.mail'.</li>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+    static         <span class="method-result">string</span>
+        <a href="#methodlog" title="details" class="method-name">log</a>
+        (<span class="var-type"><a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a></span>&nbsp;<span class="var-name">$message</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodbatchSend" title="details" class="method-name">batchSend</a>
+        (<span class="var-type"><a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a></span>&nbsp;<span class="var-name">$message</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$failedRecipients</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$it</span> = <span class="var-default">null</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">&$failedRecipients,</span>, <span class="var-type"><a href="../Swift/Mailer/Swift_Mailer_RecipientIterator.html">Swift_Mailer_RecipientIterator</a></span>&nbsp;<span class="var-name">$it,</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_Mailer.html">Swift_Mailer</a></span>
+        <a href="#methodgetMailer" title="details" class="method-name">getMailer</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixed</span>
+        <a href="#methodgetTransport" title="details" class="method-name">getTransport</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodinit" title="details" class="method-name">init</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodregisterScripts" title="details" class="method-name">registerScripts</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodsend" title="details" class="method-name">send</a>
+        (<span class="var-type"><a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a></span>&nbsp;<span class="var-name">$message</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$failedRecipients</span> = <span class="var-default">null</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">&$failedRecipients,</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsendSimple" title="details" class="method-name">sendSimple</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$from</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$to</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$subject</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$body</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodlog" id="methodlog"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method log</strong> (line <span class="linenumber">189</span>)
+ </h4> 
+<h4><i>string</i> <strong>log(
+<a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a>
+$message)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Logs a YiiMailMessage in a (hopefully) readable way using Yii::log (as  long as $this-&gt;logging is set to true).</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> $message</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - log message</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodbatchSend" id="methodbatchSend"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method batchSend</strong> (line <span class="linenumber">158</span>)
+ </h4> 
+<h4><i>int</i> <strong>batchSend(
+<a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a>
+$message, [
+&$failedRecipients = null], [
+$it = null], array
+&$failedRecipients,, <a href="../Swift/Mailer/Swift_Mailer_RecipientIterator.html">Swift_Mailer_RecipientIterator</a>
+$it,)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Send the given <a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> to all recipients individually.</h5>
+<div class="desc"><p>This differs from <a href="../Yii-Mail/YiiMail.html#methodsend">send()</a> in the way headers are presented to the  recipient.  The only recipient in the &quot;To:&quot; field will be the individual  recipient it was sent to.</p><p>If an iterator is provided, recipients will be read from the iterator  one-by-one, otherwise recipient data will be retreived from the  <a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> object.</p><p>Sender information is always read from the <a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> object.</p><p>The return value is the number of recipients who were accepted for  delivery.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> $message</strong>: </li>
+			<li><strong>array &$failedRecipients,</strong>: optional</li>
+			<li><strong><a href="../Swift/Mailer/Swift_Mailer_RecipientIterator.html">Swift_Mailer_RecipientIterator</a> $it,</strong>: optional</li>
+			<li><strong> &$failedRecipients</strong>: </li>
+			<li><strong><a href="../Swift/Mailer/Swift_Mailer_RecipientIterator.html">Swift_Mailer_RecipientIterator</a> $it</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Yii-Mail/YiiMail.html#methodsend">YiiMail::send()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetMailer" id="methodgetMailer"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getMailer</strong> (line <span class="linenumber">226</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_Mailer.html">Swift_Mailer</a></i> <strong>getMailer(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Gets the SwiftMailer <a href="../Swift/Swift_Mailer.html">Swift_Mailer</a> class instance</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetTransport" id="methodgetTransport"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getTransport</strong> (line <span class="linenumber">203</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getTransport(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Gets the SwiftMailer transport class instance, initializing it if it has</h5>
+<div class="desc"><p>not been created yet</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - <a href="../Swift/Transport/Swift_MailTransport.html">Swift_MailTransport</a> or <a href="../Swift/Transport/Swift_SmtpTransport.html">Swift_SmtpTransport</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodinit" id="methodinit"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method init</strong> (line <span class="linenumber">105</span>)
+ </h4> 
+<h4><i>void</i> <strong>init(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Calls the registerScripts() method.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodregisterScripts" id="methodregisterScripts"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method registerScripts</strong> (line <span class="linenumber">236</span>)
+ </h4> 
+<h4><i>void</i> <strong>registerScripts(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Registers swiftMailer autoloader and includes the required files</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsend" id="methodsend"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method send</strong> (line <span class="linenumber">130</span>)
+ </h4> 
+<h4><i>int</i> <strong>send(
+<a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a>
+$message, [
+&$failedRecipients = null], array
+&$failedRecipients,)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Send a <a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> as it would be sent in a mail client.</h5>
+<div class="desc"><p>All recipients (with the exception of Bcc) will be able to see the other  recipients this message was sent to.</p><p>If you need to send to each recipient without disclosing details about the  other recipients see <a href="../Yii-Mail/YiiMail.html#methodbatchSend">batchSend()</a>.</p><p>Recipient/sender data will be retreived from the <a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a>  object.</p><p>The return value is the number of recipients who were accepted for  delivery.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Yii-Mail/YiiMailMessage.html">YiiMailMessage</a> $message</strong>: </li>
+			<li><strong>array &$failedRecipients,</strong>: optional</li>
+			<li><strong> &$failedRecipients</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Yii-Mail/YiiMail.html#methodbatchSend">YiiMail::batchSend()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsendSimple" id="methodsendSimple"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method sendSimple</strong> (line <span class="linenumber">172</span>)
+ </h4> 
+<h4><i>void</i> <strong>sendSimple(
+mixed
+$from, mixed
+$to, string
+$subject, string
+$body)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Sends a message in an extremly simple but less extensive way.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $from</strong>: from address, string or array of the form $address =&gt; $name</li>
+			<li><strong>mixed $to</strong>: to address, string or array of the form $address =&gt; $name</li>
+			<li><strong>string $subject</strong>: subject</li>
+			<li><strong>string $body</strong>: body</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:32 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

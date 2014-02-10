@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_DependencyContainer</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Swift_DependencyContainer
+</h2> (line <span class="linenumber">18</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---DependencyContainer.php.html">/vendors/swiftMailer/classes/Swift/DependencyContainer.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Dependency Injection container.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="const-title">
+    <a href="#constTYPE_ALIAS" title="details" class="property"><strong>TYPE_ALIAS</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constTYPE_INSTANCE" title="details" class="property"><strong>TYPE_INSTANCE</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constTYPE_SHARED" title="details" class="property"><strong>TYPE_SHARED</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constTYPE_VALUE" title="details" class="property"><strong>TYPE_VALUE</strong></a>
+</div>
+<hr />
+<a name="constTYPE_ALIAS" id="constTYPE_ALIAS"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">TYPE_ALIAS =  0x1000</strong> (line <span class="linenumber">31</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Constant for aliases</h5>
+<ul>
+	</ul>
+</div>
+<a name="constTYPE_INSTANCE" id="constTYPE_INSTANCE"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">TYPE_INSTANCE =  0x0010</strong> (line <span class="linenumber">25</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Constant for new instance types</h5>
+<ul>
+	</ul>
+</div>
+<a name="constTYPE_SHARED" id="constTYPE_SHARED"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">TYPE_SHARED =  0x0100</strong> (line <span class="linenumber">28</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Constant for shared instance types</h5>
+<ul>
+	</ul>
+</div>
+<a name="constTYPE_VALUE" id="constTYPE_VALUE"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">TYPE_VALUE =  0x0001</strong> (line <span class="linenumber">22</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Constant for literal value types</h5>
+<ul>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+    static         <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodgetInstance" title="details" class="method-name">getInstance</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Swift_DependencyContainer</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodaddConstructorLookup" title="details" class="method-name">addConstructorLookup</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$lookup</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodaddConstructorValue" title="details" class="method-name">addConstructorValue</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodasAliasOf" title="details" class="method-name">asAliasOf</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$lookup</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodasNewInstanceOf" title="details" class="method-name">asNewInstanceOf</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$className</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodasSharedInstanceOf" title="details" class="method-name">asSharedInstanceOf</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$className</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodasValue" title="details" class="method-name">asValue</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodcreateDependenciesFor" title="details" class="method-name">createDependenciesFor</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$itemName</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">boolean</span>
+        <a href="#methodhas" title="details" class="method-name">has</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$itemName</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodlistItems" title="details" class="method-name">listItems</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixed</span>
+        <a href="#methodlookup" title="details" class="method-name">lookup</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$itemName</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodregister" title="details" class="method-name">register</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$itemName</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result"><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></span>
+        <a href="#methodwithDependencies" title="details" class="method-name">withDependencies</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$lookups</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodgetInstance" id="methodgetInstance"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getInstance</strong> (line <span class="linenumber">52</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>getInstance(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns a singleton of the DependencyContainer.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">46</span>)
+ </h4> 
+<h4><i>Swift_DependencyContainer</i> <strong>__construct(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Constructor should not be used.</h5>
+<div class="desc"><p>Use <a href="../Swift/Swift_DependencyContainer.html#methodgetInstance">getInstance()</a> instead.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddConstructorLookup" id="methodaddConstructorLookup"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addConstructorLookup</strong> (line <span class="linenumber">249</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>addConstructorLookup(
+string
+$lookup)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify a dependency lookup for the constructor of the previously  registered item.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $lookup</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodwithDependencies">Swift_DependencyContainer::withDependencies()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorValue">Swift_DependencyContainer::addConstructorValue()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddConstructorValue" id="methodaddConstructorValue"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addConstructorValue</strong> (line <span class="linenumber">230</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>addConstructorValue(
+mixed
+$value)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify a literal (non looked up) value for the constructor of the  previously registered item.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $value</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodwithDependencies">Swift_DependencyContainer::withDependencies()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorLookup">Swift_DependencyContainer::addConstructorLookup()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodasAliasOf" id="methodasAliasOf"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method asAliasOf</strong> (line <span class="linenumber">163</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>asAliasOf(
+string
+$lookup)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify the previously registered item as an alias of another item.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $lookup</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodasNewInstanceOf" id="methodasNewInstanceOf"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method asNewInstanceOf</strong> (line <span class="linenumber">181</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>asNewInstanceOf(
+string
+$className)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify the previously registered item as a new instance of $className.</h5>
+<div class="desc"><p><a href="../Swift/Swift_DependencyContainer.html#methodregister">register()</a> must be called before this will work.  Any arguments can be set with <a href="../Swift/Swift_DependencyContainer.html#methodwithDependencies">withDependencies()</a>,  <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorValue">addConstructorValue()</a> or <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorLookup">addConstructorLookup()</a>.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $className</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodwithDependencies">Swift_DependencyContainer::withDependencies()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorValue">Swift_DependencyContainer::addConstructorValue()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorLookup">Swift_DependencyContainer::addConstructorLookup()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodasSharedInstanceOf" id="methodasSharedInstanceOf"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method asSharedInstanceOf</strong> (line <span class="linenumber">195</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>asSharedInstanceOf(
+string
+$className)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify the previously registered item as a shared instance of $className.</h5>
+<div class="desc"><p><a href="../Swift/Swift_DependencyContainer.html#methodregister">register()</a> must be called before this will work.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $className</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodasValue" id="methodasValue"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method asValue</strong> (line <span class="linenumber">150</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>asValue(
+mixed
+$value)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify the previously registered item as a literal value.</h5>
+<div class="desc"><p><a href="../Swift/Swift_DependencyContainer.html#methodregister">register()</a> must be called before this will work.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $value</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodcreateDependenciesFor" id="methodcreateDependenciesFor"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method createDependenciesFor</strong> (line <span class="linenumber">116</span>)
+ </h4> 
+<h4><i>array</i> <strong>createDependenciesFor(
+string
+$itemName)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Create an array of arguments passed to the constructor of $itemName.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $itemName</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodhas" id="methodhas"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method has</strong> (line <span class="linenumber">76</span>)
+ </h4> 
+<h4><i>boolean</i> <strong>has(
+string
+$itemName)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Test if an item is registered in this container with the given name.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $itemName</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodregister">Swift_DependencyContainer::register()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodlistItems" id="methodlistItems"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method listItems</strong> (line <span class="linenumber">65</span>)
+ </h4> 
+<h4><i>array</i> <strong>listItems(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>List the names of all items stored in the Container.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodlookup" id="methodlookup"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method lookup</strong> (line <span class="linenumber">89</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>lookup(
+string
+$itemName)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Lookup the item with the given $itemName.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $itemName</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodregister">Swift_DependencyContainer::register()</a></li>
+			<li><strong>throws</strong> - Swift_DependencyException If the dependency is not found</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodregister" id="methodregister"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method register</strong> (line <span class="linenumber">136</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>register(
+string
+$itemName)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Register a new dependency with $itemName.</h5>
+<div class="desc"><p>This method returns the current DependencyContainer instance because it  requires the use of the fluid interface to set the specific details for the  dependency.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $itemName</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodasNewInstanceOf">Swift_DependencyContainer::asNewInstanceOf()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodasSharedInstanceOf">Swift_DependencyContainer::asSharedInstanceOf()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodasValue">Swift_DependencyContainer::asValue()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodwithDependencies" id="methodwithDependencies"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method withDependencies</strong> (line <span class="linenumber">211</span>)
+ </h4> 
+<h4><i><a href="../Swift/Swift_DependencyContainer.html">Swift_DependencyContainer</a></i> <strong>withDependencies(
+
+$lookups)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Specify a list of injected dependencies for the previously registered item.</h5>
+<div class="desc"><p>This method takes an array of lookup names.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $lookups</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorValue">Swift_DependencyContainer::addConstructorValue()</a>, <a href="../Swift/Swift_DependencyContainer.html#methodaddConstructorLookup">Swift_DependencyContainer::addConstructorLookup()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:19 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

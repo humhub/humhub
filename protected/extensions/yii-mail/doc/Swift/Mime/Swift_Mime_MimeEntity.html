@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Mime_MimeEntity</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Interface Swift_Mime_MimeEntity
+</h2> (line <span class="linenumber">21</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+<a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html">Swift_Mime_CharsetObserver</a>
+   |
+   --Swift_Mime_MimeEntity</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Mime---MimeEntity.php.html">/vendors/swiftMailer/classes/Swift/Mime/MimeEntity.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>A MIME entity, such as an attachment.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+<span class="type">Classes extended from Swift_Mime_MimeEntity:</span>
+ 		<dl>
+	<dt><a href="../../Swift/Mime/Swift_Mime_Message.html">Swift_Mime_Message</a></dt>
+		<dd>A Message (RFC 2822) object.</dd>
+	</dl>
+	</p>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="const-title">
+    <a href="#constLEVEL_ALTERNATIVE" title="details" class="property"><strong>LEVEL_ALTERNATIVE</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constLEVEL_MIXED" title="details" class="property"><strong>LEVEL_MIXED</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constLEVEL_RELATED" title="details" class="property"><strong>LEVEL_RELATED</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constLEVEL_TOP" title="details" class="property"><strong>LEVEL_TOP</strong></a>
+</div>
+<hr />
+<a name="constLEVEL_ALTERNATIVE" id="constLEVEL_ALTERNATIVE"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../../media/images/Constant.gif" border="0" /> <strong class="property">LEVEL_ALTERNATIVE =  4096</strong> (line <span class="linenumber">32</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>An entity which nests with the same precedence as a mime part</h5>
+<ul>
+	</ul>
+</div>
+<a name="constLEVEL_MIXED" id="constLEVEL_MIXED"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../../media/images/Constant.gif" border="0" /> <strong class="property">LEVEL_MIXED =  256</strong> (line <span class="linenumber">29</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>An entity which nests with the same precedence as an attachment</h5>
+<ul>
+	</ul>
+</div>
+<a name="constLEVEL_RELATED" id="constLEVEL_RELATED"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../../media/images/Constant.gif" border="0" /> <strong class="property">LEVEL_RELATED =  65536</strong> (line <span class="linenumber">35</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>An entity which nests with the same precedence as embedded content</h5>
+<ul>
+	</ul>
+</div>
+<a name="constLEVEL_TOP" id="constLEVEL_TOP"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../../media/images/Constant.gif" border="0" /> <strong class="property">LEVEL_TOP =  16</strong> (line <span class="linenumber">26</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Main message document; there can only be one of these</h5>
+<ul>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetBody" title="details" class="method-name">getBody</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Swift_Mime_MimeEntity[]</span>
+        <a href="#methodgetChildren" title="details" class="method-name">getChildren</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetContentType" title="details" class="method-name">getContentType</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Swift_Mime_Header[]</span>
+        <a href="#methodgetHeaders" title="details" class="method-name">getHeaders</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetId" title="details" class="method-name">getId</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetNestingLevel" title="details" class="method-name">getNestingLevel</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetBody" title="details" class="method-name">setBody</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$body</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$contentType</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetChildren" title="details" class="method-name">setChildren</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$children</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodtoByteStream" title="details" class="method-name">toByteStream</a>
+        (<span class="var-type"><a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a></span>&nbsp;<span class="var-name">$is</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodtoString" title="details" class="method-name">toString</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodgetBody" id="methodgetBody"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getBody</strong> (line <span class="linenumber">87</span>)
+ </h4> 
+<h4><i>string</i> <strong>getBody(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the body content of this entity as a string.</h5>
+<div class="desc"><p>Returns NULL if no body has been set.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetChildren" id="methodgetChildren"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getChildren</strong> (line <span class="linenumber">67</span>)
+ </h4> 
+<h4><i>Swift_Mime_MimeEntity[]</i> <strong>getChildren(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get all children nested inside this entity.</h5>
+<div class="desc"><p>These are not just the immediate children, but all children.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetContentType" id="methodgetContentType"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getContentType</strong> (line <span class="linenumber">49</span>)
+ </h4> 
+<h4><i>string</i> <strong>getContentType(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the qualified content-type of this mime entity.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetHeaders" id="methodgetHeaders"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getHeaders</strong> (line <span class="linenumber">80</span>)
+ </h4> 
+<h4><i>Swift_Mime_Header[]</i> <strong>getHeaders(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the collection of Headers in this Mime entity.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetId" id="methodgetId"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getId</strong> (line <span class="linenumber">60</span>)
+ </h4> 
+<h4><i>string</i> <strong>getId(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns a unique ID for this entity.</h5>
+<div class="desc"><p>For most entities this will likely be the Content-ID, though it has  no explicit semantic meaning and can be considered an identifier for  programming logic purposes.  If a Content-ID header is present, this value SHOULD match the value of  the header.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetNestingLevel" id="methodgetNestingLevel"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getNestingLevel</strong> (line <span class="linenumber">43</span>)
+ </h4> 
+<h4><i>int</i> <strong>getNestingLevel(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the level at which this entity shall be nested in final document.</h5>
+<div class="desc"><p>The lower the value, the more outermost the entity will be nested.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#constLEVEL_TOP">Swift_Mime_MimeEntity::LEVEL_TOP</a>, <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#constLEVEL_MIXED">Swift_Mime_MimeEntity::LEVEL_MIXED</a>, <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#constLEVEL_RELATED">Swift_Mime_MimeEntity::LEVEL_RELATED</a>, <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#constLEVEL_ALTERNATIVE">Swift_Mime_MimeEntity::LEVEL_ALTERNATIVE</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetBody" id="methodsetBody"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setBody</strong> (line <span class="linenumber">94</span>)
+ </h4> 
+<h4><i>void</i> <strong>setBody(
+string
+$body, [string
+$contentType = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the body content of this entity as a string.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $body</strong>: </li>
+			<li><strong>string $contentType</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetChildren" id="methodsetChildren"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setChildren</strong> (line <span class="linenumber">74</span>)
+ </h4> 
+<h4><i>void</i> <strong>setChildren(
+
+$children)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set all children nested inside this entity.</h5>
+<div class="desc"><p>This includes grandchildren.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>Swift_Mime_MimeEntity[] $children</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtoByteStream" id="methodtoByteStream"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method toByteStream</strong> (line <span class="linenumber">106</span>)
+ </h4> 
+<h4><i>void</i> <strong>toByteStream(
+<a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>
+$is)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get this entire entity as a ByteStream.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a> $is</strong>: to write to</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtoString" id="methodtoString"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method toString</strong> (line <span class="linenumber">100</span>)
+ </h4> 
+<h4><i>string</i> <strong>toString(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get this entire entity in its string form.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html">Swift_Mime_CharsetObserver</a></h4>
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html#methodcharsetChanged">Swift_Mime_CharsetObserver::charsetChanged()</a></strong> - Notify this observer that the entity's charset has changed.
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:25 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

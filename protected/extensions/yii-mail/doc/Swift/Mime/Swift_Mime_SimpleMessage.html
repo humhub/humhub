@@ -1,0 +1,1394 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Mime_SimpleMessage</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Swift_Mime_SimpleMessage
+</h2> (line <span class="linenumber">23</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+<a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html">Swift_Mime_SimpleMimeEntity</a>
+   |
+   --<a href="../../Swift/Mime/Swift_Mime_MimePart.html">Swift_Mime_MimePart</a>
+      |
+      --Swift_Mime_SimpleMessage</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Mime---SimpleMessage.php.html">/vendors/swiftMailer/classes/Swift/Mime/SimpleMessage.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>The default email message class.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+<span class="type">Classes extended from Swift_Mime_SimpleMessage:</span>
+ 		<dl>
+	<dt><a href="../../Swift/Mime/Swift_Message.html">Swift_Message</a></dt>
+		<dd>The Message class for building emails.</dd>
+	</dl>
+	</p>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">Swift_Mime_SimpleMessage</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        (<span class="var-type"><a href="../../Swift/Mime/Swift_Mime_HeaderSet.html">Swift_Mime_HeaderSet</a></span>&nbsp;<span class="var-name">$headers</span>, <span class="var-type"><a href="../../Swift/Mime/Swift_Mime_ContentEncoder.html">Swift_Mime_ContentEncoder</a></span>&nbsp;<span class="var-name">$encoder</span>, <span class="var-type"><a href="../../Swift/KeyCache/Swift_KeyCache.html">Swift_KeyCache</a></span>&nbsp;<span class="var-name">$cache</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddBcc" title="details" class="method-name">addBcc</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddCc" title="details" class="method-name">addCc</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddFrom" title="details" class="method-name">addFrom</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddReplyTo" title="details" class="method-name">addReplyTo</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodaddTo" title="details" class="method-name">addTo</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodattach" title="details" class="method-name">attach</a>
+        (<span class="var-type"><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a></span>&nbsp;<span class="var-name">$entity</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methoddetach" title="details" class="method-name">detach</a>
+        (<span class="var-type"><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a></span>&nbsp;<span class="var-name">$entity</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodembed" title="details" class="method-name">embed</a>
+        (<span class="var-type"><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a></span>&nbsp;<span class="var-name">$entity</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodgetBcc" title="details" class="method-name">getBcc</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodgetCc" title="details" class="method-name">getCc</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetDate" title="details" class="method-name">getDate</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetFrom" title="details" class="method-name">getFrom</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetNestingLevel" title="details" class="method-name">getNestingLevel</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetPriority" title="details" class="method-name">getPriority</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetReadReceiptTo" title="details" class="method-name">getReadReceiptTo</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetReplyTo" title="details" class="method-name">getReplyTo</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetReturnPath" title="details" class="method-name">getReturnPath</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetSender" title="details" class="method-name">getSender</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetSubject" title="details" class="method-name">getSubject</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodgetTo" title="details" class="method-name">getTo</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetBcc" title="details" class="method-name">setBcc</a>
+        (<span class="var-type">array</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetCc" title="details" class="method-name">setCc</a>
+        (<span class="var-type">array</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetDate" title="details" class="method-name">setDate</a>
+        (<span class="var-type">int</span>&nbsp;<span class="var-name">$date</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetFrom" title="details" class="method-name">setFrom</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetPriority" title="details" class="method-name">setPriority</a>
+        (<span class="var-type">int</span>&nbsp;<span class="var-name">$priority</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetReadReceiptTo" title="details" class="method-name">setReadReceiptTo</a>
+        (<span class="var-type">array</span>&nbsp;<span class="var-name">$addresses</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetReplyTo" title="details" class="method-name">setReplyTo</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetReturnPath" title="details" class="method-name">setReturnPath</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetSender" title="details" class="method-name">setSender</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$sender</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetSubject" title="details" class="method-name">setSubject</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$subject</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetTo" title="details" class="method-name">setTo</a>
+        (<span class="var-type">array</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodtoByteStream" title="details" class="method-name">toByteStream</a>
+        (<span class="var-type"><a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a></span>&nbsp;<span class="var-name">$is</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodtoString" title="details" class="method-name">toString</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#method_getIdField" title="details" class="method-name">_getIdField</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#method__toString" title="details" class="method-name">__toString</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">34</span>)
+ </h4> 
+<h4><i>Swift_Mime_SimpleMessage</i> <strong>__construct(
+<a href="../../Swift/Mime/Swift_Mime_HeaderSet.html">Swift_Mime_HeaderSet</a>
+$headers, <a href="../../Swift/Mime/Swift_Mime_ContentEncoder.html">Swift_Mime_ContentEncoder</a>
+$encoder, <a href="../../Swift/KeyCache/Swift_KeyCache.html">Swift_KeyCache</a>
+$cache, [string
+$charset = null])</strong></h4>
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../../Swift/Mime/Swift_Message.html#method__construct">Swift_Message::__construct()</a></dt>
+		<dd>Create a new Message.</dd>
+	</dl>
+	</p>
+
+<p><strong>Overrides :</strong> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#method__construct">Swift_Mime_MimePart::__construct()</a> Create a new MimePart with $headers, $encoder and $cache.</p>
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Create a new SimpleMessage with $headers, $encoder and $cache.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Mime/Swift_Mime_HeaderSet.html">Swift_Mime_HeaderSet</a> $headers</strong>: </li>
+			<li><strong><a href="../../Swift/Mime/Swift_Mime_ContentEncoder.html">Swift_Mime_ContentEncoder</a> $encoder</strong>: </li>
+			<li><strong><a href="../../Swift/KeyCache/Swift_KeyCache.html">Swift_KeyCache</a> $cache</strong>: </li>
+			<li><strong>string $charset</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddBcc" id="methodaddBcc"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addBcc</strong> (line <span class="linenumber">372</span>)
+ </h4> 
+<h4><i>void</i> <strong>addBcc(
+string
+$address, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a Bcc: address to this message.</h5>
+<div class="desc"><p>If $name is passed this name will be associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddCc" id="methodaddCc"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addCc</strong> (line <span class="linenumber">324</span>)
+ </h4> 
+<h4><i>void</i> <strong>addCc(
+string
+$address, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a Cc: address to this message.</h5>
+<div class="desc"><p>If $name is passed this name will be associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddFrom" id="methodaddFrom"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addFrom</strong> (line <span class="linenumber">174</span>)
+ </h4> 
+<h4><i>void</i> <strong>addFrom(
+string
+$address, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a From: address to this message.</h5>
+<div class="desc"><p>If $name is passed this name will be associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddReplyTo" id="methodaddReplyTo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addReplyTo</strong> (line <span class="linenumber">224</span>)
+ </h4> 
+<h4><i>void</i> <strong>addReplyTo(
+string
+$address, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a Reply-To: address to this message.</h5>
+<div class="desc"><p>If $name is passed this name will be associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodaddTo" id="methodaddTo"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method addTo</strong> (line <span class="linenumber">274</span>)
+ </h4> 
+<h4><i>void</i> <strong>addTo(
+string
+$address, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a To: address to this message.</h5>
+<div class="desc"><p>If $name is passed this name will be associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodattach" id="methodattach"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method attach</strong> (line <span class="linenumber">485</span>)
+ </h4> 
+<h4><i>void</i> <strong>attach(
+<a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a>
+$entity)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Attach a <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a> such as an Attachment or MimePart.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a> $entity</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methoddetach" id="methoddetach"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method detach</strong> (line <span class="linenumber">495</span>)
+ </h4> 
+<h4><i>void</i> <strong>detach(
+<a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a>
+$entity)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Remove an already attached entity.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a> $entity</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodembed" id="methodembed"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method embed</strong> (line <span class="linenumber">515</span>)
+ </h4> 
+<h4><i>string</i> <strong>embed(
+<a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a>
+$entity)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Attach a <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a> and return it's CID source.</h5>
+<div class="desc"><p>This method should be used when embedding images or other data in a message.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a> $entity</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetBcc" id="methodgetBcc"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getBcc</strong> (line <span class="linenumber">407</span>)
+ </h4> 
+<h4><i>array</i> <strong>getBcc(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetBcc">Swift_Mime_Message::getBcc()</a></dt>
+						<dd>Get the Bcc addresses for this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the Bcc addresses of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetCc" id="methodgetCc"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getCc</strong> (line <span class="linenumber">359</span>)
+ </h4> 
+<h4><i>array</i> <strong>getCc(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetCc">Swift_Mime_Message::getCc()</a></dt>
+						<dd>Get the Cc addresses for this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the Cc address of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetDate" id="methodgetDate"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getDate</strong> (line <span class="linenumber">110</span>)
+ </h4> 
+<h4><i>int</i> <strong>getDate(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetDate">Swift_Mime_Message::getDate()</a></dt>
+						<dd>Get the origination date of the message as a UNIX timestamp.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the date at which this message was created.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetFrom" id="methodgetFrom"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getFrom</strong> (line <span class="linenumber">211</span>)
+ </h4> 
+<h4><i>string</i> <strong>getFrom(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetFrom">Swift_Mime_Message::getFrom()</a></dt>
+						<dd>Get the From address(es) of this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the from address of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetNestingLevel" id="methodgetNestingLevel"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getNestingLevel</strong> (line <span class="linenumber">66</span>)
+ </h4> 
+<h4><i>int</i> <strong>getNestingLevel(
+)</strong></h4>
+
+<p><strong>Overrides :</strong> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodgetNestingLevel">Swift_Mime_MimePart::getNestingLevel()</a> Get the nesting level of this entity.</p>
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetNestingLevel">Swift_Mime_MimeEntity::getNestingLevel()</a></dt>
+						<dd>Get the level at which this entity shall be nested in final document.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Always returns LEVEL_TOP for a message instance.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetPriority" id="methodgetPriority"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getPriority</strong> (line <span class="linenumber">450</span>)
+ </h4> 
+<h4><i>int</i> <strong>getPriority(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the priority of this message.</h5>
+<div class="desc"><p>The returned value is an integer where 1 is the highest priority and 5  is the lowest.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetReadReceiptTo" id="methodgetReadReceiptTo"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getReadReceiptTo</strong> (line <span class="linenumber">476</span>)
+ </h4> 
+<h4><i>string</i> <strong>getReadReceiptTo(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the addresses to which a read-receipt will be sent.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetReplyTo" id="methodgetReplyTo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getReplyTo</strong> (line <span class="linenumber">261</span>)
+ </h4> 
+<h4><i>string</i> <strong>getReplyTo(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetReplyTo">Swift_Mime_Message::getReplyTo()</a></dt>
+						<dd>Get the Reply-To addresses for this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the reply-to address of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetReturnPath" id="methodgetReturnPath"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getReturnPath</strong> (line <span class="linenumber">132</span>)
+ </h4> 
+<h4><i>string</i> <strong>getReturnPath(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetReturnPath">Swift_Mime_Message::getReturnPath()</a></dt>
+						<dd>Get the return-path (bounce-detect) address.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the return-path (bounce address) of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetSender" id="methodgetSender"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getSender</strong> (line <span class="linenumber">161</span>)
+ </h4> 
+<h4><i>string</i> <strong>getSender(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetSender">Swift_Mime_Message::getSender()</a></dt>
+						<dd>Get the sender address for this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the sender of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetSubject" id="methodgetSubject"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getSubject</strong> (line <span class="linenumber">88</span>)
+ </h4> 
+<h4><i>string</i> <strong>getSubject(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetSubject">Swift_Mime_Message::getSubject()</a></dt>
+						<dd>Get the subject of the message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the subject of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetTo" id="methodgetTo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getTo</strong> (line <span class="linenumber">311</span>)
+ </h4> 
+<h4><i>array</i> <strong>getTo(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodgetTo">Swift_Mime_Message::getTo()</a></dt>
+						<dd>Get the To addresses for this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the To addresses of this message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetBcc" id="methodsetBcc"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setBcc</strong> (line <span class="linenumber">388</span>)
+ </h4> 
+<h4><i>void</i> <strong>setBcc(
+array
+$addresses, [string
+$name = null])</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetBcc">Swift_Mime_Message::setBcc()</a></dt>
+						<dd>Set the Bcc address(es).</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the Bcc addresses of this message.</h5>
+<div class="desc"><p>If $name is passed and the first parameter is a string, this name will be  associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetCc" id="methodsetCc"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setCc</strong> (line <span class="linenumber">340</span>)
+ </h4> 
+<h4><i>void</i> <strong>setCc(
+array
+$addresses, [string
+$name = null])</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetCc">Swift_Mime_Message::setCc()</a></dt>
+						<dd>Set the Cc address(es).</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the Cc addresses of this message.</h5>
+<div class="desc"><p>If $name is passed and the first parameter is a string, this name will be  associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetDate" id="methodsetDate"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setDate</strong> (line <span class="linenumber">97</span>)
+ </h4> 
+<h4><i>void</i> <strong>setDate(
+int
+$date)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetDate">Swift_Mime_Message::setDate()</a></dt>
+						<dd>Set the origination date of the message as a UNIX timestamp.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the date at which this message was created.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>int $date</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetFrom" id="methodsetFrom"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setFrom</strong> (line <span class="linenumber">192</span>)
+ </h4> 
+<h4><i>void</i> <strong>setFrom(
+string
+$addresses, [string
+$name = null])</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetFrom">Swift_Mime_Message::setFrom()</a></dt>
+						<dd>Set the From address of this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the from address of this message.</h5>
+<div class="desc"><p>You may pass an array of addresses if this message is from multiple people.</p><p>If $name is passed and the first parameter is a string, this name will be  associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetPriority" id="methodsetPriority"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setPriority</strong> (line <span class="linenumber">417</span>)
+ </h4> 
+<h4><i>void</i> <strong>setPriority(
+int
+$priority)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the priority of this message.</h5>
+<div class="desc"><p>The value is an integer where 1 is the highest priority and 5 is the lowest.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>int $priority</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetReadReceiptTo" id="methodsetReadReceiptTo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setReadReceiptTo</strong> (line <span class="linenumber">462</span>)
+ </h4> 
+<h4><i>void</i> <strong>setReadReceiptTo(
+array
+$addresses)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Ask for a delivery receipt from the recipient to be sent to $addresses</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $addresses</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetReplyTo" id="methodsetReplyTo"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setReplyTo</strong> (line <span class="linenumber">242</span>)
+ </h4> 
+<h4><i>void</i> <strong>setReplyTo(
+string
+$addresses, [string
+$name = null])</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetReplyTo">Swift_Mime_Message::setReplyTo()</a></dt>
+						<dd>Set the Reply-To address(es).</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the reply-to address of this message.</h5>
+<div class="desc"><p>You may pass an array of addresses if replies will go to multiple people.</p><p>If $name is passed and the first parameter is a string, this name will be  associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetReturnPath" id="methodsetReturnPath"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setReturnPath</strong> (line <span class="linenumber">119</span>)
+ </h4> 
+<h4><i>void</i> <strong>setReturnPath(
+string
+$address)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetReturnPath">Swift_Mime_Message::setReturnPath()</a></dt>
+						<dd>Set the return-path (bounce-detect) address.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the return-path (the bounce address) of this message.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetSender" id="methodsetSender"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setSender</strong> (line <span class="linenumber">143</span>)
+ </h4> 
+<h4><i>void</i> <strong>setSender(
+
+$address, [string
+$name = null], string
+$sender)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetSender">Swift_Mime_Message::setSender()</a></dt>
+						<dd>Set the sender of this message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the sender of this message.</h5>
+<div class="desc"><p>This does not override the From field, but it has a higher significance.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $sender</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+			<li><strong> $address</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetSubject" id="methodsetSubject"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setSubject</strong> (line <span class="linenumber">75</span>)
+ </h4> 
+<h4><i>void</i> <strong>setSubject(
+string
+$subject)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetSubject">Swift_Mime_Message::setSubject()</a></dt>
+						<dd>Set the subject of the message.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the subject of this message.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $subject</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetTo" id="methodsetTo"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setTo</strong> (line <span class="linenumber">292</span>)
+ </h4> 
+<h4><i>void</i> <strong>setTo(
+array
+$addresses, [string
+$name = null])</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetTo">Swift_Mime_Message::setTo()</a></dt>
+						<dd>Set the To address(es).</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the to addresses of this message.</h5>
+<div class="desc"><p>If multiple recipients will receive the message and array should be used.</p><p>If $name is passed and the first parameter is a string, this name will be  associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtoByteStream" id="methodtoByteStream"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method toByteStream</strong> (line <span class="linenumber">556</span>)
+ </h4> 
+<h4><i>void</i> <strong>toByteStream(
+<a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>
+$is)</strong></h4>
+
+<p><strong>Overrides :</strong> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodtoByteStream">Swift_Mime_SimpleMimeEntity::toByteStream()</a> Write this entire entity to a <a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>.</p>
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodtoByteStream">Swift_Mime_MimeEntity::toByteStream()</a></dt>
+						<dd>Get this entire entity as a ByteStream.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Write this message to a <a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a> $is</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtoString" id="methodtoString"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method toString</strong> (line <span class="linenumber">525</span>)
+ </h4> 
+<h4><i>string</i> <strong>toString(
+)</strong></h4>
+
+<p><strong>Overrides :</strong> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodtoString">Swift_Mime_SimpleMimeEntity::toString()</a> Get this entire entity as a string.</p>
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodtoString">Swift_Mime_MimeEntity::toString()</a></dt>
+						<dd>Get this entire entity in its string form.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get this message as a complete string.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="method_getIdField" id="method_getIdField"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method _getIdField</strong> (line <span class="linenumber">573</span>)
+ </h4> 
+<h4><i>void</i> <strong>_getIdField(
+)</strong></h4>
+
+<p><strong>Overrides :</strong> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_getIdField">Swift_Mime_SimpleMimeEntity::_getIdField()</a> Get the name of the header that provides the ID of this entity</p>
+	<!-- ========== Info from phpDoc block ========= -->
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_getIdField">Swift_Mime_SimpleMimeEntity::_getIdField()</a></li>
+			<li><strong>access</strong> - protected</li>
+		</ul>
+</div>
+<a name="method__toString" id="method__toString"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method __toString</strong> (line <span class="linenumber">547</span>)
+ </h4> 
+<h4><i>string</i> <strong>__toString(
+)</strong></h4>
+
+<p><strong>Overrides :</strong> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method__toString">Swift_Mime_SimpleMimeEntity::__toString()</a> Returns a string representation of this object.</p>
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Returns a string representation of this object.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../../Swift/Mime/Swift_Mime_SimpleMessage.html#methodtoString">Swift_Mime_SimpleMessage::toString()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_MimePart.html">Swift_Mime_MimePart</a></h4>
+		<h4>
+<img src="../../media/images/PublicProperty.gif" border="0" /><strong class="property"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#var$_userCharset">Swift_Mime_MimePart::$_userCharset</a></strong> - The charset last specified by the user
+	</h4> 
+		<h4>
+<img src="../../media/images/PublicProperty.gif" border="0" /><strong class="property"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#var$_userDelSp">Swift_Mime_MimePart::$_userDelSp</a></strong> - The delsp parameter last specified by the user
+	</h4> 
+		<h4>
+<img src="../../media/images/PublicProperty.gif" border="0" /><strong class="property"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#var$_userFormat">Swift_Mime_MimePart::$_userFormat</a></strong> - The format parameter last specified by the user
+	</h4> 
+			<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html">Swift_Mime_SimpleMimeEntity</a></h4>
+		<h4>
+<img src="../../media/images/PublicProperty.gif" border="0" /><strong class="property"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#var$_userContentType">Swift_Mime_SimpleMimeEntity::$_userContentType</a></strong> - 
+	</h4> 
+		</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_MimePart.html">Swift_Mime_MimePart</a></h4>
+				<h4>
+<img src="../../media/images/Constructor.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#method__construct">Swift_Mime_MimePart::__construct()</a></strong> - Create a new MimePart with $headers, $encoder and $cache.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodcharsetChanged">Swift_Mime_MimePart::charsetChanged()</a></strong> - Receive notification that the charset has changed on this document, or a  parent document.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodgetCharset">Swift_Mime_MimePart::getCharset()</a></strong> - Get the character set of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodgetDelSp">Swift_Mime_MimePart::getDelSp()</a></strong> - Test if delsp is being used for this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodgetFormat">Swift_Mime_MimePart::getFormat()</a></strong> - Get the format of this entity (i.e. flowed or fixed).
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodgetNestingLevel">Swift_Mime_MimePart::getNestingLevel()</a></strong> - Get the nesting level of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodsetBody">Swift_Mime_MimePart::setBody()</a></strong> - Set the body of this entity, either as a string, or as an instance of  <a href="../../Swift/ByteStream/Swift_OutputByteStream.html">Swift_OutputByteStream</a>.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodsetCharset">Swift_Mime_MimePart::setCharset()</a></strong> - Set the character set of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodsetDelSp">Swift_Mime_MimePart::setDelSp()</a></strong> - Turn delsp on or off for this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#methodsetFormat">Swift_Mime_MimePart::setFormat()</a></strong> - Set the format of this entity (flowed or fixed).
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#method_fixHeaders">Swift_Mime_MimePart::_fixHeaders()</a></strong> - Fix the content-type and encoding of this entity
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimePart.html#method_setNestingLevel">Swift_Mime_MimePart::_setNestingLevel()</a></strong> - Set the nesting level of this entity
+		</h4> 
+
+				<br />
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html">Swift_Mime_SimpleMimeEntity</a></h4>
+				<h4>
+<img src="../../media/images/Constructor.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method__construct">Swift_Mime_SimpleMimeEntity::__construct()</a></strong> - Create a new SimpleMimeEntity with $headers, $encoder and $cache.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodcharsetChanged">Swift_Mime_SimpleMimeEntity::charsetChanged()</a></strong> - Receive notification that the charset of this entity, or a parent entity  has changed.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodencoderChanged">Swift_Mime_SimpleMimeEntity::encoderChanged()</a></strong> - Receive notification that the encoder of this entity or a parent entity  has changed.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgenerateId">Swift_Mime_SimpleMimeEntity::generateId()</a></strong> - Generate a new Content-ID or Message-ID for this MIME entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetBody">Swift_Mime_SimpleMimeEntity::getBody()</a></strong> - Get the body of this entity as a string.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetBoundary">Swift_Mime_SimpleMimeEntity::getBoundary()</a></strong> - Get the boundary used to separate children in this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetChildren">Swift_Mime_SimpleMimeEntity::getChildren()</a></strong> - Get all children added to this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetContentType">Swift_Mime_SimpleMimeEntity::getContentType()</a></strong> - Get the Content-type of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetDescription">Swift_Mime_SimpleMimeEntity::getDescription()</a></strong> - Get the description of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetEncoder">Swift_Mime_SimpleMimeEntity::getEncoder()</a></strong> - Get the encoder used for the body of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetHeaders">Swift_Mime_SimpleMimeEntity::getHeaders()</a></strong> - Get the <a href="../../Swift/Mime/Swift_Mime_HeaderSet.html">Swift_Mime_HeaderSet</a> for this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetId">Swift_Mime_SimpleMimeEntity::getId()</a></strong> - Get the CID of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetMaxLineLength">Swift_Mime_SimpleMimeEntity::getMaxLineLength()</a></strong> - Get the maximum line length of the body of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodgetNestingLevel">Swift_Mime_SimpleMimeEntity::getNestingLevel()</a></strong> - Get the nesting level of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetBody">Swift_Mime_SimpleMimeEntity::setBody()</a></strong> - Set the body of this entity, either as a string, or as an instance of  <a href="../../Swift/ByteStream/Swift_OutputByteStream.html">Swift_OutputByteStream</a>.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetBoundary">Swift_Mime_SimpleMimeEntity::setBoundary()</a></strong> - Set the boundary used to separate children in this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetChildren">Swift_Mime_SimpleMimeEntity::setChildren()</a></strong> - Set all children of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetContentType">Swift_Mime_SimpleMimeEntity::setContentType()</a></strong> - Set the Content-type of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetDescription">Swift_Mime_SimpleMimeEntity::setDescription()</a></strong> - Set the description of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetEncoder">Swift_Mime_SimpleMimeEntity::setEncoder()</a></strong> - Set the encoder used for the body of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetId">Swift_Mime_SimpleMimeEntity::setId()</a></strong> - Set the CID of this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodsetMaxLineLength">Swift_Mime_SimpleMimeEntity::setMaxLineLength()</a></strong> - Set the maximum line length of lines in this body.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodtoByteStream">Swift_Mime_SimpleMimeEntity::toByteStream()</a></strong> - Write this entire entity to a <a href="../../Swift/ByteStream/Swift_InputByteStream.html">Swift_InputByteStream</a>.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#methodtoString">Swift_Mime_SimpleMimeEntity::toString()</a></strong> - Get this entire entity as a string.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_clearCache">Swift_Mime_SimpleMimeEntity::_clearCache()</a></strong> - Empty the KeyCache for this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_fixHeaders">Swift_Mime_SimpleMimeEntity::_fixHeaders()</a></strong> - Re-evaluate what content type and encoding should be used on this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_getCache">Swift_Mime_SimpleMimeEntity::_getCache()</a></strong> - Get the KeyCache used in this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_getHeaderFieldModel">Swift_Mime_SimpleMimeEntity::_getHeaderFieldModel()</a></strong> - Get the model data (usually an array or a string) for $field.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_getHeaderParameter">Swift_Mime_SimpleMimeEntity::_getHeaderParameter()</a></strong> - Get the parameter value of $parameter on $field header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_getIdField">Swift_Mime_SimpleMimeEntity::_getIdField()</a></strong> - Get the name of the header that provides the ID of this entity
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_setHeaderFieldModel">Swift_Mime_SimpleMimeEntity::_setHeaderFieldModel()</a></strong> - Set the model data for $field.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method_setHeaderParameter">Swift_Mime_SimpleMimeEntity::_setHeaderParameter()</a></strong> - Set the parameter value of $parameter on $field header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method__destruct">Swift_Mime_SimpleMimeEntity::__destruct()</a></strong> - Empties it's own contents from the cache.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_SimpleMimeEntity.html#method__toString">Swift_Mime_SimpleMimeEntity::__toString()</a></strong> - Returns a string representation of this object.
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:29 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

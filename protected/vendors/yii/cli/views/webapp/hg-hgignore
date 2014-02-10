@@ -1,0 +1,7 @@
+syntax: glob
+
+syntax: regexp
+# ignore all except .hgkeep
+assets/(?!.*\.hgkeep$).+
+protected/runtime/(?!.*\.hgkeep$).+
+protected/tests/report/(?!.*\.hgkeep$).+

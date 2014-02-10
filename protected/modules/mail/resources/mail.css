@@ -1,0 +1,16 @@
+.media-list li.new {
+    background-color: #e9f9ff;
+}
+
+#dropdown-messages {
+    width: 350px;
+    margin-left: -148px;
+}
+
+@media (max-width: 767px) {
+
+    #dropdown-messages {
+        width: 300px !important;
+        margin-left: -41px !important;
+    }
+}

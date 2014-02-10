@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Plugins_PopBeforeSmtpPlugin</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Swift_Plugins_PopBeforeSmtpPlugin
+</h2> (line <span class="linenumber">22</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Plugins---PopBeforeSmtpPlugin.php.html">/vendors/swiftMailer/classes/Swift/Plugins/PopBeforeSmtpPlugin.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Makes sure a connection to a POP3 host has been established prior to connecting to SMTP.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+    static         <span class="method-result"><a href="../../Swift/Plugins/Swift_Plugins_PopBeforeSmtpPlugin.html">Swift_Plugins_PopBeforeSmtpPlugin</a></span>
+        <a href="#methodnewInstance" title="details" class="method-name">newInstance</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$port</span> = <span class="var-default">110</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$crypto</span> = <span class="var-default">null</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$cypto</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Swift_Plugins_PopBeforeSmtpPlugin</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$port</span> = <span class="var-default">110</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$crypto</span> = <span class="var-default">null</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$cypto</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodbeforeTransportStarted" title="details" class="method-name">beforeTransportStarted</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodbeforeTransportStopped" title="details" class="method-name">beforeTransportStopped</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodbindSmtp" title="details" class="method-name">bindSmtp</a>
+        (<span class="var-type"><a href="../../Swift/Transport/Swift_Transport.html">Swift_Transport</a></span>&nbsp;<span class="var-name">$smtp</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodconnect" title="details" class="method-name">connect</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methoddisconnect" title="details" class="method-name">disconnect</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetConnection" title="details" class="method-name">setConnection</a>
+        (<span class="var-type"><a href="../../Swift/Plugins/Swift_Plugins_Pop_Pop3Connection.html">Swift_Plugins_Pop_Pop3Connection</a></span>&nbsp;<span class="var-name">$connection</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetPassword" title="details" class="method-name">setPassword</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetTimeout" title="details" class="method-name">setTimeout</a>
+        (<span class="var-type">int</span>&nbsp;<span class="var-name">$timeout</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetUsername" title="details" class="method-name">setUsername</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$username</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodtransportStarted" title="details" class="method-name">transportStarted</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodtransportStopped" title="details" class="method-name">transportStopped</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodnewInstance" id="methodnewInstance"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method newInstance</strong> (line <span class="linenumber">76</span>)
+ </h4> 
+<h4><i><a href="../../Swift/Plugins/Swift_Plugins_PopBeforeSmtpPlugin.html">Swift_Plugins_PopBeforeSmtpPlugin</a></i> <strong>newInstance(
+string
+$host, [int
+$port = 110], [
+$crypto = null], string
+$cypto)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Create a new PopBeforeSmtpPlugin for $host and $port.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $host</strong>: </li>
+			<li><strong>int $port</strong>: </li>
+			<li><strong>string $cypto</strong>: as &quot;tls&quot; or &quot;ssl&quot;</li>
+			<li><strong> $crypto</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">60</span>)
+ </h4> 
+<h4><i>Swift_Plugins_PopBeforeSmtpPlugin</i> <strong>__construct(
+string
+$host, [int
+$port = 110], [
+$crypto = null], string
+$cypto)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Create a new PopBeforeSmtpPlugin for $host and $port.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $host</strong>: </li>
+			<li><strong>int $port</strong>: </li>
+			<li><strong>string $cypto</strong>: as &quot;tls&quot; or &quot;ssl&quot;</li>
+			<li><strong> $crypto</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodbeforeTransportStarted" id="methodbeforeTransportStarted"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method beforeTransportStarted</strong> (line <span class="linenumber">204</span>)
+ </h4> 
+<h4><i>void</i> <strong>beforeTransportStarted(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodbeforeTransportStarted">Swift_Events_TransportChangeListener::beforeTransportStarted()</a></dt>
+						<dd>Invoked just before a Transport is started.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked just before a Transport is started.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodbeforeTransportStopped" id="methodbeforeTransportStopped"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method beforeTransportStopped</strong> (line <span class="linenumber">228</span>)
+ </h4> 
+<h4><i>void</i> <strong>beforeTransportStopped(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodbeforeTransportStopped">Swift_Events_TransportChangeListener::beforeTransportStopped()</a></dt>
+						<dd>Invoked just before a Transport is stopped.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Not used.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodbindSmtp" id="methodbindSmtp"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method bindSmtp</strong> (line <span class="linenumber">97</span>)
+ </h4> 
+<h4><i>void</i> <strong>bindSmtp(
+<a href="../../Swift/Transport/Swift_Transport.html">Swift_Transport</a>
+$smtp)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Bind this plugin to a specific SMTP transport instance.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Transport/Swift_Transport.html">Swift_Transport</a> $smtp</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodconnect" id="methodconnect"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method connect</strong> (line <span class="linenumber">140</span>)
+ </h4> 
+<h4><i>void</i> <strong>connect(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Plugins/Swift_Plugins_Pop_Pop3Connection.html#methodconnect">Swift_Plugins_Pop_Pop3Connection::connect()</a></dt>
+						<dd>Connect to the POP3 host and throw an Exception if it fails.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Connect to the POP3 host and authenticate.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>throws</strong> - Swift_Plugins_Pop_Pop3Exception if connection fails</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methoddisconnect" id="methoddisconnect"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method disconnect</strong> (line <span class="linenumber">180</span>)
+ </h4> 
+<h4><i>void</i> <strong>disconnect(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Plugins/Swift_Plugins_Pop_Pop3Connection.html#methoddisconnect">Swift_Plugins_Pop_Pop3Connection::disconnect()</a></dt>
+						<dd>Disconnect from the POP3 host and throw an Exception if it fails.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Disconnect from the POP3 host.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetConnection" id="methodsetConnection"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setConnection</strong> (line <span class="linenumber">86</span>)
+ </h4> 
+<h4><i>void</i> <strong>setConnection(
+<a href="../../Swift/Plugins/Swift_Plugins_Pop_Pop3Connection.html">Swift_Plugins_Pop_Pop3Connection</a>
+$connection)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set a Pop3Connection to delegate to instead of connecting directly.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Plugins/Swift_Plugins_Pop_Pop3Connection.html">Swift_Plugins_Pop_Pop3Connection</a> $connection</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetPassword" id="methodsetPassword"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setPassword</strong> (line <span class="linenumber">129</span>)
+ </h4> 
+<h4><i>void</i> <strong>setPassword(
+string
+$password)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the password to use when connecting (if needed).</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $password</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetTimeout" id="methodsetTimeout"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setTimeout</strong> (line <span class="linenumber">107</span>)
+ </h4> 
+<h4><i>void</i> <strong>setTimeout(
+int
+$timeout)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the connection timeout in seconds (default 10).</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>int $timeout</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetUsername" id="methodsetUsername"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setUsername</strong> (line <span class="linenumber">118</span>)
+ </h4> 
+<h4><i>void</i> <strong>setUsername(
+string
+$username)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the username to use when connecting (if needed).</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $username</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtransportStarted" id="methodtransportStarted"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method transportStarted</strong> (line <span class="linenumber">221</span>)
+ </h4> 
+<h4><i>void</i> <strong>transportStarted(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodtransportStarted">Swift_Events_TransportChangeListener::transportStarted()</a></dt>
+						<dd>Invoked immediately after the Transport is started.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Not used.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtransportStopped" id="methodtransportStopped"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method transportStopped</strong> (line <span class="linenumber">235</span>)
+ </h4> 
+<h4><i>void</i> <strong>transportStopped(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodtransportStopped">Swift_Events_TransportChangeListener::transportStopped()</a></dt>
+						<dd>Invoked immediately after the Transport is stopped.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Not used.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:27 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Plugins_LoggerPlugin</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Swift_Plugins_LoggerPlugin
+</h2> (line <span class="linenumber">30</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Plugins---LoggerPlugin.php.html">/vendors/swiftMailer/classes/Swift/Plugins/LoggerPlugin.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Does real time logging of Transport level information.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">Swift_Plugins_LoggerPlugin</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        (<span class="var-type"><a href="../../Swift/Transport/Swift_Plugins_Logger.html">Swift_Plugins_Logger</a></span>&nbsp;<span class="var-name">$logger</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodadd" title="details" class="method-name">add</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$entry</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodbeforeTransportStarted" title="details" class="method-name">beforeTransportStarted</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodbeforeTransportStopped" title="details" class="method-name">beforeTransportStopped</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodclear" title="details" class="method-name">clear</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodcommandSent" title="details" class="method-name">commandSent</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_CommandEvent.html">Swift_Events_CommandEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methoddump" title="details" class="method-name">dump</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodexceptionThrown" title="details" class="method-name">exceptionThrown</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportExceptionEvent.html">Swift_Events_TransportExceptionEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodresponseReceived" title="details" class="method-name">responseReceived</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_ResponseEvent.html">Swift_Events_ResponseEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodtransportStarted" title="details" class="method-name">transportStarted</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodtransportStopped" title="details" class="method-name">transportStopped</a>
+        (<span class="var-type"><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a></span>&nbsp;<span class="var-name">$evt</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">44</span>)
+ </h4> 
+<h4><i>Swift_Plugins_LoggerPlugin</i> <strong>__construct(
+<a href="../../Swift/Transport/Swift_Plugins_Logger.html">Swift_Plugins_Logger</a>
+$logger)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Create a new LoggerPlugin using $logger.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Transport/Swift_Plugins_Logger.html">Swift_Plugins_Logger</a> $logger</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodadd" id="methodadd"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method add</strong> (line <span class="linenumber">54</span>)
+ </h4> 
+<h4><i>void</i> <strong>add(
+string
+$entry)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Transport/Swift_Plugins_Logger.html#methodadd">Swift_Plugins_Logger::add()</a></dt>
+						<dd>Add a log entry.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Add a log entry.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $entry</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodbeforeTransportStarted" id="methodbeforeTransportStarted"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method beforeTransportStarted</strong> (line <span class="linenumber">104</span>)
+ </h4> 
+<h4><i>void</i> <strong>beforeTransportStarted(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodbeforeTransportStarted">Swift_Events_TransportChangeListener::beforeTransportStarted()</a></dt>
+						<dd>Invoked just before a Transport is started.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked just before a Transport is started.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodbeforeTransportStopped" id="methodbeforeTransportStopped"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method beforeTransportStopped</strong> (line <span class="linenumber">126</span>)
+ </h4> 
+<h4><i>void</i> <strong>beforeTransportStopped(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodbeforeTransportStopped">Swift_Events_TransportChangeListener::beforeTransportStopped()</a></dt>
+						<dd>Invoked just before a Transport is stopped.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked just before a Transport is stopped.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodclear" id="methodclear"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method clear</strong> (line <span class="linenumber">62</span>)
+ </h4> 
+<h4><i>void</i> <strong>clear(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Transport/Swift_Plugins_Logger.html#methodclear">Swift_Plugins_Logger::clear()</a></dt>
+						<dd>Clear the log contents.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Clear the log contents.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodcommandSent" id="methodcommandSent"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method commandSent</strong> (line <span class="linenumber">82</span>)
+ </h4> 
+<h4><i>void</i> <strong>commandSent(
+<a href="../../Swift/Events/Swift_Events_CommandEvent.html">Swift_Events_CommandEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_CommandListener.html#methodcommandSent">Swift_Events_CommandListener::commandSent()</a></dt>
+						<dd>Invoked immediately following a command being sent.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked immediately following a command being sent.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_ResponseEvent.html">Swift_Events_ResponseEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methoddump" id="methoddump"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method dump</strong> (line <span class="linenumber">72</span>)
+ </h4> 
+<h4><i>string</i> <strong>dump(
+)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Transport/Swift_Plugins_Logger.html#methoddump">Swift_Plugins_Logger::dump()</a></dt>
+						<dd>Get this log as a string.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Get this log as a string.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodexceptionThrown" id="methodexceptionThrown"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method exceptionThrown</strong> (line <span class="linenumber">148</span>)
+ </h4> 
+<h4><i>void</i> <strong>exceptionThrown(
+<a href="../../Swift/Events/Swift_Events_TransportExceptionEvent.html">Swift_Events_TransportExceptionEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportExceptionListener.html#methodexceptionThrown">Swift_Events_TransportExceptionListener::exceptionThrown()</a></dt>
+						<dd>Invoked as a TransportException is thrown in the Transport system.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked as a TransportException is thrown in the Transport system.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportExceptionEvent.html">Swift_Events_TransportExceptionEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodresponseReceived" id="methodresponseReceived"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method responseReceived</strong> (line <span class="linenumber">93</span>)
+ </h4> 
+<h4><i>void</i> <strong>responseReceived(
+<a href="../../Swift/Events/Swift_Events_ResponseEvent.html">Swift_Events_ResponseEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_ResponseListener.html#methodresponseReceived">Swift_Events_ResponseListener::responseReceived()</a></dt>
+						<dd>Invoked immediately following a response coming back.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked immediately following a response coming back.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_ResponseEvent.html">Swift_Events_ResponseEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtransportStarted" id="methodtransportStarted"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method transportStarted</strong> (line <span class="linenumber">115</span>)
+ </h4> 
+<h4><i>void</i> <strong>transportStarted(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodtransportStarted">Swift_Events_TransportChangeListener::transportStarted()</a></dt>
+						<dd>Invoked immediately after the Transport is started.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked immediately after the Transport is started.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtransportStopped" id="methodtransportStopped"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method transportStopped</strong> (line <span class="linenumber">137</span>)
+ </h4> 
+<h4><i>void</i> <strong>transportStopped(
+<a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a>
+$evt)</strong></h4>
+
+			<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../../Swift/Events/Swift_Events_TransportChangeListener.html#methodtransportStopped">Swift_Events_TransportChangeListener::transportStopped()</a></dt>
+						<dd>Invoked immediately after the Transport is stopped.</dd>
+					</dl>
+		<!-- ========== Info from phpDoc block ========= -->
+<h5>Invoked immediately after the Transport is stopped.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../../Swift/Events/Swift_Events_TransportChangeEvent.html">Swift_Events_TransportChangeEvent</a> $evt</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:24 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Mime_Headers_PathHeader</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Swift_Mime_Headers_PathHeader
+</h2> (line <span class="linenumber">20</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+<a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html">Swift_Mime_Headers_AbstractHeader</a>
+   |
+   --Swift_Mime_Headers_PathHeader</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Mime---Headers---PathHeader.php.html">/vendors/swiftMailer/classes/Swift/Mime/Headers/PathHeader.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>A Path Header in Swift Mailer, such a Return-Path.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">Swift_Mime_Headers_PathHeader</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetAddress" title="details" class="method-name">getAddress</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetFieldBody" title="details" class="method-name">getFieldBody</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixed</span>
+        <a href="#methodgetFieldBodyModel" title="details" class="method-name">getFieldBodyModel</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetFieldType" title="details" class="method-name">getFieldType</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetAddress" title="details" class="method-name">setAddress</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetFieldBodyModel" title="details" class="method-name">setFieldBodyModel</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$model</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">34</span>)
+ </h4> 
+<h4><i>Swift_Mime_Headers_PathHeader</i> <strong>__construct(
+string
+$name)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Creates a new PathHeader with the given $name.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetAddress" id="methodgetAddress"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getAddress</strong> (line <span class="linenumber">102</span>)
+ </h4> 
+<h4><i>string</i> <strong>getAddress(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the address which is used in this Header (if any).</h5>
+<div class="desc"><p>Null is returned if no address is set.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetFieldBody" id="methodgetFieldBody"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getFieldBody</strong> (line <span class="linenumber">114</span>)
+ </h4> 
+<h4><i>string</i> <strong>getFieldBody(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the string value of the body in this Header.</h5>
+<div class="desc"><p>This is not necessarily RFC 2822 compliant since folding white space will  not be added at this stage (see <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodtoString">toString()</a> for that).</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodtoString">Swift_Mime_Headers_AbstractHeader::toString()</a></li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetFieldBodyModel" id="methodgetFieldBodyModel"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getFieldBodyModel</strong> (line <span class="linenumber">67</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getFieldBodyModel(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the model for the field body.</h5>
+<div class="desc"><p>This method returns a string email address.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetFieldType" id="methodgetFieldType"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getFieldType</strong> (line <span class="linenumber">46</span>)
+ </h4> 
+<h4><i>int</i> <strong>getFieldType(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the type of Header that this instance represents.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>see</strong> - TYPE_TEXT, TYPE_PARAMETERIZED, TYPE_MAILBOX</li>
+			<li><strong>see</strong> - TYPE_DATE, TYPE_ID, TYPE_PATH</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetAddress" id="methodsetAddress"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setAddress</strong> (line <span class="linenumber">77</span>)
+ </h4> 
+<h4><i>void</i> <strong>setAddress(
+string
+$address)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the Address which should appear in this Header.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>throws</strong> - Swift_RfcComplianceException</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetFieldBodyModel" id="methodsetFieldBodyModel"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setFieldBodyModel</strong> (line <span class="linenumber">57</span>)
+ </h4> 
+<h4><i>void</i> <strong>setFieldBodyModel(
+string
+$model)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the model for the field body.</h5>
+<div class="desc"><p>This method takes a string for an address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $model</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>throws</strong> - Swift_RfcComplianceException</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html">Swift_Mime_Headers_AbstractHeader</a></h4>
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodclearCachedValueIf">Swift_Mime_Headers_AbstractHeader::clearCachedValueIf()</a></strong> - Clear the cached value if $condition is met.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodcreatePhrase">Swift_Mime_Headers_AbstractHeader::createPhrase()</a></strong> - Produces a compliant, formatted RFC 2822 'phrase' based on the string given.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodencodeWords">Swift_Mime_Headers_AbstractHeader::encodeWords()</a></strong> - Encode needed word tokens within a string of input.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodescapeSpecials">Swift_Mime_Headers_AbstractHeader::escapeSpecials()</a></strong> - Escape special characters in a string (convert to quoted-pairs).
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgenerateTokenLines">Swift_Mime_Headers_AbstractHeader::generateTokenLines()</a></strong> - Generates tokens from the given string which include CRLF as individual tokens.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetCachedValue">Swift_Mime_Headers_AbstractHeader::getCachedValue()</a></strong> - Get the value in the cache.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetCharset">Swift_Mime_Headers_AbstractHeader::getCharset()</a></strong> - Get the character set used in this Header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetEncodableWordTokens">Swift_Mime_Headers_AbstractHeader::getEncodableWordTokens()</a></strong> - Splits a string into tokens in blocks of words which can be encoded quickly.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetEncoder">Swift_Mime_Headers_AbstractHeader::getEncoder()</a></strong> - Get the encoder used for encoding this Header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetFieldName">Swift_Mime_Headers_AbstractHeader::getFieldName()</a></strong> - Get the name of this header (e.g. charset).
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetGrammar">Swift_Mime_Headers_AbstractHeader::getGrammar()</a></strong> - Get the grammar defined for $name token.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetLanguage">Swift_Mime_Headers_AbstractHeader::getLanguage()</a></strong> - Get the language used in this Header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetMaxLineLength">Swift_Mime_Headers_AbstractHeader::getMaxLineLength()</a></strong> - Get the maximum permitted length of lines in this Header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodgetTokenAsEncodedWord">Swift_Mime_Headers_AbstractHeader::getTokenAsEncodedWord()</a></strong> - Get a token as an encoded word for safe insertion into headers.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodinitializeGrammar">Swift_Mime_Headers_AbstractHeader::initializeGrammar()</a></strong> - Initialize some RFC 2822 (and friends) ABNF grammar definitions.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodsetCachedValue">Swift_Mime_Headers_AbstractHeader::setCachedValue()</a></strong> - Set a value into the cache.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodsetCharset">Swift_Mime_Headers_AbstractHeader::setCharset()</a></strong> - Set the character set used in this Header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodsetEncoder">Swift_Mime_Headers_AbstractHeader::setEncoder()</a></strong> - Set the encoder used for encoding the header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodsetFieldName">Swift_Mime_Headers_AbstractHeader::setFieldName()</a></strong> - Set the name of this Header field.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodsetLanguage">Swift_Mime_Headers_AbstractHeader::setLanguage()</a></strong> - Set the language used in this Header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodsetMaxLineLength">Swift_Mime_Headers_AbstractHeader::setMaxLineLength()</a></strong> - Set the maximum length of lines in the header (excluding EOL).
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodtokenNeedsEncoding">Swift_Mime_Headers_AbstractHeader::tokenNeedsEncoding()</a></strong> - Test if a token needs to be encoded or not.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodtoString">Swift_Mime_Headers_AbstractHeader::toString()</a></strong> - Get this Header rendered as a RFC 2822 compliant string.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#methodtoTokens">Swift_Mime_Headers_AbstractHeader::toTokens()</a></strong> - Generate a list of all tokens in the final header.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_Headers_AbstractHeader.html#method__toString">Swift_Mime_Headers_AbstractHeader::__toString()</a></strong> - Returns a string representation of this object.
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:27 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

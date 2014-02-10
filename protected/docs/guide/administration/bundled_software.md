@@ -1,0 +1,25 @@
+Bundled Software / Libaries
+===========================
+
+* Yii Framework (Core Framework) http://www.yiiframework.com/
+* Zend Framework (Lucene Index)
+* Code Igniter (Security Functions)
+* ADLdap (Active Directory / Ldap)    http://adldap.sourceforge.net/
+* Some Yii Extensions (See /protected/extensions/)
+* PHP Markdown by by Michel Fortin (ZammDoc Module)
+* Yii-Mail - http://www.yiiframework.com/extension/mail/
+* SwiftMailer - http://swiftmailer.org
+* jQuery - http://jquery.com
+* jQuery Cookie Plugin - https://github.com/carhartl/jquery-cookie
+* jQuery Knob - http://anthonyterrien.com/knob/
+* Twitter Bootstrap - http://getbootstrap.com/
+* Bootstrap-datepicker.js - http://www.eyecon.ro/bootstrap-datepicker
+* Lightbox for Bootstrap 3 - https://github.com/ashleydw/lightbox
+* Modernizr - http://modernizr.com/
+* HTML5 Shiv - https://github.com/aFarkas/html5shiv
+* Wysihtml5 - https://github.com/xing/wysihtml5
+* Bootstrap-wysihtml5 - http://jhollingworth.github.io/bootstrap-wysihtml5/
+* Autosize - http://www.jacklmoore.com/autosize
+* Highlight - http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
+* Timeago - http://timeago.yarp.com/
+

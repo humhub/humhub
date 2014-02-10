@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Swift_Mime_Message</title>
+  <link rel="stylesheet" href="../../media/stylesheet.css" />
+  <script src="../../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../../media/images/plus.gif";
+	imgMinus.src = "../../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Interface Swift_Mime_Message
+</h2> (line <span class="linenumber">21</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+<a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html">Swift_Mime_CharsetObserver</a>
+   |
+   --<a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a>
+      |
+      --Swift_Mime_Message</pre>
+<p>
+	<b><i>Located in File: <a href="_vendors---swiftMailer---classes---Swift---Mime---Message.php.html">/vendors/swiftMailer/classes/Swift/Mime/Message.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>A Message (RFC 2822) object.</h5>
+<ul>
+		<li><strong>author:</strong> - Chris Corbyn</li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgenerateId" title="details" class="method-name">generateId</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetBcc" title="details" class="method-name">getBcc</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetCc" title="details" class="method-name">getCc</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">int</span>
+        <a href="#methodgetDate" title="details" class="method-name">getDate</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetFrom" title="details" class="method-name">getFrom</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetReplyTo" title="details" class="method-name">getReplyTo</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetReturnPath" title="details" class="method-name">getReturnPath</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetSender" title="details" class="method-name">getSender</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodgetSubject" title="details" class="method-name">getSubject</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string[]</span>
+        <a href="#methodgetTo" title="details" class="method-name">getTo</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetBcc" title="details" class="method-name">setBcc</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetCc" title="details" class="method-name">setCc</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetDate" title="details" class="method-name">setDate</a>
+        (<span class="var-type">int</span>&nbsp;<span class="var-name">$date</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetFrom" title="details" class="method-name">setFrom</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetReplyTo" title="details" class="method-name">setReplyTo</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetReturnPath" title="details" class="method-name">setReturnPath</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$address</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetSender" title="details" class="method-name">setSender</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$address</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetSubject" title="details" class="method-name">setSubject</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$subject</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsetTo" title="details" class="method-name">setTo</a>
+        (<span class="var-type">mixed</span>&nbsp;<span class="var-name">$addresses</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">null</span>])
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodgenerateId" id="methodgenerateId"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method generateId</strong> (line <span class="linenumber">29</span>)
+ </h4> 
+<h4><i>string</i> <strong>generateId(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Generates a valid Message-ID and switches to it.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetBcc" id="methodgetBcc"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getBcc</strong> (line <span class="linenumber">228</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getBcc(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the Bcc addresses for this message.</h5>
+<div class="desc"><p>This method always returns an associative array, whereby the keys provide  the actual email addresses.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetCc" id="methodgetCc"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getCc</strong> (line <span class="linenumber">202</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getCc(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the Cc addresses for this message.</h5>
+<div class="desc"><p>This method always returns an associative array, whereby the keys provide  the actual email addresses.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetDate" id="methodgetDate"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getDate</strong> (line <span class="linenumber">57</span>)
+ </h4> 
+<h4><i>int</i> <strong>getDate(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the origination date of the message as a UNIX timestamp.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetFrom" id="methodgetFrom"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getFrom</strong> (line <span class="linenumber">128</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getFrom(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the From address(es) of this message.</h5>
+<div class="desc"><p>This method always returns an associative array where the keys are the  addresses.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetReplyTo" id="methodgetReplyTo"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getReplyTo</strong> (line <span class="linenumber">155</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getReplyTo(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the Reply-To addresses for this message.</h5>
+<div class="desc"><p>This method always returns an associative array where the keys provide the  email addresses.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetReturnPath" id="methodgetReturnPath"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getReturnPath</strong> (line <span class="linenumber">71</span>)
+ </h4> 
+<h4><i>string</i> <strong>getReturnPath(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the return-path (bounce-detect) address.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetSender" id="methodgetSender"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getSender</strong> (line <span class="linenumber">99</span>)
+ </h4> 
+<h4><i>string</i> <strong>getSender(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the sender address for this message.</h5>
+<div class="desc"><p>This has a higher significance than the From address.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetSubject" id="methodgetSubject"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getSubject</strong> (line <span class="linenumber">43</span>)
+ </h4> 
+<h4><i>string</i> <strong>getSubject(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the subject of the message.</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetTo" id="methodgetTo"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getTo</strong> (line <span class="linenumber">180</span>)
+ </h4> 
+<h4><i>string[]</i> <strong>getTo(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Get the To addresses for this message.</h5>
+<div class="desc"><p>This method always returns an associative array, whereby the keys provide  the actual email addresses.</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetBcc" id="methodsetBcc"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setBcc</strong> (line <span class="linenumber">218</span>)
+ </h4> 
+<h4><i>void</i> <strong>setBcc(
+mixed
+$addresses, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the Bcc address(es).</h5>
+<div class="desc"><p>Recipients set in this field will receive a 'blind-carbon-copy' of this  message.</p><p>In other words, they will get the message, but any other recipients of the  message will have no such knowledge of their receipt of it.</p><p>This method has the same synopsis as <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetFrom">setFrom()</a> and <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetTo">setTo()</a>.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetCc" id="methodsetCc"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setCc</strong> (line <span class="linenumber">192</span>)
+ </h4> 
+<h4><i>void</i> <strong>setCc(
+mixed
+$addresses, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the Cc address(es).</h5>
+<div class="desc"><p>Recipients set in this field will receive a 'carbon-copy' of this message.</p><p>This method has the same synopsis as <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetFrom">setFrom()</a> and <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetTo">setTo()</a>.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetDate" id="methodsetDate"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setDate</strong> (line <span class="linenumber">50</span>)
+ </h4> 
+<h4><i>void</i> <strong>setDate(
+int
+$date)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the origination date of the message as a UNIX timestamp.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>int $date</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetFrom" id="methodsetFrom"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setFrom</strong> (line <span class="linenumber">118</span>)
+ </h4> 
+<h4><i>void</i> <strong>setFrom(
+mixed
+$addresses, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the From address of this message.</h5>
+<div class="desc"><p>It is permissible for multiple From addresses to be set using an array.</p><p>If multiple From addresses are used, you SHOULD set the Sender address and  according to RFC 2822, MUST set the sender address.</p><p>An array can be used if display names are to be provided: i.e.  array('email@address.com' =&gt; 'Real Name').</p><p>If the second parameter is provided and the first is a string, then $name  is associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetReplyTo" id="methodsetReplyTo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setReplyTo</strong> (line <span class="linenumber">145</span>)
+ </h4> 
+<h4><i>void</i> <strong>setReplyTo(
+mixed
+$addresses, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the Reply-To address(es).</h5>
+<div class="desc"><p>Any replies from the receiver will be sent to this address.</p><p>It is permissible for multiple reply-to addresses to be set using an array.</p><p>This method has the same synopsis as <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetFrom">setFrom()</a> and <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetTo">setTo()</a>.</p><p>If the second parameter is provided and the first is a string, then $name  is associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetReturnPath" id="methodsetReturnPath"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setReturnPath</strong> (line <span class="linenumber">64</span>)
+ </h4> 
+<h4><i>void</i> <strong>setReturnPath(
+string
+$address)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the return-path (bounce-detect) address.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $address</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetSender" id="methodsetSender"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setSender</strong> (line <span class="linenumber">90</span>)
+ </h4> 
+<h4><i>void</i> <strong>setSender(
+mixed
+$address, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the sender of this message.</h5>
+<div class="desc"><p>If multiple addresses are present in the From field, this SHOULD be set.</p><p>According to RFC 2822 it is a requirement when there are multiple From  addresses, but Swift itself does not require it directly.</p><p>An associative array (with one element!) can be used to provide a display-  name: i.e. array('email@address' =&gt; 'Real Name').</p><p>If the second parameter is provided and the first is a string, then $name  is associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $address</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetSubject" id="methodsetSubject"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setSubject</strong> (line <span class="linenumber">36</span>)
+ </h4> 
+<h4><i>void</i> <strong>setSubject(
+string
+$subject)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the subject of the message.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $subject</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetTo" id="methodsetTo"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method setTo</strong> (line <span class="linenumber">170</span>)
+ </h4> 
+<h4><i>void</i> <strong>setTo(
+mixed
+$addresses, [string
+$name = null])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>Set the To address(es).</h5>
+<div class="desc"><p>Recipients set in this field will receive a copy of this message.</p><p>This method has the same synopsis as <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetFrom">setFrom()</a> and <a href="../../Swift/Mime/Swift_Mime_Message.html#methodsetCc">setCc()</a>.</p><p>If the second parameter is provided and the first is a string, then $name  is associated with the address.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $addresses</strong>: </li>
+			<li><strong>string $name</strong>: optional</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html">Swift_Mime_MimeEntity</a></h4>
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetBody">Swift_Mime_MimeEntity::getBody()</a></strong> - Get the body content of this entity as a string.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetChildren">Swift_Mime_MimeEntity::getChildren()</a></strong> - Get all children nested inside this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetContentType">Swift_Mime_MimeEntity::getContentType()</a></strong> - Get the qualified content-type of this mime entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetHeaders">Swift_Mime_MimeEntity::getHeaders()</a></strong> - Get the collection of Headers in this Mime entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetId">Swift_Mime_MimeEntity::getId()</a></strong> - Returns a unique ID for this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodgetNestingLevel">Swift_Mime_MimeEntity::getNestingLevel()</a></strong> - Get the level at which this entity shall be nested in final document.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodsetBody">Swift_Mime_MimeEntity::setBody()</a></strong> - Set the body content of this entity as a string.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodsetChildren">Swift_Mime_MimeEntity::setChildren()</a></strong> - Set all children nested inside this entity.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodtoByteStream">Swift_Mime_MimeEntity::toByteStream()</a></strong> - Get this entire entity as a ByteStream.
+		</h4> 
+
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_MimeEntity.html#methodtoString">Swift_Mime_MimeEntity::toString()</a></strong> - Get this entire entity in its string form.
+		</h4> 
+
+				<br />
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class <a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html">Swift_Mime_CharsetObserver</a></h4>
+				<h4>
+<img src="../../media/images/PublicMethod.gif" border="0" /><strong class="method"> <a href="../../Swift/Mime/Swift_Mime_CharsetObserver.html#methodcharsetChanged">Swift_Mime_CharsetObserver::charsetChanged()</a></strong> - Notify this observer that the entity's charset has changed.
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:25 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

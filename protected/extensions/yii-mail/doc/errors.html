@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>phpDocumentor Parser Errors and Warnings</title>
+  <link rel="stylesheet" href="media/stylesheet.css" />
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><a href="#Post-parsing">Post-parsing</a><br>
+<a href="#AbstractHeader.php">AbstractHeader.php</a><br>
+<a href="#AbstractSmtpTransport.php">AbstractSmtpTransport.php</a><br>
+<a href="#AntiFloodPlugin.php">AntiFloodPlugin.php</a><br>
+<a href="#ArrayByteStream.php">ArrayByteStream.php</a><br>
+<a href="#ArrayCharacterStream.php">ArrayCharacterStream.php</a><br>
+<a href="#ArrayKeyCache.php">ArrayKeyCache.php</a><br>
+<a href="#ArrayLogger.php">ArrayLogger.php</a><br>
+<a href="#ArrayRecipientIterator.php">ArrayRecipientIterator.php</a><br>
+<a href="#Attachment.php">Attachment.php</a><br>
+<a href="#Authenticator.php">Authenticator.php</a><br>
+<a href="#AuthHandler.php">AuthHandler.php</a><br>
+<a href="#BandwidthMonitorPlugin.php">BandwidthMonitorPlugin.php</a><br>
+<a href="#Base64ContentEncoder.php">Base64ContentEncoder.php</a><br>
+<a href="#Base64Encoder.php">Base64Encoder.php</a><br>
+<a href="#Base64HeaderEncoder.php">Base64HeaderEncoder.php</a><br>
+<a href="#ByteArrayReplacementFilter.php">ByteArrayReplacementFilter.php</a><br>
+<a href="#CharacterReader.php">CharacterReader.php</a><br>
+<a href="#CharacterReaderFactory.php">CharacterReaderFactory.php</a><br>
+<a href="#CharacterStream.php">CharacterStream.php</a><br>
+<a href="#CharsetObserver.php">CharsetObserver.php</a><br>
+<a href="#CommandEvent.php">CommandEvent.php</a><br>
+<a href="#CommandListener.php">CommandListener.php</a><br>
+<a href="#ContentEncoder.php">ContentEncoder.php</a><br>
+<a href="#CramMd5Authenticator.php">CramMd5Authenticator.php</a><br>
+<a href="#DateHeader.php">DateHeader.php</a><br>
+<a href="#DecoratorPlugin.php">DecoratorPlugin.php</a><br>
+<a href="#DependencyContainer.php">DependencyContainer.php</a><br>
+<a href="#DependencyException.php">DependencyException.php</a><br>
+<a href="#DiskKeyCache.php">DiskKeyCache.php</a><br>
+<a href="#EchoLogger.php">EchoLogger.php</a><br>
+<a href="#EmbeddedFile.php">EmbeddedFile.php</a><br>
+<a href="#Encoder.php">Encoder.php</a><br>
+<a href="#Encoding.php">Encoding.php</a><br>
+<a href="#EncodingObserver.php">EncodingObserver.php</a><br>
+<a href="#EsmtpHandler.php">EsmtpHandler.php</a><br>
+<a href="#EsmtpTransport.php">EsmtpTransport.php</a><br>
+<a href="#Event.php">Event.php</a><br>
+<a href="#EventDispatcher.php">EventDispatcher.php</a><br>
+<a href="#EventListener.php">EventListener.php</a><br>
+<a href="#EventObject.php">EventObject.php</a><br>
+<a href="#FailoverTransport.php">FailoverTransport.php</a><br>
+<a href="#FileByteStream.php">FileByteStream.php</a><br>
+<a href="#FileStream.php">FileStream.php</a><br>
+<a href="#Filterable.php">Filterable.php</a><br>
+<a href="#GenericFixedWidthReader.php">GenericFixedWidthReader.php</a><br>
+<a href="#Header.php">Header.php</a><br>
+<a href="#HeaderEncoder.php">HeaderEncoder.php</a><br>
+<a href="#HeaderFactory.php">HeaderFactory.php</a><br>
+<a href="#HeaderSet.php">HeaderSet.php</a><br>
+<a href="#HitReporter.php">HitReporter.php</a><br>
+<a href="#HtmlReporter.php">HtmlReporter.php</a><br>
+<a href="#IdentificationHeader.php">IdentificationHeader.php</a><br>
+<a href="#Image.php">Image.php</a><br>
+<a href="#InputByteStream.php">InputByteStream.php</a><br>
+<a href="#IoBuffer.php">IoBuffer.php</a><br>
+<a href="#IoException.php">IoException.php</a><br>
+<a href="#KeyCache.php">KeyCache.php</a><br>
+<a href="#KeyCacheInputStream.php">KeyCacheInputStream.php</a><br>
+<a href="#LoadBalancedTransport.php">LoadBalancedTransport.php</a><br>
+<a href="#Logger.php">Logger.php</a><br>
+<a href="#LoggerPlugin.php">LoggerPlugin.php</a><br>
+<a href="#LoginAuthenticator.php">LoginAuthenticator.php</a><br>
+<a href="#MailboxHeader.php">MailboxHeader.php</a><br>
+<a href="#Mailer.php">Mailer.php</a><br>
+<a href="#MailInvoker.php">MailInvoker.php</a><br>
+<a href="#MailTransport.php">MailTransport.php</a><br>
+<a href="#Message.php">Message.php</a><br>
+<a href="#MimeEntity.php">MimeEntity.php</a><br>
+<a href="#MimePart.php">MimePart.php</a><br>
+<a href="#NgCharacterStream.php">NgCharacterStream.php</a><br>
+<a href="#NullKeyCache.php">NullKeyCache.php</a><br>
+<a href="#OutputByteStream.php">OutputByteStream.php</a><br>
+<a href="#ParameterizedHeader.php">ParameterizedHeader.php</a><br>
+<a href="#PathHeader.php">PathHeader.php</a><br>
+<a href="#PlainAuthenticator.php">PlainAuthenticator.php</a><br>
+<a href="#PlainContentEncoder.php">PlainContentEncoder.php</a><br>
+<a href="#Pop3Connection.php">Pop3Connection.php</a><br>
+<a href="#Pop3Exception.php">Pop3Exception.php</a><br>
+<a href="#PopBeforeSmtpPlugin.php">PopBeforeSmtpPlugin.php</a><br>
+<a href="#QpContentEncoder.php">QpContentEncoder.php</a><br>
+<a href="#QpEncoder.php">QpEncoder.php</a><br>
+<a href="#QpHeaderEncoder.php">QpHeaderEncoder.php</a><br>
+<a href="#RecipientIterator.php">RecipientIterator.php</a><br>
+<a href="#ReplacementFilterFactory.php">ReplacementFilterFactory.php</a><br>
+<a href="#Replacements.php">Replacements.php</a><br>
+<a href="#Reporter.php">Reporter.php</a><br>
+<a href="#ReporterPlugin.php">ReporterPlugin.php</a><br>
+<a href="#ResponseEvent.php">ResponseEvent.php</a><br>
+<a href="#ResponseListener.php">ResponseListener.php</a><br>
+<a href="#Rfc2231Encoder.php">Rfc2231Encoder.php</a><br>
+<a href="#RfcComplianceException.php">RfcComplianceException.php</a><br>
+<a href="#SendEvent.php">SendEvent.php</a><br>
+<a href="#SendListener.php">SendListener.php</a><br>
+<a href="#SendmailTransport.php">SendmailTransport.php</a><br>
+<a href="#SimpleCharacterReaderFactory.php">SimpleCharacterReaderFactory.php</a><br>
+<a href="#SimpleEventDispatcher.php">SimpleEventDispatcher.php</a><br>
+<a href="#SimpleHeaderFactory.php">SimpleHeaderFactory.php</a><br>
+<a href="#SimpleHeaderSet.php">SimpleHeaderSet.php</a><br>
+<a href="#SimpleKeyCacheInputStream.php">SimpleKeyCacheInputStream.php</a><br>
+<a href="#SimpleMailInvoker.php">SimpleMailInvoker.php</a><br>
+<a href="#SimpleMessage.php">SimpleMessage.php</a><br>
+<a href="#SimpleMimeEntity.php">SimpleMimeEntity.php</a><br>
+<a href="#Sleeper.php">Sleeper.php</a><br>
+<a href="#SmtpAgent.php">SmtpAgent.php</a><br>
+<a href="#SmtpTransport.php">SmtpTransport.php</a><br>
+<a href="#StreamBuffer.php">StreamBuffer.php</a><br>
+<a href="#StreamFilter.php">StreamFilter.php</a><br>
+<a href="#StringReplacementFilter.php">StringReplacementFilter.php</a><br>
+<a href="#StringReplacementFilterFactory.php">StringReplacementFilterFactory.php</a><br>
+<a href="#Swift.php">Swift.php</a><br>
+<a href="#SwiftException.php">SwiftException.php</a><br>
+<a href="#ThrottlerPlugin.php">ThrottlerPlugin.php</a><br>
+<a href="#Timer.php">Timer.php</a><br>
+<a href="#Transport.php">Transport.php</a><br>
+<a href="#TransportChangeEvent.php">TransportChangeEvent.php</a><br>
+<a href="#TransportChangeListener.php">TransportChangeListener.php</a><br>
+<a href="#TransportException.php">TransportException.php</a><br>
+<a href="#TransportExceptionEvent.php">TransportExceptionEvent.php</a><br>
+<a href="#TransportExceptionListener.php">TransportExceptionListener.php</a><br>
+<a href="#UnstructuredHeader.php">UnstructuredHeader.php</a><br>
+<a href="#UsAsciiReader.php">UsAsciiReader.php</a><br>
+<a href="#Utf8Reader.php">Utf8Reader.php</a><br>
+<a href="#YiiMail.php">YiiMail.php</a><br>
+<a href="#YiiMailMessage.php">YiiMailMessage.php</a><br>
+<a name="Post-parsing"></a>
+<h1>Post-parsing</h1>
+<h2>Warnings:</h2><br>
+<b>Warning</b> - Class YiiMailMessage parent CComponent not found<br>
+<b>Warning</b> - Class YiiMail parent CApplicationComponent not found<br>
+<a name="AbstractFilterableInputStream.php"></a>
+<h1>AbstractFilterableInputStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_ByteStream_AbstractFilterableInputStream", use another DocBlock to document the file<br>
+<a name="AbstractHeader.php"></a>
+<h1>AbstractHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_AbstractHeader", use another DocBlock to document the file<br>
+<a name="AbstractSmtpTransport.php"></a>
+<h1>AbstractSmtpTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "Swift_Transport_AbstractSmtpTransport", use another DocBlock to document the file<br>
+<a name="AntiFloodPlugin.php"></a>
+<h1>AntiFloodPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_AntiFloodPlugin", use another DocBlock to document the file<br>
+<a name="ArrayByteStream.php"></a>
+<h1>ArrayByteStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_ByteStream_ArrayByteStream", use another DocBlock to document the file<br>
+<a name="ArrayCharacterStream.php"></a>
+<h1>ArrayCharacterStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_CharacterStream_ArrayCharacterStream", use another DocBlock to document the file<br>
+<a name="ArrayKeyCache.php"></a>
+<h1>ArrayKeyCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 23</b> - DocBlock would be page-level, but precedes class "Swift_KeyCache_ArrayKeyCache", use another DocBlock to document the file<br>
+<a name="ArrayLogger.php"></a>
+<h1>ArrayLogger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Loggers_ArrayLogger", use another DocBlock to document the file<br>
+<a name="ArrayRecipientIterator.php"></a>
+<h1>ArrayRecipientIterator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Mailer_ArrayRecipientIterator", use another DocBlock to document the file<br>
+<a name="Attachment.php"></a>
+<h1>Attachment.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Attachment", use another DocBlock to document the file<br>
+<b>Warning on line 23</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Attachment", use another DocBlock to document the file<br>
+<a name="Authenticator.php"></a>
+<h1>Authenticator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Transport_Esmtp_Authenticator", use another DocBlock to document the file<br>
+<a name="AuthHandler.php"></a>
+<h1>AuthHandler.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Transport_Esmtp_AuthHandler", use another DocBlock to document the file<br>
+<a name="BandwidthMonitorPlugin.php"></a>
+<h1>BandwidthMonitorPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_BandwidthMonitorPlugin", use another DocBlock to document the file<br>
+<a name="Base64ContentEncoder.php"></a>
+<h1>Base64ContentEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Mime_ContentEncoder_Base64ContentEncoder", use another DocBlock to document the file<br>
+<a name="Base64Encoder.php"></a>
+<h1>Base64Encoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Encoder_Base64Encoder", use another DocBlock to document the file<br>
+<a name="Base64HeaderEncoder.php"></a>
+<h1>Base64HeaderEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 35</b> - File "/repository/skiclubz/trunk/protected/extensions/yii-mail/vendors/swiftMailer/classes/Swift/Mime/HeaderEncoder/Base64HeaderEncoder.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="ByteArrayReplacementFilter.php"></a>
+<h1>ByteArrayReplacementFilter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_StreamFilters_ByteArrayReplacementFilter", use another DocBlock to document the file<br>
+<a name="CharacterReader.php"></a>
+<h1>CharacterReader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_CharacterReader", use another DocBlock to document the file<br>
+<b>Warning on line 38</b> - Unknown tag "@int" used<br>
+<a name="CharacterReaderFactory.php"></a>
+<h1>CharacterReaderFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_CharacterReaderFactory", use another DocBlock to document the file<br>
+<a name="CharacterStream.php"></a>
+<h1>CharacterStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 85</b> - File "/repository/skiclubz/trunk/protected/extensions/yii-mail/vendors/swiftMailer/classes/Swift/CharacterStream.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CharsetObserver.php"></a>
+<h1>CharsetObserver.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Mime_CharsetObserver", use another DocBlock to document the file<br>
+<a name="CommandEvent.php"></a>
+<h1>CommandEvent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_CommandEvent", use another DocBlock to document the file<br>
+<a name="CommandListener.php"></a>
+<h1>CommandListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_CommandListener", use another DocBlock to document the file<br>
+<a name="ContentEncoder.php"></a>
+<h1>ContentEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Mime_ContentEncoder", use another DocBlock to document the file<br>
+<a name="CramMd5Authenticator.php"></a>
+<h1>CramMd5Authenticator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Transport_Esmtp_Auth_CramMd5Authenticator", use another DocBlock to document the file<br>
+<a name="DateHeader.php"></a>
+<h1>DateHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_DateHeader", use another DocBlock to document the file<br>
+<a name="DecoratorPlugin.php"></a>
+<h1>DecoratorPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_DecoratorPlugin", use another DocBlock to document the file<br>
+<a name="DependencyContainer.php"></a>
+<h1>DependencyContainer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_DependencyContainer", use another DocBlock to document the file<br>
+<a name="DependencyException.php"></a>
+<h1>DependencyException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_DependencyException", use another DocBlock to document the file<br>
+<a name="DiskKeyCache.php"></a>
+<h1>DiskKeyCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_KeyCache_DiskKeyCache", use another DocBlock to document the file<br>
+<a name="EchoLogger.php"></a>
+<h1>EchoLogger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Loggers_EchoLogger", use another DocBlock to document the file<br>
+<a name="EmbeddedFile.php"></a>
+<h1>EmbeddedFile.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_EmbeddedFile", use another DocBlock to document the file<br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Mime_EmbeddedFile", use another DocBlock to document the file<br>
+<a name="Encoder.php"></a>
+<h1>Encoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Encoder", use another DocBlock to document the file<br>
+<a name="Encoding.php"></a>
+<h1>Encoding.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Encoding", use another DocBlock to document the file<br>
+<a name="EncodingObserver.php"></a>
+<h1>EncodingObserver.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Mime_EncodingObserver", use another DocBlock to document the file<br>
+<a name="EsmtpHandler.php"></a>
+<h1>EsmtpHandler.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Transport_EsmtpHandler", use another DocBlock to document the file<br>
+<a name="EsmtpTransport.php"></a>
+<h1>EsmtpTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "Swift_Transport_EsmtpTransport", use another DocBlock to document the file<br>
+<a name="Event.php"></a>
+<h1>Event.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_Events_Event", use another DocBlock to document the file<br>
+<a name="EventDispatcher.php"></a>
+<h1>EventDispatcher.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_EventDispatcher", use another DocBlock to document the file<br>
+<a name="EventListener.php"></a>
+<h1>EventListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Events_EventListener", use another DocBlock to document the file<br>
+<a name="EventObject.php"></a>
+<h1>EventObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_EventObject", use another DocBlock to document the file<br>
+<a name="FailoverTransport.php"></a>
+<h1>FailoverTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_FailoverTransport", use another DocBlock to document the file<br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Transport_FailoverTransport", use another DocBlock to document the file<br>
+<a name="FileByteStream.php"></a>
+<h1>FileByteStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_ByteStream_FileByteStream", use another DocBlock to document the file<br>
+<a name="FileStream.php"></a>
+<h1>FileStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_FileStream", use another DocBlock to document the file<br>
+<a name="Filterable.php"></a>
+<h1>Filterable.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_Filterable", use another DocBlock to document the file<br>
+<a name="GenericFixedWidthReader.php"></a>
+<h1>GenericFixedWidthReader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_CharacterReader_GenericFixedWidthReader", use another DocBlock to document the file<br>
+<b>Warning on line 63</b> - Unknown tag "@int" used<br>
+<a name="Header.php"></a>
+<h1>Header.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Header", use another DocBlock to document the file<br>
+<a name="HeaderEncoder.php"></a>
+<h1>HeaderEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Mime_HeaderEncoder", use another DocBlock to document the file<br>
+<a name="HeaderFactory.php"></a>
+<h1>HeaderFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Mime_HeaderFactory", use another DocBlock to document the file<br>
+<a name="HeaderSet.php"></a>
+<h1>HeaderSet.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Mime_HeaderSet", use another DocBlock to document the file<br>
+<a name="HitReporter.php"></a>
+<h1>HitReporter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Reporters_HitReporter", use another DocBlock to document the file<br>
+<a name="HtmlReporter.php"></a>
+<h1>HtmlReporter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Reporters_HtmlReporter", use another DocBlock to document the file<br>
+<a name="IdentificationHeader.php"></a>
+<h1>IdentificationHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_IdentificationHeader", use another DocBlock to document the file<br>
+<a name="Image.php"></a>
+<h1>Image.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Image", use another DocBlock to document the file<br>
+<a name="InputByteStream.php"></a>
+<h1>InputByteStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_InputByteStream", use another DocBlock to document the file<br>
+<a name="IoBuffer.php"></a>
+<h1>IoBuffer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Transport_IoBuffer", use another DocBlock to document the file<br>
+<a name="IoException.php"></a>
+<h1>IoException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_IoException", use another DocBlock to document the file<br>
+<a name="KeyCache.php"></a>
+<h1>KeyCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_KeyCache", use another DocBlock to document the file<br>
+<a name="KeyCacheInputStream.php"></a>
+<h1>KeyCacheInputStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_KeyCache_KeyCacheInputStream", use another DocBlock to document the file<br>
+<a name="LoadBalancedTransport.php"></a>
+<h1>LoadBalancedTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_LoadBalancedTransport", use another DocBlock to document the file<br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Transport_LoadBalancedTransport", use another DocBlock to document the file<br>
+<a name="Logger.php"></a>
+<h1>Logger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Logger", use another DocBlock to document the file<br>
+<a name="LoggerPlugin.php"></a>
+<h1>LoggerPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 33</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_LoggerPlugin", use another DocBlock to document the file<br>
+<a name="LoginAuthenticator.php"></a>
+<h1>LoginAuthenticator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Transport_Esmtp_Auth_LoginAuthenticator", use another DocBlock to document the file<br>
+<a name="MailboxHeader.php"></a>
+<h1>MailboxHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_MailboxHeader", use another DocBlock to document the file<br>
+<a name="Mailer.php"></a>
+<h1>Mailer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Mailer", use another DocBlock to document the file<br>
+<a name="MailInvoker.php"></a>
+<h1>MailInvoker.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_Transport_MailInvoker", use another DocBlock to document the file<br>
+<a name="MailTransport.php"></a>
+<h1>MailTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_MailTransport", use another DocBlock to document the file<br>
+<b>Warning on line 31</b> - DocBlock would be page-level, but precedes class "Swift_Transport_MailTransport", use another DocBlock to document the file<br>
+<a name="Message.php"></a>
+<h1>Message.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Message", use another DocBlock to document the file<br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Message", use another DocBlock to document the file<br>
+<a name="MimeEntity.php"></a>
+<h1>MimeEntity.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Mime_MimeEntity", use another DocBlock to document the file<br>
+<a name="MimePart.php"></a>
+<h1>MimePart.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_MimePart", use another DocBlock to document the file<br>
+<b>Warning on line 23</b> - DocBlock would be page-level, but precedes class "Swift_Mime_MimePart", use another DocBlock to document the file<br>
+<a name="NgCharacterStream.php"></a>
+<h1>NgCharacterStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 33</b> - DocBlock would be page-level, but precedes class "Swift_CharacterStream_NgCharacterStream", use another DocBlock to document the file<br>
+<a name="NullKeyCache.php"></a>
+<h1>NullKeyCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_KeyCache_NullKeyCache", use another DocBlock to document the file<br>
+<a name="OutputByteStream.php"></a>
+<h1>OutputByteStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_OutputByteStream", use another DocBlock to document the file<br>
+<a name="ParameterizedHeader.php"></a>
+<h1>ParameterizedHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Mime_ParameterizedHeader", use another DocBlock to document the file<br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_ParameterizedHeader", use another DocBlock to document the file<br>
+<a name="PathHeader.php"></a>
+<h1>PathHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_PathHeader", use another DocBlock to document the file<br>
+<a name="PlainAuthenticator.php"></a>
+<h1>PlainAuthenticator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Transport_Esmtp_Auth_PlainAuthenticator", use another DocBlock to document the file<br>
+<a name="PlainContentEncoder.php"></a>
+<h1>PlainContentEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Mime_ContentEncoder_PlainContentEncoder", use another DocBlock to document the file<br>
+<a name="Pop3Connection.php"></a>
+<h1>Pop3Connection.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Pop_Pop3Connection", use another DocBlock to document the file<br>
+<a name="Pop3Exception.php"></a>
+<h1>Pop3Exception.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Pop_Pop3Exception", use another DocBlock to document the file<br>
+<a name="PopBeforeSmtpPlugin.php"></a>
+<h1>PopBeforeSmtpPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 23</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_PopBeforeSmtpPlugin", use another DocBlock to document the file<br>
+<a name="QpContentEncoder.php"></a>
+<h1>QpContentEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Mime_ContentEncoder_QpContentEncoder", use another DocBlock to document the file<br>
+<a name="QpEncoder.php"></a>
+<h1>QpEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Encoder_QpEncoder", use another DocBlock to document the file<br>
+<a name="QpHeaderEncoder.php"></a>
+<h1>QpHeaderEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 98</b> - File "/repository/skiclubz/trunk/protected/extensions/yii-mail/vendors/swiftMailer/classes/Swift/Mime/HeaderEncoder/QpHeaderEncoder.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="RecipientIterator.php"></a>
+<h1>RecipientIterator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Mailer_RecipientIterator", use another DocBlock to document the file<br>
+<a name="ReplacementFilterFactory.php"></a>
+<h1>ReplacementFilterFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "Swift_ReplacementFilterFactory", use another DocBlock to document the file<br>
+<a name="Replacements.php"></a>
+<h1>Replacements.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Decorator_Replacements", use another DocBlock to document the file<br>
+<a name="Reporter.php"></a>
+<h1>Reporter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Reporter", use another DocBlock to document the file<br>
+<a name="ReporterPlugin.php"></a>
+<h1>ReporterPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_ReporterPlugin", use another DocBlock to document the file<br>
+<a name="ResponseEvent.php"></a>
+<h1>ResponseEvent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Events_ResponseEvent", use another DocBlock to document the file<br>
+<a name="ResponseListener.php"></a>
+<h1>ResponseListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_ResponseListener", use another DocBlock to document the file<br>
+<a name="Rfc2231Encoder.php"></a>
+<h1>Rfc2231Encoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Encoder_Rfc2231Encoder", use another DocBlock to document the file<br>
+<a name="RfcComplianceException.php"></a>
+<h1>RfcComplianceException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_RfcComplianceException", use another DocBlock to document the file<br>
+<a name="SendEvent.php"></a>
+<h1>SendEvent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Events_SendEvent", use another DocBlock to document the file<br>
+<a name="SendListener.php"></a>
+<h1>SendListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_SendListener", use another DocBlock to document the file<br>
+<a name="SendmailTransport.php"></a>
+<h1>SendmailTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_SendmailTransport", use another DocBlock to document the file<br>
+<b>Warning on line 28</b> - DocBlock would be page-level, but precedes class "Swift_Transport_SendmailTransport", use another DocBlock to document the file<br>
+<a name="SimpleCharacterReaderFactory.php"></a>
+<h1>SimpleCharacterReaderFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_CharacterReaderFactory_SimpleCharacterReaderFactory", use another DocBlock to document the file<br>
+<a name="SimpleEventDispatcher.php"></a>
+<h1>SimpleEventDispatcher.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "Swift_Events_SimpleEventDispatcher", use another DocBlock to document the file<br>
+<a name="SimpleHeaderFactory.php"></a>
+<h1>SimpleHeaderFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "Swift_Mime_SimpleHeaderFactory", use another DocBlock to document the file<br>
+<a name="SimpleHeaderSet.php"></a>
+<h1>SimpleHeaderSet.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Mime_SimpleHeaderSet", use another DocBlock to document the file<br>
+<a name="SimpleKeyCacheInputStream.php"></a>
+<h1>SimpleKeyCacheInputStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_KeyCache_SimpleKeyCacheInputStream", use another DocBlock to document the file<br>
+<a name="SimpleMailInvoker.php"></a>
+<h1>SimpleMailInvoker.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 30</b> - DocBlock would be page-level, but precedes class "Swift_Transport_SimpleMailInvoker", use another DocBlock to document the file<br>
+<a name="SimpleMessage.php"></a>
+<h1>SimpleMessage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Mime_SimpleMessage", use another DocBlock to document the file<br>
+<a name="SimpleMimeEntity.php"></a>
+<h1>SimpleMimeEntity.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Mime_SimpleMimeEntity", use another DocBlock to document the file<br>
+<a name="Sleeper.php"></a>
+<h1>Sleeper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Sleeper", use another DocBlock to document the file<br>
+<a name="SmtpAgent.php"></a>
+<h1>SmtpAgent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Transport_SmtpAgent", use another DocBlock to document the file<br>
+<a name="SmtpTransport.php"></a>
+<h1>SmtpTransport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_SmtpTransport", use another DocBlock to document the file<br>
+<a name="StreamBuffer.php"></a>
+<h1>StreamBuffer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Transport_StreamBuffer", use another DocBlock to document the file<br>
+<a name="StreamFilter.php"></a>
+<h1>StreamFilter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "Swift_StreamFilter", use another DocBlock to document the file<br>
+<a name="StringReplacementFilter.php"></a>
+<h1>StringReplacementFilter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift_StreamFilters_StringReplacementFilter", use another DocBlock to document the file<br>
+<a name="StringReplacementFilterFactory.php"></a>
+<h1>StringReplacementFilterFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_StreamFilters_StringReplacementFilterFactory", use another DocBlock to document the file<br>
+<a name="Swift.php"></a>
+<h1>Swift.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "Swift", use another DocBlock to document the file<br>
+<a name="SwiftException.php"></a>
+<h1>SwiftException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "Swift_SwiftException", use another DocBlock to document the file<br>
+<a name="ThrottlerPlugin.php"></a>
+<h1>ThrottlerPlugin.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_ThrottlerPlugin", use another DocBlock to document the file<br>
+<a name="Timer.php"></a>
+<h1>Timer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "Swift_Plugins_Timer", use another DocBlock to document the file<br>
+<a name="Transport.php"></a>
+<h1>Transport.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Transport", use another DocBlock to document the file<br>
+<a name="TransportChangeEvent.php"></a>
+<h1>TransportChangeEvent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_Events_TransportChangeEvent", use another DocBlock to document the file<br>
+<a name="TransportChangeListener.php"></a>
+<h1>TransportChangeListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "Swift_Events_TransportChangeListener", use another DocBlock to document the file<br>
+<a name="TransportException.php"></a>
+<h1>TransportException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "Swift_TransportException", use another DocBlock to document the file<br>
+<a name="TransportExceptionEvent.php"></a>
+<h1>TransportExceptionEvent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_Events_TransportExceptionEvent", use another DocBlock to document the file<br>
+<a name="TransportExceptionListener.php"></a>
+<h1>TransportExceptionListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Events_TransportExceptionListener", use another DocBlock to document the file<br>
+<a name="UnstructuredHeader.php"></a>
+<h1>UnstructuredHeader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_Mime_Headers_UnstructuredHeader", use another DocBlock to document the file<br>
+<a name="UsAsciiReader.php"></a>
+<h1>UsAsciiReader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "Swift_CharacterReader_UsAsciiReader", use another DocBlock to document the file<br>
+<b>Warning on line 46</b> - Unknown tag "@int" used<br>
+<a name="Utf8Reader.php"></a>
+<h1>Utf8Reader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "Swift_CharacterReader_Utf8Reader", use another DocBlock to document the file<br>
+<b>Warning on line 147</b> - Unknown tag "@int" used<br>
+<a name="YiiMail.php"></a>
+<h1>YiiMail.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 45</b> - no @package tag was used in a DocBlock for class YiiMail<br>
+<a name="YiiMailMessage.php"></a>
+<h1>YiiMailMessage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 35</b> - no @package tag was used in a DocBlock for class YiiMailMessage<br>
+	<div id="credit">
+		<hr />
+		Documentation generated on Fri, 12 Nov 2010 20:45:32 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>
