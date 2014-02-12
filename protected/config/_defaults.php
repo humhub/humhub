@@ -76,6 +76,7 @@ return array(
                 'freeRegistration' => true,
             ),
         ),
+        'dynamicConfigFile' => dirname(__FILE__) . '/_settings.php',
     ),
 );
 ?>

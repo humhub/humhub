@@ -312,13 +312,13 @@ class HSetting extends HActiveRecord {
     }
 
     /**
-     * Returns the configuration file (_settings.php) as Array
+     * Returns the dynamic configuration file as array
      *
      * @return Array Configuration file
      */
     public static function getConfiguration() {
 
-        $configFile = Yii::app()->basePath . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . '_settings.php';
+        $configFile = Yii::app()->params['dynamicConfigFile'];
         $config = require($configFile);
 
         if (!is_array($config))
@@ -334,7 +334,7 @@ class HSetting extends HActiveRecord {
      */
     public static function setConfiguration($config = array()) {
 
-        $configFile = Yii::app()->basePath . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . '_settings.php';
+        $configFile = Yii::app()->params['dynamicConfigFile'];
 
         $content = "<" . "?php return ";
         $content .= var_export($config, true);

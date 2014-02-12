@@ -8,7 +8,8 @@
 Yii::setPathOfAlias('modules_core', dirname(__FILE__) . '/../modules_core');
 
 
-$pre_config = CMap::mergeArray(require (dirname(__FILE__) . '/_defaults.php'), require (dirname(__FILE__) . '/_settings.php'));
+$defaults = require (dirname(__FILE__) . '/_defaults.php');
+$pre_config = CMap::mergeArray($defaults, require ($defaults['params']['dynamicConfigFile']));
 
 return CMap::mergeArray($pre_config, array(
             // preloading 'log' component

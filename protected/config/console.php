@@ -5,7 +5,10 @@
  *
  * This configuration file only affects only the console application.
  */
-$pre_config = CMap::mergeArray(require (dirname(__FILE__) . '/_defaults.php'), require (dirname(__FILE__) . '/_settings.php'));
+
+$defaults = require (dirname(__FILE__) . '/_defaults.php');
+$pre_config = CMap::mergeArray($defaults, require ($defaults['params']['dynamicConfigFile']));
+
 return CMap::mergeArray($pre_config, array(
             'preload' => array('log'),
             'behaviors' => array(
