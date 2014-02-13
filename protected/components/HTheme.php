@@ -53,7 +53,7 @@ class HTheme extends CTheme {
      */
     public static function getThemes() {
         $themes = array();
-        $themePath = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "themes";
+        $themePath = Yii::app()->themeManager->getBasePath();
 
         foreach (scandir($themePath) as $file) {
             if ($file == "." || $file == ".." || !is_dir($themePath . DIRECTORY_SEPARATOR . $file)) {

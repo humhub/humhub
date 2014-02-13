@@ -27,9 +27,7 @@
 class InstallerModule extends CWebModule {
 
     public function init() {
-
-        //set layout
-        $this->layoutPath = "protected/modules_core/installer/views/";
+        $this->setLayoutPath(Yii::getPathOfAlias('installer.views'));
     }
 
     /**
@@ -45,7 +43,6 @@ class InstallerModule extends CWebModule {
             return true;
             $success = true;
         } catch (Exception $e) {
-
         }
 
         return false;
