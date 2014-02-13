@@ -5,8 +5,6 @@
         <h4>Installation completed successfully!</h4><br>
 
         <hr>
-        <?php echo HHtml::link(Yii::t('InstallerModule.base', 'Start <i class="icon-circle-arrow-right"></i>'), array('//'), array('class' => 'btn btn-success')); ?>
+        <?php echo HHtml::link(Yii::t('InstallerModule.base', 'Start <i class="icon-circle-arrow-right"></i>'), Yii::app()->createUrl('//'), array('class' => 'btn btn-success')); ?>
     </div>
 </div>
-
-
