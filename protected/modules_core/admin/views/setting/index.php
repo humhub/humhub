@@ -10,17 +10,17 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <div class="form-group">
     <?php echo $form->labelEx($model, 'name'); ?>
-    <?php echo $form->textField($model, 'name', array('class' => 'form-control')); ?>
+    <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'readonly'=>  HSetting::IsFixed('name'))); ?>
 </div>
 
 <div class="form-group">
     <?php echo $form->labelEx($model, 'baseUrl'); ?>
-    <?php echo $form->textField($model, 'baseUrl', array('class' => 'form-control')); ?>
+    <?php echo $form->textField($model, 'baseUrl', array('class' => 'form-control', 'readonly'=>  HSetting::IsFixed('baseUrl'))); ?>
 </div>
 
 <div class="form-group">
     <?php echo $form->labelEx($model, 'defaultLanguage'); ?>
-    <?php echo $form->dropDownList($model, 'defaultLanguage', Yii::app()->getLanguages(), array('class' => 'form-control')); ?>
+    <?php echo $form->dropDownList($model, 'defaultLanguage', Yii::app()->getLanguages(), array('class' => 'form-control', 'readonly'=>  HSetting::IsFixed('defaultLanguage'))); ?>
 </div>
 
 
