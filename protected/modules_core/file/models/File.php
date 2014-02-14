@@ -59,7 +59,7 @@ class File extends HActiveRecord {
      */
     public function delete() {
 
-        $path = Yii::app()->basePath . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_uploads . DIRECTORY_SEPARATOR . $this->guid . DIRECTORY_SEPARATOR;
+        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_uploads . DIRECTORY_SEPARATOR . $this->guid . DIRECTORY_SEPARATOR;
 
         // Become really sure, that we dont delete something else :-)
         if ($this->guid != "" && $this->folder_uploads != "" && is_dir($path)) {
@@ -181,7 +181,7 @@ class File extends HActiveRecord {
      */
     public function getPath($prefix = "") {
 
-        $path = Yii::app()->basePath . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_uploads . DIRECTORY_SEPARATOR . $this->guid . DIRECTORY_SEPARATOR;
+        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_uploads . DIRECTORY_SEPARATOR . $this->guid . DIRECTORY_SEPARATOR;
 
         if (!is_dir($path))
             mkdir($path);
