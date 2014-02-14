@@ -15,11 +15,11 @@
 
             <?php echo Yii::t('SpaceModule.base', 'Please enter the name of your new space. You can edit the options on the next page.'); ?>
             <br><br>
-            <?php print $form::textField($model, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.base', 'space name'))); ?>
+            <?php print $form->textField($model, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.base', 'space name'))); ?>
             <?php echo $form->error($model, 'title'); ?>
 
             <?php $types = array('workspace' => Yii::t('SpaceModule.base', 'Space')); ?>
-            <?php print $form::dropDownList($model, 'type', $types, array('class' => 'form-control', 'style' => 'display: none;')); ?>
+            <?php print $form->dropDownList($model, 'type', $types, array('class' => 'form-control', 'style' => 'display: none;')); ?>
 
         </div>
         <div class="modal-footer">
