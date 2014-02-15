@@ -98,8 +98,7 @@ $(document).ready(function () {
 
                 _request = $.ajax({
                     'type': 'GET',
-                    //'url': getRootUrl() + '/search/index' + '?mode=quick&keyword=' + _searchString + '&sguid=' + _spaceGuid,
-                    'url': getRootUrl() + '/search/index' + '?mode=quick&keyword=' + _searchString,
+                    'url': baseUrl + '/search/index' + '?mode=quick&keyword=' + _searchString,
                     'cache': false,
                     'data': jQuery(this).parents("form").serialize(),
                     'success': function (html) {
@@ -154,13 +153,5 @@ $(document).ready(function () {
 
         $('#search-menu-dropdown li:not(:first)').remove();
     }
-
-    /**
-     * Get the root folder
-     */
-    function getRootUrl() {
-        var arr = window.location.href.split("/");
-        return "/" + arr[3];
-    }
-
+    
 });
