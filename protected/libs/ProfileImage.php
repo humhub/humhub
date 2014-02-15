@@ -121,7 +121,7 @@ class ProfileImage {
      * @return String Path to the profile image
      */
     public function getPath($prefix = "") {
-        $path = Yii::app()->basePath . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
+        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
 
         if (!is_dir($path))
             mkdir($path);

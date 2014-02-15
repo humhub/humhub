@@ -19,8 +19,7 @@
     </style>
 
     <div id="cropimage">
-        <?
-        $this->widget('ext.yii-jcrop.jCropWidget', array(
+        <?php $this->widget('ext.yii-jcrop.jCropWidget', array(
                 'imageUrl' => $profileImage->getUrl('_org') . "?nocache=" . time(),
                 'formElementX' => 'CropProfileImageForm_cropX',
                 'formElementY' => 'CropProfileImageForm_cropY',

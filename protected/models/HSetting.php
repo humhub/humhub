@@ -22,13 +22,14 @@
  * This is the model class for table "settings" and is responsible for system
  * wide settings of modules.
  *
- * Only use this for settings and not for general proposes.
+ * Only use this for settings and not for general value storage proposes. 
  *
- * The registry is used to store systemwide settings.
  * Also modules can use this to store e.g. configuration options.
  *
+ * Settings in configuration file at "params -> HSettingsFixed" are not 
+ * changeable.
+ * 
  * The followings are the available columns in table 'registry':
- *
  * @property int $id
  * @property string $name
  * @property string $value
@@ -127,6 +128,14 @@ class HSetting extends HActiveRecord {
      */
     public static function Get($name, $moduleId = "") {
 
+        if (self::IsFixed($name, $moduleId)) {
+            if ($moduleId == "") {
+                return Yii::app()->params['HSettingFixed'][$name];
+            } else {
+                return Yii::app()->params['HSettingFixed'][$moduleId][$name];
+            }
+        }
+        
         $record = self::GetRecord($name, $moduleId);
         return $record->value;
     }
@@ -154,6 +163,10 @@ class HSetting extends HActiveRecord {
     public static function Set($name, $value, $moduleId = "") {
         $record = self::GetRecord($name, $moduleId);
 
+        if (self::IsFixed($name, $moduleId)) {
+            $value = self::Get($name, $moduleId);
+        }
+        
         $record->name = $name;
         $record->value = $value;
         if ($moduleId != "")
@@ -183,6 +196,27 @@ class HSetting extends HActiveRecord {
             $record->module_id = $moduleId;
 
         $record->save();
+    }
+
+    /**
+     * Determines whether the setting value is fixed in the configuration
+     * file or can be changed at runtime.
+     * 
+     * @param type $name
+     * @return boolean
+     */
+    public static function IsFixed($name, $moduleId = "") {
+
+        if ($moduleId == "") {
+            if (isset(Yii::app()->params['HSettingFixed'][$name])) {
+                return true;
+            }
+        } else {
+            if (isset(Yii::app()->params['HSettingFixed'][$moduleId][$name])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

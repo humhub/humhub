@@ -62,9 +62,18 @@
                                 </a>
                             </li>
 
-                            <!-- if the current user has admin rights -->
-                            <?php if (Yii::app()->user->isAdmin() || Yii::app()->user->canApproveUsers()) : ?>
+                            <?php if (Yii::app()->user->isAdmin()) : ?>
                                 <li class="divider"></li>
+                                <li>
+                                    <a href="<?php echo $this->createUrl('//admin/index') ?>"><i
+                                            class="icon-cogs"></i> <?php echo Yii::t('AdminModule.base', 'Administration'); ?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+
+                            <!-- if the current user has admin rights -->
+                            <?php if (HSetting::Get('needApproval', 'authentication_internal') && (Yii::app()->user->isAdmin() || Yii::app()->user->canApproveUsers())) : ?>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//admin/approval') ?>"><i
                                             class="icon-check-sign"></i> <?php echo Yii::t('AdminModule.base', 'User Approvals'); ?>
@@ -72,13 +81,6 @@
                                 </li>
                             <?php endif; ?>
 
-                            <?php if (Yii::app()->user->isAdmin()) : ?>
-                                <li>
-                                    <a href="<?php echo $this->createUrl('//admin/index') ?>"><i
-                                            class="icon-cogs"></i> <?php echo Yii::t('AdminModule.base', 'Administration'); ?>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
 
                             <?php if (!isset(Yii::app()->session['ntlm']) || Yii::app()->session['ntlm'] == false) : ?>
                                 <li class="divider"></li>
