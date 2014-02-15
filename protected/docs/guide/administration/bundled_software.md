@@ -1,12 +1,11 @@
 Bundled Software / Libaries
 ===========================
 
-* Yii Framework (Core Framework) http://www.yiiframework.com/
-* Zend Framework (Lucene Index)
-* Code Igniter (Security Functions)
+* Yii Framework (Core Framework) http://www.yiiframework.com/ (protected/vendors/yii/LICENSE)
+* Zend Framework (Lucene Index) http://framework.zend.com/ (protected/vendors/Zend/LICENSE.txt)
+* Code Igniter (Security Functions) http://ellislab.com/codeigniter
 * ADLdap (Active Directory / Ldap)    http://adldap.sourceforge.net/
-* Some Yii Extensions (See /protected/extensions/)
-* PHP Markdown by by Michel Fortin (ZammDoc Module)
+* Yii Extensions (See /protected/extensions/)
 * Yii-Mail - http://www.yiiframework.com/extension/mail/
 * SwiftMailer - http://swiftmailer.org
 * jQuery - http://jquery.com
