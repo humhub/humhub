@@ -33,10 +33,7 @@ class CreateController extends Controller {
             $model->attributes = $_POST['SpaceCreateForm'];
 
             if ($model->validate()) {
-
-                // close modal to hide the loaded view, which is visible for some seconds, after creation
-                $this->renderModalClose();
-
+                
                 $space = new Space();
                 $space->name = $model->title;
                 $space->join_policy = 2;
@@ -55,7 +52,7 @@ class CreateController extends Controller {
 
                 // Save in this user variable, that the workspace was new created
                 Yii::app()->user->setState('ws', 'created');
-
+                
                 // Redirect to the new created Space
                 $this->htmlRedirect($this->createUrl('//space/admin/edit', array('sguid' => $space->guid)));
             }
