@@ -128,6 +128,8 @@ class StreamAction extends CAction
 
             $this->userId = Yii::app()->user->id;
             $this->userWallId = Yii::app()->user->getModel()->wall_id;
+            if ($this->userWallId == "")
+                $this->userWallId = 0;
         }
 
         Yii::endProfile('initStreamAction');
@@ -375,7 +377,12 @@ class StreamAction extends CAction
         } elseif ($this->type == 'user') {
 
             $user = User::model()->findByAttributes(array('guid' => $this->typeGuid));
-            $this->sqlWhere .= " AND wall_entry.wall_id = " . $user->wall_id;
+            
+            $wallId = $user->wall_id;
+            if ($wallId == "")
+                $wallId = 0;
+            
+            $this->sqlWhere .= " AND wall_entry.wall_id = " . $wallId;
         } else {
             throw new CHttpException(500, 'Target unknown!');
         }
