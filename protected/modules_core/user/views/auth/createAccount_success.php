@@ -20,7 +20,7 @@
                     <p><?php echo Yii::t('UserModule.auth', 'After activating your account by the administrator, you will receive a notification by email.'); ?></p>
                 <?php else: ?>
                     <a href="<?php echo $this->createUrl('//') ?>"
-                       class="btn btn-primary"><?php echo Yii::t('UserModule.auth', 'Got to login page') ?></a>
+                       class="btn btn-primary"><?php echo Yii::t('UserModule.auth', 'Go to login page') ?></a>
                 <?php endif; ?>
             </div>
         </div>

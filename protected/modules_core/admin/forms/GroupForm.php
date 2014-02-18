@@ -44,7 +44,7 @@ class GroupForm extends CFormModel {
             array('name', 'length', 'max' => 45),
             array('description, admins', 'safe'),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
-            array('description', 'required'),
+            array('name, description', 'required'),
         );
     }
 
