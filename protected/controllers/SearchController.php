@@ -105,7 +105,7 @@ class SearchController extends Controller {
                 $append = " AND (model:User OR model:Space OR (belongsToType:Space AND belongsToId:" . $currentSpace->id . "))";
             }
 
-            $hits = new ArrayObject(HSearch::getInstance()->Find($keyword . $append));
+            $hits = new ArrayObject(HSearch::getInstance()->Find($keyword."* " . $append));
             $hitCount = count($hits);
 
             // Limit Hits
