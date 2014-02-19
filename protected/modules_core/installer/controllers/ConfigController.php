@@ -185,10 +185,10 @@ class ConfigController extends Controller {
             print "got no secret to finish!";
             die();
         }
-
-        $config = HSetting::getConfiguration();
-        $config['params']['installed'] = true;
-        HSetting::setConfiguration($config);
+        
+        // Rewrite whole configuration file, also sets application
+        // in installed state.
+        HSetting::RewriteConfiguration();
 
         try {
             Yii::app()->user->logout();
