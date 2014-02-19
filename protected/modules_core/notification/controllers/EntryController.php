@@ -45,7 +45,8 @@ class EntryController extends Controller {
         if ($notification == null)
             throw new CHttpException(500, 'Invalid notification id!');
 
-        if ($notification->class != "SpaceApprovalRequestNotification") {
+        
+        if ($notification->class != "SpaceApprovalRequestNotification" && $notification->class != "SpaceInviteNotification") {
             $notification->seen = 1;
             $notification->save();
 
@@ -55,7 +56,7 @@ class EntryController extends Controller {
                 $n->markAsSeen();
             }
         }
-
+        
         $notification->redirectToTarget();
     }
 
