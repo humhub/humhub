@@ -158,10 +158,10 @@ class SelfTest {
             );
         }
 
+
         // Check Runtime Directory
         $title = 'Permissions - Runtime';
-        $path = Yii::app()->basePath . DIRECTORY_SEPARATOR . "runtime";
-        if (is_writeable($path)) {
+        if (is_writeable(Yii::app()->runtimePath)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
@@ -176,7 +176,7 @@ class SelfTest {
 
         // Check Assets Directory
         $title = 'Permissions - Assets';
-        $path = realpath(Yii::app()->basePath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . "assets");
+        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "assets";
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -193,7 +193,7 @@ class SelfTest {
 
         // Check Uploads Directory
         $title = 'Permissions - Uploads';
-        $path = realpath(Yii::app()->basePath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . "uploads");
+        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads";
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
