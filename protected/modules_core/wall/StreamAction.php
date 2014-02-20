@@ -128,6 +128,8 @@ class StreamAction extends CAction
 
             $this->userId = Yii::app()->user->id;
             $this->userWallId = Yii::app()->user->getModel()->wall_id;
+            if ($this->userWallId == "")
+                $this->userWallId = 0;
         }
 
         Yii::endProfile('initStreamAction');
@@ -375,7 +377,12 @@ class StreamAction extends CAction
         } elseif ($this->type == 'user') {
 
             $user = User::model()->findByAttributes(array('guid' => $this->typeGuid));
-            $this->sqlWhere .= " AND wall_entry.wall_id = " . $user->wall_id;
+            
+            $wallId = $user->wall_id;
+            if ($wallId == "")
+                $wallId = 0;
+            
+            $this->sqlWhere .= " AND wall_entry.wall_id = " . $wallId;
         } else {
             throw new CHttpException(500, 'Target unknown!');
         }
@@ -392,12 +399,14 @@ class StreamAction extends CAction
             $this->sqlWhere .= "AND wall_entry.created_at > :maxDate";
         }
 
+        // Show only content with attached files
+        if (in_array('entry_files', $this->filters) ) {
+            $this->sqlWhere .= " AND (SELECT id FROM file WHERE file.object_model=content.object_model AND file.object_id=content.object_id) IS NOT NULL";
+        }
+        
         // Setup Post specific filters
-        if (in_array('posts_files', $this->filters) || in_array('posts_links', $this->filters)) {
+        if (in_array('posts_links', $this->filters)) {
             $this->sqlJoin .= " LEFT JOIN post ON content.object_id=post.id AND content.object_model = 'Post'";
-            if (in_array('posts_files', $this->filters)) {
-                $this->sqlWhere .= " AND post.file_id is not null";
-            }
             if (in_array('posts_links', $this->filters)) {
                 $this->sqlWhere .= " AND post.url is not null";
             }

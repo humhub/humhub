@@ -80,7 +80,7 @@ class SettingController extends Controller {
         $this->render('index', array('model' => $form));
 
         /*
-          Yii::app()->interceptor->attachEventHandler('SuperAdminNavigationWidget', 'onInit', function($event) {
+          Yii::app()->interceptor->preattachEventHandler('SuperAdminNavigationWidget', 'onInit', function($event) {
           $event->sender->addItem(array(
           'label' => 'Item Dynamic Inject Test',
           'url' => Yii::app()->createUrl('')

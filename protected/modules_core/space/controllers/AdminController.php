@@ -73,7 +73,7 @@ class AdminController extends Controller {
 
 
         // When Sidebar is build, attach ChangeImage Widget
-        Yii::app()->interceptor->attachEventHandler('SpaceSidebarWidget', 'onInit', function($event) {
+        Yii::app()->interceptor->preattachEventHandler('SpaceSidebarWidget', 'onInit', function($event) {
                     $event->sender->addWidget('application.modules_core.space.widgets.SpaceChangeImageWidget', array(), array('sortOrder' => 10));
                 });
 
@@ -264,7 +264,7 @@ class AdminController extends Controller {
         $workspace = $this->getSpace();
 
         if (isset($_POST['UploadProfileImageForm'])) {
-            
+
             $_POST['UploadProfileImageForm'] = Yii::app()->input->stripClean($_POST['UploadProfileImageForm']);
 
             $model->attributes = $_POST['UploadProfileImageForm'];

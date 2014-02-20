@@ -23,7 +23,7 @@
             <li><a href="#" class="wallFilter" id="filter_entry_mine"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Created by me'); ?></a></li>
 
             <!-- post module related -->
-            <li><a href="#" class="wallFilter" id="filter_posts_files"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts with files'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_entry_files"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Content with attached files'); ?></a></li>
             <li><a href="#" class="wallFilter" id="filter_posts_links"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts with links'); ?></a></li>
             <li><a href="#" class="wallFilter" id="filter_model_posts"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts only'); ?></a></li>
             <!-- /post module related -->

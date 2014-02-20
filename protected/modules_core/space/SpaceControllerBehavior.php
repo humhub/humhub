@@ -58,7 +58,7 @@ class SpaceControllerBehavior extends CBehavior {
         $notifications = Notification::model()->findAllByAttributes(array('space_id' => $space->id, 'user_id' => Yii::app()->user->id), 'seen != 1');
         foreach ($notifications as $n) {
             // Ignore Approval Notifications
-            if ($n->class == "SpaceApprovalRequestNotification") {
+            if ($n->class == "SpaceApprovalRequestNotification" || $n->class == "SpaceInviteNotification") {
                 continue;
             }
             $n->seen = 1;

@@ -81,7 +81,7 @@ class DirectoryController extends Controller {
         $pages->setPageSize(HSetting::Get('paginationSize'));
         $_GET['keyword'] = $keyword; // Fix for post var
         // Add Meber Statistic Sidebar
-        Yii::app()->interceptor->attachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
+        Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
                     $event->sender->addWidget('application.modules_core.directory.widgets.MemberStatisticsWidget', array(), array('sortOrder' => 10));
                 });
 
@@ -137,7 +137,7 @@ class DirectoryController extends Controller {
         $pages->setPageSize(HSetting::Get('paginationSize'));
         $_GET['keyword'] = $keyword; // Fix for post var
         // Add Meber Statistic Sidebar
-        Yii::app()->interceptor->attachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
+        Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
                     $event->sender->addWidget('application.modules_core.directory.widgets.SpaceStatisticsWidget', array(), array('sortOrder' => 10));
                 });
 
@@ -160,7 +160,7 @@ class DirectoryController extends Controller {
         $groups = Group::model()->findAll();
 
         // Add Meber Statistic Sidebar
-        Yii::app()->interceptor->attachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
+        Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
                     $event->sender->addWidget('application.modules_core.directory.widgets.GroupStatisticsWidget', array(), array('sortOrder' => 10));
                 });
 
