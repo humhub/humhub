@@ -8,6 +8,7 @@ Yii::app()->moduleManager->register(array(
     'import' => array(
         'application.modules_core.space.widgets.*',
         'application.modules_core.space.models.*',
+        'application.modules_core.space.notifications.*',
         'application.modules_core.space.*',
     ),
     'isCoreModule' => true,

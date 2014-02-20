@@ -597,6 +597,7 @@ class Space extends HActiveRecord implements ISearchable {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
+        $user = User::model()->findByPk($userId);        
         $membership = $this->getUserMembership($userId);
 
 
@@ -619,6 +620,11 @@ class Space extends HActiveRecord implements ISearchable {
             $activity->fire();
         }
 
+        // Was invited, but declined the request
+        if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+            SpaceInviteDeclinedNotification::fire($membership->originator_user_id, $user, $this);
+        }
+        
         // Delete Membership
         UserSpaceMembership::model()->deleteAllByAttributes(array(
             'user_id' => $userId,
@@ -662,10 +668,16 @@ class Space extends HActiveRecord implements ISearchable {
                 return true;
             }
 
+            // User requested membership
             if ($membership->status == UserSpaceMembership::STATUS_APPLICANT) {
                 SpaceApprovalRequestAcceptedNotification::fire(Yii::app()->user->id, $user, $this);
             }
 
+            // User was invited 
+            if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+                SpaceInviteAcceptedNotification::fire($membership->originator_user_id, $user, $this);
+            }
+            
             // Update Membership
             $membership->status = UserSpaceMembership::STATUS_MEMBER;
         }
