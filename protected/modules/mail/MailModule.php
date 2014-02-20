@@ -19,15 +19,6 @@ class MailModule extends CWebModule {
     }
 
     /**
-     * Install some event listeners for the module
-     */
-    public static function install() {
-
-        // Install Event Handler & Behaviors
-        Yii::app()->interceptor->attachEventHandler('User', 'onBeforeDelete', array('MailInterceptor', 'onUserDelete'));
-    }
-
-    /**
      * On User delete, also delete all comments
      *
      * @param type $event
@@ -84,7 +75,7 @@ class MailModule extends CWebModule {
 
         // Is Module enabled on this workspace?
         if (Yii::app()->moduleManager->isEnabled('mail')) {
-            $event->sender->addWidget('application.modules.mail.widgets.MailNotificationWidget', array(), array('sortOrder'=>90));
+            $event->sender->addWidget('application.modules.mail.widgets.MailNotificationWidget', array(), array('sortOrder' => 90));
         }
     }
 
