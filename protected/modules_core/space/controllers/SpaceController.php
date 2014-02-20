@@ -226,7 +226,7 @@ class SpaceController extends Controller {
         }
 
         $space->removeMember();
-        $this->redirect($this->createUrl('//space/space', array('sguid' => $space->guid)));
+        $this->redirect($this->createUrl('//'));
     }
 
     /**
