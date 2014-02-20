@@ -23,7 +23,7 @@ class LikeModule extends CWebModule {
     public static function install() {
 
         // Install Event Handler & Behaviors
-        Yii::app()->interceptor->attachEventHandler('User', 'onBeforeDelete', array('LikeInterceptor', 'onUserDelete'));
+        Yii::app()->interceptor->preattachEventHandler('User', 'onBeforeDelete', array('LikeInterceptor', 'onUserDelete'));
     }
 
     /**

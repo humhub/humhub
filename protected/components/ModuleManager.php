@@ -213,7 +213,7 @@ class ModuleManager extends CApplicationComponent {
             // Register Event Handlers
             if (isset($definition['events'])) {
                 foreach ($definition['events'] as $event) {
-                    Yii::app()->interceptor->attachEventHandler(
+                    Yii::app()->interceptor->preattachEventHandler(
                             $event['class'], $event['event'], $event['callback']
                     );
                 }

@@ -36,7 +36,7 @@ class HInterceptor extends CApplicationComponent {
      * Starts interceptor service
      */
     public function start() {
-
+        
     }
 
     /**
@@ -67,19 +67,20 @@ class HInterceptor extends CApplicationComponent {
     }
 
     /**
-     * Attaches an event handler
+     * Pre-Attaches an event handler to an event of a class.
+     * 
+     * After the class is instanciated the given event handler will be attached.
+     * 
+     * An event handler must be a valid PHP callback, i.e., a string referring to
+     * a global function name, or an array containing two elements with
+     * the first element being an object and the second element a method name
+     * of the object.
      *
      * @param String $className
      * @param String $eventName
-     * @param type $handler
+     * @param callback $handler the event handler
      */
-    public function attachEventHandler($className, $eventName, $handler=null) {
-
-        # if ($className == 'ModuleManager') {#
-        #    // There is already an instance
-        #    Yii::app()->moduleManager->attachEventHandler($eventName, $handler);
-        #    return;
-        #}
+    public function preattachEventHandler($className, $eventName, $handler = null) {
 
         if (!isset($this->events[$className]))
             $this->events[$className] = array();
