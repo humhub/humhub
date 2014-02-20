@@ -57,6 +57,11 @@ class SpaceModule extends CWebModule {
             $membership->space->removeMember($user->id);
         }
 
+        // Cancel all space invites by the user
+        foreach (UserSpaceMembership::model()->findAllByAttributes(array('originator_user_id' => $user->id, 'status'=>UserSpaceMembership::STATUS_INVITED)) as $membership) {
+            $membership->space->removeMember($membership->user_id);
+        }        
+        
         return true;
     }
 
