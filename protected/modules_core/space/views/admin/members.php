@@ -43,8 +43,8 @@
                                 </div>
                             </td>
                             <td>
-                                <?php echo CHtml::link('<i class="icon-ok"></i>', $this->createUrl('workspace/adminMembersApproveApplicant', array('guid' => $workspace->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-xs btn-success tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Accept user'))); ?>
-                                <?php echo CHtml::link('<i class="icon-remove"></i>', $this->createUrl('workspace/adminMembersRejectApplicant', array('guid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-xs btn-danger tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Decline user'))); ?>
+                                <?php echo CHtml::link('<i class="icon-ok"></i>', $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-xs btn-success tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Accept user'))); ?>
+                                <?php echo CHtml::link('<i class="icon-remove"></i>', $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-xs btn-danger tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Decline user'))); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
