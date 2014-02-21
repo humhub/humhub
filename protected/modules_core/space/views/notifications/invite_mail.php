@@ -1,5 +1,3 @@
-
-
 <!-- MODULE ROW // -->
 <tr>
     <td align="center" valign="top">
@@ -15,11 +13,14 @@
                                     <td valign="top" width="600" class="flexibleContainerCell">
 
                                         <!-- CONTENT TABLE // -->
-                                        <table align="Left" border="0" cellpadding="0" cellspacing="0" width="60" class="flexibleContainer">
-                                            <tbody><tr>
+                                        <table align="Left" border="0" cellpadding="0" cellspacing="0" width="60"
+                                               class="flexibleContainer">
+                                            <tbody>
+                                                <tr>
                                                     <td align="Left" valign="top" class="imageContent">
                                                         <a href="<?php echo Yii::app()->createUrl('profile/show', array('guid' => $creator->guid)); ?>">
-                                                            <img src="<?php echo $creator->getProfileImage()->getUrl(); ?>" width="50" class="flexibleImage">
+                                                            <img src="<?php echo $sourceObject->getProfileImage()->getUrl(); ?>"
+                                                                 width="50" class="flexibleImage">
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -29,15 +30,19 @@
 
 
                                         <!-- CONTENT TABLE // -->
-                                        <table align="Right" border="0" cellpadding="0" cellspacing="0" width="480" class="flexibleContainer">
+                                        <table align="Right" border="0" cellpadding="0" cellspacing="0" width="480"
+                                               class="flexibleContainer">
                                             <tbody><tr>
                                                     <td valign="top" class="textContent">
-                                                        <?php echo Yii::t('SpaceModule.notifications', '{userName} declined your invite to {spaceName}', array('{userName}' => '<strong>' . $creator->displayName . '</strong>', '{spaceName}' => '<strong>' . $targetObject->name . '</strong>')); ?> 
+                                                        <?php echo Yii::t('SpaceModule.notifications', '{userName} invited you to {spaceName}', array('{userName}' => '<strong>' . $creator->displayName . '</strong>', '{spaceName}' => '<strong>' . $targetObject->name . '</strong>')); ?> 
+                                                        <a href="<?php echo $notification->getUrl(); ?>" target="_blank"><?php echo Yii::t('SpaceModule.notifications', 'Join now'); ?></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                         <!-- // CONTENT TABLE -->
+
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -50,6 +55,8 @@
         <!-- // CENTERING TABLE -->
     </td>
 </tr>
+
+
 
 
 

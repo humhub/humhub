@@ -74,8 +74,8 @@ class AdminController extends Controller {
 
         // When Sidebar is build, attach ChangeImage Widget
         Yii::app()->interceptor->preattachEventHandler('SpaceSidebarWidget', 'onInit', function($event) {
-                    $event->sender->addWidget('application.modules_core.space.widgets.SpaceChangeImageWidget', array(), array('sortOrder' => 10));
-                });
+            $event->sender->addWidget('application.modules_core.space.widgets.SpaceChangeImageWidget', array(), array('sortOrder' => 10));
+        });
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'workspace-edit-form') {

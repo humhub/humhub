@@ -32,7 +32,7 @@
                                         <table align="Right" border="0" cellpadding="0" cellspacing="0" width="480" class="flexibleContainer">
                                             <tbody><tr>
                                                     <td valign="top" class="textContent">
-                                                        <?php echo Yii::t('SpaceModule.notification', '{userName} accepted your invite to {spaceName}', array('{userName}' => '<strong>' . $creator->displayName . '</strong>', '{spaceName}' => '<strong>' . $targetObject->name . '</strong>')); ?> 
+                                                        <?php echo Yii::t('SpaceModule.notifications', '{userName} accepted your invite to {spaceName}', array('{userName}' => '<strong>' . $creator->displayName . '</strong>', '{spaceName}' => '<strong>' . $targetObject->name . '</strong>')); ?> 
                                                     </td>
                                                 </tr>
                                             </tbody>

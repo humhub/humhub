@@ -28,4 +28,7 @@
 
         </div>
     </a>
+    <?php if (isset($iconClass) &&  $iconClass != ""): ?>
+        <i class="<?php echo $iconClass; ?>"></i>
+    <?php endif; ?>
 </li>

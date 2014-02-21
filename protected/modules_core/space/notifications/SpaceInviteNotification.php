@@ -1,16 +1,34 @@
 <?php
 
 /**
+ * HumHub
+ * Copyright © 2014 The HumHub Project
+ *
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
  * If an user was invited to a workspace, this notification is fired.
  *
  * @todo Move to space module
- * @package humhub.modules_core.notification.notifications
+ * @package humhub.modules_core.space.notifications
  * @since 0.5
  */
 class SpaceInviteNotification extends Notification {
 
-    public $webView = "notification.views.notifications.spaceInvite";
-    public $mailView = "application.modules_core.notification.views.notifications.spaceInvite_mail";
+    public $webView = "space.views.notifications.invite";
+    public $mailView = "application.modules_core.space.views.notifications.invite_mail";
 
     public static function fire($originatorUserId, $userId, $workspace) {
 

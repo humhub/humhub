@@ -9,7 +9,6 @@ Yii::app()->moduleManager->register(array(
     'import' => array(
         'application.modules_core.notification.*',
         'application.modules_core.notification.models.*',
-        'application.modules_core.notification.notifications.*',
     ),
     // Events to Catch 
     'events' => array(

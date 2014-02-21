@@ -1,16 +1,34 @@
 <?php
 
 /**
+ * HumHub
+ * Copyright © 2014 The HumHub Project
+ *
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
  * SpaceApprovalRequestDeclinedNotification
  *
  * @todo Move to space module
- * @package humhub.modules_core.notification.notifications
+ * @package humhub.modules_core.space.notifications
  * @since 0.5
  */
 class SpaceApprovalRequestDeclinedNotification extends Notification {
 
-    public $webView = "notification.views.notifications.spaceApprovalRequestDeclined";
-    public $mailView = "application.modules_core.notification.views.notifications.spaceApprovalRequestDeclined_mail";
+    public $webView = "space.views.notifications.approvalRequestDeclined";
+    public $mailView = "application.modules_core.space.views.notifications.approvalRequestDeclined_mail";
 
     public static function fire($approverUserId, $requestor, $workspace) {
 
@@ -27,17 +45,6 @@ class SpaceApprovalRequestDeclinedNotification extends Notification {
         $notification->target_object_id = $workspace->id;
 
         $notification->save();
-    }
-
-    /**
-     * Remove notification after member was approved/declined or canceled the
-     * request.
-     *
-     * @param type $userId
-     * @param type $workspace
-     */
-    public static function remove() {
-
     }
 
     public function redirectToTarget() {
