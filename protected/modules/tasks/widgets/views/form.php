@@ -18,7 +18,7 @@ Yii::app()->clientScript->registerScriptFile(
                 <?php
                 $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                     'inputId' => 'preAssignedUsers',
-                    'userSearchUrl' => $this->createUrl('//space/space/searchMemberJson', array('sguid' => $workspace->guid)),
+                    'userSearchUrl' => $this->createUrl('//space/space/searchMemberJson', array('sguid' => $workspace->guid, 'keyword'=>'-keywordPlaceholder-')),
                     'maxUsers' => 10,
                 ));
                 ?>

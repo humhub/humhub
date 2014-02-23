@@ -38,7 +38,6 @@ foreach (explode(",", $currentValue) as $guid) {
                 inputId: '#<?php echo $inputId; ?>',
                 maxUsers: '<?php echo $maxUsers; ?>',
                 searchUrl: '<?php echo $userSearchUrl; ?>',
-                searchKey: '<?php echo $jsonTermKey; ?>',
                 currentValue: '<?php echo $newValue; ?>',
                 focus:'<?php echo $focus ?>'
             });

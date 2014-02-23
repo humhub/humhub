@@ -6,7 +6,6 @@
  * @property String $inputId is the ID of the input HTML Element
  * @property Int $maxUsers the maximum of users in this dropdown
  * @property String $userSearchUrl the url of the search, to find the users
- * @property String $jsonTermKey the parameter of the search
  * @property String $currentValue is the current value of the parent field.
  * @property String $templates.inputStructure is the HTML structure to replace the original input element.
  *
@@ -24,7 +23,6 @@ $.fn.userpicker = function (options) {
         inputId: "",
         maxUsers: 0,
         searchUrl: "",
-        searchKey: "keyword",
         currentValue: "",
         renderType: "normal", // possible values are "normal", "partial"
         focus: false,
@@ -215,7 +213,7 @@ $.fn.userpicker = function (options) {
         // show loader while loading
         $('#userpicker').html('<li><div class="loader"></div></li>');
 
-        jQuery.getJSON(options.searchUrl + "?" + options.searchKey + "=" + string, function (json) {
+        jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function (json) {
 
             // remove existings entries
             $('#userpicker li').remove();
