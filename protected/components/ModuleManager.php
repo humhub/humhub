@@ -92,8 +92,10 @@ class ModuleManager extends CApplicationComponent {
      */
     private function executeAutoloaders() {
 
+        $cacheEnabled = (get_class(Yii::app()->cache) != 'CDummyCache');
+
         $cacheFileName = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . self::AUTOSTART_CACHE_FILE_NAME;
-        if (file_exists($cacheFileName)) {
+        if ($cacheEnabled && file_exists($cacheFileName)) {
             require_once($cacheFileName);
             return;
         }
@@ -125,12 +127,14 @@ class ModuleManager extends CApplicationComponent {
             }
         }
 
-        // Created a file which contains all autoloaders
-        $content = "";
-        foreach ($fileNames as $fileName) {
-            $content .= file_get_contents($fileName);
+        if ($cacheEnabled) {
+            // Created a cache file which contains all autoloaders
+            $content = "";
+            foreach ($fileNames as $fileName) {
+                $content .= file_get_contents($fileName);
+            }
+            file_put_contents($cacheFileName, $content);
         }
-        file_put_contents($cacheFileName, $content);
     }
 
     /**
