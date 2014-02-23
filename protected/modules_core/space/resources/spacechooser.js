@@ -8,14 +8,13 @@ $(document).ready(function() {
     var arrPosition = ""; // Save the current position inside the chosen array
 
     /**
-     * Open space chooser and load user spaces
+     * Open space chooser and load user spaces 
      */
     $('#space-menu').click(function() {
 
         // load user spaces
         $.ajax({
-            //'url': '<?php echo $this->createUrl('//space/list', array('ajax' => 1)); ?>',
-            'url': getRootUrl() + '/space/list?ajax=1',
+            'url': scSpaceListUrl,
             'cache': false,
             'data': jQuery(this).parents("form").serialize(),
             'success': function(html) {
@@ -54,8 +53,7 @@ $(document).ready(function() {
     function getSpaceEntries() {
 
         // load data
-        //jQuery.getJSON("<?php echo $this->createUrl('//dashboard/GetFrontEndInfo'); ?>", function (json) {
-        jQuery.getJSON(getRootUrl() + "/dashboard/GetFrontEndInfo", function(json) {
+        jQuery.getJSON(scSpaceEntryUrl, function(json) {
 
             for (var i = 0; i < json.workspaces.length; i++) {
 
@@ -224,15 +222,6 @@ $(document).ready(function() {
             $('#space-menu-dropdown li ul li').removeClass('selected');
 
         });
-    }
-
-    /**
-     * Get the root folder
-     */
-    function getRootUrl() {
-        //var arr = window.location.href.split("/");
-        //return "/" + arr[3];
-        return baseUrl + "/";
     }
 
 });
