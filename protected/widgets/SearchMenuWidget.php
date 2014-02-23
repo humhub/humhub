@@ -30,6 +30,7 @@ class SearchMenuWidget extends HWidget {
         // publish resource files
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/searchmenu.js');
+        Yii::app()->clientScript->setJavaScriptVariable('searchAjaxUrl', $this->createUrl('//search/index', array('mode'=>'quick', 'keyword'=>'-searchKeyword-')));
     }
 
     /**

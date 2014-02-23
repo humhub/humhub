@@ -98,7 +98,7 @@ $(document).ready(function () {
 
                 _request = $.ajax({
                     'type': 'GET',
-                    'url': baseUrl + '/search/index' + '?mode=quick&keyword=' + _searchString,
+                    'url': searchAjaxUrl.replace('-searchKeyword-', _searchString),
                     'cache': false,
                     'data': jQuery(this).parents("form").serialize(),
                     'success': function (html) {
