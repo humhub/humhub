@@ -26,8 +26,7 @@
  * @since 0.5
  * @author Luke
  */
-class SpacePickerWidget extends HWidget
-{
+class SpacePickerWidget extends HWidget {
 
     /**
      * Id of input element which should replaced
@@ -38,17 +37,12 @@ class SpacePickerWidget extends HWidget
 
     /**
      * JSON Search URL - default: browse/searchJson
-     *
-     * @var type
+     * 
+     * The token -keywordPlaceholder- will replaced by the current search query.
+     * 
+     * @var String Url with -keywordPlaceholder-
      */
     public $spaceSearchUrl = "";
-
-    /**
-     * jsonTermKey is the parameter for the user search
-     *
-     * @var type
-     */
-    public $jsonTermKey = "keyword";
 
     /**
      * Maximum spaces
@@ -72,10 +66,9 @@ class SpacePickerWidget extends HWidget
      * Inits the User Picker
      *
      */
-    public function init()
-    {
+    public function init() {
         if ($this->spaceSearchUrl == "")
-            $this->spaceSearchUrl = Yii::app()->getController()->createUrl('//space/browse/searchJson');
+            $this->spaceSearchUrl = Yii::app()->getController()->createUrl('//space/browse/searchJson', array('keyword' => '-keywordPlaceholder-'));
 
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/spacepicker.js');
@@ -84,8 +77,7 @@ class SpacePickerWidget extends HWidget
     /**
      * Displays / Run the Widgets
      */
-    public function run()
-    {
+    public function run() {
 
         // Try to get current field value, when model & attribute attributes are specified.
         $currentValue = "";
@@ -99,7 +91,6 @@ class SpacePickerWidget extends HWidget
             'maxSpaces' => $this->maxSpaces,
             'currentValue' => $currentValue,
             'inputId' => $this->inputId,
-            'jsonTermKey' => $this->jsonTermKey,
         ));
     }
 

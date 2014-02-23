@@ -6,7 +6,6 @@
  * @property String $inputId is the ID of the input HTML Element
  * @property Int $maxSpaces the maximum of users in this dropdown
  * @property String $spaceSearchUrl the url of the search, to find the spaces
- * @property String $jsonTermKey the parameter of the search
  * @property String $currentValue is the current value of the parent field.
  * @property String $templates.inputStructure is the HTML structure to replace the original input element.
  *
@@ -17,14 +16,13 @@
 var chosen = "";
 var spaceCount = 0;
 
-$.fn.spacepicker = function (options) {
+$.fn.spacepicker = function(options) {
 
     // set standard options
     options = $.extend({
         inputId: "",
         maxSpaces: 0,
         searchUrl: "",
-        searchKey: "keyword",
         currentValue: "",
         templates: {
             inputStructure: '<div class="space_picker_container"><ul class="tag_input" id="space_tags"><li id="space_tag_input"><input type="text" id="space_input_field" class="tag_input_field" value="" autocomplete="off" placeholder="Add a space"></li></ul><ul class="dropdown-menu" id="spacepicker" role="menu" aria-labelledby="dropdownMenu"></ul></div>'
@@ -70,9 +68,9 @@ $.fn.spacepicker = function (options) {
         $('#space_tags').prepend(html);
 
         // create function for every space tag to remove the element
-        $('#space_tags .spaceInput i').each(function () {
+        $('#space_tags .spaceInput i').each(function() {
 
-            $(this).click(function () {
+            $(this).click(function() {
 
                 // remove user tag
                 $(this).parent().remove();
@@ -92,20 +90,20 @@ $.fn.spacepicker = function (options) {
 
 
     // Set focus on the input field, by clicking the <ul> construct
-    jQuery('#space_tags').click(function () {
+    jQuery('#space_tags').click(function() {
 
         // set focus
         $('#space_input_field').focus();
     })
 
-    $('#space_input_field').keydown(function (event) {
+    $('#space_input_field').keydown(function(event) {
 
         // by pressing the tab key an the input is empty
         if ($(this).val() == "" && event.keyCode == 9) {
 
             //do nothing
 
-        // by pressing enter, tab, up or down arrow
+            // by pressing enter, tab, up or down arrow
         } else if (event.keyCode == 40 || event.keyCode == 38 || event.keyCode == 13 || event.keyCode == 9) {
 
             // ... disable the default behavior to hold the cursor at the end of the string
@@ -129,7 +127,7 @@ $.fn.spacepicker = function (options) {
 
     })
 
-    $('#space_input_field').keyup(function (event) {
+    $('#space_input_field').keyup(function(event) {
 
         // start search after a specific count of characters
         if ($('#space_input_field').val().length >= 3) {
@@ -191,7 +189,7 @@ $.fn.spacepicker = function (options) {
     })
 
 
-    $('#space_input_field').focusout(function () {
+    $('#space_input_field').focusout(function() {
 
         // set the plain text including user guids to the original input or textarea element
         $(options.inputId).val(parseSpaceInput());
@@ -206,7 +204,7 @@ $.fn.spacepicker = function (options) {
         // show loader while loading
         $('#spacepicker').html('<li><div class="loader"></div></li>');
 
-        jQuery.getJSON(options.searchUrl + "?" + options.searchKey + "=" + string, function (json) {
+        jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function(json) {
 
             // remove existings entries
             $('#spacepicker li').remove();
@@ -265,7 +263,7 @@ $.fn.spacepicker = function (options) {
 }
 
 // Add a space tag for invitation
-function addSpaceTag(guid,image_url, name) {
+function addSpaceTag(guid, image_url, name) {
 
 
     // Building a new <li> entry
@@ -277,7 +275,7 @@ function addSpaceTag(guid,image_url, name) {
 
 
     // remove tag, by clicking the close icon
-    $('#' + guid + " i").click(function () {
+    $('#' + guid + " i").click(function() {
 
         // remove space tag
         $('#' + guid).remove();
@@ -311,7 +309,7 @@ function parseSpaceInput() {
     $('#spaceInputResult').html($('#space_tags').html());
 
 
-    $('#spaceInputResult .spaceInput').each(function () {
+    $('#spaceInputResult .spaceInput').each(function() {
 
         // add the space guid as plain text
         $(this).after(this.id + ",");

@@ -5,7 +5,6 @@
  * @property String $inputId is the ID of the input HTML Element
  * @property Int $maxSpaces the maximum of spaces for this input
  * @property String $spaceSearchUrl the url of the search, to find the spaces
- * @property String $jsonTermKey the parameter of the search
  * @property String $currentValue is the current value of the parent field.
  *
  * @package humhub.modules_core.user
@@ -35,7 +34,6 @@ foreach (explode(",", $currentValue) as $guid) {
         inputId: '#<?php echo $inputId; ?>',
         maxSpaces: '<?php echo $maxSpaces; ?>',
         searchUrl: '<?php echo $spaceSearchUrl; ?>',
-        searchKey: '<?php echo $jsonTermKey; ?>',
         currentValue: '<?php echo $newValue; ?>'
     });
 
