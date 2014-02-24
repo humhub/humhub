@@ -61,6 +61,9 @@ class HContentAddonBehavior extends HActiveRecordBehavior {
 
         $target = $this->getOwner()->getUnderlyingObject();
 
+        if ($target == null)
+              return null;
+        
         if ($target->asa('HContentBehavior') !== null) {
             $this->_cacheContentObject = $target;
             return $target;
