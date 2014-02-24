@@ -59,9 +59,6 @@ class HMailMessage extends YiiMailMessage {
             $themeName = "";
 
             if (Yii::app() instanceOf CConsoleApplication) {
-                // ConsoleApplication
-                Yii::setPathOfAlias('webroot', '../' . dirname($_SERVER['SCRIPT_FILENAME']));
-
                 if (Yii::app()->theme && Yii::app()->theme != "") {
                     $themeName = Yii::app()->theme;
                 }
