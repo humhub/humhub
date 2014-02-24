@@ -6,7 +6,7 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/theme.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 <!-- end: CSS -->
 
 
