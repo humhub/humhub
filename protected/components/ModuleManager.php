@@ -299,10 +299,15 @@ class ModuleManager extends CApplicationComponent {
 
                 $moduleEnabled = ModuleEnabled::model()->findByPk($id);
                 if ($moduleEnabled == null) {
+
                     $moduleEnabled = new ModuleEnabled();
                     $moduleEnabled->module_id = $id;
                     $moduleEnabled->save();
 
+                    // Auto Migrate (add module database changes)
+                    Yii::import('application.commands.shell.ZMigrateCommand');
+                    $migrate = ZMigrateCommand::AutoMigrate();
+                    
                     // Fire Event Disabled Event
                     if ($this->hasEventHandler('onEnable'))
                         $this->onEnable(new CEvent($this, $id));
