@@ -92,6 +92,7 @@ class Controller extends CController {
         if (Yii::app()->request->isAjaxRequest) {
             Yii::app()->clientScript->scriptMap = array(
                 'jquery.js' => false,
+                'jquery.min.js' => false,
             );
         }
 
