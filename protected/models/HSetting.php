@@ -341,9 +341,6 @@ class HSetting extends HActiveRecord {
         } else {
             unset($config['theme']);
         }
-
-        // Set in Installed State
-        $config['params']['installed'] = true;
         
         HSetting::setConfiguration($config);
     }

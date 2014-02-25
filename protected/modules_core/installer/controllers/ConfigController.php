@@ -186,10 +186,14 @@ class ConfigController extends Controller {
             die();
         }
         
+        
         // Rewrite whole configuration file, also sets application
         // in installed state.
         HSetting::RewriteConfiguration();
 
+        // Set to installed
+        $this->module->setInstalled();
+        
         try {
             Yii::app()->user->logout();
         } catch (Exception $e) {

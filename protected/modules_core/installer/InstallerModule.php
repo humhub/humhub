@@ -57,5 +57,15 @@ class InstallerModule extends CWebModule {
         }
         return false;
     }
+    
+    /**
+     * Sets application in installed state (disables installer)
+     */
+    public function setInstalled() {
+        $config = HSetting::getConfiguration();
+        $config['params']['installed'] = true;
+        HSetting::setConfiguration($config);
+        
+    }
 
 }
