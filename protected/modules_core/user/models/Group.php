@@ -8,6 +8,7 @@
  * @property integer $space_id
  * @property string $name
  * @property string $description
+ * @property string $ldap_dn
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -46,6 +47,7 @@ class Group extends HActiveRecord {
         return array(
             array('created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 45),
+            array('ldap_dn', 'length', 'max' => 255),
             array('space_id', 'checkSpaceId'),
             array('description, created_at, updated_at, admins', 'safe'),
             // The following rule is used by search().
@@ -74,6 +76,7 @@ class Group extends HActiveRecord {
             'name' => Yii::t('base', 'Name'),
             'space_id' => Yii::t('base', 'Space ID or GUID'),
             'description' => Yii::t('base', 'Description'),
+            'ldap_dn' => Yii::t('base', 'LDAP DN'),
             'created_at' => Yii::t('base', 'Created at'),
             'created_by' => Yii::t('base', 'Created by'),
             'updated_at' => Yii::t('base', 'Updated at'),

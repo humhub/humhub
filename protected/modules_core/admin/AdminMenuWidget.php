@@ -124,18 +124,9 @@ class AdminMenuWidget extends MenuWidget {
             'icon' => '<i class="icon-lock"></i>',
             'group' => 'settings',
             'sortOrder' => 500,
-            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'authentication'),
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && (Yii::app()->controller->action->id == 'authentication' || Yii::app()->controller->action->id == 'authenticationLdap')),
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
-        /*
-          $this->addItem(array(
-          'label' => Yii::t('AdminModule.base', 'LDAP'),
-          'url' => Yii::app()->createUrl('admin/setting/ldap'),
-          'group' => 'settings',
-          'sortOrder' => 600,
-          'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'ldap'),
-          ));
-         */
 
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'User profiles'),

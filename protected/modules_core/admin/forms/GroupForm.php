@@ -34,6 +34,11 @@ class GroupForm extends CFormModel {
     public $admins;
 
     /**
+     * @var string Ldap Group DN
+     */
+    public $ldapDn;
+
+    /**
      * Validation rules for group form
      *
      * @return array validation rules for model attributes.
@@ -42,6 +47,7 @@ class GroupForm extends CFormModel {
         return array(
             array('groupId', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 45),
+            array('ldapDn', 'length', 'max' => 255),
             array('description, admins', 'safe'),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
             array('name, description', 'required'),
@@ -60,6 +66,7 @@ class GroupForm extends CFormModel {
             'description' => Yii::t('base', 'Description'),
             'defaultSpaceGuid' => Yii::t('base', 'Default space'),
             'admins' => Yii::t('base', 'Administrator users'),
+            'ldapDn' => Yii::t('base', 'Ldap DN'),
         );
     }
 
@@ -74,6 +81,7 @@ class GroupForm extends CFormModel {
         $this->groupId = $group->id;
         $this->name = $group->name;
         $this->description = $group->description;
+        $this->ldapDn = $group->ldap_dn;
 
         $this->admins = "";
         foreach ($group->admins as $admin) {

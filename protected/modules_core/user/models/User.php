@@ -137,6 +137,8 @@ class User extends HActiveRecord implements ISearchable {
         $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by', 'numerical', 'integerOnly' => true);
         $rules[] = array('email', 'email');
         $rules[] = array('guid', 'length', 'max' => 45);
+        $rules[] = array('username', 'unique', 'caseSensitive' => false, 'className' => 'User');
+        $rules[] = array('email', 'unique', 'caseSensitive' => false, 'className' => 'User');
         $rules[] = array('tags', 'length', 'max' => 100);
         $rules[] = array('username', 'length', 'max' => 25);
         $rules[] = array('password', 'length', 'max' => 200, 'min' => 5);
@@ -455,34 +457,18 @@ class User extends HActiveRecord implements ISearchable {
         if ($givenPassword == "")
             return false;
 
-        // Check if users auth mode is enabled
-        if (!HAccount::HasAuthMode($this->auth_mode)) {
-            Yii::log("Could not login user " . $this->username . ", auth_mode " . $this->auth_mode . " is not active!");
-            return false;
-        }
-
         // Local Password validation
         if ($this->auth_mode == self::AUTH_MODE_LOCAL) {
             if ($this->password == $this->encryptPassword($givenPassword))
                 return true;
         } elseif ($this->auth_mode == self::AUTH_MODE_LDAP) {
 
-            // @todo: remove me :-)
-            #if ($givenPassword == "bypass")
-            #    return true;
+            #if (isset($_SERVER['REMOTE_USER']) && $_SERVER['REMOTE_USER'] == $this->username)
+            #   return true;
 
-            if (isset($_SERVER['REMOTE_USER']) && $_SERVER['REMOTE_USER'] == $this->username)
-                return true;
-
-            $ldap = HLdap::getInstance();
-            $ldap->connect();
-
-            if ($ldap->ad->authenticate($this->username, $givenPassword)) {
+            if (HLdap::getInstance()->authenticate($this->username, $givenPassword)) {
                 return true;
             }
-
-
-            $ldap->disconnect();
 
             return false;
         } else {
@@ -660,7 +646,7 @@ class User extends HActiveRecord implements ISearchable {
     public function register($userInvite) {
 
         $this->email = $userInvite->email;
-        $this->auth_mode = HAccount::AUTH_MODE_LOCAL;
+        $this->auth_mode = User::AUTH_MODE_LOCAL;
 
         if (HSetting::Get('needApproval', 'authentication_internal')) {
             $this->status = User::STATUS_NEED_APPROVAL;

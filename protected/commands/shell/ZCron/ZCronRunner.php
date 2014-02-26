@@ -76,6 +76,11 @@ class ZCronRunner extends HConsoleCommand {
             // Optimize Search Index
             HSearch::getInstance()->Optimize();
 
+            if (HSetting::Get('enabled', 'authentication_ldap')) {
+                print "- Updating LDAP Users\n";
+                HLdap::getInstance()->refreshUsers();
+            }
+
             print "- Invoking EMailing hourly\n\n";
             // Execute Hourly Mailing Runner
             Yii::import('application.commands.shell.EMailing.*');

@@ -81,19 +81,37 @@ class Space extends HActiveRecord implements ISearchable {
      * @return array validation rules for model attributes.
      */
     public function rules() {
+
+        $rules = array();
+        
+        if ($this->scenario == 'edit') {
+            $rules = array(
+                array('name', 'required'),
+                array('name', 'unique', 'caseSensitive' => false, 'className' => 'Space', 'message' => '{attribute} "{value}" is already in use! '),
+                array('website', 'url'),
+                array('description, tags', 'safe'),
+                array('join_policy', 'in', 'range' => array(0, 1, 2)),
+                array('visibility', 'in', 'range' => array(0, 1, 2)),
+            );
+            
+            if (Yii::app()->user->isAdmin() && HSetting::Get('enabled', 'authentication_ldap')) {
+                $rules[] = array('ldap_dn', 'length', 'max' => 255);
+            }
+            
+            return $rules;
+        }
+        
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
             array('name', 'required'),
             array('wall_id, join_policy, visibility, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('name, website', 'length', 'max' => 45),
+            array('ldap_dn', 'length', 'max' => 255),
             array('website', 'url'),
             array('name', 'unique', 'caseSensitive' => false, 'className' => 'Space', 'message' => '{attribute} "{value}" is already in use! '),
-            // Join Policy
             array('join_policy', 'in', 'range' => array(0, 1, 2)),
-            // Visibilty
             array('visibility', 'in', 'range' => array(0, 1, 2)),
-            // Status
             array('status', 'in', 'range' => array(0, 1, 2)),
             array('tags, description, created_at, updated_at, guid', 'safe'),
             // The following rule is used by search().
@@ -142,6 +160,7 @@ class Space extends HActiveRecord implements ISearchable {
             'description' => 'Description',
             'website' => 'Website',
             'join_policy' => 'Join Policy',
+            'ldap_dn' => 'Ldap DN',
             'visibility' => 'Visibility',
             'status' => 'Status',
             'tags' => 'Tags',

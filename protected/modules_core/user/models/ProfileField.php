@@ -10,6 +10,7 @@
  * @property string $field_type_class
  * @property string $field_type_config
  * @property string $internal_name
+ * @property string $ldap_attribute
  * @property string $title
  * @property string $description
  * @property integer $sort_order
@@ -87,6 +88,7 @@ class ProfileField extends HActiveRecord {
             array('profile_field_category_id, required, editable,show_at_registration,  visible, sort_order, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('module_id, field_type_class, title', 'length', 'max' => 255),
             array('internal_name', 'length', 'max' => 100),
+            array('ldap_attribute', 'length', 'max' => 255),
             array('internal_name', 'checkInternalName'),
             array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.base', 'Only alphanumeric characters allowed!')),
             array('field_type_class', 'checkType'),
@@ -118,6 +120,7 @@ class ProfileField extends HActiveRecord {
             'internal_name' => Yii::t('UserModule.profile', 'Internal Name'),
             'visible' => Yii::t('UserModule.profile', 'Visible'),
             'editable' => Yii::t('UserModule.profile', 'Editable'),
+            'ldap_attribute' => Yii::t('UserModule.profile', 'LDAP Attribute'),
             'show_at_registration' => Yii::t('UserModule.profile', 'Show at registration'),
             'required' => Yii::t('base', 'Required'),
             'title' => Yii::t('base', 'Title'),
@@ -198,6 +201,12 @@ class ProfileField extends HActiveRecord {
                     'sort_order' => array(
                         'type' => 'text',
                         'maxlength' => 32,
+                        'class' => 'form-control',
+                    ),
+                    //ToDo: Hide me, when Ldap Support is disabled
+                    'ldap_attribute' => array(
+                        'type' => 'text',
+                        'maxlength' => 255,
                         'class' => 'form-control',
                     ),
                     'required' => array(

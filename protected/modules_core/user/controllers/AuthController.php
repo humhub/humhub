@@ -71,11 +71,6 @@ class AuthController extends Controller {
 
                 $registerModel->attributes = $_POST['AccountRegisterForm'];
 
-                // Dont allow LDAP Registration
-                if (!HAccount::HasAuthMode('local')) {
-                    throw new CHttpException(500, Yii::t('UserModule.base', 'User registration not allowed!'));
-                }
-
                 if ($registerModel->validate()) {
 
                     // Try Load an invite
@@ -112,11 +107,6 @@ class AuthController extends Controller {
 
         // Disable Sublayout
         $this->subLayout = "";
-
-        // Password Recovery only possible with enabled local auth
-        if (!HAccount::HasAuthMode('local')) {
-            throw new CHttpException(500, 'Forgot Password only possible with "local" AuthMode!');
-        }
 
         $model = new AccountRecoverPasswordForm;
 
@@ -160,9 +150,6 @@ class AuthController extends Controller {
 
         if (!Yii::app()->user->isGuest)
             throw new CHttpException(401, 'Your are already logged in! - Logout first!');
-
-        if (!HAccount::HasAuthMode('local'))
-            throw new CHttpException(500, 'Account creation only supported on local auth!');
 
         // Check for valid user invite
         $userInvite = UserInvite::model()->findByAttributes(array('token' => Yii::app()->request->getQuery('token')));

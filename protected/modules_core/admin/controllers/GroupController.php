@@ -85,8 +85,11 @@ class GroupController extends Controller {
                 $group->name = $model->name;
                 $group->description = $model->description;
 
+                if (HSetting::Get('enabled', 'authentication_ldap'))
+                    $group->ldap_dn = $model->ldapDn;
+
                 if ($model->defaultSpaceGuid != "") {
-                    $space = Space::model()->findByAttributes(array('guid'=>$model->defaultSpaceGuid));
+                    $space = Space::model()->findByAttributes(array('guid' => $model->defaultSpaceGuid));
                     if ($space) {
                         $group->space_id = $space->id;
                     }

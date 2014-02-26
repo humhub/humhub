@@ -35,7 +35,6 @@ class HConsoleCommand extends CConsoleCommand {
         Yii::app()->interceptor->intercept($this);
 
         Yii::import('application.vendors.*');
-        require_once('adLDAP/adLDAP.php');
 
         EZendAutoloader::$prefixes = array('Zend', 'Custom');
         Yii::import("ext.yiiext.components.zendAutoloader.EZendAutoloader", true);

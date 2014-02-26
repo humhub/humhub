@@ -156,7 +156,7 @@ class AccountController extends Controller {
 
         $user = Yii::app()->user->getModel();
 
-        if ($user->auth_mode != HAccount::AUTH_MODE_LOCAL) {
+        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
             throw new CHttpException(500, 'This is not a local account! You cannot delete it. (e.g. LDAP)!');
         }
 
@@ -239,7 +239,7 @@ class AccountController extends Controller {
     public function actionChangeEmail() {
 
         $user = User::model()->findByPk(Yii::app()->user->id);
-        if ($user->auth_mode != HAccount::AUTH_MODE_LOCAL) {
+        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
             throw new CHttpException(500, Yii::t('UserModule.base', 'You cannot change your e-mail address here.'));
         }
 
@@ -275,7 +275,7 @@ class AccountController extends Controller {
 
         $user = User::model()->findByPk(Yii::app()->user->id);
 
-        if ($user->auth_mode != HAccount::AUTH_MODE_LOCAL) {
+        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
             throw new CHttpException(500, Yii::t('UserModule.base', 'You cannot change your e-mail address here.'));
         }
 
@@ -303,7 +303,7 @@ class AccountController extends Controller {
     public function actionChangePassword() {
 
         $user = User::model()->findByPk(Yii::app()->user->id);
-        if ($user->auth_mode != HAccount::AUTH_MODE_LOCAL) {
+        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
             throw new CHttpException(500, Yii::t('UserModule.base', 'You cannot change your password here.'));
         }
 

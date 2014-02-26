@@ -21,7 +21,7 @@
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'admin-editGroup-form',
     'enableAjaxValidation' => false,
-));
+        ));
 ?>
 
 <?php echo $form->errorSummary($model); ?>
@@ -47,14 +47,6 @@ $this->widget('application.modules_core.space.widgets.SpacePickerWidget', array(
     'attribute' => 'defaultSpaceGuid'
 ));
 ?>
-<br/>
-
-
-
-<?php if ($group->space) : ?>
-    <p>Currently assigned to: <?php echo $group->space->name; ?></p>
-<?php endif; ?>
-<!-- /zurzeit inaktiv -->
 
 <?php echo $form->labelEx($model, 'admins'); ?>
 <?php echo $form->textArea($model, 'admins', array('class' => 'span12', 'id' => 'user_select')); ?>
@@ -80,6 +72,12 @@ $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
 ));
 ?>
 
+<?php if (HSetting::Get('enabled', 'authentication_ldap')): ?>    
+    <div class="form-group">
+        <?php echo $form->labelEx($model, 'ldapDn'); ?>
+        <?php echo $form->textField($model, 'ldapDn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.base', 'Ldap DN'))); ?>
+    </div>
+<?php endif; ?>
 
 <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
 

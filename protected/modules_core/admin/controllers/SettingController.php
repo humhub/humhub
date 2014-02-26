@@ -109,10 +109,6 @@ class SettingController extends Controller {
             $form->attributes = $_POST['AuthenticationSettingsForm'];
 
             if ($form->validate()) {
-
-                $form->authInternal = HSetting::Set('authInternal', $form->authInternal, 'authentication');
-                $form->authLdap = HSetting::Set('authLdap', $form->authLdap, 'authentication');
-
                 $form->internalUsersCanInvite = HSetting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
                 $form->internalRequireApprovalAfterRegistration = HSetting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
                 $form->internalAllowAnonymousRegistration = HSetting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
@@ -120,15 +116,79 @@ class SettingController extends Controller {
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authentication'));
             }
         } else {
-            $form->authInternal = HSetting::Get('authInternal', 'authentication');
-            $form->authLdap = HSetting::Get('authLdap', 'authentication');
-
             $form->internalUsersCanInvite = HSetting::Get('internalUsersCanInvite', 'authentication_internal');
             $form->internalRequireApprovalAfterRegistration = HSetting::Get('needApproval', 'authentication_internal');
             $form->internalAllowAnonymousRegistration = HSetting::Get('anonymousRegistration', 'authentication_internal');
         }
 
         $this->render('authentication', array('model' => $form));
+    }
+
+    /**
+     * Returns a List of Users
+     */
+    public function actionAuthenticationLdap() {
+
+        Yii::import('admin.forms.*');
+
+        $form = new AuthenticationLdapSettingsForm;
+
+        // Load Defaults
+        $form->enabled = HSetting::Get('enabled', 'authentication_ldap');
+        $form->username = HSetting::Get('username', 'authentication_ldap');
+        $form->password = HSetting::Get('password', 'authentication_ldap');
+        $form->hostname = HSetting::Get('hostname', 'authentication_ldap');
+        $form->port = HSetting::Get('port', 'authentication_ldap');
+        $form->encryption = HSetting::Get('encryption', 'authentication_ldap');
+        $form->baseDn = HSetting::Get('baseDn', 'authentication_ldap');
+        $form->loginFilter = HSetting::Get('loginFilter', 'authentication_ldap');
+        $form->userFilter = HSetting::Get('userFilter', 'authentication_ldap');
+        $form->usernameAttribute = HSetting::Get('usernameAttribute', 'authentication_ldap');
+
+        if ($form->password != '')
+            $form->password = '---hidden---';
+
+        // uncomment the following code to enable ajax-based validation
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'authentication-ldap-settings-form') {
+            echo CActiveForm::validate($form);
+            Yii::app()->end();
+        }
+
+        if (isset($_POST['AuthenticationLdapSettingsForm'])) {
+            $_POST['AuthenticationLdapSettingsForm'] = Yii::app()->input->stripClean($_POST['AuthenticationLdapSettingsForm']);
+            $form->attributes = $_POST['AuthenticationLdapSettingsForm'];
+
+            if ($form->validate()) {
+                HSetting::Set('enabled', $form->enabled, 'authentication_ldap');
+                HSetting::Set('hostname', $form->hostname, 'authentication_ldap');
+                HSetting::Set('port', $form->port, 'authentication_ldap');
+                HSetting::Set('encryption', $form->encryption, 'authentication_ldap');
+                HSetting::Set('username', $form->username, 'authentication_ldap');
+                if ($form->password != '---hidden---')
+                    HSetting::Set('password', $form->password, 'authentication_ldap');
+                HSetting::Set('baseDn', $form->baseDn, 'authentication_ldap');
+                HSetting::Set('loginFilter', $form->loginFilter, 'authentication_ldap');
+                HSetting::Set('userFilter', $form->userFilter, 'authentication_ldap');
+                HSetting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
+                
+                $this->redirect(Yii::app()->createUrl('//admin/setting/authenticationLdap'));
+            }
+        }
+
+        $enabled = false;
+        $userCount = 0;
+        $errorMessage = "";
+
+        if (HSetting::Get('enabled', 'authentication_ldap')) {
+            $enabled = true;
+            try {
+                $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_ONE);
+            } catch (Exception $ex) {
+                $errorMessage = $ex->getMessage();
+            }
+        }
+
+        $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
     }
 
     /**

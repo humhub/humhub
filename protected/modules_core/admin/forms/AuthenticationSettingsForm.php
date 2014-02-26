@@ -6,11 +6,9 @@
  */
 class AuthenticationSettingsForm extends CFormModel {
 
-    public $authInternal;
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
-    public $authLdap;
 
 
 
@@ -23,7 +21,7 @@ class AuthenticationSettingsForm extends CFormModel {
 
         return array(
             //array('theme', 'in', 'range'=>$themes),
-            array('authInternal, authLdap, internalUsersCanInvite, internalAllowAnonymousRegistration, internalRequireApprovalAfterRegistration', 'safe'),
+            array('internalUsersCanInvite, internalAllowAnonymousRegistration, internalRequireApprovalAfterRegistration', 'safe'),
         );
     }
 
@@ -34,11 +32,9 @@ class AuthenticationSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'authInternal' => Yii::t('AdminModule.base', 'Enable'),
-            'authLdap' => Yii::t('AdminModule.base', 'Enable'),
-            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.base', 'Require group admin approval after registration'),
-            'internalAllowAnonymousRegistration' => Yii::t('AdminModule.base', 'Anonymous users can register'),
-            'internalUsersCanInvite' => Yii::t('AdminModule.base', 'Members can invite external users by email')
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModuleauthentication', 'Require group admin approval after registration'),
+            'internalAllowAnonymousRegistration' => Yii::t('AdminModule.authentication', 'Anonymous users can register'),
+            'internalUsersCanInvite' => Yii::t('AdminModule.authentication', 'Members can invite external users by email')
         );
     }
 

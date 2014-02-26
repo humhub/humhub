@@ -71,14 +71,13 @@ class AdminController extends Controller {
         $model = $this->getSpace();
         $model->scenario = 'edit';
 
-
         // When Sidebar is build, attach ChangeImage Widget
         Yii::app()->interceptor->preattachEventHandler('SpaceSidebarWidget', 'onInit', function($event) {
             $event->sender->addWidget('application.modules_core.space.widgets.SpaceChangeImageWidget', array(), array('sortOrder' => 10));
         });
 
         // Ajax Validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'workspace-edit-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'space-edit-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
@@ -89,11 +88,7 @@ class AdminController extends Controller {
             $model->attributes = $_POST['Space'];
 
             if ($model->validate()) {
-
-                // Save Space
                 $model->save();
-
-                // Redirect to current workspace
                 $this->redirect($this->createUrl('admin/edit', array('sguid' => $this->getSpace()->guid)));
             }
         }

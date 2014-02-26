@@ -268,6 +268,7 @@ class ConfigController extends Controller {
         $field->sort_order = 100;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->ldap_attribute = 'givenName';
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -279,6 +280,7 @@ class ConfigController extends Controller {
         $field->sort_order = 200;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->ldap_attribute = 'sn';
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -288,6 +290,7 @@ class ConfigController extends Controller {
         $field->internal_name = "title";
         $field->title = 'Title';
         $field->sort_order = 300;
+        $field->ldap_attribute = 'title';
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
         if ($field->save()) {

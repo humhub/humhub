@@ -3,7 +3,7 @@
     <div class="panel-body">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'workspace-edit-form',
+            'id' => 'space-edit-form',
             'enableAjaxValidation' => false,
         ));
         ?>
@@ -46,15 +46,25 @@
             <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.base', 'Choose the security level for this workspace to define the visibleness.'))); ?>
         </div>
         <hr>
+
+        <?php if (Yii::app()->user->isAdmin() && HSetting::Get('enabled', 'authentication_ldap')): ?>    
+            <div class="form-group">
+                <?php echo $form->labelEx($model, 'ldap_dn'); ?>
+                <?php echo $form->textField($model, 'ldap_dn', array('class' => 'form-control', 'maxlength' => 255)); ?>
+                <?php echo $form->error($model, 'ldap_dn'); ?>
+            </div>        
+            <hr>
+        <?php endif; ?>    
+
         <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
         <div class="pull-right">
             <?php if ($space->status == Space::STATUS_ENABLED) { ?>
                 <a href="<?php echo $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)); ?>"
                    class="btn btn-warning"><?php echo Yii::t('SpaceModule.base', 'Archive'); ?></a>
-            <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
+               <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
                 <a href="<?php echo $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)); ?>"
                    class="btn btn-warning"><?php echo Yii::t('SpaceModule.base', 'Unarchive'); ?></a>
-            <?php } ?>
+               <?php } ?>
             <a href="<?php echo $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)); ?>"
                class="btn btn-danger"><?php echo Yii::t('SpaceModule.base', 'Delete'); ?></a>
         </div>

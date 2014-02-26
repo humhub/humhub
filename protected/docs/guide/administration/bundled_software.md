@@ -4,7 +4,6 @@ Bundled Software / Libaries
 * Yii Framework (Core Framework) http://www.yiiframework.com/ (protected/vendors/yii/LICENSE)
 * Zend Framework (Lucene Index) http://framework.zend.com/ (protected/vendors/Zend/LICENSE.txt)
 * Code Igniter (Security Functions) http://ellislab.com/codeigniter
-* ADLdap (Active Directory / Ldap)    http://adldap.sourceforge.net/
 * Yii Extensions (See /protected/extensions/)
 * Yii-Mail - http://www.yiiframework.com/extension/mail/
 * SwiftMailer - http://swiftmailer.org

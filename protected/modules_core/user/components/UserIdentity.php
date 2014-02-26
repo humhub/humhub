@@ -28,7 +28,16 @@ class UserIdentity extends CUserIdentity {
         $criteria->condition = 'username=:userName OR email=:email';
         $criteria->params = array(':userName' => $this->username, ':email' => $this->username);
         $record = User::model()->find($criteria);
-
+        
+        // If user not found in db and ldap is enabled, do ldap lookup and create it when found
+        if ($record === null && HSetting::Get('enabled', 'authentication_ldap')) {
+            try {
+                $usernameDn = HLdap::getInstance()->ldap->getCanonicalAccountName($this->username,Zend_Ldap::ACCTNAME_FORM_DN);
+                HLdap::getInstance()->handleLdapUser(HLdap::getInstance()->ldap->getNode($usernameDn));
+                $record = User::model()->findByAttributes(array('username'=>$this->username));
+            } catch (Exception $ex) {;}
+        }
+        
         if ($record === null)
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         else if (!$record->validatePassword($this->password))
