@@ -4,12 +4,10 @@ Administration Guide/Notes
 
 ##Installation
 - [Requirements](requirements.md)
-- [Installer](installer.md)
-- [Cronjobs](cronjobs.md)
+- [Installation](installation.md)
 
 ##Updating
 - [Updating](updating.md)
-
 
 ##Advanced Topics
 - [Logging](logging.md)
