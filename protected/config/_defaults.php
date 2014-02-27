@@ -8,7 +8,7 @@ return array(
     'components' => array(
         // Database
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;dbname=test',
+            'connectionString' => '',
             'emulatePrepare' => true,
             'charset' => 'utf8',
             'enableProfiling' => true,
