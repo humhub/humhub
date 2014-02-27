@@ -42,12 +42,22 @@ Add following lines to your crontab:
         00 18 * * * /path/to/humhub/protected/yiic cron daily >/dev/null 2>&1
 
 
-Protected Directories
----------------------
+Security/Production Mode
+------------------------
 
-Make sure following directories are not accessible throu webserver.
+1. Make sure following directories are not accessible throu webserver.
 (These folders are protected by default per ".htaccess")
 
         - protected
         - uploads/file
 
+2. Disable Errors / Debugging Open index.php in application root folder and disable debugging.
+    
+        [...]
+
+        // Disable these 3 lines when in production mode
+        //defined('YII_DEBUG') or define('YII_DEBUG', true);
+        //defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', 5);
+        //ini_set('error_reporting', E_ALL);
+
+        [...]
