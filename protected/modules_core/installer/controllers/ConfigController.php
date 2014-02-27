@@ -137,7 +137,11 @@ class ConfigController extends Controller {
                 $user->status = User::STATUS_ENABLED;
                 $user->super_admin = true;
                 $user->save();
-
+                $user->profile->firstname = 'Super';
+                $user->profile->lastname = 'Admin';
+                $user->profile->title = "Administration";
+                $user->profile->save();
+            
                 // Create Welcome Space
                 $space = new Space();
                 $space->name = 'Welcome Space';
@@ -568,6 +572,7 @@ class ConfigController extends Controller {
         $group->name = "Users";
         $group->description = "Example Group by Installer";
         $group->save();
+        
     }
 
 }
