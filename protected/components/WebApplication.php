@@ -37,9 +37,9 @@ class WebApplication extends CWebApplication {
         parent::init();
 
         $this->interceptor->start();
-        $this->interceptor->intercept($this);
-
         $this->moduleManager->start();
+
+        $this->interceptor->intercept($this);
 
         if ($this->hasEventHandler('onInit'))
             $this->onInit(new CEvent($this));
