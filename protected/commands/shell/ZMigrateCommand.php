@@ -32,7 +32,7 @@ class ZMigrateCommand extends EMigrateCommand {
 
     public static function AutoMigrate() {
 
-
+   
         /**        $commandPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
           $runner->addCommands($commandPath);
           $commandPath = Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
@@ -53,6 +53,11 @@ class ZMigrateCommand extends EMigrateCommand {
     }
 
     public function init() {
+
+        print "Flushing Caches....\n";
+        Yii::app()->cache->flush();
+        Yii::app()->moduleManager->flushCache();             
+        
         print "Autodetecting Modules....\n";
 
         $modulePaths = array();
@@ -83,6 +88,14 @@ class ZMigrateCommand extends EMigrateCommand {
         return $migration;
     }
 
+    public function run($args) {
+
+        $exitCode = parent::run($args);
+        
+        Yii::app()->cache->flush();
+        Yii::app()->moduleManager->flushCache();             
+    }
+    
     protected function getTemplate() {
         if ($this->templateFile !== null) {
             return parent::getTemplate();
