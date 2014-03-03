@@ -18,6 +18,15 @@ class UserIdentity extends CUserIdentity {
     private $_id;
 
     /**
+     * Returns users id
+     *
+     * @return Integer
+     */
+    public function getId() {
+        return $this->_id;
+    }
+
+    /**
      * Authenticates a user based on {@link username} and {@link password}.
      *
      * @return boolean whether authentication succeeds.
@@ -41,28 +50,30 @@ class UserIdentity extends CUserIdentity {
             }
         }
 
-        // Validate Password
-        $passwordValid = false;
-        if ($user->auth_mode == User::AUTH_MODE_LOCAL) {
-            // Authenticate via Local DB 
-            if ($user->currentPassword != null && $user->currentPassword->validatePassword($this->password)) {
-                $passwordValid = true;
-            }
-        } elseif ($user->auth_mode == User::AUTH_MODE_LDAP) {
-            // Authenticate via LDAP 
-            if (HLdap::getInstance()->authenticate($this->username, $this->password)) {
-                $passwordValid = true;
-            }
-        }
-
         // Check State
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        } else if (!$passwordValid) {
-            $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
-            $this->errorCode = self::ERROR_NONE;
-            $this->onSuccessfulAuthenticate($user);
+
+            if ($user->auth_mode == User::AUTH_MODE_LOCAL) {
+                // Authenticate via Local DB 
+                if ($user->currentPassword != null && $user->currentPassword->validatePassword($this->password)) {
+                    $this->errorCode = self::ERROR_NONE;
+                } else {
+                    $this->errorCode = self::ERROR_PASSWORD_INVALID;
+                }
+            } elseif ($user->auth_mode == User::AUTH_MODE_LDAP) {
+                // Authenticate via LDAP 
+                if (HLdap::getInstance()->authenticate($this->username, $this->password)) {
+                    $this->errorCode = self::ERROR_NONE;
+                } else {
+                    $this->errorCode = self::ERROR_PASSWORD_INVALID;
+                }
+            }
+
+            if ($this->errorCode == self::ERROR_NONE) {
+                $this->onSuccessfulAuthenticate($user);
+            }
         }
 
         return !$this->errorCode;
@@ -98,15 +109,6 @@ class UserIdentity extends CUserIdentity {
     private function onSuccessfulAuthenticate($user) {
         $this->_id = $user->id;
         $this->setState('title', $user->title);
-    }
-
-    /**
-     * Returns users id
-     *
-     * @return Integer
-     */
-    public function getId() {
-        return $this->_id;
     }
 
 }
