@@ -23,7 +23,7 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    function getDisplayName() {
+    public function getDisplayName() {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->displayName;
     }
@@ -33,7 +33,7 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    function getEmail() {
+    public function getEmail() {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->email;
     }
@@ -43,7 +43,7 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    function getLanguage() {
+    public function getLanguage() {
         $user = $this->loadUser(Yii::app()->user->id);
         if ($user != null)
             return $user->language;
@@ -54,7 +54,7 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    function getGuid() {
+    public function getGuid() {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->guid;
     }
@@ -64,7 +64,7 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    function getAuthMode() {
+    public function getAuthMode() {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->auth_mode;
     }
@@ -75,7 +75,7 @@ class WebUser extends CWebUser {
      * @return type
      * @throws CHttpException
      */
-    function getModel() {
+    public function getModel() {
         $user = $this->loadUser(Yii::app()->user->id);
 
         if ($user == null)
@@ -87,7 +87,7 @@ class WebUser extends CWebUser {
     /**
      * Reloads the user cached model
      */
-    function reload() {
+    public function reload() {
         $this->_model = null;
     }
 
@@ -98,7 +98,7 @@ class WebUser extends CWebUser {
      *
      * @return int
      */
-    function isAdmin() {
+    public function isAdmin() {
         $user = $this->loadUser(Yii::app()->user->id);
 
         if ($user->super_admin == 1) {
@@ -114,7 +114,7 @@ class WebUser extends CWebUser {
      *
      * @return boolean
      */
-    function canApproveUsers() {
+    public function canApproveUsers() {
 
         if ($this->isAdmin())
             return true;

@@ -24,37 +24,52 @@ class UserIdentity extends CUserIdentity {
      */
     public function authenticate() {
 
+        // Find User
         $criteria = new CDbCriteria;
         $criteria->condition = 'username=:userName OR email=:email';
         $criteria->params = array(':userName' => $this->username, ':email' => $this->username);
-        $record = User::model()->find($criteria);
-        
+        $user = User::model()->find($criteria);
+
         // If user not found in db and ldap is enabled, do ldap lookup and create it when found
-        if ($record === null && HSetting::Get('enabled', 'authentication_ldap')) {
+        if ($user === null && HSetting::Get('enabled', 'authentication_ldap')) {
             try {
-                $usernameDn = HLdap::getInstance()->ldap->getCanonicalAccountName($this->username,Zend_Ldap::ACCTNAME_FORM_DN);
+                $usernameDn = HLdap::getInstance()->ldap->getCanonicalAccountName($this->username, Zend_Ldap::ACCTNAME_FORM_DN);
                 HLdap::getInstance()->handleLdapUser(HLdap::getInstance()->ldap->getNode($usernameDn));
-                $record = User::model()->findByAttributes(array('username'=>$this->username));
-            } catch (Exception $ex) {;}
+                $user = User::model()->findByAttributes(array('username' => $this->username));
+            } catch (Exception $ex) {
+                ;
+            }
         }
-        
-        if ($record === null)
+
+        // Validate Password
+        $passwordValid = false;
+        if ($user->auth_mode == User::AUTH_MODE_LOCAL) {
+            // Authenticate via Local DB 
+            if ($user->currentPassword != null && $user->currentPassword->validatePassword($this->password)) {
+                $passwordValid = true;
+            }
+        } elseif ($user->auth_mode == User::AUTH_MODE_LDAP) {
+            // Authenticate via LDAP 
+            if (HLdap::getInstance()->authenticate($this->username, $this->password)) {
+                $passwordValid = true;
+            }
+        }
+
+        // Check State
+        if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        else if (!$record->validatePassword($this->password))
+        } else if (!$passwordValid) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
-        else {
-
-            $this->_id = $record->id;
-
-            $this->setState('title', $record->title);
+        } else {
             $this->errorCode = self::ERROR_NONE;
+            $this->onSuccessfulAuthenticate($user);
         }
+
         return !$this->errorCode;
     }
 
     /**
      * Authenticates a given username without validating its password.
-     * This method is used by other authentication modules e.g. ldap auth.
      *
      * @return boolean whether authentication succeeds.
      */
@@ -63,18 +78,26 @@ class UserIdentity extends CUserIdentity {
         $criteria = new CDbCriteria;
         $criteria->condition = 'username=:userName OR email=:email';
         $criteria->params = array(':userName' => $this->username, ':email' => $this->username);
-        $record = User::model()->find($criteria);
+        $user = User::model()->find($criteria);
 
-        if ($record === null)
+        if ($record === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        else {
-
-            $this->_id = $record->id;
-
-            $this->setState('title', $record->title);
+        } else {
             $this->errorCode = self::ERROR_NONE;
+            $this->onSuccessfulAuthenticate($user);
         }
+
         return !$this->errorCode;
+    }
+
+    /**
+     * Executed after successful authenticating a user
+     * 
+     * @param User $user
+     */
+    private function onSuccessfulAuthenticate($user) {
+        $this->_id = $user->id;
+        $this->setState('title', $user->title);
     }
 
     /**

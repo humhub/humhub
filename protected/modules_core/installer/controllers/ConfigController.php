@@ -115,68 +115,125 @@ class ConfigController extends Controller {
     public function actionAdmin() {
         Yii::import('installer.forms.*');
 
-        $user = new User('register');
-        $user->group_id = Group::model()->findByAttributes(array())->id;
+        $userModel = new User('register');
+        $userPasswordModel = new UserPassword('newPassword');
+        $profileModel = $userModel->profile;
+        $profileModel->scenario = 'register';
 
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-form') {
-            echo CActiveForm::validate($user);
-            Yii::app()->end();
+        // Build Form Definition
+        $definition = array();
+        $definition['elements'] = array();
+
+        // Add User Form
+        $definition['elements']['User'] = array(
+            'type' => 'form',
+            #'title' => 'Account',
+            'elements' => array(
+                'username' => array(
+                    'type' => 'text',
+                    'class' => 'form-control',
+                    'maxlength' => 32,
+                ),
+                'email' => array(
+                    'type' => 'text',
+                    'class' => 'form-control',
+                    'maxlength' => 32,
+                )
+            ),
+        );
+
+        // Add User Password Form
+        $definition['elements']['UserPassword'] = array(
+            'type' => 'form',
+            'elements' => array(
+                'newPassword' => array(
+                    'type' => 'password',
+                    'class' => 'form-control',
+                    'maxlength' => 255,
+                ),
+                'newPasswordConfirm' => array(
+                    'type' => 'password',
+                    'class' => 'form-control',
+                    'maxlength' => 255,
+                ),
+            ),
+        );
+
+        // Add Profile Form
+        $definition['elements']['Profile'] = array_merge(array('type' => 'form'), $profileModel->getFormDefinition());
+
+        // Get Form Definition
+        $definition['buttons'] = array(
+            'save' => array(
+                'type' => 'submit',
+                'class' => 'btn btn-primary',
+                'label' => Yii::t('InstallerModule.base', 'Create Admin Account'),
+            ),
+        );
+
+        $form = new HForm($definition);
+        $form['User']->model = $userModel;
+        $form['User']->model->group_id = 1;
+        $form['UserPassword']->model = $userPasswordModel;
+        $form['Profile']->model = $profileModel;
+
+        if ($form->submitted('save') && $form->validate()) {
+            $this->forcePostRequest();
+
+            if (HSetting::Get('secret') == "")
+                HSetting::Set('secret', UUID::v4());
+
+            $form['User']->model->status = User::STATUS_ENABLED;
+            $form['User']->model->super_admin = true;
+            $form['User']->model->save();
+
+            $form['Profile']->model->user_id = $form['User']->model->id;
+            $form['Profile']->model->firstname = 'Super';
+            $form['Profile']->model->lastname = 'Admin';
+            $form['Profile']->model->title = "Administration";
+            $form['Profile']->model->save();
+
+            // Save User Password
+            $form['UserPassword']->model->user_id = $form['User']->model->id;
+            $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
+            $form['UserPassword']->model->save();
+
+            $userId = $form['User']->model->id;
+
+            // Create Welcome Space
+            $space = new Space();
+            $space->name = 'Welcome Space';
+            $space->join_policy = Space::JOIN_POLICY_FREE;
+            $space->visibility = Space::VISIBILITY_ALL;
+            $space->created_by = $userId;
+            $space->save();
+
+            // Add Membership
+            $membership = new UserSpaceMembership;
+            $membership->space_id = $space->id;
+            $membership->user_id = $userId;
+            $membership->status = UserSpaceMembership::STATUS_MEMBER;
+            $membership->invite_role = 1;
+            $membership->admin_role = 1;
+            $membership->share_role = 1;
+            $membership->save();
+
+            // Add Some Post to the Space
+            $post = new Post();
+            $post->contentMeta->visibility = Content::VISIBILITY_PUBLIC;
+            $post->contentMeta->space_id = $space->id;
+            $post->message = "I´ve just installed HumHub - Yeah! :-)";
+            $post->created_by = $userId;
+            $post->save();
+            $post->contentMeta->addToWall($space->wall_id);
+
+            // Set new DefaultSpace
+            HSetting::Set('defaultSpaceId', $space->id);
+
+            $this->redirect($this->createUrl('finished'));
         }
-        if (isset($_POST['User'])) {
-            $_POST['User'] = Yii::app()->input->stripClean($_POST['User']);
-            $user->attributes = $_POST['User'];
 
-            if ($user->validate()) {
-
-                // Setup Application Secret
-                if (HSetting::Get('secret') == "")
-                    HSetting::Set('secret', UUID::v4());
-
-
-                // Save Admin User
-                $user->status = User::STATUS_ENABLED;
-                $user->super_admin = true;
-                $user->save();
-                $user->profile->firstname = 'Super';
-                $user->profile->lastname = 'Admin';
-                $user->profile->title = "Administration";
-                $user->profile->save();
-            
-                // Create Welcome Space
-                $space = new Space();
-                $space->name = 'Welcome Space';
-                $space->join_policy = Space::JOIN_POLICY_FREE;
-                $space->visibility = Space::VISIBILITY_ALL;
-                $space->created_by = $user->id;
-                $space->save();
-
-                // Add Membership
-                $membership = new UserSpaceMembership;
-                $membership->space_id = $space->id;
-                $membership->user_id = $user->id;
-                $membership->status = UserSpaceMembership::STATUS_MEMBER;
-                $membership->invite_role = 1;
-                $membership->admin_role = 1;
-                $membership->share_role = 1;
-                $membership->save();
-
-                // Add Some Post to the Space
-                $post = new Post();
-                $post->contentMeta->visibility = Content::VISIBILITY_PUBLIC;
-                $post->contentMeta->space_id = $space->id;
-                $post->message = "I´ve just installed HumHub - Yeah! :-)";
-                $post->created_by = $user->id;
-                $post->save();
-                $post->contentMeta->addToWall($space->wall_id);
-
-                // Set new DefaultSpace
-                HSetting::Set('defaultSpaceId', $space->id);
-
-                $this->redirect($this->createUrl('finished'));
-            }
-        }
-
-        $this->render('admin', array('model' => $user));
+        $this->render('admin', array('form' => $form));
     }
 
     /**
@@ -189,15 +246,15 @@ class ConfigController extends Controller {
             print "got no secret to finish!";
             die();
         }
-        
-        
+
+
         // Rewrite whole configuration file, also sets application
         // in installed state.
         HSetting::RewriteConfiguration();
 
         // Set to installed
         $this->module->setInstalled();
-        
+
         try {
             Yii::app()->user->logout();
         } catch (Exception $e) {
@@ -214,9 +271,9 @@ class ConfigController extends Controller {
     private function setupInitialData() {
 
         // Seems database is already initialized
-        if (HSetting::Get('paginationSize') == 10) 
+        if (HSetting::Get('paginationSize') == 10)
             return;
-        
+
         // Rebuild Search
         HSearch::getInstance()->rebuild();
         HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
@@ -572,7 +629,6 @@ class ConfigController extends Controller {
         $group->name = "Users";
         $group->description = "Example Group by Installer";
         $group->save();
-        
     }
 
 }

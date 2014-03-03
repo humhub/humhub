@@ -13,7 +13,11 @@
         ));
         ?>
 
-        <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control')); ?>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'currentPassword'); ?>
+            <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'rows' => '6')); ?>
+            <?php echo $form->error($model, 'currentPassword'); ?>
+        </div>
 
         <hr>
         <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Delete'), array('class' => 'btn btn-danger')); ?>

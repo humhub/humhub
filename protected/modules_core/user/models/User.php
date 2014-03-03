@@ -10,7 +10,6 @@
  * @property integer $group_id
  * @property string $username
  * @property string $email
- * @property string $password
  * @property integer $super_admin
  * @property integer $status
  * @property string $auth_mode
@@ -39,7 +38,6 @@
  */
 class User extends HActiveRecord implements ISearchable {
 
-    const PASSWORD_CRYPT_IDENTIFIER = "___enc___";
     const AUTH_MODE_LDAP = "ldap";
     const AUTH_MODE_LOCAL = "local";
     const STATUS_DISABLED = 0;
@@ -50,9 +48,6 @@ class User extends HActiveRecord implements ISearchable {
     const RECEIVE_EMAIL_DAILY_SUMMARY = 1;
     const RECEIVE_EMAIL_WHEN_OFFLINE = 2;
     const RECEIVE_EMAIL_ALWAYS = 3;
-
-    // Field required for: Scenario: register, changePassword
-    public $passwordVerify;
 
     /**
      * Loaded User Profile
@@ -124,8 +119,7 @@ class User extends HActiveRecord implements ISearchable {
             // Only return all fields required for registration.
             // All other fields should be unsafe.
             return array(
-                array('password, passwordVerify, username, group_id, email', 'required'),
-                array('password', 'compare', 'compareAttribute' => 'passwordVerify', 'message' => 'Passwords did not match!'),
+                array('username, group_id, email', 'required'),
                 array('username', 'unique', 'caseSensitive' => false, 'className' => 'User'),
                 array('email', 'email'),
                 array('group_id', 'numerical'),
@@ -141,13 +135,12 @@ class User extends HActiveRecord implements ISearchable {
         $rules[] = array('email', 'unique', 'caseSensitive' => false, 'className' => 'User');
         $rules[] = array('tags', 'length', 'max' => 100);
         $rules[] = array('username', 'length', 'max' => 25);
-        $rules[] = array('password', 'length', 'max' => 200, 'min' => 5);
         $rules[] = array('language', 'length', 'max' => 5);
         $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z]/', 'message' => Yii::t('UserModule.base', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email', 'safe');
         $rules[] = array('auth_mode', 'length', 'max' => 10);
         $rules[] = array('receive_email_notifications, receive_email_messaging, receive_email_activities', 'numerical', 'integerOnly' => true);
-        $rules[] = array('id, guid, status, wall_id, group_id, username, email, password, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
+        $rules[] = array('id, guid, status, wall_id, group_id, username, email, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
 
         return $rules;
     }
@@ -174,6 +167,7 @@ class User extends HActiveRecord implements ISearchable {
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
             'messages' => array(self::MANY_MANY, 'Message', 'user_message(user_id, message_id)'),
             'httpSessions' => array(self::HAS_MANY, 'UserHttpSession', 'user_id'),
+            'currentPassword' => array(self::HAS_ONE, 'UserPassword', 'user_id', 'order' => 'id DESC')
         );
     }
 
@@ -188,7 +182,6 @@ class User extends HActiveRecord implements ISearchable {
             'group_id' => Yii::t('UserModule.base', 'Group'),
             'username' => Yii::t('UserModule.base', 'Username'),
             'email' => Yii::t('UserModule.base', 'Email'),
-            'password' => Yii::t('UserModule.base', 'Password'),
             'tags' => Yii::t('UserModule.base', 'Tags'),
             'language' => Yii::t('UserModule.base', 'Language'),
             'created_at' => Yii::t('base', 'Created At'),
@@ -202,7 +195,7 @@ class User extends HActiveRecord implements ISearchable {
     }
 
     /**
-     * Parameterized Scope for Recently
+     * Parameterized Scope for Recently 
      *
      * @param type $limit
      * @return User
@@ -274,7 +267,6 @@ class User extends HActiveRecord implements ISearchable {
 
         $criteria->compare('username', $this->username, true);
         $criteria->compare('email', $this->email, true);
-        $criteria->compare('password', $this->password, true);
         $criteria->compare('status', 2);
         $criteria->compare('super_admin', $this->super_admin);
         $criteria->compare('tags', $this->tags, true);
@@ -302,16 +294,6 @@ class User extends HActiveRecord implements ISearchable {
             }
             if ($this->auth_mode == "")
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
-        }
-
-        if ($this->auth_mode == self::AUTH_MODE_LOCAL) {
-
-            if ($this->password != "") {
-                // Check if password needs to be encrypted
-                if (substr($this->password, 0, strlen(self::PASSWORD_CRYPT_IDENTIFIER)) != self::PASSWORD_CRYPT_IDENTIFIER) {
-                    $this->password = $this->encryptPassword($this->password);
-                }
-            }
         }
 
         return parent::beforeSave();
@@ -415,7 +397,6 @@ class User extends HActiveRecord implements ISearchable {
         $this->status = User::STATUS_DELETED;
         $this->username = $this->guid;
         $this->email = "deleted_" . $this->id . "@example.com";
-        $this->password = "";
         $this->tags = "";
         $this->super_admin = 0;
         $this->receive_email_notifications = "";
@@ -429,55 +410,17 @@ class User extends HActiveRecord implements ISearchable {
 
         $this->update();
 
-        $this->afterDelete();
-
-        return true;
-    }
-
-    /**
-     * Encrypts a Password
-     *
-     * @param type $password
-     */
-    private function encryptPassword($password) {
-
-        // Salt all the passwords!
-        $password .= HSetting::Get('secret');
-
-        // Add Crypt Identifier && Encrypt Password sha1(md5(
-        return self::PASSWORD_CRYPT_IDENTIFIER . sha1(md5($password));
-    }
-
-    /**
-     * Validate Password
-     *
-     */
-    public function validatePassword($givenPassword) {
-
-        if ($givenPassword == "")
-            return false;
-
-        // Local Password validation
-        if ($this->auth_mode == self::AUTH_MODE_LOCAL) {
-            if ($this->password == $this->encryptPassword($givenPassword))
-                return true;
-        } elseif ($this->auth_mode == self::AUTH_MODE_LDAP) {
-
-            #if (isset($_SERVER['REMOTE_USER']) && $_SERVER['REMOTE_USER'] == $this->username)
-            #   return true;
-
-            if (HLdap::getInstance()->authenticate($this->username, $givenPassword)) {
-                return true;
-            }
-
-            return false;
-        } else {
-            Yii::log("Could not login user " . $this->username . ", auth_mode " . $this->auth_mode . " unknown!");
-            return false;
+        // Delete all passwords
+        foreach (UserPassword::model()->findAllByAttributes(array('user_id' => $this->id)) as $password) {
+            $password->delete();
         }
 
+        $this->afterDelete();
 
-        return false;
+
+
+
+        return true;
     }
 
     /**

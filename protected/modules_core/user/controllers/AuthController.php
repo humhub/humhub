@@ -1,13 +1,40 @@
 <?php
 
 /**
- * AuthController handles all authentication tasks.
+ * HumHub
+ * Copyright © 2014 The HumHub Project
  *
- * @author Luke
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
+ * AuthController handles all authentication tasks.
+ * 
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
 class AuthController extends Controller {
+
+    public function actions() {
+        return array(
+            // captcha action renders the CAPTCHA image displayed on the password recovery page
+            'captcha' => array(
+                'class' => 'CCaptchaAction',
+                'backColor' => 0xFFFFFF,
+            ),
+        );
+    }
 
     /**
      * Displays the login page
@@ -44,7 +71,7 @@ class AuthController extends Controller {
         // collect user input data
         if (isset($_POST['AccountLoginForm'])) {
 
-            $_POST['AccountLoginForm'] = Yii::app()->input->stripClean($_POST['AccountLoginForm']);
+            #$_POST['AccountLoginForm'] = Yii::app()->input->stripClean($_POST['AccountLoginForm']);
             $model->attributes = $_POST['AccountLoginForm'];
 
             // validate user input and redirect to the previous page if valid
@@ -114,10 +141,14 @@ class AuthController extends Controller {
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['AccountRecoverPasswordForm'])) {
+
             $_POST['AccountRecoverPasswordForm'] = Yii::app()->input->stripClean($_POST['AccountRecoverPasswordForm']);
             $model->attributes = $_POST['AccountRecoverPasswordForm'];
 
             if ($model->validate()) {
+
+                // Force new Captcha Code
+                Yii::app()->getController()->createAction('captcha')->getVerifyCode(true);
 
                 $model->recoverPassword();
 
@@ -134,10 +165,9 @@ class AuthController extends Controller {
     }
 
     /**
-     * Create Account Action
+     * Create an account 
      *
      * This action is called after e-mail validation.
-     *
      */
     public function actionCreateAccount() {
 
@@ -158,6 +188,7 @@ class AuthController extends Controller {
 
         $userModel = new User('register');
         $userModel->email = $userInvite->email;
+        $userPasswordModel = new UserPassword('newPassword');
         $profileModel = $userModel->profile;
         $profileModel->scenario = 'register';
 
@@ -170,20 +201,10 @@ class AuthController extends Controller {
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
-            'title' => 'Account',
+            'title' => Yii::t('UserModule.auth', 'Account'),
             'elements' => array(
                 'username' => array(
                     'type' => 'text',
-                    'class' => 'form-control',
-                    'maxlength' => 32,
-                ),
-                'password' => array(
-                    'type' => 'password',
-                    'class' => 'form-control',
-                    'maxlength' => 32,
-                ),
-                'passwordVerify' => array(
-                    'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 32,
                 ),
@@ -191,6 +212,24 @@ class AuthController extends Controller {
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
                     'items' => CHtml::listData($groupModels, 'id', 'name'),
+                ),
+            ),
+        );
+
+        // Add User Password Form
+        $definition['elements']['UserPassword'] = array(
+            'type' => 'form',
+            #'title' => 'Password',
+            'elements' => array(
+                'newPassword' => array(
+                    'type' => 'password',
+                    'class' => 'form-control',
+                    'maxlength' => 255,
+                ),
+                'newPasswordConfirm' => array(
+                    'type' => 'password',
+                    'class' => 'form-control',
+                    'maxlength' => 255,
                 ),
             ),
         );
@@ -203,20 +242,30 @@ class AuthController extends Controller {
             'save' => array(
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
-                'label' => Yii::t('base', 'Create account'),
+                'label' => Yii::t('UserModule.auth', 'Create account'),
             ),
         );
 
         $form = new HForm($definition);
         $form['User']->model = $userModel;
+        $form['UserPassword']->model = $userPasswordModel;
         $form['Profile']->model = $profileModel;
 
         if ($form->submitted('save') && $form->validate()) {
+
             $this->forcePostRequest();
 
+            // Registe User
             if ($form['User']->model->register($userInvite)) {
+
+                // Save User Profile
                 $form['Profile']->model->user_id = $form['User']->model->id;
                 $form['Profile']->model->save();
+
+                // Save User Password
+                $form['UserPassword']->model->user_id = $form['User']->model->id;
+                $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
+                $form['UserPassword']->model->save();
 
                 $this->render('createAccount_success', array(
                     'form' => $form,

@@ -9,25 +9,22 @@
     ));
     ?>
 
-
-    <?php //echo $form->errorSummary($model); ?>
-
     <div class="form-group">
         <?php echo $form->labelEx($model, 'currentPassword'); ?>
-        <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 45)); ?>
+        <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'currentPassword'); ?>
     </div>
     <hr/>
     <div class="form-group">
         <?php echo $form->labelEx($model, 'newPassword'); ?>
-        <?php echo $form->passwordField($model, 'newPassword', array('class' => 'form-control', 'maxlength' => 45)); ?>
+        <?php echo $form->passwordField($model, 'newPassword', array('class' => 'form-control', 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'newPassword'); ?>
     </div>
 
     <div class="form-group">
-        <?php echo $form->labelEx($model, 'newPasswordVerify'); ?>
-        <?php echo $form->passwordField($model, 'newPasswordVerify', array('class' => 'form-control', 'maxlength' => 45)); ?>
-        <?php echo $form->error($model, 'newPasswordVerify'); ?>
+        <?php echo $form->labelEx($model, 'newPasswordConfirm'); ?>
+        <?php echo $form->passwordField($model, 'newPasswordConfirm', array('class' => 'form-control', 'maxlength' => 255)); ?>
+        <?php echo $form->error($model, 'newPasswordConfirm'); ?>
     </div>
 
     <hr>

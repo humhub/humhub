@@ -5,11 +5,13 @@
             <div class="panel-body">
 
 
-                <?php $form = $this->beginWidget('CActiveForm', array(
+                <?php
+                $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'recover-password-form',
                     "enableClientValidation" => false,
                     'enableAjaxValidation' => false,
-                )); ?>
+                ));
+                ?>
 
                 <p><?php echo Yii::t('UserModule.base', 'Just enter your e-mail address. We´ll send you a new one!'); ?></p>
 
@@ -17,6 +19,12 @@
                     <?php //echo $form->labelEx($model, 'email'); ?>
                     <?php echo $form->textField($model, 'email', array('class' => 'form-control', 'id' => 'email_txt', 'placeholder' => 'your email')); ?>
                     <?php echo $form->error($model, 'email'); ?>
+                </div>
+
+                <div class="form-group">
+                    <?php $this->widget('CCaptcha'); ?>                            
+                    <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'placeholder' => 'enter security code above')); ?>
+                    <?php echo $form->error($model, 'verifyCode'); ?>
                 </div>
 
                 <hr>

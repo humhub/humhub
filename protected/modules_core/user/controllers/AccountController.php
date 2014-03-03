@@ -297,33 +297,29 @@ class AccountController extends Controller {
     }
 
     /**
-     * Change Current Password
-     *
+     * Change users current password
      */
     public function actionChangePassword() {
 
-        $user = User::model()->findByPk(Yii::app()->user->id);
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.base', 'You cannot change your password here.'));
+        if (Yii::app()->user->authMode != User::AUTH_MODE_LOCAL) {
+            throw new CHttpException(500, Yii::t('UserModule.account', 'You cannot change your password here.'));
         }
 
-        $model = new AccountChangePasswordForm;
+        $userPassword = new UserPassword('changePassword');
 
-        if (isset($_POST['AccountChangePasswordForm'])) {
+        if (isset($_POST['UserPassword'])) {
+            $userPassword->attributes = $_POST['UserPassword'];
 
-            $_POST['AccountChangePasswordForm'] = Yii::app()->input->stripClean($_POST['AccountChangePasswordForm']);
-            $model->attributes = $_POST['AccountChangePasswordForm'];
+            if ($userPassword->validate()) {
+                $userPassword->user_id = Yii::app()->user->id;
+                $userPassword->setPassword($userPassword->newPassword);
+                $userPassword->save();
 
-            if ($model->validate()) {
-
-                // Change Password
-                $model->save();
-
-                return $this->render('changePassword_success', array('model' => $model));
+                return $this->render('changePassword_success');
             }
         }
 
-        $this->render('changePassword', array('model' => $model));
+        $this->render('changePassword', array('model' => $userPassword));
     }
 
     /**

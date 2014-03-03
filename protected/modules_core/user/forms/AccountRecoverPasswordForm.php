@@ -7,7 +7,9 @@
  */
 class AccountRecoverPasswordForm extends CFormModel {
 
+    public $verifyCode;
     public $email;
+
 
     /**
      * Declares the validation rules.
@@ -17,6 +19,7 @@ class AccountRecoverPasswordForm extends CFormModel {
             array('email', 'required'),
             array('email', 'email'),
             array('email', 'canRecoverPassword'),
+            array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements()),
             array('email', 'exist', 'className' => 'User', 'message' => Yii::t('UserModule.base', '{attribute} "{value}" was not found!')),
         );
     }
@@ -57,11 +60,11 @@ class AccountRecoverPasswordForm extends CFormModel {
         // Switch to users language
         Yii::app()->language = Yii::app()->user->language;
 
-        $newPassword = $this->createRandomPassword();
-
-        // Set new Password
-        $user->password = $newPassword;
-        $user->save();
+        // Set New Password
+        $userPassword = new UserPassword();
+        $userPassword->user_id = $user->id;
+        $newPassword = $userPassword->setRandomPassword();
+        $userPassword->save();
 
         $message = new HMailMessage();
         $message->view = "application.modules_core.user.views.mails.RecoverPassword";
@@ -70,23 +73,6 @@ class AccountRecoverPasswordForm extends CFormModel {
         $message->subject = Yii::t('UserModule.base', 'Password Recovery');
         $message->setBody(array('user' => $user, 'newPassword' => $newPassword), 'text/html');
         Yii::app()->mail->send($message);
-    }
-
-    private function createRandomPassword($len = 6) {
-
-        $chars = "abcdefghijkmnopqrstuvwxyz023456789";
-        srand((double) microtime() * 1000000);
-        $i = 0;
-        $pass = '';
-
-        while ($i <= $len) {
-            $num = rand() % 33;
-            $tmp = substr($chars, $num, 1);
-            $pass = $pass . $tmp;
-            $i++;
-        }
-
-        return $pass;
     }
 
 }
