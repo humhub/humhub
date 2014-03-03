@@ -480,6 +480,8 @@ class File extends HActiveRecord {
                         $extension = 'jpg';
                     elseif ($contentType == 'image/gif')
                         $extension = 'gif';
+                    elseif ($contentType == 'image/png')
+                        $extension = 'png';
 
                     $file = new File();
                     $file->object_model = get_class($content);
