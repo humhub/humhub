@@ -164,8 +164,6 @@ class HHtml extends CHtml {
         $maxOembedCount = 3;   // Maximum OEmbeds
         $oembedCount = 0;      // OEmbeds used
 
-
-
         $text = preg_replace_callback('/http(.*?)(\s|$)/i', function($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
@@ -177,14 +175,14 @@ class HHtml extends CHtml {
                 }
             }
 
-            return HHtml::link($match[0], $match[0]);
+            return HHtml::link($match[0], $match[0], array('target' => '_blank'));
         }, $text);
 
         # breaks links!?
         #$text = nl2br($text);
-     
-        $text = str_replace("\n", "<br />\n", $text); 
-         
+
+        $text = str_replace("\n", "<br />\n", $text);
+
         return $text;
     }
 
