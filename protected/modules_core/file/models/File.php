@@ -276,7 +276,8 @@ class File extends HActiveRecord {
     }
 
     /**
-     *
+     * Store given filename into file record.
+     * 
      * @param type $tmpName
      */
     public function slurp($tmpName) {
@@ -301,6 +302,22 @@ class File extends HActiveRecord {
         $this->save();
 
         #print "slurped";
+    }
+
+    /**
+     * Store given content into file record.
+     * 
+     * @param String $tmpName
+     */
+    public function slurpContent($content) {
+        if ($this->guid == "") {
+            throw new CException("Could not use slurp on unsaved records!");
+        }
+        file_put_contents($this->getPath(), $content);
+        @chmod($this->getPath(), 0744);
+
+        $this->size = filesize($this->getPath());
+        $this->save();
     }
 
     /**
@@ -396,8 +413,8 @@ class File extends HActiveRecord {
     /**
      * Attaches a given list of files to an existing content object.
      *
-     * @param type $content is a HActiveRecordContent Object
-     * @param type $files is a comma seperated list of uploaded file guids
+     * @param HActiveRecordContent $content is a HActiveRecordContent Object
+     * @param String $files is a comma seperated list of uploaded file guids
      */
     public static function attachToContent($content, $files) {
 
@@ -418,6 +435,65 @@ class File extends HActiveRecord {
                 $file->save();
             }
         }
+    }
+
+    /**
+     * Attaches files by url which found in content text.
+     * This is experimental and only supports image files at the moment.
+     * 
+     * @param HActiveRecordContent $content
+     * @param String $text
+     */
+    public static function attachFilesByUrlsToContent($content, $text) {
+
+        if (!$content instanceof HActiveRecordContent) {
+            throw new CException("Invalid content object given!");
+        }
+
+        $max = 5;
+        $count = 1;
+
+        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function($match) use (&$count, &$max, &$content) {
+
+            if ($max > $count) {
+
+                $url = $match[0];
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+                curl_setopt($ch, CURLOPT_HEADER, true);
+
+                $ret = curl_exec($ch);
+                $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                list($headers, $outputContent) = explode("\r\n\r\n", $ret, 2);
+                curl_close($ch);
+
+                if ($httpCode == 200 && substr($contentType, 0, 6) == 'image/') {
+
+                    $extension = 'img';
+                    if ($contentType == 'image/jpeg' || $contentType == 'image/jpg')
+                        $extension = 'jpg';
+                    elseif ($contentType == 'image/gif')
+                        $extension = 'gif';
+
+                    $file = new File();
+                    $file->object_model = get_class($content);
+                    $file->mime_type = $contentType;
+                    $file->title = "Link Image";
+                    $file->file_name = "LinkImage." . $extension;
+                    $file->object_id = $content->getPrimaryKey();
+                    if ($file->save()) {
+                        $file->slurpContent($outputContent);
+                    }
+                }
+            }
+            $count++;
+        }, $text);
     }
 
 }

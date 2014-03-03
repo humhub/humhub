@@ -124,7 +124,12 @@ class PostController extends Controller {
         $post->save();
 
         File::attachToContent($post, Yii::app()->request->getParam('fileList', ""));
-
+        
+        // Experimental function, auto attach found images by urls as files
+        if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
+            File::attachFilesByUrlsToContent($post, $message);
+        }
+         
         // Creates Wall Entry for it
         $wallEntry = $post->contentMeta->addToWall($wallId);
 
