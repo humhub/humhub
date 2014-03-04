@@ -285,6 +285,16 @@ class SettingController extends Controller {
         Yii::import('admin.forms.*');
 
         $form = new MailingSettingsForm;
+        $form->transportType = HSetting::Get('transportType', 'mailing');
+        $form->hostname = HSetting::Get('hostname', 'mailing');
+        $form->username = HSetting::Get('username', 'mailing');
+        if (HSetting::Get('password', 'mailing') != '')
+            $form->password = '---invisible---';
+        
+        $form->port = HSetting::Get('port', 'mailing');
+        $form->encryption = HSetting::Get('encryption', 'mailing');
+        $form->systemEmailAddress = HSetting::Get('systemEmailAddress', 'mailing');
+        $form->systemEmailName = HSetting::Get('systemEmailName', 'mailing');
 
         // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'mailing-settings-form') {
@@ -310,16 +320,6 @@ class SettingController extends Controller {
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/mailing'));
             }
-        } else {
-            $form->transportType = HSetting::Get('transportType', 'mailing');
-            $form->hostname = HSetting::Get('hostname', 'mailing');
-            $form->username = HSetting::Get('username', 'mailing');
-            #$form->password = HSetting::Get('password', 'mailing');
-            $form->password = '---invisible---';
-            $form->port = HSetting::Get('port', 'mailing');
-            $form->encryption = HSetting::Get('encryption', 'mailing');
-            $form->systemEmailAddress = HSetting::Get('systemEmailAddress', 'mailing');
-            $form->systemEmailName = HSetting::Get('systemEmailName', 'mailing');
         }
 
         $encryptionTypes = array('' => 'None', 'ssl' => 'SSL');
