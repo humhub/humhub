@@ -5,7 +5,6 @@
  * @property String $inputId is the ID of the input HTML Element
  * @property Int $maxUsers the maximum of users for this input
  * @property String $userSearchUrl the url of the search, to find the users
- * @property String $jsonTermKey the parameter of the search
  * @property String $currentValue is the current value of the parent field.
  *
  * @package humhub.modules_core.user
