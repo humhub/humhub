@@ -114,6 +114,12 @@ class Group extends HActiveRecord {
      */
     public function delete() {
         GroupAdmin::model()->deleteAllByAttributes(array('group_id' => $this->id));
+
+        // Clear Default User Group for Registration if needed
+        if (HSetting::Get('defaultUserGroup', 'authentication_internal') == $this->id) {
+            HSetting::Set('defaultUserGroup', '', 'authentication_internal');
+        }
+
         return parent::delete();
     }
 

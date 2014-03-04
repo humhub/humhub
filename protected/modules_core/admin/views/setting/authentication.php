@@ -5,12 +5,14 @@
 
 
 <h1><?php echo Yii::t('AdminModule.authentication', 'Authentication - Basic'); ?></h1><br />
-   
-<?php $form = $this->beginWidget('CActiveForm', array(
+
+<?php
+$form = $this->beginWidget('CActiveForm', array(
     'id' => 'authentication-settings-form',
     'id' => 'file-settings-form',
     'enableAjaxValidation' => false,
-)); ?>
+        ));
+?>
 
 <?php echo $form->errorSummary($model); ?>
 
@@ -25,17 +27,22 @@
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?php echo $form->checkBox($model, 'internalUsersCanInvite', array('hint' => Yii::t('AdminModule.base', 'Possible in space member invite!'))); ?> <?php echo $model->getAttributeLabel('internalUsersCanInvite'); ?>
+            <?php echo $form->checkBox($model, 'internalUsersCanInvite'); ?> <?php echo $model->getAttributeLabel('internalUsersCanInvite'); ?>
         </label>
     </div>
 </div>
 
 <div class="form-group">
-    <div class="checkbox">
+    <div class="checkbox"> 
         <label>
             <?php echo $form->checkBox($model, 'internalRequireApprovalAfterRegistration'); ?> <?php echo $model->getAttributeLabel('internalRequireApprovalAfterRegistration'); ?>
         </label>
     </div>
+</div>
+
+<div class="form-group">
+    <?php echo $form->labelEx($model, 'defaultUserGroup'); ?>
+    <?php echo $form->dropDownList($model, 'defaultUserGroup', $groups, array('class' => 'form-control', 'readonly' => HSetting::IsFixed('defaultUserGroup', 'authentication_internal'))); ?>
 </div>
 
 <hr />

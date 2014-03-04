@@ -14,28 +14,37 @@
             <!-- show directory menu widget -->
             <div class="list-group">
                 <span class="list-group-item"><h4><?php echo Yii::t('DirectoryModule.base', 'Directory'); ?></h4></span>
-                <a href="<?php echo Yii::app()->createUrl('//directory/directory/groups'); ?>"
-                   class="list-group-item <?php if ($this->action->id == "groups") {
-                       echo "active";
-                   } ?>">
-                    <div>
-                        <div class="edit_group"><?php echo Yii::t('DirectoryModule.base', 'Groups'); ?></div>
-                    </div>
-                </a>
+
+                <?php if (Group::model()->count() > 1) : ?>
+                    <a href="<?php echo Yii::app()->createUrl('//directory/directory/groups'); ?>"
+                       class="list-group-item <?php
+                       if ($this->action->id == "groups") {
+                           echo "active";
+                       }
+                       ?>">
+                        <div>
+                            <div class="edit_group"><?php echo Yii::t('DirectoryModule.base', 'Groups'); ?></div>
+                        </div>
+                    </a>
+                <?php endif; ?>
 
                 <a href="<?php echo Yii::app()->createUrl('//directory/directory/members'); ?>"
-                   class="list-group-item <?php if ($this->action->id == "members") {
+                   class="list-group-item <?php
+                   if ($this->action->id == "members") {
                        echo "active";
-                   } ?>">
+                   }
+                   ?>">
                     <div>
                         <div class="user_details"><?php echo Yii::t('DirectoryModule.base', 'Members'); ?></div>
                     </div>
                 </a>
 
                 <a href="<?php echo Yii::app()->createUrl('//directory/directory/spaces'); ?>"
-                   class="list-group-item <?php if ($this->action->id == "spaces") {
+                   class="list-group-item <?php
+                   if ($this->action->id == "spaces") {
                        echo "active";
-                   } ?>">
+                   }
+                   ?>">
                     <div>
                         <div class="workspaces"><?php echo Yii::t('DirectoryModule.base', 'Spaces'); ?></div>
                     </div>
@@ -43,11 +52,13 @@
 
 
                 <a href="<?php echo Yii::app()->createUrl('//directory/directory/userPosts'); ?>"
-                   class="list-group-item <?php if ($this->action->id == "userPosts") {
+                   class="list-group-item <?php
+                   if ($this->action->id == "userPosts") {
                        echo "active";
-                   } ?>">
+                   }
+                   ?>">
                     <div>
-                        <div class="stream"><?php echo Yii::t('DirectoryModule.base', 'User posts'); ?></div>
+                        <div class="stream"><?php echo Yii::t('DirectoryModule.base', 'User profile posts'); ?></div>
                     </div>
                 </a>
             </div>

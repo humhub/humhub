@@ -9,19 +9,15 @@ class AuthenticationSettingsForm extends CFormModel {
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
-
-
+    public $defaultUserGroup;
 
     /**
      * Declares the validation rules.
      */
     public function rules() {
-
-        //$themes = HTheme::getThemes();
-
         return array(
-            //array('theme', 'in', 'range'=>$themes),
             array('internalUsersCanInvite, internalAllowAnonymousRegistration, internalRequireApprovalAfterRegistration', 'safe'),
+            array('defaultUserGroup', 'exist', 'attributeName' => 'id', 'className' => 'Group', 'allowEmpty' => true),
         );
     }
 
@@ -32,9 +28,10 @@ class AuthenticationSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModuleauthentication', 'Require group admin approval after registration'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.authentication', 'Require group admin approval after registration'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.authentication', 'Anonymous users can register'),
-            'internalUsersCanInvite' => Yii::t('AdminModule.authentication', 'Members can invite external users by email')
+            'internalUsersCanInvite' => Yii::t('AdminModule.authentication', 'Members can invite external users by email'),
+            'defaultUserGroup' => Yii::t('AdminModule.authentication', 'Default user group for new users'),
         );
     }
 

@@ -209,9 +209,10 @@ class AuthController extends Controller {
                     'maxlength' => 32,
                 ),
                 'group_id' => array(
-                    'type' => 'dropdownlist',
+                    'type' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ? 'hidden' : 'dropdownlist',
                     'class' => 'form-control',
                     'items' => CHtml::listData($groupModels, 'id', 'name'),
+                    'value' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ?  HSetting::Get('defaultUserGroup', 'authentication_internal') : '',
                 ),
             ),
         );

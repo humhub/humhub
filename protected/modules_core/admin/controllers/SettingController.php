@@ -109,8 +109,11 @@ class SettingController extends Controller {
         Yii::import('admin.forms.*');
 
         $form = new AuthenticationSettingsForm;
+        $form->internalUsersCanInvite = HSetting::Get('internalUsersCanInvite', 'authentication_internal');
+        $form->internalRequireApprovalAfterRegistration = HSetting::Get('needApproval', 'authentication_internal');
+        $form->internalAllowAnonymousRegistration = HSetting::Get('anonymousRegistration', 'authentication_internal');
+        $form->defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
 
-        // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'authentication-settings-form') {
             echo CActiveForm::validate($form);
             Yii::app()->end();
@@ -124,16 +127,20 @@ class SettingController extends Controller {
                 $form->internalUsersCanInvite = HSetting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
                 $form->internalRequireApprovalAfterRegistration = HSetting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
                 $form->internalAllowAnonymousRegistration = HSetting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
+                $form->defaultUserGroup = HSetting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authentication'));
             }
-        } else {
-            $form->internalUsersCanInvite = HSetting::Get('internalUsersCanInvite', 'authentication_internal');
-            $form->internalRequireApprovalAfterRegistration = HSetting::Get('needApproval', 'authentication_internal');
-            $form->internalAllowAnonymousRegistration = HSetting::Get('anonymousRegistration', 'authentication_internal');
+        }
+        
+        // Build Group Dropdown
+        $groups = array();
+        $groups[''] = Yii::t('AdminModule.authentication', 'None - shows dropdown in user registration.');
+        foreach (Group::model()->findAll() as $group) {
+            $groups[$group->id] = $group->name;
         }
 
-        $this->render('authentication', array('model' => $form));
+        $this->render('authentication', array('model' => $form, 'groups' => $groups));
     }
 
     /**
@@ -290,7 +297,7 @@ class SettingController extends Controller {
         $form->username = HSetting::Get('username', 'mailing');
         if (HSetting::Get('password', 'mailing') != '')
             $form->password = '---invisible---';
-        
+
         $form->port = HSetting::Get('port', 'mailing');
         $form->encryption = HSetting::Get('encryption', 'mailing');
         $form->systemEmailAddress = HSetting::Get('systemEmailAddress', 'mailing');

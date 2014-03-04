@@ -61,7 +61,6 @@ class AccountController extends Controller {
             $_POST['User'] = Yii::app()->input->stripClean($_POST['User']);
             $model->attributes = $_POST['User'];
 
-
             if ($model->validate()) {
 
                 // Create User
@@ -70,7 +69,6 @@ class AccountController extends Controller {
                 // Reload User in Session
                 Yii::app()->user->reload();
 
-                //$this->render('edit', array('model' => $model));
                 $this->refresh();
 
                 // form inputs are valid, do something here

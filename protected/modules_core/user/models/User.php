@@ -326,10 +326,9 @@ class User extends HActiveRecord implements ISearchable {
             }
 
             // Auto Add User to the default spaces
-            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members'=>1)) as $space) {
+            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
                 $space->addMember($this->id);
             }
-            
         }
 
 
@@ -593,6 +592,11 @@ class User extends HActiveRecord implements ISearchable {
         } else {
             $this->status = User::STATUS_ENABLED;
         }
+
+        if ((HSetting::Get('defaultUserGroup', 'authentication_internal'))) {
+            $this->group_id = HSetting::Get('defaultUserGroup', 'authentication_internal');
+        }
+
         $this->save();
 
         // User was invited to a space

@@ -41,7 +41,12 @@ class DirectoryController extends Controller {
      * Index Action, redirects to member actions
      */
     public function actionIndex() {
-        $this->redirect($this->createUrl('groups'));
+
+        if (Group::model()->count() > 1) 
+            $this->redirect($this->createUrl('groups'));
+        else
+            $this->redirect($this->createUrl('members'));
+            
     }
 
     /**
