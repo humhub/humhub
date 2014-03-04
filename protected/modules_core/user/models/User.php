@@ -325,14 +325,11 @@ class User extends HActiveRecord implements ISearchable {
                 }
             }
 
-            // Auto Add User to the default workspace
-            $defaultSpaceId = HSetting::Get('defaultSpaceId');
-            if ($defaultSpaceId != "") {
-                $space = Space::model()->findByPk($defaultSpaceId);
-                if ($space != null) {
-                    $space->addMember($this->id);
-                }
+            // Auto Add User to the default spaces
+            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members'=>1)) as $space) {
+                $space->addMember($this->id);
             }
+            
         }
 
 

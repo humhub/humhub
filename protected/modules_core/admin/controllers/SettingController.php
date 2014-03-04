@@ -57,12 +57,25 @@ class SettingController extends Controller {
                 HSetting::Set('baseUrl', $form->baseUrl);
                 HSetting::Set('defaultLanguage', $form->defaultLanguage);
 
-                if ($form->defaultSpaceGuid != "") {
-                    $space = Space::model()->findByAttributes(array('guid' => $form->defaultSpaceGuid));
-                    if ($space != null) {
-                        HSetting::Set('defaultSpaceId', $space->id);
+                $spaceGuids = explode(",", $form->defaultSpaceGuid);
+
+                // Remove Old Default Spaces
+                foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
+                    if (!in_array($space->guid, $spaceGuids)) {
+                        $space->auto_add_new_members = 0;
+                        $space->save();
                     }
                 }
+
+                // Add new Default Spaces
+                foreach ($spaceGuids as $spaceGuid) {
+                    $space = Space::model()->findByAttributes(array('guid' => $spaceGuid));
+                    if ($space != null && $space->auto_add_new_members != 1) {
+                        $space->auto_add_new_members = 1;
+                        $space->save();
+                    }
+                }
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/index'));
             }
         } else {
@@ -70,10 +83,9 @@ class SettingController extends Controller {
             $form->baseUrl = HSetting::Get('baseUrl');
             $form->defaultLanguage = HSetting::Get('defaultLanguage');
 
-            if (HSetting::Get('defaultSpaceId') != "") {
-                $space = Space::model()->findByPk(HSetting::Get('defaultSpaceId'));
-                if ($space != null)
-                    $form->defaultSpaceGuid = $space->guid;
+            $form->defaultSpaceGuid = "";
+            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
+                $form->defaultSpaceGuid .= $defaultSpace->guid . ",";
             }
         }
 
@@ -170,7 +182,7 @@ class SettingController extends Controller {
                 HSetting::Set('loginFilter', $form->loginFilter, 'authentication_ldap');
                 HSetting::Set('userFilter', $form->userFilter, 'authentication_ldap');
                 HSetting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
-                
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authenticationLdap'));
             }
         }

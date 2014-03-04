@@ -17,6 +17,7 @@
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property integer $auto_add_new_members
  *
  * The followings are the available model relations:
  * @property Activity[] $activities
@@ -105,8 +106,8 @@ class Space extends HActiveRecord implements ISearchable {
         // will receive user inputs.
         return array(
             array('name', 'required'),
-            array('wall_id, join_policy, visibility, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('name, website', 'length', 'max' => 45),
+            array('wall_id, join_policy, visibility, auto_add_new_members, created_by, updated_by', 'numerical', 'integerOnly' => true),
+            array('name, website', 'length', 'max' => 45), 
             array('ldap_dn', 'length', 'max' => 255),
             array('website', 'url'),
             array('name', 'unique', 'caseSensitive' => false, 'className' => 'Space', 'message' => '{attribute} "{value}" is already in use! '),

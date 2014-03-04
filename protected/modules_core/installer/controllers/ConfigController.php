@@ -206,6 +206,7 @@ class ConfigController extends Controller {
             $space->join_policy = Space::JOIN_POLICY_FREE;
             $space->visibility = Space::VISIBILITY_ALL;
             $space->created_by = $userId;
+            $space->auto_add_new_members = 1;
             $space->save();
 
             // Add Membership
@@ -226,9 +227,6 @@ class ConfigController extends Controller {
             $post->created_by = $userId;
             $post->save();
             $post->contentMeta->addToWall($space->wall_id);
-
-            // Set new DefaultSpace
-            HSetting::Set('defaultSpaceId', $space->id);
 
             $this->redirect($this->createUrl('finished'));
         }

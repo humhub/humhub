@@ -1,4 +1,4 @@
-<h1><?php echo Yii::t('AdminModule.base', 'Basic - Settings'); ?></h1><br>
+<h1><?php echo Yii::t('AdminModule.setting', 'Basic'); ?></h1><br>
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'basic-settings-form',
@@ -29,12 +29,13 @@ $form = $this->beginWidget('CActiveForm', array(
 <?php
 $this->widget('application.modules_core.space.widgets.SpacePickerWidget', array(
     'inputId' => 'space_select',
-    'maxSpaces' => 1,
     'model' => $model,
     'attribute' => 'defaultSpaceGuid'
 ));
 ?>
+<p class="help-block"><?php echo Yii::t('AdminModule.settings', 'New users will automatically added to these space(s).'); ?></p>
 
+<br />
 <hr>
 
 <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
