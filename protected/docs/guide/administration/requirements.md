@@ -5,10 +5,15 @@ Requirements
 * PHP 5.2+
 * MySQL
 * Apache 2.x
-* ImageMagick
-* CUrl PHP Extension (For OEmbed Features)
+* CUrl PHP Extension 
 
-	
+### Optional:
+* ImageMagick
+* PHP LDAP Support
+* PHP APC
+* PHP Memcached
+* Apache XSendfile
+
 ### Packages for Debian/Ubuntu users:
 * imagemagick
 * php5-curl

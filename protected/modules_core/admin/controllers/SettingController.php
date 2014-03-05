@@ -41,7 +41,6 @@ class SettingController extends Controller {
 
         $form = new BasicSettingsForm;
 
-        // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'basic-settings-form') {
             echo CActiveForm::validate($form);
             Yii::app()->end();
@@ -132,7 +131,7 @@ class SettingController extends Controller {
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authentication'));
             }
         }
-        
+
         // Build Group Dropdown
         $groups = array();
         $groups[''] = Yii::t('AdminModule.authentication', 'None - shows dropdown in user registration.');
@@ -420,8 +419,12 @@ class SettingController extends Controller {
         Yii::import('admin.forms.*');
 
         $form = new FileSettingsForm;
+        $form->imageMagickPath = HSetting::Get('imageMagickPath', 'file');
+        $form->maxFileSize = HSetting::Get('maxFileSize', 'file') / 1024 / 1024;
+        $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
+        $form->forbiddenExtensions = HSetting::Get('forbiddenExtensions', 'file');
 
-        // uncomment the following code to enable ajax-based validation
+        // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'file-settings-form') {
             echo CActiveForm::validate($form);
             Yii::app()->end();
@@ -432,22 +435,27 @@ class SettingController extends Controller {
             $form->attributes = $_POST['FileSettingsForm'];
 
             if ($form->validate()) {
-
                 $form->imageMagickPath = HSetting::Set('imageMagickPath', $form->imageMagickPath, 'file');
-                $form->maxFileSize = HSetting::Set('maxFileSize', $form->maxFileSize, 'file');
+                $form->maxFileSize = HSetting::Set('maxFileSize', $form->maxFileSize * 1024 * 1024, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
                 $form->forbiddenExtensions = HSetting::Set('forbiddenExtensions', strtolower($form->forbiddenExtensions), 'file');
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/file'));
             }
-        } else {
-            $form->imageMagickPath = HSetting::Get('imageMagickPath', 'file');
-            $form->maxFileSize = HSetting::Get('maxFileSize', 'file');
-            $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
-            $form->forbiddenExtensions = HSetting::Get('forbiddenExtensions', 'file');
         }
-
-        $this->render('file', array('model' => $form));
+        
+        // Determine PHP Upload Max FileSize
+        $maxUploadSize = Helpers::GetBytesOfPHPIniValue(ini_get('upload_max_filesize'));
+        if ($maxUploadSize > Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size')))
+            $maxUploadSize = Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'));
+        $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
+        
+        // Determine currently used ImageLibary
+        $currentImageLibary = 'GD';
+        if (HSetting::Get('imageMagickPath', 'file'))
+            $currentImageLibary = 'ImageMagick';
+        
+        $this->render('file', array('model' => $form, 'maxUploadSize' => $maxUploadSize, 'currentImageLibary'=>$currentImageLibary));
     }
 
     /**

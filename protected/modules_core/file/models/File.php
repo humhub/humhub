@@ -195,11 +195,15 @@ class File extends HActiveRecord {
      * Returns the Url of the File
      */
     public function getUrl($suffix = "") {
-
-        return Yii::app()->getController()->createAbsoluteUrl('//file/file/download', array(
-                    'guid' => $this->guid,
-                    'suffix' => $suffix
-        ));
+        
+        $params = array();
+        $params['guid'] = $this->guid;
+        if ($suffix) {
+            $params['suffix'] = $suffix;
+        }
+        
+        
+        return Yii::app()->getController()->createAbsoluteUrl('//file/file/download', $params);
     }
 
     /**
@@ -255,6 +259,7 @@ class File extends HActiveRecord {
 
         if (!is_file($this->getPath()))
             return "";
+        
         $imageInfo = getimagesize($this->getPath());
 
         // Check if we got any dimensions
@@ -262,16 +267,12 @@ class File extends HActiveRecord {
             return "";
         }
 
-        $convertCommand = HSetting::Get('imageMagickPath', 'file');
-
-        // Ensure max width
-        $command = $convertCommand . "  -quality 100 -density 300 {$this->getPath()} -resize '{$maxWidth}>' {$this->getPath($prefix)}";
-        $ret = passthru($command);
-
-        // Ensure max height
-        $command = $convertCommand . " -quality 100 -density 300 {$this->getPath($prefix)} -resize 'x{$maxHeight}>'  {$this->getPath($prefix)}";
-        $ret = passthru($command);
-
+        // Check if image type is supported
+        if ($imageInfo[2] != IMAGETYPE_PNG && $imageInfo[2] != IMAGETYPE_JPEG && $imageInfo[2] != IMAGETYPE_GIF) {
+            return "";
+        }
+        
+        ImageConverter::Resize($this->getPath(), $this->getPath($prefix), array('mode'=>'max', 'width'=>$maxWidth, 'height'=>$maxHeight));
         return $this->getUrl($prefix);
     }
 

@@ -16,7 +16,6 @@ class FileSettingsForm extends CFormModel {
      */
     public function rules() {
         return array(
-            array('imageMagickPath', 'required'),
             array('imageMagickPath', 'checkImageMagick'),
             array('maxFileSize, useXSendfile', 'numerical', 'integerOnly' => true),
             array('imageMagickPath, maxFileSize', 'safe'),
@@ -32,8 +31,8 @@ class FileSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'imageMagickPath' => Yii::t('AdminModule.base', 'Path to Image Magick (convert command)'),
-            'maxFileSize' => Yii::t('AdminModule.base', 'Maximum upload file size (in Bytes)'),
+            'imageMagickPath' => Yii::t('AdminModule.base', 'Image Magick convert command (optional)'),
+            'maxFileSize' => Yii::t('AdminModule.base', 'Maximum upload file size (in MB)'),
             'useXSendfile' => Yii::t('AdminModule.base', 'Use X-Sendfile for File Downloads'),
             'forbiddenExtensions' =>  Yii::t('AdminModule.base', 'Forbidden file extensions'),
         );
@@ -41,7 +40,8 @@ class FileSettingsForm extends CFormModel {
 
     public function checkImageMagick($attribute, $params) {
         if ($this->$attribute != "") {
-
+            $this->$attribute = trim($this->$attribute);
+            
             if (is_file($this->$attribute)) {
 
                 exec($this->$attribute . " --help", $returnIM);

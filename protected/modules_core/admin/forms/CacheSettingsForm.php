@@ -28,18 +28,18 @@ class CacheSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'type' => Yii::t('AdminModule.base', 'Cache Backend'),
-            'expireTime' => Yii::t('AdminModule.base', 'Default Expire Time (in seconds)'),
+            'type' => Yii::t('AdminModule.cache', 'Cache Backend'),
+            'expireTime' => Yii::t('AdminModule.cache', 'Default Expire Time (in seconds)'),
         );
     }
 
     public function checkCacheType($attribute, $params) {
         if ($this->type == 'CApcCache' && !function_exists('apc_add')) {
-            $this->addError($attribute, Yii::t('AdminModule.base', "PHP APC Extension missing - Type not available!"));
+            $this->addError($attribute, Yii::t('AdminModule.cache', "PHP APC Extension missing - Type not available!"));
         }
 
         if ($this->type == 'CDbCache' && !class_exists('SQLite3')) {
-            $this->addError($attribute, Yii::t('AdminModule.base', "PHP SQLite3 Extension missing - Type not available!"));
+            $this->addError($attribute, Yii::t('AdminModule.cache', "PHP SQLite3 Extension missing - Type not available!"));
         }
 
     }

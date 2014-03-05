@@ -337,7 +337,7 @@ class AccountController extends Controller {
             if ($model->validate()) {
 
                 $profileImage = new ProfileImage(Yii::app()->user->guid);
-                $profileImage->setNew($model->image->getTempName());
+                $profileImage->setNew($model->image);
 
                 $this->redirect($this->createUrl('//user/account/cropImage'));
             }

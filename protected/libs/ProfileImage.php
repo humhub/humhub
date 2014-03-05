@@ -160,22 +160,15 @@ class ProfileImage {
     /**
      * Sets a new profile image by given temp file
      *
-     * @param String $tempFile
+     * @param CUploadedFile $file
      */
-    public function setNew($tempFile) {
-
-        $convertCommand = HSetting::Get('imageMagickPath', 'file');
-
+    public function setNew($file) {
         $this->delete();
 
-        // Transform Orginal to Jpeg
-        $command = $convertCommand . " {$tempFile} {$this->getPath('_org')}";
-        $ret = passthru($command);
-
-
-        // Copy and Transform to $prefix_modified
-        $command = $convertCommand . " {$this->getPath('_org')} -gravity center -quality 100 -resize {$this->width}x{$this->height}^ -extent {$this->width}x{$this->height}  {$this->getPath('')}";
-        $ret = passthru($command);
+        ImageConverter::TransformToJpeg($file->getTempName(), $this->getPath('_org'));
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width'=>400, 'mode'=>'max'));
+        
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width'=>$this->width, 'height'=>$this->height));
     }
 
     /**

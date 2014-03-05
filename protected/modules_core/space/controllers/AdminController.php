@@ -269,7 +269,7 @@ class AdminController extends Controller {
             if ($model->validate()) {
 
                 $profileImage = new ProfileImage($workspace->guid);
-                $profileImage->setNew($model->image->getTempName());
+                $profileImage->setNew($model->image);
 
                 $this->redirect($this->createUrl('//space/admin/cropImage', array('sguid' => $workspace->guid)));
             }

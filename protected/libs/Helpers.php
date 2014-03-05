@@ -100,4 +100,28 @@ class Helpers {
         return $minus . $stunden . ':' . $minuten;
     }
 
+    /**
+     * Returns bytes of a PHP Ini Setting Value
+     * E.g. 10M will converted into 10485760
+     * 
+     * Source: http://php.net/manual/en/function.ini-get.php
+     * 
+     * @param String $val 
+     * @return int bytes
+     */
+    public static function GetBytesOfPHPIniValue($val) {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val) - 1]);
+        switch ($last) {
+            case 'g':
+                $val *= 1024;
+            case 'm':
+                $val *= 1024;
+            case 'k':
+                $val *= 1024;
+        }
+
+        return $val;
+    }
+
 }

@@ -27,14 +27,16 @@
                 'formElementHeight' => 'CropProfileImageForm_cropH',
                 'jCropOptions' => array(
                     'aspectRatio' => 1,
-                    'boxWidth' => 500,
-                    'boxHeight' => 500,
-                    'setSelect' => array(0, 0, 200, 200),
+                    'boxWidth' => 400,
+                    'setSelect' => array(0, 0, 100, 100),
                 ),
             )
         );
         ?>
     </div>
+    
+    <hr />
+    
     <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
 
     <?php $this->endWidget(); ?>

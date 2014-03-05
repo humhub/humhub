@@ -23,7 +23,7 @@
                  */
                 ?>
 
-                <a data-toggle="lightbox" href="<?php echo $file->getUrl(); ?>.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>'>
+                <a data-toggle="lightbox" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>'>
                     <img src='<?php echo $file->getPreviewImageUrl(200, 200); ?>'>
                 </a>
             <?php endif; ?>
