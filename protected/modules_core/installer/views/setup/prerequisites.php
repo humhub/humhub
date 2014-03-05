@@ -2,8 +2,6 @@
     <div class="panel-body">
         <h3> HumHub Installation</h3>
         <hr>
-        <div>
-            <h4>Checking Prerequisites</h4>
 
             <div class="well">
 
@@ -46,7 +44,7 @@
                 <?php echo HHtml::link('Go to database configuration <i class="icon-circle-arrow-right"></i>', array('//installer/setup/database'), array('class' => 'btn btn-success')); ?>
             <?php endif; ?>
 
-        </div>
+
 
 
 

@@ -208,6 +208,12 @@ h4 {
 .panel h3.media-heading small a {
   color: #4cd9c0;
 }
+.installer .panel {
+  margin-top: 10%;
+}
+.installer .panel h3 {
+  margin-top: 0px;
+}
 .well-small {
   padding: 10px;
   border-radius: 3px;

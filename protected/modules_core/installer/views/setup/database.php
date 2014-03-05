@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'hostname'); ?>
-            <?php echo $form->textField($model, 'hostname', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'hostname', array('class' => 'form-control', 'id' => 'hostname')); ?>
             <?php echo $form->error($model, 'hostname'); ?>
         </div>
 
@@ -67,5 +67,3 @@
         <?php $this->endWidget(); ?>
     </div>
 </div>
-
-

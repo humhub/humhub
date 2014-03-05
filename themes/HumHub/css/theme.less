@@ -234,7 +234,7 @@ h4 {
 //
 // x) Dropdowns
 // --------------------------------------------------
-.modal, .panel, .nav-tabs,  {
+.modal, .panel, .nav-tabs, {
 
   .dropdown-menu {
     border: 1px solid @colorBackground3;
@@ -296,8 +296,6 @@ h4 {
       margin-left: 20px;
       font-size: 12px;
 
-
-
       .count {
         color: @colorInfo2;
         font-weight: 600;
@@ -312,9 +310,22 @@ h4 {
     }
     small a {
       color: @colorInfo2;
-      
+
     }
   }
+
+}
+
+// Panels - Installer
+.installer {
+  .panel {
+    margin-top: 10%;
+
+    h3 {
+      margin-top: 0px;
+    }
+  }
+
 
 }
 
@@ -602,10 +613,23 @@ textarea {
 }
 
 // Placeholder text
-::-webkit-input-placeholder { color:@colorFont4 !important; }
-::-moz-placeholder { color:@colorFont4 !important; } /* firefox 19+ */
-:-ms-input-placeholder { color:@colorFont4 !important; } /* ie */
-input:-moz-placeholder { color:@colorFont4 !important; }
+::-webkit-input-placeholder {
+  color: @colorFont4 !important;
+}
+
+::-moz-placeholder {
+  color: @colorFont4 !important;
+}
+
+/* firefox 19+ */
+:-ms-input-placeholder {
+  color: @colorFont4 !important;
+}
+
+/* ie */
+input:-moz-placeholder {
+  color: @colorFont4 !important;
+}
 
 //
 // x) Labels
@@ -912,7 +936,6 @@ ul.tag_input.focus {
   color: @colorInfo2;
 }
 
-
 //
 // 7) Yii Components
 // --------------------------------------------------
@@ -922,12 +945,10 @@ ul.tag_input.focus {
   color: @colorDanger1;
 }
 
-
 // Errror handling
 .error {
   border-color: @colorDanger1 !important;
 }
-
 
 //
 // x) Third Party Tools
