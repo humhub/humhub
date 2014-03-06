@@ -14,3 +14,14 @@
         margin-left: -41px !important;
     }
 }
+
+#create-message-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+}
+
+.placeholder {
+    color: #77777A;
+}

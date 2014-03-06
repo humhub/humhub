@@ -1,6 +1,14 @@
 <div id="message_details">
     <div class="panel panel-default">
 
+        <?php if ($message == null) { ?>
+
+            <div class="panel-body">
+                <?php echo Yii::t('MailModule.base', 'There are no messages yet.'); ?>
+            </div>
+        <?php } else { ?>
+
+
         <!--    <a href="--><?php //echo $this->createUrl('//mail/mail/create') ?><!--" class="btn btn-primary"><i-->
         <!--            class="icon-plus icon-white"></i> -->
         <?php //echo Yii::t('MailModule.base', "Write new message"); ?><!--</a>-->
@@ -81,7 +89,7 @@
 
                     <!-- Button to trigger modal to add user to conversation -->
                     <?php
-                    echo CHtml::link('<i class="icon-plus"></i> '. Yii::t('MailModule.base', 'Add user'), $this->createUrl('//mail/mail/adduser', array('id' => $message->id, 'ajax' => 1)), array('class' => 'btn btn-info', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
+                    echo CHtml::link('<i class="icon-plus"></i> ' . Yii::t('MailModule.base', 'Add user'), $this->createUrl('//mail/mail/adduser', array('id' => $message->id, 'ajax' => 1)), array('class' => 'btn btn-info', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
                     ?>
 
                     <?php if (count($message->users) > 2 && $message->originator->id != Yii::app()->user->id): ?>
@@ -94,16 +102,15 @@
 
                 <?php $this->endWidget(); ?>
             </div>
-
+            <?php } ?>
 
         </div>
     </div>
-</div>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    // show Tooltips on elements inside the views, which have the class 'tt'
-    $('.tt').tooltip();
+        // show Tooltips on elements inside the views, which have the class 'tt'
+        //$('.tt').tooltip();
 
-</script>
+    </script>

@@ -27,13 +27,13 @@
         <div class="loader streamLoader"></div>
 
         <div class="emptyStreamMessage">
-            <div class="placeholder_text">
+            <div class="placeholder">
                 <b><?php echo Yii::t('TasksModule.base', 'There are no tasks yet!'); ?></b> 
             </div>
         </div>
 
         <div class="emptyFilterStreamMessage">
-            <div class="placeholder_text">
+            <div class="placeholder">
                 <b><?php echo Yii::t('TasksModule.base', 'No tasks found which matches your current filter(s)!'); ?></b> 
             </div>
         </div>

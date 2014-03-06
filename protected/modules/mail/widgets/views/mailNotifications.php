@@ -13,9 +13,10 @@
 
         // remove all <li> entries from dropdown
         $('#dropdown-messages').find('li').remove();
+        $('#dropdown-messages').find('ul').remove();
 
         // append title and loader to dropdown
-        $('#dropdown-messages').append('<li class="dropdown-header"><?php echo Yii::t('base', 'Messages'); ?></li> <ul class="media-list"><li id="loader_messages"><div class="loader"></div></li></ul><li><div class="dropdown-footer"><a class="btn btn-default col-md-12" href="<?php echo Yii::app()->createUrl('//mail/mail/index'); ?>"><?php echo Yii::t('base', 'Show all messages'); ?></a></div></li>');
+        $('#dropdown-messages').append('<li class="dropdown-header"><?php echo Yii::t('base', 'Messages'); ?> <?php echo CHtml::link(Yii::t('MailModule.base', 'New message'), $this->createUrl('//mail/mail/create', array('ajax' => 1)), array('class' => 'btn btn-info btn-xs', 'id' => 'create-message-button', 'data-toggle' => 'modal', 'data-target' => '#globalModal')); ?></li> <ul class="media-list"><li id="loader_messages"><div class="loader"></div></li></ul><li><div class="dropdown-footer"><a class="btn btn-default col-md-12" href="<?php echo Yii::app()->createUrl('//mail/mail/index'); ?>"><?php echo Yii::t('base', 'Show all messages'); ?></a></div></li>');
 
         // load newest notifications
         $.ajax({
@@ -29,3 +30,4 @@
 
     })
 </script>
+

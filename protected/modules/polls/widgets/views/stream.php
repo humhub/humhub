@@ -36,12 +36,12 @@
         <div class="s2_streamContent"></div>
         <div class="loader streamLoader"></div>
         <div class="emptyStreamMessage">
-            <div class="placeholder_text mt20">
+            <div class="placeholder">
                 <b><?php echo Yii::t('PollsModule.base', 'There are no polls yet!'); ?></b>
             </div>
         </div>
         <div class="emptyFilterStreamMessage">
-            <div class="placeholder_text">
+            <div class="placeholder">
                 <b><?php echo Yii::t('PollsModule.base', 'No poll found which matches your current filter(s)!'); ?></b>
             </div>
         </div>

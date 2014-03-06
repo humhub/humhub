@@ -129,68 +129,70 @@ class MailController extends Controller
         $message = $this->getMessage($id);
 
         if ($message == null) {
-            throw new CHttpException(404, 'Could not find message!');
-        }
+            //throw new CHttpException(404, 'Could not find message!');
+            $this->renderPartial('/mail/show', array('message' => $message));
+        } else {
 
-        // Update User Message Entry
-        $userMessage = UserMessage::model()->findByAttributes(array(
-            'user_id' => Yii::app()->user->id,
-            'message_id' => $message->id,
-        ));
-        $userMessage->scenario = 'last_viewed';
-        $userMessage->last_viewed = new CDbExpression('NOW()');
-        $userMessage->save();
+            // Update User Message Entry
+            $userMessage = UserMessage::model()->findByAttributes(array(
+                'user_id' => Yii::app()->user->id,
+                'message_id' => $message->id,
+            ));
+            $userMessage->scenario = 'last_viewed';
+            $userMessage->last_viewed = new CDbExpression('NOW()');
+            $userMessage->save();
 
-        // Reply Form
-        $replyForm = new ReplyMessageForm;
-        if (isset($_POST['ReplyMessageForm'])) {
+            // Reply Form
+            $replyForm = new ReplyMessageForm;
+            if (isset($_POST['ReplyMessageForm'])) {
 
-            $replyForm->attributes = $_POST['ReplyMessageForm'];
+                $replyForm->attributes = $_POST['ReplyMessageForm'];
 
-            if ($replyForm->validate()) {
+                if ($replyForm->validate()) {
 
-                // Attach Message Entry
-                $messageEntry = new MessageEntry();
-                $messageEntry->message_id = $message->id;
-                $messageEntry->user_id = Yii::app()->user->id;
-                $messageEntry->content = $this->cleanUpMessage($replyForm->message);
-                $messageEntry->save();
-                $messageEntry->notify();
+                    // Attach Message Entry
+                    $messageEntry = new MessageEntry();
+                    $messageEntry->message_id = $message->id;
+                    $messageEntry->user_id = Yii::app()->user->id;
+                    $messageEntry->content = $this->cleanUpMessage($replyForm->message);
+                    $messageEntry->save();
+                    $messageEntry->notify();
 
-                //  Update Modified_at Value
-                $message->save();
+                    //  Update Modified_at Value
+                    $message->save();
 
-                $this->redirect($this->createUrl('index', array('id' => $message->id)));
-            }
-        }
-
-        // Invite Form
-        $inviteForm = new InviteRecipientForm;
-        $inviteForm->message = $message;
-        if (isset($_POST['InviteRecipientForm'])) {
-
-            $inviteForm->attributes = $_POST['InviteRecipientForm'];
-
-            if ($inviteForm->validate()) {
-
-                foreach ($inviteForm->getRecipients() as $user) {
-
-                    // Attach User Message
-                    $userMessage = new UserMessage();
-                    $userMessage->message_id = $message->id;
-                    $userMessage->user_id = $user->id;
-                    $userMessage->is_originator = 0;
-                    $userMessage->save();
-
-                    $message->notify($user);
+                    $this->redirect($this->createUrl('index', array('id' => $message->id)));
                 }
-
-                $this->redirect($this->createUrl('show', array('id' => $message->id)));
             }
+
+            // Invite Form
+            $inviteForm = new InviteRecipientForm;
+            $inviteForm->message = $message;
+            if (isset($_POST['InviteRecipientForm'])) {
+
+                $inviteForm->attributes = $_POST['InviteRecipientForm'];
+
+                if ($inviteForm->validate()) {
+
+                    foreach ($inviteForm->getRecipients() as $user) {
+
+                        // Attach User Message
+                        $userMessage = new UserMessage();
+                        $userMessage->message_id = $message->id;
+                        $userMessage->user_id = $user->id;
+                        $userMessage->is_originator = 0;
+                        $userMessage->save();
+
+                        $message->notify($user);
+                    }
+
+                    $this->redirect($this->createUrl('show', array('id' => $message->id)));
+                }
+            }
+
+
+            $this->renderPartial('/mail/show', array('message' => $message, 'replyForm' => $replyForm, 'inviteForm' => $inviteForm));
         }
-
-
-        $this->renderPartial('/mail/show', array('message' => $message, 'replyForm' => $replyForm, 'inviteForm' => $inviteForm));
     }
 
     /**
