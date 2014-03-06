@@ -64,7 +64,12 @@ hr {
   line-height: 20px;
 }
 .topbar .dropdown-footer {
-  margin: 10px;
+  margin: 10px 10px 5px 10px;
+}
+.topbar .dropdown-header {
+  font-size: 16px;
+  padding: 3px 10px;
+  margin-bottom: 10px;
 }
 #topbar-first {
   top: 0;
@@ -337,6 +342,14 @@ ul.tag_input li img {
 }
 .placeholder {
   padding: 15px;
+}
+.media-list li.placeholder {
+  font-size: 14px !important;
+  border-bottom: none;
+}
+.media-list li.placeholder:hover {
+  background: none !important;
+  border-left: 3px solid white;
 }
 .space-member-sign {
   color: #5cb85c;
