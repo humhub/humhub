@@ -333,7 +333,6 @@ h4 {
     }
   }
 
-
 }
 
 //
@@ -373,7 +372,7 @@ h4 {
 // x) Navs
 // --------------------------------------------------
 
-.nav-pills, .account {
+.nav-pills, .nav-tabs, .account {
 
   .dropdown-menu {
     background-color: @colorPrimary3;
@@ -396,6 +395,9 @@ h4 {
 
         i {
           margin-right: 5px;
+          font-size: 14px;
+          display: inline-block;
+          width: 14px;
         }
       }
 
@@ -410,7 +412,16 @@ h4 {
       background-color: darken(@colorPrimary3, 5%) !important;
     }
   }
+}
 
+.nav-tabs {
+  .dropdown-menu {
+    li {
+      a {
+        font-size: 12px;
+      }
+    }
+  }
 }
 
 .nav-pills.preferences {
@@ -442,8 +453,18 @@ h4 {
 }
 
 .nav .caret, .nav .caret:hover, .nav .caret:active {
-  border-top-color: @colorPrimary3;
-  border-bottom-color: @colorPrimary3;
+  border-top-color: @colorFont3;
+  border-bottom-color: @colorFont3;
+}
+
+.nav li.dropdown > a:hover .caret, .nav li.dropdown > a:active .caret {
+  border-top-color: @colorFont3;
+  border-bottom-color: @colorFont3;
+}
+
+.nav .open > a .caret, .nav .open > a:hover .caret, .nav .open > a:focus .caret {
+  border-top-color: @colorFont3;
+  border-bottom-color: @colorFont3;
 }
 
 .nav-tabs > li {
@@ -453,7 +474,11 @@ h4 {
 
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
   border-color: #ededed;
-  color: @colorPrimary3;
+  color: @colorFont3;
+
+  .caret {
+    color: @colorFont3;
+  }
 }
 
 //

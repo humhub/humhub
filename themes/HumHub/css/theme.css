@@ -241,21 +241,25 @@ h4 {
   border-radius: 3px;
 }
 .nav-pills .dropdown-menu,
+.nav-tabs .dropdown-menu,
 .account .dropdown-menu {
   background-color: #526e82;
   border: none;
 }
 .nav-pills .dropdown-menu li.divider,
+.nav-tabs .dropdown-menu li.divider,
 .account .dropdown-menu li.divider {
   background-color: #486172;
   border-bottom: none;
   margin: 9px 1px !important;
 }
 .nav-pills .dropdown-menu li,
+.nav-tabs .dropdown-menu li,
 .account .dropdown-menu li {
   border-left: 3px solid #526e82;
 }
 .nav-pills .dropdown-menu li a,
+.nav-tabs .dropdown-menu li a,
 .account .dropdown-menu li a {
   color: white;
   font-weight: 400;
@@ -263,20 +267,30 @@ h4 {
   padding: 4px 15px;
 }
 .nav-pills .dropdown-menu li a i,
+.nav-tabs .dropdown-menu li a i,
 .account .dropdown-menu li a i {
   margin-right: 5px;
+  font-size: 14px;
+  display: inline-block;
+  width: 14px;
 }
 .nav-pills .dropdown-menu li a:hover,
+.nav-tabs .dropdown-menu li a:hover,
 .account .dropdown-menu li a:hover {
   background: none;
 }
 .nav-pills .dropdown-menu li:hover,
+.nav-tabs .dropdown-menu li:hover,
 .account .dropdown-menu li:hover,
 .nav-pills .dropdown-menu li.selected,
+.nav-tabs .dropdown-menu li.selected,
 .account .dropdown-menu li.selected {
   border-left: 3px solid #4cd9c0;
   color: #ffffff !important;
   background-color: #486172 !important;
+}
+.nav-tabs .dropdown-menu li a {
+  font-size: 12px;
 }
 .nav-pills.preferences {
   right: 10px;
@@ -302,8 +316,19 @@ h4 {
 .nav .caret,
 .nav .caret:hover,
 .nav .caret:active {
-  border-top-color: #526e82;
-  border-bottom-color: #526e82;
+  border-top-color: #555555;
+  border-bottom-color: #555555;
+}
+.nav li.dropdown > a:hover .caret,
+.nav li.dropdown > a:active .caret {
+  border-top-color: #555555;
+  border-bottom-color: #555555;
+}
+.nav .open > a .caret,
+.nav .open > a:hover .caret,
+.nav .open > a:focus .caret {
+  border-top-color: #555555;
+  border-bottom-color: #555555;
 }
 .nav-tabs > li {
   font-size: 11px;
@@ -313,7 +338,12 @@ h4 {
 .nav .open > a:hover,
 .nav .open > a:focus {
   border-color: #ededed;
-  color: #526e82;
+  color: #555555;
+}
+.nav .open > a .caret,
+.nav .open > a:hover .caret,
+.nav .open > a:focus .caret {
+  color: #555555;
 }
 .btn {
   border: none;

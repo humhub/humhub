@@ -64,7 +64,7 @@ hr {
   line-height: 20px;
 }
 .topbar .dropdown-footer {
-  margin: 10px 10px 5px 10px;
+  margin: 10px;
 }
 .topbar .dropdown-header {
   font-size: 16px;
@@ -154,6 +154,9 @@ hr {
   top: 14px;
   left: 14px;
 }
+#topbar-first .dropdown-footer {
+  margin: 10px 10px 5px 10px;
+}
 #topbar-second {
   top: 50px;
   background-color: #f8f8f8;
@@ -188,6 +191,11 @@ hr {
 }
 .nav-tabs {
   margin-bottom: 10px;
+}
+.list-group a [class^="icon-"],
+.list-group a [class*=" icon-"] {
+  display: inline-block;
+  width: 18px;
 }
 .media-list li {
   padding: 10px;
