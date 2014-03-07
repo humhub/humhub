@@ -91,7 +91,7 @@ class UserIdentity extends CUserIdentity {
         $criteria->params = array(':userName' => $this->username, ':email' => $this->username);
         $user = User::model()->find($criteria);
 
-        if ($record === null) {
+        if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         } else {
             $this->errorCode = self::ERROR_NONE;
