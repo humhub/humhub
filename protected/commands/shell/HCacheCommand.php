@@ -36,6 +36,11 @@ class HCacheCommand extends CConsoleCommand {
     public function actionFlush() {
         Yii::app()->cache->flush();
         ModuleManager::flushCache();
+
+        if (Yii::app()->cache instanceof CApcCache) {
+            print "Warning: Could not flush APC Cache! - Restart Webserver!\n";
+        }
+
         print "All application caches flushed!\n";
     }
 
