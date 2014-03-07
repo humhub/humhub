@@ -34,7 +34,7 @@ class ModuleController extends Controller {
     }
 
     public function actionIndex() {
-        Yii::app()->moduleManager->flushCache();
+        ModuleManager::flushCache();
         $this->render('index', array());
     }
 

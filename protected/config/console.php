@@ -60,6 +60,7 @@ return CMap::mergeArray($pre_config, array(
                 'emailing' => 'application.commands.shell.EMailing.EMailing',
                 'emailing_test' => 'application.commands.shell.EMailing.TestMail',
                 'cron' => 'application.commands.shell.ZCron.ZCronRunner',
+                'cache' => 'application.commands.shell.HCacheCommand',
                 'migrate' => array(
                     'class' => 'application.commands.shell.ZMigrateCommand',
                     'migrationPath' => 'application.migrations',

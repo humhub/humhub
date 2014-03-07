@@ -161,7 +161,7 @@ class ModuleManager extends CApplicationComponent {
     /**
      * Flushes Module Managers cache
      */
-    public function flushCache() {
+    public static function flushCache() {
 
         // Autoloader Cache File
         $cacheFileName = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . self::AUTOSTART_CACHE_FILE_NAME;
@@ -307,7 +307,7 @@ class ModuleManager extends CApplicationComponent {
                     // Auto Migrate (add module database changes)
                     Yii::import('application.commands.shell.ZMigrateCommand');
                     $migrate = ZMigrateCommand::AutoMigrate();
-                    
+
                     // Fire Event Disabled Event
                     if ($this->hasEventHandler('onEnable'))
                         $this->onEnable(new CEvent($this, $id));
@@ -315,7 +315,7 @@ class ModuleManager extends CApplicationComponent {
             }
         }
 
-        $this->flushCache();
+        ModuleManager::flushCache();
     }
 
     /**
@@ -361,7 +361,7 @@ class ModuleManager extends CApplicationComponent {
                     $this->onDisable(new CEvent($this, $id));
             }
         }
-        $this->flushCache();
+        ModuleManager::flushCache();
     }
 
     /**

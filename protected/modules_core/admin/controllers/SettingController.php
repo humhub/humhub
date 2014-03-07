@@ -217,6 +217,8 @@ class SettingController extends Controller {
         Yii::import('admin.forms.*');
 
         $form = new CacheSettingsForm;
+        $form->type = HSetting::Get('type', 'cache');
+        $form->expireTime = HSetting::Get('expireTime', 'cache');
 
         // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'cache-settings-form') {
@@ -227,21 +229,18 @@ class SettingController extends Controller {
         if (isset($_POST['CacheSettingsForm'])) {
 
             Yii::app()->cache->flush();
-            Yii::app()->moduleManager->flushCache();
+            ModuleManager::flushCache();
 
             $_POST['CacheSettingsForm'] = Yii::app()->input->stripClean($_POST['CacheSettingsForm']);
             $form->attributes = $_POST['CacheSettingsForm'];
 
             if ($form->validate()) {
 
-                $form->type = HSetting::Set('type', $form->type, 'cache');
-                $form->expireTime = HSetting::Set('expireTime', $form->expireTime, 'cache');
+                HSetting::Set('type', $form->type, 'cache');
+                HSetting::Set('expireTime', $form->expireTime, 'cache');
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/caching'));
             }
-        } else {
-            $form->type = HSetting::Get('type', 'cache');
-            $form->expireTime = HSetting::Get('expireTime', 'cache');
         }
 
         $cacheTypes = array(
@@ -443,19 +442,19 @@ class SettingController extends Controller {
                 $this->redirect(Yii::app()->createUrl('//admin/setting/file'));
             }
         }
-        
+
         // Determine PHP Upload Max FileSize
         $maxUploadSize = Helpers::GetBytesOfPHPIniValue(ini_get('upload_max_filesize'));
         if ($maxUploadSize > Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size')))
             $maxUploadSize = Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'));
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
-        
+
         // Determine currently used ImageLibary
         $currentImageLibary = 'GD';
         if (HSetting::Get('imageMagickPath', 'file'))
             $currentImageLibary = 'ImageMagick';
-        
-        $this->render('file', array('model' => $form, 'maxUploadSize' => $maxUploadSize, 'currentImageLibary'=>$currentImageLibary));
+
+        $this->render('file', array('model' => $form, 'maxUploadSize' => $maxUploadSize, 'currentImageLibary' => $currentImageLibary));
     }
 
     /**
