@@ -406,9 +406,7 @@ class AdminController extends Controller {
      * Request only allowed for workspace admins
      */
     public function adminOnly() {
-        $workspace = $this->getSpace();
-
-        if (!$workspace->isAdmin())
+        if (!$this->getSpace()->isAdmin())
             throw new CHttpException(403, 'Access denied - Space Administrator only!');
     }
 
@@ -418,7 +416,7 @@ class AdminController extends Controller {
     public function ownerOnly() {
         $workspace = $this->getSpace();
 
-        if (!$workspace->isOwner())
+        if (!$workspace->isOwner() && !Yii::app()->user->isAdmin())
             throw new CHttpException(403, 'Access denied - Space Owner only!');
     }
 

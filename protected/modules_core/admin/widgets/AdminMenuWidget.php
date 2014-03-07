@@ -42,7 +42,6 @@ class AdminMenuWidget extends MenuWidget {
             'isVisible' => Yii::app()->user->canApproveUsers(),
             'newItemCount' => 0
         ));
-
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Groups'),
             'url' => Yii::app()->createUrl('admin/group'),
@@ -53,12 +52,21 @@ class AdminMenuWidget extends MenuWidget {
             'isVisible' => Yii::app()->user->isAdmin(),
             'newItemCount' => 0
         ));
-
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.base', 'Spaces'),
+            'url' => Yii::app()->createUrl('admin/space'),
+            'icon' => '<i class="icon-inbox"></i>',
+            'group' => 'manage',
+            'sortOrder' => 400,
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'space'),
+            'isVisible' => Yii::app()->user->isAdmin(),
+            'newItemCount' => 0
+        ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Modules'),
             'url' => Yii::app()->createUrl('admin/module'),
             'icon' => '<i class="icon-rocket"></i>',
-            'sortOrder' => 400,
+            'sortOrder' => 500,
             'group' => 'manage',
             'newItemCount' => 0,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'module'),

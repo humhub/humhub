@@ -48,12 +48,13 @@ class Space extends HActiveRecord implements ISearchable {
     const STATUS_ENABLED = 1;   // Enabled
     const STATUS_ARCHIVED = 2;  // Archived
 
+    public $ownerUsernameSearch;
+
     /**
      * Add mix-ins to this model
      *
      * @return type
      */
-
     public function behaviors() {
         return array(
             'HContentBaseBehavior' => array(
@@ -84,7 +85,7 @@ class Space extends HActiveRecord implements ISearchable {
     public function rules() {
 
         $rules = array();
-        
+
         if ($this->scenario == 'edit') {
             $rules = array(
                 array('name', 'required'),
@@ -94,20 +95,20 @@ class Space extends HActiveRecord implements ISearchable {
                 array('join_policy', 'in', 'range' => array(0, 1, 2)),
                 array('visibility', 'in', 'range' => array(0, 1, 2)),
             );
-            
+
             if (Yii::app()->user->isAdmin() && HSetting::Get('enabled', 'authentication_ldap')) {
                 $rules[] = array('ldap_dn', 'length', 'max' => 255);
             }
-            
+
             return $rules;
         }
-        
+
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
             array('name', 'required'),
             array('wall_id, join_policy, visibility, auto_add_new_members, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('name, website', 'length', 'max' => 45), 
+            array('name, website', 'length', 'max' => 45),
             array('ldap_dn', 'length', 'max' => 255),
             array('website', 'url'),
             array('name', 'unique', 'caseSensitive' => false, 'className' => 'Space', 'message' => '{attribute} "{value}" is already in use! '),
@@ -117,7 +118,7 @@ class Space extends HActiveRecord implements ISearchable {
             array('tags, description, created_at, updated_at, guid', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, wall_id, name, description, website, join_policy, visibility, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search'),
+            array('id, wall_id, name, description, website, join_policy, visibility, tags, created_at, created_by, updated_at, updated_by, ownerUsernameSearch', 'safe', 'on' => 'search'),
         );
     }
 
@@ -147,6 +148,7 @@ class Space extends HActiveRecord implements ISearchable {
             'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
             'createdBy' => array(self::BELONGS_TO, 'User', 'created_by'),
             'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
+            'owner' => array(self::BELONGS_TO, 'User', 'updated_by'),
         );
     }
 
@@ -169,6 +171,7 @@ class Space extends HActiveRecord implements ISearchable {
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
             'updated_by' => Yii::t('base', 'Updated by'),
+            'ownerUsernameSearch' => 'Owner',
         );
     }
 
@@ -211,11 +214,7 @@ class Space extends HActiveRecord implements ISearchable {
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
     public function search() {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
         $criteria = new CDbCriteria;
-
         $criteria->compare('id', $this->id);
         $criteria->compare('wall_id', $this->wall_id);
         $criteria->compare('name', $this->name, true);
@@ -228,6 +227,9 @@ class Space extends HActiveRecord implements ISearchable {
         $criteria->compare('created_by', $this->created_by);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by);
+
+        $criteria->compare('owner.username', $this->ownerUsernameSearch, true);
+        $criteria->join = 'JOIN user owner ON (owner.id=t.created_by)';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -464,6 +466,9 @@ class Space extends HActiveRecord implements ISearchable {
         if ($userId == 0)
             $userId = Yii::app()->user->id;
 
+        if (Yii::app()->user->isAdmin())
+            return true;
+
         if ($this->isOwner($userId))
             return true;
 
@@ -617,7 +622,7 @@ class Space extends HActiveRecord implements ISearchable {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-        $user = User::model()->findByPk($userId);        
+        $user = User::model()->findByPk($userId);
         $membership = $this->getUserMembership($userId);
 
 
@@ -644,7 +649,7 @@ class Space extends HActiveRecord implements ISearchable {
         if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
             SpaceInviteDeclinedNotification::fire($membership->originator_user_id, $user, $this);
         }
-        
+
         // Delete Membership
         UserSpaceMembership::model()->deleteAllByAttributes(array(
             'user_id' => $userId,
@@ -697,13 +702,11 @@ class Space extends HActiveRecord implements ISearchable {
             if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
                 SpaceInviteAcceptedNotification::fire($membership->originator_user_id, $user, $this);
             }
-            
+
             // Update Membership
             $membership->status = UserSpaceMembership::STATUS_MEMBER;
         }
         $membership->save();
-
-
 
         // Create Wall Activity for that
         $activity = new Activity;

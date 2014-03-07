@@ -45,13 +45,13 @@ class SpaceControllerBehavior extends CBehavior {
         } else {
 
             // Super Admin can always enter
-            #if (!Yii::app()->user->isAdmin()) {
-            // Space invisible?
-            if ($space->visibility == Space::VISIBILITY_NONE) {
-                // Not Space Member
-                throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
+            if (!Yii::app()->user->isAdmin()) {
+                // Space invisible?
+                if ($space->visibility == Space::VISIBILITY_NONE) {
+                    // Not Space Member
+                    throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
+                }
             }
-            #}
         }
 
         // Delete all pending notifications for this space
