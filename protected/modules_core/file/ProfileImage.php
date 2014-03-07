@@ -28,7 +28,7 @@
  *  "" = Resized profile image
  *  "_org" = Orginal uploaded file
  *
- * @package humhub.libs
+ * @package humhub.modules_core.file
  * @since 0.5
  * @author Luke
  */
@@ -164,10 +164,8 @@ class ProfileImage {
      */
     public function setNew($file) {
         $this->delete();
-
         ImageConverter::TransformToJpeg($file->getTempName(), $this->getPath('_org'));
         ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width'=>400, 'mode'=>'max'));
-        
         ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width'=>$this->width, 'height'=>$this->height));
     }
 

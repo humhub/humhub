@@ -239,7 +239,13 @@ class ImageConverter {
 
         if ($options['mode'] == 'max') {
 
-            $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize '{$width}x{$height}>' {$targetFile}";
+            if ($width && $height)
+                $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize '{$width}x{$height}>' {$targetFile}";
+            elseif ($width)
+                $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize '{$width}x>' {$targetFile}";
+            elseif ($height)
+                $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize 'x{$height}>' {$targetFile}";
+
             $ret = passthru($command);
         } elseif ($options['mode'] == 'force') {
             $command = $convertCommand . " {$sourceFile} -gravity center -quality 100 -resize {$width}x{$height}^ -extent {$width}x{$height}  {$targetFile}";
