@@ -67,16 +67,13 @@ class MailController extends Controller
 
         $userMessages = UserMessage::model()->findAllBySql($sql, array(":userId" => Yii::app()->user->id));
 
-        $output = $this->render('/mail/index', array(
+        $this->render('/mail/index', array(
             'userMessages' => $userMessages,
             'mailCount' => $allMessageCount,
             'pageSize' => $mailsPerPage,
             'pages' => $pages
         ));
 
-        Yii::app()->clientScript->render($output);
-        echo $output;
-        Yii::app()->end();
     }
 
     /**

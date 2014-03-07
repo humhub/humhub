@@ -24,7 +24,7 @@
                             <img src="<?php echo $user->getProfileImage()->getUrl(); ?>"
                                  class="img-rounded tt img_margin" height="29" width="29" data-toggle="tooltip"
                                  data-placement="top" title=""
-                                 data-original-title="<h1><?php echo $user->displayName; ?></h1><?php echo $user->title; ?>">
+                                 data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->title; ?>">
                         </a>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -53,7 +53,6 @@
                             <h4 class="media-heading" style="font-size: 14px;"><?php echo $entry->user->displayName; ?>
                                 <small><span class="time"><?php echo $entry->created_at; ?></span></small>
                             </h4>
-                            <br>
                             <span class="content"><?php echo $entry->content; ?></span>
                         </div>
                     </div>
@@ -111,6 +110,11 @@
     <script type="text/javascript">
 
         // show Tooltips on elements inside the views, which have the class 'tt'
-        //$('.tt').tooltip();
+        $('.tt').tooltip({html: true});
+
+
+        $(function() {
+            jQuery("span.time").timeago();
+        });
 
     </script>

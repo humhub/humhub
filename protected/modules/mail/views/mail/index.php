@@ -1,7 +1,7 @@
 <?php //echo Yii::t('MailModule.base', 'Messagebox'); ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('MailModule.base', 'Inputbox') ?>
+        <?php echo Yii::t('MailModule.base', 'Inbox') ?>
 
         <!-- Button to trigger modal write a new message -->
         <?php
@@ -12,7 +12,7 @@
 
 <hr>
 
-    <ul class="media-list">
+    <ul id="inbox" class="media-list">
 
         <?php $count = 0; ?>
         <?php $firstMessageId = 0; ?>
@@ -35,7 +35,7 @@
                         echo 'new';
                     } ?>">
 
-                    <a href="javascript:showMessageDetails('<?php echo $this->createUrl("show", array("id" => $message->id, "ajax" => 1)); ?>', '<?php echo $message->id; ?>');">
+                    <a href="javascript:clearEntrySelection(); javascript:showMessageDetails('<?php echo $this->createUrl("show", array("id" => $message->id, "ajax" => 1)); ?>', '<?php echo $message->id; ?>');">
                         <div class="media">
                             <!-- Show user image -->
                             <img class="media-object img-rounded pull-left" data-src="holder.js/32x32" alt="32x32"
@@ -126,9 +126,17 @@
 
     }
 
-    function selectEntry(id) {
-        $('.messages').find('#message_' + id).addClass('active');
+    function clearEntrySelection() {
+        // remove all selected classes
+        $('#inbox').find('li.entry').removeClass('selected');
     }
+
+    function selectEntry(id) {
+        // add selection class to current active entry
+        $('#message_' + id).addClass('selected');
+    }
+
+    jQuery("span.time").timeago();
 
 </script>
 
