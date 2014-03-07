@@ -203,6 +203,7 @@ class ConfigController extends Controller {
             // Create Welcome Space
             $space = new Space();
             $space->name = 'Welcome Space';
+            $space->description = 'Your first sample space to discover HumHub.';
             $space->join_policy = Space::JOIN_POLICY_FREE;
             $space->visibility = Space::VISIBILITY_ALL;
             $space->created_by = $userId;

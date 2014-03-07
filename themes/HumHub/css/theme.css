@@ -212,6 +212,12 @@ h4 {
 .panel h3.media-heading small a {
   color: #4cd9c0;
 }
+.panel-danger {
+  border: 2px solid #ff8989;
+}
+.panel-danger .panel-heading {
+  color: #ff8989;
+}
 .installer .panel {
   margin-top: 10%;
 }
@@ -375,7 +381,7 @@ h4 {
 }
 .btn-default {
   background: #ededed;
-  color: #7a7a7a;
+  color: #7a7a7a !important;
 }
 .btn-default:hover,
 .btn-default:focus {
@@ -408,7 +414,7 @@ h4 {
 }
 .btn-info:hover,
 .btn-info:focus {
-  background: #37d5b9;
+  background: #37d5b9 !important;
   text-decoration: none;
 }
 .btn-info:active,

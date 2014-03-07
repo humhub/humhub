@@ -1,4 +1,4 @@
-<li class="<?php if (!$notification->seen) : ?><?php Yii::t('NotificationModule.base', 'new'); ?><?php endif; ?>">
+<li class="<?php if (!$notification->seen) : ?>new<?php endif; ?>">
     <a href="<?php echo $notification->getUrl(); ?>">
         <div class="media">
 
@@ -23,7 +23,7 @@
 
                 <br><span class="time"
                           title="<?php echo $notification->created_at; ?>"><?php echo $notification->created_at; ?></span>
-                <?php if (!$notification->seen) : ?> <span class="label label-danger">New</span><?php endif; ?>
+                <?php if (!$notification->seen) : ?> <span class="label label-danger"><?php echo Yii::t('NotificationModule.base', 'New'); ?></span><?php endif; ?>
             </div>
 
         </div>

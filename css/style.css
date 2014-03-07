@@ -136,8 +136,8 @@ hr {
 }
 #topbar-first .notifications #dropdown-notifications li i.approval {
   position: absolute;
-  left: 6px;
-  top: 35px;
+  left: 4px;
+  top: 34px;
   font-size: 14px;
 }
 #topbar-first .notifications #dropdown-notifications li i.accepted {
@@ -205,6 +205,9 @@ hr {
 .media-list li:hover,
 .media-list li.selected {
   background-color: #eee;
+}
+.media .media-body .content {
+  margin-right: 35px;
 }
 .panel .statistics {
   margin-top: 40px;

@@ -323,6 +323,14 @@ h4 {
 
 }
 
+.panel-danger {
+  border: 2px solid @colorDanger1;
+
+  .panel-heading {
+    color: @colorDanger1;
+  }
+}
+
 // Panels - Installer
 .installer {
   .panel {
@@ -518,7 +526,7 @@ h4 {
 
 .btn-default {
   background: @colorBackground2;
-  color: @colorFont2;
+  color: @colorFont2 !important;
 
   &:hover,
   &:focus {
@@ -557,7 +565,7 @@ h4 {
 
   &:hover,
   &:focus {
-    background: darken(@colorInfo2, 5%);
+    background: darken(@colorInfo2, 5%) !important;
     text-decoration: none;
   }
 
