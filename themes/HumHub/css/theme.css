@@ -311,6 +311,11 @@ h4 {
   background-color: #526e82;
   color: white;
 }
+.popover .popover-title {
+  background: none;
+  border-bottom: none;
+  font-weight: bold;
+}
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
@@ -566,6 +571,15 @@ a.label-warning:hover {
   font-size: 13px;
   font-weight: 600;
 }
+.list-group-item h4 {
+  font-size: 16px;
+  font-weight: 300;
+  color: #bebebe;
+  background-color: white;
+  border: none;
+  padding: 10px;
+  padding: 0;
+}
 a.list-group-item {
   color: #555555;
 }
@@ -588,6 +602,15 @@ a.list-group-item.active {
 }
 .modal {
   border: none;
+}
+.modal h1,
+.modal h2,
+.modal h3,
+.modal h4,
+.modal h5 {
+  margin-top: 0;
+  color: #bebebe;
+  font-weight: 300;
 }
 .modal-title {
   font-size: 16px;
@@ -703,6 +726,12 @@ a.list-group-item.active {
 }
 .placeholder {
   padding: 10px;
+}
+.placeholder-empty-stream {
+  background-image: url('../img/placeholder-postform-arrow.png');
+  background-repeat: no-repeat;
+  padding: 37px 0 0 70px;
+  margin-left: 90px;
 }
 ul.tag_input {
   -webkit-box-shadow: none;

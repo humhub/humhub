@@ -451,6 +451,15 @@ h4 {
 
 }
 
+.popover {
+  .popover-title {
+    background: none;
+    border-bottom: none;
+    //.heading;
+    font-weight: bold;
+  }
+}
+
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
   background-color: @colorPrimary3;
 }
@@ -767,6 +776,11 @@ a.label-warning:hover {
   font-weight: 600;
   font-size: 13px;
   font-weight: 600;
+
+  h4 {
+    .heading;
+    padding: 0;
+  }
 }
 
 a.list-group-item {
@@ -797,6 +811,12 @@ a.list-group-item.active {
 // --------------------------------------------------
 .modal {
   border: none;
+
+  h1, h2, h3, h4, h5 {
+    margin-top: 0;
+    color: @colorFont4;
+    font-weight: 300;
+  }
 }
 
 .modal-title {
@@ -955,8 +975,16 @@ a.list-group-item.active {
   color: #999;
 }
 
+// Placeholder
 .placeholder {
   padding: 10px;
+}
+
+.placeholder-empty-stream {
+  background-image: url('../img/placeholder-postform-arrow.png');
+  background-repeat: no-repeat;
+  padding: 37px 0 0 70px;
+  margin-left: 90px;
 }
 
 ul.tag_input {
