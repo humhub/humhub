@@ -30,4 +30,5 @@
 - [Settings](settings.md)
 - [Coding Style](coding_style.md)
 - [Notifications](notifications.md)
+- [JavaScript](javascript.md)
 - [Zend Framework](zend.md)

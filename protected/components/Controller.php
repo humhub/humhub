@@ -168,4 +168,24 @@ class Controller extends CController {
         //Yii::app()->end();
     }
 
+    /**
+     * Add a JavaScript to the renderPartial method to fire an event at the body tag, when the view loaded successfully
+     */
+    public function renderPartial($view, $data = null, $return = false, $processOutput = false) {
+
+        if (Yii::app()->request->isAjaxRequest) {
+            /**
+             * Fire an event with the following params:
+             * @param1 String controllerID
+             * @param2 String moduleID
+             * @param3 String actionID
+             * @param4 String view path
+             */
+            Yii::app()->clientScript->registerScript("autoAjaxEventFire","$('body').trigger('ajaxLoaded', ['". $this->id."', '". $this->module->id ."', '". $this->action->id ."', '". $view ."']);",CClientScript::POS_END);
+        }
+
+        return parent::renderPartial($view, $data, $return, $processOutput);
+    }
+
+
 }
