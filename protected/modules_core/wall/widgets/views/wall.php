@@ -59,12 +59,12 @@
                     <?php echo Yii::t('WallModule.base', '<b>Your dashboard is empty! - Fill it!</b><br>Just join or follow some workspaces or users!'); ?>
                 </div>
             <?php elseif ($type == Wall::TYPE_USER): ?>
-                <div class="placeholder">
-                    <b><?php echo Yii::t('WallModule.base', 'Oh! - There are no posts to display yet.'); ?></b>
+                <div class="placeholder placeholder-empty-stream">
+                    <?php echo Yii::t('WallModule.base', '<b>There is still nothing happens</b><br>Be the first who post something...'); ?>
                 </div>
             <?php elseif ($type == Wall::TYPE_SPACE): ?>
-                <div class="placeholder">
-                    <?php echo Yii::t('WallModule.base', '<b>This workspace is empty! - Fill it!</b><br>Just add some posts!'); ?>
+                <div class="placeholder placeholder-empty-stream">
+                    <?php echo Yii::t('WallModule.base', '<b>This space is still empty!</b><br>Make the beginning and post something...'); ?>
                 </div>
             <?php endif; ?>
         </div>

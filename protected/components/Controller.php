@@ -174,6 +174,13 @@ class Controller extends CController {
     public function renderPartial($view, $data = null, $return = false, $processOutput = false) {
 
         if (Yii::app()->request->isAjaxRequest) {
+
+            // get module id if exists
+            $moduleID = "";
+            if ($this->module != null) {
+                $moduleID = $this->module->id;
+            }
+
             /**
              * Fire an event with the following params:
              * @param1 String controllerID
@@ -181,7 +188,8 @@ class Controller extends CController {
              * @param3 String actionID
              * @param4 String view path
              */
-            Yii::app()->clientScript->registerScript("autoAjaxEventFire","$('body').trigger('ajaxLoaded', ['". $this->id."', '". $this->module->id ."', '". $this->action->id ."', '". $view ."']);",CClientScript::POS_END);
+
+            Yii::app()->clientScript->registerScript("autoAjaxEventFire","$('body').trigger('ajaxLoaded', ['". $this->id."', '". $moduleID ."', '". $this->action->id ."', '". $view ."']);",CClientScript::POS_END);
         }
 
         return parent::renderPartial($view, $data, $return, $processOutput);
