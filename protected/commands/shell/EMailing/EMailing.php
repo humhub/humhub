@@ -51,7 +51,7 @@ class EMailing extends HConsoleCommand {
 
         Yii::app()->request->setBaseUrl(HSetting::Get('baseUrl'));
 
-        $users = User::model()->with('httpSessions')->findAll();
+        $users = User::model()->with('httpSessions')->findAllByAttributes(array('status'=>User::STATUS_ENABLED));
 
         foreach ($users as $user) {
 
