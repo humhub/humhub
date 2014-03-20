@@ -137,9 +137,13 @@ class Controller extends CController {
     /**
      * Outputs a given JSON Array and ends the application
      *
-     * @param type $json
+     * @param Array $json
      */
-    protected function renderJson($json) {
+    protected function renderJson($json=array(), $success=true) {
+
+        if (is_array($json) && !isset($json['success']))
+            $json['success'] = $success;
+                
         echo CJSON::encode($json);
         Yii::app()->end();
         return;
