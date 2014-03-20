@@ -32,7 +32,7 @@ class TaskWallEntryWidget extends HWidget {
         $this->render('entry', array(
             'task' => $this->task,
             'user' => $user,
-            'space' => $this->task->contentMeta->getContentBase(),
+            'space' => $this->task->content->container,
         ));
     }
 

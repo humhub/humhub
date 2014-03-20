@@ -24,6 +24,8 @@
  */
 class Activity extends HActiveRecordContent {
 
+    public $autoAddToWall = false;
+    
     /**
      * Add mix-ins to this model
      *
@@ -33,7 +35,7 @@ class Activity extends HActiveRecordContent {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentAddonBehavior', 'HContentBehavior', 'HContentBaseBehavior'),
+                'mustBeInstanceOf' => array('HContentAddonBehavior', 'HActiveRecordContent', 'HActiveRecordContentContainer'),
             ),
         );
     }
@@ -80,33 +82,28 @@ class Activity extends HActiveRecordContent {
         $activity = new Activity;
 
         $content = null;
-
-        if ($object->asa('HContentBehavior') !== null) {
+        if ($object instanceOf HActiveRecordContent) {
             $content = $object;
-
             // Use same created_by & visibility as the Content Object
-            $activity->contentMeta->user_id = $content->contentMeta->created_by;
+            $activity->content->user_id = $content->content->created_by;
         } elseif ($object->asa('HContentAddonBehavior') !== null) {
             $content = $object->getContentObject();
         } else {
             throw new CHttpException(500, Yii::t('ActivityModule.base', 'Could not create activity for this kind of object!'));
         }
 
-        // Space or User
-        $contentBase = $content->contentMeta->getContentBase();
-
-        $activity->contentMeta->user_id = Yii::app()->user->id;
+        $activity->content->user_id = Yii::app()->user->id;
 
         // Always take visibilty of Content Object for that activity
-        $activity->contentMeta->visibility = $content->contentMeta->visibility;
+        $activity->content->visibility = $content->content->visibility;
 
         // Auto Set object_model & object_id of given object
         $activity->object_model = get_class($object);
         $activity->object_id = $object->id;
 
         // Also assign space_id if set
-        if (get_class($contentBase) == 'Space') {
-            $activity->contentMeta->space_id = $contentBase->id;
+        if ($content->content->container instanceof Space) {
+            $activity->content->space_id = $content->content->container->id;
         }
 
         return $activity;
@@ -119,22 +116,19 @@ class Activity extends HActiveRecordContent {
      */
     public function fire() {
 
-        // Get corresponding content base (workspace, user)
-        $contentBase = $this->contentMeta->getContentBase();
+        if ($this->content->container instanceof Space) {
 
-        if (get_class($contentBase) == 'Space') {
-
-            // Post this activity to workspace wall
-            $this->contentMeta->addToWall($contentBase->wall_id);
-        } elseif (get_class($contentBase) == 'User') {
+            // Post this activity to space wall
+            $this->content->addToWall($this->content->container->wall_id);
+        } elseif ($this->content->container instanceof User) {
 
             // Post this activity to users wall
             if (isset(Yii::app()->user)) {
-                $this->contentMeta->addToWall(Yii::app()->user->getModel()->wall_id);
+                $this->content->addToWall(Yii::app()->user->getModel()->wall_id);
             } else {
                 // Maybe Console Script without Yii::app()->user
                 $user = User::model()->findByPk($this->created_by);
-                $this->getContentMeta()->addToWall($user->wall_id);
+                $this->content->addToWall($user->wall_id);
             }
         }
     }
@@ -172,11 +166,11 @@ class Activity extends HActiveRecordContent {
         $underlyingObject = $this->getUnderlyingObject();
 
         $workspace = null;
-        if ($this->contentMeta->space_id != "") {
-            $workspace = Space::model()->findByPk($this->contentMeta->space_id);
+        if ($this->content->space_id != "") {
+            $workspace = Space::model()->findByPk($this->content->space_id);
         }
 
-        $user = $this->contentMeta->getUser();
+        $user = $this->content->getUser();
         if ($user == null)
             return;
 

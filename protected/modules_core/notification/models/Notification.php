@@ -186,7 +186,7 @@ class Notification extends HActiveRecord {
 
         // Find Object to Redirect to
         $contentObj = null;
-        if ($sourceObj->asa('HContentBehavior') !== null) {
+        if ($sourceObj instanceof HActiveRecordContent) {
             $contentObj = $sourceObj;
         } elseif ($sourceObj->asa('HContentAddonBehavior') !== null) {
             $contentObj = $sourceObj->getContentObject();

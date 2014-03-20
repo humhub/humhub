@@ -11,9 +11,9 @@
  * @since 0.5
  */
 ?>
-<?php if ($object->contentMeta->canArchive()) : ?>
+<?php if ($object->content->canArchive()) : ?>
     <li>
-    <?php if ($object->contentMeta->isArchived()): ?>
+    <?php if ($object->content->isArchived()): ?>
         <a href="#" onClick="wallUnarchive('<?php echo $model; ?>', '<?php echo $id; ?>');
                         return false;"><i class="icon-archive"></i> <?php echo Yii::t('WallModule.base', 'Unarchive'); ?></a>
        <?php else: ?>

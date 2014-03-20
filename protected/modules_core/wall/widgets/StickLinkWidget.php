@@ -37,8 +37,8 @@ class StickLinkWidget extends HWidget {
     public function run() {
         $this->render('stickLink', array(
             'object' => $this->content,
-            'model' => $this->content->contentMeta->object_model,
-            'id' => $this->content->contentMeta->object_id,
+            'model' => $this->content->content->object_model,
+            'id' => $this->content->content->object_id,
         ));
     }
 

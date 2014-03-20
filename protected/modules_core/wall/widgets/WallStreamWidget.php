@@ -9,25 +9,37 @@
 class WallStreamWidget extends HWidget {
 
     /**
-     * @var string type of the wall (dashboard, space, user)
+     * Type of Stream (Wall::TYPE_*)
+     * 
+     * Can be null if content container is set.
+     * 
+     * @var string 
      */
     public $type;
 
     /**
-     * @var string in case of space or user wall, the space/user guid
+     * ContentContainer (e.g. User, Space) which this space belongs to
+     * 
+     * @var HActiveRecordContentContainer 
      */
-    public $guid;
+    public $contentContainer;
 
     /**
-     * @var boolean Read Only (disable all wall methods, like comment, like, delete)
+     * Path to Stream Action to use
+     * 
+     * @var type 
      */
-    public $readonly = false;
+    public $streamAction = "//wall/wall/stream";
 
     /**
      * Inits the Wall Stream Widget
      */
     public function init() {
 
+        if ($this->contentContainer != null) {
+            $this->type = get_class($this->contentContainer);
+        }
+        
         Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->assetManager->publish(
                         Yii::getPathOfAlias('application.modules_core.wall.resources') . '/si_streaming.js'
@@ -59,18 +71,22 @@ class WallStreamWidget extends HWidget {
         // Save Wall Type
         Wall::$currentType = $this->type;
 
+        $guid = null;
+        if ($this->contentContainer != "") {
+            $guid = $this->contentContainer->guid;
+        }
+
         // Set some Urls for this wall
-        $reloadUrl = Yii::app()->createUrl('//wall/wall/stream', array('type' => $this->type, 'guid' => $this->guid, 'limit' => $wallObjectStreamLimit, 'from' => 'lastEntryId', 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
-        $startUrl = Yii::app()->createUrl('//wall/wall/stream', array('type' => $this->type, 'guid' => $this->guid, 'limit' => $wallObjectStreamLimit, 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
-        $singleEntryUrl = Yii::app()->createUrl('//wall/wall/stream', array('type' => $this->type, 'guid' => $this->guid, 'limit' => 1, 'from' => 'fromEntryId'));
+        $reloadUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $wallObjectStreamLimit, 'from' => 'lastEntryId', 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
+        $startUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $wallObjectStreamLimit, 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
+        $singleEntryUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => 1, 'from' => 'fromEntryId'));
 
         // Render It
-        $this->render('wall', array(
+        $this->render('stream', array(
             'type' => $this->type,
             'reloadUrl' => $reloadUrl,
             'startUrl' => $startUrl,
             'singleEntryUrl' => $singleEntryUrl,
-            'readonly' => $this->readonly,
         ));
     }
 

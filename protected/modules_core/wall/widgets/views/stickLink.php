@@ -11,9 +11,9 @@
  * @since 0.5
  */
 ?>
-<?php if ((Wall::$currentType == Wall::TYPE_SPACE || Wall::$currentType == Wall::TYPE_USER) && $object->contentMeta->canStick()) : ?>
+<?php if ((Wall::$currentType == Wall::TYPE_SPACE || Wall::$currentType == Wall::TYPE_USER) && $object->content->canStick()) : ?>
     <li>
-    <?php if ($object->contentMeta->isSticked()): ?>
+    <?php if ($object->content->isSticked()): ?>
         <a href="#" onClick="wallUnstick('<?php echo $model; ?>', '<?php echo $id; ?>');
                 return false;"><i class="icon-arrow-up"></i> <?php echo Yii::t('WallModule.base', 'Unstick'); ?></a>
        <?php else: ?>

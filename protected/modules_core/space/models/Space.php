@@ -32,7 +32,7 @@
  * @package humhub.modules_core.space.models
  * @since 0.5
  */
-class Space extends HActiveRecord implements ISearchable {
+class Space extends HActiveRecordContentContainer implements ISearchable {
 
     // Join Policies
 
@@ -57,8 +57,8 @@ class Space extends HActiveRecord implements ISearchable {
      */
     public function behaviors() {
         return array(
-            'HContentBaseBehavior' => array(
-                'class' => 'application.behaviors.HContentBaseBehavior'
+            'HGuidBehavior' => array(
+                'class' => 'application.behaviors.HGuidBehavior',
             ),
         );
     }
@@ -236,20 +236,6 @@ class Space extends HActiveRecord implements ISearchable {
         ));
     }
 
-    /**
-     * Before Save Addons
-     *
-     * @return type
-     */
-    protected function beforeSave() {
-
-        if ($this->isNewRecord) {
-            // Create GUID for new users
-            $this->guid = UUID::v4();
-        }
-
-        return parent::beforeSave();
-    }
 
     /**
      * After Save Addons
@@ -339,9 +325,9 @@ class Space extends HActiveRecord implements ISearchable {
             $user = User::model()->findByPk($this->created_by);
 
             $activity = new Activity;
-            $activity->contentMeta->space_id = $this->id;
-            $activity->contentMeta->user_id = $this->created_by;
-            $activity->contentMeta->visibility = Content::VISIBILITY_PUBLIC;
+            $activity->content->space_id = $this->id;
+            $activity->content->user_id = $this->created_by;
+            $activity->content->visibility = Content::VISIBILITY_PUBLIC;
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
@@ -637,9 +623,9 @@ class Space extends HActiveRecord implements ISearchable {
         // If was member, create a activity for that
         if ($membership->status == UserSpaceMembership::STATUS_MEMBER) {
             $activity = new Activity;
-            $activity->contentMeta->space_id = $this->id;
-            $activity->contentMeta->user_id = $userId;
-            $activity->contentMeta->visibility = Content::VISIBILITY_PRIVATE;
+            $activity->content->space_id = $this->id;
+            $activity->content->user_id = $userId;
+            $activity->content->visibility = Content::VISIBILITY_PRIVATE;
             $activity->type = "ActivitySpaceMemberRemoved";
             $activity->save();
             $activity->fire();
@@ -698,7 +684,7 @@ class Space extends HActiveRecord implements ISearchable {
                 SpaceApprovalRequestAcceptedNotification::fire(Yii::app()->user->id, $user, $this);
             }
 
-            // User was invited 
+            // User was invited
             if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
                 SpaceInviteAcceptedNotification::fire($membership->originator_user_id, $user, $this);
             }
@@ -710,10 +696,10 @@ class Space extends HActiveRecord implements ISearchable {
 
         // Create Wall Activity for that
         $activity = new Activity;
-        $activity->contentMeta->space_id = $this->id;
-        $activity->contentMeta->user_id = $userId;
-        $activity->contentMeta->visibility = Content::VISIBILITY_PRIVATE;
-        $activity->contentMeta->created_by = $userId;
+        $activity->content->space_id = $this->id;
+        $activity->content->user_id = $userId;
+        $activity->content->visibility = Content::VISIBILITY_PRIVATE;
+        $activity->content->created_by = $userId;
         $activity->created_by = $userId;
         $activity->type = "ActivitySpaceMemberAdded";
         $activity->save();

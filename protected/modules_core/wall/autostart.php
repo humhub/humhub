@@ -8,6 +8,7 @@ Yii::app()->moduleManager->register(array(
     'import' => array(
         'application.modules_core.wall.*',
         'application.modules_core.wall.models.*',
+        'application.modules_core.wall.widgets.*',
     ),
     'isCoreModule' => true,
     // Events to Catch 

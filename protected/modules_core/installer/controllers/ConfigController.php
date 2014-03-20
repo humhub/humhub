@@ -200,6 +200,12 @@ class ConfigController extends Controller {
 
             $userId = $form['User']->model->id;
 
+            // Switch Identity
+            Yii::import('application.modules_core.user.components.*');
+            $newIdentity = new UserIdentity($form['User']->model->username, '');
+            $newIdentity->fakeAuthenticate();
+            Yii::app()->user->login($newIdentity);
+            
             // Create Welcome Space
             $space = new Space();
             $space->name = 'Welcome Space';
@@ -222,12 +228,11 @@ class ConfigController extends Controller {
 
             // Add Some Post to the Space
             $post = new Post();
-            $post->contentMeta->visibility = Content::VISIBILITY_PUBLIC;
-            $post->contentMeta->space_id = $space->id;
             $post->message = "I´ve just installed HumHub - Yeah! :-)";
-            $post->created_by = $userId;
+            $post->content->container = $space;
+            $post->content->visibility = Content::VISIBILITY_PUBLIC;
             $post->save();
-            $post->contentMeta->addToWall($space->wall_id);
+            $post->content->addToWall();
 
             $this->redirect($this->createUrl('finished'));
         }

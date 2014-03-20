@@ -22,10 +22,9 @@ class NewLikeNotification extends Notification {
         $createdByUserId = $like->getUnderlyingObject()->created_by;
 
         // Determine Space Id if exists
-        $workspaceId = "";
-        $contentBase = $like->getContentObject()->contentMeta->getContentBase();
-        if (get_class($contentBase) == 'Space') {
-            $workspaceId = $contentBase->id;
+        $spaceId = "";
+        if ($like->getContentObject()->content->container instanceof Space) {
+            $spaceId = $like->getContentObject()->content->container->id;
         }
 
         if ($createdByUserId != $like->created_by) {
@@ -34,7 +33,7 @@ class NewLikeNotification extends Notification {
 
             $notification->class = "NewLikeNotification";
             $notification->user_id = $createdByUserId;
-            $notification->space_id = $workspaceId;
+            $notification->space_id = $spaceId;
 
             $notification->source_object_model = "Like";
             $notification->source_object_id = $like->id;

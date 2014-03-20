@@ -61,7 +61,7 @@ class CommentController extends Controller {
         $model = call_user_func(array($targetModelClass, 'model'));
         $target = $model->findByPk($targetModelId);
 
-        if ($target->asa('HContentBehavior') === null) {
+        if (!$target instanceof HActiveRecordContent) {
             throw new CHttpException(500, Yii::t('CommentModule.base', 'Invalid target class given'));
         }
 
@@ -70,7 +70,7 @@ class CommentController extends Controller {
         }
 
         // Check if we can read the target model, so we can comment it?
-        if (!$target->contentMeta->canRead(Yii::app()->user->id)) {
+        if (!$target->content->canRead(Yii::app()->user->id)) {
             throw new CHttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
@@ -124,7 +124,7 @@ class CommentController extends Controller {
             // We need it for dashboard/getFrontEndInfo
             // To count workspace Items
             try {
-                $comment->space_id = $target->contentMeta->space_id;
+                $comment->space_id = $target->content->space_id;
 
                 $workspace = Space::model()->findByPk($comment->space_id);
 

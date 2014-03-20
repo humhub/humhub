@@ -61,11 +61,9 @@ class CommentModule extends CWebModule {
      */
     public static function onWallEntryLinksInit($event) {
 
-        $contentMeta = $event->sender->object->contentMeta;
-
         $event->sender->addWidget('application.modules_core.comment.widgets.CommentLinkWidget', array(
-            'modelName' => $contentMeta->object_model,
-            'modelId' => $contentMeta->object_id,
+            'modelName' => $event->sender->object->content->object_model,
+            'modelId' => $event->sender->object->content->object_id,
                 ), array('sortOrder' => 10)
         );
     }
@@ -77,11 +75,9 @@ class CommentModule extends CWebModule {
      */
     public static function onWallEntryAddonInit($event) {
 
-        $contentMeta = $event->sender->object->contentMeta;
-
         $event->sender->addWidget('application.modules_core.comment.widgets.CommentsWidget', array(
-            'modelName' => $contentMeta->object_model,
-            'modelId' => $contentMeta->object_id,
+            'modelName' => $event->sender->object->content->object_model,
+            'modelId' => $event->sender->object->content->object_id,
                 ), array('sortOrder' => 20)
         );
     }

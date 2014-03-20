@@ -50,13 +50,13 @@ class ContentController extends Controller {
 
         $content = Content::get($model, $id);
 
-        if ($content->contentMeta->canDelete()) {
+        if ($content->content->canDelete()) {
 
             // Save wall entry ids which belongs to this post
             $json['wallEntryIds'] = array();
 
             // Wall Entry Ids
-            foreach ($content->contentMeta->getWallEntries() as $entry) {
+            foreach ($content->content->getWallEntries() as $entry) {
                 $json['wallEntryIds'][] = $entry->id;
             }
 
@@ -85,11 +85,11 @@ class ContentController extends Controller {
         $className = Yii::app()->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
-        if ($object != null && $object->contentMeta->canArchive()) {
-            $object->contentMeta->archive();
+        if ($object != null && $object->content->canArchive()) {
+            $object->content->archive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $object->contentMeta->getWallEntryIds();
+            $json['wallEntryIds'] = $object->content->getWallEntryIds();
         }
 
         // returns JSON
@@ -111,11 +111,11 @@ class ContentController extends Controller {
         $className = Yii::app()->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
-        if ($object != null && $object->contentMeta->canArchive()) {
-            $object->contentMeta->unarchive();
+        if ($object != null && $object->content->canArchive()) {
+            $object->content->unarchive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $object->contentMeta->getWallEntryIds();
+            $json['wallEntryIds'] = $object->content->getWallEntryIds();
         }
 
         // returns JSON
@@ -137,13 +137,13 @@ class ContentController extends Controller {
         $className = Yii::app()->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
-        if ($object != null && $object->contentMeta->canStick()) {
+        if ($object != null && $object->content->canStick()) {
 
-            if ($object->contentMeta->countStickedItems() < 2) {
-                $object->contentMeta->stick();
+            if ($object->content->countStickedItems() < 2) {
+                $object->content->stick();
 
                 $json['success'] = true;
-                $json['wallEntryIds'] = $object->contentMeta->getWallEntryIds();
+                $json['wallEntryIds'] = $object->content->getWallEntryIds();
             } else {
                 $json['errorMessage'] = Yii::t('WallModule.base', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
             }
@@ -170,11 +170,11 @@ class ContentController extends Controller {
 
         $object = Content::Get($className, $id);
 
-        if ($object != null && $object->contentMeta->canStick()) {
-            $object->contentMeta->unstick();
+        if ($object != null && $object->content->canStick()) {
+            $object->content->unstick();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $object->contentMeta->getWallEntryIds();
+            $json['wallEntryIds'] = $object->content->getWallEntryIds();
         }
 
         // returns JSON

@@ -75,12 +75,12 @@ class UserFollow extends HActiveRecord {
 
         // Create Wall Activity for that
         $activity = new Activity;
-        $activity->contentMeta->user_id = $follower->id;
+        $activity->content->user_id = $follower->id;
         $activity->type = "ActivityUserFollowsUser";
         $activity->object_model = "User";
         $activity->object_id = $this->user_followed_id;
         $activity->save();
-        $activity->contentMeta->addToWall($follower->wall_id);
+        $activity->content->addToWall($follower->wall_id);
 
         return parent::afterSave();
     }

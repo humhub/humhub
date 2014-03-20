@@ -9,15 +9,15 @@
  * @since 0.5
  */
 ?>
-<?php if ($object->contentMeta->isSticked()) : ?>
+<?php if ($object->content->isSticked()) : ?>
     <span class="label label-danger"><?php echo Yii::t('WallModule.base', 'Sticked'); ?></span>
 <?php endif; ?>
 
-<?php if ($object->contentMeta->isArchived()) : ?>
+<?php if ($object->content->isArchived()) : ?>
     <span class="label label-warning"><?php echo Yii::t('WallModule.base', 'Archived'); ?></span>
 <?php endif; ?>
 
-<?php if ($object->contentMeta->isPublic()) : ?>
+<?php if ($object->content->isPublic()) : ?>
     <span class="label label-success"><?php echo Yii::t('WallModule.base', 'Public'); ?></span>
 <?php endif; ?>
 

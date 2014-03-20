@@ -34,21 +34,21 @@ class ActivityWidget extends HWidget {
         // Try to figure out wallEntryId of this activity
         $wallEntryId = 0;
         if ($underlyingObject != null) {
-            if ($underlyingObject->asa('HContentBehavior') !== null) {
-                $wallEntryId = $underlyingObject->contentMeta->getFirstWallEntryId();
+            if ($underlyingObject instanceof HActiveRecordContent) {
+                $wallEntryId = $underlyingObject->content->getFirstWallEntryId();
             } elseif ($underlyingObject->asa('HContentAddonBehavior') !== null) {
-                $wallEntryId = $underlyingObject->getContentObject()->contentMeta->getFirstWallEntryId();
+                $wallEntryId = $underlyingObject->getContentObject()->content->getFirstWallEntryId();
             }
         }
 
         // When element is assigned to a workspace, assign variable
         $workspace = null;
-        if ($this->activity->contentMeta->space_id != "") {
-            $workspace = Space::model()->findByPk($this->activity->contentMeta->space_id);
+        if ($this->activity->content->space_id != "") {
+            $workspace = Space::model()->findByPk($this->activity->content->space_id);
         }
 
         // User that fired the activity
-        $user = $this->activity->contentMeta->getUser();
+        $user = $this->activity->content->user;
 
         if ($user == null) {
             Yii::log("Skipping activity without valid user", "warning");

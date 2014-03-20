@@ -37,8 +37,8 @@ class PermaLinkWidget extends HWidget {
 
         $this->render('permaLink', array(
             'object' => $this->content,
-            'model' => $this->content->contentMeta->object_model,
-            'id' => $this->content->contentMeta->object_id,
+            'model' => $this->content->content->object_model,
+            'id' => $this->content->content->object_id,
         ));
     }
 

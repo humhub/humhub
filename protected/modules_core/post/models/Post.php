@@ -17,6 +17,8 @@
  */
 class Post extends HActiveRecordContent implements ISearchable {
 
+    public $autoAddToWall = true;
+    
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -40,6 +42,7 @@ class Post extends HActiveRecordContent implements ISearchable {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('message', 'required'),
             array('created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('url', 'length', 'max' => 255),
             array('message, created_at, updated_at', 'safe'),
@@ -70,6 +73,7 @@ class Post extends HActiveRecordContent implements ISearchable {
         parent::afterSave();
 
         if ($this->isNewRecord) {
+
             $activity = Activity::CreateForContent($this);
             $activity->type = "PostCreated";
             $activity->module = "post";
@@ -98,15 +102,15 @@ class Post extends HActiveRecordContent implements ISearchable {
         $belongsToType = "";
         $belongsToGuid = "";
         $belongsToId = "";
-        if ($this->contentMeta->space_id != "") {
+        if ($this->content->space_id != "") {
             $belongsToType = "Space";
-            $belongsToId = $this->contentMeta->space_id;
+            $belongsToId = $this->content->space_id;
             $workspace = Space::model()->findByPk($belongsToId);
             if ($workspace != null)
                 $belongsToGuid = $workspace->guid;
-        } else if ($this->contentMeta->user_id != "") {
+        } else if ($this->content->user_id != "") {
             $belongsToType = "User";
-            $belongsToId = $this->contentMeta->user_id;
+            $belongsToId = $this->content->user_id;
             $user = User::model()->findByPk($belongsToId);
             if ($user != null)
                 $belongsToGuid = $user->guid;

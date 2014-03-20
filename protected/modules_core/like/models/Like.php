@@ -30,7 +30,7 @@ class Like extends HActiveRecordContentAddon {
             ),
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentAddonBehavior', 'HContentBehavior'),
+                'mustBeInstanceOf' => array('HContentAddonBehavior', 'HActiveRecordContent'),
             ),
         );
     }

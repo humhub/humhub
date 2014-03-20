@@ -9,7 +9,7 @@
 
                 <?php
                 $assignedUsers = $task->getAssignedUsers();
-                $workspace = $task->contentMeta->getContentBase();
+                $workspace = $task->content->container;
 
                 $color = 'orange';
 
@@ -53,5 +53,5 @@
             <?php endforeach; ?>
         </ul>
     </div>
-</div> 
+</div>
 

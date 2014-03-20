@@ -66,7 +66,7 @@ class PostModule extends CWebModule {
         foreach (Post::model()->findAll() as $post) {
 
             // Check for valid Content Model
-            if ($post->contentMeta == null) {
+            if ($post->content == null) {
                 $integrityChecker->showFix("Deleting post with missing content model - post id: " . $post->id);
                 if (!$integrityChecker->simulate)
                     $post->delete();
@@ -74,7 +74,7 @@ class PostModule extends CWebModule {
             }
 
             // Check for valid Content Model
-            if ($post->contentMeta->getUser() === null) {
+            if ($post->content->getUser() === null) {
                 $integrityChecker->showFix("Deleting post with missing user - post id: " . $post->id);
                 if (!$integrityChecker->simulate)
                     $post->delete();

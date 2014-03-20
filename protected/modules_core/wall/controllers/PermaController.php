@@ -49,8 +49,7 @@ class PermaController extends Controller {
         if ($wallEntry != null) {
             $obj = $wallEntry->content; // Type of IContent
             if ($obj) {
-                $contentBase = $obj->getContentBase(); // Space or User
-                $this->redirect($contentBase->getUrl(array('wallEntryId' => $id)));
+                $this->redirect($obj->container->getUrl(array('wallEntryId' => $id)));
                 return;
             }
         }
@@ -73,7 +72,7 @@ class PermaController extends Controller {
         } else {
             // Load Model and check type
             $foo = new $model;
-            if ($foo->asa('HContentBehavior') === null && $foo->asa('HContentAddonBehavior') === null) {
+            if (!$foo instanceOf HActiveRecordContent && $foo->asa('HContentAddonBehavior') === null) {
                 throw new CHttpException(404, Yii::t('WallModule.base', 'Invalid model!'));
             }
         }
@@ -88,7 +87,7 @@ class PermaController extends Controller {
                 $object = $object->getContentObject();
             }
 
-            $url = $this->createUrl('WallEntry', array('id' => $object->contentMeta->getFirstWallEntryId()));
+            $url = $this->createUrl('WallEntry', array('id' => $object->content->getFirstWallEntryId()));
             $this->redirect($url);
         }
 

@@ -1,12 +1,22 @@
 <?php
 
-class TaskFormWidget extends HWidget {
+/**
+ * PollFormWidget handles the form to create new polls.
+ *
+ * @package humhub.modules.polls.widgets
+ * @since 0.5
+ * @author Luke
+ */
+class TaskFormWidget extends ContentFormWidget {
 
-	public $workspace;
+    public function renderForm() {
 
-	public function run() {
-		$this->render('form', array('workspace'=>$this->workspace));
-	}
+        $this->submitUrl = 'tasks/task/create';
+        $this->submitButtonText = Yii::t('TasksModule.base', 'Create');
+
+        $this->form = $this->render('taskForm', array('contentContainer'=>$this->contentContainer), true);
+    }
+
 }
 
 ?>

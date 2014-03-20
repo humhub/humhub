@@ -22,10 +22,10 @@ class DeleteLinkWidget extends HWidget {
      * Executes the widget.
      */
     public function run() {
-        if ($this->object->contentMeta->canDelete()) {
+        if ($this->object->content->canDelete()) {
             $this->render('deleteLink', array(
-                'model' => $this->object->contentMeta->object_model,
-                'id' => $this->object->contentMeta->object_id
+                'model' => $this->object->content->object_model,
+                'id' => $this->object->content->object_id
             ));
         }
     }

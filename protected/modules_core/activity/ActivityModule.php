@@ -90,8 +90,8 @@ class ActivityModule extends CWebModule {
                     continue;
                 }
             }
-            if ($a->contentMeta != null) {
-                if ($a->contentMeta->getUser() == null) {
+            if ($a->content != null) {
+                if ($a->content->getUser() == null) {
                     $integrityChecker->showFix("Deleting activity with id " . $a->id . " without existing user!");
                     if (!$integrityChecker->simulate)
                         $a->delete();

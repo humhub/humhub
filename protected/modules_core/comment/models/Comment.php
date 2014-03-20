@@ -35,7 +35,7 @@ class Comment extends HActiveRecordContentAddon {
             ),
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentBehavior'),
+                'mustBeInstanceOf' => array('HActiveRecordContent'),
             ),
         );
     }

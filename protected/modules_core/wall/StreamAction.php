@@ -107,7 +107,7 @@ class StreamAction extends CAction
             $this->type = Yii::app()->request->getParam('type');
             $this->typeGuid = Yii::app()->request->getParam('guid');
 
-            if ($this->type != 'dashboard' && $this->type != 'user' && $this->type != 'community' && $this->type != 'space') {
+            if ($this->type != Wall::TYPE_DASHBOARD && $this->type != Wall::TYPE_USER && $this->type != Wall::TYPE_COMMUNITY && $this->type != Wall::TYPE_SPACE) {
                 throw new CHttpException(500, 'Invalid wall type!');
             }
 
@@ -197,7 +197,7 @@ class StreamAction extends CAction
         $stickedFirstOrder = "";
 
         // Show sticked items?
-        if (($this->type == 'space' || $this->type == 'user') && $this->wallEntryLimit != 1) {
+        if (($this->type == Wall::TYPE_SPACE || $this->type == Wall::TYPE_USER) && $this->wallEntryLimit != 1) {
             if ($this->wallEntryFrom == "") {
                 $stickedFirstOrder = "content.sticked DESC,";
             } else {
@@ -225,8 +225,12 @@ class StreamAction extends CAction
 		";
 
         // Execute SQL
+
+
         $entries = WallEntry::model()->with('content')->findAllBySql($sql, $this->sqlParams);
-        
+
+
+
         // Save Wall Type
         Wall::$currentType = $this->type;
 
@@ -237,7 +241,7 @@ class StreamAction extends CAction
         foreach ($entries as $entry) {
 
             $underlyingObject = $entry->content->getUnderlyingObject();
-            $user = $underlyingObject->contentMeta->user;
+            $user = $underlyingObject->content->user;
 
             $output .= Yii::app()->getController()->renderPartial(
                 'wall.views.wallEntry', array(
@@ -314,7 +318,7 @@ class StreamAction extends CAction
         }
 
 
-        if ($this->type == 'dashboard') {
+        if ($this->type == Wall::TYPE_DASHBOARD) {
 
 
             // In case of an space entry, we need some left join, to be able to verify that the user
@@ -359,12 +363,12 @@ class StreamAction extends CAction
 
             // Additionally Group Entries of Same Model && Instance (Only for Activites?)
             $sqlGroupBy = " GROUP BY content.object_model, content.object_id ";
-        } elseif ($this->type == 'community') {
+        } elseif ($this->type == Wall::TYPE_COMMUNITY) {
 
             $this->sqlWhere .= " AND wall_entry.wall_id IN (
 						SELECT wall_id FROM user WHERE status=1
 				) ";
-        } elseif ($this->type == 'space') {
+        } elseif ($this->type == Wall::TYPE_SPACE) {
 
             $space = Space::model()->findByAttributes(array('guid' => $this->typeGuid));
             $this->sqlWhere .= " AND wall_entry.wall_id = " . $space->wall_id;
@@ -374,14 +378,14 @@ class StreamAction extends CAction
             if (!$space->isMember()) {
                 $this->sqlWhere .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
             }
-        } elseif ($this->type == 'user') {
+        } elseif ($this->type == Wall::TYPE_USER) {
 
             $user = User::model()->findByAttributes(array('guid' => $this->typeGuid));
-            
+
             $wallId = $user->wall_id;
             if ($wallId == "")
                 $wallId = 0;
-            
+
             $this->sqlWhere .= " AND wall_entry.wall_id = " . $wallId;
         } else {
             throw new CHttpException(500, 'Target unknown!');
@@ -403,7 +407,7 @@ class StreamAction extends CAction
         if (in_array('entry_files', $this->filters) ) {
             $this->sqlWhere .= " AND (SELECT id FROM file WHERE file.object_model=content.object_model AND file.object_id=content.object_id) IS NOT NULL";
         }
-        
+
         // Setup Post specific filters
         if (in_array('posts_links', $this->filters)) {
             $this->sqlJoin .= " LEFT JOIN post ON content.object_id=post.id AND content.object_model = 'Post'";

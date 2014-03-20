@@ -10,8 +10,7 @@
 <?php
 
 $this->widget('application.modules_core.post.widgets.PostFormWidget', array(
-    'target' => Wall::TYPE_USER,
-    'guid' => Yii::app()->user->guid
+	'contentContainer' => Yii::app()->user->model
 ));
 ?>
 <?php

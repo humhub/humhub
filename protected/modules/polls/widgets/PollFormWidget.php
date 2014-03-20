@@ -7,12 +7,14 @@
  * @since 0.5
  * @author Luke
  */
-class PollFormWidget extends HWidget {
+class PollFormWidget extends ContentFormWidget {
 
-    public $space;
+    public function renderForm() {
 
-    public function run() {
-        $this->render('form', array('space' => $this->space));
+        $this->submitUrl = 'polls/poll/create';
+        $this->submitButtonText = Yii::t('PollsModule.base', 'Ask');
+
+        $this->form = $this->render('pollForm', array(), true);
     }
 
 }

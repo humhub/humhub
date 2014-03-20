@@ -38,8 +38,8 @@ class ArchiveLinkWidget extends HWidget {
     public function run() {
         $this->render('archiveLink', array(
             'object' => $this->content,
-            'model' => $this->content->contentMeta->object_model,
-            'id' => $this->content->contentMeta->object_id,
+            'model' => $this->content->content->object_model,
+            'id' => $this->content->content->object_id,
         ));
     }
 

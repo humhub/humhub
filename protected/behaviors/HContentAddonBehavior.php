@@ -63,14 +63,13 @@ class HContentAddonBehavior extends HActiveRecordBehavior {
 
         if ($target == null)
               return null;
-        
-        if ($target->asa('HContentBehavior') !== null) {
+
+        if ($target instanceof HActiveRecordContent) {
             $this->_cacheContentObject = $target;
             return $target;
         } elseif ($target->asa('HContentAddonBehavior') !== null) {
             $target2 = $target->getOwner()->getUnderlyingObject();
-
-            if ($target2->asa('HContentBehavior') !== null) {
+            if ($target2 instanceof HActiveRecordContent) {
                 $this->_cacheContentObject = $target2;
                 return $target2;
             }

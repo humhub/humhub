@@ -19,6 +19,10 @@
  */
 class Poll extends HActiveRecordContent {
 
+    const MIN_REQUIRED_ANSWERS = 2;
+
+    public $answersText;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -39,11 +43,22 @@ class Poll extends HActiveRecordContent {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array('question, created_at, created_by, updated_at, updated_by', 'required'),
+            array('question, answersText, created_at, created_by, updated_at, updated_by', 'required'),
+            array('answersText', 'validateAnswersText'),
             array('allow_multiple, created_by, updated_by', 'numerical', 'integerOnly' => true),
+            array('question', 'length', 'max' => 600),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels() {
+        return array(
+            'answersText' => Yii::t('PollsModule.base', 'Answers'),
+            'question' => Yii::t('PollsModule.base', 'Question'),
+            'allow_multiple' => Yii::t('PollsModule.base', 'Multiple answers per user'),
         );
     }
 
@@ -56,10 +71,19 @@ class Poll extends HActiveRecordContent {
         );
     }
 
-    protected function afterSave() {
+    public function afterSave() {
         parent::afterSave();
 
         if ($this->isNewRecord) {
+
+            // Set Answers
+            $answers = explode("\n", $this->answersText);
+            foreach ($answers as $answerText) {
+                $answer = new PollAnswer();
+                $answer->poll_id = $this->id;
+                $answer->answer = Yii::app()->input->stripClean($answerText);
+                $answer->save();
+            }
 
             // Create Question Answered Activity
             $activity = Activity::CreateForContent($this);
@@ -167,6 +191,10 @@ class Poll extends HActiveRecordContent {
         }
     }
 
+    public function setAnswers() {
+        
+    }
+
     /**
      * Returns the Wall Output
      */
@@ -183,6 +211,26 @@ class Poll extends HActiveRecordContent {
      */
     public function getContentTitle() {
         return Yii::t('PollsModule.base', "Question") . " \"" . Helpers::truncateText($this->question, 25) . "\"";
+    }
+
+    public function validateAnswersText() {
+
+        $answers = explode("\n", $this->answersText);
+        $answerCount = 0;
+        $answerTextNew = "";
+
+        foreach ($answers as $answer) {
+            if (trim($answer) != "") {
+                $answerCount++;
+                $answerTextNew .= $answer . "\n";
+            }
+        }
+
+        if ($answerCount < self::MIN_REQUIRED_ANSWERS) {
+            $this->addError('answersText', Yii::t('PollsModule.base', "Please specify at least {min} answers!", array("{min}" => self::MIN_REQUIRED_ANSWERS)));
+        }
+
+        $this->answersText = $answerTextNew;
     }
 
 }

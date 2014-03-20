@@ -36,7 +36,7 @@
  * @since 0.5
  * @author Luke
  */
-class User extends HActiveRecord implements ISearchable {
+class User extends HActiveRecordContentContainer implements ISearchable {
 
     const AUTH_MODE_LDAP = "ldap";
     const AUTH_MODE_LOCAL = "local";
@@ -63,9 +63,9 @@ class User extends HActiveRecord implements ISearchable {
      */
     public function behaviors() {
         return array(
-            'HContentBaseBehavior' => array(
-                'class' => 'application.behaviors.HContentBaseBehavior'
-            ),
+            'HGuidBehavior' => array(
+                'class' => 'application.behaviors.HGuidBehavior',
+            ),            
         );
     }
 
@@ -288,10 +288,6 @@ class User extends HActiveRecord implements ISearchable {
     protected function beforeSave() {
 
         if ($this->isNewRecord) {
-            if ($this->guid == "") {
-                // Create GUID for new users
-                $this->guid = UUID::v4();
-            }
             if ($this->auth_mode == "")
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
         }

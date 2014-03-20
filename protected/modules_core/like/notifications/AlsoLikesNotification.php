@@ -42,10 +42,9 @@ class AlsoLikesNotification extends Notification {
         $userIds = array_unique($userIds);
 
         // Determine Space Id if exists
-        $workspaceId = "";
-        $contentBase = $like->getContentObject()->contentMeta->getContentBase();
-        if (get_class($contentBase) == 'Space') {
-            $workspaceId = $contentBase->id;
+        $spaceId = "";
+        if ($like->getContentObject()->content->container instanceof Space) {
+            $spaceId = $like->getContentObject()->content->container->id;
         }
 
         // Write new Notification for them
@@ -54,7 +53,7 @@ class AlsoLikesNotification extends Notification {
             $notification = new Notification();
             $notification->class = "AlsoLikesNotification";
             $notification->user_id = $userId;
-            $notification->space_id = $workspaceId;
+            $notification->space_id = $spaceId;
 
             // Which object throws this notification?
             $notification->source_object_model = 'Like';

@@ -10,7 +10,7 @@
         <div class="col-md-8">
             <?php
             $this->widget('application.modules_core.post.widgets.PostFormWidget', array(
-                'target' => Wall::TYPE_USER, 'guid' => Yii::app()->user->guid
+                'contentContainer' => Yii::app()->user->model
             ));
             ?>
 
@@ -24,7 +24,7 @@
             <?php
             $this->widget('application.modules_core.dashboard.widgets.DashboardSidebarWidget', array(
                 'widgets' => array(
-                    array('application.modules_core.activity.widgets.ActivityStreamWidget', array('type' => 'dashboard'), array('sortOrder' => 10)),
+                    array('application.modules_core.activity.widgets.ActivityStreamWidget', array('type' => Wall::TYPE_DASHBOARD), array('sortOrder' => 10)),
                 )
             ));
             ?>

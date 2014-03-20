@@ -97,8 +97,7 @@ class LikeModule extends CWebModule {
      */
     public static function onWallEntryAddonInit($event) {
 
-        $contentMeta = $event->sender->object->contentMeta;
-
+        //$contentMeta2 = $event->sender->object->content;
         //$event->sender->addWidget('application.modules_core.like.widgets.ShowLikesWidget', array('object' => $event->sender->object), array('sortOrder' => 10));
     }
 

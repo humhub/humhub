@@ -33,7 +33,7 @@ class UserContent extends HActiveRecord {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentBehavior'),
+                'mustBeInstanceOf' => array('HActiveRecordContent'),
             ),
         );
     }

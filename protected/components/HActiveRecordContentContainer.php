@@ -19,25 +19,17 @@
  */
 
 /**
- * The SIContentBaseBahaviour is attached to all models which act as contentbase.
- *
- * A ContentBase can be Space or User. Essentially a ContentBase holds a
- * bunch of Content Objects.
- *
- * Each ContentBase should own a Wall Object.
- * A Content Base needs a GUID Database Field
- *
- * Additionally each ContentBase has a ProfileImage.
- *
- * Ideas/ToDo:
- *      - GetUrl  (Instead of Profile Url)
- *
- * @package humhub.behaviors
- * @since 0.5
+ * 
+ * Required Attributes:
+ *      - wall_id
+ *      - guid
+ *  
+ * Required Methods:
+ *      - getProfileImage()
+ *      - getUrl()
+ * 
  */
-class HContentBaseBehavior extends HActiveRecordBehavior {
-    // Auto Add Wall?
-    // Auto Delete Wall?
+class HActiveRecordContentContainer extends HActiveRecord implements IContentContainer {
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -47,9 +39,27 @@ class HContentBaseBehavior extends HActiveRecordBehavior {
     public function getProfileImage() {
 
         if (get_class($this->getOwner()) == 'Space') {
-            return new ProfileImage($this->getOwner()->guid, 'default_workspace');
+            return new ProfileImage($this->getOwner()->guid, 'default_space');
         }
         return new ProfileImage($this->getOwner()->guid);
+    }
+
+    /**
+     * Should be overwritten by implementation
+     */
+    public function getUrl() {
+        return "";
+    }
+
+    /**
+     * Check write permissions on content container.
+     * Overwrite this with your own implementation.
+     * 
+     * @param type $userId
+     * @return boolean
+     */
+    public function canWrite($userId = "") {
+        return false;
     }
 
 }

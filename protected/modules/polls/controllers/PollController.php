@@ -79,71 +79,29 @@ class PollController extends Controller {
      */
     public function actionCreate() {
 
-        $workspace = $this->getSpace();
-
         $this->forcePostRequest();
-
-        if (!$workspace->isMember()) {
-            throw new CHttpException(401, 'Access denied!');
-        }
-
-        $json = array();
-        $json['errorMessage'] = "None";
-
-        $questionText = Yii::app()->request->getParam('question', ""); // content of post
-        $answersBlock = Yii::app()->request->getParam('answers', ""); // content of post
-        $public = (int) Yii::app()->request->getParam('public', 0);
-        $allow_mulitple = (int) Yii::app()->request->getParam('allowMultiple', 0);
+        $_POST = Yii::app()->input->stripClean($_POST);
 
         $poll = new Poll();
-        $poll->question = Yii::app()->input->stripClean(trim($questionText));
+        $poll->content->populateByForm();
+        $poll->question = Yii::app()->request->getParam('question');
+        $poll->answersText = Yii::app()->request->getParam('answersText');
+        $poll->allow_multiple = Yii::app()->request->getParam('allowMultiple');
 
-        if ($allow_mulitple == 1) {
-            $poll->allow_multiple = 1;
+        if ($poll->validate()) {
+            $poll->save();
+            $this->renderJson(array('wallEntryId' => $poll->content->getFirstWallEntryId()));
         } else {
-            $poll->allow_multiple = 0;
+            $this->renderJson(array('errors' => $poll->getErrors()), false);
         }
-
-        // Set some content Meta Data
-        $poll->contentMeta->space_id = $workspace->id;
-        if ($public == 1 && $workspace->canShare()) {
-            $poll->contentMeta->visibility = Content::VISIBILITY_PUBLIC;
-        } else {
-            $poll->contentMeta->visibility = Content::VISIBILITY_PRIVATE;
-        }
-
-        if ($poll->save()) {
-
-            $wallEntry = $poll->contentMeta->addToWall($workspace->wall_id);
-
-            // Set Answers
-            $answers = explode("\n", $answersBlock);
-            foreach ($answers as $answerText) {
-                $answer = new PollAnswer();
-                $answer->poll_id = $poll->id;
-                $answer->answer = Yii::app()->input->stripClean($answerText);
-                $answer->save();
-            }
-
-            // Build JSON Out
-            $json['success'] = true;
-            $json['wallEntryId'] = $wallEntry->id;
-        } else {
-            $json['success'] = false;
-            $json['error'] = $poll->getErrors();
-        }
-
-        // returns JSON
-        echo CJSON::encode($json);
-        Yii::app()->end();
     }
 
     /**
      * Answers a polls
      */
     public function actionAnswer() {
-        $poll = $this->getPollByParameter();
 
+        $poll = $this->getPollByParameter();
         $answers = Yii::app()->request->getParam('answers');
 
         // Build array of answer ids
@@ -225,7 +183,7 @@ class PollController extends Controller {
 
         $json = array();
         $json['output'] = $output;
-        $json['wallEntryId'] = $question->contentMeta->getFirstWallEntryId(); // there should be only one
+        $json['wallEntryId'] = $question->content->getFirstWallEntryId(); // there should be only one
         echo CJSON::encode($json);
         Yii::app()->end();
     }
@@ -247,7 +205,7 @@ class PollController extends Controller {
             throw new CHttpException(401, Yii::t('PollsModule.base', 'Could not load poll!'));
         }
 
-        if (!$poll->contentMeta->canRead()) {
+        if (!$poll->content->canRead()) {
             throw new CHttpException(401, Yii::t('PollsModule.base', 'You have insufficient permissions to perform that operation!'));
         }
 

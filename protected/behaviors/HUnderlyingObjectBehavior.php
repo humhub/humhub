@@ -63,8 +63,10 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior {
 
     public function getUnderlyingObject() {
 
+        
         if ($this->_cached)
             return $this->_cachedObject;
+
 
         $className = $this->getOwner()->object_model;
 
@@ -72,9 +74,10 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior {
             $this->_cached = true;
             return null;
         }
-
+        
+  
         $object = $className::model()->findByPk($this->getOwner()->object_id);
-
+        
         if (count($this->mustBeInstanceOf) == 0 || $object == null) {
             $this->_cached = true;
             $this->_cachedObject = $object;

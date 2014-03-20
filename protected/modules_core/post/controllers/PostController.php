@@ -31,115 +31,28 @@ class PostController extends Controller {
         );
     }
 
-    /**
-     * Posts a new entry to the wall
-     *
-     * @return type
-     */
     public function actionPost() {
 
-        $json = array();
-        $json['errorMessage'] = "";
-
-        $target = Yii::app()->request->getParam('target', ""); // space, user
-        $guid = Yii::app()->request->getParam('guid', ""); // guid of user/space
-
-        // Check mandatory parameters
-        if ($target == "" || $guid == "") {
-            $json['error'] = true;
-            $json['errorMessage'] = Yii::t('PostModule.error', "Missing parameter!");
-            echo CJSON::encode($json);
-            return Yii::app()->end();
-        }
-
-        $message = Yii::app()->request->getParam('message', ""); // content of post
-        $message = trim($message);
-        $message = CHtml::encode($message);
-
-        // Check we got a message
-        if ($message == "") {
-            $json['error'] = true;
-            $json['errorMessage'] = Yii::t('PostModule.error', "Please enter something!");
-            echo CJSON::encode($json);
-            return Yii::app()->end();
-        }
-
-        // Wall Id to publish to
-        $wallId = "";
+        $this->forcePostRequest();
+        $_POST = Yii::app()->input->stripClean($_POST);
 
         $post = new Post();
+        $post->content->populateByForm();
+        $post->message = Yii::app()->request->getParam('message');
 
-        // Set some Space Post specific Stuff
-        $space = "";
-        if ($target == 'space') {
-            $space = Space::model()->findByAttributes(array('guid' => $guid));
+        if ($post->validate()) {
 
-            if ($space == null)
-                throw new CHttpException('404', 'Space not found!');
+            $post->save();
+            
+            // Experimental: Auto attach found images urls in message as files
+            if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
+                File::attachFilesByUrlsToContent($post, $post->message);
+            }
 
-            // Basic Access checking
-            if (!$space->canWrite())
-                throw new CHttpException('403', 'Forbidden');
-
-            $wallId = $space->wall_id;
-            $post->contentMeta->space_id = $space->id;
-
-
-            // Set some User Post specific Stuff
-        } elseif ($target == 'user') {
-
-            $user = User::model()->findByAttributes(array('guid' => $guid));
-
-            if ($user == null)
-                throw new CHttpException('404', 'Space not found!');
-
-            // Checks Basic Access
-            if (!$user->canWrite())
-                throw new CHttpException('403', 'Forbidden');
-
-            $wallId = $user->wall_id;
-            $post->contentMeta->user_id = $user->id;
+            $this->renderJson(array('wallEntryId' => $post->content->getFirstWallEntryId()));
         } else {
-            throw new CHttpException('500', 'Invalid target!');
+            $this->renderJson(array('errors' => $post->getErrors()), false);
         }
-
-
-        $public = 0;
-        if ($target == "space" && $space->canShare()) {
-            // Public / Private Handling
-            $public = (int) Yii::app()->request->getParam('public', 0); // public post?
-        } elseif ($target == "user") {
-            // User posts are always public, yet
-            $public = 1;
-        }
-
-        if ($public == 1) {
-            $post->contentMeta->visibility = Content::VISIBILITY_PUBLIC;
-        } else {
-            $post->contentMeta->visibility = Content::VISIBILITY_PRIVATE;
-        }
-
-
-        $post->message = $message;
-        $post->save();
-
-        File::attachToContent($post, Yii::app()->request->getParam('fileList', ""));
-        
-        // Experimental function, auto attach found images by urls as files
-        if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
-            File::attachFilesByUrlsToContent($post, $message);
-        }
-         
-        // Creates Wall Entry for it
-        $wallEntry = $post->contentMeta->addToWall($wallId);
-
-        // Build JSON Out
-        $json['error'] = false;
-        $json['wallEntryId'] = $wallEntry->id;
-
-        // returns JSON
-        echo CJSON::encode($json);
-        Yii::app()->end();
     }
 
 }

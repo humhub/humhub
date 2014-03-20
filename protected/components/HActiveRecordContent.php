@@ -19,28 +19,22 @@
  */
 
 /**
- * HActiveRecordContent is the base activerecord for content objects.
+ * HActiveRecordContent is the base AR for all content models.
  *
  * Each model which represents a content should derived from it.
  * (e.g. Post, Question, Task, Note, ...)
  *
- * It automatically adds the HContentBehavior which binds a 'contentMeta'
- * attribute, that always points to a Content Model Record.
- * (See SiContentBavior for more details.)
- *
- * The Content Model is responsible for
+ * It automatically binds a Content model to each instance.
+ * 
+ * The Content Model is responsible for:
  *  - Content to User/Space Binding
  *  - Access Controlling
  *  - Wall Integration
  *  - ...
  * (See Content Model for more details.)
  *
- * Cleanup:
- * On workspace or user deletion, this objects will automatically deleted.
- *
  * Note: Comments, Likes or Files are NOT Content Objects. These objects are
- * ContentAddons (HActiveRecordContentAddon) which always belongs to one
- * Content Object.
+ * ContentAddons which always belongs to one Content Object.
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
@@ -49,18 +43,22 @@
 class HActiveRecordContent extends HActiveRecord {
 
     /**
-     * Extended Constructor which automatically attaches
-     * the HContentBehavior to the objects.
-     *
-     * @param type $scenario
+     * Should this content automatically added to the wall.
+     * 
+     * @var boolean 
      */
+    public $autoAddToWall = true;
+
+    /**
+     * Corresponding Content ActiveRecord
+     *
+     * @var Content
+     */
+    public $content = null;
+
     public function __construct($scenario = 'insert') {
-
+        $this->content = new Content($scenario);
         parent::__construct($scenario);
-
-        $this->attachBehavior('HContentBehavior', array(
-            'class' => 'application.behaviors.HContentBehavior'
-        ));
     }
 
     /**
@@ -90,6 +88,75 @@ class HActiveRecordContent extends HActiveRecord {
      */
     public function getWallOut() {
         return "Default Wall Output for Class " . get_class($this->getOwner());
+    }
+
+    public function afterFind() {
+        $this->content = Content::model()->findByAttributes(array('object_model' => get_class($this), 'object_id' => $this->getPrimaryKey()));
+        parent::afterFind();
+    }
+
+    public function afterDelete() {
+        $this->content->delete();
+        parent::afterDelete();
+    }
+
+    public function afterSave() {
+
+        if ($this->isNewRecord) {
+            $this->content->user_id = $this->created_by;
+            $this->content->object_model = get_class($this);
+            $this->content->object_id = $this->getPrimaryKey();
+            $this->content->created_at = $this->created_at;
+            $this->content->created_by = $this->created_by;
+        }
+
+        $this->content->updated_at = $this->updated_at;
+        $this->content->updated_by = $this->updated_by;
+
+
+        $this->content->save();
+        parent::afterSave();
+
+        if ($this->isNewRecord && $this->autoAddToWall) {
+            $this->content->addToWall();
+        }
+    }
+
+    public function beforeValidate() {
+        return parent::beforeValidate();
+    }
+
+    public function afterValidate() {
+        if (!$this->content->validate())
+            return false;
+
+        if (!parent::afterValidate()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getErrors($attribute = null) {
+        if ($attribute != null) {
+            return parent::getErrors($attribute);
+        }
+
+        return CMap::mergeArray(parent::getErrors(), $this->content->getErrors());
+    }
+
+    public function validate($attributes = null, $clearErrors = true) {
+        if (parent::validate($attributes, $clearErrors) && $this->content->validate($attributes, $clearErrors))
+            return true;
+
+        return false;
+    }
+
+    public function hasErrors($attribute = null) {
+        if ($attribute != null)
+            return parent::hasErrors($attribute);
+
+        return parent::hasErrors() || $this->content->hasErrors();
     }
 
 }

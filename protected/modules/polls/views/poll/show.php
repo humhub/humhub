@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This view is shown when a user clicks on the "Polls" Navigation Items in the
  * Space Navigation.
@@ -10,5 +11,5 @@
  * @since 0.5
  */
 ?>
-<?php $this->widget('application.modules.polls.widgets.PollFormWidget', array('space' => $this->getSpace())); ?>
-<?php $this->widget('application.modules.polls.widgets.PollsStreamWidget', array('type' => Wall::TYPE_SPACE, 'guid' => $this->getSpace()->guid)); ?>
+<?php $this->widget('application.modules.polls.widgets.PollFormWidget', array('contentContainer' => $this->getSpace())); ?>
+<?php $this->widget('application.modules.polls.widgets.PollsStreamWidget', array('contentContainer' => $this->getSpace())); ?>

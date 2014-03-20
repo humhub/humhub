@@ -2,11 +2,9 @@
 /**
  * This view shows the streaming wall by WallStreamWidget.
  *
- * @property String $type of the wall (dashboard, space, user)
  * @property String $reloadUrl is the url to load more entries
  * @property String $startUrl is the url to load the first entries
  * @property String $singleEntryUrl is the url to load a single entry
- * @property Boolean $readonly is a flag which marks the stream as readonly. (e.g. for archived spaces)
  *
  * @package humhub.modules_core.wall
  * @since 0.5
@@ -96,7 +94,7 @@
     $(document).ready(function() {
 
         s = new Stream("#wallStream", "<?php echo $startUrl; ?>", "<?php echo $reloadUrl; ?>", "<?php echo $singleEntryUrl; ?>");
-<?php if ($readonly): ?>s.markAsReadOnly();<?php endif; ?>
+        <?php if (false): ?>s.markAsReadOnly();<?php endif; ?>
 
 
 <?php

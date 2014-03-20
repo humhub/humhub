@@ -25,11 +25,9 @@ class FileModule extends CWebModule {
      */
     public static function onWallEntryAddonInit($event) {
 
-        $contentMeta = $event->sender->object->contentMeta;
-
         $event->sender->addWidget('application.modules_core.file.widgets.ShowFilesWidget', array(
-            'modelName' => $contentMeta->object_model,
-            'modelId' => $contentMeta->object_id,
+            'modelName' => $event->sender->object->content->object_model,
+            'modelId' => $event->sender->object->content->object_id,
                 ), array('sortOrder' => 5)
         );
     }

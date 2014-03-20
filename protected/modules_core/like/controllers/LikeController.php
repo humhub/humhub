@@ -77,10 +77,10 @@ class LikeController extends Controller {
 
         // Error Target not found
         if (is_subclass_of($this->targetObject, 'HActiveRecordContent')) {
-            if (!$this->targetObject->contentMeta->canRead())
+            if (!$this->targetObject->content->canRead())
                 throw new CHttpException(401, Yii::t('LikeModule.base', 'Access denied!'));
         } elseif (is_subclass_of($this->targetObject, 'HActiveRecordContentAddon')) {
-            if (!$this->targetObject->getContentObject()->contentMeta->canRead())
+            if (!$this->targetObject->getContentObject()->content->canRead())
                 throw new CHttpException(401, Yii::t('LikeModule.base', 'Access denied!'));
         } else {
             throw new CHttpException(500, Yii::t('LikeModule.base', 'Invalid class given!'));

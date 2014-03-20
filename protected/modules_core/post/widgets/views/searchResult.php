@@ -9,12 +9,12 @@
  */
 ?>
 <?php
-$target = $post->contentMeta->getContentBase(); // User or Space
+$target = $post->content->container; // User or Space
 // Get Wall Entry Id for Link
 $wallEntryId = null;
 
 // Find the right wall entry Id
-foreach ($post->contentMeta->getWallEntries() as $wallEntry) {
+foreach ($post->content->getWallEntries() as $wallEntry) {
     if ($target->wall_id == $wallEntry->wall_id) {
         $wallEntryId = $wallEntry->id;
         break;

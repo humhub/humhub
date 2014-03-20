@@ -16,8 +16,10 @@
  * @property integer $updated_by
  */
 class Task extends HActiveRecordContent {
-    // Status
 
+    public $preassignedUsers;
+
+    // Status
     const STATUS_OPEN = 1;
     const STATUS_FINISHED = 5;
 
@@ -46,7 +48,7 @@ class Task extends HActiveRecordContent {
         return array(
             array('title,  created_at, created_by, updated_at, updated_by', 'required'),
             array('max_users, percent, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('deathline, max_users, min_users', 'safe'),
+            array('preassignedUsers, deathline, max_users, min_users', 'safe'),
         );
     }
 
@@ -73,9 +75,7 @@ class Task extends HActiveRecordContent {
             $tu->delete();
         }
 
-
         Notification::remove('Task', $this->id);
-
         return parent::delete();
     }
 
@@ -91,7 +91,7 @@ class Task extends HActiveRecordContent {
      *
      * @return type
      */
-    protected function afterSave() {
+    public function afterSave() {
 
         parent::afterSave();
 
@@ -101,6 +101,16 @@ class Task extends HActiveRecordContent {
             $activity->module = "tasks";
             $activity->save();
             $activity->fire();
+
+            // Attach Preassigned Users
+            $guids = explode(",", $this->preassignedUsers);
+            foreach ($guids as $guid) {
+                $guid = trim($guid);
+                $user = User::model()->findByAttributes(array('guid' => $guid));
+                if ($user != null) {
+                    $this->assignUser($user);
+                }
+            }
         }
 
         return true;
@@ -140,15 +150,14 @@ class Task extends HActiveRecordContent {
             #$activity = Activity::CreateForContent($this);
             #$activity->type = "TaskAssigned";
             #$activity->module = "tasks";
-            #$activity->contentMeta->user_id = $user->id;
+            #$activity->content->user_id = $user->id;
             #$activity->save();
             #$activity->fire();
-
             // Fire Notification to creator
             $notification = new Notification();
             $notification->class = "TaskAssignedNotification";
             $notification->user_id = $au->user_id; // Assigned User
-            $notification->space_id = $this->contentMeta->space_id;
+            $notification->space_id = $this->content->space_id;
             $notification->source_object_model = 'Task';
             $notification->source_object_id = $this->id;
             $notification->target_object_model = 'Task';
@@ -231,7 +240,7 @@ class Task extends HActiveRecordContent {
             $activity = Activity::CreateForContent($this);
             $activity->type = "TaskFinished";
             $activity->module = "tasks";
-            $activity->contentMeta->user_id = Yii::app()->user->id;
+            $activity->content->user_id = Yii::app()->user->id;
             $activity->save();
             $activity->fire();
 
@@ -240,7 +249,7 @@ class Task extends HActiveRecordContent {
                 $notification = new Notification();
                 $notification->class = "TaskFinishedNotification";
                 $notification->user_id = $this->created_by; // To Creator
-                $notification->space_id = $this->contentMeta->space_id;
+                $notification->space_id = $this->content->space_id;
                 $notification->source_object_model = 'Task';
                 $notification->source_object_id = $this->id;
                 $notification->target_object_model = 'Task';

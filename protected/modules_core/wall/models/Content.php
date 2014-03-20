@@ -22,15 +22,26 @@
  * @since 0.5
  */
 class Content extends CActiveRecord {
-    // Visibility Modes
 
+    /**
+     * A string contains a list of file guids which should be attached
+     * to this content after creations.
+     * 
+     * @var String
+     */
+    protected $attachFileGuidsAfterSave;
+
+    // Visibility Modes
     const VISIBILITY_PRIVATE = 0;
     const VISIBILITY_PUBLIC = 1;
 
     /**
-     * @var User stores the create user
+     * Container where content belongs to.
+     * Usually a space or user.
+     * 
+     * @var IContentContainer
      */
-    protected $_user;
+    protected $_container;
 
     /**
      * Inits the content record
@@ -61,7 +72,10 @@ class Content extends CActiveRecord {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentBehavior'),
+                'mustBeInstanceOf' => array('HActiveRecordContent'),
+            ),
+            'HGuidBehavior' => array(
+                'class' => 'application.behaviors.HGuidBehavior',
             ),
         );
     }
@@ -74,20 +88,20 @@ class Content extends CActiveRecord {
     }
 
     /**
+     * Rules to validate content model
+     * 
+     * Note: object_id, object_model, user_id are required but validated manually before save.
+     * 
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array('object_model, object_id', 'required'),
-            array('object_id, visibility, sticked, space_id, user_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
+            array('guid', 'required'),
             array('guid', 'length', 'max' => 45),
+            array('object_id, visibility, sticked, space_id, user_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('object_model', 'length', 'max' => 100),
+            array('visibility', 'validateVisibility'),
             array('archived, created_at, updated_at', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('id, guid, object_model, object_id, visibility, sticked, archived, space_id, user_id, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search'),
         );
     }
 
@@ -96,8 +110,8 @@ class Content extends CActiveRecord {
      */
     public function relations() {
         return array(
-            'workspace' => array(self::BELONGS_TO, 'Space', 'space_id'),
             'wallEntries' => array(self::HAS_MANY, 'WallEntry', 'content_id'),
+            'space' => array(self::BELONGS_TO, 'Space', 'space_id'),
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
         );
     }
@@ -124,35 +138,6 @@ class Content extends CActiveRecord {
     }
 
     /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function search() {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
-        $criteria = new CDbCriteria;
-
-        $criteria->compare('id', $this->id);
-        $criteria->compare('guid', $this->guid, true);
-        $criteria->compare('object_model', $this->object_model, true);
-        $criteria->compare('object_id', $this->object_id);
-        $criteria->compare('visibility', $this->visibility);
-        $criteria->compare('sticked', $this->sticked);
-        $criteria->compare('archived', $this->archived, true);
-        $criteria->compare('space_id', $this->space_id);
-        $criteria->compare('user_id', $this->user_id);
-        $criteria->compare('created_at', $this->created_at, true);
-        $criteria->compare('created_by', $this->created_by);
-        $criteria->compare('updated_at', $this->updated_at, true);
-        $criteria->compare('updated_by', $this->updated_by);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
-    }
-
-    /**
      * Returns a SIContent Object by given Class and ID
      *
      * @param type $className
@@ -168,29 +153,17 @@ class Content extends CActiveRecord {
         return null;
     }
 
-    /**
-     * Before Save Addons
-     *
-     * @return type
-     */
     protected function beforeSave() {
 
-        if ($this->isNewRecord) {
+        if ($this->object_model == "" || $this->object_id == "")
+            throw new CException("Could not save content with object_model or object_id!");
 
-            if ($this->guid == "") {
-                // Create GUID for new users
-                $this->guid = UUID::v4();
-            }
-        }
+        if ($this->user_id == "")
+            throw new CException("Could not save content without user_id!");
 
         return parent::beforeSave();
     }
 
-    /**
-     * After saving (update/create) a Content
-     *
-     * @param type $event
-     */
     public function afterSave() {
 
         // Loop over each eall entry and make sure its update_at / update_by
@@ -199,8 +172,9 @@ class Content extends CActiveRecord {
             $wallEntry->save();
         }
 
-        // Dirty hack
         $this->updateInvolvedUsers();
+
+        File::attachToContent($this, $this->attachFileGuidsAfterSave);
 
         return parent::afterSave();
     }
@@ -226,27 +200,6 @@ class Content extends CActiveRecord {
         // Try delete the underlying object (Post, Question, Task, ...)
         if ($this->getUnderlyingObject() !== null)
             $this->getUnderlyingObject()->delete();
-
-
-        /* Replace by event
-          // delete all comments
-          $comments = Comment::model()->findAllByAttributes(array('object_model' => $objectModel, 'object_id' => $this->getOwner()->id));
-          foreach ($comments as $comment) {
-          $comment->delete();
-          }
-
-          // delete all likes
-          $likes = Like::model()->findAllByAttributes(array('object_model' => $objectModel, 'object_id' => $this->getOwner()->id));
-          foreach ($likes as $like) {
-          $like->delete();
-          }
-
-          // delete all activities
-          $activities = Activity::model()->findAllByAttributes(array('object_model' => $objectModel, 'object_id' => $this->getOwner()->id));
-          foreach ($activities as $activity) {
-          $activity->delete();
-          }
-         */
 
         return parent::beforeDelete();
     }
@@ -298,22 +251,6 @@ class Content extends CActiveRecord {
         }
 
         // Rewrite!
-    }
-
-    /**
-     * Returns the content base of this object
-     *
-     * This can be a workspace or a user.
-     */
-    public function getContentBase() {
-
-        if ($this->space_id != "") {
-            return Space::model()->findByPk($this->space_id);
-        } else if (isset($this->user_id) && $this->user_id != "") {
-            return User::model()->findByPk($this->user_id);
-        }
-
-        return null;
     }
 
     /**
@@ -453,11 +390,10 @@ class Content extends CActiveRecord {
             return false;
         }
 
-        $contentBase = $this->getContentBase();
-        if ($contentBase instanceOf Space) {
-            return ($contentBase->isAdmin());
-        } elseif ($contentBase instanceOf User) {
-            return (Yii::app()->user->id == $contentBase->id);
+        if ($this->container instanceOf Space) {
+            return ($this->container->isAdmin());
+        } elseif ($this->container instanceOf User) {
+            return (Yii::app()->user->id == $this->container->id);
         }
 
         return false;
@@ -470,14 +406,10 @@ class Content extends CActiveRecord {
      */
     public function countStickedItems() {
 
-        $contentBase = $this->getContentBase();
-
         $sql = "SELECT count(*) FROM wall_entry LEFT JOIN content ON content.id = wall_entry.content_id WHERE wall_entry.wall_id=:wallId AND content.sticked = 1";
-        $params = array(':wallId' => $contentBase->wall_id);
+        $params = array(':wallId' => $this->container->wall_id);
 
         return WallEntry::model()->countBySql($sql, $params);
-
-        #return Content::model()->with('wallEntries')->together(true)->countByAttributes(array('sticked' => 1, 'wall_id' => $contentBase->wall_id));
     }
 
     /**
@@ -497,14 +429,12 @@ class Content extends CActiveRecord {
      */
     public function canArchive() {
 
-        $contentBase = $this->getContentBase();
-        if ($contentBase instanceOf Space) {
+        if ($this->container instanceOf Space) {
             if ($this->canWrite())
                 return true;
-            return ($contentBase->isAdmin());
-        } elseif ($contentBase instanceOf User) {
+            return ($this->container->isAdmin());
+        } elseif ($this->container instanceOf User) {
             return false; // Not available on user profiels because there are no filters?
-            //return (Yii::app()->user->id == $contentBase->id);
         }
 
         return false;
@@ -537,12 +467,20 @@ class Content extends CActiveRecord {
     }
 
     /**
-     * Also adds this this Content to the given wall
+     * Adds this this content to a given wall id
+     * 
+     * If no wallId is given, the wallId of underlying content container is 
+     * used.
      *
      * @param Integer $wallId
      * @return \WallEntry
      */
-    public function addToWall($wallId) {
+    public function addToWall($wallId = 0) {
+
+        if ($wallId == 0) {
+            $contentContainer = $this->getContainer();
+            $wallId = $contentContainer->wall_id;
+        }
 
         $wallEntry = new WallEntry();
         $wallEntry->wall_id = $wallId;
@@ -588,23 +526,89 @@ class Content extends CActiveRecord {
     }
 
     /**
-     * Returns the User which created this content
-     *
-     * @return type
+     * Sets container of this content.
+     * 
+     * @param IContentContainer $container
+     * @throws CException
      */
-    public function getUser() {
+    public function setContainer($container) {
 
-        // Use already loaded user
-        if ($this->_user != null)
-            return $this->_user;
-
-        if ($this->user != null) {
-            $this->_user = $this->user;
-            return $this->_user;
+        if ($container instanceOf Space) {
+            $this->space_id = $container->id;
+        } elseif ($container instanceOf User) {
+            $this->user_id = $container->id;
+        } else {
+            throw new CException("Invalid container type!");
         }
 
-        $this->_user = User::model()->findByPk($this->created_by);
-        return $this->_user;
+        $this->_container = $container;
+    }
+
+    /**
+     * Returns the container which this content belongs to.
+     * This is usally a space or user.
+     * 
+     * @return IContentContainer
+     * @throws CException
+     */
+    public function getContainer() {
+
+        if ($this->_container != null)
+            return $this->_container;
+
+        if ($this->space_id != null)
+            $container = Space::model()->findByPk($this->space_id);
+        elseif ($this->user_id != null)
+            $container = User::model()->findByPk($this->user_id);
+        else
+            throw new CException("Could not determine container type!");
+
+        $this->_container = $container;
+
+        return $this->_container;
+    }
+
+    /**
+     * Sets standard content informations like container, visibility, files
+     * by ContentFormWidget Submit Data.
+     */
+    public function populateByForm() {
+
+        // Set Content Container
+        $contentContainer = null;
+        if (Yii::app()->request->getParam('containerClass') == 'User')
+            $contentContainer = User::model()->findByAttributes(array('guid' => Yii::app()->request->getParam('containerGuid', "")));
+        elseif (Yii::app()->request->getParam('containerClass') == 'Space')
+            $contentContainer = Space::model()->findByAttributes(array('guid' => Yii::app()->request->getParam('containerGuid', "")));
+
+        $this->container = $contentContainer;
+
+        if (get_class($this->container) == 'Space') {
+            $this->visibility = Yii::app()->request->getParam('visibility');
+        } elseif (get_class($this->container) == 'User') {
+            $this->visibility = 1;
+        }
+
+        // Store List of attached Files to add them after Save
+        $this->attachFileGuidsAfterSave = Yii::app()->request->getParam('fileList');
+    }
+
+    public function beforeValidate() {
+
+        if (!$this->container->canWrite()) {
+            $this->addError('visibility', Yii::t('WallModule.base', 'Insufficent permissions to create content!'));
+        }
+
+        return parent::beforeValidate();
+    }
+
+    public function validateVisibility() {
+
+        if (get_class($this->container) == 'Space') {
+            if (!$this->container->canShare() && $this->visibility) {
+                $this->addError('visibility', Yii::t('WallModule.base', 'You cannot create public visible content!'));
+            }
+        }
     }
 
 }

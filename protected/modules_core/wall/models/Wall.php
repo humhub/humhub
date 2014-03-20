@@ -24,10 +24,10 @@
  */
 class Wall extends HActiveRecord {
 
-    const TYPE_USER = 'user';
-    const TYPE_SPACE = 'space';
-    const TYPE_DASHBOARD = 'dashboard'; // meta, not in db
-    const TYPE_COMMUNITY = 'community'; // meta, not in db
+    const TYPE_USER = 'User';
+    const TYPE_SPACE = 'Space';
+    const TYPE_DASHBOARD = 'Dashboard'; // meta, not in db
+    const TYPE_COMMUNITY = 'Community'; // meta, not in db
 
     /**
      * Add mix-ins to this model
@@ -38,7 +38,7 @@ class Wall extends HActiveRecord {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentBaseBehavior'),
+                'mustBeInstanceOf' => array('HActiveRecordContentContainer'),
             ),
         );
     }

@@ -195,14 +195,14 @@ class File extends HActiveRecord {
      * Returns the Url of the File
      */
     public function getUrl($suffix = "") {
-        
+
         $params = array();
         $params['guid'] = $this->guid;
         if ($suffix) {
             $params['suffix'] = $suffix;
         }
-        
-        
+
+
         return Yii::app()->getController()->createAbsoluteUrl('//file/file/download', $params);
     }
 
@@ -259,7 +259,7 @@ class File extends HActiveRecord {
 
         if (!is_file($this->getPath()))
             return "";
-        
+
         $imageInfo = getimagesize($this->getPath());
 
         // Check if we got any dimensions
@@ -271,14 +271,14 @@ class File extends HActiveRecord {
         if ($imageInfo[2] != IMAGETYPE_PNG && $imageInfo[2] != IMAGETYPE_JPEG && $imageInfo[2] != IMAGETYPE_GIF) {
             return "";
         }
-        
-        ImageConverter::Resize($this->getPath(), $this->getPath($prefix), array('mode'=>'max', 'width'=>$maxWidth, 'height'=>$maxHeight));
+
+        ImageConverter::Resize($this->getPath(), $this->getPath($prefix), array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
         return $this->getUrl($prefix);
     }
 
     /**
      * Store given filename into file record.
-     * 
+     *
      * @param type $tmpName
      */
     public function slurp($tmpName) {
@@ -307,7 +307,7 @@ class File extends HActiveRecord {
 
     /**
      * Store given content into file record.
-     * 
+     *
      * @param String $tmpName
      */
     public function slurpContent($content) {
@@ -323,7 +323,7 @@ class File extends HActiveRecord {
 
     /**
      * Returns Stylesheet Classname based on file extension
-     * 
+     *
      * @return string CSS Class
      */
     public function getMimeIconClass() {
@@ -395,12 +395,12 @@ class File extends HActiveRecord {
 
         // IS Content
         if (is_subclass_of($this->getUnderlyingObject(), 'HActiveRecordContent')) {
-            if (!$this->getUnderlyingObject()->contentMeta->canRead($userId))
+            if (!$this->getUnderlyingObject()->content->canRead($userId))
                 return false;
 
             // Is ContentAddon
         } elseif (is_subclass_of($this->getUnderlyingObject(), 'HActiveRecordContentAddon')) {
-            if (!$this->getUnderlyingObject()->getContentObject()->contentMeta->canRead($userId))
+            if (!$this->getUnderlyingObject()->getContentObject()->content->canRead($userId))
                 return false;
 
             // We dont know on which object this file hangs, so allow file downloading
@@ -414,12 +414,12 @@ class File extends HActiveRecord {
     /**
      * Attaches a given list of files to an existing content object.
      *
-     * @param HActiveRecordContent $content is a HActiveRecordContent Object
+     * @param Mixed $content is a HActiveRecordContent or Content Instance
      * @param String $files is a comma seperated list of uploaded file guids
      */
     public static function attachToContent($content, $files) {
 
-        if (!$content instanceof HActiveRecordContent) {
+        if (!$content instanceof HActiveRecordContent && !$content instanceof Content) {
             throw new CException("Invalid content object given!");
         }
 
@@ -431,8 +431,14 @@ class File extends HActiveRecord {
             // Dont allow file overtaking (ensure object_model is null)
             if ($file != null && $file->object_model == "") {
 
-                $file->object_model = get_class($content);
-                $file->object_id = $content->getPrimaryKey();
+                if ($content instanceof HActiveRecordContent) {
+                    $file->object_model = get_class($content);
+                    $file->object_id = $content->getPrimaryKey();
+                } else {
+                    $file->object_model = $content->object_model;
+                    $file->object_id = $content->object_id;
+                }
+
                 $file->save();
             }
         }
@@ -441,7 +447,7 @@ class File extends HActiveRecord {
     /**
      * Attaches files by url which found in content text.
      * This is experimental and only supports image files at the moment.
-     * 
+     *
      * @param HActiveRecordContent $content
      * @param String $text
      */
