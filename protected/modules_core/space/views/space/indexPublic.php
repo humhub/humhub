@@ -15,7 +15,7 @@
                         <h3 class="media-heading"><?php echo $space->name; ?></h3>
                         <?php echo Yii::t('SpaceModule.base', 'created by'); ?> <a
                             href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getOwner()->guid)); ?>"><?php echo $space->getOwner()->displayName; ?></a>
-                        <?php if ($space->description != "") { ?>
+                            <?php if ($space->description != "") { ?>
                             <hr>
                             <?php echo $space->description; ?>
                         <?php } ?>
@@ -39,7 +39,7 @@
                                         ?>
                                         <a href="<?php echo $this->createUrl('//space/space/requestMembership', array('sguid' => $space->guid)); ?>"
                                            class="btn btn-primary"><?php echo Yii::t('SpaceModule.base', 'Become member'); ?></a>
-                                    <?php
+                                        <?php
                                     }
                                 }
                             } elseif ($membership->status == UserSpaceMembership::STATUS_INVITED) {
@@ -65,12 +65,7 @@
                 </div>
             </div>
         </div>
-        <?php
-        $this->widget('application.modules_core.wall.widgets.WallStreamWidget', array(
-            'type' => Wall::TYPE_SPACE,
-            'guid' => $this->getSpace()->guid,
-            'readonly' => ($this->getSpace()->status != Space::STATUS_ENABLED)));
-        ?>
+        <?php $this->widget('application.modules_core.wall.widgets.WallStreamWidget', array('contentContainer' => $space)); ?>
     </div>
 </div>
 

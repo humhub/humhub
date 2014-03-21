@@ -46,7 +46,7 @@ class WallModule extends CWebModule {
         //TODO: Maybe not the best place for that
         $integrityChecker->showTestHeadline("Validating Content Objects (" . Content::model()->count() . " entries)");
         foreach (Content::model()->findAll() as $content) {
-            if ($content->getUser() == null) {
+            if ($content->user == null) {
                 $integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!");
                 if (!$integrityChecker->simulate)
                     $content->delete();

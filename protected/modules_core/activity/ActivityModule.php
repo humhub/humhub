@@ -66,39 +66,5 @@ class ActivityModule extends CWebModule {
         }
     }
 
-    /**
-     * On run of integrity check command, validate all activity
-     *
-     * @param type $event
-     */
-    public static function onIntegrityCheck($event) {
-
-        $integrityChecker = $event->sender;
-
-        $integrityChecker->showTestHeadline("Validating Activity Module (" . Activity::model()->count() . " entries)");
-
-        foreach (Activity::model()->findAll() as $a) {
-
-            // Check if underlying Model Exists
-            $className = $a->object_model;
-            if ($className != "") {
-                $obj = $className::model()->findByPk($a->object_id);
-                if ($obj === null) {
-                    $integrityChecker->showFix("Deleting activity with id " . $a->id . " without existing underlying object!");
-                    if (!$integrityChecker->simulate)
-                        $a->delete();
-                    continue;
-                }
-            }
-            if ($a->content != null) {
-                if ($a->content->getUser() == null) {
-                    $integrityChecker->showFix("Deleting activity with id " . $a->id . " without existing user!");
-                    if (!$integrityChecker->simulate)
-                        $a->delete();
-                    continue;
-                }
-            }
-        }
-    }
 
 }

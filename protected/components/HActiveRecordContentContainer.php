@@ -39,9 +39,9 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
     public function getProfileImage() {
 
         if (get_class($this->getOwner()) == 'Space') {
-            return new ProfileImage($this->getOwner()->guid, 'default_space');
+            return new ProfileImage($this->guid, 'default_space');
         }
-        return new ProfileImage($this->getOwner()->guid);
+        return new ProfileImage($this->guid);
     }
 
     /**

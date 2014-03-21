@@ -74,7 +74,7 @@ class PostModule extends CWebModule {
             }
 
             // Check for valid Content Model
-            if ($post->content->getUser() === null) {
+            if ($post->content->user === null) {
                 $integrityChecker->showFix("Deleting post with missing user - post id: " . $post->id);
                 if (!$integrityChecker->simulate)
                     $post->delete();
