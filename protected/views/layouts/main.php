@@ -31,7 +31,7 @@
         <div class="container">
             <div class="topbar-brand">
                 <a class="navbar-brand hidden-xs"
-                   href="<?php echo Yii::app()->createUrl('//dashboard/index'); ?>"><?php echo Yii::app()->name; ?></a>
+                   href="<?php echo Yii::app()->createUrl('//'); ?>"><?php echo Yii::app()->name; ?></a>
             </div>
 
             <div class="topbar-actions pull-right">
@@ -216,7 +216,7 @@
             var $newMessages = parseInt(0);
 
             // load data
-            jQuery.getJSON("<?php echo $this->createUrl('//dashboard/GetFrontEndInfo'); ?>", function (json) {
+            jQuery.getJSON("<?php echo $this->createUrl('//dashboard/dashboard/GetFrontEndInfo'); ?>", function (json) {
 
                 // save numbers to variables
                 $newNotifications = parseInt(json.newNotifications);

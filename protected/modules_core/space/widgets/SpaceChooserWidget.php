@@ -14,7 +14,7 @@ class SpaceChooserWidget extends HWidget
         // publish resource files
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->setJavascriptVariable('scSpaceListUrl', $this->createUrl('//space/list', array('ajax' => 1)));
-        Yii::app()->clientScript->setJavascriptVariable('scSpaceEntryUrl', $this->createUrl('//dashboard/GetFrontEndInfo', array('ajax' => 1)));
+        Yii::app()->clientScript->setJavascriptVariable('scSpaceEntryUrl', $this->createUrl('//dashboard/dashboard/GetFrontEndInfo', array('ajax' => 1)));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/spacechooser.js');
     }
 
