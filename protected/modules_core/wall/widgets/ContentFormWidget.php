@@ -59,11 +59,25 @@ class ContentFormWidget extends HWidget {
      * Overwrite me!
      */
     public function renderForm() {
-        
+        return "";
     }
 
+    
+    /**
+     * Checks write permissions
+     */
+    protected function hasWritePermission() {
+        return $this->contentContainer->canWrite();
+    }
+    
+    
     public function run() {
+        
+        if (!$this->hasWritePermission())
+            return;
+        
         $this->renderForm();
+        
         $this->render('application.modules_core.wall.widgets.views.contentForm', array(
             'form' => $this->form,
             'contentContainer' => $this->contentContainer,
