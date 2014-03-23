@@ -232,7 +232,6 @@ class ConfigController extends Controller {
             $post->content->container = $space;
             $post->content->visibility = Content::VISIBILITY_PUBLIC;
             $post->save();
-            $post->content->addToWall();
 
             $this->redirect($this->createUrl('finished'));
         }
