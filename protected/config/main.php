@@ -9,6 +9,15 @@ Yii::setPathOfAlias('modules_core', dirname(__FILE__) . '/../modules_core');
 
 
 $defaults = require (dirname(__FILE__) . '/_defaults.php');
+
+// Create empty dynamic configuration file, when not exists
+if (!file_exists($defaults['params']['dynamicConfigFile'])) {
+    $content = "<" . "?php return ";
+    $content .= var_export(array(), true);
+    $content .= "; ?" . ">";
+    file_put_contents($defaults['params']['dynamicConfigFile'], $content);
+}
+
 $pre_config = CMap::mergeArray($defaults, require ($defaults['params']['dynamicConfigFile']));
 
 return CMap::mergeArray($pre_config, array(
