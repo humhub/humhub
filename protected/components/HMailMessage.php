@@ -58,7 +58,7 @@ class HMailMessage extends YiiMailMessage {
             // Name of current theme if enabled
             $themeName = "";
 
-            if (Yii::app() instanceOf CConsoleApplication) {
+            if (Yii::app() instanceof CConsoleApplication) {
                 if (Yii::app()->theme && Yii::app()->theme != "") {
                     $themeName = Yii::app()->theme;
                 }

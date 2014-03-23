@@ -22,9 +22,7 @@ class AlsoCommentedNotification extends Notification {
      * @param type $comment
      */
     public static function fire($comment) {
-
-        $target = $comment->getUnderlyingObject();
-        $targetCreatorId = $target->created_by;     // gets also an new comment notification
+        $targetCreatorId = $comment->content->user_id;     // gets also an new comment notification
         // Get Users which are also commented this model
         $userIds = array();
         $otherComments = Comment::model()->findAllByAttributes(array('object_model' => $comment->object_model, 'object_id' => $comment->object_id));

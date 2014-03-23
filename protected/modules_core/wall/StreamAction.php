@@ -101,7 +101,7 @@ class StreamAction extends CAction
 
         Yii::beginProfile('initStreamAction');
 
-        if (!Yii::app() instanceOf CConsoleApplication) {
+        if (!Yii::app() instanceof CConsoleApplication) {
 
             // Define which stream we shall display?
             $this->type = Yii::app()->request->getParam('type');

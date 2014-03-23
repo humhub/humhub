@@ -20,7 +20,7 @@
  * @package humhub.modules_core.file.models
  * @since 0.5
  */
-class File extends HActiveRecord {
+class File extends HActiveRecordContentAddon {
 
     // Configuration
     protected $folder_uploads = "file";
@@ -39,19 +39,6 @@ class File extends HActiveRecord {
      */
     public function tableName() {
         return 'file';
-    }
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors() {
-        return array(
-            'HUnderlyingObjectBehavior' => array(
-                'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-            ),
-        );
     }
 
     /**
@@ -164,7 +151,7 @@ class File extends HActiveRecord {
         $file->mime_type = $cUploadedFile->getType();
 
         #$file->size = $cUploadedFile->getSize();
-
+            
         if ($file->save()) {
 
             // Add File to Filebase
@@ -392,23 +379,11 @@ class File extends HActiveRecord {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-
-        // IS Content
-        if (is_subclass_of($this->getUnderlyingObject(), 'HActiveRecordContent')) {
-            if (!$this->getUnderlyingObject()->content->canRead($userId))
-                return false;
-
-            // Is ContentAddon
-        } elseif (is_subclass_of($this->getUnderlyingObject(), 'HActiveRecordContentAddon')) {
-            if (!$this->getUnderlyingObject()->getContentObject()->content->canRead($userId))
-                return false;
-
-            // We dont know on which object this file hangs, so allow file downloading
-        } else {
+       
+        if ($this->content->canRead())
             return true;
-        }
 
-        return true;
+        return false;
     }
 
     /**

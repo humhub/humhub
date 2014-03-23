@@ -19,23 +19,6 @@
 class Like extends HActiveRecordContentAddon {
 
     /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors() {
-        return array(
-            'HContentAddonBehavior' => array(
-                'class' => 'application.behaviors.HContentAddonBehavior'
-            ),
-            'HUnderlyingObjectBehavior' => array(
-                'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentAddonBehavior', 'HActiveRecordContent'),
-            ),
-        );
-    }
-
-    /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Like the static model class

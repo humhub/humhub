@@ -25,7 +25,7 @@
 class Activity extends HActiveRecordContent {
 
     public $autoAddToWall = false;
-    
+
     /**
      * Add mix-ins to this model
      *
@@ -35,7 +35,7 @@ class Activity extends HActiveRecordContent {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
-                'mustBeInstanceOf' => array('HContentAddonBehavior', 'HActiveRecordContent', 'HActiveRecordContentContainer'),
+                'mustBeInstanceOf' => array('HActiveRecordContent', 'HActiveRecordContentContainer', 'HActiveRecordContentAddon'),
             ),
         );
     }
@@ -71,39 +71,39 @@ class Activity extends HActiveRecordContent {
     }
 
     /**
-     * Creates a "prepared" activity for an Content or ContentAddon Object
+     * Creates an instance of Activity for given object.
      *
-     * This prepopulate some settings like visibilty, space_id/user_id & co.
-     *
-     * @param type $content
+     * The activity instance inherits options/attributes like user, space or 
+     * visibility of the given object.
+     * 
+     * Dont forget to also set activity attributes like type, module before
+     * saving it!
+     * 
+     * @param Mixed $content Instance of HActiveRecordContent or HActiveRecordContentAddon
+     * @return Activity Prepared activity for given $object
      */
     public static function CreateForContent($object) {
 
         $activity = new Activity;
 
-        $content = null;
-        if ($object instanceOf HActiveRecordContent) {
-            $content = $object;
-            // Use same created_by & visibility as the Content Object
-            $activity->content->user_id = $content->content->created_by;
-        } elseif ($object->asa('HContentAddonBehavior') !== null) {
-            $content = $object->getContentObject();
-        } else {
-            throw new CHttpException(500, Yii::t('ActivityModule.base', 'Could not create activity for this kind of object!'));
+        if (!$object instanceof HActiveRecordContent && !$object instanceof HActiveRecordContentAddon) {
+            throw new CHttpException(500, Yii::t('ActivityModule.base', 'Could not create activity for this object type!'));
         }
 
-        $activity->content->user_id = Yii::app()->user->id;
+        $content = $object->content;
+
+        $activity->content->user_id = $content->created_by;
 
         // Always take visibilty of Content Object for that activity
-        $activity->content->visibility = $content->content->visibility;
+        $activity->content->visibility = $content->visibility;
 
         // Auto Set object_model & object_id of given object
         $activity->object_model = get_class($object);
-        $activity->object_id = $object->id;
+        $activity->object_id = $object->getPrimaryKey();
 
         // Also assign space_id if set
-        if ($content->content->container instanceof Space) {
-            $activity->content->space_id = $content->content->container->id;
+        if ($content->container instanceof Space) {
+            $activity->content->space_id = $content->container->id;
         }
 
         return $activity;

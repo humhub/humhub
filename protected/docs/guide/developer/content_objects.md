@@ -1,61 +1,47 @@
-Content
-=======
+Content Objects
+===============
 
-In ZAMM we differ content objects in two areas.
+There are three basic base classes which are used to store content.
 
----
 
-Content
--------
+Container (HActiveRecordContentContainer)
+-----------------------------------------
 
-``Content`` are the major content objects. These have distinct access privileges which are linked to a space or user. 
+Base Class: HActiveRecordContentContainer
+
+### Examples
+* User
+* Space
+
+Content (HActiveRecordContent)
+------------------------------
+
+Each content is linked to a content container.
+
+All subclasses of HActiveRecordContent will automatically bound to a Content 
+Model. This Model is reponsible for all generic content features like (ACL,
+Wall, ...). You can access the underlying Content model via the ``content`` 
+attribute.
+
+All content objects are automatically added to the wall of the underlying content container. 
+
+Base Class: HActiveRecordContent
 
 ### Examples
 * Post
+* Poll
 * Task
-* Question
-
-Each Content Class *must* extend the ``SIActiveRecordContent`` class. 
-
-If the content object should also be displayed in a Wall/Stream there must be a public method ``getWallOut`` which returns the wall entry.
-See [Wall Entries](wall_entries.md) for more details.
-
-Each content object gets a content active record instance by  ``SIActiveRecordContent`` parent class automatically.
-This content record is responsible for generic stuff like:
-
-* Wall Bindings & Functions
-* Archiving
-* Security (canRead, canWrite, ...)
-* Visibilty
-* Deletion
-* ...
-
-The underlying content object of a Content can be accessed by the ``contentMeta`` attribute.
-
-Example:
-    $canRead = $post->contentMeta->canRead();
 
 
-You also need to register new content objects in the autostart.php of your module.
+Addon (HActiveRecordContentAddon)
+---------------------------------
 
-    Yii::app()->moduleManager->registerContentModel('MyContent');
+Each content addon is liked to a content object which can be accessed via
+``content`` attribute.
 
----
-
-
-ContentAddon
-------------
-
-``ContentAddons`` are always linked to a ``Content`` or ``ContentAddon`` object and provides additional information for it.
+Base Class: HActiveRecordContentAddon
 
 ### Examples
-* Comment
 * Like
-* Files
-
-Each ContentAddon Class *must* extends the ``SIActiveRecordContentAddon`` class and implements the ``SIContentAddonBehavior`` behavior.
-
-Also important: 
-     Post (Content) -> Comment (ContentAddon) -> Like(ContentAddon)
-
-
+* Comment
+* File

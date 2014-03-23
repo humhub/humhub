@@ -46,7 +46,7 @@ class CommentModule extends CWebModule {
         // Loop over all comments
         foreach (Comment::model()->findAll() as $c) {
 
-            if ($c->getUnderlyingObject() === null) {
+            if ($c->source === null) {
                 $integrityChecker->showFix("Deleting comment id " . $c->id . " without existing target!");
                 if (!$integrityChecker->simulate)
                     $c->delete();

@@ -14,7 +14,7 @@ class NewCommentNotification extends Notification {
     public static function fire($comment) {
 
         // Get Comment Root
-        $createdByUserId = $comment->getContentObject()->created_by;
+        $createdByUserId = $comment->content->created_by;
 
         if ($createdByUserId != $comment->created_by) {
 

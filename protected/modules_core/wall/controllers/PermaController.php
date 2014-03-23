@@ -62,36 +62,37 @@ class PermaController extends Controller {
      */
     public function actionContent() {
 
-        // Id of wall entry
+        $content = Content::model()->findByAttributes(array('object_model' => Yii::app()->request->getParam('model'), 'object_id' => Yii::app()->request->getParam('id')));
+        if ($content != null) {
+            $url = $this->createUrl('WallEntry', array('id' => $content->getFirstWallEntryId()));
+            $this->redirect($url);
+
+            return;
+        }
+
         $id = (int) Yii::app()->request->getParam('id', "");
-        $model = Yii::app()->request->getParam('model', "");
+        $model = Yii::app()->request->getParam('model');
 
         // Check given model
         if (!class_exists($model)) {
-            throw new CHttpException(404, Yii::t('WallModule.base', 'Unknown Content Model!'));
-        } else {
-            // Load Model and check type
-            $foo = new $model;
-            if (!$foo instanceOf HActiveRecordContent && $foo->asa('HContentAddonBehavior') === null) {
-                throw new CHttpException(404, Yii::t('WallModule.base', 'Invalid model!'));
-            }
+            throw new CHttpException(404, Yii::t('WallModule.base', 'Unknown content class!'));
+        }
+
+        // Load Model and check type
+        $foo = new $model;
+        if (!$foo instanceof HActiveRecordContent && !$foo instanceof HActiveRecordContentAddon) {
+            throw new CHttpException(404, Yii::t('WallModule.base', 'Invalid content class!'));
         }
 
         $model = call_user_func(array($model, 'model'));
         $object = $model->findByPk($id);
 
-        if ($object != null) {
-
-            // Get Content Object of ContentAddon
-            if ($object->asa('HContentAddonBehavior') !== null) {
-                $object = $object->getContentObject();
-            }
-
-            $url = $this->createUrl('WallEntry', array('id' => $object->content->getFirstWallEntryId()));
-            $this->redirect($url);
+        if ($object == null) {
+            throw new CHttpException(404, Yii::t('WallModule.base', 'Could not find requested content!'));
         }
 
-        throw new CHttpException(404, Yii::t('WallModule.base', 'Requested content not found!'));
+        $url = $this->createUrl('WallEntry', array('id' => $object->content->getFirstWallEntryId()));
+        $this->redirect($url);
     }
 
 }

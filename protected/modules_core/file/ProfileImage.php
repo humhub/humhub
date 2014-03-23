@@ -83,7 +83,7 @@ class ProfileImage {
         $path = "";
 
         // Workaround for absolute urls in console applications (Cron)
-        if (Yii::app() instanceOf CConsoleApplication) {
+        if (Yii::app() instanceof CConsoleApplication) {
             $path = Yii::app()->request->getBaseUrl();
         } else {
             $path = Yii::app()->getBaseUrl(true);

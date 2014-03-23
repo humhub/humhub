@@ -23,8 +23,6 @@ class AlsoLikesNotification extends Notification {
         // Get Users which are also likes this model
         $userIds = array();
 
-        $underlyingObject = $like->getUnderlyingObject();
-
         $otherLikes = Like::model()->findAllByAttributes(array('object_model' => $like->object_model, 'object_id' => $like->object_id));
         foreach ($otherLikes as $otherLike) {
 
@@ -32,9 +30,8 @@ class AlsoLikesNotification extends Notification {
                 continue;
 
             // This user will also gets a "New Like" notification
-            if ($underlyingObject->created_by == $otherLike->created_by)
+            if ($like->source->created_by == $otherLike->created_by)
                 continue;
-
 
             $userIds[] = $otherLike->created_by;
         }
@@ -43,8 +40,8 @@ class AlsoLikesNotification extends Notification {
 
         // Determine Space Id if exists
         $spaceId = "";
-        if ($like->getContentObject()->content->container instanceof Space) {
-            $spaceId = $like->getContentObject()->content->container->id;
+        if ($like->content->container instanceof Space) {
+            $spaceId = $like->content->container->id;
         }
 
         // Write new Notification for them

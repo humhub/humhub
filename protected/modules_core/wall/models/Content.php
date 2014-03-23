@@ -26,7 +26,7 @@ class Content extends CActiveRecord {
     /**
      * A string contains a list of file guids which should be attached
      * to this content after creations.
-     * 
+     *
      * @var String
      */
     protected $attachFileGuidsAfterSave;
@@ -38,7 +38,7 @@ class Content extends CActiveRecord {
     /**
      * Container where content belongs to.
      * Usually a space or user.
-     * 
+     *
      * @var IContentContainer
      */
     protected $_container;
@@ -89,9 +89,9 @@ class Content extends CActiveRecord {
 
     /**
      * Rules to validate content model
-     * 
+     *
      * Note: object_id, object_model, user_id are required but validated manually before save.
-     * 
+     *
      * @return array validation rules for model attributes.
      */
     public function rules() {
@@ -390,9 +390,9 @@ class Content extends CActiveRecord {
             return false;
         }
 
-        if ($this->container instanceOf Space) {
+        if ($this->container instanceof Space) {
             return ($this->container->isAdmin());
-        } elseif ($this->container instanceOf User) {
+        } elseif ($this->container instanceof User) {
             return (Yii::app()->user->id == $this->container->id);
         }
 
@@ -429,11 +429,11 @@ class Content extends CActiveRecord {
      */
     public function canArchive() {
 
-        if ($this->container instanceOf Space) {
+        if ($this->container instanceof Space) {
             if ($this->canWrite())
                 return true;
             return ($this->container->isAdmin());
-        } elseif ($this->container instanceOf User) {
+        } elseif ($this->container instanceof User) {
             return false; // Not available on user profiels because there are no filters?
         }
 
@@ -468,8 +468,8 @@ class Content extends CActiveRecord {
 
     /**
      * Adds this this content to a given wall id
-     * 
-     * If no wallId is given, the wallId of underlying content container is 
+     *
+     * If no wallId is given, the wallId of underlying content container is
      * used.
      *
      * @param Integer $wallId
@@ -527,15 +527,15 @@ class Content extends CActiveRecord {
 
     /**
      * Sets container of this content.
-     * 
+     *
      * @param IContentContainer $container
      * @throws CException
      */
     public function setContainer($container) {
 
-        if ($container instanceOf Space) {
+        if ($container instanceof Space) {
             $this->space_id = $container->id;
-        } elseif ($container instanceOf User) {
+        } elseif ($container instanceof User) {
             $this->user_id = $container->id;
         } else {
             throw new CException("Invalid container type!");
@@ -547,7 +547,7 @@ class Content extends CActiveRecord {
     /**
      * Returns the container which this content belongs to.
      * This is usally a space or user.
-     * 
+     *
      * @return IContentContainer
      * @throws CException
      */

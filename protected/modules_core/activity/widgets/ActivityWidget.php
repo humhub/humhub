@@ -34,10 +34,8 @@ class ActivityWidget extends HWidget {
         // Try to figure out wallEntryId of this activity
         $wallEntryId = 0;
         if ($underlyingObject != null) {
-            if ($underlyingObject instanceof HActiveRecordContent) {
+            if ($underlyingObject instanceof HActiveRecordContent || $underlyingObject instanceof HActiveRecordContentAddon) {
                 $wallEntryId = $underlyingObject->content->getFirstWallEntryId();
-            } elseif ($underlyingObject->asa('HContentAddonBehavior') !== null) {
-                $wallEntryId = $underlyingObject->getContentObject()->content->getFirstWallEntryId();
             }
         }
 

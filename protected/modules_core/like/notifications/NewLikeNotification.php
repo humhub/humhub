@@ -18,21 +18,19 @@ class NewLikeNotification extends Notification {
      */
     public static function fire($like) {
 
-        // Get Comment Root
-        $createdByUserId = $like->getUnderlyingObject()->created_by;
-
         // Determine Space Id if exists
         $spaceId = "";
-        if ($like->getContentObject()->content->container instanceof Space) {
-            $spaceId = $like->getContentObject()->content->container->id;
+        if ($like->content->container instanceof Space) {
+            $spaceId = $like->content->container->id;
         }
 
-        if ($createdByUserId != $like->created_by) {
+        if ($like->source->created_by != $like->created_by) {
+
             // Send Notification to owner
             $notification = new Notification();
 
             $notification->class = "NewLikeNotification";
-            $notification->user_id = $createdByUserId;
+            $notification->user_id = $like->source->created_by;
             $notification->space_id = $spaceId;
 
             $notification->source_object_model = "Like";
@@ -41,9 +39,9 @@ class NewLikeNotification extends Notification {
             $notification->target_object_model = $like->object_model;
             $notification->target_object_id = $like->object_id;
 
-
             $notification->save();
         }
+        
     }
 
 }

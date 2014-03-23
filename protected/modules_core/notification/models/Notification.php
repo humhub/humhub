@@ -169,40 +169,27 @@ class Notification extends HActiveRecord {
     }
 
     /**
-     * After clicking on a notification
+     * After clicking on a notification, redirect to target.
      *
-     * This function only works when the Source Object has Behavior
-     * HContentBehavior or HContentAddonBehavior
-     *
-     * If not, overwrite this function
+     * Source Object must be a instance of HActiveRecordContent or HActiveRecordContentAddon
+     * If not, overwrite this function.
      */
     public function redirectToTarget() {
 
-        // Can be a comment, like, post, ...
         $sourceObj = $this->getSourceObject();
         if ($sourceObj == null) {
-            die("Could not load Source Obj");
+            throw new CHttpException(500, Yii::t('NotificationModule.base', 'Could not load notification source object to redirect to!'));
         }
 
-        // Find Object to Redirect to
-        $contentObj = null;
-        if ($sourceObj instanceof HActiveRecordContent) {
-            $contentObj = $sourceObj;
-        } elseif ($sourceObj->asa('HContentAddonBehavior') !== null) {
-            $contentObj = $sourceObj->getContentObject();
-        } else {
-            throw new CHttpException(500, 'Invalid source object');
+        if (!$sourceObj instanceof HActiveRecordContent && !$sourceObj instanceof HActiveRecordContentAddon) {
+            throw new CHttpException(500, Yii::t('NotificationModule.base', 'Could not determine redirect url for this kind of source object!'));
         }
 
-        $objectModel = get_class($contentObj);
-        $objectId = $contentObj->id;
-
-        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl(
-                        "//wall/perma/content", array(
-                    'model' => $objectModel,
-                    'id' => $objectId,
-                        )
-        ));
+        $content = $sourceObj->content;
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("//wall/perma/content", array(
+                    'model' => $content->object_model,
+                    'id' => $content->object_id,
+        )));
     }
 
     /**

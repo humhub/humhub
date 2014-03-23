@@ -72,7 +72,7 @@ class LikeModule extends CWebModule {
         $integrityChecker->showTestHeadline("Validating Like Module (".Like::model()->count()." entries)");
 
         foreach (Like::model()->findAll() as $l) {
-            if ($l->getUnderlyingObject() === null) {
+            if ($l->source === null) {
                 $integrityChecker->showFix("Deleting like id " . $l->id . " without existing target!");
                 if (!$integrityChecker->simulate)
                     $l->delete();
