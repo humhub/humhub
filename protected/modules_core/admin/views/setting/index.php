@@ -16,6 +16,7 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="form-group">
     <?php echo $form->labelEx($model, 'baseUrl'); ?>
     <?php echo $form->textField($model, 'baseUrl', array('class' => 'form-control', 'readonly'=>  HSetting::IsFixed('baseUrl'))); ?>
+    <p class="help-block"><?php echo Yii::t('AdminModule.setting', 'E.g. http://example.com/humhub'); ?></p>
 </div>
 
 <div class="form-group">

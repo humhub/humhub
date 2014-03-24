@@ -16,6 +16,14 @@ class StreamAction extends CAction
     const SORT_CREATED_AT = 1;
     const SORT_UPDATED_AT = 2;
 
+    
+    /**
+     * Modes
+     */
+    const MODE_NORMAL = "normal";
+    const MODE_ACTIVITY = "activity";
+    
+    
     /**
      * @var String Type of wall output (normal or activity). Default is 'normal'.
      */

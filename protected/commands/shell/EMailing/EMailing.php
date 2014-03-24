@@ -49,8 +49,6 @@ class EMailing extends HConsoleCommand {
         $this->mode = $args[0];
         Yii::import("application.modules_core.wall.*", true);
 
-        Yii::app()->request->setBaseUrl(HSetting::Get('baseUrl'));
-
         $users = User::model()->with('httpSessions')->findAllByAttributes(array('status'=>User::STATUS_ENABLED));
 
         foreach ($users as $user) {
@@ -188,8 +186,8 @@ class EMailing extends HConsoleCommand {
 
         // Get Stream contents
         $action = new StreamAction(null, 'console');
-        $action->mode = 'activity';
-        $action->type = 'dashboard';
+        $action->mode = StreamAction::MODE_ACTIVITY;
+        $action->type = Wall::TYPE_DASHBOARD;
         $action->userId = $user->id;
         $action->userWallId = $user->wall_id;
         $action->wallEntryLimit = 50;

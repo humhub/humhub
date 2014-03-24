@@ -46,11 +46,57 @@ class HConsoleApplication extends CConsoleApplication {
 
         $this->interceptor->start();
         $this->moduleManager->start();
-        
+
         $this->interceptor->intercept($this);
 
         if ($this->hasEventHandler('onInit'))
             $this->onInit(new CEvent($this));
+
+        $this->setupRequestInfo();
+    }
+
+    /**
+     * Sets some mandatory request infos to ensure absolute url creation.
+     * These values are extracted from baseUrl which is stored as HSetting.
+     */
+    private function setupRequestInfo() {
+
+        $parsedUrl = parse_url(HSetting::Get('baseUrl'));
+
+        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
+        $port = isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '';
+
+        Yii::app()->request->setHostInfo($parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $port);
+        Yii::app()->request->setBaseUrl(HSetting::Get('baseUrl'));
+        Yii::app()->request->setScriptUrl($path . '/index.php');
+    }
+
+    /**
+     * Creates an absolute URL based on the given controller and action information.
+     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
+     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
+     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
+     * @param string $ampersand the token separating name-value pairs in the URL.
+     * @return string the constructed URL
+     */
+    public function createUrl($route, $params = array(), $schema = '', $ampersand = '&') {
+        $url = parent::createUrl($route, $params, $ampersand);
+        if (strpos($url, 'http') === 0)
+            return $url;
+        else
+            return $this->getRequest()->getHostInfo($schema) . $url;
+    }
+
+    /**
+     * Creates an absolute URL based on the given controller and action information.
+     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
+     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
+     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
+     * @param string $ampersand the token separating name-value pairs in the URL.
+     * @return string the constructed URL
+     */
+    public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&') {
+        return $this->createUrl($route, $params, $schema, $ampersand);
     }
 
     /**

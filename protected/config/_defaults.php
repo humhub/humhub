@@ -15,6 +15,16 @@ return array(
             'enableParamLogging' => true,
             'schemaCachingDuration' => 3600,
         ),
+        'urlManager' => array(
+            'urlFormat' => 'get',
+            'showScriptName' => true,
+            'rules' => array(
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '/' => '//'
+            ),
+        ),
         'moduleManager' => array(
             'class' => 'application.components.ModuleManager',
         ),
