@@ -120,6 +120,16 @@ class HActiveRecordContent extends HActiveRecord {
         if ($this->isNewRecord && $this->autoAddToWall) {
             $this->content->addToWall();
         }
+        
+        // When Space Content, update also last visit
+        if ($this->content->space_id) {
+            $membership = $this->content->space->getUserMembership(Yii::app()->user->id);
+            if ($membership) {
+                $membership->updateLastVisit();
+            }
+        }
+
+        
     }
 
     public function beforeValidate() {

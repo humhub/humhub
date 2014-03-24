@@ -100,6 +100,15 @@ class UserSpaceMembership extends HActiveRecord {
     }
 
     /**
+     * Update last visit 
+     */
+    public function updateLastVisit() {
+        $this->scenario = 'last_visit';
+        $this->last_visit = new CDbExpression('NOW()');
+        $this->save();
+    }
+
+    /**
      * Counts all new Items for this membership
      */
     public function countNewItems($since = "") {

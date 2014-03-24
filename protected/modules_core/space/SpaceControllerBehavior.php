@@ -39,9 +39,7 @@ class SpaceControllerBehavior extends CBehavior {
         // Save users last action on this space
         $membership = $space->getUserMembership(Yii::app()->user->id);
         if ($membership != null) {
-            $membership->scenario = 'last_visit';
-            $membership->last_visit = new CDbExpression('NOW()');
-            $membership->save();
+            $membership->updateLastVisit();
         } else {
 
             // Super Admin can always enter
