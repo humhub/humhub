@@ -6,7 +6,6 @@ class m140324_170617_membership extends EDbMigration {
 
         $this->renameTable('user_space_membership', 'space_membership');
         
-        die();
     }
 
     public function down() {

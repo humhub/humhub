@@ -215,7 +215,7 @@ class AdminController extends Controller {
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
 
         if ($user != null) {
-            $membership = $space->getUserMembership($user->id);
+            $membership = $space->getMembership($user->id);
             if ($membership != null && $membership->status == SpaceMembership::STATUS_APPLICANT) {
                 $space->addMember($user->id);
             }

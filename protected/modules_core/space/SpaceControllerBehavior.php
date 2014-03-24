@@ -37,7 +37,7 @@ class SpaceControllerBehavior extends CBehavior {
             throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space not found!'));
 
         // Save users last action on this space
-        $membership = $space->getUserMembership(Yii::app()->user->id);
+        $membership = $space->getMembership(Yii::app()->user->id);
         if ($membership != null) {
             $membership->updateLastVisit();
         } else {

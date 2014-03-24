@@ -35,7 +35,6 @@
 class Space extends HActiveRecordContentContainer implements ISearchable {
 
     // Join Policies
-
     const JOIN_POLICY_NONE = 0;  // No Self Join Possible
     const JOIN_POLICY_APPLICATION = 1; // Only Application Possible
     const JOIN_POLICY_FREE = 2;  // Free for All
@@ -236,7 +235,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         ));
     }
 
-
     /**
      * After Save Addons
      */
@@ -272,7 +270,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $this->getProfileImage()->delete();
 
-
         // Remove all Follwers
         SpaceFollow::model()->deleteAllByAttributes(array('space_id' => $this->id));
 
@@ -281,18 +278,16 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         UserInvite::model()->deleteAllByAttributes(array('space_invite_id' => $this->id));
 
-        // Delete all content objects of this workspace (Should handled by Modules)
-        #foreach (Content::model()->findAllByAttributes(array('space_id' => $this->id)) as $content) {
-        #    $content->delete();
-        #}
+        // Delete all content objects of this space
+        foreach (Content::model()->findAllByAttributes(array('space_id' => $this->id)) as $content) {
+            $content->delete();
+        }
+
         // When this workspace is used in a group as default workspace, delete the link
         foreach (Group::model()->findAllByAttributes(array('space_id' => $this->id)) as $group) {
             $group->space_id = "";
             $group->save();
         }
-
-
-        //ToDo: If is default Space delete assignment
 
         $oldWallId = $this->wall_id;
 
@@ -431,7 +426,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
 
         if ($membership != null && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
@@ -458,7 +453,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($this->isOwner($userId))
             return true;
 
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
 
         if ($membership != null && $membership->admin_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
@@ -507,7 +502,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($userId == 0)
             $userId = Yii::app()->user->id;
 
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
         if ($membership != null) {
             $membership->admin_role = 1;
             $membership->save();
@@ -527,7 +522,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($userId == 0)
             $userId = Yii::app()->user->id;
 
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
 
         if ($membership != null && $membership->invite_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
@@ -555,7 +550,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
 
         if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
@@ -568,7 +563,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * If none Record is found, null is given
      */
-    public function getUserMembership($userId = "") {
+    public function getMembership($userId = "") {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
@@ -609,7 +604,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
             $userId = Yii::app()->user->id;
 
         $user = User::model()->findByPk($userId);
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
 
 
         if ($this->isOwner($userId)) {
@@ -721,7 +716,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      */
     public function inviteMember($userId, $originatorUserId) {
 
-        $membership = $this->getUserMembership($userId);
+        $membership = $this->getMembership($userId);
 
         if ($membership != null) {
 
@@ -889,7 +884,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         $admins = array();
 
         $adminMemberships = SpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id, 'admin_role' => 1));
-
 
         foreach ($adminMemberships as $admin) {
             $admins[] = $admin->user;

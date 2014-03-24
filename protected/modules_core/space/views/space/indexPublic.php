@@ -30,7 +30,7 @@
                                 print CHtml::link(Yii::t('SpaceModule.base', "Cancel membership"), $this->createUrl('//space/space/revokeMembership', array('sguid' => $space->guid)), array('class' => 'btn btn-danger'));
                             }
                         } else {
-                            $membership = $space->getUserMembership();
+                            $membership = $space->getMembership();
                             if ($membership == null) {
                                 if ($space->canJoin()) {
                                     if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {

@@ -179,7 +179,7 @@ class SpaceController extends Controller {
         $space = $this->getSpace();
 
         // Check if we have already some sort of membership
-        if ($space->getUserMembership(Yii::app()->user->id) != null) {
+        if ($space->getMembership(Yii::app()->user->id) != null) {
             throw new CHttpException(500, Yii::t('SpaceModule.base', 'Could not request membership!'));
         }
 

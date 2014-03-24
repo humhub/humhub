@@ -130,7 +130,7 @@ class CommentController extends Controller {
 
                 // Update Last viewed for Spaces
                 if ($workspace != "") {
-                    $membership = $workspace->getUserMembership(Yii::app()->user->id);
+                    $membership = $workspace->getMembership(Yii::app()->user->id);
                     if ($membership != null) {
                         $membership->scenario = 'last_visit';
                         $membership->last_visit = new CDbExpression('NOW()');
