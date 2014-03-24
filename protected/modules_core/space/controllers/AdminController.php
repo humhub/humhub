@@ -125,7 +125,7 @@ class AdminController extends Controller {
                         if ($workspace->isOwner($user->id))
                             continue;
 
-                        $membership = UserSpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $workspace->id));
+                        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $workspace->id));
                         if ($membership != null) {
                             $membership->invite_role = (isset($userSettings['inviteRole']) && $userSettings['inviteRole'] == 1) ? 1 : 0;
                             $membership->admin_role = (isset($userSettings['adminRole']) && $userSettings['adminRole'] == 1) ? 1 : 0;
@@ -216,7 +216,7 @@ class AdminController extends Controller {
 
         if ($user != null) {
             $membership = $space->getUserMembership($user->id);
-            if ($membership != null && $membership->status == UserSpaceMembership::STATUS_APPLICANT) {
+            if ($membership != null && $membership->status == SpaceMembership::STATUS_APPLICANT) {
                 $space->addMember($user->id);
             }
         }

@@ -71,7 +71,7 @@ abstract class HActiveRecord extends CActiveRecord {
                 $this->created_by = $userId;
         }
 
-        // Dont update in this scenario (UserSpaceMembership, only changed column is "last_visit")
+        // Dont update in this scenario (SpaceMembership, only changed column is "last_visit")
         if ($this->scenario != 'last_visit' && $userId != 0) {
 
             //not a new record, so just set the last updated time and last updated user id

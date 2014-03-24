@@ -133,9 +133,9 @@ class DashboardController extends Controller {
         $criteria = new CDbCriteria();
         $criteria->order = 'last_visit DESC';
 
-        $memberships = UserSpaceMembership::model()->with('workspace')->findAllByAttributes(array(
+        $memberships = SpaceMembership::model()->with('workspace')->findAllByAttributes(array(
             'user_id' => Yii::app()->user->id,
-            'status' => UserSpaceMembership::STATUS_MEMBER
+            'status' => SpaceMembership::STATUS_MEMBER
                 ), $criteria);
 
         foreach ($memberships as $membership) {

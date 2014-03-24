@@ -16,7 +16,7 @@ class UserSpacesWidget extends HWidget {
         $user = Yii::app()->getController()->getUser();
         $i = 0;
 
-        foreach (UserSpaceMembership::GetUserSpaces($user->id) as $space) {
+        foreach (SpaceMembership::GetUserSpaces($user->id) as $space) {
             if ($space->visibility == Space::VISIBILITY_NONE)
                 continue;
             if ($space->status != Space::STATUS_ENABLED)

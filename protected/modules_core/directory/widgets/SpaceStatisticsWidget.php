@@ -17,7 +17,7 @@ class SpaceStatisticsWidget extends HWidget {
         $newSpaces = Space::model()->active()->recently(10)->findAll();
         $statsCountSpaces = Space::model()->count();
         $statsCountSpacesHidden = Space::model()->countByAttributes(array('visibility' => Space::VISIBILITY_NONE));
-        $statsSpaceMostMembers = Space::model()->find('id = (SELECT space_id  FROM user_space_membership GROUP BY space_id ORDER BY count(*) DESC LIMIT 1)');
+        $statsSpaceMostMembers = Space::model()->find('id = (SELECT space_id  FROM space_membership GROUP BY space_id ORDER BY count(*) DESC LIMIT 1)');
 
         // Render widgets view
         $this->render('spaceStats', array(

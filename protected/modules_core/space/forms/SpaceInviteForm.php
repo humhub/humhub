@@ -84,8 +84,8 @@ class SpaceInviteForm extends CFormModel {
                 // Try load user
                 $user = User::model()->findByAttributes(array('guid' => $userGuid));
                 if ($user != null) {
-                    $membership = UserSpaceMembership::model()->findByAttributes(array('space_id' => $this->space->id, 'user_id' => $user->id));
-                    if ($membership != null && $membership->status == UserSpaceMembership::STATUS_MEMBER) {
+                    $membership = SpaceMembership::model()->findByAttributes(array('space_id' => $this->space->id, 'user_id' => $user->id));
+                    if ($membership != null && $membership->status == SpaceMembership::STATUS_MEMBER) {
                         $this->addError($attribute, Yii::t('SpaceModule.base', "User is already member!"));
                         continue;
                     }

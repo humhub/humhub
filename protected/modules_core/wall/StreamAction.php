@@ -323,10 +323,10 @@ class StreamAction extends CAction {
             // has access to see this entry
             $this->sqlJoin .= "
 					LEFT JOIN wall ON wall.id = wall_entry.wall_id AND wall.type='space'
-					LEFT JOIN user_space_membership ON
-						wall.object_id = user_space_membership.space_id AND
-						user_space_membership.user_id=:userId AND
-						user_space_membership.status=" . UserSpaceMembership::STATUS_MEMBER . "
+					LEFT JOIN space_membership ON
+						wall.object_id = space_membership.space_id AND
+						space_membership.user_id=:userId AND
+						space_membership.status=" . SpaceMembership::STATUS_MEMBER . "
 				";
 
             // Get all Wall Ids where the User is assigned to
@@ -340,9 +340,9 @@ class StreamAction extends CAction {
 							LEFT JOIN space sf ON sf.id=space_follow.space_id
 							WHERE space_follow.user_id=:userId AND sf.wall_id IS NOT NULL
 						UNION
-						SELECT sm.wall_id FROM user_space_membership
-							LEFT JOIN space sm ON sm.id=user_space_membership.space_id
-							WHERE user_space_membership.user_id=:userId AND sm.wall_id IS NOT NULL
+						SELECT sm.wall_id FROM space_membership
+							LEFT JOIN space sm ON sm.id=space_membership.space_id
+							WHERE space_membership.user_id=:userId AND sm.wall_id IS NOT NULL
 						UNION
 						SELECT {$usersWallId}
 				) ";
@@ -354,7 +354,7 @@ class StreamAction extends CAction {
             $this->sqlWhere .= "
 					AND  (
 						(wall.object_model IS NULL) OR
-						(content.visibility = 0 AND user_space_membership.status = " . UserSpaceMembership::STATUS_MEMBER . ") OR
+						(content.visibility = 0 AND space_membership.status = " . SpaceMembership::STATUS_MEMBER . ") OR
 						(content.visibility = 1 OR content.visibility IS NULL)
 					)
 				";

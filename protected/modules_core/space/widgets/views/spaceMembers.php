@@ -99,10 +99,10 @@
                     <?php
                     }
                 }
-            } elseif ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+            } elseif ($membership->status == SpaceMembership::STATUS_INVITED) {
                 print '<a href="' . Yii::app()->createUrl("//space/space/inviteAccept", array('sguid' => $space->guid)) . '" class="btn btn-primary">' . Yii::t('SpaceModule.base', 'Accept invite') . '</a>';
                 print '<a href="' . Yii::app()->createUrl("//space/space/revokeMembership", array('sguid' => $space->guid)) . '" class="btn btn-primary">' . Yii::t('SpaceModule.base', 'Deny invite') . '</a>';
-            } elseif ($membership->status == UserSpaceMembership::STATUS_APPLICANT) {
+            } elseif ($membership->status == SpaceMembership::STATUS_APPLICANT) {
                 print '<a href="' . Yii::app()->createUrl("//space/space/revokeMembership", array('sguid' => $space->guid)) . '" class="btn btn-primary" id="membership_button">' . Yii::t('SpaceModule.base', 'Cancel pending membership application') . '</a>';
             }
         }

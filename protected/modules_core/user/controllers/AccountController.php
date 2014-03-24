@@ -158,7 +158,7 @@ class AccountController extends Controller {
             throw new CHttpException(500, 'This is not a local account! You cannot delete it. (e.g. LDAP)!');
         }
 
-        foreach (UserSpaceMembership::GetUserSpaces() as $workspace) {
+        foreach (SpaceMembership::GetUserSpaces() as $workspace) {
             // Oups, we are owner in this workspace!
             if ($workspace->isOwner($user->id)) {
                 $isSpaceOwner = true;

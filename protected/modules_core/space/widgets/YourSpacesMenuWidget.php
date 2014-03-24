@@ -20,7 +20,7 @@ class YourSpacesMenuWidget extends HWidget {
         $this->render('yourSpacesMenu', array(
             'currentSpace' => $currentSpace,
             'currentSpaceGuid' => $currentSpaceGuid,
-            'usersSpaces' => UserSpaceMembership::GetUserSpaces(),
+            'usersSpaces' => SpaceMembership::GetUserSpaces(),
         ));
     }
 

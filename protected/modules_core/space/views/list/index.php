@@ -1,6 +1,6 @@
 <?php $count = 0; ?>
 
-<?php foreach (UserSpaceMembership::GetUserSpaces() as $space): ?>
+<?php foreach (SpaceMembership::GetUserSpaces() as $space): ?>
     <li>
         <a href="<?php echo $space->getUrl(); ?>">
             <div class="media">

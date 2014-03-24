@@ -33,7 +33,7 @@ class CreateController extends Controller {
             $model->attributes = $_POST['SpaceCreateForm'];
 
             if ($model->validate()) {
-                
+
                 $space = new Space();
                 $space->name = $model->title;
                 $space->join_policy = 2;
@@ -41,10 +41,10 @@ class CreateController extends Controller {
                 $space->save();
 
                 // Add Membership
-                $membership = new UserSpaceMembership;
+                $membership = new SpaceMembership;
                 $membership->space_id = $space->id;
                 $membership->user_id = Yii::app()->user->id;
-                $membership->status = UserSpaceMembership::STATUS_MEMBER;
+                $membership->status = SpaceMembership::STATUS_MEMBER;
                 $membership->invite_role = 1;
                 $membership->admin_role = 1;
                 $membership->share_role = 1;
@@ -52,7 +52,7 @@ class CreateController extends Controller {
 
                 // Save in this user variable, that the workspace was new created
                 Yii::app()->user->setState('ws', 'created');
-                
+
                 // Redirect to the new created Space
                 $this->htmlRedirect($this->createUrl('//space/admin/edit', array('sguid' => $space->guid)));
             }

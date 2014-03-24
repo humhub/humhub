@@ -182,7 +182,7 @@ class UserController extends Controller {
 
             $this->forcePostRequest();
 
-            foreach (UserSpaceMembership::GetUserSpaces() as $workspace) {
+            foreach (SpaceMembership::GetUserSpaces() as $workspace) {
                 if ($workspace->isOwner($user->id)) {
                     $workspace->addMember(Yii::app()->user->id);
                     $workspace->setOwner(Yii::app()->user->id);

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "user_space_membership".
+ * This is the model class for table "space_membership".
  *
- * The followings are the available columns in table 'user_space_membership':
+ * The followings are the available columns in table 'space_membership':
  * @property integer $space_id
  * @property integer $user_id
  * @property string $originator_user_id
@@ -23,7 +23,7 @@
  * @author Luke
 
  */
-class UserSpaceMembership extends HActiveRecord {
+class SpaceMembership extends HActiveRecord {
 
     const STATUS_INVITED = 1;
     const STATUS_APPLICANT = 2;
@@ -32,7 +32,7 @@ class UserSpaceMembership extends HActiveRecord {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return UserSpaceMembership the static model class
+     * @return SpaceMembership the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
@@ -42,7 +42,7 @@ class UserSpaceMembership extends HActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'user_space_membership';
+        return 'space_membership';
     }
 
     /**
@@ -100,7 +100,7 @@ class UserSpaceMembership extends HActiveRecord {
     }
 
     /**
-     * Update last visit 
+     * Update last visit
      */
     public function updateLastVisit() {
         $this->scenario = 'last_visit';
@@ -160,9 +160,9 @@ class UserSpaceMembership extends HActiveRecord {
             $criteria->order = 'last_visit DESC';
 
             $spaces = array();
-            $memberships = UserSpaceMembership::model()->with('space')->findAllByAttributes(array(
+            $memberships = SpaceMembership::model()->with('space')->findAllByAttributes(array(
                 'user_id' => $userId,
-                'status' => UserSpaceMembership::STATUS_MEMBER,
+                'status' => SpaceMembership::STATUS_MEMBER,
                     ), $criteria);
 
             foreach ($memberships as $membership) {

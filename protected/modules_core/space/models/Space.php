@@ -133,15 +133,15 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'space_invite_id'),
             'follower' => array(self::MANY_MANY, 'User', 'space_follow(space_id, user_id)'),
             // List of workspace applicants
-            'applicants' => array(self::HAS_MANY, 'UserSpaceMembership', 'space_id', 'condition' => 'status=' . UserSpaceMembership::STATUS_APPLICANT),
+            'applicants' => array(self::HAS_MANY, 'SpaceMembership', 'space_id', 'condition' => 'status=' . SpaceMembership::STATUS_APPLICANT),
             // Approved Membership Only
-            'memberships' => array(self::HAS_MANY, 'UserSpaceMembership', 'space_id',
-                'condition' => 'memberships.status=' . UserSpaceMembership::STATUS_MEMBER,
+            'memberships' => array(self::HAS_MANY, 'SpaceMembership', 'space_id',
+                'condition' => 'memberships.status=' . SpaceMembership::STATUS_MEMBER,
                 'order' => 'admin_role DESC, share_role DESC'
             ),
             // Approved Membership Only
-            'membershipsLimited' => array(self::HAS_MANY, 'UserSpaceMembership', 'space_id',
-                'condition' => 'status=' . UserSpaceMembership::STATUS_MEMBER,
+            'membershipsLimited' => array(self::HAS_MANY, 'SpaceMembership', 'space_id',
+                'condition' => 'status=' . SpaceMembership::STATUS_MEMBER,
                 'order' => 'admin_role DESC, share_role DESC',
                 'limit' => 50,
             ),
@@ -277,7 +277,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         SpaceFollow::model()->deleteAllByAttributes(array('space_id' => $this->id));
 
         // Delete all memberships
-        UserSpaceMembership::model()->deleteAllByAttributes(array('space_id' => $this->id));
+        SpaceMembership::model()->deleteAllByAttributes(array('space_id' => $this->id));
 
         UserInvite::model()->deleteAllByAttributes(array('space_invite_id' => $this->id));
 
@@ -433,7 +433,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $membership = $this->getUserMembership($userId);
 
-        if ($membership != null && $membership->status == UserSpaceMembership::STATUS_MEMBER)
+        if ($membership != null && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
         return false;
@@ -460,7 +460,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $membership = $this->getUserMembership($userId);
 
-        if ($membership != null && $membership->admin_role == 1 && $membership->status == UserSpaceMembership::STATUS_MEMBER)
+        if ($membership != null && $membership->admin_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
         return false;
@@ -529,7 +529,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $membership = $this->getUserMembership($userId);
 
-        if ($membership != null && $membership->invite_role == 1 && $membership->status == UserSpaceMembership::STATUS_MEMBER)
+        if ($membership != null && $membership->invite_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
         if ($this->isAdmin($userId)) {
@@ -557,14 +557,14 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $membership = $this->getUserMembership($userId);
 
-        if ($membership != null && $membership->share_role == 1 && $membership->status == UserSpaceMembership::STATUS_MEMBER)
+        if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
         return false;
     }
 
     /**
-     * Returns the UserSpaceMembership Record for this Space
+     * Returns the SpaceMembership Record for this Space
      *
      * If none Record is found, null is given
      */
@@ -572,13 +572,13 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-        $rCacheId = 'UserSpaceMembership_' . $userId . "_" . $this->id;
+        $rCacheId = 'SpaceMembership_' . $userId . "_" . $this->id;
         $rCacheRes = RuntimeCache::Get($rCacheId);
 
         if ($rCacheRes != null)
             return $rCacheRes;
 
-        $dbResult = UserSpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
+        $dbResult = SpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
         RuntimeCache::Set($rCacheId, $dbResult);
 
         return $dbResult;
@@ -621,7 +621,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         }
 
         // If was member, create a activity for that
-        if ($membership->status == UserSpaceMembership::STATUS_MEMBER) {
+        if ($membership->status == SpaceMembership::STATUS_MEMBER) {
             $activity = new Activity;
             $activity->content->space_id = $this->id;
             $activity->content->user_id = $userId;
@@ -632,12 +632,12 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         }
 
         // Was invited, but declined the request
-        if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+        if ($membership->status == SpaceMembership::STATUS_INVITED) {
             SpaceInviteDeclinedNotification::fire($membership->originator_user_id, $user, $this);
         }
 
         // Delete Membership
-        UserSpaceMembership::model()->deleteAllByAttributes(array(
+        SpaceMembership::model()->deleteAllByAttributes(array(
             'user_id' => $userId,
             'space_id' => $this->id,
         ));
@@ -661,36 +661,36 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $user = User::model()->findByPk($userId);
 
-        $membership = UserSpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
+        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
 
         if ($membership == null) {
             // Add Membership
-            $membership = new UserSpaceMembership;
+            $membership = new SpaceMembership;
             $membership->space_id = $this->id;
             $membership->user_id = $userId;
-            $membership->status = UserSpaceMembership::STATUS_MEMBER;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
             $membership->invite_role = 0;
             $membership->admin_role = 0;
             $membership->share_role = 0;
         } else {
 
             // User is already member
-            if ($membership->status == UserSpaceMembership::STATUS_MEMBER) {
+            if ($membership->status == SpaceMembership::STATUS_MEMBER) {
                 return true;
             }
 
             // User requested membership
-            if ($membership->status == UserSpaceMembership::STATUS_APPLICANT) {
+            if ($membership->status == SpaceMembership::STATUS_APPLICANT) {
                 SpaceApprovalRequestAcceptedNotification::fire(Yii::app()->user->id, $user, $this);
             }
 
             // User was invited
-            if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+            if ($membership->status == SpaceMembership::STATUS_INVITED) {
                 SpaceInviteAcceptedNotification::fire($membership->originator_user_id, $user, $this);
             }
 
             // Update Membership
-            $membership->status = UserSpaceMembership::STATUS_MEMBER;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
         }
         $membership->save();
 
@@ -726,23 +726,23 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         if ($membership != null) {
 
             // User is already member
-            if ($membership->status == UserSpaceMembership::STATUS_MEMBER) {
+            if ($membership->status == SpaceMembership::STATUS_MEMBER) {
                 return;
             }
 
             // User requested already membership, just approve him
-            if ($membership->status == UserSpaceMembership::STATUS_APPLICANT) {
+            if ($membership->status == SpaceMembership::STATUS_APPLICANT) {
                 $space->addMember(Yii::app()->user->id);
                 return;
             }
 
             // Already invite, reinvite him
-            if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+            if ($membership->status == SpaceMembership::STATUS_INVITED) {
                 // Remove existing notification
                 SpaceInviteNotification::remove($userId, $this);
             }
         } else {
-            $membership = new UserSpaceMembership;
+            $membership = new SpaceMembership;
         }
 
 
@@ -750,7 +750,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         $membership->user_id = $userId;
         $membership->originator_user_id = $originatorUserId;
 
-        $membership->status = UserSpaceMembership::STATUS_INVITED;
+        $membership->status = SpaceMembership::STATUS_INVITED;
         $membership->invite_role = 0;
         $membership->admin_role = 0;
         $membership->share_role = 0;
@@ -812,10 +812,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     public function requestMembership($userId, $message = "") {
 
         // Add Membership
-        $membership = new UserSpaceMembership;
+        $membership = new SpaceMembership;
         $membership->space_id = $this->id;
         $membership->user_id = $userId;
-        $membership->status = UserSpaceMembership::STATUS_APPLICANT;
+        $membership->status = SpaceMembership::STATUS_APPLICANT;
         $membership->invite_role = 0;
         $membership->admin_role = 0;
         $membership->share_role = 0;
@@ -888,7 +888,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
 
         $admins = array();
 
-        $adminMemberships = UserSpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id, 'admin_role' => 1));
+        $adminMemberships = SpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id, 'admin_role' => 1));
 
 
         foreach ($adminMemberships as $admin) {

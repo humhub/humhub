@@ -41,7 +41,7 @@ class SpaceModule extends CWebModule {
         $user = $event->sender;
 
         // Check if the user owns some spaces
-        foreach (UserSpaceMembership::GetUserSpaces($user->id) as $space) {
+        foreach (SpaceMembership::GetUserSpaces($user->id) as $space) {
             if ($space->isOwner($user->id)) {
                 throw new CHttpException(500, Yii::t('SpaceModule.error', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
             }
@@ -53,15 +53,15 @@ class SpaceModule extends CWebModule {
         }
 
         // Cancel all space memberships
-        foreach (UserSpaceMembership::model()->findAllByAttributes(array('user_id' => $user->id)) as $membership) {
+        foreach (SpaceMembership::model()->findAllByAttributes(array('user_id' => $user->id)) as $membership) {
             $membership->space->removeMember($user->id);
         }
 
         // Cancel all space invites by the user
-        foreach (UserSpaceMembership::model()->findAllByAttributes(array('originator_user_id' => $user->id, 'status'=>UserSpaceMembership::STATUS_INVITED)) as $membership) {
+        foreach (SpaceMembership::model()->findAllByAttributes(array('originator_user_id' => $user->id, 'status'=>SpaceMembership::STATUS_INVITED)) as $membership) {
             $membership->space->removeMember($membership->user_id);
-        }        
-        
+        }
+
         return true;
     }
 

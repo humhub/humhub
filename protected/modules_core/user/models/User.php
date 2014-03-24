@@ -65,7 +65,7 @@ class User extends HActiveRecordContentContainer implements ISearchable {
         return array(
             'HGuidBehavior' => array(
                 'class' => 'application.behaviors.HGuidBehavior',
-            ),            
+            ),
         );
     }
 
@@ -161,8 +161,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
             'followerUser' => array(self::MANY_MANY, 'User', 'user_follow(user_followed_id, user_follower_id)'),
             'followSpaces' => array(self::MANY_MANY, 'Space', 'space_follow(user_id, space_id)'),
             // Member to be renamed
-            'workspaces' => array(self::HAS_MANY, 'UserSpaceMembership', 'user_id'),
-            'workspaceMemberships' => array(self::HAS_MANY, 'UserSpaceMembership', 'user_id', 'condition' => 'status=' . UserSpaceMembership::STATUS_MEMBER),
+            'workspaces' => array(self::HAS_MANY, 'SpaceMembership', 'user_id'),
+            'workspaceMemberships' => array(self::HAS_MANY, 'SpaceMembership', 'user_id', 'condition' => 'status=' . SpaceMembership::STATUS_MEMBER),
             // Users which this user has invited
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
             'messages' => array(self::MANY_MANY, 'Message', 'user_message(user_id, message_id)'),
@@ -195,7 +195,7 @@ class User extends HActiveRecordContentContainer implements ISearchable {
     }
 
     /**
-     * Parameterized Scope for Recently 
+     * Parameterized Scope for Recently
      *
      * @param type $limit
      * @return User

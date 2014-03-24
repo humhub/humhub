@@ -205,7 +205,7 @@ class ConfigController extends Controller {
             $newIdentity = new UserIdentity($form['User']->model->username, '');
             $newIdentity->fakeAuthenticate();
             Yii::app()->user->login($newIdentity);
-            
+
             // Create Welcome Space
             $space = new Space();
             $space->name = 'Welcome Space';
@@ -217,10 +217,10 @@ class ConfigController extends Controller {
             $space->save();
 
             // Add Membership
-            $membership = new UserSpaceMembership;
+            $membership = new SpaceMembership;
             $membership->space_id = $space->id;
             $membership->user_id = $userId;
-            $membership->status = UserSpaceMembership::STATUS_MEMBER;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
             $membership->invite_role = 1;
             $membership->admin_role = 1;
             $membership->share_role = 1;

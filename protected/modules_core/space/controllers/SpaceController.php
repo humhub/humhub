@@ -121,7 +121,7 @@ class SpaceController extends Controller {
 
         // Build Search Condition
         $params = array();
-        $condition = "user_space_membership.status=" . UserSpaceMembership::STATUS_MEMBER;
+        $condition = "space_membership.status=" . SpaceMembership::STATUS_MEMBER;
         $condition .= " AND space_id=" . $space->id;
         $parts = explode(" ", $keyword);
         $i = 0;
@@ -131,8 +131,8 @@ class SpaceController extends Controller {
             $params[':match' . $i] = "%" . $part . "%";
         }
 
-        $sql = "SELECT DISTINCT user.* FROM user_space_membership
-                LEFT JOIN user ON user.id=user_space_membership.user_id
+        $sql = "SELECT DISTINCT user.* FROM space_membership
+                LEFT JOIN user ON user.id=space_membership.user_id
                 WHERE " . $condition . " LIMIT 0," . $maxResults;
 
         $users = User::model()->findAllBySql($sql, $params);
@@ -284,13 +284,13 @@ class SpaceController extends Controller {
         $space = $this->getSpace();
 
         // Load Pending Membership
-        $membership = UserSpaceMembership::model()->findByAttributes(array('user_id' => Yii::app()->user->id, 'space_id' => $space->id));
+        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => Yii::app()->user->id, 'space_id' => $space->id));
         if ($membership == null) {
             throw new CHttpException(404, Yii::t('SpaceModule.base', 'There is no pending invite!'));
         }
 
         // Check there are really an Invite
-        if ($membership->status == UserSpaceMembership::STATUS_INVITED) {
+        if ($membership->status == SpaceMembership::STATUS_INVITED) {
             $space->addMember(Yii::app()->user->id);
         }
 
