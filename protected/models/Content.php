@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * HumHub
+ * Copyright © 2014 The HumHub Project
+ *
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
  * This is the model class for table "content".
  *
  * The followings are the available columns in table 'content':
@@ -18,7 +36,7 @@
  * @property string $updated_at
  * @property integer $updated_by
  *
- * @package humhub.modules_core.wall.models
+ * @package humhub.models
  * @since 0.5
  */
 class Content extends CActiveRecord {
@@ -160,6 +178,19 @@ class Content extends CActiveRecord {
 
         if ($this->user_id == "")
             throw new CException("Could not save content without user_id!");
+
+
+        // Set some default values
+        if (!$this->archived) {
+            $this->archived = 0;
+        }
+        if (!$this->visibility) {
+            $this->visibility = self::VISIBILITY_PRIVATE;
+        }
+        if (!$this->sticked) {
+            $this->sticked = 0;
+        }
+
 
         return parent::beforeSave();
     }

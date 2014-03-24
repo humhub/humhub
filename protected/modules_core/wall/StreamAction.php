@@ -7,8 +7,7 @@
  * @since 0.5
  * @author Luke
  */
-class StreamAction extends CAction
-{
+class StreamAction extends CAction {
 
     /**
      * Constants used for sorting
@@ -16,14 +15,12 @@ class StreamAction extends CAction
     const SORT_CREATED_AT = 1;
     const SORT_UPDATED_AT = 2;
 
-    
     /**
      * Modes
      */
     const MODE_NORMAL = "normal";
     const MODE_ACTIVITY = "activity";
-    
-    
+
     /**
      * @var String Type of wall output (normal or activity). Default is 'normal'.
      */
@@ -104,8 +101,7 @@ class StreamAction extends CAction
      *
      * (When called from console, this method is not called.)
      */
-    public function init()
-    {
+    public function init() {
 
         Yii::beginProfile('initStreamAction');
 
@@ -120,9 +116,9 @@ class StreamAction extends CAction
             }
 
             // Options how many items
-            $this->wallEntryFrom = (int)Yii::app()->request->getParam('from');
-            $this->wallEntryTo = (int)Yii::app()->request->getParam('to');
-            $this->wallEntryLimit = (int)Yii::app()->request->getParam('limit', 2);
+            $this->wallEntryFrom = (int) Yii::app()->request->getParam('from');
+            $this->wallEntryTo = (int) Yii::app()->request->getParam('to');
+            $this->wallEntryLimit = (int) Yii::app()->request->getParam('limit', 2);
 
             // Sorting (switch to updated at)
             if (Yii::app()->request->getParam('sort') == 'u') {
@@ -149,8 +145,7 @@ class StreamAction extends CAction
      *
      * @return type
      */
-    public function runConsole()
-    {
+    public function runConsole() {
         $this->init();
         $this->prepareSQL();
         $this->setupFilterSQL();
@@ -193,8 +188,7 @@ class StreamAction extends CAction
     /**
      * Execute the Stream Action and returns a JSON output.
      */
-    public function run()
-    {
+    public function run() {
 
         $this->init();
         $this->prepareSQL();
@@ -232,12 +226,10 @@ class StreamAction extends CAction
 			LIMIT {$this->wallEntryLimit}
 		";
 
+
+
         // Execute SQL
-
-
         $entries = WallEntry::model()->with('content')->findAllBySql($sql, $this->sqlParams);
-
-
 
         // Save Wall Type
         Wall::$currentType = $this->type;
@@ -252,13 +244,13 @@ class StreamAction extends CAction
             $user = $underlyingObject->content->user;
 
             $output .= Yii::app()->getController()->renderPartial(
-                'wall.views.wallEntry', array(
-                    'entry' => $entry,
-                    'user' => $user,
-                    'mode' => $this->mode,
-                    'object' => $underlyingObject,
-                    'content' => $underlyingObject->getWallOut()
-                ), true
+                    'wall.views.wallEntry', array(
+                'entry' => $entry,
+                'user' => $user,
+                'mode' => $this->mode,
+                'object' => $underlyingObject,
+                'content' => $underlyingObject->getWallOut()
+                    ), true
             );
             $generatedWallEntryIds[] = $entry->id;
             $lastEntryId = $entry->id;
@@ -291,8 +283,7 @@ class StreamAction extends CAction
      *
      * @throws CHttpException
      */
-    protected function prepareSQL()
-    {
+    protected function prepareSQL() {
 
         /**
          * Build SQL
@@ -327,7 +318,6 @@ class StreamAction extends CAction
 
 
         if ($this->type == Wall::TYPE_DASHBOARD) {
-
 
             // In case of an space entry, we need some left join, to be able to verify that the user
             // has access to see this entry
@@ -364,8 +354,8 @@ class StreamAction extends CAction
             $this->sqlWhere .= "
 					AND  (
 						(wall.object_model IS NULL) OR
-						(content.visibility = 0 AND user_space_membership.status = 3) OR
-						(content.visibility = 1)
+						(content.visibility = 0 AND user_space_membership.status = " . UserSpaceMembership::STATUS_MEMBER . ") OR
+						(content.visibility = 1 OR content.visibility IS NULL)
 					)
 				";
 
@@ -403,8 +393,7 @@ class StreamAction extends CAction
     /**
      * Adds filters to the SQL Query
      */
-    protected function setupFilterSQL()
-    {
+    protected function setupFilterSQL() {
 
         if ($this->wallEntryDateTo != "") {
             $this->sqlParams[':maxDate'] = $this->wallEntryDateTo;
@@ -412,7 +401,7 @@ class StreamAction extends CAction
         }
 
         // Show only content with attached files
-        if (in_array('entry_files', $this->filters) ) {
+        if (in_array('entry_files', $this->filters)) {
             $this->sqlWhere .= " AND (SELECT id FROM file WHERE file.object_model=content.object_model AND file.object_id=content.object_id) IS NOT NULL";
         }
 
