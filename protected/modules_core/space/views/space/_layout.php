@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 space-nav-container">
             <!-- show space menu widget -->
             <?php $this->widget('application.modules_core.space.widgets.SpaceMenuWidget', array()); ?>
 
@@ -14,7 +14,7 @@
             }
             ?>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-7 space-stream-container">
             <!-- show content -->
             <?php echo $content; ?>
         </div>

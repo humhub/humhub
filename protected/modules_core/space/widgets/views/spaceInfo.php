@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default space-info">
     <div class="panel-body">
         <div class="media-body">
             <h5 class="media-heading"><?php echo $space->name; ?></h5>

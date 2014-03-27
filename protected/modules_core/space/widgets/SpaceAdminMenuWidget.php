@@ -21,7 +21,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
 
         $this->addItemGroup(array(
             'id' => 'admin',
-            'label' => Yii::t('SpaceModule.base', 'Options'),
+            'label' => Yii::t('SpaceModule.base', 'Space preferences'),
             'sortOrder' => 100,
         ));
 
@@ -29,6 +29,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
         if ($space->isAdmin()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.base', 'Basic'),
+                'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/edit', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="icon-cogs"></i>',
                 'sortOrder' => 100,
@@ -40,6 +41,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
         if ($space->canInvite()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.base', 'Members'),
+                'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/members', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="icon-group"></i>',
                 'sortOrder' => 200,
@@ -51,6 +53,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
         if ($space->isAdmin()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.base', 'Modules'),
+                'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/modules', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="icon-rocket"></i>',
                 'sortOrder' => 300,

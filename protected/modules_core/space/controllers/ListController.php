@@ -35,7 +35,7 @@ class ListController extends Controller {
     }
 
     public function actionIndex() {
-        $this->renderPartial('index');
+        $this->renderPartial('index', null, false, true);
     }
 
 }

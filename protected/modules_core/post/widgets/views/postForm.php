@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default post-form">
     <div class="panel-body">
         <?php
         $defaultText = Yii::t('PostModule.base', "Whats on your mind?");

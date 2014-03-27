@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default activities">
     <div class="panel-heading"><?php echo Yii::t('ActivityModule.base', 'Latest activities'); ?></div>
     <div id="activityStream">
         <div id="activityEmpty" style="display:none">

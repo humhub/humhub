@@ -54,7 +54,7 @@ class CreateController extends Controller {
                 Yii::app()->user->setState('ws', 'created');
                 
                 // Redirect to the new created Space
-                $this->htmlRedirect($this->createUrl('//space/admin/edit', array('sguid' => $space->guid)));
+                $this->htmlRedirect($this->createUrl('//space/space', array('sguid' => $space->guid)));
             }
         }
 
