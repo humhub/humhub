@@ -314,7 +314,8 @@ h4 {
 .popover .popover-title {
   background: none;
   border-bottom: none;
-  font-weight: bold;
+  font-weight: 300;
+  font-size: 18px;
 }
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
