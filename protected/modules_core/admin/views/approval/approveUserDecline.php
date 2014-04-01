@@ -34,6 +34,6 @@ $form = $this->beginWidget('CActiveForm', array(
 </script>
 <hr/>
 <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Send & decline'), array('class' => 'btn btn-danger')); ?>
-<a href="<?php echo $this->createUrl('//admin/approval/'); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.base', 'Cancel'); ?></a>
+ <a href="<?php echo $this->createUrl('//admin/approval/'); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.base', 'Cancel'); ?></a>
 
 <?php $this->endWidget(); ?>
