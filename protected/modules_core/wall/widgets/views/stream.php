@@ -17,27 +17,44 @@
         <ul class="dropdown-menu">
             <!--<li><a href="#"><i class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Show all'); ?></a></li>-->
 
-            <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Where I´m involved'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_entry_mine"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Created by me'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Where I´m involved'); ?></a>
+            </li>
+            <li><a href="#" class="wallFilter" id="filter_entry_mine"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Created by me'); ?></a></li>
 
             <!-- post module related -->
-            <li><a href="#" class="wallFilter" id="filter_entry_files"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Content with attached files'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_posts_links"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts with links'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_model_posts"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts only'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_entry_files"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Content with attached files'); ?>
+                </a></li>
+            <li><a href="#" class="wallFilter" id="filter_posts_links"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts with links'); ?></a>
+            </li>
+            <li><a href="#" class="wallFilter" id="filter_model_posts"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts only'); ?></a></li>
             <!-- /post module related -->
 
             <li class="divider"></li>
 
-            <li><a href="#" class="wallFilter" id="filter_entry_archived"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Include archived posts'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_visibility_public"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Only public posts'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_visibility_private"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Only private posts'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_entry_archived"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Include archived posts'); ?>
+                </a></li>
+            <li><a href="#" class="wallFilter" id="filter_visibility_public"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Only public posts'); ?></a>
+            </li>
+            <li><a href="#" class="wallFilter" id="filter_visibility_private"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Only private posts'); ?></a>
+            </li>
         </ul>
     </li>
     <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Sorting'); ?> <b class="caret"></b></a>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Sorting'); ?>
+            <b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="#" class="wallSorting" id="sorting_c"><i class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
-            <li><a href="#" class="wallSorting" id="sorting_u"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
+            <li><a href="#" class="wallSorting" id="sorting_c"><i
+                        class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
+            <li><a href="#" class="wallSorting" id="sorting_u"><i
+                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
         </ul>
     </li>
 </ul>
@@ -58,10 +75,19 @@
                 </div>
             <?php elseif ($type == Wall::TYPE_USER): ?>
 
-                <div class="placeholder placeholder-empty-stream">
-                    <?php echo Yii::t('WallModule.base', '<b>There is still nothing happens</b><br>Be the first who post something...'); ?>
-                </div>
-            <?php elseif ($type == Wall::TYPE_SPACE): ?>
+                <?php if ($this->contentContainer->id == Yii::app()->user->id) { ?>
+                    <div class="placeholder placeholder-empty-stream">
+                        <?php echo Yii::t('WallModule.base', '<b>Your profile stream is still empty</b><br>Get started and post something...'); ?>
+                    </div>
+                <?php } else { ?>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        <?php echo Yii::t('WallModule.base', '<b>This profile stream is still empty</b>'); ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php
+            elseif ($type == Wall::TYPE_SPACE): ?>
                 <div class="placeholder placeholder-empty-stream">
                     <?php echo Yii::t('WallModule.base', '<b>This space is still empty!</b><br>Make the beginning and post something...'); ?>
                 </div>
@@ -79,7 +105,8 @@
     <!-- DIV for an single wall entry -->
     <div class="s2_single">
         <div class="back_button_holder">
-            <a href="#" class="singleBackLink btn btn-primary"><?php echo Yii::t('WallModule.base', 'Back to stream'); ?></a><br><br>
+            <a href="#"
+               class="singleBackLink btn btn-primary"><?php echo Yii::t('WallModule.base', 'Back to stream'); ?></a><br><br>
         </div>
         <div class="p_border"></div>
 
@@ -92,21 +119,22 @@
 
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         s = new Stream("#wallStream", "<?php echo $startUrl; ?>", "<?php echo $reloadUrl; ?>", "<?php echo $singleEntryUrl; ?>");
-        <?php if (false): ?>s.markAsReadOnly();<?php endif; ?>
+        <?php if (false): ?>s.markAsReadOnly();
+        <?php endif; ?>
 
 
-<?php
-// if we should show a single wall entry (e.g. search)
-$wallEntryId = (int) Yii::app()->request->getParam('wallEntryId');
-?>
-<?php if ($wallEntryId) : ?>
-            s.showItem(<?php echo $wallEntryId; ?>);
-<?php else: ?>
-            s.showStream();
-<?php endif; ?>
+        <?php
+        // if we should show a single wall entry (e.g. search)
+        $wallEntryId = (int) Yii::app()->request->getParam('wallEntryId');
+        ?>
+        <?php if ($wallEntryId) : ?>
+        s.showItem(<?php echo $wallEntryId; ?>);
+        <?php else: ?>
+        s.showStream();
+        <?php endif; ?>
 
 
         // Indicates this is the primary stream (not a module stream)
