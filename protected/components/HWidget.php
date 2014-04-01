@@ -49,10 +49,12 @@ class HWidget extends CWidget {
 
         // Fastlane
         $className = get_class($this);
-        if (isset(self::$_viewPaths[$className]))
-            return self::$_viewPaths[$className];
+        
 
         if ($checkTheme && ($theme = Yii::app()->getTheme()) !== null) {
+            if (isset(self::$_viewPaths[$className]))
+                return self::$_viewPaths[$className];
+            
             //   /themes/myTheme/views/
             $path = $theme->getViewPath() . DIRECTORY_SEPARATOR;
 
@@ -65,10 +67,11 @@ class HWidget extends CWidget {
 
             if (is_dir($path))
                 return self::$_viewPaths[$className] = $path;
+        } else {
+            $class = new ReflectionClass($className);
+            return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
         }
 
-        $class = new ReflectionClass($className);
-        return self::$_viewPaths[$className] = dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
     }
 
     /**
