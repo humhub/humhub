@@ -57,6 +57,7 @@
                     <?php echo Yii::t('WallModule.base', '<b>Your dashboard is empty! - Fill it!</b><br>Just join or follow some workspaces or users!'); ?>
                 </div>
             <?php elseif ($type == Wall::TYPE_USER): ?>
+
                 <div class="placeholder placeholder-empty-stream">
                     <?php echo Yii::t('WallModule.base', '<b>There is still nothing happens</b><br>Be the first who post something...'); ?>
                 </div>

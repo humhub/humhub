@@ -8,7 +8,6 @@ Yii::app()->clientScript->registerScriptFile(
 <?php echo CHtml::textArea("title", "", array('id' => 'contentForm_title', 'class' => 'form-control autosize contentForm', 'rows' => '1', "tabindex" => "1", "placeholder" => Yii::t('PollsModule.base', "Ask something..."))); ?>
 
 <div class="contentForm_options">
-
     <?php echo CHtml::textField('preassignedUsers', ''); ?>
     <?php
     $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
@@ -31,6 +30,8 @@ Yii::app()->clientScript->registerScriptFile(
 
 <script type="text/javascript">
     $(function() {
+
+        // setup datepicker
         $('#dateinput').datepicker({
             format: 'dd.mm.yyyy',
             weekStart: 1
@@ -45,5 +46,11 @@ Yii::app()->clientScript->registerScriptFile(
             // set date to form input
             $('#deathline').val(_date);
         });
+
+        // handle tabindex
+        $('#contentForm_title').focusout(function() {
+            $('#tag_input_field').focus();
+        })
+
     })
 </script>

@@ -301,6 +301,20 @@ ul.tag_input li img {
 #spacepicker li.selected {
   background-color: #eee;
 }
+.contentForm_options {
+  margin-top: 10px;
+}
+#contentFormFiles_list {
+  padding-left: 0;
+}
+#contentFormError {
+  color: red;
+  padding-left: 0;
+  list-style: none;
+}
+.post-files {
+  margin-top: 10px;
+}
 .activities {
   max-height: 400px;
   overflow: auto;

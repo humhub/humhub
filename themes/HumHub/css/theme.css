@@ -747,6 +747,9 @@ ul.tag_input.focus {
 .space-member-sign {
   color: #4cd9c0;
 }
+#contentFormError {
+  color: #ff8989;
+}
 .errorMessage {
   color: #ff8989;
 }

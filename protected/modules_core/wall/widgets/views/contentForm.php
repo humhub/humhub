@@ -47,8 +47,6 @@
 
                     } else {
 
-                        console.log(response);
-
                         $('#contentFormError').show();
 
                         $.each(response.errors, function(fieldName, errorMessage){
@@ -58,7 +56,7 @@
                             $('#'+fieldId).addClass('error');
 
                             $.each(errorMessage, function(key, msg) {
-                                $('#contentFormError').append('<li>'+msg+'</li>');
+                                $('#contentFormError').append('<li><i class=\"icon-warning-sign\"></i> '+msg+'</li>');
                             });
                             
                         });
