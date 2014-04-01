@@ -170,7 +170,7 @@ class Activity extends HActiveRecordContent {
             $workspace = Space::model()->findByPk($this->content->space_id);
         }
 
-        $user = $this->content->getUser();
+        $user = $this->content->user;
         if ($user == null)
             return;
 
