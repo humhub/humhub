@@ -36,7 +36,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <hr>
 <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Send & save'), array('class' => 'btn btn-primary')); ?>
-<a href="<?php echo $this->createUrl('//admin/approval/'); ?>"
+ <a href="<?php echo $this->createUrl('//admin/approval/'); ?>"
    class="btn btn-primary"><?php echo Yii::t('AdminModule.base', 'Cancel'); ?></a>
 
 <?php $this->endWidget(); ?>
