@@ -54,6 +54,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name' => 'ownerUsernameSearch',
             'value' => function($data, $row) {
+                if (!$data->owner)
+                    return "-";
+                
                 return $data->owner->username;
             }
         ),
