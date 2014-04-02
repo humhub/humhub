@@ -88,9 +88,11 @@
                 <?php } ?>
             <?php
             elseif ($type == Wall::TYPE_SPACE): ?>
+                <?php if ($this->contentContainer->canWrite()) { ?>
                 <div class="placeholder placeholder-empty-stream">
                     <?php echo Yii::t('WallModule.base', '<b>This space is still empty!</b><br>Make the beginning and post something...'); ?>
                 </div>
+            <?php }?>
             <?php endif; ?>
         </div>
 
