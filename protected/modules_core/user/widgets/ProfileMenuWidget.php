@@ -36,12 +36,14 @@ class ProfileMenuWidget extends MenuWidget {
             'isActive' => (Yii::app()->controller->id == "profile" && Yii::app()->controller->action->id == "index"),
         ));
 
-        $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'About'),
-            'url' => Yii::app()->createUrl('//user/profile/about', array('uguid' => $userGuid)),
-            'sortOrder' => 300,
-            'isActive' => (Yii::app()->controller->id == "profile" && Yii::app()->controller->action->id == "about"),
-        ));
+        if (Yii::app()->getController()->getUser()->profile->about != "") {
+            $this->addItem(array(
+                'label' => Yii::t('UserModule.base', 'About'),
+                'url' => Yii::app()->createUrl('//user/profile/about', array('uguid' => $userGuid)),
+                'sortOrder' => 300,
+                'isActive' => (Yii::app()->controller->id == "profile" && Yii::app()->controller->action->id == "about"),
+            ));
+        }
 
         parent::init();
     }
