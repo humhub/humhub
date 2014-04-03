@@ -36,13 +36,6 @@
                              src="<?php echo $this->getUser()->getProfileImage()->getUrl(); ?>">
                     </a>
 
-                    <div id="lightbox_636" class="lightbox hide fade" tabindex="-1" role="dialog" aria-hidden="true"
-                         style="position: fixed; width: 700px; height: 567px; top: 131.5px; left: 50%; margin-left: -350px; display: none;">
-                        <div class="lightbox-content" style="width: 680px; height: 547px;">
-                            <img
-                                src="https://si.zeros.ones.de/si/file/file/download/guid/4d2be385-7db2-4e20-a7c3-0b9bc384c8cc/suffix">
-                        </div>
-                    </div>
 
                     <div class="media-body">
                         <h3 class="media-heading"><?php echo $this->getUser()->displayName; ?>
@@ -147,13 +140,11 @@
 
                         <!-- start: tags for user skills -->
                         <div class="tags">
-                            <?php if ($this->getUser()->tags) { ?>
+                            <?php if ($this->getUser()->tags) : ?>
                                 <?php foreach ($this->getUser()->getTags() as $tag) { ?>
                                     <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/members', array('keyword' => 'tags:' . $tag, 'areas' => array('User'))), array('class' => 'btn btn-info btn-xs tag')); ?>
                                 <?php } ?>
-                            <?php } else { ?>
-                                No tags set.
-                            <?php } ?>
+                            <?php endif; ?>
                         </div>
                         <!-- end: tags for user skills -->
 
