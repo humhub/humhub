@@ -33,9 +33,19 @@ class ModuleController extends Controller {
         );
     }
 
+    
+    
     public function actionIndex() {
         ModuleManager::flushCache();
-        $this->render('index', array());
+ 
+        // Require this initial redirect to ensure Module Cache is flushed
+        // before list it.
+        $this->redirect(Yii::app()->createUrl('admin/module/list'));        
+    }
+
+    public function actionList() {
+        ModuleManager::flushCache();        
+        $this->render('list', array());
     }
 
     public function actionEnable() {
@@ -51,7 +61,7 @@ class ModuleController extends Controller {
             Yii::app()->moduleManager->enable($moduleId);
         }
 
-        $this->redirect(Yii::app()->createUrl('admin/module'));
+        $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
 
     /**
@@ -71,7 +81,7 @@ class ModuleController extends Controller {
             Yii::app()->moduleManager->disable($moduleId);
         }
 
-        $this->redirect(Yii::app()->createUrl('admin/module'));
+        $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
 
 }
