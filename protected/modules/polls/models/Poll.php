@@ -85,7 +85,7 @@ class Poll extends HActiveRecordContent {
                 $answer->save();
             }
 
-            // Create Question Answered Activity
+            // Create Question Created Activity
             $activity = Activity::CreateForContent($this);
             $activity->type = "PollCreated";
             $activity->module = "polls";

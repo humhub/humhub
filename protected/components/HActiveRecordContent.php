@@ -71,8 +71,9 @@ class HActiveRecordContent extends HActiveRecord {
      */
     public function getContentTitle() {
         $objectModel = get_class($this); // e.g. Post
-        return $objectModel . " (" . $this->getOwner()->id . ")";
+        return $objectModel . " (" . $this->id . ")";
     }
+
 
     /**
      * If the content should also displayed on a wall, overwrite this
@@ -87,7 +88,7 @@ class HActiveRecordContent extends HActiveRecord {
      * @return type
      */
     public function getWallOut() {
-        return "Default Wall Output for Class " . get_class($this->getOwner());
+        return "Default Wall Output for Class " . get_class($this);
     }
 
     public function afterFind() {
@@ -128,8 +129,6 @@ class HActiveRecordContent extends HActiveRecord {
                 $membership->updateLastVisit();
             }
         }
-
-
     }
 
     public function beforeValidate() {
