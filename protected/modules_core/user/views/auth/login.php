@@ -29,12 +29,12 @@
             ?>
 
             <div class="form-group">
-                <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'username or email'))); ?>
+                <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email'))); ?>
                 <?php echo $form->error($model, 'username'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'password'))); ?>
+                <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'id' => 'login_password', 'placeholder' => Yii::t('UserModule.auth', 'password'))); ?>
                 <?php echo $form->error($model, 'password'); ?>
             </div>
 
@@ -83,5 +83,12 @@
         </div>
     <?php endif; ?>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        // set cursor ot login field
+        $('#login_username').focus();
+    })
+</script>
 
 
