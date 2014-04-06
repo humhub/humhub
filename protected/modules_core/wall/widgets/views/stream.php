@@ -69,10 +69,16 @@
         <div class="loader streamLoader"></div>
 
         <div class="emptyStreamMessage">
+            <?php if ($type == Wall::TYPE_COMMUNITY): ?>
+                <div class="placeholder placeholder-empty-stream">
+                    <?php echo Yii::t('WallModule.base', '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...'); ?>
+                </div>
+            <?php endif; ?>
             <?php if ($type == Wall::TYPE_DASHBOARD): ?>
                 <div class="placeholder">
                     <?php echo Yii::t('WallModule.base', '<b>Your dashboard is empty! - Fill it!</b><br>Just join or follow some workspaces or users!'); ?>
                 </div>
+
             <?php elseif ($type == Wall::TYPE_USER): ?>
 
                 <?php if ($this->contentContainer->id == Yii::app()->user->id) { ?>
