@@ -12,11 +12,15 @@
  */
 ?>
 <div id="<?php echo $uploaderId; ?>_details" style="display:none">
-    <br>
-    <div class="progress progress-info active" id="<?php echo $uploaderId; ?>_progress" >
-      <div class="bar" style="width: 0%;"></div>
+
+    <div class="progress contentForm-upload-progress" id="<?php echo $uploaderId; ?>_progress" style="">
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+             aria-valuemax="100" style="width: 0%">
+        </div>
     </div>
+
+
     <?php //echo Yii::t('FileModule.base', 'List of already uploaded files:'); ?>
-    <ul style="list-style: none; margin: 0;" id="<?php echo $uploaderId; ?>_list">
+    <ul style="list-style: none; display:none; margin: 0; padding-top: 10px;" id="<?php echo $uploaderId; ?>_list">
     </ul>
 </div>

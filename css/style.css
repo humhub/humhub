@@ -389,6 +389,13 @@ ul.tag_input li img {
   left: 50px;
   font-size: 18px;
 }
+.contentForm_options {
+  min-height: 29px;
+}
+.contentForm-upload-progress {
+  margin-top: 18px;
+  margin-bottom: 10px !important;
+}
 .mime {
   background-repeat: no-repeat;
   background-position: 0 0;

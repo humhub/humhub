@@ -17,17 +17,19 @@
 
             <hr>
 
-            <?php
-            $url = CHtml::normalizeUrl(Yii::app()->createUrl($submitUrl));
-            echo HHtml::ajaxSubmitButton($submitButtonText, $url, array(
-                'type' => 'POST',
-                'dataType' => 'json',
-                'beforeSend' => "function() {
+            <div class="btn_container">
+
+                <?php
+                $url = CHtml::normalizeUrl(Yii::app()->createUrl($submitUrl));
+                echo HHtml::ajaxSubmitButton($submitButtonText, $url, array(
+                        'type' => 'POST',
+                        'dataType' => 'json',
+                        'beforeSend' => "function() {
                     $('.contentForm').removeClass('error');
                     $('#contentFormError').hide();
                     $('#contentFormError').empty();
                 }",
-                'success' => "function(response) {
+                        'success' => "function(response) {
                     if (response.success) {
                     
                         // application.modules_core.wall function
@@ -64,26 +66,28 @@
                     }
              }",
                     ), array('id' => "post_submit_button", 'class' => 'btn btn-info')
-            );
-            ?>
-            <?php
-            // Creates Uploading Button
-            $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-                'uploaderId' => 'contentFormFiles', // Unique ID of Uploader Instance
-                'bindToFormFieldId' => 'contentFrom_files', // Hidden field to store uploaded files
-            ));
-            ?>
+                );
+                ?>
+                <?php
+                // Creates Uploading Button
+                $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
+                    'uploaderId' => 'contentFormFiles', // Unique ID of Uploader Instance
+                    'bindToFormFieldId' => 'contentFrom_files', // Hidden field to store uploaded files
+                ));
+                ?>
 
-            <!-- content sharing -->
-            <div class="pull-right">
-                <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
-                    <div class="checkbox">
-                        <label>
-                            <?php echo CHtml::checkbox("visibility", "", array('id'=>'contentForm_visibility', 'class' => 'contentForm')); ?> <?php echo Yii::t('WallModule.base', 'Is public'); ?>
-                        </label>
-                    </div>
+                <!-- content sharing -->
+                <div class="pull-right">
+                    <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
+                        <div class="checkbox">
+                            <label>
+                                <?php echo CHtml::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm')); ?> <?php echo Yii::t('WallModule.base', 'Is public'); ?>
+                            </label>
+                        </div>
 
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+
             </div>
 
             <?php echo CHtml::endForm(); ?>
@@ -96,8 +100,10 @@
             ));
             ?>
 
-        </div> <!-- /contentForm_Options -->
-    </div> <!-- /panel body -->
+        </div>
+        <!-- /contentForm_Options -->
+    </div>
+    <!-- /panel body -->
 </div> <!-- /panel -->
 
 <div class="clearFloats"></div>
@@ -110,7 +116,7 @@
 
 
     // Remove info text from the textinput
-    jQuery('#contentFormBody').click(function() {
+    jQuery('#contentFormBody').click(function () {
 
         // Hide options by default
         jQuery('.contentForm_options').fadeIn();

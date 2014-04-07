@@ -36,7 +36,8 @@
         cursor: pointer;
     }
 </style>
-<span class="btn btn-info fileinput-button tt" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
+<span class="btn btn-info fileinput-button tt" data-toggle="tooltip" data-placement="top" title=""
+      data-original-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
     <i class="icon-cloud-upload"></i>
     <input id="<?php echo $uploaderId; ?>" type="file" name="files[]"
            data-url="<?php echo Yii::app()->createUrl('//file/file/upload'); ?>" multiple>
@@ -76,12 +77,38 @@
             },
 
             progressall: function (e, data) {
+
                 var progress = parseInt(data.loaded / data.total * 100, 10);
 
+                // Fix: remove focus from upload button to hide tooltip
+                $('#post_submit_button').focus();
+
+                // hide form buttons
+                $('.btn_container').hide();
+
+                // show progress bar
+                $('#<?php echo $uploaderId; ?>_progress').show();
+
                 if (progress == 100) {
+
+                    // set upload status to 100
+                    $('#<?php echo $uploaderId; ?>_progress').children().css('width', 100 + "%");
+
+                    // hide progress bar
                     $('#<?php echo $uploaderId; ?>_progress').hide();
+
+                    // show form buttons
+                    $('.btn_container').show();
+
+                    // show attached files
+                    $('#<?php echo $uploaderId; ?>_list').fadeIn('slow');
+
                 } else {
+
+                    // show progress bar
                     $('#<?php echo $uploaderId; ?>_progress').show();
+
+                    // update upload status
                     $('#<?php echo $uploaderId; ?>_progress').children().css('width', progress + "%");
                 }
 
