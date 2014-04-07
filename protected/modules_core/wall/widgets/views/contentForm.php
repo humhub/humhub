@@ -37,8 +37,8 @@
 
                         // Reset Form (Empty State)
                         $('.contentForm').filter(':text').val('');
-                        $('.contentForm').filter('textarea').val('');
-                        $('.contentForm').attr('checked', false); 
+                        $('.contentForm').filter('textarea').val('').trigger('autosize.resize');
+                        $('.contentForm').attr('checked', false);
                         $('.userInput').remove(); // used by UserPickerWidget
 
                         $('#contentFrom_files').val('');

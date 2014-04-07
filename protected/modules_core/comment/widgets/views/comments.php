@@ -46,9 +46,12 @@
         <?php echo CHtml::textArea("message", Yii::t('CommentModule.base', ""), array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize', 'placeholder' => 'Write a new comment...')); ?>
         <?php
         echo HHtml::ajaxSubmitButton(Yii::t('base', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
+                'beforeSend' => "function() {
+                $('#newCommentForm_" . $id . "').blur();
+                }",
                 'success' => "function(html) {
             $('#comments_area_" . $id . "').html(html);
-            $('#newCommentForm_" . $id . "').val('');
+            $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
         }",
             ), array(
                 'id' => "comment_create_post_" . $id,
