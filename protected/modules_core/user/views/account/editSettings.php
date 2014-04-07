@@ -19,7 +19,7 @@
 
     <div class="form-group">
         <?php echo $form->labelEx($model, 'language'); ?>
-        <?php echo $form->dropDownList($model, 'language', array('en' => 'English', 'de' => 'Deutsch*', 'fr' => 'Francais*'), array('class' => 'form-control')); ?>
+        <?php echo $form->dropDownList($model, 'language', Yii::app()->params['availableLanguages'], array('class' => 'form-control')); ?>
         <?php echo $form->error($model, 'language'); ?>
     </div>
     <hr>

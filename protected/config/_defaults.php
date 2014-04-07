@@ -77,14 +77,11 @@ return array(
     'params' => array(
         // Installed Flag
         'installed' => false,
-        // Authentication Options
-        'auth' => array(
-            // Available Registration Types
-            'modes' => array('local'),
-            // Local Authentication Options
-            'local' => array(
-                'freeRegistration' => true,
-            ),
+        'availableLanguages' => array(
+            'en' => 'English',
+            'de' => 'Deutsch*',
+            'fr' => 'Francais*',
+            'nl' => 'Nederlands*'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/_settings.php',
     ),
