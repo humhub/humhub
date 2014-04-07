@@ -16,8 +16,8 @@
 <?php
 $label = '<i class="icon-trash"></i> '. Yii::t('base', 'Delete');
 
-$url = CHtml::normalizeUrl(Yii::app()->createUrl('//wall/content/delete', array('model' => $model, 'id' => $id)));
+echo HHtml::ajaxLink($label, array('//wall/content/delete'), array('type'=>'post', 'data'=>array('model'=>$model, 'id'=>$id), 'success' => "function(jsonResp) { wallDelete(jsonResp); }"), array('id' => "deleteLink" . $model . "_" . $id));
 
-echo HHtml::ajaxLink($label, $url, array('success' => "function(jsonResp) { wallDelete(jsonResp); }"), array('id' => "deleteLink" . $model . "_" . $id));
+
 ?>
 </li>

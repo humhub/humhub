@@ -38,6 +38,11 @@ class HHtml extends CHtml {
      */
     public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array()) {
 
+        // Auto set csrf token
+        if (isset($ajaxOptions['data']) && is_array($ajaxOptions['data']) && !isset($ajaxOptions['data'][Yii::app()->request->csrfTokenName])) {
+            $ajaxOptions['data'][Yii::app()->request->csrfTokenName] = Yii::app()->request->csrfToken;
+        }
+        
         if (isset($htmlOptions['id'])) {
             $id = $htmlOptions['id'];
             $cs = Yii::app()->getClientScript();

@@ -3,8 +3,13 @@ function wallStick(className, id) {
     url = wallStickLinkUrl.replace('-className-', className);
     url = url.replace('-id-', id);
     
+    postData = {}
+    postData[csrfName] = csrfValue;
+    
     $.ajax({
         dataType: "json",
+        type: 'post',
+        data: postData,        
         url: url
     }).done(function(data) {
         if (data.success) {
@@ -27,8 +32,13 @@ function wallUnstick(className, id) {
     url = wallUnstickLinkUrl.replace('-className-', className);
     url = url.replace('-id-', id);
     
+    postData = {}
+    postData[csrfName] = csrfValue;
+    
     $.ajax({
         dataType: "json",
+        type: 'post',
+        data: postData,        
         url: url
     }).done(function(data) {
         if (data.success) {
@@ -53,8 +63,13 @@ function wallArchive(className, id) {
     url = wallArchiveLinkUrl.replace('-className-', className);
     url = url.replace('-id-', id);
 
+    postData = {}
+    postData[csrfName] = csrfValue;
+
     $.ajax({
         dataType: "json",
+        type: 'post',
+        data: postData,
         url: url
     }).done(function(data) {
         if (data.success) {
@@ -87,8 +102,13 @@ function wallUnarchive(className, id) {
     url = wallUnarchiveLinkUrl.replace('-className-', className);
     url = url.replace('-id-', id);
 
+    postData = {}
+    postData[csrfName] = csrfValue;
+
     $.ajax({
         dataType: "json",
+        type: 'post',
+        data: postData,
         url: url
     }).done(function(data) {
         if (data.success) {

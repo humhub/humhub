@@ -41,6 +41,8 @@ class ContentController extends Controller {
      */
     public function actionDelete() {
 
+        $this->forcePostRequest();
+
         // Json Array
         $json = array();
         $json['success'] = false;
@@ -78,6 +80,8 @@ class ContentController extends Controller {
      */
     public function actionArchive() {
 
+        $this->forcePostRequest();
+
         $json = array();
         $json['success'] = false;   // default
 
@@ -104,6 +108,8 @@ class ContentController extends Controller {
      */
     public function actionUnarchive() {
 
+        $this->forcePostRequest();
+
         $json = array();
         $json['success'] = false;   // default
 
@@ -129,6 +135,8 @@ class ContentController extends Controller {
      * Returns JSON Output.
      */
     public function actionStick() {
+
+        $this->forcePostRequest();
 
         $json = array();
         $json['success'] = false;   // default
@@ -161,6 +169,8 @@ class ContentController extends Controller {
      * Returns JSON Output.
      */
     public function actionUnStick() {
+
+        $this->forcePostRequest();
 
         $json = array();
         $json['success'] = false;   // default
