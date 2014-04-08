@@ -15,8 +15,9 @@ Yii::app()->moduleManager->register(array(
     'events' => array(
         array('class' => 'User', 'event' => 'onAfterDelete', 'callback' => array('ActivityModule', 'onUserDelete')),
         array('class' => 'Space', 'event' => 'onBeforeDelete', 'callback' => array('ActivityModule', 'onSpaceDelete')),
-        array('class' => 'HActiveRecordContent', 'event' => 'onBeforeDelete', 'callback' => array('ActivityModule', 'onContentDelete')),
-    ),
+        array('class' => 'HActiveRecord', 'event' => 'onBeforeDelete', 'callback' => array('ActivityModule', 'onActiveRecordDelete')),
+        array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('ActivityModule', 'onIntegrityCheck')),
+       ),
     'contentModels' => array('Activity'),
 ));
 ?>

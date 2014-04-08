@@ -45,12 +45,18 @@ class ActivityModule extends CWebModule {
     }
 
     /**
-     * On delete of a content object, also try delete all corresponding activities
+     * On delete of some active record, check if there are related activities and delete them.
      */
-    public static function onContentDelete($event) {
+    public static function onActiveRecordDelete($event) {
 
-        foreach (Activity::model()->findAllByAttributes(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $activity) {
-            $activity->delete();
+        $model = get_class($event->sender);
+        $pk = $event->sender->getPrimaryKey();
+
+        // Check if primary key exists and is not array (multiple pk) 
+        if ($pk !== null && !is_array($pk)) {
+            foreach (Activity::model()->findAllByAttributes(array('object_id' => $pk, 'object_model' => $model)) as $activity) {
+                $activity->delete();
+            }
         }
     }
 
@@ -66,5 +72,25 @@ class ActivityModule extends CWebModule {
         }
     }
 
+    /**
+     * On run of integrity check command, validate all module data
+     *
+     * @param CEvent $event
+     */
+    public static function onIntegrityCheck($event) {
+
+        $integrityChecker = $event->sender;
+        $integrityChecker->showTestHeadline("Validating Activity Module (" . Activity::model()->count() . " entries)");
+
+        // Loop over all comments
+        foreach (Activity::model()->findAll() as $a) {
+
+            if ($a->getUnderlyingObject() === null) {
+                $integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target!");
+                if (!$integrityChecker->simulate)
+                    $a->delete();
+            }
+        }
+    }
 
 }
