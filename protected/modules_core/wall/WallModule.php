@@ -59,7 +59,7 @@ class WallModule extends CWebModule {
                 continue;
             }
 
-            $content->updateInvolvedUsers();
+            #$content->updateInvolvedUsers();
         }
     }
 
