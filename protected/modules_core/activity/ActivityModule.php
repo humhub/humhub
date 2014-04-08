@@ -85,7 +85,7 @@ class ActivityModule extends CWebModule {
         // Loop over all comments
         foreach (Activity::model()->findAll() as $a) {
 
-            if ($a->getUnderlyingObject() === null) {
+            if ($a->object_model != "" && $a->object_id != "" && $a->getUnderlyingObject() === null) {
                 $integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target!");
                 if (!$integrityChecker->simulate)
                     $a->delete();
