@@ -33,10 +33,10 @@
                                     <tbody><tr>
                                         <td valign="top" class="textContent">
 
-                                            <strong><?php echo $creator->displayName; ?></strong> <?php echo Yii::t('TasksModule.base', 'assigned you to the task '); ?> <?php echo $targetObject->getContentTitle(); ?><?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?><br/>
+                                            <strong><?php echo $creator->displayName; ?></strong> <?php echo Yii::t('TasksModule.base', 'created the new task '); ?>  <strong><?php echo $targetObject->getContentTitle(); ?></strong>. <?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?><br/>
                                             <br/>
                                             <a href="<?php echo $notification->getUrl(); ?>"><?php echo Yii::t('TasksModule.base', 'go to task'); ?></a>
-                                            
+
                                         </td>
                                     </tr>
                                     </tbody>

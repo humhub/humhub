@@ -8,6 +8,7 @@ Yii::app()->moduleManager->register(array(
     'import' => array(
         'application.modules.polls.models.*',
         'application.modules.polls.behaviors.*',
+        'application.modules.polls.notifications.*',
         'application.modules.polls.*',
     ),
     // Events to Catch 

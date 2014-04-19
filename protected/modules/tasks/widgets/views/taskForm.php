@@ -49,7 +49,7 @@ Yii::app()->clientScript->registerScriptFile(
 
         // handle tabindex
         $('#contentForm_title').focusout(function() {
-            $('#tag_input_field').focus();
+            $('#preassignedUsers_tag_input_field').focus();
         })
 
     })

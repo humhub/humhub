@@ -36,7 +36,7 @@
                                     <tr>
                                         <td valign="top" class="textContent">
                                             <strong><?php echo $user->displayName; ?></strong> <?php echo Yii::t('PollsModule.base', 'asked the question:'); ?>
-                                            <br><br><?php echo Helpers::truncateText($target->question, 25); ?><?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in
+                                            <br><?php echo Helpers::truncateText($target->question, 25); ?><?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in
                                                 <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?>
                                             <br/>
                                             <br>

@@ -36,9 +36,11 @@
         <div class="s2_streamContent"></div>
         <div class="loader streamLoader"></div>
         <div class="emptyStreamMessage">
-            <div class="placeholder">
-                <b><?php echo Yii::t('PollsModule.base', 'There are no polls yet!'); ?></b>
-            </div>
+            <?php if ($this->contentContainer->canWrite()) { ?>
+                <div class="placeholder placeholder-empty-stream">
+                    <?php echo Yii::t('PollModule.base', '<b>There are no polls yet!</b><br>Be the first and create one...'); ?>
+                </div>
+            <?php }?>
         </div>
         <div class="emptyFilterStreamMessage">
             <div class="placeholder">

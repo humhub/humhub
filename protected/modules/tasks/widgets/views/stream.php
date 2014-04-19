@@ -27,9 +27,11 @@
         <div class="loader streamLoader"></div>
 
         <div class="emptyStreamMessage">
-            <div class="placeholder">
-                <b><?php echo Yii::t('TasksModule.base', 'There are no tasks yet!'); ?></b> 
-            </div>
+            <?php if ($this->contentContainer->canWrite()) { ?>
+                <div class="placeholder placeholder-empty-stream">
+                    <?php echo Yii::t('PollModule.base', '<b>There are no tasks yet!</b><br>Be the first and create one...'); ?>
+                </div>
+            <?php }?>
         </div>
 
         <div class="emptyFilterStreamMessage">
