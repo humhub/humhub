@@ -234,7 +234,7 @@ $.fn.userpicker = function (options) {
                     var str = '<li id="user_' + json[i].guid + '"><a tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName + '\', \'' + uniqueID + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
 
                     // append the entry to the <ul> list if user is not already added
-                    if ($('#' + json[i].guid).length == 0) {
+                    if ($('#' + uniqueID + '_' + json[i].guid).length == 0) {
                         $('#' + uniqueID + '_userpicker').append(str);
                     }
 
@@ -291,7 +291,7 @@ $.fn.userpicker = function (options) {
 $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
 
     // Building a new <li> entry
-    var _tagcode = '<li class="userInput" id="' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="icon-remove-sign"></i></li>';
+    var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="icon-remove-sign"></i></li>';
 
 
     // insert the new created <li> entry into the <ul> construct
@@ -318,7 +318,7 @@ $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
     $('#' + id + '_tag_input_field').val('');
 
     // raise the count of added user
-    id++;
+    //id++;
 
 
 }
@@ -334,8 +334,12 @@ $.fn.userpicker.parseUserInput = function (id) {
 
     $('#' + id + '_inputResult .userInput').each(function () {
 
+
+        // get user guid without unique userpicker id
+        var pureID = this.id.replace(id+'_','');
+
         // add the user guid as plain text
-        $(this).after(this.id + ",");
+        $(this).after(pureID + ",");
 
         // remove the link
         $(this).remove();
