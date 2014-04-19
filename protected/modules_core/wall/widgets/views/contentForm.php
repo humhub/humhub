@@ -7,6 +7,26 @@
 
         <?php echo $form; ?>
 
+        <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
+            <input type="text" value="" id="notifiyUserInput" name="notifiyUserInput"/>
+
+            <?php
+
+            $user_url = '//space/space/searchMemberJson';
+            if (get_class($contentContainer) == Wall::TYPE_USER) {
+                $user_url = '//user/search/json';
+            }
+
+            $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
+                'inputId' => 'notifiyUserInput',
+                'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
+                'maxUsers' => 10,
+                'placeholderText' => Yii::t('WallModule.base', 'Add a member to notify'),
+                'focus' => true,
+            ));
+            ?>
+        </div>
+
         <?php
         echo CHtml::hiddenField("fileList", '', array('id' => "contentFrom_files"));
         echo CHtml::hiddenField("containerGuid", $contentContainer->guid);
@@ -40,6 +60,8 @@
                         $('.contentForm').filter('textarea').val('').trigger('autosize.resize');
                         $('.contentForm').attr('checked', false);
                         $('.userInput').remove(); // used by UserPickerWidget
+                        $('#notifyUserContainer').addClass('hidden');
+                        $('#notifiyUserInput').val('');
 
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
@@ -78,14 +100,39 @@
 
                 <!-- content sharing -->
                 <div class="pull-right">
-                    <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
-                        <div class="checkbox">
-                            <label>
-                                <?php echo CHtml::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm')); ?> <?php echo Yii::t('WallModule.base', 'Is public'); ?>
-                            </label>
-                        </div>
 
-                    <?php endif; ?>
+                    <div class="checkbox hidden">
+                        <label>
+                            <?php echo CHtml::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm')); ?> <?php echo Yii::t('WallModule.base', 'Is public'); ?>
+                        </label>
+                    </div>
+
+                    <!--                        <a class="tt btn btn-icon" href="" data-toggle="tooltip" data-placement="top" data-original-title="<?php /*echo Yii::t('WallModule.base', 'Notify related members about this post'); */ ?>"><i class="icon-bell-alt"></i></a>
+                        <a class="tt btn btn-icon" href="" data-toggle="tooltip" data-placement="top" data-original-title="<?php /*echo Yii::t('WallModule.base', 'Make public for nonmembers<br>and followers of this space'); */ ?>"><i class="icon-lock"></i></a>
+-->
+                    <span class="label label-success label-public hidden">Public</span>
+
+                    <ul class="nav nav-pills preferences">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cogs"></i></a>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="javascript:notifyUser();"><i
+                                            class="icon-bell-alt"></i> <?php echo Yii::t('WallModule.base', 'Notify members'); ?>
+                                    </a>
+                                </li>
+                                <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
+                                    <li>
+                                        <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
+                                                class="icon-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    </ul>
+
+
                 </div>
 
             </div>
@@ -122,6 +169,23 @@
         jQuery('.contentForm_options').fadeIn();
 
     });
+
+    function changeVisibility() {
+        if ($('#contentForm_visibility').attr('checked') != 'checked') {
+            $('#contentForm_visibility').attr('checked', 'checked');
+            $('#contentForm_visibility_entry').html('<i class="icon-lock"></i> <?php echo Yii::t('WallModule.base', 'Make private'); ?>');
+            $('.label-public').removeClass('hidden');
+        } else {
+            $('#contentForm_visibility').removeAttr('checked');
+            $('#contentForm_visibility_entry').html('<i class="icon-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>');
+            $('.label-public').addClass('hidden');
+        }
+    }
+
+    function notifyUser() {
+        $('#notifyUserContainer').removeClass('hidden');
+        $('#notifiyUserInput_tag_input_field').focus();
+    }
 
     // add autosize function to input
     $('.autosize').autosize();

@@ -393,7 +393,7 @@ ul.tag_input {
   line-height: 8px;
 }
 
-#userpicker, #spacepicker {
+/*.picker {
   li > a {
     padding-left: 10px;
   }
@@ -402,7 +402,7 @@ ul.tag_input {
     //padding-left: 6px;
     background-color: #eee;
   }
-}
+}*/
 
 .contentForm_options {
   margin-top: 10px;
@@ -419,7 +419,7 @@ ul.tag_input {
   list-style: none;
 }
 
-.post-files {
+.post-files, .oembed_snippet {
   margin-top: 10px;
 }
 
@@ -537,8 +537,15 @@ ul.tag_input {
   margin-bottom: 10px !important;
 }
 
+// content form
 .btn_container {
-  //margin-bottom: 0px;
+  position: relative;
+
+  .label-public {
+    position: absolute;
+    right: 40px;
+    top: 6px;
+  }
 }
 
 // Mime-Types

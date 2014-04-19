@@ -293,14 +293,16 @@ ul.tag_input li img {
   cursor: pointer;
   line-height: 8px;
 }
-#userpicker li > a,
-#spacepicker li > a {
-  padding-left: 10px;
-}
-#userpicker li.selected,
-#spacepicker li.selected {
-  background-color: #eee;
-}
+/*.picker {
+  li > a {
+    padding-left: 10px;
+  }
+
+  li.selected {
+    //padding-left: 6px;
+    background-color: #eee;
+  }
+}*/
 .contentForm_options {
   margin-top: 10px;
 }
@@ -312,7 +314,8 @@ ul.tag_input li img {
   padding-left: 0;
   list-style: none;
 }
-.post-files {
+.post-files,
+.oembed_snippet {
   margin-top: 10px;
 }
 .activities {
@@ -395,6 +398,14 @@ ul.tag_input li img {
 .contentForm-upload-progress {
   margin-top: 18px;
   margin-bottom: 10px !important;
+}
+.btn_container {
+  position: relative;
+}
+.btn_container .label-public {
+  position: absolute;
+  right: 40px;
+  top: 6px;
 }
 .mime {
   background-repeat: no-repeat;

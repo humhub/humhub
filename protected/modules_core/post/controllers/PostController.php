@@ -40,10 +40,15 @@ class PostController extends Controller {
         $post->content->populateByForm();
         $post->message = Yii::app()->request->getParam('message');
 
+        // get user guids from notify input
+        $post->userToNotify = Yii::app()->request->getParam('notifiyUserInput');
+
+
+
         if ($post->validate()) {
 
             $post->save();
-            
+
             // Experimental: Auto attach found images urls in message as files
             if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
                 File::attachFilesByUrlsToContent($post, $post->message);

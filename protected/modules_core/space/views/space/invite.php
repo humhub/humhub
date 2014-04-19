@@ -26,6 +26,7 @@
                 'inputId' => 'invite',
                 'model' => $model, // CForm Instanz
                 'attribute' => 'invite',
+                'placeholderText' => Yii::t('SpaceModule.base', 'Add a user'),
                 'focus' => true,
             ));
             ?>

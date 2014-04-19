@@ -13,7 +13,7 @@
         <div class="modal-body">
 
 
-            <?php echo Yii::t('SpaceModule.base', 'Please enter the name of your new space. You can edit the options on the next page.'); ?>
+            <?php echo Yii::t('SpaceModule.base', 'Please enter the name of your new space.<br>You can edit the options at the space preferences after creation.'); ?>
             <br><br>
             <?php print $form->textField($model, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.base', 'space name'))); ?>
             <?php echo $form->error($model, 'title'); ?>

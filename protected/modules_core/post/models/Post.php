@@ -15,30 +15,35 @@
  * @package humhub.modules_core.post.models
  * @since 0.5
  */
-class Post extends HActiveRecordContent implements ISearchable {
+class Post extends HActiveRecordContent implements ISearchable
+{
 
+    public $userToNotify = "";
     public $autoAddToWall = true;
-    
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Post the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'post';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -49,7 +54,21 @@ class Post extends HActiveRecordContent implements ISearchable {
         );
     }
 
-    public function beforeSave() {
+    /**
+     * Before Delete, remove LikeCount (Cache) of target object.
+     * Remove activity
+     */
+    protected function beforeDelete() {
+
+        Notification::remove('Post', $this->id);
+
+        return parent::beforeDelete();
+    }
+
+
+
+    public function beforeSave()
+    {
 
         // Prebuild Previews for URLs in Message
         UrlOembed::preload($this->message);
@@ -68,7 +87,8 @@ class Post extends HActiveRecordContent implements ISearchable {
      *
      * @return type
      */
-    public function afterSave() {
+    public function afterSave()
+    {
 
         parent::afterSave();
 
@@ -79,6 +99,18 @@ class Post extends HActiveRecordContent implements ISearchable {
             $activity->module = "post";
             $activity->save();
             $activity->fire();
+
+            // notify assigned Users
+            if ($this->userToNotify != "") {
+                $guids = explode(",", $this->userToNotify);
+                foreach ($guids as $guid) {
+                    $guid = trim($guid);
+                    $user = User::model()->findByAttributes(array('guid' => $guid));
+                    if ($user != null) {
+                        $this->notifyUser($user);
+                    }
+                }
+            }
         }
 
         return true;
@@ -87,7 +119,8 @@ class Post extends HActiveRecordContent implements ISearchable {
     /**
      * Returns the Wall Output
      */
-    public function getWallOut() {
+    public function getWallOut()
+    {
         return Yii::app()->getController()->widget('application.modules_core.post.widgets.PostWidget', array('post' => $this), true);
     }
 
@@ -97,7 +130,8 @@ class Post extends HActiveRecordContent implements ISearchable {
      *
      * @return Array
      */
-    public function getSearchAttributes() {
+    public function getSearchAttributes()
+    {
 
         $belongsToType = "";
         $belongsToGuid = "";
@@ -134,7 +168,8 @@ class Post extends HActiveRecordContent implements ISearchable {
     /**
      * Returns the Search Result Output
      */
-    public function getSearchResult() {
+    public function getSearchResult()
+    {
         return Yii::app()->getController()->widget('application.modules_core.post.widgets.PostSearchResultWidget', array('post' => $this), true);
     }
 
@@ -145,8 +180,33 @@ class Post extends HActiveRecordContent implements ISearchable {
      *
      * @return String
      */
-    public function getContentTitle() {
+    public function getContentTitle()
+    {
         return Yii::t('PostModule.base', 'Post') . " \"" . Helpers::truncateText(CHtml::encode($this->message), 25) . "\"";
+    }
+
+
+    /**
+     * Assign user to this post
+     */
+    public function notifyUser($user = "")
+    {
+
+        if ($user == "") {
+            $user = Yii::app()->user->getModel();
+        }
+
+        // Fire Notification to user
+        $notification = new Notification();
+        $notification->class = "PostCreatedNotification";
+        $notification->user_id = $user->id; // Assigned User
+        $notification->space_id = $this->content->space_id;
+        $notification->source_object_model = 'Post';
+        $notification->source_object_id = $this->id;
+        $notification->target_object_model = 'Post';
+        $notification->target_object_id = $this->id;
+        $notification->save();
+
     }
 
 }

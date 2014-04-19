@@ -69,6 +69,12 @@ class UserPickerWidget extends HWidget {
      */
     public $attribute = null;
 
+
+    /**
+     * @var string for input placeholder attribute.
+     */
+    public $placeholderText = "";
+
     /**
      * Inits the User Picker
      *
@@ -102,6 +108,7 @@ class UserPickerWidget extends HWidget {
             'currentValue' => $currentValue,
             'inputId' => $this->inputId,
             'focus' => $this->focus,
+            'placeholderText' => $this->placeholderText,
         ));
     }
 
