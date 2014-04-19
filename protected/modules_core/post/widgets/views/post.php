@@ -47,7 +47,7 @@
         if (_state == "down") {
             // show full content
             $('#post-content-' + post_id).animate({
-                'max-height': '100%'
+                'max-height': '2000px'
             }, 800);
 
             // set new link content
