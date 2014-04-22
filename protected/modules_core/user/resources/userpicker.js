@@ -298,10 +298,10 @@ $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
     $('#' + id + '_tag_input').before(_tagcode);
 
     // remove tag, by clicking the close icon
-    $('#' + guid + " i").click(function () {
+    $('#'+ id +'_' + guid + " i").click(function () {
 
         // remove user tag
-        $('#' + guid).remove();
+        $('#'+ id +'_' + guid).remove();
 
         // reduce the count of added user
         userCount--;
