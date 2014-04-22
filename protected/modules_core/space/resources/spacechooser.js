@@ -124,6 +124,13 @@ $(document).ready(function() {
             // lowercase and save entered string in variable
             var input = $(this).val().toLowerCase();
 
+            if (input > 0) {
+                // remove max-height property to hide the nicescroll scrollbar
+                $('#space-menu-spaces').css({'max-height': 'none'});
+            } else {
+                // set max-height property to show the nicescroll scrollbar
+                $('#space-menu-spaces').css({'max-height': '400px'});
+            }
 
             // empty variable and array
             chosen = [];
@@ -222,6 +229,9 @@ $(document).ready(function() {
             $('#space-menu-dropdown li ul li').removeClass('selected');
 
         });
+
+        // set max-height property to show the nicescroll scrollbar
+        $('#space-menu-spaces').css({'max-height': '400px'});
     }
 
 });

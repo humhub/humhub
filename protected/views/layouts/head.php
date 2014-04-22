@@ -31,6 +31,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.knob.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/wysihtml5-0.3.0.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js"></script>
 
 <!-- Global app functions -->
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js"></script>

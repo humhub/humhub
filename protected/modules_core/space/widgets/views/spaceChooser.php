@@ -33,7 +33,7 @@
 
         <li class="divider"></li>
         <li>
-            <ul class="media-list">
+            <ul class="media-list" id="space-menu-spaces">
                 <li id="loader_spaces">
                     <div class="loader"></div>
                 </li>
@@ -49,3 +49,16 @@
         </li>
     </ul>
 </li>
+
+<script type="text/javascript">
+
+    // set niceScroll to SpaceChooser menu
+    $("#space-menu-spaces").niceScroll({
+        cursorwidth: "7",
+        cursorborder:"",
+        cursorcolor:"#555",
+        cursoropacitymax:"0.2",
+        railpadding:{top:0,right:3,left:0,bottom:0}
+    });
+
+</script>

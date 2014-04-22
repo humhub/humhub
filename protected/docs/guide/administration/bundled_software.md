@@ -20,4 +20,5 @@ Bundled Software / Libaries
 * Autosize - http://www.jacklmoore.com/autosize
 * Highlight - http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
 * Timeago - http://timeago.yarp.com/
+* NiceScroll - https://github.com/inuyaksa/jquery.nicescroll
 
