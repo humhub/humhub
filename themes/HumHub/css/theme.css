@@ -754,6 +754,10 @@ ul.tag_input.focus {
 #contentFormError {
   color: #ff8989;
 }
+.data-saved {
+  padding-left: 10px;
+  color: #4cd9c0;
+}
 .errorMessage {
   color: #ff8989;
 }

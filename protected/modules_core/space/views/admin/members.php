@@ -208,6 +208,10 @@
         </div>
         <hr>
         <?php echo CHtml::submitButton("Save", array('class' => 'btn btn-primary')); ?>
+
+        <!-- show flash message after saving -->
+        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+
         <?php echo Chtml::endForm(); ?>
 
     </div>

@@ -75,6 +75,9 @@ class SettingController extends Controller {
                     }
                 }
 
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/index'));
             }
         } else {
@@ -127,6 +130,9 @@ class SettingController extends Controller {
                 $form->internalRequireApprovalAfterRegistration = HSetting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
                 $form->internalAllowAnonymousRegistration = HSetting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
                 $form->defaultUserGroup = HSetting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authentication'));
             }
@@ -189,6 +195,9 @@ class SettingController extends Controller {
                 HSetting::Set('userFilter', $form->userFilter, 'authentication_ldap');
                 HSetting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
 
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authenticationLdap'));
             }
         }
@@ -239,6 +248,9 @@ class SettingController extends Controller {
                 HSetting::Set('type', $form->type, 'cache');
                 HSetting::Set('expireTime', $form->expireTime, 'cache');
 
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved and flushed cache'));
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/caching'));
             }
         }
@@ -274,6 +286,10 @@ class SettingController extends Controller {
             if ($form->validate()) {
 
                 $form->trackingHtmlCode = HSetting::SetText('trackingHtmlCode', $form->trackingHtmlCode);
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/statistic'));
             }
         } else {
@@ -323,6 +339,9 @@ class SettingController extends Controller {
                 $form->systemEmailAddress = HSetting::Set('systemEmailAddress', $form->systemEmailAddress, 'mailing');
                 $form->systemEmailName = HSetting::Set('systemEmailName', $form->systemEmailName, 'mailing');
 
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
                 $this->redirect(Yii::app()->createUrl('//admin/setting/mailing'));
             }
         }
@@ -356,6 +375,9 @@ class SettingController extends Controller {
                 $form->theme = HSetting::Set('theme', $form->theme);
                 $form->paginationSize = HSetting::Set('paginationSize', $form->paginationSize);
                 $form->displayName = HSetting::Set('displayNameFormat', $form->displayName);
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/design'));
             }
@@ -438,6 +460,9 @@ class SettingController extends Controller {
                 $form->maxFileSize = HSetting::Set('maxFileSize', $form->maxFileSize * 1024 * 1024, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
                 $form->forbiddenExtensions = HSetting::Set('forbiddenExtensions', strtolower($form->forbiddenExtensions), 'file');
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved and flushed cache'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/file'));
             }

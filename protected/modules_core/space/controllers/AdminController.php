@@ -89,6 +89,10 @@ class AdminController extends Controller {
 
             if ($model->validate()) {
                 $model->save();
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
                 $this->redirect($this->createUrl('admin/edit', array('sguid' => $this->getSpace()->guid)));
             }
         }
@@ -143,6 +147,7 @@ class AdminController extends Controller {
                         if ($newOwnerId != $owner->id) {
                             if ($workspace->isMember($newOwnerId)) {
                                 $workspace->setOwner($newOwnerId);
+
                                 // Redirect to current workspace
                                 $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
                             }
@@ -150,6 +155,10 @@ class AdminController extends Controller {
                     }
                 }
             } // Loop over Users
+
+            // set flash message
+            Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
         } // Updated Users
 
 

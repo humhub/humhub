@@ -38,6 +38,9 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
 
+<!-- show flash message after saving -->
+<?php $this->widget('application.widgets.DataSavedWidget'); ?>
+
 <?php $this->endWidget(); ?>
 
 

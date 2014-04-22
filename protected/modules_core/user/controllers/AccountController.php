@@ -69,6 +69,9 @@ class AccountController extends Controller {
                 // Reload User in Session
                 Yii::app()->user->reload();
 
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+
                 $this->refresh();
 
                 // form inputs are valid, do something here
@@ -138,6 +141,9 @@ class AccountController extends Controller {
         if ($form->submitted('save') && $form->validate()) {
             $this->forcePostRequest();
             $profile->save();
+
+            // set flash message
+            Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
         }
 
         $this->render('edit', array('form' => $form));
@@ -219,6 +225,9 @@ class AccountController extends Controller {
 
                 // Reload User in Session
                 Yii::app()->user->reload();
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
 
                 $this->render('emailing', array('model' => $model));
 

@@ -57,6 +57,10 @@
         <?php endif; ?>    
 
         <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+
+        <!-- show flash message after saving -->
+        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+
         <div class="pull-right">
             <?php if ($space->status == Space::STATUS_ENABLED) { ?>
                 <a href="<?php echo $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)); ?>"

@@ -27,7 +27,6 @@
     <hr>
     <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
 
-
     <?php $this->endWidget(); ?>
 </div>
 
