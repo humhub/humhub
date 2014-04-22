@@ -11,7 +11,7 @@
                 <div class="media-body" id="space-description" style="overflow: hidden; max-height: 75px; font-size: 13px;">
                     <?php echo $space->description; ?>
                 </div>
-                <a class="btn btn-default btn-xs pull-right hidden" id="more-button" style="margin-top: 5px;" href="javascript:showMore();"><i class="icon-arrow-down"></i> more</a>
+                <a class="btn btn-default btn-xs pull-right hidden" id="more-button" style="margin-top: 5px;" href="javascript:showMoreInfo();"><i class="icon-arrow-down"></i> more</a>
 
             </div>
         </div>
@@ -35,7 +35,7 @@
     // current button state
     var _state = "more";
 
-    function showMore() {
+    function showMoreInfo() {
 
         if (_state == "more") {
             $('#space-description').css('max-height', '2000px');
