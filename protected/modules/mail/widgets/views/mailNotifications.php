@@ -8,6 +8,37 @@
 </div>
 
 <script type="text/javascript">
+
+    // load number of new messages at page loading
+    getMessageCount();
+
+    // load number of new messages in a loop
+    setInterval(getMessageCount, 60000);
+
+
+    // load and show new count of  messages
+    function getMessageCount() {
+
+        var $newMessages = parseInt(0);
+
+        // load data
+        jQuery.getJSON("<?php echo $this->createUrl('//mail/mail/GetMessageCount'); ?>", function (json) {
+
+            // show or hide the badge for new messages
+            $newMessages = parseInt(json.newMessages);
+            if ($newMessages == 0) {
+                $('#badge-messages').css('display', 'none');
+            } else {
+                $('#badge-messages').empty();
+                $('#badge-messages').append($newMessages);
+                $('#badge-messages').fadeIn('fast');
+            }
+
+        })
+
+    }
+
+
     // open the messages menu
     $('#icon-messages').click(function () {
 

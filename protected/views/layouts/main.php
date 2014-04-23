@@ -205,23 +205,20 @@
         // load number of new notifications at page loading
         getNotifications();
 
-        // load number of new notifications and messages in a loop
+        // load number of new notifications in a loop
         setInterval(getNotifications, 60000);
 
 
-        // load and show new count of notifications and messages
+        // load and show new count of notifications
         function getNotifications() {
 
             var $newNotifications = parseInt(0);
-            var $newMessages = parseInt(0);
 
             // load data
             jQuery.getJSON("<?php echo $this->createUrl('//dashboard/dashboard/GetFrontEndInfo'); ?>", function (json) {
 
                 // save numbers to variables
                 $newNotifications = parseInt(json.newNotifications);
-
-                //alert($newNotifications);
 
                 // show or hide the badge for new notifications
                 if ($newNotifications == 0) {
@@ -231,19 +228,6 @@
                     $('#badge-notifications').append($newNotifications);
                     $('#badge-notifications').fadeIn('fast');
                 }
-
-                <?php // Do better  ?>
-                <?php if (Yii::app()->moduleManager->isEnabled('mail')) : ?>
-                // show or hide the badge for new messages
-                $newMessages = parseInt(json.newMessages);
-                if ($newMessages == 0) {
-                    $('#badge-messages').css('display', 'none');
-                } else {
-                    $('#badge-messages').empty();
-                    $('#badge-messages').append($newMessages);
-                    $('#badge-messages').fadeIn('fast');
-                }
-                <?php endif; ?>
 
             })
 
