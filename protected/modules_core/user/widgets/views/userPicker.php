@@ -38,7 +38,8 @@ foreach (explode(",", $currentValue) as $guid) {
                 maxUsers: '<?php echo $maxUsers; ?>',
                 searchUrl: '<?php echo $userSearchUrl; ?>',
                 currentValue: '<?php echo $newValue; ?>',
-                focus:'<?php echo $focus ?>',
+                focus:'<?php echo $focus; ?>',
+                userGuid:'<?php echo $userGuid; ?>',
                 placeholderText:'<?php echo $placeholderText; ?>'
             });
         });

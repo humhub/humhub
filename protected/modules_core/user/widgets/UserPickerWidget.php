@@ -52,6 +52,13 @@ class UserPickerWidget extends HWidget {
     public $maxUsers = 50;
 
     /**
+     * Set guid for the current user
+     *
+     * @var type string
+     */
+    public $userGuid = "";
+
+    /**
      * Set focus to input or not
      *
      * @var type boolean
@@ -108,6 +115,7 @@ class UserPickerWidget extends HWidget {
             'currentValue' => $currentValue,
             'inputId' => $this->inputId,
             'focus' => $this->focus,
+            'userGuid' => $this->userGuid,
             'placeholderText' => $this->placeholderText,
         ));
     }

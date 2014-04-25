@@ -22,6 +22,7 @@ $.fn.userpicker = function (options) {
         currentValue: "",
         renderType: "normal", // possible values are "normal", "partial"
         focus: false,
+        userGuid: "",
         placeholderText: 'Add an user'
     }, options);
 
@@ -234,7 +235,7 @@ $.fn.userpicker = function (options) {
                     var _takenData = false;
 
                     // set options to link, that this entry is already taken or not available
-                    if ($('#' + uniqueID + '_' + json[i].guid).length != 0 || json[i].isMember == true) {
+                    if ($('#' + uniqueID + '_' + json[i].guid).length != 0 || json[i].isMember == true || json[i].guid == options.userGuid) {
                         _takenStyle = "opacity: 0.4;"
                         _takenData = true;
                     }

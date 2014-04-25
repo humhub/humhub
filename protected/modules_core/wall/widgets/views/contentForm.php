@@ -21,6 +21,7 @@
                 'inputId' => 'notifiyUserInput',
                 'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
                 'maxUsers' => 10,
+                'userGuid' => Yii::app()->user->guid,
                 'placeholderText' => Yii::t('WallModule.base', 'Add a member to notify'),
                 'focus' => true,
             ));
