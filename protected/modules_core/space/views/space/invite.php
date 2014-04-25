@@ -46,7 +46,9 @@
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
             ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
-            ?><button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>
+            ?>
+            <button type="button" class="btn btn-primary"
+                    data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>
 
             <div class="col-md-1 modal-loader">
                 <div id="invite-loader" class="loader loader-small hidden"></div>

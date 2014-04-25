@@ -230,13 +230,21 @@ $.fn.userpicker = function (options) {
 
                 for (var i = 0; i < json.length; i++) {
 
-                    // build <li> entry
-                    var str = '<li id="user_' + json[i].guid + '"><a tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName + '\', \'' + uniqueID + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
+                    var _takenStyle = "";
+                    var _takenData = false;
 
-                    // append the entry to the <ul> list if user is not already added
-                    if ($('#' + uniqueID + '_' + json[i].guid).length == 0) {
-                        $('#' + uniqueID + '_userpicker').append(str);
+                    // set options to link, that this entry is already taken or not available
+                    if ($('#' + uniqueID + '_' + json[i].guid).length != 0 || json[i].isMember == true) {
+                        _takenStyle = "opacity: 0.4;"
+                        _takenData = true;
                     }
+
+                    // build <li> entry
+                    var str = '<li id="user_' + json[i].guid + '"><a style="' + _takenStyle + '" data-taken="' + _takenData + '" tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName + '\', \'' + uniqueID + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
+
+                    // append the entry to the <ul> list
+                    $('#' + uniqueID + '_userpicker').append(str);
+
 
                 }
 
@@ -290,35 +298,36 @@ $.fn.userpicker = function (options) {
 // Add a usertag for invitation
 $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
 
-    // Building a new <li> entry
-    var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="icon-remove-sign"></i></li>';
+    if ($('#user_' + guid + ' a').attr('data-taken') != "true") {
+
+        // Building a new <li> entry
+        var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="icon-remove-sign"></i></li>';
 
 
-    // insert the new created <li> entry into the <ul> construct
-    $('#' + id + '_tag_input').before(_tagcode);
+        // insert the new created <li> entry into the <ul> construct
+        $('#' + id + '_tag_input').before(_tagcode);
 
-    // remove tag, by clicking the close icon
-    $('#'+ id +'_' + guid + " i").click(function () {
+        // remove tag, by clicking the close icon
+        $('#' + id + '_' + guid + " i").click(function () {
 
-        // remove user tag
-        $('#'+ id +'_' + guid).remove();
+            // remove user tag
+            $('#' + id + '_' + guid).remove();
 
-        // reduce the count of added user
-        userCount--;
+            // reduce the count of added user
+            userCount--;
 
-    })
+        })
 
-    // hide user results
-    $('#' + id + '_userpicker').hide();
+        // hide user results
+        $('#' + id + '_userpicker').hide();
 
-    // set focus to the input element
-    $('#' + id + '_tag_input_field').focus();
+        // set focus to the input element
+        $('#' + id + '_tag_input_field').focus();
 
-    // Clear the textinput
-    $('#' + id + '_tag_input_field').val('');
+        // Clear the textinput
+        $('#' + id + '_tag_input_field').val('');
 
-    // raise the count of added user
-    //id++;
+    }
 
 
 }
@@ -336,7 +345,7 @@ $.fn.userpicker.parseUserInput = function (id) {
 
 
         // get user guid without unique userpicker id
-        var pureID = this.id.replace(id+'_','');
+        var pureID = this.id.replace(id + '_', '');
 
         // add the user guid as plain text
         $(this).after(pureID + ",");

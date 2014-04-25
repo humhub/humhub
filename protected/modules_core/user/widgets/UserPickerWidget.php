@@ -83,7 +83,7 @@ class UserPickerWidget extends HWidget {
 
         // Default user search for all users
         if ($this->userSearchUrl == "")
-            $this->userSearchUrl = Yii::app()->getController()->createUrl('//user/search/json', array('keyword' => '-keywordPlaceholder-'));
+            $this->userSearchUrl = Yii::app()->getController()->createUrl('//user/search/json', array('keyword' => '-keywordPlaceholder-', 'space_id' => Yii::app()->getController()->getSpace()->id));
 
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.highlight.min.js', CClientScript::POS_END);

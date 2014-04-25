@@ -30,6 +30,7 @@ class SearchController extends Controller {
         $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
         $page = (int) Yii::app()->request->getParam('page', 1); // current page (pagination)
         $limit = (int) Yii::app()->request->getParam('limit', HSetting::Get('paginationSize')); // current page (pagination)
+        $spaceId = (int) Yii::app()->request->getParam('space_id', 0);
         $hitCount = 0;
 
         $keyword = Yii::app()->input->stripClean($keyword);
@@ -48,6 +49,9 @@ class SearchController extends Controller {
             } else {
                 $query = "email:" . $keyword . " AND (model:User)";
             }
+
+            // get members of the current space
+            $spaceMembers = SpaceMembership::model()->findAll('space_id=:space_id', array(':space_id'=>$spaceId));
 
             //$hits = HSearch::getInstance()->Find($query);
             //, $limit, $page
@@ -80,6 +84,7 @@ class SearchController extends Controller {
                         $userInfo['displayName'] = $user->displayName;
                         $userInfo['image'] = $user->getProfileImage()->getUrl();
                         $userInfo['link'] = $user->getUrl();
+                        $userInfo['isMember'] = $this->checkMembership($spaceMembers, $userId);
                         $results[] = $userInfo;
                     } else {
                         Yii::log("Could not load use with id " . $userId . " from search index!", CLogger::LEVEL_ERROR);
@@ -91,6 +96,23 @@ class SearchController extends Controller {
         }
         print CJSON::encode($results);
         Yii::app()->end();
+    }
+
+    /**
+     * check Membership of users
+     *
+     */
+    private function checkMembership($members, $userId) {
+
+        // check if current user is member of this space
+        foreach ($members as $member) {
+            if ($userId == $member->user_id) {
+                return true;
+                break;
+            }
+        }
+
+        return false;
     }
 
 }
