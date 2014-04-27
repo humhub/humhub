@@ -124,6 +124,12 @@
     </div>
 </div>
 
+<!-- show "Load More" button on mobile devices -->
+<div class="col-md-12 text-center visible-xs visible-sm">
+    <button id="btn-load-more" class="btn btn-primary btn-lg ">Load more</button>
+    <br/><br/>
+</div>
+
 
 <script>
 
@@ -151,7 +157,14 @@
         // Current active stream
         currentStream = s;
 
+
     });
+
+    $('#btn-load-more').click(function() {
+        // load next wall entries
+        currentStream.loadMore();
+    })
+
 </script>
 
 
