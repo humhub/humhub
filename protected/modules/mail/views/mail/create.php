@@ -34,6 +34,7 @@
                 'inputId' => 'recipient',
                 'model' => $model, // CForm Instanz
                 'attribute' => 'recipient',
+                'userGuid' => Yii::app()->user->guid,
                 'focus' => true,
             ));
             ?>

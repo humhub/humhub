@@ -26,6 +26,7 @@
                 'inputId' => 'addUserFrom_mail',
                 'model' => $inviteForm, // CForm Instanz
                 'attribute' => 'recipient',
+                'userGuid' => Yii::app()->user->guid,
                 'focus' => true,
             ));
             ?>
