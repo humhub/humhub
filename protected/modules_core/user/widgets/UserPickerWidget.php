@@ -26,7 +26,8 @@
  * @since 0.5
  * @author Luke
  */
-class UserPickerWidget extends HWidget {
+class UserPickerWidget extends HWidget
+{
 
     /**
      * Id of input element which should replaced
@@ -39,8 +40,8 @@ class UserPickerWidget extends HWidget {
      * JSON Search URL - defaults: search/json
      *
      * The token -keywordPlaceholder- will replaced by the current search query.
-     * 
-     * @var String Url with -keywordPlaceholder-  
+     *
+     * @var String Url with -keywordPlaceholder-
      */
     public $userSearchUrl = "";
 
@@ -86,11 +87,19 @@ class UserPickerWidget extends HWidget {
      * Inits the User Picker
      *
      */
-    public function init() {
+    public function init()
+    {
 
         // Default user search for all users
-        if ($this->userSearchUrl == "")
-            $this->userSearchUrl = Yii::app()->getController()->createUrl('//user/search/json', array('keyword' => '-keywordPlaceholder-', 'space_id' => Yii::app()->getController()->getSpace()->id));
+        if ($this->userSearchUrl == "") {
+
+            // provide the space id if the widget is calling from a space
+            if (Yii::app()->getController()->id == 'space') {
+                $this->userSearchUrl = Yii::app()->getController()->createUrl('//user/search/json', array('keyword' => '-keywordPlaceholder-', 'space_id' => Yii::app()->getController()->getSpace()->id));
+            } else {
+                $this->userSearchUrl = Yii::app()->getController()->createUrl('//user/search/json', array('keyword' => '-keywordPlaceholder-'));
+            }
+        }
 
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.highlight.min.js', CClientScript::POS_END);
@@ -100,7 +109,8 @@ class UserPickerWidget extends HWidget {
     /**
      * Displays / Run the Widgets
      */
-    public function run() {
+    public function run()
+    {
 
         // Try to get current field value, when model & attribute attributes are specified.
         $currentValue = "";
