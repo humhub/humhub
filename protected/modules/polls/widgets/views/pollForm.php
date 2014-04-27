@@ -5,7 +5,7 @@
     <?php echo CHtml::textArea("answersText", "", array('id' => "contentForm_answersText", 'rows' => '5', "class" => "form-control contentForm", "tabindex" => "2", "placeholder" => Yii::t('PollsModule.base', "Possible answers (one per line)"))); ?>
     <div class="checkbox">
         <label>
-            <?php echo CHtml::checkbox("allowMultiple", "", array('id' => "contentForm_answersText", 'class' => 'checkbox tick contentForm', "tabindex" => "4")); ?> <?php echo Yii::t('PollsModule.base', 'Allow multiple answers per user?'); ?>
+            <?php echo CHtml::checkbox("allowMultiple", "", array('id' => "contentForm_allowMultiple", 'class' => 'checkbox contentForm', "tabindex" => "4")); ?> <?php echo Yii::t('PollsModule.base', 'Allow multiple answers per user?'); ?>
         </label>
     </div>
     

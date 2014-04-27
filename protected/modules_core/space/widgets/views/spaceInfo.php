@@ -2,7 +2,6 @@
     <div class="panel-body">
         <div class="media-body">
             <h5 class="media-heading"><?php echo $space->name; ?></h5>
-
             <div class="media">
                 <img class="img-rounded pull-left"
                      src="<?php echo $space->getProfileImage()->getUrl(); ?>" height="100" width="100"
@@ -19,6 +18,8 @@
 </div>
 
 <script type="text/javascript">
+
+
 
     $(document).ready(function() {
 

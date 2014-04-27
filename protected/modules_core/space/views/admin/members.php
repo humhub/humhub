@@ -134,10 +134,35 @@
                                 </td>
 
                                 <?php if (!$workspace->isOwner($user->id)) : ?>
-                                    <td><?php echo CHtml::checkBox('user_' . $user->guid . "[inviteRole]", $membership->invite_role, array('class' => 'check_invite', 'id' => "chk_invite_" . $user->id)); ?></td>
-                                    <td><?php echo CHtml::checkBox('user_' . $user->guid . "[shareRole]", $membership->share_role, array('class' => 'check_share', 'id' => "chk_share_" . $user->id)); ?></td>
-                                    <td><?php echo CHtml::checkBox('user_' . $user->guid . "[adminRole]", $membership->admin_role, array('class' => 'check_admin', 'id' => "chk_admin_" . $user->id)); ?></td>
-                                    <td>
+<!--                                    <td><?php /*echo CHtml::checkBox('user_' . $user->guid . "[inviteRole]", $membership->invite_role, array('class' => 'check_invite', 'id' => "chk_invite_" . $user->id)); */?></td>
+                                    <td><?php /*echo CHtml::checkBox('user_' . $user->guid . "[shareRole]", $membership->share_role, array('class' => 'check_share', 'id' => "chk_share_" . $user->id)); */?></td>
+                                    <td><?php /*echo CHtml::checkBox('user_' . $user->guid . "[adminRole]", $membership->admin_role, array('class' => 'check_admin', 'id' => "chk_admin_" . $user->id)); */?></td>-->
+                                    <td style="vertical-align:middle">
+                                        <div class="checkbox">
+                                            <label>
+                                                <?php echo CHtml::checkBox('user_' . $user->guid . "[inviteRole]", $membership->invite_role, array('class' => 'check_invite', 'id' => "chk_invite_" . $user->id, 'data-view' => 'slider')); ?>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:middle">
+                                        <div class="checkbox">
+                                            <label>
+                                                <?php echo CHtml::checkBox('user_' . $user->guid . "[shareRole]", $membership->share_role, array('class' => 'check_share', 'id' => "chk_share_" . $user->id, 'data-view' => 'slider')); ?>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:middle">
+                                        <div class="checkbox">
+                                            <label>
+                                                <?php echo CHtml::checkBox('user_' . $user->guid . "[adminRole]", $membership->admin_role, array('class' => 'check_admin', 'id' => "chk_admin_" . $user->id, 'data-view' => 'slider')); ?>
+                                            </label>
+                                        </div>
+                                    </td>
+
+
+
+
+                                    <td style="vertical-align:middle">
                                         <!-- load modal confirm widget -->
                                         <?php
                                         $this->widget('application.widgets.ModalConfirmWidget', array(

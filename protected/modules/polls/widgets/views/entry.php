@@ -26,11 +26,20 @@
 
             <div class="row">
                 <?php if (!$poll->hasUserVoted()) : ?>
-                    <div class="col-md-1">
+                    <div class="col-md-1" style="padding-right: 0;">
                         <?php if ($poll->allow_multiple) : ?>
-                            <?php echo CHtml::checkBox('answers[' . $answer->id . ']'); ?>
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo CHtml::checkBox('answers[' . $answer->id . ']'); ?>
+                                </label>
+                            </div>
+
                         <?php else: ?>
-                            <?php echo CHtml::radioButton('answers', false, array('value' => $answer->id)); ?>
+                            <div class="radio">
+                                <label>
+                                    <?php echo CHtml::radioButton('answers', false, array('value' => $answer->id, 'id' => 'answer_'. $answer->id)); ?>
+                                </label>
+                            </div>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
@@ -117,7 +126,7 @@
             $voteUrl = CHtml::normalizeUrl(array('/polls/poll/answerReset', 'sguid' => $space->guid, 'pollId' => $poll->id));
             echo HHtml::ajaxLink(Yii::t('PollsModule.base', 'Reset my vote'), $voteUrl, array(
                     'dataType' => 'json',
-                    'success' => "function(json) { $('#wallEntry_'+json.wallEntryId).html(parseHtml(json.output)); }",
+                    'success' => "function(json) { $('#wallEntry_'+json.wallEntryId).html(parseHtml(json.output)); $('#wallEntry_'+json.wallEntryId).find(':checkbox, :radio').flatelements(); }",
                 ), array('id' => "PollAnswerResetButton_" . $poll->id, 'class' => 'btn btn-danger')
             );
             ?>
