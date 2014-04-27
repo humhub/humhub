@@ -18,5 +18,9 @@
 
 <?php if ($mode != "activity") : ?>
     </div>
+    <script type="text/javascript">
+        // Replace the standard checkbox and radio buttons
+        $('#wallEntry_<?php echo $entry->id; ?>').find(':checkbox, :radio').flatelements();
+    </script>
 <?php endif; ?>
 

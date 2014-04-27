@@ -491,6 +491,14 @@ h4 {
 textarea {
   resize: none;
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('../img/select_arrow.png') !important;
+  background-repeat: no-repeat;
+  background-position: right 13px;
+}
 ::-webkit-input-placeholder {
   color: #bebebe !important;
 }

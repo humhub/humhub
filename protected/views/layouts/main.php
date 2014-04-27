@@ -177,8 +177,12 @@
 
 <script type="text/javascript">
 
+    // Replace the standard checkbox and radio buttons
+    $('body').find(':checkbox, :radio').flatelements();
 
     $(document).ready(function () {
+
+
 
         // Open the notification menu
         $('#icon-notifications').click(function () {

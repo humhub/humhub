@@ -6,6 +6,7 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/theme.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css" rel="stylesheet">
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/flatelements.css" rel="stylesheet">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 <!-- end: CSS -->
 
@@ -33,6 +34,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/wysihtml5-0.3.0.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.flatelements.js"></script>
 
 <!-- Global app functions -->
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js"></script>
