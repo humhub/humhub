@@ -191,7 +191,7 @@
             $('#dropdown-notifications').find('li').remove();
 
             // append title and loader to dropdown
-            $('#dropdown-notifications').append('<li class="dropdown-header"><?php echo Yii::t('base', 'Notifications'); ?></li><li id="loader_notifications"><div class="loader"></div></li>');
+            $('#dropdown-notifications').append('<li class="dropdown-header"><div class="arrow"></div><?php echo Yii::t('base', 'Notifications'); ?></li><li id="loader_notifications"><div class="loader"></div></li>');
 
             // load newest notifications
             $.ajax({

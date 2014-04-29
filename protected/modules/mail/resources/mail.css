@@ -25,3 +25,19 @@
 .placeholder {
     color: #77777A;
 }
+
+#dropdown-messages .arrow {
+    top: -11px !important;
+}
+
+@media (max-width: 767px) {
+
+    #dropdown-messages {
+        width: 300px !important;
+
+    }
+
+    .arrow {
+        margin-left: -101px !important;
+    }
+}
