@@ -174,7 +174,6 @@
 </div>
 <!-- end: Modal -->
 
-
 <script type="text/javascript">
 
     // Replace the standard checkbox and radio buttons

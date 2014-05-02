@@ -18,7 +18,7 @@
             <!-- show content -->
             <?php echo $content; ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 space-sidebar-container">
             <!-- show modules like activity stream and space member widget -->
             <?php $this->widget('application.modules_core.space.widgets.SpaceSidebarWidget', array(
                 'widgets' => array(

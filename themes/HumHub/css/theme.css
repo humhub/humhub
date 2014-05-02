@@ -191,6 +191,11 @@ h4 {
   -moz-box-shadow: 0 0 3px #dadada;
   border-radius: 4px;
 }
+.panel h1 {
+  font-size: 22px;
+  font-weight: 200;
+  margin-top: 0px;
+}
 .panel .panel-heading {
   font-size: 16px;
   font-weight: 300;
@@ -201,6 +206,9 @@ h4 {
 }
 .panel .panel-body {
   padding: 10px;
+}
+.panel .panel-body p {
+  color: #aeaeae;
 }
 .panel .statistics .entry {
   margin-left: 20px;
@@ -704,6 +712,25 @@ a.list-group-item.active {
 .tooltip.in {
   opacity: 1;
   filter: alpha(opacity=100);
+}
+table th {
+  font-size: 11px;
+  color: #bebebe;
+  font-weight: normal;
+}
+table .time {
+  font-size: 12px;
+}
+table td a:hover {
+  color: #4cd9c0;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 6px 5px 4px 5px;
 }
 .loader {
   height: 60px;
