@@ -71,6 +71,7 @@ return array(
         // 3rd Party Extensions
         'ext.yii-mail.YiiMailMessage',
         'ext.EZendAutoloader.EZendAutoloader',
+        'ext.controller-events.*'
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']

@@ -21,4 +21,4 @@ Bundled Software / Libaries
 * Highlight - http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
 * Timeago - http://timeago.yarp.com/
 * NiceScroll - https://github.com/inuyaksa/jquery.nicescroll
-
+* Controller-Events - http://www.yiiframework.com/extension/controller-events/

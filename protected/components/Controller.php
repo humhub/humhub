@@ -25,7 +25,7 @@
  * @package humhub.components
  * @since 0.5
  */
-class Controller extends CController {
+class Controller extends EController {
 
     /**
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
