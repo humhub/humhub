@@ -63,6 +63,7 @@
                         $('.userInput').remove(); // used by UserPickerWidget
                         $('#notifyUserContainer').addClass('hidden');
                         $('#notifiyUserInput').val('');
+                        $('.label-public').addClass('hidden');
 
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
