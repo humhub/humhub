@@ -13,6 +13,7 @@ Yii::app()->moduleManager->register(array(
     // Events to Catch 
     'events' => array(
         array('class' => 'WallEntryAddonWidget', 'event' => 'onInit', 'callback' => array('FileModule', 'onWallEntryAddonInit')),
+        array('class' => 'ZCronRunner', 'event' => 'onDailyRun', 'callback' => array('FileModule', 'onCronDailyRun')),
     ),
 ));
 ?>
