@@ -74,7 +74,6 @@ class HActiveRecordContent extends HActiveRecord {
         return $objectModel . " (" . $this->id . ")";
     }
 
-
     /**
      * If the content should also displayed on a wall, overwrite this
      * method and produce a wall output.
@@ -166,6 +165,27 @@ class HActiveRecordContent extends HActiveRecord {
             return parent::hasErrors($attribute);
 
         return parent::hasErrors() || $this->content->hasErrors();
+    }
+
+    /**
+     * Scope to limit for a given content container
+     * 
+     * @param HActiveRecordContentContainer $container
+     */
+    public function contentContainer($container) {
+
+        $criteria = new CDbCriteria();
+        $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
+
+        $containerClass = get_class($container);
+        if ($containerClass == 'Space') {
+            $criteria->condition = 'content.space_id=' . $container->id;
+        } elseif ($containerClass == 'User') {
+            $criteria->condition = 'content.user_id=' . $container->id;
+        }
+        $this->getDbCriteria()->mergeWith($criteria);
+
+        return $this;
     }
 
 }
