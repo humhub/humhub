@@ -252,11 +252,15 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     }
 
     /**
-     * Before Delete of a User
-     *
+     * Before deletion of a Space
      */
     protected function beforeDelete() {
         if (parent::beforeDelete()) {
+
+            foreach (SpaceSetting::model()->findAllByAttributes(array('space_id'=>$this->id)) as $spaceSetting) {
+                $spaceSetting->delete();
+            }
+            
             HSearch::getInstance()->deleteModel($this);
             return true;
         }

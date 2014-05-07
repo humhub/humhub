@@ -337,9 +337,12 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      */
     public function beforeDelete() {
         if (parent::beforeDelete()) {
+
+            foreach (UserSetting::model()->findAllByAttributes(array('user_id'=>$this->id)) as $userSetting) {
+                $userSetting->delete();
+            }
+            
             HSearch::getInstance()->deleteModel($this);
-
-
 
             return true;
         }
