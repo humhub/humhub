@@ -17,7 +17,7 @@ class YiiGiiModule extends CWebModule {
                 'class' => 'system.gii.GiiModule',
                 'password' => HSetting::Get('password', 'yiigii'),
                 // If removed, Gii defaults to localhost only. Edit carefully to taste.
-                'ipFilters' => explode(",", HSetting::Get('ipFilters', 'yiigii')),
+                'ipFilters' => explode(",", str_replace(" ", "",HSetting::Get('ipFilters', 'yiigii'))),
                 'generatorPaths' => array(
                     'bootstrap.gii',
                 ),
