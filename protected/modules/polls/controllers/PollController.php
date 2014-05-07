@@ -181,6 +181,11 @@ class PollController extends Controller {
      */
     private function getPollOut($question) {
 
+        // Set correct wall type
+        $wallType = Yii::app()->request->getParam('wallType');
+        if ($wallType != "" && ($wallType == 'Space' || $wallType == 'Dashboard' || $wallType == 'User'))
+            Wall::$currentType = $wallType;
+
         $output = $question->getWallOut();
         Yii::app()->clientScript->render($output);
 

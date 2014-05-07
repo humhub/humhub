@@ -106,7 +106,7 @@
         <?php if (!$poll->hasUserVoted()) : ?>
             <br>
             <?php
-            $voteUrl = CHtml::normalizeUrl(array('/polls/poll/answer', 'sguid' => $space->guid, 'pollId' => $poll->id));
+            $voteUrl = CHtml::normalizeUrl(array('/polls/poll/answer', 'sguid' => $space->guid, 'pollId' => $poll->id, 'wallType'=>Wall::$currentType));
             echo HHtml::ajaxSubmitButton(Yii::t('PollsModule.base', 'Vote'), $voteUrl, array(
                     'dataType' => 'json',
                     'success' => "function(json) {  $('#wallEntry_'+json.wallEntryId).html(parseHtml(json.output)); }",
@@ -123,7 +123,7 @@
         <?php if ($poll->hasUserVoted()) : ?>
             <br>
             <?php
-            $voteUrl = CHtml::normalizeUrl(array('/polls/poll/answerReset', 'sguid' => $space->guid, 'pollId' => $poll->id));
+            $voteUrl = CHtml::normalizeUrl(array('/polls/poll/answerReset', 'sguid' => $space->guid, 'pollId' => $poll->id, 'wallType' => Wall::$currentType));
             echo HHtml::ajaxLink(Yii::t('PollsModule.base', 'Reset my vote'), $voteUrl, array(
                     'dataType' => 'json',
                     'success' => "function(json) { $('#wallEntry_'+json.wallEntryId).html(parseHtml(json.output)); $('#wallEntry_'+json.wallEntryId).find(':checkbox, :radio').flatelements(); }",
