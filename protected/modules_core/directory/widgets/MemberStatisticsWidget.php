@@ -19,7 +19,12 @@ class MemberStatisticsWidget extends HWidget {
         // Some member stats
         Yii::import('application.modules.mail.models.*');
         $statsTotalUsers = User::model()->count();
-        $statsUserOnline = UserHttpSession::model()->count('user_id IS NOT NULL');
+        
+        $criteria = new CDbCriteria;
+        $criteria->group = 'user_id';
+        $criteria->condition = 'user_id IS NOT null';
+        $statsUserOnline = UserHttpSession::model()->count($criteria);
+
         $statsMessageEntries = 0;
         if (Yii::app()->moduleManager->isEnabled('mail'))
             $statsMessageEntries = MessageEntry::model()->count();
