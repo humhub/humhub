@@ -29,6 +29,8 @@
  */
 class HForm extends CForm {
 
+    public $inputElementClass = "HFormInputElement";
+
     /**
      * Renders the {@link buttons} in this form.
      * @return string the rendering result
@@ -59,9 +61,6 @@ class HForm extends CForm {
             if ($element instanceof CFormInputElement) {
                 if ($element->type === 'hidden')
                     return "<div style=\"visibility:hidden\">\n" . $element->render() . "</div>\n";
-
-                elseif ($element->type === 'checkbox')
-                    return "<div class=\"checkbox field_{$element->name}\">\n" . $element->render() . "</div>\n";
                 else
                     return "<div class=\"form-group field_{$element->name}\">\n" . $element->render() . "</div>\n";
             }
