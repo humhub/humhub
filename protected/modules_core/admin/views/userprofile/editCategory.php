@@ -8,7 +8,7 @@
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'admin-userprofile-editcategory',
     'enableAjaxValidation' => false,
-));
+        ));
 ?>
 
 <div class="form-group">
@@ -29,7 +29,11 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo $form->error($category, 'title'); ?>
 </div>
 
-<!--<?php echo $form->textField($category, 'visibility', array('class' => 'form-control')); ?>-->
+<div class="form-group">
+    <?php echo $form->labelEx($category, 'translation_category') ?>
+    <?php echo $form->textField($category, 'translation_category', array('class' => 'form-control')); ?>
+    <?php echo $form->error($category, 'translation_category'); ?>
+</div>
 
 <hr>
 

@@ -333,6 +333,8 @@ class ConfigController extends Controller {
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
         $field->ldap_attribute = 'givenName';
+        $field->is_system = true;
+        $field->show_at_registration = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -345,6 +347,8 @@ class ConfigController extends Controller {
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
         $field->ldap_attribute = 'sn';
+        $field->show_at_registration = true;
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -357,6 +361,7 @@ class ConfigController extends Controller {
         $field->ldap_attribute = 'title';
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();

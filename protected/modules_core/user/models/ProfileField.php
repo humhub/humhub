@@ -18,6 +18,8 @@
  * @property integer $visible
  * @property integer $editable
  * @property integer $show_at_registration
+ * @property string $translation_category
+ * @property integer $is_system
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -26,7 +28,8 @@
  * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class ProfileField extends HActiveRecord {
+class ProfileField extends HActiveRecord
+{
 
     /**
      * Field Type Instance
@@ -68,27 +71,30 @@ class ProfileField extends HActiveRecord {
      * @param string $className active record class name.
      * @return ProfileField the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'profile_field';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('profile_field_category_id, field_type_class, internal_name, title, sort_order', 'required'),
             array('profile_field_category_id, required, editable,show_at_registration,  visible, sort_order, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('module_id, field_type_class, title', 'length', 'max' => 255),
             array('internal_name', 'length', 'max' => 100),
-            array('ldap_attribute', 'length', 'max' => 255),
+            array('ldap_attribute, translation_category', 'length', 'max' => 255),
             array('internal_name', 'checkInternalName'),
             array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.base', 'Only alphanumeric characters allowed!')),
             array('field_type_class', 'checkType'),
@@ -101,7 +107,8 @@ class ProfileField extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'category' => array(self::BELONGS_TO, 'ProfileFieldCategory', 'profile_field_category_id'),
         );
@@ -110,7 +117,8 @@ class ProfileField extends HActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => Yii::t('base', 'ID'),
             'profile_field_category_id' => Yii::t('UserModule.profile', 'Profile Field Category'),
@@ -122,6 +130,7 @@ class ProfileField extends HActiveRecord {
             'editable' => Yii::t('UserModule.profile', 'Editable'),
             'ldap_attribute' => Yii::t('UserModule.profile', 'LDAP Attribute'),
             'show_at_registration' => Yii::t('UserModule.profile', 'Show at registration'),
+            'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
             'required' => Yii::t('base', 'Required'),
             'title' => Yii::t('base', 'Title'),
             'description' => Yii::t('base', 'Description'),
@@ -137,7 +146,12 @@ class ProfileField extends HActiveRecord {
      * Before deleting a profile field, inform underlying ProfileFieldType for
      * cleanup.
      */
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
+        if ($this->is_system) {
+            return false;
+        }
+
         $this->fieldType->delete();
         return parent::beforeDelete();
     }
@@ -145,7 +159,8 @@ class ProfileField extends HActiveRecord {
     /**
      * After Save, also saving the underlying Field Type
      */
-    public function afterSave() {
+    public function afterSave()
+    {
 
         # Cause Endless
         #$this->fieldType->save();
@@ -157,7 +172,8 @@ class ProfileField extends HActiveRecord {
      *
      * @return ProfileFieldType
      */
-    public function getFieldType() {
+    public function getFieldType()
+    {
 
         if ($this->_fieldType != null)
             return $this->_fieldType;
@@ -176,7 +192,8 @@ class ProfileField extends HActiveRecord {
      *
      * @return Array CForm Definition
      */
-    public function getFormDefinition() {
+    public function getFormDefinition()
+    {
 
         $categories = ProfileFieldCategory::model()->findAll(array('order' => 'sort_order'));
         $definition = array(
@@ -202,6 +219,12 @@ class ProfileField extends HActiveRecord {
                         'type' => 'text',
                         'maxlength' => 32,
                         'class' => 'form-control',
+                    ),
+                    'translation_category' => array(
+                        'type' => 'text',
+                        'maxlength' => 32,
+                        'class' => 'form-control',
+                        'value' => $this->getTranslationCategory(),
                     ),
                     //ToDo: Hide me, when Ldap Support is disabled
                     'ldap_attribute' => array(
@@ -248,7 +271,8 @@ class ProfileField extends HActiveRecord {
      *
      * Also ensures that internal_name could not be changed on existing records.
      */
-    public function checkInternalName() {
+    public function checkInternalName()
+    {
 
         // Little bit cleanup
         $this->internal_name = strtolower($this->internal_name);
@@ -277,7 +301,8 @@ class ProfileField extends HActiveRecord {
      *
      * Also ensures that field_type_class could not be changed on existing records.
      */
-    public function checkType() {
+    public function checkType()
+    {
 
         if (!$this->isNewRecord) {
 
@@ -301,8 +326,25 @@ class ProfileField extends HActiveRecord {
      *
      * @return type
      */
-    public function getUserValue($user, $raw = true) {
+    public function getUserValue($user, $raw = true)
+    {
         return $this->fieldType->getUserValue($user, $raw);
+    }
+
+    /**
+     * Returns the translation category 
+     * Defaults to: UserModule.profile
+     * 
+     * @return string
+     */
+    public function getTranslationCategory()
+    {
+
+        if ($this->translation_category != "") {
+            return $this->translation_category;
+        }
+
+        return "UserModule.profile";
     }
 
 }

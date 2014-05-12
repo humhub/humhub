@@ -52,6 +52,8 @@ class UserProfileController extends Controller {
         if ($category == null)
             $category = new ProfileFieldCategory;
 
+        $category->translation_category = $category->getTranslationCategory();        
+        
         // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-userprofile-editcategory') {
             echo CActiveForm::validate($category);
@@ -133,7 +135,7 @@ class UserProfileController extends Controller {
             ),
         );
 
-        if (!$field->isNewRecord) {
+        if (!$field->isNewRecord && !$field->is_system) {
             $definition['buttons']['delete'] = array(
                 'type' => 'submit',
                 'label' => Yii::t('base', 'Delete'),

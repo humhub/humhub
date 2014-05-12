@@ -10,6 +10,7 @@
  * @property integer $sort_order
  * @property integer $module_id
  * @property integer $visibility
+ * @property string $translation_category
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -18,7 +19,8 @@
  * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class ProfileFieldCategory extends HActiveRecord {
+class ProfileFieldCategory extends HActiveRecord
+{
 
     /**
      * Default Value for Sort Order
@@ -32,27 +34,30 @@ class ProfileFieldCategory extends HActiveRecord {
      * @param string $className active record class name.
      * @return ProfileFieldCategory the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'profile_field_category';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
             array('title, sort_order', 'required'),
             array('sort_order, module_id, visibility, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('title', 'length', 'max' => 255),
+            array('title, translation_category', 'length', 'max' => 255),
             array('created_at, updated_at', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
@@ -63,7 +68,8 @@ class ProfileFieldCategory extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'fields' => array(self::HAS_MANY, 'ProfileField', 'profile_field_category_id'),
         );
@@ -72,19 +78,54 @@ class ProfileFieldCategory extends HActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
+
+        /**
+         * Hack for Yii Messages Command
+         * 
+         * Yii::t('UserModule.profile', 'General')
+         * Yii::t('UserModule.profile', 'Communication')
+         * Yii::t('UserModule.profile', 'Social bookmarks')
+         */
         return array(
             'id' => Yii::t('base', 'ID'),
             'title' => Yii::t('base', 'Title'),
             'description' => Yii::t('base', 'Description'),
             'sort_order' => Yii::t('base', 'Sort order'),
             'module_id' => Yii::t('base', 'Module'),
-            'visibility' => Yii::t('UserModule.base', 'Visibility'),
+            'visibility' => Yii::t('UserModule.profile', 'Visibility'),
+            'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
             'created_at' => Yii::t('base', 'Created at'),
             'created_by' => Yii::t('base', 'Created by'),
             'updated_at' => Yii::t('base', 'Updated at'),
             'updated_by' => Yii::t('base', 'Updated by'),
         );
+    }
+
+    public function beforeDelete()
+    {
+        if ($this->is_system) {
+            return false;
+        }
+
+        return parent::beforeDelete();
+    }
+
+    /**
+     * Returns the translation category 
+     * Defaults to: UserModule.profile
+     * 
+     * @return string
+     */
+    public function getTranslationCategory()
+    {
+
+        if ($this->translation_category != "") {
+            return $this->translation_category;
+        }
+
+        return "UserModule.profile";
     }
 
 }
