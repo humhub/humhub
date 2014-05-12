@@ -18,6 +18,7 @@
  */
 return array (
   'All' => '',
+  'Delete space' => '',
   'Delete user account' => '',
   'Edit user account' => '',
   'No' => '',

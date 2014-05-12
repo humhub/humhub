@@ -40,9 +40,10 @@ return array (
   'Total spaces' => '',
   'Total users' => '',
   'User Posts' => '',
-  'User posts' => '',
+  'User profile posts' => '',
   'You are a member of this space' => '',
   'search for members' => '',
   'search for spaces' => '',
   'show all members' => '',
+  'User posts' => '@@@@',
 );

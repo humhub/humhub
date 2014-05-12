@@ -17,7 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Current Image Libary: {currentImageLibary}' => '',
+  'PHP reported a maximum of {maxUploadSize} MB' => '',
+  'e.g. Linux=/usr/bin/convert or  MacOSX = /opt/local/bin/convert or Win = C:\\wamp\\imagemagick\\convert.exe' => '@@@@',
   '(comma separated)' => '(komma gescheiden)',
   'File - Settings' => 'Bestand - Instellingen',
-  'e.g. Linux=/usr/bin/convert or  MacOSX = /opt/local/bin/convert or Win = C:\\wamp\\imagemagick\\convert.exe' => '',
 );

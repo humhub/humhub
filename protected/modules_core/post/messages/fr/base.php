@@ -18,10 +18,16 @@
  */
 return array (
   'Basic subsystem for workspace/user post.' => '',
+  'Collapse' => '',
   'Post' => '',
+  'Read full post...' => '',
   'Read online...' => '',
-  'This post is public' => '',
   'Whats on your mind?' => '',
   'created a new post' => '',
+  'created a new post and assigned you.' => '',
+  'go to poll' => '',
+  'go to post' => '',
   'wrote a new post' => '',
+  'wrote a new post and assigned you.' => '',
+  'This post is public' => '@@@@',
 );

@@ -17,6 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Password changed' => '',
+  'You cannot change your password here.' => '',
+  'Your password has been successfully changed!' => '',
   'Enhance your profile with modules.' => 'Verbeter je profiel met modules.',
   'Save profile' => 'Opslaan',
   'User modules' => 'Gebruiker modules',

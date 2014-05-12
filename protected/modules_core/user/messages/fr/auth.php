@@ -17,10 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Account' => '',
   'After activating your account by the administrator, you will receive a notification by email.' => '',
   'Copyright © 2013 by humhub' => '',
+  'Create account' => '',
   'Forgot your password?' => '',
-  'Got to login page' => '',
+  'Go to login page' => '',
   'Password recovery!' => '',
   'Please sign in' => '',
   'Registration' => '',
@@ -31,4 +33,5 @@ return array (
   'email' => '',
   'password' => '',
   'username or email' => '',
+  'Got to login page' => '@@@@',
 );

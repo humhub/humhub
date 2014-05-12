@@ -18,6 +18,9 @@
  */
 return array (
   'Enhance your profile with modules.' => '',
+  'Password changed' => '',
   'Save profile' => '',
   'User modules' => '',
+  'You cannot change your password here.' => '',
+  'Your password has been successfully changed!' => '',
 );

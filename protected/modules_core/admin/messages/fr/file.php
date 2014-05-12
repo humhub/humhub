@@ -18,6 +18,8 @@
  */
 return array (
   '(comma separated)' => '',
+  'Current Image Libary: {currentImageLibary}' => '',
   'File - Settings' => '',
-  'e.g. Linux=/usr/bin/convert or  MacOSX = /opt/local/bin/convert or Win = C:\\wamp\\imagemagick\\convert.exe' => '',
+  'PHP reported a maximum of {maxUploadSize} MB' => '',
+  'e.g. Linux=/usr/bin/convert or  MacOSX = /opt/local/bin/convert or Win = C:\\wamp\\imagemagick\\convert.exe' => '@@@@',
 );

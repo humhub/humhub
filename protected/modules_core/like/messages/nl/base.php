@@ -19,7 +19,6 @@
 return array (
   '<strong>You</strong> like this.' => '',
   '<strong>You</strong><br>' => '',
-  'Access denied!' => 'Toegang geweigerd',
   'Could not find target class!' => '',
   'Could not find target record!' => '',
   'Invalid class given!' => '',
@@ -31,7 +30,9 @@ return array (
   'and {count} more like this.' => '',
   'go to post' => '',
   'liked the' => '',
-  'likes' => '',
   'likes the' => '',
   'likes your' => '',
+  '{userDisplayName} likes {contentTitle}' => '',
+  'likes' => '@@@@',
+  'Access denied!' => 'Toegang geweigerd',
 );

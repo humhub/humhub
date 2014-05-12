@@ -31,7 +31,8 @@ return array (
   'and {count} more like this.' => '',
   'go to post' => '',
   'liked the' => '',
-  'likes' => '',
   'likes the' => '',
   'likes your' => '',
+  '{userDisplayName} likes {contentTitle}' => '',
+  'likes' => '@@@@',
 );

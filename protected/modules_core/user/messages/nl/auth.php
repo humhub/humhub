@@ -17,10 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'After activating your account by the administrator, you will receive a notification by email.' => 'Wanneer uw account is geactiveerd door de administrator, ontvangt u een email.',
+  'Account' => '',
   'Copyright © 2013 by humhub' => '',
+  'Create account' => '',
+  'Go to login page' => '',
+  'Got to login page' => '@@Ga naar login pagina@@',
+  'After activating your account by the administrator, you will receive a notification by email.' => 'Wanneer uw account is geactiveerd door de administrator, ontvangt u een email.',
   'Forgot your password?' => 'Wachtwoord vergeten?',
-  'Got to login page' => 'Ga naar login pagina',
   'Password recovery!' => 'Wachtwoord herstel!',
   'Please sign in' => 'Log in astublieft',
   'Registration' => 'Registratie',
