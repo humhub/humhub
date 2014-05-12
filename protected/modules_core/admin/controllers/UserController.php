@@ -66,6 +66,7 @@ class UserController extends Controller {
             throw new CHttpException(404, Yii::t('AdminModule.base', 'User not found!'));
 
         $user->scenario = 'adminEdit';
+        $user->profile->scenario = 'adminEdit';
         $profile = $user->profile;
 
         // Build Form Definition

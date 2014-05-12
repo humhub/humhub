@@ -9,28 +9,32 @@
  * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class Profile extends HActiveRecord {
+class Profile extends HActiveRecord
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Profile the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'profile';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
 
         $rules = array();
 
@@ -42,16 +46,16 @@ class Profile extends HActiveRecord {
         $rules[] = array('user_id', 'numerical', 'integerOnly' => true);
 
         foreach (ProfileField::model()->findAll() as $profileField) {
-            if (!$profileField->visible)
+            if (!$profileField->visible && !$this->scenario == 'adminEdit')
                 continue;
 
-            if (!$profileField->editable)
+            if (!$profileField->editable && !$this->scenario == 'adminEdit')
                 continue;
 
             if ($this->scenario == 'register' && !$profileField->show_at_registration)
                 continue;
 
-           $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
+            $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
         }
 
         return $rules;
@@ -60,7 +64,8 @@ class Profile extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
         );
@@ -69,7 +74,8 @@ class Profile extends HActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
 
         $labels = array();
         $labels['user_id'] = Yii::t('UserModule.base', 'User');
@@ -84,7 +90,8 @@ class Profile extends HActiveRecord {
     /**
      * Returns the Profile as CForm
      */
-    public function getFormDefinition() {
+    public function getFormDefinition()
+    {
 
         $definition = array();
         $definition['elements'] = array();
@@ -99,14 +106,21 @@ class Profile extends HActiveRecord {
 
             foreach (ProfileField::model()->findAllByAttributes(array('profile_field_category_id' => $profileFieldCategory->id), array('order' => 'sort_order')) as $profileField) {
 
-                if (!$profileField->visible)
+                if (!$profileField->visible && $this->scenario != 'adminEdit')
                     continue;
 
                 if ($this->scenario == 'register' && !$profileField->show_at_registration)
                     continue;
 
-                $category['elements'] = array_merge($category['elements'], $profileField->fieldType->getFieldFormDefinition());
-
+                // Mark field as editable when we are on adminEdit scenario
+                if ($this->scenario == 'adminEdit') {
+                    $profileField->editable = true;
+                }
+                
+                $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
+                $category['elements'] = array_merge($category['elements'], $fieldDefinition);
+                
+                
             }
 
             $definition['elements']['category_' . $profileFieldCategory->id] = $category;
@@ -121,7 +135,8 @@ class Profile extends HActiveRecord {
      * @param String $name
      * @return Boolean
      */
-    public function columnExists($name) {
+    public function columnExists($name)
+    {
         $table = Yii::app()->getDb()->getSchema()->getTable(Profile::model()->tableName());
         $columnNames = $table->getColumnNames();
         return (in_array($name, $columnNames));
