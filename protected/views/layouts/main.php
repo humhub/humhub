@@ -204,7 +204,6 @@
 
         })
 
-
         // load number of new notifications at page loading
         getNotifications();
 

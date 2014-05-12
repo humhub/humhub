@@ -25,7 +25,8 @@
  * @package humhub.libs
  * @since 0.5
  */
-class HHtml extends CHtml {
+class HHtml extends CHtml
+{
 
     /**
      * Fixes the default yii ajaxLink with unregistering onClick Handlers first, before set new one.
@@ -36,13 +37,14 @@ class HHtml extends CHtml {
      * @param type $htmlOptions
      * @return type
      */
-    public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array()) {
+    public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array())
+    {
 
         // Auto set csrf token
         if (isset($ajaxOptions['data']) && is_array($ajaxOptions['data']) && !isset($ajaxOptions['data'][Yii::app()->request->csrfTokenName])) {
             $ajaxOptions['data'][Yii::app()->request->csrfTokenName] = Yii::app()->request->csrfToken;
         }
-        
+
         if (isset($htmlOptions['id'])) {
             $id = $htmlOptions['id'];
             $cs = Yii::app()->getClientScript();
@@ -63,7 +65,8 @@ class HHtml extends CHtml {
      * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
      * @return string the generated button
      */
-    public static function ajaxSubmitButton($label, $url, $ajaxOptions = array(), $htmlOptions = array()) {
+    public static function ajaxSubmitButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
+    {
         if (isset($htmlOptions['id'])) {
             $id = $htmlOptions['id'];
             $cs = Yii::app()->getClientScript();
@@ -88,7 +91,8 @@ class HHtml extends CHtml {
      * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
      * @return string the generated button
      */
-    public static function ajaxButton($label, $url, $ajaxOptions = array(), $htmlOptions = array()) {
+    public static function ajaxButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
+    {
         if (isset($htmlOptions['id'])) {
             $id = $htmlOptions['id'];
             $cs = Yii::app()->getClientScript();
@@ -100,7 +104,8 @@ class HHtml extends CHtml {
         return parent::ajaxButton($label, $url, $ajaxOptions, $htmlOptions);
     }
 
-    public static function encodeJSParam($val) {
+    public static function encodeJSParam($val)
+    {
 
         $val = str_replace("'", "\'", $val);
         $val = str_replace("'", '\"', $val);
@@ -114,7 +119,8 @@ class HHtml extends CHtml {
      * @param type $timestamp
      * @return type
      */
-    public static function timeago($timestamp) {
+    public static function timeago($timestamp)
+    {
         if (is_numeric($timestamp)) {
             $timestamp = date('Y-m-d H:i:s', $timestamp);
         }
@@ -131,7 +137,8 @@ class HHtml extends CHtml {
      * @param array $htmlOptions
      * @return string
      */
-    public static function postLink($text, $url = '#', $htmlOptions = array()) {
+    public static function postLink($text, $url = '#', $htmlOptions = array())
+    {
 
         $id = "";
         if (!isset($htmlOptions['id'])) {
@@ -159,17 +166,21 @@ class HHtml extends CHtml {
 
     /**
      * Converts an given Ascii Text into a HTML Block
+     * @param boolean $allowHtml transform user names in links
+     * @param boolean $allowEmbed Sets if comitted video links will embedded
      *
      * Tasks:
      *      nl2br
      *      oembed urls
      */
-    public static function enrichText($text) {
+    public static function enrichText($text)
+    {
 
-        $maxOembedCount = 3;   // Maximum OEmbeds
-        $oembedCount = 0;      // OEmbeds used
+        $maxOembedCount = 3; // Maximum OEmbeds
+        $oembedCount = 0; // OEmbeds used
 
-        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function($match) use (&$oembedCount, &$maxOembedCount) {
+
+        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
@@ -183,10 +194,50 @@ class HHtml extends CHtml {
             return HHtml::link($match[0], $match[0], array('target' => '_blank'));
         }, $text);
 
+
         # breaks links!?
         #$text = nl2br($text);
 
         $text = str_replace("\n", "<br />\n", $text);
+
+        // get user details from guids
+        $text = self::translateUserMentioning($text, true);
+
+        return $text;
+    }
+
+
+    /**
+     * Translate guids from users to username
+     * @param strint $text Contains the complete message
+     * @param boolean $buildAnchors Wrap the username with a link to the profile, if it's true
+     *
+     */
+    public static function translateUserMentioning($text, $buildAnchors = true)
+    {
+        // save hits of @ char
+        $hits = substr_count($text, ' @');
+
+        // loop for every founded @ char
+        for ($i = 0; $i < $hits; $i++) {
+
+            // extract user guid
+            $guid = substr($text, strpos($text, ' @'), 38);
+
+            // load user row from database
+            $user = User::model()->findByAttributes(array('guid' => substr($guid, 2)));
+
+            // make user clickable if Html is allowed
+            if ($buildAnchors == true) {
+                $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">' . $user->getDisplayName() . '</a>';
+            } else {
+                $link = " ". $user->getDisplayName();
+            }
+
+            // replace guid with profile link and username
+            $text = str_replace($guid, $link, $text);
+
+        }
 
         return $text;
     }

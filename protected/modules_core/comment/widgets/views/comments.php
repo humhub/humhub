@@ -43,7 +43,7 @@
 
 
 
-        <?php echo CHtml::textArea("message", Yii::t('CommentModule.base', ""), array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize', 'placeholder' => 'Write a new comment...')); ?>
+        <?php echo CHtml::textArea("message", Yii::t('CommentModule.base', ""), array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => 'Write a new comment...')); ?>
         <?php
         echo HHtml::ajaxSubmitButton(Yii::t('base', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
                 'beforeSend' => "function() {
@@ -55,11 +55,11 @@
         }",
             ), array(
                 'id' => "comment_create_post_" . $id,
-                'class' => 'btn btn-small btn-primary hide'
+                'class' => 'btn btn-small btn-primary',
+                'style' => 'position: absolute; top: -3000px; left: -3000px;',
             )
         );
         ?>
-
 
         <?php echo Chtml::endForm(); ?>
     </div>
@@ -68,26 +68,37 @@
 
 <script type="text/javascript">
 
+    $('#newCommentForm_<?php echo $id; ?>').mention({
+        searchUrl: '<?php echo Yii::app()->createAbsoluteUrl('user/search/json') ?>'
+    });
+
     // Fire click event for comment button by typing enter
     $('#newCommentForm_<?php echo $id; ?>').keydown(function (event) {
 
         if (event.keyCode == 13) {
 
-            event.cancelBubble = true;
-            event.returnValue = false;
-            jQuery('#comment_create_post_<?php echo $id; ?>').click();
 
-            // empty input
-            $(this).val('');
+            if ($.fn.mention.defaults.stateUserList == false) {
 
-            // correct the textfield height
-            //jQuery('#newCommentForm_<?php echo $id; ?>').css({'height': '13px'});
+                event.cancelBubble = true;
+                event.returnValue = false;
+
+                $('#comment_create_post_<?php echo $id; ?>').focus();
+                $('#comment_create_post_<?php echo $id; ?>').click();
+
+                // empty input
+                $(this).val('');
+            }
+
+
         }
 
         return event.returnValue;
 
     });
 
+    // set the size for one row (Firefox)
+    $('#newCommentForm_<?php echo $id; ?>').css({height: '36px'});
 
     // add autosize function to input
     $('.autosize').autosize();

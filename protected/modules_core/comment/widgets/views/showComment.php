@@ -17,7 +17,12 @@
 
         <div class="media-body">
             <h4 class="media-heading"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo $user->displayName; ?></a> <small><?php echo HHtml::timeago($comment->created_at); ?></small></h4>
-            <span class="content"><?php print nl2br($comment->message); ?></span>
+            <span class="content">
+                <?php
+                print HHtml::enrichText($comment->message);
+                //print nl2br($comment->message);
+                ?>
+            </span>
 
             <?php //echo CHtml::link(Yii::t('base', "Delete"), '#'); ?>
 

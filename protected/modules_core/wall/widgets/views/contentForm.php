@@ -64,9 +64,11 @@
                         $('#notifyUserContainer').addClass('hidden');
                         $('#notifiyUserInput').val('');
                         $('.label-public').addClass('hidden');
-
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
+
+                        //$('.contentForm').
+                        $.fn.mention.reset('.contentForm');
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
                         clearFileUpload('contentFormFiles');
@@ -103,15 +105,6 @@
                 <!-- content sharing -->
                 <div class="pull-right">
 
-                    <div class="checkbox hidden">
-                        <label>
-                            <?php echo CHtml::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm')); ?> <?php echo Yii::t('WallModule.base', 'Is public'); ?>
-                        </label>
-                    </div>
-
-                    <!--                        <a class="tt btn btn-icon" href="" data-toggle="tooltip" data-placement="top" data-original-title="<?php /*echo Yii::t('WallModule.base', 'Notify related members about this post'); */ ?>"><i class="icon-bell-alt"></i></a>
-                        <a class="tt btn btn-icon" href="" data-toggle="tooltip" data-placement="top" data-original-title="<?php /*echo Yii::t('WallModule.base', 'Make public for nonmembers<br>and followers of this space'); */ ?>"><i class="icon-lock"></i></a>
--->
                     <span class="label label-success label-public hidden">Public</span>
 
                     <ul class="nav nav-pills preferences">
@@ -159,6 +152,10 @@
 
 <script type="text/javascript">
 
+    $('#contentForm_message').mention({
+        searchUrl: '<?php echo Yii::app()->createAbsoluteUrl('user/search/json') ?>'
+    });
+
     // Hide options by default
     jQuery('.contentForm_options').hide();
     $('#contentFormError').hide();
@@ -188,6 +185,9 @@
         $('#notifyUserContainer').removeClass('hidden');
         $('#notifiyUserInput_tag_input_field').focus();
     }
+
+    // set the size for one row (Firefox)
+    $('textarea').css({height: '36px'});
 
     // add autosize function to input
     $('.autosize').autosize();

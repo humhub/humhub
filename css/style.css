@@ -44,6 +44,9 @@ hr {
 .col-md-12 {
   position: inherit;
 }
+textarea {
+  height: 1.5em;
+}
 .topbar {
   position: fixed;
   display: block;

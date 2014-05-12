@@ -7,6 +7,7 @@
 <link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/flatelements.css" rel="stylesheet">
+<link href="<?php echo Yii::app()->baseUrl; ?>/css/mention.css" rel="stylesheet">
 <!-- end: CSS -->
 
 
@@ -34,6 +35,8 @@
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.flatelements.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.textrange.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.mention.js"></script>
 
 <!-- Global app functions -->
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js"></script>

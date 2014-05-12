@@ -32,7 +32,7 @@
                                     <tbody><tr>
                                         <td valign="top" class="textContent">
                                             <strong><?php echo $creator->displayName; ?></strong> <?php echo Yii::t('CommentModule.base', 'also commented'); ?> <?php echo $targetObject->getContentTitle(); ?><?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?>:<br/>
-                                            <?php echo $sourceObject->message; ?>
+                                            <?php echo NotificationModule::formatOutput($sourceObject->message); ?>
                                             <br/>
                                             <a href="<?php echo $notification->getUrl(); ?>"><?php echo Yii::t('CommentModule.base', 'go to post'); ?></a>
                                         </td>

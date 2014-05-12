@@ -31,7 +31,7 @@
                                                     <td valign="top" class="textContent">
                                                         <strong><?php echo $user->displayName; ?></strong> <?php echo Yii::t('PostModule.base', 'wrote a new post'); ?><?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?><br/>
                                                         <br/>
-                                                        <?php echo $target->message; ?><br>
+                                                        <?php echo ActivityModule::formatOutput($target->message); ?><br>
                                                         <a href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($target), 'id' => $target->id)); ?>"><?php echo Yii::t('PostModule.base', 'Read online...'); ?></a>
                                                     </td>
                                                 </tr>

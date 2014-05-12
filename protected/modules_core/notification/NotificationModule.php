@@ -99,4 +99,14 @@ class NotificationModule extends CWebModule {
         }
     }
 
+    /**
+     * Formatted the notification content before delivery
+     *
+     * @param string $text
+     */
+    public static function formatOutput($text) {
+        $text = HHtml::translateUserMentioning($text, false);
+        return $text;
+    }
+
 }
