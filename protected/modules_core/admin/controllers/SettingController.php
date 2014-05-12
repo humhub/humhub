@@ -4,14 +4,16 @@
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
-class SettingController extends Controller {
+class SettingController extends Controller
+{
 
     public $subLayout = "/_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -22,7 +24,8 @@ class SettingController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow',
                 'expression' => 'Yii::app()->user->isAdmin()'
@@ -36,7 +39,8 @@ class SettingController extends Controller {
     /**
      * Returns a List of Users
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         Yii::import('admin.forms.*');
 
         $form = new BasicSettingsForm;
@@ -106,7 +110,8 @@ class SettingController extends Controller {
     /**
      * Returns a List of Users
      */
-    public function actionAuthentication() {
+    public function actionAuthentication()
+    {
 
         Yii::import('admin.forms.*');
 
@@ -151,7 +156,8 @@ class SettingController extends Controller {
     /**
      * Returns a List of Users
      */
-    public function actionAuthenticationLdap() {
+    public function actionAuthenticationLdap()
+    {
 
         Yii::import('admin.forms.*');
 
@@ -221,7 +227,8 @@ class SettingController extends Controller {
     /**
      * Caching Options
      */
-    public function actionCaching() {
+    public function actionCaching()
+    {
 
         Yii::import('admin.forms.*');
 
@@ -268,7 +275,8 @@ class SettingController extends Controller {
     /**
      * Statistic Settings
      */
-    public function actionStatistic() {
+    public function actionStatistic()
+    {
         Yii::import('admin.forms.*');
 
         $form = new StatisticSettingsForm;
@@ -302,7 +310,8 @@ class SettingController extends Controller {
     /**
      * E-Mail Mailing Settings
      */
-    public function actionMailing() {
+    public function actionMailing()
+    {
         Yii::import('admin.forms.*');
 
         $form = new MailingSettingsForm;
@@ -355,7 +364,8 @@ class SettingController extends Controller {
     /**
      * E-Mail Mailing Settings
      */
-    public function actionDesign() {
+    public function actionDesign()
+    {
         Yii::import('admin.forms.*');
 
         $form = new DesignSettingsForm;
@@ -372,9 +382,9 @@ class SettingController extends Controller {
 
             if ($form->validate()) {
 
-                $form->theme = HSetting::Set('theme', $form->theme);
-                $form->paginationSize = HSetting::Set('paginationSize', $form->paginationSize);
-                $form->displayName = HSetting::Set('displayNameFormat', $form->displayName);
+                HSetting::Set('theme', $form->theme);
+                HSetting::Set('paginationSize', $form->paginationSize);
+                HSetting::Set('displayNameFormat', $form->displayName);
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
@@ -395,7 +405,8 @@ class SettingController extends Controller {
     /**
      * Security Settings
      */
-    public function actionSecurity() {
+    public function actionSecurity()
+    {
 
         Yii::import('admin.forms.*');
 
@@ -427,7 +438,8 @@ class SettingController extends Controller {
     /**
      * LDAP Settings
      */
-    public function actionLDAP() {
+    public function actionLDAP()
+    {
         $form = "";
 
         $this->render('ldap', array('model' => $form));
@@ -436,7 +448,8 @@ class SettingController extends Controller {
     /**
      * File Settings
      */
-    public function actionFile() {
+    public function actionFile()
+    {
         Yii::import('admin.forms.*');
 
         $form = new FileSettingsForm;
@@ -485,7 +498,8 @@ class SettingController extends Controller {
     /**
      * Caching Options
      */
-    public function actionCronJob() {
+    public function actionCronJob()
+    {
 
         $this->render('cronjob', array(
         ));
@@ -494,7 +508,8 @@ class SettingController extends Controller {
     /**
      * Self Test
      */
-    public function actionSelfTest() {
+    public function actionSelfTest()
+    {
         Yii::import('application.commands.shell.ZMigrateCommand');
         $migrate = ZMigrateCommand::AutoMigrate();
 

@@ -27,7 +27,8 @@
  *
  * @author luke
  */
-class ConfigController extends Controller {
+class ConfigController extends Controller
+{
 
     /**
      * @var String layout to use
@@ -42,7 +43,8 @@ class ConfigController extends Controller {
      *
      * @param type $action
      */
-    protected function beforeAction($action) {
+    protected function beforeAction($action)
+    {
 
         // Flush Caches
         Yii::app()->cache->flush();
@@ -66,7 +68,8 @@ class ConfigController extends Controller {
      * Index is only called on fresh databases, when there are already settings
      * in database, the user will directly redirected to actionFinished()
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         if (HSetting::Get('name') == "") {
             HSetting::Set('name', "My HumHub Network");
@@ -80,7 +83,8 @@ class ConfigController extends Controller {
     /**
      * Basic Settings Form
      */
-    public function actionBasic() {
+    public function actionBasic()
+    {
         Yii::import('installer.forms.*');
 
         $form = new ConfigBasicForm;
@@ -112,7 +116,8 @@ class ConfigController extends Controller {
      * This should be the last step, before the user is created also the
      * application secret will created.
      */
-    public function actionAdmin() {
+    public function actionAdmin()
+    {
         Yii::import('installer.forms.*');
 
         $userModel = new User('register');
@@ -188,7 +193,7 @@ class ConfigController extends Controller {
             $form['User']->model->save();
 
             $form['Profile']->model->user_id = $form['User']->model->id;
-            $form['Profile']->model->firstname = 'Super';
+            $form['Profile']->model->firstname = 'System';
             $form['Profile']->model->lastname = 'Admin';
             $form['Profile']->model->title = "Administration";
             $form['Profile']->model->save();
@@ -242,7 +247,8 @@ class ConfigController extends Controller {
     /**
      * Last Step, finish up the installation
      */
-    public function actionFinished() {
+    public function actionFinished()
+    {
 
         // Should not happen
         if (HSetting::Get('secret') == "") {
@@ -271,7 +277,8 @@ class ConfigController extends Controller {
      *
      * This will be done at the first step.
      */
-    private function setupInitialData() {
+    private function setupInitialData()
+    {
 
         // Seems database is already initialized
         if (HSetting::Get('paginationSize') == 10)
@@ -282,6 +289,7 @@ class ConfigController extends Controller {
         HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
 
         HSetting::Set('paginationSize', 10);
+        HSetting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 
         // Authentication
         HSetting::Set('authInternal', '1', 'authentication');
@@ -334,6 +342,7 @@ class ConfigController extends Controller {
         $field->field_type_class = 'ProfileFieldTypeText';
         $field->ldap_attribute = 'givenName';
         $field->is_system = true;
+        $field->required = true;
         $field->show_at_registration = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -348,6 +357,7 @@ class ConfigController extends Controller {
         $field->field_type_class = 'ProfileFieldTypeText';
         $field->ldap_attribute = 'sn';
         $field->show_at_registration = true;
+        $field->required = true;
         $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
