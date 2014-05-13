@@ -7,12 +7,14 @@
  * @since 0.5
  * @author Luke
  */
-class AdminMenuWidget extends MenuWidget {
+class AdminMenuWidget extends MenuWidget
+{
 
     public $template = "application.widgets.views.leftNavigation";
     public $type = "adminNavigation";
 
-    public function init() {
+    public function init()
+    {
 
 
         $this->addItemGroup(array(
@@ -198,6 +200,16 @@ class AdminMenuWidget extends MenuWidget {
             'group' => 'settings',
             'sortOrder' => 1000,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'cronjob'),
+            'isVisible' => Yii::app()->user->isAdmin(),
+        ));
+
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.base', 'Logging'),
+            'url' => Yii::app()->createUrl('admin/logging'),
+            'icon' => '<i class="icon-warning-sign"></i>',
+            'group' => 'settings',
+            'sortOrder' => 1100,
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'logging'),
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
 

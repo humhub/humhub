@@ -51,6 +51,22 @@ return array(
         'cache' => array(
             'class' => 'CDummyCache'
         ),
+        'log' => array(
+            'class' => 'CLogRouter',
+            'routes' => array(
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'error, warning',
+                ),
+                array(
+                    'class' => 'CDbLogRoute',
+                    'levels' => 'error, warning',
+                    'logTableName' => 'logging',
+                    'connectionID' => 'db',
+                    'autoCreateLogTable' => false,
+                ),
+            ),
+        ),
     ),
     // Modules
     'modules' => array(

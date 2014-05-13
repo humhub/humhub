@@ -21,8 +21,6 @@ if (!file_exists($defaults['params']['dynamicConfigFile'])) {
 $pre_config = CMap::mergeArray($defaults, require ($defaults['params']['dynamicConfigFile']));
 
 return CMap::mergeArray($pre_config, array(
-            // preloading 'log' component
-            'preload' => array('log'),
             // application components
             'components' => array(
                 // Session specific settings
@@ -47,15 +45,6 @@ return CMap::mergeArray($pre_config, array(
                 'errorHandler' => array(
                     // use 'site/error' action to display errors
                     'errorAction' => '//site/error',
-                ),
-                'log' => array(
-                    'class' => 'CLogRouter',
-                    'routes' => array(
-                        array(
-                            'class' => 'CFileLogRoute',
-                            'levels' => 'error, warning',
-                        ),
-                    ),
                 ),
             ),
         ));
