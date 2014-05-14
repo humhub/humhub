@@ -22,7 +22,6 @@
 <![endif]-->
 
 <!-- start: JavaScript -->
-<!--<script type="text/javascript" src="<?php /*echo Yii::app()->baseUrl; */?>/js/bootstrap.min.js"></script>-->
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/ekko-lightbox-modified.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/modernizr.js"></script>
