@@ -1,18 +1,18 @@
 <ul class="nav nav-tabs wallFilterPanel" id="filter">
     <li class=" dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Filter'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="#" class="wallFilter" id="filter_tasks_meAssigned"><i class="icon-check-empty"></i> <?php echo Yii::t('TasksModule.base', 'Assigned to me'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_entry_mine"><i class="icon-check-empty"></i> <?php echo Yii::t('TasksModule.base', 'Created by me'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_tasks_open"><i class="icon-check-empty"></i> <?php echo Yii::t('TasksModule.base', 'State is open'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_tasks_finished"><i class="icon-check-empty"></i> <?php echo Yii::t('TasksModule.base', 'State is finished'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_tasks_notassigned"><i class="icon-check-empty"></i> <?php echo Yii::t('TasksModule.base', 'Nobody assigned'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_tasks_meAssigned"><i class="fa fa-square-o"></i> <?php echo Yii::t('TasksModule.base', 'Assigned to me'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_entry_mine"><i class="fa fa-square-o"></i> <?php echo Yii::t('TasksModule.base', 'Created by me'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_tasks_open"><i class="fa fa-square-oy"></i> <?php echo Yii::t('TasksModule.base', 'State is open'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_tasks_finished"><i class="fa fa-square-o"></i> <?php echo Yii::t('TasksModule.base', 'State is finished'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_tasks_notassigned"><i class="fa fa-square-o"></i> <?php echo Yii::t('TasksModule.base', 'Nobody assigned'); ?></a></li>
         </ul>
     </li>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Sorting'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="#" class="wallSorting" id="sorting_c"><i class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
-            <li><a href="#" class="wallSorting" id="sorting_u"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
+            <li><a href="#" class="wallSorting" id="sorting_c"><i class="fa fa-check-square-o"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
+            <li><a href="#" class="wallSorting" id="sorting_u"><i class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
         </ul>
     </li>        
 </ul>

@@ -38,7 +38,7 @@
 </style>
 <span class="btn btn-info fileinput-button tt" data-toggle="tooltip" data-placement="top" title=""
       data-original-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
-    <i class="icon-cloud-upload"></i>
+    <i class="fa fa-cloud-upload"></i>
     <input id="<?php echo $uploaderId; ?>" type="file" name="files[]"
            data-url="<?php echo Yii::app()->createUrl('//file/file/upload'); ?>" multiple>
 </span>

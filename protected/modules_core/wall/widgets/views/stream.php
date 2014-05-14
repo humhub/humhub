@@ -15,35 +15,35 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Filter'); ?> <b
                 class="caret"></b></a>
         <ul class="dropdown-menu">
-            <!--<li><a href="#"><i class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Show all'); ?></a></li>-->
+            <!--<li><a href="#"><i class="fa fa-checkfa fa-check-square-o"></i> <?php echo Yii::t('WallModule.base', 'Show all'); ?></a></li>-->
 
             <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Where I´m involved'); ?></a>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Where I´m involved'); ?></a>
             </li>
             <li><a href="#" class="wallFilter" id="filter_entry_mine"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Created by me'); ?></a></li>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Created by me'); ?></a></li>
 
             <!-- post module related -->
             <li><a href="#" class="wallFilter" id="filter_entry_files"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Content with attached files'); ?>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Content with attached files'); ?>
                 </a></li>
             <li><a href="#" class="wallFilter" id="filter_posts_links"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts with links'); ?></a>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Posts with links'); ?></a>
             </li>
             <li><a href="#" class="wallFilter" id="filter_model_posts"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Posts only'); ?></a></li>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Posts only'); ?></a></li>
             <!-- /post module related -->
 
             <li class="divider"></li>
 
             <li><a href="#" class="wallFilter" id="filter_entry_archived"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Include archived posts'); ?>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Include archived posts'); ?>
                 </a></li>
             <li><a href="#" class="wallFilter" id="filter_visibility_public"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Only public posts'); ?></a>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Only public posts'); ?></a>
             </li>
             <li><a href="#" class="wallFilter" id="filter_visibility_private"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Only private posts'); ?></a>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Only private posts'); ?></a>
             </li>
         </ul>
     </li>
@@ -52,9 +52,9 @@
             <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li><a href="#" class="wallSorting" id="sorting_c"><i
-                        class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
+                        class="fa fa-check-square-o"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
             <li><a href="#" class="wallSorting" id="sorting_u"><i
-                        class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
+                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
         </ul>
     </li>
 </ul>

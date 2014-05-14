@@ -267,7 +267,7 @@ function addSpaceTag(guid, image_url, name) {
 
 
     // Building a new <li> entry
-    var _tagcode = '<li class="spaceInput" id="' + guid + '"><img class="img-rounded" src="' + image_url + '" alt="' + name + '" width="24" height="24" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" />' + name + '<i class="icon-remove-sign"></i></li>';
+    var _tagcode = '<li class="spaceInput" id="' + guid + '"><img class="img-rounded" src="' + image_url + '" alt="' + name + '" width="24" height="24" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" />' + name + '<i class="fa fa-times-circle"></i></li>';
 
 
     // insert the new created <li> entry into the <ul> contruct

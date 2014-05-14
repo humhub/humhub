@@ -37,7 +37,7 @@
                         <?php
 
                         echo HHtml::ajaxLink(
-                            '<span class="tasks-check tt" data-toggle="tooltip" data-placement="top" data-original-title="' . Yii::t("TasksModule.base", "Click, to finish this task") . '"><i class="icon-check-empty"> </i></span>', CHtml::normalizeUrl(array('/tasks/task/changeStatus', 'guid' => $space->guid, 'taskId' => $task->id, 'status' => Task::STATUS_FINISHED)), array(
+                            '<span class="tasks-check tt" data-toggle="tooltip" data-placement="top" data-original-title="' . Yii::t("TasksModule.base", "Click, to finish this task") . '"><i class="fa fa-check-empty"> </i></span>', CHtml::normalizeUrl(array('/tasks/task/changeStatus', 'guid' => $space->guid, 'taskId' => $task->id, 'status' => Task::STATUS_FINISHED)), array(
                                 'dataType' => "json",
                                 'success' => "function(json) {  $('#wallEntry_'+json.wallEntryId).html(parseHtml(json.output)); }",
                             ), array('id' => "TaskFinishLink_" . $task->id)
@@ -46,13 +46,13 @@
                     <?php } else { ?>
                         <span class="tasks-check disabled tt" data-toggle="tooltip" data-placement="top"
                               data-original-title="<?php echo Yii::t("TasksModule.base", "You're not assigned to this task"); ?>"><i
-                                class="icon-check-empty"> </i></span>
+                                class="fa fa-square-o"> </i></span>
                     <?php } ?>
                 <?php elseif ($task->status == Task::STATUS_FINISHED) : ?>
                     <?php if ($currentUserAssigned || (count($assignedUsers) < $task->max_users)) { ?>
                         <?php
                         echo HHtml::ajaxLink(
-                            '<span class="tasks-check tt"  data-toggle="tooltip" data-placement="top" data-original-title="' . Yii::t("TasksModule.base", "This task is already done. Click to reopen.") . '"><i class="icon-check"> </i></span>', CHtml::normalizeUrl(array('/tasks/task/changeStatus', 'guid' => $space->guid, 'taskId' => $task->id, 'status' => Task::STATUS_OPEN)), array(
+                            '<span class="tasks-check tt"  data-toggle="tooltip" data-placement="top" data-original-title="' . Yii::t("TasksModule.base", "This task is already done. Click to reopen.") . '"><i class="fa fa-check-square-o"> </i></span>', CHtml::normalizeUrl(array('/tasks/task/changeStatus', 'guid' => $space->guid, 'taskId' => $task->id, 'status' => Task::STATUS_OPEN)), array(
                                 'dataType' => "json",
                                 'success' => "function(json) {  $('#wallEntry_'+json.wallEntryId).html(parseHtml(json.output));}",
                             ), array('id' => "TaskOpenLink_" . $task->id)
@@ -61,7 +61,7 @@
                     <?php } else { ?>
                         <span class="tasks-check disabled tt" data-toggle="tooltip" data-placement="top"
                               data-original-title="<?php echo Yii::t("TasksModule.base", "This task is already done"); ?>"><i
-                                class="icon-check"> </i></span>
+                                class="fa fa-check-square-o"> </i></span>
                     <?php } ?>
 
                 <?php endif; ?>
@@ -80,7 +80,7 @@
                         }
                         ?>
                         <span class="<?php echo $class; ?>"><i
-                                class="icon-time"> </i> <?php echo date("d. M", $timestamp); ?></span>
+                                class="fa fa-clock-o"> </i> <?php echo date("d. M", $timestamp); ?></span>
                     <?php endif; ?>
 
                 </small>

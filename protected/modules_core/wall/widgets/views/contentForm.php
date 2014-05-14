@@ -114,17 +114,17 @@
 
                     <ul class="nav nav-pills preferences">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cogs"></i></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
-                                            class="icon-bell-alt"></i> <?php echo Yii::t('WallModule.base', 'Notify members'); ?>
+                                            class="fa fa-bell"></i> <?php echo Yii::t('WallModule.base', 'Notify members'); ?>
                                     </a>
                                 </li>
                                 <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
-                                                class="icon-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>
+                                                class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>
@@ -174,11 +174,11 @@
     function changeVisibility() {
         if ($('#contentForm_visibility').attr('checked') != 'checked') {
             $('#contentForm_visibility').attr('checked', 'checked');
-            $('#contentForm_visibility_entry').html('<i class="icon-lock"></i> <?php echo Yii::t('WallModule.base', 'Make private'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('WallModule.base', 'Make private'); ?>');
             $('.label-public').removeClass('hidden');
         } else {
             $('#contentForm_visibility').removeAttr('checked');
-            $('#contentForm_visibility_entry').html('<i class="icon-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>');
             $('.label-public').addClass('hidden');
         }
     }

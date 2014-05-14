@@ -25,7 +25,7 @@ Yii::app()->clientScript->registerScriptFile(
 
             <!--            <div class="input-append date" id="dateinput" data-date="" data-date-format="dd.mm.yyyy">
                             <input class="form-control" size="16" type="text" value="" readonly="" placeholder="Deadline">
-                            <span class="add-on"><i class="icon-calendar"></i></span>
+                            <span class="add-on"><i class="fa fa-calendar"></i></span>
                         </div>-->
             <div class="form-group">
                 <input class="form-control" id="dateinput" size="16" type="text" value="" readonly=""

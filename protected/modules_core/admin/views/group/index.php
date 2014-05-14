@@ -27,7 +27,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
                 'update' => array
                 (
-                    'label'=>'<i class="icon-pencil"></i>',
+                    'label'=>'<i class="fa fa-pencil"></i>',
                     'imageUrl'=>false,
                     'options' => array(
                         'class' => 'btn btn-primary btn-xs tt',
@@ -43,10 +43,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'pager' => array(
         'class' => 'CLinkPager',
         'maxButtonCount' => 5,
-        'nextPageLabel' => '<i class="icon-step-forward"></i>',
-        'prevPageLabel' => '<i class="icon-step-backward"></i>',
-        'firstPageLabel' => '<i class="icon-fast-backward"></i>',
-        'lastPageLabel' => '<i class="icon-fast-forward"></i>',
+        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
+        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
+        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
+        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
         'header' => '',
         'htmlOptions' => array('class' => 'pagination'),
     ),

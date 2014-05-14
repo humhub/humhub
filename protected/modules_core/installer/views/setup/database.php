@@ -59,7 +59,7 @@
 
         <?php if ($submitted) {
             if ($success) {
-                echo HHtml::link(Yii::t('InstallerModule.base', 'Next <i class="icon-circle-arrow-right"></i>'), array('//installer/setup/init'), array('class' => 'btn btn-success'));
+                echo HHtml::link(Yii::t('InstallerModule.base', 'Next <i class="fa fa-circle-arrow-right"></i>'), array('//installer/setup/init'), array('class' => 'btn btn-success'));
             }
         }
         ?>

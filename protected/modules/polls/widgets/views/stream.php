@@ -13,18 +13,18 @@
     <li class=" dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Filter'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <!--<li><a href="#" class="wallFilter" id="filter_visibility_public"><i class="icon-check"></i> <?php echo Yii::t('PollsModule.base', 'Display all'); ?></a></li>-->
-            <li><a href="#" class="wallFilter" id="filter_polls_notAnswered"><i class="icon-check-empty"></i> <?php echo Yii::t('PollsModule.base', 'No answered yet'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_entry_mine"><i class="icon-check-empty"></i> <?php echo Yii::t('PollsModule.base', 'Asked by me'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_visibility_public"><i class="icon-check-empty"></i> <?php echo Yii::t('PollsModule.base', 'Only public polls'); ?></a></li>
-            <li><a href="#" class="wallFilter" id="filter_visibility_private"><i class="icon-check-empty"></i> <?php echo Yii::t('PollsModule.base', 'Only private polls'); ?></a></li>
+            <!--<li><a href="#" class="wallFilter" id="filter_visibility_public"><i class="fa fa-check-square-o"></i> <?php echo Yii::t('PollsModule.base', 'Display all'); ?></a></li>-->
+            <li><a href="#" class="wallFilter" id="filter_polls_notAnswered"><i class="fa fa-square-o"></i> <?php echo Yii::t('PollsModule.base', 'No answered yet'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_entry_mine"><i class="fa fa-square-o"></i> <?php echo Yii::t('PollsModule.base', 'Asked by me'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_visibility_public"><i class="fa fa-square-o"></i> <?php echo Yii::t('PollsModule.base', 'Only public polls'); ?></a></li>
+            <li><a href="#" class="wallFilter" id="filter_visibility_private"><i class="fa fa-square-o"></i> <?php echo Yii::t('PollsModule.base', 'Only private polls'); ?></a></li>
         </ul>
     </li>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Sorting'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="#" class="wallSorting" id="sorting_c"><i class="icon-check"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
-            <li><a href="#" class="wallSorting" id="sorting_u"><i class="icon-check-empty"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
+            <li><a href="#" class="wallSorting" id="sorting_c"><i class="fa fa-check-square-o"></i> <?php echo Yii::t('WallModule.base', 'Creation time'); ?></a></li>
+            <li><a href="#" class="wallSorting" id="sorting_u"><i class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.base', 'Last update'); ?></a></li>
         </ul>
     </li>
 </ul>

@@ -43,8 +43,8 @@
                                 </div>
                             </td>
                             <td>
-                                <?php echo CHtml::link('<i class="icon-ok"></i>', $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-xs btn-success tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Accept user'))); ?>
-                                <?php echo CHtml::link('<i class="icon-remove"></i>', $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-xs btn-danger tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Decline user'))); ?>
+                                <?php echo CHtml::link('<i class="fa fa-ok"></i>', $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-xs btn-success tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Accept user'))); ?>
+                                <?php echo CHtml::link('<i class="fa fa-times"></i>', $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-xs btn-danger tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Decline user'))); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -196,10 +196,10 @@
                         'itemCount' => $item_count,
                         'pageSize' => $page_size,
                         'maxButtonCount' => 5,
-                        'nextPageLabel' => '<i class="icon-step-forward"></i>',
-                        'prevPageLabel' => '<i class="icon-step-backward"></i>',
-                        'firstPageLabel' => '<i class="icon-fast-backward"></i>',
-                        'lastPageLabel' => '<i class="icon-fast-forward"></i>',
+                        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
+                        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
+                        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
+                        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
                         'header' => '',
                         'htmlOptions' => array('class' => 'pagination'),
                     ));

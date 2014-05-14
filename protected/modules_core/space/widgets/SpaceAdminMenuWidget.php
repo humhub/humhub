@@ -31,7 +31,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
                 'label' => Yii::t('SpaceModule.base', 'Basic'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/edit', array('sguid' => $spaceGuid)),
-                'icon' => '<i class="icon-cogs"></i>',
+                'icon' => '<i class="fa fa-cogs"></i>',
                 'sortOrder' => 100,
                 'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "edit"),
             ));
@@ -43,7 +43,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
                 'label' => Yii::t('SpaceModule.base', 'Members'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/members', array('sguid' => $spaceGuid)),
-                'icon' => '<i class="icon-group"></i>',
+                'icon' => '<i class="fa fa-group"></i>',
                 'sortOrder' => 200,
                 'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "members"),
             ));
@@ -55,7 +55,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
                 'label' => Yii::t('SpaceModule.base', 'Modules'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/modules', array('sguid' => $spaceGuid)),
-                'icon' => '<i class="icon-rocket"></i>',
+                'icon' => '<i class="fa fa-rocket"></i>',
                 'sortOrder' => 300,
                 'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "modules"),
             ));

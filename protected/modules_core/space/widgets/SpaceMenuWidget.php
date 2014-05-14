@@ -27,7 +27,7 @@ class SpaceMenuWidget extends MenuWidget {
             'label' => Yii::t('SpaceModule.base', 'Stream'),
             'group' => 'modules',
             'url' => Yii::app()->createUrl('//space/space', array('sguid' => $spaceGuid)),
-            'icon' => '<i class="icon-reorder"></i>',
+            'icon' => '<i class="fa fa-bars"></i>',
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->id == "space" && Yii::app()->controller->action->id == "index" && Yii::app()->controller->module->id == "space"),
         ));

@@ -14,7 +14,7 @@
 <li class="divider"></li>
 <li>
 <?php
-$label = '<i class="icon-trash"></i> '. Yii::t('base', 'Delete');
+$label = '<i class="fa fa-trash-o"></i> '. Yii::t('base', 'Delete');
 
 echo HHtml::ajaxLink($label, array('//wall/content/delete'), array('type'=>'post', 'data'=>array('model'=>$model, 'id'=>$id), 'success' => "function(jsonResp) { wallDelete(jsonResp); }"), array('id' => "deleteLink" . $model . "_" . $id));
 
