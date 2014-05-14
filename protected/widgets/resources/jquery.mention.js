@@ -235,7 +235,7 @@ $.fn.mention = function (options) {
             _obj.show();
 
             // start ajax request
-            jQuery.getJSON(opts.searchUrl + '&keyword=' + $string + '&space_id=8', function (json) {
+            jQuery.getJSON(opts.searchUrl.replace('-keywordPlaceholder-', $string), function (json) {
 
                 // remove existings entries
                 _obj.find('li').remove();

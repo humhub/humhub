@@ -16,7 +16,9 @@
 ?>
 
 
-<div class="well well-small" style="<?php if (count($comments) == 0) {  echo 'display: none;'; } ?>" id="comment_<?php echo $id; ?>">
+<div class="well well-small" style="<?php if (count($comments) == 0) {
+    echo 'display: none;';
+} ?>" id="comment_<?php echo $id; ?>">
     <div class="comment" id="comments_area_<?php echo $id; ?>">
         <?php if ($isLimited): ?>
             <?php
@@ -44,6 +46,16 @@
 
 
         <?php echo CHtml::textArea("message", Yii::t('CommentModule.base', ""), array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => 'Write a new comment...')); ?>
+
+        <?php
+        
+        /* Modify textarea for mention input */
+        $this->widget('application.widgets.MentionWidget', array(
+            'element' => '#newCommentForm_' . $id,
+        ));
+
+        ?>
+
         <?php
         echo HHtml::ajaxSubmitButton(Yii::t('base', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
                 'beforeSend' => "function() {
@@ -67,10 +79,6 @@
 <?php /* END: Comment Create Form */ ?>
 
 <script type="text/javascript">
-
-    $('#newCommentForm_<?php echo $id; ?>').mention({
-        searchUrl: '<?php echo Yii::app()->createAbsoluteUrl('user/search/json') ?>'
-    });
 
     // Fire click event for comment button by typing enter
     $('#newCommentForm_<?php echo $id; ?>').keydown(function (event) {

@@ -17,6 +17,12 @@
                 $user_url = '//user/search/json';
             }
 
+            /* Modify textarea for mention input */
+            $this->widget('application.widgets.MentionWidget', array(
+                'element' => '#contentForm_message',
+            ));
+
+            /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                 'inputId' => 'notifiyUserInput',
                 'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
@@ -151,10 +157,6 @@
 <div class="clearFloats"></div>
 
 <script type="text/javascript">
-
-    $('#contentForm_message').mention({
-        searchUrl: '<?php echo Yii::app()->createAbsoluteUrl('user/search/json') ?>'
-    });
 
     // Hide options by default
     jQuery('.contentForm_options').hide();
