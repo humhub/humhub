@@ -2,285 +2,276 @@ $.fn.mention = function (options) {
 
     var opts = $.extend({}, $.fn.mention.defaults, options);
 
+    // variable for userlist arrow navigation
+    var chosen = "";
 
-    var mq = window.matchMedia("(min-width: 1023px)");
+    // variables for text selection (username replacement)
+    var searchStart = 0;
+    var searchEnd = 0;
 
-    if (mq.matches) {
-        // window width is at least 500px
+    $(this).each(function () {
 
+        // create container arround textarea
+        $(this).wrap('<div class="mention-container" style="height: 36px"></div>');
 
-        // variable for userlist arrow navigation
-        var chosen = "";
+        // add mention overlay
+        $(this).before('<div class="mention-overlay"></div>');
 
-        // variables for text selection (username replacement)
-        var searchStart = 0;
-        var searchEnd = 0;
+        // textarea for html content
+        $(this).before('<textarea class="mention-html-content" name=""></textarea>');
 
-        $(this).each(function () {
+        // add dropdown list for user results
+        $(this).parent().append('<ul class="dropdown-menu mention-userlist" role="menu" aria-labelledby="dropdownMenu"><li><div class="loader"></div></li></ul>');
 
-            // create container arround textarea
-            $(this).wrap('<div class="mention-container" style="height: 36px"></div>');
+        // set the css properties from textarea to mention overlay
+        $(this).parent().find('.mention-overlay').css({
+            /*width: $textarea.css('width'),*/
+            fontFamily: opts.fontFamily,
+            fontWeight: opts.fontWeight,
+            fontSize: opts.fontSize,
+            border: opts.border,
+            color: opts.color,
+            padding: opts.padding,
+            minHeight: opts.minHeight,
+            lineHeight: opts.lineHeight,
+            borderRadius: opts.borderRadius
 
-            // add mention overlay
-            $(this).before('<div class="mention-overlay"></div>');
+        });
 
-            // textarea for html content
-            $(this).before('<textarea class="mention-html-content" name=""></textarea>');
+        // change textarea style
+        $(this).css({
+            position: 'absolute',
+            resize: 'none',
+            //height: '36px',
+            backgroundColor: 'transparent'
 
-            // add dropdown list for user results
-            $(this).parent().append('<ul class="dropdown-menu mention-userlist" role="menu" aria-labelledby="dropdownMenu"><li><div class="loader"></div></li></ul>');
+        })
 
-            // set the css properties from textarea to mention overlay
-            $(this).parent().find('.mention-overlay').css({
-                /*width: $textarea.css('width'),*/
-                fontFamily: opts.fontFamily,
-                fontWeight: opts.fontWeight,
-                fontSize: opts.fontSize,
-                border: opts.border,
-                color: opts.color,
-                padding: opts.padding,
-                minHeight: opts.minHeight,
-                lineHeight: opts.lineHeight,
-                borderRadius: opts.borderRadius
+        // set name of original textarea to the new generated one
+        $(this).parent().find('.mention-html-content').attr('name', $(this).attr('name'));
 
-            });
+        // clear name for original textarea
+        $(this).attr('name', '');
 
-            // change textarea style
-            $(this).css({
-                position: 'absolute',
-                resize: 'none',
-                //height: '36px',
-                backgroundColor: 'transparent'
+        //
+        // Event for handle user input
+        //
+        $(this).keydown(function (event) {
 
-            })
+            if (event.keyCode == 40 || event.keyCode == 38 || event.keyCode == 13 || event.keyCode == 9) {
 
-            // set name of original textarea to the new generated one
-            $(this).parent().find('.mention-html-content').attr('name', $(this).attr('name'));
-
-            // clear name for original textarea
-            $(this).attr('name', '');
-
-            //
-            // Event for handle user input
-            //
-            $(this).keydown(function (event) {
-
-                if (event.keyCode == 40 || event.keyCode == 38 || event.keyCode == 13 || event.keyCode == 9) {
-
-                    // disable default behavior for arrow, enter and tab keys, when userlist is open
-                    if ($.fn.mention.defaults.stateUserList == true) {
-                        event.preventDefault();
-                    }
-
-                }
-                // update mention overlay
-                $.fn.mention.updateMentionOverlay($(this));
-
-            })
-
-            $(window).scroll(function () {
-
-                // hide userlist
-                $('.mention-userlist').hide();
-
-            })
-
-            // set textarea height to mention container
-            $(this).on('change keyup paste', function () {
-                $.fn.mention.updateMentionContainerSize($(this));
-            })
-
-
-            $(this).keyup(function (event) {
-
-                // check if a @ char exists
-                if ($(this).val().search(" @") == -1) {
-
-                    // set userlist state to "close" if no @ char was found to deactivate the search
-                    $.fn.mention.defaults.stateUserList = false;
-
+                // disable default behavior for arrow, enter and tab keys, when userlist is open
+                if ($.fn.mention.defaults.stateUserList == true) {
+                    event.preventDefault();
                 }
 
-                // catch input from @ char for windows or mac
-                if (event.altKey && event.keyCode == 76 || event.keyCode == 81) {
+            }
 
-                    // check if there an space before @ to ignore email inputs
-                    if ($(this).val().search(" @") != -1) {
+            // update mention overlay
+            $.fn.mention.updateMentionOverlay($(this));
 
-                        // save the current cursor position
-                        searchStart = $(this).textrange('get').start;
+        })
 
-                        // set mention userlist to the right position
-                        $.fn.mention.setPosition($(this));
+        $(window).scroll(function () {
 
-                        // set userlist state to "open"
-                        $.fn.mention.defaults.stateUserList = true;
+            // hide userlist
+            $('.mention-userlist').hide();
 
-                    }
+        })
 
-                }
+        // set textarea height to mention container
+        $(this).on('change keyup paste', function () {
+            $.fn.mention.updateMentionContainerSize($(this));
+        })
 
-                // find userlist element
-                var _obj = $(this).parent().find('.mention-userlist');
 
-                // navigate with arrow keys
-                if (event.keyCode == 40) {
+        $(this).keyup(function (event) {
 
-                    // select next <li> element
-                    if (chosen === "") {
-                        chosen = 1;
-                    } else if ((chosen + 1) < _obj.find('li').length) {
-                        chosen++;
-                    }
-                    _obj.find('li').removeClass('selected');
-                    _obj.find('li:eq(' + chosen + ')').addClass('selected');
-                    return false;
+            // check if a @ char exists
+            if ($(this).val().search(" @") == -1) {
 
-                    // navigate with arrow keys
-                } else if (event.keyCode == 38) {
+                // set userlist state to "close" if no @ char was found to deactivate the search
+                $.fn.mention.defaults.stateUserList = false;
 
-                    // select previous <li> element
-                    if (chosen === "") {
-                        chosen = 1;
-                    } else if (chosen > 0) {
-                        chosen--;
-                    }
-                    _obj.find('li').removeClass('selected');
-                    _obj.find('li:eq(' + chosen + ')').addClass('selected');
-                    return false;
+            }
 
-                } else if (event.keyCode == 13 || event.keyCode == 9) {
+            // catch input from @ char for windows or mac
+            if (event.altKey && event.keyCode == 76 || event.keyCode == 81) {
 
-                    // simulate click event
-                    if ($.fn.mention.defaults.stateUserList == true) {
-                        window.location.href = _obj.find('.selected').children('a').attr('href');
-                    }
+                // check if there an space before @ to ignore email inputs
+                if ($(this).val().search(" @") != -1) {
 
-                } else if ($.fn.mention.defaults.stateUserList == true) {
+                    // save the current cursor position
+                    searchStart = $(this).textrange('get').start;
 
                     // set mention userlist to the right position
                     $.fn.mention.setPosition($(this));
 
-                    // safe the current cursor position
-                    searchEnd = $(this).textrange('get').start;
-
-                    // select text from entered @ char until current cursor position
-                    $(this).textrange('set', searchStart, searchEnd - searchStart);
-
-                    // save selection
-                    var _str = $(this).textrange('get');
-
-                    if (_str.length >= 1) {
-
-                        // search for user by string
-                        loadUser($(this), _str.text);
-                    } else {
-                        $(this).parent().find('.mention-userlist').hide();
-                    }
-
-                    // set cursor the back to the last position
-                    $(this).textrange('set', searchEnd, 0);
+                    // set userlist state to "open"
+                    $.fn.mention.defaults.stateUserList = true;
 
                 }
 
-            })
+            }
 
+            // find userlist element
+            var _obj = $(this).parent().find('.mention-userlist');
 
-            //
-            // Update the original textarea by losing focus
-            //
-            $(this).focusout(function () {
+            // navigate with arrow keys
+            if (event.keyCode == 40) {
 
-                // the focusout event will be also fired by clicking an userlist entry with mouse
-                // so check, if the user selection is over, before updating the original textarea
-                if ($.fn.mention.defaults.stateUserList == false) {
+                // select next <li> element
+                if (chosen === "") {
+                    chosen = 1;
+                } else if ((chosen + 1) < _obj.find('li').length) {
+                    chosen++;
+                }
+                _obj.find('li').removeClass('selected');
+                _obj.find('li:eq(' + chosen + ')').addClass('selected');
+                return false;
 
-                    // hide mention userlist
+                // navigate with arrow keys
+            } else if (event.keyCode == 38) {
+
+                // select previous <li> element
+                if (chosen === "") {
+                    chosen = 1;
+                } else if (chosen > 0) {
+                    chosen--;
+                }
+                _obj.find('li').removeClass('selected');
+                _obj.find('li:eq(' + chosen + ')').addClass('selected');
+                return false;
+
+            } else if (event.keyCode == 13 || event.keyCode == 9) {
+
+                // simulate click event
+                if ($.fn.mention.defaults.stateUserList == true) {
+                    window.location.href = _obj.find('.selected').children('a').attr('href');
+                }
+
+            } else if ($.fn.mention.defaults.stateUserList == true) {
+
+                // set mention userlist to the right position
+                $.fn.mention.setPosition($(this));
+
+                // safe the current cursor position
+                searchEnd = $(this).textrange('get').start;
+
+                // select text from entered @ char until current cursor position
+                $(this).textrange('set', searchStart, searchEnd - searchStart);
+
+                // save selection
+                var _str = $(this).textrange('get');
+
+                if (_str.length >= 1) {
+
+                    // search for user by string
+                    loadUser($(this), _str.text);
+                } else {
                     $(this).parent().find('.mention-userlist').hide();
-
-                    // save mention overlay object
-                    var $element = $(this).parent().find('.mention-overlay');
-
-                    // save unchanged content
-                    var _html = $element.html();
-
-                    // change <span> tags with just the user guids
-                    for (var i = 0; i <= $element.html().split('</span>').length; i++) {
-                        var _guid = $element.children('span').attr('data-guid');
-                        $element.children('span').first().replaceWith('@' + _guid);
-                    }
-
-                    // add modified content to the original textarea
-                    $(this).parent().find('.mention-html-content').val($element.html().split('&nbsp;').join(' '));
-
-                    // put the original content back to the textarea
-                    $element.html(_html);
-
                 }
 
-            })
+                // set cursor the back to the last position
+                $(this).textrange('set', searchEnd, 0);
+
+            }
 
         })
 
 
-        function loadUser($obj, $string) {
+        //
+        // Update the original textarea by losing focus
+        //
+        $(this).focusout(function () {
 
-            // get userlist element
-            var _obj = $obj.parent().find('.mention-userlist');
+            // the focusout event will be also fired by clicking an userlist entry with mouse
+            // so check, if the user selection is over, before updating the original textarea
+            if ($.fn.mention.defaults.stateUserList == false) {
 
-            // show loader while loading
-            //_obj.html('<li><div class="loader"></div></li>');
+                // hide mention userlist
+                $(this).parent().find('.mention-userlist').hide();
 
-            // show userlist
-            _obj.show();
+                // save mention overlay object
+                var $element = $(this).parent().find('.mention-overlay');
 
-            // start ajax request
-            jQuery.getJSON(opts.searchUrl.replace('-keywordPlaceholder-', $string), function (json) {
+                // save unchanged content
+                var _html = $element.html();
 
-                // remove existings entries
-                _obj.find('li').remove();
+                // change <span> tags with just the user guids
+                for (var i = 0; i <= $element.html().split('</span>').length; i++) {
+                    var _guid = $element.children('span').attr('data-guid');
+                    $element.children('span').first().replaceWith('@' + _guid);
+                }
 
-                if (json.length > 0) {
+                // add modified content to the original textarea
+                $(this).parent().find('.mention-html-content').val($element.html().split('&nbsp;').join(' '));
 
-                    for (var i = 0; i < json.length; i++) {
+                // put the original content back to the textarea
+                $element.html(_html);
 
-                        // build <li> entry
-                        var str = '<li id="user_' + json[i].guid + '"><a tabindex="-1" href="javascript:$.fn.mention.addUser(\'' + $obj.attr('id') + '\',\'' + json[i].guid + '\', \'' + json[i].displayName + '\', ' + searchStart + ', ' + searchEnd + ');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
+            }
 
-                        // append the entry to the <ul> list
-                        _obj.append(str);
+        })
 
-                    }
+    })
 
-                    // check if the list is empty
-                    if (_obj.children().length == 0) {
-                        // hide userpicker, if it is
-                        _obj.hide();
-                    }
 
-                    // reset the variable for arrows keys
-                    chosen = "";
+    function loadUser($obj, $string) {
 
-                } else {
+        // get userlist element
+        var _obj = $obj.parent().find('.mention-userlist');
 
-                    // hide userpicker, if no user was found
+        // show loader while loading
+        //_obj.html('<li><div class="loader"></div></li>');
+
+        // show userlist
+        _obj.show();
+
+        // start ajax request
+        jQuery.getJSON(opts.searchUrl.replace('-keywordPlaceholder-', $string), function (json) {
+
+            // remove existings entries
+            _obj.find('li').remove();
+
+            if (json.length > 0) {
+
+                for (var i = 0; i < json.length; i++) {
+
+                    // build <li> entry
+                    var str = '<li id="user_' + json[i].guid + '"><a tabindex="-1" href="javascript:$.fn.mention.addUser(\'' + $obj.attr('id') + '\',\'' + json[i].guid + '\', \'' + json[i].displayName + '\', ' + searchStart + ', ' + searchEnd + ');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
+
+                    // append the entry to the <ul> list
+                    _obj.append(str);
+
+                }
+
+                // check if the list is empty
+                if (_obj.children().length == 0) {
+                    // hide userpicker, if it is
                     _obj.hide();
                 }
 
-                // remove hightlight
-                _obj.find('li').removeHighlight();
+                // reset the variable for arrows keys
+                chosen = "";
 
-                // add new highlight matching strings
-                _obj.find('li').highlight($string);
+            } else {
 
-                // add selection to the first space entry
-                _obj.find('li:eq(0)').addClass('selected');
+                // hide userpicker, if no user was found
+                _obj.hide();
+            }
 
-            })
-        }
+            // remove hightlight
+            _obj.find('li').removeHighlight();
 
+            // add new highlight matching strings
+            _obj.find('li').highlight($string);
+
+            // add selection to the first space entry
+            _obj.find('li:eq(0)').addClass('selected');
+
+        })
     }
-
 
 }
 

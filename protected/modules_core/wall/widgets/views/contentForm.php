@@ -73,7 +73,6 @@
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
 
-                        //$('.contentForm').
                         $.fn.mention.reset('.contentForm');
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
@@ -138,7 +137,7 @@
 
             </div>
 
-            <?php echo CHtml::endForm(); ?>
+
 
             <?php
             // Creates a list of already uploaded Files
@@ -150,6 +149,7 @@
 
         </div>
         <!-- /contentForm_Options -->
+        <?php echo CHtml::endForm(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->
