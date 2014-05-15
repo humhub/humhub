@@ -17,6 +17,12 @@
                 $user_url = '//user/search/json';
             }
 
+            /* Modify textarea for mention input */
+            $this->widget('application.widgets.MentionWidget', array(
+                'element' => '#contentForm_message',
+            ));
+
+            /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                 'inputId' => 'notifiyUserInput',
                 'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
@@ -67,7 +73,6 @@
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
 
-                        //$('.contentForm').
                         $.fn.mention.reset('.contentForm');
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
@@ -109,17 +114,17 @@
 
                     <ul class="nav nav-pills preferences">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cogs"></i></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
-                                            class="icon-bell-alt"></i> <?php echo Yii::t('WallModule.base', 'Notify members'); ?>
+                                            class="fa fa-bell"></i> <?php echo Yii::t('WallModule.base', 'Notify members'); ?>
                                     </a>
                                 </li>
                                 <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
-                                                class="icon-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>
+                                                class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>
@@ -132,7 +137,7 @@
 
             </div>
 
-            <?php echo CHtml::endForm(); ?>
+
 
             <?php
             // Creates a list of already uploaded Files
@@ -144,6 +149,7 @@
 
         </div>
         <!-- /contentForm_Options -->
+        <?php echo CHtml::endForm(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->
@@ -151,10 +157,6 @@
 <div class="clearFloats"></div>
 
 <script type="text/javascript">
-
-    $('#contentForm_message').mention({
-        searchUrl: '<?php echo Yii::app()->createAbsoluteUrl('user/search/json') ?>'
-    });
 
     // Hide options by default
     jQuery('.contentForm_options').hide();
@@ -172,11 +174,11 @@
     function changeVisibility() {
         if ($('#contentForm_visibility').attr('checked') != 'checked') {
             $('#contentForm_visibility').attr('checked', 'checked');
-            $('#contentForm_visibility_entry').html('<i class="icon-lock"></i> <?php echo Yii::t('WallModule.base', 'Make private'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('WallModule.base', 'Make private'); ?>');
             $('.label-public').removeClass('hidden');
         } else {
             $('#contentForm_visibility').removeAttr('checked');
-            $('#contentForm_visibility_entry').html('<i class="icon-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>');
             $('.label-public').addClass('hidden');
         }
     }

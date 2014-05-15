@@ -10,7 +10,7 @@
 
 
         <!--    <a href="--><?php //echo $this->createUrl('//mail/mail/create') ?><!--" class="btn btn-primary"><i-->
-        <!--            class="icon-plus icon-white"></i> -->
+        <!--            class="fa fa-plus icon-white"></i> -->
         <?php //echo Yii::t('MailModule.base', "Write new message"); ?><!--</a>-->
 
         <div class="panel-heading">
@@ -88,13 +88,13 @@
 
                     <!-- Button to trigger modal to add user to conversation -->
                     <?php
-                    echo CHtml::link('<i class="icon-plus"></i> ' . Yii::t('MailModule.base', 'Add user'), $this->createUrl('//mail/mail/adduser', array('id' => $message->id, 'ajax' => 1)), array('class' => 'btn btn-info', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
+                    echo CHtml::link('<i class="fa fa-plus"></i> ' . Yii::t('MailModule.base', 'Add user'), $this->createUrl('//mail/mail/adduser', array('id' => $message->id, 'ajax' => 1)), array('class' => 'btn btn-info', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
                     ?>
 
                     <?php if (count($message->users) > 2 && $message->originator->id != Yii::app()->user->id): ?>
                         <a class="btn btn-danger"
                            href="<?php echo $this->createUrl('leave', array('id' => $message->id)); ?>"><i
-                                class="icon-signout"></i> <?php echo Yii::t('MailModule.base', "Leave discussion"); ?>
+                                class="fa fa-sign-out"></i> <?php echo Yii::t('MailModule.base', "Leave discussion"); ?>
                         </a>
                     <?php endif; ?>
                 </div>

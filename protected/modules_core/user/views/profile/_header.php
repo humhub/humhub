@@ -48,70 +48,70 @@
                                     <a href="skype:<?php echo $this->getUser()->profile->im_skype; ?>?chat&topic=hello"
                                        target="_self"
                                        alt="skype link"><i
-                                            class="icon-skype"></i></a>
+                                            class="fa fa-skype"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show facebook icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_facebook != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_facebook; ?>" target="_blank"
                                        alt="facebook link"><i
-                                            class="icon-facebook-sign"></i></a>
+                                            class="fa fa-facebook-sign"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show linkedin icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_linkedin != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_linkedin; ?>" target="_blank"
                                        alt="linkedin link"><i
-                                            class="icon-linkedin-sign"></i></a>
+                                            class="fa fa-linkedin-sign"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show xing icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_xing != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_xing; ?>" target="_blank"
                                        alt="xing link"><i
-                                            class="icon-xing"></i></a>
+                                            class="fa fa-xing"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show youtube icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_youtube != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_youtube; ?>" target="_blank"
                                        alt="youtube link"><i
-                                            class="icon-youtube"></i></a>
+                                            class="fa fa-youtube"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show vimeo icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_vimeo != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_vimeo; ?>" target="_blank"
                                        alt="vimeo link"><i
-                                            class="icon-youtube-play"></i></a>
+                                            class="fa fa-youtube-play"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show flickr icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_flickr != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_flickr; ?>" target="_blank"
                                        alt="flickr link"><i
-                                            class="icon-flickr"></i></a>
+                                            class="fa fa-flickr"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show myspace icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_myspace != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_myspace; ?>" target="_blank"
                                        alt="myspace link"><i
-                                            class="icon-music"></i></a>
+                                            class="fa fa-music"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show googleplus icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_googleplus != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_googleplus; ?>" target="_blank"
                                        alt="googleplus link"><i
-                                            class="icon-google-plus"></i></a>
+                                            class="fa fa-google-plus"></i></a>
                                 <?php endif; ?>
 
                                 <!-- show twitter icon, if stated -->
                                 <?php if ($this->getUser()->profile->url_twitter != "") : ?>
                                     <a href="<?php echo $this->getUser()->profile->url_twitter; ?>" target="_blank"
                                        alt="twitter link"><i
-                                            class="icon-twitter"></i></a>
+                                            class="fa fa-twitter"></i></a>
                                 <?php endif; ?>
 
                                 <!-- end: Social user bookmarks -->
@@ -124,13 +124,13 @@
 
                         <?php if ($this->getUser()->profile->phone_work != "") : ?>
                             <?php echo $seperator; ?>
-                            <i class="icon-phone"></i> <?php echo $this->getUser()->profile->phone_work; ?>
+                            <i class="fa fa-phone"></i> <?php echo $this->getUser()->profile->phone_work; ?>
                             <?php $seperator = ", "; ?>
                         <?php endif; ?>
 
                         <?php if ($this->getUser()->profile->city != "") : ?>
                             <?php echo $seperator; ?>
-                            <i class="icon-map-marker"></i> <?php echo $this->getUser()->profile->city; ?>
+                            <i class="fa fa-map-marker"></i> <?php echo $this->getUser()->profile->city; ?>
                             <?php $seperator = ", "; ?>
                         <?php endif; ?>
 

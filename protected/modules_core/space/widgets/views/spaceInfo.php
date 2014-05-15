@@ -10,7 +10,7 @@
                 <div class="media-body" id="space-description" style="overflow: hidden; max-height: 75px; font-size: 13px;">
                     <?php echo $space->description; ?>
                 </div>
-                <a class="btn btn-default btn-xs pull-right hidden" id="more-button" style="margin-top: 5px;" href="javascript:showMoreInfo();"><i class="icon-arrow-down"></i> more</a>
+                <a class="btn btn-default btn-xs pull-right hidden" id="more-button" style="margin-top: 5px;" href="javascript:showMoreInfo();"><i class="fa fa-arrow-down"></i> more</a>
 
             </div>
         </div>
@@ -40,11 +40,11 @@
 
         if (_state == "more") {
             $('#space-description').css('max-height', '2000px');
-            $('#more-button').html('<i class="icon-arrow-up"></i> less');
+            $('#more-button').html('<i class="fa fa-arrow-up"></i> less');
             _state = "less"
         } else {
             $('#space-description').css('max-height', '75px');
-            $('#more-button').html('<i class="icon-arrow-down"></i> more');
+            $('#more-button').html('<i class="fa fa-arrow-down"></i> more');
             _state = "more"
         }
 

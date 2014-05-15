@@ -26,7 +26,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Users'),
             'url' => Yii::app()->createUrl('admin/user'),
-            'icon' => '<i class="icon-user"></i>',
+            'icon' => '<i class="fa fa-user"></i>',
             'group' => 'manage',
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'user'),
@@ -37,7 +37,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'User approval'),
             'url' => Yii::app()->createUrl('admin/approval'),
-            'icon' => '<i class="icon-ok-circle"></i>',
+            'icon' => '<i class="fa fa-check-circle"></i>',
             'group' => 'manage',
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'approval'),
@@ -47,7 +47,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Groups'),
             'url' => Yii::app()->createUrl('admin/group'),
-            'icon' => '<i class="icon-group"></i>',
+            'icon' => '<i class="fa fa-group"></i>',
             'group' => 'manage',
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'group'),
             'sortOrder' => 300,
@@ -57,7 +57,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Spaces'),
             'url' => Yii::app()->createUrl('admin/space'),
-            'icon' => '<i class="icon-inbox"></i>',
+            'icon' => '<i class="fa fa-inbox"></i>',
             'group' => 'manage',
             'sortOrder' => 400,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'space'),
@@ -67,7 +67,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Modules'),
             'url' => Yii::app()->createUrl('admin/module'),
-            'icon' => '<i class="icon-rocket"></i>',
+            'icon' => '<i class="fa fa-rocket"></i>',
             'sortOrder' => 500,
             'group' => 'manage',
             'newItemCount' => 0,
@@ -78,7 +78,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'About'),
             'url' => Yii::app()->createUrl('admin/about'),
-            'icon' => '<i class="icon-info-sign"></i>',
+            'icon' => '<i class="fa fa-info-sign"></i>',
             'sortOrder' => 10000,
             'group' => 'manage',
             'newItemCount' => 0,
@@ -96,7 +96,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Basic'),
             'url' => Yii::app()->createUrl('admin/setting/index'),
-            'icon' => '<i class="icon-cogs"></i>',
+            'icon' => '<i class="fa fa-cogs"></i>',
             'group' => 'settings',
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'index'),
@@ -105,7 +105,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Design'),
             'url' => Yii::app()->createUrl('admin/setting/design'),
-            'icon' => '<i class="icon-magic"></i>',
+            'icon' => '<i class="fa fa-magic"></i>',
             'group' => 'settings',
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'design'),
@@ -131,7 +131,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Authentication'),
             'url' => Yii::app()->createUrl('admin/setting/authentication'),
-            'icon' => '<i class="icon-lock"></i>',
+            'icon' => '<i class="fa fa-lock"></i>',
             'group' => 'settings',
             'sortOrder' => 500,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && (Yii::app()->controller->action->id == 'authentication' || Yii::app()->controller->action->id == 'authenticationLdap')),
@@ -141,7 +141,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'User profiles'),
             'url' => Yii::app()->createUrl('admin/userprofile/index'),
-            'icon' => '<i class="icon-wrench"></i>',
+            'icon' => '<i class="fa fa-wrench"></i>',
             'group' => 'settings',
             'sortOrder' => 500,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'userprofile'),
@@ -160,7 +160,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Mailing'),
             'url' => Yii::app()->createUrl('admin/setting/mailing'),
-            'icon' => '<i class="icon-envelope"></i>',
+            'icon' => '<i class="fa fa-envelope"></i>',
             'group' => 'settings',
             'sortOrder' => 600,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'mailing'),
@@ -169,7 +169,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Caching'),
             'url' => Yii::app()->createUrl('admin/setting/caching'),
-            'icon' => '<i class="icon-dashboard"></i>',
+            'icon' => '<i class="fa fa-dashboard"></i>',
             'group' => 'settings',
             'sortOrder' => 800,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'caching'),
@@ -178,7 +178,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Files'),
             'url' => Yii::app()->createUrl('admin/setting/file'),
-            'icon' => '<i class="icon-file"></i>',
+            'icon' => '<i class="fa fa-file"></i>',
             'group' => 'settings',
             'sortOrder' => 800,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'file'),
@@ -187,7 +187,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Statistics'),
             'url' => Yii::app()->createUrl('admin/setting/statistic'),
-            'icon' => '<i class="icon-bar-chart"></i>',
+            'icon' => '<i class="fa fa-bar-chart-o"></i>',
             'group' => 'settings',
             'sortOrder' => 900,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'statistic'),
@@ -196,7 +196,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Cron jobs'),
             'url' => Yii::app()->createUrl('admin/setting/cronjob'),
-            'icon' => '<i class="icon-truck"></i>',
+            'icon' => '<i class="fa fa-truck"></i>',
             'group' => 'settings',
             'sortOrder' => 1000,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'cronjob'),
@@ -216,7 +216,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Self test & update'),
             'url' => Yii::app()->createUrl('admin/setting/selftest'),
-            'icon' => '<i class="icon-warning-sign"></i>',
+            'icon' => '<i class="fa fa-warning"></i>',
             'group' => 'settings',
             'sortOrder' => 1100,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'selftest'),

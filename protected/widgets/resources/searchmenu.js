@@ -5,7 +5,7 @@
 $(document).ready(function () {
 
     // declare variable for ajax request
-    var _request = jQuery.ajax();
+    var _request;
     var chosenSearch = "";
 
     /**
@@ -19,9 +19,11 @@ $(document).ready(function () {
         function setFocus() {
             // set focus
             $('#search-menu-search').focus();
+
             // stop interval
             clearInterval(searchFocus);
         }
+
 
     })
 
@@ -29,7 +31,7 @@ $(document).ready(function () {
     /**
      * Show and navigate through search resutls depends on user input
      */
-    $('#search-menu-search').keyup(function () {
+    $('#search-menu-search').keyup(function (event) {
 
 
         if (event.keyCode == 40) {
@@ -71,6 +73,9 @@ $(document).ready(function () {
 
             // empty variable
             chosenSearch = "";
+
+            // create ajax object
+            _request = jQuery.ajax();
 
             // get content form input field
             var _searchString = $(this).val();

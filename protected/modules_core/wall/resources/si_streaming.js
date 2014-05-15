@@ -301,12 +301,12 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         $(".wallFilter").off();
         $(".wallFilter").click(function() {
             checkboxi = $(this).children("i");
-            if (checkboxi.hasClass('icon-check-empty')) {
-                checkboxi.removeClass('icon-check-empty');
-                checkboxi.addClass('icon-check');
+            if (checkboxi.hasClass('fa-square-o')) {
+                checkboxi.removeClass('fa-square-o');
+                checkboxi.addClass('fa-check-square-o');
             } else {
-                checkboxi.addClass('icon-check-empty');
-                checkboxi.removeClass('icon-check');
+                checkboxi.addClass('fa-square-o');
+                checkboxi.removeClass('fa-check-square-o');
             }
 
             me.updateFilters();
@@ -319,13 +319,13 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
             // uncheck all sorting
             $(".wallSorting").each(function() {
-                $(this).children("i").removeClass('icon-check');
-                $(this).children("i").addClass('icon-check-empty');
+                $(this).children("i").removeClass('fa-check-square-o');
+                $(this).children("i").addClass('fa-square-o');
             });
 
             // check current sorting mode
-            $("#" + newSortingMode).children("i").removeClass('icon-check-empty');
-            $("#" + newSortingMode).children("i").addClass('icon-check');
+            $("#" + newSortingMode).children("i").removeClass('fa-square-o');
+            $("#" + newSortingMode).children("i").addClass('fa-check-square-o');
 
             // remove sorting id append
             newSortingMode = newSortingMode.replace('sorting_', '');
@@ -359,7 +359,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
             checkboxi = $(this).children("i");
 
             // Is filter enabled?
-            if (checkboxi.hasClass('icon-check')) {
+            if (checkboxi.hasClass('fa-check-square-o')) {
                 filterName = $(this).attr('id');
 
                 // remove id addon filter_

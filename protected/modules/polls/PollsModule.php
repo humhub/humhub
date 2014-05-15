@@ -37,7 +37,7 @@ class PollsModule extends CWebModule {
             $event->sender->addItem(array(
                 'label' => Yii::t('PollsModule.base', 'Polls'),
                 'url' => Yii::app()->createUrl('//polls/poll/show', array('sguid' => $space->guid)),
-                'icon' => '<i class="icon-question-sign"></i>',
+                'icon' => '<i class="fa fa-question-circle"></i>',
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'polls'),
             ));
         }

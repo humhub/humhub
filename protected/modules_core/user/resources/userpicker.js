@@ -302,7 +302,7 @@ $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
     if ($('#user_' + guid + ' a').attr('data-taken') != "true") {
 
         // Building a new <li> entry
-        var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="icon-remove-sign"></i></li>';
+        var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="fa fa-times-circle"></i></li>';
 
 
         // insert the new created <li> entry into the <ul> construct

@@ -13,5 +13,5 @@
             <?php endforeach; ?>
     </ul>
     <br>
-    <a href="<?php echo $this->createUrl('//space/create') ?>" class="btn"><i class="icon-plus"></i> New Space</a>
+    <a href="<?php echo $this->createUrl('//space/create') ?>" class="btn"><i class="fa fa-plus"></i> New Space</a>
 </div>

@@ -65,7 +65,7 @@ class TasksModule extends CWebModule {
             $event->sender->addItem(array(
                 'label' => Yii::t('TasksModule.base', 'Tasks'),
                 'url' => Yii::app()->createUrl('/tasks/task/show', array('sguid' => $space->guid)),
-                'icon' => '<i class="icon-check-sign"></i>',
+                'icon' => '<i class="fa fa-check-square"></i>',
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'tasks'),
             ));
         }

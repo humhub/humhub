@@ -71,7 +71,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 (
                 'view' => array
                     (
-                    'label' => '<i class="icon-eye-open"></i>',
+                    'label' => '<i class="fa fa-eye"></i>',
                     'imageUrl' => false,
                     'options' => array(
                         'style' => 'margin-right: 3px',
@@ -84,7 +84,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 ),
                 'update' => array
                     (
-                    'label' => '<i class="icon-pencil"></i>',
+                    'label' => '<i class="fa fa-pencil"></i>',
                     'imageUrl' => false,
                     'options' => array(
                         'style' => 'margin-right: 3px',
@@ -97,7 +97,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 ),
                 'deleteOwn' => array
                     (
-                    'label' => '<i class="icon-remove"></i>',
+                    'label' => '<i class="fa fa-times"></i>',
                     'imageUrl' => false,
                     'url' => 'Yii::app()->createUrl("//space/admin/delete", array("sguid"=>$data->guid));',
                     'deleteConfirmation' => false,
@@ -116,10 +116,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'pager' => array(
         'class' => 'CLinkPager',
         'maxButtonCount' => 5,
-        'nextPageLabel' => '<i class="icon-step-forward"></i>',
-        'prevPageLabel' => '<i class="icon-step-backward"></i>',
-        'firstPageLabel' => '<i class="icon-fast-backward"></i>',
-        'lastPageLabel' => '<i class="icon-fast-forward"></i>',
+        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
+        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
+        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
+        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
         'header' => '',
         'htmlOptions' => array('class' => 'pagination'),
     ),

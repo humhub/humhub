@@ -15,10 +15,10 @@
     <li>
     <?php if ($object->content->isSticked()): ?>
         <a href="#" onClick="wallUnstick('<?php echo $model; ?>', '<?php echo $id; ?>');
-                return false;"><i class="icon-arrow-up"></i> <?php echo Yii::t('WallModule.base', 'Unstick'); ?></a>
+                return false;"><i class="fa fa-arrow-up"></i> <?php echo Yii::t('WallModule.base', 'Unstick'); ?></a>
        <?php else: ?>
         <a href="#" onClick="wallStick('<?php echo $model; ?>', '<?php echo $id; ?>');
-                return false;"><i class="icon-arrow-up"></i> <?php echo Yii::t('WallModule.base', 'Stick'); ?></a>
+                return false;"><i class="fa fa-arrow-up"></i> <?php echo Yii::t('WallModule.base', 'Stick'); ?></a>
     <?php endif; ?>
     </li>
 <?php endif; ?>

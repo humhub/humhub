@@ -46,7 +46,7 @@
                             <div class="media-body">
 
                                 <h4 class="media-heading"><?php echo $message->getLastEntry()->user->displayName; ?> <small><span class="time"><?php echo $message->updated_at; ?></span></small></h4>
-                                <!--<i class="icon-paper-clip"></i> <i class="icon-star"></i>-->
+                                <!--<i class="fa fa-paper-clip"></i> <i class="fa fa-star"></i>-->
 
                                 <h5><?php print Helpers::truncateText($message->title, 75); ?></h5>
 
@@ -84,10 +84,10 @@
         'itemCount' => $mailCount,
         'pageSize' => $pageSize,
         'maxButtonCount' => 5,
-        'nextPageLabel' => '<i class="icon-step-forward"></i>',
-        'prevPageLabel' => '<i class="icon-step-backward"></i>',
-        'firstPageLabel' => '<i class="icon-fast-backward"></i>',
-        'lastPageLabel' => '<i class="icon-fast-forward"></i>',
+        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
+        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
+        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
+        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
         'header' => '',
         'htmlOptions' => array('class' => 'pagination'),
     ));

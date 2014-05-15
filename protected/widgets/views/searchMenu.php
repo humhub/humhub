@@ -6,7 +6,7 @@
                placeholder="<?php echo Yii::t('base', 'Search for users, spaces and posts'); ?>">
 
         <div class="search-reset" id="search-search-reset"><i
-                class="icon-remove-sign"></i></div>
+                class="fa fa-times-circle"></i></div>
     </form>
 </li>
 

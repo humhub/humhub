@@ -41,7 +41,7 @@
             <?php echo HHtml::link('Check again', array('//installer/setup/prerequisites'), array('class' => 'btn btn-primary')); ?>
 
             <?php if (!$hasError): ?>
-                <?php echo HHtml::link('Go to database configuration <i class="icon-circle-arrow-right"></i>', array('//installer/setup/database'), array('class' => 'btn btn-success')); ?>
+                <?php echo HHtml::link('Go to database configuration <i class="fa fa-circle-arrow-right"></i>', array('//installer/setup/database'), array('class' => 'btn btn-success')); ?>
             <?php endif; ?>
 
 

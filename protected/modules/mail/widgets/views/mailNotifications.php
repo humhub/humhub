@@ -1,6 +1,6 @@
 <div class="btn-group">
     <a href="#" id="icon-messages" class="dropdown-toggle" data-toggle="dropdown"><i
-            class="icon-envelope"></i></a>
+            class="fa fa-envelope"></i></a>
     <span id="badge-messages" style="display:none;"
           class="label label-danger label-notification">1</span>
     <ul id="dropdown-messages" class="dropdown-menu">

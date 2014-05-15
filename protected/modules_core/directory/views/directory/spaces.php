@@ -74,7 +74,7 @@
                     </a>
 
                     <?php if ($space->isMember()) { ?>
-                        <i class="icon-user space-member-sign tt" data-toggle="tooltip" data-placement="top"
+                        <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top"
                            title=""
                            data-original-title="<?php echo Yii::t('DirectoryModule.base', 'You are a member of this space'); ?>"></i>
                     <?php } ?>
@@ -111,10 +111,10 @@
         'itemCount' => $hitCount,
         'pageSize' => $pageSize,
         'maxButtonCount' => 5,
-        'nextPageLabel' => '<i class="icon-step-forward"></i>',
-        'prevPageLabel' => '<i class="icon-step-backward"></i>',
-        'firstPageLabel' => '<i class="icon-fast-backward"></i>',
-        'lastPageLabel' => '<i class="icon-fast-forward"></i>',
+        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
+        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
+        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
+        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
         'header' => '',
         'htmlOptions' => array('class' => 'pagination'),
     ));

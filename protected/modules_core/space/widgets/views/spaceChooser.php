@@ -27,7 +27,7 @@
                                                              placeholder="Search">
 
                 <div class="search-reset" id="space-search-reset"><i
-                        class="icon-remove-sign"></i></div>
+                        class="fa fa-times-circle"></i></div>
             </form>
         </li>
 

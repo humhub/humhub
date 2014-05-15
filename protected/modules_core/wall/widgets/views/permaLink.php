@@ -10,4 +10,4 @@
  * @package humhub.modules_core.wall
  * @since 0.5
  */
-?><li><a href="#" onClick="wallPermaLink('<?php echo $model; ?>', '<?php echo $id; ?>'); return false;"><i class="icon-link"></i> <?php echo Yii::t('WallModule.base', 'Permalink'); ?></a></li>
+?><li><a href="#" onClick="wallPermaLink('<?php echo $model; ?>', '<?php echo $id; ?>'); return false;"><i class="fa fa-link"></i> <?php echo Yii::t('WallModule.base', 'Permalink'); ?></a></li>

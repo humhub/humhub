@@ -84,10 +84,3 @@ list($className, $modelId) = explode("_", $id);
     (<span class="<?php echo $id . "-LikeCount"; ?>">0</span>)
 <?php } ?>
 
-
-<script type="text/javascript">
-
-    // show Tooltips on elements inside the views, which have the class 'tt'
-    $('.tt').tooltip({html: true});
-
-</script>

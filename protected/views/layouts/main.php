@@ -53,12 +53,12 @@
                         <ul class="dropdown-menu pull-right">
                             <li>
                                 <a href="<?php echo $this->createUrl('//user/profile', array('guid' => Yii::app()->user->guid)); ?>"><i
-                                        class="icon-user"></i> <?php echo Yii::t('UserModule.base', 'My profile'); ?>
+                                        class="fa fa-user"></i> <?php echo Yii::t('UserModule.base', 'My profile'); ?>
                                 </a>
                             </li>
                             <li>
                                 <a href="<?php echo $this->createUrl('//user/account/edit') ?>"><i
-                                        class="icon-edit"></i> <?php echo Yii::t('UserModule.base', 'Account settings'); ?>
+                                        class="fa fa-edit"></i> <?php echo Yii::t('UserModule.base', 'Account settings'); ?>
                                 </a>
                             </li>
 
@@ -66,7 +66,7 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//admin/index') ?>"><i
-                                            class="icon-cogs"></i> <?php echo Yii::t('AdminModule.base', 'Administration'); ?>
+                                            class="fa fa-cogs"></i> <?php echo Yii::t('AdminModule.base', 'Administration'); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -76,7 +76,7 @@
                             <?php if (HSetting::Get('needApproval', 'authentication_internal') && (Yii::app()->user->isAdmin() || Yii::app()->user->canApproveUsers())) : ?>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//admin/approval') ?>"><i
-                                            class="icon-check-sign"></i> <?php echo Yii::t('AdminModule.base', 'User Approvals'); ?>
+                                            class="fa fa-check-circle"></i> <?php echo Yii::t('AdminModule.base', 'User Approvals'); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -86,7 +86,7 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//user/auth/logout') ?>"><i
-                                            class="icon-signout"></i> <?php echo Yii::t('UserModule.base', 'Logout'); ?>
+                                            class="fa fa-sign-out"></i> <?php echo Yii::t('UserModule.base', 'Logout'); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -102,7 +102,7 @@
                 <!-- global notifications dropdown -->
                 <div class="btn-group">
                     <a href="#" id="icon-notifications" data-toggle="dropdown">
-                        <i class="icon-bell-alt"></i>
+                        <i class="fa fa-bell"></i>
                     </a>
                     <span id="badge-notifications" style="display:none;" class="label label-danger label-notifications">1</span>
 
@@ -135,7 +135,7 @@
             <ul class="nav pull-right">
                 <li class="dropdown">
                     <a href="#" id="search-menu" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-search"></i></a>
+                        <i class="fa fa-search"></i></a>
                     <ul class="dropdown-menu pull-right" id="search-menu-dropdown">
 
                         <!-- load search menu widget -->
@@ -235,14 +235,6 @@
 
         }
 
-
-        // show Tooltips on elements inside the views, which have the class 'tt'
-        $('.tt').tooltip({html: true});
-
-        // show Popovers on elements inside the views, which have the class 'po'
-        $('.po').popover({html: true});
-
-
         /* Ensures after hide modal content is removed. */
         $('#globalModal').on('hidden.bs.modal', function (e) {
             $(this).removeData('bs.modal');
@@ -259,6 +251,21 @@
         cursoropacitymax:"0.2",
         railpadding:{top:120,right:3,left:0,bottom:20}
     });
+
+    // call this after every ajax loading
+    $(document).ajaxComplete(function(event, xhr, settings) {
+
+        // show Tooltips on elements inside the views, which have the class 'tt'
+        $('.tt').tooltip({html: true});
+
+        // show Popovers on elements inside the views, which have the class 'po'
+        $('.po').popover({html: true});
+
+        // activate placeholder text for older browsers (specially IE)
+        $('input, textarea').placeholder();
+
+    });
+
 
 </script>
 

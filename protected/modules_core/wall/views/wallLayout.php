@@ -14,7 +14,7 @@
     <!-- start: show wall entry options -->
     <ul class="nav nav-pills preferences">
         <li class="dropdown ">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cogs"></i></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
             <ul class="dropdown-menu pull-right">
                 <?php $this->widget('application.modules_core.wall.widgets.WallEntryControlsWidget', array('object' => $object)); ?>
             </ul>

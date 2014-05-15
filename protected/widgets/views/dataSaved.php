@@ -2,7 +2,7 @@
 <?php if(Yii::app()->user->hasFlash('data-saved')): ?>
 
     <!-- <span> element to display the message -->
-    <span class="data-saved"><i class="icon-ok-sign"></i> <?php echo Yii::app()->user->getFlash('data-saved'); ?></span>
+    <span class="data-saved"><i class="fa fa-check-circle"></i> <?php echo Yii::app()->user->getFlash('data-saved'); ?></span>
 
     <script type="text/javascript">
 

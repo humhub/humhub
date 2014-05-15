@@ -485,6 +485,11 @@ ul.tag_input li img {
 .highlight {
   background-color: #fffbc1;
 }
+input.placeholder,
+textarea.placeholder {
+  padding: 0 0 0 10px;
+  color: #999999;
+}
 @media (max-width: 767px) {
   .topbar {
     padding-left: 0;
