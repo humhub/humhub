@@ -123,9 +123,3 @@
 
 
 
-<script type="text/javascript">
-    $('.tt').tooltip({html: true});
-</script>
-
-
-

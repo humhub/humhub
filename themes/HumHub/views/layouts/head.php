@@ -34,6 +34,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.flatelements.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.placeholder.js"></script>
 
 <!-- Global app functions -->
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js"></script>

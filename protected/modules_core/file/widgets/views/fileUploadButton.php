@@ -133,7 +133,4 @@
         $('#<?php echo $uploaderId;?>_list').html('');
     }
 
-    // show Tooltips on elements inside the views, which have the class 'tt'
-    $('.tt').tooltip({html: true});
-
 </script>

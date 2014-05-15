@@ -235,14 +235,6 @@
 
         }
 
-
-        // show Tooltips on elements inside the views, which have the class 'tt'
-        $('.tt').tooltip({html: true});
-
-        // show Popovers on elements inside the views, which have the class 'po'
-        $('.po').popover({html: true});
-
-
         /* Ensures after hide modal content is removed. */
         $('#globalModal').on('hidden.bs.modal', function (e) {
             $(this).removeData('bs.modal');
@@ -259,6 +251,21 @@
         cursoropacitymax:"0.2",
         railpadding:{top:120,right:3,left:0,bottom:20}
     });
+
+    // call this after every ajax loading
+    $(document).ajaxComplete(function(event, xhr, settings) {
+
+        // show Tooltips on elements inside the views, which have the class 'tt'
+        $('.tt').tooltip({html: true});
+
+        // show Popovers on elements inside the views, which have the class 'po'
+        $('.po').popover({html: true});
+
+        // activate placeholder text for older browsers (specially IE)
+        $('input, textarea').placeholder();
+
+    });
+
 
 </script>
 
