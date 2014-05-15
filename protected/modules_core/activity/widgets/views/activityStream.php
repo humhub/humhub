@@ -17,8 +17,9 @@
             <div class="placeholder"><?php echo Yii::t('ActivityModule.base', 'There are no activities yet.'); ?></div>
         </div>
         <ul id="activityContents" class="media-list activities">
+            <li class="loader" id="activityLoader"></li>
         </ul>
-        <div class="loader" id="activityLoader"></div>
+
     </div>
 </div>
 
@@ -32,6 +33,11 @@
         cursoropacitymax:"0.2",
         railpadding:{top:0,right:3,left:0,bottom:0}
     });
+
+    // update nicescroll object with new content height after ajax request
+    $(document).ajaxComplete(function(event, xhr, settings) {
+        $("#activityContents").getNiceScroll().resize();
+    })
 
 </script>
 
