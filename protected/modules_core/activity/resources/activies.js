@@ -39,7 +39,7 @@ $(document).ready(function () {
             if (activityLastEntryReached == false) {
 
                 // load more activities
-                loadMore();
+                loadMoreActivities();
             }
 
         }
@@ -49,7 +49,7 @@ $(document).ready(function () {
     /**
      * load new activities
      */
-    function loadMore() {
+    function loadMoreActivities() {
 
         // save url for activity reloads
         var _url = activityReloadUrl.replace('lastEntryId', activityLastLoadedEntryId);
@@ -92,7 +92,7 @@ $(document).ready(function () {
     }
 
     // load the first activities
-    loadMore();
+    loadMoreActivities();
 
 });
 
