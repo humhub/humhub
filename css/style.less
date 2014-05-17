@@ -55,7 +55,7 @@ hr {
 }
 
 textarea {
-  height:1.5em;
+  height: 1.5em;
 }
 
 //
@@ -91,6 +91,18 @@ textarea {
     font-size: 16px;
     padding: 3px 10px;
     margin-bottom: 10px;
+
+    .dropdown-header-link {
+      position: absolute;
+      top: 2px;
+      right: 10px;
+
+      a {
+        color: #428bca !important;
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
   }
 
 }
@@ -189,7 +201,7 @@ textarea {
       left: 50%;
       margin-left: -18px;
       border-top-width: 0;
-      border-bottom-color: rgba(0,0,0,0.15);
+      border-bottom-color: rgba(0, 0, 0, 0.15);
       top: -16px;
       z-index: 1035;
     }
@@ -197,6 +209,11 @@ textarea {
     #dropdown-notifications {
       width: 350px;
       margin-left: -148px;
+
+      ul.media-list {
+        max-height: 400px;
+        overflow: auto;
+      }
 
       li {
 
@@ -653,7 +670,6 @@ input.placeholder, textarea.placeholder {
   padding: 0 0 0 10px;
   color: #999999;
 }
-
 
 //
 // 10) Responsive modifications

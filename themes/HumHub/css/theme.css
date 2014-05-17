@@ -23,6 +23,9 @@ h4 {
   font-weight: 300;
   color: #bebebe;
 }
+.topbar .dropdown-header .dropdown-header-link a {
+  color: #4cd9c0 !important;
+}
 #topbar-first {
   background-color: #7191a8;
   color: white;

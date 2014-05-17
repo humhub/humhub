@@ -1,4 +1,4 @@
-<li class="<?php if (!$notification->seen) : ?>new<?php endif; ?>">
+<li class="<?php if (!$notification->seen) : ?>new<?php endif; ?>" id="notification-<?php echo $notification->id; ?>">
     <a href="<?php echo $notification->getUrl(); ?>">
         <div class="media">
 
