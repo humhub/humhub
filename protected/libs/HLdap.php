@@ -24,7 +24,8 @@
  * @package humhub.libs
  * @since 0.5
  */
-class HLdap {
+class HLdap
+{
 
     /**
      * @var Zend_Ldap instance
@@ -41,7 +42,8 @@ class HLdap {
      *
      * @return HLdap
      */
-    static public function getInstance() {
+    static public function getInstance()
+    {
 
         if (null === self::$instance) {
             self::$instance = new self;
@@ -52,7 +54,8 @@ class HLdap {
     /**
      * Creates singleton HLdap Instance which configured Zend_Ldap Class
      */
-    public function __construct() {
+    public function __construct()
+    {
 
         try {
             $options = array(
@@ -81,7 +84,8 @@ class HLdap {
      * @param type $password
      * @return boolean
      */
-    public function authenticate($username, $password) {
+    public function authenticate($username, $password)
+    {
         $username = $this->ldap->getCanonicalAccountName($username, Zend_Ldap::ACCTNAME_FORM_DN);
         try {
             $this->ldap->bind($username, $password);
@@ -103,7 +107,8 @@ class HLdap {
      * 
      * Also disabling deleted ldap users in humhub
      */
-    public function refreshUsers() {
+    public function refreshUsers()
+    {
 
         $ldapUserIds = array();
 
@@ -118,7 +123,7 @@ class HLdap {
             }
 
 
-            foreach (User::model()->findAllByAttributes(array('auth_mode' => User::AUTH_MODE_LDAP), 'status!='.User::STATUS_DISABLED) as $user) {
+            foreach (User::model()->findAllByAttributes(array('auth_mode' => User::AUTH_MODE_LDAP), 'status!=' . User::STATUS_DISABLED) as $user) {
                 if (!in_array($user->id, $ldapUserIds)) {
                     // User not longer available in ldap
                     $user->status = User::STATUS_DISABLED;
@@ -128,7 +133,7 @@ class HLdap {
                 }
             }
         } catch (Exception $ex) {
-            
+            Yii::log($ex->getMessage(), CLogger::LEVEL_ERROR, 'authentication_ldap');
         }
     }
 
@@ -138,7 +143,8 @@ class HLdap {
      * @param Zend_Ldap_Node $node
      * @return User User Object
      */
-    public function handleLdapUser($node) {
+    public function handleLdapUser($node)
+    {
 
         $username = $node->getAttribute(HSetting::Get('usernameAttribute', 'authentication_ldap'), 0);
         $email = $node->getAttribute('mail', 0);
@@ -161,7 +167,6 @@ class HLdap {
             }
             $user->status = User::STATUS_ENABLED;
             $user->auth_mode = User::AUTH_MODE_LDAP;
-            $user->password = "--ldap--";
             $user->group_id = 1;
 
             Yii::log('Create ldap user ' . $username . '!', CLogger::LEVEL_INFO, 'authentication_ldap');
@@ -225,7 +230,8 @@ class HLdap {
      * @param type $object_guid
      * @return type
      */
-    private function binToStrGuid($object_guid) {
+    private function binToStrGuid($object_guid)
+    {
         $hex_guid = bin2hex($object_guid);
 
         if ($hex_guid == "")
