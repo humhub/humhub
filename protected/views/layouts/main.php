@@ -100,15 +100,7 @@
             <div class="notifications pull-right">
 
                 <!-- global notifications dropdown -->
-                <div class="btn-group">
-                    <a href="#" id="icon-notifications" data-toggle="dropdown">
-                        <i class="fa fa-bell"></i>
-                    </a>
-                    <span id="badge-notifications" style="display:none;" class="label label-danger label-notifications">1</span>
-
-                    <!-- container for ajax response -->
-                    <ul id="dropdown-notifications" class="dropdown-menu"></ul>
-                </div>
+                <?php $this->widget('application.modules_core.notification.widgets.NotificationListWidget'); ?>
 
                 <!-- Notification addon widget for modules -->
                 <?php $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array())); ?>
@@ -181,60 +173,6 @@
 
     $(document).ready(function () {
 
-
-
-        // Open the notification menu
-        $('#icon-notifications').click(function () {
-
-            // remove all <li> entries from dropdown
-            $('#dropdown-notifications').find('li').remove();
-
-            // append title and loader to dropdown
-            $('#dropdown-notifications').append('<li class="dropdown-header"><div class="arrow"></div><?php echo Yii::t('base', 'Notifications'); ?></li><li id="loader_notifications"><div class="loader"></div></li>');
-
-            // load newest notifications
-            $.ajax({
-                'type': 'GET',
-                'url': '<?php echo $this->createUrl('//notification/list', array('ajax' => 1)); ?>',
-                'cache': false,
-                'data': jQuery(this).parents("form").serialize(),
-                'success': function (html) {
-                    $("#loader_notifications").replaceWith(html)
-                }});
-
-        })
-
-        // load number of new notifications at page loading
-        getNotifications();
-
-        // load number of new notifications in a loop
-        setInterval(getNotifications, 60000);
-
-
-        // load and show new count of notifications
-        function getNotifications() {
-
-            var $newNotifications = parseInt(0);
-
-            // load data
-            jQuery.getJSON("<?php echo $this->createUrl('//dashboard/dashboard/GetFrontEndInfo'); ?>", function (json) {
-
-                // save numbers to variables
-                $newNotifications = parseInt(json.newNotifications);
-
-                // show or hide the badge for new notifications
-                if ($newNotifications == 0) {
-                    $('#badge-notifications').css('display', 'none');
-                } else {
-                    $('#badge-notifications').empty();
-                    $('#badge-notifications').append($newNotifications);
-                    $('#badge-notifications').fadeIn('fast');
-                }
-
-            })
-
-        }
-
         /* Ensures after hide modal content is removed. */
         $('#globalModal').on('hidden.bs.modal', function (e) {
             $(this).removeData('bs.modal');
@@ -268,8 +206,6 @@
 
 
 </script>
-
-
 </body>
 </html>
 

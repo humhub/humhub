@@ -74,6 +74,16 @@ textarea {
   padding: 3px 10px;
   margin-bottom: 10px;
 }
+.topbar .dropdown-header .dropdown-header-link {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+}
+.topbar .dropdown-header .dropdown-header-link a {
+  color: #428bca !important;
+  font-size: 12px;
+  font-weight: normal;
+}
 #topbar-first {
   top: 0;
   background-color: #101010;
@@ -164,6 +174,10 @@ textarea {
 #topbar-first .notifications #dropdown-notifications {
   width: 350px;
   margin-left: -148px;
+}
+#topbar-first .notifications #dropdown-notifications ul.media-list {
+  max-height: 400px;
+  overflow: auto;
 }
 #topbar-first .notifications #dropdown-notifications li {
   position: relative;

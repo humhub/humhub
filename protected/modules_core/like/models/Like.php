@@ -91,7 +91,7 @@ class Like extends HActiveRecordContentAddon {
 
         // Send Notifications
         NewLikeNotification::fire($this);
-        AlsoLikesNotification::fire($this);
+        //AlsoLikesNotification::fire($this);
 
         return parent::afterSave();
     }
