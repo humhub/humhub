@@ -9,7 +9,7 @@ class m140507_150421_create_settings_table extends EDbMigration {
             'id' => 'pk',
             'user_id' => 'int(10)',
             'module_id' => 'varchar(100) DEFAULT NULL',
-            'name' => 'varchar(255)',
+            'name' => 'varchar(100)',
             'value' => 'varchar(255) DEFAULT NULL',
             'created_at' => 'datetime DEFAULT NULL',
             'created_by' => 'int(11) DEFAULT NULL',

@@ -44,8 +44,8 @@ class UserSetting extends HActiveRecord {
     public function rules() {
         return array(
             array('user_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('module_id', 'length', 'max' => 100),
-            array('name, value', 'length', 'max' => 255),
+            array('module_id, name', 'length', 'max' => 100),
+            array('value', 'length', 'max' => 255),
             array('created_at, updated_at', 'safe'),
         );
     }
