@@ -240,8 +240,8 @@ textarea {
 .nav-tabs {
   margin-bottom: 10px;
 }
-.list-group a [class^="icon-"],
-.list-group a [class*=" icon-"] {
+.list-group a [class^="fa-"],
+.list-group a [class*=" fa-"] {
   display: inline-block;
   width: 18px;
 }
