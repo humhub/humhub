@@ -21,7 +21,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'name' => 'name',
-            'header' => Yii::t('AdminModule.space', 'Name'),
+            'filter' => CHtml::activeTextField($model, 'name', array('placeholder' => Yii::t('AdminModule.space', 'Search for space name'))),
+            'header' => Yii::t('AdminModule.space', 'Space name'),
         ),
         array(
             'name' => 'visibility',
@@ -53,6 +54,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'name' => 'ownerUsernameSearch',
+            'header' => Yii::t('AdminModule.space', 'Space owner'),
+            'filter' => CHtml::activeTextField($model, 'ownerUsernameSearch', array('placeholder' => Yii::t('AdminModule.space', 'Search for space owner'))),
             'value' => function($data, $row) {
                 if (!$data->owner)
                     return "-";
@@ -126,3 +129,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'pagerCssClass' => 'pagination-container',
 ));
 ?>
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $('.grid-view-loading').show();
+        $('.grid-view-loading').css('display', 'block !important');
+        $('.grid-view-loading').css('opacity', '1 !important');
+    });
+
+</script>

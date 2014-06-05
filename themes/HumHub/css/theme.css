@@ -385,7 +385,6 @@ h4 {
   /*  padding: 8px 16px;
     font-weight: 600;
     font-size: 14px;*/
-
   padding: 4px 12px;
 }
 .input.btn {
@@ -742,6 +741,40 @@ table td a:hover {
 .loader-small {
   height: 32px;
   width: 32px;
+}
+.grid-view .filters input,
+.grid-view .filters select {
+  border: 2px solid #ededed;
+  box-shadow: none;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 4px;
+}
+.grid-view .filters input:focus,
+.grid-view .filters select:focus {
+  border: 2px solid #4cd9c0;
+  outline: 0;
+  box-shadow: none;
+}
+.grid-view {
+  padding: 15px 0 0 0;
+}
+.grid-view img {
+  border-radius: 3px;
+}
+.grid-view table th {
+  font-size: 13px !important;
+  font-weight: bold !important;
+}
+.grid-view table tr {
+  font-size: 13px !important;
+}
+.grid-view .summary {
+  font-size: 12px;
+  color: #bac2c7;
+}
+.grid-view-loading {
+  background: url('../img/loader.gif') no-repeat top left;
 }
 .userInput,
 .spaceInput {

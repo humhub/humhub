@@ -15,18 +15,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'value' => 'CHtml::image($data->profileImage->getUrl())',
             'type' => 'raw',
+            'htmlOptions' => array('width' => '30px'),
         ),
         array(
             'name' => 'username',
             'header' => 'Username',
-            'htmlOptions' => array('width' => '300px'),
+            'filter' => CHtml::activeTextField($model, 'username', array('placeholder' => Yii::t('AdminModule.user', 'Search for username'))),
         ),
         array(
             'name' => 'group_id',
             'value' => 'Group::getGroupNameById($data->group_id)',
             'filter' => GroupAdmin::gridItems(),
         ),
-        'email',
+        array(
+            'name' => 'email',
+            'header' => Yii::t('AdminModule.user', 'Email'),
+            'filter' => CHtml::activeTextField($model, 'username', array('placeholder' => Yii::t('AdminModule.user', 'Search for email'))),
+        ),
         array(
             'class' => 'CButtonColumn',
             'template' => '{view}',

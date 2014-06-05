@@ -78,7 +78,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'About'),
             'url' => Yii::app()->createUrl('admin/about'),
-            'icon' => '<i class="fa fa-info-sign"></i>',
+            'icon' => '<i class="fa fa-info-circle"></i>',
             'sortOrder' => 10000,
             'group' => 'manage',
             'newItemCount' => 0,
@@ -196,7 +196,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Cron jobs'),
             'url' => Yii::app()->createUrl('admin/setting/cronjob'),
-            'icon' => '<i class="fa fa-truck"></i>',
+            'icon' => '<i class="fa fa-history"></i>',
             'group' => 'settings',
             'sortOrder' => 1000,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'cronjob'),
@@ -206,7 +206,7 @@ class AdminMenuWidget extends MenuWidget
         $this->addItem(array(
             'label' => Yii::t('AdminModule.base', 'Logging'),
             'url' => Yii::app()->createUrl('admin/logging'),
-            'icon' => '<i class="icon-warning-sign"></i>',
+            'icon' => '<i class="fa fa-keyboard-o"></i>',
             'group' => 'settings',
             'sortOrder' => 1100,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'logging'),

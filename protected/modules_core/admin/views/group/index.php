@@ -13,11 +13,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
     /*'loadingCssClass' => 'loader',*/
     'columns' => array(
         array(
-            'name' => 'id',
-            'htmlOptions' => array('width' => '40px'),
+            'name' => 'name',
+            'header' => Yii::t('AdminModule.group', 'Group name'),
+            'filter' => CHtml::activeTextField($model, 'name', array('placeholder' => Yii::t('AdminModule.group', 'Search for group name'))),
         ),
-        'name',
-        'description',
+        array(
+            'name' => 'description',
+            'header' => Yii::t('AdminModule.group', 'Description'),
+            'filter' => CHtml::activeTextField($model, 'description', array('placeholder' => Yii::t('AdminModule.group', 'Search for description'))),
+        ),
         array(
             'class' => 'CButtonColumn',
             'template' => '{update}',
