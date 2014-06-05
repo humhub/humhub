@@ -15,20 +15,24 @@ class AccountMenuWidget extends MenuWidget {
     public function init() {
 
         $this->addItemGroup(array(
-            'id' => 'admin',
+            'id' => 'account',
             'label' => Yii::t('UserModule.base', 'Account settings'),
             'sortOrder' => 100,
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'Edit Profile'),
+            'label' => Yii::t('UserModule.base', 'Profile'),
+            'icon' => '<i class="fa fa-user"></i>',
+            'group' => 'account',
             'url' => Yii::app()->createUrl('//user/account/edit'),
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->action->id == "edit"),
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'Edit Settings'),
+            'label' => Yii::t('UserModule.base', 'Settings'),
+            'icon' => '<i class="fa fa-wrench"></i>',
+            'group' => 'account',
             'url' => Yii::app()->createUrl('//user/account/editSettings'),
             'sortOrder' => 110,
             'isActive' => (Yii::app()->controller->action->id == "editSettings"),
@@ -37,7 +41,9 @@ class AccountMenuWidget extends MenuWidget {
         // Only show this page when really user specific modules available
         if (count(Yii::app()->user->getModel()->getAvailableModules()) != 0) {
             $this->addItem(array(
-                'label' => Yii::t('UserModule.base', 'Edit Modules'),
+                'label' => Yii::t('UserModule.base', 'Modules'),
+                'icon' => '<i class="fa fa-rocket"></i>',
+                'group' => 'account',
                 'url' => Yii::app()->createUrl('//user/account/editModules'),
                 'sortOrder' => 120,
                 'isActive' => (Yii::app()->controller->action->id == "editModules"),
@@ -45,7 +51,9 @@ class AccountMenuWidget extends MenuWidget {
         }
  
         $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'E-Mail notifications'),
+            'label' => Yii::t('UserModule.base', 'Notifications'),
+            'icon' => '<i class="fa fa-bell"></i>',
+            'group' => 'account',
             'url' => Yii::app()->createUrl('//user/account/emailing/'),
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->action->id == "emailing"),
@@ -54,14 +62,18 @@ class AccountMenuWidget extends MenuWidget {
         // LDAP users cannot change their e-mail address
         if (Yii::app()->user->getAuthMode() != User::AUTH_MODE_LDAP) {
             $this->addItem(array(
-                'label' => Yii::t('UserModule.base', 'Change E-Mail'),
+                'label' => Yii::t('UserModule.base', 'E-Mail'),
+                'icon' => '<i class="fa fa-paper-plane"></i>',
+                'group' => 'account',
                 'url' => Yii::app()->createUrl('//user/account/changeEmail'),
                 'sortOrder' => 300,
                 'isActive' => (Yii::app()->controller->action->id == "changeEmail"),
             ));
         }
         $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'Change image'),
+            'label' => Yii::t('UserModule.base', 'Picture'),
+            'icon' => '<i class="fa fa-picture-o"></i>',
+            'group' => 'account',
             'url' => Yii::app()->createUrl('//user/account/changeImage'),
             'sortOrder' => 400,
             'isActive' => (Yii::app()->controller->action->id == "changeImage"),
@@ -70,13 +82,17 @@ class AccountMenuWidget extends MenuWidget {
         // LDAP users cannot changes password or delete account
         if (Yii::app()->user->getAuthMode() != User::AUTH_MODE_LDAP) {
             $this->addItem(array(
-                'label' => Yii::t('UserModule.base', 'Change password'),
+                'label' => Yii::t('UserModule.base', 'Password'),
+                'icon' => '<i class="fa fa-key"></i>',
+                'group' => 'account',
                 'url' => Yii::app()->createUrl('//user/account/changePassword'),
                 'sortOrder' => 500,
                 'isActive' => (Yii::app()->controller->action->id == "changePassword"),
             ));
             $this->addItem(array(
-                'label' => Yii::t('UserModule.base', 'Delete your account'),
+                'label' => Yii::t('UserModule.base', 'Delete account'),
+                'icon' => '<i class="fa fa-trash-o"></i>',
+                'group' => 'account',
                 'url' => Yii::app()->createUrl('//user/account/delete'),
                 'sortOrder' => 600,
                 'isActive' => (Yii::app()->controller->action->id == "delete"),
