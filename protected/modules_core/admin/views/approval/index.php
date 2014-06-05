@@ -34,21 +34,28 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'class' => 'CButtonColumn',
-            'template' => '{view}',
-            'viewButtonUrl' => 'Yii::app()->createUrl("admin/approval/approveUser", array("id"=>$data->id));',
+            'template' => '{accept}{decline}',
+            'htmlOptions' => array('width' => '160px'),
             'buttons'=>array
             (
-                'view' => array
+                'accept' => array
                 (
-                    'label'=>'<i class="fa fa-eye"></i>',
+                    'label'=>Yii::t('AdminModule.approval', 'Accept'),
+                    'url'=>'Yii::app()->createUrl("admin/approval/approveUserAccept", array("id" => $data->id))',
                     'imageUrl'=>false,
                     'options' => array(
                         'style' => 'margin-right: 3px',
-                        'class' => 'btn btn-primary btn-xs tt',
-                        'data-toggle' => 'tooltip',
-                        'data-placement' => 'top',
-                        'title' => '',
-                        'data-original-title' => 'View user approval',
+                        'class' => 'btn btn-primary btn-sm',
+                    ),
+                ),
+                'decline' => array
+                (
+                    'label'=>Yii::t('AdminModule.approval', 'Decline'),
+                    'url'=>'Yii::app()->createUrl("admin/approval/approveUserDecline", array("id" => $data->id))',
+                    'imageUrl'=>false,
+                    'options' => array(
+                        'style' => 'margin-right: 3px',
+                        'class' => 'btn btn-danger btn-sm',
                     ),
                 ),
             ),

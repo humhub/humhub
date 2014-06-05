@@ -50,24 +50,6 @@ class ApprovalController extends Controller {
     }
 
     /**
-     * Shows options for a user registration request.
-     *
-     * Options are approve or decline
-     */
-    public function actionApproveUser() {
-
-        $id = (int) Yii::app()->request->getQuery('id');
-        
-        $model = User::model()->resetScope()->unapproved()->findByPk($id);
-
-        if ($model == null)
-            throw new CHttpException(404, Yii::t('AdminModule.approval', 'Could not load requested user!'));
-
-        $model->scenario = 'edit';
-        $this->render('approveUser', array('model' => $model));
-    }
-
-    /**
      * Approves a user registration request
      *
      * @throws CHttpException
