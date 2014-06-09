@@ -6,7 +6,8 @@
  * @package humhub.modules_core.like
  * @since 0.5
  */
-class LikeLinkWidget extends HWidget {
+class LikeLinkWidget extends HWidget
+{
 
     /**
      * The Object to be liked
@@ -19,7 +20,8 @@ class LikeLinkWidget extends HWidget {
      * Inits the Widget
      *
      */
-    public function init() {
+    public function init()
+    {
 
         // Inject some important Javascript Variables
         Yii::app()->clientScript->setJavascriptVariable(
@@ -56,7 +58,8 @@ class LikeLinkWidget extends HWidget {
     /**
      * Executes the widget.
      */
-    public function run() {
+    public function run()
+    {
 
         $currentUserLiked = false;
 

@@ -18,10 +18,8 @@
    style="<?php if (!$currentUserLiked): ?>display:none<?php endif; ?>">Unlike</a>
 
 <?php
-
 $userlist = ""; // variable for users output
 $maxUser = 5; // limit for rendered users inside the tooltip
-
 // if the current user also likes
 if ($currentUserLiked == true) {
     // if only one user likes
@@ -43,7 +41,6 @@ for ($i = 0; $i < count($likes); $i++) {
             // output, if an other user liked
             $userlist .= "<strong>" . $likes[$i]->getUser()->displayName . "</strong>" . Yii::t('base', ' likes this.');
         }
-
     } else {
 
         // check, if you liked
@@ -60,16 +57,13 @@ for ($i = 0; $i < count($likes); $i++) {
             // stop the loop
             break;
         }
-
     }
 }
 ?>
 
 <?php
-
 // get class name and model id from $id variable
 list($className, $modelId) = explode("_", $id);
-
 ?>
 
 <?php if (count($likes) > 0) { ?>

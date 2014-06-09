@@ -43,7 +43,6 @@ function initLikeModule() {
             data: data,
             url: url
         }).done(function(data) {
-            $("#" + className + "_" + id + "-ShowLikes").replaceWith(data.showLikesWidget);
 
             // Switch Links
             if (data.currentUserLiked) {
@@ -74,10 +73,4 @@ function initLikeModule() {
  */
 function updateLikeCounters(className, id, count) {
     $('.' + className + "_" + id + "-LikeCount").html(count);
-
-    if (count == 0) {
-        // Hide also the ShowLikes Area w
-        $("#" + className + "_" + id + "-ShowLikes").hide();
-    }
-
 }

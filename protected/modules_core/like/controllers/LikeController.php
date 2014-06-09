@@ -8,7 +8,8 @@
  * @package humhub.modules_core.like.controllers
  * @since 0.5
  */
-class LikeController extends Controller {
+class LikeController extends Controller
+{
 
     /**
      * The Object to be liked
@@ -31,7 +32,8 @@ class LikeController extends Controller {
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -42,7 +44,8 @@ class LikeController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -56,7 +59,8 @@ class LikeController extends Controller {
     /**
      * Loads the target object, checks rights & co
      */
-    protected function loadTarget() {
+    protected function loadTarget()
+    {
         $this->model = Yii::app()->request->getQuery('className', '');
         $this->id = (int) Yii::app()->request->getQuery('id', '');
 
@@ -90,7 +94,8 @@ class LikeController extends Controller {
     /**
      * Creates a new like
      */
-    public function actionLike() {
+    public function actionLike()
+    {
 
         $this->forcePostRequest();
         $this->loadTarget();
@@ -112,7 +117,8 @@ class LikeController extends Controller {
     /**
      * Unlikes an item
      */
-    public function actionUnLike() {
+    public function actionUnLike()
+    {
 
         $this->forcePostRequest();
         $this->loadTarget();
@@ -127,7 +133,8 @@ class LikeController extends Controller {
     /**
      * Returns an JSON with current like informations about a target
      */
-    public function actionShowLikes() {
+    public function actionShowLikes()
+    {
 
         $this->loadTarget();
 
@@ -140,12 +147,7 @@ class LikeController extends Controller {
             }
         }
 
-        // Get ShowLikesWidget Output
-        $showLikeWidgetOutput = $this->widget('application.modules_core.like.widgets.ShowLikesWidget', array('object' => $this->targetObject), true);
-        Yii::app()->clientScript->render($showLikeWidgetOutput);
-
         $json = array();
-        $json['showLikesWidget'] = $showLikeWidgetOutput;
         $json['currentUserLiked'] = $currentUserLiked;
         $json['likeCounter'] = count($likes);
 
@@ -156,7 +158,8 @@ class LikeController extends Controller {
     /**
      * Returns a user list which contains all users who likes it
      */
-    public function actionUserList() {
+    public function actionUserList()
+    {
 
         $this->loadTarget();
 
@@ -167,7 +170,7 @@ class LikeController extends Controller {
 
         $sql = "SELECT u.* FROM `like` l " .
                 "LEFT JOIN user u ON l.created_by = u.id " .
-                "WHERE l.object_model=:omodel AND l.object_id=:oid AND u.status=".User::STATUS_ENABLED." ".
+                "WHERE l.object_model=:omodel AND l.object_id=:oid AND u.status=" . User::STATUS_ENABLED . " " .
                 "ORDER BY l.created_at DESC " .
                 "LIMIT " . intval(($page - 1) * $usersPerPage) . "," . intval($usersPerPage);
         $params = array(':omodel' => $this->model, ':oid' => $this->id);
