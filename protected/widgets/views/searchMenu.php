@@ -14,7 +14,7 @@
     /**
      * Open search menu
      */
-    $('#search-menu').click(function () {
+    $('#search-menu-nav').click(function () {
 
         // use setIntervall to setting the focus
         var searchFocus = setInterval(setFocus, 10);

@@ -61,7 +61,7 @@ $(document).ready(function () {
         } else if (event.keyCode == 13) {
 
             // checking if results existing
-            if ($('#search-menu-dropdown li ul li').size() > 3) {
+            if ($('#search-menu-dropdown li ul li').size() > 1) {
                 // move to selected space, by hitting enter
                 window.location.href = $('#search-menu-dropdown li ul li.selected a').attr('href');
             }
