@@ -227,15 +227,18 @@ class HHtml extends CHtml
             // load user row from database
             $user = User::model()->findByAttributes(array('guid' => substr($guid, 2)));
 
-            // make user clickable if Html is allowed
-            if ($buildAnchors == true) {
-                $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">' . $user->getDisplayName() . '</a>';
-            } else {
-                $link = " ". $user->getDisplayName();
-            }
+            if ($user !== null) {
+                // make user clickable if Html is allowed
+                if ($buildAnchors == true) {
+                    $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">' . $user->getDisplayName() . '</a>';
+                } else {
+                    $link = " ". $user->getDisplayName();
+                }
 
-            // replace guid with profile link and username
-            $text = str_replace($guid, $link, $text);
+                // replace guid with profile link and username
+                $text = str_replace($guid, $link, $text);
+            }
+            
 
         }
 
