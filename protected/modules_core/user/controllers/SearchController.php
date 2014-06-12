@@ -71,7 +71,7 @@ class SearchController extends Controller
         } else {
 
             // get matching database rows
-            $profiles = Yii::app()->db->createCommand("SELECT user_id FROM profile WHERE firstname like '%" . $keyword . "%' OR lastname like '%" . $keyword . "%'")->queryAll();
+            $profiles = Yii::app()->db->createCommand("SELECT user_id FROM profile WHERE firstname like '%" . $keyword . "%' OR lastname like '%" . $keyword . "%' LIMIT 10")->queryAll();
 
             // save rows count
             $hitCount = count($profiles);
