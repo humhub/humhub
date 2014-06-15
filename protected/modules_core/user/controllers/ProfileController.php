@@ -63,6 +63,10 @@ class ProfileController extends Controller {
     public function actionAbout() {
         $this->render('about',array('user'=>$this->getUser()));
     }
+    
+    public function actionInfo() {
+        $this->render('info',array('user'=>$this->getUser()));
+    }    
 
     /**
      * Unfollows a User

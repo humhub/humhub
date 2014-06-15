@@ -109,12 +109,11 @@ class Profile extends HActiveRecord
          * Yii::t('UserModule.profile', 'Google+ URL')
          * Yii::t('UserModule.profile', 'Twitter URL')
          */
-        
         $labels = array();
         $labels['user_id'] = Yii::t('UserModule.base', 'User');
 
         foreach (ProfileField::model()->findAll() as $profileField) {
-            $labels[$profileField->internal_name] = Yii::t($profileField->getTranslationCategory(),$profileField->title);
+            $labels[$profileField->internal_name] = Yii::t($profileField->getTranslationCategory(), $profileField->title);
         }
 
         return $labels;
@@ -149,11 +148,9 @@ class Profile extends HActiveRecord
                 if ($this->scenario == 'adminEdit') {
                     $profileField->editable = true;
                 }
-                
+
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
-                
-                
             }
 
             $definition['elements']['category_' . $profileFieldCategory->id] = $category;
@@ -173,6 +170,48 @@ class Profile extends HActiveRecord
         $table = Yii::app()->getDb()->getSchema()->getTable(Profile::model()->tableName());
         $columnNames = $table->getColumnNames();
         return (in_array($name, $columnNames));
+    }
+
+    /**
+     * Returns all profile field categories with some user data
+     * 
+     * @todo Optimize me
+     * @return Array ProfileFieldCategory
+     */
+    public function getProfileFieldCategories()
+    {
+
+        $categories = array();
+
+        foreach (ProfileFieldCategory::model()->findAll(array('order' => 'sort_order')) as $category) {
+
+            if (count($this->getProfileFields($category)) != 0) {
+                $categories[] = $category;
+            }
+        }
+
+        return $categories;
+    }
+
+    /**
+     * Returns all profile fields with user data by given category
+     * 
+     * @todo Optimize me
+     * @param ProfileFieldCategory $category
+     * @return Array ProfileFields
+     */
+    public function getProfileFields(ProfileFieldCategory $category)
+    {
+        $fields = array();
+
+        foreach (ProfileField::model()->findAllByAttributes(array('profile_field_category_id' => $category->id), array('order' => 'sort_order')) as $field) {
+
+            if ($field->getUserValue($this->user) != "") {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
     }
 
 }
