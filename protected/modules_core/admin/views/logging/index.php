@@ -1,8 +1,12 @@
 <h1><?php echo Yii::t('AdminModule.logging', 'Logging'); ?></h1>
 
 
-<?php echo Yii::t('AdminModule.logging', 'Total {count} entries found.', array("{count}"=>$itemCount)); ?> 
-<?php echo Yii::t('AdminModule.logging', 'Displaying {count} entries per page.', array("{count}"=>$pageSize)); ?> 
+<div>
+    <?php echo Yii::t('AdminModule.logging', 'Total {count} entries found.', array("{count}"=>$itemCount)); ?> 
+    <span class="pull-right"><?php echo Yii::t('AdminModule.logging', 'Displaying {count} entries per page.', array("{count}"=>$pageSize)); ?></span>
+</div>
+
+<hr>
 
 <ul class="media-list">
     <?php foreach ($entries as $entry) : ?>
@@ -21,11 +25,10 @@
                 }
                 ?>
                 
-                
-                <h4 class="media-heading"><span class="pull-left label <?php echo $labelClass; ?>"><?php echo $entry->level; ?></span>&nbsp;
-                    (<?php echo $entry->id; ?>)&nbsp;
+                <h4 class="media-heading">
+                    <span class="label <?php echo $labelClass; ?>"><?php echo $entry->level; ?></span>&nbsp;
                     <?php echo date('r', $entry->logtime); ?>&nbsp;
-                    <strong><?php echo $entry->category; ?></strong>
+                    <span class="pull-right"><?php echo $entry->category; ?></span>
                 </h4>
                 <?php echo $entry->message; ?>
             </div>
