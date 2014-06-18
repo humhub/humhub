@@ -9,42 +9,40 @@
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class CommentsWidget extends HWidget {
+class CommentsWidget extends HWidget
+{
 
     /**
-     * Model Name (e.g. Post) to identify which posts we shall show
-     *
-     * @var String
+     * Content Object
      */
-    public $modelName = "";
-
-    /**
-     * The primary key of the Model
-     *
-     * @var Integer
-     */
-    public $modelId = "";
+    public $object;
 
     /**
      * Executes the widget.
      */
-    public function run() {
+    public function run()
+    {
 
+        $modelName = $this->object->content->object_model;
+        $modelId = $this->object->content->object_id;
+        
         // Indicates that the number of comments was limited
         $isLimited = false;
 
         // Count all Comments
-        $commentCount = Comment::GetCommentCount($this->modelName, $this->modelId);
-        $comments = Comment::GetCommentsLimited($this->modelName, $this->modelId, 2);
+        $commentCount = Comment::GetCommentCount($modelName, $modelId);
+        $comments = Comment::GetCommentsLimited($modelName, $modelId, 2);
 
         if ($commentCount > 2)
             $isLimited = true;
 
         $this->render('comments', array(
+            'object' => $this->object,
+            
             'comments' => $comments,
-            'modelName' => $this->modelName,
-            'modelId' => $this->modelId,
-            'id' => $this->modelName . "_" . $this->modelId,
+            'modelName' => $modelName,
+            'modelId' => $modelId,
+            'id' => $modelName . "_" . $modelId,
             'isLimited' => $isLimited,
             'total' => $commentCount
                 )

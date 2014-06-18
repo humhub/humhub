@@ -6,7 +6,8 @@
  * @package humhub.modules_core.comment.controllers
  * @since 0.5
  */
-class CommentController extends Controller {
+class CommentController extends Controller
+{
 
     // Used by loadTargetModel() to avoid multiple loading
     private $cachedLoadedTarget = null;
@@ -14,7 +15,8 @@ class CommentController extends Controller {
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -25,7 +27,8 @@ class CommentController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -42,7 +45,8 @@ class CommentController extends Controller {
      *
      * @return type
      */
-    private function loadTargetModel() {
+    private function loadTargetModel()
+    {
 
         // Fast lane
         if ($this->cachedLoadedTarget != null)
@@ -83,7 +87,8 @@ class CommentController extends Controller {
     /**
      * Returns a List of all Comments belong to this Model
      */
-    public function actionShow() {
+    public function actionShow()
+    {
 
         $target = $this->loadTargetModel();
 
@@ -101,10 +106,31 @@ class CommentController extends Controller {
         Yii::app()->end();
     }
 
+    public function actionShowPopup()
+    {
+
+        $target = $this->loadTargetModel();
+
+        $output = "";
+
+        // Get new current comments
+        $comments = Comment::model()->findAllByAttributes(array('object_model' => get_class($target), 'object_id' => $target->id));
+
+        foreach ($comments as $comment) {
+            $output .= $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);
+        }
+
+
+        $id = get_class($target) . "_" . $target->id;
+        $this->renderPartial('show', array('object' => $target, 'output' => $output, 'id' => $id), false, true);
+        
+    }
+
     /**
      * Handles AJAX Post Request to submit new Comment
      */
-    public function actionPost() {
+    public function actionPost()
+    {
 
         $this->forcePostRequest();
         $target = $this->loadTargetModel();
@@ -151,7 +177,8 @@ class CommentController extends Controller {
      * Handles AJAX Request for Comment Deletion.
      * Currently this is only allowed for the Comment Owner.
      */
-    public function actionDelete() {
+    public function actionDelete()
+    {
 
         $this->forcePostRequest();
         $target = $this->loadTargetModel();

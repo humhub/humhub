@@ -69,6 +69,16 @@ class SpaceControllerBehavior extends CBehavior {
         return $space;
     }
 
+    
+    public function createContainerUrl($route, $params = array(), $ampersand = '&') {
+
+        if (!isset($params['sguid'])) {
+            $params['sguid'] = $this->getSpace()->guid;
+        }
+        
+        return $this->owner->createUrl($route, $params, $ampersand);
+    }
+    
 }
 
 ?>
