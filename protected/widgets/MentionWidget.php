@@ -60,17 +60,11 @@ class MentionWidget extends HWidget
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.mention.js', CClientScript::POS_END);
         Yii::app()->clientScript->registerCssFile($assetPrefix . '/mention.css');
 
-    }
-
-    /**
-     * Displays / Run the Widget
-     */
-    public function run()
-    {
-        $this->render('mention', array(
-            'element' => $this->element,
-            'userSearchUrl' => $this->userSearchUrl,
-        ));
+        
+        $js = '$("'.$this->element.'").mention({searchUrl: "'.$this->userSearchUrl.'"})';
+        Yii::app()->clientScript->registerScript('mentioning_'.$this->element, $js);
+        
+        
     }
 
 }
