@@ -4,14 +4,16 @@
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
-class ModuleController extends Controller {
+class ModuleController extends Controller
+{
 
     public $subLayout = "/_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -22,7 +24,8 @@ class ModuleController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow',
                 'expression' => 'Yii::app()->user->isAdmin()'
@@ -33,33 +36,35 @@ class ModuleController extends Controller {
         );
     }
 
-    
-    
-    public function actionIndex() {
+    public function actionIndex()
+    {
         ModuleManager::flushCache();
- 
+
         // Require this initial redirect to ensure Module Cache is flushed
         // before list it.
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));        
+        $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
 
-    public function actionList() {
-        ModuleManager::flushCache();        
-        $this->render('list', array());
+    public function actionList()
+    {
+
+        $installedModules = Yii::app()->moduleManager->getInstalledModules();
+
+        ModuleManager::flushCache();
+        $this->render('list', array('installedModules' => $installedModules));
     }
 
-    public function actionEnable() {
+    public function actionEnable()
+    {
 
         $moduleId = Yii::app()->request->getQuery('moduleId');
+        $module = Yii::app()->moduleManager->getModule($moduleId);
 
-        $definition = Yii::app()->moduleManager->getDefinition($moduleId);
-        if ($definition == null) {
+        if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.base', 'Could not find requested module!'));
         }
 
-        if (!Yii::app()->moduleManager->isEnabled($moduleId)) {
-            Yii::app()->moduleManager->enable($moduleId);
-        }
+        $module->enable();
 
         $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
@@ -68,18 +73,17 @@ class ModuleController extends Controller {
      *
      * @throws CHttpException
      */
-    public function actionDisable() {
+    public function actionDisable()
+    {
 
         $moduleId = Yii::app()->request->getQuery('moduleId');
+        $module = Yii::app()->moduleManager->getModule($moduleId);
 
-        $definition = Yii::app()->moduleManager->getDefinition($moduleId);
-        if ($definition == null) {
+        if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.base', 'Could not find requested module!'));
         }
 
-        if (Yii::app()->moduleManager->isEnabled($moduleId)) {
-            Yii::app()->moduleManager->disable($moduleId);
-        }
+        $module->disable();
 
         $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
