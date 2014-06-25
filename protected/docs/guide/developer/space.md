@@ -1,24 +1,52 @@
 Space
 =====
 
-Space Modules can be enabled/disabled per space.
+When your module should also appear in space module section you need to add the 
+SpaceModuleBehavior to your Module Class.
 
+```php
 
-You need to the enable the flag **isSpaceModule** in the register module array.
+    class SomeModule extends HWebModule
+    {
 
-    Yii::app()->moduleManager->registerModule(array(
-        'id' => 'example',
-        'title' => 'Example Space Module',
-        'description' => 'A space example module',
-        'isSpaceModule' => true
+        public function behaviors()
+        {
+
+            return array(
+                'SpaceModuleBehavior' => array(
+                    'class' => 'application.modules_core.space.SpaceModuleBehavior',
+                ),
+            );
+        }
+
+        //...
+
+    }
+
+```
+
+See SpaceModuleBehavior Class for further details.
+
+## Example: Add item to space navigation
+
+Catch Space Navigation Init Event in your modules autostart.php.
+
+```autostart.php
+
+    Yii::app()->moduleManager->register(array(
+        //...
+
+        'events' => array(
+            array('class' => 'SpaceMenuWidget', 'event' => 'onInit', 'callback' => array('ExampleModule', 'onSpaceMenuInit')),
+        )
+
     ));
 
-Then the module is available under the **Space -> Modules** Section.
+```
 
-Before manipulating e.g. the SpaceMenu you need to check that the module is enabled in the space.
+Define callback in your module to add item.
 
-You can check this by:
-
+```php
     /**
      * On build of a Space Navigation, check if this module is enabled.
      * When enabled add a menu item
@@ -31,19 +59,51 @@ You can check this by:
         
         // Is Module enabled on this workspace?
         if ($space->isModuleEnabled('example')) {
+
             $event->sender->addItem(array(
                 'label' => 'Some space navigation entry',
                 'url' => '#',
                 'icon' => 'icon',
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'example'),
             ));
+
         }
     }
-
-At this release it´s not possible to create on space types. 
-This feature will be available in a future release.
+```
 
 
+## Access space by by module controller
 
+By adding the SpaceControllerBehavior you are able to access current space in your controllers.
+Make sure you always pass the current space guid (sguid) in your urls. 
 
+When using the method createContainerUrl (provided by SpaceControllerBehavior or UserControllerBehavior)  the current space or user guid is automatically added to urls.
 
+```php
+
+    /**
+     * Add mix-ins to this model
+     *
+     * @return type
+     */
+    public function behaviors()
+    {
+        return array(
+            'SpaceControllerBehavior' => array(
+                'class' => 'application.modules_core.space.SpaceControllerBehavior',
+            ),
+        );
+    }
+
+    public function actionTest() {
+        $currentSpace = $this->getSpace();
+        
+        $this->redirect($this->createContainerUrl('test2'));
+        
+    }
+
+    public function actionTest2() {
+        $currentSpace = $this->getSpace();
+    }
+
+```
