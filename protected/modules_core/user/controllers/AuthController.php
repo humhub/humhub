@@ -24,9 +24,11 @@
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
-    public function actions() {
+    public function actions()
+    {
         return array(
             // captcha action renders the CAPTCHA image displayed on the password recovery page
             'captcha' => array(
@@ -39,7 +41,8 @@ class AuthController extends Controller {
     /**
      * Displays the login page
      */
-    public function actionLogin() {
+    public function actionLogin()
+    {
 
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::app()->user->isGuest) {
@@ -58,7 +61,7 @@ class AuthController extends Controller {
         $model = new AccountLoginForm;
 
         //TODO: Solve this via events!
-        if (Yii::app()->moduleManager->isEnabled('zsso')) {
+        if (Yii::app()->getModule('zsso') != null) {
             ZSsoModule::beforeActionLogin();
         }
 
@@ -130,7 +133,8 @@ class AuthController extends Controller {
      *
      * @todo check local auth_mode
      */
-    public function actionRecoverPassword() {
+    public function actionRecoverPassword()
+    {
 
         // Disable Sublayout
         $this->subLayout = "";
@@ -169,7 +173,8 @@ class AuthController extends Controller {
      *
      * This action is called after e-mail validation.
      */
-    public function actionCreateAccount() {
+    public function actionCreateAccount()
+    {
 
         $_POST = Yii::app()->input->stripClean($_POST);
 
@@ -212,7 +217,7 @@ class AuthController extends Controller {
                     'type' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ? 'hidden' : 'dropdownlist',
                     'class' => 'form-control',
                     'items' => CHtml::listData($groupModels, 'id', 'name'),
-                    'value' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ?  HSetting::Get('defaultUserGroup', 'authentication_internal') : '',
+                    'value' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ? HSetting::Get('defaultUserGroup', 'authentication_internal') : '',
                 ),
             ),
         );
@@ -287,7 +292,8 @@ class AuthController extends Controller {
      * Logouts a User
      *
      */
-    public function actionLogout() {
+    public function actionLogout()
+    {
 
         Yii::app()->user->logout();
 
@@ -302,7 +308,8 @@ class AuthController extends Controller {
      *
      * Can also used as a kind of keep alive.
      */
-    public function actionCheckSessionState() {
+    public function actionCheckSessionState()
+    {
         $out = array();
         $out['loggedIn'] = false;
 
@@ -318,7 +325,8 @@ class AuthController extends Controller {
      * Allows third party applications to convert a valid sessionId
      * into a username.
      */
-    public function actionGetSessionUserJson() {
+    public function actionGetSessionUserJson()
+    {
 
         $sessionId = Yii::app()->request->getQuery('sessionId');
 

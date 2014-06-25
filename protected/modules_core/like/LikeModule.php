@@ -7,9 +7,11 @@
  * @package humhub.modules_core.like
  * @since 0.5
  */
-class LikeModule extends CWebModule {
+class LikeModule extends HWebModule
+{
 
-    public function init() {
+    public function init()
+    {
         // import the module-level models and components
         $this->setImport(array(
             'like.models.*',
@@ -18,20 +20,12 @@ class LikeModule extends CWebModule {
     }
 
     /**
-     * Install some event listeners for the module
-     */
-    public static function install() {
-
-        // Install Event Handler & Behaviors
-        Yii::app()->interceptor->preattachEventHandler('User', 'onBeforeDelete', array('LikeInterceptor', 'onUserDelete'));
-    }
-
-    /**
      * On User delete, also delete all comments
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         foreach (Like::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $like) {
             $like->delete();
@@ -43,7 +37,8 @@ class LikeModule extends CWebModule {
     /**
      * On delete of a content object, also delete all corresponding likes
      */
-    public static function onContentDelete($event) {
+    public static function onContentDelete($event)
+    {
 
         foreach (Like::model()->findAllByAttributes(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $like) {
             $like->delete();
@@ -54,7 +49,8 @@ class LikeModule extends CWebModule {
      * On delete of a content addon object, e.g. a comment
      * also delete all likes
      */
-    public static function onContentAddonDelete($event) {
+    public static function onContentAddonDelete($event)
+    {
 
         foreach (Like::model()->findAllByAttributes(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $like) {
             $like->delete();
@@ -66,10 +62,11 @@ class LikeModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Validating Like Module (".Like::model()->count()." entries)");
+        $integrityChecker->showTestHeadline("Validating Like Module (" . Like::model()->count() . " entries)");
 
         foreach (Like::model()->findAll() as $l) {
             if ($l->source === null) {
@@ -85,7 +82,8 @@ class LikeModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onWallEntryLinksInit($event) {
+    public static function onWallEntryLinksInit($event)
+    {
 
         $event->sender->addWidget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $event->sender->object), array('sortOrder' => 10));
     }
@@ -95,8 +93,9 @@ class LikeModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onWallEntryAddonInit($event) {
-
+    public static function onWallEntryAddonInit($event)
+    {
+        
     }
 
 }

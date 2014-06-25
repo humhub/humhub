@@ -6,7 +6,7 @@
  * @package humhub.modules_core.file
  * @since 0.5
  */
-class FileModule extends CWebModule {
+class FileModule extends HWebModule {
 
     /**
      * Inits the Module

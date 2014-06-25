@@ -1,0 +1,9 @@
+{
+    "id": "space",
+    "name": "Space",
+    "description": "Space Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

@@ -4,7 +4,7 @@
  * @package humhub.modules_core.post
  * @since 0.5
  */
-class PostModule extends CWebModule {
+class PostModule extends HWebModule {
 
     public function init() {
 

@@ -44,6 +44,7 @@ class FileController extends Controller {
         foreach (CUploadedFile::getInstancesByName('files') as $cFile) {
             $files[] = $this->handleFileUpload($cFile);
         }
+        
 
         return $this->renderJson(array('files' => $files));
     }

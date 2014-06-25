@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'user',
-    'title' => Yii::t('UserModule.base', 'User'),
-    'description' => Yii::t('SpaceModule.base', 'Users core'),
     'class' => 'application.modules_core.user.UserModule',
     'isCoreModule' => true,
     'import' => array(

@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'mail',
-    'title' => Yii::t('MailModule.base', 'Mail'),
-    'description' => Yii::t('MailModule.base', 'Adds the mailing core module.'),
     'class' => 'application.modules.mail.MailModule',
     'import' => array(
         'application.modules.mail.*',

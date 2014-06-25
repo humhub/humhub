@@ -6,12 +6,14 @@
  * @package humhub.modules_core.dashboard
  * @since 0.5
  */
-class DashboardModule extends CWebModule {
+class DashboardModule extends HWebModule
+{
 
     /**
      * Inits the Module
      */
-    public function init() {
+    public function init()
+    {
 
         $this->setImport(array(
         ));
@@ -23,17 +25,16 @@ class DashboardModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onTopMenuInit($event) {
+    public static function onTopMenuInit($event)
+    {
 
         // Is Module enabled on this workspace?
-        if (Yii::app()->moduleManager->isEnabled('dashboard')) {
-            $event->sender->addItem(array(
-                'label' => Yii::t('DashboardModule.base', 'Dashboard'),
-                'url' => Yii::app()->createUrl('//dashboard/dashboard'),
-                'sortOrder' => 100,
-                'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'dashboard'),
-            ));
-        }
+        $event->sender->addItem(array(
+            'label' => Yii::t('DashboardModule.base', 'Dashboard'),
+            'url' => Yii::app()->createUrl('//dashboard/dashboard'),
+            'sortOrder' => 100,
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'dashboard'),
+        ));
     }
 
 }

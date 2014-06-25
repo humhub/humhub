@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'notification',
-    'title' => Yii::t('NotificationModule.base', 'Notification'),
-    'description' => Yii::t('FeedbackModule.base', 'Basic subsystem for notifications.'),
     'class' => 'application.modules_core.notification.NotificationModule',
     'isCoreModule' => true,
     'import' => array(

@@ -1,0 +1,9 @@
+{
+    "id": "notification",
+    "name": "Notifications",
+    "description": "Notification Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

@@ -1,0 +1,10 @@
+{
+    "id": "polls",
+    "name": "Polling",
+    "description": "Simple polling system",
+    "keywords": ["poll", "votes"],
+    "version": "0.5",
+    "humhub": {
+        "minVersion": "0.5"
+    }
+}

@@ -24,7 +24,7 @@
  * @package humhub.modules_core.installer
  * @since 0.5
  */
-class InstallerModule extends CWebModule {
+class InstallerModule extends HWebModule {
 
     public function init() {
         $this->setLayoutPath(Yii::getPathOfAlias('installer.views'));

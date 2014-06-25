@@ -1,11 +1,13 @@
 <?php
 
-class TasksModule extends CWebModule {
+class TasksModule extends HWebModule
+{
 
     /**
      * Inits the Module
      */
-    public function init() {
+    public function init()
+    {
         $this->setImport(array(
             'tasks.*',
             'tasks.models.*',
@@ -14,12 +16,23 @@ class TasksModule extends CWebModule {
         ));
     }
 
+    public function behaviors()
+    {
+
+        return array(
+            'SpaceModuleBehavior' => array(
+                'class' => 'application.modules_core.space.SpaceModuleBehavior',
+            ),
+        );
+    }
+
     /**
      * On User delete, also delete all tasks 
      * 
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         foreach (Content::model()->findAllByAttributes(array('created_by' => $event->sender->id, 'object_model' => 'Task')) as $content) {
             $content->delete();
@@ -44,7 +57,8 @@ class TasksModule extends CWebModule {
      * 
      * @param type $event
      */
-    public static function onSpaceDelete($event) {
+    public static function onSpaceDelete($event)
+    {
         foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Task')) as $content) {
             $content->delete();
         }
@@ -56,10 +70,11 @@ class TasksModule extends CWebModule {
      * 
      * @param type $event
      */
-    public static function onSpaceMenuInit($event) {
+    public static function onSpaceMenuInit($event)
+    {
 
         $space = Yii::app()->getController()->getSpace();
-        
+
         // Is Module enabled on this workspace?
         if ($space->isModuleEnabled('tasks')) {
             $event->sender->addItem(array(
@@ -77,7 +92,8 @@ class TasksModule extends CWebModule {
      * 
      * @param type $event
      */
-    public static function onSpaceUninstallModule($event) {
+    public static function onSpaceUninstallModule($event)
+    {
         if ($event->params == 'tasks') {
             foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Task')) as $content) {
                 $content->delete();
@@ -91,7 +107,8 @@ class TasksModule extends CWebModule {
      * 
      * @param type $event
      */
-    public static function onDisableModule($event) {
+    public static function onDisableModule($event)
+    {
         if ($event->params == 'tasks') {
             foreach (Content::model()->findAllByAttributes(array('object_model' => 'Task')) as $content) {
                 $content->delete();
@@ -104,7 +121,8 @@ class TasksModule extends CWebModule {
      * 
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Validating Tasks Module (" . Task::model()->count() . " entries)");

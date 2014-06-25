@@ -1,0 +1,9 @@
+{
+    "id": "installer",
+    "name": "Installer",
+    "description": "Installer Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

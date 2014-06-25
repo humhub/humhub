@@ -1,0 +1,9 @@
+{
+    "id": "directory",
+    "name": "Directory",
+    "description": "Directory Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

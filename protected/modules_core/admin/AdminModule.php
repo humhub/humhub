@@ -4,7 +4,7 @@
  * @package humhub.modules_core.admin
  * @since 0.5
  */
-class AdminModule extends CWebModule {
+class AdminModule extends HWebModule {
 
     public function init() {
 

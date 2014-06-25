@@ -1,0 +1,9 @@
+{
+    "id": "dashboard",
+    "name": "Dashboard",
+    "description": "Dashboard Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

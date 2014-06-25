@@ -3,8 +3,6 @@
 Yii::app()->moduleManager->register(array(
     'id' => 'polls',
     'class' => 'application.modules.polls.PollsModule',
-    'title' => Yii::t('PollsModule.base', 'Polls'),
-    'description' => Yii::t('PollsModule.base', 'Adds polling features to spaces.'),
     'import' => array(
         'application.modules.polls.models.*',
         'application.modules.polls.behaviors.*',
@@ -20,12 +18,5 @@ Yii::app()->moduleManager->register(array(
         array('class' => 'ModuleManager', 'event' => 'onDisable', 'callback' => array('PollsModule', 'onDisableModule')),
         array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('PollsModule', 'onIntegrityCheck')),
     ),
-    'spaceModules' => array(
-        'polls' => array(
-            'title' => Yii::t('PollsModule.base', 'Polls'),
-            'description' => Yii::t('PollsModule.base', 'Adds polling features to your space.'),
-        ),
-    ),
-    'contentModels' => array('Poll'),
 ));
 ?>

@@ -7,7 +7,7 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityModule extends CWebModule {
+class ActivityModule extends HWebModule {
 
     /**
      * Inits the activity module

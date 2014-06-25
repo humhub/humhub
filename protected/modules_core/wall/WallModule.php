@@ -10,7 +10,7 @@
  * @since 0.5
  * @author Luke
  */
-class WallModule extends CWebModule {
+class WallModule extends HWebModule {
 
     /**
      * Inits the wall module

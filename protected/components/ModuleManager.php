@@ -19,156 +19,134 @@
  */
 
 /**
- * ModuleManager allows dynamic enabling/disabling of application modules.
- *
- * Each module has a autostart.php which can register the module.
- *
- * Modules must register with a module definition, which holds all relevant
- * information about it.
- *
- *      Module Definition Array:
- *           id => mymodule                         (also folder name under /modules/...)
- *           title => My Module
- *           icon => cssClass
- *           description => someText                (For Admin Manage Modules)
- *           isSpaceModule => true/FALSE        (Is a workspace module)
- *           isCoreModule => true/FALSE             (Is core module, always enabled)
- *           configRoute => 'mymodule/configure'    (Configuration URL for SuperAdmin)
- *
- * @todo cache enabled modules - problem module manager started before caching
- *
- * @package humhub.components
- * @since 0.5
+ * Module Manager
+ * 
+ *  - Starts module autostart files
+ *  - Handles enabled modules
+ *  - Modules autostarts.php registers to it for events & co  
+ * 
  */
-class ModuleManager extends CApplicationComponent {
+class ModuleManager extends CApplicationComponent
+{
 
     const AUTOSTART_CACHE_FILE_NAME = "cache_autostart.php";
 
     /**
-     * @var Array of all registered module definitions
+     * List of all enabled module ids
+     * 
+     * @var Array
      */
-    public $registeredModules;
+    private $enabledModules = array();
 
     /**
-     * @var Array of enabled module ids.
+     * Array of installed modules populated on autostart.php register
+     * 
+     * @var Array moduleId => moduleClass 
      */
-    public $enabledModules;
+    private $installedModules = array();
 
     /**
-     * @var Array of registered content model classes.
+     * Initializes the module manager
      */
-    public $registeredContentModels = array();
-
-    /**
-     * Initializes the application component.
-     * This should also should check which module is enabled
-     */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
-        if (Yii::app()->params['installed'])
-            $this->loadEnabledModules();
+        if (Yii::app()->params['installed']) {
+
+            // Load all enabled modules
+            $cacheId = "enabledModules";
+            $cacheValue = Yii::app()->cache->get($cacheId);
+
+            if ($cacheValue === false || !is_array($cacheValue)) {
+
+                foreach (ModuleEnabled::model()->findAll() as $em) {
+                    $this->enabledModules[] = $em->module_id;
+                }
+
+                Yii::app()->cache->set($cacheId, $this->enabledModules, HSetting::Get('expireTime', 'cache'));
+            } else {
+                $this->enabledModules = $cacheValue;
+            }
+        }
 
         // Intercept this controller
         Yii::app()->interceptor->intercept($this);
     }
 
-    public function start() {
-
-        $this->executeAutoloaders();
-        #print "start";
-        #die();
-    }
-
     /**
-     * Searches and executes all module autoloaders.
-     *
-     * The module autoloaders are stored in a file "autostart.php" which can be
-     * placed in the root directory of the module.
-     *
-     * @todo Caching autostarts
-     * @todo Remove rendundant code
+     * Starts module manager which executes all enabled autoloaders
      */
-    private function executeAutoloaders() {
-
+    public function start()
+    {
         $cacheEnabled = (get_class(Yii::app()->cache) != 'CDummyCache');
-
         $cacheFileName = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . self::AUTOSTART_CACHE_FILE_NAME;
+
+        // Fastlane, when cache enabled and cachefile exists
         if ($cacheEnabled && file_exists($cacheFileName)) {
             require_once($cacheFileName);
             return;
         }
 
-        $fileNames = array();
+        $autostartFiles = array();
 
-        // Looking up 3rd party modules
+        /*
+          // Recursively collect all module_core autostarts
+          $modulesCorePath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules_core';
+          $modules = scandir($modulesCorePath);
+          foreach ($modules as $moduleId) {
+          $autostartFiles[] = $modulesCorePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
+          }
+
+          // Collect autostarts of enabled modules
+          $modulesCustomPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules';
+          foreach ($this->enabledModules as $moduleId) {
+          $autostartFiles[] = $modulesCustomPath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
+          }
+         */
+
+        // Recursively collect all moodules / modules_core autostarts
         $modulesPaths = array(Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules', Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules_core');
+        foreach ($modulesPaths as $modulePath) {
+            $modules = scandir($modulePath);
+            foreach ($modules as $moduleId) {
+                $autostartFiles[] = $modulePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
+            }
+        }
 
-        // Execute Autoloaders in each modules paths
-        foreach ($modulesPaths as $modulesPath) {
+        // Execute (and cache) found autostarts
+        $cacheFileContent = "";
+        foreach ($autostartFiles as $autoloadFile) {
+            if (is_file($autoloadFile)) {
 
-            // Scan Modules
-            $modules = scandir($modulesPath);
-            foreach ($modules as $module) {
-                if ($module == '.' || $module == '..')
-                    continue;
+                require_once($autoloadFile);
 
-                $moduleDir = $modulesPath . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR;
-
-                if (is_dir($moduleDir) && is_file($moduleDir . 'autostart.php')) {
-
-                    // Store Filename to Cache Content
-                    $fileNames[] = $moduleDir . 'autostart.php';
-
-                    // Execute Autoloader
-                    require_once($moduleDir . 'autostart.php');
+                // Cache content of autostart file 
+                if ($cacheEnabled) {
+                    $cacheFileContent .= file_get_contents($autoloadFile);
                 }
             }
         }
 
         if ($cacheEnabled) {
-            // Created a cache file which contains all autoloaders
-            $content = "";
-            foreach ($fileNames as $fileName) {
-                $content .= file_get_contents($fileName);
-            }
-            file_put_contents($cacheFileName, $content);
+            file_put_contents($cacheFileName, $cacheFileContent);
         }
     }
 
     /**
-     * Loads all enabled modules from the database. (Cached)
+     * Flushes Module Managers Cache
      */
-    private function loadEnabledModules() {
+    public static function flushCache()
+    {
 
-        $cacheId = "enabledModules";
-        $cacheValue = Yii::app()->cache->get($cacheId);
-
-        if ($cacheValue === false || !is_array($cacheValue)) {
-
-            $enabledModules = array();
-            foreach (ModuleEnabled::model()->findAll() as $em) {
-                $enabledModules[$em->module_id] = $em->module_id;
-            }
-            Yii::app()->cache->set($cacheId, $enabledModules, HSetting::Get('expireTime', 'cache'));
-            $this->enabledModules = $enabledModules;
-        } else {
-            $this->enabledModules = $cacheValue;
-        }
-    }
-
-    /**
-     * Flushes Module Managers cache
-     */
-    public static function flushCache() {
-
-        // Autoloader Cache File
+        // Delete Autoloader Cache File
         $cacheFileName = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . self::AUTOSTART_CACHE_FILE_NAME;
         if (file_exists($cacheFileName)) {
             unlink($cacheFileName);
         }
 
+        // Delete Enabled Modules List
         $cacheId = "enabledModules";
         Yii::app()->cache->delete($cacheId);
     }
@@ -176,243 +154,145 @@ class ModuleManager extends CApplicationComponent {
     /**
      * Registers a module
      * This is usally called in the autostart file of the module.
+     * 
+     * - id
+     * - class          Module Base Class
+     * - import         Global Module Imports        
+     * - events         Events to catch
+     * 
+     * - isCoreModule   Core Modules only
      *
      * @param Array $definition
      */
-    public function register($definition) {
-        $id = $definition['id'];
+    public function register($definition)
+    {
 
-        if (!isset($definition['isSpaceModule']))
-            $definition['isSpaceModule'] = false;
+        if (!isset($definition['class']) || !isset($definition['id'])) {
+            throw new Exception("Register Module needs module Id and Class!");
+        }
 
-        if (!isset($definition['isCoreModule']))
-            $definition['isCoreModule'] = false;
+        $isCoreModule = (isset($definition['isCoreModule']) && $definition['isCoreModule']);
 
-        if (!isset($definition['configRoute']))
-            $definition['configRoute'] = '';
+        $this->installedModules[$definition['id']] = $definition['class'];
 
-        if (!isset($definition['spaceConfigRoute']))
-            $definition['spaceConfigRoute'] = '';
+        // Not enabled and no core module
+        if (!$isCoreModule && !in_array($definition['id'], $this->enabledModules)) {
+            return;
+        }
 
+        // Register Yii Module
+        Yii::app()->setModules(array(
+            $definition['id'] => array(
+                'class' => $definition['class']
+            ),
+        ));
 
-        $this->registeredModules[$id] = $definition;
+        // Set Imports
+        if (isset($definition['import'])) {
+            Yii::app()->setImport($definition['import']);
+        }
 
-        // Check if module is enabled
-        if (Yii::app()->moduleManager->isEnabled($id)) {
-
-            // Register Yii Module
-            if (isset($definition['class'])) {
-                Yii::app()->setModules(array(
-                    $id => array(
-                        'class' => $definition['class']
-                    ),
-                ));
-            }
-
-            // Set Imports
-            if (isset($definition['import'])) {
-                Yii::app()->setImport($definition['import']);
-            }
-
-            // Register Event Handlers
-            if (isset($definition['events'])) {
-                foreach ($definition['events'] as $event) {
-                    Yii::app()->interceptor->preattachEventHandler(
-                            $event['class'], $event['event'], $event['callback']
-                    );
-                }
+        // Register Event Handlers
+        if (isset($definition['events'])) {
+            foreach ($definition['events'] as $event) {
+                Yii::app()->interceptor->preattachEventHandler(
+                        $event['class'], $event['event'], $event['callback']
+                );
             }
         }
     }
 
     /**
-     * Checks if a module is enabled or not.
-     *
-     * @param type $moduleId
-     * @return boolean
+     * Returns Module Base Class of installed module neither when not enabled.
+     * 
+     * @param String $id Module Id
+     * @return HWebModule
      */
-    public function isEnabled($moduleId) {
+    public function getModule($id)
+    {
 
-        $definition = $this->getDefinition($moduleId);
-
-        if ($definition['isCoreModule'])
-            return true;
-
-        // Core installed yet?
-        if (!Yii::app()->params['installed'])
-            return false;
-
-        if (in_array($moduleId, $this->enabledModules)) {
-            return true;
+        // When enabled, returned it directly
+        if (Yii::app()->getModule($id) != null) {
+            return Yii::app()->getModule($id);
         }
 
-        #$moduleEnabled = ModuleEnabled::model()->findByPk($moduleId);
-        #if ($moduleEnabled != null) {
-        #    return true;
-        #}
-
-        return false;
-    }
-
-    /**
-     * Returns an array with all registered modules
-     * This contains all enabled & disabled modules.
-     * Key is the moduleId and value is the module definition
-     *
-     * @return type
-     */
-    public function getRegisteredModules() {
-        return $this->registeredModules;
-    }
-
-    /**
-     * Returns an array with enabled modules
-     * Key of the array is the module id and value is the module definition.
-     *
-     * @return array
-     */
-    public function getEnabledModules() {
-
-        $enabledModules = array();
-
-        foreach ($this->getRegisteredModules() as $moduleId => $definition) {
-            if ($this->isEnabled($moduleId)) {
-                $enabledModules[$moduleId] = $definition;
-            }
+        // Not enabled, but installed - create it
+        if (isset($this->installedModules[$id])) {
+            $class = $this->installedModules[$id];
+            return Yii::createComponent($class, $id, null);
         }
-
-        return $enabledModules;
-    }
-
-    /**
-     * Enables a module by given module id.
-     *
-     * @param String $id
-     */
-    public function enable($id) {
-
-        $definition = $this->getDefinition($id);
-        if ($definition != null) {
-
-            // Core Modules doesn´t need to enabled
-            if (!$definition['isCoreModule']) {
-
-                $moduleEnabled = ModuleEnabled::model()->findByPk($id);
-                if ($moduleEnabled == null) {
-
-                    $moduleEnabled = new ModuleEnabled();
-                    $moduleEnabled->module_id = $id;
-                    $moduleEnabled->save();
-
-                    // Auto Migrate (add module database changes)
-                    Yii::import('application.commands.shell.ZMigrateCommand');
-                    $migrate = ZMigrateCommand::AutoMigrate();
-
-                    // Fire Event Disabled Event
-                    if ($this->hasEventHandler('onEnable'))
-                        $this->onEnable(new CEvent($this, $id));
-                }
-            }
-        }
-
-        ModuleManager::flushCache();
-    }
-
-    /**
-     * Disables a active module by given module id
-     *
-     * @param String $id
-     */
-    public function disable($id) {
-
-        $definition = $this->getDefinition($id);
-        if ($definition != null) {
-
-            // Core Modules couldn´t disabled
-            if (!$definition['isCoreModule']) {
-
-                if (isset($definition['userModules']) && is_array($definition['userModules'])) {
-                    $modulesToDisable = array_keys($definition['userModules']);
-                    foreach (User::model()->findAll() as $user) {
-                        foreach ($modulesToDisable as $userModuleId) {
-                            if ($user->isModuleEnabled($userModuleId))
-                                $user->uninstallModule($userModuleId);
-                        }
-                    }
-                }
-
-                if (isset($definition['spaceModules']) && is_array($definition['spaceModules'])) {
-                    $modulesToDisable = array_keys($definition['spaceModules']);
-                    foreach (Space::model()->findAll() as $space) {
-                        foreach ($modulesToDisable as $spaceModuleId) {
-                            if ($space->isModuleEnabled($spaceModuleId))
-                                $space->uninstallModule($spaceModuleId);
-                        }
-                    }
-                }
-
-                // Get Enabled Module Record
-                $moduleEnabled = ModuleEnabled::model()->findByPk($id);
-                if ($moduleEnabled != null)
-                    $moduleEnabled->delete();
-
-                // Fire Event Disabled Event
-                if ($this->hasEventHandler('onDisable'))
-                    $this->onDisable(new CEvent($this, $id));
-            }
-        }
-        ModuleManager::flushCache();
-    }
-
-    /**
-     * This event is raised after disabling a module
-     *
-     * @param CEvent $event the event parameter
-     * @see disable
-     */
-    public function onDisable($event) {
-        $this->raiseEvent('onDisable', $event);
-    }
-
-    /**
-     * This event is raised after enabling a module
-     *
-     * @param CEvent $event the event parameter
-     * @see enable
-     */
-    public function onEnable($event) {
-        $this->raiseEvent('onEnable', $event);
-    }
-
-    /**
-     * Returns the definition array of a registered module
-     *
-     * @param type $id
-     * @return null
-     */
-    public function getDefinition($id) {
-        if (isset($this->registeredModules[$id]))
-            return $this->registeredModules[$id];
 
         return null;
     }
 
     /**
-     * Registers a new Content Model
-     *
-     * @param String $className
+     * Returns a list of all installed modules
+     * 
+     * @param boolean $includeCoreModules include also core modules
+     * @param boolean $returnClassName instead of instance
+     * @return Array of installed Modules
      */
-    public function registerContentModel($className) {
-        $this->registeredContentModels[] = $className;
+    public function getInstalledModules($includeCoreModules = false, $returnClassName = false)
+    {
+
+        $installed = array();
+        foreach ($this->installedModules as $moduleId => $className) {
+
+            if (!$includeCoreModules && strpos($className, 'application.modules_core') !== false) {
+                continue;
+            }
+
+            if ($returnClassName) {
+                $installed[] = $className;
+            } else {
+                $module = $this->getModule($moduleId);
+
+                if ($module != null) {
+                    $installed[$moduleId] = $module;
+                }
+            }
+        }
+
+        return $installed;
     }
 
     /**
-     * Returns a list of all registered content models
-     *
-     * @return Array
+     * Returns a list of all enabled modules
      */
-    public function getContentModels() {
-        return $this->registeredContentModels;
+    public function getEnabledModules()
+    {
+
+        $modules = array();
+        foreach ($this->enabledModules as $moduleId) {
+            $module = $this->getModule($moduleId);
+            if ($module != null) {
+                $modules[] = $module;
+            }
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Checks if a module is enabled.
+     *
+     * @param String $moduleId
+     * @return boolean
+     */
+    public function isEnabled($moduleId)
+    {
+        return (in_array($moduleId, $this->enabledModules));
+    }
+
+    /**
+     * Checks if a module id is installed.
+     *
+     * @param String $moduleId
+     * @return boolean
+     */
+    public function isInstalled($moduleId)
+    {
+        return (array_key_exists($moduleId, $this->installedModules));
     }
 
 }

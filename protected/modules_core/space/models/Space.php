@@ -32,7 +32,8 @@
  * @package humhub.modules_core.space.models
  * @since 0.5
  */
-class Space extends HActiveRecordContentContainer implements ISearchable {
+class Space extends HActiveRecordContentContainer implements ISearchable
+{
 
     // Join Policies
     const JOIN_POLICY_NONE = 0;  // No Self Join Possible
@@ -54,7 +55,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'HGuidBehavior' => array(
                 'class' => 'application.behaviors.HGuidBehavior',
@@ -67,21 +69,24 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param string $className active record class name.
      * @return Space the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'space';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
 
         $rules = array();
 
@@ -124,7 +129,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -154,7 +160,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => 'ID',
             'wall_id' => 'Wall',
@@ -178,7 +185,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * Scopes
      *
      */
-    public function scopes() {
+    public function scopes()
+    {
         return array(
             // Coming soon
             'active' => array(
@@ -200,7 +208,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $limit
      * @return User
      */
-    public function recently($limit = 10) {
+    public function recently($limit = 10)
+    {
         $this->getDbCriteria()->mergeWith(array(
             'order' => 'created_at DESC',
             'limit' => $limit,
@@ -212,7 +221,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search() {
+    public function search()
+    {
         $criteria = new CDbCriteria;
         $criteria->compare('id', $this->id);
         $criteria->compare('wall_id', $this->wall_id);
@@ -238,7 +248,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * After Save Addons
      */
-    protected function afterSave() {
+    protected function afterSave()
+    {
 
         // Try To Delete Search Model
         HSearch::getInstance()->deleteModel($this);
@@ -254,13 +265,14 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Before deletion of a Space
      */
-    protected function beforeDelete() {
+    protected function beforeDelete()
+    {
         if (parent::beforeDelete()) {
 
-            foreach (SpaceSetting::model()->findAllByAttributes(array('space_id'=>$this->id)) as $spaceSetting) {
+            foreach (SpaceSetting::model()->findAllByAttributes(array('space_id' => $this->id)) as $spaceSetting) {
                 $spaceSetting->delete();
             }
-            
+
             HSearch::getInstance()->deleteModel($this);
             return true;
         }
@@ -270,7 +282,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * Delete a Space
      *
      */
-    public function delete() {
+    public function delete()
+    {
 
         $this->getProfileImage()->delete();
 
@@ -314,7 +327,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    public function insert($attributes = null) {
+    public function insert($attributes = null)
+    {
 
         if (parent::insert($attributes)) {
 
@@ -340,7 +354,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param $userId User Id of User
      */
-    public function isFollowedBy($userId = "") {
+    public function isFollowedBy($userId = "")
+    {
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -358,7 +373,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param $userId User Id of User
      */
-    public function canJoin($userId = "") {
+    public function canJoin($userId = "")
+    {
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -379,7 +395,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param $userId User Id of User
      */
-    public function canJoinFree($userId = "") {
+    public function canJoinFree($userId = "")
+    {
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -401,7 +418,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function canWrite($userId = "") {
+    public function canWrite($userId = "")
+    {
 
         // No writes allowed for archived workspaces
         if ($this->status == Space::STATUS_ARCHIVED)
@@ -424,7 +442,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function isMember($userId = "") {
+    public function isMember($userId = "")
+    {
 
         // Take current userid if none is given
         if ($userId == "")
@@ -446,7 +465,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function isAdmin($userId = "") {
+    public function isAdmin($userId = "")
+    {
 
         if ($userId == 0)
             $userId = Yii::app()->user->id;
@@ -471,7 +491,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function setOwner($userId = "") {
+    public function setOwner($userId = "")
+    {
 
         if ($userId == 0)
             $userId = Yii::app()->user->id;
@@ -489,7 +510,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    public function getOwner() {
+    public function getOwner()
+    {
 
         $user = User::model()->findByPk($this->created_by);
         return $user;
@@ -501,7 +523,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function setAdmin($userId = "") {
+    public function setAdmin($userId = "")
+    {
 
         if ($userId == 0)
             $userId = Yii::app()->user->id;
@@ -521,7 +544,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function canInvite($userId = "") {
+    public function canInvite($userId = "")
+    {
 
         if ($userId == 0)
             $userId = Yii::app()->user->id;
@@ -545,7 +569,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function canShare($userId = "") {
+    public function canShare($userId = "")
+    {
 
         // There is no visibility for guests, so sharing is useless anyway.
         if ($this->visibility != Space::VISIBILITY_ALL)
@@ -567,7 +592,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * If none Record is found, null is given
      */
-    public function getMembership($userId = "") {
+    public function getMembership($userId = "")
+    {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
@@ -586,7 +612,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Is given User owner of this Space
      */
-    public function isOwner($userId = "") {
+    public function isOwner($userId = "")
+    {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
@@ -602,7 +629,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param $userId UserId of User to Remove
      */
-    public function removeMember($userId = "") {
+    public function removeMember($userId = "")
+    {
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -656,7 +684,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param type $userId
      */
-    public function addMember($userId) {
+    public function addMember($userId)
+    {
 
         $user = User::model()->findByPk($userId);
 
@@ -718,7 +747,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @param type $originatorUserId
      */
-    public function inviteMember($userId, $originatorUserId) {
+    public function inviteMember($userId, $originatorUserId)
+    {
 
         $membership = $this->getMembership($userId);
 
@@ -765,7 +795,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $email
      * @param type $originatorUserId
      */
-    public function inviteMemberByEMail($email, $originatorUserId) {
+    public function inviteMemberByEMail($email, $originatorUserId)
+    {
 
         // Invalid E-Mail
         $validator = new CEmailValidator;
@@ -808,7 +839,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @param type $message
      */
-    public function requestMembership($userId, $message = "") {
+    public function requestMembership($userId, $message = "")
+    {
 
         // Add Membership
         $membership = new SpaceMembership;
@@ -828,7 +860,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * Checks if there is already a wall created for this workspace.
      * If not, a new wall will be created and automatically assigned.
      */
-    public function checkWall() {
+    public function checkWall()
+    {
 
         // Check if wall exists
         if ($this->wall == null) {
@@ -856,7 +889,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return Array
      */
-    public function getSearchAttributes() {
+    public function getSearchAttributes()
+    {
 
         return array(
             // Assignment
@@ -876,14 +910,16 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Returns the Search Result Output
      */
-    public function getSearchResult() {
+    public function getSearchResult()
+    {
         return Yii::app()->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', array('space' => $this), true);
     }
 
     /**
      * Returns the Admins of this Space
      */
-    public function getAdmins() {
+    public function getAdmins()
+    {
 
         $admins = array();
 
@@ -900,7 +936,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * Counts all Content Items related to this workspace except of Activities.
      * Additonally Comments (normally ContentAddon) will be included.
      */
-    public function countItems() {
+    public function countItems()
+    {
 
         $count = 0;
         $count += Content::model()->countByAttributes(array('space_id' => $this->id), 'object_model != :activityModel', array(':activityModel' => 'Activity'));
@@ -914,7 +951,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return Integer
      */
-    public function countPosts() {
+    public function countPosts()
+    {
         /*
           $criteria = new CDbCriteria();
           $criteria->condition = "content.space_id=:space_id";
@@ -927,7 +965,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Sets Comments Count for this workspace
      */
-    public function getCommentCount() {
+    public function getCommentCount()
+    {
         $cacheId = "workspaceCommentCount_" . $this->id;
         $cacheValue = Yii::app()->cache->get($cacheId);
 
@@ -943,7 +982,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Returns an array with assigned Tags
      */
-    public function getTags() {
+    public function getTags()
+    {
 
         // split tags string into individual tags
         return preg_split("/[;,# ]+/", $this->tags);
@@ -952,7 +992,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Archive this Space
      */
-    public function archive() {
+    public function archive()
+    {
         $this->status = self::STATUS_ARCHIVED;
         $this->save();
     }
@@ -960,7 +1001,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Unarchive this Space
      */
-    public function unarchive() {
+    public function unarchive()
+    {
         $this->status = self::STATUS_ENABLED;
         $this->save();
     }
@@ -971,32 +1013,29 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      * @param array $parameters
      * @return string url
      */
-    public function getUrl($parameters = array()) {
+    public function getUrl($parameters = array())
+    {
         $parameters['sguid'] = $this->guid;
         return Yii::app()->createUrl('//space/space', $parameters);
     }
 
     /**
-     * Returns a list of available workspace modules
+     * Collects a list of all modules which are available for this space
      *
      * @return array
      */
-    public function getAvailableModules() {
+    public function getAvailableModules()
+    {
 
-        $availableModules = array();
+        $modules = array();
 
-        // Loop over all enabled modules
-        foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $definition) {
-
-            if (isset($definition['spaceModules']) && is_array($definition['spaceModules'])) {
-
-                foreach ($definition['spaceModules'] as $moduleId => $moduleInfo) {
-                    $availableModules[$moduleId] = $moduleInfo;
-                }
+        foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $module) {
+            if (array_key_exists('SpaceModuleBehavior', $module->behaviors())) {
+                $modules[$module->getId()] = $module;
             }
         }
 
-        return $availableModules;
+        return $modules;
     }
 
     /**
@@ -1004,7 +1043,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return array
      */
-    public function getEnabledModules() {
+    public function getEnabledModules()
+    {
 
         $modules = array();
         foreach (SpaceApplicationModule::model()->findAllByAttributes(array('space_id' => $this->id)) as $SpaceModule) {
@@ -1014,6 +1054,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
                 $modules[] = $moduleId;
             }
         }
+
         return $modules;
     }
 
@@ -1022,7 +1063,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param type $moduleId
      */
-    public function isModuleEnabled($moduleId) {
+    public function isModuleEnabled($moduleId)
+    {
 
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
@@ -1041,7 +1083,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Installs a Module
      */
-    public function installModule($moduleId) {
+    public function installModule($moduleId)
+    {
 
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
@@ -1068,14 +1111,16 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         return true;
     }
 
-    public function onInstallModule($event) {
+    public function onInstallModule($event)
+    {
         $this->raiseEvent('onInstallModule', $event);
     }
 
     /**
      * Uninstalls a Module
      */
-    public function uninstallModule($moduleId) {
+    public function uninstallModule($moduleId)
+    {
 
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
@@ -1098,7 +1143,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable {
         return true;
     }
 
-    public function onUninstallModule($event) {
+    public function onUninstallModule($event)
+    {
         $this->raiseEvent('onUninstallModule', $event);
     }
 

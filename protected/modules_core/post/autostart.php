@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'post',
-    'title' => Yii::t('PostModule.base', 'Post'),
-    'description' => Yii::t('PostModule.base', 'Basic subsystem for workspace/user post.'),
     'class' => 'application.modules_core.post.PostModule',
     'isCoreModule' => true,
     'import' => array(

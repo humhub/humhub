@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'file',
-    'title' => Yii::t('FileModule.base', 'File'),
-    'description' => Yii::t('FileModule.base', 'Files core module.'),
     'class' => 'application.modules_core.file.FileModule',
     'isCoreModule' => true,
     'import' => array(

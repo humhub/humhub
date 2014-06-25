@@ -9,12 +9,14 @@
  * @package humhub.modules_core.directory
  * @since 0.5
  */
-class DirectoryModule extends CWebModule {
+class DirectoryModule extends HWebModule
+{
 
     /**
      * Inits the Module
      */
-    public function init() {
+    public function init()
+    {
 
         $this->setImport(array(
         ));
@@ -26,17 +28,15 @@ class DirectoryModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onTopMenuInit($event) {
+    public static function onTopMenuInit($event)
+    {
 
-        // Is Module enabled on this workspace?
-        if (Yii::app()->moduleManager->isEnabled('directory')) {
-            $event->sender->addItem(array(
-                'label' => Yii::t('DirectoryModule.base', 'Directory'),
-                'url' => Yii::app()->createUrl('//directory/directory'),
-                'sortOrder' => 400,
-                'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'directory'),
-            ));
-        }
+        $event->sender->addItem(array(
+            'label' => Yii::t('DirectoryModule.base', 'Directory'),
+            'url' => Yii::app()->createUrl('//directory/directory'),
+            'sortOrder' => 400,
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'directory'),
+        ));
     }
 
 }

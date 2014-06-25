@@ -6,7 +6,7 @@
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class CommentModule extends CWebModule
+class CommentModule extends HWebModule
 {
 
     /**

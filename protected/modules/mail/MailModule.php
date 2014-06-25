@@ -6,9 +6,11 @@
  * @package humhub.modules.mail
  * @since 0.5
  */
-class MailModule extends CWebModule {
+class MailModule extends HWebModule
+{
 
-    public function init() {
+    public function init()
+    {
 
         $this->setImport(array(
             'mail.models.*',
@@ -23,7 +25,8 @@ class MailModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         Yii::import('application.modules.mail.models.*');
 
@@ -45,7 +48,8 @@ class MailModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         #$integrityChecker->showTestHeadline("Validating Mail Module (" . Message::model()->count() . " entries)");
@@ -57,26 +61,21 @@ class MailModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onTopMenuInit($event) {
+    public static function onTopMenuInit($event)
+    {
 
-        // Is Module enabled on this workspace?
-        if (Yii::app()->moduleManager->isEnabled('mail')) {
-            $event->sender->addItem(array(
-                'label' => Yii::t('MailModule.base', 'Messages'),
-                'url' => Yii::app()->createUrl('//mail/mail/index', array()),
-                'icon' => 'mail',
-                'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'mail'),
-                'sortOrder' => 300,
-            ));
-        }
+        $event->sender->addItem(array(
+            'label' => Yii::t('MailModule.base', 'Messages'),
+            'url' => Yii::app()->createUrl('//mail/mail/index', array()),
+            'icon' => 'mail',
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'mail'),
+            'sortOrder' => 300,
+        ));
     }
 
-    public static function onNotificationAddonInit($event) {
-
-        // Is Module enabled on this workspace?
-        if (Yii::app()->moduleManager->isEnabled('mail')) {
-            $event->sender->addWidget('application.modules.mail.widgets.MailNotificationWidget', array(), array('sortOrder' => 90));
-        }
+    public static function onNotificationAddonInit($event)
+    {
+        $event->sender->addWidget('application.modules.mail.widgets.MailNotificationWidget', array(), array('sortOrder' => 90));
     }
 
 }
