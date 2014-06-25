@@ -1,6 +1,6 @@
 {
     "id": "polls",
-    "name": "Polling",
+    "name": "Polls",
     "description": "Simple polling system",
     "keywords": ["poll", "votes"],
     "version": "0.5",
