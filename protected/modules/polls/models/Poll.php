@@ -17,32 +17,38 @@
  * @since 0.5
  * @author Luke
  */
-class Poll extends HActiveRecordContent {
+class Poll extends HActiveRecordContent
+{
 
     const MIN_REQUIRED_ANSWERS = 2;
+
     public $userToNotify = "";
     public $answersText;
+    public $autoAddToWall = true;
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Question the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'poll';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('question, answersText, created_at, created_by, updated_at, updated_by', 'required'),
             array('answersText', 'validateAnswersText'),
@@ -54,7 +60,8 @@ class Poll extends HActiveRecordContent {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'answersText' => Yii::t('PollsModule.base', 'Answers'),
             'question' => Yii::t('PollsModule.base', 'Question'),
@@ -65,13 +72,15 @@ class Poll extends HActiveRecordContent {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'answers' => array(self::HAS_MANY, 'PollAnswer', 'poll_id'),
         );
     }
 
-    public function afterSave() {
+    public function afterSave()
+    {
         parent::afterSave();
 
         if ($this->isNewRecord) {
@@ -111,7 +120,8 @@ class Poll extends HActiveRecordContent {
     /**
      * Deletes a Poll including its dependencies.
      */
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
 
         // Delete all dependencies
         foreach ($this->answers as $answer) {
@@ -132,7 +142,8 @@ class Poll extends HActiveRecordContent {
      * @param type $userId
      * @return type
      */
-    public function hasUserVoted($userId = "") {
+    public function hasUserVoted($userId = "")
+    {
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -145,7 +156,8 @@ class Poll extends HActiveRecordContent {
         return true;
     }
 
-    public function vote($votes = array()) {
+    public function vote($votes = array())
+    {
 
         if ($this->hasUserVoted()) {
             return;
@@ -180,7 +192,8 @@ class Poll extends HActiveRecordContent {
      *
      * @param type $userId
      */
-    public function resetAnswer($userId = "") {
+    public function resetAnswer($userId = "")
+    {
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -205,14 +218,16 @@ class Poll extends HActiveRecordContent {
         }
     }
 
-    public function setAnswers() {
+    public function setAnswers()
+    {
         
     }
 
     /**
      * Returns the Wall Output
      */
-    public function getWallOut() {
+    public function getWallOut()
+    {
         return Yii::app()->getController()->widget('application.modules.polls.widgets.PollWallEntryWidget', array('poll' => $this), true);
     }
 
@@ -223,11 +238,13 @@ class Poll extends HActiveRecordContent {
      *
      * @return String
      */
-    public function getContentTitle() {
+    public function getContentTitle()
+    {
         return Yii::t('PollsModule.base', "Question") . " \"" . Helpers::truncateText($this->question, 25) . "\"";
     }
 
-    public function validateAnswersText() {
+    public function validateAnswersText()
+    {
 
         $answers = explode("\n", $this->answersText);
         $answerCount = 0;
@@ -267,7 +284,6 @@ class Poll extends HActiveRecordContent {
         $notification->target_object_model = 'Poll';
         $notification->target_object_id = $this->id;
         $notification->save();
-
     }
 
 }
