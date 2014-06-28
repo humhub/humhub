@@ -15,17 +15,25 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', 'Space directory'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Space</strong> directory'); ?>
     </div>
 
     <div class="panel-body">
 
         <!-- search form -->
 
+
         <?php echo CHtml::form(Yii::app()->createUrl('//directory/directory/spaces', array()), 'post', array('class' => 'form-search')); ?>
-        <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control", "placeholder" => Yii::t('DirectoryModule.base', "search for spaces"))); ?>
-        <br/>
-        <?php echo CHtml::submitButton('Search', array('class' => 'btn btn-primary')); ?>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="form-group form-group-search">
+                    <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.base', 'search for spaces'))); ?>
+                    <?php echo CHtml::submitButton('Search', array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
         <?php echo CHtml::endForm(); ?>
 
 
@@ -87,7 +95,7 @@
                         <?php if ($space->tags) : ?>
                             <?php foreach ($space->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag)), array('class' => 'label label-info'));    ?>
+                                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag)), array('class' => 'label label-default'));    ?>
                                     <?php
                                     $tag_count++;
                                 }

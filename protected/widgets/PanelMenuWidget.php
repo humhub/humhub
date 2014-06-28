@@ -19,39 +19,33 @@
  */
 
 /**
- * UploadProfileImageForm allows uploads of profile images.
+ * PanelMenuWidget add an dropdown menu to the panel header
  *
- * Profile images will used by spaces or users.
- *
- * @package humhub.forms
+ * @package humhub.widgets
  * @since 0.5
+ * @author Andreas Strobel
  */
-class UploadProfileImageForm extends CFormModel {
+class PanelMenuWidget extends HWidget {
 
     /**
-     * @var String uploaded image
+     * @var String unique id from panel element
      */
-    public $image;
+    public $id = "";
+
 
     /**
-     * Declares the validation rules.
-     *
-     * @return Array Validation Rules
+     * Displays / Run the Widgets
      */
-    public function rules() {
-        return array(
-            array('image', 'required'),
-            array('image', 'file', 'types' => 'jpg, png, jpeg, tiff', 'maxSize' => 3 * 1024 * 1024),
-        );
-    }
+    public function run() {
 
-    /**
-     * Declares attribute labels.
-     */
-    public function attributeLabels() {
-        return array(
-            'image' => Yii::t('base', 'New profile image'),
-        );
+        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources', true, 0, defined('YII_DEBUG'));
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/panelMenu.js', CClientScript::POS_BEGIN);
+
+        $this->render('panelMenu', array(
+            'id' => $this->id,
+        ));
     }
 
 }
+
+?>

@@ -13,6 +13,9 @@
                 $this->widget('application.modules_core.space.widgets.SpaceAdminMenuWidget', array());
             }
             ?>
+
+            <br/>
+
         </div>
         <div class="col-md-7 space-stream-container">
             <!-- show content -->

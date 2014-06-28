@@ -4,7 +4,7 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('UserModule.base', '<strong>Modify</strong> your profile image'); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('UserModule.base', '<strong>Modify</strong> your title image'); ?></h4>
         </div>
         <div class="modal-body">
 
@@ -37,9 +37,9 @@
                         'formElementWidth' => 'CropProfileImageForm_cropW',
                         'formElementHeight' => 'CropProfileImageForm_cropH',
                         'jCropOptions' => array(
-                            'aspectRatio' => 1,
+                            'aspectRatio' => '2.5',
                             'boxWidth' => 400,
-                            'setSelect' => array(0, 0, 100, 100),
+                            'setSelect' => array(0, 0, 200, 75),
                         ),
                     )
                 );
@@ -50,7 +50,7 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('UserModule.account', 'Save'), array('//user/account/cropImage'), array(
+            <?php echo HHtml::ajaxButton(Yii::t('UserModule.account', 'Save'), array('//user/profile/cropBannerImage'), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',

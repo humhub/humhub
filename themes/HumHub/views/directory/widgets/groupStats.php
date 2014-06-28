@@ -7,10 +7,13 @@
  */
 ?>
 
+<div class="panel panel-default" id="groups-statistics-panel">
 
-<div class="panel panel-default">
+    <!-- Display panel menu widget -->
+    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'groups-statistics-panel')); ?>
+
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', 'Statistics'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Group</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div style="text-align: center;">

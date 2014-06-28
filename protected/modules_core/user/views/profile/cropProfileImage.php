@@ -50,7 +50,7 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('UserModule.account', 'Save'), array('//user/account/cropImage'), array(
+            <?php echo HHtml::ajaxButton(Yii::t('UserModule.account', 'Save'), array('//user/profile/cropProfileImage'), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',

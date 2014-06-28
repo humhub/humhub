@@ -9,10 +9,13 @@
  */
 ?>
 <?php if (count($spaces) > 0) { ?>
-    <div class="panel panel-default members">
+    <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
+
+        <!-- Display panel menu widget -->
+        <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-spaces-panel')); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', 'Member in these spaces'); ?>
+            <?php echo Yii::t('UserModule.base', '<strong>Member</strong> in these spaces'); ?>
         </div>
 
         <div class="panel-body">

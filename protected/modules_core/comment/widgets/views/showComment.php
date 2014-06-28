@@ -11,7 +11,7 @@
 ?>
     <div class="media">
         <a href="<?php echo $user->getUrl(); ?>" class="pull-left">
-            <img class="media-object img-rounded" src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="40"
+            <img class="media-object img-rounded user-image" src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="40"
                  height="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/>
         </a>
 

@@ -12,7 +12,7 @@ class AdminController extends Controller {
     /**
      * @var String Admin Sublayout
      */
-    public $subLayout = "application.modules_core.space.views.admin._layout";
+    public $subLayout = "application.modules_core.space.views.space._layout";
 
     /**
      * @return array action filters
@@ -59,6 +59,7 @@ class AdminController extends Controller {
         $this->redirect($this->createUrl('edit', array('sguid' => $this->getSpace()->guid)));
     }
 
+
     /**
      * Space Edit Form
      *
@@ -70,11 +71,6 @@ class AdminController extends Controller {
 
         $model = $this->getSpace();
         $model->scenario = 'edit';
-
-        // When Sidebar is build, attach ChangeImage Widget
-        Yii::app()->interceptor->preattachEventHandler('SpaceSidebarWidget', 'onInit', function($event) {
-            $event->sender->addWidget('application.modules_core.space.widgets.SpaceChangeImageWidget', array(), array('sortOrder' => 10));
-        });
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'space-edit-form') {
@@ -185,9 +181,12 @@ class AdminController extends Controller {
 
         $members = $workspace->memberships($criteria);
 
+        $invited_members = SpaceMembership::model()->findAllByAttributes(array('space_id' => $workspace->id, 'status' => SpaceMembership::STATUS_INVITED));
+
         $this->render('members', array(
             'workspace' => $workspace,
             'members' => $members, // must be the same as $item_count
+            'invited_members' => $invited_members,
             'item_count' => $allMemberCount,
             'page_size' => $membersPerPage,
             'search' => $search,
@@ -255,6 +254,7 @@ class AdminController extends Controller {
         // Redirect  back to Administration page
         $this->htmlRedirect($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)));
     }
+
 
     /**
      * Set a Profile Image

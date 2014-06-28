@@ -11,6 +11,9 @@ class SpaceCreateForm extends CFormModel
 {
 	public $title;
 	public $type;
+    public $description;
+    public $join_policy;
+    public $visibility;
 
 	/**
 	 * Declares the validation rules.
@@ -21,6 +24,9 @@ class SpaceCreateForm extends CFormModel
 
 			array('title, type', 'required'),
 			array('title', 'checkTitle'),
+            array('description', 'safe'),
+            array('join_policy', 'in', 'range' => array(0, 1, 2)),
+            array('visibility', 'in', 'range' => array(0, 1, 2)),
 
 		);
 	}

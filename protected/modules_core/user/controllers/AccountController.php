@@ -8,14 +8,16 @@
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class AccountController extends Controller {
+class AccountController extends Controller
+{
 
     public $subLayout = "_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -26,7 +28,8 @@ class AccountController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
 
         // Only allow authenticated users
         return array(
@@ -44,7 +47,8 @@ class AccountController extends Controller {
      *
      * @todo Add Group
      */
-    public function actionEditSettings() {
+    public function actionEditSettings()
+    {
 
         // Load current user model in edit mode
         $model = User::model()->findByPk(Yii::app()->user->id);
@@ -85,12 +89,14 @@ class AccountController extends Controller {
     /**
      * Allows the user to enable user specifc modules
      */
-    public function actionEditModules() {
+    public function actionEditModules()
+    {
         $user = Yii::app()->user->getModel();
         $this->render('editModules', array('user' => $user));
     }
 
-    public function actionEnableModule() {
+    public function actionEnableModule()
+    {
         $user = Yii::app()->user->getModel();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
@@ -101,7 +107,8 @@ class AccountController extends Controller {
         $this->redirect($this->createUrl('//user/account/editModules', array()));
     }
 
-    public function actionDisableModule() {
+    public function actionDisableModule()
+    {
 
         $user = Yii::app()->user->getModel();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
@@ -116,7 +123,8 @@ class AccountController extends Controller {
     /**
      * Edit Users Profile
      */
-    public function actionEdit() {
+    public function actionEdit()
+    {
 
         $_POST = Yii::app()->input->stripClean($_POST);
 
@@ -154,7 +162,8 @@ class AccountController extends Controller {
      *
      * Its only possible if the user is not owner of a workspace.
      */
-    public function actionDelete() {
+    public function actionDelete()
+    {
 
         $isSpaceOwner = false;
 
@@ -201,7 +210,8 @@ class AccountController extends Controller {
      *
      * @todo Add Group
      */
-    public function actionEmailing() {
+    public function actionEmailing()
+    {
 
         $model = User::model()->findByPk(Yii::app()->user->id);
         $model->scenario = 'edit';
@@ -243,7 +253,8 @@ class AccountController extends Controller {
      * Change Current Password
      *
      */
-    public function actionChangeEmail() {
+    public function actionChangeEmail()
+    {
 
         $user = User::model()->findByPk(Yii::app()->user->id);
         if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
@@ -275,7 +286,8 @@ class AccountController extends Controller {
      * After the user validated his email
      *
      */
-    public function actionChangeEmailValidate() {
+    public function actionChangeEmailValidate()
+    {
 
         $token = $_GET['token'];
         $email = $_GET['email'];
@@ -306,7 +318,8 @@ class AccountController extends Controller {
     /**
      * Change users current password
      */
-    public function actionChangePassword() {
+    public function actionChangePassword()
+    {
 
         if (Yii::app()->user->authMode != User::AUTH_MODE_LOCAL) {
             throw new CHttpException(500, Yii::t('UserModule.account', 'You cannot change your password here.'));
@@ -327,52 +340,6 @@ class AccountController extends Controller {
         }
 
         $this->render('changePassword', array('model' => $userPassword));
-    }
-
-    /**
-     * Sets a new Profile Image
-     */
-    public function actionChangeImage() {
-
-        $model = new UploadProfileImageForm();
-
-        if (isset($_POST['UploadProfileImageForm'])) {
-
-            $_POST['UploadProfileImageForm'] = Yii::app()->input->stripClean($_POST['UploadProfileImageForm']);
-
-            $model->attributes = $_POST['UploadProfileImageForm'];
-            $model->image = CUploadedFile::getInstance($model, 'image');
-
-            if ($model->validate()) {
-
-                $profileImage = new ProfileImage(Yii::app()->user->guid);
-                $profileImage->setNew($model->image);
-
-                $this->redirect($this->createUrl('//user/account/cropImage'));
-            }
-        }
-
-        $this->render('changeImage', array('model' => $model, 'user' => Yii::app()->user->getModel()));
-    }
-
-    /**
-     * Crops the profile image of the user
-     */
-    public function actionCropImage() {
-
-        $model = new CropProfileImageForm;
-        $profileImage = new ProfileImage(Yii::app()->user->guid);
-
-        if (isset($_POST['CropProfileImageForm'])) {
-            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
-            $model->attributes = $_POST['CropProfileImageForm'];
-            if ($model->validate()) {
-                $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-                $this->redirect($this->createUrl('//user/account/edit'));
-            }
-        }
-
-        $this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
     }
 
 }

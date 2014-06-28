@@ -43,7 +43,7 @@
                                 <strong><?php echo Yii::app()->user->displayName; ?></strong><br/><span><?php echo Yii::app()->user->getModel()->profile->title; ?></span>
                             </div>
 
-                            <img class="img-rounded"
+                            <img id="user-account-image" class="img-rounded"
                                  src="<?php echo Yii::app()->user->model->getProfileImage()->getUrl(); ?>"
                                  height="32" width="32" alt="32x32" data-src="holder.js/32x32"
                                  style="width: 32px; height: 32px;"/>
@@ -204,6 +204,10 @@
 
     });
 
+    $('#globalModal').on('shown.bs.modal', function (e) {
+        // reduce the standard modal width
+        $('.modal-dialog').css('width', '300px');
+    })
 
 </script>
 </body>

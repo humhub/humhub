@@ -32,6 +32,7 @@ class DirectoryModule extends CWebModule {
         if (Yii::app()->moduleManager->isEnabled('directory')) {
             $event->sender->addItem(array(
                 'label' => Yii::t('DirectoryModule.base', 'Directory'),
+                'icon' => '<i class="fa fa-book"></i>',
                 'url' => Yii::app()->createUrl('//directory/directory'),
                 'sortOrder' => 400,
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'directory'),

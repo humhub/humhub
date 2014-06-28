@@ -7,9 +7,13 @@
  */
 ?>
 
-<div class="panel panel-default members">
+<div class="panel panel-default members" id="new-people-panel">
+
+    <!-- Display panel menu widget -->
+    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'new-people-panel')); ?>
+
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', 'New people'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> people'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newUsers as $user) : ?>
@@ -23,9 +27,13 @@
     </div>
 </div>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="user-statistics-panel">
+
+    <!-- Display panel menu widget -->
+    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-statistics-panel')); ?>
+
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', 'Statistics'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div style="text-align: center;">

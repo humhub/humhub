@@ -19,7 +19,7 @@ class SpaceMenuWidget extends MenuWidget {
 
         $this->addItemGroup(array(
             'id' => 'modules',
-            'label' => Yii::t('SpaceModule.base', 'Modules'),
+            'label' => Yii::t('SpaceModule.base', '<strong>Space</strong> menu'),
             'sortOrder' => 100,
         ));
 

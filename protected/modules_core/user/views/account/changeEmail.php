@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', 'Change E-mail'); ?>
+    <?php echo Yii::t('UserModule.base', '<strong>Change</strong> E-mail'); ?>
 </div>
 <div class="panel-body">
     <?php

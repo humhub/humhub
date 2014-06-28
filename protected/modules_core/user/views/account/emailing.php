@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', 'Email Notifications'); ?>
+    <?php echo Yii::t('UserModule.base', '<strong>Email</strong> Notifications'); ?>
 </div>
 <div class="panel-body">
     <?php

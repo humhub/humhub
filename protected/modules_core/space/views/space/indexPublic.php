@@ -15,11 +15,19 @@
                         <h3 class="media-heading"><?php echo $space->name; ?></h3>
                         <?php echo Yii::t('SpaceModule.base', 'created by'); ?> <a
                             href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getOwner()->guid)); ?>"><?php echo $space->getOwner()->displayName; ?></a>
-                            <?php if ($space->description != "") { ?>
+                        <?php if ($space->description != "") { ?>
                             <hr>
                             <?php echo $space->description; ?>
                         <?php } ?>
-                        <br><br>
+                        <br/>
+                        <!-- start: space tags -->
+                        <div class="tags">
+                            <?php foreach ($space->getTags() as $tag) { ?>
+                                <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag, 'areas' => array('Space'))), array('class' => 'btn btn-default btn-xs tag')); ?>
+                            <?php } ?>
+                        </div>
+                        <!-- end: space tags -->
+                        <br/>
                         <?php
                         // Membership Handling
                         if ($space->isMember(Yii::app()->user->id)) {
@@ -39,7 +47,7 @@
                                         ?>
                                         <a href="<?php echo $this->createUrl('//space/space/requestMembership', array('sguid' => $space->guid)); ?>"
                                            class="btn btn-primary"><?php echo Yii::t('SpaceModule.base', 'Become member'); ?></a>
-                                        <?php
+                                    <?php
                                     }
                                 }
                             } elseif ($membership->status == SpaceMembership::STATUS_INVITED) {

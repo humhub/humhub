@@ -8,7 +8,7 @@
     <?php foreach ($this->getItems() as $item) : ?>
         <li class="visible-md visible-lg <?php if ($item['isActive']): ?>active<?php endif; ?>">
             <a href="<?php echo $item['url']; ?>">
-                <?php //echo $item['icon']; ?>
+                <?php echo $item['icon']; ?><br/>
                 <?php echo $item['label']; ?>
             </a>
         </li>

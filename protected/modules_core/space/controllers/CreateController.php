@@ -36,8 +36,9 @@ class CreateController extends Controller {
 
                 $space = new Space();
                 $space->name = $model->title;
-                $space->join_policy = 2;
-                $space->visibility = 2;
+                $space->description = $model->description;
+                $space->join_policy = $model->join_policy;
+                $space->visibility = $model->visibility;
                 $space->save();
 
                 // Add Membership

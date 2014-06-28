@@ -1,5 +1,6 @@
 <!-- start: CSS -->
 <!--<link href="<?php /*echo Yii::app()->baseUrl; */?>/css/style.css" rel="stylesheet">-->
+<link href="<?php echo Yii::app()->baseUrl; ?>/css/animate.min.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/datepicker.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/style.css" rel="stylesheet">

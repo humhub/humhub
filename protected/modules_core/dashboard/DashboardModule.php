@@ -29,6 +29,7 @@ class DashboardModule extends CWebModule {
         if (Yii::app()->moduleManager->isEnabled('dashboard')) {
             $event->sender->addItem(array(
                 'label' => Yii::t('DashboardModule.base', 'Dashboard'),
+                'icon' => '<i class="fa fa-tachometer"></i>',
                 'url' => Yii::app()->createUrl('//dashboard/dashboard'),
                 'sortOrder' => 100,
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'dashboard'),
