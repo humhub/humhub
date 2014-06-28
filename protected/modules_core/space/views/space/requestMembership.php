@@ -1,15 +1,15 @@
-<div class="modal-dialog">
+<div class="modal-dialog animated fadeIn">
     <div class="modal-content">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'space-apply-form',
-            'enableAjaxValidation' => true,
+            'enableAjaxValidation' => false,
         ));
         ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', "Request space membership"); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', "<strong>Request</strong> space membership"); ?></h4>
         </div>
         <div class="modal-body">
 
@@ -27,7 +27,7 @@
 
         </div>
         <div class="modal-footer">
-
+            <hr/>
             <?php
             echo CHtml::ajaxButton(Yii::t('SpaceModule.base', 'Send'), array('//space/space/requestMembershipForm', 'sguid' => $space->guid), array(
                 'type' => 'POST',
@@ -55,6 +55,12 @@
 
     // set focus to input field
     $('#request-message').focus()
+
+    // Shake modal after wrong validation
+    <?php if ($form->errorSummary($model) != null) { ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
+    <?php } ?>
 
     /*
      * Modal handling by close event

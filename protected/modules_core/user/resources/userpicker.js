@@ -296,7 +296,7 @@ $.fn.userpicker = function (options) {
 }
 
 
-// Add a usertag for invitation
+// Add an usertag for invitation
 $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
 
     if ($('#user_' + guid + ' a').attr('data-taken') != "true") {

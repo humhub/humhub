@@ -4,21 +4,23 @@
         <?php if (Yii::app()->params['currentSpace']) { ?>
             <img
                 src="<?php echo Yii::app()->params['currentSpace']->getProfileImage()->getUrl(); ?>"
-                width="20" height="20" alt="20x20" data-src="holder.js/20x20"
-                style="width: 20px; height: 20px; margin-right: 5px;" class="img-rounded"/>
+                width="32" height="32" alt="32x32" data-src="holder.js/24x24"
+                style="width: 32px; height: 32px; margin-right: 3px; margin-top: 3px;" class="img-rounded"/>
         <?php } ?>
 
         <?php
         if (Yii::app()->params['currentSpace']) {
-            echo '<span class="title">';
+/*            echo '<span class="title">';
             echo Helpers::trimText(Yii::app()->params['currentSpace']->name, 30);
-            echo ' </span>';
+            echo ' </span>';*/
         } else {
-            echo Yii::t('base', 'Choose a space... ');
+            //echo Yii::t('base', 'Choose a space... ');
+            echo '<i class="fa fa-dot-circle-o"></i><br>Pick a space';
         }
         ?>
         <!-- end: Show space image and name if chosen -->
-        <b class="caret"></b></a>
+        <b class="caret"></b>
+    </a>
     <ul class="dropdown-menu" id="space-menu-dropdown">
         <li>
             <form action="" class="dropdown-controls"><input type="text" id="space-menu-search"

@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs wallFilterPanel" id="filter">
+<ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
     <li class=" dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Filter'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li><a href="#" class="wallFilter" id="filter_tasks_meAssigned"><i class="fa fa-square-o"></i> <?php echo Yii::t('TasksModule.base', 'Assigned to me'); ?></a></li>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- DIV for an single wall entry -->
-    <div class="s2_single">
+    <div class="s2_single" style="display: none;">
         <a href="#" class="singleBackLink"><?php echo Yii::t('WallModule.base', 'Back to stream'); ?></a>
 
         <div class="s2_singleContent"></div>

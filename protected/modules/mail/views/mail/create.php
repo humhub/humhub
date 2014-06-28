@@ -53,7 +53,7 @@
 
         </div>
         <div class="modal-footer">
-
+            <hr/>
             <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Send'), array('//mail/mail/create'), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#create-message-loader").removeClass("hidden"); }',

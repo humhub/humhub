@@ -20,6 +20,7 @@
                 id="myModalLabel">
                 <?php echo $title; ?>
             </h4>
+            <br/>
         </div>
 
 

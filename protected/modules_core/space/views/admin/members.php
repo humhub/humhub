@@ -1,243 +1,336 @@
+<?php
+
+/**@var $this AdminController */
+/**@var $workspace Space */
+
+?>
+
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.admin', 'Manage your members'); ?>
-    </div>
-    <div class="panel-body">
+<div class="panel-heading">
+    <?php echo Yii::t('SpaceModule.admin', '<strong>Manage</strong> your space members'); ?>
+</div>
+<div class="panel-body">
 
-        <p><?php echo Yii::t('SpaceModule.admin', 'In the area below, you see all active members of this workspace.<br>You can edit and remove or invite new users.'); ?></p>
+    <?php echo Yii::t('SpaceModule.admin', 'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.'); ?>
 
-        <!-- user invite button -->
-        <?php
-        echo CHtml::link(Yii::t('SpaceModule.admin', 'Invite new user'), $this->createUrl('//space/space/invite', array('sguid' => $workspace->guid)), array('class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
-        ?>
 
-        <hr>
-        <?php if (count($workspace->applicants) != 0) : ?>
-            <div class="well well-small">
-                <p><strong><?php echo Yii::t('SpaceModule.admin', 'Approval pending:'); ?></strong></p>
-                <table width="100%" border="0">
-                    <?php foreach ($workspace->applicants as $membership) : ?>
-                        <?php $user = $membership->user; ?>
-                        <tr>
-                            <td width="100%">
-                                <div class="media">
-                                    <a class="pull-left" href="<?php echo $user->getProfileUrl(); ?>">
+    <br/><br/>
+    <?php echo CHtml::form($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)), 'GET'); ?>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group form-group-search">
 
-                                        <img class="media-object img-rounded"
-                                             src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="34"
-                                             height="34" alt="34x34" data-src="holder.js/34x34"
-                                             style="width: 34px; height: 34px;">
-                                    </a>
 
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></a>
-                                            <?php if ($user->group != null) { ?>
-                                                <small>
-                                                    (<?php echo HHtml::link($user->group->name, $this->createUrl('community/members', array('keyword' => 'groupId:' . $user->group->id))); ?>
-                                                    )
-                                                </small>
-                                            <?php } ?>
-                                        </h5><br>
-                                        <?php echo CHtml::encode($membership->request_message); ?>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <?php echo CHtml::link('<i class="fa fa-ok"></i>', $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-xs btn-success tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Accept user'))); ?>
-                                <?php echo CHtml::link('<i class="fa fa-times"></i>', $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-xs btn-danger tt", 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'data-original-title' => Yii::t('SpaceModule.base', 'Decline user'))); ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
+                <input type="text" class="form-control form-search" placeholder="Search members" name="search"
+                       value="<?php echo CHtml::encode($search); ?>"/>
+                <br/>
+                <?php echo CHtml::submitButton("Search", array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+
             </div>
-            <hr>
-        <?php endif; ?>
 
-        <?php echo CHtml::form($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)), 'GET'); ?>
-        <div class="row">
-            <div class="col-md-9">
-                <input type="text" class="form-control" name="search" value="<?php echo CHtml::encode($search); ?>"/>
-            </div>
-            <div class="col-md-3">
-                <?php echo CHtml::submitButton("Search", array('class' => 'btn btn-primary')); ?>
-            </div>
         </div>
 
+        <div class="col-md-3"></div>
 
-        </form>
-        <br>
+    </div>
+    <?php echo Chtml::endForm(); ?>
 
-        <?php echo Chtml::endForm(); ?>
+    <?php echo CHtml::form($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)), 'post'); ?>
+    <?php if ($item_count > 0): ?>
 
-        <?php echo CHtml::form($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)), 'post'); ?>
-        <div class="well well-small">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th><?php echo Yii::t('SpaceModule.admin', "User"); ?></th>
+                <th></th>
+                <th><?php echo Yii::t('SpaceModule.admin', "Can invite"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
+                                  title="<?php echo Yii::t('SpaceModule.admin', 'Allow this user to<br>invite other users'); ?>"></i>
+                </th>
+                <th><?php echo Yii::t('SpaceModule.admin', "Can share"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
+                                 title="<?php echo Yii::t('SpaceModule.admin', 'Allow this user to<br>make content public'); ?>"></i>
+                </th>
+                <th><?php echo Yii::t('SpaceModule.admin', "Is admin"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
+                                title="<?php echo Yii::t('SpaceModule.admin', 'Make this user to an admin'); ?>"></i>
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
 
-            <?php if ($item_count > 0): ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="col-md-4 sortable">
-                                <?php echo Yii::t('SpaceModule.admin', 'Name'); ?>
-                            </th>
-                            <th class="col-md-1">
-                                <?php echo Yii::t('SpaceModule.admin', 'Can invite'); ?>
-                            </th>
-                            <th class="col-md-1">
-                                <?php echo Yii::t('SpaceModule.admin', 'Can share'); ?>
-                            </th>
-                            <th class="col-md-1">
-                                <?php echo Yii::t('SpaceModule.admin', 'Is admin'); ?>
-                            </th>
-                            <th class="col-md-1">
+            <?php foreach ($members as $membership) : ?>
+                <?php
+                $user = $membership->user;
+                if ($user == null)
+                    continue;
 
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($members as $membership) : ?>
+                // Hidden field to get users on this page
+                echo CHtml::hiddenField("users[" . $user->guid . "]", $user->guid);
+
+                // Hidden field to get users on this page
+                echo CHtml::hiddenField('user_' . $user->guid . "[placeholder]", 1);
+                ?>
+
+                <tr>
+                    <td width="52px">
+                        <a href="<?php echo $user->getProfileUrl(); ?>">
+
+                            <img class="media-object img-rounded"
+                                 src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="48"
+                                 height="48" alt="48x48" data-src="holder.js/48x48"
+                                 style="width: 48px; height: 48px;">
+                        </a>
+
+                    </td>
+                    <td>
+                        <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
+                        <br/>
+                        <?php echo $user->title; ?>
+
+                    </td>
+
+                    <?php if (!$workspace->isOwner($user->id)) : ?>
+                        <td style="vertical-align:middle">
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo CHtml::checkBox('user_' . $user->guid . "[inviteRole]", $membership->invite_role, array('class' => 'check_invite', 'id' => "chk_invite_" . $user->id, 'data-view' => 'slider')); ?>
+                                </label>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo CHtml::checkBox('user_' . $user->guid . "[shareRole]", $membership->share_role, array('class' => 'check_share', 'id' => "chk_share_" . $user->id, 'data-view' => 'slider')); ?>
+                                </label>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo CHtml::checkBox('user_' . $user->guid . "[adminRole]", $membership->admin_role, array('class' => 'check_admin', 'id' => "chk_admin_" . $user->id, 'data-view' => 'slider')); ?>
+                                </label>
+                            </div>
+                        </td>
+
+
+
+
+                        <td style="vertical-align:middle">
+                            <!-- load modal confirm widget -->
                             <?php
-                            $user = $membership->user;
-                            if ($user == null)
-                                continue;
-
-                            // Hidden field to get users on this page
-                            echo CHtml::hiddenField("users[" . $user->guid . "]", $user->guid);
-
-                            // Hidden field to get users on this page
-                            echo CHtml::hiddenField('user_' . $user->guid . "[placeholder]", 1);
+                            $this->widget('application.widgets.ModalConfirmWidget', array(
+                                'uniqueID' => $user->id,
+                                'title' => Yii::t('SpaceModule.admin', '<strong>Remove</strong> member'),
+                                'message' => Yii::t('SpaceModule.admin', 'Are you sure, that you want to remove this member from this space?'),
+                                'buttonTrue' => Yii::t('SpaceModule.admin', 'Yes, remove'),
+                                'buttonFalse' => Yii::t('SpaceModule.admin', 'No, cancel'),
+                                'class' => 'btn btn-sm btn-danger',
+                                'linkContent' => Yii::t('SpaceModule.admin', 'Remove'),
+                                'linkHref' => $this->createUrl('//space/admin/adminRemoveMember', array('guid' => $workspace->guid, 'userGuid' => $user->guid, 'ajax' => 1))
+                            ));
                             ?>
 
-                            <!-- BEGIN: Results -->
-                            <tr id="row_<?php echo $user->guid; ?>">
-                                <td>
-                                    <div class="media">
-                                        <a class="pull-left" href="<?php echo $user->getProfileUrl(); ?>">
+                        </td>
+                    <?php else: ?>
+                        <td colspan="3">
+                            <div class="space-owner"><?php echo Yii::t('SpaceModule.admin', 'Space owner'); ?></div>
+                        </td>
+                        <td></td>
+                    <?php endif; ?>
 
-                                            <img class="media-object img-rounded"
-                                                 src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="48"
-                                                 height="48" alt="48x48" data-src="holder.js/48x48"
-                                                 style="width: 48px; height: 48px;">
-                                        </a>
+                </tr>
 
-                                        <div class="media-body">
-                                            <h5 class="media-heading"><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></a>
-                                                <?php if ($user->group != null) { ?>
-                                                    <small>
-                                                        (<?php echo HHtml::link($user->group->name, $this->createUrl('community/members', array('keyword' => 'groupId:' . $user->group->id))); ?>
-                                                        )
-                                                    </small>
-                                                <?php } ?>
-                                            </h5>
-                                            <?php echo $user->title; ?><br>
-                                        </div>
-                                    </div>
-                                </td>
+            <?php endforeach; ?>
 
-                                <?php if (!$workspace->isOwner($user->id)) : ?>
-<!--                                    <td><?php /*echo CHtml::checkBox('user_' . $user->guid . "[inviteRole]", $membership->invite_role, array('class' => 'check_invite', 'id' => "chk_invite_" . $user->id)); */?></td>
-                                    <td><?php /*echo CHtml::checkBox('user_' . $user->guid . "[shareRole]", $membership->share_role, array('class' => 'check_share', 'id' => "chk_share_" . $user->id)); */?></td>
-                                    <td><?php /*echo CHtml::checkBox('user_' . $user->guid . "[adminRole]", $membership->admin_role, array('class' => 'check_admin', 'id' => "chk_admin_" . $user->id)); */?></td>-->
-                                    <td style="vertical-align:middle">
-                                        <div class="checkbox">
-                                            <label>
-                                                <?php echo CHtml::checkBox('user_' . $user->guid . "[inviteRole]", $membership->invite_role, array('class' => 'check_invite', 'id' => "chk_invite_" . $user->id, 'data-view' => 'slider')); ?>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td style="vertical-align:middle">
-                                        <div class="checkbox">
-                                            <label>
-                                                <?php echo CHtml::checkBox('user_' . $user->guid . "[shareRole]", $membership->share_role, array('class' => 'check_share', 'id' => "chk_share_" . $user->id, 'data-view' => 'slider')); ?>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td style="vertical-align:middle">
-                                        <div class="checkbox">
-                                            <label>
-                                                <?php echo CHtml::checkBox('user_' . $user->guid . "[adminRole]", $membership->admin_role, array('class' => 'check_admin', 'id' => "chk_admin_" . $user->id, 'data-view' => 'slider')); ?>
-                                            </label>
-                                        </div>
-                                    </td>
+            </tbody>
+        </table>
+
+        <div class="pagination-container">
+            <?php
+            $this->widget('CLinkPager', array(
+                'currentPage' => $pages->getCurrentPage(),
+                'itemCount' => $item_count,
+                'pageSize' => $page_size,
+                'maxButtonCount' => 5,
+                'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
+                'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
+                'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
+                'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
+                'header' => '',
+                'htmlOptions' => array('class' => 'pagination'),
+            ));
+            ?>
+        </div>
+
+    <?php endif; ?>
 
 
 
 
-                                    <td style="vertical-align:middle">
-                                        <!-- load modal confirm widget -->
-                                        <?php
-                                        $this->widget('application.widgets.ModalConfirmWidget', array(
-                                            'uniqueID' => $user->id,
-                                            'message' => Yii::t('SpaceModule.admin', 'Are you sure, to remove this user from the space?'),
-                                            'buttonTrue' => Yii::t('SpaceModule.admin', 'Yes, remove'),
-                                            'buttonFalse' => Yii::t('SpaceModule.admin', 'No, cancel'),
-                                            'class' => 'btn btn-mini btn-danger',
-                                            'linkContent' => Yii::t('SpaceModule.admin', 'Remove'),
-                                            'linkHref' => $this->createUrl('//space/admin/adminRemoveMember', array('guid' => $workspace->guid, 'userGuid' => $user->guid, 'ajax' => 1))
-                                        ));
-                                        ?>
+    <?php $owner = $workspace->getOwner(); ?>
 
-                                    </td>
-                                <?php else: ?>
-                                    <td colspan="4"><div class="space-owner"><?php echo Yii::t('SpaceModule.admin', 'Space owner'); ?></div></td>
-                                <?php endif; ?>
-                            </tr>
+    <?php if ($owner->id == Yii::app()->user->id): ?>
+        <p>
+            <a data-toggle="collapse" id="space-owner-link" href="#collapse-space-owner" style="font-size: 11px;"><i
+                    class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.admin', 'Change space owner') ?>
+            </a>
+        </p>
+        <div id="collapse-space-owner" class="panel-collapse collapse">
+            <div class="well well-sm">
 
-                            <!-- END: Results -->
+                <p>    <?php echo Yii::t('SpaceModule.admin', 'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.') ?></p>
 
-                        <?php endforeach; ?>
+                <div class="row">
+                    <div class="col-md-5">
 
-                    </tbody>
-                </table>
+                        <select name="ownerId" class="form-control">
+                            <?php foreach ($workspace->memberships as $membership) : ?>
+                                <?php if ($membership->user == null) continue; ?>
+                                <option
+                                    value="<?php echo $membership->user->id; ?>" <?php if ($membership->user->id == $owner->id): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
 
-                <div class="pagination-container">
-                    <?php
-                    $this->widget('CLinkPager', array(
-                        'currentPage' => $pages->getCurrentPage(),
-                        'itemCount' => $item_count,
-                        'pageSize' => $page_size,
-                        'maxButtonCount' => 5,
-                        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
-                        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
-                        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
-                        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
-                        'header' => '',
-                        'htmlOptions' => array('class' => 'pagination'),
-                    ));
-                    ?>
+                    </div>
+                    <div class="col-md-7"></div>
                 </div>
-            <?php else: ?>
-
-                <strong><?php echo Yii::t('SpaceModule.admin', 'No users found!'); ?></strong>
-                <br/>
-                <br/>
-            <?php endif; ?>
-
-
-
-
-            <?php $owner = $workspace->getOwner(); ?>
-
-            <?php if ($owner->id == Yii::app()->user->id): ?>
-                <?php /* Change Owner of the workspace */ ?>
-                <hr>
-                <b>Owner of this workspace:</b>
-                <select name="ownerId" class="form-control">
-                    <?php foreach ($workspace->memberships as $membership) : ?>
-                        <?php if ($membership->user == null) continue; ?>
-                        <option
-                            value="<?php echo $membership->user->id; ?>" <?php if ($membership->user->id == $owner->id): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
-                        <?php endforeach; ?>
-                </select>
-            <?php endif; ?>
+            </div>
 
         </div>
-        <hr>
-        <?php echo CHtml::submitButton("Save", array('class' => 'btn btn-primary')); ?>
 
-        <!-- show flash message after saving -->
-        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+    <?php endif; ?>
 
-        <?php echo Chtml::endForm(); ?>
 
+    <hr>
+    <?php echo CHtml::submitButton("Save", array('class' => 'btn btn-primary')); ?>
+
+    <!-- show flash message after saving -->
+    <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+
+    <?php echo Chtml::endForm(); ?>
+
+</div>
+</div>
+<?php if (count($workspace->applicants) != 0) : ?>
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <?php echo Yii::t('SpaceModule.admin', '<strong>Outstanding</strong> user requests'); ?>
+        </div>
+        <div class="panel-body">
+            <p>
+                <?php echo Yii::t('SpaceModule.admin', "The following users waiting for an approval to enter this space. Please take some action now."); ?>
+            </p>
+
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th><?php echo Yii::t('SpaceModule.admin', "User"); ?></th>
+                    <th></th>
+                    <th><?php echo Yii::t('SpaceModule.admin', "Request message"); ?></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($workspace->applicants as $membership) : ?>
+                    <?php $user = $membership->user; ?>
+                    <tr>
+                        <td width="40px">
+                            <a href="<?php echo $user->getProfileUrl(); ?>">
+
+                                <img class="media-object img-rounded"
+                                     src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="34"
+                                     height="34" alt="34x34" data-src="holder.js/34x34"
+                                     style="width: 34px; height: 34px;">
+                            </a>
+                        </td>
+                        <td>
+                            <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
+                            <br/>
+                            <?php echo $user->title; ?>
+                        </td>
+                        <td>
+                            <?php echo CHtml::encode($membership->request_message); ?>
+                        </td>
+                        <td width="150px">
+                            <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Accept'), $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
+                            <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Decline'), $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+<?php if (count($invited_members) != 0) : ?>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <?php echo Yii::t('SpaceModule.admin', '<strong>Outstanding</strong> sended invitations'); ?>
+    </div>
+    <div class="panel-body">
+        <p>
+            <?php echo Yii::t('SpaceModule.admin', "The following users were already invited to this space, but didn't follow the invitation until now."); ?>
+            <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+                <br/>
+                <?php echo Yii::t('SpaceModule.admin', "External users who invited by email, will be not listed here."); ?>
+            <?php endif; ?>
+        </p>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th><?php echo Yii::t('SpaceModule.admin', "User"); ?></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($invited_members as $membership) : ?>
+                <?php $user = $membership->user; ?>
+
+                <tr>
+                    <td width="40px">
+                        <a href="<?php echo $user->getProfileUrl(); ?>">
+
+                            <img class="media-object img-rounded"
+                                 src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="34"
+                                 height="34" alt="34x34" data-src="holder.js/34x34"
+                                 style="width: 34px; height: 34px;">
+                        </a>
+                    </td>
+                    <td>
+                        <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
+                        <br/>
+                        <?php echo $user->title; ?>
+                    </td>
+                    <td width="100px">
+                        <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Revoke invitation'), $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $workspace->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+
+            </tbody>
+        </table>
     </div>
 </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+
+    $('#collapse-space-owner').on('show.bs.collapse', function () {
+        // change link arrow
+        $('#space-owner-link i').removeClass('fa-caret-right');
+        $('#space-owner-link i').addClass('fa-caret-down');
+    })
+
+    $('#collapse-space-owner').on('hide.bs.collapse', function () {
+        // change link arrow
+        $('#space-owner-link i').removeClass('fa-caret-down');
+        $('#space-owner-link i').addClass('fa-caret-right');
+    })
+</script>

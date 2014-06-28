@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', 'Delete Account'); ?>
+    <?php echo Yii::t('UserModule.base', '<strong>Delete</strong> account'); ?>
 </div>
 
 <div class="panel-body">

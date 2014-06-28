@@ -1,8 +1,8 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Edit</strong> user'); ?></div>
+    <div class="panel-body">
 
+        <?php echo $form; ?>
 
-
-
-<h1><?php echo Yii::t('UserModule.base', 'Edit user'); ?></h1>
-
-<?php echo $form; ?>
-
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', 'Change password'); ?>
+    <?php echo Yii::t('UserModule.base', '<strong>Change</strong> password'); ?>
 </div>
 <div class="panel-body">
     <?php

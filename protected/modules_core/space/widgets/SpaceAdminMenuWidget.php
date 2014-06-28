@@ -21,14 +21,14 @@ class SpaceAdminMenuWidget extends MenuWidget {
 
         $this->addItemGroup(array(
             'id' => 'admin',
-            'label' => Yii::t('SpaceModule.base', 'Space preferences'),
+            'label' => Yii::t('SpaceModule.base', '<strong>Space</strong> preferences'),
             'sortOrder' => 100,
         ));
 
         // check user rights
         if ($space->isAdmin()) {
             $this->addItem(array(
-                'label' => Yii::t('SpaceModule.base', 'Basic'),
+                'label' => Yii::t('SpaceModule.base', 'General'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/edit', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="fa fa-cogs"></i>',
@@ -38,7 +38,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
         }
 
         // check user rights
-        if ($space->canInvite()) {
+        if ($space->isAdmin()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.base', 'Members'),
                 'group' => 'admin',

@@ -1,7 +1,7 @@
 <?php if ($space->isAdmin() && count($space->applicants) != 0) : ?>
     <div class="panel panel-danger">
 
-        <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', 'New member request'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', '<strong>New</strong> member request'); ?></div>
 
         <div class="panel-body">
             <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -47,8 +47,12 @@
     </div>
 <?php endif; ?>
 
-<div class="panel panel-default members">
-    <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', 'Members'); ?></div>
+<div class="panel panel-default members" id="space-members-panel">
+
+    <!-- Display panel menu widget -->
+    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'space-members-panel')); ?>
+
+    <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?></div>
     <div class="panel-body">
         <?php if (count($space->membershipsLimited) != 0) : ?>
             <?php $ix = 0; ?>

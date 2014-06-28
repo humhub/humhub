@@ -13,6 +13,11 @@
  */
 ?>
 
+
+<div class="panel panel-default">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Delete</strong> group'); ?></div>
+    <div class="panel-body">
+
 <p>
 <?php echo Yii::t('AdminModule.base', 'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:', array('{group}' => $group->name)); ?>
 </p>
@@ -51,7 +56,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <?php $this->endWidget(); ?>
 
-
+</div></div>
 
 
 

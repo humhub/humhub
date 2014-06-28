@@ -1,5 +1,6 @@
-<div class="panel panel-default">
+<div class="panel panel-default <?php if (Yii::app()->getController()->id == 'dashboard') { echo 'hidden'; } ?>">
     <div class="panel-body" id="contentFormBody">
+
         <?php echo CHtml::form('', 'POST'); ?>
 
         <ul id="contentFormError">
@@ -58,7 +59,7 @@
                 }",
                         'success' => "function(response) {
                     if (response.success) {
-                    
+
                         // application.modules_core.wall function
                         currentStream.prependEntry(response.wallEntryId);
 
@@ -83,7 +84,7 @@
                         $('#contentFormError').show();
 
                         $.each(response.errors, function(fieldName, errorMessage){
-                            
+
                             // Mark Fields as Error
                             fieldId = 'contentForm_'+fieldName;
                             $('#'+fieldId).addClass('error');
@@ -91,7 +92,7 @@
                             $.each(errorMessage, function(key, msg) {
                                 $('#contentFormError').append('<li><i class=\"icon-warning-sign\"></i> '+msg+'</li>');
                             });
-                            
+
                         });
 
                     }
@@ -107,14 +108,17 @@
                 ));
                 ?>
 
+                <!-- public checkbox -->
+                <?php echo CHtml::checkbox("visibility", "", array('id'=>'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
+
                 <!-- content sharing -->
                 <div class="pull-right">
 
                     <span class="label label-success label-public hidden">Public</span>
 
-                    <ul class="nav nav-pills preferences">
+                    <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
+                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i

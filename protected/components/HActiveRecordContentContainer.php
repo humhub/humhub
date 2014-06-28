@@ -45,6 +45,17 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
     }
 
     /**
+     * Returns the Profile Banner Image Object for this Content Base
+     *
+     * @return ProfileBannerImage
+     */
+    public function getProfileBannerImage() {
+
+        return new ProfileBannerImage($this->guid);
+    }
+
+
+    /**
      * Should be overwritten by implementation
      */
     public function getUrl() {

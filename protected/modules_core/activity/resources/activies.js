@@ -14,12 +14,17 @@ function activityShowItem(wallEntryId) {
 
 $(document).ready(function () {
 
-
     // set the ID for the last loaded activity entry to 1
     var activityLastLoadedEntryId = 1;
 
     // save if the last entries are already loaded
     var activityLastEntryReached = false;
+
+    // listen for scrolling event yes or no
+    var scrolling = true;
+
+    // hide loader
+    $("#activityLoader").hide();
 
     $('#activityContents').scroll(function () {
 
@@ -33,13 +38,19 @@ $(document).ready(function () {
         var _currentScrollPosition = $('#activityContents').scrollTop();
 
         // load more activites if current scroll position is near scroll height
-        if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 1)) {
+        if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 30)) {
 
             // checking if ajax loading is necessary or the last entries are already loaded
             if (activityLastEntryReached == false) {
 
-                // load more activities
-                loadMoreActivities();
+                if (scrolling == true) {
+
+                    // stop listening for scrolling event to load the new activity range only one time
+                    scrolling = false;
+
+                    // load more activities
+                    loadMoreActivities();
+                }
             }
 
         }
@@ -65,18 +76,18 @@ $(document).ready(function () {
         // load json
         jQuery.getJSON(_url, function (json) {
 
-            // hide loader
-            $("#activityLoader").hide();
-
             if (activityLastLoadedEntryId == 1 && json.counter == 0) {
 
                 // show placeholder if no results exists
                 $("#activityEmpty").show();
 
+                // hide loader
+                $("#activityLoader").hide();
+
             } else {
 
                 // add new activities
-                $('#activityContents').prepend(json.output);
+                $("#activityLoader").before(json.output);
 
                 // save the last activity id for the next reload
                 activityLastLoadedEntryId = json.lastEntryId;
@@ -84,9 +95,15 @@ $(document).ready(function () {
                 if (json.counter < 10) {
                     // prevent the next ajax calls, if there are no more entries
                     activityLastEntryReached = true;
+
+                    // hide loader
+                    $("#activityLoader").hide();
                 }
 
             }
+
+            // start listening for the scrolling event
+            scrolling = true;
 
         });
     }

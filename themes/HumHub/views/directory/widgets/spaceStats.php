@@ -7,9 +7,13 @@
  */
 ?>
 
-<div class="panel panel-default spaces">
+<div class="panel panel-default spaces" id="new-spaces-panel">
+
+    <!-- Display panel menu widget -->
+    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'new-spaces-panel')); ?>
+
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', 'New spaces'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> spaces'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
@@ -23,9 +27,13 @@
     </div>
 </div>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="spaces-statistics-panel">
+
+    <!-- Display panel menu widget -->
+    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'spaces-statistics-panel')); ?>
+
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', 'Statistics'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Space</strong> stats'); ?>
     </div>
 
     <div class="panel-body">

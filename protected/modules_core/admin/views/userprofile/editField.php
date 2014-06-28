@@ -1,12 +1,20 @@
-<?php if (!$field->isNewRecord) : ?>
-    <h1><?php echo Yii::t('AdminModule.base', 'Edit profile field'); ?></h1>
-<?php else: ?>
-    <h1><?php echo Yii::t('AdminModule.base', 'Create new profile field'); ?></h1>
-<?php endif; ?>
+<div class="panel panel-default">
 
-<?php
-echo $form;
-?>
+    <?php if (!$field->isNewRecord) : ?>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Edit</strong> profile field'); ?></div>
+    <?php else: ?>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Create</strong> new profile field'); ?></div>
+    <?php endif; ?>
+
+    <div class="panel-body">
+
+
+        <?php
+        echo $form;
+        ?>
+
+    </div>
+</div>
 
 
 <script>

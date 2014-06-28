@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('base', 'User details new'); ?>
+    <?php echo Yii::t('base', '<strong>User</strong> details new'); ?>
 
     <!-- show flash message after saving -->
     <?php $this->widget('application.widgets.DataSavedWidget'); ?>

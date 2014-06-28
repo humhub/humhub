@@ -16,7 +16,7 @@ class AccountMenuWidget extends MenuWidget {
 
         $this->addItemGroup(array(
             'id' => 'account',
-            'label' => Yii::t('UserModule.base', 'Account settings'),
+            'label' => Yii::t('UserModule.base', '<strong>Account</strong> settings'),
             'sortOrder' => 100,
         ));
 

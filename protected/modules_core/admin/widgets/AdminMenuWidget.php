@@ -19,7 +19,7 @@ class AdminMenuWidget extends MenuWidget
 
         $this->addItemGroup(array(
             'id' => 'manage',
-            'label' => Yii::t('AdminModule.base', 'Manage'),
+            'label' => Yii::t('AdminModule.base', '<strong>Administration</strong> menu'),
             'sortOrder' => 100,
         ));
 

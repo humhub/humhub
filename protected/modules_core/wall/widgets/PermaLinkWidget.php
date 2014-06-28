@@ -18,19 +18,6 @@ class PermaLinkWidget extends HWidget {
     public $content;
 
     /**
-     * Inits the Perma Link
-     *
-     * Creates a Javascript Variable "wallPermaLinkUrl" with the Permalink Base URL
-     */
-    public function init() {
-
-        // Add Archive Links to JS
-        Yii::app()->clientScript->setJavascriptVariable(
-                "wallPermaLinkUrl", Yii::app()->createAbsoluteUrl('//wall/perma/content', array('model' => '-className-', 'id' => '-id-'))
-        );
-    }
-
-    /**
      * Executes the widget.
      */
     public function run() {

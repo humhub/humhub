@@ -1,5 +1,7 @@
-<h1><?php echo Yii::t('AdminModule.base', 'Decline & delete user: {displayName}', array('{displayName}' => $model->displayName)); ?></h1>
-<br>
+<div class="panel panel-default">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => $model->displayName)); ?></div>
+    <div class="panel-body">
+
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'approve-declineuser-form',

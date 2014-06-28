@@ -10,7 +10,8 @@
  * @since 0.5
  */
 ?>
-<ul class="nav nav-tabs wallFilterPanel" id="filter">
+<?php if (Yii::app()->getController()->id != 'dashboard') {  ?>
+<ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
     <li class=" dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Filter'); ?> <b
                 class="caret"></b></a>
@@ -58,7 +59,7 @@
         </ul>
     </li>
 </ul>
-
+<?php } ?>
 
 <div id="wallStream">
 
@@ -96,7 +97,7 @@
             elseif ($type == Wall::TYPE_SPACE): ?>
                 <?php if ($this->contentContainer->canWrite()) { ?>
                 <div class="placeholder placeholder-empty-stream">
-                    <?php echo Yii::t('WallModule.base', '<b>This space is still empty!</b><br>Make the beginning and post something...'); ?>
+                    <?php echo Yii::t('WallModule.base', '<b>This space is still empty!</b><br>Start by posting something here...'); ?>
                 </div>
             <?php }?>
             <?php endif; ?>
@@ -111,7 +112,7 @@
     </div>
 
     <!-- DIV for an single wall entry -->
-    <div class="s2_single">
+    <div class="s2_single" style="display: none;">
         <div class="back_button_holder">
             <a href="#"
                class="singleBackLink btn btn-primary"><?php echo Yii::t('WallModule.base', 'Back to stream'); ?></a><br><br>

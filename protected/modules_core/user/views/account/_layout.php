@@ -9,8 +9,6 @@
             </div>
         </div>
         <div class="col-md-3">
-            <img class="img-rounded" src="<?php echo Yii::app()->user->model->getProfileImage()->getUrl(); ?>"
-                 data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
         </div>
     </div>
 </div>

@@ -11,9 +11,12 @@
 ?>
 
 <?php if (count($follower) > 0) { ?>
-    <div class="panel panel-default follower">
+    <div class="panel panel-default follower" id="profile-follower-panel">
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.base', 'Followers'); ?></div>
+        <!-- Display panel menu widget -->
+        <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'profile-follower-panel')); ?>
+
+        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>User</strong> followers'); ?></div>
 
         <div class="panel-body">
             <?php foreach ($follower as $user): ?>
@@ -30,10 +33,14 @@
 <?php } ?>
 
 <?php if (count($follow) > 0) { ?>
-    <div class="panel panel-default follower">
+    <div class="panel panel-default follower" id="profile-following-panel">
+
+        <!-- Display panel menu widget -->
+        <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'profile-following-panel')); ?>
+
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', 'Following'); ?>
+            <?php echo Yii::t('UserModule.base', '<strong>Following</strong> user'); ?>
         </div>
 
         <div class="panel-body">

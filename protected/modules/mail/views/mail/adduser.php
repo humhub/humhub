@@ -33,7 +33,7 @@
 
         </div>
         <div class="modal-footer">
-
+            <hr/>
             <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Send'), array('//mail/mail/adduser', 'id' => $message->id), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#adduser-loader").removeClass("hidden"); }',

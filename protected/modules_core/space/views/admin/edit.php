@@ -1,5 +1,10 @@
+<?php
+/** @var $this AdminController */
+/** @var $model Space */
+?>
+
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', 'General space options'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', '<strong>General</strong> space settings'); ?></div>
     <div class="panel-body">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -10,19 +15,40 @@
 
         <?php //echo $form->errorSummary($model); ?>
 
+        <div class="row">
 
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'name'); ?>
-            <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'maxlength' => 45)); ?>
-            <?php echo $form->error($model, 'name'); ?>
+            <div class="col-md-3">
+
+                <img class="img-rounded" src="<?php echo $model->getProfileImage()->getUrl(); ?>" alt=""/><br><br>
+                <?php echo CHtml::link(Yii::t('SpaceModule.base', "Change image"), $this->createUrl('//space/admin/changeImage', array('sguid' => $model->guid)), array('class' => 'btn btn-primary')); ?>
+
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'name'); ?>
+                    <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'maxlength' => 45)); ?>
+                    <?php echo $form->error($model, 'name'); ?>
+                </div>
+
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'description'); ?>
+                    <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '6')); ?>
+                    <?php echo $form->error($model, 'description'); ?>
+                </div>
+
+
+            </div>
+
+
         </div>
 
 
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'description'); ?>
-            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '6')); ?>
-            <?php echo $form->error($model, 'description'); ?>
-        </div>
+
+
+
         <div class="form-group">
             <?php echo $form->labelEx($model, 'website'); ?>
             <?php echo $form->textField($model, 'website', array('class' => 'form-control', 'maxlength' => 45)); ?>

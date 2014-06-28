@@ -122,18 +122,6 @@ function wallUnarchive(className, id) {
     });
 }
 
-
-/**
- * 
- */
-function wallPermaLink(className, id) {
-    url = wallPermaLinkUrl.replace('-className-', className);
-    url = url.replace('-id-', id);
-    
-    window.prompt ("Copy to clipboard: Ctrl+C, Enter", url);
-    
-}
-
 /**
  * Wall Delete
  * 

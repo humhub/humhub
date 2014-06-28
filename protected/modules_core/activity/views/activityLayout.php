@@ -8,12 +8,13 @@
  * @package humhub.modules.activity
  * @since 0.5
  */
+/**@var $activity Activity */
 ?>
 
 
 <li class="activity-entry">
     <?php if ($this->wallEntryId != 0) : ?><a href="#" onClick="activityShowItem(<?php echo $this->wallEntryId; ?>);
-                return false;"><?php endif; ?>
+        return false;"><?php endif; ?>
         <div class="media">
             <!-- Show user image -->
             <img class="media-object img-rounded pull-left" data-src="holder.js/32x32" alt="32x32"
@@ -25,9 +26,10 @@
                 <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
                      style="width: 20px; height: 20px;"
                      src="<?php echo $activity->content->space->getProfileImage()->getUrl(); ?>">
-                 <?php endif; ?>
+            <?php endif; ?>
 
             <div class="media-body">
+
                 <!-- Show content -->
                 <?php echo $content; ?><br>
 

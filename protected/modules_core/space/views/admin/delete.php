@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.base', 'Delete space'); ?>
+        <?php echo Yii::t('SpaceModule.base', '<strong>Delete</strong> space'); ?>
     </div>
     <div class="panel-body">
         <p><?php echo Yii::t('SpaceModule.base', 'Are you sure, that you want to delete this space? All published content will be removed!'); ?></p>

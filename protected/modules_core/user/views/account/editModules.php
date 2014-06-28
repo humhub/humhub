@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.account', 'User modules'); ?>
+    <?php echo Yii::t('UserModule.account', '<strong>User</strong> modules'); ?>
 </div>
 
 <div class="panel-body">

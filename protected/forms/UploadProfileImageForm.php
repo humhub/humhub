@@ -40,6 +40,7 @@ class UploadProfileImageForm extends CFormModel {
      */
     public function rules() {
         return array(
+            array('image', 'required'),
             array('image', 'file', 'types' => 'jpg, png, jpeg, tiff', 'maxSize' => 3 * 1024 * 1024),
         );
     }

@@ -24,26 +24,29 @@ class ProfileMenuWidget extends MenuWidget {
         $userGuid = Yii::app()->getController()->getUser()->guid;
 
         $this->addItemGroup(array(
-            'id' => 'general',
-            'label' => Yii::t('UserModule.base', 'General'),
+            'id' => 'profile',
+            'label' => Yii::t('UserModule.base', '<strong>Profile</strong> menu'),
             'sortOrder' => 100,
         ));
 
+
         $this->addItem(array(
             'label' => Yii::t('UserModule.base', 'Stream'),
+            'group' => 'profile',
             'url' => Yii::app()->createUrl('//user/profile', array('uguid' => $userGuid)),
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->id == "profile" && Yii::app()->controller->action->id == "index"),
         ));
 
-        if (Yii::app()->getController()->getUser()->profile->about != "") {
+        //if (Yii::app()->getController()->getUser()->profile->about != "") {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.base', 'About'),
+                'group' => 'profile',
                 'url' => Yii::app()->createUrl('//user/profile/about', array('uguid' => $userGuid)),
                 'sortOrder' => 300,
                 'isActive' => (Yii::app()->controller->id == "profile" && Yii::app()->controller->action->id == "about"),
             ));
-        }
+        //}
 
         parent::init();
     }

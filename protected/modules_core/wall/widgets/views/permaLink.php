@@ -10,4 +10,19 @@
  * @package humhub.modules_core.wall
  * @since 0.5
  */
-?><li><a href="#" onClick="wallPermaLink('<?php echo $model; ?>', '<?php echo $id; ?>'); return false;"><i class="fa fa-link"></i> <?php echo Yii::t('WallModule.base', 'Permalink'); ?></a></li>
+?><li>
+
+    <?php $this->widget('application.widgets.ModalConfirmWidget', array(
+        'uniqueID' => 'modal_permalink_'. $id,
+        'linkOutput' => 'a',
+        'title' => Yii::t('WallModule.base', '<strong>Permalink</strong> to this post'),
+        'message' => '<textarea rows="3" id="permalink-txt-'. $id .'" class="form-control permalink-txt">'. Yii::app()->createAbsoluteUrl('//wall/perma/content', array('model' => $model, 'id' => $id)) .'</textarea><p class="help-block">Copy to clipboard: Ctrl+C, Enter</p>',
+        'buttonFalse' => Yii::t('WallModule.base', 'Close'),
+        'linkContent' => '<i class="fa fa-link"></i> ' . Yii::t('WallModule.base', 'Permalink'),
+        'linkHref' => '',
+        'confirmJS' => 'function(jsonResp) { wallDelete(jsonResp); }',
+        'modalShownJS' => '$("#permalink-txt-'. $id .'").focus(); $("#permalink-txt-'. $id .'").select();'
+    ));
+
+    ?>
+</li>

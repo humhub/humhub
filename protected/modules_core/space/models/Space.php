@@ -37,11 +37,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
     // Join Policies
     const JOIN_POLICY_NONE = 0;  // No Self Join Possible
-    const JOIN_POLICY_APPLICATION = 1; // Only Application Possible
+    const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
     const JOIN_POLICY_FREE = 2;  // Free for All
     // Visibility
     const VISIBILITY_NONE = 0;  // Always invisible
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered memebrs
+    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
     const VISIBILITY_ALL = 2;   // Free for All
     // Status
     const STATUS_DISABLED = 0;  // Disabled
