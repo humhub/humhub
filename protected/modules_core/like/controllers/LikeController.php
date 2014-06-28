@@ -181,7 +181,7 @@ class LikeController extends Controller
         $users = User::model()->findAllBySql($sql, $params);
 
         $output = $this->renderPartial('application.modules_core.user.views._listUsers', array(
-            'title' => Yii::t('LikeModule.base', "Users who like this"),
+            'title' => Yii::t('LikeModule.base', "<strong>Users</strong> who like this"),
             'users' => $users,
             'pagination' => $pagination
                 ), true);

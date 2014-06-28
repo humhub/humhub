@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
-        <?php $form = $this->beginWidget('CActiveForm', array('id' => 'workspace-crop-image-form', 'enableAjaxValidation' => false)); ?>
+        <?php $form = $this->beginWidget('CActiveForm', array('id' => 'banner-crop-image-form', 'enableAjaxValidation' => false)); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"

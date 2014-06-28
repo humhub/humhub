@@ -257,61 +257,85 @@ class AdminController extends Controller {
 
 
     /**
-     * Set a Profile Image
-     *
+     * Handle the profile image upload
      */
-    public function actionChangeImage() {
+    public function actionSpaceImageUpload()
+    {
 
-        $this->adminOnly();
+        $space = $this->getSpace();
 
         $model = new UploadProfileImageForm();
-        $workspace = $this->getSpace();
 
-        if (isset($_POST['UploadProfileImageForm'])) {
+        $json = array();
 
-            $_POST['UploadProfileImageForm'] = Yii::app()->input->stripClean($_POST['UploadProfileImageForm']);
+        //$model->image = CUploadedFile::getInstance($model, 'image');
+        $files = CUploadedFile::getInstancesByName('spacefiles');
+        $file = $files[0];
+        $model->image = $file;
 
-            $model->attributes = $_POST['UploadProfileImageForm'];
+        if ($model->validate()) {
 
-            $model->image = CUploadedFile::getInstance($model, 'image');
+            $json['error'] = false;
 
-            if ($model->validate()) {
+            $profileImage = new ProfileImage($space->guid);
+            $profileImage->setNew($model->image);
 
-                $profileImage = new ProfileImage($workspace->guid);
-                $profileImage->setNew($model->image);
+            $json['name'] = "";
+            $json['url'] = $profileImage->getUrl();
+            $json['size'] = $model->image->getSize();
+            $json['deleteUrl'] = "";
+            $json['deleteType'] = "";
 
-                $this->redirect($this->createUrl('//space/admin/cropImage', array('sguid' => $workspace->guid)));
-            }
+        } else {
+            $json['error'] = true;
+            $json['errors'] = $model->getErrors();
         }
 
-        $this->render('changeImage', array('model' => $model, 'workspace' => $workspace));
+
+        return $this->renderJson(array('files' => $json));
     }
 
+
     /**
-     * Set a Profile Image
-     *
+     * Crops the profile image of the user
      */
-    public function actionCropImage() {
+    public function actionCropSpaceImage()
+    {
 
         $this->adminOnly();
 
-        $workspace = $this->getSpace();
+        $space = $this->getSpace();
 
         $model = new CropProfileImageForm;
-        $profileImage = new ProfileImage($workspace->guid);
+        $profileImage = new ProfileImage($space->guid);
 
         if (isset($_POST['CropProfileImageForm'])) {
-
+            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
             $model->attributes = $_POST['CropProfileImageForm'];
-
             if ($model->validate()) {
                 $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-                $this->redirect($this->createUrl('//space/admin/edit', array('sguid' => $workspace->guid)));
+                //$this->htmlRedirect($this->createUrl('//user/profile')); //redirect($this->createUrl('//user/account/edit'));
+                $this->htmlRedirect();
             }
         }
 
-        $this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'workspace' => $workspace));
+        //$this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
+
+        $output = $this->renderPartial('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
+        Yii::app()->clientScript->render($output);
+        echo $output;
+        Yii::app()->end();
     }
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Deletes the Profile Image
