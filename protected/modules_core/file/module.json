@@ -1,0 +1,9 @@
+{
+    "id": "file",
+    "name": "File",
+    "description": "File Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

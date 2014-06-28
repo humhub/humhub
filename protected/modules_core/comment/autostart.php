@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'comment',
-    'title' => Yii::t('CommentModule.base', 'Comments'),
-    'description' => Yii::t('CommentModule.base', 'Comments core module.'),
     'class' => 'application.modules_core.comment.CommentModule',
     'isCoreModule' => true,
     'import' => array(

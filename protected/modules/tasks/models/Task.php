@@ -15,7 +15,8 @@
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Task extends HActiveRecordContent {
+class Task extends HActiveRecordContent
+{
 
     public $preassignedUsers;
     public $userToNotify = "";
@@ -24,26 +25,31 @@ class Task extends HActiveRecordContent {
     const STATUS_OPEN = 1;
     const STATUS_FINISHED = 5;
 
+    public $autoAddToWall = true;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Task the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'task';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -56,7 +62,8 @@ class Task extends HActiveRecordContent {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -68,7 +75,8 @@ class Task extends HActiveRecordContent {
     /**
      * Deletes a Task including its dependencies.
      */
-    public function delete() {
+    public function delete()
+    {
 
         // delete all tasks user assignments
         $taskUser = TaskUser::model()->findAllByAttributes(array('task_id' => $this->id));
@@ -84,7 +92,8 @@ class Task extends HActiveRecordContent {
     /**
      * Returns the Wall Output
      */
-    public function getWallOut() {
+    public function getWallOut()
+    {
         return Yii::app()->getController()->widget('application.modules.tasks.widgets.TaskWallEntryWidget', array('task' => $this), true);
     }
 
@@ -93,7 +102,8 @@ class Task extends HActiveRecordContent {
      *
      * @return type
      */
-    public function afterSave() {
+    public function afterSave()
+    {
 
         parent::afterSave();
 
@@ -133,7 +143,8 @@ class Task extends HActiveRecordContent {
     /**
      * Returns assigned users to this task
      */
-    public function getAssignedUsers() {
+    public function getAssignedUsers()
+    {
         $users = array();
         $tus = TaskUser::model()->findAllByAttributes(array('task_id' => $this->id));
         foreach ($tus as $tu) {
@@ -147,7 +158,8 @@ class Task extends HActiveRecordContent {
     /**
      * Assign user to this task
      */
-    public function assignUser($user = "") {
+    public function assignUser($user = "")
+    {
 
         if ($user == "")
             $user = Yii::app()->user->getModel();
@@ -186,7 +198,8 @@ class Task extends HActiveRecordContent {
     /**
      * UnAssign user to this task
      */
-    public function unassignUser($user = "") {
+    public function unassignUser($user = "")
+    {
         if ($user == "")
             $user = Yii::app()->user->getModel();
 
@@ -214,7 +227,8 @@ class Task extends HActiveRecordContent {
         return false;
     }
 
-    public function changePercent($newPercent) {
+    public function changePercent($newPercent)
+    {
 
         if ($this->percent != $newPercent) {
             $this->percent = $newPercent;
@@ -232,7 +246,8 @@ class Task extends HActiveRecordContent {
         return true;
     }
 
-    public function changeStatus($newStatus) {
+    public function changeStatus($newStatus)
+    {
 
         $this->status = $newStatus;
         $this->save();
@@ -292,7 +307,8 @@ class Task extends HActiveRecordContent {
         return true;
     }
 
-    public static function GetUsersOpenTasks() {
+    public static function GetUsersOpenTasks()
+    {
 
         $sql = " SELECT task.* FROM task_user " .
                 " LEFT JOIN task ON task.id = task_user.task_id " .
@@ -314,10 +330,10 @@ class Task extends HActiveRecordContent {
      *
      * @return String
      */
-    public function getContentTitle() {
+    public function getContentTitle()
+    {
         return "\"" . Helpers::truncateText($this->title, 25) . "\"";
     }
-
 
     /**
      * Assign user to this task
@@ -339,7 +355,6 @@ class Task extends HActiveRecordContent {
         $notification->target_object_model = 'Task';
         $notification->target_object_id = $this->id;
         $notification->save();
-
     }
 
 }

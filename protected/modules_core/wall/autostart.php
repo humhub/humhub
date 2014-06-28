@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'wall',
-    'title' => Yii::t('WallModule.base', 'Wall'),
-    'description' => Yii::t('WallModule.base', 'Adds the wall/streaming core module.'),
     'class' => 'application.modules_core.wall.WallModule',
     'import' => array(
         'application.modules_core.wall.*',

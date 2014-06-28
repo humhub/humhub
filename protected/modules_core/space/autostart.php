@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'space',
-    'title' => Yii::t('SpaceModule.base', 'Spaces'),
-    'description' => Yii::t('SpaceModule.base', 'Spaces core'),
     'class' => 'application.modules_core.space.SpaceModule',
     'import' => array(
         'application.modules_core.space.widgets.*',

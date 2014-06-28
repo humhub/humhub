@@ -26,11 +26,13 @@ Yii::import('application.extensions.migrate-command.EMigrateCommand');
  * @package humhub.commands
  * @since 0.5
  */
-class ZMigrateCommand extends EMigrateCommand {
+class ZMigrateCommand extends EMigrateCommand
+{
 
     public $migrationTable = 'migration';
 
-    public static function AutoMigrate() {
+    public static function AutoMigrate()
+    {
 
 
         /**        $commandPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
@@ -52,7 +54,8 @@ class ZMigrateCommand extends EMigrateCommand {
         return htmlentities(ob_get_clean(), null, Yii::app()->charset);
     }
 
-    public function init() {
+    public function init()
+    {
 
         print "Flushing Caches....\n";
         Yii::app()->cache->flush();
@@ -60,11 +63,14 @@ class ZMigrateCommand extends EMigrateCommand {
 
         print "Autodetecting Modules....\n";
 
+
+
+
         $modulePaths = array();
-        foreach (Yii::app()->moduleManager->getRegisteredModules() as $moduleId => $moduleInfo) {
+        foreach (Yii::app()->moduleManager->getInstalledModules(true, true) as $moduleId => $classAlias) {
 
             // Convert path.to.example.ExampleModule to path.to.example.migrations
-            $path = explode(".", $moduleInfo['class']);
+            $path = explode(".", $classAlias);
             array_pop($path);
             $path[] = $this->migrationSubPath;
             $migrationPath = implode(".", $path);
@@ -77,7 +83,8 @@ class ZMigrateCommand extends EMigrateCommand {
         $this->modulePaths = $modulePaths;
     }
 
-    protected function instantiateMigration($class) {
+    protected function instantiateMigration($class)
+    {
 
         $migration = new $class;
         $migration->setDbConnection($this->getDbConnection());
@@ -88,7 +95,8 @@ class ZMigrateCommand extends EMigrateCommand {
         return $migration;
     }
 
-    public function run($args) {
+    public function run($args)
+    {
 
         $exitCode = parent::run($args);
 
@@ -96,7 +104,8 @@ class ZMigrateCommand extends EMigrateCommand {
         ModuleManager::flushCache();
     }
 
-    protected function getTemplate() {
+    protected function getTemplate()
+    {
         if ($this->templateFile !== null) {
             return parent::getTemplate();
         } else {

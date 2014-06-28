@@ -9,17 +9,29 @@
  * @since 0.5
  * @author Luke
  */
-class PollsModule extends CWebModule {
+class PollsModule extends HWebModule
+{
 
     /**
      * Inits the Module
      */
-    public function init() {
+    public function init()
+    {
 
         $this->setImport(array(
             'polls.models.*',
             'polls.behaviors.*',
         ));
+    }
+
+    public function behaviors()
+    {
+
+        return array(
+            'SpaceModuleBehavior' => array(
+                'class' => 'application.modules_core.space.SpaceModuleBehavior',
+            ),
+        );
     }
 
     /**
@@ -28,7 +40,8 @@ class PollsModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onSpaceMenuInit($event) {
+    public static function onSpaceMenuInit($event)
+    {
 
         $space = Yii::app()->getController()->getSpace();
 
@@ -49,7 +62,8 @@ class PollsModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         foreach (Content::model()->findAllByAttributes(array('user_id' => $event->sender->id, 'object_model' => 'Poll')) as $content) {
             $content->delete();
@@ -67,7 +81,8 @@ class PollsModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onSpaceDelete($event) {
+    public static function onSpaceDelete($event)
+    {
         foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Poll')) as $content) {
             $content->delete();
         }
@@ -79,7 +94,8 @@ class PollsModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onSpaceUninstallModule($event) {
+    public static function onSpaceUninstallModule($event)
+    {
         if ($event->params == 'polls') {
             foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Poll')) as $content) {
                 $content->delete();
@@ -93,7 +109,8 @@ class PollsModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onDisableModule($event) {
+    public static function onDisableModule($event)
+    {
         if ($event->params == 'polls') {
 
             foreach (Content::model()->findAllByAttributes(array('object_model' => 'Poll')) as $content) {
@@ -107,7 +124,8 @@ class PollsModule extends CWebModule {
      *
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Validating Polls Module (" . Poll::model()->count() . " entries)");

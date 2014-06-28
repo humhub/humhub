@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'admin',
-    'title' => Yii::t('AdminModule.base', 'Admin'),
-    'description' => Yii::t('AdminModule.base', 'Provides general admin functions.'),
     'class' => 'application.modules_core.admin.AdminModule',
     'isCoreModule' => true,
     'import' => array(

@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'activity',
-    'title' => Yii::t('ActivityModule.base', 'Activities'),
-    'description' => Yii::t('ActivityModule.base', 'Adds the activities core module.'),
     'class' => 'application.modules_core.activity.ActivityModule',
     'isCoreModule' => true,
     'import' => array(
@@ -18,6 +16,5 @@ Yii::app()->moduleManager->register(array(
         array('class' => 'HActiveRecord', 'event' => 'onBeforeDelete', 'callback' => array('ActivityModule', 'onActiveRecordDelete')),
         array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('ActivityModule', 'onIntegrityCheck')),
        ),
-    'contentModels' => array('Activity'),
 ));
 ?>

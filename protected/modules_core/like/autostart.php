@@ -2,8 +2,6 @@
 
 Yii::app()->moduleManager->register(array(
     'id' => 'like',
-    'title' => Yii::t('LikeModule.base', 'Likes'),
-    'description' => Yii::t('LikeModule.base', 'Likes core module.'),
     'class' => 'application.modules_core.like.LikeModule',
     'isCoreModule' => true,
     'import' => array(

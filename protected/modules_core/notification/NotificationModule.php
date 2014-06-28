@@ -6,7 +6,7 @@
  * @package humhub.modules_core.notification
  * @since 0.5
  */
-class NotificationModule extends CWebModule {
+class NotificationModule extends HWebModule {
 
     public function init() {
         $this->setImport(array(

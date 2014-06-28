@@ -7,7 +7,7 @@
  * @package humhub.modules_core.space
  * @since 0.5
  */
-class SpaceModule extends CWebModule {
+class SpaceModule extends HWebModule {
 
     public function init() {
         $this->setImport(array(

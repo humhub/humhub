@@ -6,14 +6,16 @@
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class CommentModule extends CWebModule {
+class CommentModule extends HWebModule
+{
 
     /**
      * On content deletion make sure to delete all its comments
      *
      * @param CEvent $event
      */
-    public static function onContentDelete($event) {
+    public static function onContentDelete($event)
+    {
 
         foreach (Comment::model()->findAllByAttributes(array('object_model' => get_class($event->sender), 'object_id' => $event->sender->id)) as $comment) {
             $comment->delete();
@@ -25,7 +27,8 @@ class CommentModule extends CWebModule {
      *
      * @param CEvent $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         foreach (Comment::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $comment) {
             $comment->delete();
@@ -38,7 +41,8 @@ class CommentModule extends CWebModule {
      *
      * @param CEvent $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Validating Comment Module (" . Comment::model()->count() . " entries)");
@@ -59,13 +63,9 @@ class CommentModule extends CWebModule {
      *
      * @param CEvent $event
      */
-    public static function onWallEntryLinksInit($event) {
-
-        $event->sender->addWidget('application.modules_core.comment.widgets.CommentLinkWidget', array(
-            'modelName' => $event->sender->object->content->object_model,
-            'modelId' => $event->sender->object->content->object_id,
-                ), array('sortOrder' => 10)
-        );
+    public static function onWallEntryLinksInit($event)
+    {
+        $event->sender->addWidget('application.modules_core.comment.widgets.CommentLinkWidget', array('object' => $event->sender->object), array('sortOrder' => 10));
     }
 
     /**
@@ -73,13 +73,9 @@ class CommentModule extends CWebModule {
      *
      * @param CEvent $event
      */
-    public static function onWallEntryAddonInit($event) {
-
-        $event->sender->addWidget('application.modules_core.comment.widgets.CommentsWidget', array(
-            'modelName' => $event->sender->object->content->object_model,
-            'modelId' => $event->sender->object->content->object_id,
-                ), array('sortOrder' => 20)
-        );
+    public static function onWallEntryAddonInit($event)
+    {
+        $event->sender->addWidget('application.modules_core.comment.widgets.CommentsWidget', array('object' => $event->sender->object), array('sortOrder' => 20));
     }
 
 }

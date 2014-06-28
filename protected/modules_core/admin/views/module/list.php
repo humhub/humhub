@@ -1,106 +1,53 @@
-<div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Manage</strong> modules'); ?></div>
-    <div class="panel-body">
+<h1><?php echo Yii::t('AdminModule.base', 'Modules'); ?></h1>
 
-        <p>Manage installed/active modules in your HumHub Installation!</p><br>
+<ul class="nav nav-pills" id="moduleTabs">
+    <li class="active"><a href="#extensions">Installed</a></li>
+    <!--<li><?php echo CHtml::link('Browse online', $this->createUrl('listOnline')); ?></li>-->
+</ul>
+<br>
+
+<h2>Installed Modules</h2>
 
 
-        <ul class="nav nav-pills" id="moduleTabs">
-            <li class="active"><a href="#extensions">Third party modules</a></li>
-            <li><a href="#core">Installed core modules</a></li>
-        </ul>
-        <br>
-        <hr>
+<?php foreach ($installedModules as $moduleId => $module) : ?>
+    <div class="media">
+        <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
+             style="width: 64px; height: 64px;"
+             src="<?php echo $module->getImage(); ?>">
 
-        <div class="tab-content">
-            <div class="tab-pane active" id="extensions">
-
-                <?php foreach (Yii::app()->moduleManager->getRegisteredModules() as $moduleDefinition) : ?>
-
-                    <?php
-                    $moduleId = $moduleDefinition['id'];
-                    ?>
-
-                    <?php if (!$moduleDefinition['isCoreModule']) : ?>
-
-                        <div class="media">
-                            <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
-                                 style="width: 64px; height: 64px;"
-                                 src="<?php echo Yii::app()->baseUrl; ?>/uploads/profile_image/default_module.jpg">
-
-                            <div class="media-body">
-                                <h4 class="media-heading"><?php echo $moduleDefinition['title']; ?>
-                                    <small>
-                                        <?php if (Yii::app()->moduleManager->isEnabled($moduleId)) : ?>
-                                            <span
-                                                class="label label-success"><?php echo Yii::t('SpaceModule.base', 'Activated'); ?></span>
-                                        <?php endif; ?>
-                                    </small>
-                                </h4>
-
-                                <p><?php echo $moduleDefinition['description']; ?></p>
-                                <?php if (Yii::app()->moduleManager->isEnabled($moduleId)) : ?>
-                                    <?php echo CHtml::link(Yii::t('base', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId), array('class' => 'btn btn-sm btn-primary', 'onClick' => 'return moduleDisableWarning()')); ?>
-
-                                    <?php if (isset($moduleDefinition['configRoute']) && $moduleDefinition['configRoute'] != "") : ?>
-                                        <?php echo CHtml::link(Yii::t('AdminModule.base', 'Configure'), array($moduleDefinition['configRoute']), array('class' => 'btn btn-default btn-sm')); ?>
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <?php echo CHtml::link(Yii::t('base', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId), array('class' => 'btn btn-sm btn-primary')); ?>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <!-- Start: Module update message for the future -->
-                        <!--            <br>
-                                    <div class="alert alert-warning">
-                                        New Update for this module is available! <a href="#">See details</a>
-                                    </div>-->
-                        <!-- End: Module update message for the future -->
-                        <hr>
+        <div class="media-body">
+            <h4 class="media-heading"><?php echo $module->getName(); ?>
+                <small>
+                    <?php if ($module->isEnabled()) : ?>
+                        <span
+                            class="label label-success"><?php echo Yii::t('SpaceModule.base', 'Activated'); ?></span>
                     <?php endif; ?>
-                <?php endforeach; ?>
+                </small>
+            </h4>
 
+            <p><?php echo $module->getDescription(); ?></p>
 
-            </div>
+            <p><small>
+                    <?php if ($module->isEnabled()) : ?>
+                        <?php echo CHtml::link(Yii::t('AdminModule.modules', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId)); ?>
 
-            <div class="tab-pane" id="core">
-
-
-                <?php foreach (Yii::app()->moduleManager->getRegisteredModules() as $moduleDefinition) : ?>
-
-                    <?php if ($moduleDefinition['isCoreModule']) : ?>
-
-                        <div class="media">
-                            <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
-                                 style="width: 64px; height: 64px;"
-                                 src="<?php echo Yii::app()->baseUrl; ?>/uploads/profile_image/default_module.jpg">
-
-                            <div class="media-body">
-                                <h4 class="media-heading"><?php echo $moduleDefinition['title']; ?></h4>
-
-                                <p><?php echo $moduleDefinition['description']; ?></p>
-                            </div>
-                        </div>
-                        <hr>
+                        <?php if ($module->getConfigUrl()) : ?>
+                            &middot; <?php echo CHtml::link(Yii::t('AdminModule.modules', 'Configure'), $module->getConfigUrl()); ?>
+                        <?php endif; ?>
+                    <?php else: ?> 
+                        <?php echo CHtml::link(Yii::t('AdminModule.modules', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId)); ?>
                     <?php endif; ?>
-                <?php endforeach; ?>
+                    
+                    <!--
+                    &middot; <?php echo CHtml::link(Yii::t('AdminModule.modules', 'Uninstall'), array('//admin/module/uninstall', 'moduleId' => $moduleId)); ?>
+                    -->
+                    
+                    <!--
+                    &middot; <a href="#"> Details</a>
+                    &middot; <a href="#"> Uninstall</a>
+                    -->
+                </small></p>
 
-
-            </div>
         </div>
     </div>
-</div>
-
-<script>
-
-    $('#moduleTabs a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-
-
-    function moduleDisableWarning() {
-        return confirm("<?php echo Yii::t('AdminModule.base', 'Are you really sure?\nAll module specific content will be ***DELETED***!'); ?>");
-    }
-</script>
-
+<?php endforeach; ?>

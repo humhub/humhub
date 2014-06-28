@@ -3,8 +3,6 @@
 Yii::app()->moduleManager->register(array(
     'id' => 'tasks',
     'class' => 'application.modules.tasks.TasksModule',
-    'title' => Yii::t('TasksModule.base', 'Tasks'),
-    'description' => Yii::t('TasksModule.base', 'Adds a taskmanager to your spaces. With this module you can create and assign tasks to users in spaces.'),
     'import' => array(
         'application.modules.tasks.*',
         'application.modules.tasks.models.*',
@@ -19,12 +17,5 @@ Yii::app()->moduleManager->register(array(
         array('class' => 'ModuleManager', 'event' => 'onDisable', 'callback' => array('TasksModule', 'onDisableModule')),
         array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('TasksModule', 'onIntegrityCheck')),
     ),
-    'spaceModules' => array(
-        'tasks' => array(
-            'title' => Yii::t('TasksModule.base', 'Tasks'),
-            'description' => Yii::t('TasksModule.base', 'Adds a taskmanager to your spaces. With this module you can create and assign tasks to users in spaces.'),
-        ),
-    ),
-    'contentModels' => array('Task'),
 ));
 ?>

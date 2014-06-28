@@ -1,0 +1,9 @@
+{
+    "id": "admin",
+    "name": "Admin",
+    "description": "Admin Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

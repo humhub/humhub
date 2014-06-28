@@ -25,7 +25,7 @@
             $reloadUrl = CHtml::normalizeUrl(Yii::app()->createUrl('comment/comment/show', array('model' => $modelName, 'id' => $modelId)));
             echo HHtml::ajaxLink($showAllLabel, $reloadUrl, array(
                 'success' => "function(html) { $('#comments_area_" . $id . "').html(html); }",
-            ), array('id' => $id . "_showAllLink", 'class' => 'show show-all-link'));
+                    ), array('id' => $id . "_showAllLink", 'class' => 'show show-all-link'));
             ?>
             <hr>
         <?php endif; ?>
@@ -35,87 +35,16 @@
         <?php endforeach; ?>
     </div>
 
-    <?php /* BEGIN: Comment Create Form */ ?>
-    <div id="comment_create_form_<?php echo $id; ?>">
-        <?php echo CHtml::form("#"); ?>
-        <?php echo CHtml::hiddenField('model', $modelName); ?>
-        <?php echo CHtml::hiddenField('id', $modelId); ?>
+    <?php $this->widget('application.modules_core.comment.widgets.CommentFormWidget', array('object' => $object)); ?>
 
-
-
-        <?php echo CHtml::textArea("message", Yii::t('CommentModule.base', ""), array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => 'Write a new comment...')); ?>
-
-        <?php
-
-        /* Modify textarea for mention input */
-        $this->widget('application.widgets.MentionWidget', array(
-            'element' => '#newCommentForm_' . $id,
-        ));
-
-        ?>
-
-        <?php
-        echo HHtml::ajaxSubmitButton(Yii::t('base', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
-                'beforeSend' => "function() {
-                $('#newCommentForm_" . $id . "').blur();
-                }",
-                'success' => "function(html) {
-            $('#comments_area_" . $id . "').html(html);
-            $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
-            $.fn.mention.reset('#newCommentForm_" . $id . "');
-
-        }",
-            ), array(
-                'id' => "comment_create_post_" . $id,
-                'class' => 'btn btn-small btn-primary',
-                'style' => 'position: absolute; top: -3000px; left: -3000px;',
-            )
-        );
-        ?>
-
-        <?php echo Chtml::endForm(); ?>
-    </div>
 </div>
 <?php /* END: Comment Create Form */ ?>
 
 <script type="text/javascript">
 
-    <?php if (count($comments) != 0) { ?>
-    // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
-    $('#comment_<?php echo $id; ?>').show();
-    <?php } ?>
-
-    // Fire click event for comment button by typing enter
-    $('#newCommentForm_<?php echo $id; ?>').keydown(function (event) {
-
-        if (event.keyCode == 13) {
-
-
-            if ($.fn.mention.defaults.stateUserList == false) {
-
-                event.cancelBubble = true;
-                event.returnValue = false;
-
-                $('#comment_create_post_<?php echo $id; ?>').focus();
-                $('#comment_create_post_<?php echo $id; ?>').click();
-
-                // empty input
-                //$(this).val('');
-
-            }
-
-
-        }
-
-        return event.returnValue;
-
-    });
-
-    // set the size for one row (Firefox)
-    $('#newCommentForm_<?php echo $id; ?>').css({height: '36px'});
-
-    // add autosize function to input
-    $('.autosize').autosize();
-
+<?php if (count($comments) != 0) { ?>
+        // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
+        $('#comment_<?php echo $id; ?>').show();
+<?php } ?>
 
 </script>

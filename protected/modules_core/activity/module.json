@@ -1,0 +1,9 @@
+{
+    "id": "activity",
+    "name": "Activity",
+    "description": "Activity Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

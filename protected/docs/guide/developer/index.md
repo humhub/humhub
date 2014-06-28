@@ -9,7 +9,6 @@
 
 ## Modules
 - [General](modules_general.md)
-- [Autostart](autostart.md)
 - [Database](database.md)
 - [User](user.md)
 - [Space](space.md)

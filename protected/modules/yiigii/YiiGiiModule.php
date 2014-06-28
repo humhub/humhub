@@ -1,6 +1,6 @@
 <?php
 
-class YiiGiiModule extends CWebModule {
+class YiiGiiModule extends HWebModule {
 
     public function init() {
         $this->setImport(array(

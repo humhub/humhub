@@ -21,7 +21,7 @@
 /**
  * HActiveRecordContent is the base AR for all content models.
  *
- * Each model which represents a content should derived from it.
+ * Each model which represents a piece of content should derived from it.
  * (e.g. Post, Question, Task, Note, ...)
  *
  * It automatically binds a Content model to each instance.
@@ -33,14 +33,15 @@
  *  - ...
  * (See Content Model for more details.)
  *
- * Note: Comments, Likes or Files are NOT Content Objects. These objects are
- * ContentAddons which always belongs to one Content Object.
+ * Note: Comments, Likes or Files are NOT Content Objects. 
+ * These objects are ContentAddons which always belongs to one Content Object.
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5
  */
-class HActiveRecordContent extends HActiveRecord {
+class HActiveRecordContent extends HActiveRecord
+{
 
     /**
      * Should this content automatically added to the wall.
@@ -56,7 +57,8 @@ class HActiveRecordContent extends HActiveRecord {
      */
     public $content = null;
 
-    public function __construct($scenario = 'insert') {
+    public function __construct($scenario = 'insert')
+    {
         $this->content = new Content($scenario);
         parent::__construct($scenario);
     }
@@ -69,7 +71,8 @@ class HActiveRecordContent extends HActiveRecord {
      *
      * @return type
      */
-    public function getContentTitle() {
+    public function getContentTitle()
+    {
         $objectModel = get_class($this); // e.g. Post
         return $objectModel . " (" . $this->id . ")";
     }
@@ -86,21 +89,25 @@ class HActiveRecordContent extends HActiveRecord {
      *
      * @return type
      */
-    public function getWallOut() {
+    public function getWallOut()
+    {
         return "Default Wall Output for Class " . get_class($this);
     }
 
-    public function afterFind() {
+    public function afterFind()
+    {
         $this->content = Content::model()->findByAttributes(array('object_model' => get_class($this), 'object_id' => $this->getPrimaryKey()));
         parent::afterFind();
     }
 
-    public function afterDelete() {
+    public function afterDelete()
+    {
         $this->content->delete();
         parent::afterDelete();
     }
 
-    public function afterSave() {
+    public function afterSave()
+    {
 
         if ($this->isNewRecord) {
             $this->content->user_id = $this->created_by;
@@ -130,11 +137,13 @@ class HActiveRecordContent extends HActiveRecord {
         }
     }
 
-    public function beforeValidate() {
+    public function beforeValidate()
+    {
         return parent::beforeValidate();
     }
 
-    public function afterValidate() {
+    public function afterValidate()
+    {
         if (!$this->content->validate())
             return false;
 
@@ -145,7 +154,8 @@ class HActiveRecordContent extends HActiveRecord {
         return true;
     }
 
-    public function getErrors($attribute = null) {
+    public function getErrors($attribute = null)
+    {
         if ($attribute != null) {
             return parent::getErrors($attribute);
         }
@@ -153,14 +163,16 @@ class HActiveRecordContent extends HActiveRecord {
         return CMap::mergeArray(parent::getErrors(), $this->content->getErrors());
     }
 
-    public function validate($attributes = null, $clearErrors = true) {
+    public function validate($attributes = null, $clearErrors = true)
+    {
         if (parent::validate($attributes, $clearErrors) && $this->content->validate($attributes, $clearErrors))
             return true;
 
         return false;
     }
 
-    public function hasErrors($attribute = null) {
+    public function hasErrors($attribute = null)
+    {
         if ($attribute != null)
             return parent::hasErrors($attribute);
 
@@ -172,7 +184,8 @@ class HActiveRecordContent extends HActiveRecord {
      * 
      * @param HActiveRecordContentContainer $container
      */
-    public function contentContainer($container) {
+    public function contentContainer($container)
+    {
 
         $criteria = new CDbCriteria();
         $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;

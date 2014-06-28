@@ -204,7 +204,7 @@ class Profile extends HActiveRecord
     {
         $fields = array();
 
-        foreach (ProfileField::model()->findAllByAttributes(array('profile_field_category_id' => $category->id), array('order' => 'sort_order')) as $field) {
+        foreach (ProfileField::model()->findAllByAttributes(array('profile_field_category_id' => $category->id, 'visible' => 1), array('order' => 'sort_order')) as $field) {
 
             if ($field->getUserValue($this->user) != "") {
                 $fields[] = $field;

@@ -6,7 +6,7 @@
  * @since 0.5
  * @author Luke
  */
-class UserModule extends CWebModule {
+class UserModule extends HWebModule {
 
     public function init() {
         $this->setImport(array(
