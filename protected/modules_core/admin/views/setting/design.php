@@ -1,4 +1,7 @@
-<h1><?php echo Yii::t('AdminModule.base', 'Design - Settings'); ?></h1><br>
+<div class="panel panel-default">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Design</strong> settings'); ?></div>
+    <div class="panel-body">
+
 <?php $form = $this->beginWidget('CActiveForm', array(
     'id' => 'design-settings-form',
     'enableAjaxValidation' => false,
