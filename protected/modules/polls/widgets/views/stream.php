@@ -9,7 +9,7 @@
  * @since 0.5
  */
 ?>
-<ul class="nav nav-tabs wallFilterPanel" id="filter">
+<ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
     <li class=" dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.base', 'Filter'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -50,7 +50,7 @@
     </div>
 
     <!-- DIV for an single wall entry -->
-    <div class="s2_single">
+    <div class="s2_single" style="display: none;">
         <div class="back_button_holder">
             <a href="#" class="singleBackLink button_white"><?php echo Yii::t('WallModule.base', 'Back to stream'); ?></a>
         </div>

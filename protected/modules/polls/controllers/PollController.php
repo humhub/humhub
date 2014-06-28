@@ -164,7 +164,7 @@ class PollController extends Controller {
 
         $users = User::model()->findAllBySql($sql, $params);
         $output = $this->renderPartial('application.modules_core.user.views._listUsers', array(
-            'title' => Yii::t('PollsModule.base', "Users voted for: {answer}", array('{answer}' => $answer->answer)),
+            'title' => Yii::t('PollsModule.base', "Users voted for: <strong>{answer}</strong>", array('{answer}' => $answer->answer)),
             'users' => $users,
             'pagination' => $pagination
                 ), true);
