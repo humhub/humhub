@@ -25,14 +25,16 @@
  * @package humhub.components
  * @since 0.5
  */
-class WebApplication extends CWebApplication {
+class WebApplication extends CWebApplication
+{
 
     /**
      * Inits the webapplication
      *
      * Also start interceptor to add event support
      */
-    protected function init() {
+    protected function init()
+    {
 
         parent::init();
 
@@ -49,7 +51,8 @@ class WebApplication extends CWebApplication {
      * This event is raised after the init is executed.
      * @param CEvent $event the event parameter
      */
-    public function onInit($event) {
+    public function onInit($event)
+    {
         $this->raiseEvent('onInit', $event);
     }
 
@@ -58,7 +61,8 @@ class WebApplication extends CWebApplication {
      *
      * @return Array
      */
-    public static function getLanguages() {
+    public static function getLanguages()
+    {
 
         $languages = array();
         $languages['en'] = 'en';
