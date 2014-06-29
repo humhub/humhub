@@ -46,11 +46,17 @@ h4 {
 #topbar-first .media-list a {
   color: #555555;
 }
+#topbar-first .media-list li {
+  color: #555555;
+}
 #topbar-first .media-list li i.accepted {
   color: #4cd9c0 !important;
 }
 #topbar-first .media-list li i.declined {
   color: #ff8989 !important;
+}
+#topbar-first .media-list li.placeholder {
+  border-bottom: none;
 }
 #topbar-first .media-list .media .media-body .label {
   padding: .1em .5em .1em;
@@ -154,6 +160,7 @@ h4 {
   font-weight: 300;
   margin-top: 5px;
   margin-bottom: 5px;
+  min-height: 15px;
 }
 .media .media-body .time {
   font-size: 11px;
