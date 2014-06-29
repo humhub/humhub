@@ -33,15 +33,24 @@ class HWebModule extends CWebModule
      */
     private $_moduleInfo = null;
 
-    
     /**
      * Indicates that module is required by core
      * 
      * @var Boolean
      */
     public $isCoreModule = false;
-    
-    
+
+    /**
+     * URL to assets
+     * 
+     * @var String
+     */
+    private $_assetsUrl;
+
+    /**
+     * Preinits the module, attaches behaviors.
+     * e.g. UserModuleBehavior or SpaceModuleBehavior
+     */
     public function preinit()
     {
         $this->attachBehaviors($this->behaviors());
@@ -124,11 +133,16 @@ class HWebModule extends CWebModule
 
     /**
      * Returns image url for this module
+     * Place your modules image in assets/module_image.png
      * 
      * @return String Image Url
      */
     public function getImage()
     {
+        if (is_file($this->getAssetsPath() . DIRECTORY_SEPARATOR . 'module_image.png')) {
+            return $this->getAssetsUrl() . '/module_image.png';
+        }
+
         return Yii::app()->baseUrl . '/uploads/profile_image/default_module.jpg';
     }
 
@@ -230,7 +244,7 @@ class HWebModule extends CWebModule
             throw new CException("Could not uninstall core modules!");
             return;
         }
-        
+
         if ($this->isEnabled()) {
             $this->disable();
         }
@@ -277,7 +291,37 @@ class HWebModule extends CWebModule
         if (!@rename($this->getPath(), $backupFolderName)) {
             throw new CException("Could not remove module folder!");
         }
+    }
 
+    /**
+     * Get assets url
+     * 
+     * @return String url to assets
+     */
+    public function getAssetsUrl()
+    {
+        if ($this->_assetsUrl === null) {
+            if ($this->getPath() != "") {
+                $this->_assetsUrl = Yii::app()->getAssetManager()->publish($this->getAssetsPath());
+            }
+        }
+        return $this->_assetsUrl;
+    }
+
+    /**
+     * Get assets path
+     * 
+     * @return String path to assets
+     */
+    public function getAssetsPath()
+    {
+        $path = $this->getPath() . DIRECTORY_SEPARATOR . 'assets';
+
+        if (is_dir($path)) {
+            return $path;
+        }
+
+        return "";
     }
 
 }

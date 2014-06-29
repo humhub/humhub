@@ -15,10 +15,17 @@
 
         <?php foreach ($modules as $module): ?>
 
+            <?php
+            $moduleImageUrl = Yii::app()->baseUrl . '/uploads/profile_image/default_module.jpg';
+            if (isset($module['moduleImageUrl']) && $moduleImageUrl != "") {
+                $moduleImageUrl = $module['moduleImageUrl'];
+            }
+            ?>
+
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                      style="width: 64px; height: 64px;"
-                     src="<?php echo Yii::app()->baseUrl; ?>/uploads/profile_image/default_module.jpg">
+                     src="<?php echo $moduleImageUrl; ?>">
 
                 <div class="media-body">
                     <h4 class="media-heading"><?php echo $module['name']; ?> </h4>
