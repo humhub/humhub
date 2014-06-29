@@ -10,6 +10,8 @@
 class LikeModule extends HWebModule
 {
 
+    public $isCoreModule = true;
+
     public function init()
     {
         // import the module-level models and components

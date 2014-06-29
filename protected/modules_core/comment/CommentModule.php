@@ -9,6 +9,8 @@
 class CommentModule extends HWebModule
 {
 
+    public $isCoreModule = true;
+
     /**
      * On content deletion make sure to delete all its comments
      *

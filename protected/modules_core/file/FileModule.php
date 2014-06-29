@@ -6,12 +6,16 @@
  * @package humhub.modules_core.file
  * @since 0.5
  */
-class FileModule extends HWebModule {
+class FileModule extends HWebModule
+{
+
+    public $isCoreModule = true;
 
     /**
      * Inits the Module
      */
-    public function init() {
+    public function init()
+    {
 
         $this->setImport(array(
         ));
@@ -22,7 +26,8 @@ class FileModule extends HWebModule {
      *
      * @param CEvent $event
      */
-    public static function onWallEntryAddonInit($event) {
+    public static function onWallEntryAddonInit($event)
+    {
 
         $event->sender->addWidget('application.modules_core.file.widgets.ShowFilesWidget', array(
             'modelName' => $event->sender->object->content->object_model,
@@ -38,10 +43,11 @@ class FileModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onCronDailyRun($event) {
+    public static function onCronDailyRun($event)
+    {
 
         $cron = $event->sender;
-        
+
         /**
          * Delete unused files
          */

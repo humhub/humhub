@@ -12,6 +12,8 @@
 class DirectoryModule extends HWebModule
 {
 
+    public $isCoreModule = true;
+
     /**
      * Inits the Module
      */

@@ -10,12 +10,16 @@
  * @since 0.5
  * @author Luke
  */
-class WallModule extends HWebModule {
+class WallModule extends HWebModule
+{
+
+    public $isCoreModule = true;
 
     /**
      * Inits the wall module
      */
-    public function init() {
+    public function init()
+    {
 
         $this->setImport(array(
             'wall.controllers.*',
@@ -29,7 +33,8 @@ class WallModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
 
@@ -68,7 +73,8 @@ class WallModule extends HWebModule {
      *
      * @param CEvent $event
      */
-    public static function onWallEntryControlsInit($event) {
+    public static function onWallEntryControlsInit($event)
+    {
 
         // Add Delete Link
         $event->sender->addWidget('application.modules_core.wall.widgets.DeleteLinkWidget', array(
@@ -100,7 +106,8 @@ class WallModule extends HWebModule {
      *
      * @param CEvent $event
      */
-    public static function onWallEntryAddonInit($event) {
+    public static function onWallEntryAddonInit($event)
+    {
 
         $event->sender->addWidget('application.modules_core.wall.widgets.WallEntryLinksWidget', array(
             'object' => $event->sender->object,

@@ -6,9 +6,13 @@
  * @since 0.5
  * @author Luke
  */
-class UserModule extends HWebModule {
+class UserModule extends HWebModule
+{
 
-    public function init() {
+    public $isCoreModule = true;
+
+    public function init()
+    {
         $this->setImport(array(
             'user.models.*',
             'user.components.*',
@@ -20,7 +24,8 @@ class UserModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onSearchRebuild($event) {
+    public static function onSearchRebuild($event)
+    {
 
         foreach (User::model()->findAll() as $obj) {
             HSearch::getInstance()->addModel($obj);

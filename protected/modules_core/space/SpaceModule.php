@@ -7,9 +7,13 @@
  * @package humhub.modules_core.space
  * @since 0.5
  */
-class SpaceModule extends HWebModule {
+class SpaceModule extends HWebModule
+{
 
-    public function init() {
+    public $isCoreModule = true;
+
+    public function init()
+    {
         $this->setImport(array(
             'space.models.*',
             'space.forms.*',
@@ -23,7 +27,8 @@ class SpaceModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onSearchRebuild($event) {
+    public static function onSearchRebuild($event)
+    {
         foreach (Space::model()->findAll() as $obj) {
             if ($obj->visibility != Space::VISIBILITY_NONE)
                 HSearch::getInstance()->addModel($obj);
@@ -36,7 +41,8 @@ class SpaceModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         $user = $event->sender;
 
@@ -58,7 +64,7 @@ class SpaceModule extends HWebModule {
         }
 
         // Cancel all space invites by the user
-        foreach (SpaceMembership::model()->findAllByAttributes(array('originator_user_id' => $user->id, 'status'=>SpaceMembership::STATUS_INVITED)) as $membership) {
+        foreach (SpaceMembership::model()->findAllByAttributes(array('originator_user_id' => $user->id, 'status' => SpaceMembership::STATUS_INVITED)) as $membership) {
             $membership->space->removeMember($membership->user_id);
         }
 

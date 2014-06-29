@@ -4,9 +4,13 @@
  * @package humhub.modules_core.post
  * @since 0.5
  */
-class PostModule extends HWebModule {
+class PostModule extends HWebModule
+{
 
-    public function init() {
+    public $isCoreModule = true;
+
+    public function init()
+    {
 
         $this->setImport(array(
             'post.models.*',
@@ -14,14 +18,14 @@ class PostModule extends HWebModule {
         ));
     }
 
-    public function beforeControllerAction($controller, $action) {
+    public function beforeControllerAction($controller, $action)
+    {
 
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
             // you may place customized code here
             return true;
-        }
-        else
+        } else
             return false;
     }
 
@@ -30,7 +34,8 @@ class PostModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         foreach (Content::model()->findAllByAttributes(array('user_id' => $event->sender->id, 'object_model' => 'Post')) as $content) {
             $content->delete();
@@ -46,7 +51,8 @@ class PostModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onSpaceDelete($event) {
+    public static function onSpaceDelete($event)
+    {
 
         foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Post')) as $content) {
             $content->delete();
@@ -58,7 +64,8 @@ class PostModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Validating Post Module (" . Post::model()->count() . " entries)");
@@ -88,9 +95,10 @@ class PostModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onSearchRebuild($event) {
+    public static function onSearchRebuild($event)
+    {
         foreach (Post::model()->findAll() as $obj) {
-        #    HSearch::getInstance()->addModel($obj);
+            #    HSearch::getInstance()->addModel($obj);
             print "p";
         }
     }

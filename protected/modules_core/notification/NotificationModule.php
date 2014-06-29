@@ -6,9 +6,13 @@
  * @package humhub.modules_core.notification
  * @since 0.5
  */
-class NotificationModule extends HWebModule {
+class NotificationModule extends HWebModule
+{
 
-    public function init() {
+    public $isCoreModule = true;
+
+    public function init()
+    {
         $this->setImport(array(
             'notification.controllers.*',
             'notification.models.*',
@@ -20,7 +24,8 @@ class NotificationModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         foreach (Notification::model()->findAllByAttributes(array('user_id' => $event->sender->id)) as $notification) {
             $notification->delete();
@@ -42,7 +47,8 @@ class NotificationModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onSpaceDelete($event) {
+    public static function onSpaceDelete($event)
+    {
 
         foreach (Notification::model()->findAllByAttributes(array('space_id' => $event->sender->id)) as $notification) {
             $notification->delete();
@@ -54,7 +60,8 @@ class NotificationModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Validating Notification Module (" . Notification::model()->count() . " entries)");
@@ -86,7 +93,8 @@ class NotificationModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onCronDailyRun($event) {
+    public static function onCronDailyRun($event)
+    {
 
         $cron = $event->sender;
 
@@ -104,7 +112,8 @@ class NotificationModule extends HWebModule {
      *
      * @param string $text
      */
-    public static function formatOutput($text) {
+    public static function formatOutput($text)
+    {
         $text = HHtml::translateUserMentioning($text, false);
         return $text;
     }

@@ -33,10 +33,19 @@ class HWebModule extends CWebModule
      */
     private $_moduleInfo = null;
 
+    
+    /**
+     * Indicates that module is required by core
+     * 
+     * @var Boolean
+     */
+    public $isCoreModule = false;
+    
+    
     public function preinit()
     {
         $this->attachBehaviors($this->behaviors());
-        
+
         parent::preinit();
     }
 
@@ -173,12 +182,14 @@ class HWebModule extends CWebModule
      */
     public function disable()
     {
-        if ($this->isEnabled()) {
+        if ($this->isEnabled() && !$this->isCoreModule) {
             $moduleEnabled = ModuleEnabled::model()->findByPk($this->getId());
             if ($moduleEnabled != null) {
                 $moduleEnabled->delete();
             }
         }
+
+        ModuleManager::flushCache();
     }
 
     /**
@@ -215,11 +226,18 @@ class HWebModule extends CWebModule
     public function uninstall()
     {
 
+        if ($this->isCoreModule) {
+            throw new CException("Could not uninstall core modules!");
+            return;
+        }
+        
         if ($this->isEnabled()) {
             $this->disable();
         }
 
         $this->removeModuleFolder();
+
+        ModuleManager::flushCache();
     }
 
     /**
@@ -231,18 +249,35 @@ class HWebModule extends CWebModule
     }
 
     /**
+     * This method is called after an update is performed.
+     * You may extend it with your own update process.
+     * 
+     */
+    public function update()
+    {
+        // Auto Migrate (add module database changes)
+        Yii::import('application.commands.shell.ZMigrateCommand');
+        $migrate = ZMigrateCommand::AutoMigrate();
+    }
+
+    /**
      * Removes module folder in case of uninstall or update
      */
-    protected function removeModuleFolder()
+    public function removeModuleFolder()
     {
 
         $moduleBackupFolder = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_backups';
         if (!is_dir($moduleBackupFolder)) {
-            mkdir($moduleBackupFolder);
+            if (!@mkdir($moduleBackupFolder)) {
+                throw new CException("Could not create module backup folder!");
+            }
         }
 
         $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $this->getId() . "_" . time();
-        rename($this->getPath(), $backupFolderName);
+        if (!@rename($this->getPath(), $backupFolderName)) {
+            throw new CException("Could not remove module folder!");
+        }
+
     }
 
 }

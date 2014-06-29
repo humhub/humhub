@@ -148,6 +148,14 @@ class HHtml extends CHtml
             $id = $htmlOptions['id'];
         }
 
+        // Build Click JS
+        $clickJS = '$("#postLink_' . $id . '").submit(); return true;';
+        if (isset($htmlOptions['confirm'])) {
+            $confirm = 'confirm(\'' . CJavaScript::quote($htmlOptions['confirm']) . '\')';
+            $clickJS = "if(!$confirm) return false;" . $clickJS;
+            unset($htmlOptions['confirm']);
+        }
+
         $output = self::link($text, "#", $htmlOptions);
 
         // Generate this at the end of the page
@@ -156,9 +164,10 @@ class HHtml extends CHtml
         $hiddenFormHtml .= self::endForm();
         $hiddenFormHtml .= "</div>";
 
+
         $cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
-        $cs->registerScript($id, '$("#' . $id . '").on("click", function(){ $("#postLink_' . $id . '").submit(); console.log("sbm"); return true; });');
+        $cs->registerScript($id, '$("#' . $id . '").on("click", function(){ ' . $clickJS . ' });');
         $cs->registerHtml($id, $hiddenFormHtml);
 
         return $output;
@@ -206,7 +215,6 @@ class HHtml extends CHtml
         return $text;
     }
 
-
     /**
      * Translate guids from users to username
      * @param strint $text Contains the complete message
@@ -232,14 +240,12 @@ class HHtml extends CHtml
                 if ($buildAnchors == true) {
                     $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">' . $user->getDisplayName() . '</a>';
                 } else {
-                    $link = " ". $user->getDisplayName();
+                    $link = " " . $user->getDisplayName();
                 }
 
                 // replace guid with profile link and username
                 $text = str_replace($guid, $link, $text);
             }
-            
-
         }
 
         return $text;

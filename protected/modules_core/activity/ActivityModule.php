@@ -7,12 +7,16 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityModule extends HWebModule {
+class ActivityModule extends HWebModule
+{
+
+    public $isCoreModule = true;
 
     /**
      * Inits the activity module
      */
-    public function init() {
+    public function init()
+    {
         $this->setImport(array(
             'activity.models.*',
             'activity.behaviors.*',
@@ -24,7 +28,8 @@ class ActivityModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onUserDelete($event) {
+    public static function onUserDelete($event)
+    {
 
         $user = $event->sender;
 
@@ -47,7 +52,8 @@ class ActivityModule extends HWebModule {
     /**
      * On delete of some active record, check if there are related activities and delete them.
      */
-    public static function onActiveRecordDelete($event) {
+    public static function onActiveRecordDelete($event)
+    {
 
         $model = get_class($event->sender);
         $pk = $event->sender->getPrimaryKey();
@@ -65,7 +71,8 @@ class ActivityModule extends HWebModule {
      *
      * @param type $event
      */
-    public static function onSpaceDelete($event) {
+    public static function onSpaceDelete($event)
+    {
 
         foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Activity')) as $content) {
             $content->delete();
@@ -77,7 +84,8 @@ class ActivityModule extends HWebModule {
      *
      * @param CEvent $event
      */
-    public static function onIntegrityCheck($event) {
+    public static function onIntegrityCheck($event)
+    {
 
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Validating Activity Module (" . Activity::model()->count() . " entries)");
@@ -98,7 +106,8 @@ class ActivityModule extends HWebModule {
      *
      * @param string $text
      */
-    public static function formatOutput($text) {
+    public static function formatOutput($text)
+    {
         $text = HHtml::translateUserMentioning($text, false);
         return $text;
     }

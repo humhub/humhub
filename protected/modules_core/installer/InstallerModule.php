@@ -24,9 +24,13 @@
  * @package humhub.modules_core.installer
  * @since 0.5
  */
-class InstallerModule extends HWebModule {
+class InstallerModule extends HWebModule
+{
 
-    public function init() {
+    public $isCoreModule = true;
+
+    public function init()
+    {
         $this->setLayoutPath(Yii::getPathOfAlias('installer.views'));
     }
 
@@ -35,7 +39,8 @@ class InstallerModule extends HWebModule {
      *
      * @return boolean
      */
-    public function checkDBConnection() {
+    public function checkDBConnection()
+    {
 
         try {
             // Check DB Connection
@@ -43,6 +48,7 @@ class InstallerModule extends HWebModule {
             return true;
             $success = true;
         } catch (Exception $e) {
+            
         }
 
         return false;
@@ -51,21 +57,22 @@ class InstallerModule extends HWebModule {
     /**
      * Checks if the application is already configured.
      */
-    public function isConfigured() {
+    public function isConfigured()
+    {
         if (HSetting::Get('secret') != "") {
             return true;
         }
         return false;
     }
-    
+
     /**
      * Sets application in installed state (disables installer)
      */
-    public function setInstalled() {
+    public function setInstalled()
+    {
         $config = HSetting::getConfiguration();
         $config['params']['installed'] = true;
         HSetting::setConfiguration($config);
-        
     }
 
 }

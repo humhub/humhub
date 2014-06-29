@@ -245,10 +245,14 @@ class ModuleManager extends CApplicationComponent
             if ($returnClassName) {
                 $installed[] = $className;
             } else {
-                $module = $this->getModule($moduleId);
 
-                if ($module != null) {
-                    $installed[$moduleId] = $module;
+                try {
+                    $module = $this->getModule($moduleId);
+                    if ($module != null) {
+                        $installed[$moduleId] = $module;
+                    }
+                } catch (Exception $ex) {
+                    self::flushCache();
                 }
             }
         }
@@ -293,6 +297,34 @@ class ModuleManager extends CApplicationComponent
     public function isInstalled($moduleId)
     {
         return (array_key_exists($moduleId, $this->installedModules));
+    }
+
+    /**
+     * Checks if a given module Id can uninstalled
+     */
+    public function canUninstall($moduleId)
+    {
+
+        // Some Core Module cannot be uninstalled
+        if (in_array($moduleId, array('polls', 'tasks', 'yiigii', 'mail'))) {
+            return false;
+        }
+        
+        if ($this->isInstalled($moduleId)) {
+
+            $module = $this->getModule($moduleId);
+
+            if ($module == null) {
+                throw new CException(Yii::t('AdminModule.modules', 'Could not find requested module!'));
+            }
+
+            if ($module->isCoreModule) {
+                return false;
+            }
+            
+        }
+        
+        return true;
     }
 
 }

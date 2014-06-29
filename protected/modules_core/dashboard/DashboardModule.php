@@ -9,6 +9,8 @@
 class DashboardModule extends HWebModule
 {
 
+    public $isCoreModule = true;
+
     /**
      * Inits the Module
      */
