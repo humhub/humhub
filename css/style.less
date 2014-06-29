@@ -221,8 +221,8 @@ textarea {
 
         i.approval {
           position: absolute;
-          left: 4px;
-          top: 34px;
+          left: 2px;
+          top: 36px;
           font-size: 14px;
         }
         i.accepted {
@@ -327,23 +327,6 @@ textarea {
 // 5) Panels
 // --------------------------------------------------
 
-.panel {
-
-  .statistics {
-
-    margin-top: 40px;
-    margin-right: 20px;
-
-    .entry {
-      margin-left: 20px;
-
-      .count {
-        font-size: 30px;
-      }
-    }
-  }
-}
-
 .panel.profile {
   position: relative;
 
@@ -361,11 +344,114 @@ textarea {
   }
 }
 
+.panel-profile {
+
+  .panel-profile-header {
+
+    position: relative;
+    border: 3px solid #fff;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+
+    .img-profile-header-background {
+      border-radius: 3px;
+    }
+
+    .img-profile-data {
+      position: absolute;
+      height: 100px;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      padding-left: 180px;
+      padding-top: 30px;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      color: #fff;
+      background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.58))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* IE10+ */
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#94000000', GradientType=0); /* IE6-9 */
+
+      h1 {
+        font-size: 30px;
+        font-weight: 100;
+        margin-bottom: 7px;
+
+      }
+
+      h2 {
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 0;
+      }
+    }
+
+    .profile-user-photo-container {
+      position: absolute;
+      bottom: -50px;
+      left: 15px;
+
+      .profile-user-photo {
+        border: 3px solid #fff;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .panel-profile-controls {
+    padding-left: 160px;
+  }
+
+}
+
 //
 // 6) Pagination
 // --------------------------------------------------
 .pagination-container {
   text-align: center;
+}
+
+//
+// Modals
+// --------------------------------------------------
+@media screen and (max-width: 768px) {
+  .modal-dialog {
+    width: auto !important;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+.modal-dialog-extra-small {
+  width: 400px;
+}
+
+.modal-dialog-small {
+  width: 500px;
+}
+
+.modal-dialog-normal {
+  width: 600px;
+}
+
+.modal-dialog-medium {
+  width: 768px;
+}
+
+.modal-dialog-large {
+  width: 900px
+}
+
+@media screen and (max-width: 920px) {
+  .modal-dialog-large {
+    width: auto !important;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
 }
 
 //
@@ -437,7 +523,7 @@ ul.tag_input {
   font-size: 12px !important;
   padding: 2px;
   float: left;
-  margin: 4px 4px 0 0;
+  margin: 3px 4px 0 0;
 }
 
 .userInput i, .spaceInput i {
@@ -526,12 +612,10 @@ ul.tag_input {
   display: block;
 }
 
-.wall-entry {
-  .preferences {
-    position: absolute;
-    right: 1px;
-    top: 1px;
-  }
+nav-pills.preferences {
+  position: absolute;
+  right: 1px;
+  top: 1px;
 }
 
 .wall-entry-controls {
@@ -543,10 +627,11 @@ ul.tag_input {
 // Tags
 .tags {
 
-  margin: 5px 0;
-
   .tag {
-    margin-bottom: 5px;
+    margin-top: 5px;
+    border-radius: 2px;
+    padding: 4px 8px;
+    text-transform: uppercase;
   }
 }
 
@@ -597,7 +682,7 @@ ul.tag_input {
   .label-public {
     position: absolute;
     right: 40px;
-    top: 6px;
+    top: 11px;
   }
 }
 
@@ -656,6 +741,81 @@ ul.tag_input {
   padding-left: 0;
 }
 
+// Installer
+.installer {
+
+  .logo {
+    text-align: center
+  }
+
+}
+
+// Upload box
+
+.upload-box-container {
+  //background-color: red;
+  position: relative;
+}
+
+.upload-box {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  width: 100%;
+  height: 100px;
+  padding: 20px 20px 20px 20px;
+  background: #F8F8F8;
+  border: 2px dashed #DDD;
+  text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
+  //opacity: 0.9;
+
+  input[type="file"] {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .upload-box-progress-bar {
+    display: none;
+  }
+}
+
+.image-upload-container {
+
+  position: relative;
+
+  .image-upload-buttons {
+    display: none;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+  }
+
+  input[type="file"] {
+    position: absolute;
+    //background-color: red;
+    opacity: 0;
+  }
+
+  .image-upload-loader {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    padding: 20px 20px 20px 20px;
+    background: #F8F8F8;
+
+    .image-upload-progess-bar {
+
+    }
+
+  }
+}
+
 //
 // 9) Third Party Tools
 // --------------------------------------------------
@@ -707,21 +867,21 @@ input.placeholder, textarea.placeholder {
     }
   }
 
-  .profile {
+  /*  .profile {
 
-    .media > a {
-      float: none !important;
-      margin-right: 0;
+      .media > a {
+        float: none !important;
+        margin-right: 0;
 
-      img {
-        margin-bottom: 10px;
+        img {
+          margin-bottom: 10px;
+        }
+
       }
 
-    }
-
-    .statistics {
-      float: none !important;
-    }
-  }
+      .statistics {
+        float: none !important;
+      }
+    }*/
 
 }

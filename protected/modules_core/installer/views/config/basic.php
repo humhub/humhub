@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-body">
-        <h3> HumHub Configuration</h3>
-        <hr>
-        <h4>Basic Network Settings</h4><br>
+        <p class="lead"><?php echo Yii::t('InstallerModule.base', '<strong>Your</strong> Social Network name'); ?></p>
+
+        <p>Of course, your new social network need a name. Please change the default name with one you like. (For example the name of your company, organization or club)</p>
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -19,7 +19,7 @@
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('InstallerModule.base', 'Next'), array('class' => 'btn btn-success')); ?>
+        <?php echo CHtml::submitButton(Yii::t('InstallerModule.base', 'Next'), array('class' => 'btn btn-primary')); ?>
 
         <?php $this->endWidget(); ?>
     </div>

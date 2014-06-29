@@ -12,13 +12,13 @@
 ?>
 
 
-<div class="container" style="text-align: center;">
-    <h1><?php echo Yii::app()->name; ?></h1>
+<div class="container outsite" style="text-align: center;">
+    <h1 class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
     <br>
 
-    <div class="panel panel-default" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+    <div class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.auth', 'Please sign in'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Please</strong> sign in'); ?></div>
 
         <div class="panel-body">
             <?php
@@ -45,7 +45,8 @@
             </div>
 
             <hr>
-            <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Sign in'), array('class' => 'btn btn-large btn-primary')); ?><br>
+            <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Sign in'), array('class' => 'btn btn-large btn-primary')); ?>
+            <br>
 
             <?php $this->endWidget(); ?>
 
@@ -54,12 +55,13 @@
 
     </div>
     <a href="<?php echo $this->createUrl('//user/auth/recoverPassword'); ?>"><?php echo Yii::t('UserModule.auth', 'Forgot your password?') ?></a>
-<br><br><br>
+    <br><br><br>
 
     <?php if ($canRegister) : ?>
-        <div class="panel panel-default" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+        <div class="panel panel-default animated bounceInLeft"
+             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
-            <div class="panel-heading"><?php echo Yii::t('UserModule.auth', 'Registration') ?></div>
+            <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Sign</strong> up') ?></div>
 
             <div class="panel-body">
 
@@ -67,7 +69,7 @@
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'account-register-form',
-                    'enableAjaxValidation' => true,
+                    'enableAjaxValidation' => false,
                 ));
                 ?>
 
@@ -85,7 +87,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         // set cursor ot login field
         $('#login_username').focus();
     })

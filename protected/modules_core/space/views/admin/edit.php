@@ -4,7 +4,8 @@
 ?>
 
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('SpaceModule.base', '<strong>General</strong> space settings'); ?></div>
+    <div
+        class="panel-heading"><?php echo Yii::t('SpaceModule.base', '<strong>General</strong> space settings'); ?></div>
     <div class="panel-body">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -15,38 +16,19 @@
 
         <?php //echo $form->errorSummary($model); ?>
 
-        <div class="row">
 
-            <div class="col-md-3">
-
-                <img class="img-rounded" src="<?php echo $model->getProfileImage()->getUrl(); ?>" alt=""/><br><br>
-                <?php echo CHtml::link(Yii::t('SpaceModule.base', "Change image"), $this->createUrl('//space/admin/changeImage', array('sguid' => $model->guid)), array('class' => 'btn btn-primary')); ?>
-
-            </div>
-
-            <div class="col-md-9">
-
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'name'); ?>
-                    <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'maxlength' => 45)); ?>
-                    <?php echo $form->error($model, 'name'); ?>
-                </div>
-
-
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'description'); ?>
-                    <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '6')); ?>
-                    <?php echo $form->error($model, 'description'); ?>
-                </div>
-
-
-            </div>
-
-
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'name'); ?>
+            <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'maxlength' => 45)); ?>
+            <?php echo $form->error($model, 'name'); ?>
         </div>
 
 
-
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'description'); ?>
+            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '6')); ?>
+            <?php echo $form->error($model, 'description'); ?>
+        </div>
 
 
         <div class="form-group">
@@ -73,14 +55,14 @@
         </div>
         <hr>
 
-        <?php if (Yii::app()->user->isAdmin() && HSetting::Get('enabled', 'authentication_ldap')): ?>    
+        <?php if (Yii::app()->user->isAdmin() && HSetting::Get('enabled', 'authentication_ldap')): ?>
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'ldap_dn'); ?>
                 <?php echo $form->textField($model, 'ldap_dn', array('class' => 'form-control', 'maxlength' => 255)); ?>
                 <?php echo $form->error($model, 'ldap_dn'); ?>
-            </div>        
+            </div>
             <hr>
-        <?php endif; ?>    
+        <?php endif; ?>
 
         <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
 
@@ -91,10 +73,10 @@
             <?php if ($space->status == Space::STATUS_ENABLED) { ?>
                 <a href="<?php echo $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)); ?>"
                    class="btn btn-warning"><?php echo Yii::t('SpaceModule.base', 'Archive'); ?></a>
-               <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
+            <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
                 <a href="<?php echo $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)); ?>"
                    class="btn btn-warning"><?php echo Yii::t('SpaceModule.base', 'Unarchive'); ?></a>
-               <?php } ?>
+            <?php } ?>
             <a href="<?php echo $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)); ?>"
                class="btn btn-danger"><?php echo Yii::t('SpaceModule.base', 'Delete'); ?></a>
         </div>
@@ -104,5 +86,4 @@
 
 </div>
 <?php $this->endWidget(); ?>
-
 

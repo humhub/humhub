@@ -297,6 +297,7 @@ class SpaceController extends Controller {
         $this->redirect($space->getUrl());
     }
 
+
 }
 
 ?>

@@ -13,6 +13,11 @@ class SpaceInfoWidget extends HWidget {
 
     public function run() {
 
+        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.ui.widget.js');
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.iframe-transport.js');
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.fileupload.js');
+
         $this->render('spaceInfo', array('space' => Yii::app()->getController()->getSpace()));
     }
 

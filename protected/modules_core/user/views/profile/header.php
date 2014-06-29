@@ -136,7 +136,7 @@
     </div>
 </div>
 
-<!-- start: Confirm modal -->
+<!-- start: Error modal -->
 <div class="modal" id="uploadErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-extra-small animated pulse">
