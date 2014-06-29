@@ -125,7 +125,7 @@
         var profileImageUrl = '<?php echo Yii::app()->createUrl('//space/admin/spaceImageUpload', array('guid' => $space->guid)); ?>';
         var bannerImageUrl = '<?php echo Yii::app()->createUrl('//user/profile/bannerImageUpload'); ?>';
 
-        //$('.fileupload').each(function () {
+        $('.fileupload').each(function () {
 
             /**
              * Handle Profile Image Upload
@@ -163,7 +163,7 @@
                 $('#space-profile-image').removeClass('animated bounceIn');
             })
 
-        //});
+        });
 
 
     })

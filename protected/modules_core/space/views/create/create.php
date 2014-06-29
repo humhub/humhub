@@ -99,7 +99,7 @@
                 'type' => 'POST',
                 'beforeSend' => 'function(){ jQuery("#create-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
-            ), array('class' => 'btn btn-primary'));
+            ), array('class' => 'btn btn-primary', 'id' => 'space-create-submit-button'));
             ?>
 
             <div class="col-md-1 modal-loader">
@@ -154,6 +154,17 @@
         // just close modal and reset modal content to default (shows the loader)
         $('#globalModal').html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
     })
+
+    // prevent enter key and simulate ajax button submit click
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                $('#space-create-submit-button').click();
+                //return false;
+            }
+        });
+    });
 
 </script>
 
