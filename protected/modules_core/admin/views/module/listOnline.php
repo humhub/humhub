@@ -1,9 +1,11 @@
 <div class="panel panel-default">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.modules', '<strong>Modules</strong> directory'); ?></div>
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
+        <br/>
 
-        <h2><?php echo Yii::t('AdminModule.modules', 'Online available modules'); ?></h2>
+        <h1><?php echo Yii::t('AdminModule.modules', '<strong>Online</strong> available modules'); ?></h1>
 
         <?php foreach ($modules as $module): ?>
 
@@ -13,34 +15,36 @@
                      src="<?php echo Yii::app()->baseUrl; ?>/uploads/profile_image/default_module.jpg">
 
                 <div class="media-body">
-                    <h4 class="media-heading"><?php echo $module['name']; ?> 
+                    <h4 class="media-heading"><?php echo $module['name']; ?>
                         <?php if (Yii::app()->moduleManager->isInstalled($module['id'])): ?>
-                            <small><span class="label label-success"><?php echo Yii::t('AdminModules.modules', 'Installed'); ?></small></span>
+                            <small><span
+                                    class="label label-success"><?php echo Yii::t('AdminModules.modules', 'Installed'); ?>
+                            </small></span>
                         <?php endif; ?>
                     </h4>
                     <p><?php echo $module['description']; ?></p>
-                    <p><small>
 
-                            <?php echo Yii::t('AdminModule.modules', 'Latest version:'); ?> <?php echo $module['latestVersion']; ?> 
+                    <div class="module-controls">
+                        <?php echo Yii::t('AdminModule.modules', 'Latest version:'); ?> <?php echo $module['latestVersion']; ?>
 
-                            <?php if (isset($module['latestCompatibleVersion'])) : ?>
+                        <?php if (isset($module['latestCompatibleVersion'])) : ?>
 
-                                <?php if ($module['latestCompatibleVersion'] != $module['latestVersion']) : ?>
-                                    &middot; <?php echo Yii::t('AdminModule.modules', 'Latest compatible version:'); ?>  <?php echo $module['latestCompatibleVersion']; ?> 
-                                <?php endif; ?>
-
-                                <?php if (!Yii::app()->moduleManager->isInstalled($module['id'])): ?>
-                                    &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Install'), $this->createUrl('install', array('moduleId' => $module['id']))); ?>
-                                <?php endif; ?>
-
-                            <?php else : ?>
-                                &middot; <span style="color:red"><?php echo Yii::t('AdminModule.modules', 'No compatible module version found!'); ?></span>
+                            <?php if ($module['latestCompatibleVersion'] != $module['latestVersion']) : ?>
+                                &middot; <?php echo Yii::t('AdminModule.modules', 'Latest compatible version:'); ?>  <?php echo $module['latestCompatibleVersion']; ?>
                             <?php endif; ?>
-                                
-                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target'=>'#globalModal', 'data-toggle'=>'modal')); ?>
-                                
-                        </small>
-                    </p>
+
+                            <?php if (!Yii::app()->moduleManager->isInstalled($module['id'])): ?>
+                                &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Install'), $this->createUrl('install', array('moduleId' => $module['id']))); ?>
+                            <?php endif; ?>
+
+                        <?php else : ?>
+                            &middot; <span
+                                style="color:red"><?php echo Yii::t('AdminModule.modules', 'No compatible module version found!'); ?></span>
+                        <?php endif; ?>
+
+                        &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+
+                    </div>
                 </div>
             </div>
 

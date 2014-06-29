@@ -1,11 +1,10 @@
-<div class="modal-dialog modal-dialog-small animated fadeIn">
+<div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
 
-        
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('AdminModule.modules', 'More information: %moduleName%', array('%moduleName%' => $name)); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('AdminModule.modules', 'More information: <strong>%moduleName%</strong>', array('%moduleName%' => $name)); ?></h4>
         </div>
         <div class="modal-body">
             

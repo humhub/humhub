@@ -159,6 +159,12 @@ h4 {
   font-size: 11px;
   color: #bebebe;
 }
+.media .media-body .module-controls {
+  font-size: 85%;
+}
+.media .media-body .module-controls a {
+  color: #4cd9c0;
+}
 .media .content a {
   color: #4cd9c0;
 }
@@ -217,8 +223,9 @@ h4 {
 }
 .panel h1 {
   font-size: 16px;
-  font-weight: 200;
+  font-weight: 300;
   margin-top: 0px;
+  color: #555555;
 }
 .panel .panel-heading {
   font-size: 16px;
