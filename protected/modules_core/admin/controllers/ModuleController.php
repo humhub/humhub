@@ -187,10 +187,10 @@ class ModuleController extends Controller
             throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
-        if (Yii::app()->moduleManager->canUninstall($moduleId)) {
+        if (!Yii::app()->moduleManager->canUninstall($moduleId)) {
             throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not uninstall module first! Module is protected.'));
         }
-        
+
         // Remove old module files
         $module->removeModuleFolder();
         $this->install($moduleId);
@@ -229,6 +229,49 @@ class ModuleController extends Controller
         }
 
         $this->render('listUpdates', array('modules' => $updates));
+    }
+
+    /**
+     * Returns more information about an installed module.
+     * 
+     * @throws CHttpException
+     */
+    public function actionInfo()
+    {
+
+        $moduleId = Yii::app()->request->getQuery('moduleId');
+        $module = Yii::app()->moduleManager->getModule($moduleId);
+
+        if ($module == null) {
+            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
+        }
+
+        $readmeMd = "";
+        $readmeMdFile = $module->getPath() . DIRECTORY_SEPARATOR . 'README.md';
+        if (file_exists($readmeMdFile)) {
+            $readmeMd = file_get_contents($readmeMdFile);
+        }
+
+        $this->renderPartial('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd), false, true);
+    }
+
+    /**
+     * Returns informations about a online not installed module
+     * 
+     * @throws CHttpException
+     */
+    public function actionInfoOnline()
+    {
+
+        $moduleId = Yii::app()->request->getQuery('moduleId');
+
+        $moduleInfo = $this->getOnlineModuleInfo($moduleId);
+
+        if (!isset($moduleInfo['latestVersion'])) {
+            throw new CException(Yii::t('AdminModule.modules', "No module version found!"));
+        }
+
+        $this->renderPartial('info', array('name' => $moduleInfo['latestVersion']['name'], 'description' => $moduleInfo['latestVersion']['description'], 'content' => $moduleInfo['latestVersion']['README.md']), false, true);
     }
 
     /**

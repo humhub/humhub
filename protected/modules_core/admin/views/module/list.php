@@ -40,6 +40,8 @@
                                 &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Uninstall'), array('//admin/module/uninstall', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.modules', 'Are you sure? - All module data will be lost!'))); ?>
                             <?php endif; ?>
                                 
+                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/info', 'moduleId' => $moduleId), array('data-target'=>'#globalModal', 'data-toggle'=>'modal')); ?>
+                                
                         </small></p>
 
                 </div>

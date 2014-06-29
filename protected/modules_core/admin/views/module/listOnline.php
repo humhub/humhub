@@ -36,7 +36,9 @@
                             <?php else : ?>
                                 &middot; <span style="color:red"><?php echo Yii::t('AdminModule.modules', 'No compatible module version found!'); ?></span>
                             <?php endif; ?>
-
+                                
+                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target'=>'#globalModal', 'data-toggle'=>'modal')); ?>
+                                
                         </small>
                     </p>
                 </div>

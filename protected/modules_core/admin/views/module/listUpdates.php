@@ -26,6 +26,7 @@
                                 <?php echo Yii::t('AdminModule.modules', 'Installed version:'); ?> <?php echo Yii::app()->moduleManager->getModule($module['id'])->getVersion(); ?> 
                                 &middot; <?php echo Yii::t('AdminModule.modules', 'Latest compatible Version:'); ?> <?php echo $module['latestCompatibleVersion']; ?> 
                                 &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Update'), $this->createUrl('update', array('moduleId' => $module['id']))); ?>
+                                &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target'=>'#globalModal', 'data-toggle'=>'modal')); ?>
                             <?php endif; ?>
                         </small>
                     </p>
