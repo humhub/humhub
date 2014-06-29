@@ -17,7 +17,7 @@
 
             <?php
             $moduleImageUrl = Yii::app()->baseUrl . '/uploads/profile_image/default_module.jpg';
-            if (isset($module['moduleImageUrl']) && $moduleImageUrl != "") {
+            if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
                 $moduleImageUrl = $module['moduleImageUrl'];
             }
             ?>
