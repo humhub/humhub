@@ -281,7 +281,7 @@ class ModuleController extends Controller
      */
     private function install($moduleId)
     {
-        $modulePath = Yii::getPathOfAlias('application.modules');
+        $modulePath = Yii::app()->getModulePath();
 
         if (!is_writable($modulePath)) {
             throw new CHttpException(500, Yii::t('AdminModule.modules', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
