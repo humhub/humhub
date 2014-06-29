@@ -107,7 +107,7 @@ class ModuleManager extends CApplicationComponent
          */
 
         // Recursively collect all moodules / modules_core autostarts
-        $modulesPaths = array(Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules', Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules_core');
+        $modulesPaths = array(Yii::app()->getModulePath(), Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules_core');
         foreach ($modulesPaths as $modulePath) {
             $modules = scandir($modulePath);
             foreach ($modules as $moduleId) {
@@ -309,7 +309,7 @@ class ModuleManager extends CApplicationComponent
         if (in_array($moduleId, array('polls', 'tasks', 'yiigii', 'mail'))) {
             return false;
         }
-        
+
         if ($this->isInstalled($moduleId)) {
 
             $module = $this->getModule($moduleId);
@@ -321,9 +321,8 @@ class ModuleManager extends CApplicationComponent
             if ($module->isCoreModule) {
                 return false;
             }
-            
         }
-        
+
         return true;
     }
 
