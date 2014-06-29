@@ -107,6 +107,8 @@ h4 {
 
     li {
 
+      color: @colorFont3;
+
       i.accepted {
         color: @colorInfo2 !important;
       }
@@ -114,6 +116,10 @@ h4 {
       i.declined {
         color: @colorDanger1 !important;
       }
+    }
+
+    li.placeholder {
+      border-bottom: none;
     }
 
     .media .media-body {
@@ -253,6 +259,7 @@ h4 {
       font-weight: 300;
       margin-top: 5px;
       margin-bottom: 5px;
+      min-height: 15px;
     }
 
     .time {
