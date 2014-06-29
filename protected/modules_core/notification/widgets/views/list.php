@@ -25,10 +25,10 @@
     // set niceScroll to notification list
     $("#dropdown-notifications ul.media-list").niceScroll({
         cursorwidth: "7",
-        cursorborder:"",
-        cursorcolor:"#555",
-        cursoropacitymax:"0.2",
-        railpadding:{top:0,right:3,left:0,bottom:0}
+        cursorborder: "",
+        cursorcolor: "#555",
+        cursoropacitymax: "0.2",
+        railpadding: {top: 0, right: 3, left: 0, bottom: 0}
     });
 
 
@@ -42,7 +42,7 @@
             'url': '<?php echo $this->createUrl('//notification/list/markAsSeen', array('ajax' => 1)); ?>',
             'cache': false,
             'data': jQuery(this).parents("form").serialize(),
-            'success': function(html) {
+            'success': function (html) {
                 // hide notification badge at the top menu
                 $('#badge-notifications').css('display', 'none');
             }});
@@ -107,6 +107,8 @@
 
         });
 
+        var notification_placeholder = "<?php echo Yii::t('NotificationModule.base', 'There are no notifications available') ?>"
+
 
         function loadNotificationEntries() {
 
@@ -122,19 +124,24 @@
                 // hide loader
                 $("#loader_notifications .loader").hide();
 
-                // save id from the last entry for the next loading
-                notificationLastLoadedEntryId = json.lastEntryId;
+                if (json.counter == 0) {
+                    $("#dropdown-notifications ul.media-list").append('<li class="placeholder">' + notification_placeholder + '</li>');
+                } else {
 
-                if (json.counter < 6) {
-                    // prevent the next ajax calls, if there are no more entries
-                    notificationLastEntryReached = true;
+                    // save id from the last entry for the next loading
+                    notificationLastLoadedEntryId = json.lastEntryId;
+
+                    if (json.counter < 6) {
+                        // prevent the next ajax calls, if there are no more entries
+                        notificationLastEntryReached = true;
+                    }
+
+                    // add new entries
+                    $("#dropdown-notifications ul.media-list").append(json.output);
+
+                    // format time
+                    $('span.time').timeago();
                 }
-
-                // add new entries
-                $("#dropdown-notifications ul.media-list").append(json.output);
-
-                // format time
-                $('span.time').timeago();
 
 
             });
