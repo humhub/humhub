@@ -273,6 +273,13 @@ class Space extends HActiveRecordContentContainer implements ISearchable
                 $spaceSetting->delete();
             }
 
+            // Disable all enabled modules
+            foreach ($this->getAvailableModules() as $moduleId => $module) {
+                if ($this->isModuleEnabled($moduleId)) {
+                    $this->uninstallModule($moduleId);
+                }
+            }
+
             HSearch::getInstance()->deleteModel($this);
             return true;
         }
@@ -1137,10 +1144,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         if ($this->hasEventHandler('onUninstallModule'))
             $this->onUninstallModule(new CEvent($this, $moduleId));
 
-        // New Way
+        // New Way: Handle it directly in module class
         $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->disableSpaceModule($this);
-        
+
         SpaceApplicationModule::model()->deleteAllByAttributes(array('space_id' => $this->id, 'module_id' => $moduleId));
 
         return true;
