@@ -84,4 +84,54 @@ class SpaceModuleBehavior extends CBehavior
         return "";
     }
 
+    
+    /**
+     * Returns the module image for space admins.
+     * You may want to overwrite with an special space image.
+     * 
+     * @return String
+     */
+    public function getSpaceModuleImage()
+    {
+        return $this->getOwner()->getImage();
+    } 
+    
+    /**
+     * Enables this module on given space
+     * 
+     * @param Space $space
+     */
+    public function enableSpaceModule(Space $space)
+    {
+        
+    }
+
+    /**
+     * Disables this module on given space
+     * 
+     * You may want to overwrite this function and delete e.g. created
+     * content objects.
+     * 
+     * @param Space $space
+     */
+    public function disableSpaceModule(Space $space)
+    {
+        
+    }
+
+    /**
+     * Returns a list of all spaces where this SpaceModule is
+     * enabled.
+     * 
+     * @return Array Space
+     */
+    public function getSpaceModuleSpaces()
+    {
+        $spaces = array();
+        foreach (SpaceApplicationModule::model()->with('space')->findAllByAttributes(array('module_id' => $this->owner->getId())) as $spaceModule) {
+            $spaces[] = $spaceModule->space;
+        }
+        return $spaces;
+    }
+
 }

@@ -377,10 +377,14 @@ class User extends HActiveRecordContentContainer implements ISearchable {
         // Delete wall entries
         WallEntry::model()->deleteAllByAttributes(array('wall_id' => $this->wall_id));
 
-        // Delete all content objects of this workspace (Should handled by modules)
-        #foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
-        #    $content->delete();
-        #}
+        // Deletes all content created by this user
+        foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
+            $content->delete();
+        }
+        foreach (Content::model()->findAllByAttributes(array('created_by' => $this->id)) as $content) {
+            $content->delete();
+        }
+        
         // Unbind my wall_id
         $this->save();
 

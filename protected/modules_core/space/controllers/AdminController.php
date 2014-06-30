@@ -370,7 +370,7 @@ class AdminController extends Controller {
             }
         }
 
-        $this->render('modules');
+        $this->render('modules', array('availableModules' => $this->getSpace()->getAvailableModules()));
     }
 
     public function actionEnableModule() {

@@ -18,28 +18,32 @@
  * @package humhub.modules_core.space.models
  * @since 0.5
  */
-class SpaceApplicationModule extends HActiveRecord {
+class SpaceApplicationModule extends HActiveRecord
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return SpaceApplicationModule the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'space_module';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -52,10 +56,10 @@ class SpaceApplicationModule extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
+    public function relations()
+    {
         return array(
+            'space' => array(self::BELONGS_TO, 'Space', 'space_id'),
         );
     }
 

@@ -337,6 +337,14 @@ class ModuleController extends Controller
         }
 
         ModuleManager::flushCache();
+
+        // Call Modules autostart
+        $autostartFilename = $modulePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
+        if (file_exists($autostartFilename)) {
+            require_once($autostartFilename);
+            $module = Yii::app()->moduleManager->getModule($moduleId);
+            $module->install();
+        }
     }
 
     /**

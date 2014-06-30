@@ -191,19 +191,37 @@ class HWebModule extends CWebModule
     }
 
     /**
+     * Disables a module
      * 
-     * @todo also disable it on all spaces/users 
+     * Which means delete all (user-) data created by the module.
+     * 
      */
     public function disable()
     {
-        if ($this->isEnabled() && !$this->isCoreModule) {
-            $moduleEnabled = ModuleEnabled::model()->findByPk($this->getId());
-            if ($moduleEnabled != null) {
-                $moduleEnabled->delete();
+        if (!$this->isEnabled() || $this->isCoreModule)
+            return false;
+
+        // Check this module is a SpaceModule
+        // ToDo: Handle this directly via SpaceModuleBehavior & Events
+        if (array_key_exists('SpaceModuleBehavior', $this->behaviors())) {
+            foreach ($this->getSpaceModuleSpaces() as $space) {
+                $space->uninstallModule($this->getId());
             }
         }
 
+        // Disable module in database
+        $moduleEnabled = ModuleEnabled::model()->findByPk($this->getId());
+        if ($moduleEnabled != null) {
+            $moduleEnabled->delete();
+        }
+
+        HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+        SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+        UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+
         ModuleManager::flushCache();
+
+        return true;
     }
 
     /**
@@ -234,8 +252,11 @@ class HWebModule extends CWebModule
     /**
      * Uninstalls a module
      * 
-     * Removes module folder from system.
      * You may overwrite this method to add more cleanup stuff.
+     * 
+     * This method shall:
+     *      - Delete all module files
+     *      - Delete all modules tables, database changes
      */
     public function uninstall()
     {
@@ -249,6 +270,26 @@ class HWebModule extends CWebModule
             $this->disable();
         }
 
+        // Use uninstall migration, when found
+        $uninstallMigration = $this->getPath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'uninstall.php';
+        if (file_exists($uninstallMigration)) {
+            Yii::import("application.commands.shell.*");
+            ob_start();
+            require_once($uninstallMigration);
+            $migration = new uninstall;
+            $migration->setDbConnection(Yii::app()->db);
+            try {
+                $migration->up();
+            } catch (Exception $ex) {
+                ;
+            }
+            ob_get_clean();
+        }
+
+        // Delete all executed migration by module
+        $command = Yii::app()->db->createCommand('DELETE FROM migration WHERE module = :moduleId');
+        $command->execute(array(':moduleId' => $this->getId()));
+
         $this->removeModuleFolder();
 
         ModuleManager::flushCache();
@@ -259,7 +300,9 @@ class HWebModule extends CWebModule
      */
     public function install()
     {
-        print "Install called" . $this->getId();
+        // Execute all available migrations
+        Yii::import('application.commands.shell.ZMigrateCommand');
+        $migrate = ZMigrateCommand::AutoMigrate();
     }
 
     /**

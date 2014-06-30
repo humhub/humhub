@@ -29,7 +29,7 @@
                         <?php echo Yii::t('AdminModules.modules', 'Version:'); ?> <?php echo $module->getVersion(); ?>
 
                         <?php if ($module->isEnabled()) : ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId)); ?>
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!'))); ?>
 
                             <?php if ($module->getConfigUrl()) : ?>
                                 &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'Configure'), $module->getConfigUrl()); ?>
@@ -39,7 +39,7 @@
                         <?php endif; ?>
 
                         <?php if (Yii::app()->moduleManager->canUninstall($moduleId)): ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Uninstall'), array('//admin/module/uninstall', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.modules', 'Are you sure? - All module data will be lost!'))); ?>
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Uninstall'), array('//admin/module/uninstall', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module related data and files will be lost!'))); ?>
                         <?php endif; ?>
 
                         &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/info', 'moduleId' => $moduleId), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>

@@ -3,14 +3,19 @@
         <?php echo Yii::t('SpaceModule.base', 'Modules'); ?>
     </div>
     <div class="panel-body">
-        <?php echo Yii::t('SpaceModule.base', 'Enhance this space with modules.'); ?><br>
+
+        <?php if (count($availableModules) == 0): ?>
+            <p><?php echo Yii::t('SpaceModule.base', 'Currently there are no modules avaiable for this space!'); ?></p>
+        <?php else: ?>
+            <?php echo Yii::t('SpaceModule.base', 'Enhance this space with modules.'); ?><br>
+        <?php endif; ?>
 
 
-        <?php foreach ($this->getSpace()->getAvailableModules() as $moduleId => $module): ?>
+        <?php foreach ($availableModules as $moduleId => $module): ?>
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                      style="width: 64px; height: 64px;"
-                     src="<?php echo Yii::app()->baseUrl; ?>/uploads/profile_image/default_module.jpg">
+                     src="<?php echo $module->getSpaceModuleImage(); ?>">
 
                 <div class="media-body">
                     <h4 class="media-heading"><?php echo $module->getSpaceModuleName(); ?>
@@ -21,7 +26,7 @@
 
                     <p><?php echo $module->getSpaceModuleDescription(); ?></p>
                     <?php if ($this->getSpace()->isModuleEnabled($moduleId)) : ?>
-                        <?php echo CHtml::link(Yii::t('base', 'Disable'), array('//space/admin/disableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary', 'onClick' => 'return moduleDisableWarning()')); ?>
+                        <?php echo HHtml::postLink(Yii::t('base', 'Disable'), array('//space/admin/disableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary', 'confirm' => Yii::t('SpaceModule.base', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
 
                         <?php if ($module->getSpaceModuleConfigUrl($this->getSpace()) != "") : ?>
                             <?php
@@ -31,7 +36,7 @@
                             ?>
                         <?php endif; ?>
                     <?php else: ?>
-                        <?php echo CHtml::link(Yii::t('base', 'Enable'), array('//space/admin/enableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary')); ?>
+                        <?php echo HHtml::postLink(Yii::t('base', 'Enable'), array('//space/admin/enableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary')); ?>
                     <?php endif; ?>
                 </div>
             </div>
