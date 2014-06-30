@@ -11,11 +11,8 @@ Yii::app()->moduleManager->register(array(
     ),
     // Events to Catch
     'events' => array(
-        array('class' => 'User', 'event' => 'onBeforeDelete', 'callback' => array('PostModule', 'onUserDelete')),
-        array('class' => 'Space', 'event' => 'onBeforeDelete', 'callback' => array('PostModule', 'onSpaceDelete')),
         array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('PostModule', 'onIntegrityCheck')),
         array('class' => 'HSearch', 'event' => 'onRebuild', 'callback' => array('PostModule', 'onSearchRebuild')),
     ),
-    'contentModels' => array('Activity'),
 ));
 ?>

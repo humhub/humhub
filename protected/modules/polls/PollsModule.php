@@ -35,6 +35,34 @@ class PollsModule extends HWebModule
     }
 
     /**
+     * On global module disable, delete all created content
+     */
+    public function disable()
+    {
+        if (parent::disable()) {
+            foreach (Content::model()->findAllByAttributes(array('object_model' => 'Poll')) as $content) {
+                $content->delete();
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * On disabling this module on a space, deleted all module -> space related content/data.
+     * Method stub is provided by "SpaceModuleBehavior"
+     * 
+     * @param Space $space
+     */
+    public function disableSpaceModule(Space $space)
+    {
+        foreach (Content::model()->findAllByAttributes(array('space_id' => $space->id, 'object_model' => 'Poll')) as $content) {
+            $content->delete();
+        }
+    }
+
+    /**
      * On build of a Space Navigation, check if this module is enabled.
      * When enabled add a menu item
      *
@@ -58,77 +86,18 @@ class PollsModule extends HWebModule
     }
 
     /**
-     * On User delete, also delete all posts
+     * On User delete, delete all poll answers by this user
      *
      * @param type $event
      */
     public static function onUserDelete($event)
     {
 
-        foreach (Content::model()->findAllByAttributes(array('user_id' => $event->sender->id, 'object_model' => 'Poll')) as $content) {
-            $content->delete();
-        }
-
         foreach (PollAnswerUser::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $question) {
             $question->delete();
         }
 
         return true;
-    }
-
-    /**
-     * On workspace deletion make sure to delete all posts
-     *
-     * @param type $event
-     */
-    public static function onSpaceDelete($event)
-    {
-        foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Poll')) as $content) {
-            $content->delete();
-        }
-    }
-
-    /**
-     * After the module was uninstalled from this workspace.
-     * Do Cleanup
-     *
-     * @param type $event
-     */
-    public static function onSpaceUninstallModule($event)
-    {
-        if ($event->params == 'polls') {
-            foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Poll')) as $content) {
-                $content->delete();
-            }
-        }
-    }
-
-    /**
-     * After the module was disabled globally
-     * Do Cleanup
-     *
-     * @param type $event
-     */
-    public static function onDisableModule($event)
-    {
-        if ($event->params == 'polls') {
-
-            foreach (Content::model()->findAllByAttributes(array('object_model' => 'Poll')) as $content) {
-                $content->delete();
-            }
-        }
-    }
-
-    /**
-     * On run of integrity check command, validate all module data
-     *
-     * @param type $event
-     */
-    public static function onIntegrityCheck($event)
-    {
-
-        $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Validating Polls Module (" . Poll::model()->count() . " entries)");
     }
 
 }

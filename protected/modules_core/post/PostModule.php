@@ -30,36 +30,6 @@ class PostModule extends HWebModule
     }
 
     /**
-     * On User delete, also delete all posts
-     *
-     * @param type $event
-     */
-    public static function onUserDelete($event)
-    {
-
-        foreach (Content::model()->findAllByAttributes(array('user_id' => $event->sender->id, 'object_model' => 'Post')) as $content) {
-            $content->delete();
-        }
-        foreach (Content::model()->findAllByAttributes(array('created_by' => $event->sender->id, 'object_model' => 'Post')) as $content) {
-            $content->delete();
-        }
-        return true;
-    }
-
-    /**
-     * On workspace deletion make sure to delete all posts
-     *
-     * @param type $event
-     */
-    public static function onSpaceDelete($event)
-    {
-
-        foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Post')) as $content) {
-            $content->delete();
-        }
-    }
-
-    /**
      * On run of integrity check command, validate all post data
      *
      * @param type $event

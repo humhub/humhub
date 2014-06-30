@@ -2,7 +2,7 @@
     "id": "polls",
     "name": "Polls",
     "description": "Simple polling system",
-    "keywords": ["poll", "votes"],
+    "keywords": ["poll", "voting"],
     "version": "0.5",
     "humhub": {
         "minVersion": "0.5"

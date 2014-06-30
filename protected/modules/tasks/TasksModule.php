@@ -27,20 +27,40 @@ class TasksModule extends HWebModule
     }
 
     /**
-     * On User delete, also delete all tasks 
+     * On global module disable, delete all created content
+     */
+    public function disable()
+    {
+        if (parent::disable()) {
+            foreach (Content::model()->findAllByAttributes(array('object_model' => 'Task')) as $content) {
+                $content->delete();
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * On disabling this module on a space, deleted all module -> space related content/data.
+     * Method stub is provided by "SpaceModuleBehavior"
+     * 
+     * @param Space $space
+     */
+    public function disableSpaceModule(Space $space)
+    {
+        foreach (Content::model()->findAllByAttributes(array('space_id' => $space->id, 'object_model' => 'Task')) as $content) {
+            $content->delete();
+        }
+    }
+
+    /**
+     * On User delete, delete all task assignments
      * 
      * @param type $event
      */
     public static function onUserDelete($event)
     {
-
-        foreach (Content::model()->findAllByAttributes(array('created_by' => $event->sender->id, 'object_model' => 'Task')) as $content) {
-            $content->delete();
-        }
-
-        foreach (Content::model()->findAllByAttributes(array('user_id' => $event->sender->id, 'object_model' => 'Task')) as $content) {
-            $content->delete();
-        }
 
         foreach (TaskUser::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $task) {
             $task->delete();
@@ -50,18 +70,6 @@ class TasksModule extends HWebModule
         }
 
         return true;
-    }
-
-    /**
-     * On workspace deletion make sure to delete all tasks
-     * 
-     * @param type $event
-     */
-    public static function onSpaceDelete($event)
-    {
-        foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Task')) as $content) {
-            $content->delete();
-        }
     }
 
     /**
@@ -75,7 +83,7 @@ class TasksModule extends HWebModule
 
         $space = Yii::app()->getController()->getSpace();
 
-        // Is Module enabled on this workspace?
+        // Is Module enabled on this space?
         if ($space->isModuleEnabled('tasks')) {
             $event->sender->addItem(array(
                 'label' => Yii::t('TasksModule.base', 'Tasks'),
@@ -85,48 +93,6 @@ class TasksModule extends HWebModule
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'tasks'),
             ));
         }
-    }
-
-    /**
-     * After the module was uninstalled from a workspace.
-     * Do Cleanup
-     * 
-     * @param type $event
-     */
-    public static function onSpaceUninstallModule($event)
-    {
-        if ($event->params == 'tasks') {
-            foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Task')) as $content) {
-                $content->delete();
-            }
-        }
-    }
-
-    /**
-     * After the module was disabled globally
-     * Do Cleanup
-     * 
-     * @param type $event
-     */
-    public static function onDisableModule($event)
-    {
-        if ($event->params == 'tasks') {
-            foreach (Content::model()->findAllByAttributes(array('object_model' => 'Task')) as $content) {
-                $content->delete();
-            }
-        }
-    }
-
-    /**
-     * On run of integrity check command, validate all module data
-     * 
-     * @param type $event
-     */
-    public static function onIntegrityCheck($event)
-    {
-
-        $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Validating Tasks Module (" . Task::model()->count() . " entries)");
     }
 
 }

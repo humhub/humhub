@@ -1,7 +1,7 @@
-{
-    "id": "yiigii",
+l
+{    "id": "yiigii",
     "name": "Yii Gii Integration",
-    "description": "Integrates Yii Code Generator",
+    "description": "Integrates Yii Code Generator for HumHub Developers",
     "keywords": ["yii", "gii", "development"],
     "version": "0.9",
     "humhub": {

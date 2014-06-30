@@ -77,7 +77,7 @@
             <?php endif; ?>
             <?php if ($type == Wall::TYPE_DASHBOARD): ?>
                 <div class="placeholder">
-                    <?php echo Yii::t('WallModule.base', '<b>Your dashboard is empty! - Fill it!</b><br>Just join or follow some workspaces or users!'); ?>
+                    <?php echo Yii::t('WallModule.base', '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!'); ?>
                 </div>
 
             <?php elseif ($type == Wall::TYPE_USER): ?>

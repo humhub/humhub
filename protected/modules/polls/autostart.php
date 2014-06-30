@@ -12,11 +12,7 @@ Yii::app()->moduleManager->register(array(
     // Events to Catch 
     'events' => array(
         array('class' => 'User', 'event' => 'onBeforeDelete', 'callback' => array('PollsModule', 'onUserDelete')),
-        array('class' => 'Space', 'event' => 'onBeforeDelete', 'callback' => array('PollsModule', 'onSpaceDelete')),
-        array('class' => 'Space', 'event' => 'onUninstallModule', 'callback' => array('PollsModule', 'onSpaceUninstallModule')),
         array('class' => 'SpaceMenuWidget', 'event' => 'onInit', 'callback' => array('PollsModule', 'onSpaceMenuInit')),
-        array('class' => 'ModuleManager', 'event' => 'onDisable', 'callback' => array('PollsModule', 'onDisableModule')),
-        array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('PollsModule', 'onIntegrityCheck')),
     ),
 ));
 ?>

@@ -7,7 +7,8 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class AdminController extends Controller {
+class AdminController extends Controller
+{
 
     /**
      * @var String Admin Sublayout
@@ -17,7 +18,8 @@ class AdminController extends Controller {
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -28,7 +30,8 @@ class AdminController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -44,7 +47,8 @@ class AdminController extends Controller {
      *
      * @return type
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ProfileControllerBehavior' => array(
                 'class' => 'application.modules_core.space.SpaceControllerBehavior',
@@ -55,17 +59,18 @@ class AdminController extends Controller {
     /**
      * First Admin Action to display
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->redirect($this->createUrl('edit', array('sguid' => $this->getSpace()->guid)));
     }
-
 
     /**
      * Space Edit Form
      *
      * @todo Add Owner Switch Box for the Owner only!
      */
-    public function actionEdit() {
+    public function actionEdit()
+    {
 
         $this->adminOnly();
 
@@ -99,7 +104,8 @@ class AdminController extends Controller {
     /**
      * Members Administration Action
      */
-    public function actionMembers() {
+    public function actionMembers()
+    {
 
         $this->adminOnly();
 
@@ -151,10 +157,8 @@ class AdminController extends Controller {
                     }
                 }
             } // Loop over Users
-
             // set flash message
             Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
-
         } // Updated Users
 
 
@@ -197,7 +201,8 @@ class AdminController extends Controller {
     /**
      * User Manage Users Page, Reject Member Request Link
      */
-    public function actionAdminMembersRejectApplicant() {
+    public function actionAdminMembersRejectApplicant()
+    {
         $this->adminOnly();
 
         $space = $this->getSpace();
@@ -215,7 +220,8 @@ class AdminController extends Controller {
     /**
      * User Manage Users Page, Approve Member Request Link
      */
-    public function actionAdminMembersApproveApplicant() {
+    public function actionAdminMembersApproveApplicant()
+    {
         $this->adminOnly();
 
         $space = $this->getSpace();
@@ -237,7 +243,8 @@ class AdminController extends Controller {
      * Removes a Member
      *
      */
-    public function actionAdminRemoveMember() {
+    public function actionAdminRemoveMember()
+    {
 
         $this->adminOnly();
 
@@ -254,7 +261,6 @@ class AdminController extends Controller {
         // Redirect  back to Administration page
         $this->htmlRedirect($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)));
     }
-
 
     /**
      * Handle the profile image upload
@@ -285,7 +291,6 @@ class AdminController extends Controller {
             $json['size'] = $model->image->getSize();
             $json['deleteUrl'] = "";
             $json['deleteType'] = "";
-
         } else {
             $json['error'] = true;
             $json['errors'] = $model->getErrors();
@@ -294,7 +299,6 @@ class AdminController extends Controller {
 
         return $this->renderJson(array('files' => $json));
     }
-
 
     /**
      * Crops the profile image of the user
@@ -327,20 +331,11 @@ class AdminController extends Controller {
         Yii::app()->end();
     }
 
-
-
-
-
-
-
-
-
-
-
     /**
      * Deletes the Profile Image
      */
-    public function actionDeleteImage() {
+    public function actionDeleteImage()
+    {
 
         $this->adminOnly();
         $space = $this->getSpace();
@@ -351,7 +346,8 @@ class AdminController extends Controller {
     /**
      * Modules Administration Action
      */
-    public function actionModules() {
+    public function actionModules()
+    {
 
         $this->adminOnly();
         $space = $this->getSpace();
@@ -373,7 +369,10 @@ class AdminController extends Controller {
         $this->render('modules', array('availableModules' => $this->getSpace()->getAvailableModules()));
     }
 
-    public function actionEnableModule() {
+    public function actionEnableModule()
+    {
+
+        $this->forcePostRequest();
 
         $space = $this->getSpace();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
@@ -385,7 +384,10 @@ class AdminController extends Controller {
         $this->redirect($this->createUrl('admin/modules', array('sguid' => $this->getSpace()->guid)));
     }
 
-    public function actionDisableModule() {
+    public function actionDisableModule()
+    {
+
+        $this->forcePostRequest();
 
         $space = $this->getSpace();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
@@ -400,7 +402,8 @@ class AdminController extends Controller {
     /**
      * Archives a workspace
      */
-    public function actionArchive() {
+    public function actionArchive()
+    {
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
@@ -410,7 +413,8 @@ class AdminController extends Controller {
     /**
      * UnArchives a workspace
      */
-    public function actionUnArchive() {
+    public function actionUnArchive()
+    {
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
@@ -420,7 +424,8 @@ class AdminController extends Controller {
     /**
      * Deletes this Space
      */
-    public function actionDelete() {
+    public function actionDelete()
+    {
         $this->ownerOnly();
         $space = $this->getSpace();
         $model = new SpaceDeleteForm;
@@ -438,7 +443,8 @@ class AdminController extends Controller {
     /**
      * Request only allowed for workspace admins
      */
-    public function adminOnly() {
+    public function adminOnly()
+    {
         if (!$this->getSpace()->isAdmin())
             throw new CHttpException(403, 'Access denied - Space Administrator only!');
     }
@@ -446,7 +452,8 @@ class AdminController extends Controller {
     /**
      * Request only allowed for workspace owner
      */
-    public function ownerOnly() {
+    public function ownerOnly()
+    {
         $workspace = $this->getSpace();
 
         if (!$workspace->isOwner() && !Yii::app()->user->isAdmin())
