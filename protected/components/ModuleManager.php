@@ -243,7 +243,7 @@ class ModuleManager extends CApplicationComponent
             }
 
             if ($returnClassName) {
-                $installed[] = $className;
+                $installed[$moduleId] = $className;
             } else {
 
                 try {
