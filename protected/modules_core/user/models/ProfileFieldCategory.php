@@ -10,6 +10,7 @@
  * @property integer $sort_order
  * @property integer $module_id
  * @property integer $visibility
+ * @property integer $is_system
  * @property string $translation_category
  * @property string $created_at
  * @property integer $created_by

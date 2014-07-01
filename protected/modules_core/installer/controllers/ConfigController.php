@@ -319,18 +319,21 @@ class ConfigController extends Controller
         $cGeneral->title = "General";
         $cGeneral->sort_order = 100;
         $cGeneral->visibility = 1;
+        $cGeneral->is_system = true;
         $cGeneral->save();
 
         $cCommunication = new ProfileFieldCategory;
         $cCommunication->title = "Communication";
         $cCommunication->sort_order = 200;
         $cCommunication->visibility = 1;
+        $cCommunication->is_system = true;
         $cCommunication->save();
 
         $cSocial = new ProfileFieldCategory;
         $cSocial->title = "Social bookmarks";
         $cSocial->sort_order = 300;
         $cSocial->visibility = 1;
+        $cSocial->is_system = true;
         $cSocial->save();
 
         // Add Fields
@@ -395,6 +398,7 @@ class ConfigController extends Controller
         $field->sort_order = 400;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 150;
             $field->fieldType->save();
@@ -405,6 +409,7 @@ class ConfigController extends Controller
         $field->title = 'Zip';
         $field->sort_order = 500;
         $field->profile_field_category_id = $cGeneral->id;
+        $field->is_system = true;
         $field->field_type_class = 'ProfileFieldTypeNumber';
         if ($field->save()) {
             $field->fieldType->save();
@@ -416,6 +421,7 @@ class ConfigController extends Controller
         $field->sort_order = 600;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -427,6 +433,7 @@ class ConfigController extends Controller
         $field->sort_order = 700;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -439,6 +446,7 @@ class ConfigController extends Controller
         $field->sort_order = 800;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -450,6 +458,7 @@ class ConfigController extends Controller
         $field->sort_order = 900;
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = 'ProfileFieldTypeTextArea';
+        $field->is_system = true;
         if ($field->save()) {
             #$field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -462,6 +471,7 @@ class ConfigController extends Controller
         $field->sort_order = 100;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -473,6 +483,7 @@ class ConfigController extends Controller
         $field->sort_order = 200;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -484,6 +495,7 @@ class ConfigController extends Controller
         $field->sort_order = 300;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -495,6 +507,7 @@ class ConfigController extends Controller
         $field->sort_order = 400;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -506,6 +519,7 @@ class ConfigController extends Controller
         $field->sort_order = 500;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -517,6 +531,7 @@ class ConfigController extends Controller
         $field->sort_order = 600;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
@@ -529,6 +544,7 @@ class ConfigController extends Controller
         $field->sort_order = 700;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeNumber';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->save();
         }
@@ -539,6 +555,7 @@ class ConfigController extends Controller
         $field->sort_order = 800;
         $field->profile_field_category_id = $cCommunication->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'email';
             $field->fieldType->save();
@@ -550,6 +567,7 @@ class ConfigController extends Controller
         $field->sort_order = 100;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -561,6 +579,7 @@ class ConfigController extends Controller
         $field->sort_order = 200;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -572,6 +591,7 @@ class ConfigController extends Controller
         $field->sort_order = 300;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -583,6 +603,7 @@ class ConfigController extends Controller
         $field->sort_order = 400;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -594,6 +615,7 @@ class ConfigController extends Controller
         $field->sort_order = 500;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -605,6 +627,7 @@ class ConfigController extends Controller
         $field->sort_order = 600;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -616,6 +639,7 @@ class ConfigController extends Controller
         $field->sort_order = 700;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -627,6 +651,7 @@ class ConfigController extends Controller
         $field->sort_order = 800;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -638,6 +663,7 @@ class ConfigController extends Controller
         $field->sort_order = 900;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();
@@ -649,6 +675,7 @@ class ConfigController extends Controller
         $field->sort_order = 1000;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = 'ProfileFieldTypeText';
+        $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
             $field->fieldType->save();

@@ -1,8 +1,10 @@
 <?php
 
-class m131023_164513_initial extends ZDbMigration {
+class m131023_164513_initial extends ZDbMigration
+{
 
-    public function up() {
+    public function up()
+    {
 
         $this->createTable('group', array(
             'id' => 'pk',
@@ -112,14 +114,20 @@ class m131023_164513_initial extends ZDbMigration {
 
         $this->addPrimaryKey('pk_user_follow', 'user_follow', 'user_follower_id,user_followed_id');
 
-        $this->createTable('user_http_session', array(
-            'id' => 'char(32) NOT NULL',
-            'expire' => 'int(11) DEFAULT NULL',
-            'user_id' => 'int(11) DEFAULT NULL',
-            'data' => 'longblob DEFAULT NULL',
-                ), '');
 
-        $this->addPrimaryKey('pk_user_http_session', 'user_http_session', 'id');
+        try {
+            // May already created
+            $this->createTable('user_http_session', array(
+                'id' => 'char(32) NOT NULL',
+                'expire' => 'int(11) DEFAULT NULL',
+                'user_id' => 'int(11) DEFAULT NULL',
+                'data' => 'longblob DEFAULT NULL',
+                    ), '');
+            $this->addPrimaryKey('pk_user_http_session', 'user_http_session', 'id');
+        } catch (Exception $ex) {
+        }
+
+
 
         $this->createTable('user_invite', array(
             'id' => 'pk',
@@ -165,7 +173,8 @@ class m131023_164513_initial extends ZDbMigration {
         $this->addPrimaryKey('pk_user_space_membership', 'user_space_membership', 'space_id,user_id');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_164513_initial does not support migration down.\n";
         return false;
 

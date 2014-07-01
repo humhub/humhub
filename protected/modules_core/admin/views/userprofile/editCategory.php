@@ -1,6 +1,6 @@
 <div class="panel panel-default">
 
-    <?php if (!$field->isNewRecord) : ?>
+    <?php if (!$category->isNewRecord) : ?>
         <div
             class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Edit</strong> profile category'); ?></div>
     <?php else: ?>
@@ -45,7 +45,7 @@
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
 
-        <?php if (!$category->isNewRecord) : ?>
+        <?php if (!$category->isNewRecord && !$category->is_system) : ?>
             <?php echo HHtml::postLink(Yii::t('base', 'Delete'), $this->createUrl('//admin/userprofile/deleteCategory', array('id' => $category->id)), array('class' => 'btn btn-danger')); ?>
         <?php endif; ?>
 
