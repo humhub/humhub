@@ -377,7 +377,18 @@ class ConfigController extends Controller
             $field->fieldType->save();
         }
 
-
+        $field = new ProfileField();
+        $field->internal_name = "gender";
+        $field->title = 'Gender';
+        $field->sort_order = 300;
+        $field->profile_field_category_id = $cGeneral->id;
+        $field->field_type_class = 'ProfileFieldTypeSelect';
+        $field->is_system = true;
+        if ($field->save()) {
+            $field->fieldType->options = "male=>Male\nfemale=>Female\ncustom=>Custom";
+            $field->fieldType->save();
+        }
+        
         $field = new ProfileField();
         $field->internal_name = "street";
         $field->title = 'Street';
