@@ -247,6 +247,11 @@ class SettingController extends Controller
             Yii::app()->cache->flush();
             ModuleManager::flushCache();
 
+            // Delete also published assets 
+            foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(Yii::app()->getAssetManager()->getBasePath(), FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+                $path->isDir() ? rmdir($path->getPathname()) : unlink($path->getPathname());
+            }
+
             $_POST['CacheSettingsForm'] = Yii::app()->input->stripClean($_POST['CacheSettingsForm']);
             $form->attributes = $_POST['CacheSettingsForm'];
 
@@ -261,6 +266,7 @@ class SettingController extends Controller
                 $this->redirect(Yii::app()->createUrl('//admin/setting/caching'));
             }
         }
+
 
         $cacheTypes = array(
             'CDummyCache' => Yii::t('AdminModule.base', 'No caching (Testing only!)'),
