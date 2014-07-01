@@ -70,14 +70,6 @@ class AccountMenuWidget extends MenuWidget {
                 'isActive' => (Yii::app()->controller->action->id == "changeEmail"),
             ));
         }
-        $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'Picture'),
-            'icon' => '<i class="fa fa-picture-o"></i>',
-            'group' => 'account',
-            'url' => Yii::app()->createUrl('//user/account/changeImage'),
-            'sortOrder' => 400,
-            'isActive' => (Yii::app()->controller->action->id == "changeImage"),
-        ));
 
         // LDAP users cannot changes password or delete account
         if (Yii::app()->user->getAuthMode() != User::AUTH_MODE_LDAP) {
