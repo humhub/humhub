@@ -39,28 +39,32 @@
  * @package humhub.models
  * @since 0.5
  */
-class HSetting extends HActiveRecord {
+class HSetting extends HActiveRecord
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return HSetting the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'setting';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -79,7 +83,8 @@ class HSetting extends HActiveRecord {
      * @param type $moduleId
      * @return \HSetting
      */
-    private static function GetRecord($name, $moduleId = "") {
+    private static function GetRecord($name, $moduleId = "")
+    {
 
         $cacheId = 'HSetting_' . $name . '_' . $moduleId;
 
@@ -126,7 +131,8 @@ class HSetting extends HActiveRecord {
      * @param type $moduleId
      * @return type
      */
-    public static function Get($name, $moduleId = "") {
+    public static function Get($name, $moduleId = "")
+    {
 
         if (self::IsFixed($name, $moduleId)) {
             if ($moduleId == "") {
@@ -135,7 +141,7 @@ class HSetting extends HActiveRecord {
                 return Yii::app()->params['HSettingFixed'][$moduleId][$name];
             }
         }
-        
+
         $record = self::GetRecord($name, $moduleId);
         return $record->value;
     }
@@ -147,7 +153,8 @@ class HSetting extends HActiveRecord {
      * @param type $moduleId
      * @return type
      */
-    public static function GetText($name, $moduleId = "") {
+    public static function GetText($name, $moduleId = "")
+    {
 
         $record = self::GetRecord($name, $moduleId);
         return $record->value_text;
@@ -160,13 +167,14 @@ class HSetting extends HActiveRecord {
      * @param type $value
      * @param type $moduleId
      */
-    public static function Set($name, $value, $moduleId = "") {
+    public static function Set($name, $value, $moduleId = "")
+    {
         $record = self::GetRecord($name, $moduleId);
 
         if (self::IsFixed($name, $moduleId)) {
             $value = self::Get($name, $moduleId);
         }
-        
+
         $record->name = $name;
         $record->value = $value;
         if ($moduleId != "")
@@ -187,7 +195,8 @@ class HSetting extends HActiveRecord {
      * @param type $value
      * @param type $moduleId
      */
-    public static function SetText($name, $value, $moduleId = "") {
+    public static function SetText($name, $value, $moduleId = "")
+    {
         $record = self::GetRecord($name, $moduleId);
 
         $record->name = $name;
@@ -205,7 +214,8 @@ class HSetting extends HActiveRecord {
      * @param type $name
      * @return boolean
      */
-    public static function IsFixed($name, $moduleId = "") {
+    public static function IsFixed($name, $moduleId = "")
+    {
 
         if ($moduleId == "") {
             if (isset(Yii::app()->params['HSettingFixed'][$name])) {
@@ -224,7 +234,8 @@ class HSetting extends HActiveRecord {
      *
      * @return String
      */
-    public function getCacheId() {
+    public function getCacheId()
+    {
         return "HSetting_" . $this->name . "_" . $this->module_id;
     }
 
@@ -236,7 +247,8 @@ class HSetting extends HActiveRecord {
      * @param type $attributes
      * @return type
      */
-    public function save($runValidation = true, $attributes = null) {
+    public function save($runValidation = true, $attributes = null)
+    {
 
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
@@ -246,7 +258,8 @@ class HSetting extends HActiveRecord {
     /**
      * After delete check if its required to rewrite configuration file
      */
-    public function afterDelete() {
+    public function afterDelete()
+    {
 
         $cacheId = $this->getCacheId();
         Yii::app()->cache->delete($cacheId);
@@ -269,7 +282,8 @@ class HSetting extends HActiveRecord {
     /**
      * After saving check if its required to rewrite the configuration file.
      */
-    public function afterSave() {
+    public function afterSave()
+    {
 
         parent::afterSave();
 
@@ -288,7 +302,8 @@ class HSetting extends HActiveRecord {
     /**
      * Rewrites the configuration file
      */
-    public static function rewriteConfiguration() {
+    public static function rewriteConfiguration()
+    {
 
         // Get Current Configuration
         $config = HSetting::getConfiguration();
@@ -341,7 +356,7 @@ class HSetting extends HActiveRecord {
         } else {
             unset($config['theme']);
         }
-        
+
         HSetting::setConfiguration($config);
     }
 
@@ -350,7 +365,8 @@ class HSetting extends HActiveRecord {
      *
      * @return Array Configuration file
      */
-    public static function getConfiguration() {
+    public static function getConfiguration()
+    {
 
         $configFile = Yii::app()->params['dynamicConfigFile'];
         $config = require($configFile);
@@ -366,7 +382,8 @@ class HSetting extends HActiveRecord {
      *
      * @param type $config
      */
-    public static function setConfiguration($config = array()) {
+    public static function setConfiguration($config = array())
+    {
 
         $configFile = Yii::app()->params['dynamicConfigFile'];
 
@@ -375,6 +392,21 @@ class HSetting extends HActiveRecord {
         $content .= "; ?" . ">";
 
         file_put_contents($configFile, $content);
+    }
+
+    /**
+     * Checks if inital data like settings, groups are installed.
+     * 
+     * @return Boolean Is Installed
+     */
+    public static function isInstalled()
+    {
+
+        if (isset(Yii::app()->params['installed']) && Yii::app()->params['installed']) {
+            return true;
+        }
+
+        return false;
     }
 
 }
