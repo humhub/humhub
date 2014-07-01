@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="pull-left entry">
-                    <span class="count"><?php echo count($this->getUser()->workspaces); ?></span><br>
+                    <span class="count"><?php echo count($this->getUser()->spaces); ?></span><br>
                     <span class="title"><?php echo Yii::t('base', 'Spaces'); ?></span>
                 </div>
             </div>

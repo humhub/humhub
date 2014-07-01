@@ -149,23 +149,20 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
-            'activities' => array(self::HAS_MANY, 'Activity', 'user_id'),
-            'portfolioItems' => array(self::MANY_MANY, 'PortfolioItem', 'portfolio_item_like(created_by, portfolio_item_id)'),
             'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
             'group' => array(self::BELONGS_TO, 'Group', 'group_id'),
+
             // Following
             'followsUser' => array(self::MANY_MANY, 'User', 'user_follow(user_follower_id,user_followed_id)'),
             'followerUser' => array(self::MANY_MANY, 'User', 'user_follow(user_followed_id, user_follower_id)'),
             'followSpaces' => array(self::MANY_MANY, 'Space', 'space_follow(user_id, space_id)'),
+            
             // Member to be renamed
-            'workspaces' => array(self::HAS_MANY, 'SpaceMembership', 'user_id'),
-            'workspaceMemberships' => array(self::HAS_MANY, 'SpaceMembership', 'user_id', 'condition' => 'status=' . SpaceMembership::STATUS_MEMBER),
-            // Users which this user has invited
+            'spaces' => array(self::HAS_MANY, 'SpaceMembership', 'user_id'),
+            'spaceMemberships' => array(self::HAS_MANY, 'SpaceMembership', 'user_id', 'condition' => 'status=' . SpaceMembership::STATUS_MEMBER),
+
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
-            'messages' => array(self::MANY_MANY, 'Message', 'user_message(user_id, message_id)'),
             'httpSessions' => array(self::HAS_MANY, 'UserHttpSession', 'user_id'),
             'currentPassword' => array(self::HAS_ONE, 'UserPassword', 'user_id', 'order' => 'id DESC')
         );
@@ -649,6 +646,7 @@ class User extends HActiveRecordContentContainer implements ISearchable {
 
         $availableModules = array();
 
+        /*
         // Loop over all enabled modules
         foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $definition) {
 
@@ -659,6 +657,7 @@ class User extends HActiveRecordContentContainer implements ISearchable {
                 }
             }
         }
+        */
 
         return $availableModules;
     }
