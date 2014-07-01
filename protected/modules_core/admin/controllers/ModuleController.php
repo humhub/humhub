@@ -313,7 +313,7 @@ class ModuleController extends Controller
         try {
             $http = new Zend_Http_Client($downloadUrl, array(
                 'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => array(CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => true),
+                'curloptions' => array(CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2),
             ));
             $response = $http->request();
             file_put_contents($downloadTargetFileName, $response->getBody());
@@ -367,7 +367,7 @@ class ModuleController extends Controller
 
             $http = new Zend_Http_Client($url, array(
                 'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => array(CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => true),
+                'curloptions' => array(CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2),
             ));
 
             $response = $http->request();
@@ -391,7 +391,7 @@ class ModuleController extends Controller
         try {
             $http = new Zend_Http_Client($url, array(
                 'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => array(CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => true),
+                'curloptions' => array(CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2),
             ));
 
 
