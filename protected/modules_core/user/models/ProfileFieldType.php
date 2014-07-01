@@ -34,7 +34,8 @@ class ProfileFieldType extends CFormModel {
         return array(
             'ProfileFieldTypeNumber' => Yii::t('UserModule.base', 'Number'),
             'ProfileFieldTypeText' => Yii::t('UserModule.base', 'Text'),
-            'ProfileFieldTypeTextArea' => Yii::t('UserModule.base', 'Text area'),
+            'ProfileFieldTypeTextArea' => Yii::t('UserModule.base', 'Text Area'),
+            'ProfileFieldTypeSelect' => Yii::t('UserModule.base', 'Select List'),
         );
     }
 
