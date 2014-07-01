@@ -23,3 +23,4 @@ Bundled Software / Libaries
 * NiceScroll - https://github.com/inuyaksa/jquery.nicescroll
 * Controller-Events - http://www.yiiframework.com/extension/controller-events/
 * HTML5 Placeholder jQuery Plugin - https://github.com/mathiasbynens/jquery-placeholder
+* animate.css by Daniel Eden - http://daneden.me/animate
