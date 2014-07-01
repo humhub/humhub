@@ -164,7 +164,7 @@ class Comment extends HActiveRecordContentAddon {
      * @return String
      */
     public function getContentTitle() {
-        return "Comment \"" . Helpers::truncateText($this->message, 25) . "\"";
+        return "Comment \"" . Helpers::truncateText($this->message, 40) . "\"";
     }
 
 }
