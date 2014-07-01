@@ -40,7 +40,7 @@
                         <a href="javascript:$('#spaceimageupload input').click();" class="btn btn-info btn-sm"><i
                                 class="fa fa-cloud-upload"></i></a>
                         <a id="profile-image-upload-edit-button"
-                           style="<?php //if ($user->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
+                           style="<?php if (!$space->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
                            href="<?php echo Yii::app()->createAbsoluteUrl('//space/admin/cropSpaceImage', array('guid' => $space->guid)); ?>"
                            class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                                 class="fa fa-edit"></i></a>

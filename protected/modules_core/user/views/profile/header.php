@@ -34,7 +34,7 @@
                     <a href="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="banner-image-upload-edit-button"
-                       style="<?php //if ($user->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
+                       style="<?php if (!$this->getUser()->getProfileBannerImage()->hasImage()) { echo 'display: none;'; } ?>"
                        href="<?php echo Yii::app()->createAbsoluteUrl('//user/profile/cropBannerImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
@@ -70,7 +70,7 @@
                     <a href="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="profile-image-upload-edit-button"
-                       style="<?php //if ($user->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
+                       style="<?php if (!$this->getUser()->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
                        href="<?php echo Yii::app()->createAbsoluteUrl('//user/profile/cropProfileImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
