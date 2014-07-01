@@ -15,7 +15,7 @@
             echo ' </span>';*/
         } else {
             //echo Yii::t('base', 'Choose a space... ');
-            echo '<i class="fa fa-dot-circle-o"></i><br>Pick a space';
+            echo '<i class="fa fa-dot-circle-o"></i><br>My spaces';
         }
         ?>
         <!-- end: Show space image and name if chosen -->
