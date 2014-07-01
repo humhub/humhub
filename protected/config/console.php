@@ -47,7 +47,7 @@ return CMap::mergeArray($pre_config, array(
                 'search_rebuild' => 'application.commands.shell.SearchIndexer.Rebuilder',
                 'search_optimize' => 'application.commands.shell.SearchIndexer.Optimize',
                 'integritychecker' => 'application.commands.shell.Maintain.IntegrityChecker',
-                'search' => 'application.modules.zstunden.commands.Search',
+                'space' => 'application.modules_core.space.console.SpaceCliTool',
                 'emailing' => 'application.commands.shell.EMailing.EMailing',
                 'emailing_test' => 'application.commands.shell.EMailing.TestMail',
                 'cron' => 'application.commands.shell.ZCron.ZCronRunner',
