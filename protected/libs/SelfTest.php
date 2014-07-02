@@ -207,6 +207,22 @@ class SelfTest {
             );
         }
 
+        // Check Custom Modules Directory
+        $title = 'Permissions - Module Directory';
+        $path = Yii::getPathOfAlias('application.modules');
+        if (is_writeable($path)) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Make ' . $path . " writable for the webserver/php!"
+            );
+        }        
+        
         return $checks;
     }
 

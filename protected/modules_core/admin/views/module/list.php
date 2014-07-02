@@ -6,6 +6,11 @@
         <br/>
 
         <h1><?php echo Yii::t('AdminModules.modules', '<strong>Currently</strong> installed modules'); ?></h1>
+        
+        <?php if (count($installedModules) == 0): ?>
+            <div><?php echo Yii::t('AdminModules.modules', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
+        <?php endif; ?>
+        
         <?php foreach ($installedModules as $moduleId => $module) : ?>
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
