@@ -25,7 +25,8 @@
  * @package humhub.modules_core.installer.controllers
  * @since 0.5
  */
-class SetupController extends Controller {
+class SetupController extends Controller
+{
 
     /**
      * @var String layout to use
@@ -34,7 +35,8 @@ class SetupController extends Controller {
 
     const PASSWORD_PLACEHOLDER = 'n0thingToSeeHere!';
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->redirect(Yii::app()->createUrl('prerequisites'));
     }
 
@@ -44,7 +46,8 @@ class SetupController extends Controller {
      *
      * (Step 2)
      */
-    public function actionPrerequisites() {
+    public function actionPrerequisites()
+    {
 
         $checks = SelfTest::getResults();
 
@@ -64,7 +67,8 @@ class SetupController extends Controller {
      *
      * (Step 3)
      */
-    public function actionDatabase() {
+    public function actionDatabase()
+    {
 
         Yii::import('installer.forms.*');
 
@@ -75,7 +79,6 @@ class SetupController extends Controller {
 
         $form = new DatabaseForm;
 
-        // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'database-form') {
             echo CActiveForm::validate($form);
             Yii::app()->end();
@@ -145,7 +148,8 @@ class SetupController extends Controller {
     /**
      * The init action imports the database structure & inital data
      */
-    public function actionInit() {
+    public function actionInit()
+    {
 
         if (!$this->getModule()->checkDBConnection())
             $this->redirect(Yii::app()->createUrl('//installer/setup/database'));

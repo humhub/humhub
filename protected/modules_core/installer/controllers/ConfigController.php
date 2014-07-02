@@ -193,9 +193,7 @@ class ConfigController extends Controller
             $form['User']->model->save();
 
             $form['Profile']->model->user_id = $form['User']->model->id;
-            $form['Profile']->model->firstname = 'System';
-            $form['Profile']->model->lastname = 'Admin';
-            $form['Profile']->model->title = "Administration";
+            $form['Profile']->model->title = "System Administration";
             $form['Profile']->model->save();
 
             // Save User Password
@@ -391,7 +389,7 @@ class ConfigController extends Controller
             $field->fieldType->options = "male=>Male\nfemale=>Female\ncustom=>Custom";
             $field->fieldType->save();
         }
-        
+
         $field = new ProfileField();
         $field->internal_name = "street";
         $field->title = 'Street';
