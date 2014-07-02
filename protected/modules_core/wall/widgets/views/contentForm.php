@@ -9,7 +9,7 @@
         <?php echo $form; ?>
 
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
-            <input type="text" value="" id="notifiyUserInput" name="notifiyUserInput"/>
+            <input type="text" value="" id="notifyUserInput" name="notifyUserInput"/>
 
             <?php
 
@@ -25,7 +25,7 @@
 
             /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
-                'inputId' => 'notifiyUserInput',
+                'inputId' => 'notifyUserInput',
                 'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
                 'maxUsers' => 10,
                 'userGuid' => Yii::app()->user->guid,
@@ -69,7 +69,7 @@
                         $('.contentForm').attr('checked', false);
                         $('.userInput').remove(); // used by UserPickerWidget
                         $('#notifyUserContainer').addClass('hidden');
-                        $('#notifiyUserInput').val('');
+                        $('#notifyUserInput').val('');
                         $('.label-public').addClass('hidden');
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
@@ -189,7 +189,7 @@
 
     function notifyUser() {
         $('#notifyUserContainer').removeClass('hidden');
-        $('#notifiyUserInput_tag_input_field').focus();
+        $('#notifyUserInput_tag_input_field').focus();
     }
 
     // set the size for one row (Firefox)

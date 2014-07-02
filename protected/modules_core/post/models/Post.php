@@ -18,7 +18,6 @@
 class Post extends HActiveRecordContent implements ISearchable
 {
 
-    public $userToNotify = "";
     public $autoAddToWall = true;
 
     /**
@@ -58,14 +57,13 @@ class Post extends HActiveRecordContent implements ISearchable
      * Before Delete, remove LikeCount (Cache) of target object.
      * Remove activity
      */
-    protected function beforeDelete() {
+    protected function beforeDelete()
+    {
 
         Notification::remove('Post', $this->id);
 
         return parent::beforeDelete();
     }
-
-
 
     public function beforeSave()
     {
@@ -93,24 +91,11 @@ class Post extends HActiveRecordContent implements ISearchable
         parent::afterSave();
 
         if ($this->isNewRecord) {
-
             $activity = Activity::CreateForContent($this);
             $activity->type = "PostCreated";
             $activity->module = "post";
             $activity->save();
             $activity->fire();
-
-            // notify assigned Users
-            if ($this->userToNotify != "") {
-                $guids = explode(",", $this->userToNotify);
-                foreach ($guids as $guid) {
-                    $guid = trim($guid);
-                    $user = User::model()->findByAttributes(array('guid' => $guid));
-                    if ($user != null) {
-                        $this->notifyUser($user);
-                    }
-                }
-            }
         }
 
         return true;
@@ -183,30 +168,6 @@ class Post extends HActiveRecordContent implements ISearchable
     public function getContentTitle()
     {
         return Yii::t('PostModule.base', 'Post') . " \"" . Helpers::truncateText(CHtml::encode($this->message), 25) . "\"";
-    }
-
-
-    /**
-     * Assign user to this post
-     */
-    public function notifyUser($user = "")
-    {
-
-        if ($user == "") {
-            $user = Yii::app()->user->getModel();
-        }
-
-        // Fire Notification to user
-        $notification = new Notification();
-        $notification->class = "PostCreatedNotification";
-        $notification->user_id = $user->id; // Assigned User
-        $notification->space_id = $this->content->space_id;
-        $notification->source_object_model = 'Post';
-        $notification->source_object_id = $this->id;
-        $notification->target_object_model = 'Post';
-        $notification->target_object_id = $this->id;
-        $notification->save();
-
     }
 
 }

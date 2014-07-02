@@ -57,6 +57,11 @@ class HActiveRecordContent extends HActiveRecord
      */
     public $content = null;
 
+    /**
+     * Constructor
+     * 
+     * @param type $scenario
+     */
     public function __construct($scenario = 'insert')
     {
         $this->content = new Content($scenario);

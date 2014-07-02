@@ -74,7 +74,7 @@
                                                             <tr>
                                                                 <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#a3a2a2; font-weight:300; text-align:left; ">
                                                                     <!-- START: CONTENT -->
-                                                                    <?php echo Yii::t('PostModule.base', 'wrote a new post and assigned you.'); ?> <?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?>
+                                                                    <?php echo Yii::t('WallModule.notifications', 'notified you about new'); ?> <?php echo $targetObject->getContentTitle(); ?> <?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?>
                                                                     &nbsp;
                                                                     <!-- END: CONTENT -->
 
@@ -82,7 +82,7 @@
                                                                     <span
                                                                         style="text-decoration: none; color: #7191a8;"><a
                                                                             href="<?php echo $notification->getUrl(); ?>"
-                                                                            style="text-decoration: none; color: #7191a8; "><strong><?php echo Yii::t('PostModule.base', 'go to post'); ?></strong></a></span>
+                                                                            style="text-decoration: none; color: #7191a8; "><strong><?php echo Yii::t('WallModule.notifications', 'open'); ?></strong></a></span>
                                                                     <!-- END: CONTENT LINK -->
                                                                 </td>
                                                             </tr>

@@ -7,7 +7,6 @@ Yii::app()->moduleManager->register(array(
     'import' => array(
         'application.modules_core.post.*',
         'application.modules_core.post.models.*',
-        'application.modules_core.post.notifications.*',
     ),
     // Events to Catch
     'events' => array(

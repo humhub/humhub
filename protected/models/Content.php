@@ -39,7 +39,8 @@
  * @package humhub.models
  * @since 0.5
  */
-class Content extends CActiveRecord {
+class Content extends CActiveRecord
+{
 
     /**
      * A string contains a list of file guids which should be attached
@@ -48,6 +49,13 @@ class Content extends CActiveRecord {
      * @var String
      */
     protected $attachFileGuidsAfterSave;
+
+    /**
+     * A array of user objects which should informed about this new content. 
+     * 
+     * @var Array User
+     */
+    protected $notifyUsersOfNewContent = array();
 
     // Visibility Modes
     const VISIBILITY_PRIVATE = 0;
@@ -64,7 +72,8 @@ class Content extends CActiveRecord {
     /**
      * Inits the content record
      */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
@@ -77,7 +86,8 @@ class Content extends CActiveRecord {
      * @param string $className active record class name.
      * @return Content the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
@@ -86,7 +96,8 @@ class Content extends CActiveRecord {
      *
      * @return type
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
@@ -101,7 +112,8 @@ class Content extends CActiveRecord {
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'content';
     }
 
@@ -112,7 +124,8 @@ class Content extends CActiveRecord {
      *
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('guid', 'required'),
             array('guid', 'length', 'max' => 45),
@@ -126,7 +139,8 @@ class Content extends CActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'wallEntries' => array(self::HAS_MANY, 'WallEntry', 'content_id'),
             'space' => array(self::BELONGS_TO, 'Space', 'space_id'),
@@ -137,7 +151,8 @@ class Content extends CActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => 'ID',
             'guid' => 'Guid',
@@ -161,7 +176,8 @@ class Content extends CActiveRecord {
      * @param type $className
      * @param type $id
      */
-    static function Get($className, $id) {
+    static function Get($className, $id)
+    {
 
         $content = Content::model()->findByAttributes(array('object_model' => $className, 'object_id' => $id));
 
@@ -171,7 +187,8 @@ class Content extends CActiveRecord {
         return null;
     }
 
-    protected function beforeSave() {
+    protected function beforeSave()
+    {
 
         if ($this->object_model == "" || $this->object_id == "")
             throw new CException("Could not save content with object_model or object_id!");
@@ -195,12 +212,31 @@ class Content extends CActiveRecord {
         return parent::beforeSave();
     }
 
-    public function afterSave() {
+    public function afterSave()
+    {
 
         // Loop over each eall entry and make sure its update_at / update_by
         // will also updated. (Sorting wall against update)
         foreach ($this->getWallEntries() as $wallEntry) {
             $wallEntry->save();
+        }
+
+        // Handle user notifications by ContentFormWidget
+        if ($this->isNewRecord) {
+            foreach ($this->notifyUsersOfNewContent as $user) {
+                // Fire Notification to user
+                $notification = new Notification();
+                $notification->class = "ContentCreatedNotification";
+                $notification->user_id = $user->id;
+                if (get_class($this->container) == 'Space') {
+                    $notification->space_id = $this->container->id;
+                }
+                $notification->source_object_model = $this->object_model;
+                $notification->source_object_id = $this->object_id;
+                $notification->target_object_model = $this->object_model;
+                $notification->target_object_id = $this->object_id;
+                $notification->save();
+            }
         }
 
         $this->updateInvolvedUsers();
@@ -213,7 +249,8 @@ class Content extends CActiveRecord {
     /**
      * Before deleting a SIContent try to delete all corresponding SIContentAddons.
      */
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
 
         // delete also all wall entries
         foreach ($this->getWallEntries() as $entry) {
@@ -245,7 +282,8 @@ class Content extends CActiveRecord {
      *       - Make it faster!
      *       - Missing Users which likes a comment
      */
-    public function updateInvolvedUsers() {
+    public function updateInvolvedUsers()
+    {
 
         // Collect User Ids
         $foundUsersIds = array();
@@ -292,7 +330,8 @@ class Content extends CActiveRecord {
      *
      * @param type $userId
      */
-    public function canDelete($userId = "") {
+    public function canDelete($userId = "")
+    {
 
         if (HSetting::Get('canAdminAlwaysDeleteContent', 'security') == 1 && Yii::app()->user->isAdmin())
             return true;
@@ -312,7 +351,8 @@ class Content extends CActiveRecord {
      * @param type $userId
      * @return type
      */
-    public function canRead($userId = "") {
+    public function canRead($userId = "")
+    {
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -344,7 +384,8 @@ class Content extends CActiveRecord {
      * @param type $userId
      * @return type
      */
-    public function canWrite($userId = "") {
+    public function canWrite($userId = "")
+    {
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
@@ -359,7 +400,8 @@ class Content extends CActiveRecord {
      *
      * @return Integer
      */
-    public function getVisibility() {
+    public function getVisibility()
+    {
         return $this->visibility;
     }
 
@@ -368,7 +410,8 @@ class Content extends CActiveRecord {
      *
      * @return boolean
      */
-    public function isPublic() {
+    public function isPublic()
+    {
 
         // Space Content
         if ($this->space_id != null) {
@@ -388,14 +431,16 @@ class Content extends CActiveRecord {
      *
      * @return Boolean
      */
-    public function isSticked() {
+    public function isSticked()
+    {
         return ($this->sticked);
     }
 
     /**
      * Sticks the content object
      */
-    public function stick() {
+    public function stick()
+    {
         $this->sticked = 1;
         $this->save();
     }
@@ -403,7 +448,8 @@ class Content extends CActiveRecord {
     /**
      * Unsticks the content object
      */
-    public function unstick() {
+    public function unstick()
+    {
 
         $this->sticked = 0;
         $this->save();
@@ -415,7 +461,8 @@ class Content extends CActiveRecord {
      *
      * @return boolean
      */
-    public function canStick() {
+    public function canStick()
+    {
 
         if ($this->isArchived()) {
             return false;
@@ -435,7 +482,8 @@ class Content extends CActiveRecord {
      *
      * @return Int
      */
-    public function countStickedItems() {
+    public function countStickedItems()
+    {
 
         $sql = "SELECT count(*) FROM wall_entry LEFT JOIN content ON content.id = wall_entry.content_id WHERE wall_entry.wall_id=:wallId AND content.sticked = 1";
         $params = array(':wallId' => $this->container->wall_id);
@@ -448,7 +496,8 @@ class Content extends CActiveRecord {
      *
      * @return type
      */
-    public function isArchived() {
+    public function isArchived()
+    {
         return ($this->archived);
     }
 
@@ -458,7 +507,8 @@ class Content extends CActiveRecord {
      *
      * @return boolean
      */
-    public function canArchive() {
+    public function canArchive()
+    {
 
         if ($this->container instanceof Space) {
             if ($this->canWrite())
@@ -474,7 +524,8 @@ class Content extends CActiveRecord {
     /**
      * Archives the content object
      */
-    public function archive() {
+    public function archive()
+    {
         if ($this->canArchive()) {
 
             if ($this->isSticked()) {
@@ -489,7 +540,8 @@ class Content extends CActiveRecord {
     /**
      * Unarchives the content object
      */
-    public function unarchive() {
+    public function unarchive()
+    {
         if ($this->canArchive()) {
 
             $this->archived = 0;
@@ -506,7 +558,8 @@ class Content extends CActiveRecord {
      * @param Integer $wallId
      * @return \WallEntry
      */
-    public function addToWall($wallId = 0) {
+    public function addToWall($wallId = 0)
+    {
 
         if ($wallId == 0) {
             $contentContainer = $this->getContainer();
@@ -526,7 +579,8 @@ class Content extends CActiveRecord {
      *
      * @return Array of wall entries for this content
      */
-    public function getWallEntries() {
+    public function getWallEntries()
+    {
         $entries = WallEntry::model()->findAllByAttributes(array('content_id' => $this->id));
         return $entries;
     }
@@ -534,7 +588,8 @@ class Content extends CActiveRecord {
     /**
      * Returns the first found wall entry Id of this object
      */
-    public function getFirstWallEntryId() {
+    public function getFirstWallEntryId()
+    {
         $wallEntries = $this->getWallEntries();
         if (isset($wallEntries[0])) {
             return $wallEntries[0]->id;
@@ -548,7 +603,8 @@ class Content extends CActiveRecord {
      *
      * @return Array
      */
-    public function getWallEntryIds() {
+    public function getWallEntryIds()
+    {
         $ids = array();
         foreach ($this->getWallEntries() as $entry) {
             $ids[] = $entry->id;
@@ -562,7 +618,8 @@ class Content extends CActiveRecord {
      * @param IContentContainer $container
      * @throws CException
      */
-    public function setContainer($container) {
+    public function setContainer($container)
+    {
 
         if ($container instanceof Space) {
             $this->space_id = $container->id;
@@ -582,7 +639,8 @@ class Content extends CActiveRecord {
      * @return IContentContainer
      * @throws CException
      */
-    public function getContainer() {
+    public function getContainer()
+    {
 
         if ($this->_container != null)
             return $this->_container;
@@ -603,7 +661,8 @@ class Content extends CActiveRecord {
      * Sets standard content informations like container, visibility, files
      * by ContentFormWidget Submit Data.
      */
-    public function populateByForm() {
+    public function populateByForm()
+    {
 
         // Set Content Container
         $contentContainer = null;
@@ -620,11 +679,24 @@ class Content extends CActiveRecord {
             $this->visibility = 1;
         }
 
+        // Handle Notify User Features of ContentFormWidget
+        // ToDo: Check permissions of user guids
+        $userGuids = Yii::app()->request->getParam('notifyUserInput');
+        if ($userGuids != "") {
+            foreach (explode(",", $userGuids) as $guid) {
+                $user = User::model()->findByAttributes(array('guid' => trim($guid)));
+                if ($user) {
+                    $this->notifyUsersOfNewContent[] = $user;
+                }
+            }
+        }
+
         // Store List of attached Files to add them after Save
         $this->attachFileGuidsAfterSave = Yii::app()->request->getParam('fileList');
     }
 
-    public function beforeValidate() {
+    public function beforeValidate()
+    {
 
         if (!$this->container->canWrite()) {
             $this->addError('visibility', Yii::t('WallModule.base', 'Insufficent permissions to create content!'));
@@ -633,7 +705,8 @@ class Content extends CActiveRecord {
         return parent::beforeValidate();
     }
 
-    public function validateVisibility() {
+    public function validateVisibility()
+    {
 
         if (get_class($this->container) == 'Space') {
             if (!$this->container->canShare() && $this->visibility) {

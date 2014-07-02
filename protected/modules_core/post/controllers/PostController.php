@@ -4,12 +4,14 @@
  * @package humhub.modules_core.post.controllers
  * @since 0.5
  */
-class PostController extends Controller {
+class PostController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -20,7 +22,8 @@ class PostController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -31,7 +34,8 @@ class PostController extends Controller {
         );
     }
 
-    public function actionPost() {
+    public function actionPost()
+    {
 
         $this->forcePostRequest();
         $_POST = Yii::app()->input->stripClean($_POST);
@@ -39,11 +43,6 @@ class PostController extends Controller {
         $post = new Post();
         $post->content->populateByForm();
         $post->message = Yii::app()->request->getParam('message');
-
-        // get user guids from notify input
-        $post->userToNotify = Yii::app()->request->getParam('notifiyUserInput');
-
-
 
         if ($post->validate()) {
 
