@@ -50,7 +50,7 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
-            <?php $visibilities = array(0 => Yii::t('SpaceModule.base', 'Invisible'), 1 => Yii::t('SpaceModule.base', 'Visible for the community'), 2 => Yii::t('SpaceModule.base', 'Visible for all')); ?>
+            <?php $visibilities = array(0 => Yii::t('SpaceModule.base', 'Invisible'), 1 => Yii::t('SpaceModule.base', 'Visible for network users'), 2 => Yii::t('SpaceModule.base', 'Visible for all')); ?>
             <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.base', 'Choose the security level for this workspace to define the visibleness.'))); ?>
         </div>
         <hr>
