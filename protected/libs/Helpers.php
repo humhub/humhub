@@ -123,5 +123,15 @@ class Helpers {
 
         return $val;
     }
+    
+    
+    /**
+     * Returns a unique string
+     * 
+     * @return string unique
+     */
+    public static function GetUniqeId() {
+        return str_replace('.', '', uniqid('', true));
+    }
 
 }

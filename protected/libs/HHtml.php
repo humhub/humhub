@@ -50,7 +50,7 @@ class HHtml extends CHtml
             $cs = Yii::app()->getClientScript();
             $cs->registerScript('Yii.HHtml.#' . $id, "jQuery('body').off('click','#{$id}');");
         } else {
-            $htmlOptions['id'] = uniqid();
+            $htmlOptions['id'] = Helpers::GetUniqeId();
         }
 
         return parent::ajaxLink($text, $url, $ajaxOptions, $htmlOptions);
@@ -72,11 +72,11 @@ class HHtml extends CHtml
             $cs = Yii::app()->getClientScript();
             $cs->registerScript('Yii.HHtml.#' . $id, "jQuery('body').off('click','#{$id}');");
         } else {
-            $htmlOptions['id'] = uniqid();
+            $htmlOptions['id'] = Helpers::GetUniqeId();
         }
 
         if (!isset($htmlOptions['name'])) {
-            $htmlOptions['name'] = uniqid();
+            $htmlOptions['name'] = Helpers::GetUniqeId();
         }
 
         return parent::ajaxSubmitButton($label, $url, $ajaxOptions, $htmlOptions);
@@ -98,7 +98,7 @@ class HHtml extends CHtml
             $cs = Yii::app()->getClientScript();
             $cs->registerScript('Yii.HHtml.#' . $id, "jQuery('body').off('click','#{$id}');");
         } else {
-            $htmlOptions['id'] = uniqid();
+            $htmlOptions['id'] = Helpers::GetUniqeId();
         }
 
         return parent::ajaxButton($label, $url, $ajaxOptions, $htmlOptions);
@@ -142,7 +142,7 @@ class HHtml extends CHtml
 
         $id = "";
         if (!isset($htmlOptions['id'])) {
-            $id = uniqid();
+            $id = Helpers::GetUniqeId();
             $htmlOptions['id'] = $id;
         } else {
             $id = $htmlOptions['id'];
