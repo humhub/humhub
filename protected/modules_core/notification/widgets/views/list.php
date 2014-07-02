@@ -8,7 +8,7 @@
     <ul id="dropdown-notifications" class="dropdown-menu">
         <li class="dropdown-header">
             <div class="arrow"></div><?php echo Yii::t('base', 'Notifications'); ?>
-            <div class="dropdown-header-link"><a
+            <div class="dropdown-header-link"><a id="mark-seen-link"
                     href="javascript:markNotificationsAsSeen();"><?php echo Yii::t('NotificationModule', 'Mark all as seen'); ?></a>
             </div>
         </li>
@@ -45,6 +45,7 @@
             'success': function (html) {
                 // hide notification badge at the top menu
                 $('#badge-notifications').css('display', 'none');
+                $('#mark-seen-link').css('display', 'none');
             }});
     }
 
@@ -169,9 +170,11 @@
                 // show or hide the badge for new notifications
                 if ($newNotifications == 0) {
                     $('#badge-notifications').css('display', 'none');
+                    $('#mark-seen-link').css('display', 'none');
                 } else {
                     $('#badge-notifications').empty();
                     $('#badge-notifications').append($newNotifications);
+                    $('#mark-seen-link').css('display', 'inline');
                     $('#badge-notifications').fadeIn('fast');
                 }
 
