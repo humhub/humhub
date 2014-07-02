@@ -38,6 +38,7 @@ class AccountMenuWidget extends MenuWidget {
             'isActive' => (Yii::app()->controller->action->id == "editSettings"),
         ));
 
+        
         // Only show this page when really user specific modules available
         if (count(Yii::app()->user->getModel()->getAvailableModules()) != 0) {
             $this->addItem(array(

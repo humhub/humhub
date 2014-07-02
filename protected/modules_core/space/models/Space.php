@@ -1035,7 +1035,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function getAvailableModules()
     {
-
         $modules = array();
 
         foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $module) {

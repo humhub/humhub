@@ -19,11 +19,11 @@
  */
 
 /**
- * This behavior should attached to a HWebModule when it provides a space module.
+ * This behavior should attached to a HWebModule when it provides a user profile module.
  *
  * @author luke
  */
-class SpaceModuleBehavior extends CBehavior
+class UserModuleBehavior extends CBehavior
 {
 
     /**
@@ -31,110 +31,110 @@ class SpaceModuleBehavior extends CBehavior
      * 
      * @return Space
      */
-    public function getSpace()
+    public function getUser()
     {
-        return Yii::app()->getController()->getSpace();
+        return Yii::app()->getController()->getUser();
     }
 
     /**
-     * Checks if this module is enabled on given space.
+     * Checks if this module is enabled on given user profile.
      * 
-     * @param Space $space
+     * @param User $user
      * @return boolean
      */
-    public function isSpaceModuleEnabled(Space $space = null)
+    public function isUserModuleEnabled(User $user = null)
     {
-        if ($space == null) {
-            $space = $this->getSpace();
+        if ($user == null) {
+            $user = $this->getUser();
         }
 
-        return $space->isModuleEnabled($this->getOwner()->getId());
+        return $user->isModuleEnabled($this->getOwner()->getId());
     }
 
     /**
-     * Returns module name for spaces of your module.
+     * Returns module name for users of your module.
      * You may want to overwrite it in your module.
      * 
      * @return String
      */
-    public function getSpaceModuleName()
+    public function getUserModuleName()
     {
         return $this->getOwner()->getName();
     }
 
     /**
-     * Returns module description for spaces of your module.
+     * Returns module description for users of your module.
      * You may want to overwrite it in your module.
      * 
      * @return String
      */
-    public function getSpaceModuleDescription()
+    public function getUserModuleDescription()
     {
         return $this->getOwner()->getDescription();
     }
 
     /**
-     * Returns module config url for spaces of your module.
+     * Returns module config url for users of your module.
      * You may want to overwrite it in your module.
      * 
      * @return String
      */
-    public function getSpaceModuleConfigUrl(Space $space)
+    public function getUserModuleConfigUrl(User $user)
     {
         return "";
     }
 
     
     /**
-     * Returns the module image for space admins.
-     * You may want to overwrite with an special space image.
+     * Returns the module image for users.
+     * You may want to overwrite with an special user profile image.
      * 
      * @return String
      */
-    public function getSpaceModuleImage()
+    public function getUserModuleImage()
     {
         return $this->getOwner()->getImage();
     } 
     
     /**
-     * Enables this module on given space
+     * Enables this module on given user
      * 
-     * @param Space $space
+     * @param User $user
      */
-    public function enableSpaceModule(Space $space)
+    public function enableUserModule(User $user)
     {
         
     }
 
     /**
-     * Disables this module on given space
+     * Disables this module on given user
      * 
      * You may want to overwrite this function and delete e.g. created
      * content objects.
      * 
-     * @param Space $space
+     * @param User $user
      */
-    public function disableSpaceModule(Space $space)
+    public function disableUserModule(User $user)
     {
         
     }
 
     /**
-     * Returns a list of all spaces where this SpaceModule is
+     * Returns a list of all users where this Module is
      * enabled.
      * 
-     * @return Array Space
+     * @return Array User
      */
-    public function getSpaceModuleSpaces()
+    public function getUserModuleUsers()
     {
-        $spaces = array();
-        foreach (SpaceApplicationModule::model()->with('space')->findAllByAttributes(array('module_id' => $this->owner->getId())) as $spaceModule) {
-            $space = $spaceModule->space;
-            if ($space != null && $space instanceOf Space) {
-                $spaces[] = $space;
+        $users = array();
+        foreach (UserApplicationModule::model()->with('user')->findAllByAttributes(array('module_id' => $this->owner->getId())) as $userModule) {
+            $user = $userModule->user;
+            if ($user != null && $user instanceOf User) {
+                $users[] = $user;
             }
         }
-        return $spaces;
+        return $users;
     }
 
 }
