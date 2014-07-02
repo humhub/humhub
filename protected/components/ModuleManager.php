@@ -20,11 +20,11 @@
 
 /**
  * Module Manager
- * 
+ *
  *  - Starts module autostart files
  *  - Handles enabled modules
- *  - Modules autostarts.php registers to it for events & co  
- * 
+ *  - Modules autostarts.php registers to it for events & co
+ *
  */
 class ModuleManager extends CApplicationComponent
 {
@@ -33,15 +33,15 @@ class ModuleManager extends CApplicationComponent
 
     /**
      * List of all enabled module ids
-     * 
+     *
      * @var Array
      */
     private $enabledModules = array();
 
     /**
      * Array of installed modules populated on autostart.php register
-     * 
-     * @var Array moduleId => moduleClass 
+     *
+     * @var Array moduleId => moduleClass
      */
     private $installedModules = array();
 
@@ -122,7 +122,7 @@ class ModuleManager extends CApplicationComponent
 
                 require_once($autoloadFile);
 
-                // Cache content of autostart file 
+                // Cache content of autostart file
                 if ($cacheEnabled) {
                     $cacheFileContent .= file_get_contents($autoloadFile);
                 }
@@ -154,12 +154,12 @@ class ModuleManager extends CApplicationComponent
     /**
      * Registers a module
      * This is usally called in the autostart file of the module.
-     * 
+     *
      * - id
      * - class          Module Base Class
-     * - import         Global Module Imports        
+     * - import         Global Module Imports
      * - events         Events to catch
-     * 
+     *
      * - isCoreModule   Core Modules only
      *
      * @param Array $definition
@@ -204,7 +204,7 @@ class ModuleManager extends CApplicationComponent
 
     /**
      * Returns Module Base Class of installed module neither when not enabled.
-     * 
+     *
      * @param String $id Module Id
      * @return HWebModule
      */
@@ -227,7 +227,7 @@ class ModuleManager extends CApplicationComponent
 
     /**
      * Returns a list of all installed modules
-     * 
+     *
      * @param boolean $includeCoreModules include also core modules
      * @param boolean $returnClassName instead of instance
      * @return Array of installed Modules
@@ -304,11 +304,6 @@ class ModuleManager extends CApplicationComponent
      */
     public function canUninstall($moduleId)
     {
-
-        // Some Core Module cannot be uninstalled
-        if (in_array($moduleId, array('polls', 'tasks', 'yiigii', 'mail'))) {
-            return false;
-        }
 
         if ($this->isInstalled($moduleId)) {
 
