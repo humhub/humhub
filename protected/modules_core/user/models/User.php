@@ -351,6 +351,13 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 $userSetting->delete();
             }
 
+            // Disable all enabled modules
+            foreach ($this->getAvailableModules() as $moduleId => $module) {
+                if ($this->isModuleEnabled($moduleId)) {
+                    $this->uninstallModule($moduleId);
+                }
+            }
+
             HSearch::getInstance()->deleteModel($this);
 
             return true;
