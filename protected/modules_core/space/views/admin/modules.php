@@ -5,7 +5,7 @@
     <div class="panel-body">
 
         <?php if (count($availableModules) == 0): ?>
-            <p><?php echo Yii::t('SpaceModule.base', 'Currently there are no modules avaiable for this space!'); ?></p>
+            <p><?php echo Yii::t('SpaceModule.base', 'Currently there are no modules available for this space!'); ?></p>
         <?php else: ?>
             <?php echo Yii::t('SpaceModule.base', 'Enhance this space with modules.'); ?><br>
         <?php endif; ?>
