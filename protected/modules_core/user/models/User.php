@@ -36,7 +36,8 @@
  * @since 0.5
  * @author Luke
  */
-class User extends HActiveRecordContentContainer implements ISearchable {
+class User extends HActiveRecordContentContainer implements ISearchable
+{
 
     const AUTH_MODE_LDAP = "ldap";
     const AUTH_MODE_LOCAL = "local";
@@ -61,7 +62,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'HGuidBehavior' => array(
                 'class' => 'application.behaviors.HGuidBehavior',
@@ -69,14 +71,16 @@ class User extends HActiveRecordContentContainer implements ISearchable {
         );
     }
 
-    public function defaultScope() {
+    public function defaultScope()
+    {
         return array(
             // Per default show only content of users which are enabled or disabled
             'condition' => "status='" . self::STATUS_ENABLED . "' OR status='" . self::STATUS_DISABLED . "'",
         );
     }
 
-    public function scopes() {
+    public function scopes()
+    {
         return array(
             'notDeleted' => array(
                 'condition' => "status != '" . self::STATUS_DELETED . "'",
@@ -99,21 +103,24 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * @param string $className active record class name.
      * @return User the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'user';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
 
         if ($this->scenario == 'register') {
             // Only return all fields required for registration.
@@ -148,20 +155,18 @@ class User extends HActiveRecordContentContainer implements ISearchable {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
             'group' => array(self::BELONGS_TO, 'Group', 'group_id'),
-
             // Following
             'followsUser' => array(self::MANY_MANY, 'User', 'user_follow(user_follower_id,user_followed_id)'),
             'followerUser' => array(self::MANY_MANY, 'User', 'user_follow(user_followed_id, user_follower_id)'),
             'followSpaces' => array(self::MANY_MANY, 'Space', 'space_follow(user_id, space_id)'),
-            
             // Member to be renamed
             'spaces' => array(self::HAS_MANY, 'SpaceMembership', 'user_id'),
             'spaceMemberships' => array(self::HAS_MANY, 'SpaceMembership', 'user_id', 'condition' => 'status=' . SpaceMembership::STATUS_MEMBER),
-
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
             'httpSessions' => array(self::HAS_MANY, 'UserHttpSession', 'user_id'),
             'currentPassword' => array(self::HAS_ONE, 'UserPassword', 'user_id', 'order' => 'id DESC')
@@ -171,7 +176,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => Yii::t('base', 'ID'),
             'guid' => Yii::t('base', 'Guid'),
@@ -197,7 +203,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * @param type $limit
      * @return User
      */
-    public function recently($limit = 10) {
+    public function recently($limit = 10)
+    {
         $this->getDbCriteria()->mergeWith(array(
             'order' => 'created_at DESC',
             'limit' => $limit,
@@ -209,7 +216,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search() {
+    public function search()
+    {
 
         $criteria = new CDbCriteria;
         $criteria->compare('id', $this->id);
@@ -236,7 +244,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function searchNeedApproval() {
+    public function searchNeedApproval()
+    {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
@@ -282,7 +291,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    protected function beforeSave() {
+    protected function beforeSave()
+    {
 
         if ($this->isNewRecord) {
             if ($this->auth_mode == "")
@@ -297,7 +307,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    protected function afterSave() {
+    protected function afterSave()
+    {
 
         // Search Stuff
         if (!$this->isNewRecord) {
@@ -332,13 +343,21 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * Before Delete of a User
      *
      */
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
         if (parent::beforeDelete()) {
 
-            foreach (UserSetting::model()->findAllByAttributes(array('user_id'=>$this->id)) as $userSetting) {
+            foreach (UserSetting::model()->findAllByAttributes(array('user_id' => $this->id)) as $userSetting) {
                 $userSetting->delete();
             }
-            
+
+            // Disable all enabled modules
+            foreach ($this->getAvailableModules() as $moduleId => $module) {
+                if ($this->isModuleEnabled($moduleId)) {
+                    $this->uninstallModule($moduleId);
+                }
+            }
+
             HSearch::getInstance()->deleteModel($this);
 
             return true;
@@ -350,7 +369,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return type
      */
-    public function delete() {
+    public function delete()
+    {
 
         if (!$this->beforeDelete())
             return;
@@ -381,7 +401,7 @@ class User extends HActiveRecordContentContainer implements ISearchable {
         foreach (Content::model()->findAllByAttributes(array('created_by' => $this->id)) as $content) {
             $content->delete();
         }
-        
+
         // Unbind my wall_id
         $this->save();
 
@@ -425,7 +445,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * @param array $parameters
      * @return string
      */
-    public function getUrl($parameters = array()) {
+    public function getUrl($parameters = array())
+    {
         $parameters['uguid'] = $this->guid;
         return Yii::app()->createUrl('//user/profile', $parameters);
     }
@@ -435,14 +456,16 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return Link
      */
-    public function getProfileUrl() {
+    public function getProfileUrl()
+    {
         return $this->getUrl();
     }
 
     /**
      * Returns an array with assigned Tags
      */
-    public function getTags() {
+    public function getTags()
+    {
 
         // split tags string into individual tags
         return preg_split("/[;,# ]+/", $this->tags);
@@ -453,7 +476,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param $userId User Id of User
      */
-    public function isFollowedBy($userId) {
+    public function isFollowedBy($userId)
+    {
 
         $followed = UserFollow::model()->findByAttributes(array('user_follower_id' => $userId, 'user_followed_id' => $this->id));
 
@@ -469,7 +493,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userId
      * @return type
      */
-    public function canWrite($userId = "") {
+    public function canWrite($userId = "")
+    {
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -484,7 +509,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * Checks if a wall was created for this user
      * If not, it will created.
      */
-    public function checkWall() {
+    public function checkWall()
+    {
 
         // Check if wall exists
         if ($this->wall == null) {
@@ -510,7 +536,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return Array
      */
-    public function getSearchAttributes() {
+    public function getSearchAttributes()
+    {
 
         return array(
             // Assignment
@@ -532,7 +559,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Returns the Search Result Output
      */
-    public function getSearchResult() {
+    public function getSearchResult()
+    {
         return Yii::app()->getController()->widget('application.modules_core.user.widgets.UserSearchResultWidget', array('user' => $this), true);
     }
 
@@ -541,7 +569,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return Profile
      */
-    public function getProfile() {
+    public function getProfile()
+    {
 
         if ($this->_profile != null)
             return $this->_profile;
@@ -561,7 +590,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return string
      */
-    public function getDisplayName() {
+    public function getDisplayName()
+    {
 
         $name = '';
         $format = HSetting::Get('displayNameFormat');
@@ -582,7 +612,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * @param type $userInvite
      * @return boolean
      */
-    public function register($userInvite) {
+    public function register($userInvite)
+    {
 
         $this->email = $userInvite->email;
         $this->auth_mode = User::AUTH_MODE_LOCAL;
@@ -642,24 +673,18 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return array
      */
-    public function getAvailableModules() {
+    public function getAvailableModules()
+    {
 
-        $availableModules = array();
+        $modules = array();
 
-        /*
-        // Loop over all enabled modules
-        foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $definition) {
-
-            if (isset($definition['userModules']) && is_array($definition['userModules'])) {
-
-                foreach ($definition['userModules'] as $moduleId => $moduleInfo) {
-                    $availableModules[$moduleId] = $moduleInfo;
-                }
+        foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $module) {
+            if (array_key_exists('UserModuleBehavior', $module->behaviors())) {
+                $modules[$module->getId()] = $module;
             }
         }
-        */
 
-        return $availableModules;
+        return $modules;
     }
 
     /**
@@ -667,7 +692,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @return array
      */
-    public function getEnabledModules() {
+    public function getEnabledModules()
+    {
 
         $modules = array();
         foreach (UserApplicationModule::model()->findAllByAttributes(array('user_id' => $this->id)) as $userModule) {
@@ -677,6 +703,7 @@ class User extends HActiveRecordContentContainer implements ISearchable {
                 $modules[] = $moduleId;
             }
         }
+
         return $modules;
     }
 
@@ -685,7 +712,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      *
      * @param type $moduleId
      */
-    public function isModuleEnabled($moduleId) {
+    public function isModuleEnabled($moduleId)
+    {
 
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
@@ -704,7 +732,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
     /**
      * Installs a Module
      */
-    public function installModule($moduleId) {
+    public function installModule($moduleId)
+    {
 
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
@@ -731,14 +760,16 @@ class User extends HActiveRecordContentContainer implements ISearchable {
         return true;
     }
 
-    public function onInstallModule($event) {
+    public function onInstallModule($event)
+    {
         $this->raiseEvent('onInstallModule', $event);
     }
 
     /**
      * Uninstalls a Module
      */
-    public function uninstallModule($moduleId) {
+    public function uninstallModule($moduleId)
+    {
 
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
@@ -761,7 +792,8 @@ class User extends HActiveRecordContentContainer implements ISearchable {
         return true;
     }
 
-    public function onUninstallModule($event) {
+    public function onUninstallModule($event)
+    {
         $this->raiseEvent('onUninstallModule', $event);
     }
 
@@ -770,15 +802,18 @@ class User extends HActiveRecordContentContainer implements ISearchable {
      * Temporary
      * ------------------------------------------------------------------------------------------------
      */
-    public function getFirstname() {
+    public function getFirstname()
+    {
         return $this->profile->firstname;
     }
 
-    public function getLastname() {
+    public function getLastname()
+    {
         return $this->profile->lastname;
     }
 
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->profile->title;
     }
 

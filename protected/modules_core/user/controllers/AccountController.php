@@ -92,7 +92,7 @@ class AccountController extends Controller
     public function actionEditModules()
     {
         $user = Yii::app()->user->getModel();
-        $this->render('editModules', array('user' => $user));
+        $this->render('editModules', array('user' => $user, 'availableModules' => $user->getAvailableModules()));
     }
 
     public function actionEnableModule()
