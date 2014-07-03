@@ -251,6 +251,78 @@ class HHtml extends CHtml
         return $text;
     }
 
+    /**
+     * ActiveForm Variant of DateTime Field
+     * 
+     * @param type $model
+     * @param type $attribute
+     * @param type $htmlOptions
+     * @param type $pickerOptions See HHTML::dateTimeField for details.
+     * @return type
+     */
+    public static function activeDateTimeField($model, $attribute, $htmlOptions = array(), $pickerOptions = array())
+    {
+        $value = self::resolveValue($model, $attribute);
+
+        self::resolveNameID($model, $attribute, $htmlOptions);
+        $name = $htmlOptions['name'];
+
+        self::clientChange('change', $htmlOptions);
+
+        return self::dateTimeField($name, $value, $htmlOptions, $pickerOptions);
+    }
+
+    /**
+     * Standalone DateTime Field.
+     * Internal Format: 2017-01-01 00:00:00 
+     * 
+     * Picker Options Attributes:
+     *      pickDate = TRUE/false
+     *      pickTime = true/FALSE   
+     *      displayFormat = Default: DD.MM.YYYY[ - HH:mm]
+     * 
+     * @param String $name
+     * @param String $value
+     * @param Array $htmlOptions
+     * @param Array $pickerOptions
+     * 
+     * @return String datetimeField HTML
+     */
+    public static function dateTimeField($name, $value = "", $htmlOptions = array(), $pickerOptions = array())
+    {
+        // load js for datetimepicker component
+        Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->baseUrl . '/js/moment.js', CClientScript::POS_END
+        );
+        Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
+        );
+        Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
+        );
+
+        // load css for datetimepicker component
+        Yii::app()->clientScript->registerCssFile(
+                Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
+        );
+
+        if (isset($pickerOptions['pickTime']) && $pickerOptions['pickTime'] == true) {
+            $htmlOptions['data-options-pickTime'] = "true";
+        }
+
+        if (isset($pickerOptions['displayFormat'])) {
+            $htmlOptions['data-options-displayFormat'] = $pickerOptions['displayFormat'];
+        }
+
+        if (!isset($htmlOptions['class'])) {
+            $htmlOptions['class'] = 'hhtml-datetime-field';
+        } else {
+            $htmlOptions['class'] .= ' hhtml-datetime-field';
+        }
+
+        return self::textField($name, $value, $htmlOptions);
+    }
+
 }
 
 ?>
