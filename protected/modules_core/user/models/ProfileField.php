@@ -347,4 +347,7 @@ class ProfileField extends HActiveRecord
         return "UserModule.profile";
     }
 
+    
+
+    
 }

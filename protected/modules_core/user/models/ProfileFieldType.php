@@ -6,7 +6,8 @@
  * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class ProfileFieldType extends CFormModel {
+class ProfileFieldType extends CFormModel
+{
 
     /**
      * Corresponding ProfileField Model
@@ -20,7 +21,8 @@ class ProfileFieldType extends CFormModel {
      *
      * @param type $profileField
      */
-    public function setProfileField($profileField) {
+    public function setProfileField($profileField)
+    {
         $this->profileField = $profileField;
         $this->load();
     }
@@ -30,12 +32,15 @@ class ProfileFieldType extends CFormModel {
      *
      * @return Array
      */
-    public static function getFieldTypes() {
+    public static function getFieldTypes()
+    {
         return array(
             'ProfileFieldTypeNumber' => Yii::t('UserModule.base', 'Number'),
             'ProfileFieldTypeText' => Yii::t('UserModule.base', 'Text'),
             'ProfileFieldTypeTextArea' => Yii::t('UserModule.base', 'Text Area'),
             'ProfileFieldTypeSelect' => Yii::t('UserModule.base', 'Select List'),
+            'ProfileFieldTypeDateTime' => Yii::t('UserModule.base', 'Datetime'),
+            'ProfileFieldTypeBirthday' => Yii::t('UserModule.base', 'Birthday'),
         );
     }
 
@@ -44,7 +49,8 @@ class ProfileFieldType extends CFormModel {
      *
      * @return Array
      */
-    public static function getTypeInstances($profileField = null) {
+    public static function getTypeInstances($profileField = null)
+    {
 
         $types = array();
         foreach (self::getFieldTypes() as $className => $title) {
@@ -66,16 +72,16 @@ class ProfileFieldType extends CFormModel {
     /**
      * Return the Form Element to edit the value of the Field
      */
-    public function getFieldFormDefinition() {
+    public function getFieldFormDefinition()
+    {
 
-        $definition =  array($this->profileField->internal_name => array(
+        $definition = array($this->profileField->internal_name => array(
                 'type' => 'text',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)
         ));
 
         return $definition;
-
     }
 
     /**
@@ -86,7 +92,8 @@ class ProfileFieldType extends CFormModel {
      * @param type $definition
      * @return Array of Form Definition
      */
-    public function getFormDefinition($definition = array()) {
+    public function getFormDefinition($definition = array())
+    {
 
         $definition[get_class($this)]['class'] = "fieldTypeSettings " . get_class($this);
         return $definition;
@@ -100,7 +107,8 @@ class ProfileFieldType extends CFormModel {
      *
      * @return boolean
      */
-    public function validate($attributes=null, $clearErrors=true) {
+    public function validate($attributes = null, $clearErrors = true)
+    {
 
         // Bound to a profile field?
         if ($this->profileField != null) {
@@ -122,7 +130,8 @@ class ProfileFieldType extends CFormModel {
      *
      * The ProfileFieldType Class itself can overwrite this behavior.
      */
-    public function save() {
+    public function save()
+    {
 
         $data = array();
         foreach ($this->attributeNames() as $attributeName) {
@@ -146,7 +155,8 @@ class ProfileFieldType extends CFormModel {
      *
      * These settings are loaded from the underlying ProfileField.
      */
-    public function load() {
+    public function load()
+    {
         $config = CJSON::decode($this->profileField->field_type_config);
         if (is_array($config)) {
             foreach ($config as $key => $value) {
@@ -159,7 +169,8 @@ class ProfileFieldType extends CFormModel {
     /**
      * Deletes a Profile Field Type
      */
-    public function delete() {
+    public function delete()
+    {
         // Try create column name
         if (Profile::model()->columnExists($this->profileField->internal_name)) {
             $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "`;";
@@ -172,7 +183,8 @@ class ProfileFieldType extends CFormModel {
      *
      * This method should be overwritten by the child class.
      */
-    public function addToProfileTable() {
+    public function addToProfileTable()
+    {
         return true;
     }
 
@@ -183,7 +195,8 @@ class ProfileFieldType extends CFormModel {
      * @param type $rules
      * @return Array rules
      */
-    public function getFieldRules($rules = array()) {
+    public function getFieldRules($rules = array())
+    {
 
         if ($this->profileField->required)
             $rules[] = array($this->profileField->internal_name, 'required');
@@ -192,7 +205,6 @@ class ProfileFieldType extends CFormModel {
         return $rules;
     }
 
-
     /**
      * Returns the value of a given user of this field
      *
@@ -200,10 +212,20 @@ class ProfileFieldType extends CFormModel {
      * @param type $raw
      * @return type
      */
-    public function getUserValue($user, $raw=true) {
-            $internalName = $this->profileField->internal_name;
-            return $user->profile->$internalName;
+    public function getUserValue($user, $raw = true)
+    {
+        $internalName = $this->profileField->internal_name;
+        return $user->profile->$internalName;
     }
+
+    public function getLabels()
+    {
+        $labels = array();
+        $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
+        return $labels;
+    }
+
+
 
 }
 

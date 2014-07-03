@@ -1,19 +1,7 @@
 $(document).ready(function() {
 
-    var createDefaultDateValue = function(date, time) {
-
-        console.log(time);
-        var d = new Date()
-                , datePart = date || ((1900 + d.getYear()) + '-' + (1 + d.getMonth()) + '-' + d.getDate())
-                , timePart = time || (d.getHours() + ':' + d.getMinutes())
-                ;
-        return datePart + ' ' + timePart;
-    };
-
     $('.hhtml-datetime-field').each(function(index, element) {
         var $element = $(element)
-                , defaultDate = $element.val() || createDefaultDateValue($element.attr('data-options-defaultdate'), $element.attr('data-options-defaulttime'))
-                , $dateInput = $('<input value="' + defaultDate + '" type="text" class="' + $element.attr('class') + '" />')
                 , dateTimepickerDefaultOptions = {
                     pickDate: true,
                     pickTime: false,
@@ -25,9 +13,12 @@ $(document).ready(function() {
                     sideBySide: false,
                     format: 'YYYY-MM-DD hh:mm'
                 }
-        , dateTimepickerOptions = {}
+        , $dateInput = $element.clone()
+                , dateTimepickerOptions = {}
         , re_dataAttr = /^data\-options\-(.+)$/
                 ;
+
+        $dateInput.removeAttr('name').removeAttr('id');
 
         $.each(element.attributes, function(index, attr) {
             if (re_dataAttr.test(attr.nodeName)) {
@@ -59,11 +50,17 @@ $(document).ready(function() {
             datepicker.format = $element.attr('data-options-displayFormat');
         }
 
-        datepicker.setDate(datepicker.date); // update visible date to correct Format
+        if ($element.val() != "") {
+            datepicker.setDate(datepicker.date); // update visible date to correct Format
+        }
 
         $dateInput.bind('blur change', function(ev) {
-            if (datepicker.getDate()) {
-                $element.val(datepicker.getDate().format('YYYY-MM-DD HH:mm:00'));
+            if ($dateInput.val()) {
+                if (datepicker.getDate()) {
+                    $element.val(datepicker.getDate().format('YYYY-MM-DD HH:mm:00'));
+                }
+            } else {
+                $element.val('');
             }
         });
 

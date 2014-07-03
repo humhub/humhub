@@ -113,7 +113,7 @@ class Profile extends HActiveRecord
         $labels['user_id'] = Yii::t('UserModule.base', 'User');
 
         foreach (ProfileField::model()->findAll() as $profileField) {
-            $labels[$profileField->internal_name] = Yii::t($profileField->getTranslationCategory(), $profileField->title);
+            $labels = array_merge($labels, $profileField->fieldType->getLabels());
         }
 
         return $labels;
