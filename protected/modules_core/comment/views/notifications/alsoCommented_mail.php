@@ -77,7 +77,6 @@
                                                                     <?php echo Yii::t('CommentModule.base', 'also commented'); ?> <?php echo $targetObject->getContentTitle(); ?><?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?> in <strong><?php echo Helpers::truncateText($workspace->name, 25); ?></strong><?php endif; ?>:<br/>
                                                                     <em>"<?php echo NotificationModule::formatOutput($sourceObject->message); ?>"</em>
                                                                     &nbsp;
-                                                                    <br>
                                                                     <!-- END: CONTENT -->
 
                                                                     <!-- START: CONTENT LINK -->
