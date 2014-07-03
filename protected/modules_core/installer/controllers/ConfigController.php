@@ -451,6 +451,17 @@ class ConfigController extends Controller
         }
 
         $field = new ProfileField();
+        $field->internal_name = "birthday";
+        $field->title = 'Birthday';
+        $field->sort_order = 900;
+        $field->profile_field_category_id = $cGeneral->id;
+        $field->field_type_class = 'ProfileFieldTypeBirthday';
+        $field->is_system = true;
+        if ($field->save()) {
+            $field->fieldType->save();
+        }        
+        
+        $field = new ProfileField();
         $field->internal_name = "about";
         $field->title = 'About';
         $field->sort_order = 900;
