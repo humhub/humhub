@@ -26,6 +26,6 @@
 class HVersion
 {
 
-    const VERSION = "0.6.3-dev";
+    const VERSION = "0.6.3";
 
 }

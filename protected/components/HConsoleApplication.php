@@ -28,7 +28,8 @@
  * @package humhub.components
  * @since 0.8
  */
-class HConsoleApplication extends CConsoleApplication {
+class HConsoleApplication extends CConsoleApplication
+{
 
     /**
      * Current theme name
@@ -36,11 +37,13 @@ class HConsoleApplication extends CConsoleApplication {
      * @var String
      */
     public $theme;
+    private $_viewPath;
 
     /**
      * Initializes the console application and setup some event handlers
      */
-    protected function init() {
+    protected function init()
+    {
 
         parent::init();
 
@@ -59,7 +62,8 @@ class HConsoleApplication extends CConsoleApplication {
      * Sets some mandatory request infos to ensure absolute url creation.
      * These values are extracted from baseUrl which is stored as HSetting.
      */
-    private function setupRequestInfo() {
+    private function setupRequestInfo()
+    {
 
         $parsedUrl = parse_url(HSetting::Get('baseUrl'));
 
@@ -79,7 +83,8 @@ class HConsoleApplication extends CConsoleApplication {
      * @param string $ampersand the token separating name-value pairs in the URL.
      * @return string the constructed URL
      */
-    public function createUrl($route, $params = array(), $schema = '', $ampersand = '&') {
+    public function createUrl($route, $params = array(), $schema = '', $ampersand = '&')
+    {
         $url = parent::createUrl($route, $params, $ampersand);
         if (strpos($url, 'http') === 0)
             return $url;
@@ -95,7 +100,8 @@ class HConsoleApplication extends CConsoleApplication {
      * @param string $ampersand the token separating name-value pairs in the URL.
      * @return string the constructed URL
      */
-    public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&') {
+    public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
+    {
         return $this->createUrl($route, $params, $schema, $ampersand);
     }
 
@@ -103,7 +109,8 @@ class HConsoleApplication extends CConsoleApplication {
      * Raised after the application inits.
      * @param CEvent $event the event parameter
      */
-    public function onInit($event) {
+    public function onInit($event)
+    {
         $this->raiseEvent('onInit', $event);
     }
 
@@ -113,8 +120,51 @@ class HConsoleApplication extends CConsoleApplication {
      * @param String $name
      * @param String $file
      */
-    public function addCommand($name, $file) {
+    public function addCommand($name, $file)
+    {
         $this->getCommandRunner()->commands[$name] = $file;
+    }
+
+    /**
+     * Registers the core application components.
+     * This method overrides the parent implementation by registering additional core components.
+     * @see setComponents
+     */
+    protected function registerCoreComponents()
+    {
+        parent::registerCoreComponents();
+
+        $components = array(
+            'widgetFactory' => array(
+                'class' => 'CWidgetFactory',
+            ),
+            'themeManager' => array(
+                'class' => 'CThemeManager',
+            ),
+        );
+
+        $this->setComponents($components);
+    }
+
+    /**
+     * Returns the widget factory.
+     * @return IWidgetFactory the widget factory
+     * @since 1.1
+     */
+    public function getWidgetFactory()
+    {
+        return $this->getComponent('widgetFactory');
+    }
+
+    /**
+     * @return string the root directory of view files. Defaults to 'protected/views'.
+     */
+    public function getViewPath()
+    {
+        if ($this->_viewPath !== null)
+            return $this->_viewPath;
+        else
+            return $this->_viewPath = $this->getBasePath() . DIRECTORY_SEPARATOR . 'views';
     }
 
 }
