@@ -265,7 +265,7 @@ class AdminController extends Controller
     /**
      * Handle the profile image upload
      */
-    public function actionSpaceImageUpload()
+    public function actionImageUpload()
     {
 
         $space = $this->getSpace();
@@ -303,7 +303,7 @@ class AdminController extends Controller
     /**
      * Crops the profile image of the user
      */
-    public function actionCropSpaceImage()
+    public function actionCropImage()
     {
 
         $this->adminOnly();

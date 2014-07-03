@@ -41,7 +41,7 @@
                                 class="fa fa-cloud-upload"></i></a>
                         <a id="profile-image-upload-edit-button"
                            style="<?php if (!$space->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
-                           href="<?php echo Yii::app()->createAbsoluteUrl('//space/admin/cropSpaceImage', array('guid' => $space->guid)); ?>"
+                           href="<?php echo Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)); ?>"
                            class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                                 class="fa fa-edit"></i></a>
                     </div>
@@ -122,8 +122,7 @@
     $(function () {
         'use strict';
         // Change this to the location of your server-side upload handler:
-        var profileImageUrl = '<?php echo Yii::app()->createUrl('//space/admin/spaceImageUpload', array('guid' => $space->guid)); ?>';
-        var bannerImageUrl = '<?php echo Yii::app()->createUrl('//user/profile/bannerImageUpload'); ?>';
+        var profileImageUrl = '<?php echo Yii::app()->createUrl('//space/admin/imageUpload', array('guid' => $space->guid)); ?>';
 
         $('.fileupload').each(function () {
 

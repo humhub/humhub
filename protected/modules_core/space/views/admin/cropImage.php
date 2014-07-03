@@ -50,7 +50,7 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Save'), Yii::app()->createAbsoluteUrl('//space/admin/cropSpaceImage', array('guid' => $space->guid)), array(
+            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Save'), Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
