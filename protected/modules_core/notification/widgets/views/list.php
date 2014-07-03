@@ -108,7 +108,7 @@
 
         });
 
-        var notification_placeholder = "<?php echo Yii::t('NotificationModule.base', 'There are no notifications available') ?>"
+        var notification_placeholder = "<?php echo Yii::t('NotificationModule.base', 'There are no notifications yet.') ?>"
 
 
         function loadNotificationEntries() {

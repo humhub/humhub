@@ -142,19 +142,6 @@
         $('#access-settings-link i').addClass('fa-caret-right');
     })
 
-
-    /*
-     * Modal handling by close event
-     */
-    $('#globalModal').on('hidden.bs.modal', function (e) {
-
-        // Reload whole page (to see changes on it)
-        //window.location.reload();
-
-        // just close modal and reset modal content to default (shows the loader)
-        $('#globalModal').html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
-    })
-
     // prevent enter key and simulate ajax button submit click
     $(document).ready(function() {
         $(window).keydown(function(event){

@@ -15,7 +15,19 @@
                     <input type="file" name="bannerfiles[]">
                 </form>
 
-                <div class="image-upload-loader" id="banner-image-upload-loader" style="padding: 140px 350px;">
+                <?php
+                // set standard padding for banner progressbar
+                $padding = '140px 350px';
+
+                // if the default banner image is displaying
+                if (!$this->getUser()->getProfileBannerImage()->hasImage())
+                {
+                    // change padding to the lower image height
+                    $padding = '70px 350px';
+                }
+                ?>
+
+                <div class="image-upload-loader" id="banner-image-upload-loader" style="padding: <?php echo $padding ?>;">
                     <div class="progress image-upload-progess-bar" id="banner-image-upload-bar">
                         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="00"
                              aria-valuemin="0"

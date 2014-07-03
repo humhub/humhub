@@ -88,21 +88,6 @@
 
 <script type="text/javascript">
 
-    /*
-     * Modal handling by close event
-     */
-    $('#globalModal').on('hidden.bs.modal', function (e) {
-
-        // Reload whole page (to see changes on it)
-        //window.location.reload();
-
-        // just close modal and reset modal content to default (shows the loader)
-        $('#globalModal').html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
-    })
-</script>
-
-<script type="text/javascript">
-
     // scroll to top of list
     $(".modal-body").animate({ scrollTop: 0 }, 200);
 

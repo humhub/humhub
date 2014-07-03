@@ -176,7 +176,9 @@
         /* Ensures after hide modal content is removed. */
         $('#globalModal').on('hidden.bs.modal', function (e) {
             $(this).removeData('bs.modal');
-            $(this).html("");
+
+            // just close modal and reset modal content to default (shows the loader)
+            $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
         })
 
     });
