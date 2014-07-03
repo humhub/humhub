@@ -114,10 +114,10 @@ EOF;
 		$updateCoordsCode = <<<EOF
 			function updateCoords{$count}(c)
 			{
-				jQuery('#{$this->formElementX}').val(c.x);
-				jQuery('#{$this->formElementY}').val(c.y);
-				jQuery('#{$this->formElementWidth}').val(c.w);
-				jQuery('#{$this->formElementHeight}').val(c.h);
+				jQuery('#{$this->formElementX}').val(Math.round(c.x));
+				jQuery('#{$this->formElementY}').val(Math.round(c.y));
+				jQuery('#{$this->formElementWidth}').val(Math.round(c.w));
+				jQuery('#{$this->formElementHeight}').val(Math.round(c.h));
 				var rx = {$this->previewWidth} / c.w;
 				var ry = {$this->previewHeight} / c.h;
 				if ($('#{$this->previewId}') != undefined) {

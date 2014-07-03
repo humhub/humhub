@@ -37,7 +37,7 @@
                         'formElementWidth' => 'CropProfileImageForm_cropW',
                         'formElementHeight' => 'CropProfileImageForm_cropH',
                         'jCropOptions' => array(
-                            'aspectRatio' => '2.5',
+                            'aspectRatio' => '2.8333',
                             'boxWidth' => 400,
                             'setSelect' => array(0, 0, 200, 75),
                         ),
@@ -69,6 +69,7 @@
         </div>
 
         <?php $this->endWidget(); ?>
+
     </div>
 
 </div>
