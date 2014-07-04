@@ -188,7 +188,7 @@ class ModuleController extends Controller
         }
 
         $onlineModules = new OnlineModuleManager();
-        $onlineModules->update($module);
+        $onlineModules->update($moduleId);
         
         $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }

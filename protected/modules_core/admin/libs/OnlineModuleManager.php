@@ -104,14 +104,24 @@ class OnlineModuleManager
         }
     }
 
-    public function update(HWebModule $module)
+    /**
+     * Updates a given module
+     * 
+     * @param HWebModule $module
+     */
+    public function update($moduleId)
     {
-
+        // Hack: for some broken modules using wall aliases
+        Yii::setPathOfAlias('wall', Yii::app()->getModulePath());
+        
         // Remove old module files
-		Yii::app()->moduleManager->removeModuleFolder($module->getId());
-        $this->install($module->getId());
+        Yii::app()->moduleManager->removeModuleFolder($moduleId);
+        $this->install($moduleId);
+        
+        $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->update();
     }
+
 
     /**
      * Returns an array of all available online modules
@@ -126,7 +136,7 @@ class OnlineModuleManager
      */
     public function getModules()
     {
-        $url = self::HUMHUB_ONLINE_API_URL . "list?version=" . urlencode(HVersion::VERSION)."&installId=".HSetting::Get('installationId', 'admin');
+        $url = self::HUMHUB_ONLINE_API_URL . "list?version=" . urlencode(HVersion::VERSION) . "&installId=" . HSetting::Get('installationId', 'admin');
         $modules = array();
 
         try {
@@ -153,7 +163,7 @@ class OnlineModuleManager
     {
 
         // get all module informations
-        $url = self::HUMHUB_ONLINE_API_URL . "info?id=" . urlencode($moduleId) . "&version=" . HVersion::VERSION."&installId=".HSetting::Get('installationId', 'admin');
+        $url = self::HUMHUB_ONLINE_API_URL . "info?id=" . urlencode($moduleId) . "&version=" . HVersion::VERSION . "&installId=" . HSetting::Get('installationId', 'admin');
         try {
             $http = new Zend_Http_Client($url, array(
                 'adapter' => 'Zend_Http_Client_Adapter_Curl',

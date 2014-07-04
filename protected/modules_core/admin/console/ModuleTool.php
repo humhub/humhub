@@ -115,7 +115,13 @@ class ModuleTool extends HConsoleCommand
         print "\nModule " . $moduleId . " successfully uninstalled!\n";
     }
 
-    public function actionUpdate($args)
+    /**
+     * Updates a module
+     * 
+     * @param type $args
+     * @return type
+     */
+    public function actionUpdate($args, $force=false)
     {
 
         if (!isset($args[0])) {
@@ -125,41 +131,44 @@ class ModuleTool extends HConsoleCommand
         }
 
         $moduleId = $args[0];
-        $module = Yii::app()->moduleManager->getModule($moduleId);
-        $onlineModules = new OnlineModuleManager();
 
-        if ($module == null) {
+        
+        if (!Yii::app()->moduleManager->isInstalled($moduleId)) {
             print "\nModule " . $moduleId . " is not installed!\n";
             return;
         }
-
-
+        
+        // Look online for module
+        $onlineModules = new OnlineModuleManager();
         $moduleInfo = $onlineModules->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
             print "No compatible version for " . $moduleId . " found online!\n";
             return;
         }
-
-        if ($moduleInfo['latestCompatibleVersion']['version'] == $module->getVersion()) {
-            print "Module " . $moduleId . " already up to date!\n";
-            return;
+        
+        if (!$force) {
+            $module = Yii::app()->moduleManager->getModule($moduleId);
+            
+            if ($moduleInfo['latestCompatibleVersion']['version'] == $module->getVersion()) {
+                print "Module " . $moduleId . " already up to date!\n";
+                return;
+            }
         }
 
-        $onlineModules->update($module);
+        $onlineModules->update($moduleId);
 
         print "Module " . $moduleId . " successfully updated!\n";
     }
 
     public function actionUpdateAll($args)
     {
-        $installedModules = Yii::app()->moduleManager->getInstalledModules();
+        $installedModules = Yii::app()->moduleManager->getInstalledModules(false, true);
         ModuleManager::flushCache();
 
         print "Updating modules: \n\n";
-
-        foreach ($installedModules as $module) {
-            $this->actionUpdate(array($module->getId()));
+        foreach ($installedModules as $moduleId => $moduleClass) {
+            $this->actionUpdate(array($moduleId), true);
         }
     }
 
