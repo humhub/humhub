@@ -32,8 +32,8 @@ class OnlineModuleManager
     const HUMHUB_ONLINE_API_URL = "https://www.humhub.org/modules/api/";
 
     /**
-     * Installs latest compatible module version 
-     * 
+     * Installs latest compatible module version
+     *
      * @param type $moduleId
      */
     public function install($moduleId)
@@ -108,20 +108,20 @@ class OnlineModuleManager
     {
 
         // Remove old module files
-        $module->removeModuleFolder();
+		Yii::app()->moduleManager->removeModuleFolder($module->getId());
         $this->install($module->getId());
         $module->update();
     }
 
     /**
      * Returns an array of all available online modules
-     * 
+     *
      * Key is moduleId
      *  - name
      *  - description
      *  - latestVersion
      *  - latestCompatibleVersion
-     * 
+     *
      * @return Array of modulles
      */
     public function getModules()

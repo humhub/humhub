@@ -290,7 +290,7 @@ class HWebModule extends CWebModule
         $command = Yii::app()->db->createCommand('DELETE FROM migration WHERE module = :moduleId');
         $command->execute(array(':moduleId' => $this->getId()));
 
-        $this->removeModuleFolder();
+        Yii::app()->moduleManager->removeModuleFolder($this->getId());
 
         ModuleManager::flushCache();
     }

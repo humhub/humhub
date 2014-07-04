@@ -252,6 +252,7 @@ class ModuleManager extends CApplicationComponent
                         $installed[$moduleId] = $module;
                     }
                 } catch (Exception $ex) {
+                    Yii::log('Could not instanciate module: ' . $moduleId . "." . $ex->getMessage(), 'error');
                     self::flushCache();
                 }
             }
@@ -319,6 +320,30 @@ class ModuleManager extends CApplicationComponent
         }
 
         return true;
+    }
+
+    /**
+     * Removes module folder
+     * 
+     * @param String $moduleId
+     */
+    public function removeModuleFolder($moduleId)
+    {
+        
+        $modulePath = Yii::app()->getModulePath().DIRECTORY_SEPARATOR.$moduleId;
+        
+        
+        $moduleBackupFolder = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_backups';
+        if (!is_dir($moduleBackupFolder)) {
+            if (!@mkdir($moduleBackupFolder)) {
+                throw new CException("Could not create module backup folder!");
+            }
+        }
+
+        $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
+        if (!@rename($modulePath, $backupFolderName)) {
+            throw new CException("Could not remove module folder!");
+        }
     }
 
 }
