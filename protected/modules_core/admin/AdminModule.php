@@ -15,6 +15,7 @@ class AdminModule extends HWebModule
         $this->setImport(array(
             'admin.models.*',
             'admin.forms.*',
+            'admin.libs.*',
             'admin.*',
         ));
     }

@@ -27,11 +27,6 @@
 class ModuleController extends Controller
 {
 
-    /**
-     * URL to the HumHub Module Store API
-     */
-    const HUMHUB_ONLINE_API_URL = "https://www.humhub.org/modules/api/";
-
     public $subLayout = "/_layout";
 
     /**
@@ -134,7 +129,8 @@ class ModuleController extends Controller
         $moduleId = Yii::app()->request->getQuery('moduleId');
 
         if (!Yii::app()->moduleManager->isInstalled($moduleId)) {
-            $this->install($moduleId);
+            $onlineModules = new OnlineModuleManager();
+            $onlineModules->install($moduleId);
         }
 
         // Redirect to Module Install?
@@ -191,11 +187,9 @@ class ModuleController extends Controller
             throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not uninstall module first! Module is protected.'));
         }
 
-        // Remove old module files
-        $module->removeModuleFolder();
-        $this->install($moduleId);
-        $module->update();
-
+        $onlineModules = new OnlineModuleManager();
+        $onlineModules->update($module);
+        
         $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
 
@@ -204,7 +198,8 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
-        $modules = $this->getOnlineModules();
+        $onlineModules = new OnlineModuleManager();
+        $modules = $onlineModules->getModules();
         $this->render('listOnline', array('modules' => $modules));
     }
 
@@ -216,7 +211,8 @@ class ModuleController extends Controller
 
         $updates = array();
 
-        foreach ($this->getOnlineModules() as $moduleId => $moduleInfo) {
+        $onlineModules = new OnlineModuleManager();
+        foreach ($onlineModules->getModules() as $moduleId => $moduleInfo) {
 
             if (isset($moduleInfo['latestCompatibleVersion']) && Yii::app()->moduleManager->isInstalled($moduleId)) {
 
@@ -265,7 +261,8 @@ class ModuleController extends Controller
 
         $moduleId = Yii::app()->request->getQuery('moduleId');
 
-        $moduleInfo = $this->getOnlineModuleInfo($moduleId);
+        $onlineModules = new OnlineModuleManager();
+        $moduleInfo = $onlineModules->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestVersion'])) {
             throw new CException(Yii::t('AdminModule.modules', "No module version found!"));
@@ -274,144 +271,5 @@ class ModuleController extends Controller
         $this->renderPartial('info', array('name' => $moduleInfo['latestVersion']['name'], 'description' => $moduleInfo['latestVersion']['description'], 'content' => $moduleInfo['latestVersion']['README.md']), false, true);
     }
 
-    /**
-     * Installs latest compatible module version 
-     * 
-     * @param type $moduleId
-     */
-    private function install($moduleId)
-    {
-        $modulePath = Yii::app()->getModulePath();
-
-        if (!is_writable($modulePath)) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
-        }
-
-        $moduleInfo = $this->getOnlineModuleInfo($moduleId);
-
-        if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            throw new CException(Yii::t('AdminModule.modules', "No compatible module version found!"));
-        }
-
-        if (is_dir($modulePath . DIRECTORY_SEPARATOR . $moduleId)) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Module directory for module %moduleId% already exists!', array('%moduleId%' => $moduleId)));
-        }
-
-        // Check Module Folder exists
-        $moduleDownloadFolder = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_downloads';
-        if (!is_dir($moduleDownloadFolder)) {
-            if (!@mkdir($moduleDownloadFolder)) {
-                throw new CException("Could not create module download folder!");
-            }
-        }
-
-        $version = $moduleInfo['latestCompatibleVersion'];
-
-        // Download
-        $downloadUrl = $version['downloadUrl'];
-        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
-        try {
-            $http = new Zend_Http_Client($downloadUrl, array(
-                'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => $this->getCurlOptions(),
-            ));
-            $response = $http->request();
-            file_put_contents($downloadTargetFileName, $response->getBody());
-        } catch (Exception $ex) {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Module download failed! (%error%)', array('%error%' => $ex->getMessage())));
-        }
-
-        // Extract Package
-        if (file_exists($downloadTargetFileName)) {
-            // Unzip
-            $zip = new ZipArchive;
-            $res = $zip->open($downloadTargetFileName);
-            if ($res === TRUE) {
-                $zip->extractTo($modulePath);
-                $zip->close();
-            } else {
-                throw new CHttpException('500', Yii::t('AdminModule.modules', 'Could not extract module!'));
-            }
-        } else {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Download of module failed!'));
-        }
-
-        ModuleManager::flushCache();
-
-        // Call Modules autostart
-        $autostartFilename = $modulePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
-        if (file_exists($autostartFilename)) {
-            require_once($autostartFilename);
-            $module = Yii::app()->moduleManager->getModule($moduleId);
-            $module->install();
-        }
-    }
-
-    /**
-     * Returns an array of all available online modules
-     * 
-     * Key is moduleId
-     *  - name
-     *  - description
-     *  - latestVersion
-     *  - latestCompatibleVersion
-     * 
-     * @return Array of modulles
-     */
-    private function getOnlineModules()
-    {
-        $url = self::HUMHUB_ONLINE_API_URL . "list?version=" . urlencode(HVersion::VERSION);
-        $modules = array();
-
-        try {
-
-            $http = new Zend_Http_Client($url, array(
-                'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => $this->getCurlOptions(),
-            ));
-
-            $response = $http->request();
-            $json = $response->getBody();
-
-            $modules = CJSON::decode($json);
-        } catch (Exception $ex) {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Could not fetch module list online! (%error%)', array('%error%' => $ex->getMessage())));
-        }
-        return $modules;
-    }
-
-    /**
-     * Returns an array of informations about a module
-     */
-    private function getOnlineModuleInfo($moduleId)
-    {
-
-        // get all module informations
-        $url = self::HUMHUB_ONLINE_API_URL . "info?id=" . urlencode($moduleId) . "&version=" . HVersion::VERSION;
-        try {
-            $http = new Zend_Http_Client($url, array(
-                'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => $this->getCurlOptions(),
-            ));
-
-            $response = $http->request();
-            $json = $response->getBody();
-
-            $moduleInfo = CJSON::decode($json);
-        } catch (Exception $ex) {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Could not get module info online! (%error%)', array('%error%' => $ex->getMessage())));
-        }
-
-        return $moduleInfo;
-    }
-
-    private function getCurlOptions()
-    {
-        return array(
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_CAINFO => Yii::getPathOfAlias('application.config.ssl_certs') . DIRECTORY_SEPARATOR . 'humhub.crt'
-        );
-    }
 
 }

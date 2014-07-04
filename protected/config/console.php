@@ -49,9 +49,9 @@ return CMap::mergeArray($pre_config, array(
                 'integritychecker' => 'application.commands.shell.Maintain.IntegrityChecker',
                 'space' => 'application.modules_core.space.console.SpaceCliTool',
                 'emailing' => 'application.commands.shell.EMailing.EMailing',
-                'emailing_test' => 'application.commands.shell.EMailing.TestMail',
                 'cron' => 'application.commands.shell.ZCron.ZCronRunner',
                 'cache' => 'application.commands.shell.HCacheCommand',
+                'module' => 'application.modules_core.admin.console.ModuleTool',
                 'migrate' => array(
                     'class' => 'application.commands.shell.ZMigrateCommand',
                     'migrationPath' => 'application.migrations',

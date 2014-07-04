@@ -307,7 +307,8 @@ class ConfigController extends Controller
         // Caching
         HSetting::Set('type', 'CFileCache', 'cache');
         HSetting::Set('expireTime', '3600', 'cache');
-
+        HSetting::Set('installationId', md5(uniqid("",true)), 'admin');
+        
         // Design
         HSetting::Set('theme', "HumHub");
 
