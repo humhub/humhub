@@ -211,19 +211,24 @@ class ModuleManager extends CApplicationComponent
     public function getModule($id)
     {
 
-        // When enabled, returned it directly
-        if (Yii::app()->getModule($id) != null) {
-            return Yii::app()->getModule($id);
-        }
+        try {
+            // When enabled, returned it directly
+            if (Yii::app()->getModule($id) != null) {
+                return Yii::app()->getModule($id);
+            }
 
-        // Not enabled, but installed - create it
-        if (isset($this->installedModules[$id])) {
-            $class = $this->installedModules[$id];
-            return Yii::createComponent($class, $id, null);
+            // Not enabled, but installed - create it
+            if (isset($this->installedModules[$id])) {
+                $class = $this->installedModules[$id];
+                return Yii::createComponent($class, $id, null);
+            }
+        } catch (Exception $ex) {
+            Yii::log("Loading of module ".$id." failed! ".$ex->getMessage(), 'error');
         }
 
         return null;
     }
+
 
     /**
      * Returns a list of all installed modules
