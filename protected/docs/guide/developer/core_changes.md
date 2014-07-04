@@ -3,6 +3,8 @@ Core Changes / Changelog
 
 This file shows changes of the core api for migrating your modules between new versions.
 
+# 0.6.5
+- Moved all Space/User Behaviors in behaviors folder!
 
 # 0.6
 

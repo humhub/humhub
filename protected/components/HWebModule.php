@@ -28,21 +28,21 @@ class HWebModule extends CWebModule
 
     /**
      * Loaded Module JSON File
-     * 
-     * @var Array 
+     *
+     * @var Array
      */
     private $_moduleInfo = null;
 
     /**
      * Indicates that module is required by core
-     * 
+     *
      * @var Boolean
      */
     public $isCoreModule = false;
 
     /**
      * URL to assets
-     * 
+     *
      * @var String
      */
     private $_assetsUrl;
@@ -61,23 +61,23 @@ class HWebModule extends CWebModule
     /**
      * Add behaviors to this module
      *
-     * You may want to enable one of these behavior to alos make this module 
+     * You may want to enable one of these behavior to alos make this module
      * available on space and/or user context.
-     * 
+     *
      * See related behaviors classes for more details.
-     * 
-     * @return Array 
+     *
+     * @return Array
      */
     public function behaviors()
     {
         return array(
                 /*
                   'SpaceModuleBehavior' => array(
-                  'class' => 'application.modules_core.space.SpaceModuleBehavior',
+                  'class' => 'application.modules_core.space.behaviors.SpaceModuleBehavior',
                   ),
 
                   'UserModuleBehavior' => array(
-                  'class' => 'application.modules_core.user.UserModuleBehavior',
+                  'class' => 'application.modules_core.user.behaviors.UserModuleBehavior',
                   ),
                  */
         );
@@ -85,7 +85,7 @@ class HWebModule extends CWebModule
 
     /**
      * Returns modules name provided by module.json file
-     * 
+     *
      * @return string Description
      */
     public function getName()
@@ -101,7 +101,7 @@ class HWebModule extends CWebModule
 
     /**
      * Returns modules description provided by module.json file
-     * 
+     *
      * @return string Description
      */
     public function getDescription()
@@ -117,7 +117,7 @@ class HWebModule extends CWebModule
 
     /**
      * Returns modules version number provided by module.json file
-     * 
+     *
      * @return string Version Number
      */
     public function getVersion()
@@ -134,7 +134,7 @@ class HWebModule extends CWebModule
     /**
      * Returns image url for this module
      * Place your modules image in assets/module_image.png
-     * 
+     *
      * @return String Image Url
      */
     public function getImage()
@@ -148,10 +148,10 @@ class HWebModule extends CWebModule
 
     /**
      * Returns URL of configuration controller for this module.
-     * 
+     *
      * You may overwrite this method to provide advanced module configuration
      * possibilities.
-     * 
+     *
      * @return string
      */
     public function getConfigUrl()
@@ -161,7 +161,7 @@ class HWebModule extends CWebModule
 
     /**
      * Checks whether this module is enabled or not
-     * 
+     *
      * @return boolean
      */
     public function isEnabled()
@@ -192,9 +192,9 @@ class HWebModule extends CWebModule
 
     /**
      * Disables a module
-     * 
+     *
      * Which means delete all (user-) data created by the module.
-     * 
+     *
      */
     public function disable()
     {
@@ -225,9 +225,9 @@ class HWebModule extends CWebModule
     }
 
     /**
-     * Reads module.json which contains basic module informations and 
+     * Reads module.json which contains basic module informations and
      * returns it as array
-     * 
+     *
      * @return Array module.json content
      */
     protected function getModuleInfo()
@@ -251,9 +251,9 @@ class HWebModule extends CWebModule
 
     /**
      * Uninstalls a module
-     * 
+     *
      * You may overwrite this method to add more cleanup stuff.
-     * 
+     *
      * This method shall:
      *      - Delete all module files
      *      - Delete all modules tables, database changes
@@ -308,7 +308,7 @@ class HWebModule extends CWebModule
     /**
      * This method is called after an update is performed.
      * You may extend it with your own update process.
-     * 
+     *
      */
     public function update()
     {
@@ -338,7 +338,7 @@ class HWebModule extends CWebModule
 
     /**
      * Get assets url
-     * 
+     *
      * @return String url to assets
      */
     public function getAssetsUrl()
@@ -353,7 +353,7 @@ class HWebModule extends CWebModule
 
     /**
      * Get assets path
-     * 
+     *
      * @return String path to assets
      */
     public function getAssetsPath()

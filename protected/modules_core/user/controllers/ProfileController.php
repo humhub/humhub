@@ -45,7 +45,7 @@ class ProfileController extends Controller {
     public function behaviors() {
         return array(
             'ProfileControllerBehavior' => array(
-                'class' => 'application.modules_core.user.ProfileControllerBehavior',
+                'class' => 'application.modules_core.user.behaviors.ProfileControllerBehavior',
             ),
         );
     }

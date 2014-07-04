@@ -51,7 +51,7 @@ class AdminController extends Controller
     {
         return array(
             'ProfileControllerBehavior' => array(
-                'class' => 'application.modules_core.space.SpaceControllerBehavior',
+                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
             ),
         );
     }

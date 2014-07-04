@@ -1,13 +1,32 @@
 <?php
 
 /**
+ * HumHub
+ * Copyright © 2014 The HumHub Project
+ *
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
  * SpaceControllerBehavior is a controller behavior used for space modules/controllers.
  *
  * @author Luke
- * @package humhub.modules_core.space
- * @since 0.5
+ * @package humhub.modules_core.space.behaviors
+ * @since 0.6
  */
-class SpaceControllerBehavior extends CBehavior {
+class SpaceControllerBehavior extends CBehavior
+{
 
     /**
      * Returns the current selected space by parameter guid
@@ -17,7 +36,8 @@ class SpaceControllerBehavior extends CBehavior {
      *
      * @return Space
      */
-    public function getSpace() {
+    public function getSpace()
+    {
 
         // Check if current space is already determined
         if (Yii::app()->params['currentSpace']) {
@@ -69,16 +89,16 @@ class SpaceControllerBehavior extends CBehavior {
         return $space;
     }
 
-    
-    public function createContainerUrl($route, $params = array(), $ampersand = '&') {
+    public function createContainerUrl($route, $params = array(), $ampersand = '&')
+    {
 
         if (!isset($params['sguid'])) {
             $params['sguid'] = $this->getSpace()->guid;
         }
-        
+
         return $this->owner->createUrl($route, $params, $ampersand);
     }
-    
+
 }
 
 ?>

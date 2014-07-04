@@ -20,7 +20,8 @@
 
 /**
  * This behavior should attached to a HWebModule when it provides a user profile module.
- *
+ * 
+ * @package humhub.modules_core.user.behaviors
  * @author luke
  */
 class UserModuleBehavior extends CBehavior
