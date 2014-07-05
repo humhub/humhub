@@ -100,25 +100,28 @@ class EMailing extends HConsoleCommand {
      */
     private function getNotificationContent($user) {
 
+        $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', HSetting::Get('receive_email_notifications', 'mailing'));
+        
+        
         // Never receive notifications
-        if ($user->receive_email_notifications == User::RECEIVE_EMAIL_NEVER) {
+        if ($receive_email_notifications == User::RECEIVE_EMAIL_NEVER) {
             return "";
         }
 
         // We are in hourly mode and user wants daily
-        if ($this->mode == 'hourly' && $user->receive_email_notifications == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
+        if ($this->mode == 'hourly' && $receive_email_notifications == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
             return "";
         }
 
         // We are in daily mode and user dont wants daily reports
-        if ($this->mode == 'daily' && $user->receive_email_notifications != User::RECEIVE_EMAIL_DAILY_SUMMARY) {
+        if ($this->mode == 'daily' && $receive_email_notifications != User::RECEIVE_EMAIL_DAILY_SUMMARY) {
             return "";
         }
 
         // User wants only when offline and is online
         if ($this->mode == 'hourly') {
             $isOnline = (count($user->httpSessions) > 0);
-            if ($user->receive_email_notifications == User::RECEIVE_EMAIL_WHEN_OFFLINE && $isOnline) {
+            if ($receive_email_notifications == User::RECEIVE_EMAIL_WHEN_OFFLINE && $isOnline) {
                 return "";
             }
         }
@@ -154,25 +157,27 @@ class EMailing extends HConsoleCommand {
      */
     private function getActivityContent($user) {
 
+        $receive_email_activities = $user->getSetting("receive_email_activities", 'core', HSetting::Get('receive_email_activities', 'mailing'));
+        
         // User never wants activity content
-        if ($user->receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
+        if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
             return "";
         }
 
         // We are in hourly mode and user wants receive a daily summary
-        if ($this->mode == 'hourly' && $user->receive_email_activities == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
+        if ($this->mode == 'hourly' && $receive_email_activities == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
             return "";
         }
 
         // We are in daily mode and user wants receive not daily
-        if ($this->mode == 'daily' && $user->receive_email_activities != User::RECEIVE_EMAIL_DAILY_SUMMARY) {
+        if ($this->mode == 'daily' && $receive_email_activities != User::RECEIVE_EMAIL_DAILY_SUMMARY) {
             return "";
         }
 
         // User is online and want only receive when offline
         if ($this->mode == 'hourly') {
             $isOnline = (count($user->httpSessions) > 0);
-            if ($user->receive_email_activities == User::RECEIVE_EMAIL_WHEN_OFFLINE && $isOnline) {
+            if ($receive_email_activities == User::RECEIVE_EMAIL_WHEN_OFFLINE && $isOnline) {
                 return "";
             }
         }

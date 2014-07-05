@@ -213,36 +213,22 @@ class AccountController extends Controller
     public function actionEmailing()
     {
 
-        $model = User::model()->findByPk(Yii::app()->user->id);
-        $model->scenario = 'edit';
+        $user = Yii::app()->user->getModel();
+        $model = new AccountEmailingForm();
 
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-editAccount-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
-        }
+        $model->receive_email_messaging = $user->getSetting("receive_email_messaging", 'core', User::RECEIVE_EMAIL_ALWAYS);
+        $model->receive_email_activities = $user->getSetting("receive_email_activities", 'core', HSetting::Get('receive_email_activities', 'mailing'));
+        $model->receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', HSetting::Get('receive_email_notifications', 'mailing'));
 
-        if (isset($_POST['User'])) {
-
-            $_POST['User'] = Yii::app()->input->stripClean($_POST['User']);
-            $model->attributes = $_POST['User'];
-
+        if (isset($_POST['AccountEmailingForm'])) {
+            $model->attributes = Yii::app()->input->stripClean($_POST['AccountEmailingForm']);
 
             if ($model->validate()) {
+                $user->setSetting("receive_email_messaging", $model->receive_email_messaging);
+                $user->setSetting("receive_email_activities", $model->receive_email_activities);
+                $user->setSetting("receive_email_notifications", $model->receive_email_notifications);
 
-                // Create User
-                $model->save();
-
-                // Reload User in Session
-                Yii::app()->user->reload();
-
-                // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
-
-                $this->render('emailing', array('model' => $model));
-
-                // form inputs are valid, do something here
-                return;
             }
         }
 

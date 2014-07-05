@@ -318,6 +318,33 @@ class SettingController extends Controller
      */
     public function actionMailing()
     {
+
+        $model = new MailingDefaultsForm();
+
+        $model->receive_email_activities = HSetting::Get("receive_email_activities", 'mailing');
+        $model->receive_email_notifications = HSetting::Get("receive_email_notifications", 'mailing');
+
+        if (isset($_POST['MailingDefaultsForm'])) {
+            $model->attributes = Yii::app()->input->stripClean($_POST['MailingDefaultsForm']);
+
+            if ($model->validate()) {
+
+                HSetting::Set('receive_email_activities', $model->receive_email_activities, 'mailing');
+                HSetting::Set('receive_email_notifications', $model->receive_email_notifications, 'mailing');
+
+                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+            }
+        }
+
+
+        $this->render('mailing', array('model' => $model));
+    }
+
+    /**
+     * E-Mail Mailing Settings
+     */
+    public function actionMailingServer()
+    {
         Yii::import('admin.forms.*');
 
         $form = new MailingSettingsForm;
@@ -357,14 +384,14 @@ class SettingController extends Controller
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
 
-                $this->redirect(Yii::app()->createUrl('//admin/setting/mailing'));
+                $this->redirect(Yii::app()->createUrl('//admin/setting/mailing_server'));
             }
         }
 
         $encryptionTypes = array('' => 'None', 'ssl' => 'SSL');
         $transportTypes = array('php' => 'PHP', 'smtp' => 'SMTP');
 
-        $this->render('mailing', array('model' => $form, 'encryptionTypes' => $encryptionTypes, 'transportTypes' => $transportTypes));
+        $this->render('mailing_server', array('model' => $form, 'encryptionTypes' => $encryptionTypes, 'transportTypes' => $transportTypes));
     }
 
     /**

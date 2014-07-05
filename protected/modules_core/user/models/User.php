@@ -15,9 +15,6 @@
  * @property string $auth_mode
  * @property string $tags
  * @property string $language
- * @property integer $receive_email_notifications
- * @property integer $receive_email_messaging
- * @property integer $receive_email_activities
  * @property string $last_activity_email
  * @property string $created_at
  * @property integer $created_by
@@ -39,12 +36,23 @@
 class User extends HActiveRecordContentContainer implements ISearchable
 {
 
+    /**
+     * Authentication Modes
+     */
     const AUTH_MODE_LDAP = "ldap";
     const AUTH_MODE_LOCAL = "local";
+
+    /**
+     * User Status Flags
+     */
     const STATUS_DISABLED = 0;
     const STATUS_ENABLED = 1;
     const STATUS_NEED_APPROVAL = 2;
     const STATUS_DELETED = 3;
+
+    /**
+     * E-Mail Settings (Value Stored in UserSetting)
+     */
     const RECEIVE_EMAIL_NEVER = 0;
     const RECEIVE_EMAIL_DAILY_SUMMARY = 1;
     const RECEIVE_EMAIL_WHEN_OFFLINE = 2;
@@ -68,6 +76,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'HGuidBehavior' => array(
                 'class' => 'application.behaviors.HGuidBehavior',
             ),
+            'UserSettingBehavior' => array(
+                'class' => 'application.modules_core.user.behaviors.UserSettingBehavior',
+            )
         );
     }
 
@@ -146,7 +157,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z]/', 'message' => Yii::t('UserModule.base', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email', 'safe');
         $rules[] = array('auth_mode', 'length', 'max' => 10);
-        $rules[] = array('receive_email_notifications, receive_email_messaging, receive_email_activities', 'numerical', 'integerOnly' => true);
         $rules[] = array('id, guid, status, wall_id, group_id, username, email, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
 
         return $rules;
@@ -191,9 +201,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'created_by' => Yii::t('base', 'Created by'),
             'updated_at' => Yii::t('base', 'Updated at'),
             'updated_by' => Yii::t('base', 'Updated by'),
-            'receive_email_notifications' => Yii::t('UserModule.base', 'Send notifications?'),
-            'receive_email_messaging' => Yii::t('UserModule.base', 'Send messages?'),
-            'receive_email_activities' => Yii::t('UserModule.base', 'Send activities?'),
         );
     }
 
@@ -347,9 +354,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
         if (parent::beforeDelete()) {
 
-            foreach (UserSetting::model()->findAllByAttributes(array('user_id' => $this->id)) as $userSetting) {
-                $userSetting->delete();
-            }
+
+            UserSetting::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
             // Disable all enabled modules
             foreach ($this->getAvailableModules() as $moduleId => $module) {
@@ -411,18 +417,15 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         // Clean up user table fields
         $this->status = User::STATUS_DELETED;
-        $this->username = $this->guid;
-        $this->email = "deleted_" . $this->id . "@example.com";
+        $this->email = "deleted_" . $this->id . "@deleted.local";
         $this->tags = "";
         $this->super_admin = 0;
-        $this->receive_email_notifications = "";
-        $this->receive_email_messaging = "";
-        $this->receive_email_activities = "";
         $this->last_activity_email = "";
 
         // We assign a new guid, because LDAP Sync uses the GUID from LDAP Directory
         // This might cause conflicts if a LDAP User is deleted.
         $this->guid = UUID::v4();
+        $this->username = $this->guid;
 
         $this->update();
 
@@ -432,9 +435,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         $this->afterDelete();
-
-
-
 
         return true;
     }

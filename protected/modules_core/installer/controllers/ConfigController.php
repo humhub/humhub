@@ -299,6 +299,8 @@ class ConfigController extends Controller
         HSetting::Set('transportType', 'php', 'mailing');
         HSetting::Set('systemEmailAddress', 'social@example.com', 'mailing');
         HSetting::Set('systemEmailName', 'My Social Network', 'mailing');
+        HSetting::Set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY, 'mailing');
+        HSetting::Set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE, 'mailing');
 
         // File
         HSetting::Set('maxFileSize', '1048576', 'file');
