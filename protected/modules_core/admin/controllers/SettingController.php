@@ -384,7 +384,7 @@ class SettingController extends Controller
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
 
-                $this->redirect(Yii::app()->createUrl('//admin/setting/mailing_server'));
+                $this->redirect(Yii::app()->createUrl('//admin/setting/mailingServer'));
             }
         }
 
