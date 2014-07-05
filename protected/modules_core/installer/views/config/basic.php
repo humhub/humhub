@@ -1,13 +1,17 @@
-<div class="panel panel-default">
+<div id="name-form" class="panel panel-default animated fadeIn">
+
+    <div class="install-header install-header-small" style="background-image: url('<?php echo $this->module->assetsUrl; ?>/humhub-install-header.jpg');">
+        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.base', 'Social Network <strong>Name</strong>'); ?></h2>
+    </div>
+
     <div class="panel-body">
-        <p class="lead"><?php echo Yii::t('InstallerModule.base', '<strong>Your</strong> Social Network name'); ?></p>
 
         <p>Of course, your new social network need a name. Please change the default name with one you like. (For example the name of your company, organization or club)</p>
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'basic-form',
-            'enableAjaxValidation' => true,
+            'enableAjaxValidation' => false,
         ));
         ?>
 
@@ -24,5 +28,20 @@
         <?php $this->endWidget(); ?>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        // set cursor to email field
+        $('#ConfigBasicForm_name').focus();
+    })
+
+    // Shake panel after wrong validation
+    <?php if ($form->errorSummary($model) != null) { ?>
+    $('#name-form').removeClass('fadeIn');
+    $('#name-form').addClass('shake');
+    <?php } ?>
+
+</script>
 
 

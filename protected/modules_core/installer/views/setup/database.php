@@ -1,7 +1,10 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <p class="lead"><?php echo Yii::t('InstallerModule.base', '<strong>HumHub</strong> database configuration'); ?></p>
+<div id="database-form" class="panel panel-default animated fadeIn">
 
+    <div class="install-header install-header-small" style="background-image: url('<?php echo $this->module->assetsUrl; ?>/humhub-install-header.jpg');">
+        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.base', '<strong>Database</strong> Configuration'); ?></h2>
+    </div>
+
+    <div class="panel-body">
         <p>
             <?php echo Yii::t('InstallerModule.base', 'Below you have to enter your database connection details. If you’re not sure about these, please contact your administrator or web host.'); ?>
         </p>
@@ -73,3 +76,18 @@
         <?php $this->endWidget(); ?>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        // set cursor to email field
+        $('#hostname').focus();
+    })
+
+    // Shake panel after wrong validation
+    <?php if ($form->errorSummary($model) != null) { ?>
+    $('#database-form').removeClass('fadeIn');
+    $('#database-form').addClass('shake');
+    <?php } ?>
+
+</script>

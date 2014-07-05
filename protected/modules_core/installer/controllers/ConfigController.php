@@ -72,7 +72,7 @@ class ConfigController extends Controller
     {
 
         if (HSetting::Get('name') == "") {
-            HSetting::Set('name', "My HumHub Network");
+            HSetting::Set('name', "HumHub");
         }
 
         $this->setupInitialData();

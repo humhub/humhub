@@ -1112,12 +1112,14 @@ img.bounceIn {
 .outside .text {
   color: #ffffff;
   font-size: 12px;
+  margin-bottom: 15px;
 }
 .outside .text a {
   color: #ffffff;
   text-decoration: underline;
 }
-.outside h1 {
+.outside h1,
+.outside h2 {
   color: #ffffff !important;
 }
 .outside .panel {
@@ -1128,4 +1130,40 @@ img.bounceIn {
 .outside .panel .panel-heading,
 .outside .panel .panel-body {
   padding: 15px;
+}
+.outside .panel .fa {
+  width: 18px;
+}
+.outside .panel .check-ok {
+  color: #4cd9c0;
+}
+.outside .panel .check-warning {
+  color: #fdd198;
+}
+.outside .panel .check-error {
+  color: #ff8989;
+}
+.outside .panel .prerequisites-list ul {
+  list-style: none;
+  padding-left: 15px;
+}
+.outside .panel .prerequisites-list ul li {
+  padding-bottom: 5px;
+}
+.outside .install-header {
+  position: relative;
+  text-align: center;
+  height: 152px;
+  background-position: top center;
+  border-radius: 3px;
+  border: 3px solid #ffffff;
+}
+.outside .install-header .install-header-title {
+  padding: 6% 30px 0 30px;
+}
+.outside .install-header.install-header-small {
+  height: 110px;
+}
+.outside .install-header.install-header-small .install-header-title {
+  padding: 3% 30px 0 30px;
 }

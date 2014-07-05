@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="language" content="en"/>
 
+    <link type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/style.css"/>
     <link href="<?php echo Yii::app()->baseUrl; ?>/themes/HumHub/css/theme.css" rel="stylesheet">
@@ -14,16 +15,28 @@
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
 </head>
+<style type="text/css">
+    body {
+        background-color: #7191a8 !important;
+    }
+</style>
 
 <body>
 
-<div class="container installer" style="margin: 0 auto; max-width: 700px;">
+<div class="container installer outside" style="margin: 0 auto; max-width: 700px;">
     <div class="logo">
-        <h1><?php echo Yii::app()->name; ?></h1>
-        <h2><?php echo Yii::t('InstallerModule.base', 'Your Social Network Toolbox'); ?></h2>
+        <?php if (Yii::app()->name == "HumHub") : ?>
+            <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
+                <img src="<?php echo $this->module->assetsUrl; ?>/humhub-logo-white.png" alt="Logo">
+            </a>
+        <?php else : ?>
+            <h1 class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+        <?php endif; ?>
     </div>
-
     <?php echo $content; ?>
+    <div class="text text-center animated fadeIn">
+        Powered by <a href="http://www.humhub.org" target="_blank">HumHub</a>
+    </div>
 </div>
 
 <div class="clear"></div>

@@ -29,9 +29,20 @@ class InstallerModule extends HWebModule
 
     public $isCoreModule = true;
 
+    private $_assetsUrl;
+
+    public function getAssetsUrl()     {
+        if ($this->_assetsUrl === null)
+            $this->_assetsUrl = Yii::app()->getAssetManager()->publish(
+                Yii::getPathOfAlias('installer.resources')
+            );
+        return $this->_assetsUrl;
+    }
+
     public function init()
     {
         $this->setLayoutPath(Yii::getPathOfAlias('installer.views'));
+        Yii::app()->clientScript->registerCoreScript('jquery');
     }
 
     /**
