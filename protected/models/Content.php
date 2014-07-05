@@ -698,7 +698,7 @@ class Content extends CActiveRecord
     public function beforeValidate()
     {
 
-        if (!$this->container->canWrite()) {
+        if (!$this->container->canWrite($this->created_by)) {
             $this->addError('visibility', Yii::t('WallModule.base', 'Insufficent permissions to create content!'));
         }
 
