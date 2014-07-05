@@ -31,7 +31,7 @@
                 </div>
 
                 <hr>
-                <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Get new password'), array('class' => 'btn btn-primary')); ?>
+                <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Get new password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo $this->createUrl('//') ?>"><?php echo Yii::t('UserModule.auth', 'Back') ?></a>
 
                 <?php $this->endWidget(); ?>
 
