@@ -94,4 +94,9 @@ class HFormInputElement extends CFormInputElement
         return parent::render();
     }
 
+    public function renderHint()
+    {
+        return $this->hint === null ? '' : ' <p class="help-block">' . $this->hint . '</p>';
+    }
+
 }
