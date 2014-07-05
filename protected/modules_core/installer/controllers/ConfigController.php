@@ -219,6 +219,9 @@ class ConfigController extends Controller
             $space->auto_add_new_members = 1;
             $space->save();
 
+            $profileImage = new ProfileImage($space->guid);
+            $profileImage->setNew($this->getModule()->getPath().DIRECTORY_SEPARATOR."resources".DIRECTORY_SEPARATOR.'welcome_space.jpg');
+            
             // Add Membership
             $membership = new SpaceMembership;
             $membership->space_id = $space->id;

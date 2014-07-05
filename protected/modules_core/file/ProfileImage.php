@@ -160,11 +160,16 @@ class ProfileImage {
     /**
      * Sets a new profile image by given temp file
      *
-     * @param CUploadedFile $file
+     * @param mixed $file CUploadedFile or file path
      */
     public function setNew($file) {
+        
+        if ($file instanceof CUploadedFile) {
+            $file = $file->getTempName();
+        } 
+        
         $this->delete();
-        ImageConverter::TransformToJpeg($file->getTempName(), $this->getPath('_org'));
+        ImageConverter::TransformToJpeg($file, $this->getPath('_org'));
         ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width'=>400, 'mode'=>'max'));
         ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width'=>$this->width, 'height'=>$this->height));
     }
