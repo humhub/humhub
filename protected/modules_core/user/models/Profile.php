@@ -159,6 +159,15 @@ class Profile extends HActiveRecord
         return $definition;
     }
 
+    public function beforeSave()
+    {
+        foreach ($this->attributes as $key => $value)
+            if ($value == "")
+                $this->$key = NULL;
+
+        return parent::beforeSave();
+    }
+
     /**
      * Checks if the given column name already exists on the profile table.
      *
