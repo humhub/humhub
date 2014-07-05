@@ -20,28 +20,32 @@
  * @since 0.5
  * @author Luke
  */
-class UserSetting extends HActiveRecord {
+class UserSetting extends HActiveRecord
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return UserSetting the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'user_setting';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('user_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('module_id, name', 'length', 'max' => 100),
@@ -55,18 +59,21 @@ class UserSetting extends HActiveRecord {
      *
      * @return String
      */
-    public function getCacheId() {
+    public function getCacheId()
+    {
         return "UserSetting_" . $this->user_id . "_" . $this->name . "_" . $this->module_id;
     }
 
-    public function beforeSave() {
+    public function beforeSave()
+    {
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
 
         return parent::beforeSave();
     }
 
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
 
@@ -81,18 +88,29 @@ class UserSetting extends HActiveRecord {
      * @param type $value
      * @param type $moduleId 
      */
-    public static function Set($userId, $name, $value, $moduleId = "") {
-        $record = self::GetRecord($userId, $name, $moduleId);
+    public static function Set($userId, $name, $value, $moduleId = "core")
+    {
+        if ($userId == "") {
+            $userId = Yii::app()->user->id;
+        }
+        if ($moduleId == "") {
+            $moduleId = "core";
+        }
+
+        $record = self::GetRecord($userId, $name, $moduleId = "core");
         $record->value = $value;
         $record->name = $name;
         $record->module_id = $moduleId;
 
-        if ($moduleId != "")
+        if ($moduleId != "") {
             $record->module_id = $moduleId;
+        }
 
-        if ($value == "") {
-            if (!$record->isNewRecord)
-                $record->delete();
+        if ($value == "") { {
+                if (!$record->isNewRecord) {
+                    $record->delete();
+                }
+            }
         } else {
             $record->save();
         }
@@ -106,8 +124,18 @@ class UserSetting extends HActiveRecord {
      * @param type $moduleId
      * @return type
      */
-    public static function Get($userId, $name, $moduleId = "") {
+    public static function Get($userId, $name, $moduleId = "core", $defaultValue = "")
+    {
+        if ($userId == "") {
+            $userId = Yii::app()->user->id;
+        }
+
         $record = self::GetRecord($userId, $name, $moduleId);
+
+        if ($record->isNewRecord) {
+            return $defaultValue;
+        }
+        
         return $record->value;
     }
 
@@ -120,7 +148,12 @@ class UserSetting extends HActiveRecord {
      * @param type $moduleId
      * @return \HSetting
      */
-    private static function GetRecord($userId, $name, $moduleId = "") {
+    private static function GetRecord($userId, $name, $moduleId = "core")
+    {
+
+        if ($moduleId == "") {
+            $moduleId = "core";
+        }
 
         $cacheId = 'UserSetting_' . $userId . '_' . $name . '_' . $moduleId;
 
@@ -136,9 +169,7 @@ class UserSetting extends HActiveRecord {
         }
 
         $condition = "";
-        $params = array('name' => $name);
-        $params = array('user_id' => $userId);
-
+        $params = array('name' => $name, 'user_id' => $userId);
         if ($moduleId != "") {
             $params['module_id'] = $moduleId;
         } else {

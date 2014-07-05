@@ -20,28 +20,32 @@
  * @since 0.5
  * @author Luke
  */
-class SpaceSetting extends HActiveRecord {
+class SpaceSetting extends HActiveRecord
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return SpaceSetting the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'space_setting';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('space_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('module_id, name', 'length', 'max' => 100),
@@ -55,18 +59,21 @@ class SpaceSetting extends HActiveRecord {
      *
      * @return String
      */
-    public function getCacheId() {
+    public function getCacheId()
+    {
         return "SpaceSetting_" . $this->space_id . "_" . $this->name . "_" . $this->module_id;
     }
 
-    public function beforeSave() {
+    public function beforeSave()
+    {
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
 
         return parent::beforeSave();
     }
 
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
 
@@ -81,18 +88,23 @@ class SpaceSetting extends HActiveRecord {
      * @param type $value
      * @param type $moduleId 
      */
-    public static function Set($spaceId, $name, $value, $moduleId = "") {
+    public static function Set($spaceId, $name, $value, $moduleId = "core")
+    {
+
+        if ($moduleId == "") {
+            $moduleId = "core";
+        }
+
         $record = self::GetRecord($spaceId, $name, $moduleId);
         $record->value = $value;
         $record->name = $name;
         $record->module_id = $moduleId;
-
-        if ($moduleId != "")
-            $record->module_id = $moduleId;
+        $record->module_id = $moduleId;
 
         if ($value == "") {
-            if (!$record->isNewRecord)
+            if (!$record->isNewRecord) {
                 $record->delete();
+            }
         } else {
             $record->save();
         }
@@ -101,13 +113,21 @@ class SpaceSetting extends HActiveRecord {
     /**
      * Returns an Space Setting
      * 
-     * @param type $spaceId
-     * @param type $name
-     * @param type $moduleId
+     * @param Stringn $spaceId
+     * @param Strign $name
+     * @param Strign $moduleId
+     * @param String $defaultValue
+     * 
      * @return type
      */
-    public static function Get($spaceId, $name, $moduleId = "") {
+    public static function Get($spaceId, $name, $moduleId = "core", $defaultValue = "")
+    {
         $record = self::GetRecord($spaceId, $name, $moduleId);
+
+        if ($record->isNewRecord) {
+            return $defaultValue;
+        }
+
         return $record->value;
     }
 
@@ -120,8 +140,13 @@ class SpaceSetting extends HActiveRecord {
      * @param type $moduleId
      * @return \HSetting
      */
-    private static function GetRecord($spaceId, $name, $moduleId = "") {
+    private static function GetRecord($spaceId, $name, $moduleId = "core")
+    {
 
+        if ($moduleId == "") {
+            $moduleId = "core";
+        }
+        
         $cacheId = 'SpaceSetting_' . $spaceId . '_' . $name . '_' . $moduleId;
 
         // Check if stored in Runtime Cache
@@ -136,8 +161,7 @@ class SpaceSetting extends HActiveRecord {
         }
 
         $condition = "";
-        $params = array('name' => $name);
-        $params = array('space_id' => $spaceId);
+        $params = array('name' => $name, 'space_id' => $spaceId);
 
         if ($moduleId != "") {
             $params['module_id'] = $moduleId;

@@ -61,6 +61,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             'HGuidBehavior' => array(
                 'class' => 'application.behaviors.HGuidBehavior',
             ),
+            'SpaceSettingBehavior' => array(
+                'class' => 'application.modules_core.space.behaviors.SpaceSettingBehavior',
+            )
         );
     }
 
@@ -137,10 +140,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             // Active Invites
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'space_invite_id'),
             'follower' => array(self::MANY_MANY, 'User', 'space_follow(space_id, user_id)'),
-            
             // List of space applicants
             'applicants' => array(self::HAS_MANY, 'SpaceMembership', 'space_id', 'condition' => 'status=' . SpaceMembership::STATUS_APPLICANT),
-            
             // Approved Membership Only
             'memberships' => array(self::HAS_MANY, 'SpaceMembership', 'space_id',
                 'condition' => 'memberships.status=' . SpaceMembership::STATUS_MEMBER,
