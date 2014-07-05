@@ -5,7 +5,7 @@
 <meta name="viewport" content="initial-scale=1.0"/>
 <meta name="format-detection" content="telephone=no"/>
 
-<title>HumHub - Latest updates</title>
+<title>HumHub - Please continue your registration</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
 <style type="text/css">
 
@@ -576,65 +576,66 @@ td[class="image-124px"] img{
 <!--END TOP NAVIGATION ​LAYOUT-->
 
 
-<!-- START TITLE LAYOUT -->
+<!-- START HEIGHT SPACE 20PX LAYOUT-1 -->
+<tr>
+    <td valign="top" align="center"  class="fix-box">
+        <table width="600" height="20"  align="center" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-top-left-radius: 4px; border-top-right-radius: 4px;"  class="full-width" >
+            <tr>
+                <td valign="top" height="20">
+            </tr>
+        </table>
+    </td>
+</tr>
+<!-- END HEIGHT SPACE 20PX LAYOUT-1-->
+
+
+<!-- START LAYOUT-1/1 -->
 
 <tr>
-    <td align="center" valign="top"  class="fix-box">
+    <td align="center" valign="top"   class="fix-box">
 
-        <!-- start container width 600px -->
-        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="#ffffff" style="background-color: #ffffff; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+        <!-- start  container width 600px -->
+        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container"  style="background-color: #ffffff; ">
+
+
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
-                    <table width="560"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" bgcolor="#ffffff" style="background-color:#ffffff;">
+                    <table width="540"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" bgcolor="#ffffff" style="background-color:#ffffff;">
 
 
-                        <!--start space height -->
+                        <!-- start text content -->
                         <tr>
-                            <td height="20" ></td>
-                        </tr>
-                        <!--end space height -->
-
-                        <!-- start image content -->
-                        <tr>
-                            <td valign="top" width="100%">
-
-                                <!-- start content left -->
-                                <table width="270" border="0" cellspacing="0" cellpadding="0" align="left" class="full-width"  >
-
-
-                                    <!-- start text content -->
+                            <td valign="top">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
                                     <tr>
-                                        <td valign="top">
-                                            <table border="0" cellspacing="0" cellpadding="0" align="left" >
+                                        <td valign="top" width="auto" align="center">
+                                            <!-- start button -->
+                                            <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td  style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left;">
-                           <span style="color: #555555; font-weight: 300;">
-                             <a href="#" style="text-decoration: none; color: #555555; font-weight: 300;"><strong>Latest</strong> updates</a>
-                           </span>
+                                                    <td width="auto"  align="center" valign="middle" height="28" style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
+
+                             <span style="color: #555555; font-weight: 300;">
+                               <?php echo Yii::t('UserModule.mails', 'Welcome to <strong>HumHub</strong>'); ?><br/>
+                             </span>
                                                     </td>
                                                 </tr>
-
-                                                <!--start space height -->
-                                                <tr>
-                                                    <td height="20" ></td>
-                                                </tr>
-                                                <!--end space height -->
                                             </table>
+                                            <!-- end button -->
                                         </td>
                                     </tr>
-                                    <!-- end text content -->
+
+
+
                                 </table>
-                                <!-- end content left -->
-
-
                             </td>
                         </tr>
-                        <!-- end image content -->
+                        <!-- end text content -->
+
 
                     </table>
-                    <!-- end container width 560px -->
+                    <!-- end  container width 560px -->
                 </td>
             </tr>
         </table>
@@ -642,18 +643,80 @@ td[class="image-124px"] img{
     </td>
 </tr>
 
-<!-- END  TITLE LAYOUT  -->
+<!-- END LAYOUT-1/1 -->
 
 
-<!-- START NOTIFICATION/ACTIVITY CONTENT-->
-<?php
-if ($notificationContent != '') {
-    echo $notificationContent;
-} else if ($activityContent != '') {
-    echo $activityContent;
-}
-?>
-<!-- END NOTIFICATION/ACTIVITY CONTENT-->
+<!-- START LAYOUT-1/2 -->
+
+<tr>
+    <td align="center" valign="top"   class="fix-box">
+
+        <!-- start  container width 600px -->
+        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container"  style="background-color: #ffffff; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
+
+
+            <tr>
+                <td valign="top">
+
+                    <!-- start container width 560px -->
+                    <table width="540"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" bgcolor="#ffffff" style="background-color:#ffffff;">
+
+
+                        <!-- start text content -->
+                        <tr>
+                            <td valign="top">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" >
+
+
+                                    <!-- start text content -->
+                                    <tr>
+                                        <td valign="top">
+                                            <table border="0" cellspacing="0" cellpadding="0" align="left" >
+
+
+                                                <!--start space height -->
+                                                <tr>
+                                                    <td height="15" ></td>
+                                                </tr>
+                                                <!--end space height -->
+
+                                                <tr>
+                                                    <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
+
+                                                        <?php echo $message; ?>
+
+                                                    </td>
+                                                </tr>
+
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- end text content -->
+
+
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- end text content -->
+
+                        <!--start space height -->
+                        <tr>
+                            <td height="15" ></td>
+                        </tr>
+                        <!--end space height -->
+
+
+                    </table>
+                    <!-- end  container width 560px -->
+                </td>
+            </tr>
+        </table>
+        <!-- end  container width 600px -->
+    </td>
+</tr>
+
+<!-- END LAYOUT-1/2 -->
 
 
 <!--START FOOTER LAYOUT-->
@@ -686,7 +749,7 @@ if ($notificationContent != '') {
                                     <tr>
                                         <td valign="middle">
 
-                                            <table align="left" border="0" cellspacing="0" cellpadding="0" class="container2" >
+                                            <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2" >
 
                                                 <tr>
                                                     <td  align="center" valign="top" style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
@@ -704,30 +767,6 @@ if ($notificationContent != '') {
                                                 <!-- end space -->
 
                                             </table>
-
-                                            <!--start content nav -->
-                                            <table border="0"  align="right" cellpadding="0" cellspacing="0"  class="container2" >
-
-
-                                                <!--start call us -->
-                                                <tr>
-                                                    <td valign="middle" align="center">
-
-                                                        <table align="right" border="0"  cellpadding="0" cellspacing="0" class="clear-align" style="height:100%;">
-                                                            <tr>
-                                                                <td style="font-size: 11px;  line-height: 18px; color: #7191a8;  font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
-
-                                                                    <span style="text-decoration: none; color: #7191a8;"><a href="<?php echo Yii::app()->createAbsoluteUrl('//user/account/emailing'); ?>" style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('base', 'Manage your email settings') ?></a></span>
-
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                                <!--end call us -->
-
-                                            </table>
-                                            <!--end content nav -->
 
                                         </td>
                                     </tr>
