@@ -273,6 +273,16 @@ class AuthController extends Controller
                 $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
                 $form['UserPassword']->model->save();
 
+                // Autologin user
+                if (!$needApproval) {
+                    $user = $form['User']->model;
+                    $newIdentity = new UserIdentity($user->username, '');
+                    $newIdentity->fakeAuthenticate();
+                    Yii::app()->user->login($newIdentity);
+                    $this->redirect(array('//dashboard/dashboard'));
+                    return;
+                }
+
                 $this->render('createAccount_success', array(
                     'form' => $form,
                     'needApproval' => $needApproval,
