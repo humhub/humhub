@@ -21,9 +21,9 @@
         <p class="help-block">Fields with <span class="required">*</span> are required.</p><br>
 
         <?php echo $form->errorSummary($model); ?>
-
-        <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'span8', 'maxlength' => 45)); ?>
-
+        <div class="form-group">
+            <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 45)); ?>
+        </div>
         <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Delete account'), array('class' => 'btn btn-danger')); ?>
 
 

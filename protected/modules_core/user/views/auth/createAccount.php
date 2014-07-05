@@ -11,12 +11,31 @@
 ?>
 
 <div class="container" style="text-align: center;">
+    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+    <br/>
     <div class="row">
-        <div class="panel panel-default" style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.base', 'Registration'); ?></div>
+        <div id="create-account-form" class="panel panel-default animated bounceIn" style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
+            <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Account</strong> registration'); ?></div>
             <div class="panel-body">
                 <?php echo $form; ?>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        // set cursor to login field
+        $('#User_username').focus();
+    })
+
+    // Shake panel after wrong validation
+    <?php foreach($form->models as $model) : ?>
+    <?php if ($model->hasErrors()) : ?>
+        $('#create-account-form').removeClass('bounceIn');
+        $('#create-account-form').addClass('shake');
+        $('#app-title').removeClass('fadeIn');
+    <?php endif; ?>
+    <?php endforeach; ?>
+
+</script>

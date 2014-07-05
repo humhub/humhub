@@ -1,7 +1,10 @@
 <div class="container" style="text-align: center;">
+    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+    <br>
+
     <div class="row">
-        <div class="panel panel-default" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.base', 'Password recovery'); ?></div>
+        <div id="password-recovery-form" class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+            <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Password</strong> recovery'); ?></div>
             <div class="panel-body">
 
 
@@ -35,10 +38,20 @@
 
             </div>
         </div>
-        <script type="text/javascript">
-            jQuery('#email_txt').focus();
-        </script>
-
-
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        // set cursor to email field
+        $('#email_txt').focus();
+    })
+
+    // Shake panel after wrong validation
+    <?php if ($form->errorSummary($model) != null) { ?>
+    $('#password-recovery-form').removeClass('bounceIn');
+    $('#password-recovery-form').addClass('shake');
+    $('#app-title').removeClass('fadeIn');
+    <?php } ?>
+</script>

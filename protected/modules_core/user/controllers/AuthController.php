@@ -27,6 +27,8 @@
 class AuthController extends Controller
 {
 
+    public $subLayout = "_layout";
+
     public function actions()
     {
         return array(
@@ -54,9 +56,6 @@ class AuthController extends Controller
 
 
         $ntlmAutoLogin = false;
-
-        // Disable Sublayout
-        $this->subLayout = "";
 
         $model = new AccountLoginForm;
 
@@ -136,9 +135,6 @@ class AuthController extends Controller
     public function actionRecoverPassword()
     {
 
-        // Disable Sublayout
-        $this->subLayout = "";
-
         $model = new AccountRecoverPasswordForm;
 
         // Uncomment the following line if AJAX validation is needed
@@ -177,9 +173,6 @@ class AuthController extends Controller
     {
 
         $_POST = Yii::app()->input->stripClean($_POST);
-
-        // Disable Sublayout
-        $this->subLayout = "";
 
         $needApproval = HSetting::Get('needApproval', 'authentication_internal');
 

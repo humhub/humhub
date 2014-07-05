@@ -12,11 +12,11 @@
 ?>
 
 
-<div class="container outsite" style="text-align: center;">
-    <h1 class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+<div class="container" style="text-align: center;">
+    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
     <br>
 
-    <div class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+    <div class="panel panel-default animated bounceIn" id="login-form" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Please</strong> sign in'); ?></div>
 
@@ -27,6 +27,8 @@
                 'enableAjaxValidation' => false,
             ));
             ?>
+
+            <p><?php echo Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
 
             <div class="form-group">
                 <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email'))); ?>
@@ -45,27 +47,35 @@
             </div>
 
             <hr>
-            <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Sign in'), array('class' => 'btn btn-large btn-primary')); ?>
-            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Sign in'), array('class' => 'btn btn-large btn-primary')); ?>
+                </div>
+                <div class="col-md-8 text-right">
+                    <small>
+                        <?php echo Yii::t('UserModule.auth', 'Forgot your password?'); ?>
+                        <a href="<?php echo $this->createUrl('//user/auth/recoverPassword'); ?>"><br><?php echo Yii::t('UserModule.auth', 'Create a new one.') ?></a>
+                    </small>
+                </div>
+            </div>
 
             <?php $this->endWidget(); ?>
 
         </div>
 
-
     </div>
-    <a href="<?php echo $this->createUrl('//user/auth/recoverPassword'); ?>"><?php echo Yii::t('UserModule.auth', 'Forgot your password?') ?></a>
-    <br><br><br>
+
+    <br>
 
     <?php if ($canRegister) : ?>
-        <div class="panel panel-default animated bounceInLeft"
+        <div id="register-form" class="panel panel-default animated bounceInLeft"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
             <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Sign</strong> up') ?></div>
 
             <div class="panel-body">
 
-                <p><?php echo Yii::t('UserModule.base', 'Please enter your e-mail to join the network.'); ?></p>
+                <p><?php echo Yii::t('UserModule.base', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'account-register-form',
@@ -74,7 +84,7 @@
                 ?>
 
                 <div class="form-group">
-                    <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'email'))); ?>
+                    <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'id' => 'register-email', 'placeholder' => Yii::t('UserModule.auth', 'email'))); ?>
                     <?php echo $form->error($registerModel, 'email'); ?>
                 </div>
                 <hr>
@@ -83,14 +93,33 @@
                 <?php $this->endWidget(); ?>
             </div>
         </div>
+
     <?php endif; ?>
+
 </div>
 
 <script type="text/javascript">
     $(function () {
-        // set cursor ot login field
+        // set cursor to login field
         $('#login_username').focus();
     })
+
+    // Shake panel after wrong validation
+    <?php if ($form->errorSummary($model) != null) { ?>
+    $('#login-form').removeClass('bounceIn');
+    $('#login-form').addClass('shake');
+    $('#register-form').removeClass('bounceInLeft');
+    $('#app-title').removeClass('fadeIn');
+    <?php } ?>
+
+    // Shake panel after wrong validation
+    <?php if ($form->errorSummary($registerModel) != null) { ?>
+    $('#register-form').removeClass('bounceInLeft');
+    $('#register-form').addClass('shake');
+    $('#login-form').removeClass('bounceIn');
+    $('#app-title').removeClass('fadeIn');
+    <?php } ?>
+
 </script>
 
 

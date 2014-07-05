@@ -12,11 +12,14 @@
  */
 ?>
 <div class="container" style="text-align: center;">
+    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+    <br/>
     <div class="row">
         <div class="panel panel-default" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.base', 'Registration successful!'); ?></div>
+            <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Registration</strong> successful!'); ?></div>
             <div class="panel-body">
                 <p><?php echo Yii::t('UserModule.base', 'Please check your email and follow the instructions!'); ?></p>
+                <br/>
                 <a href="<?php echo $this->createUrl('//') ?>" class="btn btn-primary"><?php echo Yii::t('UserModule.auth', 'back to home') ?></a>
             </div>
         </div>

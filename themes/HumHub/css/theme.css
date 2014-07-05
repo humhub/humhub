@@ -511,11 +511,8 @@ h4 {
 .input.btn {
   outline: none;
 }
-.btn-small {
-  padding: 2px 10px;
-}
-.btn-large {
-  padding: 11px 19px;
+.btn-lg {
+  padding: 16px 28px;
 }
 .btn-sm {
   padding: 4px 8px;
@@ -1112,3 +1109,23 @@ img.bounceIn {
     box-shadow: none;
   }
 }*/
+.outside .text {
+  color: #ffffff;
+  font-size: 12px;
+}
+.outside .text a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+.outside h1 {
+  color: #ffffff !important;
+}
+.outside .panel {
+  box-shadow: 0px 0px 15px #627d92;
+  -moz-box-shadow: 0px 0px 15px #627d92;
+  -webkit-box-shadow: 0px 0px 15px #627d92;
+}
+.outside .panel .panel-heading,
+.outside .panel .panel-body {
+  padding: 15px;
+}
