@@ -55,14 +55,14 @@ class SearchController extends Controller
             $i++;
             $criteria->condition .= " AND (t.email LIKE :match{$i} OR "
                     . "t.username LIKE :match{$i} OR "
-                    . "profile.firstname LIKE :match{$i} OR "
-                    . "profile.lastname LIKE :match{$i} OR "
-                    . "profile.title LIKE :match{$i})";
+                    . "userProfile.firstname LIKE :match{$i} OR "
+                    . "userProfile.lastname LIKE :match{$i} OR "
+                    . "userProfile.title LIKE :match{$i})";
 
             $criteria->params[':match' . $i] = "%" . $part . "%";
         }
 
-        $users = User::model()->with('profile')->findAll($criteria);
+        $users = User::model()->with('userProfile')->findAll($criteria);
 
         foreach ($users as $user) {
             if ($user != null) {

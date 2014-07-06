@@ -180,7 +180,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
             'httpSessions' => array(self::HAS_MANY, 'UserHttpSession', 'user_id'),
             'currentPassword' => array(self::HAS_ONE, 'UserPassword', 'user_id', 'order' => 'id DESC'),
-            'profile' => array(self::HAS_ONE, 'Profile', 'user_id')
+            'userProfile' => array(self::HAS_ONE, 'Profile', 'user_id')
         );
     }
 
