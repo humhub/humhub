@@ -5,8 +5,6 @@ Administration Guide/Notes
 ##Installation
 - [Requirements](requirements.md)
 - [Installation](installation.md)
-
-##Updating
 - [Updating](updating.md)
 
 ##Advanced Topics

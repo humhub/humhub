@@ -38,6 +38,7 @@ return CMap::mergeArray($pre_config, array(
                 'application.components.*',
                 'application.vendors.yii.cli.commands.*',
                 'application.libs.*',
+                'application.commands.shell.*',
                 'application.modules_core.user.components.*',
                 'ext.EZendAutoloader.EZendAutoloader',
                 'ext.migrate-command.*',
@@ -52,6 +53,7 @@ return CMap::mergeArray($pre_config, array(
                 'cron' => 'application.commands.shell.ZCron.ZCronRunner',
                 'cache' => 'application.commands.shell.HCacheCommand',
                 'module' => 'application.modules_core.admin.console.ModuleTool',
+                'update' => 'application.commands.shell.HUpdateCommand',
                 'migrate' => array(
                     'class' => 'application.commands.shell.ZMigrateCommand',
                     'migrationPath' => 'application.migrations',

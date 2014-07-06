@@ -25,12 +25,14 @@
  * @package humhub.components
  * @since 0.5
  */
-class HConsoleCommand extends CConsoleCommand {
+class HConsoleCommand extends CConsoleCommand
+{
 
     /**
      * Inits the command and prepares the base environment.
      */
-    public function init() {
+    public function init()
+    {
 
         Yii::app()->interceptor->intercept($this);
 
@@ -54,7 +56,8 @@ class HConsoleCommand extends CConsoleCommand {
      *
      * @param String $title is the title of the command
      */
-    protected function printHeader($title) {
+    protected function printHeader($title)
+    {
 
         print "
 
@@ -65,6 +68,11 @@ class HConsoleCommand extends CConsoleCommand {
 $title
 --------------------------------------------------------------------------------\n
 \n";
+    }
+
+    protected function printLine()
+    {
+        print "\n--------------------------------------------------------------------------------\n";
     }
 
 }

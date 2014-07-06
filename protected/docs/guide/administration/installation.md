@@ -1,15 +1,17 @@
 Installation
 ============
 
-1. Create a mysql database e.g. humhub
-2. Extract install package into a web/htdocs folder 
+1. Grab the source and put them somewhere into htdocs, either
+  - `git clone https://github.com/humhub/humhub.git` (__recommended__, for this you need git, obviously)
+  - or download <https://github.com/humhub/humhub/archive/master.zip>
+2. Create an empty mysql database
 3. Make following directories/files writable by webserver
     - /assets
     - /protected/runtime
+    - /protected/modules
     - /protected/config/_settings.php
     - /uploads
-4. Open that folder (e.g. http://localhost/humhub)
-5. Installer will start
+4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 
 Enable Url Rewriting
@@ -46,7 +48,7 @@ Security/Production Mode
 ------------------------
 
 1. Make sure following directories are not accessible throu webserver.
-(These folders are protected by default per ".htaccess")
+(These folders are protected by default with ".htaccess")
 
         - protected
         - uploads/file
