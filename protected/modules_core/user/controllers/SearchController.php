@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * HumHub
+ * Copyright © 2014 The HumHub Project
+ *
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
  * Search Controller provides action for searching users.
  *
  * @author Luke
@@ -13,120 +31,52 @@ class SearchController extends Controller
     /**
      * JSON Search for Users
      *
-     * Returns an json array of results.
-     *
-     * Fields:
+     * Returns an array of users with fields:
      *  - guid
-     *  - firstname
-     *  - lastname
-     *  - city
+     *  - displayName
      *  - image
      *  - profile link
-     *  - isMember
-     *
-     * @todo Add limit for workspaces
      */
     public function actionJson()
     {
 
+        $maxResults = 10;
         $results = array();
-        $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
-        $spaceId = (int)Yii::app()->request->getParam('space_id', 0);
+        $keyword = Yii::app()->request->getParam('keyword');
+        $keyword = Yii::app()->input->stripClean($keyword);
 
-        // save current displayNameFormat for users
-        $displayFormat = HSetting::Get('displayNameFormat');
+        // Build Search Condition
+        $criteria = new CDbCriteria();
+        $criteria->limit = $maxResults;
+        $criteria->condition = 1;
+        $criteria->params = array();
+        $i = 0;
+        foreach (explode(" ", $keyword) as $part) {
+            $i++;
+            $criteria->condition .= " AND (t.email LIKE :match{$i} OR "
+                    . "t.username LIKE :match{$i} OR "
+                    . "profile.firstname LIKE :match{$i} OR "
+                    . "profile.lastname LIKE :match{$i} OR "
+                    . "profile.title LIKE :match{$i})";
 
-        // get members of the current space
-        $spaceMembers = SpaceMembership::model()->findAll('space_id=:space_id', array(':space_id' => $spaceId));
+            $criteria->params[':match' . $i] = "%" . $part . "%";
+        }
 
+        $users = User::model()->with('profile')->findAll($criteria);
 
-        if ($displayFormat == "{username}") {
-
-            // build like search string
-            $match = addcslashes($keyword, '%_');
-
-            // build sql string
-            $q = new CDbCriteria();
-            $q->addSearchCondition('username', $match);
-
-            // find users by committed keyword
-            $users = User::model()->findAll( $q );
-
-            foreach ($users as $user) {
-
-                if ($user != null) {
-
-                    // push array with new user entry
-                    $userInfo = array();
-                    $userInfo['guid'] = $user->guid;
-                    $userInfo['displayName'] = $user->displayName;
-                    $userInfo['image'] = $user->getProfileImage()->getUrl();
-                    $userInfo['link'] = $user->getUrl();
-                    $userInfo['isMember'] = $this->checkMembership($spaceMembers, $user->id);
-                    $results[] = $userInfo;
-
-                }
+        foreach ($users as $user) {
+            if ($user != null) {
+                $userInfo = array();
+                $userInfo['guid'] = $user->guid;
+                $userInfo['displayName'] = $user->displayName;
+                $userInfo['image'] = $user->getProfileImage()->getUrl();
+                $userInfo['link'] = $user->getUrl();
+                $results[] = $userInfo;
             }
-
-        } else {
-
-            // get matching database rows
-            $profiles = Yii::app()->db->createCommand("SELECT user_id FROM profile WHERE firstname like '%" . $keyword . "%' OR lastname like '%" . $keyword . "%' LIMIT 10")->queryAll();
-
-            // save rows count
-            $hitCount = count($profiles);
-
-            // close function, if there are no results
-            if ($hitCount == 0) {
-                print CJSON::encode($results);
-                Yii::app()->end();
-            }
-
-            foreach ($profiles as $profile) {
-
-                // get user id
-                $userId = $profile['user_id'];
-
-                // find user in database
-                $user = User::model()->findByPk($userId);
-
-                if ($user != null) {
-
-                    // push array with new user entry
-                    $userInfo = array();
-                    $userInfo['guid'] = $user->guid;
-                    $userInfo['displayName'] = $user->displayName;
-                    $userInfo['image'] = $user->getProfileImage()->getUrl();
-                    $userInfo['link'] = $user->getUrl();
-                    $userInfo['isMember'] = $this->checkMembership($spaceMembers, $userId);
-                    $results[] = $userInfo;
-
-                }
-            }
-
         }
 
         print CJSON::encode($results);
         Yii::app()->end();
-
-    }
-
-    /**
-     * check Membership of users
-     *
-     */
-    private function checkMembership($members, $userId)
-    {
-
-        // check if current user is member of this space
-        foreach ($members as $member) {
-            if ($userId == $member->user_id) {
-                return true;
-                break;
-            }
-        }
-
-        return false;
     }
 
 }

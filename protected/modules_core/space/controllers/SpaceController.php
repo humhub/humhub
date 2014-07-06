@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * HumHub
+ * Copyright © 2014 The HumHub Project
+ *
+ * The texts of the GNU Affero General Public License with an additional
+ * permission and of our proprietary license can be found at and
+ * in the LICENSE file you have received along with this program.
+ *
+ * According to our dual licensing model, this program can be used either
+ * under the terms of the GNU Affero General Public License, version 3,
+ * or under a proprietary license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ */
+
+/**
  * SpaceController is the main controller for spaces.
  *
  * It show the space itself and handles all related tasks like following or
@@ -10,14 +28,16 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class SpaceController extends Controller {
+class SpaceController extends Controller
+{
 
     public $subLayout = "_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -28,7 +48,8 @@ class SpaceController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -44,7 +65,8 @@ class SpaceController extends Controller {
      *
      * @return type
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'SpaceControllerBehavior' => array(
                 'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
@@ -55,7 +77,8 @@ class SpaceController extends Controller {
     /**
      * Generic Start Action for Profile
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->pageTitle = HSetting::Get('name') . " - " . $this->getSpace()->name;
 
 
@@ -74,7 +97,8 @@ class SpaceController extends Controller {
      * List Members of the Space
      *
      */
-    public function actionMembers() {
+    public function actionMembers()
+    {
         $this->getSpace();
         $this->render('members');
     }
@@ -82,7 +106,8 @@ class SpaceController extends Controller {
     /**
      * Follows a Space
      */
-    public function actionFollow() {
+    public function actionFollow()
+    {
 
         $space = $this->getSpace();
         SpaceFollow::follow($space->id, Yii::app()->user->id);
@@ -93,7 +118,8 @@ class SpaceController extends Controller {
     /**
      * Unfollows a Space
      */
-    public function actionUnfollow() {
+    public function actionUnfollow()
+    {
 
         $space = $this->getSpace();
         SpaceFollow::unfollow($space->id, Yii::app()->user->id);
@@ -105,7 +131,8 @@ class SpaceController extends Controller {
      * Provides a searchable user list of all workspace members in json.
      *
      */
-    public function actionSearchMemberJson() {
+    public function actionSearchMemberJson()
+    {
 
         $space = $this->getSpace();
 
@@ -127,12 +154,18 @@ class SpaceController extends Controller {
         $i = 0;
         foreach ($parts as $part) {
             $i++;
-            $condition .= " AND (email LIKE :match{$i} OR username LIKE :match{$i})";
+            $condition .= " AND (u.email LIKE :match{$i} OR "
+                    . "u.username LIKE :match{$i} OR "
+                    . "p.firstname LIKE :match{$i} OR "
+                    . "p.lastname LIKE :match{$i} OR "
+                    . "p.title LIKE :match{$i})";
+
             $params[':match' . $i] = "%" . $part . "%";
         }
 
-        $sql = "SELECT DISTINCT user.* FROM space_membership
-                LEFT JOIN user ON user.id=space_membership.user_id
+        $sql = "SELECT DISTINCT u.* FROM space_membership
+                LEFT JOIN user u ON u.id=space_membership.user_id
+                LEFT JOIN profile p ON p.user_id=u.id
                 WHERE " . $condition . " LIMIT 0," . $maxResults;
 
         $users = User::model()->findAllBySql($sql, $params);
@@ -153,7 +186,8 @@ class SpaceController extends Controller {
     /**
      * Requests Membership for this Space
      */
-    public function actionRequestMembership() {
+    public function actionRequestMembership()
+    {
 
         $space = $this->getSpace();
 
@@ -174,7 +208,8 @@ class SpaceController extends Controller {
      * (If a message is required.)
      *
      */
-    public function actionRequestMembershipForm() {
+    public function actionRequestMembershipForm()
+    {
 
         $space = $this->getSpace();
 
@@ -217,7 +252,8 @@ class SpaceController extends Controller {
     /**
      * Revokes Membership for this workspace
      */
-    public function actionRevokeMembership() {
+    public function actionRevokeMembership()
+    {
 
         $space = $this->getSpace();
 
@@ -232,7 +268,8 @@ class SpaceController extends Controller {
     /**
      * Invite New Members to this workspace
      */
-    public function actionInvite() {
+    public function actionInvite()
+    {
 
         $space = $this->getSpace();
 
@@ -278,7 +315,8 @@ class SpaceController extends Controller {
      * When a user clicks on the Accept Invite Link, this action is called.
      * After this the user should be member of this workspace.
      */
-    public function actionInviteAccept() {
+    public function actionInviteAccept()
+    {
 
         // Get Current Space
         $space = $this->getSpace();
@@ -296,7 +334,6 @@ class SpaceController extends Controller {
 
         $this->redirect($space->getUrl());
     }
-
 
 }
 
