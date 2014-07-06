@@ -129,10 +129,11 @@
                     <a href="#" id="search-menu" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-search"></i></a>
                     <ul class="dropdown-menu pull-right" id="search-menu-dropdown">
-
-                        <!-- load search menu widget -->
-                        <?php $this->widget('application.widgets.SearchMenuWidget', array()); ?>
-
+                        <?php $this->widget('application.widgets.TopMenuRightStackWidget', array(
+                            'widgets' => array(
+                                array('application.widgets.SearchMenuWidget', array())
+                            )
+                        )); ?>
                     </ul>
                 </li>
             </ul>
