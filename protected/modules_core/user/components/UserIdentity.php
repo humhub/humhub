@@ -107,6 +107,10 @@ class UserIdentity extends CUserIdentity {
      * @param User $user
      */
     private function onSuccessfulAuthenticate($user) {
+        
+        $user->last_login = new CDbExpression('NOW()');
+        $user->save();
+        
         $this->_id = $user->id;
         $this->setState('title', $user->title);
     }
