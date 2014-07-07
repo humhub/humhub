@@ -146,6 +146,7 @@ class AccountController extends Controller
 
         // Create Form
         $form = new HForm($definition, $profile);
+        $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate()) {
             $this->forcePostRequest();
             $profile->save();
