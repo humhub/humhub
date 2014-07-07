@@ -295,9 +295,10 @@ class ConfigController extends Controller
         // Authentication
         HSetting::Set('authInternal', '1', 'authentication');
         HSetting::Set('authLdap', '0', 'authentication');
-        HSetting::Set('needApproval', '1', 'authentication_internal');
+        HSetting::Set('needApproval', '0', 'authentication_internal');
         HSetting::Set('anonymousRegistration', '1', 'authentication_internal');
-
+        HSetting::Set('internalUsersCanInvite', '1', 'authentication_internal');
+        
         // Mailing
         HSetting::Set('transportType', 'php', 'mailing');
         HSetting::Set('systemEmailAddress', 'social@example.com', 'mailing');

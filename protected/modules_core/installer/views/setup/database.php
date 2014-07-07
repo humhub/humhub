@@ -62,7 +62,7 @@
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('InstallerModule.base', 'Check and save'), array('class' => 'btn btn-success')); ?>
+        <?php echo CHtml::submitButton(Yii::t('InstallerModule.base', 'Next'), array('class' => 'btn btn-primary')); ?>
 
         <?php $this->endWidget(); ?>
     </div>
