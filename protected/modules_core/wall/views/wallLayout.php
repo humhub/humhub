@@ -49,7 +49,7 @@
 
             </small>
         </h4>
-        <h5><?php echo $object->content->user->title; ?></h5>
+        <h5><?php echo $object->content->user->profile->title; ?></h5>
 
     </div>
     <hr/>
