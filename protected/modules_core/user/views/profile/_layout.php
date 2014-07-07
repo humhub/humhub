@@ -3,11 +3,7 @@
     <div class="row">
 
         <div class="col-md-9">
-            <?php
-            // import header
-            $this->renderPartial('application.modules_core.user.views.profile.header');
-            ?>
-
+            <?php $this->widget('application.modules_core.user.widgets.ProfileHeaderWidget');?>
             <div class="row">
                 <div class="col-md-3">
                     <?php $this->widget('application.modules_core.user.widgets.ProfileMenuWidget', array()); ?>

@@ -25,7 +25,7 @@
                 <?php foreach ($users as $user) : ?>
                     <a id="<?php echo $user->guid; ?>" href="<?php echo $user->getUrl(); ?>">
                         <img data-toggle="tooltip" data-placement="top" title=""
-                             data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->title; ?>"
+                             data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->profile->title; ?>"
                              src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                              height="40"
                              width="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"></a>

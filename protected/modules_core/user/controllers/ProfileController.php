@@ -54,11 +54,6 @@ class ProfileController extends Controller {
      *
      */
     public function actionIndex() {
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.ui.widget.js');
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.iframe-transport.js');
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.fileupload.js');
-
         $this->render('index');
     }
 
