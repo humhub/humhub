@@ -112,7 +112,7 @@ class UserIdentity extends CUserIdentity {
         $user->save();
         
         $this->_id = $user->id;
-        $this->setState('title', $user->title);
+        $this->setState('title', $user->profile->title);
     }
 
 }
