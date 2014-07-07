@@ -39,7 +39,7 @@
                 <div class="img-profile-data">
                     <h1><?php echo $this->getUser()->displayName; ?></h1>
 
-                    <h2><?php echo $this->getUser()->title; ?></h2>
+                    <h2><?php echo $this->getUser()->profile->title; ?></h2>
                 </div>
 
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">

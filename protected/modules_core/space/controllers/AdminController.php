@@ -110,7 +110,7 @@ class AdminController extends Controller
         $this->adminOnly();
 
         $membersPerPage = 10;
-        $workspace = $this->getSpace();
+        $space = $this->getSpace();
 
         // User Role Management
         if (isset($_POST['users'])) {
@@ -128,10 +128,10 @@ class AdminController extends Controller
                     if ($user != null) {
 
                         // No changes on the Owner
-                        if ($workspace->isOwner($user->id))
+                        if ($space->isOwner($user->id))
                             continue;
 
-                        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $workspace->id));
+                        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $space->id));
                         if ($membership != null) {
                             $membership->invite_role = (isset($userSettings['inviteRole']) && $userSettings['inviteRole'] == 1) ? 1 : 0;
                             $membership->admin_role = (isset($userSettings['adminRole']) && $userSettings['adminRole'] == 1) ? 1 : 0;
@@ -141,16 +141,16 @@ class AdminController extends Controller
                     }
 
                     // Change owner if changed
-                    if ($workspace->isOwner()) {
-                        $owner = $workspace->getOwner();
+                    if ($space->isOwner()) {
+                        $owner = $space->getOwner();
 
                         $newOwnerId = Yii::app()->request->getParam('ownerId');
 
                         if ($newOwnerId != $owner->id) {
-                            if ($workspace->isMember($newOwnerId)) {
-                                $workspace->setOwner($newOwnerId);
+                            if ($space->isMember($newOwnerId)) {
+                                $space->setOwner($newOwnerId);
 
-                                // Redirect to current workspace
+                                // Redirect to current space
                                 $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
                             }
                         }
@@ -177,18 +177,18 @@ class AdminController extends Controller
         }
 
         //ToDo: Better Counting
-        $allMemberCount = count($workspace->memberships($criteria));
+        $allMemberCount = count($space->memberships($criteria));
 
         $pages = new CPagination($allMemberCount);
         $pages->setPageSize($membersPerPage);
         $pages->applyLimit($criteria);
 
-        $members = $workspace->memberships($criteria);
+        $members = $space->memberships($criteria);
 
-        $invited_members = SpaceMembership::model()->findAllByAttributes(array('space_id' => $workspace->id, 'status' => SpaceMembership::STATUS_INVITED));
+        $invited_members = SpaceMembership::model()->findAllByAttributes(array('space_id' => $space->id, 'status' => SpaceMembership::STATUS_INVITED));
 
         $this->render('members', array(
-            'workspace' => $workspace,
+            'space' => $space,
             'members' => $members, // must be the same as $item_count
             'invited_members' => $invited_members,
             'item_count' => $allMemberCount,

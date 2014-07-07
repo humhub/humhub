@@ -18,7 +18,7 @@
                                      src="<?php echo $user->getProfileImage()->getUrl(); ?>" height="24" width="24"
                                      alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;"
                                      data-toggle="tooltip" data-placement="top" title=""
-                                     data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->title; ?>"/>
+                                     data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->profile->title; ?>"/>
                             </a>
 
 
@@ -65,7 +65,7 @@
                     <img src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;" data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->title; ?>">
+                         data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->profile->title; ?>">
                 </a>
                 <?php if ($space->isAdmin($user->id)) { ?>
                     <!-- output, if user is admin of this space -->
