@@ -249,8 +249,19 @@ class SettingController extends Controller
 
             // Delete also published assets 
             foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(Yii::app()->getAssetManager()->getBasePath(), FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-                $path->isDir() ? rmdir($path->getPathname()) : unlink($path->getPathname());
+
+                // Do not remove .gitignore in assets folder
+                if ($path->getPathname() == Yii::app()->getAssetManager()->getBasePath().DIRECTORY_SEPARATOR.'.gitignore') {
+                    continue;
+                }
+                
+                if ($path->isDir()) {
+                   rmdir($path->getPathname());    
+                } else {
+                    unlink($path->getPathname());
+                }
             }
+
 
             $_POST['CacheSettingsForm'] = Yii::app()->input->stripClean($_POST['CacheSettingsForm']);
             $form->attributes = $_POST['CacheSettingsForm'];
