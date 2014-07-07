@@ -27,7 +27,6 @@
 class AccountEmailingForm extends CFormModel
 {
 
-    public $receive_email_messaging;
     public $receive_email_activities;
     public $receive_email_notifications;
 
@@ -37,7 +36,7 @@ class AccountEmailingForm extends CFormModel
     public function rules()
     {
         return array(
-            array('receive_email_messaging, receive_email_activities, receive_email_notifications', 'in',
+            array('receive_email_activities, receive_email_notifications', 'in',
                 'range' => array(
                     User::RECEIVE_EMAIL_NEVER,
                     User::RECEIVE_EMAIL_DAILY_SUMMARY,
@@ -57,7 +56,6 @@ class AccountEmailingForm extends CFormModel
     {
         return array(
             'receive_email_notifications' => Yii::t('UserModule.base', 'Send notifications?'),
-            'receive_email_messaging' => Yii::t('UserModule.base', 'Send messages?'),
             'receive_email_activities' => Yii::t('UserModule.base', 'Send activities?'),
         );
     }

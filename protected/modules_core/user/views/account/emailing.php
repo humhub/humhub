@@ -38,17 +38,6 @@
 
     <hr>
 
-
-    <strong><?php echo Yii::t('UserModule.account', 'Private messaging'); ?></strong><br />
-    <?php echo Yii::t('UserModule.account', 'Get an email, when users write you a private message or reply this.'); ?>
-    <?php
-    echo $form->dropDownList($model, 'receive_email_messaging', array(
-        User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.base', 'Never'),
-        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.base', 'Always'),
-    ), array('id' => 'reg_group', 'class' => 'form-control'));
-    ?>
-    <hr>
-
     <?php echo CHtml::submitButton(Yii::t('base', 'Save'), array('class' => 'btn btn-primary')); ?>
 
     <!-- show flash message after saving -->
