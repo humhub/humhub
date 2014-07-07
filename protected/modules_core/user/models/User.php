@@ -672,24 +672,4 @@ class User extends HActiveRecordContentContainer implements ISearchable
         return true;
     }
 
-    /**
-     * ------------------------------------------------------------------------------------------------
-     * Temporary
-     * ------------------------------------------------------------------------------------------------
-     */
-    public function getFirstname()
-    {
-        return $this->profile->firstname;
-    }
-
-    public function getLastname()
-    {
-        return $this->profile->lastname;
-    }
-
-    public function getTitle()
-    {
-        return $this->profile->title;
-    }
-
 }
