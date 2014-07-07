@@ -122,6 +122,9 @@ class SetupController extends Controller
                     HSetting::setConfiguration($config);
 
                     $success = true;
+                    
+                    $this->redirect(array('init'));
+                    
                 } catch (Exception $e) {
                     $errorMessage = $e->getMessage();
                 }
