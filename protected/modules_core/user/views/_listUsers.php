@@ -48,7 +48,7 @@
                                         <?php if ($user->group != null) { ?>
                                             <small>(<?php echo $user->group->name; ?>)</small><?php } ?>
                                     </h4>
-                                    <h5><?php echo $user->title; ?></h5>
+                                    <h5><?php echo $user->profile->title; ?></h5>
                                 </div>
                             </div>
                         </a>

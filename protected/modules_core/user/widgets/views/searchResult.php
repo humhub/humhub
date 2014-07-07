@@ -20,8 +20,8 @@
                 <h4 class="media-heading"><?php echo $user->displayName; ?>
                     <?php if ($user->group != null) { ?>
                         <small>(<?php echo $user->group->name; ?>)</small><?php } ?></h4>
-                <?php if ($user->title != "") { ?>
-                    <h5><?php echo $user->title; ?></h5>
+                <?php if ($user->profile->title != "") { ?>
+                    <h5><?php echo $user->profile->title; ?></h5>
                 <?php } ?>
 
                 <?php $tag_count = 0; ?>
