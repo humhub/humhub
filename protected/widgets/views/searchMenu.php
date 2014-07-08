@@ -3,7 +3,7 @@
         <input type="text" id="search-menu-search"
                class="form-control"
                autocomplete="off"
-               placeholder="<?php echo Yii::t('base', 'Search for users, spaces and posts'); ?>">
+               placeholder="<?php echo Yii::t('base', 'Search for users and spaces'); ?>">
 
         <div class="search-reset" id="search-search-reset"><i
                 class="fa fa-times-circle"></i></div>
