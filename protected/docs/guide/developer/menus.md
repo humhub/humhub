@@ -1,14 +1,15 @@
 Menus
 =====
 
-You can modify each menu/navigation by intercepting menu events.
+All navigations widget classes inherits the base class ``MenuWidget`` which allows modules
+to inject own items into navigation menu.
 
 ## Events of MenuWidget
 
 * onInit    - at initialization of a menu
 * onRun     - before the menu is rendered
 
-## Menus
+## List of Menus
 
 * TopMenuWidget - Top Navigation
 * ProfileMenuWidget - User Profile Menu (User Module)
@@ -19,29 +20,22 @@ You can modify each menu/navigation by intercepting menu events.
 
 ## Example
 
-``autostart.php:``
+__autostart.php__
+```php
+    //...
+    'events' => array(
+        // Wait for TopMenu Initalization Event
+        array('class' => 'TopMenuWidget', 'event' => 'onInit', 'callback' => array('ExampleModule', 'onTopMenuInit')),
+    ),
+    //...
+```
 
-    Yii::app()->interceptor->attachEventHandler('TopMenuWidget', 'onInit', array('ExampleModule', 'onTopMenuInit'));
-
-''ExampleModule.php:''
-
-    /**
-     * On build of the TopMenu, check if module is enabled
-     * When enabled add a menu item
-     * 
-     * @param type $event
-     */
+__ExampleModule.php__
+```php
     public static function onTopMenuInit($event) {
-
-        // Is Module enabled?
-        if (Yii::app()->moduleManager->isEnabled('myModule')) {
-
-            // Add Item to Menu 
-            $event->sender->addItem(array(
-                'label' => 'My new navigation item',
-                'url' => Yii::app()->createUrl('/mymodule/url', array()),
-                'icon' => 'time',
-                'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'mymodule'),
-            ));
-        }
+        $event->sender->addItem(array(
+            'label' => 'My new top menu item',
+            'url' => 'http://www.google.de',
+        ));
     }
+'

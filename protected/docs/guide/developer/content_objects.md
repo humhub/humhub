@@ -20,10 +20,7 @@ Each content is linked to a content container.
 
 All subclasses of HActiveRecordContent will automatically bound to a Content 
 Model. This Model is reponsible for all generic content features like (ACL,
-Wall, ...). You can access the underlying Content model via the ``content`` 
-attribute.
-
-All content objects are automatically added to the wall of the underlying content container. 
+Wall, ...). You can access this underlying Content model via the ``content`` attribute.
 
 Base Class: HActiveRecordContent
 
@@ -31,6 +28,12 @@ Base Class: HActiveRecordContent
 * Post
 * Poll
 * Task
+
+### Stream / Wall
+
+TDB
+
+
 
 
 Addon (HActiveRecordContentAddon)

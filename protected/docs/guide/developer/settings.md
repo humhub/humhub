@@ -1,19 +1,37 @@
 Settings
 ========
 
-The ``ZSetting`` can be used to store settings or configuration options for your
-module.
 
-``ZSetting::Set`` and ``ZSetting::Get`` only supports strings with a maximum length
-of 255 characters. If you need to store larger texts you can use the ``ZSetting::GetText`` and
-``ZSetting::SetText`` methods.
+Global Settings
+---------------
 
 Example:
 
-        // Store a Setting
-        ZSetting::Set('nameOfSetting', 'someValue', 'yourModuleId');
+```php
+    HSetting::Set('someName', 'someValue' ,'exampleModuleId');
+    $mySetting = HSetting::Get('someName', 'exampleModuleId');
+```
 
-        // Get a Setting
-        $value = ZSetting::Get('nameOfSetting', 'yourModuleId');
 
 
+User Settings
+-------------
+
+Example:
+
+```php
+    $user->setSetting("someName", "someValue", "exampleModuleId");
+    $mySetting = $user->getSetting("someName", "exampleModuleId");
+```
+
+
+
+Space Settings
+--------------
+
+Example:
+
+```php
+    $space->setSetting("someName", "someValue", "exampleModuleId");
+    $mySetting = $space->getSetting("someName", "exampleModuleId");
+```

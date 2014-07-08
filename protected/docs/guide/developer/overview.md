@@ -5,7 +5,6 @@ Overview
 
 - HumHub is based on Yii PHP Framework (http://www.yiiframework.com/)
 - Check out: [The Definitive Guide to Yii](http://www.yiiframework.com/doc/guide/) 
-- Find a Class Reference at http://zammapp.com/api/
 
 ## Development Mode
 
