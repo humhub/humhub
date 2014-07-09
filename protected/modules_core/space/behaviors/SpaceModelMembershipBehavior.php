@@ -126,7 +126,7 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-        if ($this->getSpaceOwner()->created_by == $userId) {
+        if ($this->getSpaceOwner()->id == $userId) {
             return true;
         }
 

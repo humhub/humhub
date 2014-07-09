@@ -142,25 +142,25 @@ class AdminController extends Controller
                             $membership->save();
                         }
                     }
+                }
+            }
 
-                    // Change owner if changed
-                    if ($space->isSpaceOwner()) {
-                        $owner = $space->getSpaceOwner();
+            // Change owner if changed
+            if ($space->isSpaceOwner()) {
+                $owner = $space->getSpaceOwner();
 
-                        $newOwnerId = Yii::app()->request->getParam('ownerId');
+                $newOwnerId = Yii::app()->request->getParam('ownerId');
 
-                        if ($newOwnerId != $owner->id) {
-                            if ($space->isMember($newOwnerId)) {
-                                $space->setSpaceOwner($newOwnerId);
+                if ($newOwnerId != $owner->id) {
+                    if ($space->isMember($newOwnerId)) {
+                        $space->setSpaceOwner($newOwnerId);
 
-                                // Redirect to current space
-                                $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
-                            }
-                        }
+                        // Redirect to current space
+                        $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
                     }
                 }
-            } // Loop over Users
-            // set flash message
+            }
+
             Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
         } // Updated Users
 

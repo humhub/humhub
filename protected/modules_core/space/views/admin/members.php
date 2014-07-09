@@ -169,7 +169,7 @@
 
     <?php $owner = $space->getSpaceOwner(); ?>
 
-    <?php if ($owner->id == Yii::app()->user->id): ?>
+    <?php if ($space->isSpaceOwner()): ?>
         <p>
             <a data-toggle="collapse" id="space-owner-link" href="#collapse-space-owner" style="font-size: 11px;"><i
                     class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.admin', 'Change space owner') ?>
@@ -187,7 +187,7 @@
                             <?php foreach ($space->memberships as $membership) : ?>
                                 <?php if ($membership->user == null) continue; ?>
                                 <option
-                                    value="<?php echo $membership->user->id; ?>" <?php if ($membership->user->id == $owner->id): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
+                                    value="<?php echo $membership->user->id; ?>" <?php if ($space->isSpaceOwner($membership->user->id)): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
                             <?php endforeach; ?>
                         </select>
 
