@@ -56,6 +56,13 @@ class AdminController extends Controller
         );
     }
 
+    public function beforeAction($action)
+    {
+
+        $this->adminOnly();
+        return parent::beforeAction($action);
+    }
+
     /**
      * First Admin Action to display
      */
@@ -71,8 +78,6 @@ class AdminController extends Controller
      */
     public function actionEdit()
     {
-
-        $this->adminOnly();
 
         $model = $this->getSpace();
         $model->scenario = 'edit';
@@ -106,8 +111,6 @@ class AdminController extends Controller
      */
     public function actionMembers()
     {
-
-        $this->adminOnly();
 
         $membersPerPage = 10;
         $space = $this->getSpace();
@@ -203,7 +206,6 @@ class AdminController extends Controller
      */
     public function actionAdminMembersRejectApplicant()
     {
-        $this->adminOnly();
 
         $space = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
@@ -222,8 +224,6 @@ class AdminController extends Controller
      */
     public function actionAdminMembersApproveApplicant()
     {
-        $this->adminOnly();
-
         $space = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
@@ -245,9 +245,6 @@ class AdminController extends Controller
      */
     public function actionAdminRemoveMember()
     {
-
-        $this->adminOnly();
-
         $workspace = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
@@ -267,11 +264,8 @@ class AdminController extends Controller
      */
     public function actionImageUpload()
     {
-
         $space = $this->getSpace();
-
         $model = new UploadProfileImageForm();
-
         $json = array();
 
         //$model->image = CUploadedFile::getInstance($model, 'image');
@@ -296,7 +290,6 @@ class AdminController extends Controller
             $json['errors'] = $model->getErrors();
         }
 
-
         return $this->renderJson(array('files' => $json));
     }
 
@@ -305,8 +298,6 @@ class AdminController extends Controller
      */
     public function actionCropImage()
     {
-
-        $this->adminOnly();
 
         $space = $this->getSpace();
 
@@ -318,12 +309,9 @@ class AdminController extends Controller
             $model->attributes = $_POST['CropProfileImageForm'];
             if ($model->validate()) {
                 $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-                //$this->htmlRedirect($this->createUrl('//user/profile')); //redirect($this->createUrl('//user/account/edit'));
                 $this->htmlRedirect();
             }
         }
-
-        //$this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
 
         $output = $this->renderPartial('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
         Yii::app()->clientScript->render($output);
@@ -337,7 +325,6 @@ class AdminController extends Controller
     public function actionDeleteImage()
     {
 
-        $this->adminOnly();
         $space = $this->getSpace();
         $space->getProfileImage()->delete();
         $this->redirect($this->createUrl('//space/admin/edit', array('sguid' => $space->guid)));
@@ -349,7 +336,6 @@ class AdminController extends Controller
     public function actionModules()
     {
 
-        $this->adminOnly();
         $space = $this->getSpace();
 
         if (Yii::app()->request->getParam('submitted') == 1) {
