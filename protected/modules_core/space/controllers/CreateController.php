@@ -41,16 +41,6 @@ class CreateController extends Controller {
                 $space->visibility = $model->visibility;
                 $space->save();
 
-                // Add Membership
-                $membership = new SpaceMembership;
-                $membership->space_id = $space->id;
-                $membership->user_id = Yii::app()->user->id;
-                $membership->status = SpaceMembership::STATUS_MEMBER;
-                $membership->invite_role = 1;
-                $membership->admin_role = 1;
-                $membership->share_role = 1;
-                $membership->save();
-
                 // Save in this user variable, that the workspace was new created
                 Yii::app()->user->setState('ws', 'created');
 

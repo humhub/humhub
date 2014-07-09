@@ -350,14 +350,26 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
             $user = User::model()->findByPk($this->created_by);
 
+            // Auto add creator as admin
+            $membership = new SpaceMembership;
+            $membership->space_id = $this->id;
+            $membership->user_id = $user->id;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
+            $membership->invite_role = 1;
+            $membership->admin_role = 1;
+            $membership->share_role = 1;
+            $membership->save();            
+            
             $activity = new Activity;
+            $activity->content->created_by = $user->id;
             $activity->content->space_id = $this->id;
-            $activity->content->user_id = $this->created_by;
+            $activity->content->user_id = $user->id;
             $activity->content->visibility = Content::VISIBILITY_PUBLIC;
+            $activity->created_by = $user->id;
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
-
+            
             return true;
         }
     }
@@ -585,15 +597,12 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     public function canShare($userId = "")
     {
 
-        // There is no visibility for guests, so sharing is useless anyway.
-        if ($this->visibility != Space::VISIBILITY_ALL)
-            return false;
-
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
         $membership = $this->getMembership($userId);
 
+        
         if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
