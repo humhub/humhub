@@ -176,7 +176,7 @@ class AccountController extends Controller
 
         foreach (SpaceMembership::GetUserSpaces() as $workspace) {
             // Oups, we are owner in this workspace!
-            if ($workspace->isOwner($user->id)) {
+            if ($workspace->isSpaceOwner($user->id)) {
                 $isSpaceOwner = true;
             }
         }

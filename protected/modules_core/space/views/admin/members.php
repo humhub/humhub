@@ -89,7 +89,7 @@
 
                     </td>
 
-                    <?php if (!$space->isOwner($user->id)) : ?>
+                    <?php if (!$space->isSpaceOwner($user->id)) : ?>
                         <td style="vertical-align:middle">
                             <div class="checkbox">
                                 <label>
@@ -167,7 +167,7 @@
 
 
 
-    <?php $owner = $space->getOwner(); ?>
+    <?php $owner = $space->getSpaceOwner(); ?>
 
     <?php if ($owner->id == Yii::app()->user->id): ?>
         <p>

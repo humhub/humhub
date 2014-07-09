@@ -128,7 +128,7 @@ class AdminController extends Controller
                     if ($user != null) {
 
                         // No changes on the Owner
-                        if ($space->isOwner($user->id))
+                        if ($space->isSpaceOwner($user->id))
                             continue;
 
                         $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $space->id));
@@ -141,14 +141,14 @@ class AdminController extends Controller
                     }
 
                     // Change owner if changed
-                    if ($space->isOwner()) {
-                        $owner = $space->getOwner();
+                    if ($space->isSpaceOwner()) {
+                        $owner = $space->getSpaceOwner();
 
                         $newOwnerId = Yii::app()->request->getParam('ownerId');
 
                         if ($newOwnerId != $owner->id) {
                             if ($space->isMember($newOwnerId)) {
-                                $space->setOwner($newOwnerId);
+                                $space->setSpaceOwner($newOwnerId);
 
                                 // Redirect to current space
                                 $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
@@ -252,7 +252,7 @@ class AdminController extends Controller
         $userGuid = Yii::app()->request->getParam('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
 
-        if ($workspace->isOwner($user->id)) {
+        if ($workspace->isSpaceOwner($user->id)) {
             throw new CHttpException(500, 'Owner cannot be removed!');
         }
 
@@ -456,7 +456,7 @@ class AdminController extends Controller
     {
         $workspace = $this->getSpace();
 
-        if (!$workspace->isOwner() && !Yii::app()->user->isAdmin())
+        if (!$workspace->isSpaceOwner() && !Yii::app()->user->isAdmin())
             throw new CHttpException(403, 'Access denied - Space Owner only!');
     }
 

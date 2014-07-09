@@ -87,7 +87,7 @@
         <?php
         // Membership Handling
         if ($space->isMember(Yii::app()->user->id)) {
-            if (!$space->isOwner(Yii::app()->user->id)) {
+            if (!$space->isSpaceOwner(Yii::app()->user->id)) {
                 print CHtml::link('<i class="fa fa-sign-out"></i> '. Yii::t('SpaceModule.base', "Leave space"), $this->createUrl('//space/space/revokeMembership', array('sguid' => $space->guid)), array('class' => 'btn btn-danger'));
             }
         } else {

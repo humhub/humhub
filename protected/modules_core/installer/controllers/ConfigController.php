@@ -222,16 +222,6 @@ class ConfigController extends Controller
             $profileImage = new ProfileImage($space->guid);
             $profileImage->setNew($this->getModule()->getPath().DIRECTORY_SEPARATOR."resources".DIRECTORY_SEPARATOR.'welcome_space.jpg');
             
-            // Add Membership
-            $membership = new SpaceMembership;
-            $membership->space_id = $space->id;
-            $membership->user_id = $userId;
-            $membership->status = SpaceMembership::STATUS_MEMBER;
-            $membership->invite_role = 1;
-            $membership->admin_role = 1;
-            $membership->share_role = 1;
-            $membership->save();
-
             // Add Some Post to the Space
             $post = new Post();
             $post->message = "I´ve just installed HumHub - Yeah! :-)";

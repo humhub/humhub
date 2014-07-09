@@ -14,7 +14,7 @@
                     <div class="media-body">
                         <h3 class="media-heading"><?php echo $space->name; ?></h3>
                         <?php echo Yii::t('SpaceModule.base', 'created by'); ?> <a
-                            href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getOwner()->guid)); ?>"><?php echo $space->getOwner()->displayName; ?></a>
+                            href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getSpaceOwner()->guid)); ?>"><?php echo $space->getSpaceOwner()->displayName; ?></a>
                         <?php if ($space->description != "") { ?>
                             <hr>
                             <?php echo $space->description; ?>
@@ -31,7 +31,7 @@
                         <?php
                         // Membership Handling
                         if ($space->isMember(Yii::app()->user->id)) {
-                            if ($space->isOwner(Yii::app()->user->id)) {
+                            if ($space->isSpaceOwner(Yii::app()->user->id)) {
                                 print Yii::t('SpaceModule.base', "You are the owner of this workspace.");
                             } else {
                                 print '<br><br>';
