@@ -204,8 +204,10 @@ class AdminController extends Controller
     /**
      * User Manage Users Page, Reject Member Request Link
      */
-    public function actionAdminMembersRejectApplicant()
+    public function actionMembersRejectApplicant()
     {
+
+        $this->forcePostRequest();
 
         $space = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
@@ -222,8 +224,11 @@ class AdminController extends Controller
     /**
      * User Manage Users Page, Approve Member Request Link
      */
-    public function actionAdminMembersApproveApplicant()
+    public function actionMembersApproveApplicant()
     {
+
+        $this->forcePostRequest();
+
         $space = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
@@ -241,10 +246,11 @@ class AdminController extends Controller
 
     /**
      * Removes a Member
-     *
      */
-    public function actionAdminRemoveMember()
+    public function actionRemoveMember()
     {
+        $this->forcePostRequest();
+
         $workspace = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
@@ -298,7 +304,6 @@ class AdminController extends Controller
      */
     public function actionCropImage()
     {
-
         $space = $this->getSpace();
 
         $model = new CropProfileImageForm;
@@ -324,6 +329,7 @@ class AdminController extends Controller
      */
     public function actionDeleteImage()
     {
+        $this->forcePostRequest();
 
         $space = $this->getSpace();
         $space->getProfileImage()->delete();
@@ -335,23 +341,7 @@ class AdminController extends Controller
      */
     public function actionModules()
     {
-
         $space = $this->getSpace();
-
-        if (Yii::app()->request->getParam('submitted') == 1) {
-
-            $modules = Yii::app()->request->getParam('module', array());
-
-            foreach ($workspace->getAvailableModules() as $moduleId => $moduleInfo) {
-
-                if (!array_key_exists($moduleId, $modules) && $workspace->isModuleEnabled($moduleId)) {
-                    $workspace->uninstallModule($moduleId);
-                } elseif (array_key_exists($moduleId, $modules) && !$workspace->isModuleEnabled($moduleId)) {
-                    $workspace->installModule($moduleId);
-                }
-            }
-        }
-
         $this->render('modules', array('availableModules' => $this->getSpace()->getAvailableModules()));
     }
 
@@ -390,6 +380,7 @@ class AdminController extends Controller
      */
     public function actionArchive()
     {
+        $this->forcePostRequest();
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
@@ -401,6 +392,7 @@ class AdminController extends Controller
      */
     public function actionUnArchive()
     {
+        $this->forcePostRequest();
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();

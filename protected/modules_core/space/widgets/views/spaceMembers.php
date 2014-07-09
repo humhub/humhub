@@ -29,8 +29,8 @@
                             <?php echo CHtml::encode($membership->request_message); ?><br>
 
                             <hr>
-                            <?php echo CHtml::link('Accept', $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => 'btn btn-success btn-sm', 'id' => 'user_accept_' . $user->guid)); ?>
-                            <?php echo CHtml::link('Decline', $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => 'btn btn-danger btn-sm', 'id' => 'user_decline_' . $user->guid)); ?>
+                            <?php echo HHtml::postLink('Accept', $this->createUrl('//space/admin/membersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => 'btn btn-success btn-sm', 'id' => 'user_accept_' . $user->guid)); ?>
+                            <?php echo HHtml::postLink('Decline', $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => 'btn btn-danger btn-sm', 'id' => 'user_decline_' . $user->guid)); ?>
 
                         </td>
                     </tr>

@@ -126,7 +126,7 @@
                                 'buttonFalse' => Yii::t('SpaceModule.admin', 'No, cancel'),
                                 'class' => 'btn btn-sm btn-danger',
                                 'linkContent' => Yii::t('SpaceModule.admin', 'Remove'),
-                                'linkHref' => $this->createUrl('//space/admin/adminRemoveMember', array('guid' => $space->guid, 'userGuid' => $user->guid, 'ajax' => 1))
+                                'linkHref' => $this->createUrl('//space/admin/removeMember', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'ajax' => 1))
                             ));
                             ?>
 
@@ -253,8 +253,8 @@
                             <?php echo CHtml::encode($membership->request_message); ?>
                         </td>
                         <td width="150px">
-                            <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Accept'), $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
-                            <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Decline'), $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Accept'), $this->createUrl('//space/admin/membersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Decline'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -309,7 +309,7 @@
                         <?php echo $user->profile->title; ?>
                     </td>
                     <td width="100px">
-                        <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Revoke invitation'), $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
+                        <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
