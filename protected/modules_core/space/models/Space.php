@@ -66,6 +66,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             ),
             'SpacesModelModulesBehavior' => array(
                 'class' => 'application.modules_core.space.behaviors.SpaceModelModulesBehavior',
+            ),
+            'SpacesModelMembershipBehavior' => array(
+                'class' => 'application.modules_core.space.behaviors.SpaceModelMembershipBehavior',
             )
         );
     }
@@ -350,14 +353,26 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
             $user = User::model()->findByPk($this->created_by);
 
+            // Auto add creator as admin
+            $membership = new SpaceMembership;
+            $membership->space_id = $this->id;
+            $membership->user_id = $user->id;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
+            $membership->invite_role = 1;
+            $membership->admin_role = 1;
+            $membership->share_role = 1;
+            $membership->save();            
+            
             $activity = new Activity;
+            $activity->content->created_by = $user->id;
             $activity->content->space_id = $this->id;
-            $activity->content->user_id = $this->created_by;
+            $activity->content->user_id = $user->id;
             $activity->content->visibility = Content::VISIBILITY_PUBLIC;
+            $activity->created_by = $user->id;
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
-
+            
             return true;
         }
     }
@@ -449,107 +464,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return false;
     }
 
-    /**
-     * Checks if given Userid is Member of this Space.
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function isMember($userId = "")
-    {
-
-        // Take current userid if none is given
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
-
-        $membership = $this->getMembership($userId);
-
-        if ($membership != null && $membership->status == SpaceMembership::STATUS_MEMBER)
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Checks if given Userid is Admin of this Space.
-     *
-     * If no UserId is given, current UserId will be used
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function isAdmin($userId = "")
-    {
-
-        if ($userId == 0)
-            $userId = Yii::app()->user->id;
-
-        if (Yii::app()->user->isAdmin())
-            return true;
-
-        if ($this->isOwner($userId))
-            return true;
-
-        $membership = $this->getMembership($userId);
-
-        if ($membership != null && $membership->admin_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Sets Owner for this workspace
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function setOwner($userId = "")
-    {
-
-        if ($userId == 0)
-            $userId = Yii::app()->user->id;
-
-        $this->setAdmin($userId);
-
-        $this->created_by = $userId;
-        $this->save();
-
-        return true;
-    }
-
-    /**
-     * Gets Owner for this workspace
-     *
-     * @return type
-     */
-    public function getOwner()
-    {
-
-        $user = User::model()->findByPk($this->created_by);
-        return $user;
-    }
-
-    /**
-     * Sets Owner for this workspace
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function setAdmin($userId = "")
-    {
-
-        if ($userId == 0)
-            $userId = Yii::app()->user->id;
-
-        $membership = $this->getMembership($userId);
-        if ($membership != null) {
-            $membership->admin_role = 1;
-            $membership->save();
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Checks if given user can invite people to this workspace
@@ -585,288 +499,16 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     public function canShare($userId = "")
     {
 
-        // There is no visibility for guests, so sharing is useless anyway.
-        if ($this->visibility != Space::VISIBILITY_ALL)
-            return false;
-
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
         $membership = $this->getMembership($userId);
 
+        
         if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
         return false;
-    }
-
-    /**
-     * Returns the SpaceMembership Record for this Space
-     *
-     * If none Record is found, null is given
-     */
-    public function getMembership($userId = "")
-    {
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
-
-        $rCacheId = 'SpaceMembership_' . $userId . "_" . $this->id;
-        $rCacheRes = RuntimeCache::Get($rCacheId);
-
-        if ($rCacheRes != null)
-            return $rCacheRes;
-
-        $dbResult = SpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
-        RuntimeCache::Set($rCacheId, $dbResult);
-
-        return $dbResult;
-    }
-
-    /**
-     * Is given User owner of this Space
-     */
-    public function isOwner($userId = "")
-    {
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
-
-        if ($this->created_by == $userId) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Remove Membership
-     *
-     * @param $userId UserId of User to Remove
-     */
-    public function removeMember($userId = "")
-    {
-
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
-
-        $user = User::model()->findByPk($userId);
-        $membership = $this->getMembership($userId);
-
-
-        if ($this->isOwner($userId)) {
-            return false;
-        }
-
-        if ($membership == null) {
-            return true;
-        }
-
-        // If was member, create a activity for that
-        if ($membership->status == SpaceMembership::STATUS_MEMBER) {
-            $activity = new Activity;
-            $activity->content->space_id = $this->id;
-            $activity->content->user_id = $userId;
-            $activity->content->visibility = Content::VISIBILITY_PRIVATE;
-            $activity->type = "ActivitySpaceMemberRemoved";
-            $activity->save();
-            $activity->fire();
-        }
-
-        // Was invited, but declined the request
-        if ($membership->status == SpaceMembership::STATUS_INVITED) {
-            SpaceInviteDeclinedNotification::fire($membership->originator_user_id, $user, $this);
-        }
-
-        // Delete Membership
-        SpaceMembership::model()->deleteAllByAttributes(array(
-            'user_id' => $userId,
-            'space_id' => $this->id,
-        ));
-
-
-        // Cleanup Notifications
-        SpaceApprovalRequestNotification::remove($userId, $this);
-        SpaceInviteNotification::remove($userId, $this);
-        SpaceApprovalRequestNotification::remove($userId, $this);
-    }
-
-    /**
-     * Adds an member to this space.
-     *
-     * This can happens after an clicking "Request Membership" Link
-     * after Approval or accepting an invite.
-     *
-     * @param type $userId
-     */
-    public function addMember($userId)
-    {
-
-        $user = User::model()->findByPk($userId);
-
-        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
-
-        if ($membership == null) {
-            // Add Membership
-            $membership = new SpaceMembership;
-            $membership->space_id = $this->id;
-            $membership->user_id = $userId;
-            $membership->status = SpaceMembership::STATUS_MEMBER;
-            $membership->invite_role = 0;
-            $membership->admin_role = 0;
-            $membership->share_role = 0;
-        } else {
-
-            // User is already member
-            if ($membership->status == SpaceMembership::STATUS_MEMBER) {
-                return true;
-            }
-
-            // User requested membership
-            if ($membership->status == SpaceMembership::STATUS_APPLICANT) {
-                SpaceApprovalRequestAcceptedNotification::fire(Yii::app()->user->id, $user, $this);
-            }
-
-            // User was invited
-            if ($membership->status == SpaceMembership::STATUS_INVITED) {
-                SpaceInviteAcceptedNotification::fire($membership->originator_user_id, $user, $this);
-            }
-
-            // Update Membership
-            $membership->status = SpaceMembership::STATUS_MEMBER;
-        }
-        $membership->save();
-
-        // Create Wall Activity for that
-        $activity = new Activity;
-        $activity->content->space_id = $this->id;
-        $activity->content->user_id = $userId;
-        $activity->content->visibility = Content::VISIBILITY_PRIVATE;
-        $activity->content->created_by = $userId;
-        $activity->created_by = $userId;
-        $activity->type = "ActivitySpaceMemberAdded";
-        $activity->save();
-        $activity->fire();
-
-        // Cleanup Notifications
-        SpaceInviteNotification::remove($userId, $this);
-        SpaceApprovalRequestNotification::remove($userId, $this);
-    }
-
-    /**
-     * Invites a registered user to this space
-     *
-     * If user is already invited, retrigger invitation.
-     * If user is applicant approve it.
-     *
-     * @param type $userId
-     * @param type $originatorUserId
-     */
-    public function inviteMember($userId, $originatorUserId)
-    {
-
-        $membership = $this->getMembership($userId);
-
-        if ($membership != null) {
-
-            // User is already member
-            if ($membership->status == SpaceMembership::STATUS_MEMBER) {
-                return;
-            }
-
-            // User requested already membership, just approve him
-            if ($membership->status == SpaceMembership::STATUS_APPLICANT) {
-                $space->addMember(Yii::app()->user->id);
-                return;
-            }
-
-            // Already invite, reinvite him
-            if ($membership->status == SpaceMembership::STATUS_INVITED) {
-                // Remove existing notification
-                SpaceInviteNotification::remove($userId, $this);
-            }
-        } else {
-            $membership = new SpaceMembership;
-        }
-
-
-        $membership->space_id = $this->id;
-        $membership->user_id = $userId;
-        $membership->originator_user_id = $originatorUserId;
-
-        $membership->status = SpaceMembership::STATUS_INVITED;
-        $membership->invite_role = 0;
-        $membership->admin_role = 0;
-        $membership->share_role = 0;
-
-        $membership->save();
-
-        SpaceInviteNotification::fire($originatorUserId, $userId, $this);
-    }
-
-    /**
-     * Invites a not registered member to this space
-     *
-     * @param type $email
-     * @param type $originatorUserId
-     */
-    public function inviteMemberByEMail($email, $originatorUserId)
-    {
-
-        // Invalid E-Mail
-        $validator = new CEmailValidator;
-        if (!$validator->validateValue($email))
-            return false;
-
-        // User already registered
-        $user = User::model()->findByAttributes(array('email' => $email));
-        if ($user != null)
-            return false;
-
-        $userInvite = UserInvite::model()->findByAttributes(array('email' => $email));
-
-        // No invite yet
-        if ($userInvite == null) {
-            // Invite EXTERNAL user
-            $userInvite = new UserInvite();
-            $userInvite->email = $email;
-            $userInvite->source = UserInvite::SOURCE_INVITE;
-            $userInvite->user_originator_id = $originatorUserId;
-            $userInvite->space_invite_id = $this->id;
-            $userInvite->save();
-            $userInvite->sendInviteMail();
-
-            // There is a pending registration
-            // Steal it und send mail again
-            // Unfortunately there a no multiple workspace invites supported
-            // so we take the last one
-        } else {
-            $userInvite->user_originator_id = $originatorUserId;
-            $userInvite->space_invite_id = $this->id;
-            $userInvite->save();
-            $userInvite->sendInviteMail();
-        }
-    }
-
-    /**
-     * Requests Membership
-     *
-     * @param type $userId
-     * @param type $message
-     */
-    public function requestMembership($userId, $message = "")
-    {
-
-        // Add Membership
-        $membership = new SpaceMembership;
-        $membership->space_id = $this->id;
-        $membership->user_id = $userId;
-        $membership->status = SpaceMembership::STATUS_APPLICANT;
-        $membership->invite_role = 0;
-        $membership->admin_role = 0;
-        $membership->share_role = 0;
-        $membership->request_message = $message;
-        $membership->save();
-
-        SpaceApprovalRequestNotification::fire($userId, $this);
     }
 
     /**
@@ -928,22 +570,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return Yii::app()->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', array('space' => $this), true);
     }
 
-    /**
-     * Returns the Admins of this Space
-     */
-    public function getAdmins()
-    {
-
-        $admins = array();
-
-        $adminMemberships = SpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id, 'admin_role' => 1));
-
-        foreach ($adminMemberships as $admin) {
-            $admins[] = $admin->user;
-        }
-
-        return $admins;
-    }
 
     /**
      * Counts all Content Items related to this workspace except of Activities.

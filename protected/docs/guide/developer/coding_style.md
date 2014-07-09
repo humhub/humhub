@@ -1,7 +1,5 @@
 Coding Style 
 ============
 
-**ToDo: Add more Infos**
+Overally rules are based on PSR-2 standard with some minor exceptions and changes. 
 
-- Tabs 2 Spaces 
-- Tab Size: 4 Spaces

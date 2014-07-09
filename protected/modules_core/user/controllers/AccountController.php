@@ -146,6 +146,7 @@ class AccountController extends Controller
 
         // Create Form
         $form = new HForm($definition, $profile);
+        $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate()) {
             $this->forcePostRequest();
             $profile->save();
@@ -175,7 +176,7 @@ class AccountController extends Controller
 
         foreach (SpaceMembership::GetUserSpaces() as $workspace) {
             // Oups, we are owner in this workspace!
-            if ($workspace->isOwner($user->id)) {
+            if ($workspace->isSpaceOwner($user->id)) {
                 $isSpaceOwner = true;
             }
         }
@@ -216,7 +217,6 @@ class AccountController extends Controller
         $user = Yii::app()->user->getModel();
         $model = new AccountEmailingForm();
 
-        $model->receive_email_messaging = $user->getSetting("receive_email_messaging", 'core', User::RECEIVE_EMAIL_ALWAYS);
         $model->receive_email_activities = $user->getSetting("receive_email_activities", 'core', HSetting::Get('receive_email_activities', 'mailing'));
         $model->receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', HSetting::Get('receive_email_notifications', 'mailing'));
 
@@ -224,7 +224,6 @@ class AccountController extends Controller
             $model->attributes = Yii::app()->input->stripClean($_POST['AccountEmailingForm']);
 
             if ($model->validate()) {
-                $user->setSetting("receive_email_messaging", $model->receive_email_messaging);
                 $user->setSetting("receive_email_activities", $model->receive_email_activities);
                 $user->setSetting("receive_email_notifications", $model->receive_email_notifications);
 

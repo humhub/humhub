@@ -1,19 +1,25 @@
 CronJobs
 ========
 
-If your module needs to execute regular (hourly or daily) tasks, it can intercept to the Zamm Cronjob System.
+If your module needs to execute regular (hourly or daily) tasks, it can also intercept cron events.
 
 
-For a daily task:
+## Example
 
-         Yii::app()->interceptor->attachEventHandler('ZCronRunner', 'onDailyRun', array('MyModule', 'doSomethingDaily'));
+__autostart.php__
+```php
+    //...
+    'events' => array(
+        // For hourly execution: onHourlyRun
+        array('class' => 'ZCronRunner', 'event' => 'onDailyRun', 'callback' => array('ExampleModule', 'onCronDailyRun')),
+    ),
+    //...
+```
 
-For an hourly task:
-
-         Yii::app()->interceptor->attachEventHandler('ZCronRunner', 'onHourlyRun', array('MyModule', 'doSomethingHourly'));
- 
-``Note:`` The hourly task may run more frequent!
-
-If you need other times you may need to implement a distinct cli command runner (console.md) and your own cron job.
-
+__ExampleModule.php__
+```php
+    public static function onCronDailyRun($event) {
+        // Do something daily
+    }
+```
 

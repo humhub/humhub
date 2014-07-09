@@ -56,6 +56,13 @@ class AdminController extends Controller
         );
     }
 
+    public function beforeAction($action)
+    {
+
+        $this->adminOnly();
+        return parent::beforeAction($action);
+    }
+
     /**
      * First Admin Action to display
      */
@@ -71,8 +78,6 @@ class AdminController extends Controller
      */
     public function actionEdit()
     {
-
-        $this->adminOnly();
 
         $model = $this->getSpace();
         $model->scenario = 'edit';
@@ -107,8 +112,6 @@ class AdminController extends Controller
     public function actionMembers()
     {
 
-        $this->adminOnly();
-
         $membersPerPage = 10;
         $space = $this->getSpace();
 
@@ -128,7 +131,7 @@ class AdminController extends Controller
                     if ($user != null) {
 
                         // No changes on the Owner
-                        if ($space->isOwner($user->id))
+                        if ($space->isSpaceOwner($user->id))
                             continue;
 
                         $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $space->id));
@@ -139,25 +142,25 @@ class AdminController extends Controller
                             $membership->save();
                         }
                     }
+                }
+            }
 
-                    // Change owner if changed
-                    if ($space->isOwner()) {
-                        $owner = $space->getOwner();
+            // Change owner if changed
+            if ($space->isSpaceOwner()) {
+                $owner = $space->getSpaceOwner();
 
-                        $newOwnerId = Yii::app()->request->getParam('ownerId');
+                $newOwnerId = Yii::app()->request->getParam('ownerId');
 
-                        if ($newOwnerId != $owner->id) {
-                            if ($space->isMember($newOwnerId)) {
-                                $space->setOwner($newOwnerId);
+                if ($newOwnerId != $owner->id) {
+                    if ($space->isMember($newOwnerId)) {
+                        $space->setSpaceOwner($newOwnerId);
 
-                                // Redirect to current space
-                                $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
-                            }
-                        }
+                        // Redirect to current space
+                        $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
                     }
                 }
-            } // Loop over Users
-            // set flash message
+            }
+
             Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
         } // Updated Users
 
@@ -201,9 +204,10 @@ class AdminController extends Controller
     /**
      * User Manage Users Page, Reject Member Request Link
      */
-    public function actionAdminMembersRejectApplicant()
+    public function actionMembersRejectApplicant()
     {
-        $this->adminOnly();
+
+        $this->forcePostRequest();
 
         $space = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
@@ -220,9 +224,10 @@ class AdminController extends Controller
     /**
      * User Manage Users Page, Approve Member Request Link
      */
-    public function actionAdminMembersApproveApplicant()
+    public function actionMembersApproveApplicant()
     {
-        $this->adminOnly();
+
+        $this->forcePostRequest();
 
         $space = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
@@ -241,18 +246,16 @@ class AdminController extends Controller
 
     /**
      * Removes a Member
-     *
      */
-    public function actionAdminRemoveMember()
+    public function actionRemoveMember()
     {
-
-        $this->adminOnly();
+        $this->forcePostRequest();
 
         $workspace = $this->getSpace();
         $userGuid = Yii::app()->request->getParam('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
 
-        if ($workspace->isOwner($user->id)) {
+        if ($workspace->isSpaceOwner($user->id)) {
             throw new CHttpException(500, 'Owner cannot be removed!');
         }
 
@@ -267,11 +270,8 @@ class AdminController extends Controller
      */
     public function actionImageUpload()
     {
-
         $space = $this->getSpace();
-
         $model = new UploadProfileImageForm();
-
         $json = array();
 
         //$model->image = CUploadedFile::getInstance($model, 'image');
@@ -296,7 +296,6 @@ class AdminController extends Controller
             $json['errors'] = $model->getErrors();
         }
 
-
         return $this->renderJson(array('files' => $json));
     }
 
@@ -305,9 +304,6 @@ class AdminController extends Controller
      */
     public function actionCropImage()
     {
-
-        $this->adminOnly();
-
         $space = $this->getSpace();
 
         $model = new CropProfileImageForm;
@@ -318,12 +314,9 @@ class AdminController extends Controller
             $model->attributes = $_POST['CropProfileImageForm'];
             if ($model->validate()) {
                 $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-                //$this->htmlRedirect($this->createUrl('//user/profile')); //redirect($this->createUrl('//user/account/edit'));
                 $this->htmlRedirect();
             }
         }
-
-        //$this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
 
         $output = $this->renderPartial('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
         Yii::app()->clientScript->render($output);
@@ -336,8 +329,8 @@ class AdminController extends Controller
      */
     public function actionDeleteImage()
     {
+        $this->forcePostRequest();
 
-        $this->adminOnly();
         $space = $this->getSpace();
         $space->getProfileImage()->delete();
         $this->redirect($this->createUrl('//space/admin/edit', array('sguid' => $space->guid)));
@@ -348,24 +341,7 @@ class AdminController extends Controller
      */
     public function actionModules()
     {
-
-        $this->adminOnly();
         $space = $this->getSpace();
-
-        if (Yii::app()->request->getParam('submitted') == 1) {
-
-            $modules = Yii::app()->request->getParam('module', array());
-
-            foreach ($workspace->getAvailableModules() as $moduleId => $moduleInfo) {
-
-                if (!array_key_exists($moduleId, $modules) && $workspace->isModuleEnabled($moduleId)) {
-                    $workspace->uninstallModule($moduleId);
-                } elseif (array_key_exists($moduleId, $modules) && !$workspace->isModuleEnabled($moduleId)) {
-                    $workspace->installModule($moduleId);
-                }
-            }
-        }
-
         $this->render('modules', array('availableModules' => $this->getSpace()->getAvailableModules()));
     }
 
@@ -404,6 +380,7 @@ class AdminController extends Controller
      */
     public function actionArchive()
     {
+        $this->forcePostRequest();
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
@@ -415,6 +392,7 @@ class AdminController extends Controller
      */
     public function actionUnArchive()
     {
+        $this->forcePostRequest();
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
@@ -456,7 +434,7 @@ class AdminController extends Controller
     {
         $workspace = $this->getSpace();
 
-        if (!$workspace->isOwner() && !Yii::app()->user->isAdmin())
+        if (!$workspace->isSpaceOwner() && !Yii::app()->user->isAdmin())
             throw new CHttpException(403, 'Access denied - Space Owner only!');
     }
 

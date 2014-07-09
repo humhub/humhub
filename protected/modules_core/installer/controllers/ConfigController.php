@@ -222,16 +222,6 @@ class ConfigController extends Controller
             $profileImage = new ProfileImage($space->guid);
             $profileImage->setNew($this->getModule()->getPath().DIRECTORY_SEPARATOR."resources".DIRECTORY_SEPARATOR.'welcome_space.jpg');
             
-            // Add Membership
-            $membership = new SpaceMembership;
-            $membership->space_id = $space->id;
-            $membership->user_id = $userId;
-            $membership->status = SpaceMembership::STATUS_MEMBER;
-            $membership->invite_role = 1;
-            $membership->admin_role = 1;
-            $membership->share_role = 1;
-            $membership->save();
-
             // Add Some Post to the Space
             $post = new Post();
             $post->message = "I´ve just installed HumHub - Yeah! :-)";
@@ -295,9 +285,10 @@ class ConfigController extends Controller
         // Authentication
         HSetting::Set('authInternal', '1', 'authentication');
         HSetting::Set('authLdap', '0', 'authentication');
-        HSetting::Set('needApproval', '1', 'authentication_internal');
+        HSetting::Set('needApproval', '0', 'authentication_internal');
         HSetting::Set('anonymousRegistration', '1', 'authentication_internal');
-
+        HSetting::Set('internalUsersCanInvite', '1', 'authentication_internal');
+        
         // Mailing
         HSetting::Set('transportType', 'php', 'mailing');
         HSetting::Set('systemEmailAddress', 'social@example.com', 'mailing');

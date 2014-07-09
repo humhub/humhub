@@ -4,7 +4,7 @@ Database
 Use migrations to create or update your database tables.
 See http://www.yiiframework.com/doc/guide/1.1/en/database.migration for all basics about migrations.
 
-If you need distinct tables, please use a prefix "mymodule_" on table name.
+If you need own tables, please use a prefix "mymodule_" on table name.
 
 
 Create a Migration:

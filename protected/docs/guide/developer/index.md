@@ -14,9 +14,8 @@
 - [Space](space.md)
 - [Content Objects](content_objects.md)
 - [Events](events.md)
-- [Menus & Navigation](menus.md)
-- [Sidebars](sidebars.md)
-- [Wall Entries](wall_entries.md)
+- [MenuWidget / Navigations](menus.md)
+- [StackWidget / Sidebars](stack_sidebar.md)
 
 ## More
 - [Activities](activities.md)
@@ -25,7 +24,6 @@
 - [Console](console.md)
 - [Search](search.md)
 - [Integrity Checker](integrity_checker.md)
-- [Updates](updates.md)
 - [Settings](settings.md)
 - [Coding Style](coding_style.md)
 - [Notifications](notifications.md)

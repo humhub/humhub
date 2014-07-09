@@ -257,7 +257,7 @@ class SpaceController extends Controller
 
         $space = $this->getSpace();
 
-        if ($space->isOwner()) {
+        if ($space->isSpaceOwner()) {
             throw new CHttpException(500, Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!'));
         }
 

@@ -71,14 +71,12 @@
 
         <div class="pull-right">
             <?php if ($space->status == Space::STATUS_ENABLED) { ?>
-                <a href="<?php echo $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)); ?>"
-                   class="btn btn-warning"><?php echo Yii::t('SpaceModule.base', 'Archive'); ?></a>
+                <?php echo HHtml::postLink(Yii::t('SpaceModule.base', 'Archive'), $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
             <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
-                <a href="<?php echo $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)); ?>"
-                   class="btn btn-warning"><?php echo Yii::t('SpaceModule.base', 'Unarchive'); ?></a>
+                <?php echo HHtml::postLink(Yii::t('SpaceModule.base', 'Unarchive'), $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
             <?php } ?>
-            <a href="<?php echo $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)); ?>"
-               class="btn btn-danger"><?php echo Yii::t('SpaceModule.base', 'Delete'); ?></a>
+            <?php echo HHtml::postLink(Yii::t('SpaceModule.base', 'Delete'), $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)), array('class' => 'btn btn-danger')); ?>
+
         </div>
 
 

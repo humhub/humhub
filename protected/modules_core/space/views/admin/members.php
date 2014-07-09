@@ -89,7 +89,7 @@
 
                     </td>
 
-                    <?php if (!$space->isOwner($user->id)) : ?>
+                    <?php if (!$space->isSpaceOwner($user->id)) : ?>
                         <td style="vertical-align:middle">
                             <div class="checkbox">
                                 <label>
@@ -126,7 +126,7 @@
                                 'buttonFalse' => Yii::t('SpaceModule.admin', 'No, cancel'),
                                 'class' => 'btn btn-sm btn-danger',
                                 'linkContent' => Yii::t('SpaceModule.admin', 'Remove'),
-                                'linkHref' => $this->createUrl('//space/admin/adminRemoveMember', array('guid' => $space->guid, 'userGuid' => $user->guid, 'ajax' => 1))
+                                'linkHref' => $this->createUrl('//space/admin/removeMember', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'ajax' => 1))
                             ));
                             ?>
 
@@ -167,9 +167,9 @@
 
 
 
-    <?php $owner = $space->getOwner(); ?>
+    <?php $owner = $space->getSpaceOwner(); ?>
 
-    <?php if ($owner->id == Yii::app()->user->id): ?>
+    <?php if ($space->isSpaceOwner()): ?>
         <p>
             <a data-toggle="collapse" id="space-owner-link" href="#collapse-space-owner" style="font-size: 11px;"><i
                     class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.admin', 'Change space owner') ?>
@@ -187,7 +187,7 @@
                             <?php foreach ($space->memberships as $membership) : ?>
                                 <?php if ($membership->user == null) continue; ?>
                                 <option
-                                    value="<?php echo $membership->user->id; ?>" <?php if ($membership->user->id == $owner->id): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
+                                    value="<?php echo $membership->user->id; ?>" <?php if ($space->isSpaceOwner($membership->user->id)): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
                             <?php endforeach; ?>
                         </select>
 
@@ -253,8 +253,8 @@
                             <?php echo CHtml::encode($membership->request_message); ?>
                         </td>
                         <td width="150px">
-                            <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Accept'), $this->createUrl('//space/admin/adminMembersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
-                            <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Decline'), $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Accept'), $this->createUrl('//space/admin/membersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Decline'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -309,7 +309,7 @@
                         <?php echo $user->profile->title; ?>
                     </td>
                     <td width="100px">
-                        <?php echo CHtml::link(Yii::t('SpaceModule.admin', 'Revoke invitation'), $this->createUrl('//space/admin/adminMembersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
+                        <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
