@@ -28,6 +28,8 @@
 class SpaceControllerBehavior extends CBehavior
 {
 
+    public $space = null;
+
     /**
      * Returns the current selected space by parameter guid
      *
@@ -39,9 +41,8 @@ class SpaceControllerBehavior extends CBehavior
     public function getSpace()
     {
 
-        // Check if current space is already determined
-        if (Yii::app()->params['currentSpace']) {
-            return Yii::app()->params['currentSpace'];
+        if ($this->space != null) {
+            return $this->space;
         }
 
         // Get Space GUID by parameter
@@ -52,12 +53,22 @@ class SpaceControllerBehavior extends CBehavior
         }
 
         // Try Load the space
-        $space = Space::model()->findByAttributes(array('guid' => $guid));
-        if ($space == null)
+        $this->space = Space::model()->findByAttributes(array('guid' => $guid));
+        if ($this->space == null)
             throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space not found!'));
 
+        $this->checkAccess();
+
+        // Store current space to stash
+        Yii::app()->params['currentSpace'] = $this->space;
+
+        return $this->space;
+    }
+
+    public function checkAccess() {
+        
         // Save users last action on this space
-        $membership = $space->getMembership(Yii::app()->user->id);
+        $membership = $this->space->getMembership(Yii::app()->user->id);
         if ($membership != null) {
             $membership->updateLastVisit();
         } else {
@@ -65,7 +76,7 @@ class SpaceControllerBehavior extends CBehavior
             // Super Admin can always enter
             if (!Yii::app()->user->isAdmin()) {
                 // Space invisible?
-                if ($space->visibility == Space::VISIBILITY_NONE) {
+                if ($this->space->visibility == Space::VISIBILITY_NONE) {
                     // Not Space Member
                     throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
                 }
@@ -73,7 +84,7 @@ class SpaceControllerBehavior extends CBehavior
         }
 
         // Delete all pending notifications for this space
-        $notifications = Notification::model()->findAllByAttributes(array('space_id' => $space->id, 'user_id' => Yii::app()->user->id), 'seen != 1');
+        $notifications = Notification::model()->findAllByAttributes(array('space_id' => $this->space->id, 'user_id' => Yii::app()->user->id), 'seen != 1');
         foreach ($notifications as $n) {
             // Ignore Approval Notifications
             if ($n->class == "SpaceApprovalRequestNotification" || $n->class == "SpaceInviteNotification") {
@@ -82,18 +93,15 @@ class SpaceControllerBehavior extends CBehavior
             $n->seen = 1;
             $n->save();
         }
-
-        // Store current space to stash
-        Yii::app()->params['currentSpace'] = $space;
-
-        return $space;
+        
+        
     }
-
-    public function createContainerUrl($route, $params = array(), $ampersand = '&')
+    
+    public function createSpaceUrl($route, $params = array(), $ampersand = '&')
     {
 
         if (!isset($params['sguid'])) {
-            $params['sguid'] = $this->getSpace()->guid;
+            $params['sguid'] = $this->space->guid;
         }
 
         return $this->owner->createUrl($route, $params, $ampersand);

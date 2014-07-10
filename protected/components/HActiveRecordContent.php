@@ -111,6 +111,17 @@ class HActiveRecordContent extends HActiveRecord
         parent::afterDelete();
     }
 
+    /**
+     * After Saving of records of type content, automatically add/bind the
+     * corresponding content to it.
+     * 
+     * If the automatic wall adding (autoAddToWall) is enabled, also create
+     * wall entry for this content.
+     * 
+     * NOTE: If you overwrite this method, e.g. for creating activities ensure
+     * this (parent) implementation is invoked BEFORE your implementation. Otherwise
+     * the Content Object is not available.
+     */
     public function afterSave()
     {
 
@@ -124,7 +135,6 @@ class HActiveRecordContent extends HActiveRecord
 
         $this->content->updated_at = $this->updated_at;
         $this->content->updated_by = $this->updated_by;
-
 
         $this->content->save();
         parent::afterSave();
@@ -195,12 +205,14 @@ class HActiveRecordContent extends HActiveRecord
         $criteria = new CDbCriteria();
         $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
 
-        $containerClass = get_class($container);
-        if ($containerClass == 'Space') {
+        if ($container instanceof Space) {
             $criteria->condition = 'content.space_id=' . $container->id;
-        } elseif ($containerClass == 'User') {
-            $criteria->condition = 'content.user_id=' . $container->id;
+        } elseif ($container instanceof User) {
+            $criteria->condition = 'content.user_id=' . $container->id . ' AND (content.space_id="" OR content.space_id IS NULL)';
+        } else {
+            throw new CException("Could not determine container type!");
         }
+
         $this->getDbCriteria()->mergeWith($criteria);
 
         return $this;

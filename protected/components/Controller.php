@@ -25,38 +25,15 @@
  * @package humhub.components
  * @since 0.5
  */
-class Controller extends EController {
+class Controller extends EController
+{
 
-    /**
-     * @var string the default layout for the controller view. Defaults to '//layouts/column1',
-     * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
-     */
     public $layout = '//layouts/main';
 
     /**
      * @var string the sub layout for the controller view. Defaults to '',
      */
     public $subLayout = '';
-
-    /**
-     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
-     */
-    public $menu = array();
-
-    /**
-     * @var array the breadcrumbs of the current page. The value of this property will
-     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
-     * for more details on how to specify this property.
-     */
-    public $breadcrumbs = array();
-    public $snippets = array();
-
-    /**
-     * Minimum required database version (HSetting)
-     *
-     * @var type
-     */
-    #protected $requiredDbVersion = 28;
 
     /**
      * Inits the controller class.
@@ -67,7 +44,8 @@ class Controller extends EController {
      * - Set Language
      * - Check Database Version
      */
-    public function init() {
+    public function init()
+    {
 
         Yii::app()->interceptor->intercept($this);
 
@@ -108,7 +86,8 @@ class Controller extends EController {
      * Create Redirect for AJAX Requests which output goes into HTML content.
      * Is an alternative method to redirect, for ajax responses.
      */
-    public function htmlRedirect($url = "") {
+    public function htmlRedirect($url = "")
+    {
 
         echo "<script>\n";
 
@@ -139,11 +118,12 @@ class Controller extends EController {
      *
      * @param Array $json
      */
-    protected function renderJson($json=array(), $success=true) {
+    protected function renderJson($json = array(), $success = true)
+    {
 
         if (is_array($json) && !isset($json['success']))
             $json['success'] = $success;
-                
+
         echo CJSON::encode($json);
         Yii::app()->end();
         return;
@@ -152,7 +132,8 @@ class Controller extends EController {
     /**
      * Ensures the current request is a post, when not throw an error
      */
-    public function forcePostRequest() {
+    public function forcePostRequest()
+    {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(500, Yii::t('base', 'Invalid request.'));
         }
@@ -163,7 +144,8 @@ class Controller extends EController {
     /**
      * Closes a modal
      */
-    public function renderModalClose() {
+    public function renderModalClose()
+    {
 
         // close modal to hide the loaded view, which is visible for some seconds, after creation
         echo "<script>";
@@ -175,7 +157,8 @@ class Controller extends EController {
     /**
      * Add a JavaScript to the renderPartial method to fire an event at the body tag, when the view loaded successfully
      */
-    public function renderPartial($view, $data = null, $return = false, $processOutput = false) {
+    public function renderPartial($view, $data = null, $return = false, $processOutput = false)
+    {
 
         if (Yii::app()->request->isAjaxRequest) {
 
@@ -192,12 +175,10 @@ class Controller extends EController {
              * @param3 String actionID
              * @param4 String view path
              */
-
-            Yii::app()->clientScript->registerScript("autoAjaxEventFire","$('body').trigger('ajaxLoaded', ['". $this->id."', '". $moduleID ."', '". $this->action->id ."', '". $view ."']);",CClientScript::POS_END);
+            Yii::app()->clientScript->registerScript("autoAjaxEventFire", "$('body').trigger('ajaxLoaded', ['" . $this->id . "', '" . $moduleID . "', '" . $this->action->id . "', '" . $view . "']);", CClientScript::POS_END);
         }
 
         return parent::renderPartial($view, $data, $return, $processOutput);
     }
-
 
 }

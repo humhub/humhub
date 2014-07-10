@@ -67,7 +67,7 @@ class Content extends CActiveRecord
      *
      * @var IContentContainer
      */
-    protected $_container;
+    protected $_container = null;
 
     /**
      * Inits the content record
@@ -620,11 +620,10 @@ class Content extends CActiveRecord
      */
     public function setContainer($container)
     {
-
         if ($container instanceof Space) {
             $this->space_id = $container->id;
         } elseif ($container instanceof User) {
-            $this->user_id = $container->id;
+            $this->user_id = $container->id;           
         } else {
             throw new CException("Invalid container type!");
         }
@@ -642,15 +641,17 @@ class Content extends CActiveRecord
     public function getContainer()
     {
 
-        if ($this->_container != null)
+        if ($this->_container != null) {
             return $this->_container;
-
-        if ($this->space_id != null)
+        }
+     
+        if ($this->space_id != null) {
             $container = Space::model()->findByPk($this->space_id);
-        elseif ($this->user_id != null)
+        } elseif ($this->user_id != null) {
             $container = User::model()->findByPk($this->user_id);
-        else
+        } else {
             throw new CException("Could not determine container type!");
+        }
 
         $this->_container = $container;
 
