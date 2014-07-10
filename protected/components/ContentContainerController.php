@@ -49,7 +49,7 @@ class ContentContainerController extends Controller
      * Automatically checks permission to access the container
      * before a controller action is called.
      */
-    public $autoCheckContainerAccess = false;
+    public $autoCheckContainerAccess = true;
 
     /**
      * Automatically loads the underlying contentContainer (User/Space) by using
@@ -91,13 +91,23 @@ class ContentContainerController extends Controller
             ));
 
             $this->subLayout = "application.modules_core.user.views.profile._layout";
+        } else {
+            throw new CHttpException(500, Yii::t('base', 'Could not determine content container!'));
         }
 
+        /**
+         * Auto check access rights to this container
+         */
         if ($this->contentContainer != null) {
             if ($this->autoCheckContainerAccess) {
                 $this->checkContainerAccess();
             }
         }
+
+        if (!$this->checkModuleIsEnabled()) {
+            throw new CHttpException(405, Yii::t('base', 'Module is not on this content container enabled!'));
+        }
+
 
         return parent::init();
     }
@@ -143,6 +153,20 @@ class ContentContainerController extends Controller
         } elseif ($this->contentContainer instanceof Space) {
             $this->getOwner()->checkAccess();
         }
+    }
+
+    /**
+     * Checks if current module is enabled on this content container.
+     * 
+     * @return boolean
+     */
+    public function checkModuleIsEnabled()
+    {
+        $module = $this->getModule();
+        if ($module != null && $module instanceof HWebModule && !$module->isCoreModule) {
+            return $this->contentContainer->isModuleEnabled($module->getId());
+        }
+        return true;
     }
 
 }
