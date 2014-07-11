@@ -52,7 +52,7 @@
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a href="<?php echo $this->createUrl('//user/profile', array('guid' => Yii::app()->user->guid)); ?>"><i
+                                <a href="<?php echo $this->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid)); ?>"><i
                                         class="fa fa-user"></i> <?php echo Yii::t('UserModule.base', 'My profile'); ?>
                                 </a>
                             </li>

@@ -132,9 +132,9 @@
                 <?php
                 if (!$isProfileOwner) {
                     if ($user->isFollowedBy(Yii::app()->user->id)) {
-                        print CHtml::link("Unfollow", $this->createUrl('profile/unfollow', array('guid' => $user->guid)), array('class' => 'btn btn-primary'));
+                        print CHtml::link("Unfollow", $this->createUrl('profile/unfollow', array('uguid' => $user->guid)), array('class' => 'btn btn-primary'));
                     } else {
-                        print CHtml::link("Follow", $this->createUrl('profile/follow', array('guid' => $user->guid)), array('class' => 'btn btn-success'));
+                        print CHtml::link("Follow", $this->createUrl('profile/follow', array('uguid' => $user->guid)), array('class' => 'btn btn-success'));
                     }
                 }
                 ?>
@@ -143,7 +143,7 @@
                 <!-- start: Edit profile -->
                 <?php if ($isProfileOwner) { ?>
                     <!-- Edit user account (if this is your profile) -->
-                    <a href="<?php echo $this->createUrl('//user/account/edit', array('guid' => $user->guid)); ?>"
+                    <a href="<?php echo $this->createUrl('//user/account/edit'); ?>"
                        id="edit_profile" class="btn btn-primary">Edit account</a>
                    <?php } ?>
                 <!-- end: Edit profile -->

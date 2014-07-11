@@ -19,10 +19,21 @@ return array(
             'urlFormat' => 'get',
             'showScriptName' => true,
             'rules' => array(
+                array(
+                    'class' => 'application.modules_core.space.components.SpaceUrlRule',
+                    'connectionId' => 'db',
+                ),
+                array(
+                    'class' => 'application.modules_core.user.components.UserUrlRule',
+                    'connectionId' => 'db',
+                ),
+                '/' => '//',
+                'dashboard' => 'dashboard/dashboard',
+                'directory/members' => 'directory/directory/members',
+                'directory/spaces' => 'directory/directory/spaces',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-                '/' => '//'
             ),
         ),
         'moduleManager' => array(

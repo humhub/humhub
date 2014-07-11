@@ -20,7 +20,7 @@
 
         <div class="panel-body">
             <?php foreach ($spaces as $space): ?>
-                <a href="<?php echo Yii::app()->createUrl('//space/space', array('guid' => $space->guid)); ?>">
+                <a href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid)); ?>">
                     <img src="<?php echo $space->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
