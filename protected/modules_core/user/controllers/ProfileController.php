@@ -109,12 +109,10 @@ class ProfileController extends Controller {
             $model->attributes = $_POST['CropProfileImageForm'];
             if ($model->validate()) {
                 $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-                $this->htmlRedirect($this->createUrl('//user/profile')); //redirect($this->createUrl('//user/account/edit'));
+                $this->htmlRedirect($this->createUrl('//user/profile', array('uguid'=>Yii::app()->user->guid)));
             }
         }
-
-        //$this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
-
+        
         $output = $this->renderPartial('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
         Yii::app()->clientScript->render($output);
         echo $output;
@@ -132,8 +130,7 @@ class ProfileController extends Controller {
         $model = new UploadProfileImageForm();
 
         $json = array();
-
-        //$model->image = CUploadedFile::getInstance($model, 'image');
+        
         $files = CUploadedFile::getInstancesByName('bannerfiles');
         $file = $files[0];
         $model->image = $file;
@@ -177,11 +174,9 @@ class ProfileController extends Controller {
             $model->attributes = $_POST['CropProfileImageForm'];
             if ($model->validate()) {
                 $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-                $this->htmlRedirect($this->createUrl('//user/profile')); //redirect($this->createUrl('//user/account/edit'));
+                $this->htmlRedirect($this->createUrl('//user/profile', array('uguid'=>Yii::app()->user->guid)));
             }
         }
-
-        //$this->render('cropImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
 
         $output = $this->renderPartial('cropBannerImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()));
         Yii::app()->clientScript->render($output);
