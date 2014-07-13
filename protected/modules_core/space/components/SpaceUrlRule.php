@@ -33,8 +33,8 @@ class SpaceUrlRule extends CBaseUrlRule
     {
 
         if (isset($params['sguid'])) {
-            if ($route == 'space/space') {
-                $route = "";
+            if ($route == 'space/space' || $route == 'space/space/index') {
+                $route = "home";
             }
             $url = "s/" . urlencode($params['sguid']) . "/" . $route;
             unset($params['sguid']);
@@ -55,10 +55,10 @@ class SpaceUrlRule extends CBaseUrlRule
                 if ($space !== null) {
                     
                     $_GET['sguid'] = $space->guid;
-                    if (isset($parts[2])) {
-                        return $parts[2];
+                    if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
+                        return 'space/space/index';
                     } else {
-                        return 'space/space';
+                        return $parts[2];
                     }
                 } else {
                     throw new CHttpException('404', Yii::t('SpaceModule.base', 'Space not found!'));
