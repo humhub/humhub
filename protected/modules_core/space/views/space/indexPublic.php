@@ -21,11 +21,13 @@
                         <?php } ?>
                         <br/>
                         <!-- start: space tags -->
+                        <?php if(count($space->getTags()) > 1 ) : ?>
                         <div class="tags">
                             <?php foreach ($space->getTags() as $tag) { ?>
                                 <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag, 'areas' => array('Space'))), array('class' => 'btn btn-default btn-xs tag')); ?>
                             <?php } ?>
                         </div>
+                        <?php endif; ?>
                         <!-- end: space tags -->
                         <br/>
                         <?php
