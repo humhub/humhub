@@ -215,7 +215,11 @@ class AdminController extends Controller
 
         if ($user != null) {
             $space->removeMember($user->id);
+
+            // send notification only the recipient decline the invitation
+            if (Yii::app()->user->id == $user->id) {
             SpaceApprovalRequestDeclinedNotification::fire(Yii::app()->user->id, $user, $space);
+            }
         }
 
         $this->redirect($space->getUrl());
