@@ -117,28 +117,28 @@ $(document).ready(function() {
         $('#profile-image-upload-buttons').show();
     })
 
-// show buttons also at buttons rollover (better: prevent the mouseleave event)
+    // show buttons also at buttons rollover (better: prevent the mouseleave event)
     $('#profile-image-upload-buttons').mouseover(function() {
         $('#profile-image-upload-buttons').show();
     })
 
-// hide buttons at image mouse leave
+    // hide buttons at image mouse leave
     $('#profilefileupload').mouseleave(function() {
         $('#profile-image-upload-buttons').hide();
     })
 
 
-// show buttons at image rollover
+    // show buttons at image rollover
     $('#bannerfileupload, .img-profile-data').mouseover(function() {
         $('#banner-image-upload-buttons').show();
     })
 
-// show buttons also at buttons rollover (better: prevent the mouseleave event)
+    // show buttons also at buttons rollover (better: prevent the mouseleave event)
     $('#banner-image-upload-buttons').mouseover(function() {
         $('#banner-image-upload-buttons').show();
     })
 
-// hide buttons at image mouse leave
+    // hide buttons at image mouse leave
     $('#bannerfileupload, .img-profile-data').mouseleave(function() {
         $('#banner-image-upload-buttons').hide();
     })

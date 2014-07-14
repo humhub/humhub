@@ -26,7 +26,8 @@
                 }
                 ?>
 
-                <div class="image-upload-loader" id="banner-image-upload-loader" style="padding: <?php echo $padding ?>;">
+                <div class="image-upload-loader" id="banner-image-upload-loader"
+                     style="padding: <?php echo $padding ?>;">
                     <div class="progress image-upload-progess-bar" id="banner-image-upload-bar">
                         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="00"
                              aria-valuemin="0"
@@ -35,12 +36,16 @@
                     </div>
                 </div>
 
-                <div class="img-profile-data">
-                    <h1><?php echo $user->displayName; ?></h1>
+            <?php } ?>
 
-                    <h2><?php echo $user->profile->title; ?></h2>
-                </div>
+            <!-- show user name and title -->
+            <div class="img-profile-data">
+                <h1><?php echo $user->displayName; ?></h1>
+                <h2><?php echo $user->profile->title; ?></h2>
+            </div>
 
+            <!-- check if the current user is the profile owner and can change the images -->
+            <?php if ($isProfileOwner) { ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
                     <a href="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
@@ -54,7 +59,9 @@
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                 </div>
+
             <?php } ?>
+
 
         </div>
 
@@ -145,7 +152,7 @@
                     <!-- Edit user account (if this is your profile) -->
                     <a href="<?php echo $this->createUrl('//user/account/edit'); ?>"
                        id="edit_profile" class="btn btn-primary">Edit account</a>
-                   <?php } ?>
+                <?php } ?>
                 <!-- end: Edit profile -->
             </div>
 
