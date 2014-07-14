@@ -1,7 +1,7 @@
 <?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>
 
-<?php echo Yii::t('CommentModule.activity', "<strong>%displayName%</strong> wrote a new comment ", array(
-    '%displayName%' => $user->displayName
+<?php echo Yii::t('CommentModule.activity', "%displayName% wrote a new comment ", array(
+    '%displayName%' => '<strong>'. $user->displayName .'</strong>'
 ));
 ?>
 "<?php

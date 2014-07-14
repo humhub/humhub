@@ -1,5 +1,6 @@
 <?php $this->beginContent('application.modules_core.notification.views.notificationLayout', array('notification' => $notification, 'iconClass' => 'fa fa-check-circle approval accepted')); ?>
-<?php echo Yii::t('SpaceModule.notifications', '<strong>{userName}</strong> accepted your invite for the space <strong>{spaceName}</strong>', array(
-    '{userName}' => $creator->displayName,
-    '{spaceName}' => $targetObject->name)); ?>
+<?php echo Yii::t('SpaceModule.notifications', '{userName} accepted your invite for the space {spaceName}', array(
+    '{userName}' => '<strong>' . $creator->displayName . '</strong>',
+    '{spaceName}' => '<strong>' . $targetObject->name . '</strong>'
+)); ?>
 <?php $this->endContent(); ?>
