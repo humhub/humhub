@@ -171,11 +171,13 @@
                 if ($newNotifications == 0) {
                     $('#badge-notifications').css('display', 'none');
                     $('#mark-seen-link').css('display', 'none');
+                    $('#icon-notifications .fa').removeClass("animated swing");
                 } else {
                     $('#badge-notifications').empty();
                     $('#badge-notifications').append($newNotifications);
                     $('#mark-seen-link').css('display', 'inline');
                     $('#badge-notifications').fadeIn('fast');
+                    $('#icon-notifications .fa').addClass("animated swing");
                 }
 
             })

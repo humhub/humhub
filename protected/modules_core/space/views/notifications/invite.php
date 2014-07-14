@@ -1,3 +1,5 @@
 <?php $this->beginContent('application.modules_core.notification.views.notificationLayout', array('notification' => $notification)); ?>
-<?php echo Yii::t('SpaceModule.notifications', '{userName} invited you to {spaceName}', array('{userName}' => '<strong>' . $creator->displayName . '</strong>', '{spaceName}' => '<strong>' . $targetObject->name . '</strong>')); ?> 
+<?php echo Yii::t('SpaceModule.notifications', '<strong>{userName}</strong> invited you to the space <strong>{spaceName}</strong>', array(
+    '{userName}' => $creator->displayName,
+    '{spaceName}' => $targetObject->name)); ?>
 <?php $this->endContent(); ?>

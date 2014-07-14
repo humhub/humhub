@@ -1,16 +1,17 @@
-<?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>                    
-
-<strong><?php echo $user->displayName; ?></strong>
+<?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>
 
 <?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?>
-    <?php echo Yii::t('ActivityModule.base', 'joined space'); ?>
-    <strong>
-        <?php echo Helpers::truncateText($workspace->name, 40); ?>
-    </strong>
+
+    <?php echo Yii::t('ActivityModule.base', "<strong>%displayName%</strong> joined the space <strong>%spaceName%</strong>", array(
+        '%displayName%' => $user->displayName,
+        '%spaceName%' => Helpers::truncateText($workspace->name, 40)
+    )); ?>
 
 <?php else: ?>
 
-    <?php echo Yii::t('ActivityModule.base', 'joined this space.'); ?>
+    <?php echo Yii::t('ActivityModule.base', "<strong>%displayName%</strong> joined this space.", array(
+        '%displayName%' => $user->displayName
+    )); ?>
 
 <?php endif; ?>
 

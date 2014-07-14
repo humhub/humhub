@@ -1,4 +1,3 @@
-
 <!-- START NOTIFICATION/ACTIVITY -->
 <tr>
     <td align="center" valign="top" class="fix-box">
@@ -39,9 +38,9 @@
                                                         <a href="<?php echo Yii::app()->createUrl('user/profile', array('guid' => $user->guid)); ?>">
                                                             <img
                                                                 src="<?php echo $activity->content->user->getProfileImage()->getUrl(); ?>"
-                                                                width="69"
-                                                                alt="face1_69x69"
-                                                                style="max-width:69px; display:block !important; border-radius: 4px;"
+                                                                width="50"
+                                                                alt="face1_50x50"
+                                                                style="max-width:50px; display:block !important; border-radius: 4px;"
                                                                 border="0" hspace="0" vspace="0"/>
                                                         </a>
                                                         <!-- END: USER IMAGE -->
@@ -52,47 +51,41 @@
 
                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0"
                                                                align="left">
-                                                            <tr>
-                                                                <td style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left;">
-                                                                    <span style="color: #555555; font-weight: 300;">
-                                                                        <a href="<?php echo Yii::app()->createUrl('user/profile', array('uguid' => $activity->content->guid)); ?>"
-                                                                           style="text-decoration: none; color: #555555; font-weight: 300;">
-                                                                            <!-- START: USER NAME -->
-                                                                            <?php echo $activity->content->user->displayName; ?>
-                                                                            <!-- END: USER NAME -->
-                                                                        </a>
-
-                                                                        <?php if ($activity->content->space != null): ?>
-                                                                            <?php echo Yii::t('ActivityModule.base', 'via'); ?>
-                                                                            <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $activity->content->space->guid)); ?>"
-                                                                               style="text-decoration: none; color: #555555; font-weight: 300;">
-                                                                                   <?php echo$activity->content->space->name; ?>
-                                                                            </a>
-                                                                        <?php endif; ?>
-
-
-
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-
-                                                            <!--start space height -->
-                                                            <tr>
-                                                                <td height="10"></td>
-                                                            </tr>
-                                                            <!--end space height -->
 
                                                             <tr>
-                                                                <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#a3a2a2; font-weight:300; text-align:left; ">
+                                                                <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left; ">
 
+                                                                    <!-- content output-->
                                                                     <?php echo $content; ?>
 
-                                                                    <!-- START: CONTENT LINK -->
-                                                                    <span
-                                                                        style="text-decoration: none; color: #7191a8;"><a
-                                                                            href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($activity->getUnderlyingObject()), 'id' => $activity->getUnderlyingObject()->getPrimaryKey())); ?>"
-                                                                            style="text-decoration: none; color: #7191a8; "><strong><?php echo Yii::t('ActivityModule.base', 'Read online...'); ?></strong></a></span>
-                                                                    <!-- END: CONTENT LINK -->
+                                                                    <!-- check if variable exists and is true -->
+                                                                    <?php if (!empty($showSpace)) : ?>
+
+                                                                        <!-- check if variable is true -->
+                                                                        <?php if ($showSpace == true) : ?>
+
+                                                                            <!-- check if activity object has a space -->
+                                                                            <?php if ($activity->content->space != null): ?>
+                                                                                (<?php echo Yii::t('ActivityModule.base', 'via'); ?>
+                                                                                <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $activity->content->space->guid)); ?>"
+                                                                                   style="text-decoration: none; color: #555555;">
+                                                                                    <?php echo $activity->content->space->name; ?>
+                                                                                </a>)
+                                                                            <?php endif; ?>
+
+
+                                                                            <!-- START: CONTENT LINK -->
+                                                                            <span
+                                                                                style="text-decoration: none; color: #7191a8;"> - <a
+                                                                                    href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($activity->getUnderlyingObject()), 'id' => $activity->getUnderlyingObject()->getPrimaryKey())); ?>"
+                                                                                    style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.base', 'see online'); ?></a></span>
+                                                                            <!-- END: CONTENT LINK -->
+                                                                        <?php else : ?>
+
+                                                                        <?php endif; ?>
+
+                                                                    <?php endif; ?>
+
 
                                                                 </td>
                                                             </tr>
