@@ -55,7 +55,7 @@ class SpaceControllerBehavior extends CBehavior
         // Try Load the space
         $this->space = Space::model()->findByAttributes(array('guid' => $guid));
         if ($this->space == null)
-            throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space not found!'));
+            throw new CHttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
 
         $this->checkAccess();
 
@@ -78,7 +78,7 @@ class SpaceControllerBehavior extends CBehavior
                 // Space invisible?
                 if ($this->space->visibility == Space::VISIBILITY_NONE) {
                     // Not Space Member
-                    throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
+                    throw new CHttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space is invisible!'));
                 }
             }
         }

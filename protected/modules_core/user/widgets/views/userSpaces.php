@@ -15,7 +15,7 @@
         <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-spaces-panel')); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Member</strong> in these spaces'); ?>
+            <?php echo Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces'); ?>
         </div>
 
         <div class="panel-body">

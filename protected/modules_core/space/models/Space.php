@@ -185,7 +185,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
-            'updated_by' => Yii::t('base', 'Updated by'),
+            'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => 'Owner',
         );
     }

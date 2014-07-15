@@ -28,7 +28,7 @@ class ProfileFieldTypeTextArea extends ProfileFieldType {
         return parent::getFormDefinition(array(
                     get_class($this) => array(
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.base', 'Text area field options'),
+                        'title' => Yii::t('UserModule.models_ProfileFieldTypeTextArea', 'Text area field options'),
                         'elements' => array(
                         )
         )));

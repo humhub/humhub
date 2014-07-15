@@ -15,11 +15,11 @@
 
 
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Delete</strong> group'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_delete', '<strong>Delete</strong> group'); ?></div>
     <div class="panel-body">
 
 <p>
-<?php echo Yii::t('AdminModule.base', 'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:', array('{group}' => $group->name)); ?>
+<?php echo Yii::t('AdminModule.views_group_delete', 'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:', array('{group}' => $group->name)); ?>
 </p>
 
 
@@ -50,7 +50,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
 
 <hr>
-<?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Delete group'), array('class' => 'btn btn-danger')); ?>
+<?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_delete', 'Delete group'), array('class' => 'btn btn-danger')); ?>
 
 
 

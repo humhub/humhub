@@ -68,7 +68,7 @@ class ContentContainerController extends Controller
             $this->contentContainer = Space::model()->findByAttributes(array('guid' => $spaceGuid));
 
             if ($this->contentContainer == null) {
-                throw new CHttpException(404, Yii::t('SpaceModule.base', 'Space not found!'));
+                throw new CHttpException(404, Yii::t('base', 'Space not found!'));
             }
 
             $this->attachBehavior('SpaceControllerBehavior', array(
@@ -82,7 +82,7 @@ class ContentContainerController extends Controller
             $this->contentContainer = User::model()->findByAttributes(array('guid' => $userGuid));
 
             if ($this->contentContainer == null) {
-                throw new CHttpException(404, Yii::t('UserModule.base', 'Space not found!'));
+                throw new CHttpException(404, Yii::t('base', 'User not found!'));
             }
 
             $this->attachBehavior('ProfileControllerBehavior', array(

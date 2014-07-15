@@ -24,7 +24,7 @@ class StatisticSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'trackingHtmlCode' => Yii::t('AdminModule.base', 'HTML tracking code'),
+            'trackingHtmlCode' => Yii::t('AdminModule.forms_StatisticSettingsForm', 'HTML tracking code'),
         );
     }
 

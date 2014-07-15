@@ -21,14 +21,14 @@ class SpaceAdminMenuWidget extends MenuWidget {
 
         $this->addItemGroup(array(
             'id' => 'admin',
-            'label' => Yii::t('SpaceModule.base', '<strong>Space</strong> preferences'),
+            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', '<strong>Space</strong> preferences'),
             'sortOrder' => 100,
         ));
 
         // check user rights
         if ($space->isAdmin()) {
             $this->addItem(array(
-                'label' => Yii::t('SpaceModule.base', 'General'),
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'General'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/edit', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="fa fa-cogs"></i>',
@@ -40,7 +40,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
         // check user rights
         if ($space->isAdmin()) {
             $this->addItem(array(
-                'label' => Yii::t('SpaceModule.base', 'Members'),
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/members', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="fa fa-group"></i>',
@@ -52,7 +52,7 @@ class SpaceAdminMenuWidget extends MenuWidget {
         // check user rights
         if ($space->isAdmin()) {
             $this->addItem(array(
-                'label' => Yii::t('SpaceModule.base', 'Modules'),
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Modules'),
                 'group' => 'admin',
                 'url' => Yii::app()->createUrl('//space/admin/modules', array('sguid' => $spaceGuid)),
                 'icon' => '<i class="fa fa-rocket"></i>',
@@ -62,19 +62,19 @@ class SpaceAdminMenuWidget extends MenuWidget {
         }
 
 #        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.base', 'Archive'),
+#            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Archive'),
 #            'url' => Yii::app()->createUrl('//space/admin/archive', array('sguid'=>$spaceGuid)),
 #            'sortOrder' => 400,
 #            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "archive"),
 #        ));
 #        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.base', 'Delete'),
+#            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Delete'),
 #            'url' => Yii::app()->createUrl('//space/admin/delete', array('sguid'=>$spaceGuid)),
 #            'sortOrder' => 500,
 #            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "delete"),
 #        ));
 #        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.base', 'Back to workspace'),
+#            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Back to workspace'),
 #            'url' => Yii::app()->createUrl('//space/space', array('sguid'=>$spaceGuid)),
 #            'sortOrder' => 1000,
 #        ));

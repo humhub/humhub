@@ -48,7 +48,7 @@ class ProfileControllerBehavior extends CBehavior
         $this->user = User::model()->findByAttributes(array('guid' => $guid));
 
         if ($this->user == null)
-            throw new CHttpException(404, Yii::t('base', 'User not found!'));
+            throw new CHttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'User not found!'));
 
         $this->checkAccess();
         

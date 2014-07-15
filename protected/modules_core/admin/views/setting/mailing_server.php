@@ -1,13 +1,13 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.mailing', '<strong>Mailing</strong> settings'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_mailing_server', '<strong>Mailing</strong> settings'); ?></div>
     <div class="panel-body">
 
         <ul class="nav nav-pills">
             <li><a
-                    href="<?php echo $this->createUrl('mailing'); ?>"><?php echo Yii::t('AdminModule.mailing', 'Defaults'); ?></a>
+                    href="<?php echo $this->createUrl('mailing'); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing_server', 'Defaults'); ?></a>
             </li>
             <li class="active">
-                <a href="<?php echo $this->createUrl('mailingServer'); ?>"><?php echo Yii::t('AdminModule.mailing', 'Server Settings'); ?></a>
+                <a href="<?php echo $this->createUrl('mailingServer'); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing_server', 'Server Settings'); ?></a>
             </li>
         </ul>
         <br />
@@ -40,7 +40,7 @@
 
         <div id="smtpOptions">
             <hr>
-            <h4> <?php echo Yii::t('AdminModule.base', 'SMTP Options'); ?> </h4>
+            <h4> <?php echo Yii::t('AdminModule.views_setting_mailing_server', 'SMTP Options'); ?> </h4>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'hostname'); ?>
@@ -68,7 +68,7 @@
             </div>
         </div>
         <hr>
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_mailing_server', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>

@@ -87,7 +87,7 @@ class File extends HActiveRecordContentAddon {
             array('created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('guid, size', 'length', 'max' => 45),
             array('mime_type', 'length', 'max' => 150),
-            array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')),
+            array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
             array('file_name, title', 'length', 'max' => 255),
             array('created_at, updated_at', 'safe'),
         );
@@ -98,16 +98,16 @@ class File extends HActiveRecordContentAddon {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('base', 'ID'),
-            'guid' => Yii::t('base', 'Guid'),
-            'file_name' => Yii::t('FileModule.base', 'File name'),
-            'title' => Yii::t('FileModule.base', 'Title'),
-            'mime_type' => Yii::t('FileModule.base', 'Mime Type'),
-            'size' => Yii::t('FileModule.base', 'Size'),
-            'created_at' => Yii::t('base', 'Created at'),
-            'created_by' => Yii::t('base', 'Created By'),
-            'updated_at' => Yii::t('base', 'Updated at'),
-            'updated_by' => Yii::t('base', 'Updated by'),
+            'id' => Yii::t('FileModule.models_File', 'ID'),
+            'guid' => Yii::t('FileModule.models_File', 'Guid'),
+            'file_name' => Yii::t('FileModule.models_File', 'File name'),
+            'title' => Yii::t('FileModule.models_File', 'Title'),
+            'mime_type' => Yii::t('FileModule.models_File', 'Mime Type'),
+            'size' => Yii::t('FileModule.models_File', 'Size'),
+            'created_at' => Yii::t('FileModule.models_File', 'Created at'),
+            'created_by' => Yii::t('FileModule.models_File', 'Created By'),
+            'updated_at' => Yii::t('FileModule.models_File', 'Updated at'),
+            'updated_by' => Yii::t('FileModule.models_File', 'Updated by'),
         );
     }
 

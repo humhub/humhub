@@ -88,7 +88,7 @@ class ModuleController extends Controller
         $module = Yii::app()->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $module->enable();
@@ -110,7 +110,7 @@ class ModuleController extends Controller
         $module = Yii::app()->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $module->disable();
@@ -154,11 +154,11 @@ class ModuleController extends Controller
             $module = Yii::app()->moduleManager->getModule($moduleId);
 
             if ($module == null) {
-                throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
+                throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
             }
 
             if (!is_writable($module->getPath())) {
-                throw new CHttpException(500, Yii::t('AdminModule.modules', 'Module path %path% is not writeable!', array('%path%' => $module->getPath())));
+                throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', array('%path%' => $module->getPath())));
             }
 
             $module->uninstall();
@@ -180,11 +180,11 @@ class ModuleController extends Controller
         $module = Yii::app()->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         if (!Yii::app()->moduleManager->canUninstall($moduleId)) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not uninstall module first! Module is protected.'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not uninstall module first! Module is protected.'));
         }
 
         $onlineModules = new OnlineModuleManager();
@@ -239,7 +239,7 @@ class ModuleController extends Controller
         $module = Yii::app()->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $readmeMd = "";
@@ -265,7 +265,7 @@ class ModuleController extends Controller
         $moduleInfo = $onlineModules->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestVersion'])) {
-            throw new CException(Yii::t('AdminModule.modules', "No module version found!"));
+            throw new CException(Yii::t('AdminModule.controllers_ModuleController', "No module version found!"));
         }
 
         $this->renderPartial('info', array('name' => $moduleInfo['latestVersion']['name'], 'description' => $moduleInfo['latestVersion']['description'], 'content' => $moduleInfo['latestVersion']['README.md']), false, true);

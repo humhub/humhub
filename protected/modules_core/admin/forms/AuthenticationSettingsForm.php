@@ -28,10 +28,10 @@ class AuthenticationSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.authentication', 'Require group admin approval after registration'),
-            'internalAllowAnonymousRegistration' => Yii::t('AdminModule.authentication', 'Anonymous users can register'),
-            'internalUsersCanInvite' => Yii::t('AdminModule.authentication', 'Members can invite external users by email'),
-            'defaultUserGroup' => Yii::t('AdminModule.authentication', 'Default user group for new users'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Require group admin approval after registration'),
+            'internalAllowAnonymousRegistration' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Anonymous users can register'),
+            'internalUsersCanInvite' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Members can invite external users by email'),
+            'defaultUserGroup' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user group for new users'),
         );
     }
 

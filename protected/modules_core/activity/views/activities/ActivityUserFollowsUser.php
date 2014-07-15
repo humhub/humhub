@@ -9,7 +9,7 @@
 ?>
 <?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>
 
-<?php echo Yii::t('ActivityModule.base', '{user1} now follows {user2}.', array(
+<?php echo Yii::t('ActivityModule.views_activities_ActivityUserFollowsUser', '{user1} now follows {user2}.', array(
     '{user1}' => '<strong>' . $user->displayName . '</strong>',
     '{user2}' => '<strong>' . $target->displayName . '</strong>',
 ));

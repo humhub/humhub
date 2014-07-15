@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Manage</strong> user profiles'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_index', '<strong>Manage</strong> user profiles'); ?></div>
     <div class="panel-body">
 
         <?php echo HHtml::link('Add new category', $this->createUrl('//admin/userprofile/editCategory'), array('class' => 'btn btn-primary')); ?>

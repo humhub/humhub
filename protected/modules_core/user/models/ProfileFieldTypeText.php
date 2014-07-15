@@ -75,7 +75,7 @@ class ProfileFieldTypeText extends ProfileFieldType {
         return parent::getFormDefinition(array(
                     get_class($this) => array(
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.base', 'Text Field Options'),
+                        'title' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Text Field Options'),
                         'elements' => array(
                             'maxLength' => array(
                                 'type' => 'text',

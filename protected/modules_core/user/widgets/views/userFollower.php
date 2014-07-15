@@ -16,7 +16,7 @@
         <!-- Display panel menu widget -->
         <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'profile-follower-panel')); ?>
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>User</strong> followers'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers'); ?></div>
 
         <div class="panel-body">
             <?php foreach ($follower as $user): ?>
@@ -40,7 +40,7 @@
 
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Following</strong> user'); ?>
+            <?php echo Yii::t('UserModule.widgets_views_userFollower', '<strong>Following</strong> user'); ?>
         </div>
 
         <div class="panel-body">

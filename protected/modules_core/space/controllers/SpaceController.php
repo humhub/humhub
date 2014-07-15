@@ -137,7 +137,7 @@ class SpaceController extends Controller
         $space = $this->getSpace();
 
         if (!$space->isMember()) {
-            throw new CHttpException(404, Yii::t('SpaceModule.base', 'This action is only available for workspace members!'));
+            throw new CHttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
         $maxResults = 10;
@@ -192,7 +192,7 @@ class SpaceController extends Controller
         $space = $this->getSpace();
 
         if (!$space->canJoin(Yii::app()->user->id))
-            throw new CHttpException(500, Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
+            throw new CHttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'You are not allowed to join this space!'));
 
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
             // Redirect to Membership Request Form
@@ -215,7 +215,7 @@ class SpaceController extends Controller
 
         // Check if we have already some sort of membership
         if ($space->getMembership(Yii::app()->user->id) != null) {
-            throw new CHttpException(500, Yii::t('SpaceModule.base', 'Could not request membership!'));
+            throw new CHttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'Could not request membership!'));
         }
 
         $model = new SpaceRequestMembershipForm;
@@ -258,7 +258,7 @@ class SpaceController extends Controller
         $space = $this->getSpace();
 
         if ($space->isSpaceOwner()) {
-            throw new CHttpException(500, Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!'));
+            throw new CHttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'As owner you cannot revoke your membership!'));
         }
 
         $space->removeMember();
@@ -324,7 +324,7 @@ class SpaceController extends Controller
         // Load Pending Membership
         $membership = SpaceMembership::model()->findByAttributes(array('user_id' => Yii::app()->user->id, 'space_id' => $space->id));
         if ($membership == null) {
-            throw new CHttpException(404, Yii::t('SpaceModule.base', 'There is no pending invite!'));
+            throw new CHttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'There is no pending invite!'));
         }
 
         // Check there are really an Invite

@@ -85,22 +85,22 @@ class ProfileFieldCategory extends HActiveRecord
         /**
          * Hack for Yii Messages Command
          * 
-         * Yii::t('UserModule.profile', 'General')
-         * Yii::t('UserModule.profile', 'Communication')
-         * Yii::t('UserModule.profile', 'Social bookmarks')
+         * Yii::t('UserModule.models_ProfileFieldCategory', 'General')
+         * Yii::t('UserModule.models_ProfileFieldCategory', 'Communication')
+         * Yii::t('UserModule.models_ProfileFieldCategory', 'Social bookmarks')
          */
         return array(
-            'id' => Yii::t('base', 'ID'),
-            'title' => Yii::t('base', 'Title'),
-            'description' => Yii::t('base', 'Description'),
-            'sort_order' => Yii::t('base', 'Sort order'),
-            'module_id' => Yii::t('base', 'Module'),
-            'visibility' => Yii::t('UserModule.profile', 'Visibility'),
-            'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
-            'created_at' => Yii::t('base', 'Created at'),
-            'created_by' => Yii::t('base', 'Created by'),
-            'updated_at' => Yii::t('base', 'Updated at'),
-            'updated_by' => Yii::t('base', 'Updated by'),
+            'id' => Yii::t('UserModule.models_ProfileFieldCategory', 'ID'),
+            'title' => Yii::t('UserModule.models_ProfileFieldCategory', 'Title'),
+            'description' => Yii::t('UserModule.models_ProfileFieldCategory', 'Description'),
+            'sort_order' => Yii::t('UserModule.models_ProfileFieldCategory', 'Sort order'),
+            'module_id' => Yii::t('UserModule.models_ProfileFieldCategory', 'Module'),
+            'visibility' => Yii::t('UserModule.models_ProfileFieldCategory', 'Visibility'),
+            'translation_category' => Yii::t('UserModule.models_ProfileFieldCategory', 'Translation Category ID'),
+            'created_at' => Yii::t('UserModule.models_ProfileFieldCategory', 'Created at'),
+            'created_by' => Yii::t('UserModule.models_ProfileFieldCategory', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_ProfileFieldCategory', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_ProfileFieldCategory', 'Updated by'),
         );
     }
 

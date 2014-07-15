@@ -316,7 +316,7 @@ class ModuleManager extends CApplicationComponent
             $module = $this->getModule($moduleId);
 
             if ($module == null) {
-                throw new CException(Yii::t('AdminModule.modules', 'Could not find requested module!'));
+                throw new CException(Yii::t('base', 'Could not find requested module!'));
             }
 
             if ($module->isCoreModule) {

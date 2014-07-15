@@ -9,11 +9,11 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', "<strong>Request</strong> space membership"); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_requestMembership', "<strong>Request</strong> space membership"); ?></h4>
         </div>
         <div class="modal-body">
 
-            <?php echo Yii::t('SpaceModule.base', 'Please shortly introduce yourself, to become an approved member of this space.'); ?>
+            <?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Please shortly introduce yourself, to become an approved member of this space.'); ?>
 
             <br/>
             <br/>
@@ -29,7 +29,7 @@
         <div class="modal-footer">
             <hr/>
             <?php
-            echo CHtml::ajaxButton(Yii::t('SpaceModule.base', 'Send'), array('//space/space/requestMembershipForm', 'sguid' => $space->guid), array(
+            echo CHtml::ajaxButton(Yii::t('SpaceModule.views_space_requestMembership', 'Send'), array('//space/space/requestMembershipForm', 'sguid' => $space->guid), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ jQuery("#send-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
@@ -38,7 +38,7 @@
 
 
             <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>
+                    data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Close'); ?></button>
 
             <div class="col-md-1 modal-loader">
                 <div id="send-loader" class="loader loader-small hidden"></div>

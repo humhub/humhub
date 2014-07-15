@@ -617,7 +617,7 @@ td[class="image-124px"] img{
                                                     <td width="auto"  align="center" valign="middle" height="28" style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
                              <span style="color: #555555; font-weight: 300;">
-                               <?php echo Yii::t('UserModule.mails', '<strong>Confirm</strong></strong> your new email address'); ?>
+                               <?php echo Yii::t('UserModule.views_mails_ChangeEmail', '<strong>Confirm</strong></strong> your new email address'); ?>
                              </span>
                                                     </td>
                                                 </tr>
@@ -683,9 +683,9 @@ td[class="image-124px"] img{
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.base', 'Hello'); ?> <?php echo $user->displayName; ?>,<br><br>
+                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Hello'); ?> <?php echo $user->displayName; ?>,<br><br>
 
-                                                        <?php echo Yii::t('UserModule.mails', 'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.', array('{newemail}' => $newEmail)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.', array('{newemail}' => $newEmail)); ?>
 
                                                     </td>
                                                 </tr>
@@ -712,7 +712,7 @@ td[class="image-124px"] img{
 
                              <span style="color: #ffffff; font-weight: 300;">
                                <a href="<?php echo Yii::app()->createAbsoluteUrl("//user/account/changeEmailValidate", array('email'=>$newEmail, 'token'=>$token)); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                   <strong><?php echo Yii::t('UserModule.mails', 'Confirm'); ?></strong>
+                                   <strong><?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Confirm'); ?></strong>
                                </a>
                              </span>
                                                     </td>

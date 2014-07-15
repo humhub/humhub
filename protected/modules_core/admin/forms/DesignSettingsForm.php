@@ -31,9 +31,9 @@ class DesignSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'theme' => Yii::t('AdminModule.base', 'Theme'),
-            'paginationSize' => Yii::t('AdminModule.base', 'Default pagination size (Entries per page)'),
-            'displayName' => Yii::t('AdminModule.base', 'Display Name (Format)'),
+            'theme' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Theme'),
+            'paginationSize' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Default pagination size (Entries per page)'),
+            'displayName' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Display Name (Format)'),
         );
     }
 

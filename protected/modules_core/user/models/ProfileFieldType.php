@@ -35,12 +35,12 @@ class ProfileFieldType extends CFormModel
     public static function getFieldTypes()
     {
         return array(
-            'ProfileFieldTypeNumber' => Yii::t('UserModule.base', 'Number'),
-            'ProfileFieldTypeText' => Yii::t('UserModule.base', 'Text'),
-            'ProfileFieldTypeTextArea' => Yii::t('UserModule.base', 'Text Area'),
-            'ProfileFieldTypeSelect' => Yii::t('UserModule.base', 'Select List'),
-            'ProfileFieldTypeDateTime' => Yii::t('UserModule.base', 'Datetime'),
-            'ProfileFieldTypeBirthday' => Yii::t('UserModule.base', 'Birthday'),
+            'ProfileFieldTypeNumber' => Yii::t('UserModule.models_ProfileFieldType', 'Number'),
+            'ProfileFieldTypeText' => Yii::t('UserModule.models_ProfileFieldType', 'Text'),
+            'ProfileFieldTypeTextArea' => Yii::t('UserModule.models_ProfileFieldType', 'Text Area'),
+            'ProfileFieldTypeSelect' => Yii::t('UserModule.models_ProfileFieldType', 'Select List'),
+            'ProfileFieldTypeDateTime' => Yii::t('UserModule.models_ProfileFieldType', 'Datetime'),
+            'ProfileFieldTypeBirthday' => Yii::t('UserModule.models_ProfileFieldType', 'Birthday'),
         );
     }
 

@@ -1,15 +1,15 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.modules', '<strong>Modules</strong> directory'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listUpdates', '<strong>Modules</strong> directory'); ?></div>
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
         <br/>
 
-        <h1><?php echo Yii::t('AdminModules.modules', '<strong>Available</strong> Updates'); ?></h1>
+        <h1><?php echo Yii::t('AdminModules.module_listUpdates', '<strong>Available</strong> Updates'); ?></h1>
 
         <?php if (count($modules) == 0): ?>
 
-            <div><?php echo Yii::t('AdminModules.modules', 'All modules are up to date!'); ?></div>
+            <div><?php echo Yii::t('AdminModules.module_listUpdates', 'All modules are up to date!'); ?></div>
 
         <?php endif; ?>
 
@@ -35,10 +35,10 @@
                     <div class="module-controls">
 
                         <?php if (isset($module['latestCompatibleVersion']) && Yii::app()->moduleManager->isInstalled($module['id'])) : ?>
-                            <?php echo Yii::t('AdminModule.modules', 'Installed version:'); ?> <?php echo Yii::app()->moduleManager->getModule($module['id'])->getVersion(); ?>
-                            &middot; <?php echo Yii::t('AdminModule.modules', 'Latest compatible Version:'); ?> <?php echo $module['latestCompatibleVersion']; ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.modules', 'Update'), $this->createUrl('update', array('moduleId' => $module['id']))); ?>
-                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.modules', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+                            <?php echo Yii::t('AdminModule.views_module_listUpdates', 'Installed version:'); ?> <?php echo Yii::app()->moduleManager->getModule($module['id'])->getVersion(); ?>
+                            &middot; <?php echo Yii::t('AdminModule.views_module_listUpdates', 'Latest compatible Version:'); ?> <?php echo $module['latestCompatibleVersion']; ?>
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listUpdates', 'Update'), $this->createUrl('update', array('moduleId' => $module['id']))); ?>
+                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_listUpdates', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
                         <?php endif; ?>
 
                     </div>

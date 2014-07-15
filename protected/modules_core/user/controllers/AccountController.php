@@ -74,7 +74,7 @@ class AccountController extends Controller
                 Yii::app()->user->reload();
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
 
                 $this->refresh();
 
@@ -139,7 +139,7 @@ class AccountController extends Controller
         $definition['buttons'] = array(
             'save' => array(
                 'type' => 'submit',
-                'label' => Yii::t('UserModule.account', 'Save profile'),
+                'label' => Yii::t('UserModule.controllers_AccountController', 'Save profile'),
                 'class' => 'btn btn-primary'
             ),
         );
@@ -152,7 +152,7 @@ class AccountController extends Controller
             $profile->save();
 
             // set flash message
-            Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+            Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
 
         $this->render('edit', array('form' => $form));
@@ -227,7 +227,7 @@ class AccountController extends Controller
                 $user->setSetting("receive_email_activities", $model->receive_email_activities);
                 $user->setSetting("receive_email_notifications", $model->receive_email_notifications);
 
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
             }
         }
 
@@ -243,7 +243,7 @@ class AccountController extends Controller
 
         $user = User::model()->findByPk(Yii::app()->user->id);
         if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.base', 'You cannot change your e-mail address here.'));
+            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
         }
 
         $model = new AccountChangeEmailForm;
@@ -280,18 +280,18 @@ class AccountController extends Controller
         $user = User::model()->findByPk(Yii::app()->user->id);
 
         if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.base', 'You cannot change your e-mail address here.'));
+            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
         }
 
         // Check if Token is valid
         if (md5(HSetting::Get('secret') . $user->guid . $email) != $token) {
-            throw new CHttpException(404, Yii::t('UserModule.base', 'Invalid link! Please make sure that you entered the entire url.'));
+            throw new CHttpException(404, Yii::t('UserModule.controllers_AccountController', 'Invalid link! Please make sure that you entered the entire url.'));
         }
 
         // Check if E-Mail is in use, e.g. by other user
         $emailAvailablyCheck = User::model()->findByAttributes(array('email' => $email));
         if ($emailAvailablyCheck != null) {
-            throw new CHttpException(404, Yii::t('UserModule.base', 'The entered e-mail address is already in use by another user.'));
+            throw new CHttpException(404, Yii::t('UserModule.controllers_AccountController', 'The entered e-mail address is already in use by another user.'));
         }
 
         $user->email = $email;
@@ -307,7 +307,7 @@ class AccountController extends Controller
     {
 
         if (Yii::app()->user->authMode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.account', 'You cannot change your password here.'));
+            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your password here.'));
         }
 
         $userPassword = new UserPassword('changePassword');

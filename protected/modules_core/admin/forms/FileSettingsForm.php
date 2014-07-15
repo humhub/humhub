@@ -31,10 +31,10 @@ class FileSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'imageMagickPath' => Yii::t('AdminModule.base', 'Image Magick convert command (optional)'),
-            'maxFileSize' => Yii::t('AdminModule.base', 'Maximum upload file size (in MB)'),
-            'useXSendfile' => Yii::t('AdminModule.base', 'Use X-Sendfile for File Downloads'),
-            'forbiddenExtensions' =>  Yii::t('AdminModule.base', 'Forbidden file extensions'),
+            'imageMagickPath' => Yii::t('AdminModule.forms_FileSettingsForm', 'Image Magick convert command (optional)'),
+            'maxFileSize' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum upload file size (in MB)'),
+            'useXSendfile' => Yii::t('AdminModule.forms_FileSettingsForm', 'Use X-Sendfile for File Downloads'),
+            'forbiddenExtensions' =>  Yii::t('AdminModule.forms_FileSettingsForm', 'Forbidden file extensions'),
         );
     }
 
@@ -47,10 +47,10 @@ class FileSettingsForm extends CFormModel {
                 exec($this->$attribute . " --help", $returnIM);
 
                 if (strpos(implode("\n", $returnIM), "ImageMagick") === false) {
-                    $this->addError($attribute, Yii::t('AdminModule.base', "Got invalid image magick response! - Correct command?"));
+                    $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Got invalid image magick response! - Correct command?"));
                 }
             } else {
-                $this->addError($attribute, Yii::t('AdminModule.base', "Convert command not found!"));
+                $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Convert command not found!"));
             }
 
 

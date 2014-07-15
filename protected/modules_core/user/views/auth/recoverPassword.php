@@ -4,7 +4,7 @@
 
     <div class="row">
         <div id="password-recovery-form" class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Password</strong> recovery'); ?></div>
+            <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery'); ?></div>
             <div class="panel-body">
 
 
@@ -16,7 +16,7 @@
                 ));
                 ?>
 
-                <p><?php echo Yii::t('UserModule.base', 'Just enter your e-mail address. We´ll send you a new one!'); ?></p>
+                <p><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you a new one!'); ?></p>
 
                 <div class="form-group">
                     <?php //echo $form->labelEx($model, 'email'); ?>
@@ -31,7 +31,7 @@
                 </div>
 
                 <hr>
-                <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Get new password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo $this->createUrl('//') ?>"><?php echo Yii::t('UserModule.auth', 'Back') ?></a>
+                <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Get new password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo $this->createUrl('//') ?>"><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Back') ?></a>
 
                 <?php $this->endWidget(); ?>
 

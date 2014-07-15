@@ -84,10 +84,10 @@ class UserProfileController extends Controller {
 
         $category = ProfileFieldCategory::model()->findByPk($id);
         if ($category == null)
-            throw new CHttpException(500, Yii::t('UserModule.base', 'Could not load category.'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'Could not load category.'));
 
         if (count($category->fields) != 0)
-            throw new CHttpException(500, Yii::t('UserModule.base', 'You can only delete empty categories!'));
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'You can only delete empty categories!'));
 
         $category->delete();
 
@@ -130,7 +130,7 @@ class UserProfileController extends Controller {
         $definition['buttons'] = array(
             'save' => array(
                 'type' => 'submit',
-                'label' => Yii::t('base', 'Save'),
+                'label' => Yii::t('AdminModule.controllers_UserprofileController', 'Save'),
                 'class' => 'btn btn-primary'
             ),
         );
@@ -138,7 +138,7 @@ class UserProfileController extends Controller {
         if (!$field->isNewRecord && !$field->is_system) {
             $definition['buttons']['delete'] = array(
                 'type' => 'submit',
-                'label' => Yii::t('base', 'Delete'),
+                'label' => Yii::t('AdminModule.controllers_UserprofileController', 'Delete'),
                 'class' => 'btn btn-danger pull-right'
             );
         }

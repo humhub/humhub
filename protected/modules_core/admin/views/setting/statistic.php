@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Statistic</strong> settings'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_statistic', '<strong>Statistic</strong> settings'); ?></div>
     <div class="panel-body">
 
         <?php $form = $this->beginWidget('CActiveForm', array(
@@ -15,7 +15,7 @@
         </div>
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_statistic', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>

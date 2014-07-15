@@ -1,15 +1,15 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', '<strong>Delete</strong> account'); ?>
+    <?php echo Yii::t('UserModule.views_account_delete', '<strong>Delete</strong> account'); ?>
 </div>
 
 <div class="panel-body">
     <?php if ($isSpaceOwner) { ?>
 
-        <?php echo Yii::t('UserModule.base', 'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.'); ?>
+        <?php echo Yii::t('UserModule.views_account_delete', 'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.'); ?>
 
     <?php } else { ?>
 
-        <?php echo Yii::t('UserModule.base', 'Are you sure, that you want to delete your account?<br />All your published content will be removed! '); ?>
+        <?php echo Yii::t('UserModule.views_account_delete', 'Are you sure, that you want to delete your account?<br />All your published content will be removed! '); ?>
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -24,7 +24,7 @@
         <div class="form-group">
             <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 45)); ?>
         </div>
-        <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Delete account'), array('class' => 'btn btn-danger')); ?>
+        <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_delete', 'Delete account'), array('class' => 'btn btn-danger')); ?>
 
 
         <?php $this->endWidget(); ?>

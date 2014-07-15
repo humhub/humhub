@@ -65,7 +65,7 @@
 
                                                                             <!-- check if activity object has a space -->
                                                                             <?php if ($notification->space != null): ?>
-                                                                                (<?php echo Yii::t('ActivityModule.base', 'via'); ?>
+                                                                                (<?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'via'); ?>
                                                                                 <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $notification->space->guid)); ?>"
                                                                                    style="text-decoration: none; color: #555555;">
                                                                                     <?php echo $notification->space->name; ?>
@@ -80,7 +80,7 @@
                                                                     <span
                                                                         style="text-decoration: none; color: #7191a8;"> - <a
                                                                             href="<?php echo $notification->getUrl(); ?>"
-                                                                            style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('NotificationModule.base', 'see online'); ?></a></span>
+                                                                            style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'see online'); ?></a></span>
                                                                     <!-- END: CONTENT LINK -->
 
                                                                 </td>

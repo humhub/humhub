@@ -45,7 +45,7 @@ class AccountDeleteForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'currentPassword' => Yii::t('UserModule.base', 'Your password'),
+            'currentPassword' => Yii::t('UserModule.forms_AccountDeleteForm', 'Your password'),
         );
     }
 

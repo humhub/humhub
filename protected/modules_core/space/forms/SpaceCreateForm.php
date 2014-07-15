@@ -39,8 +39,8 @@ class SpaceCreateForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'title'=>Yii::t('SpaceModule.base', 'Title'),
-			'type'=>Yii::t('SpaceModule.base', 'Type'),
+			'title'=>Yii::t('SpaceModule.forms_SpaceCreateForm', 'Title'),
+			'type'=>Yii::t('SpaceModule.forms_SpaceCreateForm', 'Type'),
 		);
 	}
 
@@ -54,7 +54,7 @@ class SpaceCreateForm extends CFormModel
 		if ($this->$attribute != "") {
 			$space = Space::model()->findByAttributes(array('name'=>$this->title));
 			if ($space !== null) {
-				$this->addError($attribute, Yii::t('SpaceModule.base', "Space title is already in use!"));
+				$this->addError($attribute, Yii::t('SpaceModule.forms_SpaceCreateForm', "Space title is already in use!"));
 			}
 		}
 	}

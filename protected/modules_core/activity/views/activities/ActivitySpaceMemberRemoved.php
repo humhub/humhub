@@ -2,14 +2,14 @@
 
 <?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?>
 
-    <?php echo Yii::t('ActivityModule.base', "%displayName% left the space %spaceName%", array(
+    <?php echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberRemoved', "%displayName% left the space %spaceName%", array(
         '%displayName%' => '<strong>' . $user->displayName . '</strong>',
         '%spaceName%' => '<strong>' . Helpers::truncateText($workspace->name, 40) . '</strong>'
     )); ?>
 
 <?php else: ?>
 
-    <?php echo Yii::t('ActivityModule.base', "%displayName% left this space.", array(
+    <?php echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberRemoved', "%displayName% left this space.", array(
         '%displayName%' => '<strong>' . $user->displayName . '</strong>'
     )); ?>
 

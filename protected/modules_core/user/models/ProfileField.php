@@ -96,7 +96,7 @@ class ProfileField extends HActiveRecord
             array('internal_name', 'length', 'max' => 100),
             array('ldap_attribute, translation_category', 'length', 'max' => 255),
             array('internal_name', 'checkInternalName'),
-            array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.base', 'Only alphanumeric characters allowed!')),
+            array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Only alphanumeric characters allowed!')),
             array('field_type_class', 'checkType'),
             array('description, created_at, updated_at', 'safe'),
         );
@@ -120,25 +120,25 @@ class ProfileField extends HActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id' => Yii::t('base', 'ID'),
-            'profile_field_category_id' => Yii::t('UserModule.profile', 'Profile Field Category'),
-            'module_id' => Yii::t('UserModule.profile', 'Module'),
-            'field_type_class' => Yii::t('UserModule.profile', 'Fieldtype'),
-            'field_type_config' => Yii::t('UserModule.profile', 'Type Config'),
-            'internal_name' => Yii::t('UserModule.profile', 'Internal Name'),
-            'visible' => Yii::t('UserModule.profile', 'Visible'),
-            'editable' => Yii::t('UserModule.profile', 'Editable'),
-            'ldap_attribute' => Yii::t('UserModule.profile', 'LDAP Attribute'),
-            'show_at_registration' => Yii::t('UserModule.profile', 'Show at registration'),
-            'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
-            'required' => Yii::t('base', 'Required'),
-            'title' => Yii::t('base', 'Title'),
-            'description' => Yii::t('base', 'Description'),
-            'sort_order' => Yii::t('base', 'Sort order'),
-            'created_at' => Yii::t('base', 'Created at'),
-            'created_by' => Yii::t('base', 'Created by'),
-            'updated_at' => Yii::t('base', 'Updated at'),
-            'updated_by' => Yii::t('base', 'Updated by'),
+            'id' => Yii::t('UserModule.models_ProfileField', 'ID'),
+            'profile_field_category_id' => Yii::t('UserModule.models_ProfileField', 'Profile Field Category'),
+            'module_id' => Yii::t('UserModule.models_ProfileField', 'Module'),
+            'field_type_class' => Yii::t('UserModule.models_ProfileField', 'Fieldtype'),
+            'field_type_config' => Yii::t('UserModule.models_ProfileField', 'Type Config'),
+            'internal_name' => Yii::t('UserModule.models_ProfileField', 'Internal Name'),
+            'visible' => Yii::t('UserModule.models_ProfileField', 'Visible'),
+            'editable' => Yii::t('UserModule.models_ProfileField', 'Editable'),
+            'ldap_attribute' => Yii::t('UserModule.models_ProfileField', 'LDAP Attribute'),
+            'show_at_registration' => Yii::t('UserModule.models_ProfileField', 'Show at registration'),
+            'translation_category' => Yii::t('UserModule.models_ProfileField', 'Translation Category ID'),
+            'required' => Yii::t('UserModule.models_ProfileField', 'Required'),
+            'title' => Yii::t('UserModule.models_ProfileField', 'Title'),
+            'description' => Yii::t('UserModule.models_ProfileField', 'Description'),
+            'sort_order' => Yii::t('UserModule.models_ProfileField', 'Sort order'),
+            'created_at' => Yii::t('UserModule.models_ProfileField', 'Created at'),
+            'created_by' => Yii::t('UserModule.models_ProfileField', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_ProfileField', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_ProfileField', 'Updated by'),
         );
     }
 
@@ -283,7 +283,7 @@ class ProfileField extends HActiveRecord
             // Dont allow changes of internal_name - Maybe not the best way to check it.
             $currentProfileField = ProfileField::model()->findByPk($this->id);
             if ($this->internal_name != $currentProfileField->internal_name) {
-                $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name could not be changed!'));
+                $this->addError('internal_name', Yii::t('UserModule.models_ProfileField', 'Internal name could not be changed!'));
             }
         } else {
 
@@ -291,7 +291,7 @@ class ProfileField extends HActiveRecord
             $table = Yii::app()->getDb()->getSchema()->getTable(Profile::model()->tableName());
             $columnNames = $table->getColumnNames();
             if (in_array($this->internal_name, $columnNames)) {
-                $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name already in use!'));
+                $this->addError('internal_name', Yii::t('UserModule.models_ProfileField', 'Internal name already in use!'));
             }
         }
     }
@@ -309,11 +309,11 @@ class ProfileField extends HActiveRecord
             // Dont allow changes of internal_name - Maybe not the best way to check it.
             $currentProfileField = ProfileField::model()->findByPk($this->id);
             if ($this->field_type_class != $currentProfileField->field_type_class) {
-                $this->addError('field_type_class', Yii::t('UserModule.profile', 'Field Type could not be changed!'));
+                $this->addError('field_type_class', Yii::t('UserModule.models_ProfileField', 'Field Type could not be changed!'));
             }
         } else {
             if (!key_exists($this->field_type_class, ProfileFieldType::getFieldTypes())) {
-                $this->addError('field_type_class', Yii::t('UserModule.profile', 'Invalid field type!'));
+                $this->addError('field_type_class', Yii::t('UserModule.models_ProfileField', 'Invalid field type!'));
             }
         }
     }

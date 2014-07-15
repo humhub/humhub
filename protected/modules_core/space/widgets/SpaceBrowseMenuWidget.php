@@ -15,20 +15,20 @@ class SpaceBrowseMenuWidget extends MenuWidget {
 
         $this->addItemGroup(array(
             'id' => 'browse',
-            'label' => Yii::t('SpaceModule.base', 'Spaces'),
+            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Spaces'),
             'sortOrder' => 100,
         ));
 
 
         $this->addItem(array(
-            'label' => Yii::t('SpaceModule.base', 'My Space List'),
+            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My Space List'),
             'url' => Yii::app()->createUrl('//space/browse', array()),
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('SpaceModule.base', 'My space summary'),
+            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My space summary'),
             'url' => Yii::app()->createUrl('//dashboard', array()),
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
@@ -36,7 +36,7 @@ class SpaceBrowseMenuWidget extends MenuWidget {
 
 
         $this->addItem(array(
-            'label' => Yii::t('SpaceModule.base', 'Space directory'),
+            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Space directory'),
             'url' => Yii::app()->createUrl('//community/workspaces', array()),
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
@@ -44,13 +44,13 @@ class SpaceBrowseMenuWidget extends MenuWidget {
 
 
 #        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.base', 'Members'),
+#            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Members'),
 #            'url' => Yii::app()->createUrl('//space/space/members', array('sguid'=>$spaceGuid)),
 #            'sortOrder' => 200,
 #            'isActive' => (Yii::app()->controller->id == "space" && Yii::app()->controller->action->id == "members"),
 #        ));
 #        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.base', 'Admin'),
+#            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Admin'),
 #            'url' => Yii::app()->createUrl('//space/admin', array('sguid'=>$spaceGuid)),
 #            'sortOrder' => 9999,
 #            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "index"),

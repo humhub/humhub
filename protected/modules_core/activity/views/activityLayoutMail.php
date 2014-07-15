@@ -66,7 +66,7 @@
 
                                                                             <!-- check if activity object has a space -->
                                                                             <?php if ($activity->content->space != null): ?>
-                                                                                (<?php echo Yii::t('ActivityModule.base', 'via'); ?>
+                                                                                (<?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
                                                                                 <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $activity->content->space->guid)); ?>"
                                                                                    style="text-decoration: none; color: #555555;">
                                                                                     <?php echo $activity->content->space->name; ?>
@@ -78,7 +78,7 @@
                                                                             <span
                                                                                 style="text-decoration: none; color: #7191a8;"> - <a
                                                                                     href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($activity->getUnderlyingObject()), 'id' => $activity->getUnderlyingObject()->getPrimaryKey())); ?>"
-                                                                                    style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.base', 'see online'); ?></a></span>
+                                                                                    style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php else : ?>
 

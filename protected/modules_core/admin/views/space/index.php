@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.space', '<strong>Manage</strong> spaces'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
     <div class="panel-body">
 
         <?php
@@ -23,41 +23,41 @@
                 ),
                 array(
                     'name' => 'name',
-                    'filter' => CHtml::activeTextField($model, 'name', array('placeholder' => Yii::t('AdminModule.space', 'Search for space name'))),
-                    'header' => Yii::t('AdminModule.space', 'Space name'),
+                    'filter' => CHtml::activeTextField($model, 'name', array('placeholder' => Yii::t('AdminModule.views_space_index', 'Search for space name'))),
+                    'header' => Yii::t('AdminModule.views_space_index', 'Space name'),
                 ),
                 array(
                     'name' => 'visibility',
-                    'filter' => array("" => Yii::t('AdminModule.space', 'All'), 0 => Yii::t('AdminModule.space', 'Invisible'), 1 => Yii::t('AdminModule.space', 'Registrated only'), 2 => Yii::t('AdminModule.space', 'All')),
+                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('AdminModule.views_space_index', 'Invisible'), 1 => Yii::t('AdminModule.views_space_index', 'Registrated only'), 2 => Yii::t('AdminModule.views_space_index', 'All')),
                     'value' => function ($data, $row) {
                             if ($data->visibility == Space::VISIBILITY_NONE)
-                                return Yii::t('AdminModule.space', 'Invisible');
+                                return Yii::t('AdminModule.views_space_index', 'Invisible');
                             else if ($data->visibility == Space::VISIBILITY_REGISTERED_ONLY)
-                                return Yii::t('AdminModule.space', 'Registrated only');
+                                return Yii::t('AdminModule.views_space_index', 'Registrated only');
                             else if ($data->visibility == Space::VISIBILITY_ALL)
-                                return Yii::t('AdminModule.space', 'Visible');
+                                return Yii::t('AdminModule.views_space_index', 'Visible');
 
                             return $data->visibility;
                         }
                 ),
                 array(
                     'name' => 'join_policy',
-                    'filter' => array("" => Yii::t('AdminModule.space', 'All'), 0 => Yii::t('AdminModule.space', 'By Invite'), 1 => Yii::t('AdminModule.space', 'Invite / Request'), 2 => Yii::t('AdminModule.space', 'Everbody')),
+                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('AdminModule.views_space_index', 'By Invite'), 1 => Yii::t('AdminModule.views_space_index', 'Invite / Request'), 2 => Yii::t('AdminModule.views_space_index', 'Everbody')),
                     'value' => function ($data, $row) {
                             if ($data->join_policy == Space::JOIN_POLICY_NONE)
-                                return Yii::t('AdminModule.space', 'By invite');
+                                return Yii::t('AdminModule.views_space_index', 'By invite');
                             else if ($data->join_policy == Space::JOIN_POLICY_APPLICATION)
-                                return Yii::t('AdminModule.space', 'Invite & Request');
+                                return Yii::t('AdminModule.views_space_index', 'Invite & Request');
                             else if ($data->join_policy == Space::JOIN_POLICY_FREE)
-                                return Yii::t('AdminModule.space', 'Free');
+                                return Yii::t('AdminModule.views_space_index', 'Free');
 
                             return $data->join_policy;
                         }
                 ),
                 array(
                     'name' => 'ownerUsernameSearch',
-                    'header' => Yii::t('AdminModule.space', 'Space owner'),
-                    'filter' => CHtml::activeTextField($model, 'ownerUsernameSearch', array('placeholder' => Yii::t('AdminModule.space', 'Search for space owner'))),
+                    'header' => Yii::t('AdminModule.views_space_index', 'Space owner'),
+                    'filter' => CHtml::activeTextField($model, 'ownerUsernameSearch', array('placeholder' => Yii::t('AdminModule.views_space_index', 'Search for space owner'))),
                     'value' => function ($data, $row) {
                             if (!$data->owner)
                                 return "-";
@@ -84,7 +84,7 @@
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
                                 'title' => '',
-                                'data-original-title' => Yii::t('AdminModule.space', 'View space'),
+                                'data-original-title' => Yii::t('AdminModule.views_space_index', 'View space'),
                             ),
                         ),
                         'update' => array
@@ -97,7 +97,7 @@
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
                                 'title' => '',
-                                'data-original-title' => Yii::t('AdminModule.space', 'Edit space'),
+                                'data-original-title' => Yii::t('AdminModule.views_space_index', 'Edit space'),
                             ),
                         ),
                         'deleteOwn' => array
@@ -111,7 +111,7 @@
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
                                 'title' => '',
-                                'data-original-title' => Yii::t('AdminModule.user', 'Delete space'),
+                                'data-original-title' => Yii::t('AdminModule.views_space_index', 'Delete space'),
                             ),
                         ),
                     ),

@@ -30,10 +30,10 @@ class BasicSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'name' => Yii::t('AdminModule.setting', 'Name of the application'),
-            'baseUrl' => Yii::t('AdminModule.setting', 'Base URL'),
-            'defaultLanguage' => Yii::t('AdminModule.setting', 'Default language'),
-            'defaultSpaceGuid' => Yii::t('AdminModule.setting', 'Default space'),
+            'name' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Name of the application'),
+            'baseUrl' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Base URL'),
+            'defaultLanguage' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default language'),
+            'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
         );
     }
 
@@ -51,7 +51,7 @@ class BasicSettingsForm extends CFormModel {
                 if ($spaceGuid != "") {
                     $space = Space::model()->findByAttributes(array('guid' => $spaceGuid));
                     if ($space == null) {
-                        $this->addError($attribute, Yii::t('AdminModule.setting', "Invalid space"));
+                        $this->addError($attribute, Yii::t('AdminModule.forms_BasicSettingsForm', "Invalid space"));
                     }
                 }
             }

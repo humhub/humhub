@@ -14,11 +14,11 @@
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'groups-statistics-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>Group</strong> stats'); ?>
+        <?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Total groups'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Total groups'); ?></strong><br><br>
 
             <input id="groups-total" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
                    data-fgcolor="#34c7ff" data-skin="tron"
@@ -36,7 +36,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Average members'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Average members'); ?></strong><br><br>
 
             <input id="group-average" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
                    data-fgcolor="#34c7ff"
@@ -55,7 +55,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Top Group'); ?>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>
                 :</strong> <?php echo $statsTopGroup->name; ?>
         </div>
     </div>

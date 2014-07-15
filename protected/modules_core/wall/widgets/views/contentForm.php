@@ -29,7 +29,7 @@
                 'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
                 'maxUsers' => 10,
                 'userGuid' => Yii::app()->user->guid,
-                'placeholderText' => Yii::t('WallModule.base', 'Add a member to notify'),
+                'placeholderText' => Yii::t('WallModule.widgets_views_archiveLink', 'Add a member to notify'),
                 'focus' => true,
             ));
             ?>
@@ -122,13 +122,13 @@
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
-                                            class="fa fa-bell"></i> <?php echo Yii::t('WallModule.base', 'Notify members'); ?>
+                                            class="fa fa-bell"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Notify members'); ?>
                                     </a>
                                 </li>
                                 <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
-                                                class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>
+                                                class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Make public'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>
@@ -178,11 +178,11 @@
     function changeVisibility() {
         if ($('#contentForm_visibility').attr('checked') != 'checked') {
             $('#contentForm_visibility').attr('checked', 'checked');
-            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('WallModule.base', 'Make private'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Make private'); ?>');
             $('.label-public').removeClass('hidden');
         } else {
             $('#contentForm_visibility').removeAttr('checked');
-            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.base', 'Make public'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Make public'); ?>');
             $('.label-public').addClass('hidden');
         }
     }

@@ -7,11 +7,11 @@
 
 <div class="panel panel-default">
 <div class="panel-heading">
-    <?php echo Yii::t('SpaceModule.admin', '<strong>Manage</strong> your space members'); ?>
+    <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> your space members'); ?>
 </div>
 <div class="panel-body">
 
-    <?php echo Yii::t('SpaceModule.admin', 'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.'); ?>
+    <?php echo Yii::t('SpaceModule.views_admin_members', 'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.'); ?>
 
 
     <br/><br/>
@@ -42,16 +42,16 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th><?php echo Yii::t('SpaceModule.admin', "User"); ?></th>
+                <th><?php echo Yii::t('SpaceModule.views_admin_members', "User"); ?></th>
                 <th></th>
-                <th><?php echo Yii::t('SpaceModule.admin', "Can invite"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
-                                  title="<?php echo Yii::t('SpaceModule.admin', 'Allow this user to<br>invite other users'); ?>"></i>
+                <th><?php echo Yii::t('SpaceModule.views_admin_members', "Can invite"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
+                                  title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Allow this user to<br>invite other users'); ?>"></i>
                 </th>
-                <th><?php echo Yii::t('SpaceModule.admin', "Can share"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
-                                 title="<?php echo Yii::t('SpaceModule.admin', 'Allow this user to<br>make content public'); ?>"></i>
+                <th><?php echo Yii::t('SpaceModule.views_admin_members', "Can share"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
+                                 title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Allow this user to<br>make content public'); ?>"></i>
                 </th>
-                <th><?php echo Yii::t('SpaceModule.admin', "Is admin"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
-                                title="<?php echo Yii::t('SpaceModule.admin', 'Make this user to an admin'); ?>"></i>
+                <th><?php echo Yii::t('SpaceModule.views_admin_members', "Is admin"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
+                                title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Make this user to an admin'); ?>"></i>
                 </th>
                 <th></th>
             </tr>
@@ -120,12 +120,12 @@
                             <?php
                             $this->widget('application.widgets.ModalConfirmWidget', array(
                                 'uniqueID' => $user->id,
-                                'title' => Yii::t('SpaceModule.admin', '<strong>Remove</strong> member'),
-                                'message' => Yii::t('SpaceModule.admin', 'Are you sure, that you want to remove this member from this space?'),
-                                'buttonTrue' => Yii::t('SpaceModule.admin', 'Yes, remove'),
-                                'buttonFalse' => Yii::t('SpaceModule.admin', 'No, cancel'),
+                                'title' => Yii::t('SpaceModule.views_admin_members', '<strong>Remove</strong> member'),
+                                'message' => Yii::t('SpaceModule.views_admin_members', 'Are you sure, that you want to remove this member from this space?'),
+                                'buttonTrue' => Yii::t('SpaceModule.views_admin_members', 'Yes, remove'),
+                                'buttonFalse' => Yii::t('SpaceModule.views_admin_members', 'No, cancel'),
                                 'class' => 'btn btn-sm btn-danger',
-                                'linkContent' => Yii::t('SpaceModule.admin', 'Remove'),
+                                'linkContent' => Yii::t('SpaceModule.views_admin_members', 'Remove'),
                                 'linkHref' => $this->createUrl('//space/admin/removeMember', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'ajax' => 1))
                             ));
                             ?>
@@ -133,7 +133,7 @@
                         </td>
                     <?php else: ?>
                         <td colspan="3">
-                            <div class="space-owner"><?php echo Yii::t('SpaceModule.admin', 'Space owner'); ?></div>
+                            <div class="space-owner"><?php echo Yii::t('SpaceModule.views_admin_members', 'Space owner'); ?></div>
                         </td>
                         <td></td>
                     <?php endif; ?>
@@ -172,13 +172,13 @@
     <?php if ($space->isSpaceOwner()): ?>
         <p>
             <a data-toggle="collapse" id="space-owner-link" href="#collapse-space-owner" style="font-size: 11px;"><i
-                    class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.admin', 'Change space owner') ?>
+                    class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_admin_members', 'Change space owner') ?>
             </a>
         </p>
         <div id="collapse-space-owner" class="panel-collapse collapse">
             <div class="well well-sm">
 
-                <p>    <?php echo Yii::t('SpaceModule.admin', 'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.') ?></p>
+                <p>    <?php echo Yii::t('SpaceModule.views_admin_members', 'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.') ?></p>
 
                 <div class="row">
                     <div class="col-md-5">
@@ -214,20 +214,20 @@
 <?php if (count($space->applicants) != 0) : ?>
     <div class="panel panel-danger">
         <div class="panel-heading">
-            <?php echo Yii::t('SpaceModule.admin', '<strong>Outstanding</strong> user requests'); ?>
+            <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Outstanding</strong> user requests'); ?>
         </div>
         <div class="panel-body">
             <p>
-                <?php echo Yii::t('SpaceModule.admin', "The following users waiting for an approval to enter this space. Please take some action now."); ?>
+                <?php echo Yii::t('SpaceModule.views_admin_members', "The following users waiting for an approval to enter this space. Please take some action now."); ?>
             </p>
 
 
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th><?php echo Yii::t('SpaceModule.admin', "User"); ?></th>
+                    <th><?php echo Yii::t('SpaceModule.views_admin_members', "User"); ?></th>
                     <th></th>
-                    <th><?php echo Yii::t('SpaceModule.admin', "Request message"); ?></th>
+                    <th><?php echo Yii::t('SpaceModule.views_admin_members', "Request message"); ?></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -253,8 +253,8 @@
                             <?php echo CHtml::encode($membership->request_message); ?>
                         </td>
                         <td width="150px">
-                            <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Accept'), $this->createUrl('//space/admin/membersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
-                            <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Decline'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Accept'), $this->createUrl('//space/admin/membersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Decline'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -270,21 +270,21 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.admin', '<strong>Outstanding</strong> sended invitations'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Outstanding</strong> sended invitations'); ?>
     </div>
     <div class="panel-body">
         <p>
-            <?php echo Yii::t('SpaceModule.admin', "The following users were already invited to this space, but didn't follow the invitation until now."); ?>
+            <?php echo Yii::t('SpaceModule.views_admin_members', "The following users were already invited to this space, but didn't follow the invitation until now."); ?>
             <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <br/>
-                <?php echo Yii::t('SpaceModule.admin', "External users who invited by email, will be not listed here."); ?>
+                <?php echo Yii::t('SpaceModule.views_admin_members', "External users who invited by email, will be not listed here."); ?>
             <?php endif; ?>
         </p>
 
         <table class="table table-hover">
             <thead>
             <tr>
-                <th><?php echo Yii::t('SpaceModule.admin', "User"); ?></th>
+                <th><?php echo Yii::t('SpaceModule.views_admin_members', "User"); ?></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -309,7 +309,7 @@
                         <?php echo $user->profile->title; ?>
                     </td>
                     <td width="100px">
-                        <?php echo HHtml::postLink(Yii::t('SpaceModule.admin', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
+                        <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

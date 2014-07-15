@@ -12,10 +12,10 @@
 
 <div class="panel panel-default panel-activities">
 
-    <div class="panel-heading"><?php echo Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', '<strong>Latest</strong> activities'); ?></div>
     <div id="activityStream">
         <div id="activityEmpty" style="display:none">
-            <div class="placeholder"><?php echo Yii::t('ActivityModule.base', 'There are no activities yet.'); ?></div>
+            <div class="placeholder"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', 'There are no activities yet.'); ?></div>
         </div>
         <ul id="activityContents" class="media-list activities">
             <li class="loader" id="activityLoader"></li>

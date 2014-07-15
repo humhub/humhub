@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.file', '<strong>File</strong> settings'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_file', '<strong>File</strong> settings'); ?></div>
     <div class="panel-body">
 
 
@@ -15,13 +15,13 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'imageMagickPath'); ?>
             <?php echo $form->textField($model, 'imageMagickPath', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('imageMagickPath', 'file'))); ?>
-            <p class="help-block"><?php echo Yii::t('AdminModule.file', 'Current Image Libary: {currentImageLibary}', array('{currentImageLibary}' => $currentImageLibary)); ?></p>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Current Image Libary: {currentImageLibary}', array('{currentImageLibary}' => $currentImageLibary)); ?></p>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'maxFileSize'); ?>
             <?php echo $form->textField($model, 'maxFileSize', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxFileSize', 'file'))); ?>
-            <p class="help-block"><?php echo Yii::t('AdminModule.file', 'PHP reported a maximum of {maxUploadSize} MB', array('{maxUploadSize}' => $maxUploadSize)); ?></p>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'PHP reported a maximum of {maxUploadSize} MB', array('{maxUploadSize}' => $maxUploadSize)); ?></p>
         </div>
 
         <div class="form-group">
@@ -35,12 +35,12 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'forbiddenExtensions'); ?>
-            <?php echo $form->textField($model, 'forbiddenExtensions', array('class' => 'form-control', 'hint' => Yii::t('AdminModule.file', '(comma separated)'))); ?>
+            <?php echo $form->textField($model, 'forbiddenExtensions', array('class' => 'form-control', 'hint' => Yii::t('AdminModule.views_setting_file', '(comma separated)'))); ?>
         </div>
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_file', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>

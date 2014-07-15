@@ -38,7 +38,7 @@ class ProfileFieldTypeBirthday extends ProfileFieldTypeDateTime
         return parent::getFormDefinition(array(
                     get_class($this) => array(
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.base', 'Birthday field options'),
+                        'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
                         'elements' => array(
                         )
         )));
@@ -124,7 +124,7 @@ class ProfileFieldTypeBirthday extends ProfileFieldTypeDateTime
 
             $birthDate = new DateTime($birthdayDate);
             $lifeSpan = $birthDate->diff(new DateTime());
-            $age = Yii::t('UserModule.profile', '%y Years', array('%y' => $lifeSpan->format("%y")));
+            $age = Yii::t('UserModule.models_ProfileFieldTypeBirthday', '%y Years', array('%y' => $lifeSpan->format("%y")));
 
             return Yii::app()->dateFormatter->format('d. MMMM y ', $birthdayDate) . " (" . $age . ")";
         } else {

@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => $model->displayName)); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => $model->displayName)); ?></div>
     <div class="panel-body">
 
 <?php
@@ -35,7 +35,7 @@ $form = $this->beginWidget('CActiveForm', array(
     });
 </script>
 <hr/>
-<?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Send & decline'), array('class' => 'btn btn-danger')); ?>
- <a href="<?php echo $this->createUrl('//admin/approval/'); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.base', 'Cancel'); ?></a>
+<?php echo CHtml::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), array('class' => 'btn btn-danger')); ?>
+ <a href="<?php echo $this->createUrl('//admin/approval/'); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
 
 <?php $this->endWidget(); ?>

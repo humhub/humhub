@@ -1,10 +1,10 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.base', '<strong>Delete</strong> space'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_delete', '<strong>Delete</strong> space'); ?>
     </div>
     <div class="panel-body">
-        <p><?php echo Yii::t('SpaceModule.base', 'Are you sure, that you want to delete this space? All published content will be removed!'); ?></p>
-        <p><?php echo Yii::t('SpaceModule.base', 'Please provide your password to continue!'); ?></p><br>
+        <p><?php echo Yii::t('SpaceModule.views_admin_delete', 'Are you sure, that you want to delete this space? All published content will be removed!'); ?></p>
+        <p><?php echo Yii::t('SpaceModule.views_admin_delete', 'Please provide your password to continue!'); ?></p><br>
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -20,7 +20,7 @@
         </div>
 
         <hr>
-        <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Delete'), array('class' => 'btn btn-danger')); ?>
+        <?php echo CHtml::submitButton(Yii::t('SpaceModule.views_admin_delete', 'Delete'), array('class' => 'btn btn-danger')); ?>
 
         <?php $this->endWidget(); ?>
     </div>

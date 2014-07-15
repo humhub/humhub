@@ -144,7 +144,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 array('username', 'unique', 'caseSensitive' => false, 'className' => 'User'),
                 array('email', 'email'),
                 array('group_id', 'numerical'),
-                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß ]/', 'message' => Yii::t('UserModule.base', 'Username must consist of letters, numbers and spaces only')),
+                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß ]/', 'message' => Yii::t('UserModule.models_User', 'Username must consist of letters, numbers and spaces only')),
             );
         }
 
@@ -157,7 +157,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $rules[] = array('tags', 'length', 'max' => 100);
         $rules[] = array('username', 'length', 'max' => 25);
         $rules[] = array('language', 'length', 'max' => 5);
-        $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z]/', 'message' => Yii::t('UserModule.base', 'Invalid language!'));
+        $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email', 'safe');
         $rules[] = array('auth_mode', 'length', 'max' => 10);
         $rules[] = array('id, guid, status, wall_id, group_id, username, email, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
@@ -193,18 +193,18 @@ class User extends HActiveRecordContentContainer implements ISearchable
     public function attributeLabels()
     {
         return array(
-            'id' => Yii::t('base', 'ID'),
-            'guid' => Yii::t('base', 'Guid'),
-            'wall_id' => Yii::t('UserModule.base', 'Wall'),
-            'group_id' => Yii::t('UserModule.base', 'Group'),
-            'username' => Yii::t('UserModule.base', 'Username'),
-            'email' => Yii::t('UserModule.base', 'Email'),
-            'tags' => Yii::t('UserModule.base', 'Tags'),
-            'language' => Yii::t('UserModule.base', 'Language'),
-            'created_at' => Yii::t('base', 'Created At'),
-            'created_by' => Yii::t('base', 'Created by'),
-            'updated_at' => Yii::t('base', 'Updated at'),
-            'updated_by' => Yii::t('base', 'Updated by'),
+            'id' => Yii::t('UserModule.models_User', 'ID'),
+            'guid' => Yii::t('UserModule.models_User', 'Guid'),
+            'wall_id' => Yii::t('UserModule.models_User', 'Wall'),
+            'group_id' => Yii::t('UserModule.models_User', 'Group'),
+            'username' => Yii::t('UserModule.models_User', 'Username'),
+            'email' => Yii::t('UserModule.models_User', 'Email'),
+            'tags' => Yii::t('UserModule.models_User', 'Tags'),
+            'language' => Yii::t('UserModule.models_User', 'Language'),
+            'created_at' => Yii::t('UserModule.models_User', 'Created At'),
+            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
         );
     }
 
@@ -662,7 +662,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
                     $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
                     $message->addTo($adminUser->email);
                     $message->view = "application.views.mail.TextOnly";
-                    $message->subject = Yii::t('UserModule.base', "New user needs approval");
+                    $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
                     $message->setBody(array('message' => $html), 'text/html');
                     Yii::app()->mail->send($message);
                 }

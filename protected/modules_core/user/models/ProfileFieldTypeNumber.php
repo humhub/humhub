@@ -42,7 +42,7 @@ class ProfileFieldTypeNumber extends ProfileFieldType {
         return parent::getFormDefinition(array(
                     get_class($this) => array(
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.base', 'Number field options'),
+                        'title' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Number field options'),
                         'elements' => array(
                             'maxValue' => array(
                                 'type' => 'text',

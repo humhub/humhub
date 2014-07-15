@@ -21,7 +21,7 @@
         <?php if ($isLimited): ?>
             <?php
             // Create an ajax link, which loads all comments upon request
-            $showAllLabel = Yii::t('CommentModule.base', 'Show all {total} comments.', array('{total}' => $total));
+            $showAllLabel = Yii::t('CommentModule.widgets_views_comments', 'Show all {total} comments.', array('{total}' => $total));
             $reloadUrl = CHtml::normalizeUrl(Yii::app()->createUrl('comment/comment/show', array('model' => $modelName, 'id' => $modelId)));
             echo HHtml::ajaxLink($showAllLabel, $reloadUrl, array(
                 'success' => "function(html) { $('#comments_area_" . $id . "').html(html); }",

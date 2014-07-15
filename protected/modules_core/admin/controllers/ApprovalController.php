@@ -61,7 +61,7 @@ class ApprovalController extends Controller {
         $model = User::model()->resetScope()->unapproved()->findByPk($id);
 
         if ($model == null)
-            throw new CHttpException(404, Yii::t('base', 'User not found!'));
+            throw new CHttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
 
         $approveFormModel = new ApproveUserForm;
 
@@ -106,7 +106,7 @@ class ApprovalController extends Controller {
         $user = User::model()->resetScope()->unapproved()->findByPk($id);
 
         if ($user == null)
-            throw new CHttpException(404, Yii::t('AdminModule.approval', 'User not found!'));
+            throw new CHttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
 
         $approveFormModel = new ApproveUserForm;
 

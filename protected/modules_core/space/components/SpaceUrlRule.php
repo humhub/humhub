@@ -61,7 +61,7 @@ class SpaceUrlRule extends CBaseUrlRule
                         return $parts[2];
                     }
                 } else {
-                    throw new CHttpException('404', Yii::t('SpaceModule.base', 'Space not found!'));
+                    throw new CHttpException('404', Yii::t('SpaceModule.components_SpaceUrlRule', 'Space not found!'));
                 }
             }
         }

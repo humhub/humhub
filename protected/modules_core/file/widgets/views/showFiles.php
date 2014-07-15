@@ -23,7 +23,7 @@
                  */
                 ?>
 
-                <a data-toggle="lightbox" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>'>
+                <a data-toggle="lightbox" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                     <img src='<?php echo $file->getPreviewImageUrl(200, 200); ?>'>
                 </a>
             <?php endif; ?>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Show List of all files -->
-    <?php //echo Yii::t('FileModule.base', 'Attached Files:'); ?>
+    <?php //echo Yii::t('FileModule.widgets_views_showFiles', 'Attached Files:'); ?>
     <hr>
     <ul class="files" style="list-style: none; margin: 0;">
         <?php foreach ($files as $file) : ?>

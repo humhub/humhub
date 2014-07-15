@@ -20,7 +20,7 @@ class AccountRecoverPasswordForm extends CFormModel {
             array('email', 'email'),
             array('email', 'canRecoverPassword'),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements()),
-            array('email', 'exist', 'className' => 'User', 'message' => Yii::t('UserModule.base', '{attribute} "{value}" was not found!')),
+            array('email', 'exist', 'className' => 'User', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')),
         );
     }
 
@@ -31,7 +31,7 @@ class AccountRecoverPasswordForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'email' => Yii::t('UserModule.base', 'E-Mail'),
+            'email' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'E-Mail'),
         );
     }
 
@@ -44,7 +44,7 @@ class AccountRecoverPasswordForm extends CFormModel {
         if ($this->email != "") {
             $user = User::model()->findByAttributes(array('email' => $this->email));
             if ($user != null && $user->auth_mode != "local") {
-                $this->addError($attribute, Yii::t('UserModule.base', Yii::t('UserModule.base', "Password recovery is not possible on your account type!")));
+                $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', "Password recovery is not possible on your account type!")));
             }
         }
     }
@@ -70,7 +70,7 @@ class AccountRecoverPasswordForm extends CFormModel {
         $message->view = "application.modules_core.user.views.mails.RecoverPassword";
         $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
         $message->addTo($this->email);
-        $message->subject = Yii::t('UserModule.base', 'Password Recovery');
+        $message->subject = Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery');
         $message->setBody(array('user' => $user, 'newPassword' => $newPassword), 'text/html');
         Yii::app()->mail->send($message);
     }

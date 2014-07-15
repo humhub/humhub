@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', 'Accept user: <strong>{displayName}</strong> ', array('{displayName}' => $model->displayName)); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_approveUserAccept', 'Accept user: <strong>{displayName}</strong> ', array('{displayName}' => $model->displayName)); ?></div>
     <div class="panel-body">
 
         <?php
@@ -37,9 +37,9 @@
         </script>
 
         <hr>
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Send & save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_approval_approveUserAccept', 'Send & save'), array('class' => 'btn btn-primary')); ?>
         <a href="<?php echo $this->createUrl('//admin/approval/'); ?>"
-           class="btn btn-primary"><?php echo Yii::t('AdminModule.base', 'Cancel'); ?></a>
+           class="btn btn-primary"><?php echo Yii::t('AdminModule.views_approval_approveUserAccept', 'Cancel'); ?></a>
 
         <?php $this->endWidget(); ?>
 

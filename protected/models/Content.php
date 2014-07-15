@@ -700,7 +700,7 @@ class Content extends CActiveRecord
     {
 
         if (!$this->container->canWrite($this->created_by)) {
-            $this->addError('visibility', Yii::t('WallModule.base', 'Insufficent permissions to create content!'));
+            $this->addError('visibility', Yii::t('base', 'Insufficent permissions to create content!'));
         }
 
         return parent::beforeValidate();
@@ -711,7 +711,7 @@ class Content extends CActiveRecord
 
         if (get_class($this->container) == 'Space') {
             if (!$this->container->canShare() && $this->visibility) {
-                $this->addError('visibility', Yii::t('WallModule.base', 'You cannot create public visible content!'));
+                $this->addError('visibility', Yii::t('base', 'You cannot create public visible content!'));
             }
         }
     }

@@ -66,16 +66,16 @@ class CommentController extends Controller
         $target = $model->findByPk($targetModelId);
 
         if (!$target instanceof HActiveRecordContent) {
-            throw new CHttpException(500, Yii::t('CommentModule.base', 'Invalid target class given'));
+            throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Invalid target class given'));
         }
 
         if ($target == null) {
-            throw new CHttpException(404, Yii::t('CommentModule.base', 'Target not found!'));
+            throw new CHttpException(404, Yii::t('CommentModule.controllers_CommentController', 'Target not found!'));
         }
 
         // Check if we can read the target model, so we can comment it?
         if (!$target->content->canRead(Yii::app()->user->id)) {
-            throw new CHttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
+            throw new CHttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
         }
 
         // Create Fastlane:
@@ -193,10 +193,10 @@ class CommentController extends Controller
             if ($comment->canDelete()) {
                 $comment->delete();
             } else {
-                throw new CHttpException(500, Yii::t('CommentModule.base', 'Insufficent permissions!'));
+                throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Insufficent permissions!'));
             }
         } else {
-            throw new CHttpException(500, Yii::t('CommentModule.base', 'Could not delete comment!')); // Possible Hack attempt!
+            throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Could not delete comment!')); // Possible Hack attempt!
         }
 
         return $this->actionShow();

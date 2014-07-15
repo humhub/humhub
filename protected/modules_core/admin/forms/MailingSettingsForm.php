@@ -37,13 +37,13 @@ class MailingSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'systemEmailAddress' => Yii::t('AdminModule.base', 'E-Mail sender address'),
-            'systemEmailName' => Yii::t('AdminModule.base', 'E-Mail sender name'),
-            'transportType' => Yii::t('AdminModule.base', 'Mail Transport Type'),
-            'username' => Yii::t('AdminModule.base', 'Username'),
-            'password' => Yii::t('AdminModule.base', 'Password'),
-            'port' => Yii::t('AdminModule.base', 'Port number'),
-            'encryption' => Yii::t('AdminModule.base', 'Encryption'),
+            'systemEmailAddress' => Yii::t('AdminModule.forms_MailingSettingsForm', 'E-Mail sender address'),
+            'systemEmailName' => Yii::t('AdminModule.forms_MailingSettingsForm', 'E-Mail sender name'),
+            'transportType' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Mail Transport Type'),
+            'username' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Username'),
+            'password' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Password'),
+            'port' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Port number'),
+            'encryption' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Encryption'),
         );
     }
 

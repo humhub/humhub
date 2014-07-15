@@ -1,10 +1,10 @@
 <div class="panel panel-default">
     <div
-        class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Pending</strong> user approvals'); ?></div>
+        class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_index', '<strong>Pending</strong> user approvals'); ?></div>
     <div class="panel-body">
 
         <p>
-            <?php echo Yii::t('AdminModule.base', 'Here you see all users who have registered and still waiting for a approval.'); ?>
+            <?php echo Yii::t('AdminModule.views_approval_index', 'Here you see all users who have registered and still waiting for a approval.'); ?>
         </p>
 
         <?php
@@ -23,7 +23,7 @@
                 array(
                     'name' => 'username',
                     'header' => 'Username',
-                    'filter' => CHtml::activeTextField($model, 'username', array('placeholder' => Yii::t('AdminModule.user', 'Search for username'))),
+                    'filter' => CHtml::activeTextField($model, 'username', array('placeholder' => Yii::t('AdminModule.views_approval_index', 'Search for username'))),
                 ),
                 array(
                     'name' => 'group_id',
@@ -32,8 +32,8 @@
                 ),
                 array(
                     'name' => 'email',
-                    'header' => Yii::t('AdminModule.user', 'Email'),
-                    'filter' => CHtml::activeTextField($model, 'email', array('placeholder' => Yii::t('AdminModule.user', 'Search for email'))),
+                    'header' => Yii::t('AdminModule.views_approval_index', 'Email'),
+                    'filter' => CHtml::activeTextField($model, 'email', array('placeholder' => Yii::t('AdminModule.views_approval_index', 'Search for email'))),
                 ),
                 array(
                     'class' => 'CButtonColumn',
@@ -43,7 +43,7 @@
                     (
                         'accept' => array
                         (
-                            'label' => Yii::t('AdminModule.approval', 'Accept'),
+                            'label' => Yii::t('AdminModule.views_approval', 'Accept'),
                             'url' => 'Yii::app()->createUrl("admin/approval/approveUserAccept", array("id" => $data->id))',
                             'imageUrl' => false,
                             'options' => array(
@@ -53,7 +53,7 @@
                         ),
                         'decline' => array
                         (
-                            'label' => Yii::t('AdminModule.approval', 'Decline'),
+                            'label' => Yii::t('AdminModule.views_approval', 'Decline'),
                             'url' => 'Yii::app()->createUrl("admin/approval/approveUserDecline", array("id" => $data->id))',
                             'imageUrl' => false,
                             'options' => array(
