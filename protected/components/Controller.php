@@ -79,6 +79,8 @@ class Controller extends EController
         Yii::app()->clientScript->setJavascriptVariable('csrfValue', Yii::app()->request->csrfToken);
         Yii::app()->clientScript->setJavascriptVariable('baseUrl', Yii::app()->getBaseUrl(true));
 
+        $this->initAjaxCsrfToken();
+        
         return parent::init();
     }
 
@@ -113,6 +115,15 @@ class Controller extends EController
         Yii::app()->end();
     }
 
+    // this function will work to post csrf token.
+    protected function initAjaxCsrfToken() {
+    
+    	Yii::app()->clientScript->registerScript('AjaxCsrfToken', ' $.ajaxSetup({
+			data: {"' . Yii::app()->request->csrfTokenName . '": "' . Yii::app()->request->csrfToken . '"},
+			cache:false
+			});', CClientScript::POS_HEAD);
+    }
+    
     /**
      * Outputs a given JSON Array and ends the application
      *
