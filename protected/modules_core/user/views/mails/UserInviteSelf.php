@@ -64,7 +64,7 @@ a{
 
 
 
-/* 
+/*
 
 main color = #7191a8
 
@@ -683,7 +683,7 @@ td[class="image-124px"] img{
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:center; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'We are happy that you want to use HumHub. The Open Source Social Network to increase your communication and teamwork. Please click on the button below to proceed with your registration.'); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'We are happy that you want to use ' .Yii::app()->name. '. The Open Source Social Network to increase your communication and teamwork. Please click on the button below to proceed with your registration.'); ?>
 
                                                     </td>
                                                 </tr>
