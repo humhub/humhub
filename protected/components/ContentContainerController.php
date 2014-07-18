@@ -60,8 +60,8 @@ class ContentContainerController extends Controller
     public function init()
     {
 
-        $spaceGuid = Yii::app()->request->getQuery('sguid');
-        $userGuid = Yii::app()->request->getQuery('uguid');
+        $spaceGuid = Yii::app()->request->getParam('sguid', '');
+        $userGuid = Yii::app()->request->getParam('uguid', '');
 
         if ($spaceGuid != "") {
 

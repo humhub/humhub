@@ -8,6 +8,14 @@ class UserProfileController extends Controller {
 
     public $subLayout = "/_layout";
 
+    public function behaviors() {
+    	return array(
+    			'HReorderContentBehavior' => array(
+    					'class' => 'application.behaviors.HReorderContentBehavior',
+    			)
+    	);
+    }    
+    
     /**
      * @return array action filters
      */
@@ -174,6 +182,15 @@ class UserProfileController extends Controller {
 
 
         $this->render('editField', array('form' => $form, 'field' => $field));
+    }
+    
+    /**
+     * Reorder Fields action.
+     * @uses behaviors.ReorderContentBehavior
+     */
+    public function actionReorderFields() {
+    	// generate json response
+    	echo json_encode($this->reorderContent('ProfileField', 200, 'The item order was successfully changed.'));
     }
 
 }
