@@ -214,6 +214,7 @@
     })
 
 </script>
+<?php echo HSetting::GetText('trackingHtmlCode'); ?>
 </body>
 </html>
 
