@@ -45,7 +45,7 @@ class UserUrlRule extends CBaseUrlRule
 
             unset($params['uguid']);
             if ($route == 'user/profile') {
-                $route = "";
+                $route = "home";
             }
 
             $url = "u/" . urlencode(strtolower($userName)) . "/" . $route;
@@ -61,17 +61,16 @@ class UserUrlRule extends CBaseUrlRule
         if (substr($pathInfo, 0, 2) == "u/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                #$space = Space::model()->findByPk($parts[1]);
-                #$user = User::model()->findByAttributes(array('guid' => $parts[1]));
+
                 $user = User::model()->findByAttributes(array('username' => $parts[1]));
 
                 if ($user !== null) {
                     $_GET['uguid'] = $user->guid;
-                    if (isset($parts[2])) {
-                        return $parts[2];
-                    } else {
+                    if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
                         return 'user/profile';
-                    }
+                    } else {
+                        return $parts[2];
+                    }                    
                 }
             }
         }
