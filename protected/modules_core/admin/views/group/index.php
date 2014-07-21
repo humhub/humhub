@@ -2,6 +2,10 @@
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_index', '<strong>Manage</strong> groups'); ?></div>
     <div class="panel-body">
 
+        <p>
+            <?php echo Yii::t('AdminModule.views_groups_index', 'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.'); ?>
+        </p>
+
         <?php echo HHtml::link("Create new group", array('//admin/group/edit'), array('class' => 'btn btn-primary')); ?>
         <br>
 

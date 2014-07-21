@@ -15,7 +15,7 @@
             echo ' </span>';*/
         } else {
             //echo Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Choose a space... ');
-            echo '<i class="fa fa-dot-circle-o"></i><br>My spaces';
+            echo '<i class="fa fa-dot-circle-o"></i><br>'. Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces');
         }
         ?>
         <!-- end: Show space image and name if chosen -->
@@ -45,7 +45,7 @@
             <div class="dropdown-footer">
                 <!-- create new space -->
                 <?php
-                echo CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Create new space'), $this->createUrl('//space/create/create'), array('class' => 'btn btn-info col-md-12', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
+                echo CHtml::link(Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space'), $this->createUrl('//space/create/create'), array('class' => 'btn btn-info col-md-12', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
                 ?>
             </div>
         </li>

@@ -2,6 +2,11 @@
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
     <div class="panel-body">
 
+        <p>
+            <?php echo Yii::t('AdminModule.views_space_index', 'In this overview you can find every space and manage him.'); ?>
+        </p>
+
+
         <?php
         $visibilities = array(
             0 => 'Invisible',

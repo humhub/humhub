@@ -151,7 +151,7 @@
                 <?php if ($isProfileOwner) { ?>
                     <!-- Edit user account (if this is your profile) -->
                     <a href="<?php echo $this->createUrl('//user/account/edit'); ?>"
-                       id="edit_profile" class="btn btn-primary">Edit account</a>
+                       id="edit_profile" class="btn btn-primary"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'); ?></a>
                 <?php } ?>
                 <!-- end: Edit profile -->
             </div>

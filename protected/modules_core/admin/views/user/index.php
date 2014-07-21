@@ -2,6 +2,10 @@
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
     <div class="panel-body">
 
+        <p>
+            <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>
+        </p>
+
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
             'id' => 'user-grid',
