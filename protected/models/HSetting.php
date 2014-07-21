@@ -240,23 +240,20 @@ class HSetting extends HActiveRecord
     }
 
     /**
-     * Saving the registry object
-     * Also deletes cache Entry
-     *
-     * @param type $runValidation
-     * @param type $attributes
-     * @return type
+     * clears cache
+     * @return void
      */
-    public function save($runValidation = true, $attributes = null)
+    public function clearCache()
     {
-
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
-        return parent::save($runValidation, $attributes);
     }
 
     public function beforeSave()
     {
+
+        $this->clearCache();
+
         if ($this->hasAttribute('created_by') && empty($this->created_by))
             $this->created_by = 0;
 
