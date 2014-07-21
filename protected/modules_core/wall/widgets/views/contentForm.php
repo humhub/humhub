@@ -18,11 +18,6 @@
                 $user_url = '//user/search/json';
             }
 
-            /* Modify textarea for mention input */
-            $this->widget('application.widgets.MentionWidget', array(
-                'element' => '#contentForm_message',
-            ));
-
             /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                 'inputId' => 'notifyUserInput',

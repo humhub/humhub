@@ -17,29 +17,22 @@
     <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => 'Write a new comment...')); ?>
 
     <?php
-    /* Modify textarea for mention input */
-    $this->widget('application.widgets.MentionWidget', array(
-        'element' => '#newCommentForm_' . $id,
-    ));
-    ?>
-
-    <?php
     echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
-        'beforeSend' => "function() {
+            'beforeSend' => "function() {
                 $('#newCommentForm_" . $id . "').blur();
                 }",
-        'success' => "function(html) {
+            'success' => "function(html) {
             
             $('#comments_area_" . $id . "').html(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
             $.fn.mention.reset('#newCommentForm_" . $id . "');
 
         }",
-            ), array(
-        'id' => "comment_create_post_" . $id,
-        'class' => 'btn btn-small btn-primary',
-        'style' => 'position: absolute; top: -3000px; left: -3000px;',
-            )
+        ), array(
+            'id' => "comment_create_post_" . $id,
+            'class' => 'btn btn-small btn-primary',
+            'style' => 'position: absolute; top: -3000px; left: -3000px;',
+        )
     );
     ?>
 
@@ -49,22 +42,16 @@
 
 <script>
     // Fire click event for comment button by typing enter
-    $('#newCommentForm_<?php echo $id; ?>').keydown(function(event) {
+    $('#newCommentForm_<?php echo $id; ?>').keydown(function (event) {
 
         if (event.keyCode == 13) {
 
-            if ($.fn.mention.defaults.stateUserList == false) {
+            event.cancelBubble = true;
+            event.returnValue = false;
 
-                event.cancelBubble = true;
-                event.returnValue = false;
+            $('#comment_create_post_<?php echo $id; ?>').focus();
+            $('#comment_create_post_<?php echo $id; ?>').click();
 
-                $('#comment_create_post_<?php echo $id; ?>').focus();
-                $('#comment_create_post_<?php echo $id; ?>').click();
-
-                // empty input
-                //$(this).val('');
-
-            }
 
         }
 
