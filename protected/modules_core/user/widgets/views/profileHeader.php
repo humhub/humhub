@@ -47,7 +47,7 @@
             <!-- check if the current user is the profile owner and can change the images -->
             <?php if ($isProfileOwner) { ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
-                    <a href="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"><i
+                    <a href="#" onclick="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="banner-image-upload-edit-button"
                        style="<?php
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="image-upload-buttons" id="profile-image-upload-buttons">
-                    <a href="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"><i
+                    <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="profile-image-upload-edit-button"
                        style="<?php

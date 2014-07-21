@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="image-upload-buttons" id="space-image-upload-buttons">
-                        <a href="javascript:$('#spaceimageupload input').click();" class="btn btn-info btn-sm"><i
+                        <a herf="#" onclick="javascript:$('#spaceimageupload input').click();" class="btn btn-info btn-sm"><i
                                 class="fa fa-cloud-upload"></i></a>
                         <a id="profile-image-upload-edit-button"
                            style="<?php if (!$space->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
