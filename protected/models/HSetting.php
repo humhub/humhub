@@ -255,6 +255,20 @@ class HSetting extends HActiveRecord
         return parent::save($runValidation, $attributes);
     }
 
+    public function beforeSave()
+    {
+        if ($this->hasAttribute('created_by') && empty($this->created_by))
+            $this->created_by = 0;
+
+        if ($this->hasAttribute('updated_by') && empty($this->updated_by))
+            $this->updated_by = 0;
+
+        if ($this->hasAttribute('updated_at') && empty($this->updated_at))
+            $this->updated_at = new CDbExpression('NOW()');
+
+        return parent::beforeSave();
+    }
+
     /**
      * After delete check if its required to rewrite configuration file
      */

@@ -190,6 +190,8 @@ class ConfigController extends Controller
 
             $form['User']->model->status = User::STATUS_ENABLED;
             $form['User']->model->super_admin = true;
+            $form['User']->model->language = '';
+            $form['User']->model->last_activity_email = new CDbExpression('NOW()');
             $form['User']->model->save();
 
             $form['Profile']->model->user_id = $form['User']->model->id;
@@ -315,6 +317,7 @@ class ConfigController extends Controller
         $cGeneral->sort_order = 100;
         $cGeneral->visibility = 1;
         $cGeneral->is_system = true;
+        $cGeneral->description = '';
         $cGeneral->save();
 
         $cCommunication = new ProfileFieldCategory;
@@ -322,6 +325,7 @@ class ConfigController extends Controller
         $cCommunication->sort_order = 200;
         $cCommunication->visibility = 1;
         $cCommunication->is_system = true;
+        $cCommunication->description = '';
         $cCommunication->save();
 
         $cSocial = new ProfileFieldCategory;
@@ -329,6 +333,7 @@ class ConfigController extends Controller
         $cSocial->sort_order = 300;
         $cSocial->visibility = 1;
         $cSocial->is_system = true;
+        $cSocial->description = '';
         $cSocial->save();
 
         // Add Fields
