@@ -36,6 +36,7 @@ class AdminMenuWidget extends MenuWidget
 
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User approval'),
+            'id' => 'approval',
             'url' => Yii::app()->createUrl('admin/approval'),
             'icon' => '<i class="fa fa-check-circle"></i>',
             'group' => 'manage',
@@ -46,6 +47,7 @@ class AdminMenuWidget extends MenuWidget
         ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Groups'),
+            'id' => 'groups',
             'url' => Yii::app()->createUrl('admin/group'),
             'icon' => '<i class="fa fa-group"></i>',
             'group' => 'manage',
@@ -56,6 +58,7 @@ class AdminMenuWidget extends MenuWidget
         ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
+            'id' => 'spaces',
             'url' => Yii::app()->createUrl('admin/space'),
             'icon' => '<i class="fa fa-inbox"></i>',
             'group' => 'manage',
@@ -66,6 +69,7 @@ class AdminMenuWidget extends MenuWidget
         ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
+            'id' => 'modules',
             'url' => Yii::app()->createUrl('admin/module'),
             'icon' => '<i class="fa fa-rocket"></i>',
             'sortOrder' => 500,

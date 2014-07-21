@@ -142,7 +142,7 @@
 
     <!-- end: second top navigation bar -->
 
-
+    <?php $this->widget('application.modules_core.tour.widgets.TourWidget', array()); ?>
 
 <?php } ?>
 

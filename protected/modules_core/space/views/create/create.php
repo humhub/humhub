@@ -19,7 +19,7 @@
 
             <div class="form-group">
 
-                <label>What do you want to call your space?</label>
+                <label><?php echo Yii::t('SpaceModule.views_create_create', 'How you want to name your space?'); ?></label>
                 <?php print $form->textField($model, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name'))); ?>
                 <?php echo $form->error($model, 'title'); ?>
 
@@ -28,8 +28,8 @@
 
             </div>
             <div class="form-group">
-                <label>Which reason has the space?</label>
-                <?php print $form->textArea($model, 'description', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'))); ?>
+                <label><?php echo Yii::t('SpaceModule.views_create_create', 'Please write down a small description for other users.'); ?></label>
+                <?php print $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'))); ?>
             </div>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
