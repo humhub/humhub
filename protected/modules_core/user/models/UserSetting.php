@@ -97,7 +97,7 @@ class UserSetting extends HActiveRecord
             $moduleId = "core";
         }
 
-        $record = self::GetRecord($userId, $name, $moduleId = "core");
+        $record = self::GetRecord($userId, $name, $moduleId);
         $record->value = $value;
         $record->name = $name;
         $record->module_id = $moduleId;
