@@ -97,6 +97,8 @@ class AccountController extends Controller
 
     public function actionEnableModule()
     {
+        $this->forcePostRequest();
+
         $user = Yii::app()->user->getModel();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
@@ -109,6 +111,7 @@ class AccountController extends Controller
 
     public function actionDisableModule()
     {
+        $this->forcePostRequest();
 
         $user = Yii::app()->user->getModel();
         $moduleId = Yii::app()->request->getParam('moduleId', "");

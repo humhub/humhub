@@ -17,13 +17,13 @@
                     <p><?php echo $module->getUserModuleDescription(); ?></p>
 
                     <?php if ($user->isModuleEnabled($module->getId())) : ?>
-                        <?php echo CHtml::link(Yii::t('UserModule.views_account_editModules', 'Disable'), array('//user/account/disableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-mini btn-danger', 'onClick' => 'return moduleDisableWarning()')); ?>
+                        <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Disable'), array('//user/account/disableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-mini btn-danger', 'confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
 
                         <?php if ($module->getUserModuleConfigUrl($user)) : ?>
                             <?php echo CHtml::link(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getUserModuleConfigUrl($user), array('class' => 'btn btn-mini')); ?>
                         <?php endif; ?>
                     <?php else: ?>
-                        <?php echo CHtml::link(Yii::t('UserModule.views_account_editModules', 'Enable'), array('//user/account/enableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-mini btn-success')); ?>
+                        <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Enable'), array('//user/account/enableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-mini btn-success')); ?>
                     <?php endif; ?>
                 </div>
             </li>
