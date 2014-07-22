@@ -18,7 +18,7 @@ $(document).ready(function () {
                 orphan: true,
                 backdrop: true,
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Welcome</strong> to %appName%', array('%appName%' => Yii::app()->name)); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', "This is a brief introduction to give you an overview about the most important functions... Let's go!"); ?>"
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', "This is a brief introduction of %appName% to give you an overview about the most important functions... Let's go!", array('%appName%' => Yii::app()->name)); ?>"
             },
             {
                 // step 1
@@ -31,7 +31,7 @@ $(document).ready(function () {
                 // step 2
                 element: "#space-menu",
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> selector'); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'The heart of %appName% are Spaces.<br><br>A space can be a topic, a group or a project, within you can communicate with others.<br><br>Click on <strong>\"%spaceTopMenuEntry%\"</strong> on the top left side to select a space.', array('%appName%' => Yii::app()->name, '%spaceTopMenuEntry%' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces'))); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'The heart of %appName% are Spaces.<br><br>A space can be a topic, a group or a project, where you can communicate with others.<br><br>Click on the top menu item <strong>\"%spaceTopMenuEntry%\"</strong> to open the space selector.', array('%appName%' => Yii::app()->name, '%spaceTopMenuEntry%' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces'))); ?>",
                 reflex: true,
                 next: -1,
                 placement: "bottom"
@@ -40,7 +40,7 @@ $(document).ready(function () {
                 // step 3
                 element: "#space-menu-dropdown",
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>My Spaces</strong>'); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Here you will find a list of spaces, which you are a member of.<br><br>To create your first own space, click on <strong>\"%createSpaceButton%\"</strong>.', array('%createSpaceButton%' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space'))); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Here you will find a list of spaces, which you are a member of.<br><br>Click now on <strong>\"%createSpaceButton%\"</strong> to create your first own space.', array('%createSpaceButton%' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space'))); ?>",
                 reflex: true,
                 next: -1,
                 onShow: function (tour) {
@@ -54,27 +54,27 @@ $(document).ready(function () {
                 backdrop: true,
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Congratulations!</strong>'); ?>",
                 prev: -1,
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', "You've just created a new space.<br><br>In the center of it, future members content will be shown."); ?>"
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', "You've just created a new space.<br><br>In the center of it, future members content will be shown. Now, let's take a look at the menus and panels on the sides more closely."); ?>"
             },
             {
                 // step 5
                 element: ".space-nav-container .panel:eq(0)",
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> menu'); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This is the navigation of your space. In this particular part you will be able to find the modules which are enabled for it. This might be Polls, Tasks or Notes for example.<br /> <br />You\'ll learn more about modules in the later stages of this tutorial.'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This is the navigation menu of your space.<br><br>In this particular part you will be able to find the modules which are enabled for it. This might be Polls, Tasks or Notes for example.'); ?>",
                 placement: "right"
             },
             {
                 // step 6
                 element: ".space-nav-container .panel:eq(1)",
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> preferences'); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This menu is only visible for space administrators. You can manage members, modules or settings in this section.<br /><br />Note: Module availability may vary depending on System Administrators decision.'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This menu is only visible for space administrators. Here you can manage space settings, members and activate / deactivate modules for this space.'); ?>",
                 placement: "right"
             },
             {
                 // step 7
                 element: ".space-info",
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> info'); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This is a short space overview. It should mainly consists of basic information regarding the space. <br /><br />You may change the image of the space by clicking on it or via drag & drop.'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This is a short space overview. It should mainly consists of basic information regarding the space. <br /><br />You can change the image of the space by clicking on it or via drag & drop.'); ?>",
                 placement: "left"
             },
             {
@@ -109,17 +109,17 @@ $(document).ready(function () {
                 // step 11
                 orphan: true,
                 backdrop: true,
-                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Your</strong> Profile'); ?>",
+                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>User</strong> profile'); ?>",
                 next: -1,
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'To manage your profile, which is visible by everybody click on  <strong>\"%editAccountButton%\"</strong>.<br><br>You can simply change the profile and title images via drag & drop.<br><br>Our little introduction ends here, so you can start right now with that. <br><br>Have fun.', array('%editAccountButton%' => Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'))); ?>"
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Your profile ist visible for every user on the platform.<br><br>You can simply change the profile and title images via drag & drop and edit your profile information by clicking on  <strong>\"%editAccountButton%\"</strong>.<br><br>Our little introduction ends here, so you can start right now with that. <br><br>Have fun with the platform.', array('%editAccountButton%' => Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'))); ?>"
             },
             <?php else : ?>
             {
                 // step 12
                 orphan: true,
                 backdrop: true,
-                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Your</strong> Profile'); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'To manage your profile, which ist visible by everybody click on  <strong>\"%editAccountButton%\"</strong>.<br><br>You can simply change the profile and title images via drag & drop.<br><br>', array('%editAccountButton%' => Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'))); ?>"
+                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>User</strong> profile'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Your profile ist visible for every user on the platform.<br><br>You can simply change the profile and title images via drag & drop and edit your profile information by clicking on  <strong>\"%editAccountButton%\"</strong>.', array('%editAccountButton%' => Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'))); ?>"
             },
             <?php endif;  ?>
             {
@@ -179,7 +179,7 @@ $(document).ready(function () {
                 orphan: true,
                 backdrop: true,
                 title: "<?php echo Yii::t('TourModule.widgets_views_index', "<strong>Hurray!</strong> We're done."); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This have been the most important things you should know before using the platform.<br><br>We hope your and your users experience will meet your expectations.<br><br>We are always looking forward for every suggestion or any kind of help to support the project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :)'); ?>"
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This have been the most important things you should know before using the platform.<br><br>We hope, that you and the future users will have a good experience and fun with the platform.<br><br>We are always looking forward for every suggestion or any kind of help to support the project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :)'); ?>"
             }
 
         ]);

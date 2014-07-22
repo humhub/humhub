@@ -14,20 +14,26 @@ class TourWidget extends HWidget {
      */
     public function run() {
 
-        // save in variable, if this user seen the tour already
-        $tourSeen = Yii::app()->user->getModel()->getSetting("seen", "tour");
+        // check if tour is activated for new users
+        if (HSetting::Get('tour') == 1) {
 
-        // if not...
-        if ($tourSeen != "true") {
+            // save in variable, if this user seen the tour already
+            $tourSeen = Yii::app()->user->getModel()->getSetting("seen", "tour");
 
-            // ...load resources
-            $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-            Yii::app()->clientScript->registerScriptFile($assetPrefix . '/bootstrap-tour.min.js');
-            Yii::app()->clientScript->registerCssFile($assetPrefix . '/bootstrap-tour.min.css');
+            // if not...
+            if ($tourSeen != "true") {
 
-            // ... render widget view
-            $this->render('index', array());
+                // ...load resources
+                $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+                Yii::app()->clientScript->registerScriptFile($assetPrefix . '/bootstrap-tour.min.js');
+                Yii::app()->clientScript->registerCssFile($assetPrefix . '/bootstrap-tour.min.css');
+
+                // ... render widget view
+                $this->render('index', array());
+            }
         }
+
+
     }
 
 }

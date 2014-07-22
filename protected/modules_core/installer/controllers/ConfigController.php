@@ -308,6 +308,9 @@ class ConfigController extends Controller
         // Design
         HSetting::Set('theme', "HumHub");
 
+        // Basic
+        HSetting::Set('tour', 1);
+
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory;

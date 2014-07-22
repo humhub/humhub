@@ -10,6 +10,7 @@ class BasicSettingsForm extends CFormModel {
     public $baseUrl;
     public $defaultLanguage;
     public $defaultSpaceGuid;
+    public $tour;
 
     /**
      * Declares the validation rules.
@@ -20,6 +21,7 @@ class BasicSettingsForm extends CFormModel {
             array('name', 'length', 'max' => 150),
             array('defaultLanguage', 'in', 'range' => Yii::app()->getLanguages()),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
+            array('tour', 'safe'),
         );
     }
 
@@ -34,6 +36,7 @@ class BasicSettingsForm extends CFormModel {
             'baseUrl' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default language'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
+            'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users')
         );
     }
 

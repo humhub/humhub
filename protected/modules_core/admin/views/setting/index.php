@@ -39,7 +39,17 @@
         ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'New users will automatically added to these space(s).'); ?></p>
 
-        <br/>
+
+        <strong>Introduction tour</strong>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($model, 'tour'); ?> <?php echo $model->getAttributeLabel('tour'); ?>
+                </label>
+            </div>
+        </div>
+
+
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), array('class' => 'btn btn-primary')); ?>

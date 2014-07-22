@@ -59,6 +59,7 @@ class SettingController extends Controller
                 HSetting::Set('name', $form->name);
                 HSetting::Set('baseUrl', $form->baseUrl);
                 HSetting::Set('defaultLanguage', $form->defaultLanguage);
+                HSetting::Set('tour', $form->tour);
 
                 $spaceGuids = explode(",", $form->defaultSpaceGuid);
 
@@ -88,6 +89,7 @@ class SettingController extends Controller
             $form->name = HSetting::Get('name');
             $form->baseUrl = HSetting::Get('baseUrl');
             $form->defaultLanguage = HSetting::Get('defaultLanguage');
+            $form->tour = HSetting::Get('tour');
 
             $form->defaultSpaceGuid = "";
             foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
