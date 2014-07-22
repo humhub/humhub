@@ -15,7 +15,7 @@ class TourWidget extends HWidget {
     public function run() {
 
         // check if tour is activated for new users
-        if (HSetting::Get('tour') == 1) {
+        if (HSetting::Get('enable', 'tour') == 1) {
 
             // save in variable, if this user seen the tour already
             $tourSeen = Yii::app()->user->getModel()->getSetting("seen", "tour");
