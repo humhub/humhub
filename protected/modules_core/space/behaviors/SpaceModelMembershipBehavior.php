@@ -323,8 +323,7 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
     {
 
         $user = User::model()->findByPk($userId);
-
-        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->getOwner()->id));
+        $membership = $this->getMembership($userId);
 
         if ($membership == null) {
             // Add Membership
@@ -360,9 +359,7 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
         // Create Wall Activity for that
         $activity = new Activity;
         $activity->content->space_id = $this->getOwner()->id;
-        $activity->content->user_id = $userId;
         $activity->content->visibility = Content::VISIBILITY_PRIVATE;
-        $activity->content->created_by = $userId;
         $activity->created_by = $userId;
         $activity->type = "ActivitySpaceMemberAdded";
         $activity->save();
@@ -400,9 +397,9 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
         if ($membership->status == SpaceMembership::STATUS_MEMBER) {
             $activity = new Activity;
             $activity->content->space_id = $this->getOwner()->id;
-            $activity->content->user_id = $userId;
             $activity->content->visibility = Content::VISIBILITY_PRIVATE;
             $activity->type = "ActivitySpaceMemberRemoved";
+            $activity->created_by = $userId;
             $activity->save();
             $activity->fire();
         }
