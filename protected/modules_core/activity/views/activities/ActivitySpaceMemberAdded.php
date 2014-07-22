@@ -10,7 +10,7 @@
 <?php else: ?>
 
     <?php echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberAdded', "%displayName% joined this space.", array(
-        '<strong>'.$user->displayName.'</strong>'
+        '%displayName%' => '<strong>'.$user->displayName.'</strong>'
     )); ?>
 
 <?php endif; ?>
