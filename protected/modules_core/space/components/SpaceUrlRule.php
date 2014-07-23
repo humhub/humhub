@@ -56,7 +56,8 @@ class SpaceUrlRule extends CBaseUrlRule
                     
                     $_GET['sguid'] = $space->guid;
                     if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
-                        return 'space/space/index';
+                        $temp = 1;
+                        return 'space/space/index'. str_replace('home', '', $parts[2], $temp);
                     } else {
                         return $parts[2];
                     }

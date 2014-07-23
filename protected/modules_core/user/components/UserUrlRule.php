@@ -44,7 +44,7 @@ class UserUrlRule extends CBaseUrlRule
             $userName = self::getUserNameByGuid($params['uguid']);
 
             unset($params['uguid']);
-            if ($route == 'user/profile') {
+            if ($route == 'user/profile' || $route == 'user/profile/index') {
                 $route = "home";
             }
 
@@ -67,7 +67,8 @@ class UserUrlRule extends CBaseUrlRule
                 if ($user !== null) {
                     $_GET['uguid'] = $user->guid;
                     if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
-                        return 'user/profile';
+                        $temp = 1;
+                        return 'user/profile/index'. str_replace('home', '', $parts[2], $temp);
                     } else {
                         return $parts[2];
                     }                    
