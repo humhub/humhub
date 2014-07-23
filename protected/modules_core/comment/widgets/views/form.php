@@ -25,13 +25,12 @@
             
             $('#comments_area_" . $id . "').html(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
-            $.fn.mention.reset('#newCommentForm_" . $id . "');
 
         }",
         ), array(
             'id' => "comment_create_post_" . $id,
             'class' => 'btn btn-small btn-primary',
-            'style' => 'position: absolute; top: -3000px; left: -3000px;',
+            'style' => 'display: none;',
         )
     );
     ?>
@@ -48,10 +47,10 @@
 
             event.cancelBubble = true;
             event.returnValue = false;
+            event.preventDefault();
 
             $('#comment_create_post_<?php echo $id; ?>').focus();
             $('#comment_create_post_<?php echo $id; ?>').click();
-
 
         }
 
