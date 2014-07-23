@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Will injected to dashboard sidebar to show a breaking news
+ * Will show the introduction tour
  *
- * @package humhub.modules.breakingnews.widgets
+ * @package humhub.modules_core.tour.widgets
  * @since 0.5
- * @author Luke
+ * @author andystrobel
  */
 class TourWidget extends HWidget {
 

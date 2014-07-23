@@ -9,7 +9,7 @@ Yii::app()->moduleManager->register(array(
     ),
     // Events to Catch
     'events' => array(
-        //array('class' => 'PageAddonStackWidget', 'event' => 'onInit', 'callback' => array('TourModule', 'onTourWidgetInit')),
+
     ),
 ));
 ?>

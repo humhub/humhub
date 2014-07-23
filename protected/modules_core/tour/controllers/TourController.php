@@ -10,7 +10,9 @@
 class TourController extends Controller {
 
     public function actionSeen() {
-        $this->renderPartial('seen');
+
+        // set tour status to seen for current user
+        Yii::app()->user->getModel()->setSetting("seen", "true", "tour");
     }
 
 }
