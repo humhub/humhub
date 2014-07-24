@@ -20,7 +20,6 @@ class m140321_000917_content extends EDbMigration {
         }
         
         try {
-            $this->dropIndex('object_model', 'content');
             $this->dropIndex('guid', 'content');
         } catch (Exception $ex) {
             ;
