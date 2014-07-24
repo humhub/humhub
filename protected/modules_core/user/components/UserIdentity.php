@@ -64,7 +64,7 @@ class UserIdentity extends CUserIdentity {
                 }
             } elseif ($user->auth_mode == User::AUTH_MODE_LDAP) {
                 // Authenticate via LDAP 
-                if (HLdap::getInstance()->authenticate($this->username, $this->password)) {
+                if (HLdap::getInstance()->authenticate($user->username, $this->password)) {
                     $this->errorCode = self::ERROR_NONE;
                 } else {
                     $this->errorCode = self::ERROR_PASSWORD_INVALID;
