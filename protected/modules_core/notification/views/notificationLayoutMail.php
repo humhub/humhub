@@ -39,7 +39,7 @@
                                                             <img
                                                                 src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
                                                                 width="50"
-                                                                alt="face1_50x50"
+                                                                alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"
                                                                 border="0" hspace="0" vspace="0"/>
                                                         </a>

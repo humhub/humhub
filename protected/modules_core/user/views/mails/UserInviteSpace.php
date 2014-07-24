@@ -691,7 +691,7 @@ td[class="image-124px"] img{
                                                             <img
                                                                 src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
                                                                 width="69"
-                                                                alt="face1_69x69"
+                                                                alt=""
                                                                 style="max-width:69px; display:block !important; border-radius: 4px;"
                                                                 border="0" hspace="0" vspace="0"/>
                                                         </a>
