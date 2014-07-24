@@ -3,7 +3,7 @@
     <div class="panel-body">
 
         <p>
-            <?php echo Yii::t('AdminModule.views_space_index', 'In this overview you can find every space and manage him.'); ?>
+            <?php echo Yii::t('AdminModule.views_space_index', 'In this overview you can find every space and manage it.'); ?>
         </p>
 
 
