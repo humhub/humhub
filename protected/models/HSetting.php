@@ -403,6 +403,11 @@ class HSetting extends HActiveRecord
         $content .= "; ?" . ">";
 
         file_put_contents($configFile, $content);
+        
+        if (function_exists('opcache_reset')) {
+            opcache_invalidate($configFile);
+        }
+            
     }
 
     /**

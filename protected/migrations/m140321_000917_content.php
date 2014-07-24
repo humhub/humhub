@@ -19,12 +19,6 @@ class m140321_000917_content extends EDbMigration {
             $updateCommand->execute();
         }
         
-        try {
-            $this->dropIndex('guid', 'content');
-        } catch (Exception $ex) {
-            ;
-        }
-        
         $this->createIndex('index_object_model', 'content', 'object_model, object_id', true);
         $this->createIndex('index_guid', 'content', 'guid', true);
         $this->createIndex('index_space_id', 'content', 'space_id', false);
