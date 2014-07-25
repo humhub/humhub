@@ -111,7 +111,7 @@ return array(
             'fr' => 'Francais*',
             'nl' => 'Nederlands*'
         ),
-        'dynamicConfigFile' => dirname(__FILE__) . '/_settings.php',
+        'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
 );
 ?>
