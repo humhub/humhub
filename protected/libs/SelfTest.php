@@ -144,7 +144,7 @@ class SelfTest {
 
         // Checks Writeable Config
         $title = 'Permissions - Config';
-        $configFile = Yii::app()->params['dynamicConfigFile'];
+        $configFile = dirname(Yii::app()->params['dynamicConfigFile']);
         if (is_writeable($configFile)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
