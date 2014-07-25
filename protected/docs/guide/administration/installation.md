@@ -9,8 +9,9 @@ Installation
     - /assets
     - /protected/runtime
     - /protected/modules
-    - /protected/config/_settings.php
-    - /uploads
+    - /protected/config/local
+    - /uploads/*
+    - 
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 
@@ -18,7 +19,7 @@ Enable Url Rewriting
 --------------------
 
 1. Rename file .htaccess.dist to .htaccess
-2. Add urlManager lines in protected/config/_settings.php
+2. Add urlManager lines in protected/config/local/_settings.php
 
         <?php return array (
           'components' => 
