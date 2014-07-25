@@ -16,7 +16,7 @@
         <?php foreach ($modules as $module): ?>
 
             <?php
-            $moduleImageUrl = Yii::app()->baseUrl . '/uploads/profile_image/default_module.jpg';
+            $moduleImageUrl = Yii::app()->baseUrl . '/img/default_module.jpg';
             if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
                 $moduleImageUrl = $module['moduleImageUrl'];
             }

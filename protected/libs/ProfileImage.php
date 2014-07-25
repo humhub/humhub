@@ -32,7 +32,8 @@
  * @since 0.5
  * @author Luke
  */
-class ProfileImage {
+class ProfileImage
+{
 
     /**
      * @var String is the guid of user or space
@@ -66,7 +67,8 @@ class ProfileImage {
      *
      * @param type $guid
      */
-    public function __construct($guid, $defaultImage = 'default') {
+    public function __construct($guid, $defaultImage = 'default_user')
+    {
         $this->guid = $guid;
         $this->defaultImage = $defaultImage;
     }
@@ -77,7 +79,8 @@ class ProfileImage {
      * @param String $prefix Prefix of the returned image
      * @return String Url of the profile image
      */
-    public function getUrl($prefix = "") {
+    public function getUrl($prefix = "")
+    {
 
         $cacheId = 0;
         $path = "";
@@ -89,14 +92,12 @@ class ProfileImage {
             $path = Yii::app()->getBaseUrl(true);
         }
 
-        $path .= '/uploads/' . $this->folder_images . '/';
 
-        $fileName = $this->getPath($prefix);
-
-        if (file_exists($fileName)) {
-            #$cacheId = filemtime($fileName);
+        if (file_exists($this->getPath($prefix))) {
+            $path .= '/uploads/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
         } else {
+            $path .= '/img/';
             $path .= $this->defaultImage;
         }
         $path .= '.jpg';
@@ -110,7 +111,8 @@ class ProfileImage {
      *
      * @return Boolean is there a profile image
      */
-    public function hasImage() {
+    public function hasImage()
+    {
         return file_exists($this->getPath("_org"));
     }
 
@@ -120,7 +122,8 @@ class ProfileImage {
      * @param String $prefix for the profile image
      * @return String Path to the profile image
      */
-    public function getPath($prefix = "") {
+    public function getPath($prefix = "")
+    {
         $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
 
         if (!is_dir($path))
@@ -142,7 +145,8 @@ class ProfileImage {
      * @param Int $w
      * @return boolean indicates the success
      */
-    public function cropOriginal($x, $y, $h, $w) {
+    public function cropOriginal($x, $y, $h, $w)
+    {
 
         $image = imagecreatefromjpeg($this->getPath('_org'));
 
@@ -162,22 +166,24 @@ class ProfileImage {
      *
      * @param mixed $file CUploadedFile or file path
      */
-    public function setNew($file) {
-        
+    public function setNew($file)
+    {
+
         if ($file instanceof CUploadedFile) {
             $file = $file->getTempName();
-        } 
-        
+        }
+
         $this->delete();
         ImageConverter::TransformToJpeg($file, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width'=>400, 'mode'=>'max'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width'=>$this->width, 'height'=>$this->height));
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width' => 400, 'mode' => 'max'));
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width' => $this->width, 'height' => $this->height));
     }
 
     /**
      * Deletes current profile
      */
-    public function delete() {
+    public function delete()
+    {
         @unlink($this->getPath());
         @unlink($this->getPath('_org'));
     }
