@@ -28,21 +28,24 @@ class Comment extends HActiveRecordContentAddon {
      * @param string $className active record class name.
      * @return Comment the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__) 
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName() 
+    {
         return 'comment';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules() 
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -55,8 +58,8 @@ class Comment extends HActiveRecordContentAddon {
      * Before Delete, remove LikeCount (Cache) of target object.
      * Remove activity
      */
-    protected function beforeDelete() {
-
+    protected function beforeDelete() 
+    {
         $this->flushCache();
         Notification::remove('Comment', $this->id);
         return parent::beforeDelete();
@@ -67,19 +70,22 @@ class Comment extends HActiveRecordContentAddon {
      *
      * @return User
      */
-    public function getUser() {
+    public function getUser() 
+    {
         return User::model()->findByPk($this->created_by);
     }
 
     /**
      * Flush comments cache
      */
-    public function flushCache() {
+    public function flushCache()
+    {
         Yii::app()->cache->delete('commentCount_' . $this->object_model . '_' . $this->object_id);
         Yii::app()->cache->delete('commentsLimited_' . $this->object_model . '_' . $this->object_id);
 
         // delete workspace comment stats cache
-        if ($this->space_id != "") {
+        if (!empty($this->space_id))
+        {
             Yii::app()->cache->delete('workspaceCommentCount_' . $this->space_id);
         }
     }
@@ -89,11 +95,10 @@ class Comment extends HActiveRecordContentAddon {
      *
      * @return type
      */
-    protected function afterSave() {
-
+    protected function afterSave() 
+    {
+        // flush the cache
         $this->flushCache();
-
-        parent::afterSave();
 
         $activity = Activity::CreateForContent($this);
         $activity->type = "CommentCreated";
@@ -105,7 +110,7 @@ class Comment extends HActiveRecordContentAddon {
         NewCommentNotification::fire($this);
         AlsoCommentedNotification::fire($this);
 
-        return true;
+        return parent::afterSave();
     }
 
     /**
@@ -116,12 +121,13 @@ class Comment extends HActiveRecordContentAddon {
      * @param type $limit
      * @return type
      */
-    public static function GetCommentsLimited($model, $id, $limit = 2) {
-        $cacheId = "commentsLimited_" . $model . "_" . $id;
-        $cacheValue = Yii::app()->cache->get($cacheId);
+    public static function GetCommentsLimited($model, $id, $limit = 2)
+    {
+        $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
+        $comments = Yii::app()->cache->get($cacheID);
 
-        if ($cacheValue === false) {
-
+        if ($comments === false) 
+        {
             $commentCount = self::GetCommentCount($model, $id);
 
             $criteria = new CDbCriteria;
@@ -129,12 +135,11 @@ class Comment extends HActiveRecordContentAddon {
             $criteria->offset = ($commentCount - 2);
             $criteria->limit = "2";
 
-            $newCacheValue = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
-            Yii::app()->cache->set($cacheId, $newCacheValue, HSetting::Get('expireTime', 'cache'));
-            return $newCacheValue;
-        } else {
-            return $cacheValue;
+            $comments = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
+            Yii::app()->cache->set($cacheID, $comments, HSetting::Get('expireTime', 'cache'));
         }
+
+        return $comments;
     }
 
     /**
@@ -144,17 +149,18 @@ class Comment extends HActiveRecordContentAddon {
      * @param type $id
      * @return type
      */
-    public static function GetCommentCount($model, $id) {
-        $cacheId = "commentCount_" . $model . "_" . $id;
-        $cacheValue = Yii::app()->cache->get($cacheId);
-
-        if ($cacheValue === false) {
-            $newCacheValue = Comment::model()->countByAttributes(array('object_model' => $model, 'object_id' => $id));
-            Yii::app()->cache->set($cacheId, $newCacheValue, HSetting::Get('expireTime', 'cache'));
-            return $newCacheValue;
-        } else {
-            return $cacheValue;
+    public static function GetCommentCount($model, $id)
+    {
+        $cacheID = sprintf("commentCount_%s_%s", $model, $id);
+        $commentCount = Yii::app()->cache->get($cacheID);
+        
+        if ($commentCount === false)
+        {
+            $commentCount = Comment::model()->countByAttributes(array('object_model' => $model, 'object_id' => $id));
+            Yii::app()->cache->set($cacheID, $commentCount, HSetting::Get('expireTime', 'cache'));
         }
+
+        return $commentCount;
     }
 
     /**
@@ -163,7 +169,8 @@ class Comment extends HActiveRecordContentAddon {
      *
      * @return String
      */
-    public function getContentTitle() {
+    public function getContentTitle()
+    {
         return "Comment \"" . Helpers::truncateText($this->message, 40) . "\"";
     }
 
