@@ -24,13 +24,13 @@
             ?>
         </span>
 
-        <?php //echo CHtml::link(Yii::t('base', "Delete"), '#'); ?>
+        <?php //echo CHtml::link(Yii::t('CommentModule.widgets_views_showComment', "Delete"), '#'); ?>
 
         <div class="wall-entry-controls">
             <?php
             if ($comment->canDelete()) {
                 $deleteUrl = CHtml::normalizeUrl(array('//comment/comment/delete', 'model' => $comment->object_model, 'id' => $comment->object_id, 'cid' => $comment->id));
-                echo HHtml::ajaxLink(Yii::t('base', 'Delete'), $deleteUrl, array(
+                echo HHtml::ajaxLink(Yii::t('CommentModule.widgets_views_showComment', 'Delete'), $deleteUrl, array(
                     'type' => 'POST',
                     'data' => array(Yii::app()->request->csrfTokenName => Yii::app()->request->csrfToken),
                     'success' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }",

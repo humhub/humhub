@@ -26,7 +26,7 @@ class SpaceRequestMembershipForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'message' => Yii::t('SpaceModule.base', 'Application message'),
+            'message' => Yii::t('SpaceModule.forms_SpaceMembershipForm', 'Application message'),
         );
     }
 

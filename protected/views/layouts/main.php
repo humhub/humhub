@@ -52,13 +52,13 @@
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a href="<?php echo $this->createUrl('//user/profile', array('guid' => Yii::app()->user->guid)); ?>"><i
-                                        class="fa fa-user"></i> <?php echo Yii::t('UserModule.base', 'My profile'); ?>
+                                <a href="<?php echo $this->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid)); ?>"><i
+                                        class="fa fa-user"></i> <?php echo Yii::t('base', 'My profile'); ?>
                                 </a>
                             </li>
                             <li>
                                 <a href="<?php echo $this->createUrl('//user/account/edit') ?>"><i
-                                        class="fa fa-edit"></i> <?php echo Yii::t('UserModule.base', 'Account settings'); ?>
+                                        class="fa fa-edit"></i> <?php echo Yii::t('base', 'Account settings'); ?>
                                 </a>
                             </li>
 
@@ -66,7 +66,7 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//admin/index') ?>"><i
-                                            class="fa fa-cogs"></i> <?php echo Yii::t('AdminModule.base', 'Administration'); ?>
+                                            class="fa fa-cogs"></i> <?php echo Yii::t('base', 'Administration'); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -76,7 +76,7 @@
                             <?php if (HSetting::Get('needApproval', 'authentication_internal') && (Yii::app()->user->isAdmin() || Yii::app()->user->canApproveUsers())) : ?>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//admin/approval') ?>"><i
-                                            class="fa fa-check-circle"></i> <?php echo Yii::t('AdminModule.base', 'User Approvals'); ?>
+                                            class="fa fa-check-circle"></i> <?php echo Yii::t('base', 'User Approvals'); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -86,7 +86,7 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a href="<?php echo $this->createUrl('//user/auth/logout') ?>"><i
-                                            class="fa fa-sign-out"></i> <?php echo Yii::t('UserModule.base', 'Logout'); ?>
+                                            class="fa fa-sign-out"></i> <?php echo Yii::t('base', 'Logout'); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -142,6 +142,7 @@
 
     <!-- end: second top navigation bar -->
 
+    <?php $this->widget('application.modules_core.tour.widgets.TourWidget', array()); ?>
 
 <?php } ?>
 
@@ -213,6 +214,7 @@
     })
 
 </script>
+<?php echo HSetting::GetText('trackingHtmlCode'); ?>
 </body>
 </html>
 

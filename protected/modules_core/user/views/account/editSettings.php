@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', '<strong>User</strong> settings'); ?>
+    <?php echo Yii::t('UserModule.views_account_editSettings', '<strong>User</strong> settings'); ?>
 </div>
 <div class="panel-body">
     <?php
@@ -24,7 +24,7 @@
     </div>
     <hr>
 
-    <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>
 
     <!-- show flash message after saving -->
     <?php $this->widget('application.widgets.DataSavedWidget'); ?>

@@ -23,7 +23,7 @@
 
                 <br><span class="time"
                           title="<?php echo $notification->created_at; ?>"><?php echo $notification->created_at; ?></span>
-                <?php if (!$notification->seen) : ?> <span class="label label-danger"><?php echo Yii::t('NotificationModule.base', 'New'); ?></span><?php endif; ?>
+                <?php if (!$notification->seen) : ?> <span class="label label-danger"><?php echo Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span><?php endif; ?>
             </div>
 
         </div>

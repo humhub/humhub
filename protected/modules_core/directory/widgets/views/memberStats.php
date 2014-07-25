@@ -13,7 +13,7 @@
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'new-people-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> people'); ?>
+        <?php echo Yii::t('DirectoryModule.widgets_views_memberStats', '<strong>New</strong> people'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newUsers as $user) : ?>
@@ -33,11 +33,11 @@
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-statistics-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> stats'); ?>
+        <?php echo Yii::t('DirectoryModule.widgets_views_memberStats', '<strong>Member</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Total users'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_memberStats', 'Total users'); ?></strong><br><br>
 
             <input id="user-total" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="#34c7ff" data-skin="tron"
@@ -54,7 +54,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Online right now'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_memberStats', 'Online right now'); ?></strong><br><br>
 
             <input id="user-online" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="#85dc0a"
@@ -73,7 +73,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Follows somebody'); ?>:</strong> <?php echo $statsUserFollow; ?>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_memberStats', 'Follows somebody'); ?>:</strong> <?php echo $statsUserFollow; ?>
         </div>
 
 

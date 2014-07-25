@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', '<strong>Change</strong> password'); ?>
+    <?php echo Yii::t('UserModule.views_account_changePassword', '<strong>Change</strong> password'); ?>
 </div>
 <div class="panel-body">
     <?php
@@ -28,7 +28,7 @@
     </div>
 
     <hr>
-    <?php echo CHtml::submitButton(Yii::t('UserModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_changePassword', 'Save'), array('class' => 'btn btn-primary')); ?>
 
 
     <?php $this->endWidget(); ?>

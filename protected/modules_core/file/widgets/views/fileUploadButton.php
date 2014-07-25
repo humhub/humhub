@@ -37,7 +37,7 @@
     }
 </style>
 <span class="btn btn-info fileinput-button tt" data-toggle="tooltip" data-placement="top" title=""
-      data-original-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
+      data-original-title="<?php echo Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'); ?>">
     <i class="fa fa-cloud-upload"></i>
 
     <input id="<?php echo $uploaderId; ?>" class="postfileupload" type="file" name="files[]"

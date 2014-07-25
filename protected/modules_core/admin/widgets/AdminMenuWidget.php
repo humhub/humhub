@@ -19,12 +19,12 @@ class AdminMenuWidget extends MenuWidget
 
         $this->addItemGroup(array(
             'id' => 'manage',
-            'label' => Yii::t('AdminModule.base', '<strong>Administration</strong> menu'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu'),
             'sortOrder' => 100,
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Users'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
             'url' => Yii::app()->createUrl('admin/user'),
             'icon' => '<i class="fa fa-user"></i>',
             'group' => 'manage',
@@ -35,7 +35,8 @@ class AdminMenuWidget extends MenuWidget
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'User approval'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User approval'),
+            'id' => 'approval',
             'url' => Yii::app()->createUrl('admin/approval'),
             'icon' => '<i class="fa fa-check-circle"></i>',
             'group' => 'manage',
@@ -45,7 +46,8 @@ class AdminMenuWidget extends MenuWidget
             'newItemCount' => 0
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Groups'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Groups'),
+            'id' => 'groups',
             'url' => Yii::app()->createUrl('admin/group'),
             'icon' => '<i class="fa fa-group"></i>',
             'group' => 'manage',
@@ -55,7 +57,8 @@ class AdminMenuWidget extends MenuWidget
             'newItemCount' => 0
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Spaces'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
+            'id' => 'spaces',
             'url' => Yii::app()->createUrl('admin/space'),
             'icon' => '<i class="fa fa-inbox"></i>',
             'group' => 'manage',
@@ -65,7 +68,8 @@ class AdminMenuWidget extends MenuWidget
             'newItemCount' => 0
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Modules'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
+            'id' => 'modules',
             'url' => Yii::app()->createUrl('admin/module'),
             'icon' => '<i class="fa fa-rocket"></i>',
             'sortOrder' => 500,
@@ -76,7 +80,7 @@ class AdminMenuWidget extends MenuWidget
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'About'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'About'),
             'url' => Yii::app()->createUrl('admin/about'),
             'icon' => '<i class="fa fa-info-circle"></i>',
             'sortOrder' => 10000,
@@ -89,12 +93,12 @@ class AdminMenuWidget extends MenuWidget
 
         $this->addItemGroup(array(
             'id' => 'settings',
-            'label' => Yii::t('AdminModule.base', 'Settings'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'),
             'sortOrder' => 200,
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Basic'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Basic'),
             'url' => Yii::app()->createUrl('admin/setting/index'),
             'icon' => '<i class="fa fa-cogs"></i>',
             'group' => 'settings',
@@ -103,7 +107,7 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Design'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Design'),
             'url' => Yii::app()->createUrl('admin/setting/design'),
             'icon' => '<i class="fa fa-magic"></i>',
             'group' => 'settings',
@@ -113,14 +117,14 @@ class AdminMenuWidget extends MenuWidget
         ));
         /*
           $this->addItem(array(
-          'label' => Yii::t('AdminModule.base', 'Users'),
+          'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
           'url' => Yii::app()->createUrl('admin/setting/user'),
           'group' => 'settings',
           'sortOrder' => 300,
           'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'authentication'),
           ));
           $this->addItem(array(
-          'label' => Yii::t('AdminModule.base', 'Spaces'),
+          'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
           'url' => Yii::app()->createUrl('admin/setting/user'),
           'group' => 'settings',
           'sortOrder' => 400,
@@ -129,7 +133,7 @@ class AdminMenuWidget extends MenuWidget
          *
          */
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Authentication'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Authentication'),
             'url' => Yii::app()->createUrl('admin/setting/authentication'),
             'icon' => '<i class="fa fa-lock"></i>',
             'group' => 'settings',
@@ -139,7 +143,7 @@ class AdminMenuWidget extends MenuWidget
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'User profiles'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User profiles'),
             'url' => Yii::app()->createUrl('admin/userprofile/index'),
             'icon' => '<i class="fa fa-wrench"></i>',
             'group' => 'settings',
@@ -149,7 +153,7 @@ class AdminMenuWidget extends MenuWidget
         ));
         /*
           $this->addItem(array(
-          'label' => Yii::t('AdminModule.base', 'Security & Roles'),
+          'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Security & Roles'),
           'url' => Yii::app()->createUrl('admin/setting/security'),
           'group' => 'settings',
           'sortOrder' => 700,
@@ -158,7 +162,7 @@ class AdminMenuWidget extends MenuWidget
 
          */
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Mailing'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Mailing'),
             'url' => Yii::app()->createUrl('admin/setting/mailing'),
             'icon' => '<i class="fa fa-envelope"></i>',
             'group' => 'settings',
@@ -167,7 +171,7 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Caching'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Caching'),
             'url' => Yii::app()->createUrl('admin/setting/caching'),
             'icon' => '<i class="fa fa-dashboard"></i>',
             'group' => 'settings',
@@ -176,7 +180,7 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Files'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Files'),
             'url' => Yii::app()->createUrl('admin/setting/file'),
             'icon' => '<i class="fa fa-file"></i>',
             'group' => 'settings',
@@ -185,7 +189,7 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Statistics'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
             'url' => Yii::app()->createUrl('admin/setting/statistic'),
             'icon' => '<i class="fa fa-bar-chart-o"></i>',
             'group' => 'settings',
@@ -194,7 +198,7 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Cron jobs'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Cron jobs'),
             'url' => Yii::app()->createUrl('admin/setting/cronjob'),
             'icon' => '<i class="fa fa-history"></i>',
             'group' => 'settings',
@@ -204,7 +208,7 @@ class AdminMenuWidget extends MenuWidget
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Logging'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Logging'),
             'url' => Yii::app()->createUrl('admin/logging'),
             'icon' => '<i class="fa fa-keyboard-o"></i>',
             'group' => 'settings',
@@ -214,7 +218,7 @@ class AdminMenuWidget extends MenuWidget
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.base', 'Self test & update'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Self test & update'),
             'url' => Yii::app()->createUrl('admin/setting/selftest'),
             'icon' => '<i class="fa fa-warning"></i>',
             'group' => 'settings',

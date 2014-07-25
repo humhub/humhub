@@ -29,27 +29,49 @@
 class ProfileControllerBehavior extends CBehavior
 {
 
+    public $user = null;
+    
     public function getUser()
     {
 
-        $guid = Yii::app()->request->getQuery('guid');
+        if ($this->user != null) {
+            return $this->user;
+        }
+        
+        // Get User GUID by parameter
+        $guid = Yii::app()->request->getQuery('uguid');
+        if ($guid == "") {
+            // Workaround for older version
+            $guid = Yii::app()->request->getQuery('guid');
+        }        
 
-        if ($guid == "")
-            $guid = Yii::app()->request->getQuery('uguid', Yii::app()->user->guid);
+        $this->user = User::model()->findByAttributes(array('guid' => $guid));
 
+        if ($this->user == null)
+            throw new CHttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'User not found!'));
 
-        $user = User::model()->findByAttributes(array('guid' => $guid));
+        $this->checkAccess();
+        
+        return $this->user;
+    }
 
-        if ($user == null)
-            throw new CHttpException(404, Yii::t('base', 'User not found!'));
-
-        if ($user->status == User::STATUS_DELETED)
+    public function checkAccess()
+    {
+        if ($this->user->status == User::STATUS_DELETED)
             throw new CHttpException(404, 'User deleted!');
 
-        if ($user->status == User::STATUS_NEED_APPROVAL)
+        if ($this->user->status == User::STATUS_NEED_APPROVAL)
             throw new CHttpException(404, 'This user account is not approved yet!');
+    }
 
-        return $user;
+    public function createUserUrl($route, $params = array(), $ampersand = '&')
+    {
+
+        if (!isset($params['uguid'])) {
+            $params['uguid'] = $this->user->guid;
+        }
+
+        return $this->owner->createUrl($route, $params, $ampersand);
     }
 
 }

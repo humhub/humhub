@@ -1,8 +1,8 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Self</strong> test'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_selftest', '<strong>Self</strong> test'); ?></div>
     <div class="panel-body">
 
-        <p><?php echo Yii::t('AdminModule.base', 'Checking HumHub software prerequisites.'); ?></p>
+        <p><?php echo Yii::t('AdminModule.views_setting_selftest', 'Checking HumHub software prerequisites.'); ?></p>
 
         <div class="well">
 
@@ -41,7 +41,7 @@
         </div>
         <hr>
 
-        <?php echo HHtml::link(Yii::t('AdminModule.base', 'Re-Run tests'), array('//admin/setting/selftest'), array('class' => 'btn btn-primary')); ?>
+        <?php echo HHtml::link(Yii::t('AdminModule.views_setting_selftest', 'Re-Run tests'), array('//admin/setting/selftest'), array('class' => 'btn btn-primary')); ?>
 
     </div>
 </div>

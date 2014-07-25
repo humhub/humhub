@@ -1,12 +1,13 @@
-<?php $this->beginContent('application.modules_core.notification.views.notificationLayoutMail', array('notification' => $notification)); ?>
+<?php $this->beginContent('application.modules_core.notification.views.notificationLayoutMail', array('notification' => $notification, 'showSpace' => true)); ?>
 
-<?php echo Yii::t('CommentModule.notification', "%displayName% commented your %contentTitle%.", array(
-   '%displayName%' => '', // Above in e-mail main layout, kept for same translation message as web notification.
-   '%contentTitle%' => $targetObject->getContentTitle()
-)); ?>
+<?php echo Yii::t('CommentModule.views_notifications_newCommented', "%displayName% commented your %contentTitle%.", array(
+    '%displayName%' => '<strong>' . $creator->displayName . '</strong>',
+    '%contentTitle%' => $targetObject->getContentTitle()
+));
+?>
 
-<br />
+    <br/>
 
-<em>"<?php echo NotificationModule::formatOutput($sourceObject->message); ?>"</em>
+    <em>"<?php echo NotificationModule::formatOutput($sourceObject->message); ?>"</em>
 
 <?php $this->endContent(); ?>

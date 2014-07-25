@@ -1,4 +1,3 @@
-
 // Defines current active stream object
 var currentStream;
 
@@ -28,7 +27,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Clear Stream
      */
-    this.clear = function() {
+    this.clear = function () {
 
         this.lastLoadedEntryId = 0;
         //this.firstLoadedEntryId = 0;
@@ -36,7 +35,6 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         this.loadedEntryCount = 0;
         this.lastEntryLoaded = false;		// Maximum wallentries reached
         this.currentMode = 'normal';		// or single
-
 
 
         this.readOnly = false;
@@ -63,7 +61,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Mark Stream as Read Only
      */
-    this.markAsReadOnly = function() {
+    this.markAsReadOnly = function () {
         this.readOnly = true;
 
         $(this.baseDiv).find(".s2_single").show();
@@ -73,10 +71,10 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
     /**
      * Shows a single Item
-     * 
+     *
      * @param wallEntryId to show
      */
-    this.showItem = function(wallEntryId) {
+    this.showItem = function (wallEntryId) {
         me = this;
 
         if (typeof activeTab != 'undefined') {
@@ -99,7 +97,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         url = url.replace('fromEntryId', wallEntryId + 1);
 
         // Load Entry
-        jQuery.getJSON(url, function(json) {
+        jQuery.getJSON(url, function (json) {
             streamDiv = $(me.baseDiv).find(".s2_singleContent");
             //$(json.output).appendTo(streamDiv).fadeIn('fast');
             $(streamDiv).append(parseHtml(json.output));
@@ -110,7 +108,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
             // Back Link
             $(me.baseDiv).find(".singleBackLink").off('click');
-            $(me.baseDiv).find(".singleBackLink").click(function() {
+            $(me.baseDiv).find(".singleBackLink").click(function () {
                 me.showStream();
             });
 
@@ -127,7 +125,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Shows the Stream
      */
-    this.showStream = function() {
+    this.showStream = function () {
 
         me = this;
 
@@ -141,13 +139,14 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         url = url.replace('filter_placeholder', this.filters);
         url = url.replace('sort_placeholder', this.sorting);
 
-        jQuery.getJSON(url, function(json) {
+        jQuery.getJSON(url, function (json) {
 
             $(me.baseDiv).find(".streamLoader").hide();
             me.showFilter();
 
             if (json.counter == 0) {
                 me.lastEntryLoaded = true;
+                $('#btn-load-more').hide();
 
                 if (me.filters == "") {
                     me.hideFilter();
@@ -178,10 +177,10 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Shows the Stream
      */
-    this.deleteEntry = function(wallEntryId) {
+    this.deleteEntry = function (wallEntryId) {
         me = this;
 
-        $("#wallEntry_" + wallEntryId).each(function() {
+        $("#wallEntry_" + wallEntryId).each(function () {
             me.loadedEntryCount -= 1;
             $(this).hide();
         });
@@ -196,7 +195,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Shows the Stream
      */
-    this.prependEntry = function(wallEntryId) {
+    this.prependEntry = function (wallEntryId) {
 
         me = this;
 
@@ -211,7 +210,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         url = url.replace('fromEntryId', wallEntryId + 1);
 
 
-        jQuery.getJSON(url, function(json) {
+        jQuery.getJSON(url, function (json) {
             me.loadedEntryCount += 1;
 
             streamDiv = $(me.baseDiv).find(".s2_streamContent");
@@ -230,7 +229,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Loads more Items
      */
-    this.loadMore = function() {
+    this.loadMore = function () {
 
         me = this;
 
@@ -249,7 +248,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         url = url.replace('sort_placeholder', this.sorting);
 
         // Get New Item
-        jQuery.getJSON(url, function(json) {
+        jQuery.getJSON(url, function (json) {
 
             if (json.counter == 0) {
                 me.lastEntryLoaded = true;
@@ -276,7 +275,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Fired when new entries are shown
      */
-    this.onNewEntries = function() {
+    this.onNewEntries = function () {
 
         if (this.readOnly) {
             $('.wallReadOnlyHide').hide();
@@ -291,7 +290,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      *  Filter Handler & Sorting
      */
-    this.showFilter = function() {
+    this.showFilter = function () {
 
         $('.wallFilterPanel').show();
 
@@ -299,7 +298,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
         // Handle Clicks on Filter "Checkboxes"
         $(".wallFilter").off();
-        $(".wallFilter").click(function() {
+        $(".wallFilter").click(function () {
             checkboxi = $(this).children("i");
             if (checkboxi.hasClass('fa-square-o')) {
                 checkboxi.removeClass('fa-square-o');
@@ -314,11 +313,11 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
         // Handles clicks on sorting
         $(".wallSorting").off();
-        $(".wallSorting").click(function() {
+        $(".wallSorting").click(function () {
             newSortingMode = $(this).attr('id');
 
             // uncheck all sorting
-            $(".wallSorting").each(function() {
+            $(".wallSorting").each(function () {
                 $(this).children("i").removeClass('fa-check-square-o');
                 $(this).children("i").addClass('fa-square-o');
             });
@@ -341,20 +340,20 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
     /**
      * Hide Filters when not necessary
      */
-    this.hideFilter = function() {
+    this.hideFilter = function () {
         $('.wallFilterPanel').hide();
     }
 
     /**
      * Reads the current state of filter checkboxes and reloads the stream.
      */
-    this.updateFilters = function() {
+    this.updateFilters = function () {
         me = this;
 
         this.filters = ""; // clear
 
         // Loop over all available filters
-        $(".wallFilter").each(function() {
+        $(".wallFilter").each(function () {
 
             checkboxi = $(this).children("i");
 
@@ -376,10 +375,10 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
     /**
      * Reloads a given Wall Entry
-     * 
+     *
      * @returns {undefined}
      */
-    this.reloadWallEntry = function(wallEntryId) {
+    this.reloadWallEntry = function (wallEntryId) {
 
         wallEntryId = parseInt(wallEntryId);
 
@@ -387,12 +386,11 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         url = url.replace('fromEntryId', wallEntryId + 1);
 
         // Load Entry
-        jQuery.getJSON(url, function(json) {
+        jQuery.getJSON(url, function (json) {
             $("#wallEntry_" + wallEntryId).replaceWith(parseHtml(json.output));
             me.onNewEntries();
         });
     };
-
 
 
     // Start Clear per default on a new instance
@@ -402,7 +400,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 }
 function installAutoLoader() {
     // Install autoscrolloer
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height()) {
             if (currentStream && currentStream.loadingBusyFlag == false) {
                 currentStream.loadMore();

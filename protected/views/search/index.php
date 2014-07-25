@@ -14,7 +14,7 @@
  */
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('Search.base', 'Search'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('base', 'Search'); ?></div>
 
 
     <div class="panel-body">
@@ -29,7 +29,7 @@
 
 
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('Search.base', 'Results'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('base', 'Results'); ?></div>
 
     <div class="panel-body">
 

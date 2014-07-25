@@ -4,11 +4,11 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', '<strong>Modify</strong> space image'); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> space image'); ?></h4>
         </div>
         <div class="modal-body">
 
-            <p><?php //echo Yii::t('UserModule.base', 'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.'); ?></p>
+            <p><?php //echo Yii::t('SpaceModule.views_admin_cropImage', 'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.'); ?></p>
 
 
             <?php echo $form->errorSummary($model); ?>
@@ -50,7 +50,7 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Save'), Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)), array(
+            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.views_admin_cropImage', 'Save'), Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
@@ -58,10 +58,10 @@
 
             ?>
 
-            <?php //echo CHtml::submitButton(Yii::t('UserModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+            <?php //echo CHtml::submitButton(Yii::t('SpaceModule.views_admin_cropImage', 'Save'), array('class' => 'btn btn-primary')); ?>
 
             <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>
+                    data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_admin_cropImage', 'Close'); ?></button>
 
             <div class="col-md-1 modal-loader">
                 <div id="invite-loader" class="loader loader-small hidden"></div>

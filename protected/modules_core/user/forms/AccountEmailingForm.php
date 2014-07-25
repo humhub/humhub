@@ -55,8 +55,8 @@ class AccountEmailingForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'receive_email_notifications' => Yii::t('UserModule.base', 'Send notifications?'),
-            'receive_email_activities' => Yii::t('UserModule.base', 'Send activities?'),
+            'receive_email_notifications' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send notifications?'),
+            'receive_email_activities' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send activities?'),
         );
     }
 

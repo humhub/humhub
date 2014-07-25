@@ -617,7 +617,7 @@ td[class="image-124px"] img{
                                                     <td width="auto"  align="center" valign="middle" height="28" style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
                              <span style="color: #555555; font-weight: 300;">
-                               <?php echo Yii::t('UserModule.mails', '<strong>Password</strong> recovery'); ?>
+                               <?php echo Yii::t('UserModule.views_mails_RecoverPassword', '<strong>Password</strong> recovery'); ?>
                              </span>
                                                     </td>
                                                 </tr>
@@ -683,13 +683,13 @@ td[class="image-124px"] img{
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.mails', 'Hello {displayName}, ', array('{displayName}' => $user->displayName)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Hello {displayName}, ', array('{displayName}' => $user->displayName)); ?>
                                                         <br><br>
-                                                        <?php echo Yii::t('UserModule.mails', 'You have requested a new password.'); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'You have requested a new password.'); ?>
                                                         <br>
-                                                        <?php echo Yii::t('UserModule.mails', 'Your username is: <strong>{username}</strong>', array('{username}' => $user->username)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Your username is: <strong>{username}</strong>', array('{username}' => $user->username)); ?>
                                                         <br>
-                                                        <?php echo Yii::t('UserModule.mails', 'Your new password is: <strong>{password}</strong>', array('{password}' => $newPassword)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Your new password is: <strong>{password}</strong>', array('{password}' => $newPassword)); ?>
                                                         <br>
 
                                                     </td>
@@ -717,7 +717,7 @@ td[class="image-124px"] img{
 
                              <span style="color: #ffffff; font-weight: 300;">
                                <a href="<?php echo Yii::app()->createAbsoluteUrl("//user/auth/login"); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                   <strong><?php echo Yii::t('UserModule.mails', 'Login'); ?></strong>
+                                   <strong><?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Login'); ?></strong>
                                </a>
                              </span>
                                                     </td>
@@ -787,7 +787,7 @@ td[class="image-124px"] img{
 
                                                 <tr>
                                                     <td  align="center" valign="top" style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
-                                                        <span style="text-decoration: none; color: #a3a2a2;">Powered by HumHub</span>
+                                                        <span style="text-decoration: none; color: #a3a2a2;">Powered by <a href="http://www.humhub.org" style="text-decoration: none; color: #a3a2a2;">HumHub</a> </span>
 
                                                     </td>
 

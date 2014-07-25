@@ -59,6 +59,7 @@ class SettingController extends Controller
                 HSetting::Set('name', $form->name);
                 HSetting::Set('baseUrl', $form->baseUrl);
                 HSetting::Set('defaultLanguage', $form->defaultLanguage);
+                HSetting::Set('enable', $form->tour, 'tour');
 
                 $spaceGuids = explode(",", $form->defaultSpaceGuid);
 
@@ -80,7 +81,7 @@ class SettingController extends Controller
                 }
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/index'));
             }
@@ -88,6 +89,7 @@ class SettingController extends Controller
             $form->name = HSetting::Get('name');
             $form->baseUrl = HSetting::Get('baseUrl');
             $form->defaultLanguage = HSetting::Get('defaultLanguage');
+            $form->tour = HSetting::Get('enable', 'tour');
 
             $form->defaultSpaceGuid = "";
             foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
@@ -137,7 +139,7 @@ class SettingController extends Controller
                 $form->defaultUserGroup = HSetting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authentication'));
             }
@@ -145,7 +147,7 @@ class SettingController extends Controller
 
         // Build Group Dropdown
         $groups = array();
-        $groups[''] = Yii::t('AdminModule.authentication', 'None - shows dropdown in user registration.');
+        $groups[''] = Yii::t('AdminModule.controllers_SettingController', 'None - shows dropdown in user registration.');
         foreach (Group::model()->findAll() as $group) {
             $groups[$group->id] = $group->name;
         }
@@ -202,7 +204,7 @@ class SettingController extends Controller
                 HSetting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/authenticationLdap'));
             }
@@ -272,7 +274,7 @@ class SettingController extends Controller
                 HSetting::Set('expireTime', $form->expireTime, 'cache');
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved and flushed cache'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/caching'));
             }
@@ -280,10 +282,10 @@ class SettingController extends Controller
 
 
         $cacheTypes = array(
-            'CDummyCache' => Yii::t('AdminModule.base', 'No caching (Testing only!)'),
-            'CFileCache' => Yii::t('AdminModule.base', 'File'),
-            'CDbCache' => Yii::t('AdminModule.base', 'Database'),
-            'CApcCache' => Yii::t('AdminModule.base', 'APC'),
+            'CDummyCache' => Yii::t('AdminModule.controllers_SettingController', 'No caching (Testing only!)'),
+            'CFileCache' => Yii::t('AdminModule.controllers_SettingController', 'File'),
+            'CDbCache' => Yii::t('AdminModule.controllers_SettingController', 'Database'),
+            'CApcCache' => Yii::t('AdminModule.controllers_SettingController', 'APC'),
         );
 
         $this->render('caching', array('model' => $form, 'cacheTypes' => $cacheTypes));
@@ -313,7 +315,7 @@ class SettingController extends Controller
                 $form->trackingHtmlCode = HSetting::SetText('trackingHtmlCode', $form->trackingHtmlCode);
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/statistic'));
             }
@@ -343,7 +345,7 @@ class SettingController extends Controller
                 HSetting::Set('receive_email_activities', $model->receive_email_activities, 'mailing');
                 HSetting::Set('receive_email_notifications', $model->receive_email_notifications, 'mailing');
 
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
             }
         }
 
@@ -393,7 +395,7 @@ class SettingController extends Controller
                 $form->systemEmailName = HSetting::Set('systemEmailName', $form->systemEmailName, 'mailing');
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/mailingServer'));
             }
@@ -431,7 +433,7 @@ class SettingController extends Controller
                 HSetting::Set('displayNameFormat', $form->displayName);
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/design'));
             }
@@ -442,7 +444,7 @@ class SettingController extends Controller
         }
 
         $themes = HTheme::getThemes();
-        $themes[''] = Yii::t('AdminModule.base', 'No theme');
+        $themes[''] = Yii::t('AdminModule.controllers_SettingController', 'No theme');
         $this->render('design', array('model' => $form, 'themes' => $themes));
     }
 
@@ -519,7 +521,7 @@ class SettingController extends Controller
                 $form->forbiddenExtensions = HSetting::Set('forbiddenExtensions', strtolower($form->forbiddenExtensions), 'file');
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved and flushed cache'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/file'));
             }

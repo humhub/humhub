@@ -62,11 +62,11 @@ class GroupForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'name' => Yii::t('base', 'Name'),
-            'description' => Yii::t('base', 'Description'),
-            'defaultSpaceGuid' => Yii::t('base', 'Default space'),
-            'admins' => Yii::t('base', 'Administrator users'),
-            'ldapDn' => Yii::t('base', 'Ldap DN'),
+            'name' => Yii::t('AdminModule.forms_GroupForm', 'Name'),
+            'description' => Yii::t('AdminModule.forms_GroupForm', 'Description'),
+            'defaultSpaceGuid' => Yii::t('AdminModule.forms_GroupForm', 'Default space'),
+            'admins' => Yii::t('AdminModule.forms_GroupForm', 'Administrator users'),
+            'ldapDn' => Yii::t('AdminModule.forms_GroupForm', 'Ldap DN'),
         );
     }
 
@@ -140,7 +140,7 @@ class GroupForm extends CFormModel {
             if ($space != null) {
                 $this->defaultSpaceGuid = $space->guid;
             } else {
-                $this->addError($attribute, Yii::t('AdminModule.base', "Invalid space"));
+                $this->addError($attribute, Yii::t('AdminModule.forms_GroupForm', "Invalid space"));
             }
         }
     }

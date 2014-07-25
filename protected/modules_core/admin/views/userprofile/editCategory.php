@@ -2,10 +2,10 @@
 
     <?php if (!$category->isNewRecord) : ?>
         <div
-            class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Edit</strong> profile category'); ?></div>
+            class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_editCategory', '<strong>Edit</strong> profile category'); ?></div>
     <?php else: ?>
         <div
-            class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Create</strong> new profile category'); ?></div>
+            class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_editCategory', '<strong>Create</strong> new profile category'); ?></div>
     <?php endif; ?>
 
     <div class="panel-body">
@@ -43,10 +43,10 @@
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php if (!$category->isNewRecord && !$category->is_system) : ?>
-            <?php echo HHtml::postLink(Yii::t('base', 'Delete'), $this->createUrl('//admin/userprofile/deleteCategory', array('id' => $category->id)), array('class' => 'btn btn-danger')); ?>
+            <?php echo HHtml::postLink(Yii::t('AdminModule.views_userprofile_editCategory', 'Delete'), $this->createUrl('//admin/userprofile/deleteCategory', array('id' => $category->id)), array('class' => 'btn btn-danger')); ?>
         <?php endif; ?>
 
         <?php $this->endWidget(); ?>

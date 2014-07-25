@@ -15,12 +15,12 @@
         <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-spaces-panel')); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Member</strong> in these spaces'); ?>
+            <?php echo Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces'); ?>
         </div>
 
         <div class="panel-body">
             <?php foreach ($spaces as $space): ?>
-                <a href="<?php echo Yii::app()->createUrl('//space/space', array('guid' => $space->guid)); ?>">
+                <a href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid)); ?>">
                     <img src="<?php echo $space->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"

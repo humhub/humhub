@@ -84,20 +84,20 @@ class FileController extends Controller {
         // Received a file?
         if ($cFile == null) {
             $output['error'] = true;
-            $output['errorMessage'] = Yii::t('FileModule.base', 'No file received!');
+            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'No file received!');
             return $output;
         }
 
         // Maximum File Size
         if ($cFile->getSize() > HSetting::Get('maxFileSize', 'file')) {
             $output['error'] = true;
-            $output['errorMessage'] = Yii::t('FileModule.base', 'Maximum file size has been {maxFileSize} reached!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file'))));
+            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'Maximum file size has been {maxFileSize} reached!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file'))));
             return $output;
         }
 
         if (!File::HasValidExtension($cFile->getName())) {
             $output['error'] = true;
-            $output['errorMessage'] = Yii::t('FileModule.base', 'This file type is not allowed!');
+            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'This file type is not allowed!');
             return $output;
         }
 
@@ -107,7 +107,7 @@ class FileController extends Controller {
         // Check File Storage
         if ($file == null) {
             $output['state'] = 'error';
-            $output['errorMessage'] = Yii::t('FileModule.base', 'Internal Error: Could not store file!');
+            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'Internal Error: Could not store file!');
             return $output;
         }
 
@@ -137,18 +137,18 @@ class FileController extends Controller {
         $file = File::model()->findByAttributes(array('guid' => $guid));
 
         if ($file == null) {
-            throw new CHttpException(404, Yii::t('FileModule.error', 'Could not find requested file!'));
+            throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
         if (!$file->canRead()) {
-            throw new CHttpException(401, Yii::t('FileModule.error', 'Insufficient permissions!'));
+            throw new CHttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
         }
 
         $filePath = $file->getPath($suffix);
         $fileName = $file->getFilename($suffix);
 
         if (!file_exists($filePath)) {
-            throw new CHttpException(404, Yii::t('FileModule.error', 'Could not find requested file!'));
+            throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
         if (!HSetting::Get('useXSendfile', 'file')) {

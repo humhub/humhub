@@ -387,11 +387,28 @@ h4 {
   background-color: #7191a8;
   color: white;
 }
+.popover {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
 .popover .popover-title {
   background: none;
   border-bottom: none;
+  color: #555555;
   font-weight: 300;
-  font-size: 18px;
+  font-size: 16px;
+  padding: 15px;
+}
+.popover .popover-content {
+  font-size: 13px;
+  padding: 5px 15px;
+  color: #555555;
+}
+.popover .popover-navigation {
+  padding: 15px;
 }
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,

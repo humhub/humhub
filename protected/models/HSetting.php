@@ -240,19 +240,30 @@ class HSetting extends HActiveRecord
     }
 
     /**
-     * Saving the registry object
-     * Also deletes cache Entry
-     *
-     * @param type $runValidation
-     * @param type $attributes
-     * @return type
+     * clears cache
+     * @return void
      */
-    public function save($runValidation = true, $attributes = null)
+    public function clearCache()
     {
-
         Yii::app()->cache->delete($this->getCacheId());
         RuntimeCache::Remove($this->getCacheId());
-        return parent::save($runValidation, $attributes);
+    }
+
+    public function beforeSave()
+    {
+
+        $this->clearCache();
+
+        if ($this->hasAttribute('created_by') && empty($this->created_by))
+            $this->created_by = 0;
+
+        if ($this->hasAttribute('updated_by') && empty($this->updated_by))
+            $this->updated_by = 0;
+
+        if ($this->hasAttribute('updated_at') && empty($this->updated_at))
+            $this->updated_at = new CDbExpression('NOW()');
+
+        return parent::beforeSave();
     }
 
     /**
@@ -392,6 +403,11 @@ class HSetting extends HActiveRecord
         $content .= "; ?" . ">";
 
         file_put_contents($configFile, $content);
+        
+        if (function_exists('opcache_reset')) {
+            opcache_invalidate($configFile);
+        }
+            
     }
 
     /**

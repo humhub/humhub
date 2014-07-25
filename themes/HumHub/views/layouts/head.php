@@ -1,13 +1,14 @@
+<?php $ver = HVersion::VERSION; ?>
+
 <!-- start: CSS -->
-<!--<link href="<?php /*echo Yii::app()->baseUrl; */?>/css/style.css" rel="stylesheet">-->
-<link href="<?php echo Yii::app()->baseUrl; ?>/css/animate.min.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/datepicker.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->baseUrl; ?>/css/style.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/theme.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css" rel="stylesheet">
-<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/flatelements.css" rel="stylesheet">
+<link href="<?php echo Yii::app()->baseUrl; ?>/css/animate.min.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap.min.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/datepicker.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->baseUrl; ?>/css/style.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/theme.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css?ver=<?php echo $ver; ?>" rel="stylesheet">
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/flatelements.css?ver=<?php echo $ver; ?>" rel="stylesheet">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 <!-- end: CSS -->
 
@@ -23,22 +24,22 @@
 <![endif]-->
 
 <!-- start: JavaScript -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/ekko-lightbox-modified.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/modernizr.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.highlight.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.autosize.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.timeago.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.knob.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.flatelements.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.placeholder.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap.min.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/ekko-lightbox-modified.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/modernizr.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.cookie.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.highlight.min.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.autosize.min.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.timeago.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.knob.min.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/wysihtml5-0.3.0.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.flatelements.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.placeholder.js?ver=<?php echo $ver; ?>"></script>
 
 <!-- Global app functions -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js?ver=<?php echo $ver; ?>"></script>
 <!-- end: JavaScript -->
 
 <!-- start: Favicon and Touch Icons -->

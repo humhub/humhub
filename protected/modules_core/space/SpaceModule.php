@@ -49,7 +49,7 @@ class SpaceModule extends HWebModule
         // Check if the user owns some spaces
         foreach (SpaceMembership::GetUserSpaces($user->id) as $space) {
             if ($space->isSpaceOwner($user->id)) {
-                throw new CHttpException(500, Yii::t('SpaceModule.error', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
+                throw new CHttpException(500, Yii::t('SpaceModule.base', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
             }
         }
 

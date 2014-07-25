@@ -37,7 +37,7 @@ class AccountLoginForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'rememberMe' => Yii::t('UserModule.base', 'Remember me next time'),
+            'rememberMe' => Yii::t('UserModule.forms_AccountLoginForm', 'Remember me next time'),
         );
     }
 
@@ -50,15 +50,15 @@ class AccountLoginForm extends CFormModel {
             
             $this->_identity = new UserIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
-                $this->addError('password', Yii::t('UserModule.base', 'Incorrect username/email or password.'));
+                $this->addError('password', Yii::t('UserModule.forms_AccountLoginForm', 'Incorrect username/email or password.'));
             else {
                 $user = User::model()->findByPk($this->_identity->getId());
                 if ($user->status == User::STATUS_DELETED) {
-                    $this->addError('username', Yii::t('UserModule.base', 'Your account is deleted.'));
+                    $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account is deleted.'));
                 } elseif ($user->status == User::STATUS_DISABLED) {
-                    $this->addError('username', Yii::t('UserModule.base', 'Your account is suspended.'));
+                    $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account is suspended.'));
                 } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
-                    $this->addError('username', Yii::t('UserModule.base', 'Your account has not been activated by our staff yet.'));
+                    $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account has not been activated by our staff yet.'));
                 }
             }
         }

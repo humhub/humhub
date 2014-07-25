@@ -4,7 +4,7 @@
         <!-- Display panel menu widget -->
         <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-tags-panel')); ?>
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.profile', '<strong>User</strong> tags'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userTags', '<strong>User</strong> tags'); ?></div>
         <div class="panel-body">
 
 

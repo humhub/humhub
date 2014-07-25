@@ -1,9 +1,9 @@
 <div class="panel panel-default">
 
     <?php if (!$field->isNewRecord) : ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Edit</strong> profile field'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_editField', '<strong>Edit</strong> profile field'); ?></div>
     <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Create</strong> new profile field'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_editField', '<strong>Create</strong> new profile field'); ?></div>
     <?php endif; ?>
 
     <div class="panel-body">

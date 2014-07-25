@@ -9,31 +9,27 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', '<strong>Create</strong> new space'); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_create_create', '<strong>Create</strong> new space'); ?></h4>
         </div>
         <div class="modal-body">
 
-            <div class="text-center">
-                <?php //echo Yii::t('SpaceModule.base', 'In spaces you can work, share and communicate with other people<br>about any subjects, projects or anything else.'); ?>
-                <?php //echo $form->errorSummary($model); ?>
-            </div>
             <hr/>
             <br/>
 
 
             <div class="form-group">
 
-                <label>What do you want to call your space?</label>
-                <?php print $form->textField($model, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.base', 'space name'))); ?>
+                <label><?php echo Yii::t('SpaceModule.views_create_create', 'How you want to name your space?'); ?></label>
+                <?php print $form->textField($model, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name'))); ?>
                 <?php echo $form->error($model, 'title'); ?>
 
-                <?php $types = array('workspace' => Yii::t('SpaceModule.base', 'Space')); ?>
+                <?php $types = array('workspace' => Yii::t('SpaceModule.views_create_create', 'Space')); ?>
                 <?php print $form->dropDownList($model, 'type', $types, array('class' => 'form-control', 'style' => 'display: none;')); ?>
 
             </div>
             <div class="form-group">
-                <label>Which reason has the space?</label>
-                <?php print $form->textArea($model, 'description', array('class' => 'form-control', 'placeholder' => Yii::t('SpaceModule.base', 'space description'))); ?>
+                <label><?php echo Yii::t('SpaceModule.views_create_create', 'Please write down a small description for other users.'); ?></label>
+                <?php print $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'))); ?>
             </div>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
@@ -42,30 +38,30 @@
             <div id="collapse-access-settings" class="panel-collapse collapse">
                 <br/>
 
-                <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'For everyone')); ?>
+                <?php $joinPolicies = array(0 => Yii::t('SpaceModule.views_create_create', 'Only by invite'), 1 => Yii::t('SpaceModule.views_create_create', 'Invite and request'), 2 => Yii::t('SpaceModule.views_create_create', 'For everyone')); ?>
 
                 <div class="row">
                     <div class="col-md-6">
                         <label for="">Join Policy</label>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
-                                   title="<?php echo Yii::t('SpaceModule.create', 'Users can be only added<br>by invitation'); ?>">
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can be only added<br>by invitation'); ?>">
                                 <?php echo $form->radioButton($model, 'join_policy', array('value'=>0, 'uncheckValue'=>null, 'id' => 'invite_radio', 'checked' => ''));?>
-                                <?php echo Yii::t('SpaceModule.create', 'Only by invite'); ?>
+                                <?php echo Yii::t('SpaceModule.views_create_create', 'Only by invite'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
-                                   title="<?php echo Yii::t('SpaceModule.create', 'Users can also apply for a<br>membership to this space'); ?>">
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can also apply for a<br>membership to this space'); ?>">
                                 <?php echo $form->radioButton($model, 'join_policy', array('value'=>1,'uncheckValue'=>null, 'id' => 'request_radio', 'checked' => 'checked'));?>
-                                <?php echo Yii::t('SpaceModule.create', ' Invite and request'); ?>
+                                <?php echo Yii::t('SpaceModule.views_create_create', ' Invite and request'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
-                                   title="<?php echo Yii::t('SpaceModule.create', 'Every user can enter your space<br>without your approval'); ?>">
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'Every user can enter your space<br>without your approval'); ?>">
                                 <?php echo $form->radioButton($model, 'join_policy', array('value'=>2,'uncheckValue'=>null, 'id' => 'everyone_radio', 'checked' => ''));?>
-                                <?php echo Yii::t('SpaceModule.create', 'Everyone can enter'); ?>
+                                <?php echo Yii::t('SpaceModule.views_create_create', 'Everyone can enter'); ?>
                             </label>
                         </div>
                         <br/>
@@ -74,16 +70,16 @@
                         <label for="">Visibility</label>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
-                                   title="<?php echo Yii::t('SpaceModule.create', 'Also non-members can see this<br>space, but have no access'); ?>">
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'Also non-members can see this<br>space, but have no access'); ?>">
                                 <?php echo $form->radioButton($model, 'visibility', array('value'=>1,'uncheckValue'=>null, 'id' => 'public_radio', 'checked' => 'checked'));?>
-                                <?php echo Yii::t('SpaceModule.create', ' Public (Visible)'); ?>
+                                <?php echo Yii::t('SpaceModule.views_create_create', ' Public (Visible)'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
-                                   title="<?php echo Yii::t('SpaceModule.create', 'This space will be hidden<br>for all non-members'); ?>">
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'This space will be hidden<br>for all non-members'); ?>">
                                 <?php echo $form->radioButton($model, 'visibility', array('value'=>0,'uncheckValue'=>null, 'id' => 'private_radio', 'checked' => ''));?>
-                                <?php echo Yii::t('SpaceModule.create', 'Private (Invisible)'); ?>
+                                <?php echo Yii::t('SpaceModule.views_create_create', 'Private (Invisible)'); ?>
                             </label>
                         </div>
                     </div>
@@ -95,7 +91,7 @@
             <hr/>
             <br/>
             <?php
-            echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Create'), array('//space/create/create'), array(
+            echo HHtml::ajaxButton(Yii::t('SpaceModule.views_create_create', 'Create'), array('//space/create/create'), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ jQuery("#create-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',

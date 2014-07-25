@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.setting', '<strong>Basic</strong> settings'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_index', '<strong>Basic</strong> settings'); ?></div>
     <div class="panel-body">
 
         <?php
@@ -19,7 +19,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'baseUrl'); ?>
             <?php echo $form->textField($model, 'baseUrl', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('baseUrl'))); ?>
-            <p class="help-block"><?php echo Yii::t('AdminModule.setting', 'E.g. http://example.com/humhub'); ?></p>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'E.g. http://example.com/humhub'); ?></p>
         </div>
 
         <div class="form-group">
@@ -37,12 +37,22 @@
             'attribute' => 'defaultSpaceGuid'
         ));
         ?>
-        <p class="help-block"><?php echo Yii::t('AdminModule.settings', 'New users will automatically added to these space(s).'); ?></p>
+        <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'New users will automatically added to these space(s).'); ?></p>
 
-        <br/>
+
+        <strong>Introduction tour</strong>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($model, 'tour'); ?> <?php echo $model->getAttributeLabel('tour'); ?>
+                </label>
+            </div>
+        </div>
+
+
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>

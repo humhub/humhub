@@ -72,15 +72,15 @@ class Group extends HActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('base', 'ID'),
-            'name' => Yii::t('base', 'Name'),
-            'space_id' => Yii::t('base', 'Space ID or GUID'),
-            'description' => Yii::t('base', 'Description'),
-            'ldap_dn' => Yii::t('base', 'LDAP DN'),
-            'created_at' => Yii::t('base', 'Created at'),
-            'created_by' => Yii::t('base', 'Created by'),
-            'updated_at' => Yii::t('base', 'Updated at'),
-            'updated_by' => Yii::t('base', 'Updated by'),
+            'id' => Yii::t('UserModule.models_Group', 'ID'),
+            'name' => Yii::t('UserModule.models_Group', 'Name'),
+            'space_id' => Yii::t('UserModule.models_Group', 'Space ID or GUID'),
+            'description' => Yii::t('UserModule.models_Group', 'Description'),
+            'ldap_dn' => Yii::t('UserModule.models_Group', 'LDAP DN'),
+            'created_at' => Yii::t('UserModule.models_Group', 'Created at'),
+            'created_by' => Yii::t('UserModule.models_Group', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_Group', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_Group', 'Updated by'),
         );
     }
 
@@ -163,7 +163,7 @@ class Group extends HActiveRecord {
             if ($workspace != null) {
                 $this->space_id = $workspace->id;
             } else {
-                $this->addError($attribute, Yii::t('AdminModule.base', "Invalid space ID"));
+                $this->addError($attribute, Yii::t('UserModule.models_Group', "Invalid space ID"));
             }
         }
     }

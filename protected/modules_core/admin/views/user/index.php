@@ -1,6 +1,10 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Manage</strong> users'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
     <div class="panel-body">
+
+        <p>
+            <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>
+        </p>
 
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
@@ -17,18 +21,18 @@
                 ),
                 array(
                     'name' => 'username',
-                    'header' => Yii::t('AdminModule.user', 'Username'),
-                    'filter' => CHtml::activeTextField($model, 'username', array('placeholder' => Yii::t('AdminModule.user', 'Search for username'))),
+                    'header' => Yii::t('AdminModule.views_user_index', 'Username'),
+                    'filter' => CHtml::activeTextField($model, 'username', array('placeholder' => Yii::t('AdminModule.views_user_index', 'Search for username'))),
                 ),
                 array(
                     'name' => 'email',
-                    'header' => Yii::t('AdminModule.user', 'Email'),
-                    'filter' => CHtml::activeTextField($model, 'email', array('placeholder' => Yii::t('AdminModule.user', 'Search for email'))),
+                    'header' => Yii::t('AdminModule.views_user_index', 'Email'),
+                    'filter' => CHtml::activeTextField($model, 'email', array('placeholder' => Yii::t('AdminModule.views_user_index', 'Search for email'))),
                 ),
                 array(
                     'name' => 'super_admin',
-                    'header' => Yii::t('AdminModule.user', 'Admin'),
-                    'filter' => array("" => Yii::t('AdminModule.user', 'All'), 0 => Yii::t('AdminModule.user', 'No'), 1 => Yii::t('AdminModule.user', 'Yes')),
+                    'header' => Yii::t('AdminModule.views_user_index', 'Admin'),
+                    'filter' => array("" => Yii::t('AdminModule.views_user_index', 'All'), 0 => Yii::t('AdminModule.views_user_index', 'No'), 1 => Yii::t('AdminModule.views_user_index', 'Yes')),
                 ),
                 array(
                     'class' => 'CButtonColumn',
@@ -48,7 +52,7 @@
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
                                 'title' => '',
-                                'data-original-title' => Yii::t('AdminModule.user', 'View user profile'),
+                                'data-original-title' => Yii::t('AdminModule.views_user_index', 'View user profile'),
                             ),
                         ),
                         'update' => array
@@ -61,7 +65,7 @@
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
                                 'title' => '',
-                                'data-original-title' => Yii::t('AdminModule.user', 'Edit user account'),
+                                'data-original-title' => Yii::t('AdminModule.views_user_index', 'Edit user account'),
                             ),
                         ),
                         'deleteOwn' => array
@@ -75,7 +79,7 @@
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
                                 'title' => '',
-                                'data-original-title' => Yii::t('AdminModule.user', 'Delete user account'),
+                                'data-original-title' => Yii::t('AdminModule.views_user_index', 'Delete user account'),
                             ),
                         ),
                     ),

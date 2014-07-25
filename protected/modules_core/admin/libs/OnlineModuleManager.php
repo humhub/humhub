@@ -41,17 +41,17 @@ class OnlineModuleManager
         $modulePath = Yii::app()->getModulePath();
 
         if (!is_writable($modulePath)) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
+            throw new CHttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
         }
 
         $moduleInfo = $this->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            throw new CException(Yii::t('AdminModule.modules', "No compatible module version found!"));
+            throw new CException(Yii::t('AdminModule.libs_OnlineModuleManager', "No compatible module version found!"));
         }
 
         if (is_dir($modulePath . DIRECTORY_SEPARATOR . $moduleId)) {
-            throw new CHttpException(500, Yii::t('AdminModule.modules', 'Module directory for module %moduleId% already exists!', array('%moduleId%' => $moduleId)));
+            throw new CHttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory for module %moduleId% already exists!', array('%moduleId%' => $moduleId)));
         }
 
         // Check Module Folder exists
@@ -75,7 +75,7 @@ class OnlineModuleManager
             $response = $http->request();
             file_put_contents($downloadTargetFileName, $response->getBody());
         } catch (Exception $ex) {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Module download failed! (%error%)', array('%error%' => $ex->getMessage())));
+            throw new CHttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Module download failed! (%error%)', array('%error%' => $ex->getMessage())));
         }
 
         // Extract Package
@@ -87,10 +87,10 @@ class OnlineModuleManager
                 $zip->extractTo($modulePath);
                 $zip->close();
             } else {
-                throw new CHttpException('500', Yii::t('AdminModule.modules', 'Could not extract module!'));
+                throw new CHttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not extract module!'));
             }
         } else {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Download of module failed!'));
+            throw new CHttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Download of module failed!'));
         }
 
         ModuleManager::flushCache();
@@ -151,7 +151,7 @@ class OnlineModuleManager
 
             $modules = CJSON::decode($json);
         } catch (Exception $ex) {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Could not fetch module list online! (%error%)', array('%error%' => $ex->getMessage())));
+            throw new CHttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not fetch module list online! (%error%)', array('%error%' => $ex->getMessage())));
         }
         return $modules;
     }
@@ -175,7 +175,7 @@ class OnlineModuleManager
 
             $moduleInfo = CJSON::decode($json);
         } catch (Exception $ex) {
-            throw new CHttpException('500', Yii::t('AdminModule.modules', 'Could not get module info online! (%error%)', array('%error%' => $ex->getMessage())));
+            throw new CHttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not get module info online! (%error%)', array('%error%' => $ex->getMessage())));
         }
 
         return $moduleInfo;

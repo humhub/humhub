@@ -4,7 +4,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
                 id="myModalLabel">
-                <?php echo Yii::t('CommentModule.base', 'Comments'); ?>
+                <?php echo Yii::t('CommentModule.views_comment_show', 'Comments'); ?>
             </h4>
         </div>
 

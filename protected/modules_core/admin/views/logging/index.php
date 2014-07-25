@@ -1,11 +1,11 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Error</strong> logging'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_logging_index', '<strong>Error</strong> logging'); ?></div>
     <div class="panel-body">
 
         <div>
-            <?php echo Yii::t('AdminModule.logging', 'Total {count} entries found.', array("{count}" => $itemCount)); ?>
+            <?php echo Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', array("{count}" => $itemCount)); ?>
             <span
-                class="pull-right"><?php echo Yii::t('AdminModule.logging', 'Displaying {count} entries per page.', array("{count}" => $pageSize)); ?></span>
+                class="pull-right"><?php echo Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', array("{count}" => $pageSize)); ?></span>
         </div>
 
         <hr>

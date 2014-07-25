@@ -45,7 +45,7 @@ class SpaceDeleteForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'currentPassword' => Yii::t('SpaceModule.admin', 'Your password'),
+            'currentPassword' => Yii::t('SpaceModule.forms_SpaceDeleteForm', 'Your password'),
         );
     }
 

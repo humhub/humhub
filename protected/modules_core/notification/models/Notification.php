@@ -178,11 +178,11 @@ class Notification extends HActiveRecord {
 
         $sourceObj = $this->getSourceObject();
         if ($sourceObj == null) {
-            throw new CHttpException(500, Yii::t('NotificationModule.base', 'Could not load notification source object to redirect to!'));
+            throw new CHttpException(500, Yii::t('NotificationModule.models_Notification', 'Could not load notification source object to redirect to!'));
         }
 
         if (!$sourceObj instanceof HActiveRecordContent && !$sourceObj instanceof HActiveRecordContentAddon) {
-            throw new CHttpException(500, Yii::t('NotificationModule.base', 'Could not determine redirect url for this kind of source object!'));
+            throw new CHttpException(500, Yii::t('NotificationModule.models_Notification', 'Could not determine redirect url for this kind of source object!'));
         }
 
         $content = $sourceObj->content;

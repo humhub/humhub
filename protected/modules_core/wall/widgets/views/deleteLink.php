@@ -25,11 +25,11 @@
     <?php $this->widget('application.widgets.ModalConfirmWidget', array(
         'uniqueID' => 'modal_postdelete_'. $id,
         'linkOutput' => 'a',
-        'title' => Yii::t('PostModule.base', '<strong>Confirm</strong> post deleting'),
-        'message' => Yii::t('PostModule.base', 'Do you really want to delete this post? All likes and comments will be lost!'),
-        'buttonTrue' => Yii::t('PostModule.base', 'Delete'),
-        'buttonFalse' => Yii::t('PostModule.base', 'Cancel'),
-        'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('base', 'Delete'),
+        'title' => Yii::t('WallModule.widgets_views_deleteLink', '<strong>Confirm</strong> post deleting'),
+        'message' => Yii::t('WallModule.widgets_views_deleteLink', 'Do you really want to delete this post? All likes and comments will be lost!'),
+        'buttonTrue' => Yii::t('WallModule.widgets_views_deleteLink', 'Delete'),
+        'buttonFalse' => Yii::t('WallModule.widgets_views_deleteLink', 'Cancel'),
+        'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('WallModule.widgets_views_deleteLink', 'Delete'),
         'linkHref' => $this->createUrl("//wall/content/delete", array('model' => $model, 'id' => $id)),
         'confirmJS' => 'function(jsonResp) { wallDelete(jsonResp); }'
     ));

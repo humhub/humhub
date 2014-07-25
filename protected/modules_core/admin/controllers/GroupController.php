@@ -127,7 +127,7 @@ class GroupController extends Controller {
         $group = Group::model()->findByPk($id);
 
         if ($group == null)
-            throw new CHttpException(404, Yii::t('base', 'Group not found!'));
+            throw new CHttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
 
         // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-deleteGroup-form') {

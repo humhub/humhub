@@ -15,7 +15,7 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> directory'); ?>
+        <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Member</strong> directory'); ?>
     </div>
 
     <div class="panel-body">
@@ -27,7 +27,7 @@
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.base', 'search for members'))); ?>
+                    <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_members', 'search for members'))); ?>
                     <?php echo CHtml::submitButton('Search', array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
@@ -38,7 +38,7 @@
 
 
         <?php if ($hitCount == 0): ?>
-            <p><?php echo Yii::t('DirectoryModule.base', 'No members found!'); ?></p>
+            <p><?php echo Yii::t('DirectoryModule.views_directory_members', 'No members found!'); ?></p>
         <?php endif; ?>
 
     </div>

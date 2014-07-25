@@ -48,8 +48,8 @@ class AccountChangeEmailForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'currentPassword' => Yii::t('UserModule.base', 'Current password'),
-            'newEmail' => Yii::t('UserModule.base', 'New E-Mail address'),
+            'currentPassword' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'Current password'),
+            'newEmail' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'New E-Mail address'),
         );
     }
 
@@ -69,7 +69,7 @@ class AccountChangeEmailForm extends CFormModel {
             $message->view = "application.modules_core.user.views.mails.ChangeEmail";
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($this->newEmail);
-            $message->subject = Yii::t('UserModule.base', 'E-Mail change');
+            $message->subject = Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change');
             $message->setBody(array('user' => $user, 'newEmail' => $this->newEmail, 'token' => $token), 'text/html');
             Yii::app()->mail->send($message);
         }

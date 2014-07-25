@@ -24,7 +24,7 @@ class SecuritySettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'canAdminAlwaysDeleteContent' => Yii::t('AdminModule.base', 'Super Admins can delete each content object'),
+            'canAdminAlwaysDeleteContent' => Yii::t('AdminModule.forms_SecuritySettingsForm', 'Super Admins can delete each content object'),
         );
     }
 

@@ -143,7 +143,7 @@ class HWebModule extends CWebModule
             return $this->getAssetsUrl() . '/module_image.png';
         }
 
-        return Yii::app()->baseUrl . '/uploads/profile_image/default_module.jpg';
+        return Yii::app()->baseUrl . '/img/default_module.jpg';
     }
 
     /**

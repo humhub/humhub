@@ -97,7 +97,7 @@ class AdminController extends Controller
                 $model->save();
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
 
                 $this->redirect($this->createUrl('admin/edit', array('sguid' => $this->getSpace()->guid)));
             }
@@ -161,7 +161,7 @@ class AdminController extends Controller
                 }
             }
 
-            Yii::app()->user->setFlash('data-saved', Yii::t('base', 'Saved'));
+            Yii::app()->user->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
         } // Updated Users
 
 
@@ -215,7 +215,11 @@ class AdminController extends Controller
 
         if ($user != null) {
             $space->removeMember($user->id);
+
+            // send notification only the recipient decline the invitation
+            if (Yii::app()->user->id == $user->id) {
             SpaceApprovalRequestDeclinedNotification::fire(Yii::app()->user->id, $user, $space);
+            }
         }
 
         $this->redirect($space->getUrl());

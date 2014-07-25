@@ -26,7 +26,8 @@
                 }
                 ?>
 
-                <div class="image-upload-loader" id="banner-image-upload-loader" style="padding: <?php echo $padding ?>;">
+                <div class="image-upload-loader" id="banner-image-upload-loader"
+                     style="padding: <?php echo $padding ?>;">
                     <div class="progress image-upload-progess-bar" id="banner-image-upload-bar">
                         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="00"
                              aria-valuemin="0"
@@ -35,14 +36,18 @@
                     </div>
                 </div>
 
-                <div class="img-profile-data">
-                    <h1><?php echo $user->displayName; ?></h1>
+            <?php } ?>
 
-                    <h2><?php echo $user->profile->title; ?></h2>
-                </div>
+            <!-- show user name and title -->
+            <div class="img-profile-data">
+                <h1><?php echo $user->displayName; ?></h1>
+                <h2><?php echo $user->profile->title; ?></h2>
+            </div>
 
+            <!-- check if the current user is the profile owner and can change the images -->
+            <?php if ($isProfileOwner) { ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
-                    <a href="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"><i
+                    <a href="#" onclick="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="banner-image-upload-edit-button"
                        style="<?php
@@ -54,7 +59,9 @@
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                 </div>
+
             <?php } ?>
+
 
         </div>
 
@@ -82,7 +89,7 @@
                 </div>
 
                 <div class="image-upload-buttons" id="profile-image-upload-buttons">
-                    <a href="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"><i
+                    <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="profile-image-upload-edit-button"
                        style="<?php
@@ -110,18 +117,18 @@
                 <div class="pull-left entry">
                     <span class="count"><?php echo count($user->followerUser); ?></span></a>
                     <br>
-                    <span class="title"><?php echo Yii::t('UserModule.profile', 'Followers'); ?></span>
+                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
                 </div>
 
                 <div class="pull-left entry">
                     <span class="count"><?php echo count($user->followsUser); ?></span>
                     <br>
-                    <span class="title"><?php echo Yii::t('UserModule.profile', 'Following'); ?></span>
+                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
                 </div>
 
                 <div class="pull-left entry">
                     <span class="count"><?php echo count($user->spaces); ?></span><br>
-                    <span class="title"><?php echo Yii::t('base', 'Spaces'); ?></span>
+                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
                 </div>
             </div>
             <!-- end: User statistics -->
@@ -132,9 +139,9 @@
                 <?php
                 if (!$isProfileOwner) {
                     if ($user->isFollowedBy(Yii::app()->user->id)) {
-                        print CHtml::link("Unfollow", $this->createUrl('profile/unfollow', array('guid' => $user->guid)), array('class' => 'btn btn-primary'));
+                        print CHtml::link("Unfollow", $this->createUrl('profile/unfollow', array('uguid' => $user->guid)), array('class' => 'btn btn-primary'));
                     } else {
-                        print CHtml::link("Follow", $this->createUrl('profile/follow', array('guid' => $user->guid)), array('class' => 'btn btn-success'));
+                        print CHtml::link("Follow", $this->createUrl('profile/follow', array('uguid' => $user->guid)), array('class' => 'btn btn-success'));
                     }
                 }
                 ?>
@@ -143,9 +150,9 @@
                 <!-- start: Edit profile -->
                 <?php if ($isProfileOwner) { ?>
                     <!-- Edit user account (if this is your profile) -->
-                    <a href="<?php echo $this->createUrl('//user/account/edit', array('guid' => $user->guid)); ?>"
-                       id="edit_profile" class="btn btn-primary">Edit account</a>
-                   <?php } ?>
+                    <a href="<?php echo $this->createUrl('//user/account/edit'); ?>"
+                       id="edit_profile" class="btn btn-primary"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'); ?></a>
+                <?php } ?>
                 <!-- end: Edit profile -->
             </div>
 
@@ -163,14 +170,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"
-                    id="myModalLabel"><?php echo Yii::t('UserModule.account', '<strong>Something</strong> went wrong'); ?></h4>
+                    id="myModalLabel"><?php echo Yii::t('UserModule.widgets_views_profileHeader', '<strong>Something</strong> went wrong'); ?></h4>
             </div>
             <div class="modal-body text-center">
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"
-                        data-dismiss="modal"><?php echo Yii::t('UserModule.account', 'Ok'); ?></button>
+                        data-dismiss="modal"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Ok'); ?></button>
             </div>
         </div>
     </div>

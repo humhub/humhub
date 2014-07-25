@@ -153,10 +153,10 @@ class ContentController extends Controller {
                 $json['success'] = true;
                 $json['wallEntryIds'] = $object->content->getWallEntryIds();
             } else {
-                $json['errorMessage'] = Yii::t('WallModule.base', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
+                $json['errorMessage'] = Yii::t('WallModule.controllers_ContentController', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
             }
         } else {
-            $json['errorMessage'] = Yii::t('WallModule.base', "Could not load requested object!");
+            $json['errorMessage'] = Yii::t('WallModule.controllers_ContentController', "Could not load requested object!");
         }
         // returns JSON
         echo CJSON::encode($json);

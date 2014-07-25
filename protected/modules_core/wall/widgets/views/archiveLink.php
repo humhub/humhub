@@ -15,10 +15,10 @@
     <li>
     <?php if ($object->content->isArchived()): ?>
         <a href="#" onClick="wallUnarchive('<?php echo $model; ?>', '<?php echo $id; ?>');
-                        return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('WallModule.base', 'Unarchive'); ?></a>
+                        return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Unarchive'); ?></a>
        <?php else: ?>
         <a href="#" onClick="wallArchive('<?php echo $model; ?>', '<?php echo $id; ?>');
-                        return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('WallModule.base', 'Move to archive'); ?></a>
+                        return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Move to archive'); ?></a>
     <?php endif; ?>
     </li>
 <?php endif; ?>

@@ -34,6 +34,7 @@ class DirectoryModule extends HWebModule
     {
         $event->sender->addItem(array(
             'label' => Yii::t('DirectoryModule.base', 'Directory'),
+            'id' => 'directory',
             'icon' => '<i class="fa fa-book"></i>',
             'url' => Yii::app()->createUrl('//directory/directory'),
             'sortOrder' => 400,

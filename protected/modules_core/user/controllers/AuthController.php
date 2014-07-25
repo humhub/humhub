@@ -199,7 +199,7 @@ class AuthController extends Controller
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
-            'title' => Yii::t('UserModule.auth', 'Account'),
+            'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
             'elements' => array(
                 'username' => array(
                     'type' => 'text',
@@ -241,7 +241,7 @@ class AuthController extends Controller
             'save' => array(
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
-                'label' => Yii::t('UserModule.auth', 'Create account'),
+                'label' => Yii::t('UserModule.controllers_AuthController', 'Create account'),
             ),
         );
 

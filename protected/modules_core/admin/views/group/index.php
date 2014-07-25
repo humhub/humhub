@@ -1,6 +1,10 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Manage</strong> groups'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_index', '<strong>Manage</strong> groups'); ?></div>
     <div class="panel-body">
+
+        <p>
+            <?php echo Yii::t('AdminModule.views_groups_index', 'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.'); ?>
+        </p>
 
         <?php echo HHtml::link("Create new group", array('//admin/group/edit'), array('class' => 'btn btn-primary')); ?>
         <br>
@@ -16,13 +20,13 @@
             'columns' => array(
                 array(
                     'name' => 'name',
-                    'header' => Yii::t('AdminModule.group', 'Group name'),
-                    'filter' => CHtml::activeTextField($model, 'name', array('placeholder' => Yii::t('AdminModule.group', 'Search for group name'))),
+                    'header' => Yii::t('AdminModule.views_group_index', 'Group name'),
+                    'filter' => CHtml::activeTextField($model, 'name', array('placeholder' => Yii::t('AdminModule.views_group_index', 'Search for group name'))),
                 ),
                 array(
                     'name' => 'description',
-                    'header' => Yii::t('AdminModule.group', 'Description'),
-                    'filter' => CHtml::activeTextField($model, 'description', array('placeholder' => Yii::t('AdminModule.group', 'Search for description'))),
+                    'header' => Yii::t('AdminModule.views_group_index', 'Description'),
+                    'filter' => CHtml::activeTextField($model, 'description', array('placeholder' => Yii::t('AdminModule.views_group_index', 'Search for description'))),
                 ),
                 array(
                     'class' => 'CButtonColumn',

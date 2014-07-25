@@ -14,7 +14,7 @@
             <!-- show directory menu widget -->
             <div class="panel panel-default">
                 <div
-                    class="panel-heading"><?php echo Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu'); ?></div>
+                    class="panel-heading"><?php echo Yii::t('DirectoryModule.views_directory_layout', '<strong>Directory</strong> menu'); ?></div>
 
                 <div class="list-group">
                     <?php if (Group::model()->count() > 1) : ?>
@@ -25,7 +25,7 @@
                            }
                            ?>">
                             <div>
-                                <div class="edit_group"><?php echo Yii::t('DirectoryModule.base', 'Groups'); ?></div>
+                                <div class="edit_group"><?php echo Yii::t('DirectoryModule.views_directory_layout', 'Groups'); ?></div>
                             </div>
                         </a>
                     <?php endif; ?>
@@ -37,7 +37,7 @@
                        }
                        ?>">
                         <div>
-                            <div class="user_details"><?php echo Yii::t('DirectoryModule.base', 'Members'); ?></div>
+                            <div class="user_details"><?php echo Yii::t('DirectoryModule.views_directory_layout', 'Members'); ?></div>
                         </div>
                     </a>
 
@@ -48,7 +48,7 @@
                        }
                        ?>">
                         <div>
-                            <div class="workspaces"><?php echo Yii::t('DirectoryModule.base', 'Spaces'); ?></div>
+                            <div class="workspaces"><?php echo Yii::t('DirectoryModule.views_directory_layout', 'Spaces'); ?></div>
                         </div>
                     </a>
 
@@ -61,7 +61,7 @@
                        ?>">
                         <div>
                             <div
-                                class="stream"><?php echo Yii::t('DirectoryModule.base', 'User profile posts'); ?></div>
+                                class="stream"><?php echo Yii::t('DirectoryModule.views_directory_layout', 'User profile posts'); ?></div>
                         </div>
                     </a>
                 </div>

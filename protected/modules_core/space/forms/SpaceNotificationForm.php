@@ -26,8 +26,8 @@ class SpaceNotificationForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'strength' => Yii::t('SpaceModule.base', 'Strength'),
-            'scope' => Yii::t('SpaceModule.base', 'Scope'),
+            'strength' => Yii::t('SpaceModule.forms_SpaceNotificationForm', 'Strength'),
+            'scope' => Yii::t('SpaceModule.forms_SpaceNotificationForm', 'Scope'),
         );
     }
 

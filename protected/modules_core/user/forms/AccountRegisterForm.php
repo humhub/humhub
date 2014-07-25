@@ -29,7 +29,7 @@ class AccountRegisterForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'email' => Yii::t('UserModule.base', 'E-Mail'),
+            'email' => Yii::t('UserModule.forms_AccountRegisterForm', 'E-Mail'),
         );
     }
 

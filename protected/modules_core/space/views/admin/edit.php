@@ -5,7 +5,7 @@
 
 <div class="panel panel-default">
     <div
-        class="panel-heading"><?php echo Yii::t('SpaceModule.base', '<strong>General</strong> space settings'); ?></div>
+        class="panel-heading"><?php echo Yii::t('SpaceModule.views_admin_edit', '<strong>General</strong> space settings'); ?></div>
     <div class="panel-body">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -44,14 +44,14 @@
         <hr>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'join_policy'); ?>
-            <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'For everyone')); ?>
-            <?php echo $form->dropDownList($model, 'join_policy', $joinPolicies, array('class' => 'form-control', 'id' => 'join_policy_dropdown', 'hint' => Yii::t('SpaceModule.base', 'Choose the kind of membership you want to provide for this workspace.'))); ?>
+            <?php $joinPolicies = array(0 => Yii::t('SpaceModule.views_admin_edit', 'Only by invite'), 1 => Yii::t('SpaceModule.views_admin_edit', 'Invite and request'), 2 => Yii::t('SpaceModule.views_admin_edit', 'For everyone')); ?>
+            <?php echo $form->dropDownList($model, 'join_policy', $joinPolicies, array('class' => 'form-control', 'id' => 'join_policy_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'))); ?>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
-            <?php $visibilities = array(0 => Yii::t('SpaceModule.base', 'Invisible'), 1 => Yii::t('SpaceModule.base', 'Visible for network users'), 2 => Yii::t('SpaceModule.base', 'Visible for all')); ?>
-            <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.base', 'Choose the security level for this workspace to define the visibleness.'))); ?>
+            <?php $visibilities = array(0 => Yii::t('SpaceModule.views_admin_edit', 'Invisible'), 1 => Yii::t('SpaceModule.views_admin_edit', 'Visible for network users'), 2 => Yii::t('SpaceModule.views_admin_edit', 'Visible for all')); ?>
+            <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
         </div>
         <hr>
 
@@ -64,18 +64,18 @@
             <hr>
         <?php endif; ?>
 
-        <?php echo CHtml::submitButton(Yii::t('SpaceModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>
 
         <div class="pull-right">
             <?php if ($space->status == Space::STATUS_ENABLED) { ?>
-                <?php echo HHtml::postLink(Yii::t('SpaceModule.base', 'Archive'), $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
+                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
             <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
-                <?php echo HHtml::postLink(Yii::t('SpaceModule.base', 'Unarchive'), $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
+                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
             <?php } ?>
-            <?php echo HHtml::postLink(Yii::t('SpaceModule.base', 'Delete'), $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)), array('class' => 'btn btn-danger')); ?>
+            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)), array('class' => 'btn btn-danger')); ?>
 
         </div>
 

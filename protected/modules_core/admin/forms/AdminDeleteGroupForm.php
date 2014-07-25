@@ -28,7 +28,7 @@ class AdminDeleteGroupForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'group_id'=>Yii::t('AdminModule.base', 'Group'),
+			'group_id'=>Yii::t('AdminModule.forms_AdminDeleteGroupForm', 'Group'),
 		);
 	}
 }

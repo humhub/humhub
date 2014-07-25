@@ -26,8 +26,8 @@ class ApproveUserForm extends CFormModel {
 	public function attributeLabels()
 	{
 		return array(
-			'subject'=>Yii::t('AdminModule.base', Yii::t('AdminModule.base', 'Subject')),
-			'message'=>Yii::t('AdminModule.base', Yii::t('AdminModule.base', 'Message')),
+			'subject'=>Yii::t('AdminModule.forms_ApproveUserForm', 'Subject'),
+			'message'=>Yii::t('AdminModule.forms_ApproveUserForm', 'Message'),
 		);
 	}
 

@@ -45,7 +45,7 @@ class ContentFormWidget extends HWidget {
     public function init() {
 
         if ($this->submitButtonText == "")
-            $this->submitButtonText  = Yii::t('base', 'Submit');
+            $this->submitButtonText  = Yii::t('WallModule.widgets_ContentFormWidget', 'Submit');
         
         if ($this->contentContainer == null || !$this->contentContainer instanceof HActiveRecordContentContainer) {
             throw new CHttpException(500, "No Content Container given!");

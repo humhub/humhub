@@ -9,7 +9,7 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', '<strong>Invite</strong> members'); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members'); ?></h4>
         </div>
         <div class="modal-body">
 
@@ -31,7 +31,7 @@
                 <div class="tab-pane active" id="internal">
 
 
-                    <?php echo Yii::t('SpaceModule.base', 'To invite users to this space, please type their names below to find and pick them.'); ?>
+                    <?php echo Yii::t('SpaceModule.views_space_invite', 'To invite users to this space, please type their names below to find and pick them.'); ?>
 
                     <br/><br/>
                     <?php echo $form->textField($model, 'invite', array('class' => 'form-control', 'id' => 'invite')); ?>
@@ -41,7 +41,7 @@
                         'inputId' => 'invite',
                         'model' => $model, // CForm Instanz
                         'attribute' => 'invite',
-                        'placeholderText' => Yii::t('SpaceModule.base', 'Add an user'),
+                        'placeholderText' => Yii::t('SpaceModule.views_space_invite', 'Add an user'),
                         'focus' => true,
                     ));
                     ?>
@@ -49,7 +49,7 @@
                 </div>
                 <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                     <div class="tab-pane" id="external">
-                        <?php echo Yii::t('SpaceModule.base', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
+                        <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>
 
                         <div class="form-group">
@@ -65,14 +65,14 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.base', 'Send'), array('//space/space/invite', 'sguid' => $space->guid), array(
+            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.views_space_invite', 'Send'), array('//space/space/invite', 'sguid' => $space->guid), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
             ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
             ?>
             <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('base', 'Close'); ?></button>
+                    data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_invite', 'Close'); ?></button>
 
             <div class="col-md-1 modal-loader">
                 <div id="invite-loader" class="loader loader-small hidden"></div>

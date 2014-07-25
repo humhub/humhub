@@ -12,9 +12,9 @@
 
 <div class="panel panel-default">
     <?php if (!$group->isNewRecord) : ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Edit</strong> group'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Edit</strong> group'); ?></div>
     <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Create</strong> new group'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Create</strong> new group'); ?></div>
     <?php endif; ?>
     <div class="panel-body">
 
@@ -30,12 +30,12 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'name'); ?>
-            <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.base', 'Group name'))); ?>
+            <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Group name'))); ?>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'description'); ?>
-            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('AdminModule.base', 'Description'))); ?>
+            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Description'))); ?>
         </div>
 
         <?php echo $form->labelEx($model, 'defaultSpaceGuid'); ?>
@@ -53,15 +53,7 @@
         <?php echo $form->labelEx($model, 'admins'); ?>
         <?php echo $form->textArea($model, 'admins', array('class' => 'span12', 'id' => 'user_select')); ?>
         <?php
-        // build a standard dropdown list
-        //    echo $form->dropDownList(
-        //        $group, 'admins', array(), array(
-        //        'multiple' => true,
-        //        'id' => 'user_select',
-        //        'class' => 'user span12',
-        //        'data-placeholder' => Yii::t('UserModule.base', 'Add user...'),
-        //    ));
-        // attach mention widget to it
+
         $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
             'inputId' => 'user_select',
             'maxUsers' => 2,
@@ -77,15 +69,15 @@
         <?php if (HSetting::Get('enabled', 'authentication_ldap')): ?>
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'ldapDn'); ?>
-                <?php echo $form->textField($model, 'ldapDn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.base', 'Ldap DN'))); ?>
+                <?php echo $form->textField($model, 'ldapDn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN'))); ?>
             </div>
         <?php endif; ?>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php
         if (!$group->isNewRecord) {
-            echo CHtml::link(Yii::t('AdminModule.base', 'Delete'), $this->createUrl('//admin/group/delete', array('id' => $group->id)), array('class' => 'btn btn-danger'));
+            echo CHtml::link(Yii::t('AdminModule.views_group_edit', 'Delete'), $this->createUrl('//admin/group/delete', array('id' => $group->id)), array('class' => 'btn btn-danger'));
         }
         ?>
 

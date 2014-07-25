@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>About</strong> HumHub'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_about_index', '<strong>About</strong> HumHub'); ?></div>
     <div class="panel-body">
         <p>Version: <?php echo HVersion::VERSION; ?></p>
         <p><?php echo Yii::powered(); ?></p>

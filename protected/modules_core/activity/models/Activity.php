@@ -87,7 +87,7 @@ class Activity extends HActiveRecordContent {
         $activity = new Activity;
 
         if (!$object instanceof HActiveRecordContent && !$object instanceof HActiveRecordContentAddon) {
-            throw new CHttpException(500, Yii::t('ActivityModule.base', 'Could not create activity for this object type!'));
+            throw new CHttpException(500, Yii::t('ActivityModule.models_Activity', 'Could not create activity for this object type!'));
         }
 
         $content = $object->content;

@@ -1,13 +1,13 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.authentication', '<strong>Authentication</strong> - Basic'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_authentication', '<strong>Authentication</strong> - Basic'); ?></div>
     <div class="panel-body">
 
         <ul class="nav nav-pills">
             <li class="active"><a
-                    href="<?php echo $this->createUrl('authentication'); ?>"><?php echo Yii::t('AdminModule.authentication', 'Basic'); ?></a>
+                    href="<?php echo $this->createUrl('authentication'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Basic'); ?></a>
             </li>
             <li>
-                <a href="<?php echo $this->createUrl('authenticationLdap'); ?>"><?php echo Yii::t('AdminModule.authentication', 'LDAP'); ?></a>
+                <a href="<?php echo $this->createUrl('authenticationLdap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'LDAP'); ?></a>
             </li>
         </ul>
 
@@ -55,7 +55,7 @@
 
         <hr/>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>

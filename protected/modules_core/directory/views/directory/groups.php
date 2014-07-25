@@ -11,7 +11,7 @@
 <div class="panel panel-default groups">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> Group Directory'); ?>
+        <?php echo Yii::t('DirectoryModule.views_directory_groups', '<strong>Member</strong> Group Directory'); ?>
     </div>
 
     <div class="panel-body">
@@ -32,7 +32,7 @@
                     <?php $user_count++; ?>
                 <?php endforeach; ?>
                 <?php if ($user_count >= 30) { ?>
-                    <?php echo HHtml::link(Yii::t('DirectoryModule.base', "show all members"), array('//directory/directory/members', 'keyword' => 'groupId:' . $group->id)); ?>
+                    <?php echo HHtml::link(Yii::t('DirectoryModule.views_directory_groups', "show all members"), array('//directory/directory/members', 'keyword' => 'groupId:' . $group->id)); ?>
                 <?php } ?>
                 <hr>
             <?php } ?>

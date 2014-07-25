@@ -13,7 +13,7 @@
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'new-spaces-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>New/strong> spaces'); ?>
+        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>New/strong> spaces'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
@@ -33,12 +33,12 @@
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'spaces-statistics-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>Space</strong> stats'); ?>
+        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>Space</strong> stats'); ?>
     </div>
 
     <div class="panel-body">
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Total spaces'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Total spaces'); ?></strong><br><br>
 
             <input id="spaces-total" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="#34c7ff" data-skin="tron"
@@ -56,7 +56,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Private spaces'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Private spaces'); ?></strong><br><br>
 
             <input id="spaces-private" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="#34c7ff"
@@ -76,7 +76,7 @@
 
         <?php if (isset($statsSpaceMostMembers->name)) { ?>
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.base', 'Most members'); ?>:
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Most members'); ?>:
             </strong> <?php echo $statsSpaceMostMembers->name; ?>
         </div>
         <?php } ?>

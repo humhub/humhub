@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.base', '<strong>Cache</strong> Settings'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_caching', '<strong>Cache</strong> Settings'); ?></div>
     <div class="panel-body">
 
         <?php   $form = $this->beginWidget('CActiveForm', array(
@@ -22,7 +22,7 @@
         </div>
 
         <hr>
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.base', 'Save & Flush Caches'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_caching', 'Save & Flush Caches'), array('class' => 'btn btn-primary')); ?>
 
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>

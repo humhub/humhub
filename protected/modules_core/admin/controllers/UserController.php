@@ -63,7 +63,7 @@ class UserController extends Controller {
         $user = User::model()->resetScope()->notDeleted()->findByPk($id);
 
         if ($user == null)
-            throw new CHttpException(404, Yii::t('AdminModule.base', 'User not found!'));
+            throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
 
         $user->scenario = 'adminEdit';
         $user->profile->scenario = 'adminEdit';
@@ -102,9 +102,9 @@ class UserController extends Controller {
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
                     'items' => array(
-                        User::STATUS_ENABLED => Yii::t('UserModule.base', 'Enabled'),
-                        User::STATUS_DISABLED => Yii::t('UserModule.base', 'Disabled'),
-                        User::STATUS_NEED_APPROVAL => Yii::t('UserModule.base', 'Unapproved'),
+                        User::STATUS_ENABLED => Yii::t('AdminModule.controllers_UserController', 'Enabled'),
+                        User::STATUS_DISABLED => Yii::t('AdminModule.controllers_UserController', 'Disabled'),
+                        User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.controllers_UserController', 'Unapproved'),
                     ),
                 ),
             ),
@@ -117,17 +117,17 @@ class UserController extends Controller {
         $definition['buttons'] = array(
             'save' => array(
                 'type' => 'submit',
-                'label' => Yii::t('base', 'Save'),
+                'label' => Yii::t('AdminModule.controllers_UserController', 'Save'),
                 'class' => 'btn btn-primary',
             ),
             'become' => array(
                 'type' => 'submit',
-                'label' => Yii::t('AdminModule.base', 'Become this user'),
+                'label' => Yii::t('AdminModule.controllers_UserController', 'Become this user'),
                 'class' => 'btn btn-danger',
             ),
             'delete' => array(
                 'type' => 'submit',
-                'label' => Yii::t('base', 'Delete'),
+                'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
                 'class' => 'btn btn-danger',
             ),
         );
@@ -177,7 +177,7 @@ class UserController extends Controller {
         $user = User::model()->resetScope()->notDeleted()->findByPk($id);
 
         if ($user == null)
-            throw new CHttpException(404, Yii::t('base', 'User not found!'));
+            throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
 
         if ($doit == 2) {
 

@@ -1,8 +1,5 @@
 <?php
 $this->pageTitle = Yii::app()->name . ' - ' . Yii::t('base', 'Error');
-$this->breadcrumbs = array(
-    Yii::t('base', 'Error'),
-);
 ?>
 <div class="container">
     <div class="panel panel-default">

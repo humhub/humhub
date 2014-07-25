@@ -43,16 +43,16 @@ class AuthenticationLdapSettingsForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'enabled' => Yii::t('AdminModule.authentication', 'Enable LDAP Support'),
-            'username' => Yii::t('AdminModule.authentication', 'Username'),
-            'password' => Yii::t('AdminModule.authentication', 'Password'),
-            'encryption' => Yii::t('AdminModule.authentication', 'Encryption'),
-            'hostname' => Yii::t('AdminModule.authentication', 'Hostname'),
-            'port' => Yii::t('AdminModule.authentication', 'Port'),
-            'baseDn' => Yii::t('AdminModule.authentication', 'Base DN'),
-            'loginFilter' => Yii::t('AdminModule.authentication', 'Login Filter'),
-            'userFilter' => Yii::t('AdminModule.authentication', 'User Filer'),
-            'usernameAttribute' => Yii::t('AdminModule.authentication', 'Username Attribute'),
+            'enabled' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Enable LDAP Support'),
+            'username' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username'),
+            'password' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Password'),
+            'encryption' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Encryption'),
+            'hostname' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Hostname'),
+            'port' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Port'),
+            'baseDn' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Base DN'),
+            'loginFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Login Filter'),
+            'userFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'User Filer'),
+            'usernameAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username Attribute'),
         );
     }
 

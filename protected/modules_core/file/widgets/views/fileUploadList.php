@@ -20,7 +20,7 @@
     </div>
 
 
-    <?php //echo Yii::t('FileModule.base', 'List of already uploaded files:'); ?>
+    <?php //echo Yii::t('FileModule.widgets_views_fileUploadList', 'List of already uploaded files:'); ?>
     <ul style="list-style: none; display:none; margin: 0; padding-top: 10px;" id="<?php echo $uploaderId; ?>_list">
     </ul>
 </div>

@@ -6,7 +6,7 @@
  * @since 0.5 */
 ?>
     <?php foreach ($this->getItems() as $item) : ?>
-        <li class="visible-md visible-lg <?php if ($item['isActive']): ?>active<?php endif; ?>">
+        <li class="visible-md visible-lg <?php if ($item['isActive']): ?>active<?php endif; ?> <?php if (isset($item['id'])) { echo $item['id']; } ?>">
             <a href="<?php echo $item['url']; ?>">
                 <?php echo $item['icon']; ?><br/>
                 <?php echo $item['label']; ?>

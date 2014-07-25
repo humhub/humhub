@@ -7,9 +7,9 @@
     <!-- container for ajax response -->
     <ul id="dropdown-notifications" class="dropdown-menu">
         <li class="dropdown-header">
-            <div class="arrow"></div><?php echo Yii::t('base', 'Notifications'); ?>
+            <div class="arrow"></div><?php echo Yii::t('NotificationModule.widgets_views_list', 'Notifications'); ?>
             <div class="dropdown-header-link"><a id="mark-seen-link"
-                    href="javascript:markNotificationsAsSeen();"><?php echo Yii::t('NotificationModule', 'Mark all as seen'); ?></a>
+                    href="javascript:markNotificationsAsSeen();"><?php echo Yii::t('NotificationModule.widgets_views_list', 'Mark all as seen'); ?></a>
             </div>
         </li>
         <ul class="media-list"></ul>
@@ -108,7 +108,7 @@
 
         });
 
-        var notification_placeholder = "<?php echo Yii::t('NotificationModule.base', 'There are no notifications yet.') ?>"
+        var notification_placeholder = "<?php echo Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.') ?>"
 
 
         function loadNotificationEntries() {
@@ -171,11 +171,13 @@
                 if ($newNotifications == 0) {
                     $('#badge-notifications').css('display', 'none');
                     $('#mark-seen-link').css('display', 'none');
+                    $('#icon-notifications .fa').removeClass("animated swing");
                 } else {
                     $('#badge-notifications').empty();
                     $('#badge-notifications').append($newNotifications);
                     $('#mark-seen-link').css('display', 'inline');
                     $('#badge-notifications').fadeIn('fast');
+                    $('#icon-notifications .fa').addClass("animated swing");
                 }
 
             })

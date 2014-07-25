@@ -32,7 +32,7 @@ class CheckPasswordValidator extends CValidator {
         $identity->authenticate();
 
         if (!$identity->isAuthenticated) {
-            $object->addError($attribute, Yii::t('UserModule.base', "Your password is incorrect!"));
+            $object->addError($attribute, Yii::t('UserModule.components_CheckPasswordValidator', "Your password is incorrect!"));
         }
     }
 

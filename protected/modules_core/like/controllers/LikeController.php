@@ -68,7 +68,7 @@ class LikeController extends Controller
 
         // Check if like class exists
         if (!class_exists($this->model)) {
-            throw new CHttpException(500, Yii::t('LikeModule.base', 'Could not find target class!'));
+            throw new CHttpException(500, Yii::t('LikeModule.controllers_LikeController', 'Could not find target class!'));
         }
 
         $model = $this->model;
@@ -76,18 +76,18 @@ class LikeController extends Controller
 
         // Error Target not found
         if ($this->targetObject == null) {
-            throw new CHttpException(500, Yii::t('LikeModule.base', 'Could not find target record!'));
+            throw new CHttpException(500, Yii::t('LikeModule.controllers_LikeController', 'Could not find target record!'));
         }
 
         // Error Target not found
         if (is_subclass_of($this->targetObject, 'HActiveRecordContent')) {
             if (!$this->targetObject->content->canRead())
-                throw new CHttpException(401, Yii::t('LikeModule.base', 'Access denied!'));
+                throw new CHttpException(401, Yii::t('LikeModule.controllers_LikeController', 'Access denied!'));
         } elseif (is_subclass_of($this->targetObject, 'HActiveRecordContentAddon')) {
             if (!$this->targetObject->content->canRead())
-                throw new CHttpException(401, Yii::t('LikeModule.base', 'Access denied!'));
+                throw new CHttpException(401, Yii::t('LikeModule.controllers_LikeController', 'Access denied!'));
         } else {
-            throw new CHttpException(500, Yii::t('LikeModule.base', 'Invalid class given!'));
+            throw new CHttpException(500, Yii::t('LikeModule.controllers_LikeController', 'Invalid class given!'));
         }
     }
 
@@ -181,7 +181,7 @@ class LikeController extends Controller
         $users = User::model()->findAllBySql($sql, $params);
 
         $output = $this->renderPartial('application.modules_core.user.views._listUsers', array(
-            'title' => Yii::t('LikeModule.base', "<strong>Users</strong> who like this"),
+            'title' => Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this"),
             'users' => $users,
             'pagination' => $pagination
                 ), true);

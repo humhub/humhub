@@ -40,12 +40,12 @@ class ProfileFieldTypeSelect extends ProfileFieldType
         return parent::getFormDefinition(array(
                     get_class($this) => array(
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.base', 'Select field options'),
+                        'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Select field options'),
                         'elements' => array(
                             'options' => array(
                                 'type' => 'textarea',
                                 'class' => 'form-control',
-                                'hint' => Yii::t('UserModule.base', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                                'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                             ),
                         )
         )));
@@ -89,7 +89,7 @@ class ProfileFieldTypeSelect extends ProfileFieldType
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
                 'items' => $this->getSelectItems(),
-                'prompt'=> Yii::t('UserModule.base', 'Please select:'),
+                'prompt'=> Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Please select:'),
         ));
     }
 
