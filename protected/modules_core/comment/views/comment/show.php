@@ -8,15 +8,17 @@
             </h4>
         </div>
 
-
-        <div id="userlist-content">
-            <div class="well well-small" id="comment_<?php echo $id; ?>">
-                <div class="comment" id="comments_area_<?php echo $id; ?>">
-                    <?php echo $output; ?>
+        <br/>
+        <div class="modal-body">
+            <div id="userlist-content">
+                <div class="well well-small" id="comment_<?php echo $id; ?>">
+                    <div class="comment" id="comments_area_<?php echo $id; ?>">
+                        <?php echo $output; ?>
+                    </div>
+                    <?php $this->widget('application.modules_core.comment.widgets.CommentFormWidget', array('object' => $object)); ?>
                 </div>
-                <?php $this->widget('application.modules_core.comment.widgets.CommentFormWidget', array('object' => $object)); ?>
-            </div>
 
+            </div>
         </div>
 
     </div>

@@ -15,8 +15,8 @@
 
 <?php if ($mode == CommentLinkWidget::MODE_POPUP): ?>
     <a href="<?php echo $this->createUrl('//comment/comment/showPopup', array('model' => $objectModel, 'id' => $objectId)); ?>"
-       class="tt" data-toggle="modal"
-       data-placement="top" title="" data-target="#globalModal"
+       class="" data-toggle="modal"
+       title="" data-target="#globalModal"
        data-original-title="Comments">Comments (<?php echo $this->getCommentsCount(); ?>)</a>
 <?php else: ?>
     <?php echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment") . "", "#", array('onClick' => "$('#comment_" . $id . "').show();$('#newCommentForm_" . $id . "').focus();return false;")); ?>
