@@ -19,6 +19,7 @@ return CMap::mergeArray(require (dirname(__FILE__) . '/main.php'), array(
                 'system.test.*',
             ),
             'params' => array(
+                'installed' => false,
                 'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings_test.php'
             ),
         ));

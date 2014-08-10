@@ -127,6 +127,9 @@ class HDbFixtureManager extends CDbFixtureManager
 
     public function getFixturesModule($modulePath)
     {
+        
+        $moduleFixtures = array();
+        
         $schema = $this->getDbConnection()->getSchema();
         $folder = opendir($modulePath);
         $suffixLen = strlen($this->initScriptSuffix);
@@ -136,12 +139,14 @@ class HDbFixtureManager extends CDbFixtureManager
             $path = $modulePath . DIRECTORY_SEPARATOR . $file;
             if (substr($file, -4) === '.php' && is_file($path) && substr($file, -$suffixLen) !== $this->initScriptSuffix) {
                 $tableName = substr($file, 0, -4);
-                if ($schema->getTable($tableName) !== null)
+                if ($schema->getTable($tableName) !== null) {
                     $this->_fixtures[$tableName] = $path;
+                    $moduleFixtures[$tableName] = $path;
+                }
             }
         }
         closedir($folder);
-        return $this->_fixtures;
+        return $moduleFixtures;
     }
 
 }

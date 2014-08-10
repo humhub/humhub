@@ -195,24 +195,32 @@ class HActiveRecordContent extends HActiveRecord
     }
 
     /**
-     * Scope to limit for a given content container
+     * Scope to limit returned content to given content container
+     * It also respects visibility of content against current user.
      * 
      * @param HActiveRecordContentContainer $container
      */
     public function contentContainer($container)
     {
+        if ($container == null) {
+            throw new CException("No container given!");
+        }
 
         $criteria = new CDbCriteria();
         $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
 
         if ($container instanceof Space) {
-            $criteria->condition = 'content.space_id=' . $container->id;
+            $criteria->join .= " LEFT JOIN space_membership ON content.space_id=space_membership.space_id AND space_membership.user_id=:userId";
+            $criteria->condition = "content.space_id=" . $container->id;
+            $criteria->condition .= " AND ((space_membership.status=3 AND content.visibility=0) OR content.visibility=1)";
         } elseif ($container instanceof User) {
             $criteria->condition = 'content.user_id=' . $container->id . ' AND (content.space_id="" OR content.space_id IS NULL)';
+            $criteria->condition .= ' AND (content.user_id=:userId OR content.visibility=1)';
         } else {
             throw new CException("Could not determine container type!");
         }
 
+        $criteria->params[':userId'] = Yii::app()->user->id;
         $this->getDbCriteria()->mergeWith($criteria);
 
         return $this;
