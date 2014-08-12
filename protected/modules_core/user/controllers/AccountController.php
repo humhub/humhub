@@ -67,6 +67,8 @@ class AccountController extends Controller
 
             if ($model->validate()) {
 
+                Yii::app()->user->getModel()->setSetting('hideTourPanel', $model->tourpanel, "tour");
+
                 // Create User
                 $model->save();
 
@@ -82,6 +84,8 @@ class AccountController extends Controller
                 return;
             }
         }
+
+        $model->tourpanel = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
         $this->render('editSettings', array('model' => $model));
     }

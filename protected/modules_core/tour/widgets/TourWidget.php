@@ -26,7 +26,7 @@ class TourWidget extends HWidget
             if ($hideTourPanel != 1) {
 
                 // save current module and controller id's
-                $currentModuleId = Yii::app()->controller->module->id;
+                $currentModuleId = ""; Yii::app()->controller->module->id;
                 $currentControllerId = Yii::app()->controller->id;
 
                 // check current page
