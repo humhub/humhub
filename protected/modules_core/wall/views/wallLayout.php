@@ -30,7 +30,7 @@
 
     <!-- Show space image, if you are outside from a space -->
     <?php if (Wall::$currentType != Wall::TYPE_SPACE && $object->content->container instanceof Space): ?>
-        <a href="<?php echo Yii::app()->createUrl('//space/space', array('guid' => $object->content->container->guid)); ?>"
+        <a href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $object->content->container->guid)); ?>"
            class="pull-left">
             <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
                  style="width: 20px; height: 20px;"
