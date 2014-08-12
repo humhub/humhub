@@ -19,7 +19,7 @@
  */
 
 /**
- * HActiveRecordContent is the base AR for all content models.
+ * HActiveRecordContent is the base AR for all content records.
  *
  * Each model which represents a piece of content should derived from it.
  * (e.g. Post, Question, Task, Note, ...)
@@ -27,8 +27,8 @@
  * It automatically binds a Content model to each instance.
  *
  * The Content Model is responsible for:
- *  - Content to User/Space Binding
- *  - Access Controlling
+ *  - Content to Container (User/Space) Binding
+ *  - Access Controls
  *  - Wall Integration
  *  - ...
  * (See Content Model for more details.)
@@ -195,7 +195,7 @@ class HActiveRecordContent extends HActiveRecord
     }
 
     /**
-     * Scope to limit returned content to given content container
+     * Scope to limit returned content to given content container.
      * It also respects visibility of content against current user.
      * 
      * @param HActiveRecordContentContainer $container
@@ -223,6 +223,56 @@ class HActiveRecordContent extends HActiveRecord
         $criteria->params[':userId'] = Yii::app()->user->id;
         $this->getDbCriteria()->mergeWith($criteria);
 
+        return $this;
+    }
+
+    /**
+     * Scope to find user related content accross content containers.
+     * 
+     * Possible includes:
+     *      spaces            - include content of all user spaces
+     *      mine              - content created by user
+     *      profile           - content of own profile
+     *      followed_spaces   - content of followed spaces
+     *      followed_users    - content of followed users
+     * 
+     * @since 0.9
+     * @param array $includes
+     */
+    public function userRelated($includes = array('spaces'))
+    {
+        $criteria = new CDbCriteria();
+        $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
+
+        // Attach selectors
+        $selectorSql = array();
+
+        if (in_array('mine', $includes)) {
+            $selectorSql[] = 'content.user_id=' . Yii::app()->user->id;
+        }
+
+        if (in_array('profile', $includes)) {
+            $selectorSql[] = 'content.user_id=' . Yii::app()->user->id . ' and content.space_id IS NULL';
+        }
+        if (in_array('spaces', $includes)) {
+            $selectorSql[] = 'content.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
+        }
+        if (in_array('followed_spaces', $includes)) {
+            $selectorSql[] = 'content.visibility=1 AND content.space_id IN (SELECT space_id FROM space_follow sf WHERE sf.user_id=' . Yii::app()->user->id . ')';
+        }
+        if (in_array('followed_users', $includes)) {
+            $selectorSql[] = 'content.visibility=1 AND content.space_id IS NULL AND content.user_id IN (SELECT user_followed_id FROM user_follow uf WHERE uf.user_follower_id=' . Yii::app()->user->id . ')';
+        }
+
+        if (count($selectorSql) != 0) {
+            $criteria->condition .= "(" . join(') OR (', $selectorSql) . ")";
+        } else {
+            // If none valid include is given, ensure returned data is empty
+            $criteria->condition .= " 1=2 ";
+            Yii::log("userRelated Scope called without valid includes!", CLogger::LEVEL_WARNING);
+        }
+
+        $this->getDbCriteria()->mergeWith($criteria);
         return $this;
     }
 

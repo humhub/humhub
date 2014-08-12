@@ -20,13 +20,85 @@
 
 /**
  * HActiveRecordContentTest
- *
+ * 
+ * @package humhub.tests.unit.components
+ * @since 0.9
+ * @group core
  * @author luke
  */
 class HActiveRecordContentTest extends CDbTestCase
 {
 
-    public $fixtures = array(':space', ':space_membership', ':user', ':wall', ':wall_entry', ':post', ':content');
+    public $fixtures = array(':space', ':space_membership', ':space_follow', ':user', ':user_follow', ':post', ':content');
+
+    public function testRelatedContentRecord()
+    {
+        // Create Post 
+        $post = new Post();
+        $post->message = "Test";
+        $post->content->container = Yii::app()->user->getModel();
+        $this->assertTrue(isset($post->content) && $post->content instanceof Content);
+        $this->assertTrue($post->validate());
+        $this->assertTrue($post->save());
+        $this->assertEquals(1, Content::model()->countByAttributes(array('object_model' => 'Post', 'object_id' => $post->getPrimaryKey())));
+    }
+
+    public function testUserRelated()
+    {
+        Yii::app()->user->setId(1);
+
+        // Check invalid calls
+        $posts = Post::model()->userRelated(array())->findAll();
+        $this->assertCount(0, $posts);
+        $posts = Post::model()->userRelated(array('asdf'))->findAll();
+        $this->assertCount(0, $posts);
+
+        // Check mine posts
+        $posts = Post::model()->userRelated(array('mine'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(1, 2, 7, 8), $postIds);
+
+        // Check user profile posts include
+        $posts = Post::model()->userRelated(array('profile'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(1, 2), $postIds);
+
+        // Check user profile and mine 
+        $posts = Post::model()->userRelated(array('profile', 'mine'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(1, 2, 7, 8), $postIds);
+
+        // All users space membership posts
+        $posts = Post::model()->userRelated(array('spaces'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(7, 8, 9), $postIds);
+
+        // All followed space posts (public)
+        $posts = Post::model()->userRelated(array('followed_spaces'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(10), $postIds);
+
+        // All followed user profile posts (public)
+        $posts = Post::model()->userRelated(array('followed_users'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(4), $postIds);
+
+        // All together
+        $posts = Post::model()->userRelated(array('followed_users', 'followed_spaces', 'mine', 'profile', 'spaces'))->findAll();
+        $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
+        sort($postIds);
+        $this->assertEquals(array(1, 2, 4, 7, 8, 9, 10), $postIds);
+
+        Yii::app()->user->setId(2);
+        $posts = Post::model()->userRelated(array('followed_users', 'followed_spaces'))->findAll();
+        $this->assertCount(0, $posts);
+    }
 
     public function testContentSelectorUser()
     {
