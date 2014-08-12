@@ -54,6 +54,13 @@ class Comment extends HActiveRecordContentAddon {
         );
     }
 
+    public function relations()
+    {
+        return array(
+            'user'=>array(static::BELONGS_TO, 'User', 'created_by')
+        );
+    }
+
     /**
      * Before Delete, remove LikeCount (Cache) of target object.
      * Remove activity
@@ -63,16 +70,6 @@ class Comment extends HActiveRecordContentAddon {
         $this->flushCache();
         Notification::remove('Comment', $this->id);
         return parent::beforeDelete();
-    }
-
-    /**
-     * Returns user of this comment
-     *
-     * @return User
-     */
-    public function getUser() 
-    {
-        return User::model()->findByPk($this->created_by);
     }
 
     /**

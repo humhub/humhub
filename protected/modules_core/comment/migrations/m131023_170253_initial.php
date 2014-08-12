@@ -2,7 +2,8 @@
 
 class m131023_170253_initial extends ZDbMigration {
 
-    public function up() {
+    public function up() 
+    {
         $this->createTable('comment', array(
             'id' => 'pk',
             'message' => 'text DEFAULT NULL',
@@ -13,22 +14,12 @@ class m131023_170253_initial extends ZDbMigration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+        ));
     }
 
-    public function down() {
-        echo "m131023_170253_initial does not support migration down.\n";
-        return false;
+    public function down()
+    {
+        $this->dropTable('comment');
     }
 
-    /*
-      // Use safeUp/safeDown to do migration with transaction
-      public function safeUp()
-      {
-      }
-
-      public function safeDown()
-      {
-      }
-     */
 }
