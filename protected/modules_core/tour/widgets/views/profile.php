@@ -18,36 +18,36 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>User</strong> profile'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Dies ist dein öffentliches User-Profil, welches für alle registrierte User zugänglich ist."); ?>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Dies ist dein öffentliches User-Profil, welches für alle registrierten User zugänglich ist."); ?>"
         },
         {
             element: "#user-profile-image",
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> images'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', ''); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Ein neues Profilbild kannst einfach per Drag & Drop auf das jetzige hochladen.<br><br>Genauso funktioniert das auch mit dem großen Titelbild.'); ?>",
             placement: "right"
         },
         {
             element: ".controls-account",
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Edit</strong> profile'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', ''); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Edit</strong> account'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Über diesen Button gelangst du zu deinen Profil- und Accounteinstellungen.<br><br>Hier kannst du u. a. dein Profil um weitere Informationen über dich einstellen.'); ?>",
             placement: "left"
         },
         {
             element: ".profile-nav-container",
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', ''); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Wie auch bei den Spaces, verfügt ein User-Profil über ein Menü, welches mit Hilfe von Modulen erweitert werden kann.<br><br>Welche Module dir für dein Profil zu Verfügung stehen, siehst du unter <strong>Account settings</strong> <i class=\'fa fa-caret-right\'></i> <strong>Modules</strong>'); ?>",
             placement: "right"
         },
         {
             element: "#contentFormBody",
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> stream'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Jedes Profil verfügt ebensfall über eine eigene Pinnwand. User welcher dir Folgen, sehen diese Beiträge auch auf ihrem Dashbaord.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Jedes Profil verfügt ebensfall über eine eigene Pinnwand. User welcher dir Folgen, sehen diese Beiträge auch auf ihrem Dashboard.'); ?>",
             placement: "bottom"
         },
         {
             element: ".profile-sidebar-container",
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> widgets'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Mithile von Widget werden weitere Informationen zum User angezeigt.<br><br>Die Panels werden aber erst angezeigt, wenn auch Informationen zu dem User verfügbar sind.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> Panels'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Je nach eingegebenen Informationen und User-Aktivität auf der Platform werden hier weitere Panels mit Informationen zum User angezeigt'); ?>",
             placement: "left"
         },
         {
@@ -55,8 +55,7 @@
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Finished</strong>'); ?>",
             content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Hiermit hast du das Tutorial für das User-Profil erfolgreich abgeschlossen."); ?>"
-        },
-
+        }
 
     ]);
 

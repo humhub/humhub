@@ -18,7 +18,7 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Jeder User kann Spaces erstellen und andere User dazu einladen um mit Ihnen zusammen an Projekten zu arbeiten, Themen zu besprechen oder einfach nur Informationen zu teilen.<br><br>Um die Kommunikation noch produktiver zu gestalten, kann man einen Space mit den verschiedensten Modulen (Tools) erweitern."); ?>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Jeder User kann Spaces erstellen und andere User dazu einladen um mit ihnen zusammen an Projekten zu arbeiten, Themen zu besprechen oder einfach nur Informationen zu teilen.<br><br>Um die Kommunikation noch produktiver zu gestalten, kann man einen Space mit den verschiedensten Modulen (Tools) erweitern."); ?>"
         },
         {
             element: ".space-nav-container .panel:eq(0)",
@@ -35,7 +35,7 @@
         {
             element: "#contentFormBody",
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Post</strong> form'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Neue Inhalte postest du über dieses Formular.<br><br>Je nach aktiviertem Modul kannst du hier unteschiedliche Informationen angeben.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Neue Inhalte postest du über dieses Formular.<br><br>Je nach aktivierten Modulen kannst du hier unteschiedliche Informationen angeben.'); ?>",
             placement: "bottom"
         },
         {

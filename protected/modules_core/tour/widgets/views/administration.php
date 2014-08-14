@@ -18,7 +18,7 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Administration</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', "Als Administrator kannst du hier die komplette Platform verwalten.<br><br>Im oberen Teil der linken Navigation kannst du die User und Spaces verwalten und im unteren Teil Einstellungen zur Platform vornehmen."); ?>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', "Als Administrator kannst du hier die komplette Platform verwalten.<br><br>Bis auf die Module, soll hier aber nicht auf jeden Punkt einzeln eingegangen werden, da es zu jedem Punkt kurze Erläuterungen gibt."); ?>"
         },
         {
             element: "#user-profile-image",
