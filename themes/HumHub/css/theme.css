@@ -1091,6 +1091,24 @@ ul.tag_input.focus {
 .wallFilterPanel .dropdown-menu li a:hover {
   color: #fff !important;
 }
+ul.tour-list {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 10px;
+}
+ul.tour-list li {
+  padding-top: 5px;
+}
+ul.tour-list li a {
+  color: #4cd9c0;
+}
+ul.tour-list li a .fa {
+  width: 16px;
+}
+ul.tour-list li.completed a {
+  color: #bebebe;
+  text-decoration: line-through;
+}
 .errorMessage {
   color: #ff8989;
 }

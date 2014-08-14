@@ -539,12 +539,11 @@ h4 {
 
 .popover {
 
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
-  -moz-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.175);
-
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 
   .popover-title {
     background: none;
@@ -1446,6 +1445,33 @@ ul.tag_input.focus {
 
 }
 
+// TourModule
+
+ul.tour-list {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 10px;
+
+  li {
+    padding-top: 5px;
+
+    a {
+      color: @colorInfo2;
+
+      .fa {
+        width: 16px;
+      }
+    }
+  }
+
+  li.completed {
+    a {
+      color: @colorFont4;
+      text-decoration: line-through;
+    }
+  }
+}
+
 //
 // 7) Yii Components
 // --------------------------------------------------
@@ -1500,21 +1526,18 @@ img.bounceIn {
   }
 }*/
 
-
-
-
 .outside {
 
-.text {
-  color: #ffffff;
-  font-size: 12px;
-  margin-bottom: 15px;
-
-  a {
+  .text {
     color: #ffffff;
-    text-decoration: underline;
+    font-size: 12px;
+    margin-bottom: 15px;
+
+    a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
   }
-}
 
   h1, h2 {
     color: #ffffff !important;
@@ -1564,7 +1587,7 @@ img.bounceIn {
     background-position: top center;
     border-radius: 3px;
     border: 3px solid #ffffff;
-    
+
     .install-header-title {
       padding: 6% 30px 0 30px;
     }
