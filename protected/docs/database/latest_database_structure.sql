@@ -363,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `space_module` (
 CREATE TABLE IF NOT EXISTS `task` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` text NOT NULL,
-  `deathline` datetime DEFAULT NULL,
+  `deadline` datetime DEFAULT NULL,
   `max_users` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `percent` smallint(6) NOT NULL,
