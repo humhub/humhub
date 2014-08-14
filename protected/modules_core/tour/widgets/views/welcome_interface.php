@@ -7,14 +7,14 @@
                     id="myModalLabel"><?php echo Yii::t('TourModule.widgets_views_welcome_index', '<strong>Welcome</strong> to %appName%', array('%appName%' => Yii::app()->name)) ?></h4>
             </div>
             <div class="modal-body">
-                <?php echo Yii::t('TourModule.widgets_views_welcome_index', '') ?>
+                <?php echo Yii::t('TourModule.widgets_views_welcome_index', '%appName% ist eine Social Network Platform auf welcher du dich mit Anderen vernetzten, kommunizieren und über Spaces zusammenarbeiten kannst. Einen Space musst du dir wie einen virtuellen Raum vorstellen, in welchem du dich mit anderen Usern austauschst.<br><br>Wie das genau funktioniert, erfährst du in den kleinen Tutorials, welche du rechts obem im Getting Started Panel einzeln starten kannst.', array('%appName%' => Yii::app()->name)) ?>
 
             </div>
 
             <div class="modal-footer">
                 <hr>
                 <br>
-                <a href="javascript:welcomeModalSeen();startInterfaceTour();" class="btn btn-info"><?php echo Yii::t('TourModule.widgets_views_welcome_interface', 'Discover the interface'); ?></a> <a class="btn btn-primary"
+                <a href="javascript:welcomeModalSeen();startInterfaceTour();" class="btn btn-info"><?php echo Yii::t('TourModule.widgets_views_welcome_interface', 'Erste Tour starten'); ?></a> <a class="btn btn-primary"
                                                                                        href="javascript:welcomeModalSeen();"
                                                                                        data-dismis="modal"><?php echo Yii::t('TourModule.widgets_views_welcome_interface', 'Close'); ?></a>
             </div>
@@ -79,8 +79,32 @@
                 // step 0
                 orphan: true,
                 backdrop: true,
-                title: "<?php echo Yii::t('TourModule.widgets_views_welcome_interface', '<strong>Welcome</strong> to %appName%', array('%appName%' => Yii::app()->name)); ?>",
-                content: "<?php echo Yii::t('TourModule.widgets_views_welcome_interface', "This is a brief introduction of %appName% to give you an overview about the most important functions... Let's go!", array('%appName%' => Yii::app()->name)); ?>"
+                title: "<?php echo Yii::t('TourModule.widgets_views_welcome_interface', '<strong>Dashboard</strong>'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_welcome_interface', "Du befindest dich gerade auf der Einstiegsseite der Platform, dem sogenannten Dashboard.<br><br>Hier erhältst du eine Übersicht über die neusten Inhalte und Aktivitäten aus allen Spaces in welchen du Mitglied bist, sowie von allen Usern, welchen du folgst."); ?>"
+            },
+            {
+                element: "#icon-notifications",
+                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Notification</strong> menu'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'In einem Social Network können schon mal sehr viele Informationen geteilt werden.<br><br>Um den Überblick zu behalten, wirst du über dieses Menü nur über neue Aktivitäten und Inhalte informiert, welche dich direkt betreffen.'); ?>",
+                placement: "bottom"
+            },
+            {
+                element: ".dropdown.account",
+                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Account</strong> menu'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Über das Account-Menu kannst du deine Einstellungen ändern und dein öffentliches Benutzer-Profil pflegen.'); ?>",
+                placement: "bottom"
+            },
+            {
+                element: "#topbar-second",
+                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Das</strong> Hauptmenü'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Dies ist das Hauptmenü über welches du Zugriff auf alle Bereiche der Platform hast.'); ?><?php if (Yii::app()->user->isAdmin() == true) { echo Yii::t('TourModule.widgets_views_index', '<br><br>Abhängig von den installierten Modulen, können diese das Hauptmenü um neue Einträge erweitern.'); } ?>",
+                placement: "bottom"
+            },
+            {
+                element: "#space-menu",
+                title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> Auswahl'); ?>",
+                content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Dies ist das wichtigste und wird wohl dein am meinsten genutztes Menü.<br><br>Hier hast du Zugriff auf alle deine Spaces, in welchen du Mitglied bist und kannst auch neue Spaces erstellen.<br><br>Wie Spaces genau funktionieren, erfährst du im nächsten Tutorial.'); ?>",
+                placement: "bottom"
             }
         ]);
 

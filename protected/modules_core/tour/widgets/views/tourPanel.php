@@ -30,7 +30,7 @@
         ?>
 
         <ul class="tour-list">
-            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a href="javascript:startInterfaceTour();"><i class="fa fa-play-circle-o"></i> Interface</a></li>
+            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a href="javascript:startInterfaceTour();"><i class="fa fa-play-circle-o"></i> Introduction</a></li>
             <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>"><a id="interface-tour-link" href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid, 'tour' => 'true'))?>"><i class="fa fa-play-circle-o"></i> Spaces</a></li>
             <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid,'tour' => 'true'))?>"><i class="fa fa-play-circle-o"></i> User profile</a></li>
             <?php if (Yii::app()->user->isAdmin() == true) : ?>

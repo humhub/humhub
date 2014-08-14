@@ -134,7 +134,7 @@
             <!-- end: User statistics -->
 
 
-            <div class="controls pull-right">
+            <div class="controls controls-account pull-right">
                 <!-- start: User following -->
                 <?php
                 if (!$isProfileOwner) {

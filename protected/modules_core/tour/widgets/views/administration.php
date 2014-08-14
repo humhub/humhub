@@ -15,12 +15,30 @@
     // Add tour steps
     administrationTour.addSteps([
         {
-            // step 0
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Welcome</strong> to %appName%', array('%appName%' => Yii::app()->name)); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', "This is a brief introduction of %appName% to give you an overview about the most important functions... Let's go!", array('%appName%' => Yii::app()->name)); ?>"
+            title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Administration</strong>'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', "Als Administrator kannst du hier die komplette Platform verwalten.<br><br>Im oberen Teil der linken Navigation kannst du die User und Spaces verwalten und im unteren Teil Einstellungen zur Platform vornehmen."); ?>"
+        },
+        {
+            element: "#user-profile-image",
+            title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Profile</strong> images'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', ''); ?>",
+            placement: "right"
+        },
+        {
+            element: ".list-group-item.modules",
+            title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Modules</strong>'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'Du hast gerade den Menüpunkt Modules ausgewählt. Hier erhälst du Zugriff auf den Online-Marketplace, von welchem du eine wachsende Anzahl von Modulen aus der Community installieren kannst.'); ?>",
+            placement: "right"
+        },
+        {
+            orphan: true,
+            backdrop: true,
+            title: "<?php echo Yii::t('TourModule.widgets_views_administration', "<strong>Hurray!</strong> We're done."); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'This have been the most important things you should know before using the platform.<br><br>We hope, that you and the future users will have a good experience and fun with the platform.<br><br>We are always looking forward for every suggestion or any kind of help to support the project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :)'); ?>"
         }
+
     ]);
 
     // Initialize tour plugin
