@@ -20,7 +20,7 @@ class ShowCommentWidget extends HWidget {
      */
     public function run() {
 
-        $user = $this->comment->getUser();
+        $user = $this->comment->user;
 
         $this->render('showComment', array(
             'comment' => $this->comment,
