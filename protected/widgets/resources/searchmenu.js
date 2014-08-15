@@ -93,14 +93,6 @@ $(document).ready(function () {
                 // add the DOM element to search dropdown menu
                 $('#search-menu-dropdown').append(_menuStructure);
 
-
-                // load search results
-                /*
-                 var _spaceGuid = '<?php if (Yii::app()->params['currentSpace'] != null) {
-                 echo Yii::app()->params['currentSpace']->guid;
-                 } ?>';
-                 */
-
                 _request = $.ajax({
                     'type': 'GET',
                     'url': searchAjaxUrl.replace('-searchKeyword-', _searchString),
@@ -111,9 +103,6 @@ $(document).ready(function () {
 
                         // add selection to the first space entry
                         $('#search-menu-dropdown li ul li:eq(0)').addClass('selected');
-
-                        // remove hightlight
-                        $("#search-menu-dropdown li").removeHighlight();
 
                         // add new highlight matching strings
                         $("#search-menu-dropdown li").highlight($('#search-menu-search').val());
