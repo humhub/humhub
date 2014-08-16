@@ -112,14 +112,14 @@ class HSetting extends HActiveRecord
 
         if ($record == null) {
             $record = new HSetting;
-        } else {
-            $expireTime = 3600;
-            if ($record->name != 'expireTime' && $record->module_id != "cache")
-                $expireTime = HSetting::Get('expireTime', 'cache');
+        } 
+        
+        $expireTime = 3600;
+        if ($record->name != 'expireTime' && $record->module_id != "cache")
+            $expireTime = HSetting::Get('expireTime', 'cache');
 
-            Yii::app()->cache->set($cacheId, $record, $expireTime);
-            RuntimeCache::Set($cacheId, $record);
-        }
+        Yii::app()->cache->set($cacheId, $record, $expireTime);
+        RuntimeCache::Set($cacheId, $record);
 
         return $record;
     }
@@ -403,11 +403,10 @@ class HSetting extends HActiveRecord
         $content .= "; ?" . ">";
 
         file_put_contents($configFile, $content);
-        
+
         if (function_exists('opcache_reset')) {
             opcache_invalidate($configFile);
         }
-            
     }
 
     /**
