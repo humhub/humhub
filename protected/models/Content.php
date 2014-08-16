@@ -357,23 +357,33 @@ class Content extends CActiveRecord
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
-        // Space Content Access Check
-        if ($this->space_id != "" && $this->visibility == 0) {
+        if ($this->visibility == 0) {
+            // Space/User Content Access Check
+            if ($this->space_id != "") {
 
-            $space = null;
-            if (isset(Yii::app()->params['currentSpace']) && Yii::app()->params['currentSpace']->id == $this->space_id) {
-                $space = Yii::app()->params['currentSpace'];
+                $space = null;
+                if (isset(Yii::app()->params['currentSpace']) && Yii::app()->params['currentSpace']->id == $this->space_id) {
+                    $space = Yii::app()->params['currentSpace'];
+                } else {
+                    $space = Space::model()->findByPk($this->space_id);
+                }
+
+                // Space Found
+                if ($space != null) {
+                    if (!$space->isMember($userId)) {
+                        return false;
+                    }
+                }
             } else {
-                $space = Space::model()->findByPk($this->space_id);
-            }
-
-            // Space Found
-            if ($space != null) {
-                if (!$space->isMember($userId)) {
+                // Check for user content
+                if ($userId != $this->user_id) {
                     return false;
                 }
             }
         }
+
+
+
 
         return true;
     }
@@ -412,7 +422,12 @@ class Content extends CActiveRecord
      */
     public function isPublic()
     {
-
+        
+        if ($this->visibility == self::VISIBILITY_PUBLIC) {
+            return true;
+        }
+        
+        /*
         // Space Content
         if ($this->space_id != null) {
             if ($this->visibility == self::VISIBILITY_PUBLIC)
@@ -422,7 +437,7 @@ class Content extends CActiveRecord
         } elseif ($this->user_id != null) {
             return true;
         }
-
+        */
         return false;
     }
 
@@ -623,7 +638,7 @@ class Content extends CActiveRecord
         if ($container instanceof Space) {
             $this->space_id = $container->id;
         } elseif ($container instanceof User) {
-            $this->user_id = $container->id;           
+            $this->user_id = $container->id;
         } else {
             throw new CException("Invalid container type!");
         }
@@ -644,7 +659,7 @@ class Content extends CActiveRecord
         if ($this->_container != null) {
             return $this->_container;
         }
-     
+
         if ($this->space_id != null) {
             $container = Space::model()->findByPk($this->space_id);
         } elseif ($this->user_id != null) {
