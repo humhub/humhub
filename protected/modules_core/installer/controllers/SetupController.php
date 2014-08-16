@@ -160,6 +160,9 @@ class SetupController extends Controller
         // Flush Caches
         Yii::app()->cache->flush();
 
+        // Disable max execution time to avoid timeouts during database installation
+        @ini_set('max_execution_time', 0);
+        
         // Migrate Up Database
         Yii::import('application.commands.shell.ZMigrateCommand');
         ZMigrateCommand::AutoMigrate();

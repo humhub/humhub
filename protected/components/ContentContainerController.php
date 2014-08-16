@@ -103,6 +103,8 @@ class ContentContainerController extends Controller
                 'space' => $this->contentContainer
             ));
 
+            Yii::app()->params['currentSpace'] = $this->contentContainer;
+            
             $this->subLayout = "application.modules_core.space.views.space._layout";
         } elseif ($userGuid != "") {
 
@@ -116,6 +118,8 @@ class ContentContainerController extends Controller
                 'class' => 'application.modules_core.user.behaviors.ProfileControllerBehavior',
                 'user' => $this->contentContainer
             ));
+
+            Yii::app()->params['currentUser'] = $this->contentContainer;
 
             $this->subLayout = "application.modules_core.user.views.profile._layout";
         } else {
