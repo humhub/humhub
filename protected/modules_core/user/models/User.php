@@ -455,18 +455,37 @@ class User extends HActiveRecordContentContainer implements ISearchable
      */
     public function getUrl($parameters = array())
     {
-        $parameters['uguid'] = $this->guid;
-        return Yii::app()->createUrl('//user/profile', $parameters);
+        return $this->createUrl('//user/profile', $parameters);
     }
 
     /**
      * Returns the Profile Link for this User
-     *
+     * 
+     * @deprecated since version 0.8
      * @return Link
      */
     public function getProfileUrl()
     {
         return $this->getUrl();
+    }
+
+    /**
+     * Creates an url in user scope.
+     * (Adding uguid parameter to identify current user.)
+     * See CController createUrl() for more details.
+     * 
+     * @since 0.9
+     * @param type $route the URL route. 
+     * @param type $params additional GET parameters.
+     * @param type $ampersand the token separating name-value pairs in the URL.
+     */
+    public function createUrl($route, $params = array(), $ampersand = '&')
+    {
+        if (!isset($params['uguid'])) {
+            $params['uguid'] = $this->guid;
+        }
+
+        return Yii::app()->createUrl($route, $params, $ampersand);
     }
 
     /**

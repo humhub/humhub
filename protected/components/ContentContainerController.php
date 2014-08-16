@@ -130,14 +130,7 @@ class ContentContainerController extends Controller
      */
     public function createContainerUrl($route, $params = array(), $ampersand = '&')
     {
-
-        if ($this->contentContainer instanceof User) {
-            return $this->getOwner()->createUserUrl($route, $params, $ampersand);
-        } elseif ($this->contentContainer instanceof Space) {
-            return $this->getOwner()->createSpaceUrl($route, $params, $ampersand);
-        } else {
-            return $this->getOwner()->createUrl($route, $params, $ampersand);
-        }
+        return $this->contentContainer->createUrl($route, $params, $ampersand);
     }
 
     /**

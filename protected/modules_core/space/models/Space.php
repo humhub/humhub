@@ -361,8 +361,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $membership->invite_role = 1;
             $membership->admin_role = 1;
             $membership->share_role = 1;
-            $membership->save();            
-            
+            $membership->save();
+
             $activity = new Activity;
             $activity->content->created_by = $user->id;
             $activity->content->space_id = $this->id;
@@ -372,7 +372,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
-            
+
             return true;
         }
     }
@@ -464,7 +464,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return false;
     }
 
-
     /**
      * Checks if given user can invite people to this workspace
      *
@@ -504,7 +503,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
         $membership = $this->getMembership($userId);
 
-        
+
         if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
@@ -569,7 +568,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     {
         return Yii::app()->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', array('space' => $this), true);
     }
-
 
     /**
      * Counts all Content Items related to this workspace except of Activities.
@@ -654,8 +652,26 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function getUrl($parameters = array())
     {
-        $parameters['sguid'] = $this->guid;
-        return Yii::app()->createUrl('//space/space', $parameters);
+        return $this->createUrl('//space/space', $parameters);
+    }
+
+    /**
+     * Creates an url in space scope.
+     * (Adding sguid parameter to identify current space.)
+     * See CController createUrl() for more details.
+     * 
+     * @since 0.9
+     * @param type $route the URL route. 
+     * @param type $params additional GET parameters.
+     * @param type $ampersand the token separating name-value pairs in the URL.
+     */
+    public function createUrl($route, $params = array(), $ampersand = '&')
+    {
+        if (!isset($params['sguid'])) {
+            $params['sguid'] = $this->guid;
+        }
+
+        return Yii::app()->createUrl($route, $params, $ampersand);
     }
 
 }
