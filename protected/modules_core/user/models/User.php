@@ -484,8 +484,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
         if (!isset($params['uguid'])) {
             $params['uguid'] = $this->guid;
         }
-
-        return Yii::app()->createUrl($route, $params, $ampersand);
+        
+        return Yii::app()->getController()->createUrl($route, $params, $ampersand);
     }
 
     /**

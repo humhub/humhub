@@ -671,7 +671,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $params['sguid'] = $this->guid;
         }
 
-        return Yii::app()->createUrl($route, $params, $ampersand);
+        return Yii::app()->getController()->createUrl($route, $params, $ampersand);
     }
 
 }
