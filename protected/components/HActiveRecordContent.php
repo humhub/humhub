@@ -44,6 +44,15 @@ class HActiveRecordContent extends HActiveRecord
 {
 
     /**
+     * Scopes for User Related selector
+     */
+    const SCOPE_USER_RELEATED_MINE = 1;
+    const SCOPE_USER_RELEATED_SPACES = 2;
+    const SCOPE_USER_RELEATED_FOLLOWED_SPACES = 3;
+    const SCOPE_USER_RELEATED_FOLLOWED_USERS = 4;
+    const SCOPE_USER_RELEATED_OWN_PROFILE = 5;
+
+    /**
      * Should this content automatically added to the wall.
      *
      * @var boolean
@@ -229,17 +238,10 @@ class HActiveRecordContent extends HActiveRecord
     /**
      * Scope to find user related content accross content containers.
      * 
-     * Possible includes:
-     *      spaces            - include content of all user spaces
-     *      mine              - content created by user
-     *      profile           - content of own profile
-     *      followed_spaces   - content of followed spaces
-     *      followed_users    - content of followed users
-     * 
      * @since 0.9
-     * @param array $includes
+     * @param array $includes Array of self::SCOPE_USER_RELATED_*.
      */
-    public function userRelated($includes = array('spaces'))
+    public function userRelated($includes = array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_SPACES))
     {
         $criteria = new CDbCriteria();
         $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
@@ -247,20 +249,20 @@ class HActiveRecordContent extends HActiveRecord
         // Attach selectors
         $selectorSql = array();
 
-        if (in_array('mine', $includes)) {
+        if (in_array(HActiveRecordContent::SCOPE_USER_RELEATED_MINE, $includes)) {
             $selectorSql[] = 'content.user_id=' . Yii::app()->user->id;
         }
 
-        if (in_array('profile', $includes)) {
+        if (in_array(HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE, $includes)) {
             $selectorSql[] = 'content.user_id=' . Yii::app()->user->id . ' and content.space_id IS NULL';
         }
-        if (in_array('spaces', $includes)) {
+        if (in_array(self::SCOPE_USER_RELEATED_SPACES, $includes)) {
             $selectorSql[] = 'content.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
         }
-        if (in_array('followed_spaces', $includes)) {
+        if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_SPACES, $includes)) {
             $selectorSql[] = 'content.visibility=1 AND content.space_id IN (SELECT space_id FROM space_follow sf WHERE sf.user_id=' . Yii::app()->user->id . ')';
         }
-        if (in_array('followed_users', $includes)) {
+        if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_USERS, $includes)) {
             $selectorSql[] = 'content.visibility=1 AND content.space_id IS NULL AND content.user_id IN (SELECT user_followed_id FROM user_follow uf WHERE uf.user_follower_id=' . Yii::app()->user->id . ')';
         }
 

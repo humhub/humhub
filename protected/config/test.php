@@ -7,7 +7,7 @@ return CMap::mergeArray(require (dirname(__FILE__) . '/main.php'), array(
                     'basePath' => realpath(dirname(__FILE__) . '/../tests/fixtures'),
                 ),
                 'db' => array(
-                    'connectionString' => 'mysql:host=localhost;dbname=humhub_test2',
+                    'connectionString' => 'mysql:host=localhost;dbname=humhub_test',
                     'username' => 'root',
                     'password' => '123qwe',
                 ),

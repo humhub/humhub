@@ -54,49 +54,49 @@ class HActiveRecordContentTest extends CDbTestCase
         $this->assertCount(0, $posts);
 
         // Check mine posts
-        $posts = Post::model()->userRelated(array('mine'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_MINE))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(1, 2, 7, 8), $postIds);
 
         // Check user profile posts include
-        $posts = Post::model()->userRelated(array('profile'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(1, 2), $postIds);
 
         // Check user profile and mine 
-        $posts = Post::model()->userRelated(array('profile', 'mine'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE, HActiveRecordContent::SCOPE_USER_RELEATED_MINE))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(1, 2, 7, 8), $postIds);
 
         // All users space membership posts
-        $posts = Post::model()->userRelated(array('spaces'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_SPACES))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(7, 8, 9), $postIds);
 
         // All followed space posts (public)
-        $posts = Post::model()->userRelated(array('followed_spaces'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_SPACES))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(10), $postIds);
 
         // All followed user profile posts (public)
-        $posts = Post::model()->userRelated(array('followed_users'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_USERS))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(4), $postIds);
 
         // All together
-        $posts = Post::model()->userRelated(array('followed_users', 'followed_spaces', 'mine', 'profile', 'spaces'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_USERS, HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_SPACES, HActiveRecordContent::SCOPE_USER_RELEATED_MINE, HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE, HActiveRecordContent::SCOPE_USER_RELEATED_SPACES))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);
         $this->assertEquals(array(1, 2, 4, 7, 8, 9, 10), $postIds);
 
         Yii::app()->user->setId(2);
-        $posts = Post::model()->userRelated(array('followed_users', 'followed_spaces'))->findAll();
+        $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_USERS, HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_SPACES))->findAll();
         $this->assertCount(0, $posts);
     }
 
