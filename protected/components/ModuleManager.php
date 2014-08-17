@@ -111,7 +111,9 @@ class ModuleManager extends CApplicationComponent
         foreach ($modulesPaths as $modulePath) {
             $modules = scandir($modulePath);
             foreach ($modules as $moduleId) {
-                $autostartFiles[] = $modulePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
+                if (is_dir($modulePath . DIRECTORY_SEPARATOR . $moduleId)) {
+                    $autostartFiles[] = $modulePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
+                }
             }
         }
 
@@ -223,12 +225,11 @@ class ModuleManager extends CApplicationComponent
                 return Yii::createComponent($class, $id, null);
             }
         } catch (Exception $ex) {
-            Yii::log("Loading of module ".$id." failed! ".$ex->getMessage(), 'error');
+            Yii::log("Loading of module " . $id . " failed! " . $ex->getMessage(), 'error');
         }
 
         return null;
     }
-
 
     /**
      * Returns a list of all installed modules
@@ -334,10 +335,10 @@ class ModuleManager extends CApplicationComponent
      */
     public function removeModuleFolder($moduleId)
     {
-        
-        $modulePath = Yii::app()->getModulePath().DIRECTORY_SEPARATOR.$moduleId;
-        
-        
+
+        $modulePath = Yii::app()->getModulePath() . DIRECTORY_SEPARATOR . $moduleId;
+
+
         $moduleBackupFolder = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_backups';
         if (!is_dir($moduleBackupFolder)) {
             if (!@mkdir($moduleBackupFolder)) {
