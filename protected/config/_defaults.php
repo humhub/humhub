@@ -112,6 +112,7 @@ return array(
             'nl' => 'Nederlands*',
             'pl' => 'Polish*',
             'pt' => 'Portuguese*',
+            'es' => 'Spanish*',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),

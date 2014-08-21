@@ -9,7 +9,7 @@ return array(
     'sourcePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'messagePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'messages',
     //'languages'=>array('fi','zh_cn','zh_tw','de','de_du','1337', 'el','es','sv','he','nl','pt','pt_br','ru','it','fr','ja','pl','hu','ro','id','vi','bg','lv','sk','uk','ko_kr','kk','cs'),
-    'languages' => array('de', 'fr', 'nl', 'pt', 'pl'),
+    'languages' => array('de', 'fr', 'nl', 'pt', 'pl', 'es'),
     'fileTypes' => array('php'),
     'overwrite' => true,
     'removeOld' => false,
