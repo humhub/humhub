@@ -18,6 +18,7 @@
  */
 return array (
   '<strong>Something</strong> went wrong' => '',
+  'Edit account' => '',
   'Followers' => '',
   'Following' => '',
   'Ok' => '',

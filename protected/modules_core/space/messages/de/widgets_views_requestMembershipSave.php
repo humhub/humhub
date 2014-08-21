@@ -19,7 +19,6 @@
 return array (
   'Choose a space... ' => '',
   'Close' => '',
-  'Create new space' => '',
   'Request workspace membership' => '',
   'Your request was successfully submitted to the workspace administrators.' => '',
 );

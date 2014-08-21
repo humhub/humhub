@@ -23,6 +23,7 @@ return array (
   'Delete user account' => '',
   'Edit user account' => '',
   'Email' => '',
+  'In this overview you can find every registered user and manage him.' => '',
   'No' => '',
   'Search for email' => '',
   'Search for username' => '',
