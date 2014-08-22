@@ -23,13 +23,13 @@
  *
  * @package humhub.modules_core.user.tests.unit.models
  * @since 0.9
- * @group space
+ * @group user
 
  */
 class UserSettingTest extends CDbTestCase
 {
 
-    public $fixtures = array(':user_setting');
+    public $fixtures = array(':user', ':user_setting');
 
     protected function setUp()
     {

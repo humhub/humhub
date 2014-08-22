@@ -1,8 +1,8 @@
 <?php
 
 // change the following paths if necessary
-$yiit=dirname(__FILE__).'/../vendors/yii/yiit.php';
-$config=dirname(__FILE__).'/../config/test.php';
+$yiit = dirname(__FILE__) . '/../vendors/yii/yiit.php';
+$config = dirname(__FILE__) . '/../config/test.php';
 
 require_once($yiit);
 
@@ -11,9 +11,15 @@ require_once($appClass);
 
 Yii::createApplication('WebApplication', $config);
 
+Yii::import('application.vendors.*');
+EZendAutoloader::$prefixes = array('Zend', 'Custom');
+Yii::import("ext.yiiext.components.zendAutoloader.EZendAutoloader", true);
+Yii::registerAutoloader(array("EZendAutoloader", "loadClass"), true);
+
+
 // Initially load fixture manager, to make sure test database is created.
 Yii::app()->fixture;
 
 Yii::app()->user->id = 1;
-     
+
 
