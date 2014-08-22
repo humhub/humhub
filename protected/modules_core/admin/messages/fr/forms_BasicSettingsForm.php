@@ -22,4 +22,5 @@ return array (
   'Default space' => '',
   'Invalid space' => '',
   'Name of the application' => '',
+  'Show introduction tour for new users' => '',
 );

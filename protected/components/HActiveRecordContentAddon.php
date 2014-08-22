@@ -28,7 +28,8 @@
  * @package humhub.components
  * @since 0.5
  */
-class HActiveRecordContentAddon extends HActiveRecord {
+class HActiveRecordContentAddon extends HActiveRecord
+{
 
     /**
      * Content object which this addon belongs to
@@ -50,7 +51,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      * 
      * @return Content Content AR which this Addon belongs to
      */
-    public function getContent() {
+    public function getContent()
+    {
 
         if ($this->_content != null) {
             return $this->_content;
@@ -76,7 +78,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      * 
      * @return Mixed HActiveRecordContent or HActiveRecordContentAddon
      */
-    public function getSource() {
+    public function getSource()
+    {
 
         if ($this->_source != null) {
             return $this->_source;
@@ -99,7 +102,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      *
      * @return boolean
      */
-    public function canDelete() {
+    public function canDelete()
+    {
         if ($this->created_by == Yii::app()->user->id) {
             return true;
         }
@@ -112,7 +116,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      *
      * @return boolean
      */
-    public function canRead() {
+    public function canRead()
+    {
         return $this->content->canRead(Yii::app()->user->id);
     }
 
@@ -121,7 +126,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      * 
      * @return boolean
      */
-    public function canWrite() {
+    public function canWrite()
+    {
         if ($this->created_by == Yii::app()->user->id) {
             return true;
         }
@@ -134,7 +140,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      *
      * @return type
      */
-    public function getContentTitle() {
+    public function getContentTitle()
+    {
         $objectModel = get_class($this); // e.g. Like
         return $objectModel . " (" . $this->getPrimaryKey() . ")";
     }
@@ -146,7 +153,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      * @param type $clearErrors
      * @return type
      */
-    public function validate($attributes = null, $clearErrors = true) {
+    public function validate($attributes = null, $clearErrors = true)
+    {
 
         if ($this->source != null) {
             if (!$this->source instanceof HActiveRecordContentAddon && !$this->source instanceof HActiveRecordContent) {
@@ -162,7 +170,8 @@ class HActiveRecordContentAddon extends HActiveRecord {
      * 
      * @return boolean
      */
-    protected function afterSave() {
+    protected function afterSave()
+    {
 
         // Workaround for files, which have no object_model / id on uploading
         if ($this->object_model != "" && $this->object_id != "") {

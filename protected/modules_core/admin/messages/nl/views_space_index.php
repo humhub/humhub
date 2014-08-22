@@ -25,6 +25,7 @@ return array (
   'Edit space' => '',
   'Everbody' => '',
   'Free' => '',
+  'In this overview you can find every space and manage it.' => '',
   'Invisible' => '',
   'Invite & Request' => '',
   'Invite / Request' => '',

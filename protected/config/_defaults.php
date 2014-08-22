@@ -109,7 +109,10 @@ return array(
             'en' => 'English',
             'de' => 'Deutsch*',
             'fr' => 'Francais*',
-            'nl' => 'Nederlands*'
+            'nl' => 'Nederlands*',
+            'pl' => 'Polish*',
+            'pt' => 'Portuguese*',
+            'es' => 'Spanish*',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),

@@ -42,6 +42,7 @@ return array (
   'Nothing found with your input.' => '',
   'Oooops...' => '',
   'Results' => '',
+  'Save' => '',
   'Search' => '',
   'Search for users and spaces' => '',
   'Show more results' => '',
@@ -52,5 +53,4 @@ return array (
   'Welcome to <strong>HumHub</strong>' => '',
   'You cannot create public visible content!' => '',
   'Your daily summary' => '',
-  'Close' => '@@@@',
 );

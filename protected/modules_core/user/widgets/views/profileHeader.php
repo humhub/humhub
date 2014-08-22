@@ -139,9 +139,9 @@
                 <?php
                 if (!$isProfileOwner) {
                     if ($user->isFollowedBy(Yii::app()->user->id)) {
-                        print CHtml::link("Unfollow", $this->createUrl('profile/unfollow', array('uguid' => $user->guid)), array('class' => 'btn btn-primary'));
+                        print CHtml::link("Unfollow", $this->createUrl('//user/profile/unfollow', array('uguid' => $user->guid)), array('class' => 'btn btn-primary'));
                     } else {
-                        print CHtml::link("Follow", $this->createUrl('profile/follow', array('uguid' => $user->guid)), array('class' => 'btn btn-success'));
+                        print CHtml::link("Follow", $this->createUrl('//user/profile/follow', array('uguid' => $user->guid)), array('class' => 'btn btn-success'));
                     }
                 }
                 ?>
