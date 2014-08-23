@@ -1,3 +1,6 @@
+<?php
+$this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery');
+?>
 <div class="container" style="text-align: center;">
     <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
     <br>
@@ -8,30 +11,30 @@
             <div class="panel-body">
 
 
-                <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'recover-password-form',
-                    "enableClientValidation" => false,
-                    'enableAjaxValidation' => false,
-                ));
-                ?>
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+    'id' => 'recover-password-form',
+    "enableClientValidation" => false,
+    'enableAjaxValidation' => false,
+        ));
+?>
 
                 <p><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you a new one!'); ?></p>
 
                 <div class="form-group">
-                    <?php //echo $form->labelEx($model, 'email'); ?>
+<?php //echo $form->labelEx($model, 'email');  ?>
                     <?php echo $form->textField($model, 'email', array('class' => 'form-control', 'id' => 'email_txt', 'placeholder' => 'your email')); ?>
                     <?php echo $form->error($model, 'email'); ?>
                 </div>
 
                 <div class="form-group">
-                    <?php $this->widget('CCaptcha'); ?>                            
+<?php $this->widget('CCaptcha'); ?>                            
                     <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'placeholder' => 'enter security code above')); ?>
                     <?php echo $form->error($model, 'verifyCode'); ?>
                 </div>
 
                 <hr>
-                <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Get new password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo $this->createUrl('//') ?>"><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Back') ?></a>
+<?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Get new password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo $this->createUrl('//') ?>"><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Back') ?></a>
 
                 <?php $this->endWidget(); ?>
 
@@ -43,15 +46,15 @@
 
 <script type="text/javascript">
 
-    $(function () {
+    $(function() {
         // set cursor to email field
         $('#email_txt').focus();
     })
 
     // Shake panel after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
-    $('#password-recovery-form').removeClass('bounceIn');
-    $('#password-recovery-form').addClass('shake');
-    $('#app-title').removeClass('fadeIn');
-    <?php } ?>
+<?php if ($form->errorSummary($model) != null) { ?>
+        $('#password-recovery-form').removeClass('bounceIn');
+        $('#password-recovery-form').addClass('shake');
+        $('#app-title').removeClass('fadeIn');
+<?php } ?>
 </script>

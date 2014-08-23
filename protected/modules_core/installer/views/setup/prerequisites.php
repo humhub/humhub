@@ -5,7 +5,7 @@
     </div>
 
     <div class="panel-body">
-        <p><?php echo Yii::t('InstallerModule.base', 'In the following overview, you can see, if all requierements are ready.'); ?></p>
+        <p><?php echo Yii::t('InstallerModule.base', 'This overview shows all system requirements of HumHub.'); ?></p>
 
         <hr/>
             <div class="prerequisites-list">

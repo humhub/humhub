@@ -6,7 +6,7 @@
 
     <div class="panel-body">
 
-        <p>Of course, your new social network need a name. Please change the default name with one you like. (For example the name of your company, organization or club)</p>
+        <p>Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)</p>
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
