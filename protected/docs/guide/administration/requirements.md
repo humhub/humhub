@@ -2,7 +2,7 @@ Requirements
 ============
 
 ### General Requirements:
-* PHP 5.2+
+* PHP 5.3+
 * MySQL
 * Apache 2.x
 * CUrl PHP Extension 

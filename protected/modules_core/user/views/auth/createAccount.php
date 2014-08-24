@@ -8,6 +8,7 @@
  * @package humhub.modules_core.user.views
  * @since 0.5
  */
+$this->pageTitle = Yii::t('UserModule.views_auth_createAccount', '<strong>Account</strong> registration');
 ?>
 
 <div class="container" style="text-align: center;">
@@ -24,18 +25,18 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         // set cursor to login field
         $('#User_username').focus();
     })
 
     // Shake panel after wrong validation
-    <?php foreach($form->models as $model) : ?>
+<?php foreach ($form->models as $model) : ?>
     <?php if ($model->hasErrors()) : ?>
-        $('#create-account-form').removeClass('bounceIn');
-        $('#create-account-form').addClass('shake');
-        $('#app-title').removeClass('fadeIn');
+            $('#create-account-form').removeClass('bounceIn');
+            $('#create-account-form').addClass('shake');
+            $('#app-title').removeClass('fadeIn');
     <?php endif; ?>
-    <?php endforeach; ?>
+<?php endforeach; ?>
 
 </script>
