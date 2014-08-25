@@ -87,13 +87,20 @@
 
 <script type="text/javascript">
 
-    // set focus to input for space name
-    $('#SpaceCreateForm_title').focus();
-
     // Shake modal after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
+    <?php if ($form->errorSummary($model) != null) : ?>
     $('.modal-dialog').removeClass('fadeIn');
     $('.modal-dialog').addClass('shake');
-    <?php } ?>
+
+    // check if there is an error at the second tab
+    <?php if ($form->error($model, 'inviteExternal') != null) : ?>
+
+    // show tab
+    $('#tabs a:last').tab('show');
+
+    <?php endif; ?>
+
+    <?php endif; ?>
+
 
 </script>

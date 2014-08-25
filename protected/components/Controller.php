@@ -162,7 +162,7 @@ class Controller extends EController
 
         // close modal to hide the loaded view, which is visible for some seconds, after creation
         echo "<script>";
-        echo "$('#globalModal').modal('hide')";
+        echo "$('#globalModal').modal('hide');";
         echo "</script>";
         //Yii::app()->end();
     }
