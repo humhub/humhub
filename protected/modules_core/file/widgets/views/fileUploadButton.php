@@ -73,7 +73,6 @@
                             $('#<?php echo $uploaderId;?>_list').append('<li style="padding-left: 24px;" class="mime ' + file.mimeIcon + '">' + file.name + '</li>');
 
                         } else {
-                            //alert("Could not upload File: " + file.name + "\nReason:\n" + file.errorMessage);
 
                             var alertMessage = '<div class="modal" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"' +
                             'aria-hidden="true">' +
