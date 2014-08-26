@@ -27,6 +27,8 @@ class TourDashboardWidget extends HWidget
     public function run()
     {
 
+        print '<script>console.log("Häh: '.Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour").'");</script>';
+
         // check if tour is activated for new users
         if (HSetting::Get('enable', 'tour') == 1) {
 
@@ -34,7 +36,7 @@ class TourDashboardWidget extends HWidget
             $hideTourPanel = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
             // if panel is not deactivated...
-            if ($hideTourPanel != 1) {
+            if ($hideTourPanel == 0) {
 
                 // get the first space in database (should be the welcome space)
                 $space = Space::model()->find();

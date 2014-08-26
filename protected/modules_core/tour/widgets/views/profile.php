@@ -1,5 +1,6 @@
 <script type="text/javascript">
 
+    var gotoAdministration = false;
 
     // Create a new tour
     var profileTour = new Tour({
@@ -18,7 +19,7 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>User</strong> profile'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Dies ist dein öffentliches User-Profil, welches für alle registrierten User zugänglich ist."); ?>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Dies ist dein öffentliches User-Profil, welches für alle registrierten User sichtbar ist."); ?>"
         },
         {
             element: "#user-profile-image",
@@ -35,7 +36,7 @@
         {
             element: ".profile-nav-container",
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Wie auch bei den Spaces, verfügt ein User-Profil über ein Menü, welches mit Hilfe von Modulen erweitert werden kann.<br><br>Welche Module dir für dein Profil zu Verfügung stehen, siehst du unter <strong>Account settings</strong> <i class=\'fa fa-caret-right\'></i> <strong>Modules</strong>'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Wie auch bei den Spaces, verfügt ein User-Profil über ein Menü, welches mit Hilfe von Modulen erweitert werden kann.<br><br>Welche Module für dein Profil zu Verfügung stehen, siehst du in deinen <strong>Account-Einstellungen</strong> unter <strong>Modules</strong>.'); ?>",
             placement: "right"
         },
         {
@@ -50,12 +51,21 @@
             content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Je nach eingegebenen Informationen und User-Aktivität auf der Platform werden hier weitere Panels mit Informationen zum User angezeigt'); ?>",
             placement: "left"
         },
+        <?php if (Yii::app()->user->isAdmin() == true) : ?>
         {
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Finished</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Hiermit hast du das Tutorial für das User-Profil erfolgreich abgeschlossen."); ?>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Hiermit hast du auch den Step für das User-Profil hinter dich gebracht.<br><br>Zu guter Letzt folgt:<br>'); ?> <a href='javascript:gotoAdministration = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_profile", "<strong>Step 4: </strong> Administration / Modules"); ?></a><br><br>"
         }
+        <?php else : ?>
+        {
+            orphan: true,
+            backdrop: true,
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Hurray!</strong> You\'re done.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Hiermit hast du die wichtigsten Funktionen der Plattform kennengelernt.<br><br>Wir wünschen dir viel Spaß beim networken."); ?>"
+        }
+        <?php endif; ?>
 
     ]);
 
@@ -78,6 +88,14 @@
         }).done(function () {
             // redirect to dashboard
             window.location.href="<?php echo Yii::app()->createUrl('//dashboard/dashboard'); ?>";
+
+            if (gotoAdministration == true) {
+                // redirect to administration
+                window.location.href="<?php echo Yii::app()->createUrl('//admin/module/listOnline', array('tour' => 'true')); ?>";
+            } else {
+                // redirect to dashboard
+                window.location.href="<?php echo Yii::app()->createUrl('//dashboard/dashboard'); ?>";
+            }
         });
     }
 

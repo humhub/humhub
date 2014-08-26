@@ -1,5 +1,6 @@
 <script type="text/javascript">
 
+    var gotoProfile = false;
 
     // Create a new tour
     var spacesTour = new Tour({
@@ -23,7 +24,7 @@
         {
             element: ".space-nav-container .panel:eq(0)",
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong> menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This is the navigation menu of your space.<br><br>In this particular part you will be able to find the modules which are enabled for it. This might be Polls, Tasks or Notes for example.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This is the navigation menu of your space.<br><br>In this particular part you will be able to find the modules which are enabled for it. This might be Polls, Tasks or Notes for example.<br><br>Only a space admin can enable modules for a space.'); ?>",
             placement: "right"
         },
         {
@@ -41,7 +42,7 @@
         {
             element: ".wall-entry:eq(0)",
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Post</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Ein abgesendeter Post erscheint dann hier im Stream.<br><br>User können diesen nun liken und kommentieren.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Ein abgesendeter Post erscheint dann hier im Stream.<br><br>Du und andere User können diesen nun liken und kommentieren.'); ?>",
             placement: "bottom"
         },
         {
@@ -59,15 +60,15 @@
         {
             element: "#space-members-panel",
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong> members'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This panel displays a short overview of all space members. <br /><br />Furthermore it provides the ability to invite new members to this space.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This panel displays a short overview of all space members. <br /><br />Hier kannst du außerdem neue User in den Space einladen, wenn du die benötigten Rechte dafür hast.'); ?>",
             placement: "left"
         },
         {
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Finished</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Dami hast du das kurze Tutorial für die Spaces erfolgreich abgeschlossen."); ?>"
-        },
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Damit hast du den Schritt für die Spaces erfolgreich abgeschlossen.<br><br>Weiter gehts mit"); ?> <a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_spaces", "<strong>Step 3: </strong> User profile"); ?></a><br><br>"
+        }
     ]);
 
     // Initialize tour plugin
@@ -87,8 +88,15 @@
             'cache': false,
             'data': jQuery(this).parents("form").serialize()
         }).done(function () {
-            // redirect to dashboard
-            window.location.href="<?php echo Yii::app()->createUrl('//dashboard/dashboard'); ?>";
+
+            if (gotoProfile == true) {
+                // redirect to profile
+                window.location.href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid,'tour' => 'true')); ?>";
+            } else {
+                // redirect to dashboard
+                window.location.href="<?php echo Yii::app()->createUrl('//dashboard/dashboard'); ?>";
+            }
+
         });
     }
 

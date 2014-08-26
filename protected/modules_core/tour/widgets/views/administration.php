@@ -29,13 +29,13 @@
         {
             element: ".list-group-item.modules",
             title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Modules</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'Du hast gerade den Menüpunkt Modules ausgewählt. Hier erhälst du Zugriff auf den Online-Marketplace, von welchem du eine wachsende Anzahl von Modulen aus der Community installieren kannst.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'Du befindest dich gerade im Menüpunkt Modules. Hier erhälst du Zugriff auf den HumHub Online-Marketplace, von welchem du eine wachsende Anzahl von Modulen aus der Community on-the-fly installieren kannst.<br><br> Wie schon erwähnt, erweitern Module die Funktionen der Plattform. Die Möglichkeiten sind dabei unbegrenzt.'); ?>",
             placement: "right"
         },
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_administration', "<strong>Hurray!</strong> We're done."); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_administration', "<strong>Hurray!</strong> You're done."); ?>",
             content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'This have been the most important things you should know before using the platform.<br><br>We hope, that you and the future users will have a good experience and fun with the platform.<br><br>We are always looking forward for every suggestion or any kind of help to support the project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :)'); ?>"
         }
 
@@ -57,9 +57,6 @@
             'url': '<?php echo Yii::app()->createAbsoluteUrl('//tour/tour/TourCompleted', array('section' => 'administration')); ?>',
             'cache': false,
             'data': jQuery(this).parents("form").serialize()
-        }).done(function () {
-            // redirect to dashboard
-            window.location.href="<?php echo Yii::app()->createUrl('//dashboard/dashboard'); ?>";
         });
     }
 

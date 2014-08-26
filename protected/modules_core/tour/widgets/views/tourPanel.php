@@ -30,11 +30,11 @@
         ?>
 
         <ul class="tour-list">
-            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a href="javascript:startInterfaceTour();"><i class="fa fa-play-circle-o"></i> Introduction</a></li>
-            <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>"><a id="interface-tour-link" href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid, 'tour' => 'true'))?>"><i class="fa fa-play-circle-o"></i> Spaces</a></li>
-            <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid,'tour' => 'true'))?>"><i class="fa fa-play-circle-o"></i> User profile</a></li>
+            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a href="javascript:startInterfaceTour();"><i class="fa fa-play-circle-o"></i> <strong>Step 1: </strong> Einführung</a></li>
+            <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>"><a id="interface-tour-link" href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid, 'tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Step 2: </strong> Spaces</a></li>
+            <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid,'tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Step 3: </strong> User profile</a></li>
             <?php if (Yii::app()->user->isAdmin() == true) : ?>
-            <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//admin/module/listOnline', array('tour' => 'true'))?>"><i class="fa fa-play-circle-o"></i> Administration</a></li>
+            <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//admin/module/listOnline', array('tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Step 4: </strong> Administration / Modules</a></li>
             <?php endif;?>
         </ul>
     </div>

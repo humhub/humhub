@@ -407,6 +407,9 @@ h4 {
   padding: 5px 15px;
   color: #555555;
 }
+.popover .popover-content a {
+  color: #4cd9c0;
+}
 .popover .popover-navigation {
   padding: 15px;
 }

@@ -16,6 +16,7 @@ class TourWidget extends HWidget
     public function run()
     {
 
+
         // check if tour is activated for new users
         if (HSetting::Get('enable', 'tour') == 1) {
 
@@ -23,7 +24,7 @@ class TourWidget extends HWidget
             $hideTourPanel = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
             // if not...
-            if ($hideTourPanel != 1) {
+            if ($hideTourPanel == 0) {
 
                 // save current module and controller id's
                 $currentModuleId = Yii::app()->controller->module->id;
@@ -35,8 +36,11 @@ class TourWidget extends HWidget
                     // load resource files
                     $this->loadResources();
 
+                    // get the first space in database (should be the welcome space)
+                    $space = Space::model()->find();
+
                     // render tour view
-                    $this->render('welcome_interface', array());
+                    $this->render('welcome_interface', array('space' => $space));
                 }
 
 
