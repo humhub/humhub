@@ -153,7 +153,6 @@
      * @returns {undefined}     */
     function clearFileUpload(uploaderId) {
         $('#' + uploaderId + '_details').hide();
-        $('#' + uploaderId + '_progress').html('0%');
         $('#<?php echo $uploaderId;?>_list').html('');
     }
 

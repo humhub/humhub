@@ -69,8 +69,6 @@
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
 
-                        $.fn.mention.reset('.contentForm');
-
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
                         clearFileUpload('contentFormFiles');
 
