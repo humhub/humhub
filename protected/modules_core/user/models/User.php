@@ -157,7 +157,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $rules[] = array('tags', 'length', 'max' => 100);
         $rules[] = array('username', 'length', 'max' => 25);
         $rules[] = array('language', 'length', 'max' => 5);
-        $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
+        $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email', 'safe');
         $rules[] = array('auth_mode', 'length', 'max' => 10);
         $rules[] = array('id, guid, status, wall_id, group_id, username, email, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
