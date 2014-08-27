@@ -18,7 +18,8 @@
  */
 return array (
   'Sign up' => '',
-  'We are happy that you want to use HumHub. The Open Source Social Network to increase your communication and teamwork. Please click on the button below to proceed with your registration.' => '',
+  'We are happy that you want to use %appName%. The Open Source Social Network to increase your communication and teamwork. Please click on the button below to proceed with your registration.' => '',
   'Welcome to %appName%' => '',
+  'We are happy that you want to use HumHub. The Open Source Social Network to increase your communication and teamwork. Please click on the button below to proceed with your registration.' => '@@@@',
   'Welcome to <strong>HumHub</strong>' => '@@@@',
 );
