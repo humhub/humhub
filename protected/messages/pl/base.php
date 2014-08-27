@@ -35,8 +35,10 @@ return array (
   'Space not found!' => '',
   'User Approvals' => '',
   'User not found!' => '',
+  'Welcome to %appName%' => '',
   'You cannot create public visible content!' => '',
   'Save' => '@@Zapisz@@',
+  'Welcome to <strong>HumHub</strong>' => '@@Witamy na <strong>HumHub</strong>@@',
   'Account settings' => 'Ustawienia konta',
   'Administration' => 'Administracja',
   'Back to dashboard' => 'Powrót do pulpitu',
@@ -51,6 +53,5 @@ return array (
   'Search' => 'Szukaj',
   'Show more results' => 'Pokaż więcej wyników',
   'Sorry, nothing found!' => 'Przepraszam, nic nie znaleziono!',
-  'Welcome to <strong>HumHub</strong>' => 'Witamy na <strong>HumHub</strong>',
   'Your daily summary' => 'Podsumowanie dzienne',
 );

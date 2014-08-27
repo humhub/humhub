@@ -21,7 +21,9 @@ return array (
   'Could not determine content container!' => '',
   'Could not find content of addon!' => '',
   'Module is not on this content container enabled!' => '',
+  'Welcome to %appName%' => '',
   'Save' => '@@Salvar@@',
+  'Welcome to <strong>HumHub</strong>' => '@@Bem-vindo ao <strong>HumHub</strong>@@',
   'Account settings' => 'Configurações da Conta',
   'Administration' => 'Administração',
   'Back to dashboard' => 'Voltar para dashboard',
@@ -50,7 +52,6 @@ return array (
   'Space not found!' => 'Espaço não encontrado!',
   'User Approvals' => 'Aprovações de usuário',
   'User not found!' => 'Usuário não encontrado',
-  'Welcome to <strong>HumHub</strong>' => 'Bem-vindo ao <strong>HumHub</strong>',
   'You cannot create public visible content!' => 'Você não pode criar um conteúdo visível público!',
   'Your daily summary' => 'Seu resumo diário',
 );

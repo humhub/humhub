@@ -17,7 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Welcome to %appName%' => '',
   'Save' => '@@Guardar@@',
+  'Welcome to <strong>HumHub</strong>' => '@@Bienvenido a <strong>HumHub</strong>@@',
   'Account settings' => 'Configuraciones de la cuenta',
   'Administration' => 'Administración',
   'Back to dashboard' => 'Volver al Panel de Control',
@@ -50,7 +52,6 @@ return array (
   'Space not found!' => '¡Espacio no encontrado',
   'User Approvals' => 'Aprobaciones de Usuario',
   'User not found!' => '¡Usuario no encontrado!',
-  'Welcome to <strong>HumHub</strong>' => 'Bienvenido a <strong>HumHub</strong>',
   'You cannot create public visible content!' => '¡No puede crear contenido público visible!',
   'Your daily summary' => 'Su resumen diario',
 );

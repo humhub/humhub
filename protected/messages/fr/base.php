@@ -49,8 +49,9 @@ return array (
   'Space not found!' => '',
   'User Approvals' => '',
   'User not found!' => '',
-  'Welcome to <strong>HumHub</strong>' => '',
+  'Welcome to %appName%' => '',
   'You cannot create public visible content!' => '',
   'Your daily summary' => '',
   'Save' => '@@@@',
+  'Welcome to <strong>HumHub</strong>' => '@@@@',
 );

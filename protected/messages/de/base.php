@@ -23,7 +23,9 @@ return array (
   'Insufficent permissions to create content!' => '',
   'It looks like you may have taken the wrong turn.' => '',
   'Module is not on this content container enabled!' => '',
+  'Welcome to %appName%' => '',
   'Save' => '@@Speichern@@',
+  'Welcome to <strong>HumHub</strong>' => '@@Willkommen bei <strong>HumHub</strong>@@',
   'Account settings' => 'Kontoeinstellungen',
   'Administration' => 'Verwaltung',
   'Back to dashboard' => 'Zurück zum Dashboard',
@@ -50,7 +52,6 @@ return array (
   'Space not found!' => 'Space nicht gefunden',
   'User Approvals' => 'Benutzer Freigaben',
   'User not found!' => 'Benutzer nicht gefunden',
-  'Welcome to <strong>HumHub</strong>' => 'Willkommen bei <strong>HumHub</strong>',
   'You cannot create public visible content!' => 'Du hast nicht genügend Rechte um öffentlich sichtbaren Inhalt zu erstellen!',
   'Your daily summary' => 'Deine tägliche Übersicht',
 );
