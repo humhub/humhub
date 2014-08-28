@@ -79,6 +79,7 @@ class Controller extends EController
         Yii::app()->clientScript->setJavascriptVariable('csrfName', Yii::app()->request->csrfTokenName);
         Yii::app()->clientScript->setJavascriptVariable('csrfValue', Yii::app()->request->csrfToken);
         Yii::app()->clientScript->setJavascriptVariable('baseUrl', Yii::app()->getBaseUrl(true));
+        Yii::app()->clientScript->setJavascriptVariable('localeId', Yii::app()->locale->id);
 
         $this->initAjaxCsrfToken();
 
