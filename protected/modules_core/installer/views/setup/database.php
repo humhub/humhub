@@ -6,79 +6,80 @@
 
     <div class="panel-body">
         <p>
-            <?php echo Yii::t('InstallerModule.base', 'Below you have to enter your database connection details. If you’re not sure about these, please contact your administrator or web host.'); ?>
+            <?php echo Yii::t('InstallerModule.base', 'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.'); ?>
         </p>
 
 
-        <?php $form = $this->beginWidget('CActiveForm', array(
+        <?php
+        $form = $this->beginWidget('CActiveForm', array(
             'id' => 'database-form',
             'enableAjaxValidation' => false,
+        ));
+        ?>
 
-        )); ?>
-
-        <?php //echo $form->errorSummary($model); ?>
+<?php //echo $form->errorSummary($model);  ?>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'hostname'); ?>
             <?php echo $form->textField($model, 'hostname', array('class' => 'form-control', 'id' => 'hostname')); ?>
-            <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'You should be able to get this info from your web host, if localhost does not work.'); ?></p>
-            <?php echo $form->error($model, 'hostname'); ?>
+            <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)'); ?></p>
+<?php echo $form->error($model, 'hostname'); ?>
         </div>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'username'); ?>
             <?php echo $form->textField($model, 'username', array('class' => 'form-control')); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Your MySQL username'); ?></p>
-            <?php echo $form->error($model, 'username'); ?>
+<?php echo $form->error($model, 'username'); ?>
         </div>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'password'); ?>
             <?php echo $form->passwordField($model, 'password', array('class' => 'form-control')); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Your MySQL password.'); ?></p>
-            <?php echo $form->error($model, 'password'); ?>
+<?php echo $form->error($model, 'password'); ?>
         </div>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'database'); ?>
             <?php echo $form->textField($model, 'database', array('class' => 'form-control')); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'The name of the database you want to run HumHub in.'); ?></p>
-            <?php echo $form->error($model, 'database'); ?>
+<?php echo $form->error($model, 'database'); ?>
         </div>
 
         <?php if ($submitted) { ?>
-            <?php if ($success) { ?>
+                <?php if ($success) { ?>
                 <div class="alert alert-success">
-                    <?php echo Yii::t('InstallerModule.base', 'Yes, database connection works!'); ?>
+                <?php echo Yii::t('InstallerModule.base', 'Yes, database connection works!'); ?>
                 </div>
-            <?php } else { ?>
+    <?php } else { ?>
                 <div class="alert alert-danger">
                     <strong><?php echo Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br />
-                    <?php echo $errorMessage; ?>
+                <?php echo $errorMessage; ?>
                 </div>
             <?php } ?>
-        <?php } ?>
+<?php } ?>
 
 
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('InstallerModule.base', 'Next'), array('class' => 'btn btn-primary')); ?>
 
-        <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
     </div>
 </div>
 
 <script type="text/javascript">
 
-    $(function () {
+    $(function() {
         // set cursor to email field
         $('#hostname').focus();
     })
 
     // Shake panel after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
-    $('#database-form').removeClass('fadeIn');
-    $('#database-form').addClass('shake');
-    <?php } ?>
+<?php if ($form->errorSummary($model) != null) { ?>
+        $('#database-form').removeClass('fadeIn');
+        $('#database-form').addClass('shake');
+<?php } ?>
 
 </script>

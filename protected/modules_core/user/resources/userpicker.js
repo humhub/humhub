@@ -40,7 +40,9 @@ $.fn.userpicker = function (options) {
         var _template = '<div class="' + uniqueID + '_user_picker_container"><ul class="tag_input" id="' + uniqueID + '_invite_tags"><li id="' + uniqueID + '_tag_input"><input type="text" id="' + uniqueID + '_tag_input_field" class="tag_input_field" value="" autocomplete="off"></li></ul><ul class="dropdown-menu" id="' + uniqueID + '_userpicker" role="menu" aria-labelledby="dropdownMenu"></ul></div>';
 
         // remove picker if existing
-        //$('.'+uniqueID+'_user_picker_container').remove();
+        $('.'+uniqueID+'_user_picker_container').remove();
+
+
         if ($('.' + uniqueID + '_user_picker_container').length == 0) {
 
             // insert the new input structure after the original input element
@@ -81,6 +83,7 @@ $.fn.userpicker = function (options) {
     function restoreUserTags(html) {
 
         // add html structure for input element
+        $('#' + uniqueID + '_invite_tags .userInput').remove();
         $('#' + uniqueID + '_invite_tags').prepend(html);
 
         // create function for every user tag to remove the element

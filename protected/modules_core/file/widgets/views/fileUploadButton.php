@@ -73,7 +73,26 @@
                             $('#<?php echo $uploaderId;?>_list').append('<li style="padding-left: 24px;" class="mime ' + file.mimeIcon + '">' + file.name + '</li>');
 
                         } else {
-                            alert("Could not upload File: " + file.name + "\nReason:\n" + file.errorMessage);
+
+                            var alertMessage = '<div class="modal" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"' +
+                            'aria-hidden="true">' +
+                                '<div class="modal-dialog modal-dialog-extra-small animated pulse">' +
+                                '<div class="modal-content">' +
+                                '<div class="modal-header">' +
+                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                            '<h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('widgets_views_fileUploadButton', '<strong>Upload</strong> error'); ?></h4>' +
+                            '</div>' +
+                            '<div class="modal-body text-center">Could not upload File: ' + file.name + '<br>' + file.errorMessage + '</div>' +
+                            '<div class="modal-footer">' +
+                                '<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('widgets_views_fileUploadButton', 'Close'); ?></button>' +
+
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+
+                            $('body').append(alertMessage);
+                            $('#fileModal').modal('show');
                         }
 
                     });
@@ -134,7 +153,6 @@
      * @returns {undefined}     */
     function clearFileUpload(uploaderId) {
         $('#' + uploaderId + '_details').hide();
-        $('#' + uploaderId + '_progress').html('0%');
         $('#<?php echo $uploaderId;?>_list').html('');
     }
 

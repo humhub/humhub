@@ -155,10 +155,10 @@ class SpaceController extends Controller
         foreach ($parts as $part) {
             $i++;
             $condition .= " AND (u.email LIKE :match{$i} OR "
-                    . "u.username LIKE :match{$i} OR "
-                    . "p.firstname LIKE :match{$i} OR "
-                    . "p.lastname LIKE :match{$i} OR "
-                    . "p.title LIKE :match{$i})";
+                . "u.username LIKE :match{$i} OR "
+                . "p.firstname LIKE :match{$i} OR "
+                . "p.lastname LIKE :match{$i} OR "
+                . "p.title LIKE :match{$i})";
 
             $params[':match' . $i] = "%" . $part . "%";
         }
@@ -288,20 +288,26 @@ class SpaceController extends Controller
 
             if ($model->validate()) {
 
-                // Invite existing members
-                foreach ($model->getInvites() as $user) {
-                    $space->inviteMember($user->id, Yii::app()->user->id);
-                }
+                // check if both invite inputs are empty
+                if ($model->invite == "" && $model->inviteExternal == "") {
 
-                if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
-                    // Invite non existing members
-                    foreach ($model->getInvitesExternal() as $email) {
-                        $space->inviteMemberByEMail($email, Yii::app()->user->id);
+                } else {
+
+                    // Invite existing members
+                    foreach ($model->getInvites() as $user) {
+                        $space->inviteMember($user->id, Yii::app()->user->id);
                     }
-                }
 
-                // close modal
-                $this->renderModalClose();
+                    if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
+                        // Invite non existing members
+                        foreach ($model->getInvitesExternal() as $email) {
+                            $space->inviteMemberByEMail($email, Yii::app()->user->id);
+                        }
+                    }
+
+                    // close modal
+                    $this->renderModalClose();
+                }
             }
         }
 

@@ -15,8 +15,8 @@ Installation
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 
-Enable Url Rewriting
---------------------
+Enable Url Rewriting (Optional)
+-------------------------------
 
 1. Rename file .htaccess.dist to .htaccess
 2. Add urlManager lines in protected/config/local/_settings.php
