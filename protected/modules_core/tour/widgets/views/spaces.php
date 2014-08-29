@@ -19,12 +19,12 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Jeder User kann Spaces erstellen und andere User dazu einladen um mit ihnen zusammen an Projekten zu arbeiten, Themen zu besprechen oder einfach nur Informationen zu teilen.<br><br>Um die Kommunikation noch produktiver zu gestalten, kann man einen Space mit den verschiedensten Modulen (Tools) erweitern."); ?>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "In einem Space kannst du mit anderen Usern gemeinsam an Projekten arbeiten, Themen besprechen oder einfach nur Informationen teilen.<br><br>Um die Kommunikation noch produktiver zu gestalten, kann man einen Space mit den verschiedensten Modulen (Tools) erweitern."); ?>"
         },
         {
             element: ".space-nav-container .panel:eq(0)",
-            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong> menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This is the navigation menu of your space.<br><br>In this particular part you will be able to find the modules which are enabled for it. This might be Polls, Tasks or Notes for example.<br><br>Only a space admin can enable modules for a space.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong> Menü'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This is the navigation menu of the space.<br><br>In this particular part you will be able to find the modules which are enabled for it. This might be Polls, Tasks or Notes for example.<br><br>Only a space admin can enable modules for a space.'); ?>",
             placement: "right"
         },
         {
@@ -35,26 +35,26 @@
         },
         {
             element: "#contentFormBody",
-            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Post</strong> form'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Neue Inhalte postest du über dieses Formular.<br><br>Je nach aktivierten Modulen kannst du hier unteschiedliche Informationen angeben.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Beiträge</strong> schreiben'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Neue Inhalte erstellst du über dieses Formular.'); ?>",
             placement: "bottom"
         },
         {
             element: ".wall-entry:eq(0)",
-            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Post</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Ein abgesendeter Post erscheint dann hier im Stream.<br><br>Du und andere User können diesen nun liken und kommentieren.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Beiträge</strong>'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Erstellte Beiträge erscheinen dann hier im Stream.<br><br>Du und andere User können diese nun liken und kommentieren.'); ?>",
             placement: "bottom"
         },
         {
             element: ".space-info",
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Space</strong> info'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This is a short space overview. It should mainly consists of basic information regarding the space. <br /><br />You can change the image of the space by clicking on it or via drag & drop.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'This is a short space overview. It should mainly consists of basic information regarding the space. <br /><br />As space administrator you can change the image of the space by clicking on it or via drag & drop.'); ?>",
             placement: "left"
         },
         {
             element: ".panel-activities",
-            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Latest</strong> activiteis'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Damit du immer gleich auf dem laufenden bist, werden hier immer die neusten Space-Aktivitäten von Space-Mitgliedern angezeigt.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Neuste</strong> Aktivitäten'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', 'Damit du immer auf dem laufenden bist, werden hier die neusten Space-Aktivitäten anderer User angezeigt.'); ?>",
             placement: "left"
         },
         {
@@ -67,7 +67,7 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_spaces', '<strong>Finished</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Damit hast du den Schritt für die Spaces erfolgreich abgeschlossen.<br><br>Weiter gehts mit"); ?> <a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_spaces", "<strong>Step 3: </strong> User profile"); ?></a><br><br>"
+            content: "<?php echo Yii::t('TourModule.widgets_views_spaces', "Damit hast du die Space-Tour abgeschlossen.<br><br>Weiter gehts mit der Tour: "); ?> <a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_spaces", "<strong>Benutzerprofil</strong>"); ?></a><br><br>"
         }
     ]);
 

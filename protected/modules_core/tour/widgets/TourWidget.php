@@ -40,7 +40,7 @@ class TourWidget extends HWidget
                     $space = Space::model()->find();
 
                     // render tour view
-                    $this->render('welcome_interface', array('space' => $space));
+                    $this->render('interface', array('space' => $space));
                 }
 
 

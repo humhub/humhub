@@ -29,7 +29,7 @@
         {
             element: ".list-group-item.modules",
             title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Modules</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'Du befindest dich gerade im Menüpunkt Modules. Hier erhälst du Zugriff auf den HumHub Online-Marketplace, von welchem du eine wachsende Anzahl von Modulen aus der Community on-the-fly installieren kannst.<br><br> Wie schon erwähnt, erweitern Module die Funktionen der Plattform. Die Möglichkeiten sind dabei unbegrenzt.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'Du befindest dich gerade im Menüpunkt Modules. Hier erhälst du Zugriff auf den HumHub Online-Marketplace, von welchem du eine wachsende Anzahl von Modulen aus der Community on-the-fly installieren kannst.<br><br> Wie schon erwähnt, erweitern Module die Funktionen der Plattform.'); ?>",
             placement: "right"
         },
         {

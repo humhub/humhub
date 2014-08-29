@@ -9,6 +9,7 @@
 
 <!--                <li class="divider"></li>
                 <li><a href="#"><i class="fa fa-pencil"></i> Edit tags </a></li>-->
+            <?php $this->widget('application.widgets.PanelMenuEntryWidget', array()); ?>
         </ul>
     </li>
 </ul>

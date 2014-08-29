@@ -27,4 +27,12 @@ class TourModule extends HWebModule
           $event->sender->addWidget('application.modules_core.tour.widgets.TourDashboardWidget', array(), array('sortOrder' => 0));
     }
 
+
+    public static function onPanelMenuEntryInit($event)
+    {
+
+        // Add Link to PanelMenuWidget
+       $event->sender->addWidget('application.modules_core.tour.widgets.HideTourPanelWidget', array());
+    }
+
 }
