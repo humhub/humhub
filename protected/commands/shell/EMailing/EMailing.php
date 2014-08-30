@@ -55,8 +55,6 @@ class EMailing extends HConsoleCommand {
 
             print "Processing : " . $user->email . ": ";
 
-            $user->checkWall();
-
             $notificationContent = $this->getNotificationContent($user);
             $activityContent = $this->getActivityContent($user);
 
@@ -101,8 +99,8 @@ class EMailing extends HConsoleCommand {
     private function getNotificationContent($user) {
 
         $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', HSetting::Get('receive_email_notifications', 'mailing'));
-        
-        
+
+
         // Never receive notifications
         if ($receive_email_notifications == User::RECEIVE_EMAIL_NEVER) {
             return "";
@@ -158,7 +156,7 @@ class EMailing extends HConsoleCommand {
     private function getActivityContent($user) {
 
         $receive_email_activities = $user->getSetting("receive_email_activities", 'core', HSetting::Get('receive_email_activities', 'mailing'));
-        
+
         // User never wants activity content
         if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
             return "";

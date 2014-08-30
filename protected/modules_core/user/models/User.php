@@ -16,6 +16,7 @@
  * @property string $tags
  * @property string $language
  * @property string $last_activity_email
+ * @property string $last_login
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -50,7 +51,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
     const STATUS_DISABLED = 0;
     const STATUS_ENABLED = 1;
     const STATUS_NEED_APPROVAL = 2;
-    const STATUS_DELETED = 3;
 
     /**
      * E-Mail Settings (Value Stored in UserSetting)
@@ -98,9 +98,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
     public function scopes()
     {
         return array(
-            'notDeleted' => array(
-                'condition' => "status != '" . self::STATUS_DELETED . "'",
-            ),
             'unapproved' => array(
                 'condition' => "status = '" . self::STATUS_NEED_APPROVAL . "'",
             ),
@@ -161,7 +158,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $rules[] = array('tourpanel', 'safe');
         $rules[] = array('language', 'length', 'max' => 5);
         $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
-        $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email', 'safe');
+        $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email, last_login', 'safe');
         $rules[] = array('auth_mode', 'length', 'max' => 10);
         $rules[] = array('id, guid, status, wall_id, group_id, username, email, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
 
@@ -310,8 +307,23 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
 
         if ($this->isNewRecord) {
-            if ($this->auth_mode == "")
+
+            if ($this->auth_mode == "") {
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
+            }
+
+            // Set Status
+            if ($this->status == "") {
+                if (HSetting::Get('needApproval', 'authentication_internal')) {
+                    $this->status = User::STATUS_NEED_APPROVAL;
+                } else {
+                    $this->status = User::STATUS_ENABLED;
+                }
+            }
+            
+            if ((HSetting::Get('defaultUserGroup', 'authentication_internal'))) {
+                $this->group_id = HSetting::Get('defaultUserGroup', 'authentication_internal');
+            }
         }
 
         return parent::beforeSave();
@@ -335,19 +347,46 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         if ($this->isNewRecord) {
 
+            $userInvite = UserInvite::model()->findByAttributes(array('email' => $this->email));
+            if ($userInvite !== null) {
+                // User was invited to a space
+                if ($userInvite->source == UserInvite::SOURCE_INVITE) {
+                    $space = Space::model()->findByPk($userInvite->space_invite_id);
+                    if ($space != null) {
+                        $space->addMember($this->id);
+                    }
+                }
+
+                // Delete/Cleanup Invite Entry
+                $userInvite->delete();
+            }
+
             // Auto Assign User to the Group Space
             $group = Group::model()->findByPk($this->group_id);
             if ($group != null && $group->space_id != "") {
                 $space = Space::model()->findByPk($group->space_id);
-                if ($space != null) {
+                if ($space !== null) {
                     $space->addMember($this->id);
                 }
             }
+
+            $this->notifyGroupAdminsForApproval();
 
             // Auto Add User to the default spaces
             foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
                 $space->addMember($this->id);
             }
+
+            // Create new wall record for this user
+            $wall = new Wall();
+            $wall->type = Wall::TYPE_USER;
+            $wall->object_model = 'User';
+            $wall->object_id = $this->id;
+            $wall->save();
+
+            $this->wall_id = $wall->id;
+            $this->wall = $wall;
+            User::model()->updateByPk($this->id, array('wall_id' => $wall->id));
         }
 
 
@@ -360,37 +399,24 @@ class User extends HActiveRecordContentContainer implements ISearchable
      */
     public function beforeDelete()
     {
-        if (parent::beforeDelete()) {
 
-
-            UserSetting::model()->deleteAllByAttributes(array('user_id' => $this->id));
-
-            // Disable all enabled modules
-            foreach ($this->getAvailableModules() as $moduleId => $module) {
-                if ($this->isModuleEnabled($moduleId)) {
-                    $this->uninstallModule($moduleId);
-                }
+        // We don't allow deletion of users who owns a space - validate that
+        foreach (SpaceMembership::GetUserSpaces($this->id) as $workspace) {
+            if ($workspace->isSpaceOwner($this->id)) {
+                throw new Exception("Tried to delete a user which is owner of a space!");
             }
-
-            HSearch::getInstance()->deleteModel($this);
-
-            return true;
         }
-    }
 
-    /**
-     * Deletes a user including all dependencies
-     *
-     * @return type
-     */
-    public function delete()
-    {
+        UserSetting::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
-        if (!$this->beforeDelete())
-            return;
+        // Disable all enabled modules
+        foreach ($this->getAvailableModules() as $moduleId => $module) {
+            if ($this->isModuleEnabled($moduleId)) {
+                $this->uninstallModule($moduleId);
+            }
+        }
 
-        Yii::import("application.modules.mail.models.*", true);
-
+        HSearch::getInstance()->deleteModel($this);
 
         // Delete Profile Image
         $this->getProfileImage()->delete();
@@ -416,35 +442,12 @@ class User extends HActiveRecordContentContainer implements ISearchable
             $content->delete();
         }
 
-        // Unbind my wall_id
-        $this->save();
-
-        // Delete Users Profile
-        if (!$this->profile->isNewRecord)
-            $this->profile->delete();
-
-        // Clean up user table fields
-        $this->status = User::STATUS_DELETED;
-        $this->email = "deleted_" . $this->id . "@deleted.local";
-        $this->tags = "";
-        $this->super_admin = 0;
-        $this->last_activity_email = "";
-
-        // We assign a new guid, because LDAP Sync uses the GUID from LDAP Directory
-        // This might cause conflicts if a LDAP User is deleted.
-        $this->guid = UUID::v4();
-        $this->username = $this->guid;
-
-        $this->update();
-
         // Delete all passwords
         foreach (UserPassword::model()->findAllByAttributes(array('user_id' => $this->id)) as $password) {
             $password->delete();
         }
 
-        $this->afterDelete();
-
-        return true;
+        return parent::beforeDelete();
     }
 
     /**
@@ -460,7 +463,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
     /**
      * Returns the Profile Link for this User
-     * 
+     *
      * @deprecated since version 0.8
      * @return Link
      */
@@ -473,9 +476,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
      * Creates an url in user scope.
      * (Adding uguid parameter to identify current user.)
      * See CController createUrl() for more details.
-     * 
+     *
      * @since 0.9
-     * @param type $route the URL route. 
+     * @param type $route the URL route.
      * @param type $params additional GET parameters.
      * @param type $ampersand the token separating name-value pairs in the URL.
      */
@@ -484,7 +487,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         if (!isset($params['uguid'])) {
             $params['uguid'] = $this->guid;
         }
-        
+
         return Yii::app()->getController()->createUrl($route, $params, $ampersand);
     }
 
@@ -533,31 +536,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
-     * Checks if a wall was created for this user
-     * If not, it will created.
-     */
-    public function checkWall()
-    {
-
-        // Check if wall exists
-        if ($this->wall == null) {
-
-            // Create new Wall
-            $wall = new Wall();
-            $wall->type = Wall::TYPE_USER;
-            $wall->object_model = 'User';
-            $wall->object_id = $this->id;
-            $wall->save();
-
-            // Assign Wall
-            $this->wall_id = $wall->id;
-            $this->save();
-
-            $this->wall = $wall;
-        }
-    }
-
-    /**
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
@@ -565,7 +543,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
      */
     public function getSearchAttributes()
     {
-
         return array(
             // Assignment
             'belongsToType' => 'User',
@@ -634,61 +611,37 @@ class User extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
-     * Registers a new user
-     *
-     * @param type $userInvite
-     * @return boolean
+     * Notifies groups admins for approval of new user via e-mail.
+     * This should be done after a new user is created and approval is required.
+     * 
+     * @todo Create message template, move message into translation
      */
-    public function register($userInvite)
+    private function notifyGroupAdminsForApproval()
     {
-
-        $this->email = $userInvite->email;
-        $this->auth_mode = User::AUTH_MODE_LOCAL;
-
-        if (HSetting::Get('needApproval', 'authentication_internal')) {
-            $this->status = User::STATUS_NEED_APPROVAL;
-        } else {
-            $this->status = User::STATUS_ENABLED;
+        // No admin approval required
+        if ($this->status != User::STATUS_NEED_APPROVAL || !HSetting::Get('needApproval', 'authentication_internal')) {
+            return;
         }
 
-        if ((HSetting::Get('defaultUserGroup', 'authentication_internal'))) {
-            $this->group_id = HSetting::Get('defaultUserGroup', 'authentication_internal');
-        }
+        foreach (GroupAdmin::model()->findAllByAttributes(array('group_id' => $this->group_id)) as $admin) {
+            $adminUser = User::model()->findByPk($admin->user_id);
+            if ($adminUser !== null) {
+                $approvalUrl = Yii::app()->createAbsoluteUrl("//admin/approval");
 
-        $this->save();
+                $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
+                        "a new user {$this->displayName} needs approval.<br><br>\n\n" .
+                        "Click here to validate:<br>\n\n" .
+                        HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
-        // User was invited to a space
-        if ($userInvite->source == UserInvite::SOURCE_INVITE) {
-            $space = Space::model()->findByPk($userInvite->space_invite_id);
-            if ($space != null) {
-                $space->addMember($this->id);
-            }
-        }
-
-        // Delete/Cleanup Invite Entry
-        $userInvite->delete();
-
-        // When Approval is required, notify group administrators
-        if (HSetting::Get('needApproval', 'authentication_internal')) {
-
-            foreach (GroupAdmin::model()->findAllByAttributes(array('group_id' => $this->group_id)) as $admin) {
-                $adminUser = User::model()->findByPk($admin->user_id);
-                if ($adminUser != null) {
-
-                    $approvalUrl = Yii::app()->createAbsoluteUrl("//admin/approval");
-                    $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
-                            "a new user {$this->displayName} needs approval.<br><br>\n\n" .
-                            "Click here to validate:<br>\n\n" .
-                            HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
-
-                    $message = new HMailMessage();
-                    $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
-                    $message->addTo($adminUser->email);
-                    $message->view = "application.views.mail.TextOnly";
-                    $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
-                    $message->setBody(array('message' => $html), 'text/html');
-                    Yii::app()->mail->send($message);
-                }
+                $message = new HMailMessage();
+                $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
+                $message->addTo($adminUser->email);
+                $message->view = "application.views.mail.TextOnly";
+                $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
+                $message->setBody(array('message' => $html), 'text/html');
+                Yii::app()->mail->send($message);
+            } else {
+                Yii::log("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id, CLogger::LEVEL_ERROR);
             }
         }
 

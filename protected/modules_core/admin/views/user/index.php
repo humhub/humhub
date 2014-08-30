@@ -9,7 +9,7 @@
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
             'id' => 'user-grid',
-            'dataProvider' => $model->resetScope()->notDeleted()->search(),
+            'dataProvider' => $model->resetScope()->search(),
             'filter' => $model,
             'itemsCssClass' => 'table table-hover',
             // 'loadingCssClass' => 'loader',

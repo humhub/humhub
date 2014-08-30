@@ -204,7 +204,7 @@ class AuthController extends Controller
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
-        
+
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
@@ -264,7 +264,8 @@ class AuthController extends Controller
             $this->forcePostRequest();
 
             // Registe User
-            if ($form['User']->model->register($userInvite)) {
+            $form['User']->model->email = $userInvite->email;
+            if ($form['User']->model->save()) {
 
                 // Save User Profile
                 $form['Profile']->model->user_id = $form['User']->model->id;

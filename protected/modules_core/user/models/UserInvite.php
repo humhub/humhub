@@ -84,7 +84,6 @@ class UserInvite extends HActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'users' => array(self::HAS_MANY, 'User', 'user_invite_id'),
             'workspaceInvite' => array(self::BELONGS_TO, 'Space', 'space_invite_id'),
             'userOriginator' => array(self::BELONGS_TO, 'User', 'user_originator_id'),
         );

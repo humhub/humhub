@@ -60,7 +60,7 @@ class UserController extends Controller {
         $_POST = Yii::app()->input->stripClean($_POST);
 
         $id = (int) Yii::app()->request->getQuery('id');
-        $user = User::model()->resetScope()->notDeleted()->findByPk($id);
+        $user = User::model()->resetScope()->findByPk($id);
 
         if ($user == null)
             throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
@@ -174,7 +174,7 @@ class UserController extends Controller {
         $id = (int) Yii::app()->request->getQuery('id');
         $doit = (int) Yii::app()->request->getQuery('doit');
 
-        $user = User::model()->resetScope()->notDeleted()->findByPk($id);
+        $user = User::model()->resetScope()->findByPk($id);
 
         if ($user == null)
             throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));

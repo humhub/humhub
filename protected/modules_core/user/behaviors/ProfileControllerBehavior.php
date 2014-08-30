@@ -57,16 +57,13 @@ class ProfileControllerBehavior extends CBehavior
 
     public function checkAccess()
     {
-        if ($this->user->status == User::STATUS_DELETED)
-            throw new CHttpException(404, 'User deleted!');
-
         if ($this->user->status == User::STATUS_NEED_APPROVAL)
             throw new CHttpException(404, 'This user account is not approved yet!');
     }
 
     /**
      * Creates a user url
-     * 
+     *
      * @deprecated since version 0.9
      * @param type $route
      * @param type $params
