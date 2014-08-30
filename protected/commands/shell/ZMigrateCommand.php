@@ -51,6 +51,9 @@ class ZMigrateCommand extends EMigrateCommand
         $args = array('yiic', 'migrate', '--interactive=0');
         ob_start();
         $runner->run($args);
+        
+        Yii::app()->db->schema->refresh();
+
         return htmlentities(ob_get_clean(), null, Yii::app()->charset);
     }
 
