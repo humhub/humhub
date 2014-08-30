@@ -105,15 +105,17 @@ class HSetting extends HActiveRecord
         if ($moduleId != "") {
             $params['module_id'] = $moduleId;
         } else {
-            $condition = "module_id IS NULL";
+            $condition = "module_id IS NULL or module_id = ''";
         }
 
         $record = HSetting::model()->findByAttributes($params, $condition);
 
         if ($record == null) {
             $record = new HSetting;
-        } 
-        
+            $record->name = $name;
+            $record->module_id = $moduleId;
+        }
+
         $expireTime = 3600;
         if ($record->name != 'expireTime' && $record->module_id != "cache")
             $expireTime = HSetting::Get('expireTime', 'cache');
@@ -180,9 +182,8 @@ class HSetting extends HActiveRecord
         if ($moduleId != "")
             $record->module_id = $moduleId;
 
-        if ($value == "") {
-            if (!$record->isNewRecord)
-                $record->delete();
+        if ($value == "" && !$record->isNewRecord) {
+            $record->delete();
         } else {
             $record->save();
         }
@@ -237,6 +238,7 @@ class HSetting extends HActiveRecord
     public function getCacheId()
     {
         return "HSetting_" . $this->name . "_" . $this->module_id;
+        
     }
 
     /**
@@ -253,6 +255,10 @@ class HSetting extends HActiveRecord
     {
 
         $this->clearCache();
+        
+        if ($this->module_id === "") {
+            $this->module_id = new CDbExpression('NULL'); 
+        }
 
         if ($this->hasAttribute('created_by') && empty($this->created_by))
             $this->created_by = 0;
@@ -271,10 +277,7 @@ class HSetting extends HActiveRecord
      */
     public function afterDelete()
     {
-
-        $cacheId = $this->getCacheId();
-        Yii::app()->cache->delete($cacheId);
-        RuntimeCache::Remove($cacheId);
+        $this->clearCache();
 
         parent::afterDelete();
 
