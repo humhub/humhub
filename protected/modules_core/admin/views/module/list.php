@@ -27,20 +27,24 @@
                         </small>
                     </h4>
 
+                    
                     <p><?php echo $module->getDescription(); ?></p>
 
+
+                    
                     <div class="module-controls">
 
                         <?php echo Yii::t('AdminModules.module_list', 'Version:'); ?> <?php echo $module->getVersion(); ?>
 
                         <?php if ($module->isEnabled()) : ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
-
                             <?php if ($module->getConfigUrl()) : ?>
-                                &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl()); ?>
+                                &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl(), array('style'=>'font-weight:bold')); ?>
                             <?php endif; ?>
+
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
+                                
                         <?php else: ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId)); ?>
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId), array('style'=>'font-weight:bold')); ?>
                         <?php endif; ?>
 
                         <?php if (Yii::app()->moduleManager->canUninstall($moduleId)): ?>
