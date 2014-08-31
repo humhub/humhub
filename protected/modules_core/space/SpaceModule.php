@@ -53,11 +53,6 @@ class SpaceModule extends HWebModule
             }
         }
 
-        // Unfollow all spaces
-        foreach (SpaceFollow::model()->findAllByAttributes(array('user_id' => $user->id)) as $follow) {
-            SpaceFollow::unfollow($follow->space_id, $follow->user_id);
-        }
-
         // Cancel all space memberships
         foreach (SpaceMembership::model()->findAllByAttributes(array('user_id' => $user->id)) as $membership) {
             $membership->space->removeMember($user->id);

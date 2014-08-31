@@ -260,10 +260,10 @@ class HActiveRecordContent extends HActiveRecord
             $selectorSql[] = 'content.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
         }
         if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_SPACES, $includes)) {
-            $selectorSql[] = 'content.visibility=1 AND content.space_id IN (SELECT space_id FROM space_follow sf WHERE sf.user_id=' . Yii::app()->user->id . ')';
+            $selectorSql[] = 'content.visibility=1 AND content.space_id IN (SELECT object_id FROM follow sf WHERE sf.object_model="Space" AND sf.user_id=' . Yii::app()->user->id . ')';
         }
         if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_USERS, $includes)) {
-            $selectorSql[] = 'content.visibility=1 AND content.space_id IS NULL AND content.user_id IN (SELECT user_followed_id FROM user_follow uf WHERE uf.user_follower_id=' . Yii::app()->user->id . ')';
+            $selectorSql[] = 'content.visibility=1 AND content.space_id IS NULL AND content.user_id IN (SELECT object_id FROM follow uf WHERE uf.object_model="User" AND uf.user_id=' . Yii::app()->user->id . ')';
         }
 
         if (count($selectorSql) != 0) {

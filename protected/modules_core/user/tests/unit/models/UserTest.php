@@ -39,6 +39,17 @@ class UserTest extends CDbTestCase
         RuntimeCache::$data = array();
     }
 
+    public function testIsCurrentUser() {
+        Yii::app()->user->id = 1;
+
+        $user = User::model()->findByPk(1);
+        $this->assertTrue($user->isCurrentUser());
+        
+        Yii::app()->user->id = 2;
+        $this->assertFalse($user->isCurrentUser());
+    }
+    
+    
     public function testCreateApproval()
     {
         HSetting::Set('needApproval', 0, 'authentication_internal');

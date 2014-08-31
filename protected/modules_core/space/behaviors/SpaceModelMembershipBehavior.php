@@ -365,6 +365,9 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
         $activity->save();
         $activity->fire();
 
+        // Members can't also follow the space
+        $this->getOwner()->unfollow($userId);
+
         // Cleanup Notifications
         SpaceInviteNotification::remove($userId, $this->getOwner());
         SpaceApprovalRequestNotification::remove($userId, $this->getOwner());

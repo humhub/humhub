@@ -20,7 +20,7 @@
 
 /**
  * HActiveRecordContentTest
- * 
+ *
  * @package humhub.tests.unit.components
  * @since 0.9
  * @group core
@@ -29,11 +29,11 @@
 class HActiveRecordContentTest extends CDbTestCase
 {
 
-    public $fixtures = array(':space', ':space_membership', ':space_follow', ':user', ':user_follow', ':post', ':content');
+    public $fixtures = array(':space', ':space_membership', ':follow', ':user', ':post', ':content');
 
     public function testRelatedContentRecord()
     {
-        // Create Post 
+        // Create Post
         $post = new Post();
         $post->message = "Test";
         $post->content->container = Yii::app()->user->getModel();
@@ -65,7 +65,7 @@ class HActiveRecordContentTest extends CDbTestCase
         sort($postIds);
         $this->assertEquals(array(1, 2), $postIds);
 
-        // Check user profile and mine 
+        // Check user profile and mine
         $posts = Post::model()->userRelated(array(HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE, HActiveRecordContent::SCOPE_USER_RELEATED_MINE))->findAll();
         $postIds = array_map(create_function('$post', 'return $post->id;'), $posts);
         sort($postIds);

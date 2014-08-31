@@ -62,30 +62,26 @@
 
                     <!-- Follow Handling -->
                     <div class="pull-right">
-                        <?php if (!$space->isMember()) {
-                            if ($space->isFollowedBy()) {
-                                echo CHtml::link("Follow", 'javascript:setFollow("' . $this->createUrl('//space/space/follow', array('sguid' => $space->guid)) . '", "' . $space->id . '");', array('class' => 'btn btn-success btn-sm hidden', 'id' => 'button_follow_' . $space->id));
-                                echo CHtml::link("Unfollow", 'javascript:setUnfollow("' . $this->createUrl('//space/space/unfollow', array('sguid' => $space->guid)) . '", "' . $space->id . '")', array('class' => 'btn btn-primary btn-sm show', 'id' => 'button_unfollow_' . $space->id));
-                            } else {
-                                echo CHtml::link("Follow", 'javascript:setFollow("' . $this->createUrl('//space/space/follow', array('sguid' => $space->guid)) . '", "' . $space->id . '")', array('class' => 'btn btn-success btn-sm show', 'id' => 'button_follow_' . $space->id));
-                                echo CHtml::link("Unfollow", 'javascript:setUnfollow("' . $this->createUrl('//space/space/unfollow', array('sguid' => $space->guid)) . '", "' . $space->id . '")', array('class' => 'btn btn-primary btn-sm hidden', 'id' => 'button_unfollow_' . $space->id));
-                            }
+                        <?php
+                        if (!$space->isMember()) {
+                            $followed = $space->isFollowedByUser();
+                            echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . $space->createUrl('//space/space/follow') . '", "' . $space->id . '")', array('class' => 'btn btn-success btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $space->id));
+                            echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . $space->createUrl('//space/space/unfollow') . '", "' . $space->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $space->id));
                         }
-
-                        ?>
+                        ?>                        
                     </div>
 
                     <a href="<?php echo $space->getUrl(); ?>" class="pull-left">
-                    <img class="media-object img-rounded"
-                         src="<?php echo $space->getProfileImage()->getUrl(); ?>" width="50"
-                         height="50" alt="50x50" data-src="holder.js/50x50" style="width: 50px; height: 50px;">
+                        <img class="media-object img-rounded"
+                             src="<?php echo $space->getProfileImage()->getUrl(); ?>" width="50"
+                             height="50" alt="50x50" data-src="holder.js/50x50" style="width: 50px; height: 50px;">
                     </a>
 
                     <?php if ($space->isMember()) { ?>
                         <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top"
                            title=""
                            data-original-title="<?php echo Yii::t('DirectoryModule.views_directory_spaces', 'You are a member of this space'); ?>"></i>
-                    <?php } ?>
+                       <?php } ?>
 
                     <div class="media-body">
                         <h4 class="media-heading"><a href="<?php echo $space->getUrl(); ?>"><?php echo $space->name; ?></a></h4>
@@ -95,7 +91,7 @@
                         <?php if ($space->tags) : ?>
                             <?php foreach ($space->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag)), array('class' => 'label label-default'));    ?>
+                                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag)), array('class' => 'label label-default')); ?>
                                     <?php
                                     $tag_count++;
                                 }
@@ -131,26 +127,25 @@
 
 
 <script type="text/javascript">
-
     // ajax request to follow the user
     function setFollow(url, id) {
-
         jQuery.ajax({
-            'url': url,
-            'success': function () {
-                $("#button_follow_" + id).addClass('hidden');
-                $("#button_unfollow_" + id).removeClass('hidden');
+            url: url,
+            type: "POST",
+            'success': function() {
+                $("#button_follow_" + id).addClass('hide');
+                $("#button_unfollow_" + id).removeClass('hide');
             }});
     }
 
     // ajax request to unfollow the user
     function setUnfollow(url, id) {
-
         jQuery.ajax({
-            'url': url,
-            'success': function () {
-                $("#button_follow_" + id).removeClass('hidden');
-                $("#button_unfollow_" + id).addClass('hidden');
+            url: url,
+            type: "POST",
+            'success': function() {
+                $("#button_follow_" + id).removeClass('hide');
+                $("#button_unfollow_" + id).addClass('hide');
             }});
     }
 

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "workspace".
+ * This is the model class for table "space".
  *
- * The followings are the available columns in table 'workspace':
+ * The followings are the available columns in table 'space':
  * @property integer $id
  * @property integer $wall_id
  * @property string $name
@@ -69,7 +69,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             ),
             'SpacesModelMembershipBehavior' => array(
                 'class' => 'application.modules_core.space.behaviors.SpaceModelMembershipBehavior',
-            )
+            ),
+            'HFollowableBehavior' => array(
+                'class' => 'application.behaviors.HFollowableBehavior',
+            ),
         );
     }
 
@@ -145,7 +148,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return array(
             // Active Invites
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'space_invite_id'),
-            'follower' => array(self::MANY_MANY, 'User', 'space_follow(space_id, user_id)'),
             // List of space applicants
             'applicants' => array(self::HAS_MANY, 'SpaceMembership', 'space_id', 'condition' => 'status=' . SpaceMembership::STATUS_APPLICANT),
             // Approved Membership Only
@@ -276,35 +278,24 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     protected function beforeDelete()
     {
-        if (parent::beforeDelete()) {
 
-            foreach (SpaceSetting::model()->findAllByAttributes(array('space_id' => $this->id)) as $spaceSetting) {
-                $spaceSetting->delete();
-            }
-
-            // Disable all enabled modules
-            foreach ($this->getAvailableModules() as $moduleId => $module) {
-                if ($this->isModuleEnabled($moduleId)) {
-                    $this->uninstallModule($moduleId);
-                }
-            }
-
-            HSearch::getInstance()->deleteModel($this);
-            return true;
+        foreach (SpaceSetting::model()->findAllByAttributes(array('space_id' => $this->id)) as $spaceSetting) {
+            $spaceSetting->delete();
         }
-    }
 
-    /**
-     * Delete a Space
-     *
-     */
-    public function delete()
-    {
+        // Disable all enabled modules
+        foreach ($this->getAvailableModules() as $moduleId => $module) {
+            if ($this->isModuleEnabled($moduleId)) {
+                $this->uninstallModule($moduleId);
+            }
+        }
+
+        HSearch::getInstance()->deleteModel($this);
 
         $this->getProfileImage()->delete();
 
         // Remove all Follwers
-        SpaceFollow::model()->deleteAllByAttributes(array('space_id' => $this->id));
+        Follow::model()->deleteAllByAttributes(array('object_id' => $this->id, 'object_model' => 'Space'));
 
         // Delete all memberships
         SpaceMembership::model()->deleteAllByAttributes(array('space_id' => $this->id));
@@ -322,18 +313,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $group->save();
         }
 
-        $oldWallId = $this->wall_id;
+        Wall::model()->deleteAllByAttributes(array('id' => $this->wall_id));
 
-        $this->wall_id = new CDbExpression('NULL');
-        $this->save();
-
-        // Delete myself
-        $isOk = parent::delete();
-
-        // Delete wall
-        Wall::model()->deleteAllByAttributes(array('id' => $oldWallId));
-
-        return $isOk;
+        return parent::beforeDelete();
     }
 
     /**
@@ -375,25 +357,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
             return true;
         }
-    }
-
-    /**
-     * Indicates that this space is followed by
-     *
-     * @param $userId User Id of User
-     */
-    public function isFollowedBy($userId = "")
-    {
-        // Take current userid if none is given
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
-
-        $followed = SpaceFollow::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
-
-        if ($followed != null)
-            return true;
-
-        return false;
     }
 
     /**
@@ -659,9 +622,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      * Creates an url in space scope.
      * (Adding sguid parameter to identify current space.)
      * See CController createUrl() for more details.
-     * 
+     *
      * @since 0.9
-     * @param type $route the URL route. 
+     * @param type $route the URL route.
      * @param type $params additional GET parameters.
      * @param type $ampersand the token separating name-value pairs in the URL.
      */
@@ -671,7 +634,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $params['sguid'] = $this->guid;
         }
 
-        return Yii::app()->getController()->createUrl($route, $params, $ampersand);
+        if (Yii::app()->getController() !== null) {
+            return Yii::app()->getController()->createUrl($route, $params, $ampersand);
+        } else {
+            return Yii::app()->createUrl($route, $params, $ampersand);
+        }
     }
 
 }

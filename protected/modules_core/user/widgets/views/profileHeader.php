@@ -115,13 +115,13 @@
             <div class="statistics pull-left">
 
                 <div class="pull-left entry">
-                    <span class="count"><?php echo count($user->followerUser); ?></span></a>
+                    <span class="count"><?php echo $user->getFollowerCount(); ?></span></a>
                     <br>
                     <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
                 </div>
 
                 <div class="pull-left entry">
-                    <span class="count"><?php echo count($user->followsUser); ?></span>
+                    <span class="count"><?php echo $user->getFollowingCount('User') + $user->getFollowingCount('Space'); ?></span>
                     <br>
                     <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
                 </div>
@@ -130,6 +130,7 @@
                     <span class="count"><?php echo count($user->spaces); ?></span><br>
                     <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
                 </div>
+
             </div>
             <!-- end: User statistics -->
 
@@ -137,11 +138,11 @@
             <div class="controls controls-account pull-right">
                 <!-- start: User following -->
                 <?php
-                if (!$isProfileOwner) {
-                    if ($user->isFollowedBy(Yii::app()->user->id)) {
-                        print CHtml::link("Unfollow", $this->createUrl('//user/profile/unfollow', array('uguid' => $user->guid)), array('class' => 'btn btn-primary'));
+                if (!$user->isCurrentUser()) {
+                    if ($user->isFollowedByUser()) {
+                        print HHtml::postLink(Yii::t("UserModule.widgets_views_profileHeader", "Unfollow"), $user->createUrl('//user/profile/unfollow'), array('class' => 'btn btn-primary'));
                     } else {
-                        print CHtml::link("Follow", $this->createUrl('//user/profile/follow', array('uguid' => $user->guid)), array('class' => 'btn btn-success'));
+                        print HHtml::postLink(Yii::t("UserModule.widgets_views_profileHeader", "Follow"), $user->createUrl('//user/profile/follow'), array('class' => 'btn btn-success'));
                     }
                 }
                 ?>
@@ -150,9 +151,10 @@
                 <!-- start: Edit profile -->
                 <?php if ($isProfileOwner) { ?>
                     <!-- Edit user account (if this is your profile) -->
-                    <a href="<?php echo $this->createUrl('//user/account/edit'); ?>"
+                    <a href="<?php echo $this->createUrl('//user/account/edit');
+                    ?>"
                        id="edit_profile" class="btn btn-primary"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Edit account'); ?></a>
-                <?php } ?>
+                   <?php } ?>
                 <!-- end: Edit profile -->
             </div>
 

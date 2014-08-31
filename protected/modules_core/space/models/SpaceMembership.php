@@ -23,7 +23,8 @@
  * @author Luke
 
  */
-class SpaceMembership extends HActiveRecord {
+class SpaceMembership extends HActiveRecord
+{
 
     const STATUS_INVITED = 1;
     const STATUS_APPLICANT = 2;
@@ -34,21 +35,24 @@ class SpaceMembership extends HActiveRecord {
      * @param string $className active record class name.
      * @return SpaceMembership the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'space_membership';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -62,7 +66,8 @@ class SpaceMembership extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -74,17 +79,12 @@ class SpaceMembership extends HActiveRecord {
     }
 
     /**
-     * Before saving this record
+     * Before saving this record.
      *
      * @return type
      */
-    protected function beforeSave() {
-
-        // Ensure that workspace members not also follows the workspace
-        if ($this->status == self::STATUS_MEMBER) {
-            SpaceFollow::unfollow($this->space_id, $this->user_id);
-        }
-
+    protected function beforeSave()
+    {
         Yii::app()->cache->delete('userSpaces_' . $this->user_id);
         return parent::beforeSave();
     }
@@ -94,7 +94,8 @@ class SpaceMembership extends HActiveRecord {
      *
      * @return type
      */
-    protected function beforeDelete() {
+    protected function beforeDelete()
+    {
         Yii::app()->cache->delete('userSpaces_' . $this->user_id);
         return parent::beforeDelete();
     }
@@ -102,7 +103,8 @@ class SpaceMembership extends HActiveRecord {
     /**
      * Update last visit
      */
-    public function updateLastVisit() {
+    public function updateLastVisit()
+    {
         $this->scenario = 'last_visit';
         $this->last_visit = new CDbExpression('NOW()');
         $this->save();
@@ -111,7 +113,8 @@ class SpaceMembership extends HActiveRecord {
     /**
      * Counts all new Items for this membership
      */
-    public function countNewItems($since = "") {
+    public function countNewItems($since = "")
+    {
 
         $count = 0;
 
@@ -146,7 +149,8 @@ class SpaceMembership extends HActiveRecord {
      *
      * @param type $userId
      */
-    public static function GetUserSpaces($userId = "") {
+    public static function GetUserSpaces($userId = "")
+    {
 
         // Take current userid if none is given
         if ($userId == "")

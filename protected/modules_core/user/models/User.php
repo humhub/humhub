@@ -24,8 +24,6 @@
  *
  * The followings are the available model relations:
  * @property Group $group
- * @property UserFollow[] $userFollows
- * @property UserFollow[] $userFollows1
  * @property UserInvite[] $userInvites
  * @property Message[] $messages
  * @property Space[] $workspaces
@@ -80,6 +78,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
             ),
             'UserSettingBehavior' => array(
                 'class' => 'application.modules_core.user.behaviors.UserSettingBehavior',
+            ),
+            'HFollowableBehavior' => array(
+                'class' => 'application.behaviors.HFollowableBehavior',
             ),
             'UserModelModulesBehavior' => array(
                 'class' => 'application.modules_core.user.behaviors.UserModelModulesBehavior',
@@ -173,11 +174,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
         return array(
             'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
             'group' => array(self::BELONGS_TO, 'Group', 'group_id'),
-            // Following
-            'followsUser' => array(self::MANY_MANY, 'User', 'user_follow(user_follower_id,user_followed_id)'),
-            'followerUser' => array(self::MANY_MANY, 'User', 'user_follow(user_followed_id, user_follower_id)'),
-            'followSpaces' => array(self::MANY_MANY, 'Space', 'space_follow(user_id, space_id)'),
-            // Member to be renamed
             'spaces' => array(self::HAS_MANY, 'SpaceMembership', 'user_id'),
             'spaceMemberships' => array(self::HAS_MANY, 'SpaceMembership', 'user_id', 'condition' => 'status=' . SpaceMembership::STATUS_MEMBER),
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
@@ -320,7 +316,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
                     $this->status = User::STATUS_ENABLED;
                 }
             }
-            
+
             if ((HSetting::Get('defaultUserGroup', 'authentication_internal'))) {
                 $this->group_id = HSetting::Get('defaultUserGroup', 'authentication_internal');
             }
@@ -424,9 +420,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
         // Delete all pending invites
         UserInvite::model()->deleteAllByAttributes(array('user_originator_id' => $this->id));
 
-        // Delete all follows
-        UserFollow::model()->deleteAllByAttributes(array('user_follower_id' => $this->id));
-        UserFollow::model()->deleteAllByAttributes(array('user_followed_id' => $this->id));
+        Follow::model()->deleteAllByAttributes(array('user_id' => $this->id));
+        Follow::model()->deleteAllByAttributes(array('object_model' => 'User', 'object_id' => $this->id));
 
         // Delete all group admin assignments
         GroupAdmin::model()->deleteAllByAttributes(array('user_id' => $this->id));
@@ -488,7 +483,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
             $params['uguid'] = $this->guid;
         }
 
-        return Yii::app()->getController()->createUrl($route, $params, $ampersand);
+        if (Yii::app()->getController() !== null) {
+            return Yii::app()->getController()->createUrl($route, $params, $ampersand);
+        } else {
+            return Yii::app()->createUrl($route, $params, $ampersand);
+        }
     }
 
     /**
@@ -499,22 +498,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         // split tags string into individual tags
         return preg_split("/[;,# ]+/", $this->tags);
-    }
-
-    /**
-     * Indicates that this user is followed by
-     *
-     * @param $userId User Id of User
-     */
-    public function isFollowedBy($userId)
-    {
-
-        $followed = UserFollow::model()->findByAttributes(array('user_follower_id' => $userId, 'user_followed_id' => $this->id));
-
-        if ($followed != null)
-            return true;
-
-        return false;
     }
 
     /**
@@ -646,6 +629,20 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         return true;
+    }
+
+    /**
+     * Checks if this records belongs to the current user
+     * 
+     * @return boolean is current User
+     */
+    public function isCurrentUser()
+    {
+        if (Yii::app()->user->id == $this->id) {
+            return true;
+        }
+
+        return false;
     }
 
 }
