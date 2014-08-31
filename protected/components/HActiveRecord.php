@@ -71,16 +71,6 @@ abstract class HActiveRecord extends CActiveRecord {
                 $this->created_by = $userId;
         }
 
-        // Dont update in this scenario (SpaceMembership, only changed column is "last_visit")
-        if ($this->scenario != 'last_visit' && $userId != 0) {
-
-            //not a new record, so just set the last updated time and last updated user id
-            $this->updated_at = new CDbExpression('NOW()');
-            if ($this->updated_by == "")
-                $this->updated_by = $userId;
-        }
-
-
         return parent::beforeValidate();
     }
 

@@ -105,9 +105,8 @@ class SpaceMembership extends HActiveRecord
      */
     public function updateLastVisit()
     {
-        $this->scenario = 'last_visit';
         $this->last_visit = new CDbExpression('NOW()');
-        $this->save();
+        $this->saveAttributes(array('last_visit'));
     }
 
     /**
