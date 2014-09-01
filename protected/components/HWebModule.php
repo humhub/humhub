@@ -205,7 +205,7 @@ class HWebModule extends CWebModule
         // ToDo: Handle this directly via SpaceModuleBehavior & Events
         if (array_key_exists('SpaceModuleBehavior', $this->behaviors())) {
             foreach ($this->getSpaceModuleSpaces() as $space) {
-                $space->uninstallModule($this->getId());
+                $space->disableModule($this->getId());
             }
         }
 

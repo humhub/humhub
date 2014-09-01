@@ -286,7 +286,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         // Disable all enabled modules
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
-                $this->uninstallModule($moduleId);
+                $this->disableModule($moduleId);
             }
         }
 

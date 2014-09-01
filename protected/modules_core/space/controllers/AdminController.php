@@ -358,7 +358,7 @@ class AdminController extends Controller
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
         if (!$this->getSpace()->isModuleEnabled($moduleId)) {
-            $this->getSpace()->installModule($moduleId);
+            $this->getSpace()->enableModule($moduleId);
         }
 
         $this->redirect($this->createUrl('admin/modules', array('sguid' => $this->getSpace()->guid)));
@@ -373,7 +373,7 @@ class AdminController extends Controller
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
         if ($this->getSpace()->isModuleEnabled($moduleId)) {
-            $this->getSpace()->uninstallModule($moduleId);
+            $this->getSpace()->disableModule($moduleId);
         }
 
         $this->redirect($this->createUrl('admin/modules', array('sguid' => $this->getSpace()->guid)));

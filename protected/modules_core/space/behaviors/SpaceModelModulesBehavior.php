@@ -21,7 +21,7 @@
 /**
  * SpaceModelModuleBehavior handles all space model relating moduling methods.
  * (Install, Uninstall modules)
- * 
+ *
  * @since 0.6
  * @package humhub.modules_core.space.behaviors
  * @author luke
@@ -92,7 +92,7 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
     /**
      * Installs a Module
      */
-    public function installModule($moduleId)
+    public function enableModule($moduleId)
     {
 
         // Not enabled globally
@@ -102,7 +102,7 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::log("Space->installModule(" . $moduleId . ") module is already enabled");
+            Yii::log("Space->enableModule(" . $moduleId . ") module is already enabled");
             return false;
         }
 
@@ -121,7 +121,7 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
     /**
      * Uninstalls a Module
      */
-    public function uninstallModule($moduleId)
+    public function disableModule($moduleId)
     {
 
         // Not enabled globally
@@ -131,7 +131,7 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::log("Space->uninstallModule(" . $moduleId . ") module is not enabled");
+            Yii::log("Space->disableModule(" . $moduleId . ") module is not enabled");
             return false;
         }
 
