@@ -202,14 +202,14 @@ class HWebModule extends CWebModule
             return false;
 
         // Check this module is a SpaceModule
-        if (array_key_exists('SpaceModuleBehavior', $this->behaviors())) {
+        if ($this->isSpaceModule()) {
             foreach ($this->getSpaceModuleSpaces() as $space) {
                 $space->disableModule($this->getId());
             }
         }
 
         // Check this module is a UserModule
-        if (array_key_exists('UserModuleBehavior', $this->behaviors())) {
+        if ($this->isUserModule()) {
             foreach ($this->getUserModuleUsers() as $user) {
                 $user->disableModule($this->getId());
             }
@@ -224,6 +224,16 @@ class HWebModule extends CWebModule
         HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
         SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
         UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+
+        // Delete also records with disabled state from SpaceApplicationModule Table
+        foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
+            $sam->delete();
+        }
+
+        // Delete also records with disabled state from UserApplicationModule Table
+        foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
+            $uam->delete();
+        }
 
         ModuleManager::flushCache();
 
@@ -371,6 +381,32 @@ class HWebModule extends CWebModule
         }
 
         return "";
+    }
+
+    /**
+     * Indicates that module acts as Space Module.
+     * 
+     * @return boolean
+     */
+    public function isSpaceModule()
+    {
+        if (array_key_exists('SpaceModuleBehavior', $this->behaviors())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Indicates that module acts as User Module.
+     * 
+     * @return boolean
+     */
+    public function isUserModule()
+    {
+        if (array_key_exists('UserModuleBehavior', $this->behaviors())) {
+            return true;
+        }
+        return false;
     }
 
 }

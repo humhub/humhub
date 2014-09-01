@@ -240,6 +240,74 @@ class ModuleController extends Controller
         $this->renderPartial('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd), false, true);
     }
 
+    /**
+     * Sets default enabled/disabled on User or/and Space Modules 
+     * 
+     * @throws CHttpException
+     */
+    public function actionSetAsDefault()
+    {
+
+        $moduleId = Yii::app()->request->getQuery('moduleId');
+        $module = Yii::app()->moduleManager->getModule($moduleId);
+
+        if ($module == null) {
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+        }
+
+        $model = new ModuleSetAsDefaultForm();
+
+        $spaceDefaultModule = null;
+        if ($module->isSpaceModule()) {
+            $spaceDefaultModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => 0, 'module_id' => $moduleId));
+            if ($spaceDefaultModule === null) {
+                $spaceDefaultModule = new SpaceApplicationModule();
+                $spaceDefaultModule->module_id = $moduleId;
+                $spaceDefaultModule->space_id = 0;
+                $spaceDefaultModule->state = SpaceApplicationModule::STATE_DISABLED;
+            }
+            $model->spaceDefaultState = $spaceDefaultModule->state;
+        }
+
+        $userDefaultModule = null;
+        if ($module->isSpaceModule()) {
+            $userDefaultModule = UserApplicationModule::model()->findByAttributes(array('user_id' => 0, 'module_id' => $moduleId));
+            if ($userDefaultModule === null) {
+                $userDefaultModule = new UserApplicationModule();
+                $userDefaultModule->module_id = $moduleId;
+                $userDefaultModule->user_id = 0;
+                $userDefaultModule->state = UserApplicationModule::STATE_DISABLED;
+            }
+            $model->userDefaultState = $userDefaultModule->state;
+        }
+
+
+        if (isset($_POST['ModuleSetAsDefaultForm'])) {
+
+
+            $_POST['ModuleSetAsDefaultForm'] = Yii::app()->input->stripClean($_POST['ModuleSetAsDefaultForm']);
+            $model->attributes = $_POST['ModuleSetAsDefaultForm'];
+
+            if ($model->validate()) {
+
+                if ($module->isSpaceModule()) {
+                    $spaceDefaultModule->state = $model->spaceDefaultState;
+                    $spaceDefaultModule->save();
+                }
+
+                if ($module->isUserModule()) {
+                    $userDefaultModule->state = $model->userDefaultState;
+                    $userDefaultModule->save();
+                }
+
+                // close modal
+                $this->renderModalClose();
+            }
+        }
+
+        $this->renderPartial('setAsDefault', array('module' => $module, 'model' => $model), false, true);
+    }
+
     public function getOnlineModuleManager()
     {
 

@@ -372,7 +372,7 @@ class AdminController extends Controller
         $space = $this->getSpace();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
-        if ($this->getSpace()->isModuleEnabled($moduleId)) {
+        if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
             $this->getSpace()->disableModule($moduleId);
         }
 

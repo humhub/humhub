@@ -120,7 +120,7 @@ class AccountController extends Controller
         $user = Yii::app()->user->getModel();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
-        if ($user->isModuleEnabled($moduleId)) {
+        if ($user->isModuleEnabled($moduleId) && $user->canDisableModule($moduleId)) {
             $user->disableModule($moduleId);
         }
 

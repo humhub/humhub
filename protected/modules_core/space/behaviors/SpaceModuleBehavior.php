@@ -84,7 +84,6 @@ class SpaceModuleBehavior extends CBehavior
         return "";
     }
 
-    
     /**
      * Returns the module image for space admins.
      * You may want to overwrite with an special space image.
@@ -94,8 +93,8 @@ class SpaceModuleBehavior extends CBehavior
     public function getSpaceModuleImage()
     {
         return $this->getOwner()->getImage();
-    } 
-    
+    }
+
     /**
      * Enables this module on given space
      * 
@@ -128,12 +127,13 @@ class SpaceModuleBehavior extends CBehavior
     public function getSpaceModuleSpaces()
     {
         $spaces = array();
-        foreach (SpaceApplicationModule::model()->with('space')->findAllByAttributes(array('module_id' => $this->owner->getId())) as $spaceModule) {
-            $space = $spaceModule->space;
-            if ($space != null && $space instanceOf Space) {
-                $spaces[] = $space;
+
+        foreach (Space::model()->findAll() as $s) {
+            if ($s->isModuleEnabled($this->owner->getId())) {
+                $spaces[] = $s;
             }
         }
+
         return $spaces;
     }
 

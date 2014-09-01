@@ -26,7 +26,10 @@
 
                     <p><?php echo $module->getSpaceModuleDescription(); ?></p>
                     <?php if ($this->getSpace()->isModuleEnabled($moduleId)) : ?>
-                        <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_modules', 'Disable'), array('//space/admin/disableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary', 'confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
+
+                        <?php if ($this->getSpace()->canDisableModule($moduleId)): ?>
+                            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_modules', 'Disable'), array('//space/admin/disableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary', 'confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
+                        <?php endif; ?>
 
                         <?php if ($module->getSpaceModuleConfigUrl($this->getSpace()) != "") : ?>
                             <?php
