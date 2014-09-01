@@ -28,6 +28,7 @@ class ModuleController extends Controller
 {
 
     public $subLayout = "/_layout";
+    private $_onlineModuleManager = null;
 
     /**
      * @return array action filters
@@ -187,9 +188,9 @@ class ModuleController extends Controller
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not uninstall module first! Module is protected.'));
         }
 
-        $onlineModules = new OnlineModuleManager();
+        $onlineModules = $this->getOnlineModuleManager();
         $onlineModules->update($moduleId);
-        
+
         $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
 
@@ -198,8 +199,9 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
-        $onlineModules = new OnlineModuleManager();
+        $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules();
+
         $this->render('listOnline', array('modules' => $modules));
     }
 
@@ -208,23 +210,10 @@ class ModuleController extends Controller
      */
     public function actionListUpdates()
     {
+        $onlineModules = $this->getOnlineModuleManager();
+        $modules = $onlineModules->getModuleUpdates();
 
-        $updates = array();
-
-        $onlineModules = new OnlineModuleManager();
-        foreach ($onlineModules->getModules() as $moduleId => $moduleInfo) {
-
-            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::app()->moduleManager->isInstalled($moduleId)) {
-
-                $module = Yii::app()->moduleManager->getModule($moduleId);
-
-                if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
-                    $updates[$moduleId] = $moduleInfo;
-                }
-            }
-        }
-
-        $this->render('listUpdates', array('modules' => $updates));
+        $this->render('listUpdates', array('modules' => $modules));
     }
 
     /**
@@ -261,7 +250,7 @@ class ModuleController extends Controller
 
         $moduleId = Yii::app()->request->getQuery('moduleId');
 
-        $onlineModules = new OnlineModuleManager();
+        $onlineModules = $this->getOnlineModuleManager();
         $moduleInfo = $onlineModules->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestVersion'])) {
@@ -271,5 +260,14 @@ class ModuleController extends Controller
         $this->renderPartial('info', array('name' => $moduleInfo['latestVersion']['name'], 'description' => $moduleInfo['latestVersion']['description'], 'content' => $moduleInfo['latestVersion']['README.md']), false, true);
     }
 
+    public function getOnlineModuleManager()
+    {
+
+        if ($this->_onlineModuleManager === null) {
+            $this->_onlineModuleManager = new OnlineModuleManager();
+        }
+
+        return $this->_onlineModuleManager;
+    }
 
 }

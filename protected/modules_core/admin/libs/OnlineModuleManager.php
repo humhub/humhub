@@ -31,6 +31,8 @@ class OnlineModuleManager
      */
     const HUMHUB_ONLINE_API_URL = "https://www.humhub.org/modules/api/";
 
+    private $_modules = null;
+
     /**
      * Installs latest compatible module version
      *
@@ -113,15 +115,14 @@ class OnlineModuleManager
     {
         // Hack: for some broken modules using wall aliases
         Yii::setPathOfAlias('wall', Yii::app()->getModulePath());
-        
+
         // Remove old module files
         Yii::app()->moduleManager->removeModuleFolder($moduleId);
         $this->install($moduleId);
-        
+
         $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->update();
     }
-
 
     /**
      * Returns an array of all available online modules
@@ -136,24 +137,52 @@ class OnlineModuleManager
      */
     public function getModules()
     {
+
+        if ($this->_modules !== null) {
+            return $this->_modules;
+        }
+
         $url = self::HUMHUB_ONLINE_API_URL . "list?version=" . urlencode(HVersion::VERSION) . "&installId=" . HSetting::Get('installationId', 'admin');
-        $modules = array();
 
         try {
 
-            $http = new Zend_Http_Client($url, array(
-                'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                'curloptions' => $this->getCurlOptions(),
-            ));
+            $this->_modules = Yii::app()->cache->get('onlineModuleManager_modules');
+            if ($this->_modules === null || !is_array($this->_modules)) {
 
-            $response = $http->request();
-            $json = $response->getBody();
+                $http = new Zend_Http_Client($url, array(
+                    'adapter' => 'Zend_Http_Client_Adapter_Curl',
+                    'curloptions' => $this->getCurlOptions(),
+                ));
 
-            $modules = CJSON::decode($json);
+                $response = $http->request();
+                $json = $response->getBody();
+
+                $this->_modules = CJSON::decode($json);
+                Yii::app()->cache->set('onlineModuleManager_modules', $this->_modules, HSetting::Get('expireTime', 'cache'));
+            }
         } catch (Exception $ex) {
             throw new CHttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not fetch module list online! (%error%)', array('%error%' => $ex->getMessage())));
         }
-        return $modules;
+        return $this->_modules;
+    }
+
+    public function getModuleUpdates()
+    {
+        $updates = array();
+
+        foreach ($this->getModules() as $moduleId => $moduleInfo) {
+
+            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::app()->moduleManager->isInstalled($moduleId)) {
+
+                $module = Yii::app()->moduleManager->getModule($moduleId);
+
+                if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
+                    $updates[$moduleId] = $moduleInfo;
+                }
+            }
+        }
+
+        return $updates;
     }
 
     /**
@@ -165,6 +194,7 @@ class OnlineModuleManager
         // get all module informations
         $url = self::HUMHUB_ONLINE_API_URL . "info?id=" . urlencode($moduleId) . "&version=" . HVersion::VERSION . "&installId=" . HSetting::Get('installationId', 'admin');
         try {
+
             $http = new Zend_Http_Client($url, array(
                 'adapter' => 'Zend_Http_Client_Adapter_Curl',
                 'curloptions' => $this->getCurlOptions(),
