@@ -240,26 +240,6 @@ class ModuleController extends Controller
         $this->renderPartial('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd), false, true);
     }
 
-    /**
-     * Returns informations about a online not installed module
-     * 
-     * @throws CHttpException
-     */
-    public function actionInfoOnline()
-    {
-
-        $moduleId = Yii::app()->request->getQuery('moduleId');
-
-        $onlineModules = $this->getOnlineModuleManager();
-        $moduleInfo = $onlineModules->getModuleInfo($moduleId);
-
-        if (!isset($moduleInfo['latestVersion'])) {
-            throw new CException(Yii::t('AdminModule.controllers_ModuleController', "No module version found!"));
-        }
-
-        $this->renderPartial('info', array('name' => $moduleInfo['latestVersion']['name'], 'description' => $moduleInfo['latestVersion']['description'], 'content' => $moduleInfo['latestVersion']['README.md']), false, true);
-    }
-
     public function getOnlineModuleManager()
     {
 
