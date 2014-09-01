@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
 
-            <p><?php //echo Yii::t('UserModule.views_profile_cropProfileImage', 'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.'); ?></p>
+            <p><?php //echo Yii::t('UserModule.views_profile_cropProfileImage', 'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.');   ?></p>
 
 
             <?php echo $form->errorSummary($model); ?>
@@ -30,18 +30,19 @@
             </style>
 
             <div id="cropimage">
-                <?php $this->widget('ext.yii-jcrop.jCropWidget', array(
-                        'imageUrl' => $profileImage->getUrl('_org') . "?nocache=" . time(),
-                        'formElementX' => 'CropProfileImageForm_cropX',
-                        'formElementY' => 'CropProfileImageForm_cropY',
-                        'formElementWidth' => 'CropProfileImageForm_cropW',
-                        'formElementHeight' => 'CropProfileImageForm_cropH',
-                        'jCropOptions' => array(
-                            'aspectRatio' => 1,
-                            'boxWidth' => 400,
-                            'setSelect' => array(0, 0, 100, 100),
-                        ),
-                    )
+                <?php
+                $this->widget('ext.yii-jcrop.jCropWidget', array(
+                    'imageUrl' => $profileImage->getUrl('_org') . "?nocache=" . time(),
+                    'formElementX' => 'CropProfileImageForm_cropX',
+                    'formElementY' => 'CropProfileImageForm_cropY',
+                    'formElementWidth' => 'CropProfileImageForm_cropW',
+                    'formElementHeight' => 'CropProfileImageForm_cropH',
+                    'jCropOptions' => array(
+                        'aspectRatio' => 1,
+                        'boxWidth' => 400,
+                        'setSelect' => array(0, 0, 100, 100),
+                    ),
+                        )
                 );
                 ?>
             </div>
@@ -50,15 +51,15 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('UserModule.views_profile_cropProfileImage', 'Save'), array('//user/profile/cropProfileImage'), array(
+            <?php
+            echo HHtml::ajaxButton(Yii::t('UserModule.views_profile_cropProfileImage', 'Save'), array('//user/account/cropProfileImage'), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
-            ), array('class' => 'btn btn-primary'));
-
+                    ), array('class' => 'btn btn-primary'));
             ?>
 
-            <?php //echo CHtml::submitButton(Yii::t('UserModule.views_profile_cropProfileImage', 'Save'), array('class' => 'btn btn-primary')); ?>
+            <?php //echo CHtml::submitButton(Yii::t('UserModule.views_profile_cropProfileImage', 'Save'), array('class' => 'btn btn-primary'));  ?>
 
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropProfileImage', 'Close'); ?></button>

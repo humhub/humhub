@@ -334,6 +334,119 @@ class AccountController extends Controller
         $this->render('changePassword', array('model' => $userPassword));
     }
 
+    /**
+     * Crops the banner image of the user
+     */
+    public function actionCropBannerImage()
+    {
+
+        $model = new CropProfileImageForm;
+        $profileImage = new ProfileBannerImage(Yii::app()->user->guid);
+
+        if (isset($_POST['CropProfileImageForm'])) {
+            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
+            $model->attributes = $_POST['CropProfileImageForm'];
+            if ($model->validate()) {
+                $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
+                $this->htmlRedirect(Yii::app()->user->getModel()->getUrl());
+            }
+        }
+
+        $this->renderPartial('cropBannerImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()), false, true);
+    }
+
+    /**
+     * Handle the banner image upload
+     */
+    public function actionBannerImageUpload()
+    {
+
+        $model = new UploadProfileImageForm();
+
+        $json = array();
+
+        $files = CUploadedFile::getInstancesByName('bannerfiles');
+        $file = $files[0];
+        $model->image = $file;
+
+        if ($model->validate()) {
+
+            $json['error'] = false;
+
+            $profileImage = new ProfileBannerImage(Yii::app()->user->guid);
+            $profileImage->setNew($model->image);
+
+            $json['name'] = "";
+            $json['url'] = $profileImage->getUrl();
+            $json['size'] = $model->image->getSize();
+            $json['deleteUrl'] = "";
+            $json['deleteType'] = "";
+        } else {
+            $json['error'] = true;
+            $json['errors'] = $model->getErrors();
+        }
+
+
+        return $this->renderJson(array('files' => $json));
+    }
+
+    /**
+     * Handle the profile image upload
+     */
+    public function actionProfileImageUpload()
+    {
+
+        $model = new UploadProfileImageForm();
+
+        $json = array();
+
+        //$model->image = CUploadedFile::getInstance($model, 'image');
+        $files = CUploadedFile::getInstancesByName('profilefiles');
+        $file = $files[0];
+        $model->image = $file;
+
+        if ($model->validate()) {
+
+            $json['error'] = false;
+
+            $profileImage = new ProfileImage(Yii::app()->user->guid);
+            $profileImage->setNew($model->image);
+
+            $json['name'] = "";
+            $json['url'] = $profileImage->getUrl();
+            $json['size'] = $model->image->getSize();
+            $json['deleteUrl'] = "";
+            $json['deleteType'] = "";
+        } else {
+            $json['error'] = true;
+            $json['errors'] = $model->getErrors();
+        }
+
+
+        return $this->renderJson(array('files' => $json));
+    }
+
+    /**
+     * Crops the profile image of the user
+     */
+    public function actionCropProfileImage()
+    {
+
+        $model = new CropProfileImageForm;
+        $profileImage = new ProfileImage(Yii::app()->user->guid);
+
+        if (isset($_POST['CropProfileImageForm'])) {
+            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
+            $model->attributes = $_POST['CropProfileImageForm'];
+            if ($model->validate()) {
+                $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
+                $this->htmlRedirect(Yii::app()->user->getModel()->getUrl());
+            }
+        }
+
+        $this->renderPartial('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()), false, true);
+    }
+
 }
 
 ?>

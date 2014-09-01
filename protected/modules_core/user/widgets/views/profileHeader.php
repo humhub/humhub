@@ -55,7 +55,7 @@
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Yii::app()->createAbsoluteUrl('//user/profile/cropBannerImage'); ?>"
+                       href="<?php echo Yii::app()->createUrl('//user/account/cropBannerImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                 </div>
@@ -97,7 +97,7 @@
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Yii::app()->createAbsoluteUrl('//user/profile/cropProfileImage'); ?>"
+                       href="<?php echo Yii::app()->createUrl('//user/account/cropProfileImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                 </div>
