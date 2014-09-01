@@ -43,7 +43,7 @@ class UserApplicationModule extends HActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('module_id, user_id, created_at, created_by, updated_at, updated_by', 'required'),
+            array('module_id, user_id', 'required'),
             array('user_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('module_id', 'length', 'max' => 255),
         );
@@ -52,10 +52,10 @@ class UserApplicationModule extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
+    public function relations()
+    {
         return array(
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
         );
     }
 

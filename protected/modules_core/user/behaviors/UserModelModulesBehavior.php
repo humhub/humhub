@@ -93,7 +93,7 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
     /**
      * Installs a Module
      */
-    public function installModule($moduleId)
+    public function enableModule($moduleId)
     {
 
         // Not enabled globally
@@ -103,7 +103,7 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::log("User->installModule(" . $moduleId . ") module is already enabled");
+            Yii::log("User->enableModule(" . $moduleId . ") module is already enabled");
             return false;
         }
 
@@ -112,7 +112,7 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
         $userModule->module_id = $moduleId;
         $userModule->user_id = $this->getOwner()->id;
         $userModule->save();
-
+        
         $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->enableUserModule($this->getOwner());
 
@@ -122,7 +122,7 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
     /**
      * Uninstalls a Module
      */
-    public function uninstallModule($moduleId)
+    public function disableModule($moduleId)
     {
 
         // Not enabled globally
@@ -132,7 +132,7 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::log("User->uninstallModule(" . $moduleId . ") module is not enabled");
+            Yii::log("User->disableModule(" . $moduleId . ") module is not enabled");
             return false;
         }
 

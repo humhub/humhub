@@ -202,10 +202,16 @@ class HWebModule extends CWebModule
             return false;
 
         // Check this module is a SpaceModule
-        // ToDo: Handle this directly via SpaceModuleBehavior & Events
         if (array_key_exists('SpaceModuleBehavior', $this->behaviors())) {
             foreach ($this->getSpaceModuleSpaces() as $space) {
                 $space->disableModule($this->getId());
+            }
+        }
+
+        // Check this module is a UserModule
+        if (array_key_exists('UserModuleBehavior', $this->behaviors())) {
+            foreach ($this->getUserModuleUsers() as $user) {
+                $user->disableModule($this->getId());
             }
         }
 

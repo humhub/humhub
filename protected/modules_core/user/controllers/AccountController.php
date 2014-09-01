@@ -107,7 +107,7 @@ class AccountController extends Controller
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
         if (!$user->isModuleEnabled($moduleId)) {
-            $user->installModule($moduleId);
+            $user->enableModule($moduleId);
         }
 
         $this->redirect($this->createUrl('//user/account/editModules', array()));
@@ -121,7 +121,7 @@ class AccountController extends Controller
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
         if ($user->isModuleEnabled($moduleId)) {
-            $user->uninstallModule($moduleId);
+            $user->disableModule($moduleId);
         }
 
         $this->redirect($this->createUrl('//user/account/editModules', array()));

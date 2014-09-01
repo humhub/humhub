@@ -408,7 +408,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         // Disable all enabled modules
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
-                $this->uninstallModule($moduleId);
+                $this->disableModule($moduleId);
             }
         }
 
@@ -596,7 +596,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
     /**
      * Notifies groups admins for approval of new user via e-mail.
      * This should be done after a new user is created and approval is required.
-     * 
+     *
      * @todo Create message template, move message into translation
      */
     private function notifyGroupAdminsForApproval()
@@ -633,7 +633,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
     /**
      * Checks if this records belongs to the current user
-     * 
+     *
      * @return boolean is current User
      */
     public function isCurrentUser()
