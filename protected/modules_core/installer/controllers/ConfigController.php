@@ -227,7 +227,7 @@ class ConfigController extends Controller
 
             // Add Some Post to the Space
             $post = new Post();
-            $post->message = "I´ve just installed HumHub - Yeah! :-)";
+            $post->message = "Yay! I've just installed HumHub :-)";
             $post->content->container = $space;
             $post->content->visibility = Content::VISIBILITY_PUBLIC;
             $post->save();
