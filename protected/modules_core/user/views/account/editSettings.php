@@ -23,11 +23,11 @@
         <?php echo $form->error($model, 'language'); ?>
     </div>
 
-    <strong>Tour Panel</strong>
+    <strong><?php echo Yii::t('UserModule.views_account_editSettings', 'Getting Started'); ?></strong>
     <div class="form-group">
         <div class="checkbox">
             <label>
-                <?php echo $form->checkBox($model, 'tourpanel'); ?> <?php echo $model->getAttributeLabel('tourpanel'); ?>
+                <?php echo $form->checkBox($model, 'show_introduction_tour'); ?> <?php echo $model->getAttributeLabel('show_introduction_tour'); ?>
             </label>
         </div>
     </div>

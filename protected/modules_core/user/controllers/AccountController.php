@@ -50,42 +50,32 @@ class AccountController extends Controller
     public function actionEditSettings()
     {
 
-        // Load current user model in edit mode
-        $model = User::model()->findByPk(Yii::app()->user->id);
-        $model->scenario = 'edit';
+        $model = new AccountSettingsForm();
+        $model->language = Yii::app()->user->getModel()->language;
+        $model->tags = Yii::app()->user->getModel()->tags;
+        $model->show_introduction_tour = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-editAccount-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
-        }
 
-        if (isset($_POST['User'])) {
+        if (isset($_POST['AccountSettingsForm'])) {
 
-            $_POST['User'] = Yii::app()->input->stripClean($_POST['User']);
-            $model->attributes = $_POST['User'];
+            $_POST['AccountSettingsForm'] = Yii::app()->input->stripClean($_POST['AccountSettingsForm']);
+            $model->attributes = $_POST['AccountSettingsForm'];
 
             if ($model->validate()) {
 
-                Yii::app()->user->getModel()->setSetting('hideTourPanel', $model->tourpanel, "tour");
+                Yii::app()->user->getModel()->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
 
-                // Create User
-                $model->save();
+                $user = Yii::app()->user->getModel();
+                $user->language = $model->language;
+                $user->tags = $model->tags;
+                $user->save();
 
-                // Reload User in Session
                 Yii::app()->user->reload();
 
-                // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
-
                 $this->refresh();
-
-                // form inputs are valid, do something here
-                return;
             }
         }
-
-        $model->tourpanel = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
         $this->render('editSettings', array('model' => $model));
     }

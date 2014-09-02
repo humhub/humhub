@@ -35,8 +35,6 @@
 class User extends HActiveRecordContentContainer implements ISearchable
 {
 
-    public $tourpanel;
-
     /**
      * Authentication Modes
      */
@@ -156,7 +154,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $rules[] = array('email', 'unique', 'caseSensitive' => false, 'className' => 'User');
         $rules[] = array('tags', 'length', 'max' => 100);
         $rules[] = array('username', 'length', 'max' => 25);
-        $rules[] = array('tourpanel', 'safe');
         $rules[] = array('language', 'length', 'max' => 5);
         $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email, last_login', 'safe');
@@ -197,7 +194,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'email' => Yii::t('UserModule.models_User', 'Email'),
             'tags' => Yii::t('UserModule.models_User', 'Tags'),
             'language' => Yii::t('UserModule.models_User', 'Language'),
-            'tourpanel' => Yii::t('UserModule.models_User', 'Hide tour panel on dashboard'),
+
             'created_at' => Yii::t('UserModule.models_User', 'Created At'),
             'created_by' => Yii::t('UserModule.models_User', 'Created by'),
             'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
