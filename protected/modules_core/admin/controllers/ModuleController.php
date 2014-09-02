@@ -270,7 +270,7 @@ class ModuleController extends Controller
         }
 
         $userDefaultModule = null;
-        if ($module->isSpaceModule()) {
+        if ($module->isUserModule()) {
             $userDefaultModule = UserApplicationModule::model()->findByAttributes(array('user_id' => 0, 'module_id' => $moduleId));
             if ($userDefaultModule === null) {
                 $userDefaultModule = new UserApplicationModule();
