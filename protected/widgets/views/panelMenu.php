@@ -7,19 +7,19 @@
             <li><a href="javascript:togglePanelDown('<?php echo $id; ?>');" class="panel-expand" style="display:none;"><i
                         class="fa fa-plus-square"></i> <?php echo Yii::t('base', 'Expand'); ?></a></li>
 
-<!--                <li class="divider"></li>
-                <li><a href="#"><i class="fa fa-pencil"></i> Edit tags </a></li>-->
-            <?php $this->widget('application.widgets.PanelMenuEntryWidget', array()); ?>
+            <?php
+            echo $this->extraMenus;
+            ?>
         </ul>
     </li>
 </ul>
 
-<script type="text/javascript">
+<script type = "text/javascript">
 
-    $( document ).ready(function() {
+    $(document).ready(function() {
 
         // check and set panel state from cookie
-        checkPanelMenuCookie('<?php echo $id; ?>');
+        checkPanelMenuCookie('<?php echo $this->id; ?>');
     });
 
 

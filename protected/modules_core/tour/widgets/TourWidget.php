@@ -15,73 +15,36 @@ class TourWidget extends HWidget
      */
     public function run()
     {
-
-
-        // check if tour is activated for new users
-        if (HSetting::Get('enable', 'tour') == 1) {
-
-            // save in variable, if the tour panel is activated or not
-            $hideTourPanel = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
-
-            // if not...
-            if ($hideTourPanel == 0) {
-
-                // save current module and controller id's
-                $currentModuleId = Yii::app()->controller->module->id;
-                $currentControllerId = Yii::app()->controller->id;
-
-                // check current page
-                if ($currentModuleId == "dashboard" && $currentControllerId == "dashboard") {
-
-                    // load resource files
-                    $this->loadResources();
-
-                    // get the first space in database (should be the welcome space)
-                    $space = Space::model()->find();
-
-                    // render tour view
-                    $this->render('interface', array('space' => $space));
-                }
-
-
-                // check current page
-                if ($currentModuleId == "space" && $currentControllerId == "space" && isset($_GET['tour'])) {
-
-                    // load resource files
-                    $this->loadResources();
-
-                    // render tour view
-                    $this->render('spaces', array());
-                }
-
-
-                // check current page
-                if ($currentModuleId == "user" && $currentControllerId == "profile" && isset($_GET['tour'])) {
-
-                    // load resource files
-                    $this->loadResources();
-
-                    // render tour view
-                    $this->render('profile', array());
-                }
-
-
-                // check current page
-                if ($currentModuleId == "admin" && $currentControllerId == "module" && isset($_GET['tour'])) {
-
-                    // load resource files
-                    $this->loadResources();
-
-                    // render tour view
-                    $this->render('administration', array());
-                }
-
-
-            }
-
+        // Active tour flag not set
+        if (!isset($_GET['tour'])) {
+            return;
         }
 
+        // Tour only possible when we are in a module
+        if (Yii::app()->controller->module === null) {
+            return;
+        }
 
+        // Check if tour is activated by admin and users
+        if (HSetting::Get('enable', 'tour') == 0 || Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour") == 1) {
+            return;
+        }
+
+        $this->loadResources();
+
+        // save current module and controller id's
+        $currentModuleId = Yii::app()->controller->module->id;
+        $currentControllerId = Yii::app()->controller->id;
+
+        if ($currentModuleId == "dashboard" && $currentControllerId == "dashboard") {
+            $this->render('guide_interface');
+        } elseif ($currentModuleId == "space" && $currentControllerId == "space") {
+            $this->render('guide_spaces', array());
+        } elseif ($currentModuleId == "user" && $currentControllerId == "profile") {
+            $this->render('guide_profile', array());
+        } elseif ($currentModuleId == "admin" && $currentControllerId == "module") {
+            $this->render('guide_administration', array());
+        }
     }
 
     /**

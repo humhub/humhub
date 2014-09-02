@@ -76,7 +76,7 @@
     function tourCompleted() {
         // load user spaces
         $.ajax({
-            'url': '<?php echo Yii::app()->createAbsoluteUrl('//tour/tour/TourCompleted', array('section' => 'profile')); ?>',
+            'url': '<?php echo Yii::app()->createAbsoluteUrl('//tour/tour/tourCompleted', array('section' => 'profile')); ?>',
             'cache': false,
             'data': jQuery(this).parents("form").serialize()
         }).done(function () {
