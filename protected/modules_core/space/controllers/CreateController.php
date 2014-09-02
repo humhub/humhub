@@ -7,19 +7,25 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class CreateController extends Controller {
+class CreateController extends Controller
+{
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->redirect($this->createUrl('create/create'));
     }
 
     /**
      * Creates a new Space
-     *
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
 
-        $model = new SpaceCreateForm;
+        if (!Yii::app()->user->canCreateSpace()) {
+            throw new CHttpException(400, 'You are not allowed to create spaces!');
+        }
+
+        $model = new Space('edit');
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'space-create-form') {
@@ -27,32 +33,29 @@ class CreateController extends Controller {
             Yii::app()->end();
         }
 
-        if (isset($_POST['SpaceCreateForm'])) {
-            $_POST['SpaceCreateForm'] = Yii::app()->input->stripClean($_POST['SpaceCreateForm']);
+        if (isset($_POST['Space'])) {
+            $_POST['Space'] = Yii::app()->input->stripClean($_POST['Space']);
 
-            $model->attributes = $_POST['SpaceCreateForm'];
+            $model->attributes = $_POST['Space'];
 
-            if ($model->validate()) {
-
-                $space = new Space();
-                $space->name = $model->title;
-                $space->description = $model->description;
-                $space->join_policy = $model->join_policy;
-                $space->visibility = $model->visibility;
-                $space->save();
+            if (Yii::app()->user->canCreatePublicSpace()) {
+                $model->visibility = Space::VISIBILITY_ALL;
+            } else {
+                $model->visibility = Space::VISIBILITY_NONE;
+            }
+            
+            if ($model->validate() && $model->save()) {
 
                 // Save in this user variable, that the workspace was new created
                 Yii::app()->user->setState('ws', 'created');
 
                 // Redirect to the new created Space
-                $this->htmlRedirect($this->createUrl('//space/space', array('sguid' => $space->guid)));
+                $this->htmlRedirect($model->getUrl());
             }
+            
         }
 
-        $output = $this->renderPartial('create', array('model' => $model));
-        Yii::app()->clientScript->render($output);
-        echo $output;
-        Yii::app()->end();
+        $this->renderPartial('create', array('model' => $model), false, true);
     }
 
 }

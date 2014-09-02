@@ -109,6 +109,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
                 array('website', 'url'),
                 array('description, tags', 'safe'),
                 array('join_policy', 'in', 'range' => array(0, 1, 2)),
+                array('visibility', 'checkVisibility'),
                 array('visibility', 'in', 'range' => array(0, 1, 2)),
             );
 
@@ -178,7 +179,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             'wall_id' => 'Wall',
             'name' => 'Name',
             'description' => 'Description',
-            'website' => 'Website',
+            'website' => 'Website URL (optional)',
             'join_policy' => 'Join Policy',
             'ldap_dn' => 'Ldap DN',
             'visibility' => 'Visibility',
@@ -270,6 +271,40 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             HSearch::getInstance()->addModel($this);
         }
 
+        if ($this->isNewRecord) {
+            $user = User::model()->findByPk($this->created_by);
+
+            // Create new wall record for this space
+            $wall = new Wall();
+            $wall->type = Wall::TYPE_SPACE;
+            $wall->object_model = 'Space';
+            $wall->object_id = $this->id;
+            $wall->save();
+            $this->wall_id = $wall->id;
+            $this->wall = $wall;
+            Space::model()->updateByPk($this->id, array('wall_id' => $wall->id));
+
+            // Auto add creator as admin
+            $membership = new SpaceMembership;
+            $membership->space_id = $this->id;
+            $membership->user_id = $user->id;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
+            $membership->invite_role = 1;
+            $membership->admin_role = 1;
+            $membership->share_role = 1;
+            $membership->save();
+
+            $activity = new Activity;
+            $activity->content->created_by = $user->id;
+            $activity->content->space_id = $this->id;
+            $activity->content->user_id = $user->id;
+            $activity->content->visibility = Content::VISIBILITY_PUBLIC;
+            $activity->created_by = $user->id;
+            $activity->type = "ActivitySpaceCreated";
+            $activity->save();
+            $activity->fire();
+        }
+
         parent::afterSave();
     }
 
@@ -316,47 +351,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         Wall::model()->deleteAllByAttributes(array('id' => $this->wall_id));
 
         return parent::beforeDelete();
-    }
-
-    /**
-     * After Insert, create a Wall and fire some Activity Informations.
-     *
-     * We cannot do this in AfterSave because we need to save() the Space again.
-     *
-     * @return type
-     */
-    public function insert($attributes = null)
-    {
-
-        if (parent::insert($attributes)) {
-
-            // Check we have a wall yet?
-            $this->checkWall();
-
-            $user = User::model()->findByPk($this->created_by);
-
-            // Auto add creator as admin
-            $membership = new SpaceMembership;
-            $membership->space_id = $this->id;
-            $membership->user_id = $user->id;
-            $membership->status = SpaceMembership::STATUS_MEMBER;
-            $membership->invite_role = 1;
-            $membership->admin_role = 1;
-            $membership->share_role = 1;
-            $membership->save();
-
-            $activity = new Activity;
-            $activity->content->created_by = $user->id;
-            $activity->content->space_id = $this->id;
-            $activity->content->user_id = $user->id;
-            $activity->content->visibility = Content::VISIBILITY_PUBLIC;
-            $activity->created_by = $user->id;
-            $activity->type = "ActivitySpaceCreated";
-            $activity->save();
-            $activity->fire();
-
-            return true;
-        }
     }
 
     /**
@@ -471,33 +465,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             return true;
 
         return false;
-    }
-
-    /**
-     * Checks if there is already a wall created for this workspace.
-     * If not, a new wall will be created and automatically assigned.
-     */
-    public function checkWall()
-    {
-
-        // Check if wall exists
-        if ($this->wall == null) {
-
-            // Create new Wall
-            $wall = new Wall();
-            $wall->type = Wall::TYPE_SPACE;
-            $wall->object_model = 'Space';
-            $wall->object_id = $this->id;
-
-
-            $wall->save();
-
-            // Assign Wall
-            $this->wall_id = $wall->id;
-            $this->save();
-
-            $this->wall = $wall;
-        }
     }
 
     /**
@@ -638,6 +605,26 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             return Yii::app()->getController()->createUrl($route, $params, $ampersand);
         } else {
             return Yii::app()->createUrl($route, $params, $ampersand);
+        }
+    }
+
+    /**
+     * Validator for visibility 
+     * 
+     * Used in edit scenario to check if the user really can create spaces
+     * on this visibility.
+     * 
+     * @param type $attribute
+     * @param type $params
+     */
+    public function checkVisibility($attribute, $params)
+    {
+        if (!Yii::app()->user->canCreatePublicSpace() && ($this->$attribute == 1 || $this->$attribute == 2)) {
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'));
+        }
+
+        if (!Yii::app()->user->canCreatePrivateSpace() && $this->$attribute == 0) {
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create private visible spaces!'));
         }
     }
 

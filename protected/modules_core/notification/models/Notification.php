@@ -58,7 +58,7 @@ class Notification extends HActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('class, user_id, created_at, created_by, updated_at, updated_by', 'required'),
+            array('class, user_id', 'required'),
             array('user_id, seen, source_object_id, target_object_id, emailed, space_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('class, source_object_model, target_object_model', 'length', 'max' => 100),
             // The following rule is used by search().

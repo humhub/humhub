@@ -90,20 +90,15 @@ class AdminController extends Controller
 
         if (isset($_POST['Space'])) {
             $_POST['Space'] = Yii::app()->input->stripClean($_POST['Space']);
-
             $model->attributes = $_POST['Space'];
-
             if ($model->validate()) {
                 $model->save();
-
-                // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
-
-                $this->redirect($this->createUrl('admin/edit', array('sguid' => $this->getSpace()->guid)));
+                $this->redirect($model->createUrl('admin/edit'));
             }
         }
 
-        $this->render('edit', array('model' => $model, 'space' => $model));
+        $this->render('edit', array('model' => $model));
     }
 
     /**
@@ -122,7 +117,6 @@ class AdminController extends Controller
 
             // Loop over all users in Form
             foreach ($users as $userGuid) {
-
                 // Get informations
                 if (isset($_POST['user_' . $userGuid])) {
                     $userSettings = Yii::app()->request->getParam('user_' . $userGuid);
@@ -218,7 +212,7 @@ class AdminController extends Controller
 
             // send notification only the recipient decline the invitation
             if (Yii::app()->user->id == $user->id) {
-            SpaceApprovalRequestDeclinedNotification::fire(Yii::app()->user->id, $user, $space);
+                SpaceApprovalRequestDeclinedNotification::fire(Yii::app()->user->id, $user, $space);
             }
         }
 
