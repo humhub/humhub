@@ -332,13 +332,13 @@ class StreamAction extends CAction {
             // Get all Wall Ids where the User is assigned to
             $usersWallId = $this->userWallId;
             $this->sqlWhere .= " AND wall_entry.wall_id IN (
-						SELECT uf.wall_id FROM user_follow
-							LEFT JOIN user uf ON uf.id=user_follow.user_followed_id
-							WHERE user_follow.user_follower_id=:userId AND uf.wall_id is NOT NULL
+						SELECT uf.wall_id FROM follow
+							LEFT JOIN user uf ON uf.id=follow.object_id AND follow.object_model='User'
+							WHERE follow.user_id=:userId AND uf.wall_id is NOT NULL
 						UNION
-						SELECT sf.wall_id FROM space_follow
-							LEFT JOIN space sf ON sf.id=space_follow.space_id
-							WHERE space_follow.user_id=:userId AND sf.wall_id IS NOT NULL
+						SELECT sf.wall_id FROM follow
+							LEFT JOIN space sf ON sf.id=follow.object_id AND follow.object_model='Space'
+							WHERE follow.user_id=:userId AND sf.wall_id IS NOT NULL
 						UNION
 						SELECT sm.wall_id FROM space_membership
 							LEFT JOIN space sm ON sm.id=space_membership.space_id
