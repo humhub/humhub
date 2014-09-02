@@ -40,7 +40,7 @@ class UserHttpSession extends CActiveRecord {
         return array(
             array('id', 'required'),
             array('expire, user_id', 'numerical', 'integerOnly' => true),
-            array('id', 'length', 'max' => 32),
+            array('id', 'length', 'max' => 255),
             array('data', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
