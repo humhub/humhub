@@ -8,7 +8,7 @@
     </div>
     <div class="panel-body">
         <p>
-            <?php echo Yii::t('TourModule.widgets_views_tourPanel', 'Erhalte eine Einführung über die wichtigsten Funktionen mit Hilfe der folgenden Touren:'); ?>
+            <?php echo Yii::t('TourModule.widgets_views_tourPanel', 'Get to know your way around the site\'s most important features with the following guides:'); ?>
         </p>
 
         <?php
@@ -19,11 +19,11 @@
         ?>
 
         <ul class="tour-list">
-            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a href="javascript:startInterfaceTour();"><i class="fa fa-play-circle-o"></i> <strong>Tour: </strong> Übersicht</a></li>
-            <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>"><a id="interface-tour-link" href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid, 'tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Tour: </strong> Spaces</a></li>
-            <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid,'tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Tour: </strong> Benutzerprofil</a></li>
+            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a href="javascript:startInterfaceTour();"><i class="fa fa-play-circle-o"></i> <strong>Guide: </strong> Overview</a></li>
+            <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>"><a id="interface-tour-link" href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $space->guid, 'tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Guide: </strong> Spaces</a></li>
+            <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => Yii::app()->user->guid,'tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Guide: </strong> User profile</a></li>
             <?php if (Yii::app()->user->isAdmin() == true) : ?>
-            <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//admin/module/listOnline', array('tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Tour: </strong> Administration (Modules)</a></li>
+            <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>"><a href="<?php echo Yii::app()->createUrl('//admin/module/listOnline', array('tour' => 'true')); ?>"><i class="fa fa-play-circle-o"></i> <strong>Guide: </strong> Administration (Modules)</a></li>
             <?php endif;?>
         </ul>
     </div>

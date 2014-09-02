@@ -4,7 +4,7 @@
     // Create a new tour
     var administrationTour = new Tour({
         storage: false,
-        template: '<div class="popover tour"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev"><?php echo Yii::t('TourModule.base', '« Prev'); ?></button> <button class="btn btn-sm btn-default" data-role="next"><?php echo Yii::t('TourModule.base', 'Next »'); ?></button>  </div> <button class="btn btn-sm btn-default" data-role="end"><?php echo Yii::t('TourModule.base', 'End tour'); ?></button> </div> </div>',
+        template: '<div class="popover tour"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev"><?php echo Yii::t('TourModule.base', '« Prev'); ?></button> <button class="btn btn-sm btn-default" data-role="next"><?php echo Yii::t('TourModule.base', 'Next »'); ?></button>  </div> <button class="btn btn-sm btn-default" data-role="end"><?php echo Yii::t('TourModule.base', 'End guide'); ?></button> </div> </div>',
         name: 'administration',
         onEnd: function (tour) {
             tourCompleted();
@@ -18,25 +18,19 @@
             orphan: true,
             backdrop: true,
             title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Administration</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', "Als Administrator kannst du hier die komplette Platform verwalten.<br><br>Bis auf die Module, soll hier aber nicht auf jeden Punkt einzeln eingegangen werden, da es zu jedem Punkt kurze Erläuterungen gibt."); ?>"
-        },
-        {
-            element: "#user-profile-image",
-            title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Profile</strong> images'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', ''); ?>",
-            placement: "right"
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', "As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere."); ?>"
         },
         {
             element: ".list-group-item.modules",
             title: "<?php echo Yii::t('TourModule.widgets_views_administration', '<strong>Modules</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'Du befindest dich gerade im Menüpunkt Modules. Hier erhälst du Zugriff auf den HumHub Online-Marketplace, von welchem du eine wachsende Anzahl von Modulen aus der Community on-the-fly installieren kannst.<br><br> Wie schon erwähnt, erweitern Module die Funktionen der Plattform.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.'); ?>",
             placement: "right"
         },
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_administration', "<strong>Hurray!</strong> You're done."); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'This have been the most important things you should know before using the platform.<br><br>We hope, that you and the future users will have a good experience and fun with the platform.<br><br>We are always looking forward for every suggestion or any kind of help to support the project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :)'); ?>"
+            title: "<?php echo Yii::t('TourModule.widgets_views_administration', "<strong>Hurray!</strong> That's all for now."); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_administration', 'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)'); ?>"
         }
 
     ]);

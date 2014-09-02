@@ -5,7 +5,7 @@
     // Create a new tour
     var profileTour = new Tour({
         storage: false,
-        template: '<div class="popover tour"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev"><?php echo Yii::t('TourModule.base', '« Prev'); ?></button> <button class="btn btn-sm btn-default" data-role="next"><?php echo Yii::t('TourModule.base', 'Next »'); ?></button>  </div> <button class="btn btn-sm btn-default" data-role="end"><?php echo Yii::t('TourModule.base', 'End tour'); ?></button> </div> </div>',
+        template: '<div class="popover tour"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev"><?php echo Yii::t('TourModule.base', '« Prev'); ?></button> <button class="btn btn-sm btn-default" data-role="next"><?php echo Yii::t('TourModule.base', 'Next »'); ?></button>  </div> <button class="btn btn-sm btn-default" data-role="end"><?php echo Yii::t('TourModule.base', 'End guide'); ?></button> </div> </div>',
         name: 'profile',
         onEnd: function (tour) {
             tourCompleted();
@@ -18,46 +18,46 @@
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Benutzerprofil</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Dies ist dein öffentliches User-Profil, welches für alle registrierten User sichtbar ist."); ?>"
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>User profile</strong>'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "This is your public user profile, which can be seen by any registered user."); ?>"
         },
         {
             element: "#user-profile-image",
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profilbild</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Ein neues Profilbild kannst hier ganz einfach per Klick oder Drag & Drop hochladen.<br><br>Genauso funktioniert das auch mit dem großen Titelbild.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> photo'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.'); ?>",
             placement: "right"
         },
         {
             element: ".controls-account",
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Account</strong> bearbeiten'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Über diesen Button gelangst du zu deinen Profil- und Accounteinstellungen.<br><br>Hier kannst du dein Profil um weitere Informationen ergänzen.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Edit</strong> account'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Click on this button to update your profile and account settings. You can also add more information to your profile.'); ?>",
             placement: "left"
         },
         {
             element: ".profile-nav-container",
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profilmenü</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Wie auch bei den Spaces, verfügt ein User-Profil über ein Menü, welches mit Hilfe von Modulen erweitert werden kann.<br><br>Welche Module für dein Profil zu Verfügung stehen, siehst du in deinen <strong>Account-Einstellungen</strong> unter <strong>Modules</strong>.'); ?>",
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> menu'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in “Modules” in the account settings menu.'); ?>",
             placement: "right"
         },
         {
             element: "#contentFormBody",
             title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Profile</strong> stream'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Jedes Profil verfügt ebensfalls über eine eigene Pinnwand. User welche dir Folgen, sehen deine Beiträge dann auf ihrem Dashboard.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.'); ?>",
             placement: "bottom"
         },
         <?php if (Yii::app()->user->isAdmin() == true) : ?>
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Finished</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'Hiermit hast du die Tour für das Benutzerprofil abgeschlossen.<br><br>Weiter mit der Tour:<br>'); ?> <a href='javascript:gotoAdministration = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Hurray!</strong> You\'re done!'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />'); ?> <a href='javascript:gotoAdministration = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
         }
         <?php else : ?>
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Hurray!</strong> You\'re done.'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "Hiermit hast du die Tour für das Benutzerprofil abgeschlossen."); ?>"
+            title: "<?php echo Yii::t('TourModule.widgets_views_profile', '<strong>Hurray!</strong> The End.'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_profile', "You've completed the user profile guide!"); ?>"
         }
         <?php endif; ?>
 
