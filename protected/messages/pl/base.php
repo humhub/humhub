@@ -37,8 +37,6 @@ return array (
   'User not found!' => '',
   'Welcome to %appName%' => '',
   'You cannot create public visible content!' => '',
-  'Save' => '@@Zapisz@@',
-  'Welcome to <strong>HumHub</strong>' => '@@Witamy na <strong>HumHub</strong>@@',
   'Account settings' => 'Ustawienia konta',
   'Administration' => 'Administracja',
   'Back to dashboard' => 'Powrót do pulpitu',

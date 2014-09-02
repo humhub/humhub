@@ -20,6 +20,5 @@ return array (
   'Incorrect username/email or password.' => '',
   'Remember me next time' => '',
   'Your account has not been activated by our staff yet.' => '',
-  'Your account is deleted.' => '',
   'Your account is suspended.' => '',
 );

@@ -24,8 +24,6 @@ return array (
   'It looks like you may have taken the wrong turn.' => '',
   'Module is not on this content container enabled!' => '',
   'Welcome to %appName%' => '',
-  'Save' => '@@Speichern@@',
-  'Welcome to <strong>HumHub</strong>' => '@@Willkommen bei <strong>HumHub</strong>@@',
   'Account settings' => 'Kontoeinstellungen',
   'Administration' => 'Verwaltung',
   'Back to dashboard' => 'Zurück zum Dashboard',

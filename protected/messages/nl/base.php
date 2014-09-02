@@ -52,6 +52,4 @@ return array (
   'Welcome to %appName%' => '',
   'You cannot create public visible content!' => '',
   'Your daily summary' => '',
-  'Save' => '@@@@',
-  'Welcome to <strong>HumHub</strong>' => '@@@@',
 );

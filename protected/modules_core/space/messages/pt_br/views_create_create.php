@@ -18,7 +18,6 @@
  */
 return array (
   ' Invite and request' => '',
-  ' Public (Visible)' => '',
   '<strong>Create</strong> new space' => '',
   'Also non-members can see this<br>space, but have no access' => '',
   'Create' => '',
@@ -30,7 +29,7 @@ return array (
   'Only by invite' => '',
   'Please write down a small description for other users.' => '',
   'Private (Invisible)' => '',
-  'Space' => '',
+  'Public (Visible)' => '',
   'This space will be hidden<br>for all non-members' => '',
   'Users can also apply for a<br>membership to this space' => '',
   'Users can be only added<br>by invitation' => '',

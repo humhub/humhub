@@ -7,7 +7,7 @@
                 'message' => 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.',
                 'buttonTrue' => 'Ok',
                 'buttonFalse' => 'Cancel',
-                'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.widgets_views_hideTourPanel', ' Remove panel'),
+                'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.widgets_views_tourPanel', ' Remove panel'),
                 'linkHref' => $this->createUrl("//tour/tour/hidePanel", array("ajax" => 1)),
                 'confirmJS' => '$(".panel-tour").slideToggle("slow")'
                     ), true) . "</li>";

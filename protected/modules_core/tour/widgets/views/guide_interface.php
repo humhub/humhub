@@ -20,8 +20,8 @@
             // step 0
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_welcome_interface', '<strong>Dashboard</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_welcome_interface', "This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here."); ?>"
+            title: "<?php echo Yii::t('TourModule.widgets_views_guide_interface', '<strong>Dashboard</strong>'); ?>",
+            content: "<?php echo Yii::t('TourModule.widgets_views_guide_interface', "This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here."); ?>"
         },
         {
             element: "#icon-notifications",

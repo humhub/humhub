@@ -18,4 +18,6 @@
  */
 return array (
   'Updated by' => '',
+  'You cannot create private visible spaces!' => '',
+  'You cannot create public visible spaces!' => '',
 );

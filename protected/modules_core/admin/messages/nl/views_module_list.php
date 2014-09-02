@@ -24,5 +24,6 @@ return array (
   'Disable' => '',
   'Enable' => '',
   'More info' => '',
+  'Set as default' => '',
   'Uninstall' => '',
 );
