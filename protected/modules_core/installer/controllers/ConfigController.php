@@ -310,7 +310,7 @@ class ConfigController extends Controller
         HSetting::Set('theme', "HumHub");
 
         // Basic
-        HSetting::Set('tour', 1);
+        HSetting::Set('enable', 1, 'tour');
 
 
         // Add Categories
