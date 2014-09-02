@@ -20,5 +20,5 @@
         <li class="footer"><a id="show_more_button" href="<?php echo $this->createUrl('//search/index', array('sguid' => $spaceGuid, 'keyword' => $keyword)); ?>"><?php echo Yii::t('base', 'Show more results') ?></a></li>
     <?php endif; ?>
 <?php else: ?>
-    <li><div style="padding: 10px; 5px; color: #999; font-weight: normal;"><em><?php echo Yii::t('base', 'Nothing found with your input.'); ?></em></div></li>
+    <li><div style="padding: 10px 5px; color: #999; font-weight: normal;"><em><?php echo Yii::t('base', 'Nothing found with your input.'); ?></em></div></li>
 <?php endif; ?>
