@@ -17,7 +17,7 @@ Updating
     - /path/to/humhub/uploads/file
     - /path/to/humhub/uploads/profile_image
     - /path/to/humhub/protected/runtime
-    - /path/to/humhub/protected/config/_settings.php
+    - /path/to/humhub/protected/config/local/_settings.php
     - /path/to/humhub/protected/modules
     - /path/to/humhub/themes (if any)
  Check file permissions (see [Installation](installation.md))
