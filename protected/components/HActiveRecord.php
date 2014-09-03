@@ -32,7 +32,8 @@
  * @package humhub.components
  * @since 0.5
  */
-abstract class HActiveRecord extends CActiveRecord {
+abstract class HActiveRecord extends CActiveRecord
+{
 
     // Avoid Errors when fields not exists
     public $created_at;
@@ -43,7 +44,8 @@ abstract class HActiveRecord extends CActiveRecord {
     /**
      * Inits the active records and registers the event interceptor
      */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
@@ -54,7 +56,8 @@ abstract class HActiveRecord extends CActiveRecord {
     /**
      * Prepares create_time, create_user_id, update_time and update_user_id attributes before performing validation.
      */
-    protected function beforeValidate() {
+    protected function beforeValidate()
+    {
 
         // Check if we got an user object
         if (isset(Yii::app()->user)) {
@@ -70,6 +73,14 @@ abstract class HActiveRecord extends CActiveRecord {
             if ($this->created_by == "")
                 $this->created_by = $userId;
         }
+        
+        if ($userId != 0) {
+            //not a new record, so just set the last updated time and last updated user id
+            $this->updated_at = new CDbExpression('NOW()');
+            if ($this->updated_by == "")
+                $this->updated_by = $userId;
+        }
+
 
         return parent::beforeValidate();
     }
@@ -80,7 +91,8 @@ abstract class HActiveRecord extends CActiveRecord {
      *
      * @return User
      */
-    public function getCreator() {
+    public function getCreator()
+    {
         return User::model()->findByPk($this->created_by);
     }
 
@@ -90,7 +102,8 @@ abstract class HActiveRecord extends CActiveRecord {
      *
      * @return User
      */
-    public function getUpdater() {
+    public function getUpdater()
+    {
         return User::model()->findByPk($this->updated_by);
     }
 
@@ -99,7 +112,8 @@ abstract class HActiveRecord extends CActiveRecord {
      *
      * @return String Unique Id of this record
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         return get_class($this) . "_" . $this->id;
     }
 
