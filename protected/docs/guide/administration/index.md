@@ -13,6 +13,7 @@ Administration Guide/Notes
 - [Console](console.md)
 - [Search](search.md)
 - [X-Sendfile](xsendfile.md)
+- [Timezones](timezones.md)
 
 ## More
 - [Bundled Software](bundled_software.md)
