@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Mark all as seen' => '',
-  'Notifications' => '',
-  'There are no notifications yet.' => '',
+  'Mark all as seen' => 'Alles als gelesen markieren',
+  'Notifications' => 'Mitteilungen',
+  'There are no notifications yet.' => 'Es sind keine Mitteilungen vorhanden.',
 );

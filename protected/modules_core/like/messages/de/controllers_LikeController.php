@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Users</strong> who like this' => '',
-  'Access denied!' => '',
-  'Could not find target class!' => '',
-  'Could not find target record!' => '',
-  'Invalid class given!' => '',
+  '<strong>Users</strong> who like this' => '<strong>Benutzer</strong>, denen das gefällt',
+  'Access denied!' => 'Zugriff verweigert!',
+  'Could not find target class!' => 'Zielklasse kann nicht gefunden werden!',
+  'Could not find target record!' => 'Zieleintrag kann nicht gefunden werden!',
+  'Invalid class given!' => 'Ungültige Klasse gegeben!',
 );

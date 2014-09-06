@@ -17,13 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
-  'Could not find content of addon!' => '',
-  'Could not find requested module!' => '',
-  'Insufficent permissions to create content!' => '',
-  'It looks like you may have taken the wrong turn.' => '',
-  'Module is not on this content container enabled!' => '',
-  'Welcome to %appName%' => '',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Die Quelle des Addons muss eine Instanz von HActiveRecordContent oder HActiveRecordContentAddon sein!',
+  'Could not find content of addon!' => 'Kann den Inhalt des Addons nicht finden!',
+  'Could not find requested module!' => 'Kann gesuchtes Modul nicht finden!',
+  'Insufficent permissions to create content!' => 'Unzureichende Berechtigungen, Inhalte zu erstellen!',
+  'It looks like you may have taken the wrong turn.' => 'Sie haben womöglich den falschen Weg eingeschlagen.',
+  'Module is not on this content container enabled!' => 'Dieses Modul ist nicht in diesem Content Container aktiviert!',
+  'Welcome to %appName%' => 'Willkommen bei %appName%',
   'Account settings' => 'Kontoeinstellungen',
   'Administration' => 'Verwaltung',
   'Back to dashboard' => 'Zurück zum Dashboard',

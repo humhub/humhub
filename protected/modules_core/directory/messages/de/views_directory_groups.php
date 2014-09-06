@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Member</strong> Group Directory' => '',
-  'show all members' => '',
+  '<strong>Member</strong> Group Directory' => '<strong>Benutzer</strong> Gruppen Verzeichnis',
+  'show all members' => 'zeige alle Mitglieder',
 );

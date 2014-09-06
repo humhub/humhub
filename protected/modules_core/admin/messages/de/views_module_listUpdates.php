@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modules</strong> directory' => '<strong>Verzeichnis</strong> der Module',
+  '<strong>Modules</strong> directory' => '<strong>Modul</strong> Verzeichnis',
   'Installed version:' => 'Installierte Version:',
   'Latest compatible Version:' => 'Letzte kompatible Version:',
   'Update' => 'Aktualisieren',
