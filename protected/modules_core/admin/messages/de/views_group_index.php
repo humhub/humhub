@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> groups' => '<strong>Verwaltung</strong> von Gruppen',
+  '<strong>Manage</strong> groups' => '<strong>Verwalte</strong> Gruppen',
   'Description' => 'Beschreibung',
   'Group name' => 'Gruppen Name',
   'Search for description' => 'Suche nach Beschreibung',

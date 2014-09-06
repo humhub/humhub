@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'APC' => '',
-  'Database' => '',
-  'File' => '',
-  'No caching (Testing only!)' => '',
-  'No theme' => '',
+  'APC' => 'APC',
+  'Database' => 'Datenbank',
+  'File' => 'Datei',
+  'No caching (Testing only!)' => 'Kein Caching (Nur zu Testzwecken!)',
+  'No theme' => 'Kein Thema',
   'None - shows dropdown in user registration.' => '',
-  'Saved' => '',
-  'Saved and flushed cache' => '',
+  'Saved' => 'Gespeichert',
+  'Saved and flushed cache' => 'Gespeichert und Cache wurde bereinigt',
 );

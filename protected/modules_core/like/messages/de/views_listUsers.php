@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'User who vote this' => '',
+  'User who vote this' => 'Benutzer, die abgestimmt haben',
 );

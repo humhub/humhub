@@ -17,14 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Base DN' => '',
-  'Enable LDAP Support' => '',
-  'Encryption' => '',
-  'Hostname' => '',
-  'Login Filter' => '',
-  'Password' => '',
-  'Port' => '',
-  'User Filer' => '',
-  'Username' => '',
-  'Username Attribute' => '',
+  'Base DN' => 'Basis DN',
+  'Enable LDAP Support' => 'Aktiviere LDAP Unterstützung',
+  'Encryption' => 'Verschlüsselung',
+  'Hostname' => 'Hostname',
+  'Login Filter' => 'Login Filter',
+  'Password' => 'Passwort',
+  'Port' => 'Port',
+  'User Filer' => 'Benutzer Filter',
+  'Username' => 'Benutzername',
+  'Username Attribute' => 'Benutzer Attribute',
 );

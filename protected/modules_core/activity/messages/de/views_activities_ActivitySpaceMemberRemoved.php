@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% left the space %spaceName%' => '',
-  '%displayName% left this space.' => '',
+  '%displayName% left the space %spaceName%' => '%displayName% hat den Space %spaceName% verlassen',
+  '%displayName% left this space.' => '%displayName% hat diesen Space verlassen.',
 );

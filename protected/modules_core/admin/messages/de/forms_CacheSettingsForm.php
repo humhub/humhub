@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Cache Backend' => '',
-  'Default Expire Time (in seconds)' => '',
-  'PHP APC Extension missing - Type not available!' => '',
-  'PHP SQLite3 Extension missing - Type not available!' => '',
+  'Cache Backend' => 'Cache Backend',
+  'Default Expire Time (in seconds)' => 'Standard Ablaufzeit (in Sekunden)',
+  'PHP APC Extension missing - Type not available!' => 'PHP APC Erweiterung fehlt - Typ nicht verfügbar!',
+  'PHP SQLite3 Extension missing - Type not available!' => 'PHP SQLite3 Erweiterung fehlt - Typ nicht verfügbar!',
 );

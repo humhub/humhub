@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' likes this.' => '',
-  '<strong>You</strong> like this.' => '',
-  '<strong>You</strong><br>' => '',
-  'and {count} more like this.' => '',
+  ' likes this.' => ' gefällt das.',
+  '<strong>You</strong> like this.' => '<strong>Dir</strong> gefällt das.',
+  '<strong>You</strong><br>' => '<strong>Dir</strong><br>',
+  'and {count} more like this.' => 'und {count} anderen gefällt das.',
 );

@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Upload</strong> error' => '',
-  'Close' => '',
+  '<strong>Upload</strong> error' => '<strong>Hochladen</strong> fehlgeschlagen',
+  'Close' => 'Schließen',
 );
