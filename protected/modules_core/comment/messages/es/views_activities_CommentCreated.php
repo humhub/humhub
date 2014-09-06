@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% wrote a new comment ' => '',
+  '%displayName% wrote a new comment ' => '%displayName% hat ein neues Kommentar geschrieben',
 );
