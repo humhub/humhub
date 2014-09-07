@@ -4,12 +4,14 @@ class m140907_140822_zip_field_to_text extends EDbMigration
 {
 	public function up()
 	{
-        $this->alterColumn('profile', 'zip', 'VARCHAR(10) DEFAULT NULL');
+        if (HSetting::isInstalled()) {
+            $this->alterColumn('profile', 'zip', 'VARCHAR(10) DEFAULT NULL');
 
-        $this->update('profile_field', array(
-            'field_type_class'  => 'ProfileFieldTypeText',
-            'field_type_config' => '{"minLength":null,"maxLength":10,"validator":null,"default":null,"regexp":null,"regexpErrorMessage":null}'
-        ), 'internal_name="zip"');
+            $this->update('profile_field', array(
+                'field_type_class'  => 'ProfileFieldTypeText',
+                'field_type_config' => '{"minLength":null,"maxLength":10,"validator":null,"default":null,"regexp":null,"regexpErrorMessage":null}'
+            ), 'internal_name="zip"');
+        }
 	}
 
 	public function down()
