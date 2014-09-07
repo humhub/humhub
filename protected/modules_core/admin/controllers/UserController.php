@@ -176,8 +176,11 @@ class UserController extends Controller {
 
         $user = User::model()->resetScope()->findByPk($id);
 
-        if ($user == null)
+        if ($user == null) {
             throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
+        } elseif (Yii::app()->user->id == $id) {
+            throw new CHttpException(400, Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
+        }
 
         if ($doit == 2) {
 

@@ -71,6 +71,7 @@
                         'deleteOwn' => array
                         (
                             'label' => '<i class="fa fa-times"></i>',
+                            'visible' => '$data->id != Yii::app()->user->id', //cannot delete yourself
                             'imageUrl' => false,
                             'url' => 'Yii::app()->createUrl("//admin/user/delete", array("id"=>$data->id));',
                             'deleteConfirmation' => false,
