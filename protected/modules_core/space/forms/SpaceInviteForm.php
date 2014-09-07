@@ -58,7 +58,7 @@ class SpaceInviteForm extends CFormModel {
     public function attributeLabels() {
         return array(
             'invite' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'Invites'),
-            'inviteExternal' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'New user by e-mail (comma separted)'),
+            'inviteExternal' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'New user by e-mail (comma separated)'),
         );
     }
 
@@ -101,7 +101,7 @@ class SpaceInviteForm extends CFormModel {
     }
 
     /**
-     * Checks a comma separted list of e-mails which should invited to space.
+     * Checks a comma separated list of e-mails which should invited to space.
      * E-Mails needs to be valid and not already registered.
      *
      * @param type $attribute

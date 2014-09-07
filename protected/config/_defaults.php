@@ -117,6 +117,7 @@ return array(
             'es' => 'Spanish*',
             'it' => 'Italian*',
             'tr' => 'Turkish*',
+            'ru' => 'Русский*',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
