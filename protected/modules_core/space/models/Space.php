@@ -271,9 +271,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             HSearch::getInstance()->addModel($this);
         }
 
-        if ($this->isNewRecord) {
-            $user = User::model()->findByPk($this->created_by);
+        $userId = $this->created_by;
 
+        if ($this->isNewRecord) {
             // Create new wall record for this space
             $wall = new Wall();
             $wall->type = Wall::TYPE_SPACE;
@@ -287,7 +287,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             // Auto add creator as admin
             $membership = new SpaceMembership;
             $membership->space_id = $this->id;
-            $membership->user_id = $user->id;
+            $membership->user_id = $userId;
             $membership->status = SpaceMembership::STATUS_MEMBER;
             $membership->invite_role = 1;
             $membership->admin_role = 1;
@@ -295,15 +295,17 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $membership->save();
 
             $activity = new Activity;
-            $activity->content->created_by = $user->id;
+            $activity->content->created_by = $userId;
             $activity->content->space_id = $this->id;
-            $activity->content->user_id = $user->id;
+            $activity->content->user_id = $userId;
             $activity->content->visibility = Content::VISIBILITY_PUBLIC;
-            $activity->created_by = $user->id;
+            $activity->created_by = $userId;
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
         }
+
+        Yii::app()->cache->delete('userSpaces_' . $userId);
 
         parent::afterSave();
     }
