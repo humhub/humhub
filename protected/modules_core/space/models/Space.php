@@ -332,8 +332,12 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         // Remove all Follwers
         Follow::model()->deleteAllByAttributes(array('object_id' => $this->id, 'object_model' => 'Space'));
 
-        // Delete all memberships
-        SpaceMembership::model()->deleteAllByAttributes(array('space_id' => $this->id));
+        //Delete all memberships:
+        //First select, then delete - done to make sure that SpaceMembership::beforeDelete() is triggered
+        $spaceMemberships = SpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id));
+        foreach ($spaceMemberships as $spaceMembership) {
+            $spaceMembership->delete();
+        }
 
         UserInvite::model()->deleteAllByAttributes(array('space_invite_id' => $this->id));
 
