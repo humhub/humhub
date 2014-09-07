@@ -11,7 +11,6 @@ Installation
     - /protected/modules
     - /protected/config/local
     - /uploads/*
-    - 
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 
