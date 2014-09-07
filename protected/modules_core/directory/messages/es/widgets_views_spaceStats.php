@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>New/strong> spaces' => '',
+  '<strong>New</strong> spaces' => '',
   '<strong>Space</strong> stats' => '',
   'Most members' => '',
   'Private spaces' => '',
