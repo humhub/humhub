@@ -412,8 +412,9 @@ class ConfigController extends Controller
         $field->sort_order = 500;
         $field->profile_field_category_id = $cGeneral->id;
         $field->is_system = true;
-        $field->field_type_class = 'ProfileFieldTypeNumber';
+        $field->field_type_class = 'ProfileFieldTypeText';
         if ($field->save()) {
+            $field->fieldType->maxLength = 10;
             $field->fieldType->save();
         }
 
