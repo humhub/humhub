@@ -64,8 +64,8 @@
 
         <?php if (HSetting::Get('enabled', 'authentication_ldap')): ?>
             <div class="form-group">
-                <?php echo $form->labelEx($group, 'ldapDn'); ?>
-                <?php echo $form->textField($group, 'ldapDn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN'))); ?>
+                <?php echo $form->labelEx($group, 'ldap_dn'); ?>
+                <?php echo $form->textField($group, 'ldap_dn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN'))); ?>
             </div>
         <?php endif; ?>
 
