@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Hide panel on dashboard' => '',
-  'Invalid language!' => '',
-  'Language' => '',
-  'Tags' => '',
+  'Hide panel on dashboard' => 'Auf dem Dashboard verstecken',
+  'Invalid language!' => 'Ungültige Sprache!',
+  'Language' => 'Sprache',
+  'Tags' => 'Tags',
 );

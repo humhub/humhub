@@ -17,15 +17,15 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>New</strong> member request' => '',
-  '<strong>Space</strong> members' => '',
-  'Accept invite' => '',
-  'Become member' => '',
-  'Cancel pending membership application' => '',
-  'Deny invite' => '',
-  'Follow' => '',
-  'Invite' => '',
-  'Leave space' => '',
-  'Request membership' => '',
-  'Unfollow' => '',
+  '<strong>New</strong> member request' => '<strong>Neuer</strong> Mitglieds-Antrag',
+  '<strong>Space</strong> members' => '<strong>Mitglieder</strong> des Raums',
+  'Accept invite' => 'Einladung annehmen',
+  'Become member' => 'Mitglied werden',
+  'Cancel pending membership application' => 'Offenen Mitglieds-Antrag zurückziehen',
+  'Deny invite' => 'Einladung verweigern',
+  'Follow' => 'Folgen',
+  'Invite' => 'Einladen',
+  'Leave space' => 'Raum verlassen',
+  'Request membership' => 'Mitgliedschaft beantragen',
+  'Unfollow' => 'Entfolgen',
 );

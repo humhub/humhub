@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Account</strong> registration' => '',
+  '<strong>Account</strong> registration' => '<strong>Konto</strong>-Registrierung',
 );

@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Invalid link! Please make sure that you entered the entire url.' => '',
-  'Save profile' => '',
-  'Saved' => '',
-  'The entered e-mail address is already in use by another user.' => '',
-  'You cannot change your e-mail address here.' => '',
-  'You cannot change your password here.' => '',
+  'Invalid link! Please make sure that you entered the entire url.' => 'Ungültiger Link! Bitte vergewissern Sie sich, dass Sie die ganze URL eingegeben haben.',
+  'Save profile' => 'Profil speichern',
+  'Saved' => 'Gespeichert',
+  'The entered e-mail address is already in use by another user.' => 'Die eingetragene Email-Adresse ist bereits durch einen anderen Benutzer in Gebrauch.',
+  'You cannot change your e-mail address here.' => 'Sie können Ihre Email-Adresse hier nicht ändern.',
+  'You cannot change your password here.' => 'Sie können Ihr Passwort hier nicht ändern.',
 );

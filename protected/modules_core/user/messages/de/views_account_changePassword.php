@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Change</strong> password' => '',
-  'Save' => '',
+  '<strong>Change</strong> password' => '<strong>Passwort</strong> ändern',
+  'Save' => 'Speichern',
 );
