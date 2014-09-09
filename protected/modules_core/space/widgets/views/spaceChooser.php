@@ -26,7 +26,7 @@
             <form action="" class="dropdown-controls"><input type="text" id="space-menu-search"
                                                              class="form-control"
                                                              autocomplete="off"
-                                                             placeholder="Search">
+                                                             placeholder="<?php echo Yii::t('SpaceModule.widgets_views_spaceChooser','Search'); ?>">
 
                 <div class="search-reset" id="space-search-reset"><i
                         class="fa fa-times-circle"></i></div>
