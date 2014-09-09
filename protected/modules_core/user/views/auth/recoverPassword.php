@@ -23,13 +23,13 @@ $form = $this->beginWidget('CActiveForm', array(
 
                 <div class="form-group">
 <?php //echo $form->labelEx($model, 'email');  ?>
-                    <?php echo $form->textField($model, 'email', array('class' => 'form-control', 'id' => 'email_txt', 'placeholder' => 'your email')); ?>
+                    <?php echo $form->textField($model, 'email', array('class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword','your email'))); ?>
                     <?php echo $form->error($model, 'email'); ?>
                 </div>
 
                 <div class="form-group">
 <?php $this->widget('CCaptcha'); ?>                            
-                    <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'placeholder' => 'enter security code above')); ?>
+                    <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword','enter security code above'))); ?>
                     <?php echo $form->error($model, 'verifyCode'); ?>
                 </div>
 
