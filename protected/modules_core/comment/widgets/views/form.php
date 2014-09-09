@@ -14,7 +14,7 @@
     <?php echo CHtml::hiddenField('model', $modelName); ?>
     <?php echo CHtml::hiddenField('id', $modelId); ?>
 
-    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => 'Write a new comment...')); ?>
+    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form','Write a new comment...'))); ?>
 
     <?php
     echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
