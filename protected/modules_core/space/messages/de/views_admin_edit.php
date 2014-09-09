@@ -17,17 +17,20 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>General</strong> space settings' => '<strong>Allgemein</strong> Raum-Einstellungen',
+  '<strong>General</strong> space settings' => '<strong>Allgemeine</strong> Raum-Einstellungen',
   'Archive' => 'Archivieren',
   'Choose the kind of membership you want to provide for this workspace.' => 'Wählen Sie den Typ der Mitgliedschaft, den Sie für diesen Raum zur Verfügung stellen wollen.',
   'Choose the security level for this workspace to define the visibleness.' => 'Wählen Sie die Sicherheitsstufe für diese Raum, um die Sichtbarkeit zu bestimmen.',
   'Delete' => 'Löschen',
+  'Description' => 'Beschreibung',
   'For everyone' => 'Für jeden',
   'Invisible' => 'Unsichtbar',
   'Invite and request' => 'Einladung und Anfrage',
+  'Join Policy' => 'Mitgliedschaft',
   'Only by invite' => 'Nur Einladung',
   'Save' => 'Speichern',
   'Unarchive' => 'Aus dem Archiv',
+  'Visibility' => 'Sichtbarkeit',
   'Visible for all' => 'Sichtbar für alle',
   'Visible for network users' => 'Sichtbar für Netzwerkbenutzer',
 );
