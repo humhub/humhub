@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Activated' => '',
-  'Are you sure? *ALL* module data for this space will be deleted!' => '',
-  'Configure' => '',
-  'Currently there are no modules available for this space!' => '',
-  'Disable' => '',
-  'Enable' => '',
-  'Enhance this space with modules.' => '',
-  'Modules' => '',
+  'Activated' => 'Aktiviert',
+  'Are you sure? *ALL* module data for this space will be deleted!' => 'Sind Sie sicher? Alle Daten dieses Raumes werden gelöscht!',
+  'Configure' => 'Konfigurieren',
+  'Currently there are no modules available for this space!' => 'Aktuell sind keine Modul für diesen Raum verfügbar',
+  'Disable' => 'Deaktivieren',
+  'Enable' => 'Aktivieren',
+  'Enhance this space with modules.' => 'Diesen Raum mit Modulen erweitern',
+  'Modules' => 'Module',
 );
