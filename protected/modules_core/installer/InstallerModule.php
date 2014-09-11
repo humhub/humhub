@@ -53,13 +53,14 @@ class InstallerModule extends HWebModule
     public function checkDBConnection()
     {
 
+
         try {
-            // Check DB Connection
-            Yii::app()->db->getServerVersion();
-            return true;
-            $success = true;
+            // call setActive with true to open connection.
+            Yii::app()->db->setActive(true);
+            // return the current connection state.
+            return Yii::app()->db->getActive();
         } catch (Exception $e) {
-            
+
         }
 
         return false;
