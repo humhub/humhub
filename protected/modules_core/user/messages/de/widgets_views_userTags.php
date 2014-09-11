@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>User</strong> tags' => '',
+  '<strong>User</strong> tags' => '<strong>Benutzer</strong>-Tags',
 );

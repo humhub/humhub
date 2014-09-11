@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modify</strong> space image' => '',
-  'Close' => '',
-  'Save' => '',
-  'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '',
+  '<strong>Modify</strong> space image' => '<strong>Raum-Bild</strong> ändern',
+  'Close' => 'Schließen',
+  'Save' => 'Speichern',
+  'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => 'Bitte wählen Sie den Bereich des Bildes aus, den sie nutzen wollen, und klicken auf <strong>Speichern</strong>.',
 );

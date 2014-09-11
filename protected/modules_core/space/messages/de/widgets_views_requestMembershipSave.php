@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Choose a space... ' => '',
-  'Close' => '',
-  'Request workspace membership' => '',
-  'Your request was successfully submitted to the workspace administrators.' => '',
+  'Choose a space... ' => 'Raum wählen...',
+  'Close' => 'Schließen',
+  'Request workspace membership' => 'Raum-Mitgliedschaft beantragen',
+  'Your request was successfully submitted to the workspace administrators.' => 'Ihr Antrag wurde den Raum-Administratoren übermittelt.',
 );

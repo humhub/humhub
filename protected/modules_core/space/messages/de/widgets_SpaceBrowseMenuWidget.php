@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Admin' => '',
-  'Members' => '',
-  'My Space List' => '',
-  'My space summary' => '',
-  'Space directory' => '',
-  'Spaces' => '',
+  'Admin' => 'Administrator',
+  'Members' => 'Mitglieder',
+  'My Space List' => 'Meine Raumliste',
+  'My space summary' => 'Meine Raumzusammenfassung',
+  'Space directory' => 'Raum-Verzeichnis',
+  'Spaces' => 'Räume',
 );

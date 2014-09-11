@@ -17,16 +17,16 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Please</strong> sign in' => '',
-  '<strong>Sign</strong> up' => '',
-  'Create a new one.' => '',
-  'Don\'t have an account? Join the network by entering your e-mail address.' => '',
-  'Forgot your password?' => '',
-  'If you\'re already a member, please login with your username/email and password.' => '',
-  'Register' => '',
-  'Remember me next time' => '',
-  'Sign in' => '',
-  'email' => '',
-  'password' => '',
-  'username or email' => '',
+  '<strong>Please</strong> sign in' => '<strong>Einloggen</strong>',
+  '<strong>Sign</strong> up' => '<strong>Registrieren</strong>',
+  'Create a new one.' => 'Ein neues erstellen.',
+  'Don\'t have an account? Join the network by entering your e-mail address.' => 'Noch kein Benutzerkonto? Werden Sie Mitglied, indem Sie Ihre Email-Adresse eingeben.',
+  'Forgot your password?' => 'Passwort vergessen?',
+  'If you\'re already a member, please login with your username/email and password.' => 'Wenn Sie bereits Mitglied sind, loggen Sie sich bitte mit Benutzername/Email-Adresse und Passwort ein.',
+  'Register' => 'Registrieren',
+  'Remember me next time' => 'Mich nächstes Mal wiedererkennen',
+  'Sign in' => 'Einloggen',
+  'email' => 'Email-Adresse',
+  'password' => 'Passwort',
+  'username or email' => 'Benutzername oder Email-Adresse',
 );

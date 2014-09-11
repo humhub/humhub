@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Incorrect username/email or password.' => '',
-  'Remember me next time' => '',
-  'Your account has not been activated by our staff yet.' => '',
-  'Your account is suspended.' => '',
+  'Incorrect username/email or password.' => 'Ungültiger Benutzername/Email-Adresse oder Passwort',
+  'Remember me next time' => 'Beim nächsten Mal wiedererkennen',
+  'Your account has not been activated by our staff yet.' => 'Ihr Konto wurde noch nicht von einem Administrator freigeschaltet.',
+  'Your account is suspended.' => 'Ihr Konto ist gesperrt.',
 );

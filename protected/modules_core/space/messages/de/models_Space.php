@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Updated by' => '',
-  'You cannot create private visible spaces!' => '',
-  'You cannot create public visible spaces!' => '',
+  'Updated by' => 'Aktualisiert durch',
+  'You cannot create private visible spaces!' => 'Sie können keine privaten Räume erstellen!',
+  'You cannot create public visible spaces!' => 'Sie können keine öffentlichen Räume erstellen!',
 );

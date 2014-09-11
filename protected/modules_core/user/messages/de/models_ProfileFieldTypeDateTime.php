@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Date(-time) field options' => '',
+  'Date(-time) field options' => 'Datums(-Uhrzeit)feld-Optionen',
 );

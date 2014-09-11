@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Change</strong> E-mail' => '',
-  'Your e-mail address has been successfully changed to {email}.' => '',
+  '<strong>Change</strong> E-mail' => '<strong>Email-Adresse</strong> ändern',
+  'Your e-mail address has been successfully changed to {email}.' => 'Ihre Email-Adresse wurde erfolgreich in {email} geändert.',
 );

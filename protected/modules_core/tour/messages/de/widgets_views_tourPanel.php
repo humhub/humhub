@@ -18,10 +18,10 @@
  */
 return array (
   ' Remove panel' => '',
-  '<strong>Getting</strong> Started' => '',
-  '<strong>Guide:</strong> Administration (Modules)' => '',
-  '<strong>Guide:</strong> Overview' => '',
-  '<strong>Guide:</strong> Spaces' => '',
-  '<strong>Guide:</strong> User profile' => '',
-  'Get to know your way around the site\'s most important features with the following guides:' => '',
+  '<strong>Getting</strong> Started' => '<strong>Hilfe beim Start</strong>',
+  '<strong>Guide:</strong> Administration (Modules)' => '<strong>Anleitung:</strong> Administration (Module)',
+  '<strong>Guide:</strong> Overview' => '<strong>Anleitung:</strong> Überblick',
+  '<strong>Guide:</strong> Spaces' => '<strong>Anleitung:</strong> Räume',
+  '<strong>Guide:</strong> User profile' => '<strong>Anleitung:</strong> Benutzerprofil',
+  'Get to know your way around the site\'s most important features with the following guides:' => 'Erhalten Sie einen Überblick über die wichtigsten Features der Seite mit Hilfe der folgenden Anleitungen:',
 );

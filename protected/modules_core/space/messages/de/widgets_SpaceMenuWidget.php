@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> menu' => '',
-  'Admin' => '',
-  'Members' => '',
-  'Stream' => '',
+  '<strong>Space</strong> menu' => '<strong>Raum</strong>-Menü',
+  'Admin' => 'Administrator',
+  'Members' => 'Mitglieder',
+  'Stream' => 'Stream',
 );
