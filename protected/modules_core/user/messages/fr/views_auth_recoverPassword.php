@@ -21,4 +21,6 @@ return array (
   'Back' => '',
   'Get new password' => '',
   'Just enter your e-mail address. We´ll send you a new one!' => '',
+  'your email' => '',
+  'enter security code above' => '',
 );

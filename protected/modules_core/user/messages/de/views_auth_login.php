@@ -29,4 +29,5 @@ return array (
   'email' => '',
   'password' => '',
   'username or email' => '',
+  'password' => '',
 );
