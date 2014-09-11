@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not delete user who is a space owner! Name of Space: {spaceName}' => '',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Rauminhaber kann nicht gelöscht werden! Name des Raumes: {spaceName}',
 );

@@ -17,14 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Email</strong> Notifications' => '',
-  'Activities' => '',
-  'Always' => '',
-  'Daily summary' => '',
-  'Get an email, by every activity from other users you follow or work<br>together in workspaces.' => '',
-  'Get an email, when other users comment or like your posts.' => '',
-  'Never' => '',
-  'Notifications' => '',
-  'Save' => '',
-  'When I´m offline' => '',
+  '<strong>Email</strong> Notifications' => '<strong>Email</strong>-Benachrichtigungen',
+  'Activities' => 'Aktivitäten',
+  'Always' => 'Sofort',
+  'Daily summary' => 'Tägliche Zusammenfassung',
+  'Get an email, by every activity from other users you follow or work<br>together in workspaces.' => 'Erhalten Sie eine Email bei jeder Aktivität anderer Benutzer, denen Sie folgen oder mit denen Sie in Räumen zusammenarbeiten.',
+  'Get an email, when other users comment or like your posts.' => 'Erhalten Sie eine Email, wenn andere Benutzer Ihre Beiträge kommentieren oder bewerten.',
+  'Never' => 'Nie',
+  'Notifications' => 'Benachrichtigungen',
+  'Save' => 'Speichern',
+  'When I´m offline' => 'Wenn ich offline bin',
 );

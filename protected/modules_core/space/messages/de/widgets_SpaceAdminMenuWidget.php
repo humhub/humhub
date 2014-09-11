@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> preferences' => '',
-  'Archive' => '',
-  'Back to workspace' => '',
-  'Delete' => '',
-  'General' => '',
-  'Members' => '',
-  'Modules' => '',
+  '<strong>Space</strong> preferences' => '<strong>Raum</strong>-Einstellungen',
+  'Archive' => 'Archiv',
+  'Back to workspace' => 'Zurück zum Arbeitsplatz',
+  'Delete' => 'Löschen',
+  'General' => 'Allgemein',
+  'Members' => 'Mitglieder',
+  'Modules' => 'Module',
 );

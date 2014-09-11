@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Account</strong> settings' => '',
-  'Delete account' => '',
-  'E-Mail' => '',
-  'Modules' => '',
-  'Notifications' => '',
-  'Password' => '',
-  'Profile' => '',
-  'Settings' => '',
+  '<strong>Account</strong> settings' => '<strong>Konto</strong>-Einstellungen',
+  'Delete account' => 'Konto löschen',
+  'E-Mail' => 'Email',
+  'Modules' => 'Module',
+  'Notifications' => 'Benachrichtigungen',
+  'Password' => 'Passwort',
+  'Profile' => 'Profil',
+  'Settings' => 'Einstellungen',
 );

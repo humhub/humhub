@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Space not found!' => '',
+  'Space not found!' => 'Raum nicht gefunden!',
 );

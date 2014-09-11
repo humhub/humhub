@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Sign up' => '',
-  'Welcome to %appName%' => '',
-  'Welcome to %appName%. Please click on the button below to proceed with your registration.' => '',
+  'Sign up' => 'Registrieren',
+  'Welcome to %appName%' => 'Willkommen bei %appName%',
+  'Welcome to %appName%. Please click on the button below to proceed with your registration.' => 'Willkommen bei %appName%. Bitte klicken Sie auf den Button unten, um mit der Registrierung fortzufahren.',
 );

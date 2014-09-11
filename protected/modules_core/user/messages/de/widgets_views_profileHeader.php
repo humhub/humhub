@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Something</strong> went wrong' => '',
-  'Edit account' => '',
-  'Follow' => '',
-  'Followers' => '',
-  'Following' => '',
-  'Ok' => '',
-  'Spaces' => '',
-  'Unfollow' => '',
+  '<strong>Something</strong> went wrong' => 'Ein <strong>Fehler</strong> ist aufgetreten',
+  'Edit account' => 'Benutzerkonto bearbeiten',
+  'Follow' => 'Folgen',
+  'Followers' => 'Followers',
+  'Following' => 'Folgend',
+  'Ok' => 'Ok',
+  'Spaces' => 'Räume',
+  'Unfollow' => 'Entfolgen',
 );
