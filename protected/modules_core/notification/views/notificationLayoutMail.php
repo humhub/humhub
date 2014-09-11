@@ -35,7 +35,7 @@
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createUrl('user/profile', array('guid' => $creator->guid)); ?>">
+                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
                                                             <img
                                                                 src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
                                                                 width="50"
