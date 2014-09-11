@@ -69,7 +69,7 @@ abstract class HActiveRecord extends CActiveRecord
 
         if ($this->isNewRecord) {
             // set the create date, last updated date and the user doing the creating
-            $this->created_at = $this->created_at = new CDbExpression('NOW()');
+            $this->created_at = $this->updated_at = new CDbExpression('NOW()');
             if ($this->created_by == "")
                 $this->created_by = $userId;
         }
