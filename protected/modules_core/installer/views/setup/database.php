@@ -55,7 +55,7 @@
     <?php } else { ?>
                 <div class="alert alert-danger">
                     <strong><?php echo Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br />
-                <?php echo $errorMessage; ?>
+                <?php echo HHtml::encode($errorMessage); ?>
                 </div>
             <?php } ?>
 <?php } ?>
