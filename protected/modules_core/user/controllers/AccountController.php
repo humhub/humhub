@@ -52,6 +52,10 @@ class AccountController extends Controller
 
         $model = new AccountSettingsForm();
         $model->language = Yii::app()->user->getModel()->language;
+        if ($model->language == "") {
+            $model->language = HSetting::Get('defaultLanguage');
+        }
+        
         $model->tags = Yii::app()->user->getModel()->tags;
         $model->show_introduction_tour = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
