@@ -295,6 +295,8 @@ class HSetting extends HActiveRecord
 
     /**
      * After saving check if its required to rewrite the configuration file.
+     * 
+     * @todo Find better way to detect when we need to rewrite the local config
      */
     public function afterSave()
     {
@@ -305,6 +307,7 @@ class HSetting extends HActiveRecord
         if ($this->module_id != 'mailing' &&
                 $this->module_id != 'cache' &&
                 $this->name != 'name' &&
+                $this->name != 'defaultLanguage' &&
                 $this->name != 'theme'
         ) {
             return;
@@ -325,6 +328,9 @@ class HSetting extends HActiveRecord
         // Add Application Name to Configuration
         $config['name'] = HSetting::Get('name');
 
+        // Add Default language
+        $config['language'] = HSetting::Get('defaultLanguage');
+        
         // Add Caching
         $cacheClass = HSetting::Get('type', 'cache');
         if (!$cacheClass) {
