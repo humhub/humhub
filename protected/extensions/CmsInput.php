@@ -42,7 +42,7 @@ class CmsInput extends CApplicationComponent
     protected $defaultCleanMethod   = 'stripClean';
     
     // the Codeigniter Xss Filter object.
-    protected $CI_Security;
+    protected $security;
     
     // array() holding the original $_POST.
     protected $originalPost = array();
@@ -103,7 +103,7 @@ class CmsInput extends CApplicationComponent
      */
     public function xssClean($str, $isImage=false)
     {
-        return $this->getCISecurity()->xss_clean($str, $isImage);
+        return $this->getSecurity()->xss_clean($str, $isImage);
     }
 
     /**
@@ -292,7 +292,7 @@ class CmsInput extends CApplicationComponent
      */
     public function sanitizeFilename($file)
     {
-        return $this->getCISecurity()->sanitize_filename($file);
+        return $this->getSecurity()->sanitize_filename($file);
     } 
 
     /**
@@ -414,17 +414,19 @@ class CmsInput extends CApplicationComponent
     }
     
     /**
-     * CmsInput::getCISecurity()
+     * CmsInput::getSecurity()
      * 
-     * @return
+     * @return Security
      */
-    private function getCISecurity()
+    private function getSecurity()
     {
-        if($this->CI_Security!==null)
-            return $this->CI_Security;
-        Yii::import('application.vendors.Codeigniter.CI_Security');
-        $this->CI_Security=new CI_Security;
-        return $this->CI_Security;
+        if($this->security !== null) {
+            return $this->security;
+        }
+
+        $this->security = new Security();
+
+        return $this->security;
     }
     
     /**
