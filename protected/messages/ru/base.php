@@ -17,17 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon source must be instance of HActiveRecordContent или HActiveRecordContentAddon!',
-  'Could not determine content container!' => 'Не удалось определить контейнер контента!',
-  'Could not find content of addon!' => 'Не удалось найти содержимое дополнения!',
-  'Module is not on this content container enabled!' => 'Модуль не включён в этом контейнере контента',
-  'Welcome to %appName%' => 'Добро пожаловать в %appName%',
-  'Save' => '@@Сохранить@@',
-  'Welcome to <strong>HumHub</strong>' => '@@Добро пожаловать в <strong>HumHub</strong>@@',
   'Account settings' => 'Настройки аккаунта',
   'Administration' => 'Администрирование',
   'Back to dashboard' => 'Вернуться на главную',
   'Collapse' => 'Свернуть',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon source must be instance of HActiveRecordContent или HActiveRecordContentAddon!',
+  'Could not determine content container!' => 'Не удалось определить контейнер контента!',
+  'Could not find content of addon!' => 'Не удалось найти содержимое дополнения!',
   'Could not find requested module!' => 'Не удалось найти запрашиваемый модуль!',
   'Delete' => 'Удалить',
   'Email settings' => 'Настройки Е-маил',
@@ -40,6 +36,7 @@ return array (
   'Latest news' => 'Последние новости',
   'Logout' => 'Выйти',
   'Menu' => 'Меню',
+  'Module is not on this content container enabled!' => 'Модуль не включён в этом контейнере контента',
   'My profile' => 'Мой профиль',
   'New profile image' => 'Ваше нсовое изображение',
   'Nothing found with your input.' => 'Ничего не найдено по вашему запросу.',
@@ -52,6 +49,7 @@ return array (
   'Space not found!' => 'Пространство не найдено!',
   'User Approvals' => 'Подтверждение пользователей',
   'User not found!' => 'Пользователь не найден!',
+  'Welcome to %appName%' => 'Добро пожаловать в %appName%',
   'You cannot create public visible content!' => 'Вы не можете создать публично доступный контент!',
   'Your daily summary' => 'Ваш дневной итог',
 );

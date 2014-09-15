@@ -17,6 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'enter security code above' => '',
+  'your email' => '',
   '<strong>Password</strong> recovery' => '<strong>Passwort</strong>-Wiederherstellung!',
   'Back' => 'Zurück',
   'Get new password' => 'Neues Passwort erhalten',

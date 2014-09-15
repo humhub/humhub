@@ -17,6 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Follow' => '',
+  'Unfollow' => '',
   '<strong>Something</strong> went wrong' => '<strong>Что-то</strong> пошло не так',
   'Edit account' => 'Редактировать аккаунт',
   'Followers' => 'Подписчиков',
