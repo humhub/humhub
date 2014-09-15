@@ -50,36 +50,34 @@ class AccountController extends Controller
     public function actionEditSettings()
     {
 
-        // Load current user model in edit mode
-        $model = User::model()->findByPk(Yii::app()->user->id);
-        $model->scenario = 'edit';
-
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-editAccount-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
+        $model = new AccountSettingsForm();
+        $model->language = Yii::app()->user->getModel()->language;
+        if ($model->language == "") {
+            $model->language = HSetting::Get('defaultLanguage');
         }
+        
+        $model->tags = Yii::app()->user->getModel()->tags;
+        $model->show_introduction_tour = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
 
-        if (isset($_POST['User'])) {
 
-            $_POST['User'] = Yii::app()->input->stripClean($_POST['User']);
-            $model->attributes = $_POST['User'];
+        if (isset($_POST['AccountSettingsForm'])) {
+
+            $_POST['AccountSettingsForm'] = Yii::app()->input->stripClean($_POST['AccountSettingsForm']);
+            $model->attributes = $_POST['AccountSettingsForm'];
 
             if ($model->validate()) {
 
-                // Create User
-                $model->save();
+                Yii::app()->user->getModel()->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
 
-                // Reload User in Session
+                $user = Yii::app()->user->getModel();
+                $user->language = $model->language;
+                $user->tags = $model->tags;
+                $user->save();
+
                 Yii::app()->user->reload();
 
-                // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
-
                 $this->refresh();
-
-                // form inputs are valid, do something here
-                return;
             }
         }
 
@@ -103,7 +101,7 @@ class AccountController extends Controller
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
         if (!$user->isModuleEnabled($moduleId)) {
-            $user->installModule($moduleId);
+            $user->enableModule($moduleId);
         }
 
         $this->redirect($this->createUrl('//user/account/editModules', array()));
@@ -116,8 +114,8 @@ class AccountController extends Controller
         $user = Yii::app()->user->getModel();
         $moduleId = Yii::app()->request->getParam('moduleId', "");
 
-        if ($user->isModuleEnabled($moduleId)) {
-            $user->uninstallModule($moduleId);
+        if ($user->isModuleEnabled($moduleId) && $user->canDisableModule($moduleId)) {
+            $user->disableModule($moduleId);
         }
 
         $this->redirect($this->createUrl('//user/account/editModules', array()));
@@ -177,9 +175,9 @@ class AccountController extends Controller
             throw new CHttpException(500, 'This is not a local account! You cannot delete it. (e.g. LDAP)!');
         }
 
-        foreach (SpaceMembership::GetUserSpaces() as $workspace) {
+        foreach (SpaceMembership::GetUserSpaces() as $space) {
             // Oups, we are owner in this workspace!
-            if ($workspace->isSpaceOwner($user->id)) {
+            if ($space->isSpaceOwner($user->id)) {
                 $isSpaceOwner = true;
             }
         }
@@ -328,6 +326,119 @@ class AccountController extends Controller
         }
 
         $this->render('changePassword', array('model' => $userPassword));
+    }
+
+    /**
+     * Crops the banner image of the user
+     */
+    public function actionCropBannerImage()
+    {
+
+        $model = new CropProfileImageForm;
+        $profileImage = new ProfileBannerImage(Yii::app()->user->guid);
+
+        if (isset($_POST['CropProfileImageForm'])) {
+            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
+            $model->attributes = $_POST['CropProfileImageForm'];
+            if ($model->validate()) {
+                $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
+                $this->htmlRedirect(Yii::app()->user->getModel()->getUrl());
+            }
+        }
+
+        $this->renderPartial('cropBannerImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()), false, true);
+    }
+
+    /**
+     * Handle the banner image upload
+     */
+    public function actionBannerImageUpload()
+    {
+
+        $model = new UploadProfileImageForm();
+
+        $json = array();
+
+        $files = CUploadedFile::getInstancesByName('bannerfiles');
+        $file = $files[0];
+        $model->image = $file;
+
+        if ($model->validate()) {
+
+            $json['error'] = false;
+
+            $profileImage = new ProfileBannerImage(Yii::app()->user->guid);
+            $profileImage->setNew($model->image);
+
+            $json['name'] = "";
+            $json['url'] = $profileImage->getUrl();
+            $json['size'] = $model->image->getSize();
+            $json['deleteUrl'] = "";
+            $json['deleteType'] = "";
+        } else {
+            $json['error'] = true;
+            $json['errors'] = $model->getErrors();
+        }
+
+
+        return $this->renderJson(array('files' => $json));
+    }
+
+    /**
+     * Handle the profile image upload
+     */
+    public function actionProfileImageUpload()
+    {
+
+        $model = new UploadProfileImageForm();
+
+        $json = array();
+
+        //$model->image = CUploadedFile::getInstance($model, 'image');
+        $files = CUploadedFile::getInstancesByName('profilefiles');
+        $file = $files[0];
+        $model->image = $file;
+
+        if ($model->validate()) {
+
+            $json['error'] = false;
+
+            $profileImage = new ProfileImage(Yii::app()->user->guid);
+            $profileImage->setNew($model->image);
+
+            $json['name'] = "";
+            $json['url'] = $profileImage->getUrl();
+            $json['size'] = $model->image->getSize();
+            $json['deleteUrl'] = "";
+            $json['deleteType'] = "";
+        } else {
+            $json['error'] = true;
+            $json['errors'] = $model->getErrors();
+        }
+
+
+        return $this->renderJson(array('files' => $json));
+    }
+
+    /**
+     * Crops the profile image of the user
+     */
+    public function actionCropProfileImage()
+    {
+
+        $model = new CropProfileImageForm;
+        $profileImage = new ProfileImage(Yii::app()->user->guid);
+
+        if (isset($_POST['CropProfileImageForm'])) {
+            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
+            $model->attributes = $_POST['CropProfileImageForm'];
+            if ($model->validate()) {
+                $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
+                $this->htmlRedirect(Yii::app()->user->getModel()->getUrl());
+            }
+        }
+
+        $this->renderPartial('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()), false, true);
     }
 
 }

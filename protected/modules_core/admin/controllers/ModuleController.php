@@ -28,6 +28,7 @@ class ModuleController extends Controller
 {
 
     public $subLayout = "/_layout";
+    private $_onlineModuleManager = null;
 
     /**
      * @return array action filters
@@ -187,9 +188,9 @@ class ModuleController extends Controller
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not uninstall module first! Module is protected.'));
         }
 
-        $onlineModules = new OnlineModuleManager();
+        $onlineModules = $this->getOnlineModuleManager();
         $onlineModules->update($moduleId);
-        
+
         $this->redirect(Yii::app()->createUrl('admin/module/list'));
     }
 
@@ -198,8 +199,9 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
-        $onlineModules = new OnlineModuleManager();
+        $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules();
+
         $this->render('listOnline', array('modules' => $modules));
     }
 
@@ -208,23 +210,10 @@ class ModuleController extends Controller
      */
     public function actionListUpdates()
     {
+        $onlineModules = $this->getOnlineModuleManager();
+        $modules = $onlineModules->getModuleUpdates();
 
-        $updates = array();
-
-        $onlineModules = new OnlineModuleManager();
-        foreach ($onlineModules->getModules() as $moduleId => $moduleInfo) {
-
-            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::app()->moduleManager->isInstalled($moduleId)) {
-
-                $module = Yii::app()->moduleManager->getModule($moduleId);
-
-                if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
-                    $updates[$moduleId] = $moduleInfo;
-                }
-            }
-        }
-
-        $this->render('listUpdates', array('modules' => $updates));
+        $this->render('listUpdates', array('modules' => $modules));
     }
 
     /**
@@ -252,24 +241,81 @@ class ModuleController extends Controller
     }
 
     /**
-     * Returns informations about a online not installed module
+     * Sets default enabled/disabled on User or/and Space Modules 
      * 
      * @throws CHttpException
      */
-    public function actionInfoOnline()
+    public function actionSetAsDefault()
     {
 
         $moduleId = Yii::app()->request->getQuery('moduleId');
+        $module = Yii::app()->moduleManager->getModule($moduleId);
 
-        $onlineModules = new OnlineModuleManager();
-        $moduleInfo = $onlineModules->getModuleInfo($moduleId);
-
-        if (!isset($moduleInfo['latestVersion'])) {
-            throw new CException(Yii::t('AdminModule.controllers_ModuleController', "No module version found!"));
+        if ($module == null) {
+            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
-        $this->renderPartial('info', array('name' => $moduleInfo['latestVersion']['name'], 'description' => $moduleInfo['latestVersion']['description'], 'content' => $moduleInfo['latestVersion']['README.md']), false, true);
+        $model = new ModuleSetAsDefaultForm();
+
+        $spaceDefaultModule = null;
+        if ($module->isSpaceModule()) {
+            $spaceDefaultModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => 0, 'module_id' => $moduleId));
+            if ($spaceDefaultModule === null) {
+                $spaceDefaultModule = new SpaceApplicationModule();
+                $spaceDefaultModule->module_id = $moduleId;
+                $spaceDefaultModule->space_id = 0;
+                $spaceDefaultModule->state = SpaceApplicationModule::STATE_DISABLED;
+            }
+            $model->spaceDefaultState = $spaceDefaultModule->state;
+        }
+
+        $userDefaultModule = null;
+        if ($module->isUserModule()) {
+            $userDefaultModule = UserApplicationModule::model()->findByAttributes(array('user_id' => 0, 'module_id' => $moduleId));
+            if ($userDefaultModule === null) {
+                $userDefaultModule = new UserApplicationModule();
+                $userDefaultModule->module_id = $moduleId;
+                $userDefaultModule->user_id = 0;
+                $userDefaultModule->state = UserApplicationModule::STATE_DISABLED;
+            }
+            $model->userDefaultState = $userDefaultModule->state;
+        }
+
+
+        if (isset($_POST['ModuleSetAsDefaultForm'])) {
+
+
+            $_POST['ModuleSetAsDefaultForm'] = Yii::app()->input->stripClean($_POST['ModuleSetAsDefaultForm']);
+            $model->attributes = $_POST['ModuleSetAsDefaultForm'];
+
+            if ($model->validate()) {
+
+                if ($module->isSpaceModule()) {
+                    $spaceDefaultModule->state = $model->spaceDefaultState;
+                    $spaceDefaultModule->save();
+                }
+
+                if ($module->isUserModule()) {
+                    $userDefaultModule->state = $model->userDefaultState;
+                    $userDefaultModule->save();
+                }
+
+                // close modal
+                $this->renderModalClose();
+            }
+        }
+
+        $this->renderPartial('setAsDefault', array('module' => $module, 'model' => $model), false, true);
     }
 
+    public function getOnlineModuleManager()
+    {
+
+        if ($this->_onlineModuleManager === null) {
+            $this->_onlineModuleManager = new OnlineModuleManager();
+        }
+
+        return $this->_onlineModuleManager;
+    }
 
 }

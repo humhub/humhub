@@ -105,21 +105,23 @@ class HSetting extends HActiveRecord
         if ($moduleId != "") {
             $params['module_id'] = $moduleId;
         } else {
-            $condition = "module_id IS NULL";
+            $condition = "module_id IS NULL or module_id = ''";
         }
 
         $record = HSetting::model()->findByAttributes($params, $condition);
 
         if ($record == null) {
             $record = new HSetting;
-        } else {
-            $expireTime = 3600;
-            if ($record->name != 'expireTime' && $record->module_id != "cache")
-                $expireTime = HSetting::Get('expireTime', 'cache');
-
-            Yii::app()->cache->set($cacheId, $record, $expireTime);
-            RuntimeCache::Set($cacheId, $record);
+            $record->name = $name;
+            $record->module_id = $moduleId;
         }
+
+        $expireTime = 3600;
+        if ($record->name != 'expireTime' && $record->module_id != "cache")
+            $expireTime = HSetting::Get('expireTime', 'cache');
+
+        Yii::app()->cache->set($cacheId, $record, $expireTime);
+        RuntimeCache::Set($cacheId, $record);
 
         return $record;
     }
@@ -180,9 +182,8 @@ class HSetting extends HActiveRecord
         if ($moduleId != "")
             $record->module_id = $moduleId;
 
-        if ($value == "") {
-            if (!$record->isNewRecord)
-                $record->delete();
+        if ($value == "" && !$record->isNewRecord) {
+            $record->delete();
         } else {
             $record->save();
         }
@@ -237,6 +238,7 @@ class HSetting extends HActiveRecord
     public function getCacheId()
     {
         return "HSetting_" . $this->name . "_" . $this->module_id;
+        
     }
 
     /**
@@ -253,6 +255,10 @@ class HSetting extends HActiveRecord
     {
 
         $this->clearCache();
+        
+        if ($this->module_id === "") {
+            $this->module_id = new CDbExpression('NULL'); 
+        }
 
         if ($this->hasAttribute('created_by') && empty($this->created_by))
             $this->created_by = 0;
@@ -271,10 +277,7 @@ class HSetting extends HActiveRecord
      */
     public function afterDelete()
     {
-
-        $cacheId = $this->getCacheId();
-        Yii::app()->cache->delete($cacheId);
-        RuntimeCache::Remove($cacheId);
+        $this->clearCache();
 
         parent::afterDelete();
 
@@ -292,6 +295,8 @@ class HSetting extends HActiveRecord
 
     /**
      * After saving check if its required to rewrite the configuration file.
+     * 
+     * @todo Find better way to detect when we need to rewrite the local config
      */
     public function afterSave()
     {
@@ -302,6 +307,7 @@ class HSetting extends HActiveRecord
         if ($this->module_id != 'mailing' &&
                 $this->module_id != 'cache' &&
                 $this->name != 'name' &&
+                $this->name != 'defaultLanguage' &&
                 $this->name != 'theme'
         ) {
             return;
@@ -322,6 +328,9 @@ class HSetting extends HActiveRecord
         // Add Application Name to Configuration
         $config['name'] = HSetting::Get('name');
 
+        // Add Default language
+        $config['language'] = HSetting::Get('defaultLanguage');
+        
         // Add Caching
         $cacheClass = HSetting::Get('type', 'cache');
         if (!$cacheClass) {
@@ -403,11 +412,10 @@ class HSetting extends HActiveRecord
         $content .= "; ?" . ">";
 
         file_put_contents($configFile, $content);
-        
+
         if (function_exists('opcache_reset')) {
             opcache_invalidate($configFile);
         }
-            
     }
 
     /**

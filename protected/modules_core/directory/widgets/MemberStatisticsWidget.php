@@ -28,7 +28,8 @@ class MemberStatisticsWidget extends HWidget {
         $statsMessageEntries = 0;
         if (Yii::app()->moduleManager->isEnabled('mail'))
             $statsMessageEntries = MessageEntry::model()->count();
-        $statsUserFollow = UserFollow::model()->count();
+
+        $statsUserFollow = Follow::model()->countByAttributes(array('object_model'=>'User'));
 
         // Render widgets view
         $this->render('memberStats', array(

@@ -21,57 +21,71 @@
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'admin-editGroup-form',
+            'id' => 'admin-group-form',
             'enableAjaxValidation' => false,
         ));
         ?>
 
-        <?php echo $form->errorSummary($model); ?>
+        <?php echo $form->errorSummary($group); ?>
 
         <div class="form-group">
-            <?php echo $form->labelEx($model, 'name'); ?>
-            <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Group name'))); ?>
+            <?php echo $form->labelEx($group, 'name'); ?>
+            <?php echo $form->textField($group, 'name', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Group name'))); ?>
         </div>
 
         <div class="form-group">
-            <?php echo $form->labelEx($model, 'description'); ?>
-            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Description'))); ?>
+            <?php echo $form->labelEx($group, 'description'); ?>
+            <?php echo $form->textArea($group, 'description', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Description'))); ?>
         </div>
 
-        <?php echo $form->labelEx($model, 'defaultSpaceGuid'); ?>
-        <?php echo $form->textField($model, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>
+        <?php echo $form->labelEx($group, 'defaultSpaceGuid'); ?>
+        <?php echo $form->textField($group, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>
 
         <?php
         $this->widget('application.modules_core.space.widgets.SpacePickerWidget', array(
             'inputId' => 'space_select',
             'maxSpaces' => 1,
-            'model' => $model,
+            'model' => $group,
             'attribute' => 'defaultSpaceGuid'
         ));
         ?>
 
-        <?php echo $form->labelEx($model, 'admins'); ?>
-        <?php echo $form->textArea($model, 'admins', array('class' => 'span12', 'id' => 'user_select')); ?>
+        <?php echo $form->labelEx($group, 'adminGuids'); ?>
+        <?php echo $form->textArea($group, 'adminGuids', array('class' => 'span12', 'id' => 'user_select')); ?>
         <?php
-
         $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
             'inputId' => 'user_select',
             'maxUsers' => 2,
-            // Mit diesen neuen Werten, kann man das Widget an ein Form Feld binden
-            // Somit ist es in der lage, der aktuellen Wert via PHP auszulesen
-            // Theoretisch könnte man sich evtl. auch damit da DropDownId Attribut sparen.
-            // Müssen wir mal ausprobieren
-            'model' => $model, // CForm Instanz
-            'attribute' => 'admins' // Attribut davon
+            'model' => $group,
+            'attribute' => 'adminGuids',
+            'placeholderText' => 'Add a user'
         ));
         ?>
 
         <?php if (HSetting::Get('enabled', 'authentication_ldap')): ?>
             <div class="form-group">
-                <?php echo $form->labelEx($model, 'ldapDn'); ?>
-                <?php echo $form->textField($model, 'ldapDn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN'))); ?>
+                <?php echo $form->labelEx($group, 'ldap_dn'); ?>
+                <?php echo $form->textField($group, 'ldap_dn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN'))); ?>
             </div>
         <?php endif; ?>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($group, 'can_create_public_spaces'); ?>
+                    <?php echo $group->getAttributeLabel('can_create_public_spaces'); ?>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($group, 'can_create_private_spaces'); ?>
+                    <?php echo $group->getAttributeLabel('can_create_private_spaces'); ?>
+                </label>
+            </div>
+        </div>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 

@@ -17,14 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Created at' => '',
-  'Created by' => '',
-  'Description' => '',
+  'Default Space' => 'Standard-Raum',
+  'Description' => 'Beschreibung',
+  'Group Administrators' => 'Gruppen-Administratoren',
   'ID' => '',
-  'Invalid space ID' => '',
   'LDAP DN' => '',
-  'Name' => '',
-  'Space ID or GUID' => '',
-  'Updated at' => '',
-  'Updated by' => '',
+  'Members can create private spaces' => 'Mitglieder können private Räume erstellen',
+  'Members can create public spaces' => 'Mitglieder können öffentliche Räume erstellen',
+  'Name' => 'Name',
 );

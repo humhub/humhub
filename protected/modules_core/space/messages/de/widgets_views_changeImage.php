@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Change image' => '',
-  'Current space image' => '',
+  'Change image' => 'Bild ändern',
+  'Current space image' => 'Aktuelles Raum-Bild',
 );

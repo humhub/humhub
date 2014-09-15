@@ -24,7 +24,7 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'defaultLanguage'); ?>
-            <?php echo $form->dropDownList($model, 'defaultLanguage', Yii::app()->getLanguages(), array('class' => 'form-control', 'readonly' => HSetting::IsFixed('defaultLanguage'))); ?>
+            <?php echo $form->dropDownList($model, 'defaultLanguage', Yii::app()->params['availableLanguages'], array('class' => 'form-control', 'readonly' => HSetting::IsFixed('defaultLanguage'))); ?>
         </div>
 
 

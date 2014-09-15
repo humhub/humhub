@@ -9,6 +9,7 @@
  * @package humhub.modules_core.user.views
  * @since 0.5
  */
+$this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong> sign in');
 ?>
 
 
@@ -99,26 +100,26 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         // set cursor to login field
         $('#login_username').focus();
     })
 
     // Shake panel after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
-    $('#login-form').removeClass('bounceIn');
-    $('#login-form').addClass('shake');
-    $('#register-form').removeClass('bounceInLeft');
-    $('#app-title').removeClass('fadeIn');
-    <?php } ?>
+<?php if ($form->errorSummary($model) != null) { ?>
+        $('#login-form').removeClass('bounceIn');
+        $('#login-form').addClass('shake');
+        $('#register-form').removeClass('bounceInLeft');
+        $('#app-title').removeClass('fadeIn');
+<?php } ?>
 
     // Shake panel after wrong validation
-    <?php if ($form->errorSummary($registerModel) != null) { ?>
-    $('#register-form').removeClass('bounceInLeft');
-    $('#register-form').addClass('shake');
-    $('#login-form').removeClass('bounceIn');
-    $('#app-title').removeClass('fadeIn');
-    <?php } ?>
+<?php if ($form->errorSummary($registerModel) != null) { ?>
+        $('#register-form').removeClass('bounceInLeft');
+        $('#register-form').addClass('shake');
+        $('#login-form').removeClass('bounceIn');
+        $('#app-title').removeClass('fadeIn');
+<?php } ?>
 
 </script>
 

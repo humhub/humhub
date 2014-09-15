@@ -42,7 +42,7 @@ class GroupAdmin extends HActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_id, group_id, created_at, created_by, updated_at, updated_by', 'required'),
+            array('user_id, group_id', 'required'),
             array('user_id, group_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.

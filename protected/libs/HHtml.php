@@ -292,7 +292,7 @@ class HHtml extends CHtml
     {
         // load js for datetimepicker component
         Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->baseUrl . '/js/moment.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END

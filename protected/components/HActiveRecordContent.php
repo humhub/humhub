@@ -19,7 +19,7 @@
  */
 
 /**
- * HActiveRecordContent is the base AR for all content models.
+ * HActiveRecordContent is the base AR for all content records.
  *
  * Each model which represents a piece of content should derived from it.
  * (e.g. Post, Question, Task, Note, ...)
@@ -27,8 +27,8 @@
  * It automatically binds a Content model to each instance.
  *
  * The Content Model is responsible for:
- *  - Content to User/Space Binding
- *  - Access Controlling
+ *  - Content to Container (User/Space) Binding
+ *  - Access Controls
  *  - Wall Integration
  *  - ...
  * (See Content Model for more details.)
@@ -42,6 +42,15 @@
  */
 class HActiveRecordContent extends HActiveRecord
 {
+
+    /**
+     * Scopes for User Related selector
+     */
+    const SCOPE_USER_RELEATED_MINE = 1;
+    const SCOPE_USER_RELEATED_SPACES = 2;
+    const SCOPE_USER_RELEATED_FOLLOWED_SPACES = 3;
+    const SCOPE_USER_RELEATED_FOLLOWED_USERS = 4;
+    const SCOPE_USER_RELEATED_OWN_PROFILE = 5;
 
     /**
      * Should this content automatically added to the wall.
@@ -195,26 +204,77 @@ class HActiveRecordContent extends HActiveRecord
     }
 
     /**
-     * Scope to limit for a given content container
+     * Scope to limit returned content to given content container.
+     * It also respects visibility of content against current user.
      * 
      * @param HActiveRecordContentContainer $container
      */
     public function contentContainer($container)
     {
+        if ($container == null) {
+            throw new CException("No container given!");
+        }
 
         $criteria = new CDbCriteria();
         $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
 
         if ($container instanceof Space) {
-            $criteria->condition = 'content.space_id=' . $container->id;
+            $criteria->join .= " LEFT JOIN space_membership ON content.space_id=space_membership.space_id AND space_membership.user_id=:userId";
+            $criteria->condition = "content.space_id=" . $container->id;
+            $criteria->condition .= " AND ((space_membership.status=3 AND content.visibility=0) OR content.visibility=1)";
         } elseif ($container instanceof User) {
             $criteria->condition = 'content.user_id=' . $container->id . ' AND (content.space_id="" OR content.space_id IS NULL)';
+            $criteria->condition .= ' AND (content.user_id=:userId OR content.visibility=1)';
         } else {
             throw new CException("Could not determine container type!");
         }
 
+        $criteria->params[':userId'] = Yii::app()->user->id;
         $this->getDbCriteria()->mergeWith($criteria);
 
+        return $this;
+    }
+
+    /**
+     * Scope to find user related content accross content containers.
+     * 
+     * @since 0.9
+     * @param array $includes Array of self::SCOPE_USER_RELATED_*.
+     */
+    public function userRelated($includes = array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_SPACES))
+    {
+        $criteria = new CDbCriteria();
+        $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
+
+        // Attach selectors
+        $selectorSql = array();
+
+        if (in_array(HActiveRecordContent::SCOPE_USER_RELEATED_MINE, $includes)) {
+            $selectorSql[] = 'content.user_id=' . Yii::app()->user->id;
+        }
+
+        if (in_array(HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE, $includes)) {
+            $selectorSql[] = 'content.user_id=' . Yii::app()->user->id . ' and content.space_id IS NULL';
+        }
+        if (in_array(self::SCOPE_USER_RELEATED_SPACES, $includes)) {
+            $selectorSql[] = 'content.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
+        }
+        if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_SPACES, $includes)) {
+            $selectorSql[] = 'content.visibility=1 AND content.space_id IN (SELECT object_id FROM follow sf WHERE sf.object_model="Space" AND sf.user_id=' . Yii::app()->user->id . ')';
+        }
+        if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_USERS, $includes)) {
+            $selectorSql[] = 'content.visibility=1 AND content.space_id IS NULL AND content.user_id IN (SELECT object_id FROM follow uf WHERE uf.object_model="User" AND uf.user_id=' . Yii::app()->user->id . ')';
+        }
+
+        if (count($selectorSql) != 0) {
+            $criteria->condition .= "(" . join(') OR (', $selectorSql) . ")";
+        } else {
+            // If none valid include is given, ensure returned data is empty
+            $criteria->condition .= " 1=2 ";
+            Yii::log("userRelated Scope called without valid includes!", CLogger::LEVEL_WARNING);
+        }
+
+        $this->getDbCriteria()->mergeWith($criteria);
         return $this;
     }
 

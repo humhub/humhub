@@ -22,7 +22,8 @@
  * @package humhub.modules_core.activity.models
  * @since 0.5
  */
-class Activity extends HActiveRecordContent {
+class Activity extends HActiveRecordContent
+{
 
     public $autoAddToWall = false;
 
@@ -31,7 +32,8 @@ class Activity extends HActiveRecordContent {
      *
      * @return type
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
@@ -45,21 +47,24 @@ class Activity extends HActiveRecordContent {
      * @param string $className active record class name.
      * @return Activity the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'activity';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -82,7 +87,8 @@ class Activity extends HActiveRecordContent {
      * @param Mixed $content Instance of HActiveRecordContent or HActiveRecordContentAddon
      * @return Activity Prepared activity for given $object
      */
-    public static function CreateForContent($object) {
+    public static function CreateForContent($object)
+    {
 
         $activity = new Activity;
 
@@ -114,7 +120,8 @@ class Activity extends HActiveRecordContent {
      * to the underlying workspace or user wall
      *
      */
-    public function fire() {
+    public function fire()
+    {
 
         if ($this->content->container instanceof Space) {
 
@@ -136,7 +143,8 @@ class Activity extends HActiveRecordContent {
     /**
      * Gets the Wall Output
      */
-    public function getWallOut() {
+    public function getWallOut()
+    {
         return Yii::app()->getController()->widget('application.modules_core.activity.widgets.ActivityWidget', array('activity' => $this), true);
     }
 
@@ -145,7 +153,8 @@ class Activity extends HActiveRecordContent {
      *
      * @return type
      */
-    public function getMailOut() {
+    public function getMailOut()
+    {
         $controller = new CController('MailX');
 
         // Determine View

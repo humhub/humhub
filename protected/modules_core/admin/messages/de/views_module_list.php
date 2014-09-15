@@ -17,12 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modules</strong> directory' => '',
-  'Are you sure? *ALL* module data will be lost!' => '',
-  'Are you sure? *ALL* module related data and files will be lost!' => '',
-  'Configure' => '',
-  'Disable' => '',
-  'Enable' => '',
-  'More info' => '',
-  'Uninstall' => '',
+  'Set as default' => 'Als Standard festlegen',
+  '<strong>Modules</strong> directory' => '<strong>Modul</strong> Verzeichnis',
+  'Are you sure? *ALL* module data will be lost!' => 'Bist Du sicher? *ALLE* Modul Daten gehen verloren!',
+  'Are you sure? *ALL* module related data and files will be lost!' => 'Bist Du sicher? *ALLE* Modul abhängigen Daten und Dateien gehen verloren!',
+  'Configure' => 'Konfigurieren',
+  'Disable' => 'Deaktivieren',
+  'Enable' => 'Aktivieren',
+  'More info' => 'Mehr Informationen',
+  'Uninstall' => 'Deinstallieren',
 );

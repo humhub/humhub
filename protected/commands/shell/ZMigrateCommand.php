@@ -51,6 +51,9 @@ class ZMigrateCommand extends EMigrateCommand
         $args = array('yiic', 'migrate', '--interactive=0');
         ob_start();
         $runner->run($args);
+
+        Yii::app()->db->schema->refresh();
+
         return htmlentities(ob_get_clean(), null, Yii::app()->charset);
     }
 
@@ -93,6 +96,29 @@ class ZMigrateCommand extends EMigrateCommand
             $migration->setCommand($this);
         }
         return $migration;
+    }
+
+    protected function getMigrationHistory($limit)
+    {
+        $db = $this->getDbConnection();
+        
+        $db->schema->refresh();
+        
+        // Checking for migration table without throwing an error
+        if (!array_key_exists($this->migrationTable, $db->schema->getTables())) {
+            
+            echo 'Creating migration history table "' . $this->migrationTable . '"...';
+            $db->createCommand()->createTable($this->migrationTable, array(
+                'version' => 'string NOT NULL PRIMARY KEY',
+                'apply_time' => 'integer',
+                'module' => 'VARCHAR(32)',
+            ));
+            echo "done.\n";
+            
+            
+        }
+        
+        return parent::getMigrationHistory($limit);
     }
 
     public function run($args)

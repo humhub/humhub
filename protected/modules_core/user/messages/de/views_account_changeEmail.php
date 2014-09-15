@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Change</strong> E-mail' => '',
-  'Save' => '',
+  '<strong>Change</strong> E-mail' => '<strong>Email-Adresse</strong> ändern',
+  'Save' => 'Speichern',
 );

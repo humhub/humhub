@@ -4,6 +4,7 @@ Yii::app()->moduleManager->register(array(
     'id' => 'space',
     'class' => 'application.modules_core.space.SpaceModule',
     'import' => array(
+        'application.modules_core.space.behaviors.*',
         'application.modules_core.space.widgets.*',
         'application.modules_core.space.models.*',
         'application.modules_core.space.notifications.*',

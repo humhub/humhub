@@ -42,16 +42,14 @@
                             <?php endif; ?>
 
                             <?php if (!Yii::app()->moduleManager->isInstalled($module['id'])): ?>
-                                &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listOnline', 'Install'), $this->createUrl('install', array('moduleId' => $module['id']))); ?>
+                                &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listOnline', 'Install'), $this->createUrl('install', array('moduleId' => $module['id'])), array('style'=>'font-weight:bold')); ?>
                             <?php endif; ?>
 
                         <?php else : ?>
                             &middot; <span
                                 style="color:red"><?php echo Yii::t('AdminModule.views_module_listOnline', 'No compatible module version found!'); ?></span>
                         <?php endif; ?>
-
-                        &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_listOnline', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
-
+                        &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], array('target' => '_blank')); ?>
                     </div>
                 </div>
             </div>

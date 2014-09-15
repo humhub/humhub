@@ -9,7 +9,7 @@
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
             'id' => 'user-grid',
-            'dataProvider' => $model->resetScope()->notDeleted()->search(),
+            'dataProvider' => $model->resetScope()->search(),
             'filter' => $model,
             'itemsCssClass' => 'table table-hover',
             // 'loadingCssClass' => 'loader',
@@ -71,6 +71,7 @@
                         'deleteOwn' => array
                         (
                             'label' => '<i class="fa fa-times"></i>',
+                            'visible' => '$data->id != Yii::app()->user->id', //cannot delete yourself
                             'imageUrl' => false,
                             'url' => 'Yii::app()->createUrl("//admin/user/delete", array("id"=>$data->id));',
                             'deleteConfirmation' => false,

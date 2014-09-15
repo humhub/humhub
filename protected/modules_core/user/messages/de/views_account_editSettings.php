@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>User</strong> settings' => '',
-  'Save' => '',
+  '<strong>User</strong> settings' => '<strong>Benutzer</strong>-Einstellungen',
+  'Getting Started' => 'Loslegen',
+  'Save' => 'Speichern',
 );

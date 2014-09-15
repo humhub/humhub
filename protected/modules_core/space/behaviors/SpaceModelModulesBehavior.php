@@ -21,13 +21,16 @@
 /**
  * SpaceModelModuleBehavior handles all space model relating moduling methods.
  * (Install, Uninstall modules)
- * 
+ *
  * @since 0.6
  * @package humhub.modules_core.space.behaviors
  * @author luke
  */
 class SpaceModelModulesBehavior extends CActiveRecordBehavior
 {
+
+    public $_enabledModules = null;
+    public $_availableModules = null;
 
     /**
      * Collects a list of all modules which are available for this space
@@ -36,35 +39,61 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
      */
     public function getAvailableModules()
     {
-        $modules = array();
+
+        if ($this->_availableModules !== null) {
+            return $this->_availableModules;
+        }
+
+        $this->_availableModules = array();
 
         foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $module) {
-            if (array_key_exists('SpaceModuleBehavior', $module->behaviors())) {
-                $modules[$module->getId()] = $module;
+            if ($module->isSpaceModule()) {
+                $this->_availableModules[$module->getId()] = $module;
             }
         }
 
-        return $modules;
+        return $this->_availableModules;
     }
 
     /**
-     * Returns an array of enabled workspace modules
+     * Returns an array of enabled space modules
      *
      * @return array
      */
     public function getEnabledModules()
     {
 
-        $modules = array();
-        foreach (SpaceApplicationModule::model()->findAllByAttributes(array('space_id' => $this->getOwner()->id)) as $SpaceModule) {
-            $moduleId = $SpaceModule->module_id;
+        if ($this->_enabledModules !== null) {
+            return $this->_enabledModules;
+        }
 
-            if (Yii::app()->moduleManager->isEnabled($moduleId)) {
-                $modules[] = $moduleId;
+        $this->_enabledModules = array();
+
+        $availableModules = $this->getAvailableModules();
+        $defaultStates = SpaceApplicationModule::getStates();
+        $states = SpaceApplicationModule::getStates($this->getOwner()->id);
+
+        // Get a list of all enabled module ids
+        foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
+
+            // Ensure module Id is available
+            if (!array_key_exists($id, $availableModules)) {
+                continue;
+            }
+
+            if (isset($defaultStates[$id]) && $defaultStates[$id] == SpaceApplicationModule::STATE_FORCE_ENABLED) {
+                // Forced enabled globally
+                $this->_enabledModules[] = $id;
+            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == SpaceApplicationModule::STATE_ENABLED) {
+                // No local state -> global default on
+                $this->_enabledModules[] = $id;
+            } elseif (isset($states[$id]) && $states[$id] == SpaceApplicationModule::STATE_ENABLED) {
+                // Locally enabled
+                $this->_enabledModules[] = $id;
             }
         }
 
-        return $modules;
+        return $this->_enabledModules;
     }
 
     /**
@@ -74,25 +103,13 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
      */
     public function isModuleEnabled($moduleId)
     {
-
-        // Not enabled globally
-        if (!array_key_exists($moduleId, $this->getAvailableModules())) {
-            return false;
-        }
-
-        // Not enabled at space
-        $module = SpaceApplicationModule::model()->findByAttributes(array('module_id' => $moduleId, 'space_id' => $this->getOwner()->id));
-        if ($module == null) {
-            return false;
-        }
-
-        return true;
+        return in_array($moduleId, $this->getEnabledModules());
     }
 
     /**
-     * Installs a Module
+     * Enables a Module
      */
-    public function installModule($moduleId)
+    public function enableModule($moduleId)
     {
 
         // Not enabled globally
@@ -102,15 +119,19 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::log("Space->installModule(" . $moduleId . ") module is already enabled");
+            Yii::log("Space->enableModule(" . $moduleId . ") module is already enabled");
             return false;
         }
 
         // Add Binding
-        $SpaceModule = new SpaceApplicationModule();
-        $SpaceModule->module_id = $moduleId;
-        $SpaceModule->space_id = $this->getOwner()->id;
-        $SpaceModule->save();
+        $spaceModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        if ($spaceModule == null) {
+            $spaceModule = new SpaceApplicationModule();
+            $spaceModule->space_id = $this->getOwner()->id;
+            $spaceModule->module_id = $moduleId;
+        }        
+        $spaceModule->state = SpaceApplicationModule::STATE_ENABLED;
+        $spaceModule->save();
 
         $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->enableSpaceModule($this->getOwner());
@@ -118,10 +139,20 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
         return true;
     }
 
+    public function canDisableModule($id)
+    {
+        $defaultStates = SpaceApplicationModule::getStates(0);
+        if (isset($defaultStates[$id]) && $defaultStates[$id] == SpaceApplicationModule::STATE_FORCE_ENABLED) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Uninstalls a Module
      */
-    public function uninstallModule($moduleId)
+    public function disableModule($moduleId)
     {
 
         // Not enabled globally
@@ -131,7 +162,7 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::log("Space->uninstallModule(" . $moduleId . ") module is not enabled");
+            Yii::log("Space->disableModule(" . $moduleId . ") module is not enabled");
             return false;
         }
 
@@ -139,7 +170,14 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
         $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->disableSpaceModule($this->getOwner());
 
-        SpaceApplicationModule::model()->deleteAllByAttributes(array('space_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        $spaceModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        if ($spaceModule == null) {
+            $spaceModule = new SpaceApplicationModule();
+            $spaceModule->space_id = $this->getOwner()->id;
+            $spaceModule->module_id = $moduleId;
+        }
+        $spaceModule->state = SpaceApplicationModule::STATE_DISABLED;
+        $spaceModule->save();
 
         return true;
     }

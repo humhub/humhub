@@ -50,8 +50,13 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
-            <?php $visibilities = array(0 => Yii::t('SpaceModule.views_admin_edit', 'Invisible'), 1 => Yii::t('SpaceModule.views_admin_edit', 'Visible for network users'), 2 => Yii::t('SpaceModule.views_admin_edit', 'Visible for all')); ?>
+            <?php $visibilities = array(
+                0 => Yii::t('SpaceModule.views_admin_edit', 'Invisible'),
+                1 => Yii::t('SpaceModule.views_admin_edit', 'Visible for network users'),
+                2 => Yii::t('SpaceModule.views_admin_edit', 'Visible for all')
+             ); ?>
             <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
+            <?php echo $form->error($model, 'visibility'); ?>
         </div>
         <hr>
 
@@ -70,12 +75,12 @@
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>
 
         <div class="pull-right">
-            <?php if ($space->status == Space::STATUS_ENABLED) { ?>
-                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $this->createUrl('//space/admin/archive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
-            <?php } elseif ($space->status == Space::STATUS_ARCHIVED) { ?>
-                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $this->createUrl('//space/admin/unarchive', array('sguid' => $space->guid)), array('class' => 'btn btn-warning')); ?>
+            <?php if ($model->status == Space::STATUS_ENABLED) { ?>
+                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $model->createUrl('//space/admin/archive'), array('class' => 'btn btn-warning')); ?>
+            <?php } elseif ($model->status == Space::STATUS_ARCHIVED) { ?>
+                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $model->createUrl('//space/admin/unarchive'), array('class' => 'btn btn-warning')); ?>
             <?php } ?>
-            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $this->createUrl('//space/admin/delete', array('sguid' => $space->guid)), array('class' => 'btn btn-danger')); ?>
+            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('//space/admin/delete'), array('class' => 'btn btn-danger')); ?>
 
         </div>
 

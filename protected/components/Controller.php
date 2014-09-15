@@ -34,6 +34,7 @@ class Controller extends EController
      * @var string the sub layout for the controller view. Defaults to '',
      */
     public $subLayout = '';
+    private $_pageTitle;
 
     /**
      * Inits the controller class.
@@ -78,9 +79,10 @@ class Controller extends EController
         Yii::app()->clientScript->setJavascriptVariable('csrfName', Yii::app()->request->csrfTokenName);
         Yii::app()->clientScript->setJavascriptVariable('csrfValue', Yii::app()->request->csrfToken);
         Yii::app()->clientScript->setJavascriptVariable('baseUrl', Yii::app()->getBaseUrl(true));
+        Yii::app()->clientScript->setJavascriptVariable('localeId', Yii::app()->locale->id);
 
         $this->initAjaxCsrfToken();
-        
+
         return parent::init();
     }
 
@@ -116,14 +118,15 @@ class Controller extends EController
     }
 
     // this function will work to post csrf token.
-    protected function initAjaxCsrfToken() {
-    
-    	Yii::app()->clientScript->registerScript('AjaxCsrfToken', ' $.ajaxSetup({
+    protected function initAjaxCsrfToken()
+    {
+
+        Yii::app()->clientScript->registerScript('AjaxCsrfToken', ' $.ajaxSetup({
 			data: {"' . Yii::app()->request->csrfTokenName . '": "' . Yii::app()->request->csrfToken . '"},
 			cache:false
 			});', CClientScript::POS_HEAD);
     }
-    
+
     /**
      * Outputs a given JSON Array and ends the application
      *
@@ -160,7 +163,7 @@ class Controller extends EController
 
         // close modal to hide the loaded view, which is visible for some seconds, after creation
         echo "<script>";
-        echo "$('#globalModal').modal('hide')";
+        echo "$('#globalModal').modal('hide');";
         echo "</script>";
         //Yii::app()->end();
     }
@@ -190,6 +193,27 @@ class Controller extends EController
         }
 
         return parent::renderPartial($view, $data, $return, $processOutput);
+    }
+
+    /**
+     * @return string the page title. Defaults to the controller name and the action name.
+     */
+    public function getPageTitle()
+    {
+        if ($this->_pageTitle !== null) {
+            // StripTags because we often use <strong> in headlines
+            return strip_tags($this->_pageTitle) . " - " . Yii::app()->name;
+        } else {
+            return Yii::app()->name;
+        }
+    }
+
+    /**
+     * @param string $value the page title.
+     */
+    public function setPageTitle($value)
+    {
+        $this->_pageTitle = $value;
     }
 
 }

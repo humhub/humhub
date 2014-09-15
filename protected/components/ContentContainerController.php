@@ -52,6 +52,33 @@ class ContentContainerController extends Controller
     public $autoCheckContainerAccess = true;
 
     /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
+
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'users' => array('@'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+
+    /**
      * Automatically loads the underlying contentContainer (User/Space) by using
      * the uguid/sguid request parameter
      * 
@@ -134,14 +161,7 @@ class ContentContainerController extends Controller
      */
     public function createContainerUrl($route, $params = array(), $ampersand = '&')
     {
-
-        if ($this->contentContainer instanceof User) {
-            return $this->getOwner()->createUserUrl($route, $params, $ampersand);
-        } elseif ($this->contentContainer instanceof Space) {
-            return $this->getOwner()->createSpaceUrl($route, $params, $ampersand);
-        } else {
-            return $this->getOwner()->createUrl($route, $params, $ampersand);
-        }
+        return $this->contentContainer->createUrl($route, $params, $ampersand);
     }
 
     /**

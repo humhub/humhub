@@ -360,10 +360,14 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
         $activity = new Activity;
         $activity->content->space_id = $this->getOwner()->id;
         $activity->content->visibility = Content::VISIBILITY_PRIVATE;
+        $activity->content->created_by = $this->getOwner()->id;
         $activity->created_by = $userId;
         $activity->type = "ActivitySpaceMemberAdded";
         $activity->save();
         $activity->fire();
+
+        // Members can't also follow the space
+        $this->getOwner()->unfollow($userId);
 
         // Cleanup Notifications
         SpaceInviteNotification::remove($userId, $this->getOwner());

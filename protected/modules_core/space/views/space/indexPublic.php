@@ -15,18 +15,18 @@
                         <h3 class="media-heading"><?php echo $space->name; ?></h3>
                         <?php echo Yii::t('SpaceModule.views_space_indexPublic', 'created by'); ?> <a
                             href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getSpaceOwner()->guid)); ?>"><?php echo $space->getSpaceOwner()->displayName; ?></a>
-                        <?php if ($space->description != "") { ?>
+                            <?php if ($space->description != "") { ?>
                             <hr>
                             <?php echo $space->description; ?>
                         <?php } ?>
                         <br/>
                         <!-- start: space tags -->
-                        <?php if(count($space->getTags()) > 1 ) : ?>
-                        <div class="tags">
-                            <?php foreach ($space->getTags() as $tag) { ?>
-                                <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag, 'areas' => array('Space'))), array('class' => 'btn btn-default btn-xs tag')); ?>
-                            <?php } ?>
-                        </div>
+                        <?php if (count($space->getTags()) > 1) : ?>
+                            <div class="tags">
+                                <?php foreach ($space->getTags() as $tag) { ?>
+                                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/spaces', array('keyword' => 'tags:' . $tag, 'areas' => array('Space'))), array('class' => 'btn btn-default btn-xs tag')); ?>
+                                <?php } ?>
+                            </div>
                         <?php endif; ?>
                         <!-- end: space tags -->
                         <br/>
@@ -49,7 +49,7 @@
                                         ?>
                                         <a href="<?php echo $this->createUrl('//space/space/requestMembership', array('sguid' => $space->guid)); ?>"
                                            class="btn btn-primary"><?php echo Yii::t('SpaceModule.views_space_indexPublic', 'Become member'); ?></a>
-                                    <?php
+                                        <?php
                                     }
                                 }
                             } elseif ($membership->status == SpaceMembership::STATUS_INVITED) {
@@ -64,10 +64,10 @@
                         <?php
                         // Follow Handling
                         if (!$space->isMember()) {
-                            if ($space->isFollowedBy()) {
-                                print CHtml::link(Yii::t('SpaceModule.views_space_indexPublic', "Unfollow"), $this->createUrl('//space/space/unfollow', array('sguid' => $space->guid)), array('class' => 'btn btn-danger'));
+                            if ($space->isFollowedByUser()) {
+                                print HHtml::postLink(Yii::t('SpaceModule.views_space_indexPublic', "Unfollow"), $space->createUrl('//space/space/unfollow'), array('class' => 'btn btn-danger'));
                             } else {
-                                print CHtml::link(Yii::t('SpaceModule.views_space_indexPublic', "Follow"), $this->createUrl('//space/space/follow', array('sguid' => $space->guid)), array('class' => 'btn btn-success'));
+                                print HHtml::postLink(Yii::t('SpaceModule.views_space_indexPublic', "Follow"), $space->createUrl('//space/space/follow'), array('class' => 'btn btn-success'));
                             }
                         }
                         ?>

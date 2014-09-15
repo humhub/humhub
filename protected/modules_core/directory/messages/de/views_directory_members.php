@@ -17,7 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Member</strong> directory' => '',
-  'No members found!' => '',
-  'search for members' => '',
+  '<strong>Member</strong> directory' => '<strong>Mitglieder</strong> Verzeichnis',
+  'Follow' => 'Folgen',
+  'No members found!' => 'Keine Mitglieder gefunden!',
+  'Unfollow' => 'Entfolgen',
+  'search for members' => 'suche nach Mitgliedern',
 );

@@ -8,7 +8,6 @@
             </h4>
         </div>
 
-        <br/>
         <div class="modal-body">
             <div id="userlist-content">
                 <div class="well well-small" id="comment_<?php echo $id; ?>">
@@ -20,7 +19,6 @@
 
             </div>
         </div>
-
     </div>
 </div>
 

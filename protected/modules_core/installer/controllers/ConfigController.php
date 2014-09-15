@@ -185,8 +185,9 @@ class ConfigController extends Controller
         if ($form->submitted('save') && $form->validate()) {
             $this->forcePostRequest();
 
-            if (HSetting::Get('secret') == "")
+            if (HSetting::Get('secret') == "") {
                 HSetting::Set('secret', UUID::v4());
+            }
 
             $form['User']->model->status = User::STATUS_ENABLED;
             $form['User']->model->super_admin = true;
@@ -222,11 +223,11 @@ class ConfigController extends Controller
             $space->save();
 
             $profileImage = new ProfileImage($space->guid);
-            $profileImage->setNew($this->getModule()->getPath().DIRECTORY_SEPARATOR."resources".DIRECTORY_SEPARATOR.'welcome_space.jpg');
-            
+            $profileImage->setNew($this->getModule()->getPath() . DIRECTORY_SEPARATOR . "resources" . DIRECTORY_SEPARATOR . 'welcome_space.jpg');
+
             // Add Some Post to the Space
             $post = new Post();
-            $post->message = "I´ve just installed HumHub - Yeah! :-)";
+            $post->message = "Yay! I've just installed HumHub :-)";
             $post->content->container = $space;
             $post->content->visibility = Content::VISIBILITY_PUBLIC;
             $post->save();
@@ -245,10 +246,8 @@ class ConfigController extends Controller
 
         // Should not happen
         if (HSetting::Get('secret') == "") {
-            print "got no secret to finish!";
-            die();
+            throw new CException("Finished without secret setting!");
         }
-
 
         // Rewrite whole configuration file, also sets application
         // in installed state.
@@ -290,7 +289,7 @@ class ConfigController extends Controller
         HSetting::Set('needApproval', '0', 'authentication_internal');
         HSetting::Set('anonymousRegistration', '1', 'authentication_internal');
         HSetting::Set('internalUsersCanInvite', '1', 'authentication_internal');
-        
+
         // Mailing
         HSetting::Set('transportType', 'php', 'mailing');
         HSetting::Set('systemEmailAddress', 'social@example.com', 'mailing');
@@ -305,13 +304,13 @@ class ConfigController extends Controller
         // Caching
         HSetting::Set('type', 'CFileCache', 'cache');
         HSetting::Set('expireTime', '3600', 'cache');
-        HSetting::Set('installationId', md5(uniqid("",true)), 'admin');
-        
+        HSetting::Set('installationId', md5(uniqid("", true)), 'admin');
+
         // Design
         HSetting::Set('theme', "HumHub");
 
         // Basic
-        HSetting::Set('tour', 1);
+        HSetting::Set('enable', 1, 'tour');
 
 
         // Add Categories
@@ -413,8 +412,9 @@ class ConfigController extends Controller
         $field->sort_order = 500;
         $field->profile_field_category_id = $cGeneral->id;
         $field->is_system = true;
-        $field->field_type_class = 'ProfileFieldTypeNumber';
+        $field->field_type_class = 'ProfileFieldTypeText';
         if ($field->save()) {
+            $field->fieldType->maxLength = 10;
             $field->fieldType->save();
         }
 
@@ -464,8 +464,8 @@ class ConfigController extends Controller
         $field->is_system = true;
         if ($field->save()) {
             $field->fieldType->save();
-        }        
-        
+        }
+
         $field = new ProfileField();
         $field->internal_name = "about";
         $field->title = 'About';

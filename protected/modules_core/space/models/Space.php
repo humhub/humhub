@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "workspace".
+ * This is the model class for table "space".
  *
- * The followings are the available columns in table 'workspace':
+ * The followings are the available columns in table 'space':
  * @property integer $id
  * @property integer $wall_id
  * @property string $name
@@ -69,7 +69,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             ),
             'SpacesModelMembershipBehavior' => array(
                 'class' => 'application.modules_core.space.behaviors.SpaceModelMembershipBehavior',
-            )
+            ),
+            'HFollowableBehavior' => array(
+                'class' => 'application.behaviors.HFollowableBehavior',
+            ),
         );
     }
 
@@ -106,6 +109,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
                 array('website', 'url'),
                 array('description, tags', 'safe'),
                 array('join_policy', 'in', 'range' => array(0, 1, 2)),
+                array('visibility', 'checkVisibility'),
                 array('visibility', 'in', 'range' => array(0, 1, 2)),
             );
 
@@ -145,7 +149,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return array(
             // Active Invites
             'userInvites' => array(self::HAS_MANY, 'UserInvite', 'space_invite_id'),
-            'follower' => array(self::MANY_MANY, 'User', 'space_follow(space_id, user_id)'),
             // List of space applicants
             'applicants' => array(self::HAS_MANY, 'SpaceMembership', 'space_id', 'condition' => 'status=' . SpaceMembership::STATUS_APPLICANT),
             // Approved Membership Only
@@ -176,7 +179,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             'wall_id' => 'Wall',
             'name' => 'Name',
             'description' => 'Description',
-            'website' => 'Website',
+            'website' => 'Website URL (optional)',
             'join_policy' => 'Join Policy',
             'ldap_dn' => 'Ldap DN',
             'visibility' => 'Visibility',
@@ -268,6 +271,42 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             HSearch::getInstance()->addModel($this);
         }
 
+        $userId = $this->created_by;
+
+        if ($this->isNewRecord) {
+            // Create new wall record for this space
+            $wall = new Wall();
+            $wall->type = Wall::TYPE_SPACE;
+            $wall->object_model = 'Space';
+            $wall->object_id = $this->id;
+            $wall->save();
+            $this->wall_id = $wall->id;
+            $this->wall = $wall;
+            Space::model()->updateByPk($this->id, array('wall_id' => $wall->id));
+
+            // Auto add creator as admin
+            $membership = new SpaceMembership;
+            $membership->space_id = $this->id;
+            $membership->user_id = $userId;
+            $membership->status = SpaceMembership::STATUS_MEMBER;
+            $membership->invite_role = 1;
+            $membership->admin_role = 1;
+            $membership->share_role = 1;
+            $membership->save();
+
+            $activity = new Activity;
+            $activity->content->created_by = $userId;
+            $activity->content->space_id = $this->id;
+            $activity->content->user_id = $userId;
+            $activity->content->visibility = Content::VISIBILITY_PUBLIC;
+            $activity->created_by = $userId;
+            $activity->type = "ActivitySpaceCreated";
+            $activity->save();
+            $activity->fire();
+        }
+
+        Yii::app()->cache->delete('userSpaces_' . $userId);
+
         parent::afterSave();
     }
 
@@ -276,38 +315,31 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     protected function beforeDelete()
     {
-        if (parent::beforeDelete()) {
 
-            foreach (SpaceSetting::model()->findAllByAttributes(array('space_id' => $this->id)) as $spaceSetting) {
-                $spaceSetting->delete();
-            }
-
-            // Disable all enabled modules
-            foreach ($this->getAvailableModules() as $moduleId => $module) {
-                if ($this->isModuleEnabled($moduleId)) {
-                    $this->uninstallModule($moduleId);
-                }
-            }
-
-            HSearch::getInstance()->deleteModel($this);
-            return true;
+        foreach (SpaceSetting::model()->findAllByAttributes(array('space_id' => $this->id)) as $spaceSetting) {
+            $spaceSetting->delete();
         }
-    }
 
-    /**
-     * Delete a Space
-     *
-     */
-    public function delete()
-    {
+        // Disable all enabled modules
+        foreach ($this->getAvailableModules() as $moduleId => $module) {
+            if ($this->isModuleEnabled($moduleId)) {
+                $this->disableModule($moduleId);
+            }
+        }
+
+        HSearch::getInstance()->deleteModel($this);
 
         $this->getProfileImage()->delete();
 
         // Remove all Follwers
-        SpaceFollow::model()->deleteAllByAttributes(array('space_id' => $this->id));
+        Follow::model()->deleteAllByAttributes(array('object_id' => $this->id, 'object_model' => 'Space'));
 
-        // Delete all memberships
-        SpaceMembership::model()->deleteAllByAttributes(array('space_id' => $this->id));
+        //Delete all memberships:
+        //First select, then delete - done to make sure that SpaceMembership::beforeDelete() is triggered
+        $spaceMemberships = SpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id));
+        foreach ($spaceMemberships as $spaceMembership) {
+            $spaceMembership->delete();
+        }
 
         UserInvite::model()->deleteAllByAttributes(array('space_invite_id' => $this->id));
 
@@ -322,78 +354,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             $group->save();
         }
 
-        $oldWallId = $this->wall_id;
+        Wall::model()->deleteAllByAttributes(array('id' => $this->wall_id));
 
-        $this->wall_id = new CDbExpression('NULL');
-        $this->save();
-
-        // Delete myself
-        $isOk = parent::delete();
-
-        // Delete wall
-        Wall::model()->deleteAllByAttributes(array('id' => $oldWallId));
-
-        return $isOk;
-    }
-
-    /**
-     * After Insert, create a Wall and fire some Activity Informations.
-     *
-     * We cannot do this in AfterSave because we need to save() the Space again.
-     *
-     * @return type
-     */
-    public function insert($attributes = null)
-    {
-
-        if (parent::insert($attributes)) {
-
-            // Check we have a wall yet?
-            $this->checkWall();
-
-            $user = User::model()->findByPk($this->created_by);
-
-            // Auto add creator as admin
-            $membership = new SpaceMembership;
-            $membership->space_id = $this->id;
-            $membership->user_id = $user->id;
-            $membership->status = SpaceMembership::STATUS_MEMBER;
-            $membership->invite_role = 1;
-            $membership->admin_role = 1;
-            $membership->share_role = 1;
-            $membership->save();            
-            
-            $activity = new Activity;
-            $activity->content->created_by = $user->id;
-            $activity->content->space_id = $this->id;
-            $activity->content->user_id = $user->id;
-            $activity->content->visibility = Content::VISIBILITY_PUBLIC;
-            $activity->created_by = $user->id;
-            $activity->type = "ActivitySpaceCreated";
-            $activity->save();
-            $activity->fire();
-            
-            return true;
-        }
-    }
-
-    /**
-     * Indicates that this space is followed by
-     *
-     * @param $userId User Id of User
-     */
-    public function isFollowedBy($userId = "")
-    {
-        // Take current userid if none is given
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
-
-        $followed = SpaceFollow::model()->findByAttributes(array('user_id' => $userId, 'space_id' => $this->id));
-
-        if ($followed != null)
-            return true;
-
-        return false;
+        return parent::beforeDelete();
     }
 
     /**
@@ -464,7 +427,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return false;
     }
 
-
     /**
      * Checks if given user can invite people to this workspace
      *
@@ -504,38 +466,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
         $membership = $this->getMembership($userId);
 
-        
+
         if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
             return true;
 
         return false;
-    }
-
-    /**
-     * Checks if there is already a wall created for this workspace.
-     * If not, a new wall will be created and automatically assigned.
-     */
-    public function checkWall()
-    {
-
-        // Check if wall exists
-        if ($this->wall == null) {
-
-            // Create new Wall
-            $wall = new Wall();
-            $wall->type = Wall::TYPE_SPACE;
-            $wall->object_model = 'Space';
-            $wall->object_id = $this->id;
-
-
-            $wall->save();
-
-            // Assign Wall
-            $this->wall_id = $wall->id;
-            $this->save();
-
-            $this->wall = $wall;
-        }
     }
 
     /**
@@ -569,7 +504,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     {
         return Yii::app()->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', array('space' => $this), true);
     }
-
 
     /**
      * Counts all Content Items related to this workspace except of Activities.
@@ -654,8 +588,50 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function getUrl($parameters = array())
     {
-        $parameters['sguid'] = $this->guid;
-        return Yii::app()->createUrl('//space/space', $parameters);
+        return $this->createUrl('//space/space', $parameters);
+    }
+
+    /**
+     * Creates an url in space scope.
+     * (Adding sguid parameter to identify current space.)
+     * See CController createUrl() for more details.
+     *
+     * @since 0.9
+     * @param type $route the URL route.
+     * @param type $params additional GET parameters.
+     * @param type $ampersand the token separating name-value pairs in the URL.
+     */
+    public function createUrl($route, $params = array(), $ampersand = '&')
+    {
+        if (!isset($params['sguid'])) {
+            $params['sguid'] = $this->guid;
+        }
+
+        if (Yii::app()->getController() !== null) {
+            return Yii::app()->getController()->createUrl($route, $params, $ampersand);
+        } else {
+            return Yii::app()->createUrl($route, $params, $ampersand);
+        }
+    }
+
+    /**
+     * Validator for visibility 
+     * 
+     * Used in edit scenario to check if the user really can create spaces
+     * on this visibility.
+     * 
+     * @param type $attribute
+     * @param type $params
+     */
+    public function checkVisibility($attribute, $params)
+    {
+        if (!Yii::app()->user->canCreatePublicSpace() && ($this->$attribute == 1 || $this->$attribute == 2)) {
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'));
+        }
+
+        if (!Yii::app()->user->canCreatePrivateSpace() && $this->$attribute == 0) {
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create private visible spaces!'));
+        }
     }
 
 }

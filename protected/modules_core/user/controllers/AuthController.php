@@ -196,6 +196,15 @@ class AuthController extends Controller
 
         $groupModels = Group::model()->findAll(array('order' => 'name'));
 
+        $defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
+        $groupFieldType = "dropdownlist";
+        if ($defaultUserGroup != "") {
+            $groupFieldType = "hidden";
+        } else if (count($groupModels) == 1) {
+            $groupFieldType = "hidden";
+            $defaultUserGroup = $groupModels[0]->id;
+        }
+
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
@@ -207,10 +216,10 @@ class AuthController extends Controller
                     'maxlength' => 32,
                 ),
                 'group_id' => array(
-                    'type' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ? 'hidden' : 'dropdownlist',
+                    'type' => $groupFieldType,
                     'class' => 'form-control',
                     'items' => CHtml::listData($groupModels, 'id', 'name'),
-                    'value' => (HSetting::Get('defaultUserGroup', 'authentication_internal')) ? HSetting::Get('defaultUserGroup', 'authentication_internal') : '',
+                    'value' => $defaultUserGroup,
                 ),
             ),
         );
@@ -255,7 +264,8 @@ class AuthController extends Controller
             $this->forcePostRequest();
 
             // Registe User
-            if ($form['User']->model->register($userInvite)) {
+            $form['User']->model->email = $userInvite->email;
+            if ($form['User']->model->save()) {
 
                 // Save User Profile
                 $form['Profile']->model->user_id = $form['User']->model->id;

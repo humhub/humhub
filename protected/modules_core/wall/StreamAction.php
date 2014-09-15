@@ -322,7 +322,7 @@ class StreamAction extends CAction {
             // In case of an space entry, we need some left join, to be able to verify that the user
             // has access to see this entry
             $this->sqlJoin .= "
-					LEFT JOIN wall ON wall.id = wall_entry.wall_id AND wall.type='space'
+					LEFT JOIN wall ON wall.id = wall_entry.wall_id
 					LEFT JOIN space_membership ON
 						wall.object_id = space_membership.space_id AND
 						space_membership.user_id=:userId AND
@@ -332,13 +332,13 @@ class StreamAction extends CAction {
             // Get all Wall Ids where the User is assigned to
             $usersWallId = $this->userWallId;
             $this->sqlWhere .= " AND wall_entry.wall_id IN (
-						SELECT uf.wall_id FROM user_follow
-							LEFT JOIN user uf ON uf.id=user_follow.user_followed_id
-							WHERE user_follow.user_follower_id=:userId AND uf.wall_id is NOT NULL
+						SELECT uf.wall_id FROM follow
+							LEFT JOIN user uf ON uf.id=follow.object_id AND follow.object_model='User'
+							WHERE follow.user_id=:userId AND uf.wall_id is NOT NULL
 						UNION
-						SELECT sf.wall_id FROM space_follow
-							LEFT JOIN space sf ON sf.id=space_follow.space_id
-							WHERE space_follow.user_id=:userId AND sf.wall_id IS NOT NULL
+						SELECT sf.wall_id FROM follow
+							LEFT JOIN space sf ON sf.id=follow.object_id AND follow.object_model='Space'
+							WHERE follow.user_id=:userId AND sf.wall_id IS NOT NULL
 						UNION
 						SELECT sm.wall_id FROM space_membership
 							LEFT JOIN space sm ON sm.id=space_membership.space_id
@@ -353,8 +353,8 @@ class StreamAction extends CAction {
             // Third Line: When Visibilty == public
             $this->sqlWhere .= "
 					AND  (
-						(wall.object_model IS NULL) OR
-						(content.visibility = 0 AND space_membership.status = " . SpaceMembership::STATUS_MEMBER . ") OR
+						(wall.object_model='user' AND content.visibility = 0 AND content.user_id = :userId) OR
+						(wall.object_model='space' AND content.visibility = 0 AND space_membership.status = " . SpaceMembership::STATUS_MEMBER . ") OR
 						(content.visibility = 1 OR content.visibility IS NULL)
 					)
 				";
@@ -384,6 +384,10 @@ class StreamAction extends CAction {
             if ($wallId == "")
                 $wallId = 0;
 
+            if ($user->id != Yii::app()->user->id) {
+                $this->sqlWhere .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
+            }            
+            
             $this->sqlWhere .= " AND wall_entry.wall_id = " . $wallId;
         } else {
             throw new CHttpException(500, 'Target unknown!');

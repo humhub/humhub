@@ -35,7 +35,7 @@
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createUrl('user/profile', array('guid' => $user->guid)); ?>">
+                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $activity->content->user->guid)); ?>">
                                                             <img
                                                                 src="<?php echo $activity->content->user->getProfileImage()->getUrl(); ?>"
                                                                 width="50"
@@ -69,17 +69,19 @@
                                                                                 (<?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
                                                                                 <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $activity->content->space->guid)); ?>"
                                                                                    style="text-decoration: none; color: #555555;">
-                                                                                    <?php echo $activity->content->space->name; ?>
+                                                                                       <?php echo $activity->content->space->name; ?>
                                                                                 </a>)
                                                                             <?php endif; ?>
 
+                                                                            <?php if ($activity->getUnderlyingObject() != null) : ?>
+                                                                                <!-- START: CONTENT LINK -->
+                                                                                <span
+                                                                                    style="text-decoration: none; color: #7191a8;"> - <a
+                                                                                        href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($activity->getUnderlyingObject()), 'id' => $activity->getUnderlyingObject()->getPrimaryKey())); ?>"
+                                                                                        style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
+                                                                                <!-- END: CONTENT LINK -->
+                                                                            <?php endif; ?>
 
-                                                                            <!-- START: CONTENT LINK -->
-                                                                            <span
-                                                                                style="text-decoration: none; color: #7191a8;"> - <a
-                                                                                    href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($activity->getUnderlyingObject()), 'id' => $activity->getUnderlyingObject()->getPrimaryKey())); ?>"
-                                                                                    style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
-                                                                            <!-- END: CONTENT LINK -->
                                                                         <?php else : ?>
 
                                                                         <?php endif; ?>

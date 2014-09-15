@@ -24,7 +24,7 @@ class EZendAutoloader {
      * Class autoload loader.
      *
      * @static
-     * @param string $class
+     * @param string $className
      * @return boolean
      */
     static function loadClass($className){

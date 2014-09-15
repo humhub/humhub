@@ -13,7 +13,7 @@
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'new-spaces-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>New/strong> spaces'); ?>
+        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>New</strong> spaces'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>

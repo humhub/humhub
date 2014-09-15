@@ -17,9 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Access denied!' => '',
-  'Could not delete comment!' => '',
-  'Insufficent permissions!' => '',
-  'Invalid target class given' => '',
-  'Target not found!' => '',
+  'Model & Id Parameter required!' => '',
+  'Access denied!' => 'Zugriff verweigert!',
+  'Could not delete comment!' => 'Kann Kommentar nicht löschen!',
+  'Insufficent permissions!' => 'Unzureichende Berechtigungen!',
+  'Invalid target class given' => 'Ungültige Ziel Klasse',
+  'Target not found!' => 'Ziel nicht gefunden!',
 );

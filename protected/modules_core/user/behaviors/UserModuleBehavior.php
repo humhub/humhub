@@ -85,7 +85,6 @@ class UserModuleBehavior extends CBehavior
         return "";
     }
 
-    
     /**
      * Returns the module image for users.
      * You may want to overwrite with an special user profile image.
@@ -95,8 +94,8 @@ class UserModuleBehavior extends CBehavior
     public function getUserModuleImage()
     {
         return $this->getOwner()->getImage();
-    } 
-    
+    }
+
     /**
      * Enables this module on given user
      * 
@@ -121,20 +120,20 @@ class UserModuleBehavior extends CBehavior
     }
 
     /**
-     * Returns a list of all users where this Module is
-     * enabled.
+     * Returns a list of all users where this Module is enabled.
      * 
      * @return Array User
      */
     public function getUserModuleUsers()
     {
         $users = array();
-        foreach (UserApplicationModule::model()->with('user')->findAllByAttributes(array('module_id' => $this->owner->getId())) as $userModule) {
-            $user = $userModule->user;
-            if ($user != null && $user instanceOf User) {
-                $users[] = $user;
+
+        foreach (User::model()->findAll() as $u) {
+            if ($u->isModuleEnabled($this->owner->getId())) {
+                $users[] = $u;
             }
         }
+
         return $users;
     }
 

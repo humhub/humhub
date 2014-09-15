@@ -63,16 +63,12 @@
 
                     <!-- Follow Handling -->
                     <div class="pull-right">
-                        <?php if (Yii::app()->user->id != $user->id) {
-                            if ($user->isFollowedBy(Yii::app()->user->id)) {
-                                echo CHtml::link("Follow", 'javascript:setFollow("' . $this->createUrl('//user/profile/follow', array('guid' => $user->guid)) . '", "' . $user->id . '")', array('class' => 'btn btn-success btn-sm hidden', 'id' => 'button_follow_' . $user->id));
-                                echo CHtml::link("Unfollow", 'javascript:setUnfollow("' . $this->createUrl('//user/profile/unfollow', array('guid' => $user->guid)) . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm show', 'id' => 'button_unfollow_' . $user->id));
-                            } else {
-                                echo CHtml::link("Follow", 'javascript:setFollow("' . $this->createUrl('//user/profile/follow', array('guid' => $user->guid)) . '", "' . $user->id . '")', array('class' => 'btn btn-success btn-sm show', 'id' => 'button_follow_' . $user->id));
-                                echo CHtml::link("Unfollow", 'javascript:setUnfollow("' . $this->createUrl('//user/profile/unfollow', array('guid' => $user->guid)) . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm hidden', 'id' => 'button_unfollow_' . $user->id));
-                            }
+                        <?php
+                        if (!$user->isCurrentUser()) {
+                            $followed = $user->isFollowedByUser();
+                            echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . $user->createUrl('//user/profile/follow') . '", "' . $user->id . '")', array('class' => 'btn btn-success btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $user->id));
+                            echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . $user->createUrl('//user/profile/unfollow') . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $user->id));
                         }
-
                         ?>
                     </div>
 
@@ -87,7 +83,7 @@
                     <div class="media-body">
                         <h4 class="media-heading"><a
                                 href="<?php echo $user->getUrl(); ?>"><?php echo $user->displayName; ?></a>
-                            <?php if ($user->group != null) { ?>
+                                <?php if ($user->group != null) { ?>
                                 <small>(<?php echo $user->group->name; ?>)</small><?php } ?>
                         </h4>
                         <h5><?php echo $user->profile->title; ?></h5>
@@ -140,23 +136,23 @@
 
     // ajax request to follow the user
     function setFollow(url, id) {
-
         jQuery.ajax({
-            'url': url,
-            'success': function () {
-                $("#button_follow_" + id).addClass('hidden');
-                $("#button_unfollow_" + id).removeClass('hidden');
+            url: url,
+            type: "POST",
+            'success': function() {
+                $("#button_follow_" + id).addClass('hide');
+                $("#button_unfollow_" + id).removeClass('hide');
             }});
     }
 
     // ajax request to unfollow the user
     function setUnfollow(url, id) {
-
         jQuery.ajax({
-            'url': url,
-            'success': function () {
-                $("#button_follow_" + id).removeClass('hidden');
-                $("#button_unfollow_" + id).addClass('hidden');
+            url: url,
+            type: "POST",
+            'success': function() {
+                $("#button_follow_" + id).removeClass('hide');
+                $("#button_unfollow_" + id).addClass('hide');
             }});
     }
 

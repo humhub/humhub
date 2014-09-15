@@ -96,15 +96,19 @@ class SpaceControllerBehavior extends CBehavior
         
         
     }
-    
+
+    /**
+     * Create a space url
+     * 
+     * @deprecated since version 0.9
+     * @param type $route
+     * @param type $params
+     * @param type $ampersand
+     * @return type
+     */
     public function createSpaceUrl($route, $params = array(), $ampersand = '&')
     {
-
-        if (!isset($params['sguid'])) {
-            $params['sguid'] = $this->space->guid;
-        }
-
-        return $this->owner->createUrl($route, $params, $ampersand);
+        return $this->space->createUrl($route, $params, $ampersand);
     }
 
 }

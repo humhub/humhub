@@ -11,15 +11,17 @@ Installation
     - /protected/modules
     - /protected/config/local
     - /uploads/*
-    - 
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 
-Enable Url Rewriting
---------------------
+Enable Url Rewriting (Optional)
+-------------------------------
 
-1. Rename file .htaccess.dist to .htaccess
-2. Add urlManager lines in protected/config/local/_settings.php
+
+1. Make sure you installed & configured HumHub before and your installation is working.
+2. Copy file .htaccess.dist to .htaccess
+3. You may need to modify the default .htaccess file on some hosting environments. (See inline documentation)
+4. Add urlManager lines in protected/config/local/_settings.php (Backup?)
 
         <?php return array (
           'components' => 
@@ -39,7 +41,8 @@ Enable Url Rewriting
 Enable Cron Jobs
 ----------------
 
-Add following lines to your crontab:
+- Make sure the file protected/yiic is executable. (e.g. chmod +x protected/yiic)
+- Add following lines to your crontab:
 
         30 * * * * /path/to/humhub/protected/yiic cron hourly >/dev/null 2>&1
         00 18 * * * /path/to/humhub/protected/yiic cron daily >/dev/null 2>&1

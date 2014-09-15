@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Sign up' => '',
-  'We are happy that you want to use HumHub. The Open Source Social Network to increase your communication and teamwork. Please click on the button below to proceed with your registration.' => '',
-  'Welcome to <strong>HumHub</strong>' => '',
+  'Sign up' => 'Registrieren',
+  'Welcome to %appName%' => 'Willkommen bei %appName%',
+  'Welcome to %appName%. Please click on the button below to proceed with your registration.' => 'Willkommen bei %appName%. Bitte klicken Sie auf den Button unten, um mit der Registrierung fortzufahren.',
 );

@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     $('.hhtml-datetime-field').each(function(index, element) {
+        
         var $element = $(element)
                 , dateTimepickerDefaultOptions = {
                     pickDate: true,
@@ -8,9 +9,11 @@ $(document).ready(function() {
                     useMinutes: true,
                     useSeconds: false,
                     showToday: true,
-                    language: 'en',
+                    language: localeId.replace("\_", "\-"),
                     use24hours: true,
                     sideBySide: false,
+                    // Initally use DB Timestamp Format
+                    // After that we switch to locale format
                     format: 'YYYY-MM-DD hh:mm'
                 }
         , $dateInput = $element.clone()
@@ -41,10 +44,20 @@ $(document).ready(function() {
         var datepicker = $dateInput.data("DateTimePicker");
 
         if (typeof $element.attr('data-options-displayFormat') === "undefined") {
-            if (!dateTimepickerOptions.pickTime) {
-                datepicker.format = "DD.MM.YYYY";
-            } else {
-                datepicker.format = "DD.MM.YYYY - HH:mm";
+            // Switch to format given by locale
+            localeData = moment().localeData();
+            datepicker.format = (datepicker.options.pickDate ? localeData.longDateFormat('L') : '');
+            if (datepicker.options.pickDate && datepicker.options.pickTime) {
+                datepicker.format += ' ';
+            }
+            datepicker.format += (datepicker.options.pickTime ? localeData.longDateFormat('LT') : '');
+            if (datepicker.options.useSeconds) {
+                if (localeData.longDateFormat('LT').indexOf(' A') !== -1) {
+                    datepicker.format = datepicker.format.split(' A')[0] + ':ss A';
+                }
+                else {
+                    datepicker.format += ':ss';
+                }
             }
         } else {
             datepicker.format = $element.attr('data-options-displayFormat');

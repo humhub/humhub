@@ -22,6 +22,16 @@
         <?php echo $form->dropDownList($model, 'language', Yii::app()->params['availableLanguages'], array('class' => 'form-control')); ?>
         <?php echo $form->error($model, 'language'); ?>
     </div>
+
+    <strong><?php echo Yii::t('UserModule.views_account_editSettings', 'Getting Started'); ?></strong>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <?php echo $form->checkBox($model, 'show_introduction_tour'); ?> <?php echo $model->getAttributeLabel('show_introduction_tour'); ?>
+            </label>
+        </div>
+    </div>
+
     <hr>
 
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>

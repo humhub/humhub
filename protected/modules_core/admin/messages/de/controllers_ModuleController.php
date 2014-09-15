@@ -17,8 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not find requested module!' => '',
-  'Could not uninstall module first! Module is protected.' => '',
-  'Module path %path% is not writeable!' => '',
-  'No module version found!' => '',
+  'Could not find requested module!' => 'Kann gesuchtes Modul nicht finden!',
+  'Could not uninstall module first! Module is protected.' => 'Kann das Modul nicht deinstallieren! Modul ist geschützt!',
+  'Module path %path% is not writeable!' => 'Modul Verzeichnis %path% ist nicht beschreibbar!',
 );

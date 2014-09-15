@@ -61,10 +61,6 @@ class DashboardController extends Controller {
         // contains the current version to show the welcome modal
         $version = 1;
 
-        Yii::app()->user->model->checkWall();
-
-        //$mySpaces = Yii::app()->user->getModel()->getSpaces();
-        //$this->render('index', array('mySpaces' => $mySpaces));
         $this->render('index', array('version' => $version));
     }
 

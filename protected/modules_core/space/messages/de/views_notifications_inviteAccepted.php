@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} accepted your invite for the space {spaceName}' => '',
+  '{userName} accepted your invite for the space {spaceName}' => '{userName} hat Ihre Einladung für den Raum {spaceName} angenommen',
 );

@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Group</strong> stats' => '',
-  'Average members' => '',
-  'Top Group' => '',
-  'Total groups' => '',
+  '<strong>Group</strong> stats' => '<strong>Gruppen</strong> Statistiken',
+  'Average members' => 'Durchschnittliche Mitgliederanzahl',
+  'Top Group' => 'Top Gruppen',
+  'Total groups' => 'Gruppen insgesamt',
 );

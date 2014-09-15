@@ -7,7 +7,8 @@
  * @package humhub.components
  * @since 0.5
  */
-class WebUser extends CWebUser {
+class WebUser extends CWebUser
+{
 
     /**
      * Stores user model to not repeat the database query
@@ -23,7 +24,8 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    public function getDisplayName() {
+    public function getDisplayName()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->displayName;
     }
@@ -33,7 +35,8 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->email;
     }
@@ -43,7 +46,8 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    public function getLanguage() {
+    public function getLanguage()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
         if ($user != null)
             return $user->language;
@@ -54,7 +58,8 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    public function getGuid() {
+    public function getGuid()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->guid;
     }
@@ -64,7 +69,8 @@ class WebUser extends CWebUser {
      *
      * @return String
      */
-    public function getAuthMode() {
+    public function getAuthMode()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->auth_mode;
     }
@@ -75,7 +81,8 @@ class WebUser extends CWebUser {
      * @return type
      * @throws CHttpException
      */
-    public function getModel() {
+    public function getModel()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
 
         if ($user == null)
@@ -87,7 +94,8 @@ class WebUser extends CWebUser {
     /**
      * Reloads the user cached model
      */
-    public function reload() {
+    public function reload()
+    {
         $this->_model = null;
     }
 
@@ -98,7 +106,8 @@ class WebUser extends CWebUser {
      *
      * @return int
      */
-    public function isAdmin() {
+    public function isAdmin()
+    {
         $user = $this->loadUser(Yii::app()->user->id);
 
         if ($user->super_admin == 1) {
@@ -114,7 +123,8 @@ class WebUser extends CWebUser {
      *
      * @return boolean
      */
-    public function canApproveUsers() {
+    public function canApproveUsers()
+    {
 
         if ($this->isAdmin())
             return true;
@@ -130,12 +140,59 @@ class WebUser extends CWebUser {
     }
 
     /**
+     * Checks if the user can create a space
+     * 
+     * @return boolean
+     */
+    public function canCreateSpace()
+    {
+        return ($this->canCreatePrivateSpace() || $this->canCreatePublicSpace());
+    }
+
+    /**
+     * Checks if the user can create public spaces
+     * 
+     * @return boolean
+     */
+    public function canCreatePublicSpace()
+    {
+        $user = $this->loadUser(Yii::app()->user->id);
+
+        if (Yii::app()->user->isAdmin()) {
+            return true;
+        } elseif ($user->group !== null && $user->group->can_create_public_spaces == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if user can create private spaces
+     * 
+     * @return boolean
+     */
+    public function canCreatePrivateSpace()
+    {
+        $user = $this->loadUser(Yii::app()->user->id);
+
+        if (Yii::app()->user->isAdmin()) {
+            return true;
+        } elseif ($user->group !== null && $user->group->can_create_private_spaces == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Loads user model and store/cache it as class attribute
      *
      * @param Int $id
      * @return User
      */
-    protected function loadUser($id = null) {
+    protected function loadUser($id = null)
+    {
 
         if ($this->_model === null) {
             if ($id !== null) {

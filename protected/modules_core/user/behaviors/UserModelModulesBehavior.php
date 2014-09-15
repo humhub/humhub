@@ -29,43 +29,71 @@
 class UserModelModulesBehavior extends CActiveRecordBehavior
 {
 
+    public $_enabledModules = null;
+    public $_availableModules = null;
+
     /**
-     * Returns a list of available workspace modules
+     * Returns a list of all available user modules
      *
      * @return array
      */
     public function getAvailableModules()
     {
 
-        $modules = array();
+        if ($this->_availableModules !== null) {
+            return $this->_availableModules;
+        }
+
+        $this->_availableModules = array();
 
         foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $module) {
-            if (array_key_exists('UserModuleBehavior', $module->behaviors())) {
-                $modules[$module->getId()] = $module;
+            if ($module->isUserModule()) {
+                $this->_availableModules[$module->getId()] = $module;
             }
         }
 
-        return $modules;
+        return $this->_availableModules;
     }
 
     /**
-     * Returns an array of enabled workspace modules
+     * Returns an array of enabled user modules
      *
      * @return array
      */
     public function getEnabledModules()
     {
 
-        $modules = array();
-        foreach (UserApplicationModule::model()->findAllByAttributes(array('user_id' => $this->getOwner()->id)) as $userModule) {
-            $moduleId = $userModule->module_id;
+        if ($this->_enabledModules !== null) {
+            return $this->_enabledModules;
+        }
 
-            if (Yii::app()->moduleManager->isEnabled($moduleId)) {
-                $modules[] = $moduleId;
+        $this->_enabledModules = array();
+
+        $availableModules = $this->getAvailableModules();
+        $defaultStates = UserApplicationModule::getStates();
+        $states = UserApplicationModule::getStates($this->getOwner()->id);
+
+        // Get a list of all enabled module ids
+        foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
+
+            // Ensure module Id is available
+            if (!array_key_exists($id, $availableModules)) {
+                continue;
+            }
+
+            if (isset($defaultStates[$id]) && $defaultStates[$id] == UserApplicationModule::STATE_FORCE_ENABLED) {
+                // Forced enabled globally
+                $this->_enabledModules[] = $id;
+            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == UserApplicationModule::STATE_ENABLED) {
+                // No local state -> global default on
+                $this->_enabledModules[] = $id;
+            } elseif (isset($states[$id]) && $states[$id] == UserApplicationModule::STATE_ENABLED) {
+                // Locally enabled
+                $this->_enabledModules[] = $id;
             }
         }
 
-        return $modules;
+        return $this->_enabledModules;
     }
 
     /**
@@ -75,25 +103,13 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
      */
     public function isModuleEnabled($moduleId)
     {
-
-        // Not enabled globally
-        if (!array_key_exists($moduleId, $this->getAvailableModules())) {
-            return false;
-        }
-
-        // Not enabled at space
-        $module = UserApplicationModule::model()->findByAttributes(array('module_id' => $moduleId, 'user_id' => $this->getOwner()->id));
-        if ($module == null) {
-            return false;
-        }
-
-        return true;
+        return in_array($moduleId, $this->getEnabledModules());
     }
 
     /**
-     * Installs a Module
+     * Enables a Module
      */
-    public function installModule($moduleId)
+    public function enableModule($moduleId)
     {
 
         // Not enabled globally
@@ -103,14 +119,18 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::log("User->installModule(" . $moduleId . ") module is already enabled");
+            Yii::log("User->enableModule(" . $moduleId . ") module is already enabled");
             return false;
         }
 
         // Add Binding
-        $userModule = new UserApplicationModule();
-        $userModule->module_id = $moduleId;
-        $userModule->user_id = $this->getOwner()->id;
+        $userModule = UserApplicationModule::model()->findByAttributes(array('user_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        if ($userModule == null) {
+            $userModule = new UserApplicationModule();
+            $userModule->user_id = $this->getOwner()->id;
+            $userModule->module_id = $moduleId;
+        }
+        $userModule->state = UserApplicationModule::STATE_ENABLED;
         $userModule->save();
 
         $module = Yii::app()->moduleManager->getModule($moduleId);
@@ -119,10 +139,20 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
         return true;
     }
 
+    public function canDisableModule($id)
+    {
+        $defaultStates = UserApplicationModule::getStates();
+        if (isset($defaultStates[$id]) && $defaultStates[$id] == UserApplicationModule::STATE_FORCE_ENABLED) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
-     * Uninstalls a Module
+     * Disables a Module
      */
-    public function uninstallModule($moduleId)
+    public function disableModule($moduleId)
     {
 
         // Not enabled globally
@@ -132,14 +162,22 @@ class UserModelModulesBehavior extends CActiveRecordBehavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::log("User->uninstallModule(" . $moduleId . ") module is not enabled");
+            Yii::log("User->disableModule(" . $moduleId . ") module is not enabled");
             return false;
         }
 
-        UserApplicationModule::model()->deleteAllByAttributes(array('user_id' => $this->getOwner()->id, 'module_id' => $moduleId));
-
+        // New Way: Handle it directly in module class
         $module = Yii::app()->moduleManager->getModule($moduleId);
         $module->disableUserModule($this->getOwner());
+
+        $userModule = UserApplicationModule::model()->findByAttributes(array('user_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        if ($userModule == null) {
+            $userModule = new UserApplicationModule();
+            $userModule->user_id = $this->getOwner()->id;
+            $userModule->module_id = $moduleId;
+        }
+        $userModule->state = UserApplicationModule::STATE_DISABLED;
+        $userModule->save();
 
         return true;
     }

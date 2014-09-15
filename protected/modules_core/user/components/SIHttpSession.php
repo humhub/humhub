@@ -28,7 +28,7 @@ class SIHttpSession extends CDbHttpSession {
         else
             $blob = 'BLOB';
         $db->createCommand()->createTable($tableName, array(
-            'id' => 'CHAR(32) PRIMARY KEY',
+            'id' => 'CHAR(255) PRIMARY KEY',
             'expire' => 'integer',
             'user_id' => 'integer',
             'data' => $blob,

@@ -18,5 +18,5 @@
  */
 return array (
   'see online' => '',
-  'via' => '',
+  'via' => 'via',
 );

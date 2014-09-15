@@ -43,8 +43,8 @@ class ProfileHeaderWidget extends HWidget
             Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.fileupload.js');
             Yii::app()->clientScript->registerScriptFile($assetPrefix . '/profileHeaderImageUpload.js');
 
-            Yii::app()->clientScript->setJavascriptVariable('profileImageUploaderUrl', Yii::app()->createUrl('//user/profile/profileImageUpload'));
-            Yii::app()->clientScript->setJavascriptVariable('profileHeaderUploaderUrl', Yii::app()->createUrl('//user/profile/bannerImageUpload'));
+            Yii::app()->clientScript->setJavascriptVariable('profileImageUploaderUrl', Yii::app()->createUrl('//user/account/profileImageUpload'));
+            Yii::app()->clientScript->setJavascriptVariable('profileHeaderUploaderUrl', Yii::app()->createUrl('//user/account/bannerImageUpload'));
         }
     }
 

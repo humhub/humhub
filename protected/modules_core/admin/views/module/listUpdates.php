@@ -37,8 +37,8 @@
                         <?php if (isset($module['latestCompatibleVersion']) && Yii::app()->moduleManager->isInstalled($module['id'])) : ?>
                             <?php echo Yii::t('AdminModule.views_module_listUpdates', 'Installed version:'); ?> <?php echo Yii::app()->moduleManager->getModule($module['id'])->getVersion(); ?>
                             &middot; <?php echo Yii::t('AdminModule.views_module_listUpdates', 'Latest compatible Version:'); ?> <?php echo $module['latestCompatibleVersion']; ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listUpdates', 'Update'), $this->createUrl('update', array('moduleId' => $module['id']))); ?>
-                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_listUpdates', 'More info'), array('//admin/module/infoOnline', 'moduleId' => $module['id']), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listUpdates', 'Update'), $this->createUrl('update', array('moduleId' => $module['id'])), array('style'=>'font-weight:bold')); ?>
+                            &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], array('target' => '_blank')); ?>
                         <?php endif; ?>
 
                     </div>

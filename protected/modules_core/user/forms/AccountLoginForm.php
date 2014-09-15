@@ -9,7 +9,8 @@
  * @since 0.5
  * @author Luke
  */
-class AccountLoginForm extends CFormModel {
+class AccountLoginForm extends CFormModel
+{
 
     public $username;
     public $password;
@@ -21,9 +22,10 @@ class AccountLoginForm extends CFormModel {
      * The rules state that username and password are required,
      * and password needs to be authenticated.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
-            // username and password are required
+// username and password are required
             array('username, password', 'required'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
@@ -35,7 +37,8 @@ class AccountLoginForm extends CFormModel {
     /**
      * Declares attribute labels.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'rememberMe' => Yii::t('UserModule.forms_AccountLoginForm', 'Remember me next time'),
         );
@@ -45,22 +48,19 @@ class AccountLoginForm extends CFormModel {
      * Authenticates the password.
      * This is the 'authenticate' validator as declared in rules().
      */
-    public function authenticate($attribute, $params) {
+    public function authenticate($attribute, $params)
+    {
         if (!$this->hasErrors()) {
-            
+
             $this->_identity = new UserIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
-                $this->addError('password', Yii::t('UserModule.forms_AccountLoginForm', 'Incorrect username/email or password.'));
-            else {
-                $user = User::model()->findByPk($this->_identity->getId());
-                if ($user->status == User::STATUS_DELETED) {
-                    $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account is deleted.'));
-                } elseif ($user->status == User::STATUS_DISABLED) {
-                    $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account is suspended.'));
-                } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
+                if ($this->_identity->errorCode === UserIdentity::ERROR_NOT_APPROVED) {
                     $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account has not been activated by our staff yet.'));
+                } elseif ($this->_identity->errorCode === UserIdentity::ERROR_SUSPENDED) {
+                    $this->addError('username', Yii::t('UserModule.forms_AccountLoginForm', 'Your account is suspended.'));
+                } else {
+                    $this->addError('password', Yii::t('UserModule.forms_AccountLoginForm', 'Incorrect username/email or password.'));
                 }
-            }
         }
     }
 
@@ -68,7 +68,8 @@ class AccountLoginForm extends CFormModel {
      * Logs in the user using the given username and password in the model.
      * @return boolean whether login is successful
      */
-    public function login() {
+    public function login()
+    {
         if ($this->_identity === null) {
             $this->_identity = new UserIdentity($this->username, $this->password);
             $this->_identity->authenticate();
@@ -77,8 +78,7 @@ class AccountLoginForm extends CFormModel {
             $duration = $this->rememberMe ? 3600 * 24 * 30 : 0; // 30 days
             Yii::app()->user->login($this->_identity, $duration);
             return true;
-        }
-        else
+        } else
             return false;
     }
 

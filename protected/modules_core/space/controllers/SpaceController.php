@@ -108,9 +108,11 @@ class SpaceController extends Controller
      */
     public function actionFollow()
     {
-
+        $this->forcePostRequest();
         $space = $this->getSpace();
-        SpaceFollow::follow($space->id, Yii::app()->user->id);
+        if (!$space->isMember()) {
+            $space->follow();
+        }
 
         $this->redirect($space->getUrl());
     }
@@ -120,9 +122,9 @@ class SpaceController extends Controller
      */
     public function actionUnfollow()
     {
-
+        $this->forcePostRequest();
         $space = $this->getSpace();
-        SpaceFollow::unfollow($space->id, Yii::app()->user->id);
+        $space->unfollow();
 
         $this->redirect($space->getUrl());
     }
@@ -288,20 +290,26 @@ class SpaceController extends Controller
 
             if ($model->validate()) {
 
-                // Invite existing members
-                foreach ($model->getInvites() as $user) {
-                    $space->inviteMember($user->id, Yii::app()->user->id);
-                }
+                // check if both invite inputs are empty
+                if ($model->invite == "" && $model->inviteExternal == "") {
+                    
+                } else {
 
-                if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
-                    // Invite non existing members
-                    foreach ($model->getInvitesExternal() as $email) {
-                        $space->inviteMemberByEMail($email, Yii::app()->user->id);
+                    // Invite existing members
+                    foreach ($model->getInvites() as $user) {
+                        $space->inviteMember($user->id, Yii::app()->user->id);
                     }
-                }
 
-                // close modal
-                $this->renderModalClose();
+                    if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
+                        // Invite non existing members
+                        foreach ($model->getInvitesExternal() as $email) {
+                            $space->inviteMemberByEMail($email, Yii::app()->user->id);
+                        }
+                    }
+
+                    // close modal
+                    $this->renderModalClose();
+                }
             }
         }
 

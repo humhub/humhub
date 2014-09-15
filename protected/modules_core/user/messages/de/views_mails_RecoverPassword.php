@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Password</strong> recovery' => '',
-  'Hello {displayName}, ' => '',
-  'Login' => '',
-  'You have requested a new password.' => '',
-  'Your new password is: <strong>{password}</strong>' => '',
-  'Your username is: <strong>{username}</strong>' => '',
+  '<strong>Password</strong> recovery' => '<strong>Passwort</strong>-Wiederherstellung',
+  'Hello {displayName}, ' => 'Hallo {displayName}, ',
+  'Login' => 'Einloggen',
+  'You have requested a new password.' => 'Sie haben ein neues Passwort beantragt.',
+  'Your new password is: <strong>{password}</strong>' => 'Ihr neues Passwort ist: <strong>{password}</strong>',
+  'Your username is: <strong>{username}</strong>' => 'Ihr Benutzername ist: <strong>{username}</strong>',
 );
