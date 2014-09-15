@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Latest</strong> activities' => '<strong>Последние</strong> мероприятия',
-  'There are no activities yet.' => 'Пока ещё нет мероприятий.',
+  '<strong>Latest</strong> activities' => '<strong>Активность</strong>',
+  'There are no activities yet.' => 'Пока ничего нет',
 );
