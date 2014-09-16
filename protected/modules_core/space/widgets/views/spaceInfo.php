@@ -8,7 +8,7 @@
     <!-- Display panel menu widget -->
     <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'space-info-panel')); ?>
 
-    <div class="panel-heading"><strong>Space</strong> info</div>
+    <div class="panel-heading"><?php echo Yii::t('SpaceModule.widgets_views_spaceInfo', '<strong>Space</strong> info'); ?></div>
 
     <div class="panel-body">
         <div class="media-body">
