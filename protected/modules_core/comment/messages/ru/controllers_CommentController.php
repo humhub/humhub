@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Model & Id Parameter required!' => '',
   'Access denied!' => 'Доступ ограничен!',
   'Could not delete comment!' => 'Не удалось удалить комментарий!',
   'Insufficent permissions!' => 'Недостаточно полномочий!',

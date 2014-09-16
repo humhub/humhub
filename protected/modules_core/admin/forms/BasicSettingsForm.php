@@ -19,7 +19,7 @@ class BasicSettingsForm extends CFormModel {
         return array(
             array('name, baseUrl', 'required'),
             array('name', 'length', 'max' => 150),
-            array('defaultLanguage', 'in', 'range' => Yii::app()->getLanguages()),
+            array('defaultLanguage', 'in', 'range' => array_keys(Yii::app()->params['availableLanguages'])),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
             array('tour', 'safe'),
         );

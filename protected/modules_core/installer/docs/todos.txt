@@ -1,2 +1,0 @@
-
-- Detect HtAccess / ModRewrite Support

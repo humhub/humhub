@@ -41,7 +41,8 @@ Enable Url Rewriting (Optional)
 Enable Cron Jobs
 ----------------
 
-Add following lines to your crontab:
+- Make sure the file protected/yiic is executable. (e.g. chmod +x protected/yiic)
+- Add following lines to your crontab:
 
         30 * * * * /path/to/humhub/protected/yiic cron hourly >/dev/null 2>&1
         00 18 * * * /path/to/humhub/protected/yiic cron daily >/dev/null 2>&1

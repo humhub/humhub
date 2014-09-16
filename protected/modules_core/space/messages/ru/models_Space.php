@@ -17,5 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Updated by' => '',
+  'You cannot create private visible spaces!' => '',
+  'You cannot create public visible spaces!' => '',
+  'Updated by' => 'Обновлено',
 );

@@ -24,4 +24,5 @@ return array (
   'Save' => '',
   'Unapproved' => '',
   'User not found!' => '',
+  'You cannot delete yourself!' => '',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Invalid link! Please make sure that you entered the entire url.' => 'Link inválido! Por favor, tenha certeza que você digitou a url inteira.',
+  'Invalid link! Please make sure that you entered the entire url.' => 'Некорректная ссылка! Удостоверьтесь что url по которому вы перешли - правильный.',
   'Save profile' => 'Сохранить профиль',
   'Saved' => 'Сохранён',
   'The entered e-mail address is already in use by another user.' => 'Введённый е-маил уже используется другим пользователем',

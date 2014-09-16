@@ -17,7 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Member</strong> directory' => 'Каталог <strong>пользователей</strong>',
+  'Follow' => '',
+  'Unfollow' => '',
+  '<strong>Member</strong> directory' => '<strong>Пользователи</strong>',
   'No members found!' => 'Пользователи не найдены!',
   'search for members' => 'искать пользователей',
 );
