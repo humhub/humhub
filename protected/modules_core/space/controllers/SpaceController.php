@@ -157,10 +157,10 @@ class SpaceController extends Controller
         foreach ($parts as $part) {
             $i++;
             $condition .= " AND (u.email LIKE :match{$i} OR "
-                    . "u.username LIKE :match{$i} OR "
-                    . "p.firstname LIKE :match{$i} OR "
-                    . "p.lastname LIKE :match{$i} OR "
-                    . "p.title LIKE :match{$i})";
+                . "u.username LIKE :match{$i} OR "
+                . "p.firstname LIKE :match{$i} OR "
+                . "p.lastname LIKE :match{$i} OR "
+                . "p.title LIKE :match{$i})";
 
             $params[':match' . $i] = "%" . $part . "%";
         }
@@ -183,6 +183,39 @@ class SpaceController extends Controller
 
         print CJSON::encode($results);
         Yii::app()->end();
+    }
+
+
+    public function actionSearchSpaceJson()
+    {
+
+        $maxResults = 10;
+        $results = array();
+        $keyword = Yii::app()->request->getParam('keyword');
+        $keyword = Yii::app()->input->stripClean($keyword);
+
+        $match = addcslashes($keyword, '%_'); // escape LIKE's special characters
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'name LIKE :match AND visibility != '. Space::VISIBILITY_NONE;
+        $criteria->params = array(':match' => "%$match%");
+        $criteria->limit = $maxResults;
+        $criteria->order = "name asc";
+
+        $spaces = Space::model()->findAll($criteria);
+
+        foreach ($spaces as $space) {
+            if ($space->visibility != Space::VISIBILITY_NONE) {
+                $spaceInfo['guid'] = $space->guid;
+                $spaceInfo['name'] = $space->name;
+                $spaceInfo['image'] = $space->getProfileImage()->getUrl();
+                $results[] = $spaceInfo;
+            }
+        }
+
+        print CJSON::encode($results);
+        Yii::app()->end();
+
     }
 
     /**
@@ -292,7 +325,7 @@ class SpaceController extends Controller
 
                 // check if both invite inputs are empty
                 if ($model->invite == "" && $model->inviteExternal == "") {
-                    
+
                 } else {
 
                     // Invite existing members

@@ -1,4 +1,6 @@
-<div class="panel panel-default <?php if (Yii::app()->getController()->id == 'dashboard') { echo 'hidden'; } ?>">
+<div class="panel panel-default <?php if (Yii::app()->getController()->id == 'dashboard') {
+    echo 'hidden';
+} ?>">
     <div class="panel-body" id="contentFormBody">
 
         <?php echo CHtml::form('', 'POST'); ?>
@@ -8,20 +10,32 @@
 
         <?php echo $form; ?>
 
+        <?php
+        $userSearchUrl = '//user/search/json';
+        $params = [];
+        if (get_class($contentContainer) == Wall::TYPE_SPACE) {
+
+            $userSearchUrl = '//space/space/searchMemberJson';
+            $params = array('sguid' => $this->contentContainer->guid);
+        }
+
+        /* Modify textarea for mention input */
+        $this->widget('application.widgets.MentionWidget', array(
+            'id' => 'contentForm_message',
+            'userSearchUrl' => $this->createUrl($userSearchUrl, $params),
+        ));
+
+        ?>
+
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
             <input type="text" value="" id="notifyUserInput" name="notifyUserInput"/>
 
             <?php
 
-            $user_url = '//space/space/searchMemberJson';
-            if (get_class($contentContainer) == Wall::TYPE_USER) {
-                $user_url = '//user/search/json';
-            }
-
             /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                 'inputId' => 'notifyUserInput',
-                'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
+                'userSearchUrl' => $this->createUrl($userSearchUrl, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
                 'maxUsers' => 10,
                 'userGuid' => Yii::app()->user->guid,
                 'placeholderText' => Yii::t('WallModule.widgets_views_archiveLink', 'Add a member to notify'),
@@ -68,6 +82,8 @@
                         $('.label-public').addClass('hidden');
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
+                        $('#contentForm_message_contenteditable').html('". Yii::t("PostModule.widgets_views_postForm", "Whats on your mind?") ."');
+                        $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
                         clearFileUpload('contentFormFiles');
@@ -102,7 +118,7 @@
                 ?>
 
                 <!-- public checkbox -->
-                <?php echo CHtml::checkbox("visibility", "", array('id'=>'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
+                <?php echo CHtml::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
 
                 <!-- content sharing -->
                 <div class="pull-right">
@@ -111,7 +127,8 @@
 
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
+                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#"><i
+                                    class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
@@ -190,5 +207,28 @@
 
     // add autosize function to input
     $('.autosize').autosize();
+
+    $('#contentForm_message_contenteditable').on('keypress',function(e){
+        if(e.keyCode==13){ //enter && shift
+
+            e.preventDefault(); //Prevent default browser behavior
+            if (window.getSelection) {
+                var selection = window.getSelection(),
+                    range = selection.getRangeAt(0),
+                    br = document.createElement("br"),
+                    textNode = document.createTextNode("\u00a0"); //Passing " " directly will not end up being shown correctly
+                range.deleteContents();//required or not?
+                range.insertNode(br);
+                range.collapse(false);
+                range.insertNode(textNode);
+                range.selectNodeContents(textNode);
+
+                selection.removeAllRanges();
+                selection.addRange(range);
+                return false;
+            }
+
+        }
+    });
 
 </script>
