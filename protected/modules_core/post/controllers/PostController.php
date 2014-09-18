@@ -50,7 +50,8 @@ class PostController extends Controller
 
             // Experimental: Auto attach found images urls in message as files
             if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
-                File::attachFilesByUrlsToContent($post, $post->message);
+                Yii::import('application.modules_core.file.libs.*');
+                RemoteFileDownloader::attachFiles($post, $post->message);
             }
 
             $this->renderJson(array('wallEntryId' => $post->content->getFirstWallEntryId()));

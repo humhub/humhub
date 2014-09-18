@@ -21,7 +21,7 @@
 /**
  * ImageConverter provides a simple interface for converting or resizing images.
  * 
- * @package humhub.modules_core.file
+ * @package humhub.modules_core.file.libs
  * @since 0.5
  */
 class ImageConverter {

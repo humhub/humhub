@@ -22,6 +22,9 @@
             <?php
             print HHtml::enrichText($comment->message);
             ?>
+            
+            <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
+            
         </span>
 
         <?php //echo CHtml::link(Yii::t('CommentModule.widgets_views_showComment', "Delete"), '#'); ?>

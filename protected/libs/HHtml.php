@@ -323,6 +323,49 @@ class HHtml extends CHtml
         return self::textField($name, $value, $htmlOptions);
     }
 
+    /**
+     * Returns Stylesheet Classname based on file extension
+     *
+     * @return string CSS Class
+     */
+    public static function getMimeIconClassByExtension($ext)
+    {
+        // Word
+        if ($ext == 'doc' || $ext == 'docx') {
+            return "mime-word";
+            // Excel
+        } else if ($ext == 'xls' || $ext == 'xlsx') {
+            return "mime-excel";
+            // Powerpoint
+        } else if ($ext == 'ppt' || $ext == 'pptx') {
+            return "mime-excel";
+            // PDF
+        } else if ($ext == 'pdf') {
+            return "mime-pdf";
+            // Archive
+        } else if ($ext == 'zip' || $ext == 'rar' || $ext == 'tar' || $ext == '7z') {
+            return "mime-zip";
+            // Audio
+        } else if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif') {
+            return "mime-image";
+            // Audio
+        } else if ($ext == 'mp3' || $ext == 'aiff' || $ext == 'wav') {
+            return "mime-audio";
+            // Adobe Flash
+        } else if ($ext == 'swf' || $ext == 'fla' || $ext == 'air') {
+            return "mime-flash";
+            // Adobe Photoshop
+        } else if ($ext == 'psd') {
+            return "mime-photoshop";
+            // Adobe Illustrator
+        } else if ($ext == 'ai') {
+            return "mime-illustrator";
+            // other file formats
+        } else {
+            return "mime-file";
+        }
+    }
+
 }
 
 ?>

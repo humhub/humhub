@@ -35,7 +35,7 @@
     <hr>
     <ul class="files" style="list-style: none; margin: 0;">
         <?php foreach ($files as $file) : ?>
-            <li style="padding-left: 24px;" class="mime <?php echo $file->getMimeIconClass(); ?>"><a
+            <li style="padding-left: 24px;" class="mime <?php echo HHtml::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
                         class="filename"><?php echo $file->file_name; ?></span></a>
                 <span class="time"> - <?php echo Yii::app()->format->formatSize($file->size); ?></span></li>

@@ -45,21 +45,20 @@
 </span>
 
 <script>
-    $(function () {
+    $(function() {
 
-        $('.postfileupload').each(function () {
+        $('.postfileupload').each(function() {
 
             $('#<?php echo $uploaderId; ?>').fileupload({
                 dropZone: $(this),
                 dataType: 'json',
-
                 // After File is uploaded
-                done: function (e, data) {
+                done: function(e, data) {
 
                     // Parses the given JSON Array returned by FileUpload Controller
                     // See application.modules_core.file.controllers.FileController
                     //      Method: handleFileUpload  for all available json informations.
-                    $.each(data.result.files, function (index, file) {
+                    $.each(data.result.files, function(index, file) {
 
                         // No Upload Error
                         if (!file.error) {
@@ -70,26 +69,35 @@
                             hiddenValueField.val(hiddenValueField.val() + "," + file.guid);
 
                             // Attach a simple Li Entry
-                            $('#<?php echo $uploaderId;?>_list').append('<li style="padding-left: 24px;" class="mime ' + file.mimeIcon + '">' + file.name + '</li>');
+                            $('#<?php echo $uploaderId; ?>_list').append('<li style="padding-left: 24px;" class="mime ' + file.mimeIcon + '">' + file.name + '</li>');
 
                         } else {
+                            
+                            // Parse errors array and extract error messages
+                            errorMessage = "";
+                            jQuery.each(file.errors, function() {
+                                jQuery.each(this, function() {
+                                    errorMessage += this;
+                                });
+                            });
+
+                            $('#fileModal').remove();
 
                             var alertMessage = '<div class="modal" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"' +
-                            'aria-hidden="true">' +
-                                '<div class="modal-dialog modal-dialog-extra-small animated pulse">' +
-                                '<div class="modal-content">' +
-                                '<div class="modal-header">' +
-                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                            '<h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('widgets_views_fileUploadButton', '<strong>Upload</strong> error'); ?></h4>' +
-                            '</div>' +
-                            '<div class="modal-body text-center">Could not upload File: ' + file.name + '<br>' + file.errorMessage + '</div>' +
-                            '<div class="modal-footer">' +
-                                '<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('widgets_views_fileUploadButton', 'Close'); ?></button>' +
-
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>'
+                                    'aria-hidden="true">' +
+                                    '<div class="modal-dialog modal-dialog-extra-small animated pulse">' +
+                                    '<div class="modal-content">' +
+                                    '<div class="modal-header">' +
+                                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                                    '<h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('widgets_views_fileUploadButton', '<strong>Upload</strong> error'); ?></h4>' +
+                                    '</div>' +
+                                    '<div class="modal-body text-center">Could not upload File: ' + file.name + '<br>' + errorMessage + '</div>' +
+                                    '<div class="modal-footer">' +
+                                    '<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('widgets_views_fileUploadButton', 'Close'); ?></button>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>'
 
                             $('body').append(alertMessage);
                             $('#fileModal').modal('show');
@@ -98,8 +106,7 @@
                     });
 
                 },
-
-                progressall: function (e, data) {
+                progressall: function(e, data) {
 
                     var progress = parseInt(data.loaded / data.total * 100, 10);
 
@@ -153,7 +160,7 @@
      * @returns {undefined}     */
     function clearFileUpload(uploaderId) {
         $('#' + uploaderId + '_details').hide();
-        $('#<?php echo $uploaderId;?>_list').html('');
+        $('#<?php echo $uploaderId; ?>_list').html('');
     }
 
 </script>
