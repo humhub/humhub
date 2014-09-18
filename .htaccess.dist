@@ -1,5 +1,8 @@
 RewriteEngine on
 
+# prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.)
+RedirectMatch 403 /\..*$
+
 # RewriteBase is required in some hosting environments (Amazon EC2, ...)
 #RewriteBase /
 
