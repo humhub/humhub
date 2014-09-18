@@ -207,7 +207,9 @@ class HHtml extends CHtml
         # breaks links!?
         #$text = nl2br($text);
 
-        $text = str_replace("\n", "<br />\n", $text);
+        //$text = str_replace("\n", "<br />\n", $text);
+
+
 
         // get user details from guids
         $text = self::translateUserMentioning($text, true);
@@ -217,6 +219,10 @@ class HHtml extends CHtml
 
         // create image tag for emojis
         $text = self::translateEmojis($text);
+
+        // transform to markdown
+        $md = new CMarkdown;
+        $text = $md->transform($text);
 
         return $text;
     }
@@ -231,7 +237,7 @@ class HHtml extends CHtml
     {
 
         // add white space at the beginning to get even a mentioned user from the first character
-        $text = " ". $text;
+        //$text = " ". $text;
 
         // save hits of @ char
         $hits = substr_count($text, ' @');
@@ -250,7 +256,7 @@ class HHtml extends CHtml
                 if ($buildAnchors == true) {
                     $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">@' . $user->getDisplayName() . '</a>';
                 } else {
-                    $link = " " . $user->getDisplayName();
+                    $link = " @" . $user->getDisplayName();
                 }
 
                 // replace guid with profile link and username
@@ -272,7 +278,7 @@ class HHtml extends CHtml
     {
 
         // add white space at the beginning to get even a mentioned space from the first character
-        $text = " ". $text;
+        //$text = " ". $text;
 
         // save hits of # char
         $hits = substr_count($text, ' #');
@@ -291,7 +297,7 @@ class HHtml extends CHtml
                 if ($buildAnchors == true) {
                     $link = ' <a href="' . $space->getUrl() . '" target="_self">#' . $space->name . '</a>';
                 } else {
-                    $link = " " . $space->name();
+                    $link = " #" . $space->name;
                 }
 
                 // replace guid with profile link and spacename

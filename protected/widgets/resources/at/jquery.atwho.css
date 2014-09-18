@@ -67,3 +67,32 @@
 .atwho-placeholder {
     color: #bebebe !important;
 }
+
+
+
+.popover {
+    background-color: #7191a8;
+    border: none;
+}
+
+.popover.top .arrow {
+    border-top-color: transparent;
+}
+
+.popover.top .arrow:after {
+    border-top-color: #7191a8;
+}
+
+.popover .popover-content {
+    color: #d7d7d7 !important;
+    padding: 5px 10px;
+}
+
+.popover .popover-content i {
+    width: 16px;
+}
+
+.popover a {
+    color: #fff !important;
+    font-weight: bold !important;
+}

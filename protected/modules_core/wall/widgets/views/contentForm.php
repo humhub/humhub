@@ -82,7 +82,7 @@
                         $('.label-public').addClass('hidden');
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
-                        $('#contentForm_message_contenteditable').html('". Yii::t("PostModule.widgets_views_postForm", "Whats on your mind?") ."');
+                        $('#contentForm_message_contenteditable').html('" . Yii::t("PostModule.widgets_views_postForm", "Whats on your mind?") . "');
                         $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
@@ -208,27 +208,72 @@
     // add autosize function to input
     $('.autosize').autosize();
 
-    $('#contentForm_message_contenteditable').on('keypress',function(e){
-        if(e.keyCode==13){ //enter && shift
+    /*    $('#contentForm_message_contenteditable').on('keypress',function(e){
+     if(e.keyCode==13){ //enter && shift
 
-            e.preventDefault(); //Prevent default browser behavior
-            if (window.getSelection) {
-                var selection = window.getSelection(),
-                    range = selection.getRangeAt(0),
-                    br = document.createElement("br"),
-                    textNode = document.createTextNode("\u00a0"); //Passing " " directly will not end up being shown correctly
-                range.deleteContents();//required or not?
-                range.insertNode(br);
-                range.collapse(false);
-                range.insertNode(textNode);
-                range.selectNodeContents(textNode);
+     e.preventDefault(); //Prevent default browser behavior
+     if (window.getSelection) {
+     var selection = window.getSelection(),
+     range = selection.getRangeAt(0),
+     br = document.createElement("br"),
+     textNode = document.createTextNode("\u00a0"); //Passing " " directly will not end up being shown correctly
+     range.deleteContents();//required or not?
+     range.insertNode(br);
+     range.collapse(false);
+     range.insertNode(textNode);
+     range.selectNodeContents(textNode);
 
-                selection.removeAllRanges();
-                selection.addRange(range);
-                return false;
+     selection.removeAllRanges();
+     selection.addRange(range);
+     return false;
+     }
+
+     }
+     });*/
+
+
+    $(document).ready(function () {
+
+
+        $('#contentForm_message_contenteditable').attr('data-container', 'body');
+        $('#contentForm_message_contenteditable').attr('data-toggle', 'popover');
+        $('#contentForm_message_contenteditable').attr('data-placement', 'top');
+        $('#contentForm_message_contenteditable').attr('data-content', '<a href="javascript:formatText(\'bold\');"> <i class="fa fa-bold"></i></a> <a href="javascript:formatText(\'italic\');"> <i class="fa fa-italic"></i></a> <a href="javascript:formatText(\'underline\');"> <i class="fa fa-underline"></i></a> | <a href="#"> <i class="fa fa-link"></i></a>');
+
+
+        $("#contentForm_message_contenteditable").popover({
+            html: true
+        });
+
+
+        $('#contentForm_message_contenteditable').click(function() {
+
+            var hallo = window.getSelection()
+
+            if (hallo.focusOffset > hallo.anchorOffset) {
+                //console.log('selecton true');
+                $('#contentForm_message_contenteditable').popover('show');
+                console.log(hallo.focusOffset - hallo.anchorOffset);
+
+                var caretPosition = $('#contentForm_message_contenteditable').caret('offset');
+                //console.log(caretPosition.left);
+
+                $('.popover').css({
+                    top: (caretPosition.top - 34) + "px",
+                    left: (caretPosition.left - 56 - (3 * hallo.focusOffset - hallo.anchorOffset)) + "px"
+                })
+
+            } else {
+                $('#contentForm_message_contenteditable').popover('hide');
             }
 
-        }
-    });
+        })
+
+    })
+
+    function formatText(format) {
+        document.execCommand(format, false, null);
+        //$('#contentForm_message_contenteditable').popover('hide');
+    }
 
 </script>

@@ -98,7 +98,7 @@
         })
         // add placeholder text, if input is empty
         $('#<?php echo $id; ?>_contenteditable').focusout(function () {
-            if ($(this).html() == "") {
+            if ($(this).html() == "" || $(this).html() == " "){
                 $(this).html(placeholder);
                 $(this).addClass('atwho-placeholder');
             } else {
@@ -140,7 +140,6 @@
         for (var i = 0; i <= emojiCount; i++) {
             var emojiName = element.find('.atwho-emoji:first').attr('data-emoji-name');
             element.find('.atwho-emoji:first').replaceWith(emojiName);
-            //element.find('.atwho-emoji:first').removeClass('atwho-emoji');
         }
 
 
@@ -148,7 +147,7 @@
         var html = element.html();
 
         // replace all div tags with br tags (Chrome fix)
-        html = html.replace(/\<div>/g, '<br>');
+        //html = html.replace(/\<div>/g, '<br>');
 
         // replace all <br> with new line break
         element.html(html.replace(/\<br\s*\>/g, '\n'));
