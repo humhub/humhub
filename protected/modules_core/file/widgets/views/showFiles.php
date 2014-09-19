@@ -15,14 +15,9 @@
     <div class="post-files">
         <?php foreach ($files as $file) : ?>
             <?php if ($file->getMimeBaseType() == "image") : ?>
-
                 <?php
-                /*
-                 * Note: We need to add "#.jpeg" to the full url for image
-                 * detection of ekko lightbox.
-                 */
+                //Note: We need to add "#.jpeg" to the full url for image  detection of ekko lightbox.
                 ?>
-
                 <a data-toggle="lightbox" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                     <img src='<?php echo $file->getPreviewImageUrl(200, 200); ?>'>
                 </a>
@@ -31,7 +26,6 @@
     </div>
 
     <!-- Show List of all files -->
-    <?php //echo Yii::t('FileModule.widgets_views_showFiles', 'Attached Files:'); ?>
     <hr>
     <ul class="files" style="list-style: none; margin: 0;">
         <?php foreach ($files as $file) : ?>
@@ -39,7 +33,6 @@
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
                         class="filename"><?php echo $file->file_name; ?></span></a>
                 <span class="time"> - <?php echo Yii::app()->format->formatSize($file->size); ?></span></li>
-                <?php //echo $file->mime_type; ?>
             <?php endforeach; ?>
     </ul>
 <?php endif; ?>

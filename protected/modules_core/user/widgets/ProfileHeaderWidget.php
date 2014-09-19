@@ -28,19 +28,16 @@ class ProfileHeaderWidget extends HWidget
 
     protected $user;
     protected $isProfileOwner = false;
-    
-    
+
+
     public function init()
     {
         $this->user = $this->getController()->getUser();
         $this->isProfileOwner = (Yii::app()->user->id == $this->user->id);
-        
+
         // Only include uploading javascripts on own user profiles
         if ($this->isProfileOwner) {
             $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-            Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.ui.widget.js');
-            Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.iframe-transport.js');
-            Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.fileupload.js');
             Yii::app()->clientScript->registerScriptFile($assetPrefix . '/profileHeaderImageUpload.js');
 
             Yii::app()->clientScript->setJavascriptVariable('profileImageUploaderUrl', Yii::app()->createUrl('//user/account/profileImageUpload'));

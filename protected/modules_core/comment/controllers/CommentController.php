@@ -168,6 +168,8 @@ class CommentController extends Controller
             }
 
             $comment->save();
+            File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
+            
         }
 
         return $this->actionShow();

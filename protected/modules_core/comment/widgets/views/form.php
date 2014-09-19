@@ -14,34 +14,50 @@
     <?php echo CHtml::hiddenField('model', $modelName); ?>
     <?php echo CHtml::hiddenField('id', $modelId); ?>
 
-    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form','Write a new comment...'))); ?>
+    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
+
+    <?php
+    // Creates Uploading Button
+    $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
+        'uploaderId' => 'comment_upload_' . $id,
+        'fileListFieldName' => 'fileList',
+    ));
+    ?>    
 
     <?php
     echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
-            'beforeSend' => "function() {
+        'beforeSend' => "function() {
                 $('#newCommentForm_" . $id . "').blur();
                 }",
-            'success' => "function(html) {
+        'success' => "function(html) {
             
             $('#comments_area_" . $id . "').html(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
+            resetUploader('comment_upload_" . $id . "');
 
         }",
-        ), array(
-            'id' => "comment_create_post_" . $id,
-            'class' => 'btn btn-small btn-primary',
-            'style' => 'display: none;',
-        )
+            ), array(
+        'id' => "comment_create_post_" . $id,
+        'class' => 'btn btn-small btn-primary',
+        'style' => 'display: none;',
+            )
     );
     ?>
 
     <?php echo Chtml::endForm(); ?>
 
+
+    <?php
+    // Creates a list of already uploaded Files
+    $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
+        'uploaderId' => 'comment_upload_' . $id,
+    ));
+    ?>    
 </div>
 
 <script>
     // Fire click event for comment button by typing enter
-    $('#newCommentForm_<?php echo $id; ?>').keydown(function (event) {
+    $('#newCommentForm_<?php echo $id; ?>').keydown(function(event) {
 
         if (event.keyCode == 13) {
 
