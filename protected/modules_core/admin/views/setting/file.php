@@ -34,8 +34,11 @@
         </div>
 
         <div class="form-group">
-            <?php echo $form->labelEx($model, 'forbiddenExtensions'); ?>
-            <?php echo $form->textField($model, 'forbiddenExtensions', array('class' => 'form-control', 'hint' => Yii::t('AdminModule.views_setting_file', '(comma separated)'))); ?>
+            <?php echo $form->labelEx($model, 'allowedExtensions'); ?>
+            <?php echo $form->textField($model, 'allowedExtensions', array('class' => 'form-control')); ?>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Comma separated list. Leave empty to allow all.'); ?></p>
+            
+            
         </div>
 
         <hr>

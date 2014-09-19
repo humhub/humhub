@@ -105,10 +105,15 @@ class File extends HActiveRecord
         );
     }
 
-    protected function beforeValidate()
+    protected function beforeSave()
     {
         $this->sanitizeFilename();
-        return parent::beforeValidate();
+
+        if ($this->title == "") {
+            $this->title = $this->file_name;
+        }
+
+        return parent::beforeSave();
     }
 
     protected function beforeDelete()
@@ -219,7 +224,6 @@ class File extends HActiveRecord
 
     public function getMimeBaseType()
     {
-
         if ($this->mime_type != "") {
             list($baseType, $subType) = explode('/', $this->mime_type);
             return $baseType;
@@ -230,7 +234,6 @@ class File extends HActiveRecord
 
     public function getMimeSubType()
     {
-
         if ($this->mime_type != "") {
             list($baseType, $subType) = explode('/', $this->mime_type);
             return $subType;
@@ -278,7 +281,6 @@ class File extends HActiveRecord
         if (isset($fileParts['extension'])) {
             return $fileParts['extension'];
         }
-
         return '';
     }
 
@@ -301,7 +303,6 @@ class File extends HActiveRecord
     public function setUploadedFile(CUploadedFile $cUploadedFile)
     {
         $this->file_name = $cUploadedFile->getName();
-        $this->title = $cUploadedFile->getName();
         $this->mime_type = $cUploadedFile->getType();
         $this->size = $cUploadedFile->getSize();
         $this->cUploadedFile = $cUploadedFile;
@@ -325,13 +326,17 @@ class File extends HActiveRecord
 
     public function validateExtension($attribute, $params)
     {
-        $extension = $this->getExtension();
-        $extension = trim(strtolower($extension));
+        $allowedExtensions = HSetting::Get('allowedExtensions', 'file');
 
-        $invalid = array_map('trim', explode(",", HSetting::Get('forbiddenExtensions', 'file')));
+        if ($allowedExtensions != "") {
+            $extension = $this->getExtension();
+            $extension = trim(strtolower($extension));
 
-        if (in_array($extension, $invalid)) {
-            $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));
+            $allowed = array_map('trim', explode(",", HSetting::Get('allowedExtensions', 'file')));
+
+            if (!in_array($extension, $allowed)) {
+                $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));
+            }
         }
     }
 
@@ -343,11 +348,11 @@ class File extends HActiveRecord
     }
 
     /**
-     * Attaches a given list of files to an object (HActiveRecordContent).
-     * This is used when uploading files before the target object is created yet.
+     * Attaches a given list of files to an record (HActiveRecord).
+     * This is used when uploading files before the record is created yet.
      *
-     * @param Mixed $object is a HActiveRecord
-     * @param String $files is a comma seperated list of newly uploaded file guids
+     * @param HActiveRecord $object is a HActiveRecord
+     * @param string $files is a comma seperated list of newly uploaded file guids
      */
     public static function attachPrecreated($object, $files)
     {
@@ -357,9 +362,7 @@ class File extends HActiveRecord
 
         // Attach Files
         foreach (explode(",", $files) as $fileGuid) {
-
             $file = File::model()->findByAttributes(array('guid' => trim($fileGuid)));
-
             if ($file != null && $file->object_model == "") {
                 $file->object_model = get_class($object);
                 $file->object_id = $object->getPrimaryKey();

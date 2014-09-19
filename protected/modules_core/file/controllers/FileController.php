@@ -43,7 +43,6 @@ class FileController extends Controller
      */
     public function actionUpload()
     {
-
         $files = array();
         foreach (CUploadedFile::getInstancesByName('files') as $cFile) {
             $files[] = $this->handleFileUpload($cFile);
@@ -82,25 +81,24 @@ class FileController extends Controller
         $file = new File();
         $file->setUploadedFile($cFile);
 
-        $output['name'] = $file->file_name;
-        $output['size'] = $file->size;
-
         if ($file->validate() && $file->save()) {
             $output['error'] = false;
             $output['guid'] = $file->guid;
             $output['name'] = $file->file_name;
             $output['title'] = $file->title;
-            $output['url'] = "";
-            $output['thumbnailUrl'] = "";
             $output['size'] = $file->size;
-            $output['deleteUrl'] = "";
-            $output['deleteType'] = "";
             $output['mimeIcon'] = HHtml::getMimeIconClassByExtension($file->getExtension());
-            ;
         } else {
             $output['error'] = true;
             $output['errors'] = $file->getErrors();
         }
+
+        $output['name'] = $file->file_name;
+        $output['size'] = $file->size;
+        $output['deleteUrl'] = "";
+        $output['deleteType'] = "";
+        $output['url'] = "";
+        $output['thumbnailUrl'] = "";
 
         return $output;
     }
@@ -110,7 +108,6 @@ class FileController extends Controller
      */
     public function actionDownload()
     {
-
         $guid = Yii::app()->request->getParam('guid');
         $suffix = Yii::app()->request->getParam('suffix');
 

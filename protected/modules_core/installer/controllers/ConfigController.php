@@ -299,7 +299,6 @@ class ConfigController extends Controller
 
         // File
         HSetting::Set('maxFileSize', '1048576', 'file');
-        HSetting::Set('forbiddenExtensions', 'exe', 'file');
 
         // Caching
         HSetting::Set('type', 'CFileCache', 'cache');

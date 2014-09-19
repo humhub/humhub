@@ -253,12 +253,12 @@ class SettingController extends Controller
             foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(Yii::app()->getAssetManager()->getBasePath(), FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
 
                 // Do not remove .gitignore in assets folder
-                if ($path->getPathname() == Yii::app()->getAssetManager()->getBasePath().DIRECTORY_SEPARATOR.'.gitignore') {
+                if ($path->getPathname() == Yii::app()->getAssetManager()->getBasePath() . DIRECTORY_SEPARATOR . '.gitignore') {
                     continue;
                 }
-                
+
                 if ($path->isDir()) {
-                   rmdir($path->getPathname());    
+                    rmdir($path->getPathname());
                 } else {
                     unlink($path->getPathname());
                 }
@@ -502,7 +502,7 @@ class SettingController extends Controller
         $form->imageMagickPath = HSetting::Get('imageMagickPath', 'file');
         $form->maxFileSize = HSetting::Get('maxFileSize', 'file') / 1024 / 1024;
         $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
-        $form->forbiddenExtensions = HSetting::Get('forbiddenExtensions', 'file');
+        $form->allowedExtensions = HSetting::Get('allowedExtensions', 'file');
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'file-settings-form') {
@@ -518,7 +518,7 @@ class SettingController extends Controller
                 $form->imageMagickPath = HSetting::Set('imageMagickPath', $form->imageMagickPath, 'file');
                 $form->maxFileSize = HSetting::Set('maxFileSize', $form->maxFileSize * 1024 * 1024, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
-                $form->forbiddenExtensions = HSetting::Set('forbiddenExtensions', strtolower($form->forbiddenExtensions), 'file');
+                $form->allowedExtensions = HSetting::Set('allowedExtensions', strtolower($form->allowedExtensions), 'file');
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
@@ -529,8 +529,9 @@ class SettingController extends Controller
 
         // Determine PHP Upload Max FileSize
         $maxUploadSize = Helpers::GetBytesOfPHPIniValue(ini_get('upload_max_filesize'));
-        if ($maxUploadSize > Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size')))
+        if ($maxUploadSize > Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'))) {
             $maxUploadSize = Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'));
+        }
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
 
         // Determine currently used ImageLibary
