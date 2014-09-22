@@ -17,12 +17,16 @@
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
-            <a href="<?php echo $space->getUrl(); ?>">
-                <img src="<?php echo $space->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
-                     height="40" width="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"
-                     data-toggle="tooltip" data-placement="top" title=""
-                     data-original-title="<strong><?php echo $space->name; ?></strong>">
-            </a>
+            <?php if ($space->visibility == Space::VISIBILITY_NONE && !$space->isMember()) { ?>
+            <?php } else { ?>
+                <a href="<?php echo $space->getUrl(); ?>">
+                    <img src="<?php echo $space->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
+                         height="40" width="40" alt="40x40" data-src="holder.js/40x40"
+                         style="width: 40px; height: 40px;"
+                         data-toggle="tooltip" data-placement="top" title=""
+                         data-original-title="<strong><?php echo $space->name; ?></strong>">
+                </a>
+            <?php } ?>
         <?php endforeach; ?>
     </div>
 </div>
