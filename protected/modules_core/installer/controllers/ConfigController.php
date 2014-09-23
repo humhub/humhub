@@ -182,6 +182,14 @@ class ConfigController extends Controller
         $form['UserPassword']->model = $userPasswordModel;
         $form['Profile']->model = $profileModel;
 
+        if (isset($_POST['Profile'])) {
+            $_POST['Profile'] = Yii::app()->input->stripClean($_POST['Profile']);
+        }
+        
+        if (isset($_GET['Profile'])) {
+            $_GET['Profile'] = Yii::app()->input->stripClean($_GET['Profile']);        
+        }
+
         if ($form->submitted('save') && $form->validate()) {
             $this->forcePostRequest();
 
