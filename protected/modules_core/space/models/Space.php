@@ -202,13 +202,13 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return array(
             // Coming soon
             'active' => array(
-                'condition' => 'status=' . self::STATUS_ENABLED,
+                'condition' => $this->getTableAlias().'.status=' . self::STATUS_ENABLED,
             ),
             'visible' => array(
-                'condition' => 'visibility != ' . Space::VISIBILITY_NONE,
+                'condition' => $this->getTableAlias().'.visibility != ' . Space::VISIBILITY_NONE,
             ),
             'recently' => array(
-                'order' => 'created_at DESC',
+                'order' => $this->getTableAlias().'.created_at DESC',
                 'limit' => 10,
             ),
         );
