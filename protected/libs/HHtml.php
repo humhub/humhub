@@ -189,7 +189,7 @@ class HHtml extends CHtml
         $oembedCount = 0; // OEmbeds used
 
 
-        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
+/*        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
@@ -201,15 +201,11 @@ class HHtml extends CHtml
             }
 
             return HHtml::link($match[0], $match[0], array('target' => '_blank'));
-        }, $text);
+        }, $text);*/
 
 
         # breaks links!?
         #$text = nl2br($text);
-
-        //$text = str_replace("\n", "<br />\n", $text);
-
-
 
         // get user details from guids
         $text = self::translateUserMentioning($text, true);
@@ -224,6 +220,8 @@ class HHtml extends CHtml
         $md = new CMarkdown;
         $text = $md->transform($text);
 
+        //$text = str_replace("\n", "<br />\n", $text);
+
         return $text;
     }
 
@@ -237,7 +235,7 @@ class HHtml extends CHtml
     {
 
         // add white space at the beginning to get even a mentioned user from the first character
-        //$text = " ". $text;
+        $text = " ". $text;
 
         // save hits of @ char
         $hits = substr_count($text, ' @');
@@ -278,7 +276,7 @@ class HHtml extends CHtml
     {
 
         // add white space at the beginning to get even a mentioned space from the first character
-        //$text = " ". $text;
+        $text = " ". $text;
 
         // save hits of # char
         $hits = substr_count($text, ' #');
@@ -319,7 +317,7 @@ class HHtml extends CHtml
         $s = explode(":", $text);
 
         for ($i = 1; $i <= count($s) - 1; $i += 2) {
-            $text = str_replace(':' . $s[$i] . ':', '<img class="atwho-emoji" data-emoji-name=":' . $s[$i] . ':" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png">', $text);
+            $text = str_replace(':' . $s[$i] . ':', ' <img class="atwho-emoji" data-emoji-name=":' . $s[$i] . ':" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png"/>', $text);
         }
 
         return $text;

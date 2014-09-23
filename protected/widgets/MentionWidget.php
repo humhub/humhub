@@ -54,6 +54,11 @@ class MentionWidget extends HWidget
         Yii::app()->clientScript->registerCssFile($assetPrefix . '/jquery.atwho.css');
 
 
+        $assetPrefix2 = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources/summernote', true, 0, defined('YII_DEBUG'));
+        Yii::app()->clientScript->registerScriptFile($assetPrefix2 . '/summernote.js', CClientScript::POS_END);
+        Yii::app()->clientScript->registerCssFile($assetPrefix2 . '/summernote.css');
+
+
         $this->render('mention', array('id' => $this->id, 'userSearchUrl' => $this->userSearchUrl));
         
     }

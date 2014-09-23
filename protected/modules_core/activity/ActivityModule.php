@@ -109,6 +109,7 @@ class ActivityModule extends HWebModule
     public static function formatOutput($text)
     {
         $text = HHtml::translateUserMentioning($text, false);
+        $text = HHtml::translateSpaceMentioning($text, false);
         return $text;
     }
 

@@ -235,45 +235,18 @@
     $(document).ready(function () {
 
 
-        $('#contentForm_message_contenteditable').attr('data-container', 'body');
-        $('#contentForm_message_contenteditable').attr('data-toggle', 'popover');
-        $('#contentForm_message_contenteditable').attr('data-placement', 'top');
-        $('#contentForm_message_contenteditable').attr('data-content', '<a href="javascript:formatText(\'bold\');"> <i class="fa fa-bold"></i></a> <a href="javascript:formatText(\'italic\');"> <i class="fa fa-italic"></i></a> <a href="javascript:formatText(\'underline\');"> <i class="fa fa-underline"></i></a> | <a href="#"> <i class="fa fa-link"></i></a>');
-
-
-        $("#contentForm_message_contenteditable").popover({
-            html: true
+        $('#contentForm_message_contenteditable').summernote({
+            airMode: true,
+            airPopover: [
+                ['font', ['bold', 'italic']],
+                ['para', ['ul', 'ol']],
+                ['insert', ['link']]
+            ],
+            styleWithSpan: false
         });
 
 
-        $('#contentForm_message_contenteditable').click(function() {
-
-            var hallo = window.getSelection()
-
-            if (hallo.focusOffset > hallo.anchorOffset) {
-                //console.log('selecton true');
-                $('#contentForm_message_contenteditable').popover('show');
-                console.log(hallo.focusOffset - hallo.anchorOffset);
-
-                var caretPosition = $('#contentForm_message_contenteditable').caret('offset');
-                //console.log(caretPosition.left);
-
-                $('.popover').css({
-                    top: (caretPosition.top - 34) + "px",
-                    left: (caretPosition.left - 56 - (3 * hallo.focusOffset - hallo.anchorOffset)) + "px"
-                })
-
-            } else {
-                $('#contentForm_message_contenteditable').popover('hide');
-            }
-
-        })
-
     })
 
-    function formatText(format) {
-        document.execCommand(format, false, null);
-        //$('#contentForm_message_contenteditable').popover('hide');
-    }
 
 </script>

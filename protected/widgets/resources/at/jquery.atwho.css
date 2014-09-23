@@ -60,7 +60,16 @@
     height: auto;
 }
 
-.atwho-user, .atwho-space {
+.atwho-input p {
+    padding: 0;
+    margin: 0;
+}
+
+.atwho-user, .atwho-space, .atwho-input a {
+    color: #4cd9c0;
+}
+
+.atwho-input a:hover {
     color: #4cd9c0;
 }
 
@@ -70,7 +79,7 @@
 
 
 
-.popover {
+/*.popover {
     background-color: #7191a8;
     border: none;
 }
@@ -95,4 +104,4 @@
 .popover a {
     color: #fff !important;
     font-weight: bold !important;
-}
+}*/
