@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Upload files' => 'Fichiers chargés',
+  'Upload files' => 'Envoyer des fichiers',
 );

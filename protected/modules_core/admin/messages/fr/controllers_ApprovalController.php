@@ -1,4 +1,4 @@
 <?php
 return array (
-  'User not found!' => 'Utilisateur non trouvé!',
+  'User not found!' => 'Utilisateur non trouvé !',
 );
