@@ -32,14 +32,7 @@
  * @package humhub.components
  * @since 0.5
  */
-abstract class HActiveRecord extends CActiveRecord
-{
-
-    // Avoid Errors when fields not exists
-    public $created_at;
-    public $created_by;
-    public $updated_at;
-    public $updated_by;
+abstract class HActiveRecord extends CActiveRecord {
 
     /**
      * Inits the active records and registers the event interceptor
@@ -58,31 +51,31 @@ abstract class HActiveRecord extends CActiveRecord
      */
     protected function beforeValidate()
     {
+     
+        $userID = ! empty(Yii::app()->user) ? Yii::app()->user->id : 0;
 
-        // Check if we got an user object
-        if (isset(Yii::app()->user)) {
-            $userId = Yii::app()->user->id;
-        } else {
-            $userId = 0;
-        }
-
-
-        if ($this->isNewRecord) {
-            // set the create date, last updated date and the user doing the creating
-            $this->created_at = $this->updated_at = new CDbExpression('NOW()');
-            if ($this->created_by == "")
-                $this->created_by = $userId;
-        }
+        // check if this object has 'created_by' if it does and 
+        // its a new record please set it to current userID
+        if ($this->hasAttribute('created_by') && $this->isNewRecord)
+            $this->created_by = $userID;
         
-        if ($userId != 0) {
-            //not a new record, so just set the last updated time and last updated user id
-            $this->updated_at = new CDbExpression('NOW()');
-            if ($this->updated_by == "")
-                $this->updated_by = $userId;
-        }
-
+        // check if this object has 'updated_by' if it does and 
+        // its NOT a new record please update it to current userID
+        if ($this->hasAttribute('updated_by') && !$this->isNewRecord)
+            $this->updated_by = $userID;
 
         return parent::beforeValidate();
+    }
+
+    public function behaviors()
+    {
+        return array(
+            'CTimestampBehavior' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created_at',
+                'updateAttribute' => 'updated_at',
+            )
+        );
     }
 
     /**
