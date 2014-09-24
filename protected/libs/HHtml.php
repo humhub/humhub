@@ -232,19 +232,19 @@ class HHtml extends CHtml
         $text = " " . $text;
 
         // save hits of @ char
-        $hits = substr_count($text, ' @');
+        $hits = substr_count($text, ' @-');
 
         // loop for every founded @ char
         for ($i = 0; $i < $hits; $i++) {
 
             // extract mention data
-            $data = substr($text, strpos($text, ' @'), 39);
+            $data = substr($text, strpos($text, ' @-'), 40);
 
-            // get tpye (user or space)
-            $type = substr($data, 2, 1);
+            // get type (user or space)
+            $type = substr($data, 3, 1);
 
             // extract guid
-            $guid = substr($data, 3);
+            $guid = substr($data, 4);
 
             if ($type == 'u') {
 
@@ -264,7 +264,7 @@ class HHtml extends CHtml
                 }
             } else if ($type == 's') {
 
-                // load user row from database
+                // load space row from database
                 $space = Space::model()->findByAttributes(array('guid' => $guid));
 
                 if ($space !== null) {

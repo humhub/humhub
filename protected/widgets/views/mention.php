@@ -20,7 +20,7 @@
         // init at plugin
         $('#<?php echo $id; ?>_contenteditable').atwho({
             at: "@",
-            insert_tpl: "<span class='atwho-user' data-user-guid='@${type}${guid}'>${atwho-data-value}</span>",
+            insert_tpl: "<span class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</span>",
             tpl: "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
             search_key: "name",
             limit: 10,
