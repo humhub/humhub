@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Create new space' => '',
-  'My spaces' => '',
   'Search' => '',
+  'Create new space' => 'Créer un espace',
+  'My spaces' => 'Mes espaces',
 );

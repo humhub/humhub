@@ -14,7 +14,7 @@ return array (
   'Expand' => 'Agrandir',
   'Insufficent permissions to create content!' => 'Droits d\'accès insuffisants pour créer du contenu',
   'Invalid request.' => 'Requête invalide',
-  'It looks like you may have taken the wrong turn.' => '',
+  'It looks like you may have taken the wrong turn.' => 'Il me semblerai que vous n\'êtes pas au bon endroit',
   'Keyword:' => 'Mot-clé:',
   'Latest news' => 'Dernières nouvelles',
   'Logout' => 'Se déconnecter',
