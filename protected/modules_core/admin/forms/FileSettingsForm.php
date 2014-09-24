@@ -9,7 +9,7 @@ class FileSettingsForm extends CFormModel {
     public $imageMagickPath;
     public $maxFileSize;
     public $useXSendfile;
-    public $forbiddenExtensions;
+    public $allowedExtensions;
 
     /**
      * Declares the validation rules.
@@ -19,7 +19,7 @@ class FileSettingsForm extends CFormModel {
             array('imageMagickPath', 'checkImageMagick'),
             array('maxFileSize, useXSendfile', 'numerical', 'integerOnly' => true),
             array('imageMagickPath, maxFileSize', 'safe'),
-            array('forbiddenExtensions', 'safe'),
+            array('allowedExtensions', 'safe'),
 
         );
     }
@@ -34,7 +34,7 @@ class FileSettingsForm extends CFormModel {
             'imageMagickPath' => Yii::t('AdminModule.forms_FileSettingsForm', 'Image Magick convert command (optional)'),
             'maxFileSize' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum upload file size (in MB)'),
             'useXSendfile' => Yii::t('AdminModule.forms_FileSettingsForm', 'Use X-Sendfile for File Downloads'),
-            'forbiddenExtensions' =>  Yii::t('AdminModule.forms_FileSettingsForm', 'Forbidden file extensions'),
+            'allowedExtensions' =>  Yii::t('AdminModule.forms_FileSettingsForm', 'Allowed file extensions'),
         );
     }
 

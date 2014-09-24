@@ -10,7 +10,6 @@
 <style type="text/css">
 
 
-/* Resets: see reset.css for details */
 .ReadMsgBody { width: 100%; background-color: #ffffff;}
 .ExternalClass {width: 100%; background-color: #ffffff;}
 .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height:100%;}
@@ -30,14 +29,13 @@ br, strong br, b br, em br, i br { line-height:100%; }
 h1, h2, h3, h4, h5, h6 { line-height: 100% !important; -webkit-font-smoothing: antialiased; }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: blue !important; }
 h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active { color: red !important; }
-/* Preferably not the same color as the 300 header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
+
 h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited { color: purple !important; }
-/* Preferably not the same color as the 300 header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
+
 table td, table tr { border-collapse: collapse; }
 .yshortcuts, .yshortcuts a, .yshortcuts a:link,.yshortcuts a:visited, .yshortcuts a:hover, .yshortcuts a span {
     color: black; text-decoration: none !important; border-bottom: none !important; background: none !important;
-} /* Body text color for the New Yahoo.  This example sets the font of Yahoo's Shortcuts to black. */
-/* This most probably won't work in all email clients. Don't include <code _tmplitem="406" > blocks in email. */
+}
 
 code {
     white-space: 300;
@@ -51,7 +49,6 @@ a{
     text-decoration: none !important;
 }
 
-/*mailChimp class*/
 .default-edit-image{
     height:20px;
 }
@@ -62,17 +59,6 @@ a{
     margin-bottom:0px !important;
 }
 
-
-
-/* 
-
-main color = #7191a8
-
-
-background color = #ededed
-
-
-*/
 
 
 img{height:auto !important;}
@@ -210,7 +196,6 @@ td[class="image-124px"] img{
         text-align: center !important;
     }
 
-    /* start clear and remove*/
     table[class="remove"]{
         display:none !important;
     }
@@ -218,7 +203,6 @@ td[class="image-124px"] img{
     td[class="remove"]{
         display:none !important;
     }
-    /* end clear and remove*/
 
     table[class="fix-box"]{
         padding-left:20px !important;
@@ -386,8 +370,6 @@ td[class="image-124px"] img{
     }
 
 
-
-    /*start text center*/
     td[class="text-center"]{
         text-align: center !important;
 
@@ -396,11 +378,7 @@ td[class="image-124px"] img{
     div[class="text-center"]{
         text-align: center !important;
     }
-    /*end text center*/
 
-
-
-    /* start  clear and remove */
 
     table[id="clear-padding"]{
         padding:0 !important;
@@ -420,7 +398,7 @@ td[class="image-124px"] img{
     table[class="clear-align"]{
         float:none !important;
     }
-    /* end  clear and remove */
+
 
     table[class="width-small"]{
         width:100% !important;
@@ -687,7 +665,7 @@ td[class="image-124px"] img{
 
                                                     <td valign="top" align="center" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createUrl('user/profile', array('guid' => $originator->guid)); ?>">
+                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $originator->guid)); ?>">
                                                             <img
                                                                 src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
                                                                 width="69"
@@ -711,7 +689,7 @@ td[class="image-124px"] img{
                                                 <tr>
                                                     <td style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:center;">
                                  <span style="color: #555555; font-weight: 300;">
-                                   <a href="<?php echo Yii::app()->createUrl('user/profile', array('guid' => $originator->guid)); ?>"
+                                   <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $originator->guid)); ?>"
                                       style="text-decoration: none; color: #555555; font-weight: 300;">
                                        <!-- START: USER NAME -->
                                        <?php echo $originator->displayName; ?>

@@ -51,8 +51,8 @@ class Content extends CActiveRecord
     protected $attachFileGuidsAfterSave;
 
     /**
-     * A array of user objects which should informed about this new content. 
-     * 
+     * A array of user objects which should informed about this new content.
+     *
      * @var Array User
      */
     protected $notifyUsersOfNewContent = array();
@@ -241,7 +241,7 @@ class Content extends CActiveRecord
 
         $this->updateInvolvedUsers();
 
-        File::attachToContent($this, $this->attachFileGuidsAfterSave);
+        File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
 
         return parent::afterSave();
     }
@@ -422,11 +422,11 @@ class Content extends CActiveRecord
      */
     public function isPublic()
     {
-        
+
         if ($this->visibility == self::VISIBILITY_PUBLIC) {
             return true;
         }
-        
+
         /*
         // Space Content
         if ($this->space_id != null) {

@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Request</strong> space membership' => '',
-  'Close' => '',
-  'Your request was successfully submitted to the space administrators.' => '',
+  '<strong>Request</strong> space membership' => '<strong>Raum-Mitgliedschaft</strong> beantragen',
+  'Close' => 'Schließen',
+  'Your request was successfully submitted to the space administrators.' => 'Ihr Antrag wurde den Raum-Administratoren übermittelt.',
 );

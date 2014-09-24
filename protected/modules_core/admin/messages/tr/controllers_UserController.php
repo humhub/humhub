@@ -17,11 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Become this user' => '',
-  'Delete' => '',
-  'Disabled' => '',
-  'Enabled' => '',
-  'Save' => '',
-  'Unapproved' => '',
-  'User not found!' => '',
+  'You cannot delete yourself!' => '',
+  'Become this user' => 'Bu kullanıcı ol',
+  'Delete' => 'Sil',
+  'Disabled' => 'Devre dışı',
+  'Enabled' => 'Etkin',
+  'Save' => 'Kaydet',
+  'Unapproved' => 'Onaylanmamış',
+  'User not found!' => 'Kullanıcı bulunamadı!',
 );

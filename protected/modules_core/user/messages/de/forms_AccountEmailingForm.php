@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Send activities?' => '',
-  'Send notifications?' => '',
+  'Send activities?' => 'Aktivitäten senden?',
+  'Send notifications?' => 'Benachrichtigungen senden?',
 );

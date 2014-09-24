@@ -59,7 +59,7 @@ class CommentController extends Controller
         $targetModelClass = Yii::app()->input->stripClean(trim($targetModelClass));
 
         if ($targetModelClass == "" || $targetModelId == "") {
-            throw new CHttpException(500, 'Model & Id Parameter required!');
+            throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Model & Id Parameter required!'));
         }
 
         $model = call_user_func(array($targetModelClass, 'model'));
@@ -168,6 +168,8 @@ class CommentController extends Controller
             }
 
             $comment->save();
+            File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
+            
         }
 
         return $this->actionShow();

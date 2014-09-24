@@ -12,35 +12,41 @@
  * @package humhub.modules_core.file.widgets
  * @since 0.5
  */
-class FileUploadButtonWidget extends HWidget {
+class FileUploadButtonWidget extends HWidget
+{
 
     /**
      * @var String unique id of this uploader
      */
-    public $uploaderId = "fileUploader";
+    public $uploaderId = "";
 
     /**
-     * @var String Hidden Form Field where to attach the uploaded file guids (e.g. guid1, guid2, guid3)
+     * Hidden field which stores uploaded file guids
+     * 
+     * @var string
      */
-    public $bindToFormFieldId = "fileUploader";
+    public $fileListFieldName = '';
 
     /**
      * Ensure that imported javascript resources are included in the output
      */
-    public function init() {
+    public function init()
+    {
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.ui.widget.js');
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.iframe-transport.js');
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.fileupload.js');
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/fileuploader.js');
+        Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_title', Yii::t('FileModule.widgets_FileUploadButtonWidget', '<strong>Upload</strong> error'));
+        Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_btn_close', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Close'));
+        Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Could not upload File:'));
     }
 
     /**
      * Draws the Upload Button output.
      */
-    public function run() {
+    public function run()
+    {
         $this->render('fileUploadButton', array(
+            'fileListFieldName' => $this->fileListFieldName,
             'uploaderId' => $this->uploaderId,
-            'bindToFormFieldId' => $this->bindToFormFieldId,
         ));
     }
 

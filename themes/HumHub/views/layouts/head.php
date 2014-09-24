@@ -37,6 +37,11 @@
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.nicescroll.min.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.flatelements.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.placeholder.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.iframe-transport.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.ui.widget.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.fileupload.js?ver=<?php echo $ver; ?>"></script>
+
+
 
 <!-- Global app functions -->
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js?ver=<?php echo $ver; ?>"></script>

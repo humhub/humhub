@@ -85,7 +85,6 @@ class SetupController extends Controller
         }
 
         if (isset($_POST['DatabaseForm'])) {
-            $_POST['DatabaseForm'] = Yii::app()->input->stripClean($_POST['DatabaseForm']);
             $form->attributes = $_POST['DatabaseForm'];
 
             if ($form->validate()) {

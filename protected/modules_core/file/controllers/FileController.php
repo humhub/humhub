@@ -6,12 +6,14 @@
  * @package humhub.modules_core.file.controllers
  * @since 0.5
  */
-class FileController extends Controller {
+class FileController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -22,7 +24,8 @@ class FileController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -38,13 +41,12 @@ class FileController extends Controller {
      *
      * The result is an json array of all uploaded files.
      */
-    public function actionUpload() {
-
+    public function actionUpload()
+    {
         $files = array();
         foreach (CUploadedFile::getInstancesByName('files') as $cFile) {
             $files[] = $this->handleFileUpload($cFile);
         }
-        
 
         return $this->renderJson(array('files' => $files));
     }
@@ -72,56 +74,31 @@ class FileController extends Controller {
      * @param type $cFile
      * @return Array Informations about the uploaded file
      */
-    protected function handleFileUpload($cFile) {
-
+    protected function handleFileUpload($cFile)
+    {
         $output = array();
 
-        // Set some basic information
-        $output['name'] = $cFile->getName();
-        $output['size'] = $cFile->getSize();
+        $file = new File();
+        $file->setUploadedFile($cFile);
 
-
-        // Received a file?
-        if ($cFile == null) {
+        if ($file->validate() && $file->save()) {
+            $output['error'] = false;
+            $output['guid'] = $file->guid;
+            $output['name'] = $file->file_name;
+            $output['title'] = $file->title;
+            $output['size'] = $file->size;
+            $output['mimeIcon'] = HHtml::getMimeIconClassByExtension($file->getExtension());
+        } else {
             $output['error'] = true;
-            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'No file received!');
-            return $output;
+            $output['errors'] = $file->getErrors();
         }
 
-        // Maximum File Size
-        if ($cFile->getSize() > HSetting::Get('maxFileSize', 'file')) {
-            $output['error'] = true;
-            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'Maximum file size has been {maxFileSize} reached!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file'))));
-            return $output;
-        }
-
-        if (!File::HasValidExtension($cFile->getName())) {
-            $output['error'] = true;
-            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'This file type is not allowed!');
-            return $output;
-        }
-
-        // Store File
-        $file = File::store($cFile);
-
-        // Check File Storage
-        if ($file == null) {
-            $output['state'] = 'error';
-            $output['errorMessage'] = Yii::t('FileModule.controllers_FileController', 'Internal Error: Could not store file!');
-            return $output;
-        }
-
-        // Write successful array
-        $output['error'] = false;
-        $output['guid'] = $file->guid;
         $output['name'] = $file->file_name;
-        $output['title'] = $file->title;
-        $output['url'] = "";
-        $output['thumbnailUrl'] = "";
         $output['size'] = $file->size;
         $output['deleteUrl'] = "";
         $output['deleteType'] = "";
-        $output['mimeIcon'] = $file->getMimeIconClass();
+        $output['url'] = "";
+        $output['thumbnailUrl'] = "";
 
         return $output;
     }
@@ -129,8 +106,8 @@ class FileController extends Controller {
     /**
      * Downloads a file
      */
-    public function actionDownload() {
-
+    public function actionDownload()
+    {
         $guid = Yii::app()->request->getParam('guid');
         $suffix = Yii::app()->request->getParam('suffix');
 
@@ -147,17 +124,17 @@ class FileController extends Controller {
         $filePath = $file->getPath($suffix);
         $fileName = $file->getFilename($suffix);
 
-        if (!file_exists($filePath)) {
+        if (!file_exists($filePath . DIRECTORY_SEPARATOR . $fileName)) {
             throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
         if (!HSetting::Get('useXSendfile', 'file')) {
-            Yii::app()->getRequest()->sendFile($fileName, file_get_contents($filePath), $file->mime_type);
+            Yii::app()->getRequest()->sendFile($fileName, file_get_contents($filePath . DIRECTORY_SEPARATOR . $fileName), $file->mime_type);
         } else {
             $options = array(
                 'saveName' => $fileName,
             );
-            Yii::app()->getRequest()->xSendFile($filePath, $options);
+            Yii::app()->getRequest()->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $options);
         }
     }
 

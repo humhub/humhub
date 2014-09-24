@@ -31,7 +31,7 @@ class NotificationModule extends HWebModule
             $notification->delete();
         }
 
-        foreach (Notification::model()->findAllByAttributes(array('source_object_model' => 'User', 'user_id' => $event->sender->id)) as $notification) {
+        foreach (Notification::model()->findAllByAttributes(array('source_object_model' => 'User', 'source_object_id' => $event->sender->id)) as $notification) {
             $notification->delete();
         }
 

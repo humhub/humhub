@@ -25,14 +25,16 @@
  * @package humhub.controllers
  * @since 0.5
  */
-class SearchController extends Controller {
+class SearchController extends Controller
+{
 
     public $subLayout = "_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -43,7 +45,8 @@ class SearchController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -59,7 +62,8 @@ class SearchController extends Controller {
      *
      * Modes: normal for full page, quick as partial for lightbox
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         // Get Parameters
         $keyword = Yii::app()->request->getParam('keyword', "");
@@ -105,8 +109,9 @@ class SearchController extends Controller {
                 $append = " AND (model:User OR model:Space OR (belongsToType:Space AND belongsToId:" . $currentSpace->id . "))";
             }
 
-            $hits = new ArrayObject(HSearch::getInstance()->Find($keyword."* " . $append));
+            $hits = new ArrayObject(HSearch::getInstance()->Find($keyword . "* " . $append));
             $hitCount = count($hits);
+
 
             // Limit Hits
             $hits = new LimitIterator($hits->getIterator(), ($page - 1) * $limit, $limit);
@@ -151,6 +156,48 @@ class SearchController extends Controller {
                 'hitCount' => $hitCount,
             ));
         }
+    }
+
+    /**
+     * JSON Search interface for Mentioning
+     */
+    public function actionMentioning()
+    {
+
+        $results = array();
+        $keyword = Yii::app()->request->getParam('keyword', "");
+        $keyword = Yii::app()->input->stripClean(trim($keyword));
+        
+        if (strlen($keyword) >= 3) {
+            $hits = new ArrayObject(HSearch::getInstance()->Find($keyword . "*  AND (model:User OR model:Space)"));
+            $hitCount = count($hits);
+
+            $hits = new LimitIterator($hits->getIterator(), 0, 10);
+
+            foreach ($hits as $hit) {
+
+                $doc = $hit->getDocument();
+                $model = $doc->getField('model')->value;
+                $pk = $doc->getField('pk')->value;
+
+                $object = $model::model()->findByPk($pk);
+
+                if ($object !== null && $object instanceof HActiveRecordContentContainer) {
+                    $result = array();
+                    $result['guid'] = $object->guid;
+                    if ($object instanceof Space) {
+                        $result['name'] = $object->name;
+                    } elseif  ($object instanceof User) {
+                        $result['name'] = $object->displayName;
+                    }
+                    $result['image'] = $object->getProfileImage()->getUrl();
+                    $result['link'] = $object->getUrl();
+                    $results[] = $result;
+                }
+            }
+        }
+        
+        print CJSON::encode($results);
     }
 
 }

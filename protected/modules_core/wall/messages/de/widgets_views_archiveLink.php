@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add a member to notify' => '',
-  'Make private' => '',
-  'Make public' => '',
-  'Move to archive' => '',
-  'Notify members' => '',
-  'Unarchive' => '',
+  'Add a member to notify' => 'Ein Mitglied zu den Benachrichtigungen hinzufügen',
+  'Make private' => 'Privat machen',
+  'Make public' => 'Öffentlich machen',
+  'Move to archive' => 'Ins Archiv',
+  'Notify members' => 'Mitglieder benachrichtigen',
+  'Unarchive' => 'Aus dem Archiv',
 );

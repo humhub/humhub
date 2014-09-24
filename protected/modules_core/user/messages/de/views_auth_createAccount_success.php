@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Your account</strong> has been successfully created!' => '',
-  'After activating your account by the administrator, you will receive a notification by email.' => '',
-  'Go to login page' => '',
-  'To log in with your new account, click the button below.' => '',
-  'back to home' => '',
+  '<strong>Your account</strong> has been successfully created!' => '<strong>Ihr Konto</strong> wurde erfolgreich erstellt!',
+  'After activating your account by the administrator, you will receive a notification by email.' => 'Nach der Aktivierung Ihres Kontos durch einen Administrator werden sie eine Benachrichtigung per Email erhalten.',
+  'Go to login page' => 'Zur Loginseite',
+  'To log in with your new account, click the button below.' => 'Um sich mit Ihrem neuen Konto einzuloggen, klicken Sie unten auf den Button.',
+  'back to home' => 'zurück zur Startseite',
 );

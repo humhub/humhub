@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>New/strong> spaces' => '',
-  '<strong>Space</strong> stats' => '',
-  'Most members' => '',
-  'Private spaces' => '',
-  'Total spaces' => '',
+  '<strong>New</strong> spaces' => '',
+  '<strong>Space</strong> stats' => '<strong>Mekan</strong> istatistikleri',
+  'Most members' => 'Çoğu üye',
+  'Private spaces' => 'Özel mekanlar',
+  'Total spaces' => 'Toplam mekanlar',
 );

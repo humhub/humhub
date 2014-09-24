@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Your password is incorrect!' => '',
+  'Your password is incorrect!' => 'Ihr Passwort ist falsch!',
 );

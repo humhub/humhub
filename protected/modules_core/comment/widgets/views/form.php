@@ -35,28 +35,44 @@
     ?>
 
     <?php
+    // Creates Uploading Button
+    $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
+        'uploaderId' => 'comment_upload_' . $id,
+        'fileListFieldName' => 'fileList',
+    ));
+    ?>    
+
+    <?php
     echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
-            'beforeSend' => "function() {
+        'beforeSend' => "function() {
                 $('#newCommentForm_" . $id . "').blur();
                 }",
-            'success' => "function(html) {
+        'success' => "function(html) {
             
             $('#comments_area_" . $id . "').html(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
             $('#newCommentForm_" . $id . "_contenteditable').html('". Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') ."');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
+            resetUploader('comment_upload_" . $id . "');
 
         }",
-        ), array(
-            'id' => "comment_create_post_" . $id,
-            'class' => 'btn btn-small btn-primary',
+            ), array(
+        'id' => "comment_create_post_" . $id,
+        'class' => 'btn btn-small btn-primary',
             'style' => 'position: absolute; left: -90000000px; opacity: 0;',
-        )
+            )
     );
     ?>
 
     <?php echo Chtml::endForm(); ?>
 
+
+    <?php
+    // Creates a list of already uploaded Files
+    $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
+        'uploaderId' => 'comment_upload_' . $id,
+    ));
+    ?>    
 </div>
 
 <script>

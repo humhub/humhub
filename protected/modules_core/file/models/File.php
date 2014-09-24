@@ -20,73 +20,67 @@
  * @package humhub.modules_core.file.models
  * @since 0.5
  */
-class File extends HActiveRecordContentAddon {
+class File extends HActiveRecord
+{
 
     // Configuration
     protected $folder_uploads = "file";
+
+    /**
+     * Uploaded File or File Content
+     * 
+     * @var type 
+     */
+    private $cUploadedFile = null;
+
+    /**
+     * New content of the file
+     * 
+     * @var string
+     */
+    public $newFileContent = null;
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return File the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
+    }
+
+    /**
+     * Returns all files belongs to a given HActiveRecord Object.
+     * @todo Add chaching
+     * 
+     * @param HActiveRecord $object
+     * @return Array of File instances
+     */
+    public static function getFilesOfObject(HActiveRecord $object)
+    {
+        return File::model()->findAllByAttributes(array('object_id' => $object->getPrimaryKey(), 'object_model' => get_class($object)));
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'file';
-    }
-
-    /**
-     * Deletes the file
-     */
-    public function delete() {
-
-        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_uploads . DIRECTORY_SEPARATOR . $this->guid . DIRECTORY_SEPARATOR;
-
-        // Become really sure, that we dont delete something else :-)
-        if ($this->guid != "" && $this->folder_uploads != "" && is_dir($path)) {
-
-            $files = glob($path . "*"); // get all file names
-            foreach ($files as $file) { // iterate files
-                if (is_file($file))
-                    unlink($file); // delete file
-            }
-
-            rmdir($path);
-        }
-
-        parent::delete();
-    }
-
-    /**
-     * Before Save Addons
-     *
-     * @return type
-     */
-    protected function beforeSave() {
-
-        if ($this->isNewRecord) {
-
-            // Create GUID for new files
-            $this->guid = UUID::v4();
-        }
-
-        return parent::beforeSave();
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('guid, size', 'length', 'max' => 45),
             array('mime_type', 'length', 'max' => 150),
+            array('filename', 'validateExtension'),
+            array('filename', 'validateSize'),
             array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
             array('file_name, title', 'length', 'max' => 255),
             array('created_at, updated_at', 'safe'),
@@ -94,9 +88,77 @@ class File extends HActiveRecordContentAddon {
     }
 
     /**
+     * Add mix-ins to this model
+     *
+     * @return type
+     */
+    public function behaviors()
+    {
+        return array(
+            'HUnderlyingObjectBehavior' => array(
+                'class' => 'application.behaviors.HUnderlyingObjectBehavior',
+                'mustBeInstanceOf' => array('HActiveRecord'),
+            ),
+            'HGuidBehavior' => array(
+                'class' => 'application.behaviors.HGuidBehavior',
+            ),
+        );
+    }
+
+    protected function beforeSave()
+    {
+        $this->sanitizeFilename();
+
+        if ($this->title == "") {
+            $this->title = $this->file_name;
+        }
+
+        return parent::beforeSave();
+    }
+
+    protected function beforeDelete()
+    {
+        $path = $this->getPath();
+
+        // Make really sure, that we dont delete something else :-)
+        if ($this->guid != "" && $this->folder_uploads != "" && is_dir($path)) {
+            $files = glob($path . DIRECTORY_SEPARATOR . "*");
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+            rmdir($path);
+        }
+
+        return parent::beforeDelete();
+    }
+
+    protected function afterSave()
+    {
+        // Set new uploaded file 
+        if ($this->cUploadedFile !== null && $this->cUploadedFile instanceof CUploadedFile) {
+            $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
+
+            rename($this->cUploadedFile->getTempName(), $newFilename);
+            @chmod($newFilename, 0744);
+        }
+
+        // Set file by given contents
+        if ($this->newFileContent != null) {
+            $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
+            file_put_contents($newFilename, $this->newFileContent);
+            @chmod($newFilename, 0744);
+        }
+
+        return parent::afterSave();
+    }
+
+    /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => Yii::t('FileModule.models_File', 'ID'),
             'guid' => Yii::t('FileModule.models_File', 'Guid'),
@@ -111,69 +173,19 @@ class File extends HActiveRecordContentAddon {
         );
     }
 
-    public function save($runValidation = true, $attributes = null) {
-
-        if (!self::HasValidExtension($this->file_name))
-            return false;
-
-        return parent::save($runValidation, $attributes);
-    }
-
-    /**
-     * Saves given CUploadedFiles
-     *
-     */
-    public static function store(CUploadedFile $cUploadedFile) {
-
-
-        // Santize Filename
-        $filename = $cUploadedFile->getName();
-        $filename = trim($filename);
-
-        $filename = preg_replace("/[^a-z0-9_\-s\.]/i", "", $filename);
-        $pathInfo = pathinfo($filename);
-        if (strlen($pathInfo['filename']) > 60) {
-            $pathInfo['filename'] = substr($pathInfo['filename'], 0, 60);
-        }
-
-
-        $filename = $pathInfo['filename'];
-        if (isset($pathInfo['extension']))
-            $filename .= "." . $pathInfo['extension'];
-
-        $file = new File();
-        if (!self::HasValidExtension($filename))
-            return false;
-
-        $file->file_name = $filename;
-
-        $file->title = $cUploadedFile->getName();
-        $file->mime_type = $cUploadedFile->getType();
-
-        #$file->size = $cUploadedFile->getSize();
-            
-        if ($file->save()) {
-
-            // Add File to Filebase
-            $file->slurp($cUploadedFile->getTempName());
-
-            return $file;
-        } else {
-            return;
-        }
-    }
-
     /**
      * Returns the Path of the File
      */
-    public function getPath($prefix = "") {
+    public function getPath()
+    {
+        $path = Yii::getPathOfAlias('webroot') .
+                DIRECTORY_SEPARATOR . "uploads" .
+                DIRECTORY_SEPARATOR . $this->folder_uploads .
+                DIRECTORY_SEPARATOR . $this->guid;
 
-        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_uploads . DIRECTORY_SEPARATOR . $this->guid . DIRECTORY_SEPARATOR;
-
-        if (!is_dir($path))
+        if (!is_dir($path)) {
             mkdir($path);
-
-        $path .= $this->getFilename($prefix);
+        }
 
         return $path;
     }
@@ -181,36 +193,37 @@ class File extends HActiveRecordContentAddon {
     /**
      * Returns the Url of the File
      */
-    public function getUrl($suffix = "") {
-
+    public function getUrl($suffix = "")
+    {
         $params = array();
         $params['guid'] = $this->guid;
         if ($suffix) {
             $params['suffix'] = $suffix;
         }
 
-
         return Yii::app()->getController()->createAbsoluteUrl('//file/file/download', $params);
     }
 
     /**
-     * Returns Filename
+     * Returns the filename
+     * 
+     * @param string $prefix 
+     * @return string
      */
-    public function getFilename($prefix = "") {
-
+    public function getFilename($prefix = "")
+    {
         // without prefix
-        if ($prefix == "")
+        if ($prefix == "") {
             return $this->file_name;
+        }
 
         $fileParts = pathinfo($this->file_name);
 
         return $fileParts['filename'] . "_" . $prefix . "." . $fileParts['extension'];
     }
 
-    public function getMimeBaseType() {
-
-        #Yii::log($msg, CLogger::LEVEL_INFO, 'ext.yii-mail.YiiMail'); // TODO: attempt to determine alias/category at runtime
-
+    public function getMimeBaseType()
+    {
         if ($this->mime_type != "") {
             list($baseType, $subType) = explode('/', $this->mime_type);
             return $baseType;
@@ -219,10 +232,8 @@ class File extends HActiveRecordContentAddon {
         return "";
     }
 
-    public function getMimeSubType() {
-
-        #Yii::log($msg, CLogger::LEVEL_INFO, 'ext.yii-mail.YiiMail'); // TODO: attempt to determine alias/category at runtime
-
+    public function getMimeSubType()
+    {
         if ($this->mime_type != "") {
             list($baseType, $subType) = explode('/', $this->mime_type);
             return $subType;
@@ -231,25 +242,26 @@ class File extends HActiveRecordContentAddon {
         return "";
     }
 
-    public function getPreviewImageUrl($maxWidth = 1000, $maxHeight = 1000) {
-
+    public function getPreviewImageUrl($maxWidth = 1000, $maxHeight = 1000)
+    {
         $prefix = 'pi_' . $maxWidth . "x" . $maxHeight;
 
+        $originalFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
+        $previewFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename($prefix);
+
         // already generated
-        if (is_file($this->getPath($prefix)))
+        if (is_file($previewFilename)) {
             return $this->getUrl($prefix);
+        }
 
-
-        if ($this->getMimeBaseType() != "image") {
+        // Check file exists & has valid mime type
+        if ($this->getMimeBaseType() != "image" || !is_file($originalFilename)) {
             return "";
         }
 
-        if (!is_file($this->getPath()))
-            return "";
+        $imageInfo = getimagesize($originalFilename);
 
-        $imageInfo = getimagesize($this->getPath());
-
-        // Check if we got any dimensions
+        // Check if we got any dimensions - invalid image
         if (!isset($imageInfo[0]) || !isset($imageInfo[1])) {
             return "";
         }
@@ -259,225 +271,104 @@ class File extends HActiveRecordContentAddon {
             return "";
         }
 
-        ImageConverter::Resize($this->getPath(), $this->getPath($prefix), array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
+        ImageConverter::Resize($originalFilename, $previewFilename, array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
         return $this->getUrl($prefix);
     }
 
-    /**
-     * Store given filename into file record.
-     *
-     * @param type $tmpName
-     */
-    public function slurp($tmpName) {
-
-
-        #CFileHelper::getMimeType
-        if ($this->guid == "") {
-            throw new CException("Could not use slurp on unsaved records!");
-        }
-
-        $this->size = filesize($tmpName);
-
-        #Dont work on Temp Files
-        #move_uploaded_file($tmpName, $this->getPath());
-
-        rename($tmpName, $this->getPath());
-
-        @chmod($this->getPath(), 0744);
-
-        //$this->mime_type = CFileHelper::getMimeType($this->getPath());
-        #$this->size = filesize($this->getPath());
-        $this->save();
-
-        #print "slurped";
-    }
-
-    /**
-     * Store given content into file record.
-     *
-     * @param String $tmpName
-     */
-    public function slurpContent($content) {
-        if ($this->guid == "") {
-            throw new CException("Could not use slurp on unsaved records!");
-        }
-        file_put_contents($this->getPath(), $content);
-        @chmod($this->getPath(), 0744);
-
-        $this->size = filesize($this->getPath());
-        $this->save();
-    }
-
-    /**
-     * Returns Stylesheet Classname based on file extension
-     *
-     * @return string CSS Class
-     */
-    public function getMimeIconClass() {
+    public function getExtension()
+    {
         $fileParts = pathinfo($this->file_name);
-
-        // Word
-        if ($fileParts['extension'] == 'doc' || $fileParts['extension'] == 'docx') {
-            return "mime-word";
-            // Excel
-        } else if ($fileParts['extension'] == 'xls' || $fileParts['extension'] == 'xlsx') {
-            return "mime-excel";
-            // Powerpoint
-        } else if ($fileParts['extension'] == 'ppt' || $fileParts['extension'] == 'pptx') {
-            return "mime-excel";
-            // PDF
-        } else if ($fileParts['extension'] == 'pdf') {
-            return "mime-pdf";
-            // Archive
-        } else if ($fileParts['extension'] == 'zip' || $fileParts['extension'] == 'rar' || $fileParts['extension'] == 'tar' || $fileParts['extension'] == '7z') {
-            return "mime-zip";
-            // Audio
-        } else if ($fileParts['extension'] == 'jpg' || $fileParts['extension'] == 'jpeg' || $fileParts['extension'] == 'png' || $fileParts['extension'] == 'gif') {
-            return "mime-image";
-            // Audio
-        } else if ($fileParts['extension'] == 'mp3' || $fileParts['extension'] == 'aiff' || $fileParts['extension'] == 'wav') {
-            return "mime-audio";
-            // Adobe Flash
-        } else if ($fileParts['extension'] == 'swf' || $fileParts['extension'] == 'fla' || $fileParts['extension'] == 'air') {
-            return "mime-flash";
-            // Adobe Photoshop
-        } else if ($fileParts['extension'] == 'psd') {
-            return "mime-photoshop";
-            // Adobe Illustrator
-        } else if ($fileParts['extension'] == 'ai') {
-            return "mime-illustrator";
-            // other file formats
-        } else {
-            return "mime-file";
+        if (isset($fileParts['extension'])) {
+            return $fileParts['extension'];
         }
+        return '';
     }
 
     /**
-     * Checks a given Filename if the extension is allowed
-     *
-     * @param type $fileName
+     * Checks if given file can read.
+     * 
+     * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
+     * the file is readable for all.
      */
-    public static function HasValidExtension($fileName) {
-
-        $fileParts = pathinfo($fileName);
-        $extension = trim(strtolower($fileParts['extension']));
-
-
-        $invalid = array_map('trim', explode(",", HSetting::Get('forbiddenExtensions', 'file')));
-
-        if (in_array($extension, $invalid))
-            return false;
+    public function canRead($userId = "")
+    {
+        $object = $this->getUnderlyingObject();
+        if ($object !== null && ($object instanceof HActiveRecordContent || $object instanceof HActiveRecordContentAddon)) {
+            return $object->content->canRead($userId);
+        }
 
         return true;
     }
 
-    /**
-     * Checks if given file can read
-     * Only permissions on Content or ContentAddons will be checked atm.
-     */
-    public function canRead($userId = null) {
-        if ($userId == "")
-            $userId = Yii::app()->user->id;
+    public function setUploadedFile(CUploadedFile $cUploadedFile)
+    {
+        $this->file_name = $cUploadedFile->getName();
+        $this->mime_type = $cUploadedFile->getType();
+        $this->size = $cUploadedFile->getSize();
+        $this->cUploadedFile = $cUploadedFile;
+    }
 
-       
-        if ($this->content->canRead())
-            return true;
+    public function sanitizeFilename()
+    {
+        $this->file_name = trim($this->file_name);
+        $this->file_name = preg_replace("/[^a-z0-9_\-s\. ]/i", "", $this->file_name);
 
-        return false;
+        // Ensure max length
+        $pathInfo = pathinfo($this->file_name);
+        if (strlen($pathInfo['filename']) > 60) {
+            $pathInfo['filename'] = substr($pathInfo['filename'], 0, 60);
+        }
+
+        $this->file_name = $pathInfo['filename'];
+        if (isset($pathInfo['extension']))
+            $this->file_name .= "." . trim($pathInfo['extension']);
+    }
+
+    public function validateExtension($attribute, $params)
+    {
+        $allowedExtensions = HSetting::Get('allowedExtensions', 'file');
+
+        if ($allowedExtensions != "") {
+            $extension = $this->getExtension();
+            $extension = trim(strtolower($extension));
+
+            $allowed = array_map('trim', explode(",", HSetting::Get('allowedExtensions', 'file')));
+
+            if (!in_array($extension, $allowed)) {
+                $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));
+            }
+        }
+    }
+
+    public function validateSize($attribute, $params)
+    {
+        if ($this->size > HSetting::Get('maxFileSize', 'file')) {
+            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size has been {maxFileSize} reached!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file')))));
+        }
     }
 
     /**
-     * Attaches a given list of files to an existing content object.
+     * Attaches a given list of files to an record (HActiveRecord).
+     * This is used when uploading files before the record is created yet.
      *
-     * @param Mixed $content is a HActiveRecordContent or Content Instance
-     * @param String $files is a comma seperated list of uploaded file guids
+     * @param HActiveRecord $object is a HActiveRecord
+     * @param string $files is a comma seperated list of newly uploaded file guids
      */
-    public static function attachToContent($content, $files) {
-
-        if (!$content instanceof HActiveRecordContent && !$content instanceof Content) {
-            throw new CException("Invalid content object given!");
+    public static function attachPrecreated($object, $files)
+    {
+        if (!$object instanceof HActiveRecord) {
+            throw new CException("Invalid object given - require instance of HActiveRecord!");
         }
 
         // Attach Files
         foreach (explode(",", $files) as $fileGuid) {
-
             $file = File::model()->findByAttributes(array('guid' => trim($fileGuid)));
-
-            // Dont allow file overtaking (ensure object_model is null)
             if ($file != null && $file->object_model == "") {
-
-                if ($content instanceof HActiveRecordContent) {
-                    $file->object_model = get_class($content);
-                    $file->object_id = $content->getPrimaryKey();
-                } else {
-                    $file->object_model = $content->object_model;
-                    $file->object_id = $content->object_id;
-                }
-
+                $file->object_model = get_class($object);
+                $file->object_id = $object->getPrimaryKey();
                 $file->save();
             }
         }
-    }
-
-    /**
-     * Attaches files by url which found in content text.
-     * This is experimental and only supports image files at the moment.
-     *
-     * @param HActiveRecordContent $content
-     * @param String $text
-     */
-    public static function attachFilesByUrlsToContent($content, $text) {
-
-        if (!$content instanceof HActiveRecordContent) {
-            throw new CException("Invalid content object given!");
-        }
-
-        $max = 5;
-        $count = 1;
-
-        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function($match) use (&$count, &$max, &$content) {
-
-            if ($max > $count) {
-
-                $url = $match[0];
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-                curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-                curl_setopt($ch, CURLOPT_HEADER, true);
-
-                $ret = curl_exec($ch);
-                $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                list($headers, $outputContent) = explode("\r\n\r\n", $ret, 2);
-                curl_close($ch);
-
-                if ($httpCode == 200 && substr($contentType, 0, 6) == 'image/') {
-
-                    $extension = 'img';
-                    if ($contentType == 'image/jpeg' || $contentType == 'image/jpg')
-                        $extension = 'jpg';
-                    elseif ($contentType == 'image/gif')
-                        $extension = 'gif';
-                    elseif ($contentType == 'image/png')
-                        $extension = 'png';
-
-                    $file = new File();
-                    $file->object_model = get_class($content);
-                    $file->mime_type = $contentType;
-                    $file->title = "Link Image";
-                    $file->file_name = "LinkImage." . $extension;
-                    $file->object_id = $content->getPrimaryKey();
-                    if ($file->save()) {
-                        $file->slurpContent($outputContent);
-                    }
-                }
-            }
-            $count++;
-        }, $text);
     }
 
 }
