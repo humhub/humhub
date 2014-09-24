@@ -13,18 +13,14 @@ if (Yii::app()->getController()->id == 'dashboard') {
         <?php echo $form; ?>
 
         <?php
-        $userSearchUrl = '//user/search/json';
-        $params = [];
-        if (get_class($contentContainer) == Wall::TYPE_SPACE) {
+        $userSearchUrl = '//search/mentioning';
+        //$userSearchUrl = '//user/search/json';
 
-            $userSearchUrl = '//space/space/searchMemberJson';
-            $params = array('sguid' => $this->contentContainer->guid);
-        }
 
         /* Modify textarea for mention input */
         $this->widget('application.widgets.MentionWidget', array(
             'id' => 'contentForm_message',
-            'userSearchUrl' => $this->createUrl($userSearchUrl, $params),
+            'userSearchUrl' => $this->createUrl($userSearchUrl),
         ));
 
         ?>

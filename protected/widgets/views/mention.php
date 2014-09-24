@@ -20,9 +20,9 @@
         // init at plugin
         $('#<?php echo $id; ?>_contenteditable').atwho({
             at: "@",
-            insert_tpl: "<span class='atwho-user' data-user-guid='@${guid}'>${atwho-data-value}</span>",
-            tpl: "<li data-value='@${displayName}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${displayName}</li>",
-            search_key: "displayName",
+            insert_tpl: "<span class='atwho-user' data-user-guid='@${type}${guid}'>${atwho-data-value}</span>",
+            tpl: "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
+            search_key: "name",
             limit: 10,
             callbacks: {
                 matcher: function (flag, subtext, should_start_with_space) {
@@ -53,36 +53,6 @@
             insert_tpl: "<img class='atwho-emoji' data-emoji-name=';${name};' src='<?php echo Yii::app()->baseUrl; ?>/img/emoji/${name}.png' />",
             tpl: "<li data-value=';${name};'><img src='<?php echo Yii::app()->baseUrl; ?>/img/emoji/${name}.png' /> ${name}</li>",
             data: emojis_list,
-            limit: 10
-        }).atwho({
-            at: "#",
-            insert_tpl: "<span class='atwho-space' data-space-guid='#${guid}'>${atwho-data-value}</span>",
-            tpl: "<li data-value='#${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
-            search_key: "name",
-            callbacks: {
-                matcher: function (flag, subtext, should_start_with_space) {
-                    var match, regexp;
-
-                    flag = flag.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-
-                    if (should_start_with_space) {
-                        flag = '(?:^|\\s)' + flag;
-                    }
-
-                    regexp = new RegExp(flag + '([A-Za-z0-9_\\s\+\-\]*)$', 'gi');
-                    match = regexp.exec(subtext.replace(/\s/g, " "));
-                    if (match) {
-                        return match[2] || match[1];
-                    } else {
-                        return null;
-                    }
-                },
-                remote_filter: function (query, callback) {
-                    $.getJSON("<?php echo Yii::app()->createAbsoluteUrl('//space/space/searchSpaceJson') ?>", {keyword: query}, function (data) {
-                        callback(data)
-                    });
-                }
-            },
             limit: 10
         });
 

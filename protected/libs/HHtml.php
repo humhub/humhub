@@ -207,11 +207,8 @@ class HHtml extends CHtml
         # breaks links!?
         #$text = nl2br($text);
 
-        // get user details from guids
-        $text = self::translateUserMentioning($text, true);
-
-        // get space details from guids
-        $text = self::translateSpaceMentioning($text, true);
+        // get user and space details from guids
+        $text = self::translateMentioning($text, true);
 
         // create image tag for emojis
         $text = self::translateEmojis($text);
@@ -228,7 +225,7 @@ class HHtml extends CHtml
      * @param boolean $buildAnchors Wrap the username with a link to the profile, if it's true
      *
      */
-    public static function translateUserMentioning($text, $buildAnchors = true)
+    public static function translateMentioning($text, $buildAnchors = true)
     {
 
         // add white space at the beginning to get even a mentioned user from the first character
@@ -240,64 +237,51 @@ class HHtml extends CHtml
         // loop for every founded @ char
         for ($i = 0; $i < $hits; $i++) {
 
-            // extract user guid
-            $guid = substr($text, strpos($text, ' @'), 38);
+            // extract mention data
+            $data = substr($text, strpos($text, ' @'), 39);
 
-            // load user row from database
-            $user = User::model()->findByAttributes(array('guid' => substr($guid, 2)));
+            // get tpye (user or space)
+            $type = substr($data, 2, 1);
 
-            if ($user !== null) {
-                // make user clickable if Html is allowed
-                if ($buildAnchors == true) {
-                    $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">@' . $user->getDisplayName() . '</a>';
-                } else {
-                    $link = " @" . $user->getDisplayName();
+            // extract guid
+            $guid = substr($data, 3);
+
+            if ($type == 'u') {
+
+                // load user row from database
+                $user = User::model()->findByAttributes(array('guid' => $guid));
+
+                if ($user !== null) {
+                    // make user clickable if Html is allowed
+                    if ($buildAnchors == true) {
+                        $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">@' . $user->getDisplayName() . '</a>';
+                    } else {
+                        $link = " @" . $user->getDisplayName();
+                    }
+
+                    // replace guid with profile link and username
+                    $text = str_replace($data, $link, $text);
+                }
+            } else if ($type == 's') {
+
+                // load user row from database
+                $space = Space::model()->findByAttributes(array('guid' => $guid));
+
+                if ($space !== null) {
+                    // make space clickable if Html is allowed
+                    if ($buildAnchors == true) {
+                        $link = ' <a href="' . $space->getUrl() . '" target="_self">@' . $space->name . '</a>';
+                    } else {
+                        $link = " @" . $space->name;
+                    }
+
+                    // replace guid with profile link and username
+                    $text = str_replace($data, $link, $text);
                 }
 
-                // replace guid with profile link and username
-                $text = str_replace($guid, $link, $text);
             }
-        }
-
-        return $text;
-    }
 
 
-    /**
-     * Translate guids from spaces to spacename
-     * @param strint $text Contains the complete message
-     * @param boolean $buildAnchors Wrap the space with a link to the space, if it's true
-     *
-     */
-    public static function translateSpaceMentioning($text, $buildAnchors = true)
-    {
-
-        // add white space at the beginning to get even a mentioned space from the first character
-        $text = " " . $text;
-
-        // save hits of # char
-        $hits = substr_count($text, ' #');
-
-        // loop for every founded @ char
-        for ($i = 0; $i < $hits; $i++) {
-
-            // extract user guid
-            $guid = substr($text, strpos($text, ' #'), 38);
-
-            // load space row from database
-            $space = Space::model()->findByAttributes(array('guid' => substr($guid, 2)));
-
-            if ($space !== null) {
-                // make user clickable if Html is allowed
-                if ($buildAnchors == true) {
-                    $link = ' <a href="' . $space->getUrl() . '" target="_self">#' . $space->name . '</a>';
-                } else {
-                    $link = " #" . $space->name;
-                }
-
-                // replace guid with profile link and spacename
-                $text = str_replace($guid, $link, $text);
-            }
         }
 
         return $text;
@@ -325,7 +309,6 @@ class HHtml extends CHtml
         return $text;
 
     }
-
 
 
     /**

@@ -18,19 +18,13 @@
 
     <?php
 
-    $userSearchUrl = '//user/search/json';
-    $params = [];
-    if (get_class($this->object->content->container) == Wall::TYPE_SPACE) {
-
-        $userSearchUrl = '//space/space/searchMemberJson';
-        $params = array('sguid' => $this->object->content->container->guid);
-    }
+    $userSearchUrl = '//search/mentioning';
 
     ?>
     <?php
     $this->widget('application.widgets.MentionWidget', array(
         'id' => 'newCommentForm_' . $id,
-        'userSearchUrl' => $this->createUrl($userSearchUrl, $params),
+        'userSearchUrl' => $this->createUrl($userSearchUrl),
     ));
     ?>
 

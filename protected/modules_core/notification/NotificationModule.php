@@ -114,8 +114,7 @@ class NotificationModule extends HWebModule
      */
     public static function formatOutput($text)
     {
-        $text = HHtml::translateUserMentioning($text, false);
-        $text = HHtml::translateSpaceMentioning($text, false);
+        $text = HHtml::translateMentioning($text, false);
         $text = HHtml::translateEmojis($text, false);
 
         return $text;
