@@ -11,7 +11,7 @@
         // add contenteditable div
         $('#<?php echo $id; ?>').after('<div id="<?php echo $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" contenteditable="true">' + placeholder + '</div>');
 
-        var emojis = ["Ambivalent", "Angry", "Confused", "Cool", "Frown", "Gasp", "Grin", "Heart", "Laughing", "Slant", "Smile", "Wink", "Yuck"];
+        var emojis = ["Ambivalent", "Angry", "Confused", "Cool", "Frown", "Gasp", "Grin", "Heart", "Hearteyes", "Laughing", "Slant", "Smile", "Wink", "Yuck"];
 
         var emojis_list = $.map(emojis, function (value, i) {
             return {'id': i, 'name': value};
