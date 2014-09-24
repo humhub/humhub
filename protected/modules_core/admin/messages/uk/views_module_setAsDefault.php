@@ -17,9 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  '%moduleName% - Set as default module' => '',
+  'Activated' => '',
+  'Always activated' => '',
+  'Close' => '',
+  'Deactivated' => '',
+  'Here you can choose whether or not a module should be automatically activated on a space or user profile or not. If the module should be activated, choose "always activated".' => '',
+  'Save' => '',
+  'Spaces' => '',
+  'User Profiles' => '',
 );

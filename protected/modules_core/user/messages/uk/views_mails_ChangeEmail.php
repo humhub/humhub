@@ -17,9 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  '<strong>Confirm</strong></strong> your new email address' => '',
+  'Confirm' => '',
+  'Hello' => '',
+  'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '',
 );

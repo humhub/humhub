@@ -17,9 +17,31 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'About' => '',
+  'City' => '',
+  'Country' => '',
+  'Facebook URL' => '',
+  'Fax' => '',
+  'Firstname' => '',
+  'Flickr URL' => '',
+  'Google+ URL' => '',
+  'Lastname' => '',
+  'LinkedIn URL' => '',
+  'MSN' => '',
+  'Mobile' => '',
+  'MySpace URL' => '',
+  'Phone Private' => '',
+  'Phone Work' => '',
+  'Skype Nickname' => '',
+  'State' => '',
+  'Street' => '',
+  'Title' => '',
+  'Twitter URL' => '',
+  'Url' => '',
+  'User' => '',
+  'Vimeo URL' => '',
+  'XMPP Jabber Address' => '',
+  'Xing URL' => '',
+  'Youtube URL' => '',
+  'Zip' => '',
 );

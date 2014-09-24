@@ -17,9 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'Invalid link! Please make sure that you entered the entire url.' => '',
+  'Save profile' => '',
+  'Saved' => '',
+  'The entered e-mail address is already in use by another user.' => '',
+  'You cannot change your e-mail address here.' => '',
+  'You cannot change your password here.' => '',
 );

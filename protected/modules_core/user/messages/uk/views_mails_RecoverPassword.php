@@ -17,9 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  '<strong>Password</strong> recovery' => '',
+  'Hello {displayName}, ' => '',
+  'Login' => '',
+  'You have requested a new password.' => '',
+  'Your new password is: <strong>{password}</strong>' => '',
+  'Your username is: <strong>{username}</strong>' => '',
 );

@@ -17,9 +17,17 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  '<strong>Manage</strong> users' => '',
+  'Admin' => '',
+  'All' => '',
+  'Delete user account' => '',
+  'Edit user account' => '',
+  'Email' => '',
+  'In this overview you can find every registered user and manage him.' => '',
+  'No' => '',
+  'Search for email' => '',
+  'Search for username' => '',
+  'Username' => '',
+  'View user profile' => '',
+  'Yes' => '',
 );

@@ -17,9 +17,17 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  '<strong>General</strong> space settings' => '',
+  'Archive' => '',
+  'Choose the kind of membership you want to provide for this workspace.' => '',
+  'Choose the security level for this workspace to define the visibleness.' => '',
+  'Delete' => '',
+  'For everyone' => '',
+  'Invisible' => '',
+  'Invite and request' => '',
+  'Only by invite' => '',
+  'Save' => '',
+  'Unarchive' => '',
+  'Visible for all' => '',
+  'Visible for network users' => '',
 );

@@ -17,9 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'Default Space' => '',
+  'Description' => '',
+  'Group Administrators' => '',
+  'ID' => '',
+  'LDAP DN' => '',
+  'Members can create private spaces' => '',
+  'Members can create public spaces' => '',
+  'Name' => '',
 );

@@ -17,9 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'Anonymous users can register' => '',
+  'Default user group for new users' => '',
+  'Members can invite external users by email' => '',
+  'Require group admin approval after registration' => '',
 );

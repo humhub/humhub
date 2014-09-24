@@ -17,9 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  '<strong>Request</strong> space membership' => '',
+  'Close' => '',
+  'Please shortly introduce yourself, to become an approved member of this space.' => '',
+  'Send' => '',
 );

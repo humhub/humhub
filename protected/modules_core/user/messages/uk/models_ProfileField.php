@@ -17,9 +17,28 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'Created at' => '',
+  'Created by' => '',
+  'Description' => '',
+  'Editable' => '',
+  'Field Type could not be changed!' => '',
+  'Fieldtype' => '',
+  'ID' => '',
+  'Internal Name' => '',
+  'Internal name already in use!' => '',
+  'Internal name could not be changed!' => '',
+  'Invalid field type!' => '',
+  'LDAP Attribute' => '',
+  'Module' => '',
+  'Only alphanumeric characters allowed!' => '',
+  'Profile Field Category' => '',
+  'Required' => '',
+  'Show at registration' => '',
+  'Sort order' => '',
+  'Title' => '',
+  'Translation Category ID' => '',
+  'Type Config' => '',
+  'Updated at' => '',
+  'Updated by' => '',
+  'Visible' => '',
 );

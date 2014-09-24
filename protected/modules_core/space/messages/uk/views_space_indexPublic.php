@@ -17,9 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'Accept Invite' => '',
+  'Become member' => '',
+  'Cancel membership' => '',
+  'Cancel pending membership application' => '',
+  'Deny Invite' => '',
+  'Follow' => '',
+  'Request membership' => '',
+  'Unfollow' => '',
+  'You are the owner of this workspace.' => '',
+  'created by' => '',
 );

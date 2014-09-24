@@ -17,9 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
-  'Could not load requested object!' => 'Impossible de charger l\'objet demandé !',
+  'Access denied!' => '',
+  'Could not delete comment!' => '',
+  'Insufficent permissions!' => '',
+  'Invalid target class given' => '',
+  'Model & Id Parameter required!' => '',
+  'Target not found!' => '',
 );
