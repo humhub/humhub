@@ -48,17 +48,13 @@ class MentionWidget extends HWidget
     public function init()
     {
 
+        // load resources
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources/at', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.caret.min.js', CClientScript::POS_END);
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.atwho.js', CClientScript::POS_END);
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.atwho.min.js', CClientScript::POS_END);
         Yii::app()->clientScript->registerCssFile($assetPrefix . '/jquery.atwho.css');
 
-
-        $assetPrefix2 = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources/summernote', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix2 . '/summernote.js', CClientScript::POS_END);
-        Yii::app()->clientScript->registerCssFile($assetPrefix2 . '/summernote.css');
-
-
+        // render mention view
         $this->render('mention', array('id' => $this->id, 'userSearchUrl' => $this->userSearchUrl));
         
     }

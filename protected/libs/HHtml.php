@@ -189,7 +189,7 @@ class HHtml extends CHtml
         $oembedCount = 0; // OEmbeds used
 
 
-/*        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
+        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
@@ -201,7 +201,7 @@ class HHtml extends CHtml
             }
 
             return HHtml::link($match[0], $match[0], array('target' => '_blank'));
-        }, $text);*/
+        }, $text);
 
 
         # breaks links!?
@@ -216,11 +216,8 @@ class HHtml extends CHtml
         // create image tag for emojis
         $text = self::translateEmojis($text);
 
-        // transform to markdown
-        $md = new CMarkdown;
-        $text = $md->transform($text);
-
-        //$text = str_replace("\n", "<br />\n", $text);
+        // replace all line breaks with <br> tag
+        $text = str_replace("\n", "<br />\n", $text);
 
         return $text;
     }
@@ -235,7 +232,7 @@ class HHtml extends CHtml
     {
 
         // add white space at the beginning to get even a mentioned user from the first character
-        $text = " ". $text;
+        $text = " " . $text;
 
         // save hits of @ char
         $hits = substr_count($text, ' @');
@@ -276,7 +273,7 @@ class HHtml extends CHtml
     {
 
         // add white space at the beginning to get even a mentioned space from the first character
-        $text = " ". $text;
+        $text = " " . $text;
 
         // save hits of # char
         $hits = substr_count($text, ' #');
@@ -309,20 +306,26 @@ class HHtml extends CHtml
 
     /**
      * Replace emojis from text to img tag
-     * @param strint $text Contains the complete message
+     * @param string $text Contains the complete message
+     * @param string $show show smilies or remove it (for activities and notifications)
      *
      */
-    public static function translateEmojis($text)
+    public static function translateEmojis($text, $show = true)
     {
-        $s = explode(":", $text);
+        $s = explode(";", $text);
 
         for ($i = 1; $i <= count($s) - 1; $i += 2) {
-            $text = str_replace(':' . $s[$i] . ':', ' <img class="atwho-emoji" data-emoji-name=":' . $s[$i] . ':" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png"/>', $text);
+            if ($show == true) {
+                $text = str_replace(';' . $s[$i] . ';', ' <img class="atwho-emoji" data-emoji-name=";' . $s[$i] . ';" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png"/>', $text);
+            } else {
+                $text = str_replace(' ;' . $s[$i] . ';', '', $text);
+            }
         }
 
         return $text;
 
     }
+
 
 
     /**

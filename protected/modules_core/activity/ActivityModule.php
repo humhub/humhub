@@ -110,6 +110,8 @@ class ActivityModule extends HWebModule
     {
         $text = HHtml::translateUserMentioning($text, false);
         $text = HHtml::translateSpaceMentioning($text, false);
+        $text = HHtml::translateEmojis($text, false);
+
         return $text;
     }
 

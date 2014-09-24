@@ -208,45 +208,5 @@
     // add autosize function to input
     $('.autosize').autosize();
 
-    /*    $('#contentForm_message_contenteditable').on('keypress',function(e){
-     if(e.keyCode==13){ //enter && shift
-
-     e.preventDefault(); //Prevent default browser behavior
-     if (window.getSelection) {
-     var selection = window.getSelection(),
-     range = selection.getRangeAt(0),
-     br = document.createElement("br"),
-     textNode = document.createTextNode("\u00a0"); //Passing " " directly will not end up being shown correctly
-     range.deleteContents();//required or not?
-     range.insertNode(br);
-     range.collapse(false);
-     range.insertNode(textNode);
-     range.selectNodeContents(textNode);
-
-     selection.removeAllRanges();
-     selection.addRange(range);
-     return false;
-     }
-
-     }
-     });*/
-
-
-    $(document).ready(function () {
-
-
-        $('#contentForm_message_contenteditable').summernote({
-            airMode: true,
-            airPopover: [
-                ['font', ['bold', 'italic']],
-                ['para', ['ul', 'ol']],
-                ['insert', ['link']]
-            ],
-            styleWithSpan: false
-        });
-
-
-    })
-
 
 </script>
