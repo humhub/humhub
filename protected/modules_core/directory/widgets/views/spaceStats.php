@@ -17,16 +17,13 @@
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
-            <?php if ($space->visibility == Space::VISIBILITY_NONE && !$space->isMember()) { ?>
-            <?php } else { ?>
-                <a href="<?php echo $space->getUrl(); ?>">
-                    <img src="<?php echo $space->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
-                         height="40" width="40" alt="40x40" data-src="holder.js/40x40"
-                         style="width: 40px; height: 40px;"
-                         data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo $space->name; ?></strong>">
-                </a>
-            <?php } ?>
+            <a href="<?php echo $space->getUrl(); ?>">
+                <img src="<?php echo $space->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
+                     height="40" width="40" alt="40x40" data-src="holder.js/40x40"
+                     style="width: 40px; height: 40px;"
+                     data-toggle="tooltip" data-placement="top" title=""
+                     data-original-title="<strong><?php echo $space->name; ?></strong>">
+            </a>
         <?php endforeach; ?>
     </div>
 </div>
@@ -50,7 +47,7 @@
                    data-max="<?php echo $statsCountSpaces; ?>"
                    style="width: 75px; position: absolute; margin-top: 53.57142857142857px; margin-left: -112.5px; font-size: 37.5px; border: none; background-image: none; font-family: Arial; font-weight: bold; text-align: center; color: rgb(255, 236, 3); padding: 0px; -webkit-appearance: none; background-position: initial initial; background-repeat: initial initial;">
             <script type="text/javascript">
-                $(document).ready(function () {
+                $(document).ready(function() {
                     // animate stats
                     animateKnob('#spaces-total', <?php echo $statsCountSpaces; ?>);
                 });
@@ -70,7 +67,7 @@
                    style="width: 75px; position: absolute; margin-top: 53.57142857142857px; margin-left: -112.5px; font-size: 37.5px; border: none; background-image: none; font-family: Arial; font-weight: bold; text-align: center; color: rgb(255, 236, 3); padding: 0px; -webkit-appearance: none; background-position: initial initial; background-repeat: initial initial;">
         </div>
         <script type="text/javascript">
-            $(document).ready(function () {
+            $(document).ready(function() {
                 // animate stats
                 animateKnob('#spaces-private', <?php echo $statsCountSpacesHidden; ?>);
             });
@@ -79,16 +76,16 @@
         <hr>
 
         <?php if (isset($statsSpaceMostMembers->name)) { ?>
-        <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Most members'); ?>:
-            </strong> <?php echo $statsSpaceMostMembers->name; ?>
-        </div>
+            <div style="text-align: center;">
+                <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Most members'); ?>:
+                </strong> <?php echo $statsSpaceMostMembers->name; ?>
+            </div>
         <?php } ?>
     </div>
 </div>
 
 <script>
-    $(function () {
+    $(function() {
         $(".knob").knob();
     });
 
@@ -99,7 +96,7 @@
         $(id).animate({value: value}, {
             duration: 1000,
             easing: 'swing',
-            step: function () {
+            step: function() {
                 $(id).val(Math.round(this.value)).trigger('change');
             }
         })
