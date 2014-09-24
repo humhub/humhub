@@ -1,0 +1,78 @@
+.atwho-view {
+    position:absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    margin-top: 18px;
+    background: white;
+    color: #555555;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    min-width: 120px;
+    max-width: 265px;
+    z-index: 11110 !important;
+    padding: 5px 0;
+}
+
+.atwho-view strong, .atwho-view b {
+    font-weight: normal;
+}
+
+.atwho-view .cur {
+    border-left: 3px solid #4cd9c0;
+    background-color: #f7f7f7 !important;
+}
+.atwho-view .cur small {
+    color: red;
+}
+.atwho-view strong {
+    background-color: #f9f0d2;
+}
+.atwho-view .cur strong {
+    background-color: #f9f0d2;
+}
+.atwho-view ul {
+    /* width: 100px; */
+    list-style:none;
+    padding:0;
+    margin:auto;
+}
+.atwho-view ul li {
+    display: block;
+    padding: 5px 10px;
+    border-left: 3px solid transparent;
+    padding: 4px 15px 4px 8px;
+    cursor: pointer;
+    /* border-top: 1px solid #C8C8C8; */
+}
+.atwho-view small {
+    font-size: smaller;
+    color: #777;
+    font-weight: normal;
+}
+
+.atwho-input.form-control {
+    min-height: 36px;
+    height: auto;
+}
+
+.atwho-input p {
+    padding: 0;
+    margin: 0;
+}
+
+.atwho-user, .atwho-space, .atwho-input a {
+    color: #4cd9c0;
+}
+
+.atwho-input a:hover {
+    color: #4cd9c0;
+}
+
+.atwho-placeholder {
+    color: #bebebe !important;
+}

@@ -207,10 +207,17 @@ class HHtml extends CHtml
         # breaks links!?
         #$text = nl2br($text);
 
-        $text = str_replace("\n", "<br />\n", $text);
-
         // get user details from guids
         $text = self::translateUserMentioning($text, true);
+
+        // get space details from guids
+        $text = self::translateSpaceMentioning($text, true);
+
+        // create image tag for emojis
+        $text = self::translateEmojis($text);
+
+        // replace all line breaks with <br> tag
+        $text = str_replace("\n", "<br />\n", $text);
 
         return $text;
     }
@@ -223,6 +230,10 @@ class HHtml extends CHtml
      */
     public static function translateUserMentioning($text, $buildAnchors = true)
     {
+
+        // add white space at the beginning to get even a mentioned user from the first character
+        $text = " " . $text;
+
         // save hits of @ char
         $hits = substr_count($text, ' @');
 
@@ -238,9 +249,9 @@ class HHtml extends CHtml
             if ($user !== null) {
                 // make user clickable if Html is allowed
                 if ($buildAnchors == true) {
-                    $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">' . $user->getDisplayName() . '</a>';
+                    $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">@' . $user->getDisplayName() . '</a>';
                 } else {
-                    $link = " " . $user->getDisplayName();
+                    $link = " @" . $user->getDisplayName();
                 }
 
                 // replace guid with profile link and username
@@ -251,9 +262,75 @@ class HHtml extends CHtml
         return $text;
     }
 
+
+    /**
+     * Translate guids from spaces to spacename
+     * @param strint $text Contains the complete message
+     * @param boolean $buildAnchors Wrap the space with a link to the space, if it's true
+     *
+     */
+    public static function translateSpaceMentioning($text, $buildAnchors = true)
+    {
+
+        // add white space at the beginning to get even a mentioned space from the first character
+        $text = " " . $text;
+
+        // save hits of # char
+        $hits = substr_count($text, ' #');
+
+        // loop for every founded @ char
+        for ($i = 0; $i < $hits; $i++) {
+
+            // extract user guid
+            $guid = substr($text, strpos($text, ' #'), 38);
+
+            // load space row from database
+            $space = Space::model()->findByAttributes(array('guid' => substr($guid, 2)));
+
+            if ($space !== null) {
+                // make user clickable if Html is allowed
+                if ($buildAnchors == true) {
+                    $link = ' <a href="' . $space->getUrl() . '" target="_self">#' . $space->name . '</a>';
+                } else {
+                    $link = " #" . $space->name;
+                }
+
+                // replace guid with profile link and spacename
+                $text = str_replace($guid, $link, $text);
+            }
+        }
+
+        return $text;
+    }
+
+
+    /**
+     * Replace emojis from text to img tag
+     * @param string $text Contains the complete message
+     * @param string $show show smilies or remove it (for activities and notifications)
+     *
+     */
+    public static function translateEmojis($text, $show = true)
+    {
+        $s = explode(";", $text);
+
+        for ($i = 1; $i <= count($s) - 1; $i += 2) {
+            if ($show == true) {
+                $text = str_replace(';' . $s[$i] . ';', ' <img class="atwho-emoji" data-emoji-name=";' . $s[$i] . ';" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png"/>', $text);
+            } else {
+                $text = str_replace(' ;' . $s[$i] . ';', '', $text);
+            }
+        }
+
+        return $text;
+
+    }
+
+
+
     /**
      * ActiveForm Variant of DateTime Field
-     * 
+     *
      * @param type $model
      * @param type $attribute
      * @param type $htmlOptions
@@ -274,36 +351,36 @@ class HHtml extends CHtml
 
     /**
      * Standalone DateTime Field.
-     * Internal Format: 2017-01-01 00:00:00 
-     * 
+     * Internal Format: 2017-01-01 00:00:00
+     *
      * Picker Options Attributes:
      *      pickDate = TRUE/false
-     *      pickTime = true/FALSE   
+     *      pickTime = true/FALSE
      *      displayFormat = Default: DD.MM.YYYY[ - HH:mm]
-     * 
+     *
      * @param String $name
      * @param String $value
      * @param Array $htmlOptions
      * @param Array $pickerOptions
-     * 
+     *
      * @return String datetimeField HTML
      */
     public static function dateTimeField($name, $value = "", $htmlOptions = array(), $pickerOptions = array())
     {
         // load js for datetimepicker component
         Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
+            Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
+            Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
+            Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
         );
 
         // load css for datetimepicker component
         Yii::app()->clientScript->registerCssFile(
-                Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
+            Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
         );
 
         if (isset($pickerOptions['pickTime']) && $pickerOptions['pickTime'] == true) {

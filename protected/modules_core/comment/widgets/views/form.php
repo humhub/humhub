@@ -14,7 +14,25 @@
     <?php echo CHtml::hiddenField('model', $modelName); ?>
     <?php echo CHtml::hiddenField('id', $modelId); ?>
 
-    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => 'Write a new comment...')); ?>
+    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
+
+    <?php
+
+    $userSearchUrl = '//user/search/json';
+    $params = [];
+    if (get_class($this->object->content->container) == Wall::TYPE_SPACE) {
+
+        $userSearchUrl = '//space/space/searchMemberJson';
+        $params = array('sguid' => $this->object->content->container->guid);
+    }
+
+    ?>
+    <?php
+    $this->widget('application.widgets.MentionWidget', array(
+        'id' => 'newCommentForm_' . $id,
+        'userSearchUrl' => $this->createUrl($userSearchUrl, $params),
+    ));
+    ?>
 
     <?php
     echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
@@ -25,12 +43,14 @@
             
             $('#comments_area_" . $id . "').html(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
+            $('#newCommentForm_" . $id . "_contenteditable').html('". Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') ."');
+            $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
 
         }",
         ), array(
             'id' => "comment_create_post_" . $id,
             'class' => 'btn btn-small btn-primary',
-            'style' => 'display: none;',
+            'style' => 'position: absolute; left: -90000000px; opacity: 0;',
         )
     );
     ?>
@@ -40,18 +60,30 @@
 </div>
 
 <script>
+
+    // add attribute to manage the enter/submit event (prevent submit, if user press enter to insert an item from atwho plugin)
+    $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
+
     // Fire click event for comment button by typing enter
-    $('#newCommentForm_<?php echo $id; ?>').keydown(function (event) {
+    $('#newCommentForm_<?php echo $id; ?>_contenteditable').keydown(function (event) {
 
-        if (event.keyCode == 13) {
 
+        // by pressing enter without shift
+        if (event.keyCode == 13 && event.shiftKey == false) {
+
+            // prevent default behavior
             event.cancelBubble = true;
             event.returnValue = false;
             event.preventDefault();
 
-            $('#comment_create_post_<?php echo $id; ?>').focus();
-            $('#comment_create_post_<?php echo $id; ?>').click();
 
+            // check if a submit is allowed
+            if ($('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit') == 'true') {
+
+                // emulate the click event
+                $('#comment_create_post_<?php echo $id; ?>').focus();
+                $('#comment_create_post_<?php echo $id; ?>').click();
+            }
         }
 
         return event.returnValue;
@@ -63,5 +95,22 @@
 
     // add autosize function to input
     $('.autosize').autosize();
+
+
+    $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("shown.atwho", function (event, flag, query) {
+        // prevent the submit event, by changing the attribute
+        $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'false');
+    });
+
+    $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("hidden.atwho", function (event, flag, query) {
+
+        var interval = setInterval(changeSubmitState, 10);
+
+        // allow the submit event, by changing the attribute (with delay, to prevent the first enter event for insert an item from atwho plugin)
+        function changeSubmitState() {
+            $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
+            clearInterval(interval);
+        }
+    });
 
 </script>
