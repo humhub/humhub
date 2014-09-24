@@ -187,8 +187,10 @@ class SearchController extends Controller
                     $result['guid'] = $object->guid;
                     if ($object instanceof Space) {
                         $result['name'] = $object->name;
+                        $result['type'] = 'Space';
                     } elseif  ($object instanceof User) {
                         $result['name'] = $object->displayName;
+                        $result['type'] = 'User';
                     }
                     $result['image'] = $object->getProfileImage()->getUrl();
                     $result['link'] = $object->getUrl();
