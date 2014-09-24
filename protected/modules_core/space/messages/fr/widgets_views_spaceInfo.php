@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Something</strong> went wrong' => '',
-  'Ok' => '',
+  '<strong>Space</strong> info' => '',
+  '<strong>Something</strong> went wrong' => '<strong>Quelque chose</strong> a mal fonctionné',
+  'Ok' => 'Ok',
 );

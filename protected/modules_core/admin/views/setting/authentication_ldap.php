@@ -73,7 +73,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'loginFilter'); ?>
             <?php echo $form->textField($model, 'loginFilter', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('loginFilter', 'authentication_ldap'))); ?>
-            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(cn=%s)&quot;'); ?></p>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;'); ?></p>
         </div>
 
         <div class="form-group">

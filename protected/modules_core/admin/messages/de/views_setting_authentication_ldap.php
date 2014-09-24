@@ -3,7 +3,7 @@ return array (
   '<strong>Authentication</strong> - LDAP' => '<strong>Authentifizierung</strong> - LDAP',
   'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'TLS/SSL wird in Produktivumgebungen favorisiert, da dies die Übertragung von Passwörtern in Klartext verhindert.',
   'Basic' => 'Grundeinstellung',
-  'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(cn=%s)&quot;' => 'Filter der angewendet wird, sobald sich ein Benutzer anmeldet. %uid ersetzt den Benutzername während der Anmeldung. Beispiel: &quot;(sAMAccountName=%s)&quot; or &quot;(cn=%s)&quot;',
+  'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Filter der angewendet wird, sobald sich ein Benutzer anmeldet. %uid ersetzt den Benutzername während der Anmeldung. Beispiel: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
   'LDAP' => 'LDAP',
   'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'LDAP Attribute für Benutzernamen. Beispiel: &quotuid&quot; or &quot;sAMAccountName&quot;',
   'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Zugriff auf Benutzer beschränken die diese Kriterien erfüllen. Beispiel: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',

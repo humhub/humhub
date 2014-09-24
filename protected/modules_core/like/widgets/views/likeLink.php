@@ -13,9 +13,9 @@
  */
 ?>
 <a href="#" id="<?php echo $id . "-LikeLink"; ?>" class="like likeAnchor"
-   style="<?php if ($currentUserLiked): ?>display:none<?php endif; ?>">Like</a>
+   style="<?php if ($currentUserLiked): ?>display:none<?php endif; ?>"><?php echo Yii::t('LikeModule.widgets_views_likeLink', 'Like'); ?></a>
 <a href="#" id="<?php echo $id . "-UnlikeLink"; ?>" class="unlike likeAnchor"
-   style="<?php if (!$currentUserLiked): ?>display:none<?php endif; ?>">Unlike</a>
+   style="<?php if (!$currentUserLiked): ?>display:none<?php endif; ?>"><?php echo Yii::t('LikeModule.widgets_views_likeLink', 'Unlike'); ?></a>
 
 <?php
 $userlist = ""; // variable for users output

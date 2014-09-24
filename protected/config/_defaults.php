@@ -116,8 +116,10 @@ return array(
             'pt_br' => 'Portuguese (Brazilian)*',
             'es' => 'Spanish*',
             'it' => 'Italian*',
+            'th' => 'Thai*',
             'tr' => 'Turkish*',
             'ru' => 'Русский*',
+            'uk' => 'Ukrainian*'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
