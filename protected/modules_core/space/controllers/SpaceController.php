@@ -157,10 +157,10 @@ class SpaceController extends Controller
         foreach ($parts as $part) {
             $i++;
             $condition .= " AND (u.email LIKE :match{$i} OR "
-                    . "u.username LIKE :match{$i} OR "
-                    . "p.firstname LIKE :match{$i} OR "
-                    . "p.lastname LIKE :match{$i} OR "
-                    . "p.title LIKE :match{$i})";
+                . "u.username LIKE :match{$i} OR "
+                . "p.firstname LIKE :match{$i} OR "
+                . "p.lastname LIKE :match{$i} OR "
+                . "p.title LIKE :match{$i})";
 
             $params[':match' . $i] = "%" . $part . "%";
         }
@@ -292,7 +292,7 @@ class SpaceController extends Controller
 
                 // check if both invite inputs are empty
                 if ($model->invite == "" && $model->inviteExternal == "") {
-                    
+
                 } else {
 
                     // Invite existing members

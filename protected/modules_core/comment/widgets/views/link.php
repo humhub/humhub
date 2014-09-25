@@ -19,5 +19,5 @@
        title="" data-target="#globalModal"
        data-original-title="Comments">Comments (<?php echo $this->getCommentsCount(); ?>)</a>
 <?php else: ?>
-    <?php echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment") . "", "#", array('onClick' => "$('#comment_" . $id . "').show();$('#newCommentForm_" . $id . "').focus();return false;")); ?>
+    <?php echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment") . "", "#", array('onClick' => "$('#comment_" . $id . "').show();$('#newCommentForm_" . $id . "_contenteditable').focus();return false;")); ?>
 <?php endif; ?>
