@@ -185,39 +185,6 @@ class SpaceController extends Controller
         Yii::app()->end();
     }
 
-
-    public function actionSearchSpaceJson()
-    {
-
-        $maxResults = 10;
-        $results = array();
-        $keyword = Yii::app()->request->getParam('keyword');
-        $keyword = Yii::app()->input->stripClean($keyword);
-
-        $match = addcslashes($keyword, '%_'); // escape LIKE's special characters
-
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'name LIKE :match AND visibility != '. Space::VISIBILITY_NONE;
-        $criteria->params = array(':match' => "%$match%");
-        $criteria->limit = $maxResults;
-        $criteria->order = "name asc";
-
-        $spaces = Space::model()->findAll($criteria);
-
-        foreach ($spaces as $space) {
-            if ($space->visibility != Space::VISIBILITY_NONE) {
-                $spaceInfo['guid'] = $space->guid;
-                $spaceInfo['name'] = $space->name;
-                $spaceInfo['image'] = $space->getProfileImage()->getUrl();
-                $results[] = $spaceInfo;
-            }
-        }
-
-        print CJSON::encode($results);
-        Yii::app()->end();
-
-    }
-
     /**
      * Requests Membership for this Space
      */

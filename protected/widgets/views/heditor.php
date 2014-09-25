@@ -43,7 +43,7 @@
                     }
                 },
                 remote_filter: function (query, callback) {
-                    $.getJSON("<?php echo $userSearchUrl; ?>", {keyword: query}, function (data) {
+                    $.getJSON("<?php echo Yii::app()->createAbsoluteUrl($userSearchUrl); ?>", {keyword: query}, function (data) {
                         callback(data)
                     });
                 }
@@ -136,11 +136,8 @@
 
         html = html.replace(/\&nbsp;/g, ' ');
 
-
         // replace all <br> with new line break
         element.html(html.replace(/\<br\s*\>/g, '\n '));
-
-        console.log(element.text());
 
         // return plain text without html tags
         return element.text();

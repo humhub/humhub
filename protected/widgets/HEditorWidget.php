@@ -19,13 +19,13 @@
  */
 
 /**
- * MentionWidget add users to posts and comments
+ * HEditorWidget add users to posts and comments
  *
  * @package humhub.widgets
  * @since 0.5
  * @author Andreas Strobel
  */
-class MentionWidget extends HWidget
+class HEditorWidget extends HWidget
 {
 
     /**
@@ -38,11 +38,11 @@ class MentionWidget extends HWidget
     /**
      * JSON Search URL
      */
-    public $userSearchUrl = "";
+    public $searchUrl = "//search/mentioning";
 
 
     /**
-     * Inits the Mention Widget
+     * Inits the widget
      *
      */
     public function init()
@@ -54,8 +54,12 @@ class MentionWidget extends HWidget
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.atwho.min.js', CClientScript::POS_END);
         Yii::app()->clientScript->registerCssFile($assetPrefix . '/jquery.atwho.css');
 
-        // render mention view
-        $this->render('mention', array('id' => $this->id, 'userSearchUrl' => $this->userSearchUrl));
+    }
+
+    public function run() {
+
+        // render heditor view
+        $this->render('heditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl));
         
     }
 

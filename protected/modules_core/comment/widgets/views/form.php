@@ -17,14 +17,8 @@
     <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
 
     <?php
-
-    $userSearchUrl = '//search/mentioning';
-
-    ?>
-    <?php
-    $this->widget('application.widgets.MentionWidget', array(
+    $this->widget('application.widgets.HEditorWidget', array(
         'id' => 'newCommentForm_' . $id,
-        'userSearchUrl' => $this->createUrl($userSearchUrl),
     ));
     ?>
 
