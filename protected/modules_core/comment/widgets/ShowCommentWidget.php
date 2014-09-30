@@ -10,25 +10,21 @@
  */
 class ShowCommentWidget extends HWidget {
 
-    /**
-     * @var Comment object to display
-     */
-    public $comment = null;
+	/**
+	 * @var Comment object to display
+	 */
+	public $comment = null;
 
-    /**
-     * Executes the widget.
-     */
-    public function run() {
-
-        $user = $this->comment->user;
-
-        $this->render('showComment', array(
-            'comment' => $this->comment,
-            'user' => $user,
-                )
-        );
-    }
+	/**
+	 * Executes the widget.
+	 */
+	public function run()
+	{
+		$user = $this->comment->user;
+		$this->render('showComment', array(
+			'comment' => $this->comment,
+			'user' => $user,
+		));
+	}
 
 }
-
-?>
