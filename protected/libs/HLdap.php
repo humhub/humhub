@@ -73,7 +73,7 @@ class HLdap
             $this->ldap = new Zend_Ldap($options);
             $this->ldap->bind();
         } catch (Exception $ex) {
-            
+            Yii::log('Cound not bind to LDAP Server. Error: '. $ex->getMessage(), CLogger::LEVEL_ERROR);
         }
     }
 

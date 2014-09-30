@@ -16,7 +16,7 @@
         <?php if ($enabled): ?>
             <?php if ($errorMessage != ""): ?>
                 <div
-                    class="danger"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: Error! (Message: {message}', array('{message}' => $errorMessage)); ?></div>
+                    class="danger"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: Error! (Message: {message})', array('{message}' => $errorMessage)); ?></div>
             <?php else: ?>
                 <div
                     class="success"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: OK! ({userCount} Users)', array('{userCount}' => $userCount)); ?></div>
