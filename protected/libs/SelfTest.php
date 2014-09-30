@@ -82,7 +82,22 @@ class SelfTest {
             );
         }
 
-        // Checks GD Extension
+        // Checks CURL Extension
+        $title = 'PHP - Multibyte String Functions';
+        if (function_exists('mb_substr')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PHP Multibyte Extension'
+            );
+        }
+
+        // Checks CURL Extension
         $title = 'PHP - Curl Extension';
         if (function_exists('curl_version')) {
             $checks[] = array(
@@ -97,7 +112,7 @@ class SelfTest {
             );
         }
 
-        // Checks GD Extension
+        // Checks LDAP Extension
         $title = 'PHP - LDAP Support';
         if (function_exists('ldap_bind')) {
             $checks[] = array(

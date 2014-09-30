@@ -5,7 +5,8 @@ Requirements
 * PHP 5.3+
 * MySQL
 * Apache 2.x
-* CUrl PHP Extension 
+* CUrl PHP Extension <http://de1.php.net/manual/en/curl.setup.php>
+* Multibyte String PHP Support <http://php.net/manual/en/mbstring.setup.php> 
 
 ### Optional:
 * ImageMagick
