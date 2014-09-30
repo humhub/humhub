@@ -12,19 +12,29 @@ if (Yii::app()->getController()->id == 'dashboard') {
 
         <?php echo $form; ?>
 
+        <?php
+
+        /* Modify textarea for mention input */
+        $this->widget('application.widgets.HEditorWidget', array(
+            'id' => 'contentForm_message',
+        ));
+
+        ?>
+
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
             <input type="text" value="" id="notifyUserInput" name="notifyUserInput"/>
 
             <?php
-            $user_url = '//space/space/searchMemberJson';
+
+            $userSearchUrl = '//space/space/searchMemberJson';
             if (get_class($contentContainer) == Wall::TYPE_USER) {
-                $user_url = '//user/search/json';
+                $userSearchUrl = '//user/search/json';
             }
 
             /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                 'inputId' => 'notifyUserInput',
-                'userSearchUrl' => $this->createUrl($user_url, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
+                'userSearchUrl' => $this->createUrl($userSearchUrl, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
                 'maxUsers' => 10,
                 'userGuid' => Yii::app()->user->guid,
                 'placeholderText' => Yii::t('WallModule.widgets_views_archiveLink', 'Add a member to notify'),
@@ -47,14 +57,14 @@ if (Yii::app()->getController()->id == 'dashboard') {
                 <?php
                 $url = CHtml::normalizeUrl(Yii::app()->createUrl($submitUrl));
                 echo HHtml::ajaxSubmitButton($submitButtonText, $url, array(
-                    'type' => 'POST',
-                    'dataType' => 'json',
-                    'beforeSend' => "function() {
+                        'type' => 'POST',
+                        'dataType' => 'json',
+                        'beforeSend' => "function() {
                     $('.contentForm').removeClass('error');
                     $('#contentFormError').hide();
                     $('#contentFormError').empty();
                 }",
-                    'success' => "function(response) {
+                        'success' => "function(response) {
                     if (response.success) {
 
                         // application.modules_core.wall function
@@ -70,6 +80,9 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         $('.label-public').addClass('hidden');
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
+                        $('#contentForm_message_contenteditable').html('" . Yii::t("PostModule.widgets_views_postForm", "Whats on your mind?") . "');
+                        $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
+
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
                         resetUploader('contentFormFiles');
@@ -92,7 +105,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
 
                     }
              }",
-                        ), array('id' => "post_submit_button", 'class' => 'btn btn-info')
+                    ), array('id' => "post_submit_button", 'class' => 'btn btn-info')
                 );
                 ?>
                 <?php
@@ -103,7 +116,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                 ));
                 ?>
                 <script>
-                    $('#fileUploaderButton_contentFormFiles').bind('fileuploadprogressall', function(e, data) {
+                    $('#fileUploaderButton_contentFormFiles').bind('fileuploadprogressall', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
                         if (progress == 100) {
                             // show form buttons
@@ -128,7 +141,8 @@ if (Yii::app()->getController()->id == 'dashboard') {
 
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
+                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#"><i
+                                    class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
@@ -173,9 +187,8 @@ if (Yii::app()->getController()->id == 'dashboard') {
     jQuery('.contentForm_options').hide();
     $('#contentFormError').hide();
 
-
     // Remove info text from the textinput
-    jQuery('#contentFormBody').click(function() {
+    jQuery('#contentFormBody').click(function () {
 
         // Hide options by default
         jQuery('.contentForm_options').fadeIn();
