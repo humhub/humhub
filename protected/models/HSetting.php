@@ -238,7 +238,6 @@ class HSetting extends HActiveRecord
     public function getCacheId()
     {
         return "HSetting_" . $this->name . "_" . $this->module_id;
-        
     }
 
     /**
@@ -255,9 +254,9 @@ class HSetting extends HActiveRecord
     {
 
         $this->clearCache();
-        
+
         if ($this->module_id === "") {
-            $this->module_id = new CDbExpression('NULL'); 
+            $this->module_id = new CDbExpression('NULL');
         }
 
         if ($this->hasAttribute('created_by') && empty($this->created_by))
@@ -329,8 +328,13 @@ class HSetting extends HActiveRecord
         $config['name'] = HSetting::Get('name');
 
         // Add Default language
-        $config['language'] = HSetting::Get('defaultLanguage');
-        
+        $defaultLanguage = HSetting::Get('defaultLanguage');
+        if ($defaultLanguage !== null && $defaultLanguage != "") {
+            $config['language'] = HSetting::Get('defaultLanguage');
+        } else {
+            $config['language'] = 'en';
+        }
+
         // Add Caching
         $cacheClass = HSetting::Get('type', 'cache');
         if (!$cacheClass) {
