@@ -14,16 +14,16 @@
  *
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Apache404.php 23988 2011-05-04 02:39:04Z ralph $
+ * @version    $Id$
  */
 
 /** Zend_Controller_Request_Http */
-// // require_once 'Zend/Controller/Request/Http.php';
+// require_once 'Zend/Controller/Request/Http.php';
 
 /** Zend_Uri */
-// // require_once 'Zend/Uri.php';
+// require_once 'Zend/Uri.php';
 
 /**
  * Zend_Controller_Request_Apache404

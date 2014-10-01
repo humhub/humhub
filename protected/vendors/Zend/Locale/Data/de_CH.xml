@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.57 $"/>
-		<generation date="$Date: 2009/06/09 06:08:19 $"/>
+		<version number="$Revision: 9287 $"/>
+		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
 		<language type="de"/>
 		<territory type="CH"/>
 	</identity>
@@ -26,39 +31,29 @@
 			<territory type="ZW">Zimbabwe</territory>
 		</territories>
 	</localeDisplayNames>
-	<characters>
-		<exemplarCharacters>[a ä b-o ö p-u ü v-z]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[á à ă â å ā æ ç é è ĕ ê ë ē í ì ĭ î ï ī ñ ó ò ŏ ô ø ō œ ß ú ù ŭ û ū ÿ]</exemplarCharacters>
-	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
 		<quotationEnd>»</quotationEnd>
 		<alternateQuotationStart>‹</alternateQuotationStart>
 		<alternateQuotationEnd>›</alternateQuotationEnd>
 	</delimiters>
-	<dates>
-		<calendars>
-			<calendar type="gregorian">
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="MMdd">MM-dd</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
-			</calendar>
-		</calendars>
-	</dates>
 	<numbers>
-		<symbols>
+		<symbols numberSystem="latn">
 			<decimal>.</decimal>
 			<group>'</group>
 		</symbols>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤ #,##0.00;¤-#,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
+		<currencies>
+			<currency type="CHF">
+				<symbol>CHF</symbol>
+			</currency>
+		</currencies>
 	</numbers>
 </ldml>
 

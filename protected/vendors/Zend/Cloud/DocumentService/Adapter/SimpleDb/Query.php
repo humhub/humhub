@@ -13,14 +13,14 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /*
  * @see Zend_Cloud_DocumentService_Query
  */
-// // require_once 'Zend/Cloud/DocumentService/Query.php';
+// require_once 'Zend/Cloud/DocumentService/Query.php';
 
 /**
  * Class implementing Query adapter for working with SimpleDb queries in a
@@ -29,7 +29,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cloud_DocumentService_Adapter_SimpleDb_Query
@@ -130,7 +130,7 @@ class Zend_Cloud_DocumentService_Adapter_SimpleDb_Query
         }
         if (empty($from)) {
             if (null === $collectionName) {
-                // // require_once 'Zend/Cloud/DocumentService/Exception.php';
+                // require_once 'Zend/Cloud/DocumentService/Exception.php';
                 throw new Zend_Cloud_DocumentService_Exception("Query requires a FROM clause");
             }
             $from = $adapter->quoteName($collectionName);

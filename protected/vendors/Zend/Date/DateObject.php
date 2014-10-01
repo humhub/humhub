@@ -14,8 +14,8 @@
  *
  * @category   Zend
  * @package    Zend_Date
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: DateObject.php 23775 2011-03-01 17:25:24Z ralph $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -23,7 +23,7 @@
  * @category   Zend
  * @package    Zend_Date
  * @subpackage Zend_Date_DateObject
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Date_DateObject {
@@ -85,7 +85,7 @@ abstract class Zend_Date_DateObject {
         } else if ($timestamp === null) {
             $this->_unixTimestamp = time();
         } else {
-            // // require_once 'Zend/Date/Exception.php';
+            // require_once 'Zend/Date/Exception.php';
             throw new Zend_Date_Exception('\'' . $timestamp . '\' is not a valid UNIX timestamp', 0, null, $timestamp);
         }
 
@@ -312,6 +312,13 @@ abstract class Zend_Date_DateObject {
         }
 
         if (abs($timestamp) <= 0x7FFFFFFF) {
+            // See ZF-11992
+            // "o" will sometimes resolve to the previous year (see 
+            // http://php.net/date ; it's part of the ISO 8601 
+            // standard). However, this is not desired, so replacing 
+            // all occurrences of "o" not preceded by a backslash 
+            // with "Y"
+            $format = preg_replace('/(?<!\\\\)o\b/', 'Y', $format);
             $result = ($gmt) ? @gmdate($format, $timestamp) : @date($format, $timestamp);
             date_default_timezone_set($oldzone);
             return $result;
@@ -1014,7 +1021,7 @@ abstract class Zend_Date_DateObject {
         // throw an error on false input, but only if the new date extension is available
         if (function_exists('timezone_open')) {
             if (!@timezone_open($zone)) {
-                // // require_once 'Zend/Date/Exception.php';
+                // require_once 'Zend/Date/Exception.php';
                 throw new Zend_Date_Exception("timezone ($zone) is not a known timezone", 0, null, $zone);
             }
         }

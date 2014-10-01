@@ -14,16 +14,16 @@
  *
  * @category   Zend
  * @package    Zend_Auth
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Result.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
 /**
  * @category   Zend
  * @package    Zend_Auth
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Auth_Result
@@ -84,10 +84,9 @@ class Zend_Auth_Result
     /**
      * Sets the result code, identity, and failure messages
      *
-     * @param  int     $code
-     * @param  mixed   $identity
-     * @param  array   $messages
-     * @return void
+     * @param int   $code
+     * @param mixed $identity
+     * @param array $messages
      */
     public function __construct($code, $identity, array $messages = array())
     {

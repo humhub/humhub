@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Captcha.php 24294 2011-07-28 21:34:50Z matthew $
+ * @version    $Id$
  */
 
 /** @see Zend_Form_Element_Xhtml */
@@ -38,7 +38,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Form_Element_Captcha extends Zend_Form_Element_Xhtml
@@ -127,24 +127,6 @@ class Zend_Form_Element_Captcha extends Zend_Form_Element_Xhtml
     }
 
     /**
-     * Return all attributes
-     *
-     * @return array
-     */
-    public function getAttribs()
-    {
-        $attribs = get_object_vars($this);
-        unset($attribs['helper']);
-        foreach ($attribs as $key => $value) {
-            if ('_' == substr($key, 0, 1)) {
-                unset($attribs[$key]);
-            }
-        }
-
-        return $attribs;
-    }
-
-    /**
      * Set options
      *
      * Overrides to allow passing captcha options
@@ -154,16 +136,22 @@ class Zend_Form_Element_Captcha extends Zend_Form_Element_Xhtml
      */
     public function setOptions(array $options)
     {
+        $captcha        = null;
+        $captchaOptions = array();
+
         if (array_key_exists('captcha', $options)) {
+            $captcha = $options['captcha'];
             if (array_key_exists('captchaOptions', $options)) {
-                $this->setCaptcha($options['captcha'], $options['captchaOptions']);
+                $captchaOptions = $options['captchaOptions'];
                 unset($options['captchaOptions']);
-            } else {
-                $this->setCaptcha($options['captcha']);
             }
             unset($options['captcha']);
         }
         parent::setOptions($options);
+
+        if(null !== $captcha) {
+            $this->setCaptcha($captcha, $captchaOptions);
+        }
         return $this;
     }
 
@@ -244,7 +232,8 @@ class Zend_Form_Element_Captcha extends Zend_Form_Element_Xhtml
         switch ($type) {
             case null:
                 $loader = $this->getPluginLoader(self::CAPTCHA);
-                $cPrefix = rtrim($prefix, '_') . '_Captcha';
+                $nsSeparator = (false !== strpos($prefix, '\\'))?'\\':'_';
+                $cPrefix = rtrim($prefix, $nsSeparator) . $nsSeparator . 'Captcha';
                 $cPath   = rtrim($path, '/\\') . '/Captcha';
                 $loader->addPrefixPath($cPrefix, $cPath);
                 return parent::addPrefixPath($prefix, $path);

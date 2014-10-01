@@ -15,13 +15,13 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Module
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Autoloader.php 23775 2011-03-01 17:25:24Z ralph $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /** @see Zend_Loader_Autoloader_Resource */
-// // require_once 'Zend/Loader/Autoloader/Resource.php';
+// require_once 'Zend/Loader/Autoloader/Resource.php';
 
 /**
  * Resource loader for application module classes
@@ -30,7 +30,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Module
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Module_Autoloader extends Zend_Loader_Autoloader_Resource
@@ -39,7 +39,6 @@ class Zend_Application_Module_Autoloader extends Zend_Loader_Autoloader_Resource
      * Constructor
      *
      * @param  array|Zend_Config $options
-     * @return void
      */
     public function __construct($options)
     {

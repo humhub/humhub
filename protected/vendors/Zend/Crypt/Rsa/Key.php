@@ -15,15 +15,15 @@
  * @category   Zend
  * @package    Zend_Crypt
  * @subpackage Rsa
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Key.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @category   Zend
  * @package    Zend_Crypt
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Crypt_Rsa_Key implements Countable
@@ -71,7 +71,7 @@ class Zend_Crypt_Rsa_Key implements Countable
         /**
          * @see Zend_Crypt_Exception
          */
-        // // require_once 'Zend/Crypt/Exception.php';
+        // require_once 'Zend/Crypt/Exception.php';
         throw new Zend_Crypt_Exception('No public key string representation is available');
     }
 

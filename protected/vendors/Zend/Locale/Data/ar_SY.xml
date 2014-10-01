@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.50 $"/>
-		<generation date="$Date: 2009/05/05 23:06:34 $"/>
+		<version number="$Revision: 9287 $"/>
+		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
 		<language type="ar"/>
 		<territory type="SY"/>
 	</identity>
-	<localeDisplayNames>
-		<scripts>
-			<script type="Ital">اللأيطالية القديمة</script>
-		</scripts>
-	</localeDisplayNames>
 	<dates>
 		<calendars>
 			<calendar type="gregorian">
@@ -21,7 +21,7 @@
 							<month type="2">شباط</month>
 							<month type="3">آذار</month>
 							<month type="4">نيسان</month>
-							<month type="5">نوار</month>
+							<month type="5">أيار</month>
 							<month type="6">حزيران</month>
 							<month type="7">تموز</month>
 							<month type="8">آب</month>
@@ -30,12 +30,70 @@
 							<month type="11">تشرين الثاني</month>
 							<month type="12">كانون الأول</month>
 						</monthWidth>
+						<monthWidth type="narrow">
+							<month type="1">ك</month>
+							<month type="2">ش</month>
+							<month type="3">آ</month>
+							<month type="4">ن</month>
+							<month type="5">أ</month>
+							<month type="6">ح</month>
+							<month type="7">ت</month>
+							<month type="8">آ</month>
+							<month type="9">أ</month>
+							<month type="10">ت</month>
+							<month type="11">ت</month>
+							<month type="12">ك</month>
+						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">كانون الثاني</month>
 							<month type="2">شباط</month>
 							<month type="3">آذار</month>
 							<month type="4">نيسان</month>
-							<month type="5">نوار</month>
+							<month type="5">أيار</month>
+							<month type="6">حزيران</month>
+							<month type="7">تموز</month>
+							<month type="8">آب</month>
+							<month type="9">أيلول</month>
+							<month type="10">تشرين الأول</month>
+							<month type="11">تشرين الثاني</month>
+							<month type="12">كانون الأول</month>
+						</monthWidth>
+					</monthContext>
+					<monthContext type="stand-alone">
+						<monthWidth type="abbreviated">
+							<month type="1">كانون الثاني</month>
+							<month type="2">شباط</month>
+							<month type="3">آذار</month>
+							<month type="4">نيسان</month>
+							<month type="5">أيار</month>
+							<month type="6">حزيران</month>
+							<month type="7">تموز</month>
+							<month type="8">آب</month>
+							<month type="9">أيلول</month>
+							<month type="10">تشرين الأول</month>
+							<month type="11">تشرين الثاني</month>
+							<month type="12">كانون الأول</month>
+						</monthWidth>
+						<monthWidth type="narrow">
+							<month type="1">ك</month>
+							<month type="2">ش</month>
+							<month type="3">آ</month>
+							<month type="4">ن</month>
+							<month type="5">أ</month>
+							<month type="6">ح</month>
+							<month type="7">ت</month>
+							<month type="8">آ</month>
+							<month type="9">أ</month>
+							<month type="10">ت</month>
+							<month type="11">ت</month>
+							<month type="12">ك</month>
+						</monthWidth>
+						<monthWidth type="wide">
+							<month type="1">كانون الثاني</month>
+							<month type="2">شباط</month>
+							<month type="3">آذار</month>
+							<month type="4">نيسان</month>
+							<month type="5">أيار</month>
 							<month type="6">حزيران</month>
 							<month type="7">تموز</month>
 							<month type="8">آب</month>
@@ -46,36 +104,17 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<days>
-					<dayContext type="format">
-						<dayWidth type="abbreviated">
-							<day type="sun">الأحد</day>
-							<day type="mon">الاثنين</day>
-							<day type="tue">الثلاثاء</day>
-							<day type="wed">الأربعاء</day>
-							<day type="thu">الخميس</day>
-							<day type="fri">الجمعة</day>
-							<day type="sat">السبت</day>
-						</dayWidth>
-					</dayContext>
-				</days>
 			</calendar>
 		</calendars>
 	</dates>
 	<numbers>
-		<decimalFormats>
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#0.###;#0.###-</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤#0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
 	</numbers>
 </ldml>
+

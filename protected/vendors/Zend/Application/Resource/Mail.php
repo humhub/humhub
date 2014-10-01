@@ -15,15 +15,15 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mail.php 24110 2011-06-04 01:10:23Z freak $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Application_Resource_ResourceAbstract
  */
-// // require_once 'Zend/Application/Resource/ResourceAbstract.php';
+// require_once 'Zend/Application/Resource/ResourceAbstract.php';
 
 /**
  * Resource for setting up Mail Transport and default From & ReplyTo addresses
@@ -32,7 +32,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_Mail extends Zend_Application_Resource_ResourceAbstract

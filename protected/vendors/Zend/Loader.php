@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Loader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Loader.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category   Zend
  * @package    Zend_Loader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Loader
@@ -60,19 +60,7 @@ class Zend_Loader
             throw new Zend_Exception('Directory argument must be a string or an array');
         }
 
-        // Autodiscover the path from the class name
-        // Implementation is PHP namespace-aware, and based on
-        // Framework Interop Group reference implementation:
-        // http://groups.google.com/group/php-standards/web/psr-0-final-proposal
-        $className = ltrim($class, '\\');
-        $file      = '';
-        $namespace = '';
-        if ($lastNsPos = strripos($className, '\\')) {
-            $namespace = substr($className, 0, $lastNsPos);
-            $className = substr($className, $lastNsPos + 1);
-            $file      = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-        }
-        $file .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        $file = self::standardiseFile($class);
 
         if (!empty($dirs)) {
             // use the autodiscovered path
@@ -325,5 +313,31 @@ class Zend_Loader
         } else {
             return include $filespec ;
         }
+    }
+
+    /**
+     * Standardise the filename.
+     *
+     * Convert the supplied filename into the namespace-aware standard,
+     * based on the Framework Interop Group reference implementation:
+     * http://groups.google.com/group/php-standards/web/psr-0-final-proposal
+     *
+     * The filename must be formatted as "$file.php".
+     *
+     * @param string $file - The file name to be loaded.
+     * @return string
+     */
+    public static function standardiseFile($file)
+    {
+        $fileName = ltrim($file, '\\');
+        $file      = '';
+        $namespace = '';
+        if ($lastNsPos = strripos($fileName, '\\')) {
+            $namespace = substr($fileName, 0, $lastNsPos);
+            $fileName = substr($fileName, $lastNsPos + 1);
+            $file      = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        }
+        $file .= str_replace('_', DIRECTORY_SEPARATOR, $fileName) . '.php';
+        return $file;    
     }
 }

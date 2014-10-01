@@ -14,25 +14,25 @@
  *
  * @category   Zend
  * @package    Zend_Amf
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Request.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** @see Zend_Amf_Parse_InputStream */
-// // require_once 'Zend/Amf/Parse/InputStream.php';
+// require_once 'Zend/Amf/Parse/InputStream.php';
 
 /** @see Zend_Amf_Parse_Amf0_Deserializer */
-// // require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
+// require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
 
 /** @see Zend_Amf_Constants */
-// // require_once 'Zend/Amf/Constants.php';
+// require_once 'Zend/Amf/Constants.php';
 
 /** @see Zend_Amf_Value_MessageHeader */
-// // require_once 'Zend/Amf/Value/MessageHeader.php';
+// require_once 'Zend/Amf/Value/MessageHeader.php';
 
 /** @see Zend_Amf_Value_MessageBody */
-// // require_once 'Zend/Amf/Value/MessageBody.php';
+// require_once 'Zend/Amf/Value/MessageBody.php';
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
@@ -40,7 +40,7 @@
  *
  * @todo       Currently not checking if the object needs to be Type Mapped to a server object.
  * @package    Zend_Amf
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Amf_Request
@@ -108,7 +108,7 @@ class Zend_Amf_Request
             && ($clientVersion != Zend_Amf_Constants::AMF3_OBJECT_ENCODING)
             && ($clientVersion != Zend_Amf_Constants::FMS_OBJECT_ENCODING)
         ) {
-            // // require_once 'Zend/Amf/Exception.php';
+            // require_once 'Zend/Amf/Exception.php';
             throw new Zend_Amf_Exception('Unknown Player Version ' . $clientVersion);
         }
 
@@ -150,7 +150,7 @@ class Zend_Amf_Request
         try {
             $data = $this->_deserializer->readTypeMarker();
         } catch (Exception $e) {
-            // // require_once 'Zend/Amf/Exception.php';
+            // require_once 'Zend/Amf/Exception.php';
             throw new Zend_Amf_Exception('Unable to parse ' . $name . ' header data: ' . $e->getMessage() . ' '. $e->getLine(), 0, $e);
         }
 
@@ -172,7 +172,7 @@ class Zend_Amf_Request
         try {
             $data = $this->_deserializer->readTypeMarker();
         } catch (Exception $e) {
-            // // require_once 'Zend/Amf/Exception.php';
+            // require_once 'Zend/Amf/Exception.php';
             throw new Zend_Amf_Exception('Unable to parse ' . $targetURI . ' body data ' . $e->getMessage(), 0, $e);
         }
 

@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Delicious
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Delicious.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -47,6 +47,8 @@
  */
 // require_once 'Zend/Service/Delicious/PostList.php';
 
+/** @see Zend_Xml_Security */
+// require_once 'Zend/Xml/Security.php';
 
 /**
  * Zend_Service_Delicious is a concrete implementation of the del.icio.us web service
@@ -54,7 +56,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Delicious
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Delicious
@@ -506,8 +508,8 @@ class Zend_Service_Delicious
         switch ($type) {
             case 'xml':
                 $dom = new DOMDocument() ;
-
-                if (!@$dom->loadXML($responseBody)) {
+    
+                if (!$dom = @Zend_Xml_Security::scan($responseBody, $dom)) {
                     /**
                      * @see Zend_Service_Delicious_Exception
                      */

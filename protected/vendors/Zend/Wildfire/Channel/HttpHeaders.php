@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Wildfire
  * @subpackage Channel
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HttpHeaders.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** Zend_Wildfire_Channel_Interface */
@@ -44,7 +44,7 @@
  * @category   Zend
  * @package    Zend_Wildfire
  * @subpackage Channel
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Wildfire_Channel_HttpHeaders extends Zend_Controller_Plugin_Abstract implements Zend_Wildfire_Channel_Interface

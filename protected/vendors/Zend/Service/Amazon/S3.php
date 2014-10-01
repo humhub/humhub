@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_S3
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: S3.php 24083 2011-05-30 10:52:55Z ezimuel $
+ * @version    $Id$
  */
 
 /**
@@ -36,7 +36,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_S3
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://docs.amazonwebservices.com/AmazonS3/2006-03-01/
  */
@@ -160,8 +160,8 @@ class Zend_Service_Amazon_S3 extends Zend_Service_Amazon_Abstract
         $headers=array();
         if($location) {
             $data = '<CreateBucketConfiguration><LocationConstraint>'.$location.'</LocationConstraint></CreateBucketConfiguration>';
-            $headers['Content-type']= 'text/plain';
-            $headers['Contne-size']= strlen($data);
+            $headers[self::S3_CONTENT_TYPE_HEADER]= 'text/plain';
+            $headers['Content-size']= strlen($data);
         } else {
             $data = null;
         }
@@ -321,7 +321,52 @@ class Zend_Service_Amazon_S3 extends Zend_Service_Amazon_Abstract
 
         return $objects;
     }
+     /**
+     * List the objects and common prefixes in a bucket.
+     *
+     * Provides the list of object keys and common prefixes that are contained in the bucket.  Valid params include the following.
+     * prefix - Limits the response to keys which begin with the indicated prefix. You can use prefixes to separate a bucket into different sets of keys in a way similar to how a file system uses folders.
+     * marker - Indicates where in the bucket to begin listing. The list will only include keys that occur lexicographically after marker. This is convenient for pagination: To get the next page of results use the last key of the current page as the marker.
+     * max-keys - The maximum number of keys you'd like to see in the response body. The server might return fewer than this many keys, but will not return more.
+     * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the CommonPrefixes collection. These rolled-up keys are not returned elsewhere in the response.
+     *
+     * @see ZF-11401
+     * @param  string $bucket
+     * @param array $params S3 GET Bucket Paramater
+     * @return array|false
+     */
+    public function getObjectsAndPrefixesByBucket($bucket, $params = array())
+    {
+        $response = $this->_makeRequest('GET', $bucket, $params);
 
+        if ($response->getStatus() != 200) {
+            return false;
+        }
+
+        $xml = new SimpleXMLElement($response->getBody());
+
+        $objects = array();
+        if (isset($xml->Contents)) {
+            foreach ($xml->Contents as $contents) {
+                foreach ($contents->Key as $object) {
+                    $objects[] = (string)$object;
+                }
+            }
+        }
+        $prefixes = array();
+        if (isset($xml->CommonPrefixes)) {
+            foreach ($xml->CommonPrefixes as $prefix) {
+                foreach ($prefix->Prefix as $object) {
+                    $prefixes[] = (string)$object;
+                }
+            }
+        }
+
+        return array(
+            'objects'  => $objects,
+            'prefixes' => $prefixes
+        );
+    }
     /**
      * Make sure the object name is valid
      *
@@ -490,7 +535,7 @@ class Zend_Service_Amazon_S3 extends Zend_Service_Amazon_Abstract
         }
 
         if(!isset($meta['Content-MD5'])) {
-            $headers['Content-MD5'] = base64_encode(md5_file($path, true));
+            $meta['Content-MD5'] = base64_encode(md5_file($path, true));
         }
 
         return $this->putObject($object, $data, $meta);

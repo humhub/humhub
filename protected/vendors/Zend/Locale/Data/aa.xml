@@ -1,174 +1,171 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.53 $"/>
-		<generation date="$Date: 2009/05/05 23:06:33 $"/>
+		<version number="$Revision: 9287 $"/>
+		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
 		<language type="aa"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
-			<language type="aa">Qafar</language>
-			<language type="ar">Arabic</language>
-			<language type="de">German</language>
-			<language type="en">English</language>
-			<language type="es">Spanish</language>
-			<language type="fr">French</language>
-			<language type="hi">Hindi</language>
-			<language type="it">Italian</language>
-			<language type="ja">Japanese</language>
-			<language type="pt">Portuguese</language>
-			<language type="ru">Russian</language>
-			<language type="zh">Chinese</language>
+			<language type="aa" draft="unconfirmed">Qafar</language>
 		</languages>
-		<scripts>
-			<script type="Latn">Latin</script>
-		</scripts>
 		<territories>
-			<territory type="BR">Brazil</territory>
-			<territory type="CN">China</territory>
-			<territory type="DE">Germany</territory>
-			<territory type="DJ">Yabuuti</territory>
-			<territory type="ER">Eretria</territory>
-			<territory type="ET">Otobbia</territory>
-			<territory type="FR">France</territory>
-			<territory type="GB">United Kingdom</territory>
-			<territory type="IN">India</territory>
-			<territory type="IT">Italy</territory>
-			<territory type="JP">Japan</territory>
-			<territory type="RU">Russia</territory>
-			<territory type="US">United States</territory>
+			<territory type="DJ" draft="unconfirmed">Yabuuti</territory>
+			<territory type="ER" draft="unconfirmed">Eretria</territory>
+			<territory type="ET" draft="unconfirmed">Otobbia</territory>
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a-z]</exemplarCharacters>
+		<exemplarCharacters>[a b t s e c k x i d q r f g o l m n u w h y]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[j p v z]</exemplarCharacters>
+		<exemplarCharacters type="index">[A B T S E C K X I D Q R F G O L M N U W H Y]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
+			<calendar type="generic">
+				<dateFormats>
+					<dateFormatLength type="full">
+						<dateFormat>
+							<pattern draft="unconfirmed">EEEE, MMMM dd, y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="long">
+						<dateFormat>
+							<pattern draft="unconfirmed">dd MMMM y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="medium">
+						<dateFormat>
+							<pattern draft="unconfirmed">dd-MMM-y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="short">
+						<dateFormat>
+							<pattern draft="unconfirmed">dd/MM/yy GGGGG</pattern>
+						</dateFormat>
+					</dateFormatLength>
+				</dateFormats>
+			</calendar>
 			<calendar type="gregorian">
 				<months>
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
-							<month type="1">Qun</month>
-							<month type="2">Nah</month>
-							<month type="3">Cig</month>
-							<month type="4">Agd</month>
-							<month type="5">Cax</month>
-							<month type="6">Qas</month>
-							<month type="7">Qad</month>
-							<month type="8">Leq</month>
-							<month type="9">Way</month>
-							<month type="10">Dit</month>
-							<month type="11">Xim</month>
-							<month type="12">Kax</month>
+							<month type="1" draft="unconfirmed">Qun</month>
+							<month type="2" draft="unconfirmed">Nah</month>
+							<month type="3" draft="unconfirmed">Cig</month>
+							<month type="4" draft="unconfirmed">Agd</month>
+							<month type="5" draft="unconfirmed">Cax</month>
+							<month type="6" draft="unconfirmed">Qas</month>
+							<month type="7" draft="unconfirmed">Qad</month>
+							<month type="8" draft="unconfirmed">Leq</month>
+							<month type="9" draft="unconfirmed">Way</month>
+							<month type="10" draft="unconfirmed">Dit</month>
+							<month type="11" draft="unconfirmed">Xim</month>
+							<month type="12" draft="unconfirmed">Kax</month>
 						</monthWidth>
 						<monthWidth type="wide">
-							<month type="1">Qunxa Garablu</month>
-							<month type="2">Kudo</month>
-							<month type="3">Ciggilta Kudo</month>
-							<month type="4">Agda Baxis</month>
-							<month type="5">Caxah Alsa</month>
-							<month type="6">Qasa Dirri</month>
-							<month type="7">Qado Dirri</month>
-							<month type="8">Liiqen</month>
-							<month type="9">Waysu</month>
-							<month type="10">Diteli</month>
-							<month type="11">Ximoli</month>
-							<month type="12">Kaxxa Garablu</month>
+							<month type="1" draft="unconfirmed">Qunxa Garablu</month>
+							<month type="2" draft="unconfirmed">Kudo</month>
+							<month type="3" draft="unconfirmed">Ciggilta Kudo</month>
+							<month type="4" draft="unconfirmed">Agda Baxis</month>
+							<month type="5" draft="unconfirmed">Caxah Alsa</month>
+							<month type="6" draft="unconfirmed">Qasa Dirri</month>
+							<month type="7" draft="unconfirmed">Qado Dirri</month>
+							<month type="8" draft="unconfirmed">Liiqen</month>
+							<month type="9" draft="unconfirmed">Waysu</month>
+							<month type="10" draft="unconfirmed">Diteli</month>
+							<month type="11" draft="unconfirmed">Ximoli</month>
+							<month type="12" draft="unconfirmed">Kaxxa Garablu</month>
 						</monthWidth>
 					</monthContext>
 					<monthContext type="stand-alone">
 						<monthWidth type="narrow">
-							<month type="1">Q</month>
-							<month type="2">N</month>
-							<month type="3">C</month>
-							<month type="4">A</month>
-							<month type="5">C</month>
-							<month type="6">Q</month>
-							<month type="7">Q</month>
-							<month type="8">L</month>
-							<month type="9">W</month>
-							<month type="10">D</month>
-							<month type="11">X</month>
-							<month type="12">K</month>
+							<month type="1" draft="unconfirmed">Q</month>
+							<month type="2" draft="unconfirmed">N</month>
+							<month type="3" draft="unconfirmed">C</month>
+							<month type="4" draft="unconfirmed">A</month>
+							<month type="5" draft="unconfirmed">C</month>
+							<month type="6" draft="unconfirmed">Q</month>
+							<month type="7" draft="unconfirmed">Q</month>
+							<month type="8" draft="unconfirmed">L</month>
+							<month type="9" draft="unconfirmed">W</month>
+							<month type="10" draft="unconfirmed">D</month>
+							<month type="11" draft="unconfirmed">X</month>
+							<month type="12" draft="unconfirmed">K</month>
 						</monthWidth>
 					</monthContext>
 				</months>
 				<days>
 					<dayContext type="format">
 						<dayWidth type="abbreviated">
-							<day type="sun">Aca</day>
-							<day type="mon">Etl</day>
-							<day type="tue">Tal</day>
-							<day type="wed">Arb</day>
-							<day type="thu">Kam</day>
-							<day type="fri">Gum</day>
-							<day type="sat">Sab</day>
+							<day type="sun" draft="unconfirmed">Aca</day>
+							<day type="mon" draft="unconfirmed">Etl</day>
+							<day type="tue" draft="unconfirmed">Tal</day>
+							<day type="wed" draft="unconfirmed">Arb</day>
+							<day type="thu" draft="unconfirmed">Kam</day>
+							<day type="fri" draft="unconfirmed">Gum</day>
+							<day type="sat" draft="unconfirmed">Sab</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">Acaada</day>
-							<day type="mon">Etleeni</day>
-							<day type="tue">Talaata</day>
-							<day type="wed">Arbaqa</day>
-							<day type="thu">Kamiisi</day>
-							<day type="fri">Gumqata</day>
-							<day type="sat">Sabti</day>
+							<day type="sun" draft="unconfirmed">Acaada</day>
+							<day type="mon" draft="unconfirmed">Etleeni</day>
+							<day type="tue" draft="unconfirmed">Talaata</day>
+							<day type="wed" draft="unconfirmed">Arbaqa</day>
+							<day type="thu" draft="unconfirmed">Kamiisi</day>
+							<day type="fri" draft="unconfirmed">Gumqata</day>
+							<day type="sat" draft="unconfirmed">Sabti</day>
 						</dayWidth>
 					</dayContext>
 					<dayContext type="stand-alone">
 						<dayWidth type="narrow">
-							<day type="sun">A</day>
-							<day type="mon">E</day>
-							<day type="tue">T</day>
-							<day type="wed">A</day>
-							<day type="thu">K</day>
-							<day type="fri">G</day>
-							<day type="sat">S</day>
+							<day type="sun" draft="unconfirmed">A</day>
+							<day type="mon" draft="unconfirmed">E</day>
+							<day type="tue" draft="unconfirmed">T</day>
+							<day type="wed" draft="unconfirmed">A</day>
+							<day type="thu" draft="unconfirmed">K</day>
+							<day type="fri" draft="unconfirmed">G</day>
+							<day type="sat" draft="unconfirmed">S</day>
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
-				<am>saaku</am>
-				<pm>carra</pm>
+				<dayPeriods>
+					<dayPeriodContext type="format">
+						<dayPeriodWidth type="wide">
+							<dayPeriod type="am" draft="unconfirmed">saaku</dayPeriod>
+							<dayPeriod type="pm" draft="unconfirmed">carra</dayPeriod>
+						</dayPeriodWidth>
+					</dayPeriodContext>
+				</dayPeriods>
 				<eras>
 					<eraAbbr>
-						<era type="0">Yaasuusuk Duma</era>
-						<era type="1">Yaasuusuk Wadir</era>
+						<era type="0" draft="unconfirmed">Yaasuusuk Duma</era>
+						<era type="1" draft="unconfirmed">Yaasuusuk Wadir</era>
 					</eraAbbr>
 				</eras>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern>EEEE, MMMM dd, y</pattern>
+							<pattern draft="unconfirmed">EEEE, MMMM dd, y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern>dd MMMM y</pattern>
+							<pattern draft="unconfirmed">dd MMMM y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern>dd-MMM-y</pattern>
+							<pattern draft="unconfirmed">dd-MMM-y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>dd/MM/yy</pattern>
+							<pattern draft="unconfirmed">dd/MM/yy</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -194,27 +191,22 @@
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="yyQ">Q yy</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 		</calendars>
-		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
-			<regionFormat>{0}</regionFormat>
-		</timeZoneNames>
 	</dates>
 	<numbers>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
-					<pattern>¤#,##0.00</pattern>
+				<currencyFormat type="standard">
+					<pattern draft="unconfirmed">¤#,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
+		<currencies>
+			<currency type="ETB">
+				<symbol>Br</symbol>
+			</currency>
+		</currencies>
 	</numbers>
 </ldml>
 

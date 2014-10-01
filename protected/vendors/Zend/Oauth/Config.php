@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Config.php 24364 2011-08-13 14:45:17Z padraic $
+ * @version    $Id$
  */
 
 /** Zend_Oauth */
@@ -31,7 +31,7 @@
 /**
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
@@ -581,6 +581,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
                 Zend_Oauth::POST,
                 Zend_Oauth::PUT,
                 Zend_Oauth::DELETE,
+                Zend_Oauth::OPTIONS,
             ))
         ) {
             // require_once 'Zend/Oauth/Exception.php';

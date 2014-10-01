@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.66 $"/>
-		<generation date="$Date: 2009/06/15 05:50:27 $"/>
+		<version number="$Revision: 9280 $"/>
+		<generation date="$Date: 2013-08-27 13:07:13 -0500 (Tue, 27 Aug 2013) $"/>
 		<language type="fa"/>
 		<territory type="AF"/>
 	</identity>
@@ -33,7 +38,6 @@
 		</scripts>
 		<territories>
 			<territory type="AD">اندورا</territory>
-			<territory type="AE">امارات متحدهٔ عربی</territory>
 			<territory type="AG">انتیگوا و باربودا</territory>
 			<territory type="AL">البانیا</territory>
 			<territory type="AO">انگولا</territory>
@@ -57,7 +61,6 @@
 			<territory type="CR">کاستریکا</territory>
 			<territory type="CU">کیوبا</territory>
 			<territory type="DK">دنمارک</territory>
-			<territory type="EC">اکوادور</territory>
 			<territory type="EE">استونیا</territory>
 			<territory type="ER">اریتریا</territory>
 			<territory type="ES">هسپانیه</territory>
@@ -80,7 +83,6 @@
 			<territory type="KE">کینیا</territory>
 			<territory type="KG">قرغزستان</territory>
 			<territory type="KH">کمپوچیا</territory>
-			<territory type="KM">کومور</territory>
 			<territory type="KN">سنت کیتس و نیویس</territory>
 			<territory type="KP">کوریای شمالی</territory>
 			<territory type="KR">کوریای جنوبی</territory>
@@ -122,16 +124,14 @@
 			<territory type="SV">السلوادور</territory>
 			<territory type="TJ">تاجکستان</territory>
 			<territory type="UA">اکراین</territory>
-			<territory type="US">ایالات متحدهٔ امریکا</territory>
 			<territory type="UY">یوروگوای</territory>
 			<territory type="VC">سنت وینسنت و گرینادین</territory>
 			<territory type="VE">ونزویلا</territory>
-			<territory type="WS">ساموآ</territory>
 			<territory type="ZW">زیمبابوی</territory>
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters type="auxiliary">[\u0656 \u0670 \u200C \u200D ټ ځ څ ډ ړ ږ ښ ګ ڼ ي]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[\u200C \u200D \u0656 \u0670 ټ ځ څ ډ ړ ږ ښ ګ ڼ ي]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -141,7 +141,6 @@
 						<monthWidth type="abbreviated">
 							<month type="1">جنو</month>
 							<month type="5">مـی</month>
-							<month type="6">جون</month>
 							<month type="7">جول</month>
 							<month type="12">دسم</month>
 						</monthWidth>
@@ -204,32 +203,16 @@
 							<month type="4">س</month>
 							<month type="5">ا</month>
 							<month type="6">س</month>
+							<month type="7">م</month>
 							<month type="8">ع</month>
 							<month type="9">ق</month>
 							<month type="10">ج</month>
 							<month type="11">د</month>
 							<month type="12">ح</month>
 						</monthWidth>
-						<monthWidth type="wide">
-							<month type="1">حمل</month>
-							<month type="2">ثور</month>
-							<month type="3">جوزا</month>
-							<month type="4">سرطان</month>
-							<month type="5">اسد</month>
-							<month type="6">سنبله</month>
-							<month type="7">میزان</month>
-							<month type="8">عقرب</month>
-							<month type="9">قوس</month>
-							<month type="10">جدی</month>
-							<month type="11">دلو</month>
-							<month type="12">حوت</month>
-						</monthWidth>
 					</monthContext>
 				</months>
 				<eras>
-					<eraNames>
-						<era type="0">هجری شمسی</era>
-					</eraNames>
 					<eraAbbr>
 						<era type="0">ه‍. ش.</era>
 					</eraAbbr>
@@ -238,14 +221,7 @@
 		</calendars>
 	</dates>
 	<numbers>
-		<symbols>
-			<decimal>,</decimal>
-			<group>.</group>
-			<percentSign>%</percentSign>
-			<nativeZeroDigit>0</nativeZeroDigit>
-			<minusSign>−</minusSign>
-		</symbols>
-		<percentFormats>
+		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
 					<pattern>'‪'#,##0%'‬'</pattern>
@@ -253,9 +229,6 @@
 			</percentFormatLength>
 		</percentFormats>
 		<currencies>
-			<currency type="AFN">
-				<symbol>؋</symbol>
-			</currency>
 			<currency type="AUD">
 				<displayName>دالر آسترالیا</displayName>
 			</currency>

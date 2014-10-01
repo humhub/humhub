@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Translate
  * @subpackage Zend_Translate_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Adapter.php 24268 2011-07-25 14:47:42Z guilhermeblanco $
+ * @version    $Id$
  */
 
 /**
@@ -36,7 +36,7 @@
  * @category   Zend
  * @package    Zend_Translate
  * @subpackage Zend_Translate_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Translate_Adapter {

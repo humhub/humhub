@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Pdf
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Pdf.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -78,7 +78,7 @@
  *
  * @category   Zend
  * @package    Zend_Pdf
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Pdf
@@ -95,7 +95,12 @@ class Zend_Pdf
      */
     const PDF_HEADER  = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";
 
-
+    /**
+     * Form field options
+     */
+    const PDF_FORM_FIELD_READONLY = 1;
+    const PDF_FORM_FIELD_REQUIRED = 2;
+    const PDF_FORM_FIELD_NOEXPORT = 4;
 
     /**
      * Pages collection
@@ -201,13 +206,19 @@ class Zend_Pdf
      */
     protected $_parser;
 
-
     /**
      * List of inheritable attributesfor pages tree
      *
      * @var array
      */
     protected static $_inheritableAttributes = array('Resources', 'MediaBox', 'CropBox', 'Rotate');
+
+    /**
+     * List of form fields
+     *
+     * @var array - Associative array, key: name of form field, value: Zend_Pdf_Element
+     */
+    protected $_formFields = array();
 
     /**
      * True if the object is a newly created PDF document (affects save() method behavior)
@@ -299,12 +310,12 @@ class Zend_Pdf
      *
      * If $source is a string and $load is true, then it loads document
      * from a file.
-
      * $revision used to roll back document to specified version
      * (0 - current version, 1 - previous version, 2 - ...)
      *
      * @param string  $source - PDF file to load
      * @param integer $revision
+     * @param bool    $load
      * @throws Zend_Pdf_Exception
      * @return Zend_Pdf
      */
@@ -330,6 +341,8 @@ class Zend_Pdf
 
             $this->_loadNamedDestinations($this->_trailer->Root, $this->_parser->getPDFVersion());
             $this->_loadOutlines($this->_trailer->Root);
+            $this->_loadJavaScript($this->_trailer->Root);
+            $this->_loadFormFields($this->_trailer->Root);
 
             if ($this->_trailer->Info !== null) {
                 $this->properties = $this->_trailer->Info->toPhp();
@@ -442,12 +455,12 @@ class Zend_Pdf
         $this->_loadPages($this->_trailer->Root->Pages);
     }
 
-
     /**
      * Load pages recursively
      *
      * @param Zend_Pdf_Element_Reference $pages
-     * @param array|null $attributes
+     * @param array|null                 $attributes
+     * @throws Zend_Pdf_Exception
      */
     protected function _loadPages(Zend_Pdf_Element_Reference $pages, $attributes = array())
     {
@@ -536,6 +549,7 @@ class Zend_Pdf
      * Load outlines recursively
      *
      * @param Zend_Pdf_Element_Reference $root Document catalog entry
+     * @throws Zend_Pdf_Exception
      */
     protected function _loadOutlines(Zend_Pdf_Element_Reference $root)
     {
@@ -573,6 +587,130 @@ class Zend_Pdf
         if ($root->Outlines->Count !== null) {
             $this->_originalOpenOutlinesCount = $root->Outlines->Count->value;
         }
+    }
+
+    /**
+     * Load JavaScript
+     *
+     * Populates the _javaScript string, for later use of getJavaScript method.
+     *
+     * @param Zend_Pdf_Element_Reference $root Document catalog entry
+     */
+    protected function _loadJavaScript(Zend_Pdf_Element_Reference $root)
+    {
+        if (null === $root->Names || null === $root->Names->JavaScript
+            || null === $root->Names->JavaScript->Names
+        ) {
+            return;
+        }
+
+        foreach ($root->Names->JavaScript->Names->items as $item) {
+            if ($item instanceof Zend_Pdf_Element_Reference
+                && $item->S->value === 'JavaScript'
+            ) {
+                $this->_javaScript[] = $item->JS->value;
+            }
+        }
+    }
+  
+    /**
+     * Load form fields
+     *
+     * Populates the _formFields array, for later lookup of fields by name
+     *
+     * @param Zend_Pdf_Element_Reference $root Document catalog entry
+     */
+    protected function _loadFormFields(Zend_Pdf_Element_Reference $root)
+    {
+        if ($root->AcroForm === null || $root->AcroForm->Fields === null) {
+            return;
+        }
+
+        foreach ($root->AcroForm->Fields->items as $field) {
+            /* We only support fields that are textfields and have a name */
+            if ($field->FT && $field->FT->value == 'Tx' && $field->T
+                && $field->T !== null
+            ) {
+                $this->_formFields[$field->T->value] = $field;
+            }
+        }
+
+        if (!$root->AcroForm->NeedAppearances
+            || !$root->AcroForm->NeedAppearances->value
+        ) {
+            /* Ask the .pdf viewer to generate its own appearance data, so we do not have to */
+            $root->AcroForm->add(
+                new Zend_Pdf_Element_Name('NeedAppearances'),
+                new Zend_Pdf_Element_Boolean(true)
+            );
+            $root->AcroForm->touch();
+        }
+    }
+
+    /**
+     * Retrieves a list with the names of the AcroForm textfields in the PDF
+     *
+     * @return array of strings
+     */
+    public function getTextFieldNames()
+    {
+        return array_keys($this->_formFields);
+    }
+
+    /**
+     * Sets the value of an AcroForm text field
+     *
+     * @param string $name Name of textfield
+     * @param string $value Value
+     * @throws Zend_Pdf_Exception if the textfield does not exist in the pdf
+     */
+    public function setTextField($name, $value)
+    {
+        if (!isset($this->_formFields[$name])) {
+            throw new Zend_Pdf_Exception(
+                "Field '$name' does not exist or is not a textfield"
+            );
+        }
+
+        /** @var Zend_Pdf_Element $field */
+        $field = $this->_formFields[$name];
+        $field->add(
+            new Zend_Pdf_Element_Name('V'), new Zend_Pdf_Element_String($value)
+        );
+        $field->touch();
+    }
+
+    /**
+     * Sets the properties for an AcroForm text field
+     *
+     * @param string $name
+     * @param mixed  $bitmask
+     * @throws Zend_Pdf_Exception
+     */
+    public function setTextFieldProperties($name, $bitmask)
+    {
+        if (!isset($this->_formFields[$name])) {
+            throw new Zend_Pdf_Exception(
+                "Field '$name' does not exist or is not a textfield"
+            );
+        }
+
+        $field = $this->_formFields[$name];
+        $field->add(
+            new Zend_Pdf_Element_Name('Ff'),
+            new Zend_Pdf_Element_Numeric($bitmask)
+        );
+        $field->touch();
+    }
+
+    /**
+     * Marks an AcroForm text field as read only
+     *
+     * @param string $name
+     */
+    public function markTextFieldAsReadOnly($name)
+    {
+        $this->setTextFieldProperties($name, self::PDF_FORM_FIELD_READONLY);
     }
 
     /**
@@ -916,8 +1054,9 @@ class Zend_Pdf
     /**
      * Set specified named destination
      *
-     * @param string $name
-     * @param Zend_Pdf_Destination_Explicit|Zend_Pdf_Action_GoTo $target
+     * @param string                                             $name
+     * @param Zend_Pdf_Destination_Explicit|Zend_Pdf_Action_GoTo $destination
+     * @throws Zend_Pdf_Exception
      */
     public function setNamedDestination($name, $destination = null)
     {
@@ -975,8 +1114,8 @@ class Zend_Pdf
      *
      * Returns Zend_Pdf_Page page object or null if destination is not found within PDF document.
      *
-     * @param Zend_Pdf_Destination $destination  Destination to resolve
-     * @param boolean $refreshPagesHash  Refresh page collection hashes before processing
+     * @param Zend_Pdf_Destination $destination Destination to resolve
+     * @param bool $refreshPageCollectionHashes Refresh page collection hashes before processing
      * @return Zend_Pdf_Page|null
      * @throws Zend_Pdf_Exception
      */
@@ -1034,7 +1173,7 @@ class Zend_Pdf
      * @todo Give appropriate name and make method public
      *
      * @param Zend_Pdf_Action $action
-     * @param boolean $refreshPagesHash  Refresh page collection hashes before processing
+     * @param bool $refreshPageCollectionHashes Refresh page collection hashes before processing
      * @return Zend_Pdf_Action|null
      */
     protected function _cleanUpAction(Zend_Pdf_Action $action, $refreshPageCollectionHashes = true)
@@ -1129,6 +1268,7 @@ class Zend_Pdf
      *
      * $fontName should be specified in UTF-8 encoding
      *
+     * @param string $fontName
      * @return Zend_Pdf_Resource_Font_Extracted|null
      * @throws Zend_Pdf_Exception
      */
@@ -1386,17 +1526,84 @@ class Zend_Pdf
         }
     }
 
-
     /**
-     * Set the document-level JavaScript
+     * Sets the document-level JavaScript
      *
-     * @param string $javascript
+     * Resets and appends
+     *
+     * @param string|array $javaScript
      */
-    public function setJavaScript($javascript)
+    public function setJavaScript($javaScript)
     {
-        $this->_javaScript = $javascript;
+        $this->resetJavaScript();
+
+        $this->addJavaScript($javaScript);
     }
 
+    /**
+     * Resets the document-level JavaScript
+     */
+    public function resetJavaScript()
+    {
+        $this->_javaScript = null;
+
+        $root = $this->_trailer->Root;
+        if (null === $root->Names || null === $root->Names->JavaScript) {
+            return;
+        }
+        $root->Names->JavaScript = null;
+    }
+
+    /**
+     * Appends JavaScript to the document-level JavaScript
+     *
+     * @param string|array $javaScript
+     * @throws Zend_Pdf_Exception
+     */
+    public function addJavaScript($javaScript)
+    {
+        if (empty($javaScript)) {
+            throw new Zend_Pdf_Exception(
+                'JavaScript must be a non empty string or array of strings'
+            );
+        }
+
+        if (!is_array($javaScript)) {
+            $javaScript = array($javaScript);
+        }
+
+        if (null === $this->_javaScript) {
+            $this->_javaScript = $javaScript;
+        } else {
+            $this->_javaScript = array_merge($this->_javaScript, $javaScript);
+        }
+
+        if (!empty($this->_javaScript)) {
+            $items = array();
+
+            foreach ($this->_javaScript as $javaScript) {
+                $jsCode = array(
+                    'S'  => new Zend_Pdf_Element_Name('JavaScript'),
+                    'JS' => new Zend_Pdf_Element_String($javaScript)
+                );
+                $items[] = new Zend_Pdf_Element_String('EmbeddedJS');
+                $items[] = $this->_objFactory->newObject(
+                    new Zend_Pdf_Element_Dictionary($jsCode)
+                );
+            }
+
+            $jsRef = $this->_objFactory->newObject(
+                new Zend_Pdf_Element_Dictionary(
+                    array('Names' => new Zend_Pdf_Element_Array($items))
+                )
+            );
+
+            if (null === $this->_trailer->Root->Names) {
+                $this->_trailer->Root->Names = new Zend_Pdf_Element_Dictionary();
+            }
+            $this->_trailer->Root->Names->JavaScript = $jsRef;
+        }
+    }
 
     /**
      * Convert date to PDF format (it's close to ASN.1 (Abstract Syntax Notation

@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -53,7 +53,7 @@
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Amazon_SimpleDb extends Zend_Service_Amazon_Abstract
@@ -343,8 +343,8 @@ class Zend_Service_Amazon_SimpleDb extends Zend_Service_Amazon_Abstract
      * @param string $domainName Valid domain name of the domain to create
      * @return boolean True if successful, false if not
      */
-	public function createDomain($domainName)
-	{
+    public function createDomain($domainName)
+    {
         $params               = array();
         $params['Action']     = 'CreateDomain';
         $params['DomainName'] = $domainName;
@@ -358,11 +358,11 @@ class Zend_Service_Amazon_SimpleDb extends Zend_Service_Amazon_Abstract
      * @param string $domainName Valid domain name of the domain to delete
      * @return boolean True if successful, false if not
      */
-	public function deleteDomain($domainName)
-	{
-	    $params               = array();
-	    $params['Action']     = 'DeleteDomain';
-	    $params['DomainName'] = $domainName;
+    public function deleteDomain($domainName)
+    {
+        $params               = array();
+        $params['Action']     = 'DeleteDomain';
+        $params['DomainName'] = $domainName;
         $response             = $this->_sendRequest($params);
         return $response->getHttpResponse()->isSuccessful();
     }
@@ -374,8 +374,8 @@ class Zend_Service_Amazon_SimpleDb extends Zend_Service_Amazon_Abstract
      * @param  null|string $nextToken
      * @return Zend_Service_Amazon_SimpleDb_Page
      */
-	public function select($selectExpression, $nextToken = null)
-	{
+    public function select($selectExpression, $nextToken = null)
+    {
         $params                     = array();
         $params['Action']           = 'Select';
         $params['SelectExpression'] = $selectExpression;
@@ -407,27 +407,27 @@ class Zend_Service_Amazon_SimpleDb extends Zend_Service_Amazon_Abstract
         return new Zend_Service_Amazon_SimpleDb_Page($attributes, $nextToken);
     }
 
-	/**
-	 * Quote SDB value
-	 *
-	 * Wraps it in ''
-	 *
-	 * @param string $value
-	 * @return string
-	 */
+    /**
+     * Quote SDB value
+     *
+     * Wraps it in ''
+     *
+     * @param string $value
+     * @return string
+     */
     public function quote($value)
     {
         // wrap in single quotes and convert each ' inside to ''
         return "'" . str_replace("'", "''", $value) . "'";
     }
 
-	/**
-	 * Quote SDB column or table name
-	 *
-	 * Wraps it in ``
-	 * @param string $name
-	 * @return string
-	 */
+    /**
+     * Quote SDB column or table name
+     *
+     * Wraps it in ``
+     * @param string $name
+     * @return string
+     */
     public function quoteName($name)
     {
         if (preg_match('/^[a-z_$][a-z0-9_$-]*$/i', $name) == false) {

@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: HeadLink.php 23775 2011-03-01 17:25:24Z ralph $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -30,7 +30,7 @@
  * @uses       Zend_View_Helper_Placeholder_Container_Standalone
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_Standalone
@@ -40,7 +40,19 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
      *
      * @var array
      */
-    protected $_itemKeys = array('charset', 'href', 'hreflang', 'id', 'media', 'rel', 'rev', 'type', 'title', 'extras');
+    protected $_itemKeys = array(
+        'charset',
+        'href',
+        'hreflang',
+        'id',
+        'media',
+        'rel',
+        'rev',
+        'type',
+        'title',
+        'extras',
+        'sizes',
+    );
 
     /**
      * @var string registry key
@@ -379,7 +391,7 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
         }
 
         $attributes = compact('rel', 'type', 'href', 'media', 'conditionalStylesheet', 'extras');
-        return $this->createData($attributes);
+        return $this->createData($this->_applyExtras($attributes));
     }
 
     /**
@@ -432,6 +444,24 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
         $title = (string) $title;
 
         $attributes = compact('rel', 'href', 'type', 'title', 'extras');
-        return $this->createData($attributes);
+        return $this->createData($this->_applyExtras($attributes));
+    }
+
+    /**
+     * Apply any overrides specified in the 'extras' array
+     * @param array $attributes
+     * @return array
+     */
+    protected function _applyExtras($attributes)
+    {
+        if (isset($attributes['extras'])) {
+            foreach ($attributes['extras'] as $eKey=>$eVal) {
+                if (isset($attributes[$eKey])) {
+                    $attributes[$eKey] = $eVal;
+                    unset($attributes['extras'][$eKey]);
+                }
+            }
+        }
+        return $attributes;
     }
 }

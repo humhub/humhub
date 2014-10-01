@@ -38,7 +38,7 @@ CREATE TABLE message
   handle character(32),
   body character varying(8192) NOT NULL,
   md5 character(32) NOT NULL,
-  timeout real,
+  timeout double precision,
   created integer,
   CONSTRAINT message_pk PRIMARY KEY (message_id),
   CONSTRAINT message_ibfk_1 FOREIGN KEY (queue_id)

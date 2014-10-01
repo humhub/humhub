@@ -15,15 +15,15 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Session.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Application_Resource_ResourceAbstract
  */
-// // require_once 'Zend/Application/Resource/ResourceAbstract.php';
+// require_once 'Zend/Application/Resource/ResourceAbstract.php';
 
 
 /**
@@ -33,7 +33,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_Session extends Zend_Application_Resource_ResourceAbstract
@@ -50,7 +50,7 @@ class Zend_Application_Resource_Session extends Zend_Application_Resource_Resour
      *
      * @param  array|string|Zend_Session_SaveHandler_Interface $saveHandler
      * @return Zend_Application_Resource_Session
-     * @throws Zend_Application_Resource_Exception When $saveHandler is no valid save handler
+     * @throws Zend_Application_Resource_Exception When $saveHandler is not a valid save handler
      */
     public function setSaveHandler($saveHandler)
     {
@@ -62,6 +62,7 @@ class Zend_Application_Resource_Session extends Zend_Application_Resource_Resour
      * Get session save handler
      *
      * @return Zend_Session_SaveHandler_Interface
+     * @throws Zend_Application_Resource_Exception
      */
     public function getSaveHandler()
     {

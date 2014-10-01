@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Debug
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Debug.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category   Zend
  * @package    Zend_Debug
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -90,7 +90,12 @@ class Zend_Debug
                     . PHP_EOL;
         } else {
             if(!extension_loaded('xdebug')) {
-                $output = htmlspecialchars($output, ENT_QUOTES);
+                $flags = ENT_QUOTES;
+                // PHP 5.4.0+
+                if (defined('ENT_SUBSTITUTE')) {
+                    $flags = ENT_QUOTES | ENT_SUBSTITUTE;
+                }
+                $output = htmlspecialchars($output, $flags);
             }
 
             $output = '<pre>'

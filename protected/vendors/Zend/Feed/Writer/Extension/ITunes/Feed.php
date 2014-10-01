@@ -14,15 +14,15 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Feed.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Writer_Extension_ITunes_Feed
@@ -205,7 +205,7 @@ class Zend_Feed_Writer_Extension_ITunes_Feed
     /**
      * Set "explicit" flag
      *
-     * @param  bool $value
+     * @param  string $value    Valid values: "yes", "no" or "clean"
      * @return Zend_Feed_Writer_Extension_ITunes_Feed
      */
     public function setItunesExplicit($value)

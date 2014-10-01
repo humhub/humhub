@@ -16,8 +16,8 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Response
- * @version    $Id: Response.php 23775 2011-03-01 17:25:24Z ralph $
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,7 +28,7 @@
  *
  * @package    Zend_Http
  * @subpackage Response
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Http_Response
@@ -641,7 +641,7 @@ class Zend_Http_Response
          * @link http://framework.zend.com/issues/browse/ZF-6040
          */
         $zlibHeader = unpack('n', substr($body, 0, 2));
-        if ($zlibHeader[1] % 31 == 0) {
+        if ($zlibHeader[1] % 31 == 0 && ord($body[0]) == 0x78 && in_array(ord($body[1]), array(0x01, 0x5e, 0x9c, 0xda))) {
             return gzuncompress($body);
         } else {
             return gzinflate($body);

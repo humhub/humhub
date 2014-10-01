@@ -13,13 +13,13 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage QueueService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-// // require_once 'Zend/Cloud/QueueService/Adapter.php';
-// // require_once 'Zend/Cloud/QueueService/Message.php';
-// // require_once 'Zend/Cloud/QueueService/MessageSet.php';
+// require_once 'Zend/Cloud/QueueService/Adapter.php';
+// require_once 'Zend/Cloud/QueueService/Message.php';
+// require_once 'Zend/Cloud/QueueService/MessageSet.php';
 
 /**
  * Abstract queue adapter
@@ -29,7 +29,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage QueueService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Cloud_QueueService_Adapter_AbstractAdapter

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Pdo.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -34,7 +34,7 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggregate
@@ -231,7 +231,8 @@ class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggrega
             }
         } catch (PDOException $e) {
             // require_once 'Zend/Db/Statement/Exception.php';
-            throw new Zend_Db_Statement_Exception($e->getMessage(), (int) $e->getCode(), $e);
+            $message = sprintf('%s, query was: %s', $e->getMessage(), $this->_stmt->queryString);
+            throw new Zend_Db_Statement_Exception($message, (int) $e->getCode(), $e);
         }
     }
 

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Feed_Pubsubhubbub
  * @subpackage Callback
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: CallbackAbstract.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -34,7 +34,7 @@
  * @category   Zend
  * @package    Zend_Feed_Pubsubhubbub
  * @subpackage Callback
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Feed_Pubsubhubbub_CallbackAbstract
@@ -219,7 +219,9 @@ abstract class Zend_Feed_Pubsubhubbub_CallbackAbstract
     protected function _detectCallbackUrl()
     {
         $callbackUrl = '';
-        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
+        if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) {
+            $callbackUrl = $_SERVER['HTTP_X_ORIGINAL_URL'];
+        } elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
             $callbackUrl = $_SERVER['HTTP_X_REWRITE_URL'];
         } elseif (isset($_SERVER['REQUEST_URI'])) {
             $callbackUrl = $_SERVER['REQUEST_URI'];

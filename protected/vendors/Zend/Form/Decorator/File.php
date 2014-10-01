@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -36,9 +36,9 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: File.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 class Zend_Form_Decorator_File
     extends Zend_Form_Decorator_Abstract
@@ -117,16 +117,17 @@ class Zend_Form_Decorator_File
             $markup[] = $view->formHidden('UPLOAD_IDENTIFIER', uniqid(), array('id' => 'progress_key'));
         }
 
+        $helper = $element->helper;
         if ($element->isArray()) {
             $name .= "[]";
             $count = $element->getMultiFile();
             for ($i = 0; $i < $count; ++$i) {
                 $htmlAttribs        = $attribs;
                 $htmlAttribs['id'] .= '-' . $i;
-                $markup[] = $view->formFile($name, $htmlAttribs);
+                $markup[] = $view->$helper($name, $htmlAttribs);
             }
         } else {
-            $markup[] = $view->formFile($name, $attribs);
+            $markup[] = $view->$helper($name, $attribs);
         }
 
         $markup = implode($separator, $markup);

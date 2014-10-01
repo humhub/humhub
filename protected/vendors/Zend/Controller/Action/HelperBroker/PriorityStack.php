@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: PriorityStack.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_HelperBroker_PriorityStack implements IteratorAggregate, ArrayAccess, Countable
@@ -117,7 +117,7 @@ class Zend_Controller_Action_HelperBroker_PriorityStack implements IteratorAggre
     public function offsetGet($priorityOrHelperName)
     {
         if (!$this->offsetExists($priorityOrHelperName)) {
-            // // require_once 'Zend/Controller/Action/Exception.php';
+            // require_once 'Zend/Controller/Action/Exception.php';
             throw new Zend_Controller_Action_Exception('A helper with priority ' . $priorityOrHelperName . ' does not exist.');
         }
 
@@ -140,7 +140,7 @@ class Zend_Controller_Action_HelperBroker_PriorityStack implements IteratorAggre
         $priority = (int) $priority;
 
         if (!$helper instanceof Zend_Controller_Action_Helper_Abstract) {
-            // // require_once 'Zend/Controller/Action/Exception.php';
+            // require_once 'Zend/Controller/Action/Exception.php';
             throw new Zend_Controller_Action_Exception('$helper must extend Zend_Controller_Action_Helper_Abstract.');
         }
 
@@ -175,7 +175,7 @@ class Zend_Controller_Action_HelperBroker_PriorityStack implements IteratorAggre
     public function offsetUnset($priorityOrHelperName)
     {
         if (!$this->offsetExists($priorityOrHelperName)) {
-            // // require_once 'Zend/Controller/Action/Exception.php';
+            // require_once 'Zend/Controller/Action/Exception.php';
             throw new Zend_Controller_Action_Exception('A helper with priority or name ' . $priorityOrHelperName . ' does not exist.');
         }
 

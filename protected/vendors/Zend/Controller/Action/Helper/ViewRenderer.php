@@ -15,20 +15,20 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ViewRenderer.php 24282 2011-07-28 18:59:26Z matthew $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Controller_Action_Helper_Abstract
  */
-// // require_once 'Zend/Controller/Action/Helper/Abstract.php';
+// require_once 'Zend/Controller/Action/Helper/Abstract.php';
 
 /**
  * @see Zend_View
  */
-// // require_once 'Zend/View.php';
+// require_once 'Zend/View.php';
 
 /**
  * View script integration
@@ -68,7 +68,7 @@
  * @uses       Zend_Controller_Action_Helper_Abstract
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_Helper_Abstract
@@ -245,7 +245,7 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
             /**
              * @see Zend_Controller_Action_Exception
              */
-            // // require_once 'Zend/Controller/Action/Exception.php';
+            // require_once 'Zend/Controller/Action/Exception.php';
             throw new Zend_Controller_Action_Exception('ViewRenderer cannot locate module directory for module "' . $module . '"');
         }
         $this->_moduleDir = dirname($moduleDir);
@@ -263,15 +263,15 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
             /**
              * @see Zend_Filter_Inflector
              */
-            // // require_once 'Zend/Filter/Inflector.php';
+            // require_once 'Zend/Filter/Inflector.php';
             /**
              * @see Zend_Filter_PregReplace
              */
-            // // require_once 'Zend/Filter/PregReplace.php';
+            // require_once 'Zend/Filter/PregReplace.php';
             /**
              * @see Zend_Filter_Word_UnderscoreToSeparator
              */
-            // // require_once 'Zend/Filter/Word/UnderscoreToSeparator.php';
+            // require_once 'Zend/Filter/Word/UnderscoreToSeparator.php';
             $this->_inflector = new Zend_Filter_Inflector();
             $this->_inflector->setStaticRuleReference('moduleDir', $this->_moduleDir) // moduleDir must be specified before the less specific 'module'
                  ->addRules(array(
@@ -471,7 +471,7 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
                 /**
                  * @see Zend_Controller_Action_Exception
                  */
-                // // require_once 'Zend/Controller/Action/Exception.php';
+                // require_once 'Zend/Controller/Action/Exception.php';
                 throw new Zend_Controller_Action_Exception('ViewRenderer initialization failed: retrieved view base path is empty');
             }
         }

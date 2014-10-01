@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.65 $"/>
-		<generation date="$Date: 2009/06/15 03:46:26 $"/>
+		<version number="$Revision: 9791 $"/>
+		<generation date="$Date: 2014-02-25 15:16:49 -0600 (Tue, 25 Feb 2014) $"/>
 		<language type="kok"/>
 	</identity>
 	<localeDisplayNames>
@@ -18,7 +23,6 @@
 			<language type="ba">बष्किर</language>
 			<language type="be">बैलोरुसियन्</language>
 			<language type="bg">बल्गेरियन</language>
-			<language type="bh">बीहारी</language>
 			<language type="bi">बिसलमा</language>
 			<language type="bn">बंगाली</language>
 			<language type="bo">तिबेतियन</language>
@@ -82,7 +86,6 @@
 			<language type="mk">मसीडोनियन्</language>
 			<language type="ml">मळियाळम</language>
 			<language type="mn">मंगोलियन्</language>
-			<language type="mo">मोल्डावियन्</language>
 			<language type="mr">मराठी</language>
 			<language type="ms">मलय</language>
 			<language type="mt">मालतीस्</language>
@@ -102,6 +105,7 @@
 			<language type="rm">रहटो-रोमान्स्</language>
 			<language type="rn">किरुन्दी</language>
 			<language type="ro">रोमानियन्</language>
+			<language type="ro_MD">मोल्डावियन्</language>
 			<language type="ru">रष्यन्</language>
 			<language type="rw">किन्यार्वान्डा</language>
 			<language type="sa">संस्कृत</language>
@@ -153,28 +157,39 @@
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[़ ँ-ः ०-९ ॐ अ-ऍ ए-ऑ ओ-क {क़} ख {ख़} ग {ग़} घ-ज {ज़} झ-ड {ड़} ढ {ढ़} ण-न प फ {फ़} ब-य {य़} र ल ळ व-ह ऽ-ॅ े-ॉ ो-्]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[\u200C \u200D]</exemplarCharacters>
+		<exemplarCharacters>[\u093C ० १ २ ३ ४ ५ ६ ७ ८ ९ ॐ \u0902 \u0901 ः अ आ इ ई उ ऊ ऋ ऌ ऍ ए ऐ ऑ ओ औ क {क\u093C} ख {ख\u093C} ग {ग\u093C} घ ङ च छ ज {ज\u093C} झ ञ ट ठ ड {ड\u093C} ढ {ढ\u093C} ण त थ द ध न प फ {फ\u093C} ब भ म य {य\u093C} र ल व श ष स ह ळ ऽ ा ि ी \u0941 \u0942 \u0943 \u0944 \u0945 \u0947 \u0948 ॉ ो ौ \u094D]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[\u200C\u200D]</exemplarCharacters>
+		<exemplarCharacters type="index" draft="unconfirmed">[ॐ अ आ इ ई उ ऊ ऋ ऌ ऍ ए ऐ ऑ ओ औ क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल व श ष स ह ळ ऽ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
+			<calendar type="generic">
+				<dateFormats>
+					<dateFormatLength type="full">
+						<dateFormat>
+							<pattern draft="unconfirmed">EEEE d MMMM y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="long">
+						<dateFormat>
+							<pattern draft="unconfirmed">d MMMM y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="medium">
+						<dateFormat>
+							<pattern draft="unconfirmed">dd-MM-y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="short">
+						<dateFormat>
+							<pattern draft="unconfirmed">d-M-y GGGGG</pattern>
+						</dateFormat>
+					</dateFormatLength>
+				</dateFormats>
+			</calendar>
 			<calendar type="gregorian">
 				<months>
 					<monthContext type="format">
-						<monthWidth type="abbreviated">
-							<month type="1">जानेवारी</month>
-							<month type="2">फेबृवारी</month>
-							<month type="3">मार्च</month>
-							<month type="4">एप्रिल</month>
-							<month type="5">मे</month>
-							<month type="6">जून</month>
-							<month type="7">जुलै</month>
-							<month type="8">ओगस्ट</month>
-							<month type="9">सेप्टेंबर</month>
-							<month type="10">ओक्टोबर</month>
-							<month type="11">नोव्हेंबर</month>
-							<month type="12">डिसेंबर</month>
-						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">जानेवारी</month>
 							<month type="2">फेब्रुवारी</month>
@@ -188,22 +203,6 @@
 							<month type="10">ओक्टोबर</month>
 							<month type="11">नोव्हेंबर</month>
 							<month type="12">डिसेंबर</month>
-						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
-						<monthWidth type="narrow">
-							<month type="1">1</month>
-							<month type="2">2</month>
-							<month type="3">3</month>
-							<month type="4">4</month>
-							<month type="5">5</month>
-							<month type="6">6</month>
-							<month type="7">7</month>
-							<month type="8">8</month>
-							<month type="9">9</month>
-							<month type="10">10</month>
-							<month type="11">11</month>
-							<month type="12">12</month>
 						</monthWidth>
 					</monthContext>
 				</months>
@@ -228,36 +227,15 @@
 							<day type="sat">शनिवार</day>
 						</dayWidth>
 					</dayContext>
-					<dayContext type="stand-alone">
-						<dayWidth type="narrow">
-							<day type="sun">1</day>
-							<day type="mon">2</day>
-							<day type="tue">3</day>
-							<day type="wed">4</day>
-							<day type="thu">5</day>
-							<day type="fri">6</day>
-							<day type="sat">7</day>
-						</dayWidth>
-					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
-				<am>म.पू.</am>
-				<pm>म.नं.</pm>
+				<dayPeriods>
+					<dayPeriodContext type="format">
+						<dayPeriodWidth type="wide">
+							<dayPeriod type="am">म.पू.</dayPeriod>
+							<dayPeriod type="pm">म.नं.</dayPeriod>
+						</dayPeriodWidth>
+					</dayPeriodContext>
+				</dayPeriods>
 				<eras>
 					<eraAbbr>
 						<era type="0">क्रिस्तपूर्व</era>
@@ -267,97 +245,86 @@
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern>EEEE d MMMM y</pattern>
+							<pattern draft="unconfirmed">EEEE d MMMM y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern>d MMMM y</pattern>
+							<pattern draft="unconfirmed">d MMMM y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern>dd-MM-yyyy</pattern>
+							<pattern draft="unconfirmed">dd-MM-y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>d-M-yy</pattern>
+							<pattern draft="unconfirmed">d-M-yy</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a zzzz</pattern>
+							<pattern draft="unconfirmed">h:mm:ss a zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>h:mm:ss a z</pattern>
+							<pattern draft="unconfirmed">h:mm:ss a z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>h:mm:ss a</pattern>
+							<pattern draft="unconfirmed">h:mm:ss a</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>h:mm a</pattern>
+							<pattern draft="unconfirmed">h:mm a</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="MMdd">dd-MM</dateFormatItem>
-						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
-						<dateFormatItem id="yyQ">Q yy</dateFormatItem>
-						<dateFormatItem id="yyyyMM">MM-yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMM">MMMM y</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 		</calendars>
 		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
-			<regionFormat>{0}</regionFormat>
 			<metazone type="India">
 				<long>
 					<standard>भारतीय समय</standard>
 				</long>
-				<commonlyUsed>true</commonlyUsed>
+				<short>
+					<standard>IST</standard>
+				</short>
 			</metazone>
 		</timeZoneNames>
 	</dates>
 	<numbers>
-		<decimalFormats>
+		<defaultNumberingSystem>latn</defaultNumberingSystem>
+		<otherNumberingSystems>
+			<native>deva</native>
+		</otherNumberingSystems>
+		<decimalFormats numberSystem="latn">
 			<decimalFormatLength>
 				<decimalFormat>
 					<pattern>#,##,##0.###</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
-		<percentFormats>
+		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
 					<pattern>#,##,##0%</pattern>
 				</percentFormat>
 			</percentFormatLength>
 		</percentFormats>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤ #,##,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
-		<currencies>
-			<currency type="INR">
-				<symbol>रु</symbol>
-			</currency>
-		</currencies>
 	</numbers>
 </ldml>
 

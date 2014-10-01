@@ -15,21 +15,21 @@
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Zend_Auth_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Ldap.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Auth_Adapter_Interface
  */
-// // require_once 'Zend/Auth/Adapter/Interface.php';
+// require_once 'Zend/Auth/Adapter/Interface.php';
 
 /**
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Zend_Auth_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
@@ -76,7 +76,6 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
      * @param  array  $options  An array of arrays of Zend_Ldap options
      * @param  string $username The username of the account being authenticated
      * @param  string $password The password of the account being authenticated
-     * @return void
      */
     public function __construct(array $options = array(), $username = null, $password = null)
     {
@@ -199,7 +198,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
             /**
              * @see Zend_Ldap
              */
-            // // require_once 'Zend/Ldap.php';
+            // require_once 'Zend/Ldap.php';
             $this->_ldap = new Zend_Ldap();
         }
 
@@ -247,7 +246,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         /**
          * @see Zend_Ldap_Exception
          */
-        // // require_once 'Zend/Ldap/Exception.php';
+        // require_once 'Zend/Ldap/Exception.php';
 
         $messages = array();
         $messages[0] = ''; // reserved
@@ -285,7 +284,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
                 /**
                  * @see Zend_Auth_Adapter_Exception
                  */
-                // // require_once 'Zend/Auth/Adapter/Exception.php';
+                // require_once 'Zend/Auth/Adapter/Exception.php';
                 throw new Zend_Auth_Adapter_Exception('Adapter options array not an array');
             }
             $adapterOptions = $this->_prepareOptions($ldap, $options);
@@ -371,7 +370,11 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
                 } else {
                     $line = $zle->getLine();
                     $messages[] = $zle->getFile() . "($line): " . $zle->getMessage();
-                    $messages[] = str_replace($password, '*****', $zle->getTraceAsString());
+                    $messages[] = preg_replace(
+						'/\b'.preg_quote(substr($password, 0, 15), '/').'\b/',
+						'*****',
+						$zle->getTraceAsString()
+					);
                     $messages[0] = 'An unexpected failure occurred';
                 }
                 $messages[1] = $zle->getMessage();
@@ -452,7 +455,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         /**
          * @see Zend_Ldap_Filter
          */
-        // // require_once 'Zend/Ldap/Filter.php';
+        // require_once 'Zend/Ldap/Filter.php';
         $groupName = Zend_Ldap_Filter::equals($adapterOptions['groupAttr'], $adapterOptions['group']);
         $membership = Zend_Ldap_Filter::equals($adapterOptions['memberAttr'], $user);
         $group = Zend_Ldap_Filter::andFilter($groupName, $membership);

@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +27,7 @@
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
@@ -229,17 +229,23 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
             } else {
                 $value = $value->__toString();
             }
+        } elseif (is_array($value)) {
+            $value = $this->_implodeRecursive($value);
         } else {
-            $value = (string)$value;
+            $value = implode((array) $value);
         }
 
         if ($this->getObscureValue()) {
             $value = str_repeat('*', strlen($value));
         }
 
-        $message = str_replace('%value%', (string) $value, $message);
+        $message = str_replace('%value%', $value, $message);
         foreach ($this->_messageVariables as $ident => $property) {
-            $message = str_replace("%$ident%", (string) $this->$property, $message);
+            $message = str_replace(
+                "%$ident%",
+                implode(' ', (array) $this->$property),
+                $message
+            );
         }
 
         $length = self::getMessageLength();
@@ -248,6 +254,26 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
         }
 
         return $message;
+    }
+
+    /**
+     * Joins elements of a multidimensional array
+     *
+     * @param array $pieces
+     * @return string
+     */
+    protected function _implodeRecursive(array $pieces)
+    {
+        $values = array();
+        foreach ($pieces as $item) {
+            if (is_array($item)) {
+                $values[] = $this->_implodeRecursive($item);
+            } else {
+                $values[] = $item;
+            }
+        }
+
+        return implode(', ', $values);
     }
 
     /**

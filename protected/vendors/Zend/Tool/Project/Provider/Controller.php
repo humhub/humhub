@@ -15,15 +15,15 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Controller.php 24466 2011-09-25 02:19:39Z jaguarnet7 $
+ * @version    $Id$
  */
 
 /**
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Provider_Controller

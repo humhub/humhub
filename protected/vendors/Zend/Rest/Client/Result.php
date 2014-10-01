@@ -15,16 +15,18 @@
  * @category   Zend
  * @package    Zend_Rest
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Result.php 23966 2011-05-03 14:30:07Z ralph $
+ * @version    $Id$
  */
+
+// require_once 'Zend/Xml/Security.php';
 
 /**
  * @category   Zend
  * @package    Zend_Rest
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Rest_Client_Result implements IteratorAggregate {
@@ -48,7 +50,7 @@ class Zend_Rest_Client_Result implements IteratorAggregate {
     public function __construct($data)
     {
         set_error_handler(array($this, 'handleXmlErrors'));
-        $this->_sxml = simplexml_load_string($data);
+        $this->_sxml = Zend_Xml_Security::scan($data); 
         restore_error_handler();
         if($this->_sxml === false) {
             if ($this->_errstr === null) {

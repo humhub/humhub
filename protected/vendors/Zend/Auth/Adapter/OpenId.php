@@ -15,22 +15,22 @@
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Zend_Auth_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: OpenId.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
 /**
  * @see Zend_Auth_Adapter_Interface
  */
-// // require_once 'Zend/Auth/Adapter/Interface.php';
+// require_once 'Zend/Auth/Adapter/Interface.php';
 
 
 /**
  * @see Zend_OpenId_Consumer
  */
-// // require_once 'Zend/OpenId/Consumer.php';
+// require_once 'Zend/OpenId/Consumer.php';
 
 
 /**
@@ -40,7 +40,7 @@
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Zend_Auth_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
@@ -113,7 +113,6 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
      * @param mixed $extensions extension object or array of extensions objects
      * @param Zend_Controller_Response_Abstract $response an optional response
      *        object to perform HTTP or HTML form redirection
-     * @return void
      */
     public function __construct($id = null,
                                 Zend_OpenId_Consumer_Storage $storage = null,
@@ -192,7 +191,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     /**
      * Sets an optional response object to perform HTTP or HTML form redirection
      *
-     * @param  string $root
+     * @param  string $response
      * @return Zend_Auth_Adapter_OpenId Provides a fluent interface
      */
     public function setResponse($response)

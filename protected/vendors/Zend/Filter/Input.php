@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Input.php 24472 2011-09-26 17:11:35Z matthew $
+ * @version    $Id$
  */
 
 /**
@@ -37,7 +37,7 @@
 /**
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Filter_Input
@@ -851,11 +851,13 @@ class Zend_Filter_Input
                     if (is_array($rule)) {
                         $keys      = array_keys($rule);
                         $classKey  = array_shift($keys);
-                        $ruleClass = $rule[$classKey];
-                        if ($ruleClass === 'NotEmpty') {
-                            $foundNotEmptyValidator = true;
-                            // field may not be empty, we are ready
-                            break 1;
+                        if (isset($rule[$classKey])) {
+                            $ruleClass = $rule[$classKey];
+                            if ($ruleClass === 'NotEmpty') {
+                                $foundNotEmptyValidator = true;
+                                // field may not be empty, we are ready
+                                break 1;
+                            }
                         }
                     }
 

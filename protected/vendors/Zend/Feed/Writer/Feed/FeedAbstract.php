@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FeedAbstract.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -55,7 +55,7 @@
 /**
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Writer_Feed_FeedAbstract
@@ -117,7 +117,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
                 $author['uri'] = $name['uri'];
             }
         } else {
-            if (empty($name['name']) || !is_string($name['name'])) {
+            if (empty($name) || !is_string($name)) {
                 // require_once 'Zend/Feed/Exception.php';
                 throw new Zend_Feed_Exception('Invalid parameter: "name" must be a non-empty string value');
             }
@@ -176,10 +176,10 @@ class Zend_Feed_Writer_Feed_FeedAbstract
         $zdate = null;
         if ($date === null) {
             $zdate = new Zend_Date;
-        } elseif (ctype_digit($date) && strlen($date) == 10) {
-            $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
         } elseif ($date instanceof Zend_Date) {
             $zdate = $date;
+        } elseif (ctype_digit((string)$date)) {
+            $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
         } else {
             // require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('Invalid Zend_Date object or UNIX Timestamp passed as parameter');
@@ -197,10 +197,10 @@ class Zend_Feed_Writer_Feed_FeedAbstract
         $zdate = null;
         if ($date === null) {
             $zdate = new Zend_Date;
-        } elseif (ctype_digit($date) && strlen($date) == 10) {
-            $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
         } elseif ($date instanceof Zend_Date) {
             $zdate = $date;
+        } elseif (ctype_digit((string)$date)) {
+            $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
         } else {
             // require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('Invalid Zend_Date object or UNIX Timestamp passed as parameter');
@@ -218,10 +218,10 @@ class Zend_Feed_Writer_Feed_FeedAbstract
         $zdate = null;
         if ($date === null) {
             $zdate = new Zend_Date;
-        } elseif (ctype_digit($date) && strlen($date) == 10) {
-            $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
         } elseif ($date instanceof Zend_Date) {
             $zdate = $date;
+        } elseif (ctype_digit((string)$date)) {
+            $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
         } else {
             // require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('Invalid Zend_Date object or UNIX Timestamp passed as parameter');

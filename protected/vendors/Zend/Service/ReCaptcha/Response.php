@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage ReCaptcha
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -25,9 +25,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage ReCaptcha
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Response.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 class Zend_Service_ReCaptcha_Response
 {
@@ -142,13 +142,18 @@ class Zend_Service_ReCaptcha_Response
     {
         $body = $response->getBody();
 
-        $parts = explode("\n", $body, 2);
+        // Default status and error code
+        $status = 'false';
+        $errorCode = '';
 
-        if (count($parts) !== 2) {
-            $status = 'false';
-            $errorCode = '';
-        } else {
-            list($status, $errorCode) = $parts;
+        $parts = explode("\n", $body);
+
+        if ($parts[0] === 'true') {
+            $status = 'true';
+        }
+
+        if (!empty($parts[1])) {
+            $errorCode = $parts[1];
         }
 
         $this->setStatus($status);

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @subpackage Php
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: DefaultValue.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -26,7 +26,7 @@
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @subpackage Php
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_CodeGenerator_Php_Parameter_DefaultValue
@@ -44,7 +44,7 @@ class Zend_CodeGenerator_Php_Parameter_DefaultValue
     public function __construct($defaultValue)
     {
         if(!is_string($defaultValue)) {
-            // // require_once "Zend/CodeGenerator/Php/Exception.php";
+            // require_once "Zend/CodeGenerator/Php/Exception.php";
             throw new Zend_CodeGenerator_Php_Exception(
                 "Can only set a string as default value representation, ".
                 "but ".gettype($defaultValue)." was given."

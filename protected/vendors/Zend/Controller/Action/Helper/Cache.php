@@ -14,30 +14,30 @@
  *
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Cache.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Controller_Action_Helper_Abstract
  */
-// // require_once 'Zend/Controller/Action/Helper/Abstract.php';
+// require_once 'Zend/Controller/Action/Helper/Abstract.php';
 
 /**
  * @see Zend_Controller_Action_Exception
  */
-// // require_once 'Zend/Controller/Action/Exception.php';
+// require_once 'Zend/Controller/Action/Exception.php';
 
 /**
  * @see Zend_Cache_Manager
  */
-// // require_once 'Zend/Cache/Manager.php';
+// require_once 'Zend/Cache/Manager.php';
 
 /**
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_Helper_Cache
@@ -130,16 +130,26 @@ class Zend_Controller_Action_Helper_Cache
     public function removePage($relativeUrl, $recursive = false)
     {
         $cache = $this->getCache(Zend_Cache_Manager::PAGECACHE);
+        $encodedCacheId = $this->_encodeCacheId($relativeUrl);
+
         if ($recursive) {
             $backend = $cache->getBackend();
             if (($backend instanceof Zend_Cache_Backend)
                 && method_exists($backend, 'removeRecursively')
             ) {
-                return $backend->removeRecursively($relativeUrl);
+                $result = $backend->removeRecursively($encodedCacheId);
+                if (is_null($result) ) {
+                    $result = $backend->removeRecursively($relativeUrl);
+                }
+                return $result;
             }
         }
 
-        return $cache->remove($relativeUrl);
+        $result = $cache->remove($encodedCacheId);
+        if (is_null($result) ) {
+            $result = $cache->remove($relativeUrl);
+        }
+        return $result;
     }
 
     /**

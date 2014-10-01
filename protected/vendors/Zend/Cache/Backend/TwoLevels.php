@@ -15,27 +15,27 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: TwoLevels.php 24254 2011-07-22 12:04:41Z mabe $
+ * @version    $Id$
  */
 
 
 /**
  * @see Zend_Cache_Backend_ExtendedInterface
  */
-// // require_once 'Zend/Cache/Backend/ExtendedInterface.php';
+// require_once 'Zend/Cache/Backend/ExtendedInterface.php';
 
 /**
  * @see Zend_Cache_Backend
  */
-// // require_once 'Zend/Cache/Backend.php';
+// require_once 'Zend/Cache/Backend.php';
 
 
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -72,6 +72,11 @@ class Zend_Cache_Backend_TwoLevels extends Zend_Cache_Backend implements Zend_Ca
      * =====> (boolean) fast_backend_autoload :
      * - See Zend_Cache::factory() method
      *
+     * =====> (boolean) auto_fill_fast_cache
+     * - If true, automatically fill the fast cache when a cache record was not found in fast cache, but did
+     *   exist in slow cache. This can be usefull when a non-persistent cache like APC or Memcached got
+     *   purged for whatever reason.
+     * 
      * =====> (boolean) auto_refresh_fast_cache
      * - If true, auto refresh the fast cache when a cache record is hit
      *
@@ -87,6 +92,7 @@ class Zend_Cache_Backend_TwoLevels extends Zend_Cache_Backend implements Zend_Ca
         'fast_backend_custom_naming' => false,
         'slow_backend_autoload' => false,
         'fast_backend_autoload' => false,
+        'auto_fill_fast_cache' => true,
         'auto_refresh_fast_cache' => true
     );
 
@@ -223,17 +229,23 @@ class Zend_Cache_Backend_TwoLevels extends Zend_Cache_Backend implements Zend_Ca
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
-        $res = $this->_fastBackend->load($id, $doNotTestCacheValidity);
-        if ($res === false) {
-            $res = $this->_slowBackend->load($id, $doNotTestCacheValidity);
-            if ($res === false) {
+        $resultFast = $this->_fastBackend->load($id, $doNotTestCacheValidity);
+        if ($resultFast === false) {
+            $resultSlow = $this->_slowBackend->load($id, $doNotTestCacheValidity);
+            if ($resultSlow === false) {
                 // there is no cache at all for this id
                 return false;
             }
         }
-        $array = unserialize($res);
+        $array = $resultFast !== false ? unserialize($resultFast) : unserialize($resultSlow);
+        
+        //In case no cache entry was found in the FastCache and auto-filling is enabled, copy data to FastCache
+        if ($resultFast === false && $this->_options['auto_fill_fast_cache']) {
+            $preparedData = $this->_prepareData($array['data'], $array['lifetime'], $array['priority']);
+            $this->_fastBackend->save($preparedData, $id, array(), $array['lifetime']);
+        }
         // maybe, we have to refresh the fast cache ?
-        if ($this->_options['auto_refresh_fast_cache']) {
+        elseif ($this->_options['auto_refresh_fast_cache']) {
             if ($array['priority'] == 10) {
                 // no need to refresh the fast cache with priority = 10
                 return $array['data'];

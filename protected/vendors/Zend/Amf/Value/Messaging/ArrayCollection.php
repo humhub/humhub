@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Amf
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ArrayCollection.php 24473 2011-09-26 19:33:55Z matthew $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +27,7 @@
  *
  * @package    Zend_Amf
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Amf_Value_Messaging_ArrayCollection extends ArrayObject

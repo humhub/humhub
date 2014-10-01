@@ -14,20 +14,20 @@
  *
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Ini.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Config_Writer
  */
-// // require_once 'Zend/Config/Writer/FileAbstract.php';
+// require_once 'Zend/Config/Writer/FileAbstract.php';
 
 /**
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
@@ -157,7 +157,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
             return '"' . $value .  '"';
         } else {
             /** @see Zend_Config_Exception */
-            // // require_once 'Zend/Config/Exception.php';
+            // require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception('Value can not contain double quotes "');
         }
     }
