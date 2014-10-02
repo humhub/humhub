@@ -9,7 +9,7 @@
 <link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css?ver=<?php echo $ver; ?>" rel="stylesheet">
 <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css?ver=<?php echo $ver; ?>" rel="stylesheet">
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/flatelements.css?ver=<?php echo $ver; ?>" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/font/open_sans/open-sans.css" rel="stylesheet">
 <!-- end: CSS -->
 
 
