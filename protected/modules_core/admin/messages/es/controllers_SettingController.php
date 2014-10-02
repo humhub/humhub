@@ -18,6 +18,7 @@
  */
 return array (
   'APC' => '',
+  'Could not load LDAP! - Check PHP Extension' => '',
   'Database' => '',
   'File' => '',
   'No caching (Testing only!)' => '',

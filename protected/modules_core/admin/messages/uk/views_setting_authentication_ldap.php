@@ -25,7 +25,7 @@ return array (
   'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => '',
   'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
   'Save' => '',
-  'Status: Error! (Message: {message}' => '',
+  'Status: Error! (Message: {message})' => '',
   'Status: OK! ({userCount} Users)' => '',
   'The default base DN used for searching for accounts.' => '',
   'The default credentials password (used only with username above).' => '',

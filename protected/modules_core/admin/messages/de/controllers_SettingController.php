@@ -17,12 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Could not load LDAP! - Check PHP Extension' => '',
+  'None - shows dropdown in user registration.' => '',
   'APC' => 'APC',
   'Database' => 'Datenbank',
   'File' => 'Datei',
   'No caching (Testing only!)' => 'Kein Caching (Nur zu Testzwecken!)',
   'No theme' => 'Kein Thema',
-  'None - shows dropdown in user registration.' => '',
   'Saved' => 'Gespeichert',
   'Saved and flushed cache' => 'Gespeichert und Cache wurde bereinigt',
 );
