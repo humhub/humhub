@@ -5,7 +5,7 @@
 <meta name="viewport" content="initial-scale=1.0"/>
 <meta name="format-detection" content="telephone=no"/>
 
-<title>HumHub - Latest updates</title>
+<title><?php echo Yii::app()->name; ?> - Latest updates</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
 <style type="text/css">
 
