@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not create activity for this object type!' => 'Nie można utworzyć aktywności dla tego typu obiektu!',
+  'Could not create activity for this object type!' => '',
 );
