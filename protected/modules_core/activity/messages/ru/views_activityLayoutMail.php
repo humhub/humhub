@@ -1,5 +1,5 @@
 <?php
 return array (
-  'see online' => 'смотрите онлайн',
+  'see online' => 'смотреть онлайн',
   'via' => 'через',
 );
