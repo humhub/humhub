@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Latest</strong> activities' => '',
-  'There are no activities yet.' => '',
+  '<strong>Latest</strong> activities' => '<strong>Najnowsza</strong> aktywność',
+  'There are no activities yet.' => 'Brak aktywności.',
 );
