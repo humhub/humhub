@@ -13,14 +13,6 @@
 ?>
 <li class="divider"></li>
 <li>
-    <?php
-    //$label = '<i class="fa fa-trash-o"></i> '. Yii::t('base', 'Delete');
-
-    //echo HHtml::ajaxLink($label, array('//wall/content/delete'), array('type'=>'post', 'data'=>array('model'=>$model, 'id'=>$id), 'success' => "function(jsonResp) { wallDelete(jsonResp); }"), array('id' => "deleteLink" . $model . "_" . $id));
-
-
-    ?>
-
     <!-- load modal confirm widget -->
     <?php $this->widget('application.widgets.ModalConfirmWidget', array(
         'uniqueID' => 'modal_postdelete_'. $id,

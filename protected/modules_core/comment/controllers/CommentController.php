@@ -175,6 +175,33 @@ class CommentController extends Controller
         return $this->actionShow();
     }
 
+
+    public function actionEdit() {
+
+        $id = Yii::app()->request->getParam('id'); // guid of user/workspace
+
+        $edited = false;
+
+        //$message = Yii::app()->request->getParam('message', "");
+        //$message = Yii::app()->input->stripClean(trim($message));
+
+        $model = Comment::model()->findByPk($id);
+
+        if (isset($_POST['Comment'])) {
+            $_POST['Comment'] = Yii::app()->input->stripClean($_POST['Comment']);
+            $model->attributes = $_POST['Comment'];
+            if ($model->validate()) {
+                $model->save();
+
+                $edited = true;
+
+            }
+        }
+
+
+        $this->renderPartial('edit', array('comment' => $model, 'edited' => $edited), false, true);
+    }
+
     /**
      * Handles AJAX Request for Comment Deletion.
      * Currently this is only allowed for the Comment Owner.

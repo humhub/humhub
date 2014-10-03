@@ -214,9 +214,9 @@ class HHtml extends CHtml
         $text = self::translateEmojis($text);
 
         // replace all line breaks with <br> tag
-        $text = str_replace("\n", "<br />\n", $text);
+        //$text = str_replace("/\r|\n/", "\\", $text);
 
-        return $text;
+        return nl2br($text);
     }
 
     /**
@@ -254,7 +254,7 @@ class HHtml extends CHtml
                 if ($user !== null) {
                     // make user clickable if Html is allowed
                     if ($buildAnchors == true) {
-                        $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">@' . $user->getDisplayName() . '</a>';
+                        $link = ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
                     } else {
                         $link = " @" . $user->getDisplayName();
                     }
