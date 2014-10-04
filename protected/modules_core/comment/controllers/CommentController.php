@@ -54,7 +54,7 @@ class CommentController extends Controller
 
         // Request Params
         $targetModelClass = Yii::app()->request->getParam('model');
-        $targetModelId = (int) Yii::app()->request->getParam('id');
+        $targetModelId = (int)Yii::app()->request->getParam('id');
 
         $targetModelClass = Yii::app()->input->stripClean(trim($targetModelClass));
 
@@ -123,7 +123,7 @@ class CommentController extends Controller
 
         $id = get_class($target) . "_" . $target->id;
         $this->renderPartial('show', array('object' => $target, 'output' => $output, 'id' => $id), false, true);
-        
+
     }
 
     /**
@@ -169,10 +169,42 @@ class CommentController extends Controller
 
             $comment->save();
             File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
-            
+
         }
 
         return $this->actionShow();
+    }
+
+
+    public function actionEdit()
+    {
+
+        $id = Yii::app()->request->getParam('id');
+
+        $edited = false;
+
+        $model = Comment::model()->findByPk($id);
+
+        if ($model->canWrite()) {
+
+            if (isset($_POST['Comment'])) {
+                $_POST['Comment'] = Yii::app()->input->stripClean($_POST['Comment']);
+                $model->attributes = $_POST['Comment'];
+                if ($model->validate()) {
+                    $model->save();
+
+                    $edited = true;
+
+                }
+            }
+
+            $this->renderPartial('edit', array('comment' => $model, 'edited' => $edited), false, true);
+
+
+        } else {
+            throw new CHttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
+        }
+
     }
 
     /**
@@ -184,7 +216,7 @@ class CommentController extends Controller
 
         $this->forcePostRequest();
         $target = $this->loadTargetModel();
-        $commentId = (int) Yii::app()->request->getParam('cid', "");
+        $commentId = (int)Yii::app()->request->getParam('cid', "");
 
         $comment = Comment::model()->findByPk($commentId);
 

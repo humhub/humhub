@@ -364,15 +364,6 @@ h4 {
   color: #ffffff !important;
   background-color: #61859e !important;
 }
-/*.nav-tabs {
-  .dropdown-menu {
-    li {
-      a {
-        font-size: 12px;
-      }
-    }
-  }
-}*/
 .nav-pills.preferences {
   position: absolute;
   right: 10px;
@@ -386,6 +377,14 @@ h4 {
 .nav-pills.preferences .dropdown.open .dropdown-toggle:hover {
   background-color: #7191a8;
   color: white;
+}
+.comment .media {
+  position: relative !important;
+}
+.comment .media .nav-pills.preferences {
+  display: none;
+  right: -3px;
+  top: -3px;
 }
 .popover {
   border: 1px solid rgba(0, 0, 0, 0.15);
