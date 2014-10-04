@@ -16,12 +16,12 @@
 
         <ul class="nav nav-pills preferences">
             <li class="dropdown ">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-angle-down"></i></a>
 
                 <ul class="dropdown-menu pull-right">
                     <li>
                         <?php echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
-                            'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_" . $comment->id . "').replaceWith(html); $('#comment_input_". $comment->id."_contenteditable').focus(); /*$('#comment_input_". $comment->id."').autosize();*/ }"
+                            'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_" . $comment->id . "').replaceWith(html); $('#comment_input_". $comment->id."_contenteditable').focus(); }"
                         )); ?>
                     </li>
                     <li>

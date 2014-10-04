@@ -5,7 +5,6 @@
 
     <script type="text/javascript">
         $('#comment_<?php echo $comment->id; ?>').delay(200).animate({ backgroundColor: 'transparent' }, 1000);
-        //$('#comment_<?php //echo $comment->id; ?>').removeClass('highlight');
     </script>
 
 <?php else : ?>
@@ -34,7 +33,6 @@
         <?php
         echo HHtml::ajaxButton('Save', array('//comment/comment/edit', 'id' => $comment->id), array(
             'type' => 'POST',
-            //'beforeSend' => 'function(){ jQuery("#create-loader").removeClass("hidden"); }',
             'success' => 'function(html){ $("#comment_edit_' . $comment->id . '").replaceWith(html); }',
         ), array('class' => 'btn btn-primary', 'id' => 'comment_edit_post_' . $comment->id, 'style' => 'position: absolute; left: -90000000px; opacity: 0;'));
         ?>

@@ -11,7 +11,6 @@
  * @since 0.5
  */
 ?>
-<li class="divider"></li>
 <li>
     <!-- load modal confirm widget -->
     <?php $this->widget('application.widgets.ModalConfirmWidget', array(

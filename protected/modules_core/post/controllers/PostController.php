@@ -60,4 +60,34 @@ class PostController extends Controller
         }
     }
 
+    public function actionEdit()
+    {
+
+        $id = Yii::app()->request->getParam('id');
+
+        $edited = false;
+
+        $model = Post::model()->findByPk($id);
+
+        //if ($model->canWrite()) {
+
+            if (isset($_POST['Post'])) {
+                $_POST['Post'] = Yii::app()->input->stripClean($_POST['Post']);
+                $model->attributes = $_POST['Post'];
+                if ($model->validate()) {
+                    $model->save();
+
+                    $edited = true;
+
+                }
+            }
+
+            $this->renderPartial('edit', array('post' => $model, 'edited' => $edited), false, true);
+
+        //} else {
+        //    throw new CHttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
+       // }
+
+    }
+
 }
