@@ -307,6 +307,7 @@ class ConfigController extends Controller
 
         // Design
         HSetting::Set('theme', "HumHub");
+        HSetting::Set('spaceOrder', 0, 'space');
 
         // Basic
         HSetting::Set('enable', 1, 'tour');

@@ -431,6 +431,7 @@ class SettingController extends Controller
                 HSetting::Set('theme', $form->theme);
                 HSetting::Set('paginationSize', $form->paginationSize);
                 HSetting::Set('displayNameFormat', $form->displayName);
+                HSetting::Set('spaceOrder', $form->spaceOrder, 'space');
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -441,6 +442,7 @@ class SettingController extends Controller
             $form->theme = HSetting::Get('theme');
             $form->paginationSize = HSetting::Get('paginationSize');
             $form->displayName = HSetting::Get('displayNameFormat');
+            $form->spaceOrder = HSetting::Get('spaceOrder', 'space');
         }
 
         $themes = HTheme::getThemes();
