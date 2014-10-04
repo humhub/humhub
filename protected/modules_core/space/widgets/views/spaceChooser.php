@@ -10,11 +10,7 @@
 
         <?php
         if (Yii::app()->params['currentSpace']) {
-            /*            echo '<span class="title">';
-              echo Helpers::trimText(Yii::app()->params['currentSpace']->name, 30);
-              echo ' </span>'; */
         } else {
-            //echo Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Choose a space... ');
             echo '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces');
         }
         ?>

@@ -9,6 +9,7 @@ class DesignSettingsForm extends CFormModel {
     public $theme;
     public $paginationSize;
     public $displayName;
+    public $spaceOrder;
 
     /**
      * Declares the validation rules.
@@ -20,7 +21,7 @@ class DesignSettingsForm extends CFormModel {
         return array(
             array('paginationSize', 'numerical', 'integerOnly' => true, 'max'=>200, 'min'=>1),
             array('theme', 'in', 'range'=>$themes),
-            array('displayName', 'safe'),
+            array('displayName, spaceOrder', 'safe'),
         );
     }
 
@@ -34,6 +35,7 @@ class DesignSettingsForm extends CFormModel {
             'theme' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Theme'),
             'paginationSize' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Default pagination size (Entries per page)'),
             'displayName' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Display Name (Format)'),
+            'spaceOrder' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Dropdown space order'),
         );
     }
 

@@ -44,6 +44,11 @@
                 href="<?php echo $object->content->user->getProfileUrl(); ?>"><?php echo $object->content->user->displayName; ?></a>
             <small><?php echo HHtml::timeago($object->content->created_at); ?>
 
+                <!-- show space name -->
+                <?php if (Wall::$currentType != Wall::TYPE_SPACE && $object->content->container instanceof Space): ?>
+                    <?php echo Yii::t('WallModule.views_wallLayout', 'in'); ?> <strong><a href="<?php echo $object->content->container->getUrl(); ?>"><?php echo $object->content->container->name; ?></a></strong>
+                <?php endif; ?>
+
                 <!-- show labels -->
                 <?php $this->widget('application.modules_core.wall.widgets.WallEntryLabelWidget', array('object' => $object)); ?>
 
@@ -61,3 +66,5 @@
     <!-- show controls -->
     <?php $this->widget('application.modules_core.wall.widgets.WallEntryAddonWidget', array('object' => $object)); ?>
 </div>
+
+
