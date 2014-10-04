@@ -69,7 +69,7 @@ class PostController extends Controller
 
         $model = Post::model()->findByPk($id);
 
-        //if ($model->canWrite()) {
+        if ($model->created_by == Yii::app()->user->id) {
 
             if (isset($_POST['Post'])) {
                 $_POST['Post'] = Yii::app()->input->stripClean($_POST['Post']);
@@ -84,9 +84,9 @@ class PostController extends Controller
 
             $this->renderPartial('edit', array('post' => $model, 'edited' => $edited), false, true);
 
-        //} else {
-        //    throw new CHttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
-       // }
+        } else {
+            throw new CHttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
+        }
 
     }
 

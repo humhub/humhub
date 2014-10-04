@@ -24,7 +24,6 @@ class EditLinkWidget extends HWidget {
     public function run() {
         if ($this->object->content->canWrite()) {
             $this->render('editLink', array(
-                'model' => $this->object->content->object_model,
                 'id' => $this->object->content->object_id
             ));
         }

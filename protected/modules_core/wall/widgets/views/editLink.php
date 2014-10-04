@@ -3,8 +3,6 @@
  * This view shows the edit link for wall entries.
  * Its used by EditLinkWidget.
  *
- * @property Object $object the content object (e.g. Post)
- * @property String $model the model name (e.g. Post)
  * @property String $id the primary key of the model (e.g. 1)
  *
  * @package humhub.modules_core.wall
