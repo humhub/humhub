@@ -15,7 +15,7 @@
         <div class="modal-body">
 
             <p>
-                <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Here you can choose whether or not a module should be automatically activated on a space or user profile or not. If the module should be activated, choose "always activated".'); ?>
+                <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".'); ?>
             </p>
 
             <br />
