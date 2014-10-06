@@ -2,7 +2,7 @@
 
 <?php echo Yii::t('CommentModule.views_notifications_alsoCommented', "%displayName% also commented your %contentTitle%.", array(
     '%displayName%' => '<strong>' . $creator->displayName . '</strong>',
-    '%contentTitle%' => $targetObject->getContentTitle()
+    '%contentTitle%' => NotificationModule::formatOutput($targetObject->getContentTitle())
 ));
 ?>
 <em>"<?php echo NotificationModule::formatOutput($sourceObject->message); ?>"</em>

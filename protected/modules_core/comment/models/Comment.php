@@ -168,7 +168,7 @@ class Comment extends HActiveRecordContentAddon {
      */
     public function getContentTitle()
     {
-        return "Comment \"" . Helpers::truncateText($this->message, 40) . "\"";
+        return Yii::t('CommentModule.models_comment', 'Comment') . " \"" . Helpers::truncateText($this->message, 40) . "\"";
     }
 
 }
