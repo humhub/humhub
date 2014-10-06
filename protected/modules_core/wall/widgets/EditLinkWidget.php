@@ -22,9 +22,9 @@ class EditLinkWidget extends HWidget {
      * Executes the widget.
      */
     public function run() {
-        if ($this->object->content->canWrite()) {
+        if (get_class($this->object) == "Post" && $this->object->content->canWrite()) {
             $this->render('editLink', array(
-                'id' => $this->object->content->object_id
+                'id' => $this->object->content->object_id,
             ));
         }
     }
