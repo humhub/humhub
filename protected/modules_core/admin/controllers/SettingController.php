@@ -98,15 +98,6 @@ class SettingController extends Controller
         }
 
         $this->render('index', array('model' => $form));
-
-        /*
-          Yii::app()->interceptor->preattachEventHandler('SuperAdminNavigationWidget', 'onInit', function($event) {
-          $event->sender->addItem(array(
-          'label' => 'Item Dynamic Inject Test',
-          'url' => Yii::app()->createUrl('')
-          ));
-          });
-         */
     }
 
     /**
@@ -257,12 +248,12 @@ class SettingController extends Controller
             foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(Yii::app()->getAssetManager()->getBasePath(), FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
 
                 // Do not remove .gitignore in assets folder
-                if ($path->getPathname() == Yii::app()->getAssetManager()->getBasePath().DIRECTORY_SEPARATOR.'.gitignore') {
+                if ($path->getPathname() == Yii::app()->getAssetManager()->getBasePath() . DIRECTORY_SEPARATOR . '.gitignore') {
                     continue;
                 }
-                
+
                 if ($path->isDir()) {
-                   rmdir($path->getPathname());    
+                    rmdir($path->getPathname());
                 } else {
                     unlink($path->getPathname());
                 }

@@ -31,6 +31,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.highlight.min.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.autosize.min.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.timeago.js?ver=<?php echo $ver; ?>"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/locales/jquery.timeago.<?php echo Yii::app()->locale->getLanguageId(Yii::app()->language); ?>.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.knob.min.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/wysihtml5-0.3.0.js?ver=<?php echo $ver; ?>"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap3-wysihtml5.js?ver=<?php echo $ver; ?>"></script>

@@ -10,24 +10,24 @@ class WallStreamWidget extends HWidget {
 
     /**
      * Type of Stream (Wall::TYPE_*)
-     * 
+     *
      * Can be null if content container is set.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $type;
 
     /**
      * ContentContainer (e.g. User, Space) which this space belongs to
-     * 
-     * @var HActiveRecordContentContainer 
+     *
+     * @var HActiveRecordContentContainer
      */
     public $contentContainer;
 
     /**
      * Path to Stream Action to use
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $streamAction = "//wall/wall/stream";
 
@@ -39,16 +39,10 @@ class WallStreamWidget extends HWidget {
         if ($this->contentContainer != null) {
             $this->type = get_class($this->contentContainer);
         }
-        
-        Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->assetManager->publish(
-                        Yii::getPathOfAlias('application.modules_core.wall.resources') . '/si_streaming.js'
-                ), CClientScript::POS_BEGIN
-        );
 
         Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->assetManager->publish(
-                        Yii::getPathOfAlias('application.modules_core.wall.resources') . '/jquery.timeago.js'
+                        Yii::getPathOfAlias('application.modules_core.wall.resources') . '/si_streaming.js'
                 ), CClientScript::POS_BEGIN
         );
 
