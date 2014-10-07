@@ -188,7 +188,6 @@ class HHtml extends CHtml
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
-
         $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
@@ -203,20 +202,13 @@ class HHtml extends CHtml
             return HHtml::link($match[0], $match[0], array('target' => '_blank'));
         }, $text);
 
-
-        # breaks links!?
-        #$text = nl2br($text);
-
         // get user and space details from guids
         $text = self::translateMentioning($text, true);
 
         // create image tag for emojis
         $text = self::translateEmojis($text);
 
-        // replace all line breaks with <br> tag
-        $text = str_replace("\n", "<br />\n", $text);
-
-        return $text;
+        return nl2br($text);
     }
 
     /**
@@ -254,7 +246,7 @@ class HHtml extends CHtml
                 if ($user !== null) {
                     // make user clickable if Html is allowed
                     if ($buildAnchors == true) {
-                        $link = ' <a href="' . $user->getProfileUrl() . '" target="_self">@' . $user->getDisplayName() . '</a>';
+                        $link = ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
                     } else {
                         $link = " @" . $user->getDisplayName();
                     }
@@ -270,7 +262,7 @@ class HHtml extends CHtml
                 if ($space !== null) {
                     // make space clickable if Html is allowed
                     if ($buildAnchors == true) {
-                        $link = ' <a href="' . $space->getUrl() . '" target="_self">@' . $space->name . '</a>';
+                        $link = ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>';
                     } else {
                         $link = " @" . $space->name;
                     }

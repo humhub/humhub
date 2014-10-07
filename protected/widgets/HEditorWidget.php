@@ -41,6 +41,9 @@ class HEditorWidget extends HWidget
     public $searchUrl = "//search/mentioning";
 
 
+    public $inputContent = "";
+
+
     /**
      * Inits the widget
      *
@@ -59,8 +62,8 @@ class HEditorWidget extends HWidget
     public function run() {
 
         // render heditor view
-        $this->render('heditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl));
-        
+        $this->render('heditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
+
     }
 
 }

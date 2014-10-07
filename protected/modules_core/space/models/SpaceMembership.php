@@ -157,10 +157,16 @@ class SpaceMembership extends HActiveRecord
 
         $cacheId = "userSpaces_" . $userId;
         $cacheValue = Yii::app()->cache->get($cacheId);
+        $orderSetting = HSetting::Get('spaceOrder', 'space');
 
         if ($cacheValue === false) {
             $criteria = new CDbCriteria();
-            $criteria->order = 'last_visit DESC';
+
+            if ($orderSetting == 0) {
+                $criteria->order = 'name ASC';
+            } else {
+                $criteria->order = 'last_visit DESC';
+            }
 
             $spaces = array();
             $memberships = SpaceMembership::model()->with('space')->findAllByAttributes(array(

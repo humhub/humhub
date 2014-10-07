@@ -82,6 +82,12 @@ class WallModule extends HWebModule
                 )
         );
 
+        // Add Edit Link
+        $event->sender->addWidget('application.modules_core.wall.widgets.EditLinkWidget', array(
+                'object' => $event->sender->object
+            )
+        );
+
         // Add Perma Link
         $event->sender->addWidget('application.modules_core.wall.widgets.PermaLinkWidget', array(
             'content' => $event->sender->object
