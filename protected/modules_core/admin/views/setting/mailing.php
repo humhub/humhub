@@ -29,9 +29,9 @@
         <strong><?php echo Yii::t('AdminModule.views_setting_mailing', 'Notifications'); ?></strong><br />
         <?php
         echo $form->dropDownList($model, 'receive_email_notifications', array(
-            User::RECEIVE_EMAIL_NEVER => 'Never',
-            User::RECEIVE_EMAIL_WHEN_OFFLINE => 'When I´m Offline',
-            User::RECEIVE_EMAIL_ALWAYS => 'Always',
+            User::RECEIVE_EMAIL_NEVER => Yii::t('AdminModule.views_setting_mailing', 'Never'),
+            User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('AdminModule.views_setting_mailing', 'When I´m offline'),
+            User::RECEIVE_EMAIL_ALWAYS => Yii::t('AdminModule.views_setting_mailing', 'Always'),
                 ), array('id' => 'reg_group', 'class' => 'form-control'));
         ?>
 

@@ -29,7 +29,7 @@
             <div class="col-md-6">
                 <div class="form-group form-group-search">
                     <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_spaces', 'search for spaces'))); ?>
-                    <?php echo CHtml::submitButton('Search', array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo CHtml::submitButton(Yii::t('DirectoryModule.views_directory_spaces', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>

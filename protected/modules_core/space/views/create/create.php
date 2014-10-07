@@ -30,7 +30,7 @@
             </div>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
-               style="font-size: 11px;"><i class="fa fa-caret-right"></i> Advanced access settings</a>
+               style="font-size: 11px;"><i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?></a>
 
             <div id="collapse-access-settings" class="panel-collapse collapse">
                 <br/>
@@ -39,7 +39,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="">Join Policy</label>
+                        <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Join Policy'); ?></label>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can be only added<br>by invitation'); ?>">
@@ -64,7 +64,7 @@
                         <br/>
                     </div>
                     <div class="col-md-6">
-                        <label for="">Visibility</label>
+                        <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></label>
 
                         <?php if (Yii::app()->user->canCreatePublicSpace() && Yii::app()->user->canCreatePrivateSpace()): ?>
                             <div class="radio">

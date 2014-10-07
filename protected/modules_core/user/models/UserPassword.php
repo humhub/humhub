@@ -93,6 +93,18 @@ class UserPassword extends HActiveRecord {
     }
 
     /**
+     * Declares attribute labels.
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'currentPassword' => Yii::t('UserModule.forms_AccountLoginForm', 'Current password'),
+            'newPassword' => Yii::t('UserModule.forms_AccountLoginForm', 'New password'),
+            'newPasswordConfirm' => Yii::t('UserModule.forms_AccountLoginForm', 'New password confirm'),
+        );
+    }
+
+    /**
      * @return array relational rules.
      */
     public function relations() {

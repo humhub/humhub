@@ -1,10 +1,10 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_index', '<strong>Manage</strong> user profiles'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_index', '<strong>Manage</strong> profiles fields'); ?></div>
     <div class="panel-body">
 
-        <?php echo HHtml::link('Add new category', $this->createUrl('//admin/userprofile/editCategory'), array('class' => 'btn btn-primary')); ?>
+        <?php echo HHtml::link(Yii::t('AdminModule.views_userprofile_index', 'Add new category'), $this->createUrl('//admin/userprofile/editCategory'), array('class' => 'btn btn-primary')); ?>
 
-        <?php echo HHtml::link('Add new field', $this->createUrl('//admin/userprofile/editField'), array('class' => 'btn btn-primary')); ?>
+        <?php echo HHtml::link(Yii::t('AdminModule.views_userprofile_index', 'Add new field'), $this->createUrl('//admin/userprofile/editField'), array('class' => 'btn btn-primary')); ?>
 
         <hr>
 
