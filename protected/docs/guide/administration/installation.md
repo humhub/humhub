@@ -13,6 +13,14 @@ Installation
     - /uploads/*
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
+E-Mail Configuration
+--------------------
+
+Depending on your environment which you are using you may want specify a local or remote SMTP Server.
+You can change this settings at `Administration -> Mailing -> Server Settings`.
+
+By default PHP Mail Transport is used. <http://php.net/manual/en/mail.setup.php>
+
 
 Enable Url Rewriting (Optional)
 -------------------------------

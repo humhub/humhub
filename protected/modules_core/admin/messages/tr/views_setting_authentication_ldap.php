@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Status: Error! (Message: {message})' => 'Durum: Hata! (Mesaj: {message})',
   '<strong>Authentication</strong> - LDAP' => '<strong>LDAP</strong> - Kimlik doğrulama',
   'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'SSL / TLS açık metin olarak iletilir şifreleri önlemek için üretim ortamlarında tercih edilir.',
   'Basic' => 'Temel',
@@ -8,7 +9,6 @@ return array (
   'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'Kullanıcı adı için LDAP özelliği. Örnek: &quotuid&quot; or &quot;sAMAccountName&quot;',
   'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Bu kriterleri karşılayan kullanıcılara erişim sınırlandırma. Örnek: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',
   'Save' => 'Kaydet',
-  'Status: Error! (Message: {message}' => 'Durum: Hata! (Mesaj: {message} )',
   'Status: OK! ({userCount} Users)' => 'Durum: TAMAM! ( {usercount} Kullanıcılar)',
   'The default base DN used for searching for accounts.' => 'Hesaplar için yapılan aramada varsayılan temel DN kullan.',
   'The default credentials password (used only with username above).' => 'Varsayılan kimlik şifresi (Sadece kullanıcı adı ile kullanılır)',

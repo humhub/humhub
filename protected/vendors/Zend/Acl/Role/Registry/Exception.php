@@ -14,22 +14,22 @@
  *
  * @category   Zend
  * @package    Zend_Acl
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
 /**
  * @see Zend_Acl_Exception
  */
-// // require_once 'Zend/Acl/Exception.php';
+// require_once 'Zend/Acl/Exception.php';
 
 
 /**
  * @category   Zend
  * @package    Zend_Acl
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Acl_Role_Registry_Exception extends Zend_Acl_Exception

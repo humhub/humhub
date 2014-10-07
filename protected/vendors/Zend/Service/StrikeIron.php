@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage StrikeIron
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: StrikeIron.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -29,7 +29,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage StrikeIron
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_StrikeIron

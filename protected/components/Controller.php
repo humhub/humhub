@@ -83,6 +83,9 @@ class Controller extends EController
 
         $this->initAjaxCsrfToken();
 
+        // Temporary force set the system timezone to avoid php 5.5+ warnings until we create an admin/config option for that
+        date_default_timezone_set(@date_default_timezone_get());
+        
         return parent::init();
     }
 

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Pdf
  * @subpackage Annotation
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Link.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** Internally used classes */
@@ -40,7 +40,7 @@
  *
  * @package    Zend_Pdf
  * @subpackage Annotation
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Pdf_Annotation_Link extends Zend_Pdf_Annotation
@@ -70,18 +70,19 @@ class Zend_Pdf_Annotation_Link extends Zend_Pdf_Annotation
     /**
      * Create link annotation object
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $x2
-     * @param float $y2
+     * @param float                  $x1
+     * @param float                  $y1
+     * @param float                  $x2
+     * @param float                  $y2
      * @param Zend_Pdf_Target|string $target
      * @return Zend_Pdf_Annotation_Link
+     * @throws Zend_Pdf_Exception
      */
     public static function create($x1, $y1, $x2, $y2, $target)
     {
         if (is_string($target)) {
             // require_once 'Zend/Pdf/Destination/Named.php';
-            $destination = Zend_Pdf_Destination_Named::create($target);
+            $target = Zend_Pdf_Destination_Named::create($target);
         }
         if (!$target instanceof Zend_Pdf_Target) {
             // require_once 'Zend/Pdf/Exception.php';

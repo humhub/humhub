@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
@@ -24,18 +24,18 @@
 /**
  * @see Zend_Cache_Backend_Interface
  */
-// // require_once 'Zend/Cache/Backend/ExtendedInterface.php';
+// require_once 'Zend/Cache/Backend/ExtendedInterface.php';
 
 /**
  * @see Zend_Cache_Backend
  */
-// // require_once 'Zend/Cache/Backend.php';
+// require_once 'Zend/Cache/Backend.php';
 
 
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cache_Backend_ExtendedInterface
@@ -185,7 +185,7 @@ class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cac
     {
         $mem = wincache_ucache_meminfo();
         $memSize = $mem['memory_total'];
-        $memUsed = $mem['memory_free'];
+        $memUsed = $memSize - $mem['memory_free'];
         if ($memSize == 0) {
             Zend_Cache::throwException('can\'t get WinCache memory size');
         }

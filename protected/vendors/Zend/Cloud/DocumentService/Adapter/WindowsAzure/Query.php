@@ -13,14 +13,14 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /*
  * @see Zend_Cloud_DocumentService_QueryAdapter
  */
-// // require_once 'Zend/Cloud/DocumentService/QueryAdapter.php';
+// require_once 'Zend/Cloud/DocumentService/QueryAdapter.php';
 
 /**
  * Class implementing Query adapter for working with Azure queries in a
@@ -30,7 +30,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query
@@ -52,7 +52,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query
     public function __construct($select = null)
     {
         if (!$select instanceof Zend_Service_WindowsAzure_Storage_TableEntityQuery) {
-            // // require_once 'Zend/Service/WindowsAzure/Storage/TableEntityQuery.php';
+            // require_once 'Zend/Service/WindowsAzure/Storage/TableEntityQuery.php';
             $select = new Zend_Service_WindowsAzure_Storage_TableEntityQuery();
         }
         $this->_azureSelect = $select;
@@ -113,7 +113,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query
     public function whereId($value)
     {
         if (!is_array($value)) {
-            // // require_once 'Zend/Cloud/DocumentService/Exception.php';
+            // require_once 'Zend/Cloud/DocumentService/Exception.php';
             throw new Zend_Cloud_DocumentService_Exception('Invalid document key');
         }
         $this->_azureSelect->wherePartitionKey($value[0])->whereRowKey($value[1]);
@@ -143,7 +143,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query
      */
     public function order($sort, $direction = 'asc')
     {
-        // // require_once 'Zend/Cloud/OperationNotAvailableException.php';
+        // require_once 'Zend/Cloud/OperationNotAvailableException.php';
         throw new Zend_Cloud_OperationNotAvailableException('No support for sorting for Azure yet');
     }
 

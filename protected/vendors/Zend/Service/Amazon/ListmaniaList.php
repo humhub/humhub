@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ListmaniaList.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -26,7 +26,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Amazon_ListmaniaList
@@ -50,7 +50,7 @@ class Zend_Service_Amazon_ListmaniaList
     public function __construct(DOMElement $dom)
     {
         $xpath = new DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2005-10-05');
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
         foreach (array('ListId', 'ListName') as $el) {
             $this->$el = (string) $xpath->query("./az:$el/text()", $dom)->item(0)->data;
         }

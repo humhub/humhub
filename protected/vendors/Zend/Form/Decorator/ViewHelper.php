@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Form
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -37,9 +37,9 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ViewHelper.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 class Zend_Form_Decorator_ViewHelper extends Zend_Form_Decorator_Abstract
 {
@@ -196,7 +196,8 @@ class Zend_Form_Decorator_ViewHelper extends Zend_Form_Decorator_Abstract
             if ($element instanceof $type) {
                 if (stristr($type, 'button')) {
                     $element->content = $element->getLabel();
-                    return null;
+
+                    return $element->getValue();
                 }
                 return $element->getLabel();
             }
@@ -243,7 +244,18 @@ class Zend_Form_Decorator_ViewHelper extends Zend_Form_Decorator_Abstract
             $helperObject->setTranslator($element->getTranslator());
         }
 
-        $elementContent = $view->$helper($name, $value, $attribs, $element->options);
+        // Check list separator
+        if (isset($attribs['listsep'])
+            && in_array($helper, array('formMulticheckbox', 'formRadio', 'formSelect'))
+        ) {
+            $listsep = $attribs['listsep'];
+            unset($attribs['listsep']);
+
+            $elementContent = $view->$helper($name, $value, $attribs, $element->options, $listsep);
+        } else {
+            $elementContent = $view->$helper($name, $value, $attribs, $element->options);
+        }
+
         switch ($this->getPlacement()) {
             case self::APPEND:
                 return $content . $separator . $elementContent;

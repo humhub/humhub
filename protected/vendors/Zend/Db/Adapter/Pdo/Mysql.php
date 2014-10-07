@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mysql.php 23986 2011-05-03 20:10:42Z ralph $
+ * @version    $Id$
  */
 
 
@@ -33,7 +33,7 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Abstract
@@ -101,7 +101,9 @@ class Zend_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Abstract
             return;
         }
 
-        if (!empty($this->_config['charset'])) {
+        if (!empty($this->_config['charset'])
+            && version_compare(PHP_VERSION, '5.3.6', '<')
+        ) {
             $initCommand = "SET NAMES '" . $this->_config['charset'] . "'";
             $this->_config['driver_options'][1002] = $initCommand; // 1002 = PDO::MYSQL_ATTR_INIT_COMMAND
         }

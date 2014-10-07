@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.49 $"/>
-		<generation date="$Date: 2009/05/05 23:06:36 $"/>
+		<version number="$Revision: 9295 $"/>
+		<generation date="$Date: 2013-08-30 17:35:54 -0500 (Fri, 30 Aug 2013) $"/>
 		<language type="fr"/>
 		<territory type="LU"/>
 	</identity>
 	<numbers>
-		<symbols>
+		<symbols numberSystem="latn">
 			<group>.</group>
 		</symbols>
 		<currencies>
@@ -20,3 +25,4 @@
 		</currencies>
 	</numbers>
 </ldml>
+

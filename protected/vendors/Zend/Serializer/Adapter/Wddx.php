@@ -15,13 +15,19 @@
  * @category   Zend
  * @package    Zend_Serializer
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Wddx.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** @see Zend_Serializer_Adapter_AdapterAbstract */
 // require_once 'Zend/Serializer/Adapter/AdapterAbstract.php';
+
+/** @see Zend_Xml_Security */
+// require_once 'Zend/Xml/Security.php';
+
+/** @see Zend_Xml_Exception */
+// require_once 'Zend/Xml/Exception.php';
 
 /**
  * @link       http://www.infoloom.com/gcaconfs/WEB/chicago98/simeonov.HTM
@@ -29,7 +35,7 @@
  * @category   Zend
  * @package    Zend_Serializer
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Serializer_Adapter_Wddx extends Zend_Serializer_Adapter_AdapterAbstract
@@ -100,12 +106,12 @@ class Zend_Serializer_Adapter_Wddx extends Zend_Serializer_Adapter_AdapterAbstra
             // check if the returned NULL is valid
             // or based on an invalid wddx string
             try {
-                $simpleXml = new SimpleXMLElement($wddx);
+                $simpleXml = Zend_Xml_Security::scan($wddx);
                 if (isset($simpleXml->data[0]->null[0])) {
                     return null; // valid null
                 }
                 $errMsg = 'Can\'t unserialize wddx string';
-            } catch (Exception $e) {
+            } catch (Zend_Xml_Exception $e) {
                 $errMsg = $e->getMessage();
             }
 

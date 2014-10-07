@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Memory.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** Zend_Search_Lucene_Storage_File */
@@ -27,7 +27,7 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Storage_File_Memory extends Zend_Search_Lucene_Storage_File

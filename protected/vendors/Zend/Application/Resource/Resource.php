@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Resource.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -26,7 +26,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_Application_Resource_Resource
@@ -37,7 +37,6 @@ interface Zend_Application_Resource_Resource
      * Must take an optional single argument, $options.
      *
      * @param  mixed $options
-     * @return void
      */
     public function __construct($options = null);
 

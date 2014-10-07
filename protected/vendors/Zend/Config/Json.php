@@ -16,18 +16,18 @@
  * @package   Zend_Config
  * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Json.php 23294 2010-11-05 00:27:34Z ramon $
+ * @version   $Id$
  */
 
 /**
  * @see Zend_Config
  */
-// // require_once 'Zend/Config.php';
+// require_once 'Zend/Config.php';
 
 /**
  * @see Zend_Json
  */
-// // require_once 'Zend/Json.php';
+// require_once 'Zend/Json.php';
 
 /**
  * JSON Adapter for Zend_Config
@@ -82,7 +82,7 @@ class Zend_Config_Json extends Zend_Config
     public function __construct($json, $section = null, $options = false)
     {
         if (empty($json)) {
-            // // require_once 'Zend/Config/Exception.php';
+            // require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception('Filename is not set');
         }
 
@@ -118,7 +118,7 @@ class Zend_Config_Json extends Zend_Config
 
         // Check if there was a error while loading file
         if ($this->_loadFileErrorStr !== null) {
-            // // require_once 'Zend/Config/Exception.php';
+            // require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception($this->_loadFileErrorStr);
         }
 
@@ -128,11 +128,11 @@ class Zend_Config_Json extends Zend_Config
         }
 
         // Parse/decode
-        $config = Zend_Json::decode($json);
-
-        if (null === $config) {
+        try {
+            $config = Zend_Json::decode($json);
+        } catch (Zend_Json_Exception $e) {
             // decode failed
-            // // require_once 'Zend/Config/Exception.php';
+            // require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception("Error parsing JSON data");
         }
 
@@ -147,7 +147,7 @@ class Zend_Config_Json extends Zend_Config
             $dataArray = array();
             foreach ($section as $sectionName) {
                 if (!isset($config[$sectionName])) {
-                    // // require_once 'Zend/Config/Exception.php';
+                    // require_once 'Zend/Config/Exception.php';
                     throw new Zend_Config_Exception(sprintf('Section "%s" cannot be found', $sectionName));
                 }
 
@@ -157,7 +157,7 @@ class Zend_Config_Json extends Zend_Config
             parent::__construct($dataArray, $allowModifications);
         } else {
             if (!isset($config[$section])) {
-                // // require_once 'Zend/Config/Exception.php';
+                // require_once 'Zend/Config/Exception.php';
                 throw new Zend_Config_Exception(sprintf('Section "%s" cannot be found', $section));
             }
 
@@ -186,7 +186,7 @@ class Zend_Config_Json extends Zend_Config
     protected function _processExtends(array $data, $section, array $config = array())
     {
         if (!isset($data[$section])) {
-            // // require_once 'Zend/Config/Exception.php';
+            // require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception(sprintf('Section "%s" cannot be found', $section));
         }
 
@@ -194,7 +194,7 @@ class Zend_Config_Json extends Zend_Config
 
         if (is_array($thisSection) && isset($thisSection[self::EXTENDS_NAME])) {
             if (is_array($thisSection[self::EXTENDS_NAME])) {
-                // // require_once 'Zend/Config/Exception.php';
+                // require_once 'Zend/Config/Exception.php';
                 throw new Zend_Config_Exception('Invalid extends clause: must be a string; array received');
             }
             $this->_assertValidExtend($section, $thisSection[self::EXTENDS_NAME]);
@@ -220,7 +220,9 @@ class Zend_Config_Json extends Zend_Config
     {
         foreach ($this->_getConstants() as $constant) {
             if (strstr($value, $constant)) {
-                $value = str_replace($constant, constant($constant), $value);
+                // handle backslashes that may represent windows path names for instance
+                $replacement = str_replace('\\', '\\\\', constant($constant));
+                $value = str_replace($constant, $replacement, $value);
             }
         }
         return $value;

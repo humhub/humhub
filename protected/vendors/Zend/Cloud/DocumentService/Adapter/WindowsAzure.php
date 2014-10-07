@@ -13,15 +13,15 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-// // require_once 'Zend/Cloud/DocumentService/Adapter/AbstractAdapter.php';
-// // require_once 'Zend/Cloud/DocumentService/Adapter/WindowsAzure/Query.php';
-// // require_once 'Zend/Cloud/DocumentService/Exception.php';
-// // require_once 'Zend/Service/WindowsAzure/Storage/DynamicTableEntity.php';
-// // require_once 'Zend/Service/WindowsAzure/Storage/Table.php';
+// require_once 'Zend/Cloud/DocumentService/Adapter/AbstractAdapter.php';
+// require_once 'Zend/Cloud/DocumentService/Adapter/WindowsAzure/Query.php';
+// require_once 'Zend/Cloud/DocumentService/Exception.php';
+// require_once 'Zend/Service/WindowsAzure/Storage/DynamicTableEntity.php';
+// require_once 'Zend/Service/WindowsAzure/Storage/Table.php';
 
 /**
  * SimpleDB adapter for document service.
@@ -29,7 +29,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cloud_DocumentService_Adapter_WindowsAzure
@@ -476,7 +476,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
     {
         $queryClass = $this->getQueryClass();
         if (!class_exists($queryClass)) {
-            // // require_once 'Zend/Loader.php';
+            // require_once 'Zend/Loader.php';
             Zend_Loader::loadClass($queryClass);
         }
 

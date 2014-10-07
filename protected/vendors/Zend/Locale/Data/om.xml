@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.63 $"/>
-		<generation date="$Date: 2009/06/15 03:46:25 $"/>
+		<version number="$Revision: 9791 $"/>
+		<generation date="$Date: 2014-02-25 15:16:49 -0600 (Tue, 25 Feb 2014) $"/>
 		<language type="om"/>
 	</identity>
 	<localeDisplayNames>
@@ -13,7 +18,6 @@
 			<language type="az">Afaan Azerbaijani</language>
 			<language type="be">Afaan Belarusia</language>
 			<language type="bg">Afaan Bulgariya</language>
-			<language type="bh">Afaan Bihari</language>
 			<language type="bn">Afaan Baangladeshi</language>
 			<language type="bs">Afaan Bosniyaa</language>
 			<language type="ca">Afaan Katalaa</language>
@@ -114,10 +118,44 @@
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a-z]</exemplarCharacters>
+		<exemplarCharacters>[a b c d e f g h i j k l m n o p q r s t u v w x y z]</exemplarCharacters>
+		<exemplarCharacters type="index">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
+			<calendar type="generic">
+				<dateFormats>
+					<dateFormatLength type="full">
+						<dateFormat>
+							<pattern>EEEE, MMMM d, y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="long">
+						<dateFormat>
+							<pattern>dd MMMM y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="medium">
+						<dateFormat>
+							<pattern>dd-MMM-y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="short">
+						<dateFormat>
+							<pattern>dd/MM/yy GGGGG</pattern>
+						</dateFormat>
+					</dateFormatLength>
+				</dateFormats>
+				<dateTimeFormats>
+					<availableFormats>
+						<dateFormatItem id="MMdd">dd/MM</dateFormatItem>
+						<dateFormatItem id="MMMMdd">dd MMMM</dateFormatItem>
+						<dateFormatItem id="yMM">MM/y</dateFormatItem>
+						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yQQQ">QQQ y</dateFormatItem>
+					</availableFormats>
+				</dateTimeFormats>
+			</calendar>
 			<calendar type="gregorian">
 				<months>
 					<monthContext type="format">
@@ -200,24 +238,14 @@
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
-				<am>WD</am>
-				<pm>WB</pm>
+				<dayPeriods>
+					<dayPeriodContext type="format">
+						<dayPeriodWidth type="wide">
+							<dayPeriod type="am">WD</dayPeriod>
+							<dayPeriod type="pm">WB</dayPeriod>
+						</dayPeriodWidth>
+					</dayPeriodContext>
+				</dayPeriods>
 				<eras>
 					<eraAbbr>
 						<era type="0">KD</era>
@@ -272,9 +300,9 @@
 					<availableFormats>
 						<dateFormatItem id="MMdd">dd/MM</dateFormatItem>
 						<dateFormatItem id="MMMMdd">dd MMMM</dateFormatItem>
-						<dateFormatItem id="yyMM">MM/yy</dateFormatItem>
-						<dateFormatItem id="yyQ">Q yy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yMM">MM/y</dateFormatItem>
+						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yQQQ">QQQ y</dateFormatItem>
 					</availableFormats>
 				</dateTimeFormats>
 			</calendar>
@@ -282,13 +310,17 @@
 		<timeZoneNames>
 			<hourFormat>+HH:mm;-HH:mm</hourFormat>
 			<gmtFormat>GMT{0}</gmtFormat>
-			<regionFormat>{0}</regionFormat>
 		</timeZoneNames>
 	</dates>
 	<numbers>
-		<currencyFormats>
+		<defaultNumberingSystem>latn</defaultNumberingSystem>
+		<otherNumberingSystems>
+			<native>latn</native>
+			<traditional>ethi</traditional>
+		</otherNumberingSystems>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
@@ -302,6 +334,7 @@
 			</currency>
 			<currency type="ETB">
 				<displayName>Itoophiyaa Birrii</displayName>
+				<symbol>Br</symbol>
 			</currency>
 			<currency type="EUR">
 				<displayName>Euro</displayName>

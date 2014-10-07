@@ -305,6 +305,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
             }
 
+            $this->last_activity_email = new CDbExpression('NOW()');
+            
             // Set Status
             if ($this->status == "") {
                 if (HSetting::Get('needApproval', 'authentication_internal')) {

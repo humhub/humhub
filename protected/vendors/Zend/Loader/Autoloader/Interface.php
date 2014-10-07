@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_Loader
  * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Interface.php 23775 2011-03-01 17:25:24Z ralph $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -25,7 +25,7 @@
  *
  * @package    Zend_Loader
  * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_Loader_Autoloader_Interface

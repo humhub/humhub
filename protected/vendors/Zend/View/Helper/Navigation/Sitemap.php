@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Sitemap.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -33,7 +33,7 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_Navigation_Sitemap
@@ -52,13 +52,6 @@ class Zend_View_Helper_Navigation_Sitemap
      * @var string
      */
     const SITEMAP_XSD = 'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd';
-
-    /**
-     * Whether XML output should be formatted
-     *
-     * @var bool
-     */
-    protected $_formatOutput = false;
 
     /**
      * Whether the XML declaration should be included in XML output
@@ -107,31 +100,6 @@ class Zend_View_Helper_Navigation_Sitemap
     }
 
     // Accessors:
-
-    /**
-     * Sets whether XML output should be formatted
-     *
-     * @param  bool $formatOutput                   [optional] whether output
-     *                                              should be formatted. Default
-     *                                              is true.
-     * @return Zend_View_Helper_Navigation_Sitemap  fluent interface, returns
-     *                                              self
-     */
-    public function setFormatOutput($formatOutput = true)
-    {
-        $this->_formatOutput = (bool) $formatOutput;
-        return $this;
-    }
-
-    /**
-     * Returns whether XML output should be formatted
-     *
-     * @return bool  whether XML output should be formatted
-     */
-    public function getFormatOutput()
-    {
-        return $this->_formatOutput;
-    }
 
     /**
      * Sets whether the XML declaration should be used in output
@@ -269,15 +237,8 @@ class Zend_View_Helper_Navigation_Sitemap
             $enc = $this->view->getEncoding();
         }
 
-        // TODO: remove check when minimum PHP version is >= 5.2.3
-        if (version_compare(PHP_VERSION, '5.2.3', '>=')) {
-            // do not encode existing HTML entities
-            return htmlspecialchars($string, ENT_QUOTES, $enc, false);
-        } else {
-            $string = preg_replace('/&(?!(?:#\d++|[a-z]++);)/ui', '&amp;', $string);
-            $string = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#39;', '&quot;'), $string);
-            return $string;
-        }
+        // do not encode existing HTML entities
+        return htmlspecialchars($string, ENT_QUOTES, $enc, false);
     }
 
     // Public methods:
@@ -478,6 +439,6 @@ class Zend_View_Helper_Navigation_Sitemap
                $dom->saveXML() :
                $dom->saveXML($dom->documentElement);
 
-        return rtrim($xml, PHP_EOL);
+        return rtrim($xml, self::EOL);
     }
 }

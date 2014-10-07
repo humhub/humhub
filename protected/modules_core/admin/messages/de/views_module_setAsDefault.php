@@ -22,7 +22,7 @@ return array (
   'Always activated' => 'Immer aktiviert',
   'Close' => 'Schließen',
   'Deactivated' => 'Deaktivieren',
-  'Here you can choose whether or not a module should be automatically activated on a space or user profile or not. If the module should be activated, choose "always activated".' => 'Hier kannst Du entscheiden ob ein Modul anhand des Spaces oder Benutzerprofils aktiviert sein soll oder nicht. Soll das Modul immer aktiviert sein, wähle "Immer aktiviert".',
+  'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Hier kannst Du entscheiden ob ein Modul anhand des Spaces oder Benutzerprofils aktiviert sein soll oder nicht. Soll das Modul immer aktiviert sein, wähle "Immer aktiviert".',
   'Save' => 'Speichern',
   'Spaces' => 'Spaces',
   'User Profiles' => 'Benutzerprofile',

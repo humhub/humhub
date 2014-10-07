@@ -15,30 +15,30 @@
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @subpackage PHP
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Method.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_CodeGenerator_Php_Member_Abstract
  */
-// // require_once 'Zend/CodeGenerator/Php/Member/Abstract.php';
+// require_once 'Zend/CodeGenerator/Php/Member/Abstract.php';
 
 /**
  * @see Zend_CodeGenerator_Php_Docblock
  */
-// // require_once 'Zend/CodeGenerator/Php/Docblock.php';
+// require_once 'Zend/CodeGenerator/Php/Docblock.php';
 
 /**
  * @see Zend_CodeGenerator_Php_Parameter
  */
-// // require_once 'Zend/CodeGenerator/Php/Parameter.php';
+// require_once 'Zend/CodeGenerator/Php/Parameter.php';
 
 /**
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstract
@@ -141,7 +141,7 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
         } elseif ($parameter instanceof Zend_CodeGenerator_Php_Parameter) {
             $parameterName = $parameter->getName();
         } else {
-            // // require_once 'Zend/CodeGenerator/Php/Exception.php';
+            // require_once 'Zend/CodeGenerator/Php/Exception.php';
             throw new Zend_CodeGenerator_Php_Exception('setParameter() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Parameter');
         }
 

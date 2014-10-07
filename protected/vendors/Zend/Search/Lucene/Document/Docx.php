@@ -15,13 +15,16 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Docx.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** Zend_Search_Lucene_Document_OpenXml */
 // require_once 'Zend/Search/Lucene/Document/OpenXml.php';
+
+/** Zend_Xml_Security */
+// require_once 'Zend/Xml/Security.php';
 
 /**
  * Docx document.
@@ -29,7 +32,7 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenXml {
@@ -67,11 +70,11 @@ class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenX
             // require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Invalid archive or corrupted .docx file.');
         }
-        $relations = simplexml_load_string($relationsXml);
+        $relations = Zend_Xml_Security::scan($relationsXml);
         foreach($relations->Relationship as $rel) {
             if ($rel ["Type"] == Zend_Search_Lucene_Document_OpenXml::SCHEMA_OFFICEDOCUMENT) {
                 // Found office document! Read in contents...
-                $contents = simplexml_load_string($package->getFromName(
+                $contents = Zend_Xml_Security::scan($package->getFromName(
                                                                 $this->absoluteZipPath(dirname($rel['Target'])
                                                               . '/'
                                                               . basename($rel['Target']))

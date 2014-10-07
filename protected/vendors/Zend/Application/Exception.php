@@ -14,15 +14,15 @@
  *
  * @category  Zend
  * @package   Zend_Application
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Exception.php 23953 2011-05-03 05:47:39Z ralph $
+ * @version   $Id$
  */
 
 /**
  * @see Zend_Exception
  */
-// // require_once 'Zend/Exception.php';
+// require_once 'Zend/Exception.php';
 
 /**
  * Exception class for Zend_Application
@@ -30,7 +30,7 @@
  * @uses      Zend_Exception
  * @category  Zend
  * @package   Zend_Application
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Exception extends Zend_Exception

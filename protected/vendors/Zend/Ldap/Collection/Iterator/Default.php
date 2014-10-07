@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Default.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -25,7 +25,7 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
@@ -260,7 +260,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
      */
     public function next()
     {
-        if (is_resource($this->_current)) {
+        if (is_resource($this->_current) && $this->_itemCount > 0) {
             $this->_current = @ldap_next_entry($this->_ldap->getResource(), $this->_current);
             /** @see Zend_Ldap_Exception */
             // require_once 'Zend/Ldap/Exception.php';
@@ -273,6 +273,8 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
                      throw new Zend_Ldap_Exception($this->_ldap, 'getting next entry (' . $msg . ')');
                 }
             }
+        } else {
+            $this->_current = false;
         }
     }
 

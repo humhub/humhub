@@ -4,5 +4,5 @@ return array (
   'Email' => 'Email',
   'Here you see all users who have registered and still waiting for a approval.' => 'Ici, voici la liste de tous les utilisateurs enregistrés mais en attente d\'une approbation.',
   'Search for email' => 'Rechercher un Email',
-  'Search for username' => 'Rechercher un Nom d\'Utilisateur',
+  'Search for username' => 'Rechercher un Nom d\'utilisateur',
 );

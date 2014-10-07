@@ -14,15 +14,15 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: EntryInterface.php 23953 2011-05-03 05:47:39Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @category   Zend
  * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_Feed_Reader_EntryInterface

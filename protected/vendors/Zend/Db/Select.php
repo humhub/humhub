@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Select
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Select.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -38,7 +38,7 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Select
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Select
@@ -509,7 +509,7 @@ class Zend_Db_Select
         }
 
         foreach ($spec as $val) {
-            if (preg_match('/\(.*\)/', (string) $val)) {
+            if (preg_match('/^[\w]*\([^\)]*\)$/', (string) $val)) {
                 $val = new Zend_Db_Expr($val);
             }
             $this->_parts[self::GROUP][] = $val;
@@ -601,7 +601,7 @@ class Zend_Db_Select
                     $val = trim($matches[1]);
                     $direction = $matches[2];
                 }
-                if (preg_match('/\(.*\)/', $val)) {
+                if (preg_match('/^[\w]*\([^\)]*\)$/', $val)) {
                     $val = new Zend_Db_Expr($val);
                 }
                 $this->_parts[self::ORDER][] = array($val, $direction);
@@ -654,7 +654,7 @@ class Zend_Db_Select
     }
 
     /**
-     * Get part of the structured information for the currect query.
+     * Get part of the structured information for the current query.
      *
      * @param string $part
      * @return mixed
@@ -718,7 +718,7 @@ class Zend_Db_Select
     {
         if ($part == null) {
             $this->_parts = self::$_partsInit;
-        } else if (array_key_exists($part, self::$_partsInit)) {
+        } elseif (array_key_exists($part, self::$_partsInit)) {
             $this->_parts[$part] = self::$_partsInit[$part];
         }
         return $this;
@@ -768,7 +768,7 @@ class Zend_Db_Select
 
         if (empty($name)) {
             $correlationName = $tableName = '';
-        } else if (is_array($name)) {
+        } elseif (is_array($name)) {
             // Must be array($correlationName => $tableName) or array($ident, ...)
             foreach ($name as $_correlationName => $_tableName) {
                 if (is_string($_correlationName)) {
@@ -782,10 +782,10 @@ class Zend_Db_Select
                 }
                 break;
             }
-        } else if ($name instanceof Zend_Db_Expr|| $name instanceof Zend_Db_Select) {
+        } elseif ($name instanceof Zend_Db_Expr|| $name instanceof Zend_Db_Select) {
             $tableName = $name;
             $correlationName = $this->_uniqueCorrelation('t');
-        } else if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $name, $m)) {
+        } elseif (preg_match('/^(.+)\s+AS\s+(.+)$/i', $name, $m)) {
             $tableName = $m[1];
             $correlationName = $m[2];
         } else {
@@ -880,9 +880,13 @@ class Zend_Db_Select
         $join  = $this->_adapter->quoteIdentifier(key($this->_parts[self::FROM]), true);
         $from  = $this->_adapter->quoteIdentifier($this->_uniqueCorrelation($name), true);
 
-        $cond1 = $from . '.' . $cond;
-        $cond2 = $join . '.' . $cond;
-        $cond  = $cond1 . ' = ' . $cond2;
+        $joinCond = array();
+        foreach ((array)$cond as $fieldName) {
+            $cond1 = $from . '.' . $fieldName;
+            $cond2 = $join . '.' . $fieldName;
+            $joinCond[]  = $cond1 . ' = ' . $cond2;
+        }
+        $cond = implode(' '.self::SQL_AND.' ', $joinCond);
 
         return $this->_join($type, $name, $cond, $cols, $schema);
     }
@@ -896,7 +900,8 @@ class Zend_Db_Select
     private function _uniqueCorrelation($name)
     {
         if (is_array($name)) {
-            $c = end($name);
+            $k = key($name);
+            $c = is_string($k) ? $k : end($name);
         } else {
             // Extract just the last name of a qualified table name
             $dot = strrpos($name,'.');
@@ -938,7 +943,7 @@ class Zend_Db_Select
                     $alias = $m[2];
                 }
                 // Check for columns that look like functions and convert to Zend_Db_Expr
-                if (preg_match('/\(.*\)/', $col)) {
+                if (preg_match('/^[\w]*\([^\)]*\)$/', $col)) {
                     $col = new Zend_Db_Expr($col);
                 } elseif (preg_match('/(.+)\.(.+)/', $col, $m)) {
                     $currentCorrelationName = $m[1];
@@ -1233,7 +1238,7 @@ class Zend_Db_Select
                     } else {
                         $order[] = $this->_adapter->quoteIdentifier($term[0], true) . ' ' . $term[1];
                     }
-                } else if (is_numeric($term) && strval(intval($term)) == $term) {
+                } elseif (is_numeric($term) && strval(intval($term)) == $term) {
                     $order[] = (int)trim($term);
                 } else {
                     $order[] = $this->_adapter->quoteIdentifier($term, true);

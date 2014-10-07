@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Pdf
  * @subpackage Actions
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: NameTree.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** Internally used classes */
@@ -30,7 +30,7 @@
  * @todo implement lazy resource loading so resources will be really loaded at access time
  *
  * @package    Zend_Pdf
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Pdf_NameTree implements ArrayAccess, Iterator, Countable

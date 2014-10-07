@@ -1,117 +1,121 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.28 $"/>
-		<generation date="$Date: 2009/05/05 23:06:40 $"/>
+		<version number="$Revision: 9791 $"/>
+		<generation date="$Date: 2014-02-25 15:16:49 -0600 (Tue, 25 Feb 2014) $"/>
 		<language type="st"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
-			<language type="af">Seburu</language>
-			<language type="am">Se-amhari</language>
-			<language type="ar">Se-arab</language>
-			<language type="az">Se-azerbaijani</language>
-			<language type="be">Se-belarusia</language>
-			<language type="bg">Se-bulgaria</language>
-			<language type="bh">Se-bihari</language>
-			<language type="bn">Se-bengali</language>
-			<language type="br">Breton</language>
-			<language type="bs">Se-bosnia</language>
-			<language type="ca">Se-catalia</language>
-			<language type="cs">Se-czech</language>
-			<language type="cy">Se-welsh</language>
-			<language type="da">Se-dutch</language>
-			<language type="de">Se-jeremane</language>
-			<language type="el">Se-greek</language>
-			<language type="en">Senyesemane</language>
-			<language type="eo">Se-esperanto</language>
-			<language type="es">Sespain</language>
-			<language type="et">Se-estonia</language>
-			<language type="eu">Se-basque</language>
-			<language type="fa">Se-persia</language>
-			<language type="fi">Se-finnish</language>
-			<language type="fil">Se-tagalog</language>
-			<language type="fo">Se-foroese</language>
-			<language type="fr">Se-french</language>
-			<language type="fy">Se-frisia</language>
-			<language type="ga">Se-irish</language>
-			<language type="gd">Se-scots gaelic</language>
-			<language type="gl">Se-galicia</language>
-			<language type="gn">Guarani</language>
-			<language type="gu">Se-gujarati</language>
-			<language type="he">Se-hebrew</language>
-			<language type="hi">Se-hindi</language>
-			<language type="hr">Se-croatia</language>
-			<language type="hu">Se-hungaria</language>
-			<language type="ia">Se-interlingua</language>
-			<language type="id">Se-indonesia</language>
-			<language type="is">Se-iceland</language>
-			<language type="it">Se-tariana</language>
-			<language type="ja">Se-japane</language>
-			<language type="jv">Se-javane</language>
-			<language type="ka">Se-geogia</language>
-			<language type="kn">Se-kannada</language>
-			<language type="ko">Se-korea</language>
-			<language type="ku">Kurdish</language>
-			<language type="ky">Kyrgyz</language>
-			<language type="la">Se-latino</language>
-			<language type="lt">Se-Lithuano</language>
-			<language type="mk">Se-masedonia</language>
-			<language type="ml">Se-malayalam</language>
-			<language type="mr">Se-marathi</language>
-			<language type="ms">Se-malay</language>
-			<language type="mt">Se-maltese</language>
-			<language type="ne">Se-nepali</language>
-			<language type="nl">Dutch</language>
-			<language type="nn">Se-norway (Nynorsk)</language>
-			<language type="no">Se-norway</language>
-			<language type="oc">Se-occitan</language>
-			<language type="or">Oriya</language>
-			<language type="pa">Se-punjabi</language>
-			<language type="pl">Se-polish</language>
-			<language type="ps">Pashto</language>
-			<language type="pt">Se-portugal</language>
-			<language type="pt_BR">Seputukesi (sa Brazil)</language>
-			<language type="pt_PT">Se-portugal (Portugal)</language>
-			<language type="ro">Se-romania</language>
-			<language type="ru">Se-rushia</language>
-			<language type="sh">Serbo-Croatian</language>
-			<language type="si">Se-sinhali</language>
-			<language type="sk">Se-slovak</language>
-			<language type="sl">Se-slovania</language>
-			<language type="sq">Se-albanian</language>
-			<language type="sr">Se-serbian</language>
-			<language type="st">Sesotho</language>
-			<language type="su">Se-sundanese</language>
-			<language type="sv">Se-sweden</language>
-			<language type="sw">Se-swahili</language>
-			<language type="ta">Se-tamil</language>
-			<language type="te">Se-telegu</language>
-			<language type="th">Se-thai</language>
-			<language type="ti">Se-tigrinya</language>
-			<language type="tk">Turkmen</language>
-			<language type="tlh">Se-klingon</language>
-			<language type="tr">Se-theki</language>
-			<language type="tw">Twi</language>
-			<language type="uk">Se-ukrania</language>
-			<language type="ur">Se-urdu</language>
-			<language type="uz">Se-uzbek</language>
-			<language type="vi">Se-vietnam</language>
-			<language type="xh">se Xhosa</language>
-			<language type="yi">Yiddish</language>
-			<language type="zu">se Zulu</language>
+			<language type="af" draft="unconfirmed">Seburu</language>
+			<language type="am" draft="unconfirmed">Se-amhari</language>
+			<language type="ar" draft="unconfirmed">Se-arab</language>
+			<language type="az" draft="unconfirmed">Se-azerbaijani</language>
+			<language type="be" draft="unconfirmed">Se-belarusia</language>
+			<language type="bg" draft="unconfirmed">Se-bulgaria</language>
+			<language type="bn" draft="unconfirmed">Se-bengali</language>
+			<language type="br" draft="unconfirmed">Breton</language>
+			<language type="bs" draft="unconfirmed">Se-bosnia</language>
+			<language type="ca" draft="unconfirmed">Se-catalia</language>
+			<language type="cs" draft="unconfirmed">Se-czech</language>
+			<language type="cy" draft="unconfirmed">Se-welsh</language>
+			<language type="da" draft="unconfirmed">Se-dutch</language>
+			<language type="de" draft="unconfirmed">Se-jeremane</language>
+			<language type="el" draft="unconfirmed">Se-greek</language>
+			<language type="en" draft="unconfirmed">Senyesemane</language>
+			<language type="eo" draft="unconfirmed">Se-esperanto</language>
+			<language type="es" draft="unconfirmed">Sespain</language>
+			<language type="et" draft="unconfirmed">Se-estonia</language>
+			<language type="eu" draft="unconfirmed">Se-basque</language>
+			<language type="fa" draft="unconfirmed">Se-persia</language>
+			<language type="fi" draft="unconfirmed">Se-finnish</language>
+			<language type="fil" draft="unconfirmed">Se-tagalog</language>
+			<language type="fo" draft="unconfirmed">Se-foroese</language>
+			<language type="fr" draft="unconfirmed">Se-french</language>
+			<language type="fy" draft="unconfirmed">Se-frisia</language>
+			<language type="ga" draft="unconfirmed">Se-irish</language>
+			<language type="gd" draft="unconfirmed">Se-scots gaelic</language>
+			<language type="gl" draft="unconfirmed">Se-galicia</language>
+			<language type="gn" draft="unconfirmed">Guarani</language>
+			<language type="gu" draft="unconfirmed">Se-gujarati</language>
+			<language type="he" draft="unconfirmed">Se-hebrew</language>
+			<language type="hi" draft="unconfirmed">Se-hindi</language>
+			<language type="hr" draft="unconfirmed">Se-croatia</language>
+			<language type="hu" draft="unconfirmed">Se-hungaria</language>
+			<language type="ia" draft="unconfirmed">Se-interlingua</language>
+			<language type="id" draft="unconfirmed">Se-indonesia</language>
+			<language type="is" draft="unconfirmed">Se-iceland</language>
+			<language type="it" draft="unconfirmed">Se-tariana</language>
+			<language type="ja" draft="unconfirmed">Se-japane</language>
+			<language type="jv" draft="unconfirmed">Se-javane</language>
+			<language type="ka" draft="unconfirmed">Se-geogia</language>
+			<language type="kn" draft="unconfirmed">Se-kannada</language>
+			<language type="ko" draft="unconfirmed">Se-korea</language>
+			<language type="ku" draft="unconfirmed">Kurdish</language>
+			<language type="ky" draft="unconfirmed">Kyrgyz</language>
+			<language type="la" draft="unconfirmed">Se-latino</language>
+			<language type="lt" draft="unconfirmed">Se-Lithuano</language>
+			<language type="mk" draft="unconfirmed">Se-masedonia</language>
+			<language type="ml" draft="unconfirmed">Se-malayalam</language>
+			<language type="mr" draft="unconfirmed">Se-marathi</language>
+			<language type="ms" draft="unconfirmed">Se-malay</language>
+			<language type="mt" draft="unconfirmed">Se-maltese</language>
+			<language type="ne" draft="unconfirmed">Se-nepali</language>
+			<language type="nl" draft="unconfirmed">Dutch</language>
+			<language type="nn" draft="unconfirmed">Se-norway (Nynorsk)</language>
+			<language type="no" draft="unconfirmed">Se-norway</language>
+			<language type="oc" draft="unconfirmed">Se-occitan</language>
+			<language type="or" draft="unconfirmed">Oriya</language>
+			<language type="pa" draft="unconfirmed">Se-punjabi</language>
+			<language type="pl" draft="unconfirmed">Se-polish</language>
+			<language type="ps" draft="unconfirmed">Pashto</language>
+			<language type="pt" draft="unconfirmed">Se-portugal</language>
+			<language type="pt_BR" draft="unconfirmed">Seputukesi (sa Brazil)</language>
+			<language type="pt_PT" draft="unconfirmed">Se-portugal (Portugal)</language>
+			<language type="ro" draft="unconfirmed">Se-romania</language>
+			<language type="ru" draft="unconfirmed">Se-rushia</language>
+			<language type="sh" draft="unconfirmed">Serbo-Croatian</language>
+			<language type="si" draft="unconfirmed">Se-sinhali</language>
+			<language type="sk" draft="unconfirmed">Se-slovak</language>
+			<language type="sl" draft="unconfirmed">Se-slovania</language>
+			<language type="sq" draft="unconfirmed">Se-albanian</language>
+			<language type="sr" draft="unconfirmed">Se-serbian</language>
+			<language type="st" draft="contributed">Sesotho</language>
+			<language type="su" draft="unconfirmed">Se-sundanese</language>
+			<language type="sv" draft="unconfirmed">Se-sweden</language>
+			<language type="sw" draft="unconfirmed">Se-swahili</language>
+			<language type="ta" draft="unconfirmed">Se-tamil</language>
+			<language type="te" draft="unconfirmed">Se-telegu</language>
+			<language type="th" draft="unconfirmed">Se-thai</language>
+			<language type="ti" draft="unconfirmed">Se-tigrinya</language>
+			<language type="tk" draft="unconfirmed">Turkmen</language>
+			<language type="tlh" draft="unconfirmed">Se-klingon</language>
+			<language type="tr" draft="unconfirmed">Se-theki</language>
+			<language type="tw" draft="unconfirmed">Twi</language>
+			<language type="uk" draft="unconfirmed">Se-ukrania</language>
+			<language type="ur" draft="unconfirmed">Se-urdu</language>
+			<language type="uz" draft="unconfirmed">Se-uzbek</language>
+			<language type="vi" draft="unconfirmed">Se-vietnam</language>
+			<language type="xh" draft="unconfirmed">se Xhosa</language>
+			<language type="yi" draft="unconfirmed">Yiddish</language>
+			<language type="zu" draft="unconfirmed">se Zulu</language>
 		</languages>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a b d-u w y]</exemplarCharacters>
+		<exemplarCharacters>[a b d e f g h i j k l m n o p q r s t u w y]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[c v x z]</exemplarCharacters>
-		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
+		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<delimiters>
-		<quotationStart>‘</quotationStart>
-		<quotationEnd>’</quotationEnd>
-		<alternateQuotationStart>“</alternateQuotationStart>
-		<alternateQuotationEnd>”</alternateQuotationEnd>
+		<quotationStart draft="unconfirmed">‘</quotationStart>
+		<quotationEnd draft="unconfirmed">’</quotationEnd>
+		<alternateQuotationStart draft="unconfirmed">“</alternateQuotationStart>
+		<alternateQuotationEnd draft="unconfirmed">”</alternateQuotationEnd>
 	</delimiters>
 	<dates>
 		<calendars>
@@ -119,202 +123,98 @@
 				<months>
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
-							<month type="1">Phe</month>
-							<month type="2">Kol</month>
-							<month type="3">Ube</month>
-							<month type="4">Mme</month>
-							<month type="5">Mot</month>
-							<month type="6">Jan</month>
-							<month type="7">Upu</month>
-							<month type="8">Pha</month>
-							<month type="9">Leo</month>
-							<month type="10">Mph</month>
-							<month type="11">Pun</month>
-							<month type="12">Tsh</month>
+							<month type="1" draft="unconfirmed">Phe</month>
+							<month type="2" draft="unconfirmed">Kol</month>
+							<month type="3" draft="unconfirmed">Ube</month>
+							<month type="4" draft="unconfirmed">Mme</month>
+							<month type="5" draft="unconfirmed">Mot</month>
+							<month type="6" draft="unconfirmed">Jan</month>
+							<month type="7" draft="unconfirmed">Upu</month>
+							<month type="8" draft="unconfirmed">Pha</month>
+							<month type="9" draft="unconfirmed">Leo</month>
+							<month type="10" draft="unconfirmed">Mph</month>
+							<month type="11" draft="unconfirmed">Pun</month>
+							<month type="12" draft="unconfirmed">Tsh</month>
 						</monthWidth>
 						<monthWidth type="wide">
-							<month type="1">Phesekgong</month>
-							<month type="2">Hlakola</month>
-							<month type="3">Hlakubele</month>
-							<month type="4">Mmese</month>
-							<month type="5">Motsheanong</month>
-							<month type="6">Phupjane</month>
-							<month type="7">Phupu</month>
-							<month type="8">Phata</month>
-							<month type="9">Leotshe</month>
-							<month type="10">Mphalane</month>
-							<month type="11">Pundungwane</month>
-							<month type="12">Tshitwe</month>
-						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
-						<monthWidth type="narrow">
-							<month type="1">1</month>
-							<month type="2">2</month>
-							<month type="3">3</month>
-							<month type="4">4</month>
-							<month type="5">5</month>
-							<month type="6">6</month>
-							<month type="7">7</month>
-							<month type="8">8</month>
-							<month type="9">9</month>
-							<month type="10">10</month>
-							<month type="11">11</month>
-							<month type="12">12</month>
+							<month type="1" draft="unconfirmed">Phesekgong</month>
+							<month type="2" draft="unconfirmed">Hlakola</month>
+							<month type="3" draft="unconfirmed">Hlakubele</month>
+							<month type="4" draft="unconfirmed">Mmese</month>
+							<month type="5" draft="unconfirmed">Motsheanong</month>
+							<month type="6" draft="unconfirmed">Phupjane</month>
+							<month type="7" draft="unconfirmed">Phupu</month>
+							<month type="8" draft="unconfirmed">Phata</month>
+							<month type="9" draft="unconfirmed">Leotshe</month>
+							<month type="10" draft="unconfirmed">Mphalane</month>
+							<month type="11" draft="unconfirmed">Pundungwane</month>
+							<month type="12" draft="unconfirmed">Tshitwe</month>
 						</monthWidth>
 					</monthContext>
 				</months>
 				<days>
 					<dayContext type="format">
 						<dayWidth type="abbreviated">
-							<day type="sun">Son</day>
-							<day type="mon">Mma</day>
-							<day type="tue">Bed</day>
-							<day type="wed">Rar</day>
-							<day type="thu">Ne</day>
-							<day type="fri">Hla</day>
-							<day type="sat">Moq</day>
+							<day type="sun" draft="unconfirmed">Son</day>
+							<day type="mon" draft="unconfirmed">Mma</day>
+							<day type="tue" draft="unconfirmed">Bed</day>
+							<day type="wed" draft="unconfirmed">Rar</day>
+							<day type="thu" draft="unconfirmed">Ne</day>
+							<day type="fri" draft="unconfirmed">Hla</day>
+							<day type="sat" draft="unconfirmed">Moq</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">Sontaha</day>
-							<day type="mon">Mmantaha</day>
-							<day type="tue">Labobedi</day>
-							<day type="wed">Laboraru</day>
-							<day type="thu">Labone</day>
-							<day type="fri">Labohlane</day>
-							<day type="sat">Moqebelo</day>
-						</dayWidth>
-					</dayContext>
-					<dayContext type="stand-alone">
-						<dayWidth type="narrow">
-							<day type="sun">1</day>
-							<day type="mon">2</day>
-							<day type="tue">3</day>
-							<day type="wed">4</day>
-							<day type="thu">5</day>
-							<day type="fri">6</day>
-							<day type="sat">7</day>
+							<day type="sun" draft="unconfirmed">Sontaha</day>
+							<day type="mon" draft="unconfirmed">Mmantaha</day>
+							<day type="tue" draft="unconfirmed">Labobedi</day>
+							<day type="wed" draft="unconfirmed">Laboraru</day>
+							<day type="thu" draft="unconfirmed">Labone</day>
+							<day type="fri" draft="unconfirmed">Labohlane</day>
+							<day type="sat" draft="unconfirmed">Moqebelo</day>
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
-				<am>AM</am>
-				<pm>PM</pm>
-				<eras>
-					<eraNames>
-						<era type="0">BC</era>
-						<era type="1">AD</era>
-					</eraNames>
-					<eraAbbr>
-						<era type="0">BC</era>
-						<era type="1">AD</era>
-					</eraAbbr>
-				</eras>
-				<dateFormats>
-					<dateFormatLength type="full">
-						<dateFormat>
-							<pattern>EEEE, y MMMM dd</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="long">
-						<dateFormat>
-							<pattern>y MMMM d</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="medium">
-						<dateFormat>
-							<pattern>y MMM d</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="short">
-						<dateFormat>
-							<pattern>yy/MM/dd</pattern>
-						</dateFormat>
-					</dateFormatLength>
-				</dateFormats>
-				<timeFormats>
-					<timeFormatLength type="full">
-						<timeFormat>
-							<pattern>HH:mm:ss zzzz</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="long">
-						<timeFormat>
-							<pattern>HH:mm:ss z</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="medium">
-						<timeFormat>
-							<pattern>HH:mm:ss</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="short">
-						<timeFormat>
-							<pattern>HH:mm</pattern>
-						</timeFormat>
-					</timeFormatLength>
-				</timeFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="yyQ">Q yy</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 		</calendars>
-		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
-			<regionFormat>{0}</regionFormat>
-		</timeZoneNames>
 	</dates>
 	<numbers>
-		<symbols>
+		<symbols numberSystem="latn">
 			<decimal>,</decimal>
 			<group> </group>
 		</symbols>
-		<decimalFormats>
+		<decimalFormats numberSystem="latn">
 			<decimalFormatLength>
 				<decimalFormat>
 					<pattern>#,##0.###</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
-		<scientificFormats>
+		<scientificFormats numberSystem="latn">
 			<scientificFormatLength>
 				<scientificFormat>
 					<pattern>#E0</pattern>
 				</scientificFormat>
 			</scientificFormatLength>
 		</scientificFormats>
-		<percentFormats>
+		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
 					<pattern>#,##0%</pattern>
 				</percentFormat>
 			</percentFormatLength>
 		</percentFormats>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
+		<currencies>
+			<currency type="ZAR">
+				<symbol>R</symbol>
+			</currency>
+		</currencies>
 	</numbers>
 </ldml>
 

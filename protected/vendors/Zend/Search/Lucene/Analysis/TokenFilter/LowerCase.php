@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Analysis
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: LowerCase.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -31,7 +31,7 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Analysis
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -45,14 +45,8 @@ class Zend_Search_Lucene_Analysis_TokenFilter_LowerCase extends Zend_Search_Luce
      */
     public function normalize(Zend_Search_Lucene_Analysis_Token $srcToken)
     {
-        $newToken = new Zend_Search_Lucene_Analysis_Token(
-                                     strtolower( $srcToken->getTermText() ),
-                                     $srcToken->getStartOffset(),
-                                     $srcToken->getEndOffset());
-
-        $newToken->setPositionIncrement($srcToken->getPositionIncrement());
-
-        return $newToken;
+        $srcToken->setTermText(strtolower($srcToken->getTermText()));
+        return $srcToken;
     }
 }
 

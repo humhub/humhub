@@ -16,10 +16,15 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Health
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ProfileListFeed.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
+
+/**
+ * @see Zend_Exception
+ */
+// require_once 'Zend/Exception.php';
 
 /**
  * @see Zend_Gdata_Feed
@@ -34,20 +39,17 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Health
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Health_ProfileListFeed extends Zend_Gdata_Feed
 {
-    /**
-     * The class name for individual profile feed elements.
-     *
-     * @var string
-     */
-    protected $_entryClassName = 'Zend_Gdata_Health_ProfileListEntry';
-
-    public function getEntries()
+    public function __construct($element = null)
     {
-        return $this->entry;
+        throw new Zend_Exception(
+            'Google Health API has been discontinued by Google and was removed'
+            . ' from Zend Framework in 1.12.0.  For more information see: '
+            . 'http://googleblog.blogspot.ca/2011/06/update-on-google-health-and-google.html'
+        );
     }
 }

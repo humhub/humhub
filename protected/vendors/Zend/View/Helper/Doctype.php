@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Doctype.php 24201 2011-07-05 16:22:04Z matthew $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -31,7 +31,7 @@
  *
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_Doctype extends Zend_View_Helper_Abstract
@@ -44,6 +44,7 @@ class Zend_View_Helper_Doctype extends Zend_View_Helper_Abstract
     const XHTML1_TRANSITIONAL = 'XHTML1_TRANSITIONAL';
     const XHTML1_FRAMESET     = 'XHTML1_FRAMESET';
     const XHTML1_RDFA         = 'XHTML1_RDFA';
+    const XHTML1_RDFA11       = 'XHTML1_RDFA11';
     const XHTML_BASIC1        = 'XHTML_BASIC1';
     const XHTML5              = 'XHTML5';
     const HTML4_STRICT        = 'HTML4_STRICT';
@@ -89,6 +90,7 @@ class Zend_View_Helper_Doctype extends Zend_View_Helper_Abstract
                     self::XHTML1_TRANSITIONAL => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
                     self::XHTML1_FRAMESET     => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">',
                     self::XHTML1_RDFA         => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">',
+                    self::XHTML1_RDFA11       => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd">',
                     self::XHTML_BASIC1        => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">',
                     self::XHTML5              => '<!DOCTYPE html>',
                     self::HTML4_STRICT        => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">',
@@ -120,6 +122,7 @@ class Zend_View_Helper_Doctype extends Zend_View_Helper_Abstract
                 case self::XHTML1_FRAMESET:
                 case self::XHTML_BASIC1:
                 case self::XHTML1_RDFA:
+                case self::XHTML1_RDFA11:
                 case self::XHTML5:
                 case self::HTML4_STRICT:
                 case self::HTML4_LOOSE:

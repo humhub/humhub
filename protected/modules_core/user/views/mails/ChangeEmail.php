@@ -5,7 +5,7 @@
 <meta name="viewport" content="initial-scale=1.0"/>
 <meta name="format-detection" content="telephone=no"/>
 
-<title>HumHub - Email change</title>
+<title><?php echo Yii::app()->name; ?> - Email change</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
 <style type="text/css">
 

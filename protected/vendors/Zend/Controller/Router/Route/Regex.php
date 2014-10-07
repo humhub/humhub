@@ -15,20 +15,20 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Regex.php 24182 2011-07-03 13:43:05Z adamlundrigan $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /** Zend_Controller_Router_Route_Abstract */
-// // require_once 'Zend/Controller/Router/Route/Abstract.php';
+// require_once 'Zend/Controller/Router/Route/Abstract.php';
 
 /**
  * Regex Route
  *
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Router_Route_Regex extends Zend_Controller_Router_Route_Abstract
@@ -165,7 +165,7 @@ class Zend_Controller_Router_Route_Regex extends Zend_Controller_Router_Route_Ab
     public function assemble($data = array(), $reset = false, $encode = false, $partial = false)
     {
         if ($this->_reverse === null) {
-            // // require_once 'Zend/Controller/Router/Exception.php';
+            // require_once 'Zend/Controller/Router/Exception.php';
             throw new Zend_Controller_Router_Exception('Cannot assemble. Reversed route is not specified.');
         }
 
@@ -199,7 +199,7 @@ class Zend_Controller_Router_Route_Regex extends Zend_Controller_Router_Route_Ab
         $return = @vsprintf($this->_reverse, $mergedData);
 
         if ($return === false) {
-            // // require_once 'Zend/Controller/Router/Exception.php';
+            // require_once 'Zend/Controller/Router/Exception.php';
             throw new Zend_Controller_Router_Exception('Cannot assemble. Too few arguments?');
         }
 

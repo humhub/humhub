@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Wildfire
  * @subpackage Plugin
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FirePhp.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** Zend_Controller_Request_Abstract */
@@ -41,7 +41,7 @@
  * @category   Zend
  * @package    Zend_Wildfire
  * @subpackage Plugin
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface

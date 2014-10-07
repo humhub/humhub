@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: HeadMeta.php 23775 2011-03-01 17:25:24Z ralph $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -30,7 +30,7 @@
  * @uses       Zend_View_Helper_Placeholder_Container_Standalone
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_Standalone
@@ -168,14 +168,14 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
         return parent::__call($method, $args);
     }
 
-	/**
-	 * Create an HTML5-style meta charset tag. Something like <meta charset="utf-8">
-	 *
-	 * Not valid in a non-HTML5 doctype
-	 *
-	 * @param string $charset
-	 * @return Zend_View_Helper_HeadMeta Provides a fluent interface
-	 */
+    /**
+     * Create an HTML5-style meta charset tag. Something like <meta charset="utf-8">
+     *
+     * Not valid in a non-HTML5 doctype
+     *
+     * @param string $charset
+     * @return Zend_View_Helper_HeadMeta Provides a fluent interface
+     */
     public function setCharset($charset)
     {
         $item = new stdClass;
@@ -202,14 +202,15 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             return false;
         }
 
+        $isHtml5 = is_null($this->view) ? false : $this->view->doctype()->isHtml5();
+
         if (!isset($item->content)
-        && (! $this->view->doctype()->isHtml5()
-        || (! $this->view->doctype()->isHtml5() && $item->type !== 'charset'))) {
+        && (! $isHtml5 || (! $isHtml5 && $item->type !== 'charset'))) {
             return false;
         }
 
         // <meta property= ... /> is only supported with doctype RDFa
-        if (!$this->view->doctype()->isRdfa()
+        if ( !is_null($this->view) && !$this->view->doctype()->isRdfa()
             && $item->type === 'property') {
             return false;
         }
@@ -341,7 +342,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
 
         $modifiersString = '';
         foreach ($item->modifiers as $key => $value) {
-            if ($this->view->doctype()->isHtml5()
+            if (!is_null($this->view) && $this->view->doctype()->isHtml5()
             && $key == 'scheme') {
                 // require_once 'Zend/View/Exception.php';
                 throw new Zend_View_Exception('Invalid modifier '
@@ -375,6 +376,14 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             $this->_escape($item->content),
             $modifiersString
         );
+        
+        if (isset($item->modifiers['conditional'])
+            && !empty($item->modifiers['conditional'])
+            && is_string($item->modifiers['conditional']))
+        {
+            $meta = '<!--[if ' . $this->_escape($item->modifiers['conditional']) . ']>' . $meta . '<![endif]-->';
+        }
+        
         return $meta;
     }
 

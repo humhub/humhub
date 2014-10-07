@@ -16,8 +16,8 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Client_Adapter
- * @version    $Id: Socket.php 23775 2011-03-01 17:25:24Z ralph $
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -41,7 +41,7 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Client_Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interface, Zend_Http_Client_Adapter_Stream
@@ -317,7 +317,6 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
         // First, read headers only
         $response = '';
         $gotStatus = false;
-        $stream = !empty($this->config['stream']);
 
         while (($line = @fgets($this->socket)) !== false) {
             $gotStatus = $gotStatus || (strpos($line, 'HTTP') !== false);

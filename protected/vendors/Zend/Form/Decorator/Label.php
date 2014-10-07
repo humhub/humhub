@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -29,8 +29,9 @@
  * - separator: separator to use between label and content (defaults to PHP_EOL)
  * - placement: whether to append or prepend label to content (defaults to prepend)
  * - tag: if set, used to wrap the label in an additional HTML tag
+ * - tagClass: if tag option is set, used to add a class to the label wrapper
  * - opt(ional)Prefix: a prefix to the label to use when the element is optional
- * - opt(iona)lSuffix: a suffix to the label to use when the element is optional
+ * - opt(ional)Suffix: a suffix to the label to use when the element is optional
  * - req(uired)Prefix: a prefix to the label to use when the element is required
  * - req(uired)Suffix: a suffix to the label to use when the element is required
  *
@@ -39,12 +40,19 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Label.php 23960 2011-05-03 10:58:52Z yoshida@zend.co.jp $
+ * @version    $Id$
  */
 class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
 {
+    /**
+     * Placement constants
+     */
+    const IMPLICIT         = 'IMPLICIT';
+    const IMPLICIT_PREPEND = 'IMPLICIT_PREPEND';
+    const IMPLICIT_APPEND  = 'IMPLICIT_APPEND';
+
     /**
      * Default placement: prepend
      * @var string
@@ -118,7 +126,7 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
     /**
      * Get HTML tag, if any, with which to surround label
      *
-     * @return void
+     * @return string
      */
     public function getTag()
     {
@@ -300,10 +308,6 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
             return '';
         }
 
-        if (null !== ($translator = $element->getTranslator())) {
-            $label = $translator->translate($label);
-        }
-
         $optPrefix = $this->getOptPrefix();
         $optSuffix = $this->getOptSuffix();
         $reqPrefix = $this->getReqPrefix();
@@ -321,6 +325,35 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
         return $label;
     }
 
+    /**
+     * Determine if label should append, prepend or implicit content
+     *
+     * @return string
+     */
+    public function getPlacement()
+    {
+        $placement = $this->_placement;
+        if (null !== ($placementOpt = $this->getOption('placement'))) {
+            $placementOpt = strtoupper($placementOpt);
+            switch ($placementOpt) {
+                case self::APPEND:
+                case self::PREPEND:
+                case self::IMPLICIT:
+                case self::IMPLICIT_PREPEND:
+                case self::IMPLICIT_APPEND:
+                    $placement = $this->_placement = $placementOpt;
+                    break;
+                case false:
+                    $placement = $this->_placement = null;
+                    break;
+                default:
+                    break;
+            }
+            $this->removeOption('placement');
+        }
+
+        return $placement;
+    }
 
     /**
      * Render a label
@@ -352,7 +385,48 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
 
         if (!empty($label)) {
             $options['class'] = $class;
-            $label = $view->formLabel($element->getFullyQualifiedName(), trim($label), $options);
+            $label            = trim($label);
+
+            switch ($placement) {
+                case self::IMPLICIT:
+                    // Break was intentionally omitted
+
+                case self::IMPLICIT_PREPEND:
+                    $options['escape']     = false;
+                    $options['disableFor'] = true;
+
+                    $label = $view->formLabel(
+                        $element->getFullyQualifiedName(),
+                        $label . $separator . $content,
+                        $options
+                    );
+                    break;
+
+                case self::IMPLICIT_APPEND:
+                    $options['escape']     = false;
+                    $options['disableFor'] = true;
+
+                    $label = $view->formLabel(
+                        $element->getFullyQualifiedName(),
+                        $content . $separator . $label,
+                        $options
+                    );
+                    break;
+
+                case self::APPEND:
+                    // Break was intentionally omitted
+
+                case self::PREPEND:
+                    // Break was intentionally omitted
+
+                default:
+                    $label = $view->formLabel(
+                        $element->getFullyQualifiedName(),
+                        $label,
+                        $options
+                    );
+                    break;
+            }
         } else {
             $label = '&#160;';
         }
@@ -375,8 +449,18 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
         switch ($placement) {
             case self::APPEND:
                 return $content . $separator . $label;
+
             case self::PREPEND:
                 return $label . $separator . $content;
+
+            case self::IMPLICIT:
+                // Break was intentionally omitted
+
+            case self::IMPLICIT_PREPEND:
+                // Break was intentionally omitted
+
+            case self::IMPLICIT_APPEND:
+                return $label;
         }
     }
 }

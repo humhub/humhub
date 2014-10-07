@@ -22,7 +22,7 @@ return array (
   'Always activated' => '',
   'Close' => '',
   'Deactivated' => '',
-  'Here you can choose whether or not a module should be automatically activated on a space or user profile or not. If the module should be activated, choose "always activated".' => '',
+  'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
   'Save' => '',
   'Spaces' => '',
   'User Profiles' => '',

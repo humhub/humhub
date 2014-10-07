@@ -13,7 +13,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -26,7 +26,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage DocumentService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cloud_DocumentService_Document
@@ -60,7 +60,7 @@ class Zend_Cloud_DocumentService_Document
     public function __construct($fields, $id = null)
     {
         if (!is_array($fields) && !$fields instanceof ArrayAccess) {
-            // // require_once 'Zend/Cloud/DocumentService/Exception.php';
+            // require_once 'Zend/Cloud/DocumentService/Exception.php';
             throw new Zend_Cloud_DocumentService_Exception('Fields must be an array or implement ArrayAccess');
         }
 
@@ -222,7 +222,7 @@ class Zend_Cloud_DocumentService_Document
             return $this->setField($option, $args[0]);
         }
 
-        // // require_once 'Zend/Cloud/OperationNotAvailableException.php';
+        // require_once 'Zend/Cloud/OperationNotAvailableException.php';
         throw new Zend_Cloud_OperationNotAvailableException("Unknown operation $name");
     }
 

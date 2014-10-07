@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Dojo
  * @subpackage View
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ComboBox.php 23931 2011-05-02 19:32:51Z matthew $
+ * @version    $Id$
  */
 
 /** Zend_Dojo_View_Helper_Dijit */
@@ -29,7 +29,7 @@
  * @uses       Zend_Dojo_View_Helper_Dijit
  * @package    Zend_Dojo
  * @subpackage View
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
   */
 class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit

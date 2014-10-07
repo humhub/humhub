@@ -15,33 +15,33 @@
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: DbTable.php 24185 2011-07-05 13:10:05Z adamlundrigan $
+ * @version    $Id$
  */
 
 
 /**
  * @see Zend_Auth_Adapter_Interface
  */
-// // require_once 'Zend/Auth/Adapter/Interface.php';
+// require_once 'Zend/Auth/Adapter/Interface.php';
 
 /**
  * @see Zend_Db_Adapter_Abstract
  */
-// // require_once 'Zend/Db/Adapter/Abstract.php';
+// require_once 'Zend/Db/Adapter/Abstract.php';
 
 /**
  * @see Zend_Auth_Result
  */
-// // require_once 'Zend/Auth/Result.php';
+// require_once 'Zend/Auth/Result.php';
 
 
 /**
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
@@ -132,7 +132,6 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * @param  string                   $identityColumn
      * @param  string                   $credentialColumn
      * @param  string                   $credentialTreatment
-     * @return void
      */
     public function __construct(Zend_Db_Adapter_Abstract $zendDb = null, $tableName = null, $identityColumn = null,
                                 $credentialColumn = null, $credentialTreatment = null)
@@ -171,10 +170,10 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
          * If no adapter is specified, fetch default database adapter.
          */
         if(null === $this->_zendDb) {
-            // // require_once 'Zend/Db/Table/Abstract.php';
+            // require_once 'Zend/Db/Table/Abstract.php';
             $this->_zendDb = Zend_Db_Table_Abstract::getDefaultAdapter();
             if (null === $this->_zendDb) {
-                // // require_once 'Zend/Auth/Adapter/Exception.php';
+                // require_once 'Zend/Auth/Adapter/Exception.php';
                 throw new Zend_Auth_Adapter_Exception('No database adapter present');
             }
         }
@@ -415,7 +414,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
             /**
              * @see Zend_Auth_Adapter_Exception
              */
-            // // require_once 'Zend/Auth/Adapter/Exception.php';
+            // require_once 'Zend/Auth/Adapter/Exception.php';
             throw new Zend_Auth_Adapter_Exception($exception);
         }
 
@@ -486,7 +485,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
             /**
              * @see Zend_Auth_Adapter_Exception
              */
-            // // require_once 'Zend/Auth/Adapter/Exception.php';
+            // require_once 'Zend/Auth/Adapter/Exception.php';
             throw new Zend_Auth_Adapter_Exception('The supplied parameters to Zend_Auth_Adapter_DbTable failed to '
                                                 . 'produce a valid sql statement, please check table and column names '
                                                 . 'for validity.', 0, $e);

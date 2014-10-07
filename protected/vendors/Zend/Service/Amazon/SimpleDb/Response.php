@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -24,11 +24,14 @@
  */
 // require_once 'Zend/Http/Response.php';
 
+/** @see Zend_Xml_Security */
+// require_once 'Zend/Xml/Security.php';
+
 /**
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Amazon_SimpleDb_Response
@@ -120,8 +123,7 @@ class Zend_Service_Amazon_SimpleDb_Response
             $body = false;
         }
 
-
-        return simplexml_load_string($body);
+        return Zend_Xml_Security::scan($body);
     }
 
     /**
@@ -153,9 +155,7 @@ class Zend_Service_Amazon_SimpleDb_Response
                 $errors = libxml_use_internal_errors();
 
                 $this->_document = new DOMDocument();
-                if (!$this->_document->loadXML($body)) {
-                    $this->_document = false;
-                }
+                $this->_document = Zend_Xml_Security::scan($body, $this->_document);
 
                 // reset libxml error handling
                 libxml_clear_errors();

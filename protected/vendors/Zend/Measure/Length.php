@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Measure
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Length.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version   $Id$
  */
 
 /**
@@ -31,7 +31,7 @@
  * @category   Zend
  * @package    Zend_Measure
  * @subpackage Zend_Measure_Length
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Measure_Length extends Zend_Measure_Abstract
@@ -361,7 +361,7 @@ class Zend_Measure_Length extends Zend_Measure_Abstract
         'ALEN_DANISH'     => array('0.6277',           'alen'),
         'ALEN'            => array('0.6',              'alen'),
         'ALEN_SWEDISH'    => array('0.5938',           'alen'),
-        'ANGSTROM'        => array('1.0e-10',          'Å'),
+        'ANGSTROM'        => array('1.0e-10',          'Å'),
         'ARMS'            => array('0.7',              'arms'),
         'ARPENT_CANADIAN' => array('58.47',            'arpent'),
         'ARPENT'          => array('58.471308',        'arpent'),
@@ -373,11 +373,11 @@ class Zend_Measure_Length extends Zend_Measure_Abstract
         'BAMBOO'          => array('3.2',              'bamboo'),
         'BARLEYCORN'      => array('0.0085',           'barleycorn'),
         'BEE_SPACE'       => array('0.0065',           'bee space'),
-        'BICRON'          => array('1.0e-12',          '��'),
+        'BICRON'          => array('1.0e-12',          'µµ'),
         'BLOCK_US_EAST'   => array('80.4672',          'block'),
         'BLOCK_US_WEST'   => array('100.584',          'block'),
         'BLOCK_US_SOUTH'  => array('160.9344',         'block'),
-        'BOHR'            => array('52.918e-12',       'a�'),
+        'BOHR'            => array('52.918e-12',       'a₀'),
         'BRACCIO'         => array('0.7',              'braccio'),
         'BRAZA_ARGENTINA' => array('1.733',            'braza'),
         'BRAZA'           => array('1.67',             'braza'),
@@ -415,8 +415,8 @@ class Zend_Measure_Length extends Zend_Measure_Abstract
         'DIGIT'           => array('0.019',            'digit'),
         'DIRAA'           => array('0.58',             ''),
         'DONG'            => array(array('' => '7','/' => '300'), 'dong'),
-        'DOUZIEME_WATCH'  => array('0.000188',         'douzi�me'),
-        'DOUZIEME'        => array('0.00017638888889', 'douzi�me'),
+        'DOUZIEME_WATCH'  => array('0.000188',         'douzième'),
+        'DOUZIEME'        => array('0.00017638888889', 'douzième'),
         'DRA_IRAQ'        => array('0.745',            'dra'),
         'DRA'             => array('0.7112',           'dra'),
         'EL'              => array('0.69',             'el'),
@@ -533,10 +533,10 @@ class Zend_Measure_Length extends Zend_Measure_Abstract
         'METRE'           => array('1',                'm'),
         'METRIC_MILE'     => array('1500',             'metric mile'),
         'METRIC_MILE_US'  => array('1600',             'metric mile'),
-        'MICROINCH'       => array('2.54e-08',         '�in'),
-        'MICROMETER'      => array('0.000001',         '�m'),
-        'MICROMICRON'     => array('1.0e-12',          '��'),
-        'MICRON'          => array('0.000001',         '�'),
+        'MICROINCH'       => array('2.54e-08',         'µin'),
+        'MICROMETER'      => array('0.000001',         'µm'),
+        'MICROMICRON'     => array('1.0e-12',          'µµ'),
+        'MICRON'          => array('0.000001',         'µm'),
         'MIGLIO'          => array('1488.6',           'miglio'),
         'MIIL'            => array('7500',             'miil'),
         'MIIL_DENMARK'    => array('7532.5',           'miil'),
@@ -560,7 +560,7 @@ class Zend_Measure_Length extends Zend_Measure_Abstract
         'MILLE'           => array('1949',             'mille'),
         'MILLIARE'        => array('0.001478',         'milliare'),
         'MILLIMETER'      => array('0.001',            'mm'),
-        'MILLIMICRON'     => array('1.0e-9',           'm�'),
+        'MILLIMICRON'     => array('1.0e-9',           'mµ'),
         'MKONO'           => array('0.4572',           'mkono'),
         'MOOT'            => array('0.0762',           'moot'),
         'MYRIAMETER'      => array('10000',            'mym'),
@@ -578,7 +578,7 @@ class Zend_Measure_Length extends Zend_Measure_Abstract
         'PARASANG'        => array('6000',             'parasang'),
         'PARIS_FOOT'      => array('0.3248406',        'paris foot'),
         'PARSEC'          => array('3.0856776e+16',    'pc'),
-        'PE'              => array('0.33324',          'p�'),
+        'PE'              => array('0.33324',          'pé'),
         'PEARL'           => array('0.001757299',      'pearl'),
         'PERCH'           => array('5.0292',           'perch'),
         'PERCH_IRELAND'   => array('6.4008',           'perch'),

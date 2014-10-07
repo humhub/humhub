@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_Sqs
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Sqs.php 24470 2011-09-26 16:26:44Z ezimuel $
+ * @version    $Id$
  */
 
 /**
@@ -36,7 +36,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_Sqs
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://aws.amazon.com/sqs/ Amazon Simple Queue Service
  */

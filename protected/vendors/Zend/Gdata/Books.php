@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Books
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Books.php 23805 2011-03-16 00:55:40Z tjohns $
+ * @version    $Id$
  */
 
 /**
@@ -57,7 +57,7 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Books
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Books extends Zend_Gdata

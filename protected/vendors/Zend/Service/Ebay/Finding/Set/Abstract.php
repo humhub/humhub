@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Ebay
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Abstract.php 20166 2010-01-09 19:00:17Z bkarwin $
  */
@@ -24,7 +24,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Ebay
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Service_Ebay_Finding_Set_Abstract implements SeekableIterator, Countable

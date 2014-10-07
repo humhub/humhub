@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -35,9 +35,9 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormElements.php 24453 2011-09-09 15:14:24Z matthew $
+ * @version    $Id$
  */
 class Zend_Form_Decorator_FormElements extends Zend_Form_Decorator_Abstract
 {
@@ -82,8 +82,13 @@ class Zend_Form_Decorator_FormElements extends Zend_Form_Decorator_Abstract
         $items          = array();
         $view           = $form->getView();
         foreach ($form as $item) {
-            $item->setView($view)
-                 ->setTranslator($translator);
+            $item->setView($view);
+
+            // Set translator
+            if (!$item->hasTranslator()) {
+                $item->setTranslator($translator);
+            }
+
             if ($item instanceof Zend_Form_Element) {
                 foreach ($displayGroups as $group) {
                     $elementName = $item->getName();

@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Converter.php 24354 2011-08-05 07:36:38Z sgehrig $
+ * @version    $Id$
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Ldap_Converter
@@ -69,8 +69,21 @@ class Zend_Ldap_Converter
      */
     public static function hex32ToAsc($string)
     {
-        $string = preg_replace("/\\\([0-9A-Fa-f]{2})/e", "''.chr(hexdec('\\1')).''", $string);
+        // Using a callback, since PHP 5.5 has deprecated the /e modifier in preg_replace.
+        $string = preg_replace_callback("/\\\([0-9A-Fa-f]{2})/", array('Zend_Ldap_Converter', '_charHex32ToAsc'), $string);
         return $string;
+    }
+
+    /**
+     * Convert a single slash-prefixed character from Hex32 to ASCII.
+     * Used as a callback in @see hex32ToAsc()
+     * @param array $matches
+     *
+     * @return string
+     */
+    private static function _charHex32ToAsc(array $matches)
+    {
+        return chr(hexdec($matches[0]));
     }
 
     /**

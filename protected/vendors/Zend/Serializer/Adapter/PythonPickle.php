@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Serializer
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: PythonPickle.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** @see Zend_Serializer_Adapter_AdapterAbstract */
@@ -31,7 +31,7 @@
  * @category   Zend
  * @package    Zend_Serializer
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Serializer_Adapter_PythonPickle extends Zend_Serializer_Adapter_AdapterAbstract
@@ -296,11 +296,11 @@ class Zend_Serializer_Adapter_PythonPickle extends Zend_Serializer_Adapter_Adapt
                 $this->_pickle .= self::OP_BINGET . chr($id);
             } else {
                 // LONG_BINGET + pack("<i", i)
-                $idBin = pack('l', $id);
+                $bin = pack('l', $id);
                 if (self::$_isLittleEndian === false) {
-                    $idBin = strrev($bin);
+                    $bin = strrev($bin);
                 }
-                $this->_pickle .= self::OP_LONG_BINGET . $idBin;
+                $this->_pickle .= self::OP_LONG_BINGET . $bin;
             }
         } else {
             $this->_pickle .= self::OP_GET . $id . "\r\n";
@@ -321,11 +321,11 @@ class Zend_Serializer_Adapter_PythonPickle extends Zend_Serializer_Adapter_Adapt
                 $this->_pickle .= self::OP_BINPUT . chr($id);
             } else {
                 // LONG_BINPUT + pack("<i", i)
-                $idBin = pack('l', $id);
+                $bin = pack('l', $id);
                 if (self::$_isLittleEndian === false) {
-                    $idBin = strrev($bin);
+                    $bin = strrev($bin);
                 }
-                $this->_pickle .= self::OP_LONG_BINPUT . $idBin;
+                $this->_pickle .= self::OP_LONG_BINPUT . $bin;
             }
         } else {
             $this->_pickle .= self::OP_PUT . $id . "\r\n";

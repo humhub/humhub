@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.78 $"/>
-		<generation date="$Date: 2009/06/15 17:12:26 $"/>
+		<version number="$Revision: 9791 $"/>
+		<generation date="$Date: 2014-02-25 15:16:49 -0600 (Tue, 25 Feb 2014) $"/>
 		<language type="ga"/>
 	</identity>
-	<fallback>en_IE</fallback>
 	<localeDisplayNames>
 		<languages>
 			<language type="aa">aa</language>
@@ -19,7 +23,6 @@
 			<language type="ba">Baiscíris</language>
 			<language type="be">Bealarúisis</language>
 			<language type="bg">Bulgáiris</language>
-			<language type="bh">Bihairis</language>
 			<language type="bn">Beangáilis</language>
 			<language type="bo">Tibéadais</language>
 			<language type="br">Briotáinis</language>
@@ -34,34 +37,48 @@
 			<language type="cy">Breatnais</language>
 			<language type="da">Danmhairgis</language>
 			<language type="de">Gearmáinis</language>
+			<language type="de_AT" draft="unconfirmed">Gearmáinis Ostarach</language>
+			<language type="de_CH" draft="unconfirmed">Ardghearmáinis Elvéiseach</language>
 			<language type="el">Gréigis</language>
 			<language type="en">Béarla</language>
+			<language type="en_AU" draft="unconfirmed">Béarla Astrálach</language>
+			<language type="en_CA" draft="unconfirmed">Béarla Ceanadach</language>
+			<language type="en_GB" draft="unconfirmed">Béarla Briotanach</language>
+			<language type="en_US" draft="unconfirmed">Béarla Meiriceánach</language>
 			<language type="eo">Esperanto</language>
 			<language type="es">Spáinnis</language>
+			<language type="es_419" draft="unconfirmed">Spáinnis Mheiriceá Laidinigh</language>
+			<language type="es_ES" draft="unconfirmed">Spáinnis Eorpach</language>
 			<language type="et">Eastóinis</language>
 			<language type="eu">Bascais</language>
 			<language type="fa">Peirsis</language>
 			<language type="fi">Fionlainnis</language>
-			<language type="fil">fil</language>
+			<language type="fil" draft="unconfirmed">Filipínis</language>
 			<language type="fj">Fidsis</language>
 			<language type="fo">Faróis</language>
 			<language type="fr">Fraincis</language>
+			<language type="fr_CA" draft="unconfirmed">Fraincis Ceanadach</language>
+			<language type="fr_CH" draft="unconfirmed">Fraincis Elvéiseach</language>
 			<language type="fy">Freaslainnis Iartharach</language>
 			<language type="ga">Gaeilge</language>
 			<language type="gd">Gaeilge na hAlban</language>
 			<language type="gl">Gailísis</language>
 			<language type="gn">Guaráinis</language>
+			<language type="gsw" draft="unconfirmed">Gearmáinis Elvéiseach</language>
 			<language type="gu">Gúisearáitis</language>
 			<language type="gv">Mannainis</language>
+			<language type="ha" draft="unconfirmed">Hásais</language>
 			<language type="haw">Haváíais</language>
 			<language type="he">Eabhrais</language>
 			<language type="hi">Hiondúis</language>
 			<language type="hr">Cróitis</language>
+			<language type="ht" draft="unconfirmed">Háítis</language>
 			<language type="hu">Ungáiris</language>
 			<language type="hy">Airméinis</language>
 			<language type="ia">Interlingua</language>
 			<language type="id">Indinéisis</language>
 			<language type="ie">Interlingue</language>
+			<language type="ig" draft="unconfirmed">Íogbóis</language>
 			<language type="ik">Inupiaq</language>
 			<language type="io">Ido</language>
 			<language type="is">Íoslainnis</language>
@@ -89,7 +106,6 @@
 			<language type="mk">Macadóinis</language>
 			<language type="ml">Mailéalaimis</language>
 			<language type="mn">Mongóilis</language>
-			<language type="mo">Moldáivis</language>
 			<language type="mr">Maraitis</language>
 			<language type="ms">Malaeis</language>
 			<language type="mt">Maltais</language>
@@ -98,6 +114,7 @@
 			<language type="nb">Ioruais Bokmål</language>
 			<language type="ne">Neipealais</language>
 			<language type="nl">Ollainnis</language>
+			<language type="nl_BE" draft="unconfirmed">Pléimeannais</language>
 			<language type="nn">Ioruais Nynorsk</language>
 			<language type="no">Ioruais</language>
 			<language type="nv">Navachóis</language>
@@ -111,7 +128,9 @@
 			<language type="pt_BR">Portaingéilis Bhrasaíleach</language>
 			<language type="pt_PT">Portaingéilis Ibéireach</language>
 			<language type="qu">Ceatsuais</language>
+			<language type="rm" draft="unconfirmed">Rómainis</language>
 			<language type="ro">Rómáinis</language>
+			<language type="ro_MD">Moldáivis</language>
 			<language type="ru">Rúisis</language>
 			<language type="sa">Sanscrait</language>
 			<language type="sc">Sairdínis</language>
@@ -131,11 +150,13 @@
 			<language type="sw">Svahaílis</language>
 			<language type="ta">Tamailis</language>
 			<language type="te">Teileagúis</language>
+			<language type="tg" draft="unconfirmed">Táidsícis</language>
 			<language type="th">Téalainnis</language>
 			<language type="ti">Tigrinis</language>
 			<language type="tk">Tuircméinis</language>
 			<language type="tl">Tagálaigis</language>
 			<language type="tlh">Klingon</language>
+			<language type="to" draft="unconfirmed">Tongais</language>
 			<language type="tr">Tuircis</language>
 			<language type="tt">Tatarais</language>
 			<language type="tw">Tvís</language>
@@ -147,66 +168,82 @@
 			<language type="uz">Úisbéicis</language>
 			<language type="vi">Vítneamais</language>
 			<language type="wa">Vallúnais</language>
+			<language type="wo" draft="unconfirmed">Volaifis</language>
 			<language type="xh">Cósais</language>
 			<language type="yi">Giúdais</language>
+			<language type="yo" draft="unconfirmed">Iarúibis</language>
 			<language type="zh">Sínis</language>
 			<language type="zh_Hans">Sínis Shimplithe</language>
 			<language type="zh_Hant">Sínis Thraidisiúnta</language>
 			<language type="zu">Súlúis</language>
+			<language type="zxx" draft="unconfirmed">Gan ábhar teangeolaíoch</language>
 		</languages>
 		<scripts>
-			<script type="Arab">Arabach</script>
-			<script type="Armn">Airméanach</script>
-			<script type="Beng">Beangálach</script>
-			<script type="Brai">Braille</script>
-			<script type="Cyrl">Coireallach</script>
-			<script type="Deva">Déiveanágrach</script>
-			<script type="Ethi">Aetópach</script>
-			<script type="Goth">Gotach</script>
-			<script type="Grek">Gréagach</script>
-			<script type="Gujr">Gúisearátach</script>
-			<script type="Guru">Gurmúcach</script>
-			<script type="Hang">Hangalach</script>
-			<script type="Hani">Han</script>
-			<script type="Hans">Han Símplithe</script>
-			<script type="Hant">Han Traidisiúnta</script>
-			<script type="Hebr">Eabhrach</script>
-			<script type="Hira">Híreagánach</script>
-			<script type="Hrkt">Catacánach nó Híreagánach</script>
-			<script type="Jpan">Seapánach</script>
-			<script type="Kana">Catacánach</script>
-			<script type="Knda">Cannadach</script>
-			<script type="Kore">Cóiréach</script>
-			<script type="Latg">Cló Gaelach</script>
-			<script type="Latn">Laidineach</script>
-			<script type="Mlym">Mailéalamach</script>
-			<script type="Mong">Mongólach</script>
-			<script type="Ogam">Ogham</script>
-			<script type="Orya">Oiríseach</script>
-			<script type="Runr">Rúnach</script>
-			<script type="Taml">Tamalach</script>
-			<script type="Telu">Teileagúch</script>
-			<script type="Thai">Téallanach</script>
-			<script type="Tibt">Tibéadach</script>
-			<script type="Zxxx">Gan Scríobh</script>
-			<script type="Zzzz">Script Anaithnid nó Neamhbhailí</script>
+			<script type="Arab" draft="unconfirmed">Arabach</script>
+			<script type="Armn" draft="unconfirmed">Airméanach</script>
+			<script type="Beng" draft="unconfirmed">Beangálach</script>
+			<script type="Brai" draft="unconfirmed">Braille</script>
+			<script type="Cyrl" draft="unconfirmed">Cirilleach</script>
+			<script type="Deva" draft="unconfirmed">Déiveanágrach</script>
+			<script type="Ethi" draft="unconfirmed">Aetópach</script>
+			<script type="Goth" draft="unconfirmed">Gotach</script>
+			<script type="Grek" draft="unconfirmed">Gréagach</script>
+			<script type="Gujr" draft="unconfirmed">Gúisearátach</script>
+			<script type="Guru" draft="unconfirmed">Gurmúcach</script>
+			<script type="Hang" draft="unconfirmed">Hangalach</script>
+			<script type="Hani" draft="unconfirmed">Han</script>
+			<script type="Hans" draft="unconfirmed">Han Símplithe</script>
+			<script type="Hant" draft="unconfirmed">Han Traidisiúnta</script>
+			<script type="Hebr" draft="unconfirmed">Eabhrach</script>
+			<script type="Hira" draft="unconfirmed">Híreagánach</script>
+			<script type="Hrkt" draft="unconfirmed">Catacánach nó Híreagánach</script>
+			<script type="Jpan" draft="unconfirmed">Seapánach</script>
+			<script type="Kana" draft="unconfirmed">Catacánach</script>
+			<script type="Knda" draft="unconfirmed">Cannadach</script>
+			<script type="Kore" draft="unconfirmed">Cóiréach</script>
+			<script type="Latg" draft="unconfirmed">Cló Gaelach</script>
+			<script type="Latn" draft="unconfirmed">Laidineach</script>
+			<script type="Mlym" draft="unconfirmed">Mailéalamach</script>
+			<script type="Mong" draft="unconfirmed">Mongólach</script>
+			<script type="Ogam" draft="unconfirmed">Ogham</script>
+			<script type="Orya" draft="unconfirmed">Oiríseach</script>
+			<script type="Runr" draft="unconfirmed">Rúnach</script>
+			<script type="Taml" draft="unconfirmed">Tamalach</script>
+			<script type="Telu" draft="unconfirmed">Teileagúch</script>
+			<script type="Thai" draft="unconfirmed">Téallanach</script>
+			<script type="Tibt" draft="unconfirmed">Tibéadach</script>
+			<script type="Zxxx" draft="unconfirmed">Gan Scríobh</script>
+			<script type="Zzzz" draft="unconfirmed">Script Anaithnid nó Neamhbhailí</script>
 		</scripts>
 		<territories>
 			<territory type="001">An Domhan</territory>
 			<territory type="002">An Afraic</territory>
+			<territory type="003" draft="unconfirmed">Meiriceá Thuaidh</territory>
+			<territory type="005" draft="unconfirmed">Meiriceá Theas</territory>
 			<territory type="009">An Aigéine</territory>
+			<territory type="011" draft="unconfirmed">an Afraic Iartharach</territory>
 			<territory type="013">Meiriceá Láir</territory>
+			<territory type="014" draft="unconfirmed">An Afraic Oirthearach</territory>
+			<territory type="015" draft="unconfirmed">An Afraic Thuaisceartach</territory>
 			<territory type="017">An Afraic Láir</territory>
+			<territory type="018" draft="unconfirmed">An Afraic Dheisceartach</territory>
 			<territory type="019">Na Meiriceánna</territory>
+			<territory type="021" draft="unconfirmed">Meiriceá Tuaisceartach</territory>
+			<territory type="029" draft="unconfirmed">Cairibeach</territory>
+			<territory type="030" draft="unconfirmed">Oirthear na hÁise</territory>
+			<territory type="035" draft="unconfirmed">Oirdheisceart na hÁise</territory>
 			<territory type="053">An Astráil agus an Nua-Shéalainn</territory>
 			<territory type="054">An Mheilinéis</territory>
 			<territory type="057">An Réigiún Micrinéiseach</territory>
 			<territory type="061">An Pholainéis</territory>
 			<territory type="142">An Áise</territory>
 			<territory type="143">An Áise Láir</territory>
+			<territory type="145" draft="unconfirmed">Iarthar na hÁise</territory>
 			<territory type="150">An Eoraip</territory>
-			<territory type="172">Comhlathas na Stát Neamhspleácha</territory>
+			<territory type="151" draft="unconfirmed">Oirthear na hEorpa</territory>
+			<territory type="155" draft="unconfirmed">Iarthar na hEorpa</territory>
 			<territory type="419">Meiriceá Laidineach agus an Mhuir Chairib</territory>
+			<territory type="AC" draft="unconfirmed">Oileán na Deascabhála</territory>
 			<territory type="AD">Andóra</territory>
 			<territory type="AE">Aontas na nÉimíríochtaí Arabacha</territory>
 			<territory type="AF">An Afganastáin</territory>
@@ -233,6 +270,7 @@
 			<territory type="BH">Bairéin</territory>
 			<territory type="BI">An Bhurúin</territory>
 			<territory type="BJ">Beinin</territory>
+			<territory type="BL" draft="unconfirmed">Saint Barthélemy</territory>
 			<territory type="BM">Beirmiúda</territory>
 			<territory type="BN">Brúiné</territory>
 			<territory type="BO">An Bholaiv</territory>
@@ -256,7 +294,6 @@
 			<territory type="CN">An tSín</territory>
 			<territory type="CO">An Cholóim</territory>
 			<territory type="CR">Cósta Ríce</territory>
-			<territory type="CS">An tSeirbia agus Montainéagró</territory>
 			<territory type="CU">Cúba</territory>
 			<territory type="CV">An Rinn Ghlas</territory>
 			<territory type="CX">Oileán na Nollag</territory>
@@ -275,6 +312,7 @@
 			<territory type="ER">An Eiritré</territory>
 			<territory type="ES">An Spáinn</territory>
 			<territory type="ET">An Aetóip</territory>
+			<territory type="EU">An tAontas Eorpach</territory>
 			<territory type="FI">An Fhionlainn</territory>
 			<territory type="FJ">Fidsí</territory>
 			<territory type="FK">Oileáin Fháclainne</territory>
@@ -301,6 +339,7 @@
 			<territory type="GW">An Ghuine-Bhissau</territory>
 			<territory type="GY">An Ghuáin</territory>
 			<territory type="HK">R.R.S. na Síne Hong Cong</territory>
+			<territory type="HK" alt="short">Hong Cong</territory>
 			<territory type="HM">Oileán Heard agus Oileáin McDonald</territory>
 			<territory type="HN">Hondúras</territory>
 			<territory type="HR">An Chróit</territory>
@@ -353,6 +392,7 @@
 			<territory type="MM">Maenmar</territory>
 			<territory type="MN">An Mhongóil</territory>
 			<territory type="MO">R.R.S. na Síne Macáó</territory>
+			<territory type="MO" alt="short">Macáó</territory>
 			<territory type="MP">Oileáin Mariana Thuaidh</territory>
 			<territory type="MQ">Martainíc</territory>
 			<territory type="MR">An Mharatáin</territory>
@@ -393,7 +433,6 @@
 			<territory type="PY">Paragua</territory>
 			<territory type="QA">Catar</territory>
 			<territory type="QO">An Aigéine Imeallach</territory>
-			<territory type="QU">An tAontas Eorpach</territory>
 			<territory type="RE">Réunion</territory>
 			<territory type="RO">An Rómáin</territory>
 			<territory type="RS">An tSeirbia</territory>
@@ -414,6 +453,7 @@
 			<territory type="SN">An tSeineagáil</territory>
 			<territory type="SO">An tSomáil</territory>
 			<territory type="SR">Suranam</territory>
+			<territory type="SS" draft="provisional">An tSúdáin Theas</territory>
 			<territory type="ST">Sao Tome agus Principe</territory>
 			<territory type="SV">An tSalvadóir</territory>
 			<territory type="SY">An tSiria</territory>
@@ -457,45 +497,81 @@
 			<territory type="ZZ">Réigiún Anaithnid nó Neamhbhailí</territory>
 		</territories>
 		<keys>
-			<key type="calendar">Féilire</key>
-			<key type="collation">Comhordú</key>
-			<key type="currency">Airgeadra</key>
+			<key type="calendar" draft="unconfirmed">Féilire</key>
+			<key type="collation" draft="unconfirmed">Ord Sórtála</key>
+			<key type="currency" draft="unconfirmed">Airgeadra</key>
+			<key type="numbers" draft="unconfirmed">Uimhreacha</key>
 		</keys>
 		<types>
-			<type type="big5han" key="collation">Ord sórtála Síneach traidisiúnta - Big5</type>
-			<type type="buddhist" key="calendar">Féilire Búdaíoch</type>
-			<type type="chinese" key="calendar">Féilire Síneach</type>
-			<type type="direct" key="collation">Ord sórtála díreach</type>
-			<type type="gb2312han" key="collation">Ord sórtála Síneach simplithe - GB 2312</type>
-			<type type="gregorian" key="calendar">Féilire Greagórach</type>
-			<type type="hebrew" key="calendar">Féilire Eabhrach</type>
-			<type type="islamic" key="calendar">Féilire Ioslamach</type>
-			<type type="islamic-civil" key="calendar">Féilire Ioslamach Sibhialta</type>
-			<type type="japanese" key="calendar">Féilire Seapánach</type>
-			<type type="phonebook" key="collation">Ord sórtála an eolaire teileafóin</type>
-			<type type="pinyin" key="collation">Ord sórtála pinyin</type>
-			<type type="stroke" key="collation">Ord sórtála stríce</type>
-			<type type="traditional" key="collation">Ord sórtála traidisiúnta</type>
+			<type type="big5han" key="collation" draft="unconfirmed">Ord sórtála Síneach traidisiúnta - Big5</type>
+			<type type="buddhist" key="calendar" draft="unconfirmed">Féilire Búdaíoch</type>
+			<type type="chinese" key="calendar" draft="unconfirmed">Féilire Síneach</type>
+			<type type="gb2312han" key="collation" draft="unconfirmed">Ord sórtála Síneach simplithe - GB 2312</type>
+			<type type="gregorian" key="calendar" draft="unconfirmed">Féilire Greagórach</type>
+			<type type="hebrew" key="calendar" draft="unconfirmed">Féilire Eabhrach</type>
+			<type type="islamic" key="calendar" draft="unconfirmed">Féilire Ioslamach</type>
+			<type type="islamic-civil" key="calendar" draft="unconfirmed">Féilire Ioslamach Sibhialta</type>
+			<type type="japanese" key="calendar" draft="unconfirmed">Féilire Seapánach</type>
+			<type type="phonebook" key="collation" draft="unconfirmed">Ord sórtála an eolaire teileafóin</type>
+			<type type="pinyin" key="collation" draft="unconfirmed">Ord sórtála pinyin</type>
+			<type type="stroke" key="collation" draft="unconfirmed">Ord sórtála stríce</type>
+			<type type="traditional" key="collation" draft="unconfirmed">Ord sórtála traidisiúnta</type>
 		</types>
 		<measurementSystemNames>
-			<measurementSystemName type="metric">Méadrach</measurementSystemName>
-			<measurementSystemName type="US">Meiriceánach</measurementSystemName>
+			<measurementSystemName type="metric" draft="unconfirmed">Méadrach</measurementSystemName>
+			<measurementSystemName type="US" draft="unconfirmed">Meiriceánach</measurementSystemName>
 		</measurementSystemNames>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á b-e é f-i í j-o ó p-u ú v-z]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[ḃ ċ ḋ ḟ ġ ṁ ṗ ṡ ṫ]</exemplarCharacters>
+		<exemplarCharacters>[a á b c d e é f g h i í l m n o ó p r s t u ú]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[å ḃ ċ ḋ ḟ ġ j k ṁ ṗ q ṡ ṫ v w x y z]</exemplarCharacters>
+		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
-			<calendar type="buddhist">
+			<calendar type="generic">
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE d MMMM y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
+					<dateFormatLength type="long">
+						<dateFormat>
+							<pattern>d MMMM y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="medium">
+						<dateFormat>
+							<pattern>d MMM y G</pattern>
+						</dateFormat>
+					</dateFormatLength>
+					<dateFormatLength type="short">
+						<dateFormat>
+							<pattern>dd/MM/y GGGGG</pattern>
+						</dateFormat>
+					</dateFormatLength>
 				</dateFormats>
+				<dateTimeFormats>
+					<availableFormats>
+						<dateFormatItem id="Ed">E d</dateFormatItem>
+						<dateFormatItem id="Gy">y G</dateFormatItem>
+						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMd">d MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMEd">E d MMM y G</dateFormatItem>
+						<dateFormatItem id="M">LL</dateFormatItem>
+						<dateFormatItem id="Md">dd/MM</dateFormatItem>
+						<dateFormatItem id="MEd">E dd/MM</dateFormatItem>
+						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
+						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
+						<dateFormatItem id="yyyyM">MM/y GGGGG</dateFormatItem>
+						<dateFormatItem id="yyyyMd">dd/MM/y GGGGG</dateFormatItem>
+						<dateFormatItem id="yyyyMEd">E dd/MM/y GGGGG</dateFormatItem>
+						<dateFormatItem id="yyyyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="yyyyMMMd">d MMM y G</dateFormatItem>
+						<dateFormatItem id="yyyyMMMEd">E d MMM y G</dateFormatItem>
+					</availableFormats>
+				</dateTimeFormats>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -569,13 +645,13 @@
 					</dayContext>
 					<dayContext type="stand-alone">
 						<dayWidth type="narrow">
-							<day type="sun">D</day>
-							<day type="mon">L</day>
-							<day type="tue">M</day>
-							<day type="wed">C</day>
-							<day type="thu">D</day>
-							<day type="fri">A</day>
-							<day type="sat">S</day>
+							<day type="sun" draft="unconfirmed">D</day>
+							<day type="mon" draft="unconfirmed">L</day>
+							<day type="tue" draft="unconfirmed">M</day>
+							<day type="wed" draft="unconfirmed">C</day>
+							<day type="thu" draft="unconfirmed">D</day>
+							<day type="fri" draft="unconfirmed">A</day>
+							<day type="sat" draft="unconfirmed">S</day>
 						</dayWidth>
 					</dayContext>
 				</days>
@@ -595,12 +671,18 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<am>a.m.</am>
-				<pm>p.m.</pm>
+				<dayPeriods>
+					<dayPeriodContext type="format">
+						<dayPeriodWidth type="wide">
+							<dayPeriod type="am">a.m.</dayPeriod>
+							<dayPeriod type="pm">p.m.</dayPeriod>
+						</dayPeriodWidth>
+					</dayPeriodContext>
+				</dayPeriods>
 				<eras>
 					<eraNames>
-						<era type="0">Roimh Chríost</era>
-						<era type="1">Anno Domini</era>
+						<era type="0" draft="unconfirmed">Roimh Chríost</era>
+						<era type="1" draft="unconfirmed">Anno Domini</era>
 					</eraNames>
 					<eraAbbr>
 						<era type="0">RC</era>
@@ -625,95 +707,100 @@
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>dd/MM/yyyy</pattern>
+							<pattern>dd/MM/y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>HH:mm:ss zzzz</pattern>
+							<pattern draft="unconfirmed">HH:mm:ss zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>HH:mm:ss z</pattern>
+							<pattern draft="unconfirmed">HH:mm:ss z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>HH:mm:ss</pattern>
+							<pattern draft="unconfirmed">HH:mm:ss</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>HH:mm</pattern>
+							<pattern draft="unconfirmed">HH:mm</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="HHmm">HH:mm</dateFormatItem>
-						<dateFormatItem id="HHmmss">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="Md">d/M</dateFormatItem>
-						<dateFormatItem id="MMdd">dd/MM</dateFormatItem>
-						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
-						<dateFormatItem id="mmss">mm:ss</dateFormatItem>
-						<dateFormatItem id="yyMM">MM/yy</dateFormatItem>
-						<dateFormatItem id="yyMMM">MMM yy</dateFormatItem>
-						<dateFormatItem id="yyQ">Q yy</dateFormatItem>
-						<dateFormatItem id="yyyyMM">MM/yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="Ed">E d</dateFormatItem>
+						<dateFormatItem id="Gy">y G</dateFormatItem>
+						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMd">d MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMEd">E d MMM y G</dateFormatItem>
+						<dateFormatItem id="M">LL</dateFormatItem>
+						<dateFormatItem id="Md">dd/MM</dateFormatItem>
+						<dateFormatItem id="MEd">E dd/MM</dateFormatItem>
+						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
+						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
+						<dateFormatItem id="yM">MM/y</dateFormatItem>
+						<dateFormatItem id="yMd">dd/MM/y</dateFormatItem>
+						<dateFormatItem id="yMEd">E dd/MM/y</dateFormatItem>
+						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMd">d MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMEd">E d MMM y</dateFormatItem>
 					</availableFormats>
 				</dateTimeFormats>
-				<fields>
-					<field type="era">
-						<displayName>Ré</displayName>
-					</field>
-					<field type="year">
-						<displayName>Bliain</displayName>
-					</field>
-					<field type="month">
-						<displayName>Mí</displayName>
-					</field>
-					<field type="week">
-						<displayName>Seachtain</displayName>
-					</field>
-					<field type="day">
-						<displayName>Lá</displayName>
-						<relative type="-2">Arú inné</relative>
-						<relative type="-1">Inné</relative>
-						<relative type="0">Inniu</relative>
-						<relative type="1">Amárach</relative>
-						<relative type="2">Arú amárach</relative>
-					</field>
-					<field type="weekday">
-						<displayName>Lá na seachtaine</displayName>
-					</field>
-					<field type="dayperiod">
-						<displayName>a.m./p.m.</displayName>
-					</field>
-					<field type="hour">
-						<displayName>Uair</displayName>
-					</field>
-					<field type="minute">
-						<displayName>Nóiméad</displayName>
-					</field>
-					<field type="second">
-						<displayName>Soicind</displayName>
-					</field>
-					<field type="zone">
-						<displayName>Crios</displayName>
-					</field>
-				</fields>
 			</calendar>
 		</calendars>
+		<fields>
+			<field type="era">
+				<displayName draft="unconfirmed">Ré</displayName>
+			</field>
+			<field type="year">
+				<displayName draft="unconfirmed">Bliain</displayName>
+			</field>
+			<field type="month">
+				<displayName draft="unconfirmed">Mí</displayName>
+			</field>
+			<field type="week">
+				<displayName draft="unconfirmed">Seachtain</displayName>
+			</field>
+			<field type="day">
+				<displayName draft="unconfirmed">Lá</displayName>
+				<relative type="-2" draft="unconfirmed">Arú inné</relative>
+				<relative type="-1" draft="unconfirmed">Inné</relative>
+				<relative type="0" draft="unconfirmed">Inniu</relative>
+				<relative type="1" draft="unconfirmed">Amárach</relative>
+				<relative type="2" draft="unconfirmed">Arú amárach</relative>
+			</field>
+			<field type="weekday">
+				<displayName draft="unconfirmed">Lá na seachtaine</displayName>
+			</field>
+			<field type="dayperiod">
+				<displayName draft="unconfirmed">a.m./p.m.</displayName>
+			</field>
+			<field type="hour">
+				<displayName draft="unconfirmed">Uair</displayName>
+			</field>
+			<field type="minute">
+				<displayName draft="unconfirmed">Nóiméad</displayName>
+			</field>
+			<field type="second">
+				<displayName draft="unconfirmed">Soicind</displayName>
+			</field>
+			<field type="zone">
+				<displayName draft="unconfirmed">Crios</displayName>
+			</field>
+		</fields>
 		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>MAG{0}</gmtFormat>
-			<regionFormat>{0}</regionFormat>
+			<hourFormat draft="unconfirmed">+HH:mm;-HH:mm</hourFormat>
+			<gmtFormat draft="unconfirmed">MAG{0}</gmtFormat>
+			<regionFormat draft="unconfirmed">{0}</regionFormat>
 			<zone type="Etc/Unknown">
-				<exemplarCity>Anaithnid</exemplarCity>
+				<exemplarCity draft="unconfirmed">Anaithnid</exemplarCity>
 			</zone>
 			<zone type="Europe/London">
 				<long>
@@ -733,6 +820,27 @@
 				</short>
 				<exemplarCity>Baile Átha Cliath</exemplarCity>
 			</zone>
+			<metazone type="Europe_Central">
+				<short>
+					<generic>CET</generic>
+					<standard>CET</standard>
+					<daylight>CEST</daylight>
+				</short>
+			</metazone>
+			<metazone type="Europe_Eastern">
+				<short>
+					<generic>EET</generic>
+					<standard>EET</standard>
+					<daylight>EEST</daylight>
+				</short>
+			</metazone>
+			<metazone type="Europe_Western">
+				<short>
+					<generic>WET</generic>
+					<standard>WET</standard>
+					<daylight>WEST</daylight>
+				</short>
+			</metazone>
 			<metazone type="GMT">
 				<long>
 					<standard>Meán-Am Greenwich</standard>
@@ -744,13 +852,13 @@
 		</timeZoneNames>
 	</dates>
 	<numbers>
-		<symbols>
-			<decimal>.</decimal>
-			<group>,</group>
+		<symbols numberSystem="latn">
+			<decimal draft="unconfirmed">.</decimal>
+			<group draft="unconfirmed">,</group>
 		</symbols>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
@@ -763,7 +871,7 @@
 				<displayName>Dirham Aontas na nÉimíríochtaí Arabacha</displayName>
 			</currency>
 			<currency type="AFA">
-				<displayName>Afgainí (1927-2002)</displayName>
+				<displayName>Afgainí (1927–2002)</displayName>
 			</currency>
 			<currency type="AFN">
 				<displayName>Afgainí</displayName>
@@ -782,19 +890,19 @@
 				<displayName>Kwanza Angólach</displayName>
 			</currency>
 			<currency type="AOK">
-				<displayName>Kwanza Angólach (1977-1990)</displayName>
+				<displayName>Kwanza Angólach (1977–1990)</displayName>
 			</currency>
 			<currency type="AON">
-				<displayName>Kwanza Nua Angólach (1990-2000)</displayName>
+				<displayName>Kwanza Nua Angólach (1990–2000)</displayName>
 			</currency>
 			<currency type="AOR">
-				<displayName>Kwanza Reajustado Angólach (1995-1999)</displayName>
+				<displayName>Kwanza Reajustado Angólach (1995–1999)</displayName>
 			</currency>
 			<currency type="ARA">
 				<displayName>Austral Airgintíneach</displayName>
 			</currency>
 			<currency type="ARP">
-				<displayName>Peso na Airgintíne (1983-1985)</displayName>
+				<displayName>Peso na Airgintíne (1983–1985)</displayName>
 			</currency>
 			<currency type="ARS">
 				<displayName>Peso na Airgintíne</displayName>
@@ -860,13 +968,13 @@
 				<displayName>Mvdol Bolavach</displayName>
 			</currency>
 			<currency type="BRB">
-				<displayName>Cruzeiro Novo Brasaíleach (1967-1986)</displayName>
+				<displayName>Cruzeiro Novo Brasaíleach (1967–1986)</displayName>
 			</currency>
 			<currency type="BRC">
 				<displayName>Cruzado Brasaíleach</displayName>
 			</currency>
 			<currency type="BRE">
-				<displayName>Cruzeiro Brasaíleach (1990-1993)</displayName>
+				<displayName>Cruzeiro Brasaíleach (1990–1993)</displayName>
 			</currency>
 			<currency type="BRL">
 				<displayName>Real Brasaíleach</displayName>
@@ -890,7 +998,7 @@
 				<displayName>Pula Botsuánach</displayName>
 			</currency>
 			<currency type="BYB">
-				<displayName>Rúbal Nua Béalarúiseach (1994-1999)</displayName>
+				<displayName>Rúbal Nua Béalarúiseach (1994–1999)</displayName>
 			</currency>
 			<currency type="BYR">
 				<displayName>Rúbal Béalarúiseach</displayName>
@@ -1196,7 +1304,7 @@
 				<displayName>Peso Meicsiceo</displayName>
 			</currency>
 			<currency type="MXP">
-				<displayName>Peso Airgid Meicsiceo (1861-1992)</displayName>
+				<displayName>Peso Airgid Meicsiceo (1861–1992)</displayName>
 			</currency>
 			<currency type="MXV">
 				<displayName>Unidad de Inversion (UDI) Meicsiceo</displayName>
@@ -1262,7 +1370,7 @@
 				<displayName>Zloty Polannach</displayName>
 			</currency>
 			<currency type="PLZ">
-				<displayName>Zloty Polannach (1950-1995)</displayName>
+				<displayName>Zloty Polannach (1950–1995)</displayName>
 			</currency>
 			<currency type="PTE">
 				<displayName>Escudo Portaingélach</displayName>
@@ -1280,7 +1388,7 @@
 				<displayName>Rúbal Rúiseach</displayName>
 			</currency>
 			<currency type="RUR">
-				<displayName>Rúbal Rúiseach (1991-1998)</displayName>
+				<displayName>Rúbal Rúiseach (1991–1998)</displayName>
 			</currency>
 			<currency type="RWF">
 				<displayName>Franc Ruanda</displayName>
@@ -1379,7 +1487,7 @@
 				<displayName>Karbovanetz Úcránach</displayName>
 			</currency>
 			<currency type="UGS">
-				<displayName>Scilling Uganda (1966-1987)</displayName>
+				<displayName>Scilling Uganda (1966–1987)</displayName>
 			</currency>
 			<currency type="UGX">
 				<displayName>Scilling Uganda</displayName>
@@ -1394,7 +1502,7 @@
 				<displayName>Dollar S.A.M. (an la céanna)</displayName>
 			</currency>
 			<currency type="UYP">
-				<displayName>Peso Uragua (1975-1993)</displayName>
+				<displayName>Peso Uragua (1975–1993)</displayName>
 			</currency>
 			<currency type="UYU">
 				<displayName>Peso Uruguayo Uragua</displayName>
@@ -1403,6 +1511,9 @@
 				<displayName>Sum na hÚisbéiceastáine</displayName>
 			</currency>
 			<currency type="VEB">
+				<displayName>Bolivar Veiniséala (1871–2008)</displayName>
+			</currency>
+			<currency type="VEF">
 				<displayName>Bolivar Veiniséala</displayName>
 			</currency>
 			<currency type="VND">
@@ -1454,7 +1565,7 @@
 				<displayName>CFP Franc</displayName>
 			</currency>
 			<currency type="XXX">
-				<displayName>Airgeadra Anaithnid nó Neamhbhailí</displayName>
+				<displayName draft="unconfirmed">Airgeadra Anaithnid nó Neamhbhailí</displayName>
 			</currency>
 			<currency type="YDD">
 				<displayName>Dínear Éimin</displayName>
@@ -1478,6 +1589,9 @@
 				<displayName>Rand na hAfraice Theas</displayName>
 			</currency>
 			<currency type="ZMK">
+				<displayName>Kwacha Saimbiach (1968–2012)</displayName>
+			</currency>
+			<currency type="ZMW">
 				<displayName>Kwacha Saimbiach</displayName>
 			</currency>
 			<currency type="ZRN">
@@ -1493,8 +1607,8 @@
 	</numbers>
 	<posix>
 		<messages>
-			<yesstr>tá:t</yesstr>
-			<nostr>níl:n</nostr>
+			<yesstr draft="unconfirmed">tá:t</yesstr>
+			<nostr draft="unconfirmed">níl:n</nostr>
 		</messages>
 	</posix>
 </ldml>

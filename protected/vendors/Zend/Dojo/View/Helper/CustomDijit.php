@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Dojo
  * @subpackage View
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: CustomDijit.php 23953 2011-05-03 05:47:39Z ralph $
+ * @version    $Id$
  */
 
 /** Zend_Dojo_View_Helper_DijitContainer */
@@ -29,7 +29,7 @@
  * @uses       Zend_Dojo_View_Helper_DijitContainer
  * @package    Zend_Dojo
  * @subpackage View
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
   */
 class Zend_Dojo_View_Helper_CustomDijit extends Zend_Dojo_View_Helper_DijitContainer

@@ -15,22 +15,22 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Class.php 24032 2011-05-10 21:08:20Z mabe $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Cache_Core
  */
-// // require_once 'Zend/Cache/Core.php';
+// require_once 'Zend/Cache/Core.php';
 
 
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd New BSD License
  */
 class Zend_Cache_Frontend_Class extends Zend_Cache_Core
 {
@@ -53,9 +53,9 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
      * @var array available options
      */
     protected $_specificOptions = array(
-        'cached_entity' => null,
-        'cache_by_default' => true,
-        'cached_methods' => array(),
+        'cached_entity'      => null,
+        'cache_by_default'   => true,
+        'cached_methods'     => array(),
         'non_cached_methods' => array()
     );
 
@@ -64,23 +64,23 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
      *
      * @var array
      */
-    private $_tags = array();
+    protected $_tags = array();
 
     /**
      * SpecificLifetime value
      *
      * false => no specific life time
      *
-     * @var int
+     * @var bool|int
      */
-    private $_specificLifetime = false;
+    protected $_specificLifetime = false;
 
     /**
      * The cached object or the name of the cached abstract class
      *
      * @var mixed
      */
-    private $_cachedEntity = null;
+    protected $_cachedEntity = null;
 
      /**
       * The class name of the cached object or cached abstract class
@@ -89,21 +89,20 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
       *
       * @var string
       */
-    private $_cachedEntityLabel = '';
+    protected $_cachedEntityLabel = '';
 
     /**
      * Priority (used by some particular backends)
      *
      * @var int
      */
-    private $_priority = 8;
+    protected $_priority = 8;
 
     /**
      * Constructor
      *
      * @param  array $options Associative array of options
      * @throws Zend_Cache_Exception
-     * @return void
      */
     public function __construct(array $options = array())
     {
@@ -120,7 +119,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
     /**
      * Set a specific life time
      *
-     * @param  int $specificLifetime
+     * @param  bool|int $specificLifetime
      * @return void
      */
     public function setSpecificLifetime($specificLifetime = false)
@@ -168,11 +167,15 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
     public function setCachedEntity($cachedEntity)
     {
         if (!is_string($cachedEntity) && !is_object($cachedEntity)) {
-            Zend_Cache::throwException('cached_entity must be an object or a class name');
+            Zend_Cache::throwException(
+                'cached_entity must be an object or a class name'
+            );
         }
-        $this->_cachedEntity = $cachedEntity;
+
+        $this->_cachedEntity                     = $cachedEntity;
         $this->_specificOptions['cached_entity'] = $cachedEntity;
-        if (is_string($this->_cachedEntity)){
+
+        if (is_string($this->_cachedEntity)) {
             $this->_cachedEntityLabel = $this->_cachedEntity;
         } else {
             $ro = new ReflectionObject($this->_cachedEntity);
@@ -197,6 +200,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
      * @param  string $name       Method name
      * @param  array  $parameters Method parameters
      * @return mixed Result
+     * @throws Exception
      */
     public function __call($name, $parameters)
     {
@@ -209,14 +213,17 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
         $cacheBool1 = $this->_specificOptions['cache_by_default'];
         $cacheBool2 = in_array($name, $this->_specificOptions['cached_methods']);
         $cacheBool3 = in_array($name, $this->_specificOptions['non_cached_methods']);
-        $cache = (($cacheBool1 || $cacheBool2) && (!$cacheBool3));
+        $cache      = (($cacheBool1 || $cacheBool2) && (!$cacheBool3));
+
         if (!$cache) {
             // We do not have not cache
             return call_user_func_array($callback, $parameters);
         }
 
-        $id = $this->_makeId($name, $parameters);
-        if ( ($rs = $this->load($id)) && isset($rs[0], $rs[1]) ) {
+        $id = $this->makeId($name, $parameters);
+        if (($rs = $this->load($id)) && (array_key_exists(0, $rs))
+            && (array_key_exists(1, $rs))
+        ) {
             // A cache is available
             $output = $rs[0];
             $return = $rs[1];
@@ -228,8 +235,12 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
             try {
                 $return = call_user_func_array($callback, $parameters);
                 $output = ob_get_clean();
-                $data = array($output, $return);
-                $this->save($data, $id, $this->_tags, $this->_specificLifetime, $this->_priority);
+                $data   = array($output, $return);
+
+                $this->save(
+                    $data, $id, $this->_tags, $this->_specificLifetime,
+                    $this->_priority
+                );
             } catch (Exception $e) {
                 ob_end_clean();
                 throw $e;
@@ -261,5 +272,4 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
     {
         return md5($this->_cachedEntityLabel . '__' . $name . '__' . serialize($args));
     }
-
 }

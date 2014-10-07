@@ -119,7 +119,8 @@ return array(
             'th' => 'Thai*',
             'tr' => 'Turkish*',
             'ru' => 'Русский*',
-            'uk' => 'Ukrainian*'
+            'uk' => 'Ukrainian*',
+            'el' => 'Greek*',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),

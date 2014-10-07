@@ -14,15 +14,15 @@
  *
  * @category   Zend
  * @package    Zend_Cache
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Core.php 23800 2011-03-10 20:52:08Z mabe $
+ * @version    $Id$
  */
 
 
 /**
  * @package    Zend_Cache
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Core
@@ -211,7 +211,7 @@ class Zend_Cache_Core
     public function setOption($name, $value)
     {
         if (!is_string($name)) {
-            Zend_Cache::throwException("Incorrect option name : $name");
+            Zend_Cache::throwException("Incorrect option name!");
         }
         $name = strtolower($name);
         if (array_key_exists($name, $this->_options)) {
@@ -235,17 +235,18 @@ class Zend_Cache_Core
      */
     public function getOption($name)
     {
-        if (is_string($name)) {
-            $name = strtolower($name);
-            if (array_key_exists($name, $this->_options)) {
-                // This is a Core option
-                return $this->_options[$name];
-            }
-            if (array_key_exists($name, $this->_specificOptions)) {
-                // This a specic option of this frontend
-                return $this->_specificOptions[$name];
-            }
+        $name = strtolower($name);
+
+        if (array_key_exists($name, $this->_options)) {
+            // This is a Core option
+            return $this->_options[$name];
         }
+
+        if (array_key_exists($name, $this->_specificOptions)) {
+            // This a specic option of this frontend
+            return $this->_specificOptions[$name];
+        }
+
         Zend_Cache::throwException("Incorrect option name : $name");
     }
 
@@ -718,9 +719,9 @@ class Zend_Cache_Core
         }
 
         // Create a default logger to the standard output stream
-        // // require_once 'Zend/Log.php';
-        // // require_once 'Zend/Log/Writer/Stream.php';
-        // // require_once 'Zend/Log/Filter/Priority.php';
+        // require_once 'Zend/Log.php';
+        // require_once 'Zend/Log/Writer/Stream.php';
+        // require_once 'Zend/Log/Filter/Priority.php';
         $logger = new Zend_Log(new Zend_Log_Writer_Stream('php://output'));
         $logger->addFilter(new Zend_Log_Filter_Priority(Zend_Log::WARN, '<='));
         $this->_options['logger'] = $logger;

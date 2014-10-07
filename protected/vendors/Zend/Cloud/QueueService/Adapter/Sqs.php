@@ -13,14 +13,14 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage QueueService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-// // require_once 'Zend/Service/Amazon/Sqs.php';
-// // require_once 'Zend/Cloud/QueueService/Adapter/AbstractAdapter.php';
-// // require_once 'Zend/Cloud/QueueService/Exception.php';
-// // require_once 'Zend/Cloud/QueueService/Message.php';
+// require_once 'Zend/Service/Amazon/Sqs.php';
+// require_once 'Zend/Cloud/QueueService/Adapter/AbstractAdapter.php';
+// require_once 'Zend/Cloud/QueueService/Exception.php';
+// require_once 'Zend/Cloud/QueueService/Message.php';
 
 /**
  * SQS adapter for simple queue service.
@@ -28,7 +28,7 @@
  * @category   Zend
  * @package    Zend_Cloud
  * @subpackage QueueService
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cloud_QueueService_Adapter_Sqs
@@ -118,7 +118,7 @@ class Zend_Cloud_QueueService_Adapter_Sqs
         try {
             return $this->_sqs->delete($queueId);
         } catch(Zend_Service_Amazon_Exception $e) {
-            throw Zend_Cloud_QueueService_Exception('Error on queue deletion: '.$e->getMessage(), $e->getCode(), $e);
+            throw new Zend_Cloud_QueueService_Exception('Error on queue deletion: '.$e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -172,7 +172,7 @@ class Zend_Cloud_QueueService_Adapter_Sqs
     public function storeQueueMetadata($queueId, $metadata, $options = null)
     {
         // TODO Add support for SetQueueAttributes to client library
-        // // require_once 'Zend/Cloud/OperationNotAvailableException.php';
+        // require_once 'Zend/Cloud/OperationNotAvailableException.php';
         throw new Zend_Cloud_OperationNotAvailableException('Amazon SQS doesn\'t currently support storing metadata');
     }
 

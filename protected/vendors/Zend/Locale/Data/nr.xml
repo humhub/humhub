@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
+<!-- Copyright © 1991-2013 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html
+-->
 <ldml>
 	<identity>
-		<version number="$Revision: 1.28 $"/>
-		<generation date="$Date: 2009/05/05 23:06:38 $"/>
+		<version number="$Revision: 9287 $"/>
+		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
 		<language type="nr"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
-			<language type="nr">isiNdebele</language>
+			<language type="nr" draft="provisional">isiNdebele</language>
 		</languages>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a-z]</exemplarCharacters>
+		<exemplarCharacters>[a b c d e f g h i j k l m n o p q s t u v w x y z]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[r]</exemplarCharacters>
+		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<delimiters>
-		<quotationStart>‘</quotationStart>
-		<quotationEnd>’</quotationEnd>
-		<alternateQuotationStart>“</alternateQuotationStart>
-		<alternateQuotationEnd>”</alternateQuotationEnd>
+		<quotationStart draft="unconfirmed">‘</quotationStart>
+		<quotationEnd draft="unconfirmed">’</quotationEnd>
+		<alternateQuotationStart draft="unconfirmed">“</alternateQuotationStart>
+		<alternateQuotationEnd draft="unconfirmed">”</alternateQuotationEnd>
 	</delimiters>
 	<dates>
 		<calendars>
@@ -25,202 +32,104 @@
 				<months>
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
-							<month type="1">Jan</month>
-							<month type="2">Feb</month>
-							<month type="3">Mat</month>
-							<month type="4">Apr</month>
-							<month type="5">Mey</month>
-							<month type="6">Jun</month>
-							<month type="7">Jul</month>
-							<month type="8">Arh</month>
-							<month type="9">Sep</month>
-							<month type="10">Okt</month>
-							<month type="11">Usi</month>
-							<month type="12">Dis</month>
+							<month type="1" draft="unconfirmed">Jan</month>
+							<month type="2" draft="unconfirmed">Feb</month>
+							<month type="3" draft="unconfirmed">Mat</month>
+							<month type="4" draft="unconfirmed">Apr</month>
+							<month type="5" draft="unconfirmed">Mey</month>
+							<month type="6" draft="unconfirmed">Jun</month>
+							<month type="7" draft="unconfirmed">Jul</month>
+							<month type="8" draft="unconfirmed">Arh</month>
+							<month type="9" draft="unconfirmed">Sep</month>
+							<month type="10" draft="unconfirmed">Okt</month>
+							<month type="11" draft="unconfirmed">Usi</month>
+							<month type="12" draft="unconfirmed">Dis</month>
 						</monthWidth>
 						<monthWidth type="wide">
-							<month type="1">Janabari</month>
-							<month type="2">uFeberbari</month>
-							<month type="3">uMatjhi</month>
-							<month type="4">u-Apreli</month>
-							<month type="5">Meyi</month>
-							<month type="6">Juni</month>
-							<month type="7">Julayi</month>
-							<month type="8">Arhostosi</month>
-							<month type="9">Septemba</month>
-							<month type="10">Oktoba</month>
-							<month type="11">Usinyikhaba</month>
-							<month type="12">Disemba</month>
-						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
-						<monthWidth type="narrow">
-							<month type="1">1</month>
-							<month type="2">2</month>
-							<month type="3">3</month>
-							<month type="4">4</month>
-							<month type="5">5</month>
-							<month type="6">6</month>
-							<month type="7">7</month>
-							<month type="8">8</month>
-							<month type="9">9</month>
-							<month type="10">10</month>
-							<month type="11">11</month>
-							<month type="12">12</month>
+							<month type="1" draft="unconfirmed">Janabari</month>
+							<month type="2" draft="unconfirmed">uFeberbari</month>
+							<month type="3" draft="unconfirmed">uMatjhi</month>
+							<month type="4" draft="unconfirmed">u-Apreli</month>
+							<month type="5" draft="unconfirmed">Meyi</month>
+							<month type="6" draft="unconfirmed">Juni</month>
+							<month type="7" draft="unconfirmed">Julayi</month>
+							<month type="8" draft="unconfirmed">Arhostosi</month>
+							<month type="9" draft="unconfirmed">Septemba</month>
+							<month type="10" draft="unconfirmed">Oktoba</month>
+							<month type="11" draft="unconfirmed">Usinyikhaba</month>
+							<month type="12" draft="unconfirmed">Disemba</month>
 						</monthWidth>
 					</monthContext>
 				</months>
 				<days>
 					<dayContext type="format">
 						<dayWidth type="abbreviated">
-							<day type="sun">Son</day>
-							<day type="mon">Mvu</day>
-							<day type="tue">Bil</day>
-							<day type="wed">Tha</day>
-							<day type="thu">Ne</day>
-							<day type="fri">Hla</day>
-							<day type="sat">Gqi</day>
+							<day type="sun" draft="unconfirmed">Son</day>
+							<day type="mon" draft="unconfirmed">Mvu</day>
+							<day type="tue" draft="unconfirmed">Bil</day>
+							<day type="wed" draft="unconfirmed">Tha</day>
+							<day type="thu" draft="unconfirmed">Ne</day>
+							<day type="fri" draft="unconfirmed">Hla</day>
+							<day type="sat" draft="unconfirmed">Gqi</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">uSonto</day>
-							<day type="mon">uMvulo</day>
-							<day type="tue">uLesibili</day>
-							<day type="wed">Lesithathu</day>
-							<day type="thu">uLesine</day>
-							<day type="fri">ngoLesihlanu</day>
-							<day type="sat">umGqibelo</day>
-						</dayWidth>
-					</dayContext>
-					<dayContext type="stand-alone">
-						<dayWidth type="narrow">
-							<day type="sun">1</day>
-							<day type="mon">2</day>
-							<day type="tue">3</day>
-							<day type="wed">4</day>
-							<day type="thu">5</day>
-							<day type="fri">6</day>
-							<day type="sat">7</day>
+							<day type="sun" draft="unconfirmed">uSonto</day>
+							<day type="mon" draft="unconfirmed">uMvulo</day>
+							<day type="tue" draft="unconfirmed">uLesibili</day>
+							<day type="wed" draft="unconfirmed">Lesithathu</day>
+							<day type="thu" draft="unconfirmed">uLesine</day>
+							<day type="fri" draft="unconfirmed">ngoLesihlanu</day>
+							<day type="sat" draft="unconfirmed">umGqibelo</day>
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
-				<am>AM</am>
-				<pm>PM</pm>
 				<eras>
-					<eraNames>
-						<era type="0">BC</era>
-						<era type="1">AD</era>
-					</eraNames>
 					<eraAbbr>
-						<era type="0">BC</era>
-						<era type="1">AD</era>
+						<era type="0" draft="unconfirmed">BC</era>
+						<era type="1" draft="unconfirmed">AD</era>
 					</eraAbbr>
 				</eras>
-				<dateFormats>
-					<dateFormatLength type="full">
-						<dateFormat>
-							<pattern>EEEE, y MMMM dd</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="long">
-						<dateFormat>
-							<pattern>y MMMM d</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="medium">
-						<dateFormat>
-							<pattern>y MMM d</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="short">
-						<dateFormat>
-							<pattern>yy/MM/dd</pattern>
-						</dateFormat>
-					</dateFormatLength>
-				</dateFormats>
-				<timeFormats>
-					<timeFormatLength type="full">
-						<timeFormat>
-							<pattern>HH:mm:ss zzzz</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="long">
-						<timeFormat>
-							<pattern>HH:mm:ss z</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="medium">
-						<timeFormat>
-							<pattern>HH:mm:ss</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="short">
-						<timeFormat>
-							<pattern>HH:mm</pattern>
-						</timeFormat>
-					</timeFormatLength>
-				</timeFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="yyQ">Q yy</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 		</calendars>
-		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
-			<regionFormat>{0}</regionFormat>
-		</timeZoneNames>
 	</dates>
 	<numbers>
-		<symbols>
+		<symbols numberSystem="latn">
 			<decimal>,</decimal>
 			<group> </group>
 		</symbols>
-		<decimalFormats>
+		<decimalFormats numberSystem="latn">
 			<decimalFormatLength>
 				<decimalFormat>
 					<pattern>#,##0.###</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
-		<scientificFormats>
+		<scientificFormats numberSystem="latn">
 			<scientificFormatLength>
 				<scientificFormat>
 					<pattern>#E0</pattern>
 				</scientificFormat>
 			</scientificFormatLength>
 		</scientificFormats>
-		<percentFormats>
+		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
 					<pattern>#,##0%</pattern>
 				</percentFormat>
 			</percentFormatLength>
 		</percentFormats>
-		<currencyFormats>
+		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
-				<currencyFormat>
+				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
+		<currencies>
+			<currency type="ZAR">
+				<symbol>R</symbol>
+			</currency>
+		</currencies>
 	</numbers>
 </ldml>
 

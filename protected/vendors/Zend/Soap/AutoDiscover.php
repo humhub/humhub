@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Soap
  * @subpackage AutoDiscover
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: AutoDiscover.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -268,7 +268,9 @@ class Zend_Soap_AutoDiscover implements Zend_Server_Interface
      */
     protected function getRequestUriWithoutParameters()
     {
-        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
+        if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) { // IIS with Microsoft Rewrite Module
+            $requestUri = $_SERVER['HTTP_X_ORIGINAL_URL'];
+        } elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
             $requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
         } elseif (isset($_SERVER['REQUEST_URI'])) {
             $requestUri = $_SERVER['REQUEST_URI'];

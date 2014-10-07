@@ -15,15 +15,15 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Locale.php 23784 2011-03-01 21:55:30Z intiilapa $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Application_Resource_ResourceAbstract
  */
-// // require_once 'Zend/Application/Resource/ResourceAbstract.php';
+// require_once 'Zend/Application/Resource/ResourceAbstract.php';
 
 
 /**
@@ -33,7 +33,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_Locale

@@ -15,23 +15,23 @@
  * @category   Zend
  * @package    Zend_Barcode
  * @subpackage Object
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Itf14.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** @see Zend_Barcode_Object_Code25interleaved */
-// // require_once 'Zend/Barcode/Object/Code25interleaved.php';
+// require_once 'Zend/Barcode/Object/Code25interleaved.php';
 
 /** @see Zend_Validate_Barcode */
-// // require_once 'Zend/Validate/Barcode.php';
+// require_once 'Zend/Validate/Barcode.php';
 
 /**
  * Class for generate Itf14 barcode
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Barcode_Object_Itf14 extends Zend_Barcode_Object_Code25interleaved

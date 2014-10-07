@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Navigation
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Page.php 24455 2011-09-11 12:51:54Z padraic $
+ * @version    $Id$
  */
 
 /**
@@ -29,7 +29,7 @@
  *
  * @category  Zend
  * @package   Zend_Navigation
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Navigation_Page extends Zend_Navigation_Container
@@ -163,6 +163,13 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
     protected $_properties = array();
 
     /**
+     * Custom HTML attributes
+     *
+     * @var array
+     */
+    protected $_customHtmlAttribs = array();
+
+    /**
      * The type of page to use when it wasn't set
      *
      * @var string
@@ -248,7 +255,8 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
 
         $hasUri = isset($options['uri']);
         $hasMvc = isset($options['action']) || isset($options['controller']) ||
-                  isset($options['module']) || isset($options['route']);
+                  isset($options['module']) || isset($options['route']) ||
+                  isset($options['params']);
 
         if ($hasMvc) {
             // require_once 'Zend/Navigation/Page/Mvc.php';
@@ -258,9 +266,14 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
             return new Zend_Navigation_Page_Uri($options);
         } else {
             // require_once 'Zend/Navigation/Exception.php';
-            throw new Zend_Navigation_Exception(
-                'Invalid argument: Unable to determine class to instantiate');
+            
+            $message = 'Invalid argument: Unable to determine class to instantiate';
+            if (isset($options['label'])) {
+                $message .= ' (Page label: ' . $options['label'] . ')';
         }
+            
+            throw new Zend_Navigation_Exception($message);
+    }
     }
 
     /**
@@ -663,6 +676,119 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
         }
 
         return $this->_rev;
+    }
+
+    /**
+     * Sets a single custom HTML attribute
+     *
+     * @param  string      $name            name of the HTML attribute
+     * @param  string|null $value           value for the HTML attribute
+     * @return Zend_Navigation_Page         fluent interface, returns self
+     * @throws Zend_Navigation_Exception    if name is not string or value is
+     *                                      not null or a string
+     */
+    public function setCustomHtmlAttrib($name, $value)
+    {
+        if (!is_string($name)) {
+            // require_once 'Zend/Navigation/Exception.php';
+            throw new Zend_Navigation_Exception(
+                'Invalid argument: $name must be a string'
+            );
+        }
+
+        if (null !== $value && !is_string($value)) {
+            // require_once 'Zend/Navigation/Exception.php';
+            throw new Zend_Navigation_Exception(
+                'Invalid argument: $value must be a string or null'
+            );
+        }
+
+        if (null === $value && isset($this->_customHtmlAttribs[$name])) {
+            unset($this->_customHtmlAttribs[$name]);
+        } else {
+            $this->_customHtmlAttribs[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns a single custom HTML attributes by name
+     *
+     * @param  string $name                 name of the HTML attribute
+     * @return string|null                  value for the HTML attribute or null
+     * @throws Zend_Navigation_Exception    if name is not string
+     */
+    public function getCustomHtmlAttrib($name)
+    {
+        if (!is_string($name)) {
+            // require_once 'Zend/Navigation/Exception.php';
+            throw new Zend_Navigation_Exception(
+                'Invalid argument: $name must be a string'
+            );
+        }
+
+        if (isset($this->_customHtmlAttribs[$name])) {
+            return $this->_customHtmlAttribs[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Sets multiple custom HTML attributes at once
+     *
+     * @param array $attribs        an associative array of html attributes
+     * @return Zend_Navigation_Page fluent interface, returns self
+     */
+    public function setCustomHtmlAttribs(array $attribs)
+    {
+        foreach ($attribs as $key => $value) {
+            $this->setCustomHtmlAttrib($key, $value);
+        }
+        return $this;
+    }
+
+    /**
+     * Returns all custom HTML attributes as an array
+     *
+     * @return array    an array containing custom HTML attributes
+     */
+    public function getCustomHtmlAttribs()
+    {
+        return $this->_customHtmlAttribs;
+    }
+
+    /**
+     * Removes a custom HTML attribute from the page
+     *
+     * @param  string $name          name of the custom HTML attribute
+     * @return Zend_Navigation_Page  fluent interface, returns self
+     */
+    public function removeCustomHtmlAttrib($name)
+    {
+        if (!is_string($name)) {
+            // require_once 'Zend/Navigation/Exception.php';
+            throw new Zend_Navigation_Exception(
+                'Invalid argument: $name must be a string'
+            );
+        }
+
+        if (isset($this->_customHtmlAttribs[$name])) {
+            unset($this->_customHtmlAttribs[$name]);
+        }
+    }
+
+    /**
+     * Clear all custom HTML attributes
+     *
+     * @return Zend_Navigation_Page fluent interface, returns self
+     */
+    public function clearCustomHtmlAttribs()
+    {
+        $this->_customHtmlAttribs = array();
+
+        return $this;
     }
 
     /**
@@ -1182,23 +1308,25 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
         return array_merge(
             $this->getCustomProperties(),
             array(
-                'label'     => $this->getlabel(),
-                'fragment' => $this->getFragment(),
-                'id'        => $this->getId(),
-                'class'     => $this->getClass(),
-                'title'     => $this->getTitle(),
-                'target'    => $this->getTarget(),
-                'accesskey' => $this->getAccesskey(),
-                'rel'       => $this->getRel(),
-                'rev'       => $this->getRev(),
-                'order'     => $this->getOrder(),
-                'resource'  => $this->getResource(),
-                'privilege' => $this->getPrivilege(),
-                'active'    => $this->isActive(),
-                'visible'   => $this->isVisible(),
-                'type'      => get_class($this),
-                'pages'     => parent::toArray()
-            ));
+                'label'             => $this->getlabel(),
+                'fragment'          => $this->getFragment(),
+                'id'                => $this->getId(),
+                'class'             => $this->getClass(),
+                'title'             => $this->getTitle(),
+                'target'            => $this->getTarget(),
+                'accesskey'         => $this->getAccesskey(),
+                'rel'               => $this->getRel(),
+                'rev'               => $this->getRev(),
+                'customHtmlAttribs' => $this->getCustomHtmlAttribs(),
+                'order'             => $this->getOrder(),
+                'resource'          => $this->getResource(),
+                'privilege'         => $this->getPrivilege(),
+                'active'            => $this->isActive(),
+                'visible'           => $this->isVisible(),
+                'type'              => get_class($this),
+                'pages'             => parent::toArray()
+            )
+        );
     }
 
     // Internal methods:

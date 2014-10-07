@@ -15,20 +15,20 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Route.php 24183 2011-07-04 16:08:16Z guilhermeblanco $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /** Zend_Controller_Router_Route_Abstract */
-// // require_once 'Zend/Controller/Router/Route/Abstract.php';
+// require_once 'Zend/Controller/Router/Route/Abstract.php';
 
 /**
  * Route
  *
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
@@ -350,7 +350,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                 } elseif (array_key_exists($name, $this->_defaults)) {
                     $value = $this->_defaults[$name];
                 } else {
-                    // // require_once 'Zend/Controller/Router/Exception.php';
+                    // require_once 'Zend/Controller/Router/Exception.php';
                     throw new Zend_Controller_Router_Exception($name . ' is not specified');
                 }
 
@@ -498,7 +498,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
             }
         }
 
-        // // require_once 'Zend/Controller/Router/Exception.php';
+        // require_once 'Zend/Controller/Router/Exception.php';
         throw new Zend_Controller_Router_Exception('Could not find a translator');
     }
 

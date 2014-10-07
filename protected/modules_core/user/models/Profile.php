@@ -46,10 +46,10 @@ class Profile extends HActiveRecord
         $rules[] = array('user_id', 'numerical', 'integerOnly' => true);
 
         foreach (ProfileField::model()->findAll() as $profileField) {
-            if (!$profileField->visible && !$this->scenario == 'adminEdit')
+            if (!$profileField->visible && $this->scenario != 'adminEdit')
                 continue;
 
-            if (!$profileField->editable && !$this->scenario == 'adminEdit')
+            if (!$profileField->editable && $this->scenario != 'adminEdit')
                 continue;
 
             if ($this->scenario == 'register' && !$profileField->show_at_registration)

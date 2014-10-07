@@ -15,20 +15,20 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Hostname.php 24087 2011-05-30 16:39:22Z adamlundrigan $
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /** Zend_Controller_Router_Route_Abstract */
-// // require_once 'Zend/Controller/Router/Route/Abstract.php';
+// require_once 'Zend/Controller/Router/Route/Abstract.php';
 
 /**
  * Hostname Route
  *
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
@@ -111,7 +111,7 @@ class Zend_Controller_Router_Route_Hostname extends Zend_Controller_Router_Route
     public function getRequest()
     {
         if ($this->_request === null) {
-            // // require_once 'Zend/Controller/Front.php';
+            // require_once 'Zend/Controller/Front.php';
             $this->_request = Zend_Controller_Front::getInstance()->getRequest();
         }
 
@@ -271,7 +271,7 @@ class Zend_Controller_Router_Route_Hostname extends Zend_Controller_Router_Route
                 } elseif (isset($this->_defaults[$name])) {
                     $host[$key] = $this->_defaults[$name];
                 } else {
-                    // // require_once 'Zend/Controller/Router/Exception.php';
+                    // require_once 'Zend/Controller/Router/Exception.php';
                     throw new Zend_Controller_Router_Exception($name . ' is not specified');
                 }
             } else {

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Navigation
  * @subpackage Page
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Uri.php 24455 2011-09-11 12:51:54Z padraic $
+ * @version    $Id$
  */
 
 /**
@@ -31,7 +31,7 @@
  * @category   Zend
  * @package    Zend_Navigation
  * @subpackage Page
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Navigation_Page_Uri extends Zend_Navigation_Page

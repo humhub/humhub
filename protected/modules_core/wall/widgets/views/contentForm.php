@@ -26,15 +26,15 @@ if (Yii::app()->getController()->id == 'dashboard') {
 
             <?php
 
-            $userSearchUrl = '//space/space/searchMemberJson';
-            if (get_class($contentContainer) == Wall::TYPE_USER) {
-                $userSearchUrl = '//user/search/json';
+            $userSearchUrl = $this->createUrl('//user/search/json', array('keyword' => '-keywordPlaceholder-'));;
+            if (get_class($contentContainer) == 'Space') {
+                $userSearchUrl = $this->createUrl('//space/space/searchMemberJson', array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-'));;
             }
 
             /* add UserPickerWidget to notify members */
             $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
                 'inputId' => 'notifyUserInput',
-                'userSearchUrl' => $this->createUrl($userSearchUrl, array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-')),
+                'userSearchUrl' => $userSearchUrl,
                 'maxUsers' => 10,
                 'userGuid' => Yii::app()->user->guid,
                 'placeholderText' => Yii::t('WallModule.widgets_views_archiveLink', 'Add a member to notify'),

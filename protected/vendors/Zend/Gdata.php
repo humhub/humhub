@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gdata
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Gdata.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -38,7 +38,7 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gdata
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata extends Zend_Gdata_App
@@ -121,7 +121,7 @@ class Zend_Gdata extends Zend_Gdata_App
      *                                    useObjectMapping() function.
      */
     public static function import($uri, $client = null,
-        $className='Zend_Gdata_Feed')
+        $className='Zend_Gdata_Feed', $useObjectMapping = true)
     {
         $app = new Zend_Gdata($client);
         $requestData = $app->decodeRequest('GET', $uri);

@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,9 +28,9 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Radio.php 23871 2011-04-23 22:40:16Z ramon $
+ * @version    $Id$
  */
 class Zend_Form_Element_Radio extends Zend_Form_Element_Multi
 {
@@ -53,8 +53,14 @@ class Zend_Form_Element_Radio extends Zend_Form_Element_Multi
             return $this;
         }
         parent::loadDefaultDecorators();
-        $this->addDecorator('Label', array('tag' => 'dt',
-                                           'disableFor' => true));
+
+        // Disable 'for' attribute
+        if (isset($this->_decorators['Label'])
+            && !isset($this->_decorators['Label']['options']['disableFor']))
+        {
+             $this->_decorators['Label']['options']['disableFor'] = true;
+        }
+
         return $this;
     }
 }

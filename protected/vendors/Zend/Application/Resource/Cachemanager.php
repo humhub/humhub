@@ -15,12 +15,12 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Cachemanager.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
-// // require_once 'Zend/Application/Resource/ResourceAbstract.php';
+// require_once 'Zend/Application/Resource/ResourceAbstract.php';
 
 /**
  * Cache Manager resource
@@ -28,7 +28,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_Cachemanager extends Zend_Application_Resource_ResourceAbstract
@@ -60,6 +60,15 @@ class Zend_Application_Resource_Cachemanager extends Zend_Application_Resource_R
 
             $options = $this->getOptions();
             foreach ($options as $key => $value) {
+                // Logger
+                if (isset($value['frontend']['options']['logger'])) {
+                    $logger = $value['frontend']['options']['logger'];
+                    if (is_array($logger)) {
+                        $value['frontend']['options']['logger'] = Zend_Log::factory($logger);
+                    }
+                }
+
+                // Cache templates
                 if ($this->_manager->hasCacheTemplate($key)) {
                     $this->_manager->setTemplateOptions($key, $value);
                 } else {

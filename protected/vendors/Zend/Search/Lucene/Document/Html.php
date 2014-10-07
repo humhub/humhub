@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Html.php 24144 2011-06-14 22:06:56Z adamlundrigan $
+ * @version    $Id$
  */
 
 
@@ -31,7 +31,7 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document

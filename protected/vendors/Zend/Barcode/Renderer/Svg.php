@@ -15,20 +15,20 @@
  * @category   Zend
  * @package    Zend_Barcode
  * @subpackage Renderer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Image.php 20366 2010-01-18 03:56:52Z ralph $
  */
 
 /** @see Zend_Barcode_Renderer_RendererAbstract*/
-// // require_once 'Zend/Barcode/Renderer/RendererAbstract.php';
+// require_once 'Zend/Barcode/Renderer/RendererAbstract.php';
 
 /**
  * Class for rendering the barcode as svg
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
@@ -60,14 +60,15 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
 
     /**
      * Set height of the result image
+     *
      * @param null|integer $value
      * @return Zend_Image_Barcode_Abstract
-     * @throw Zend_Image_Barcode_Exception
+     * @throws Zend_Barcode_Renderer_Exception
      */
     public function setHeight($value)
     {
         if (!is_numeric($value) || intval($value) < 0) {
-            // // require_once 'Zend/Barcode/Renderer/Exception.php';
+            // require_once 'Zend/Barcode/Renderer/Exception.php';
             throw new Zend_Barcode_Renderer_Exception(
                 'Svg height must be greater than or equals 0'
             );
@@ -90,12 +91,13 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
      * Set barcode width
      *
      * @param mixed $value
-     * @return void
+     * @return self
+     * @throws Zend_Barcode_Renderer_Exception
      */
     public function setWidth($value)
     {
         if (!is_numeric($value) || intval($value) < 0) {
-            // // require_once 'Zend/Barcode/Renderer/Exception.php';
+            // require_once 'Zend/Barcode/Renderer/Exception.php';
             throw new Zend_Barcode_Renderer_Exception(
                 'Svg width must be greater than or equals 0'
             );
@@ -117,14 +119,14 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
     /**
      * Set an image resource to draw the barcode inside
      *
-     * @param DOMDocument $value
+     * @param $svg
      * @return Zend_Barcode_Renderer
-     * @throw Zend_Barcode_Renderer_Exception
+     * @throws Zend_Barcode_Renderer_Exception
      */
     public function setResource($svg)
     {
         if (!$svg instanceof DOMDocument) {
-            // // require_once 'Zend/Barcode/Renderer/Exception.php';
+            // require_once 'Zend/Barcode/Renderer/Exception.php';
             throw new Zend_Barcode_Renderer_Exception(
                 'Invalid DOMDocument resource provided to setResource()'
             );
@@ -237,6 +239,7 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
      * Check barcode dimensions
      *
      * @return void
+     * @throws Zend_Barcode_Renderer_Exception
      */
     protected function _checkDimensions()
     {
@@ -244,7 +247,7 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
             $this->_readRootElement();
             $height = (float) $this->_rootElement->getAttribute('height');
             if ($height < $this->_barcode->getHeight(true)) {
-                // // require_once 'Zend/Barcode/Renderer/Exception.php';
+                // require_once 'Zend/Barcode/Renderer/Exception.php';
                 throw new Zend_Barcode_Renderer_Exception(
                     'Barcode is define outside the image (height)'
                 );
@@ -253,7 +256,7 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
             if ($this->_userHeight) {
                 $height = $this->_barcode->getHeight(true);
                 if ($this->_userHeight < $height) {
-                    // // require_once 'Zend/Barcode/Renderer/Exception.php';
+                    // require_once 'Zend/Barcode/Renderer/Exception.php';
                     throw new Zend_Barcode_Renderer_Exception(sprintf(
                         "Barcode is define outside the image (calculated: '%d', provided: '%d')",
                         $height,
@@ -266,7 +269,7 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
             $this->_readRootElement();
             $width = $this->_rootElement->getAttribute('width');
             if ($width < $this->_barcode->getWidth(true)) {
-                // // require_once 'Zend/Barcode/Renderer/Exception.php';
+                // require_once 'Zend/Barcode/Renderer/Exception.php';
                 throw new Zend_Barcode_Renderer_Exception(
                     'Barcode is define outside the image (width)'
                 );
@@ -275,7 +278,7 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
             if ($this->_userWidth) {
                 $width = (float) $this->_barcode->getWidth(true);
                 if ($this->_userWidth < $width) {
-                    // // require_once 'Zend/Barcode/Renderer/Exception.php';
+                    // require_once 'Zend/Barcode/Renderer/Exception.php';
                     throw new Zend_Barcode_Renderer_Exception(sprintf(
                         "Barcode is define outside the image (calculated: '%d', provided: '%d')",
                         $width,
@@ -341,13 +344,13 @@ class Zend_Barcode_Renderer_Svg extends Zend_Barcode_Renderer_RendererAbstract
     /**
      * Draw a polygon in the svg resource
      *
-     * @param string $text
-     * @param float $size
-     * @param array $position
-     * @param string $font
-     * @param integer $color
-     * @param string $alignment
-     * @param float $orientation
+     * @param string    $text
+     * @param float     $size
+     * @param array     $position
+     * @param string    $font
+     * @param integer   $color
+     * @param string    $alignment
+     * @param float|int $orientation
      */
     protected function _drawText($text, $size, $position, $font, $color, $alignment = 'center', $orientation = 0)
     {

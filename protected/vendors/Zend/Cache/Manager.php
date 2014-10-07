@@ -14,21 +14,21 @@
  *
  * @category   Zend
  * @package    Zend_Cache
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Manager.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /** @see Zend_Cache_Exception */
-// // require_once 'Zend/Cache/Exception.php';
+// require_once 'Zend/Cache/Exception.php';
 
 /** @see Zend_Cache */
-// // require_once 'Zend/Cache.php';
+// require_once 'Zend/Cache.php';
 
 /**
  * @category   Zend
  * @package    Zend_Cache
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Manager
@@ -197,15 +197,16 @@ class Zend_Cache_Manager
      * be lazy loaded
      *
      * @param  string $name
-     * @param  array $options
+     * @param  array  $options
      * @return Zend_Cache_Manager
+     * @throws Zend_Cache_Exception
      */
     public function setCacheTemplate($name, $options)
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         } elseif (!is_array($options)) {
-            // // require_once 'Zend/Cache/Exception.php';
+            // require_once 'Zend/Cache/Exception.php';
             throw new Zend_Cache_Exception('Options passed must be in'
                 . ' an associative array or instance of Zend_Config');
         }
@@ -255,7 +256,7 @@ class Zend_Cache_Manager
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         } elseif (!is_array($options)) {
-            // // require_once 'Zend/Cache/Exception.php';
+            // require_once 'Zend/Cache/Exception.php';
             throw new Zend_Cache_Exception('Options passed must be in'
                 . ' an associative array or instance of Zend_Config');
         }
@@ -284,14 +285,23 @@ class Zend_Cache_Manager
             $current['backend']['name'] = $options['backend']['name'];
         }
         if (isset($options['frontend']['options'])) {
-            foreach ($options['frontend']['options'] as $key=>$value) {
+            foreach ($options['frontend']['options'] as $key => $value) {
                 $current['frontend']['options'][$key] = $value;
             }
         }
         if (isset($options['backend']['options'])) {
-            foreach ($options['backend']['options'] as $key=>$value) {
+            foreach ($options['backend']['options'] as $key => $value) {
                 $current['backend']['options'][$key] = $value;
             }
+        }
+        if (isset($options['frontend']['customFrontendNaming'])) {
+            $current['frontend']['customFrontendNaming'] = $options['frontend']['customFrontendNaming'];
+        }
+        if (isset($options['backend']['customBackendNaming'])) {
+            $current['backend']['customBackendNaming'] = $options['backend']['customBackendNaming'];
+        }
+        if (isset($options['frontendBackendAutoload'])) {
+            $current['frontendBackendAutoload'] = $options['frontendBackendAutoload'];
         }
         return $current;
     }

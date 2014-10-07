@@ -15,27 +15,27 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Plugin
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: PutHandler.php 23953 2011-05-03 05:47:39Z ralph $
+ * @version    $Id$
  */
 
 /**
  * @see Zend_Controller_Plugin_Abstract
  */
-// // require_once 'Zend/Controller/Plugin/Abstract.php';
+// require_once 'Zend/Controller/Plugin/Abstract.php';
 
 /**
  * @see Zend_Controller_Request_Http
  */
-// // require_once 'Zend/Controller/Request/Http.php';
+// require_once 'Zend/Controller/Request/Http.php';
 
 /**
  * Plugin to digest PUT request body and make params available just like POST
  *
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Plugin
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Plugin_PutHandler extends Zend_Controller_Plugin_Abstract

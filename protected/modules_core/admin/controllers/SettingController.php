@@ -98,15 +98,6 @@ class SettingController extends Controller
         }
 
         $this->render('index', array('model' => $form));
-
-        /*
-          Yii::app()->interceptor->preattachEventHandler('SuperAdminNavigationWidget', 'onInit', function($event) {
-          $event->sender->addItem(array(
-          'label' => 'Item Dynamic Inject Test',
-          'url' => Yii::app()->createUrl('')
-          ));
-          });
-         */
     }
 
     /**
@@ -217,7 +208,11 @@ class SettingController extends Controller
         if (HSetting::Get('enabled', 'authentication_ldap')) {
             $enabled = true;
             try {
-                $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_ONE);
+                if (HLdap::getInstance()->ldap !== null) {
+                    $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_ONE);
+                } else {
+                    $errorMessage = Yii::t('AdminModule.controllers_SettingController', 'Could not load LDAP! - Check PHP Extension');
+                }
             } catch (Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
