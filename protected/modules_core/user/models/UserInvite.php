@@ -143,26 +143,31 @@ class UserInvite extends HActiveRecord {
         if ($this->source == self::SOURCE_SELF) {
 
             $message = new HMailMessage();
-            $message->view = "application.modules_core.user.views.mails.UserInviteSelf";
+            $message->view = "application.views.mail.template";
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($this->email);
-            $message->subject = 'Registration Link';
-            $message->setBody(array('token' => $this->token), 'text/html');
+            $message->subject = Yii::t('UserModule.models_UserInvite', 'Registration Link');
+            $message->setBody(array(
+                'type' => 'invite-self',
+                'token' => $this->token
+            ), 'text/html');
             Yii::app()->mail->send($message);
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             $message = new HMailMessage();
-            $message->view = "application.modules_core.user.views.mails.UserInviteSpace";
+            $message->view = "application.views.mail.template";
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($this->email);
-            $message->subject = 'Space Invite';
+            $message->subject = Yii::t('UserModule.models_UserInvite', 'Space Invite');
             $message->setBody(array(
+                'type' => 'invite-space',
                 'originator' => $this->userOriginator,
                 'originatorName' => $this->userOriginator->displayName,
                 'token' => $this->token,
                 'workspaceName' => $this->workspaceInvite->name,
-                    ), 'text/html');
+            ), 'text/html');
             Yii::app()->mail->send($message);
+
         }
     }
 

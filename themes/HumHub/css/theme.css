@@ -365,27 +365,12 @@ h4 {
   color: #ffffff !important;
   background-color: #61859e !important;
 }
-.nav-pills.preferences {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
 .nav-pills.preferences .dropdown .dropdown-toggle {
-  padding: 2px 10px;
   color: #bebebe;
 }
 .nav-pills.preferences .dropdown.open .dropdown-toggle,
 .nav-pills.preferences .dropdown.open .dropdown-toggle:hover {
   background-color: #7191a8;
-  color: white;
-}
-.comment .media {
-  position: relative !important;
-}
-.comment .media .nav-pills.preferences {
-  display: none;
-  right: -3px;
-  top: -3px;
 }
 .popover {
   border: 1px solid rgba(0, 0, 0, 0.15);
@@ -1094,23 +1079,11 @@ ul.tag_input.focus {
 .wallFilterPanel .dropdown-menu li a:hover {
   color: #fff !important;
 }
-ul.tour-list {
-  list-style: none;
-  margin-bottom: 0;
-  padding-left: 10px;
-}
-ul.tour-list li {
-  padding-top: 5px;
-}
 ul.tour-list li a {
   color: #4cd9c0;
 }
-ul.tour-list li a .fa {
-  width: 16px;
-}
 ul.tour-list li.completed a {
   color: #bebebe;
-  text-decoration: line-through;
 }
 .errorMessage {
   color: #ff8989;
@@ -1119,6 +1092,24 @@ ul.tour-list li.completed a {
   border-color: #ff8989 !important;
 }
 .highlight {
+  background-color: #f9f0d2;
+}
+.atwho-view .cur {
+  border-left: 3px solid #4cd9c0;
+  background-color: #f7f7f7 !important;
+}
+.atwho-user,
+.atwho-space,
+.atwho-input a {
+  color: #4cd9c0;
+}
+.atwho-input a:hover {
+  color: #4cd9c0;
+}
+.atwho-view strong {
+  background-color: #f9f0d2;
+}
+.atwho-view .cur strong {
   background-color: #f9f0d2;
 }
 .modal-dialog.fadeIn,
@@ -1138,15 +1129,6 @@ img.bounceIn {
   -moz-animation-duration: 800ms;
   animation-duration: 800ms;
 }
-/*body {
-  background-color: @colorPrimary3;
-
-  .panel {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-  }
-}*/
 .outside .text {
   color: #ffffff;
   font-size: 12px;

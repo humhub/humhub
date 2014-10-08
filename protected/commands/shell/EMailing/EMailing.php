@@ -65,7 +65,7 @@ class EMailing extends HConsoleCommand {
             }
 
             $message = new HMailMessage();
-            $message->view = 'application.views.mail.EMailing';
+            $message->view = 'application.views.mail.template';
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($user->email);
 
@@ -76,6 +76,8 @@ class EMailing extends HConsoleCommand {
             }
 
             $message->setBody(array(
+                'type' => 'content-updates',
+                'title' => $message->subject,
                 'notificationContent' => $notificationContent,
                 'activityContent' => $activityContent,
                 'user' => $user,

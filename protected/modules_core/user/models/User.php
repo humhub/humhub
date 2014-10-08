@@ -618,9 +618,12 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 $message = new HMailMessage();
                 $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
                 $message->addTo($adminUser->email);
-                $message->view = "application.views.mail.TextOnly";
+                $message->view = "application.views.mail.template";
                 $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
-                $message->setBody(array('message' => $html), 'text/html');
+                $message->setBody(array(
+                    'type' => 'text-only',
+                    'message' => $html
+                ), 'text/html');
                 Yii::app()->mail->send($message);
             } else {
                 Yii::log("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id, CLogger::LEVEL_ERROR);
