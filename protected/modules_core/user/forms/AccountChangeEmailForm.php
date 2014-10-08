@@ -20,11 +20,12 @@
 
 /**
  * Form Model for email change
- * 
+ *
  * @package humhub.modules_core.user.forms
  * @since 0.5
  */
-class AccountChangeEmailForm extends CFormModel {
+class AccountChangeEmailForm extends CFormModel
+{
 
     public $currentPassword;
     public $newEmail;
@@ -32,7 +33,8 @@ class AccountChangeEmailForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('currentPassword, newEmail', 'required'),
             array('currentPassword', 'CheckPasswordValidator'),
@@ -46,7 +48,8 @@ class AccountChangeEmailForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'currentPassword' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'Current password'),
             'newEmail' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'New E-Mail address'),
@@ -57,7 +60,8 @@ class AccountChangeEmailForm extends CFormModel {
      * Sends Change E-Mail E-Mail
      *
      */
-    public function sendChangeEmail() {
+    public function sendChangeEmail()
+    {
 
         if ($this->validate()) {
 
@@ -66,11 +70,16 @@ class AccountChangeEmailForm extends CFormModel {
             $token = md5(HSetting::Get('secret') . $user->guid . $this->newEmail);
 
             $message = new HMailMessage();
-            $message->view = "application.modules_core.user.views.mails.ChangeEmail";
+            $message->view = "application.views.mail.template";
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($this->newEmail);
             $message->subject = Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change');
-            $message->setBody(array('user' => $user, 'newEmail' => $this->newEmail, 'token' => $token), 'text/html');
+            $message->setBody(array(
+                    'type' => 'change-email',
+                    'user' => $user,
+                    'newEmail' => $this->newEmail,
+                    'token' => $token),
+                'text/html');
             Yii::app()->mail->send($message);
         }
     }

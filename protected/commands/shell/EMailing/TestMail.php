@@ -31,7 +31,7 @@ class TestMail extends HConsoleCommand {
         print "-------------------------------------------------------------------------\n\n";
 
         if (!isset($args[0]) || ($args[0] == "")) {
-            print "\n Run with parameter [email]!\n" .
+            print "\n Run with parameter [email]!\n";
                     print "\n\n";
             exit;
         }
@@ -40,7 +40,7 @@ class TestMail extends HConsoleCommand {
         $user = User::model()->findByPk(1);
 
         $message = new HMailMessage();
-        $message->view = 'application.views.mail.EMailing';
+        $message->view = 'application.views.mail.template';
         $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
         $message->addTo($email);
         $message->subject = "Test Mail";

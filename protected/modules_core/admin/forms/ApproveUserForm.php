@@ -38,9 +38,12 @@ class ApproveUserForm extends CFormModel {
 		$message = new HMailMessage();
 		$message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'),HSetting::Get('systemEmailName', 'mailing'));
 		$message->addTo($email);
-		$message->view = "application.views.mail.TextOnly";
+		$message->view = "application.views.mail.template";
 		$message->subject = $this->subject;
-		$message->setBody(array('message'=>$this->message), 'text/html');
+		$message->setBody(array(
+            'type' => 'text-only',
+            'message'=>$this->message
+        ), 'text/html');
 		Yii::app()->mail->send($message);
 
 	}
