@@ -18,6 +18,7 @@
  */
 return array (
   'Follow' => '',
+  'Search' => '',
   'Unfollow' => '',
   '<strong>Member</strong> directory' => '<strong>Пользователи</strong>',
   'No members found!' => 'Пользователи не найдены!',
