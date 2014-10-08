@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Accept user: <strong>{displayName}</strong> ' => '',
-  'Cancel' => '',
-  'Send & save' => '',
+  'Accept user: <strong>{displayName}</strong> ' => 'Aceitar usuário: <strong>{displayName}</strong> ',
+  'Cancel' => 'Cancelar',
+  'Send & save' => 'Enviar e salvar',
 );

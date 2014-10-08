@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Pending</strong> user approvals' => '',
-  'Email' => '',
-  'Here you see all users who have registered and still waiting for a approval.' => '',
-  'Search for email' => '',
-  'Search for username' => '',
+  '<strong>Pending</strong> user approvals' => '<strong>Pendentes</strong> aprovações de usuários',
+  'Email' => 'E-mail',
+  'Here you see all users who have registered and still waiting for a approval.' => 'Aqui você pode ver todos os usuários que se cadastraram e ainda estão aguardando por aprovação.',
+  'Search for email' => 'Busca por e-mail',
+  'Search for username' => 'Busca por nome de usuário',
 );
