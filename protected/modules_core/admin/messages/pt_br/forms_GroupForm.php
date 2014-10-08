@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Administrator users' => '',
-  'Default space' => '',
-  'Description' => '',
-  'Invalid space' => '',
+  'Administrator users' => 'Administrador dos usuários',
+  'Default space' => 'Espaço padrão',
+  'Description' => 'Descrição',
+  'Invalid space' => 'Espaço inválido',
   'Ldap DN' => '',
-  'Name' => '',
+  'Name' => 'Nome',
 );

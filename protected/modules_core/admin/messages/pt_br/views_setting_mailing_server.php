@@ -18,8 +18,8 @@
  */
 return array (
   '<strong>Mailing</strong> settings' => '',
-  'Defaults' => '',
+  'Defaults' => 'Padrões',
   'SMTP Options' => '',
-  'Save' => '',
-  'Server Settings' => '',
+  'Save' => 'Salvar',
+  'Server Settings' => 'Configurações do Servidor',
 );

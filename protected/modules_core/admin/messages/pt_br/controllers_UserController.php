@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'You cannot delete yourself!' => '',
+  'You cannot delete yourself!' => 'Você não pode se excluir!',
   'Become this user' => 'Torne-se este usuário',
   'Delete' => 'Apagar',
   'Disabled' => 'Desabilitado',

@@ -19,9 +19,9 @@
 return array (
   '<strong>Modules</strong> directory' => '',
   '<strong>Online</strong> available modules' => '',
-  'Install' => '',
-  'Latest compatible version:' => '',
-  'Latest version:' => '',
-  'More info' => '',
+  'Install' => 'Instalar',
+  'Latest compatible version:' => 'Última versão compatível',
+  'Latest version:' => 'Última versão',
+  'More info' => 'Mais informações',
   'No compatible module version found!' => '',
 );

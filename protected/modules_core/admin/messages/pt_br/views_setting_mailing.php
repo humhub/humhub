@@ -17,15 +17,15 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Mailing</strong> defaults' => '',
-  'Activities' => '',
-  'Always' => '',
-  'Daily summary' => '',
-  'Defaults' => '',
+  '<strong>Mailing</strong> defaults' => '<strong>Mailing</strong> padrões',
+  'Activities' => 'Atividades',
+  'Always' => 'Sempre',
+  'Daily summary' => 'Resumo diário',
+  'Defaults' => 'Padrões',
   'Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.' => '',
-  'Never' => '',
-  'Notifications' => '',
-  'Save' => '',
-  'Server Settings' => '',
+  'Never' => 'Nunca',
+  'Notifications' => 'Notificações',
+  'Save' => 'Salvar',
+  'Server Settings' => 'Configurações do Servidor',
   'When I´m offline' => '',
 );

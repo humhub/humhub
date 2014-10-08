@@ -1,7 +1,7 @@
 <?php
 return array (
   'Base URL' => 'URL base',
-  'Default language' => 'Língua padrão',
+  'Default language' => 'Idioma padrão',
   'Default space' => 'Espaço padrão',
   'Invalid space' => 'Espaço inválido',
   'Name of the application' => 'Nome da aplicação',

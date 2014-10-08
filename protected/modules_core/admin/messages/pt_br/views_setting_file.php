@@ -21,5 +21,5 @@ return array (
   '<strong>File</strong> settings' => '',
   'Current Image Libary: {currentImageLibary}' => '',
   'PHP reported a maximum of {maxUploadSize} MB' => '',
-  'Save' => '',
+  'Save' => 'Salvar',
 );

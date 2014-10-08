@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Manage</strong> groups' => '',
-  'Description' => '',
-  'Group name' => '',
-  'Search for description' => '',
-  'Search for group name' => '',
+  '<strong>Manage</strong> groups' => '<strong>Gerenciar</strong> grupos',
+  'Description' => 'Descrição',
+  'Group name' => 'Nome do Grupo',
+  'Search for description' => 'Buscar pela descrição',
+  'Search for group name' => 'Buscar pelo nome do grupo',
 );

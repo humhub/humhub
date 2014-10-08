@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Authentication</strong> - Basic' => '',
-  'Basic' => '',
+  '<strong>Authentication</strong> - Basic' => '<strong>Autenticação</strong> - Básica',
+  'Basic' => 'Básica',
   'LDAP' => '',
-  'Save' => '',
+  'Save' => 'Salvar',
 );
