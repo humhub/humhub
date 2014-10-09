@@ -121,6 +121,8 @@ return array(
             'ru' => 'Русский*',
             'uk' => 'Ukrainian*',
             'el' => 'Greek*',
+            'ja' => 'Japanese*',
+            'hu' => 'Hungarian*',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
