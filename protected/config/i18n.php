@@ -12,7 +12,7 @@ return array(
     'languages' => array('de', 'fr', 'nl', 'pt', 'pl', 'pt_br', 'es', 'it', 'tr', 'ru', 'th', 'uk', 'el'),
     'fileTypes' => array('php'),
     'overwrite' => true,
-    'removeOld' => true,
+    'removeOld' => false,
     'exclude' => array(
         '.svn',
         '.gitignore',
