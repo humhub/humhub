@@ -83,12 +83,12 @@ class UserController extends Controller {
                 'username' => array(
                     'type' => 'text',
                     'class' => 'form-control',
-                    'maxlength' => 32,
+                    'maxlength' => 25,
                 ),
                 'email' => array(
                     'type' => 'text',
                     'class' => 'form-control',
-                    'maxlength' => 32,
+                    'maxlength' => 100,
                 ),
                 'group_id' => array(
                     'type' => 'dropdownlist',
