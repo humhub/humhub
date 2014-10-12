@@ -18,10 +18,20 @@ class AccountRegisterForm extends CFormModel {
         return array(
             array('email', 'required'),
             array('email', 'email'),
-            array('email', 'unique', 'caseSensitive' => false, 'className' => 'User', 'message' => '{attribute} "{value}" is already in use! - Try forgot password.'),
+            array('email', 'uniqueEmailValidator'),
         );
     }
 
+    public function uniqueEMailValidator($attribute, $params) {
+        
+        $email = User::model()->resetScope()->findByAttributes(array('email' => $this->$attribute));
+        if ($email !== null) {
+            $this->addError($attribute, 'E-Mail is already in use! - Try forgot password.');
+        }
+        
+    } 
+    
+    
     /**
      * Declares customized attribute labels.
      * If not declared here, an attribute would have a label that is
