@@ -180,9 +180,6 @@ class CommentController extends Controller
     {
 
         $id = Yii::app()->request->getParam('id');
-
-        $edited = false;
-
         $model = Comment::model()->findByPk($id);
 
         if ($model->canWrite()) {
@@ -192,13 +189,17 @@ class CommentController extends Controller
                 $model->attributes = $_POST['Comment'];
                 if ($model->validate()) {
                     $model->save();
-
-                    $edited = true;
-
+                    File::attachPrecreated($model, Yii::app()->request->getParam('fileList'));
+                    
+                    // Return the new comment
+                    $output = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $model, 'justEdited' => true), true);
+                    Yii::app()->clientScript->render($output);
+                    echo $output;
+                    return;
                 }
             }
 
-            $this->renderPartial('edit', array('comment' => $model, 'edited' => $edited), false, true);
+            $this->renderPartial('edit', array('comment' => $model), false, true);
 
 
         } else {

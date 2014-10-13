@@ -20,12 +20,26 @@ class FileUploadListWidget extends HWidget
     public $uploaderId = "";
 
     /**
+     * If object is set, display also already uploaded files
+     * 
+     * @var HActiveRecord
+     */
+    public $object = null;
+
+    /**
      * Draw the widget
      */
     public function run()
     {
+
+        $files = array();
+        if ($this->object !== null) {
+            $files = File::getFilesOfObject($this->object);
+        }
+
         $this->render('fileUploadList', array(
             'uploaderId' => $this->uploaderId,
+            'files' => $files
         ));
     }
 

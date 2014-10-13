@@ -8,7 +8,8 @@
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class ShowCommentWidget extends HWidget {
+class ShowCommentWidget extends HWidget
+{
 
     /**
      * @var Comment object to display
@@ -16,15 +17,24 @@ class ShowCommentWidget extends HWidget {
     public $comment = null;
 
     /**
+     * Indicates the comment was just edited
+     * 
+     * @var boolean
+     */
+    public $justEdited = false;
+
+    /**
      * Executes the widget.
      */
-    public function run() {
+    public function run()
+    {
 
         $user = $this->comment->user;
 
         $this->render('showComment', array(
             'comment' => $this->comment,
             'user' => $user,
+            'justEdited' => $this->justEdited,
                 )
         );
     }

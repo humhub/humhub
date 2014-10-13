@@ -10,8 +10,7 @@
  */
 ?>
 
-<div class="media">
-
+<div class="media" id="comment_<?php echo $comment->id; ?>">
     <?php if ($comment->canDelete()) : ?>
 
         <ul class="nav nav-pills preferences">
@@ -20,14 +19,17 @@
 
                 <ul class="dropdown-menu pull-right">
                     <li>
-                        <?php echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
-                            'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_" . $comment->id . "').replaceWith(html); $('#comment_input_". $comment->id."_contenteditable').focus(); }"
-                        )); ?>
+                        <?php
+                        echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
+                            'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_editarea_" . $comment->id . "').replaceWith(html); $('#comment_input_" . $comment->id . "_contenteditable').focus(); }"
+                        ));
+                        ?>
                     </li>
                     <li>
 
                         <!-- load modal confirm widget -->
-                        <?php $this->widget('application.widgets.ModalConfirmWidget', array(
+                        <?php
+                        $this->widget('application.widgets.ModalConfirmWidget', array(
                             'uniqueID' => 'modal_commentdelete_' . $comment->id,
                             'linkOutput' => 'a',
                             'title' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
@@ -38,7 +40,6 @@
                             'linkHref' => $this->createUrl("//comment/comment/delete", array('model' => $comment->object_model, 'id' => $comment->object_id, 'cid' => $comment->id)),
                             'confirmJS' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }"
                         ));
-
                         ?>
 
                     </li>
@@ -46,7 +47,7 @@
             </li>
         </ul>
 
-    <?php endif; ?>
+<?php endif; ?>
 
     <a href="<?php echo $user->getUrl(); ?>" class="pull-left">
         <img class="media-object img-rounded user-image" src="<?php echo $user->getProfileImage()->getUrl(); ?>"
@@ -58,35 +59,36 @@
         <h4 class="media-heading"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo $user->displayName; ?></a>
             <small><?php echo HHtml::timeago($comment->created_at); ?></small>
         </h4>
-        <span class="content" id="comment_<?php echo $comment->id; ?>">
+        <span class="content" id="comment_editarea_<?php echo $comment->id; ?>">
             <?php
             print HHtml::enrichText($comment->message);
             ?>
-
             <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
-            
         </span>
 
         <div class="wall-entry-controls">
-            <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
+        <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
         </div>
     </div>
+    <hr>
 </div>
-<hr>
+
+<?php if ($justEdited): ?>
+    <script type="text/javascript">
+        $('#comment_editarea_<?php echo $comment->id; ?>').addClass('highlight'); 
+        $('#comment_editarea_<?php echo $comment->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
+    </script>
+<?php endif; ?>    
 
 <?php if ($comment->canDelete()) : ?>
     <script type="text/javascript">
-        $('.comment .media').mouseover(function () {
-
+        $('.comment .media').mouseover(function() {
             // find dropdown menu
             var element = $(this).find('.preferences');
-
-            // show element
             element.show();
-
         })
 
-        $('.comment .media').mouseout(function () {
+        $('.comment .media').mouseout(function() {
 
             // find dropdown menu
             var element = $(this).find('.preferences');
