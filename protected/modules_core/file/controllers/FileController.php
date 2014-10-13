@@ -43,9 +43,21 @@ class FileController extends Controller
      */
     public function actionUpload()
     {
+        // Object which the uploaded file(s) belongs to (optional)
+        $object = null;
+        $objectModel = Yii::app()->request->getParam('objectModel');
+        $objectId = Yii::app()->request->getParam('objectId');
+        if ($objectModel != "" && $objectId != "") {
+            $givenObject = $objectModel::model()->findByPk($objectId);
+            // Check if given object is HActiveRecordContent or HActiveRecordContentAddon and can be written by the current user
+            if ($givenObject !== null && ($givenObject instanceof HActiveRecordContent || $givenObject instanceof HActiveRecordContentAddon) && $givenObject->content->canWrite()) {
+                $object = $givenObject;
+            }
+        }
+
         $files = array();
         foreach (CUploadedFile::getInstancesByName('files') as $cFile) {
-            $files[] = $this->handleFileUpload($cFile);
+            $files[] = $this->handleFileUpload($cFile, $object);
         }
 
         return $this->renderJson(array('files' => $files));
@@ -74,12 +86,17 @@ class FileController extends Controller
      * @param type $cFile
      * @return Array Informations about the uploaded file
      */
-    protected function handleFileUpload($cFile)
+    protected function handleFileUpload($cFile, $object = null)
     {
         $output = array();
 
         $file = new File();
         $file->setUploadedFile($cFile);
+
+        if ($object != null) {
+            $file->object_id = $object->getPrimaryKey();
+            $file->object_model = get_class($object);
+        }
 
         if ($file->validate() && $file->save()) {
             $output['error'] = false;
@@ -136,6 +153,24 @@ class FileController extends Controller
             );
             Yii::app()->getRequest()->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $options);
         }
+    }
+
+    public function actionDelete()
+    {
+        $this->forcePostRequest();
+
+        $guid = Yii::app()->request->getParam('guid');
+        $file = File::model()->findByAttributes(array('guid' => $guid));
+
+        if ($file == null) {
+            throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
+        }
+
+        if (!$file->canDelete()) {
+            throw new CHttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
+        }
+
+        $file->delete();
     }
 
 }

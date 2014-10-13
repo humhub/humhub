@@ -178,7 +178,6 @@ class CommentController extends Controller
 
     public function actionEdit()
     {
-
         $id = Yii::app()->request->getParam('id');
         $model = Comment::model()->findByPk($id);
 
@@ -189,7 +188,6 @@ class CommentController extends Controller
                 $model->attributes = $_POST['Comment'];
                 if ($model->validate()) {
                     $model->save();
-                    File::attachPrecreated($model, Yii::app()->request->getParam('fileList'));
                     
                     // Return the new comment
                     $output = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $model, 'justEdited' => true), true);

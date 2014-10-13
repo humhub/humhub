@@ -37,6 +37,8 @@ class FileUploadListWidget extends HWidget
             $files = File::getFilesOfObject($this->object);
         }
 
+        Yii::app()->clientScript->setJavaScriptVariable('file_delete_url', $this->createUrl('//file/file/delete'));
+        
         $this->render('fileUploadList', array(
             'uploaderId' => $this->uploaderId,
             'files' => $files

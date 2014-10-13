@@ -299,6 +299,22 @@ class File extends HActiveRecord
 
         return true;
     }
+    
+    /**
+     * Checks if given file can deleted.
+     * 
+     * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
+     * the file is readable for all unless there is method canWrite or canDelete implemented.
+     */
+    public function canDelete($userId = "")
+    {
+        $object = $this->getUnderlyingObject();
+        if ($object !== null && ($object instanceof HActiveRecordContent || $object instanceof HActiveRecordContentAddon)) {
+            return $object->content->canWrite($userId);
+        }
+
+        return false;
+    }    
 
     public function setUploadedFile(CUploadedFile $cUploadedFile)
     {

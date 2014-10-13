@@ -28,6 +28,14 @@ class FileUploadButtonWidget extends HWidget
     public $fileListFieldName = '';
 
     /**
+     * The HActiveRecord which the uploaded files belongs to.
+     * Leave empty when object not exists yet.
+     * 
+     * @var HActiveRecord
+     */
+    public $object = null;
+
+    /**
      * Ensure that imported javascript resources are included in the output
      */
     public function init()
@@ -44,9 +52,18 @@ class FileUploadButtonWidget extends HWidget
      */
     public function run()
     {
+        $objectModel = "";
+        $objectId = "";
+        if ($this->object !== null) {
+            $objectModel = get_class($this->object);
+            $objectId = $this->object->getPrimaryKey();
+        }
+
         $this->render('fileUploadButton', array(
             'fileListFieldName' => $this->fileListFieldName,
             'uploaderId' => $this->uploaderId,
+            'objectModel' => $objectModel,
+            'objectId' => $objectId
         ));
     }
 

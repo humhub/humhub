@@ -43,7 +43,7 @@
     <i class="fa fa-cloud-upload"></i>
 
     <input id="fileUploaderButton_<?php echo $uploaderId; ?>" type="file" name="files[]"
-           data-url="<?php echo Yii::app()->createUrl('//file/file/upload'); ?>" multiple>
+           data-url="<?php echo Yii::app()->createUrl('//file/file/upload', array('objectModel' => $objectModel, 'objectId' => $objectId)); ?>" multiple>
 </span>
 
 <script>

@@ -8,9 +8,7 @@ function installUploader(uploaderId) {
                 if (!file.error) {
                     hiddenValueField = $('#fileUploaderHiddenField_' + uploaderId);
                     hiddenValueField.val(hiddenValueField.val() + "," + file.guid);
-
-                    $('#fileUploaderList_' + uploaderId).fadeIn('slow');
-                    $('#fileUploaderListUl_' + uploaderId).append('<li style="padding-left: 24px;" class="mime ' + file.mimeIcon + '">' + file.name + '</li>');
+                    addToUploadList(uploaderId, file.guid, file.name, file.mimeIcon);
                 } else {
                     showFileUploadError(file);
                 }
@@ -28,6 +26,27 @@ function installUploader(uploaderId) {
         }
     }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 }
+
+
+function addToUploadList(uploaderId, guid, name, icon) {
+    $('#fileUploaderList_' + uploaderId).fadeIn('slow');
+    $('#fileUploaderListUl_' + uploaderId).append('<li style="padding-left: 24px;" class="mime ' + icon + '">' + name + ' <a href="#" data-guid="' + guid + '" class="file_upload_remove_link"> (X)</a></li>');
+
+    $(".file_upload_remove_link").off("click");
+    $(".file_upload_remove_link").on("click", function() {
+        $(this).parent().remove();
+        $.ajax({
+            type: 'POST',
+            data: {'guid': $(this).data('guid')},
+            url: file_delete_url,
+        }).done(function() {
+            data: {guid: $(this).data('guid')}
+        });
+
+    });
+
+}
+
 
 function resetUploader(uploaderId) {
     $('#fileUploaderHiddenField_' + uploaderId).val('');

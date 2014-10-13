@@ -25,6 +25,7 @@
     $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
         'uploaderId' => 'comment_upload_' . $comment->id,
         'fileListFieldName' => 'fileList',
+        'object' => $comment
     ));
     ?>    
 
