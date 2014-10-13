@@ -62,14 +62,11 @@ class PostController extends Controller
 
     public function actionEdit()
     {
-
         $id = Yii::app()->request->getParam('id');
-
         $edited = false;
-
         $model = Post::model()->findByPk($id);
 
-        if ($model->created_by == Yii::app()->user->id) {
+        if ($model->content->canWrite()) {
 
             if (isset($_POST['Post'])) {
                 $_POST['Post'] = Yii::app()->input->stripClean($_POST['Post']);
@@ -77,7 +74,11 @@ class PostController extends Controller
                 if ($model->validate()) {
                     $model->save();
 
-                    $edited = true;
+                    // Return the new post
+                    $output = $this->widget('application.modules_core.post.widgets.PostWidget', array('post' => $model, 'justEdited' => true), true);
+                    Yii::app()->clientScript->render($output);
+                    echo $output;
+                    return;
 
                 }
             }

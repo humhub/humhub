@@ -20,7 +20,6 @@
     ?>
 
     <?php
-    echo HHtml::hiddenField('fileList');
     // Creates Uploading Button
     $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
         'uploaderId' => 'comment_upload_' . $comment->id,
@@ -28,7 +27,6 @@
         'object' => $comment
     ));
     ?>    
-
 
     <?php
     echo HHtml::ajaxButton('Save', array('//comment/comment/edit', 'id' => $comment->id), array(
