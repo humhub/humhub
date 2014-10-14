@@ -299,7 +299,7 @@ class File extends HActiveRecord
 
         return true;
     }
-    
+
     /**
      * Checks if given file can deleted.
      * 
@@ -313,8 +313,13 @@ class File extends HActiveRecord
             return $object->content->canWrite($userId);
         }
 
+        // File is not bound to an object
+        if ($object == null) {
+            return true;
+        }
+
         return false;
-    }    
+    }
 
     public function setUploadedFile(CUploadedFile $cUploadedFile)
     {
