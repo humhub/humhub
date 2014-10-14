@@ -459,8 +459,18 @@ ul.tour-list li.completed a {
 .contentForm_options {
   margin-top: 10px;
 }
-#contentFormFiles_list {
+.contentForm-upload-list {
   padding-left: 0;
+}
+.contentForm-upload-list li:first-child {
+  margin-top: 10px;
+}
+.file_upload_remove_link,
+.file_upload_remove_link:hover {
+  color: red;
+}
+.file_upload_remove_link:hover {
+  cursor: pointer;
 }
 #contentFormError {
   color: red;
