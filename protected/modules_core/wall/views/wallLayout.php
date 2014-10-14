@@ -42,6 +42,11 @@
         <h4 class="media-heading"><a
                 href="<?php echo $object->content->user->getProfileUrl(); ?>"><?php echo $object->content->user->displayName; ?></a>
             <small><?php echo HHtml::timeago($object->content->created_at); ?>
+                
+                <?php if ($object->content->created_at != $object->content->updated_at): ?>
+                    (<?php echo Yii::t('WallModule.views_wallLayout', 'Updated :timeago', array (':timeago'=>HHtml::timeago($object->content->updated_at))); ?>)
+                <?php endif; ?>
+                
 
                 <!-- show space name -->
                 <?php if (Wall::$currentType != Wall::TYPE_SPACE && $object->content->container instanceof Space): ?>

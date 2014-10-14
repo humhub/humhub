@@ -189,6 +189,9 @@ class CommentController extends Controller
                 if ($model->validate()) {
                     $model->save();
                     
+                    // Reload comment to get populated updated_at field
+                    $model = Comment::model()->findByPk($id);
+
                     // Return the new comment
                     $output = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $model, 'justEdited' => true), true);
                     Yii::app()->clientScript->render($output);

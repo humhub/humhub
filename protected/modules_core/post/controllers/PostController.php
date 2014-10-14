@@ -74,6 +74,9 @@ class PostController extends Controller
                 if ($model->validate()) {
                     $model->save();
 
+                    // Reload record to get populated updated_at field
+                    $model = Post::model()->findByPk($id);
+                    
                     // Return the new post
                     $output = $this->widget('application.modules_core.post.widgets.PostWidget', array('post' => $model, 'justEdited' => true), true);
                     Yii::app()->clientScript->render($output);

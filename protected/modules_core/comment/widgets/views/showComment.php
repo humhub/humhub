@@ -47,7 +47,7 @@
             </li>
         </ul>
 
-<?php endif; ?>
+    <?php endif; ?>
 
     <a href="<?php echo $user->getUrl(); ?>" class="pull-left">
         <img class="media-object img-rounded user-image" src="<?php echo $user->getProfileImage()->getUrl(); ?>"
@@ -57,8 +57,14 @@
 
     <div class="media-body">
         <h4 class="media-heading"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo $user->displayName; ?></a>
-            <small><?php echo HHtml::timeago($comment->created_at); ?></small>
+            <small><?php echo HHtml::timeago($comment->created_at); ?>
+                <?php if ($comment->created_at != $comment->updated_at): ?>
+                    (<?php echo Yii::t('CommentModule.widgets_views_showComment', 'Updated :timeago', array(':timeago' => HHtml::timeago($comment->updated_at))); ?>)
+                <?php endif; ?>
+            </small>
         </h4>
+
+
         <span class="content" id="comment_editarea_<?php echo $comment->id; ?>">
             <?php
             print HHtml::enrichText($comment->message);
@@ -67,7 +73,7 @@
         </span>
 
         <div class="wall-entry-controls">
-        <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
+            <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
         </div>
     </div>
     <hr>
@@ -75,7 +81,7 @@
 
 <?php if ($justEdited): ?>
     <script type="text/javascript">
-        $('#comment_editarea_<?php echo $comment->id; ?>').addClass('highlight'); 
+        $('#comment_editarea_<?php echo $comment->id; ?>').addClass('highlight');
         $('#comment_editarea_<?php echo $comment->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
     </script>
 <?php endif; ?>    
