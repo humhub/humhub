@@ -304,6 +304,24 @@ textarea {
   }
 }
 
+.nav-pills.preferences {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  .dropdown .dropdown-toggle {
+    padding: 2px 10px;
+  }
+
+  .dropdown.open {
+
+    .dropdown-toggle, .dropdown-toggle:hover {
+      color: white;
+    }
+  }
+
+}
+
 //
 // 4) Media-Object
 // --------------------------------------------------
@@ -326,6 +344,10 @@ textarea {
 //
 // 5) Panels
 // --------------------------------------------------
+
+.panel {
+  position: relative;
+}
 
 .panel.profile {
   position: relative;
@@ -368,7 +390,7 @@ textarea {
       border-bottom-right-radius: 3px;
       border-bottom-left-radius: 3px;
       color: #fff;
-      pointer-events : none;
+      pointer-events: none;
       background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.58))); /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%); /* Chrome10+,Safari5.1+ */
@@ -491,6 +513,22 @@ textarea {
   width: 20px;
 }
 
+// comments
+.comment {
+
+  .media {
+    position: relative !important;
+
+    .nav-pills.preferences {
+      display: none;
+      right: -3px;
+      top: -3px;
+
+    }
+  }
+
+}
+
 // User- & Space picker
 ul.tag_input {
   list-style: none;
@@ -534,16 +572,30 @@ ul.tag_input {
   line-height: 8px;
 }
 
-/*.picker {
-  li > a {
-    padding-left: 10px;
+// TourModule
+
+ul.tour-list {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 10px;
+
+  li {
+    padding-top: 5px;
+
+    a {
+
+      .fa {
+        width: 16px;
+      }
+    }
   }
 
-  li.selected {
-    //padding-left: 6px;
-    background-color: #eee;
+  li.completed {
+    a {
+      text-decoration: line-through;
+    }
   }
-}*/
+}
 
 .contentForm_options {
   margin-top: 10px;
@@ -864,22 +916,5 @@ input.placeholder, textarea.placeholder {
       margin-left: -142px !important;
     }
   }
-
-  /*  .profile {
-
-      .media > a {
-        float: none !important;
-        margin-right: 0;
-
-        img {
-          margin-bottom: 10px;
-        }
-
-      }
-
-      .statistics {
-        float: none !important;
-      }
-    }*/
 
 }

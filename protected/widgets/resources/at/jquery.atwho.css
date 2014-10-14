@@ -22,10 +22,6 @@
     font-weight: normal;
 }
 
-.atwho-view .cur {
-    border-left: 3px solid #4cd9c0;
-    background-color: #f7f7f7 !important;
-}
 .atwho-view .cur small {
     color: red;
 }
@@ -35,6 +31,7 @@
 .atwho-view .cur strong {
     background-color: #f9f0d2;
 }
+
 .atwho-view ul {
     /* width: 100px; */
     list-style:none;
@@ -63,14 +60,6 @@
 .atwho-input p {
     padding: 0;
     margin: 0;
-}
-
-.atwho-user, .atwho-space, .atwho-input a {
-    color: #4cd9c0;
-}
-
-.atwho-input a:hover {
-    color: #4cd9c0;
 }
 
 .atwho-placeholder {
