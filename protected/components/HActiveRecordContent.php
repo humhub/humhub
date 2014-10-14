@@ -67,6 +67,16 @@ class HActiveRecordContent extends HActiveRecord
     public $content = null;
 
     /**
+     * If this content is display inside the wall and should be editable
+     * there, specify a edit route here.
+     * 
+     * The primary key (id) will automatically added to the url.
+     * 
+     * @var string the route to edit this content
+     */
+    public $wallEditRoute = "";
+
+    /**
      * Constructor
      * 
      * @param type $scenario

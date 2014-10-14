@@ -46,6 +46,9 @@
 </div>
 
 <script type="text/javascript">
+
+    $('#post_input_<?php echo $post->id; ?>_contenteditable').focus();
+
     // Hide file area of post
    $('#post-<?php echo $post->id; ?>').find('.post-files').hide();
    $('#post-<?php echo $post->id; ?>').find('.files').hide();

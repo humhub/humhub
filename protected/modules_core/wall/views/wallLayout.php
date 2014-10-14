@@ -1,9 +1,8 @@
 <?php
 /**
- * This view represents the layout of a wall entry.
+ * This view represents the basic layout of a wall entry.
  *
- * @property User $user the user which created this post
- * @property Post $post the current post
+ * @property HActiveRecordContent $object the object which this wall entry belongs to.
  *
  * @package humhub.modules_core.wall
  * @since 0.5
@@ -59,7 +58,7 @@
     </div>
     <hr/>
     <!-- show content -->
-    <div class="content">
+    <div class="content" id="wall_content_<?php echo $object->getUniqueId(); ?>">
         <?php echo $content; ?>
     </div>
 

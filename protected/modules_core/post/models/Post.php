@@ -19,6 +19,7 @@ class Post extends HActiveRecordContent implements ISearchable
 {
 
     public $autoAddToWall = true;
+    public $wallEditRoute = '//post/post/edit';
 
     /**
      * Returns the static model of the specified AR class.
@@ -167,7 +168,7 @@ class Post extends HActiveRecordContent implements ISearchable
      */
     public function getContentTitle()
     {
-        return Yii::t('PostModule.models_Post', 'Post') . " \"" . Helpers::truncateText(" ". $this->message, 60) . "\"";
+        return Yii::t('PostModule.models_Post', 'Post') . " \"" . Helpers::truncateText(" " . $this->message, 60) . "\"";
     }
 
 }
