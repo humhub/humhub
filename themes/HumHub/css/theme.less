@@ -507,37 +507,16 @@ h4 {
   }
 }
 
+.nav-pills.preferences {
 
-  .nav-pills.preferences {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-
-    .dropdown .dropdown-toggle {
-      padding: 2px 10px;
-      color: @colorFont4;
-    }
-
-    .dropdown.open {
-
-      .dropdown-toggle, .dropdown-toggle:hover {
-        background-color: @colorPrimary3;
-        color: white;
-      }
-    }
-
+  .dropdown .dropdown-toggle {
+    color: @colorFont4;
   }
 
-.comment {
+  .dropdown.open {
 
-  .media {
-    position: relative !important;
-
-    .nav-pills.preferences {
-      display: none;
-      right: -3px;
-      top: -3px;
-
+    .dropdown-toggle, .dropdown-toggle:hover {
+      background-color: @colorPrimary3;
     }
   }
 
@@ -1415,6 +1394,10 @@ ul.tag_input.focus {
   color: @colorInfo2;
 }
 
+.file_upload_remove_link, .file_upload_remove_link:hover {
+  color: @colorDanger1;
+}
+
 // Contentform error
 #contentFormError {
   color: @colorDanger1;
@@ -1458,26 +1441,17 @@ ul.tag_input.focus {
 // TourModule
 
 ul.tour-list {
-  list-style: none;
-  margin-bottom: 0;
-  padding-left: 10px;
 
   li {
-    padding-top: 5px;
 
     a {
       color: @colorInfo2;
-
-      .fa {
-        width: 16px;
-      }
     }
   }
 
   li.completed {
     a {
       color: @colorFont4;
-      text-decoration: line-through;
     }
   }
 }
@@ -1505,6 +1479,29 @@ ul.tour-list {
   background-color: #f9f0d2;
 }
 
+
+// atwho Plugin
+.atwho-view .cur {
+  border-left: 3px solid @colorInfo2;
+  background-color: #f7f7f7 !important;
+}
+
+.atwho-user, .atwho-space, .atwho-input a {
+  color: @colorInfo2;
+}
+
+.atwho-input a:hover {
+  color: @colorInfo2;
+}
+
+.atwho-view strong {
+  background-color: #f9f0d2;
+}
+.atwho-view .cur strong {
+  background-color: #f9f0d2;
+}
+
+
 //
 // Animate.css modifications
 // --------------------------------------------------
@@ -1525,16 +1522,6 @@ img.bounceIn {
   -moz-animation-duration: 800ms;
   animation-duration: 800ms;
 }
-
-/*body {
-  background-color: @colorPrimary3;
-
-  .panel {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-  }
-}*/
 
 .outside {
 

@@ -30,7 +30,7 @@ function installUploader(uploaderId) {
 
 function addToUploadList(uploaderId, guid, name, icon) {
     $('#fileUploaderList_' + uploaderId).fadeIn('slow');
-    $('#fileUploaderListUl_' + uploaderId).append('<li style="padding-left: 24px;" class="mime ' + icon + '">' + name + ' <a href="#" data-guid="' + guid + '" class="file_upload_remove_link"> (X)</a></li>');
+    $('#fileUploaderListUl_' + uploaderId).append('<li style="padding-left: 24px;" class="mime ' + icon + '">' + name + ' <span data-guid="' + guid + '" class="file_upload_remove_link"> <i class="fa fa-times-circle"></i></span></li>');
 
     $(".file_upload_remove_link").off("click");
     $(".file_upload_remove_link").on("click", function() {

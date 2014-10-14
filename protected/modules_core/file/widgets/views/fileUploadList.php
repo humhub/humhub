@@ -19,7 +19,7 @@
 </div>
 
 <div id="fileUploaderList_<?php echo $uploaderId; ?>" >
-    <ul style="list-style: none; margin: 0; padding-top: 10px;"  id="fileUploaderListUl_<?php echo $uploaderId; ?>"></ul>
+    <ul style="list-style: none; margin: 0;" class="contentForm-upload-list" id="fileUploaderListUl_<?php echo $uploaderId; ?>"></ul>
 </div>
 
 

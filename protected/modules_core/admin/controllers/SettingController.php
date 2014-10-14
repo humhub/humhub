@@ -441,7 +441,7 @@ class SettingController extends Controller
         }
 
         $themes = HTheme::getThemes();
-        $themes[''] = Yii::t('AdminModule.controllers_SettingController', 'No theme');
+        //$themes[''] = Yii::t('AdminModule.controllers_SettingController', 'No theme');
         $this->render('design', array('model' => $form, 'themes' => $themes));
     }
 
