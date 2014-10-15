@@ -247,15 +247,6 @@
 
     });
 
-    // set niceScroll to body element
-    $("body").niceScroll({
-        cursorwidth: "7",
-        cursorborder:"",
-        cursorcolor:"#555",
-        cursoropacitymax:"0.2",
-        railpadding:{top:120,right:3,left:0,bottom:20}
-    });
-
     // call this after every ajax loading
     $(document).ajaxComplete(function(event, xhr, settings) {
 
