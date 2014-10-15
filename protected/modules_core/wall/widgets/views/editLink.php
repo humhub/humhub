@@ -13,7 +13,7 @@
 ?>
 <li>
     <?php
-    echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createUrl($editRoute, array('id' => $id)), array(
+    echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createUrl($editRoute, array('id' => $id, 'wallType' => Wall::$currentType)), array(
         'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#wall_content_" . $object->getUniqueId() . "').replaceWith(html); }"
     ));
     ?>

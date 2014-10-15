@@ -63,6 +63,11 @@ class PostController extends Controller
     public function actionEdit()
     {
         $id = Yii::app()->request->getParam('id');
+
+        // Current wall type we are in (Dashboard, Space, User)
+        // Used to properly render the result wall item.
+        $wallType = Yii::app()->request->getParam('wallType');
+        
         $edited = false;
         $model = Post::model()->findByPk($id);
 
@@ -77,6 +82,9 @@ class PostController extends Controller
                     // Reload record to get populated updated_at field
                     $model = Post::model()->findByPk($id);
                     
+                    // Set current wall type
+                    Wall::$currentType = $wallType;
+                    
                     // Return the new post
                     $output = $this->widget('application.modules_core.post.widgets.PostWidget', array('post' => $model, 'justEdited' => true), true);
                     Yii::app()->clientScript->render($output);
@@ -86,7 +94,7 @@ class PostController extends Controller
                 }
             }
 
-            $this->renderPartial('edit', array('post' => $model, 'edited' => $edited), false, true);
+            $this->renderPartial('edit', array('post' => $model, 'edited' => $edited, 'wallType' => $wallType), false, true);
 
         } else {
             throw new CHttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
