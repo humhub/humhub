@@ -3,10 +3,12 @@
         class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_design', '<strong>Design</strong> settings'); ?></div>
     <div class="panel-body">
 
-        <?php $form = $this->beginWidget('CActiveForm', array(
+        <?php
+        $form = $this->beginWidget('CActiveForm', array(
             'id' => 'design-settings-form',
             'enableAjaxValidation' => false,
-        )); ?>
+        ));
+        ?>
 
         <?php echo $form->errorSummary($model); ?><br>
 
@@ -27,7 +29,7 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'spaceOrder'); ?>
-            <?php echo $form->dropDownList($model, 'spaceOrder', array('0'=>Yii::t('AdminModule.views_setting_design','Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design','Last visits')), array('class' => 'form-control')); ?>
+            <?php echo $form->dropDownList($model, 'spaceOrder', array('0' => Yii::t('AdminModule.views_setting_design', 'Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design', 'Last visit')), array('class' => 'form-control')); ?>
         </div>
 
         <hr>

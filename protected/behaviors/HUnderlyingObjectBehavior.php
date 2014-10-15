@@ -19,19 +19,23 @@
  */
 
 /**
- * A SIUnderlyingObjectBahavior adds the ability to models/active records
- * to link to any other model/active record.
- *
+ * HUnderlyingObjectBahavior adds the ability to link between arbitrary 
+ * records.
+ * 
  * This is archived by the database fields object_model & object_id.
  *
  * Required database fields:
  *  - object_model
  *  - object_id
- *
+ * 
+ * E.g. usage
+ *      Like Record -> Post Record or Comment Record or Poll Record
+ *  
  * @package humhub.behaviors
  * @since 0.5
  */
-class HUnderlyingObjectBehavior extends HActiveRecordBehavior {
+class HUnderlyingObjectBehavior extends HActiveRecordBehavior
+{
 
     /**
      * The underlying object needs to be a "instanceof" at least one
@@ -44,16 +48,9 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior {
     public $mustBeInstanceOf = array();
 
     /**
-     * Cache Object to avoid multiple loading
-     *
-     * @var type
+     * Cache Object
      */
-    private $_cachedObject = null;
-
-    /**
-     * Cache Object is null
-     */
-    private $_cached = false;
+    private $_cached = null;
 
     /*
      * Returns the Underlying Object
@@ -61,39 +58,59 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior {
      * @return mixed
      */
 
-    public function getUnderlyingObject() {
-
-        
-        if ($this->_cached)
-            return $this->_cachedObject;
-
+    public function getUnderlyingObject()
+    {
+        if ($this->_cached !== null) {
+            return $this->_cached;
+        }
 
         $className = $this->getOwner()->object_model;
-
         if ($className == "") {
-            $this->_cached = true;
             return null;
         }
-        
-  
         $object = $className::model()->findByPk($this->getOwner()->object_id);
-        
-        if (count($this->mustBeInstanceOf) == 0 || $object == null) {
-            $this->_cached = true;
-            $this->_cachedObject = $object;
+
+        if ($this->validateUnderlyingObjectType($object)) {
+            $this->_cached = $object;
             return $object;
         }
 
-        // Validates object
+        return null;
+    }
+
+    /**
+     * Sets the underlying object
+     * 
+     * @param mixed $object
+     */
+    public function setUnderlyingObject($object)
+    {
+        if ($this->validateUnderlyingObjectType($object)) {
+            $this->_cached = $object;
+        }
+    }
+
+    /**
+     * Validates if given object is of allowed type
+     * 
+     * @param mixed $object
+     * @return boolean
+     */
+    private function validateUnderlyingObjectType($object)
+    {
+
+        if (count($this->mustBeInstanceOf) == 0) {
+            return true;
+        }
+
         foreach ($this->mustBeInstanceOf as $instance) {
             if ($object instanceof $instance || $object->asa($instance) !== null) {
-                $this->_cached = true;
-                $this->_cachedObject = $object;
-                return $object;
+                return true;
             }
         }
 
-        throw new CHttpException(500, 'Underlying object of invalid type! (' . $className . ')');
+        Yii::log('Got invalid underlying object type! (' . $className . ')', CLogger::LEVEL_ERROR);
+        return false;
     }
 
 }
