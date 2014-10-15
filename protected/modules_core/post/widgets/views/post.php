@@ -13,9 +13,9 @@
 <div class="panel panel-default post" id="post-<?php echo $post->id; ?>">
     <div class="panel-body">
         <?php $this->beginContent('application.modules_core.wall.views.wallLayout', array('object' => $post)); ?>
-        <div id="post-content-<?php echo $post->id; ?>" style="overflow: hidden; margin-bottom: 5px;">
+        <span id="post-content-<?php echo $post->id; ?>" style="overflow: hidden; margin-bottom: 5px;">
             <?php print HHtml::enrichText($post->message); ?>
-        </div>
+        </span>
         <a class="more-link-post hidden" id="more-link-post-<?php echo $post->id; ?>" data-state="down"
            style="margin: 20px 0 20px 0;" href="javascript:showMore(<?php echo $post->id; ?>);"><i
                 class="fa fa-arrow-down"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Read full post...'); ?></a>

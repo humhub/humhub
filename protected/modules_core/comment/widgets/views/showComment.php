@@ -65,12 +65,12 @@
         </h4>
 
 
-        <div class="content" id="comment_editarea_<?php echo $comment->id; ?>">
+        <span class="content" id="comment_editarea_<?php echo $comment->id; ?>">
             <?php
             print HHtml::enrichText($comment->message);
             ?>
             <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
-        </div>
+        </span>
 
         <div class="wall-entry-controls">
             <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>

@@ -140,6 +140,10 @@ h4 {
   background-color: #f7f7f7;
   border-left: 3px solid #4cd9c0;
 }
+.media .time {
+  font-size: 11px;
+  color: #bebebe;
+}
 .media .media-body {
   font-size: 13px;
 }
@@ -163,10 +167,6 @@ h4 {
   margin-bottom: 5px;
   min-height: 15px;
 }
-.media .media-body .time {
-  font-size: 11px;
-  color: #bebebe;
-}
 .media .media-body .module-controls {
   font-size: 85%;
 }
@@ -175,6 +175,9 @@ h4 {
 }
 .media .content a {
   color: #4cd9c0;
+}
+.media .content .files a {
+  color: #555555;
 }
 .modal .dropdown-menu,
 .panel .dropdown-menu,
