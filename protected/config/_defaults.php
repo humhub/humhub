@@ -123,6 +123,7 @@ return array(
             'el' => 'Greek*',
             'ja' => 'Japanese*',
             'hu' => 'Hungarian*',
+            'nb_no' => 'Norwegian Bokmål'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
