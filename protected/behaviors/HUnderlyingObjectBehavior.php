@@ -60,6 +60,7 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
 
     public function getUnderlyingObject()
     {
+
         if ($this->_cached !== null) {
             return $this->_cached;
         }
@@ -70,7 +71,7 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
         }
         $object = $className::model()->findByPk($this->getOwner()->object_id);
 
-        if ($this->validateUnderlyingObjectType($object)) {
+        if ($object !== null && $this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
             return $object;
         }
@@ -91,6 +92,15 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
     }
 
     /**
+     * Resets the already loaded $_cached instance of
+     * underlying object
+     */
+    public function resetUnderlyingObject()
+    {
+        $this->_cached = null;
+    }
+
+    /**
      * Validates if given object is of allowed type
      * 
      * @param mixed $object
@@ -98,7 +108,6 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
      */
     private function validateUnderlyingObjectType($object)
     {
-
         if (count($this->mustBeInstanceOf) == 0) {
             return true;
         }

@@ -265,11 +265,16 @@ class Content extends CActiveRecord
         // Remove From User Content
         UserContent::model()->deleteAllByAttributes(array('object_model' => $this->object_model, 'object_id' => $this->object_id));
 
-        // Try delete the underlying object (Post, Question, Task, ...)
-        if ($this->getUnderlyingObject() !== null)
-            $this->getUnderlyingObject()->delete();
-
         return parent::beforeDelete();
+    }
+
+    public function afterDelete()
+    {
+        // Try delete the underlying object (Post, Question, Task, ...)
+        $this->resetUnderlyingObject();
+        if ($this->getUnderlyingObject() !== null) {
+            $this->getUnderlyingObject()->delete();
+        }
     }
 
     /**
@@ -427,17 +432,6 @@ class Content extends CActiveRecord
             return true;
         }
 
-        /*
-        // Space Content
-        if ($this->space_id != null) {
-            if ($this->visibility == self::VISIBILITY_PUBLIC)
-                return true;
-
-            // User Content
-        } elseif ($this->user_id != null) {
-            return true;
-        }
-        */
         return false;
     }
 

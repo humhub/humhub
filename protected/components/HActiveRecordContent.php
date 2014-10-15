@@ -83,7 +83,8 @@ class HActiveRecordContent extends HActiveRecord
      */
     public function __construct($scenario = 'insert')
     {
-        $this->content = new Content($scenario);
+        $this->content = new Content();
+        $this->content->setUnderlyingObject($this);
         parent::__construct($scenario);
     }
 
@@ -121,6 +122,8 @@ class HActiveRecordContent extends HActiveRecord
     public function afterFind()
     {
         $this->content = Content::model()->findByAttributes(array('object_model' => get_class($this), 'object_id' => $this->getPrimaryKey()));
+        $this->content->setUnderlyingObject($this);
+        
         parent::afterFind();
     }
 
