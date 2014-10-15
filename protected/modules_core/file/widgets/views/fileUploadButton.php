@@ -48,6 +48,7 @@
 
 <script>
     $(function() {
+        'use strict';
         installUploader("<?php echo $uploaderId; ?>");
     })
 </script>

@@ -260,7 +260,10 @@
     $(document).ajaxComplete(function(event, xhr, settings) {
 
         // show Tooltips on elements inside the views, which have the class 'tt'
-        $('.tt').tooltip({html: true});
+        $('.tt').tooltip({
+            html: true,
+            container: 'body'
+        });
 
         // show Popovers on elements inside the views, which have the class 'po'
         $('.po').popover({html: true});

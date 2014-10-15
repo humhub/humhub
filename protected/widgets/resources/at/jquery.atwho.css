@@ -55,6 +55,7 @@
 .atwho-input.form-control {
     min-height: 36px;
     height: auto;
+    padding-right: 30px;
 }
 
 .atwho-input p {

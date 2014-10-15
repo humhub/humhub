@@ -1,4 +1,4 @@
-<div class="content_edit" id="comment_edit_<?php echo $comment->id; ?>">
+<div class="content_edit input-container" id="comment_edit_<?php echo $comment->id; ?>">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'comment-edit-form',

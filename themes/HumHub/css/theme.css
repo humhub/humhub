@@ -1063,6 +1063,31 @@ ul.tag_input.focus {
 #contentFormError {
   color: #ff8989;
 }
+.comment_create,
+.content_edit {
+  position: relative;
+}
+.comment_create .fileinput-button,
+.content_edit .fileinput-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 6px 10px;
+  background: transparent !important;
+}
+.comment_create .fileinput-button .fa,
+.content_edit .fileinput-button .fa {
+  color: #d7d7d7;
+}
+.comment_create .fileinput-button:hover .fa,
+.content_edit .fileinput-button:hover .fa {
+  background: transparent !important;
+  color: #b2b2b2;
+}
+.comment_create .fileinput-button:active,
+.content_edit .fileinput-button:active {
+  box-shadow: none !important;
+}
 .data-saved {
   padding-left: 10px;
   color: #4cd9c0;

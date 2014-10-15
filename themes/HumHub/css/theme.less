@@ -1403,6 +1403,32 @@ ul.tag_input.focus {
   color: @colorDanger1;
 }
 
+// fileupload button
+.comment_create, .content_edit {
+  position: relative;
+
+  .fileinput-button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 6px 10px;
+    background: transparent !important;
+
+    .fa {
+      color: @colorBackground3;
+    }
+  }
+
+  .fileinput-button:hover .fa {
+    background: transparent !important;
+    color: @colorBackground4;
+  }
+
+  .fileinput-button:active {
+    box-shadow: none !important;
+  }
+}
+
 // Flash message after saving
 .data-saved {
   padding-left: 10px;

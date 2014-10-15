@@ -481,6 +481,31 @@ ul.tour-list li.completed a {
 .oembed_snippet {
   margin-top: 10px;
 }
+.comment_create,
+.content_edit {
+  position: relative;
+}
+.comment_create .fileinput-button,
+.content_edit .fileinput-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 6px 10px;
+}
+.comment_create .fileinput-button .fa,
+.content_edit .fileinput-button .fa {
+  color: #999;
+}
+.comment_create .fileinput-button,
+.content_edit .fileinput-button,
+.comment_create .fileinput-button:hover,
+.content_edit .fileinput-button:hover {
+  background: transparent !important;
+}
+.comment_create .fileinput-button:active,
+.content_edit .fileinput-button:active {
+  box-shadow: none !important;
+}
 .activities {
   max-height: 400px;
   overflow: auto;

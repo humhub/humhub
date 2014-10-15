@@ -8,7 +8,7 @@
 
 
 <?php /* BEGIN: Comment Create Form */ ?>
-<div id="comment_create_form_<?php echo $id; ?>">
+<div id="comment_create_form_<?php echo $id; ?>" class="comment_create">
 
     <?php echo CHtml::form("#"); ?>
     <?php echo CHtml::hiddenField('model', $modelName); ?>
