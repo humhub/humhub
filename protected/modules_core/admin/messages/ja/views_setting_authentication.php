@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Authentication</strong> - Basic' => '<strong>認証</strong> - 基本',
+  '<strong>Authentication</strong> - Basic' => '<strong>Authentication</strong> - 基本認証',
   'Basic' => '基本',
   'LDAP' => 'LDAP',
   'Save' => '保存',

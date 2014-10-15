@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>CronJob</strong> settings' => '<strong>Cronジョブ</strong> 設定',
+  '<strong>CronJob</strong> settings' => '<strong>CronJob</strong> Cronジョブの設定',
   'Crontab of user: {user}' => 'ユーザーのCrontab：{user}',
   'Last run (daily):' => '最後の実行（毎日）：',
   'Last run (hourly):' => '最後の実行（毎時）：',

@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Member</strong> Group Directory' => '<strong>メンバー</strong> グループディレクトリ',
+  '<strong>Member</strong> Group Directory' => '<strong>Member</strong> グループディレクトリ',
   'show all members' => 'すべてのメンバーを表示する',
 );

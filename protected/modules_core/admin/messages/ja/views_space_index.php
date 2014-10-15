@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> spaces' => '<strong>管理</strong> スペースの管理',
+  '<strong>Manage</strong> spaces' => '<strong>Manage</strong> スペースの管理',
   'All' => 'すべて',
   'By Invite' => '招待以て',
   'By invite' => '招待以て',

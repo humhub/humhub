@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Base DN' => 'ベースDN',
+  'Base DN' => 'ベース識別名（DN）',
   'Enable LDAP Support' => 'LDAPサポートを有効にする',
   'Encryption' => '暗号化',
   'Hostname' => 'ホスト名',

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Accept' => '承認',
+  'Accept' => '同意',
   'Decline' => '辞退',
 );

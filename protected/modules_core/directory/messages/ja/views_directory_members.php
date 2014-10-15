@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Member</strong> directory' => '<strong>メンバー</strong> ディレクトリ',
+  '<strong>Member</strong> directory' => '<strong>Member</strong> メンバーディレクトリ',
   'Follow' => 'フォロー',
   'No members found!' => 'メンバーが見つかりません！',
   'Search' => '検索',

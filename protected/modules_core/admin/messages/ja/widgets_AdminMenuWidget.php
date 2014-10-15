@@ -1,11 +1,11 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => '<strong>管理</strong> 管理メニュー',
+  '<strong>Administration</strong> menu' => '<strong>Administration</strong> 管理メニュー',
   'About' => 'About',
   'Authentication' => '認証',
   'Basic' => '基本',
   'Caching' => 'キャッシュ',
-  'Cron jobs' => 'cronジョブ',
+  'Cron jobs' => 'Cronジョブ',
   'Design' => 'デザイン',
   'Files' => 'ファイル',
   'Groups' => 'グループ',

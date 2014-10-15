@@ -4,7 +4,7 @@ return array (
   'Administration' => 'Администрирование',
   'Back to dashboard' => 'Вернуться на главную',
   'Collapse' => 'Свернуть',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon source must be instance of HActiveRecordContent или HActiveRecordContentAddon!',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Источник Content Addon должен быть сущностью HActiveRecordContent либо HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Не удалось определить оболочку контента!',
   'Could not find content of addon!' => 'Не удалось найти содержимое дополнения!',
   'Could not find requested module!' => 'Не удалось найти запрашиваемый модуль!',

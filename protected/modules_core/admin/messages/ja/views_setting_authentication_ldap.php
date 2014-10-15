@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Authentication</strong> - LDAP' => '<strong>認証</strong> - LDAP',
-  'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'パスワードは平文で送信されることから情報漏洩を防止するために、運用環境ではTLS / SSL化する事が強く推奨される。',
+  '<strong>Authentication</strong> - LDAP' => '<strong>Authentication</strong> - LDAP',
+  'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'パスワードは平文で送信されることから情報漏洩を防止するために、運用環境ではTLS / SSL化する事が強く推奨されます。',
   'Basic' => '基本',
   'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'ログインした時に適用するフィルタを定義します。 %uid はログインアクションにユーザ名を置き換えます。例：&quot;(sAMAccountName=%s)&quot; または &quot;(uid=%s)&quot;',
   'LDAP' => 'LDAP',

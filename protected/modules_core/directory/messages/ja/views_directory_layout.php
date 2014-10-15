@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Directory</strong> menu' => '<strong>ディレクトリ</strong> メニュー',
+  '<strong>Directory</strong> menu' => '<strong>Directory</strong> ディレクトリメニュー',
   'Groups' => 'グループ',
   'Members' => 'メンバー',
   'Spaces' => 'スペース',

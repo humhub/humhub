@@ -1,4 +1,4 @@
 <?php
 return array (
-  '%displayName% also commented your %contentTitle%.' => '%displayName%さんは、あなたの%contentTitle%にコメントした。',
+  '%displayName% also commented your %contentTitle%.' => '%displayName%さんも、あなたの%contentTitle%にコメントしました。',
 );

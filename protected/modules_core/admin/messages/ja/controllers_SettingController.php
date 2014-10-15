@@ -1,7 +1,7 @@
 <?php
 return array (
   'APC' => 'APC',
-  'Could not load LDAP! - Check PHP Extension' => 'LDAPを読み込めませんでした！ -  PHPの拡張モジュールをチェックしてください',
+  'Could not load LDAP! - Check PHP Extension' => 'LDAPを読み込めませんでした！ -  PHPの拡張モジュールを確認してください',
   'Database' => 'データベース',
   'File' => 'ファイル',
   'No caching (Testing only!)' => 'キャッシュを利用しない（テスト用）',

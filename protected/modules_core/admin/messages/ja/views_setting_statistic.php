@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Statistic</strong> settings' => '<strong>統計値</strong> 設定',
+  '<strong>Statistic</strong> settings' => '<strong>Statistic</strong> 統計設定',
   'Save' => '保存',
 );

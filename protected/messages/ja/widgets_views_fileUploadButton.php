@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Upload</strong> error' => '<strong>アップロード</strong> エラー',
+  '<strong>Upload</strong> error' => '<strong>Upload</strong> アップロードエラー',
   'Close' => '閉じる',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> users' => '<strong>管理</strong> ユーザーを管理',
+  '<strong>Manage</strong> users' => '<strong>Manage</strong> ユーザーを管理',
   'Admin' => '管理',
   'All' => 'すべて',
   'Delete user account' => 'ユーザーアカウントを削除',
