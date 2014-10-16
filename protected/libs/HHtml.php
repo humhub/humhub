@@ -224,17 +224,17 @@ class HHtml extends CHtml
                 $user = User::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($user !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
+                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span> ';
                     }
-                    return " @" . $user->getDisplayName();
+                    return " @" . $user->getDisplayName()." ";
                 }
             } elseif ($hit[1] == 's') {
                 $space = Space::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($space !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>';
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span> ';
                     }
-                    return " @" . $space->name;
+                    return " @" . $space->name." ";
                 }
             }
             return $hit[0];
