@@ -219,66 +219,27 @@ class HHtml extends CHtml
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
-
-        // add white space at the beginning to get even a mentioned user from the first character
-        $text = " " . $text;
-
-        // save hits of @ char
-        $hits = substr_count($text, ' @-');
-
-        // loop for every founded @ char
-        for ($i = 0; $i < $hits; $i++) {
-
-            // extract mention data
-            $data = substr($text, strpos($text, ' @-'), 40);
-
-            // get type (user or space)
-            $type = substr($data, 3, 1);
-
-            // extract guid
-            $guid = substr($data, 4);
-
-            if ($type == 'u') {
-
-                // load user row from database
-                $user = User::model()->findByAttributes(array('guid' => $guid));
-
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s)@', function($hit) use(&$buildAnchors) {
+            if ($hit[1] == 'u') {
+                $user = User::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($user !== null) {
-                    // make user clickable if Html is allowed
-                    if ($buildAnchors == true) {
-                        $link = ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
-                    } else {
-                        $link = " @" . $user->getDisplayName();
+                    if ($buildAnchors) {
+                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
                     }
-
-                    // replace guid with profile link and username
-                    $text = str_replace($data, $link, $text);
+                    return " @" . $user->getDisplayName();
                 }
-            } else if ($type == 's') {
-
-                // load space row from database
-                $space = Space::model()->findByAttributes(array('guid' => $guid));
-
+            } elseif ($hit[1] == 's') {
+                $space = Space::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($space !== null) {
-                    // make space clickable if Html is allowed
-                    if ($buildAnchors == true) {
-                        $link = ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>';
-                    } else {
-                        $link = " @" . $space->name;
+                    if ($buildAnchors) {
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>';
                     }
-
-                    // replace guid with profile link and username
-                    $text = str_replace($data, $link, $text);
+                    return " @" . $space->name;
                 }
-
             }
-
-
-        }
-
-        return $text;
+            return $hit[0];
+        }, $text);
     }
-
 
     /**
      * Replace emojis from text to img tag
@@ -299,9 +260,7 @@ class HHtml extends CHtml
         }
 
         return $text;
-
     }
-
 
     /**
      * ActiveForm Variant of DateTime Field
@@ -344,18 +303,18 @@ class HHtml extends CHtml
     {
         // load js for datetimepicker component
         Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
         );
 
         // load css for datetimepicker component
         Yii::app()->clientScript->registerCssFile(
-            Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
+                Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
         );
 
         if (isset($pickerOptions['pickTime']) && $pickerOptions['pickTime'] == true) {
