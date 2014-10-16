@@ -213,9 +213,9 @@ class HHtml extends CHtml
 
     /**
      * Translate guids from users to username
+     * 
      * @param strint $text Contains the complete message
      * @param boolean $buildAnchors Wrap the username with a link to the profile, if it's true
-     *
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
@@ -243,23 +243,21 @@ class HHtml extends CHtml
 
     /**
      * Replace emojis from text to img tag
+     * 
      * @param string $text Contains the complete message
      * @param string $show show smilies or remove it (for activities and notifications)
-     *
      */
     public static function translateEmojis($text, $show = true)
     {
-        $s = explode(";", $text);
-
-        for ($i = 1; $i <= count($s) - 1; $i += 2) {
-            if ($show == true) {
-                $text = str_replace(';' . $s[$i] . ';', ' <img class="atwho-emoji" data-emoji-name=";' . $s[$i] . ';" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png"/>', $text);
-            } else {
-                $text = str_replace(' ;' . $s[$i] . ';', '', $text);
+        $emojis = array('Ambivalent', 'Angry', 'Confused', 'Cool', 'Frown', 'Gasp', 'Grin', 'Heart', 'Hearteyes', 'Laughing', 'Naughty', 'Slant', 'Smile', 'Wink', 'Yuck');
+        return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
+            if (in_array($hit[1], $emojis)) {
+                if ($show) {
+                    return '<img class="atwho-emoji" data-emoji-name=";' . $hit[1] . ';" src="' . Yii::app()->baseUrl . '/img/emoji/' . $hit[1] . '.png"/>';
+                }
+                return '';
             }
-        }
-
-        return $text;
+        }, $text);
     }
 
     /**
