@@ -213,95 +213,52 @@ class HHtml extends CHtml
 
     /**
      * Translate guids from users to username
+     * 
      * @param strint $text Contains the complete message
      * @param boolean $buildAnchors Wrap the username with a link to the profile, if it's true
-     *
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
-
-        // add white space at the beginning to get even a mentioned user from the first character
-        $text = " " . $text;
-
-        // save hits of @ char
-        $hits = substr_count($text, ' @-');
-
-        // loop for every founded @ char
-        for ($i = 0; $i < $hits; $i++) {
-
-            // extract mention data
-            $data = substr($text, strpos($text, ' @-'), 40);
-
-            // get type (user or space)
-            $type = substr($data, 3, 1);
-
-            // extract guid
-            $guid = substr($data, 4);
-
-            if ($type == 'u') {
-
-                // load user row from database
-                $user = User::model()->findByAttributes(array('guid' => $guid));
-
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s)@', function($hit) use(&$buildAnchors) {
+            if ($hit[1] == 'u') {
+                $user = User::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($user !== null) {
-                    // make user clickable if Html is allowed
-                    if ($buildAnchors == true) {
-                        $link = ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
-                    } else {
-                        $link = " @" . $user->getDisplayName();
+                    if ($buildAnchors) {
+                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>';
                     }
-
-                    // replace guid with profile link and username
-                    $text = str_replace($data, $link, $text);
+                    return " @" . $user->getDisplayName();
                 }
-            } else if ($type == 's') {
-
-                // load space row from database
-                $space = Space::model()->findByAttributes(array('guid' => $guid));
-
+            } elseif ($hit[1] == 's') {
+                $space = Space::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($space !== null) {
-                    // make space clickable if Html is allowed
-                    if ($buildAnchors == true) {
-                        $link = ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>';
-                    } else {
-                        $link = " @" . $space->name;
+                    if ($buildAnchors) {
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>';
                     }
-
-                    // replace guid with profile link and username
-                    $text = str_replace($data, $link, $text);
+                    return " @" . $space->name;
                 }
-
             }
-
-
-        }
-
-        return $text;
+            return $hit[0];
+        }, $text);
     }
-
 
     /**
      * Replace emojis from text to img tag
+     * 
      * @param string $text Contains the complete message
      * @param string $show show smilies or remove it (for activities and notifications)
-     *
      */
     public static function translateEmojis($text, $show = true)
     {
-        $s = explode(";", $text);
-
-        for ($i = 1; $i <= count($s) - 1; $i += 2) {
-            if ($show == true) {
-                $text = str_replace(';' . $s[$i] . ';', ' <img class="atwho-emoji" data-emoji-name=";' . $s[$i] . ';" src="' . Yii::app()->baseUrl . '/img/emoji/' . $s[$i] . '.png"/>', $text);
-            } else {
-                $text = str_replace(' ;' . $s[$i] . ';', '', $text);
+        $emojis = array('Ambivalent', 'Angry', 'Confused', 'Cool', 'Frown', 'Gasp', 'Grin', 'Heart', 'Hearteyes', 'Laughing', 'Naughty', 'Slant', 'Smile', 'Wink', 'Yuck');
+        return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
+            if (in_array($hit[1], $emojis)) {
+                if ($show) {
+                    return HHtml::image(Yii::app()->baseUrl . '/img/emoji/' . $hit[1] . '.png', $hit[1], array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji'));
+                }
+                return '';
             }
-        }
-
-        return $text;
-
+        }, $text);
     }
-
 
     /**
      * ActiveForm Variant of DateTime Field
@@ -344,18 +301,18 @@ class HHtml extends CHtml
     {
         // load js for datetimepicker component
         Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/moment-with-locales.min.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END
         );
         Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
+                Yii::app()->baseUrl . '/js/datetimefield-init.js', CClientScript::POS_END
         );
 
         // load css for datetimepicker component
         Yii::app()->clientScript->registerCssFile(
-            Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
+                Yii::app()->baseUrl . '/css/bootstrap-datetimepicker.css'
         );
 
         if (isset($pickerOptions['pickTime']) && $pickerOptions['pickTime'] == true) {
