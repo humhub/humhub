@@ -253,7 +253,7 @@ class HHtml extends CHtml
         return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return '<img class="atwho-emoji" data-emoji-name=";' . $hit[1] . ';" src="' . Yii::app()->baseUrl . '/img/emoji/' . $hit[1] . '.png"/>';
+                    return HHtml::image(Yii::app()->baseUrl . '/img/emoji/' . $hit[1] . '.png', $hit[1], array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji'));
                 }
                 return '';
             }
