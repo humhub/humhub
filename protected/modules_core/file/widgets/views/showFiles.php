@@ -22,6 +22,7 @@
                     <img src='<?php echo $file->getPreviewImageUrl(200, 200); ?>'>
                 </a>
             <?php endif; ?>
+
         <?php endforeach; ?>
     </div>
 
@@ -31,9 +32,19 @@
         <?php foreach ($files as $file) : ?>
             <li style="padding-left: 24px;" class="mime <?php echo HHtml::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
-                        class="filename"><?php echo $file->file_name; ?></span></a>
-                <span class="time"> - <?php echo Yii::app()->format->formatSize($file->size); ?></span></li>
-            <?php endforeach; ?>
+                        class="filename"><?php echo Helpers::trimText($file->file_name, 40); ?></span></a>
+                <span class="time" style="padding-right: 20px;"> - <?php echo Yii::app()->format->formatSize($file->size); ?></span>
+
+                <?php if ($file->getExtension() == "mp3") : ?>
+                    <!-- Integrate jPlayer -->
+                    <?php $this->widget('ext.jplayer.jplayer', array(
+                        'id' => $file->id,
+                        'file' => $file->getUrl(),
+                    )); ?>
+                <?php endif;?>
+
+            </li>
+        <?php endforeach; ?>
     </ul>
 <?php endif; ?>
 

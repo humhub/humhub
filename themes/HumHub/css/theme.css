@@ -1144,6 +1144,12 @@ ul.tour-list li.completed a {
 .atwho-view .cur strong {
   background-color: #f9f0d2;
 }
+.comment .jp-progress {
+  background-color: #dbdcdd !important;
+}
+.comment .jp-play-bar {
+  background: #cacaca;
+}
 .modal-dialog.fadeIn,
 .modal-dialog.pulse {
   -webkit-animation-duration: 200ms;
