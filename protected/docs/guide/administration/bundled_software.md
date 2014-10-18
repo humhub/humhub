@@ -24,3 +24,5 @@ Bundled Software / Libaries
 * Controller-Events - http://www.yiiframework.com/extension/controller-events/
 * HTML5 Placeholder jQuery Plugin - https://github.com/mathiasbynens/jquery-placeholder
 * animate.css by Daniel Eden - http://daneden.me/animate
+* jplayer - http://jplayer.org/
+* At.js - http://ichord.github.io/At.js/
