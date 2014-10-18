@@ -9,9 +9,9 @@
 
         <?php
         $visibilities = array(
-            0 => 'Invisible',
-            1 => 'Registered Users',
-            3 => 'All',
+            0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+            1 => Yii::t('SpaceModule.base', 'Public (Visible)'),
+            /*3 => 'All',*/
         );
 
         $this->widget('zii.widgets.grid.CGridView', array(
@@ -33,28 +33,28 @@
                 ),
                 array(
                     'name' => 'visibility',
-                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('AdminModule.views_space_index', 'Invisible'), 1 => Yii::t('AdminModule.views_space_index', 'Registrated only'), 2 => Yii::t('AdminModule.views_space_index', 'All')),
+                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('SpaceModule.base', 'Private (Invisible)'), 1 => Yii::t('SpaceModule.base', 'Public (Visible)')/*, 2 => Yii::t('AdminModule.views_space_index', 'All')*/),
                     'value' => function ($data, $row) {
                             if ($data->visibility == Space::VISIBILITY_NONE)
-                                return Yii::t('AdminModule.views_space_index', 'Invisible');
+                                return Yii::t('SpaceModule.base', 'Private (Invisible)');
                             else if ($data->visibility == Space::VISIBILITY_REGISTERED_ONLY)
-                                return Yii::t('AdminModule.views_space_index', 'Registrated only');
+                                return Yii::t('SpaceModule.base', 'Public (Visible)');
                             else if ($data->visibility == Space::VISIBILITY_ALL)
-                                return Yii::t('AdminModule.views_space_index', 'Visible');
+                                return '(not longer supported)';
 
                             return $data->visibility;
                         }
                 ),
                 array(
                     'name' => 'join_policy',
-                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('AdminModule.views_space_index', 'By Invite'), 1 => Yii::t('AdminModule.views_space_index', 'Invite / Request'), 2 => Yii::t('AdminModule.views_space_index', 'Everbody')),
+                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')),
                     'value' => function ($data, $row) {
                             if ($data->join_policy == Space::JOIN_POLICY_NONE)
-                                return Yii::t('AdminModule.views_space_index', 'By invite');
+                                return Yii::t('SpaceModule.base', 'Only by invite');
                             else if ($data->join_policy == Space::JOIN_POLICY_APPLICATION)
-                                return Yii::t('AdminModule.views_space_index', 'Invite & Request');
+                                return Yii::t('SpaceModule.base', 'Invite and request');
                             else if ($data->join_policy == Space::JOIN_POLICY_FREE)
-                                return Yii::t('AdminModule.views_space_index', 'Free');
+                                return Yii::t('SpaceModule.base', 'Everyone can enter');
 
                             return $data->join_policy;
                         }
