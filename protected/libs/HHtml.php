@@ -360,9 +360,9 @@ class HHtml extends CHtml
             // Audio
         } else if ($ext == 'mp3' || $ext == 'aiff' || $ext == 'wav') {
             return "mime-audio";
-            // Adobe Flash
-        } else if ($ext == 'swf' || $ext == 'fla' || $ext == 'air') {
-            return "mime-flash";
+            // Video
+        } else if ($ext == 'avi' || $ext == 'mp4' || $ext == 'mov' || $ext == 'mpeg' || $ext == 'wma') {
+            return "mime-video";
             // Adobe Photoshop
         } else if ($ext == 'psd') {
             return "mime-photoshop";

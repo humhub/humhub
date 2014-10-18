@@ -30,7 +30,7 @@
     <hr>
     <ul class="files" style="list-style: none; margin: 0;">
         <?php foreach ($files as $file) : ?>
-            <li style="padding-left: 24px;" class="mime <?php echo HHtml::getMimeIconClassByExtension($file->getExtension()); ?>"><a
+            <li class="mime <?php echo HHtml::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
                         class="filename"><?php echo Helpers::trimText($file->file_name, 40); ?></span></a>
                 <span class="time" style="padding-right: 20px;"> - <?php echo Yii::app()->format->formatSize($file->size); ?></span>

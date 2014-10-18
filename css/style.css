@@ -598,6 +598,7 @@ nav-pills.preferences {
 .mime {
   background-repeat: no-repeat;
   background-position: 0 0;
+  padding: 1px 0 4px 24px;
 }
 .mime-word {
   background-image: url('../img/mime/word.png');
@@ -626,8 +627,8 @@ nav-pills.preferences {
 .mime-illustrator {
   background-image: url('../img/mime/illustrator.png');
 }
-.mime-flash {
-  background-image: url('../img/mime/flash.png');
+.mime-video {
+  background-image: url('../img/mime/video.png');
 }
 .mime-audio {
   background-image: url('../img/mime/audio.png');
