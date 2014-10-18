@@ -8,9 +8,7 @@ With **HumHub** you can easily create your own themes. Regardless of whether you
 
 2. The interface of **HumHub** is using the **Twitter Bootstrap Framework** (<http://www.getbootstrap.com>) to building the interface. Currently in version 3.0.2.
 
-3. If you created or installed a new theme inside the **themes folder**, you can switch to the new theme through your account menu **Administration > Design > Theme**. 
-
-4. **HumHub** comes already with a **Sample-Theme**, which you can use as template for your own theme (what we highly recommend).
+3. If you created or installed a new theme inside the **themes folder**, you can switch to the new theme through your account menu **Administration > Design > Theme**.
 
 ---
 
