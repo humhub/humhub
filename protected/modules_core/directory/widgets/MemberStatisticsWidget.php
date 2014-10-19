@@ -19,7 +19,7 @@ class MemberStatisticsWidget extends HWidget {
         // Some member stats
         Yii::import('application.modules.mail.models.*');
         $statsTotalUsers = User::model()->count();
-        
+
         $criteria = new CDbCriteria;
         $criteria->group = 'user_id';
         $criteria->condition = 'user_id IS NOT null';
@@ -29,7 +29,7 @@ class MemberStatisticsWidget extends HWidget {
         if (Yii::app()->moduleManager->isEnabled('mail'))
             $statsMessageEntries = MessageEntry::model()->count();
 
-        $statsUserFollow = Follow::model()->countByAttributes(array('object_model'=>'User'));
+        $statsUserFollow = UserFollow::model()->countByAttributes(array('object_model'=>'User'));
 
         // Render widgets view
         $this->render('memberStats', array(

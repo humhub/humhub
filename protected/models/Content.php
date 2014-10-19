@@ -171,10 +171,10 @@ class Content extends CActiveRecord
     }
 
     /**
-     * Returns a SIContent Object by given Class and ID
+     * Returns a Content Object by given Class and ID
      *
-     * @param type $className
-     * @param type $id
+     * @param string $className Class Name of the Content
+     * @param int $id Primary Key
      */
     static function Get($className, $id)
     {
@@ -221,9 +221,11 @@ class Content extends CActiveRecord
             $wallEntry->save();
         }
 
-        // Handle user notifications by ContentFormWidget
         if ($this->isNewRecord) {
+            // If there are notifyUsers specified by populateByForm() make them follow this content
             foreach ($this->notifyUsersOfNewContent as $user) {
+                $this->getUnderlyingObject()->follow($user->id);
+
                 // Fire Notification to user
                 $notification = new Notification();
                 $notification->class = "ContentCreatedNotification";
@@ -238,8 +240,6 @@ class Content extends CActiveRecord
                 $notification->save();
             }
         }
-
-        $this->updateInvolvedUsers();
 
         File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
 
@@ -262,9 +262,6 @@ class Content extends CActiveRecord
             HSearch::getInstance()->deleteModel($this->getContentObject());
         }
 
-        // Remove From User Content
-        UserContent::model()->deleteAllByAttributes(array('object_model' => $this->object_model, 'object_id' => $this->object_id));
-
         return parent::beforeDelete();
     }
 
@@ -275,56 +272,6 @@ class Content extends CActiveRecord
         if ($this->getUnderlyingObject() !== null) {
             $this->getUnderlyingObject()->delete();
         }
-    }
-
-    /**
-     * Updates the involved Users of this object.
-     * Currently this will be execution always after saving, maybe find a better way.
-     *
-     * Fast Hack!11!
-     *
-     * ToDo: - Make it more flexible!
-     *       - Make it faster!
-     *       - Missing Users which likes a comment
-     */
-    public function updateInvolvedUsers()
-    {
-
-        // Collect User Ids
-        $foundUsersIds = array();
-
-        $foundUsersIds[] = $this->created_by;
-
-        if ($this->object_model != "Activity") {
-            $comments = Comment::model()->findAllByAttributes(array('object_model' => $this->object_model, 'object_id' => $this->object_id));
-            foreach ($comments as $comment) {
-                $foundUsersIds[] = $comment->created_by;
-
-                // Comment Likes
-                $likes = Like::model()->findAllByAttributes(array('object_model' => 'Comment', 'object_id' => $comment->id));
-                foreach ($likes as $like) {
-                    $foundUsersIds[] = $like->created_by;
-                }
-            }
-
-            $likes = Like::model()->findAllByAttributes(array('object_model' => $this->object_model, 'object_id' => $this->object_id));
-            foreach ($likes as $like) {
-                $foundUsersIds[] = $like->created_by;
-            }
-        }
-
-        UserContent::model()->deleteAllByAttributes(array('object_model' => $this->object_model, 'object_id' => $this->object_id));
-
-        // Add currently involved users
-        foreach (array_unique($foundUsersIds) as $userId) {
-            $userContent = new UserContent();
-            $userContent->object_model = $this->object_model;
-            $userContent->object_id = $this->object_id;
-            $userContent->user_id = $userId;
-            $userContent->save();
-        }
-
-        // Rewrite!
     }
 
     /**

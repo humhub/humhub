@@ -29,7 +29,7 @@
 class HActiveRecordContentTest extends CDbTestCase
 {
 
-    public $fixtures = array(':space', ':space_membership', ':follow', ':user', ':post', ':content');
+    public $fixtures = array(':space', ':space_membership', ':user_follow', ':user', ':post', ':content');
 
     public function testRelatedContentRecord()
     {

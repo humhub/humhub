@@ -71,7 +71,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
                 'class' => 'application.modules_core.space.behaviors.SpaceModelMembershipBehavior',
             ),
             'HFollowableBehavior' => array(
-                'class' => 'application.behaviors.HFollowableBehavior',
+                'class' => 'application.modules_core.user.behaviors.HFollowableBehavior',
             ),
         );
     }
@@ -332,7 +332,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         $this->getProfileImage()->delete();
 
         // Remove all Follwers
-        Follow::model()->deleteAllByAttributes(array('object_id' => $this->id, 'object_model' => 'Space'));
+        UserFollow::model()->deleteAllByAttributes(array('object_id' => $this->id, 'object_model' => 'Space'));
 
         //Delete all memberships:
         //First select, then delete - done to make sure that SpaceMembership::beforeDelete() is triggered
@@ -615,11 +615,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
-     * Validator for visibility 
-     * 
+     * Validator for visibility
+     *
      * Used in edit scenario to check if the user really can create spaces
      * on this visibility.
-     * 
+     *
      * @param type $attribute
      * @param type $params
      */

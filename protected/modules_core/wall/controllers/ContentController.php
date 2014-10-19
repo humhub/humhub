@@ -7,12 +7,14 @@
  * @since 0.5
  * @author Luke
  */
-class ContentController extends Controller {
+class ContentController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -23,7 +25,8 @@ class ContentController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -39,7 +42,8 @@ class ContentController extends Controller {
      *
      * Returns a JSON list of affected wallEntryIds.
      */
-    public function actionDelete() {
+    public function actionDelete()
+    {
 
         $this->forcePostRequest();
 
@@ -78,7 +82,8 @@ class ContentController extends Controller {
      *
      * Returns JSON Output.
      */
-    public function actionArchive() {
+    public function actionArchive()
+    {
 
         $this->forcePostRequest();
 
@@ -106,7 +111,8 @@ class ContentController extends Controller {
      *
      * Returns JSON Output.
      */
-    public function actionUnarchive() {
+    public function actionUnarchive()
+    {
 
         $this->forcePostRequest();
 
@@ -134,7 +140,8 @@ class ContentController extends Controller {
      *
      * Returns JSON Output.
      */
-    public function actionStick() {
+    public function actionStick()
+    {
 
         $this->forcePostRequest();
 
@@ -168,7 +175,8 @@ class ContentController extends Controller {
      *
      * Returns JSON Output.
      */
-    public function actionUnStick() {
+    public function actionUnStick()
+    {
 
         $this->forcePostRequest();
 
@@ -185,6 +193,29 @@ class ContentController extends Controller {
 
             $json['success'] = true;
             $json['wallEntryIds'] = $object->content->getWallEntryIds();
+        }
+
+        // returns JSON
+        echo CJSON::encode($json);
+        Yii::app()->end();
+    }
+
+    public function actionNotificationSwitch()
+    {
+        $this->forcePostRequest();
+
+        $json = array();
+        $json['success'] = false;   // default
+
+        $id = (int) Yii::app()->request->getParam('id', "");
+        $className = Yii::app()->request->getParam('className', "");
+        $switch = Yii::app()->request->getParam('switch', true);
+
+        $object = Content::Get($className, $id);
+
+        if ($object != null) {
+            $object->follow(Yii::app()->user->id, ($switch == 1) ? true : false );
+            $json['success'] = true;
         }
 
         // returns JSON

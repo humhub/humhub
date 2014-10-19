@@ -78,7 +78,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 'class' => 'application.modules_core.user.behaviors.UserSettingBehavior',
             ),
             'HFollowableBehavior' => array(
-                'class' => 'application.behaviors.HFollowableBehavior',
+                'class' => 'application.modules_core.user.behaviors.HFollowableBehavior',
             ),
             'UserModelModulesBehavior' => array(
                 'class' => 'application.modules_core.user.behaviors.UserModelModulesBehavior',
@@ -306,7 +306,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
             }
 
             $this->last_activity_email = new CDbExpression('NOW()');
-            
+
             // Set Status
             if ($this->status == "") {
                 if (HSetting::Get('needApproval', 'authentication_internal')) {
@@ -419,8 +419,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
         // Delete all pending invites
         UserInvite::model()->deleteAllByAttributes(array('user_originator_id' => $this->id));
 
-        Follow::model()->deleteAllByAttributes(array('user_id' => $this->id));
-        Follow::model()->deleteAllByAttributes(array('object_model' => 'User', 'object_id' => $this->id));
+        UserFollow::model()->deleteAllByAttributes(array('user_id' => $this->id));
+        UserFollow::model()->deleteAllByAttributes(array('object_model' => 'User', 'object_id' => $this->id));
 
         // Delete all group admin assignments
         GroupAdmin::model()->deleteAllByAttributes(array('user_id' => $this->id));

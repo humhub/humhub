@@ -172,12 +172,8 @@ class HActiveRecordContentAddon extends HActiveRecord
      */
     protected function afterSave()
     {
-
-        // Workaround for files, which have no object_model / id on uploading
-        if ($this->object_model != "" && $this->object_id != "") {
-            $this->content->save();
-        }
-
+        // Auto follow the content which this addon belongs to
+        $this->getContent()->getUnderlyingObject()->follow($this->created_by);
         return parent::afterSave();
     }
 

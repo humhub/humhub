@@ -7,7 +7,8 @@
  * @since 0.5
  * @author Luke
  */
-class StreamAction extends CAction {
+class StreamAction extends CAction
+{
 
     /**
      * Constants used for sorting
@@ -101,7 +102,8 @@ class StreamAction extends CAction {
      *
      * (When called from console, this method is not called.)
      */
-    public function init() {
+    public function init()
+    {
 
         Yii::beginProfile('initStreamAction');
 
@@ -145,7 +147,8 @@ class StreamAction extends CAction {
      *
      * @return type
      */
-    public function runConsole() {
+    public function runConsole()
+    {
         $this->init();
         $this->prepareSQL();
         $this->setupFilterSQL();
@@ -188,7 +191,8 @@ class StreamAction extends CAction {
     /**
      * Execute the Stream Action and returns a JSON output.
      */
-    public function run() {
+    public function run()
+    {
 
         $this->init();
         $this->prepareSQL();
@@ -283,7 +287,8 @@ class StreamAction extends CAction {
      *
      * @throws CHttpException
      */
-    protected function prepareSQL() {
+    protected function prepareSQL()
+    {
 
         /**
          * Build SQL
@@ -332,13 +337,13 @@ class StreamAction extends CAction {
             // Get all Wall Ids where the User is assigned to
             $usersWallId = $this->userWallId;
             $this->sqlWhere .= " AND wall_entry.wall_id IN (
-						SELECT uf.wall_id FROM follow
-							LEFT JOIN user uf ON uf.id=follow.object_id AND follow.object_model='User'
-							WHERE follow.user_id=:userId AND uf.wall_id is NOT NULL
+						SELECT uf.wall_id FROM user_follow
+							LEFT JOIN user uf ON uf.id=user_follow.object_id AND user_follow.object_model='User'
+							WHERE user_follow.user_id=:userId AND uf.wall_id is NOT NULL
 						UNION
-						SELECT sf.wall_id FROM follow
-							LEFT JOIN space sf ON sf.id=follow.object_id AND follow.object_model='Space'
-							WHERE follow.user_id=:userId AND sf.wall_id IS NOT NULL
+						SELECT sf.wall_id FROM user_follow
+							LEFT JOIN space sf ON sf.id=user_follow.object_id AND user_follow.object_model='Space'
+							WHERE user_follow.user_id=:userId AND sf.wall_id IS NOT NULL
 						UNION
 						SELECT sm.wall_id FROM space_membership
 							LEFT JOIN space sm ON sm.id=space_membership.space_id
@@ -386,8 +391,8 @@ class StreamAction extends CAction {
 
             if ($user->id != Yii::app()->user->id) {
                 $this->sqlWhere .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
-            }            
-            
+            }
+
             $this->sqlWhere .= " AND wall_entry.wall_id = " . $wallId;
         } else {
             throw new CHttpException(500, 'Target unknown!');
@@ -397,7 +402,8 @@ class StreamAction extends CAction {
     /**
      * Adds filters to the SQL Query
      */
-    protected function setupFilterSQL() {
+    protected function setupFilterSQL()
+    {
 
         if ($this->wallEntryDateTo != "") {
             $this->sqlParams[':maxDate'] = $this->wallEntryDateTo;
@@ -433,8 +439,8 @@ class StreamAction extends CAction {
 
         // Show only items where the current user is involed
         if (in_array('entry_userinvoled', $this->filters)) {
-            $this->sqlJoin .= " LEFT JOIN user_content ON content.object_model=user_content.object_model AND content.object_id=user_content.object_id AND user_content.user_id = :userId";
-            $this->sqlWhere .= " AND user_content.id IS NOT NULL";
+            $this->sqlJoin .= " LEFT JOIN user_follow ON content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId";
+            $this->sqlWhere .= " AND user_follow.id IS NOT NULL";
         }
 
         // Posts only

@@ -64,7 +64,6 @@ class WallModule extends HWebModule
                 continue;
             }
 
-            #$content->updateInvolvedUsers();
         }
     }
 
@@ -84,10 +83,15 @@ class WallModule extends HWebModule
 
         // Add Edit Link
         $event->sender->addWidget('application.modules_core.wall.widgets.EditLinkWidget', array(
-                'object' => $event->sender->object
-            )
+            'object' => $event->sender->object
+                )
         );
 
+        // Add Notifications on/off Link
+        $event->sender->addWidget('application.modules_core.wall.widgets.NotificationSwitchLinkWidget', array(
+            'content' => $event->sender->object
+                )
+        );
         // Add Perma Link
         $event->sender->addWidget('application.modules_core.wall.widgets.PermaLinkWidget', array(
             'content' => $event->sender->object

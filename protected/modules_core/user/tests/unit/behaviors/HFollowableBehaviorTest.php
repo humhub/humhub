@@ -23,13 +23,13 @@
  *
  * @package humhub.tests.unit.behaviors
  * @since 0.9
- * @group core
+ * @group user
  * @author luke
  */
 class HFollowableBehaviorTest extends CDbTestCase
 {
-
-    public $fixtures = array(':follow', ':user', ':space');
+    
+    public $fixtures = array(':user_follow', ':user', ':space');
 
     public function testFollow()
     {

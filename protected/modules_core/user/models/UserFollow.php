@@ -1,15 +1,16 @@
 <?php
 
 /**
- * This is the model class for table "follow".
+ * This is the model class for table "user_follow".
  *
- * The followings are the available columns in table 'follow':
+ * The followings are the available columns in table 'user_follow':
  * @property integer $id
  * @property string $object_model
  * @property integer $object_id
  * @property integer $user_id
+ * @property integer $send_notifications
  */
-class Follow extends HActiveRecord
+class UserFollow extends HActiveRecord
 {
 
     /**
@@ -27,7 +28,7 @@ class Follow extends HActiveRecord
      */
     public function tableName()
     {
-        return 'follow';
+        return 'user_follow';
     }
 
     /**

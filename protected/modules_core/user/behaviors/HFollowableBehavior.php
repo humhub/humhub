@@ -22,11 +22,17 @@
  * HFollowableBehavior adds following methods to HActiveRecords
  *
  * @author Lucas Bartholemy <lucas.bartholemy@humhub.com>
- * @package humhub.behaviors
+ * @package humhub.modules_core.user.behaviors
  * @since 0.5
  */
 class HFollowableBehavior extends CActiveRecordBehavior
 {
+
+    public function beforeDelete($event)
+    {
+        UserFollow::model()->deleteAllByAttributes(array('object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()));
+        return parent::beforeValidate($event);
+    }
 
     /**
      * Return the follow record based on the owner record and the given user id
@@ -36,7 +42,7 @@ class HFollowableBehavior extends CActiveRecordBehavior
      */
     private function getFollowRecord($userId)
     {
-        return Follow::model()->findByAttributes(array('object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey(), 'user_id' => $userId));
+        return UserFollow::model()->findByAttributes(array('object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey(), 'user_id' => $userId));
     }
 
     /**
@@ -45,7 +51,7 @@ class HFollowableBehavior extends CActiveRecordBehavior
      * @param int $userId
      * @return boolean 
      */
-    public function follow($userId = "")
+    public function follow($userId = "", $withNotifications = true)
     {
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -55,20 +61,23 @@ class HFollowableBehavior extends CActiveRecordBehavior
             return false;
         }
 
-        $record = $this->getFollowRecord($userId);
-        if ($record === null) {
-            $follow = new Follow();
+        $follow = $this->getFollowRecord($userId);
+        if ($follow === null) {
+            $follow = new UserFollow();
             $follow->user_id = $userId;
             $follow->object_id = $this->getOwner()->getPrimaryKey();
             $follow->object_model = get_class($this->getOwner());
-            if (!$follow->save()) {
-                return false;
-            }
-        } else {
-            // Already follows this object
-            return false;
         }
 
+        if ($withNotifications) {
+            $follow->send_notifications = 1;
+        } else {
+            $follow->send_notifications = 0;
+        }
+
+        if (!$follow->save()) {
+            return false;
+        }
         return true;
     }
 
@@ -100,14 +109,25 @@ class HFollowableBehavior extends CActiveRecordBehavior
      * Checks if the given user follows this owner record.
      * 
      * @param int $userId
+     * @param boolean $withNotifcations if true, only return true when also notifications enabled
      * @return boolean Is object followed by user
      */
-    public function isFollowedByUser($userId = "")
+    public function isFollowedByUser($userId = "", $withNotifications = false)
     {
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::app()->user->id;
+        }
 
-        return ($this->getFollowRecord($userId) !== null);
+        $record = $this->getFollowRecord($userId);
+        if ($record !== null) {
+            if ($withNotifications && $record->send_notifications == 1) {
+                return true;
+            } elseif (!$withNotifications) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -117,7 +137,7 @@ class HFollowableBehavior extends CActiveRecordBehavior
      */
     public function getFollowerCount()
     {
-        return Follow::model()->countByAttributes(array('object_id' => $this->getOwner()->getPrimaryKey(), 'object_model' => get_class($this->getOwner())));
+        return UserFollow::model()->countByAttributes(array('object_id' => $this->getOwner()->getPrimaryKey(), 'object_model' => get_class($this->getOwner())));
     }
 
     /**
@@ -129,8 +149,8 @@ class HFollowableBehavior extends CActiveRecordBehavior
     public function getFollowers($eCriteria = null)
     {
         $criteria = new CDbCriteria();
-        $criteria->join = 'LEFT JOIN follow ON t.id = follow.user_id AND follow.object_id=:object_id AND follow.object_model=:object_model';
-        $criteria->condition = 'follow.user_id IS NOT NULL';
+        $criteria->join = 'LEFT JOIN user_follow ON t.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model=:object_model';
+        $criteria->condition = 'user_follow.user_id IS NOT NULL';
         $criteria->params = array(':object_id' => $this->getOwner()->getPrimaryKey(), ':object_model' => get_class($this->getOwner()));
 
         if ($eCriteria !== null) {
@@ -153,7 +173,7 @@ class HFollowableBehavior extends CActiveRecordBehavior
             throw new CException("Invalid objectModel parameter given!");
         }
 
-        return Follow::model()->countByAttributes(array('user_id' => $this->getOwner()->getPrimaryKey(), 'object_model' => $objectModel));
+        return UserFollow::model()->countByAttributes(array('user_id' => $this->getOwner()->getPrimaryKey(), 'object_model' => $objectModel));
     }
 
     /**
@@ -175,8 +195,8 @@ class HFollowableBehavior extends CActiveRecordBehavior
         }
 
         $criteria = new CDbCriteria();
-        $criteria->join = 'LEFT JOIN follow ON t.id = follow.object_id AND follow.object_model=:object_model';
-        $criteria->condition = 'follow.user_id=:user_id';
+        $criteria->join = 'LEFT JOIN user_follow ON t.id = user_follow.object_id AND user_follow.object_model=:object_model';
+        $criteria->condition = 'user_follow.user_id=:user_id';
         $criteria->params = array(':user_id' => $userId, ':object_model' => get_class($this->getOwner()));
 
         if ($eCriteria !== null) {
@@ -185,5 +205,5 @@ class HFollowableBehavior extends CActiveRecordBehavior
 
         return $objectModel::model()->findAll($criteria);
     }
-    
+
 }
