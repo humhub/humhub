@@ -108,8 +108,24 @@ class UserMentioning extends HActiveRecord
 
     public function afterSave()
     {
+        $this->sendNotification();
+        return parent::afterSave();
+    }
 
-        $content = $this->getUnderlyingObject()->content;
+    /**
+     * Sends an notification about new mentioning
+     */
+    protected function sendNotification()
+    {
+        $record = $this->getUnderlyingObject();
+
+        // Avoid notifications when user mentioned himself
+        if ($record instanceof HActiveRecordContent && $this->user_id == $record->content->user_id) {
+            return;
+        } elseif ($record instanceof HActiveRecordContentAddon && $this->user_id == $record->created_by) {
+            return;
+        }
+        $content = $record->content;
 
         // Check if user has read access to this content
         if ($content->canRead($this->user_id)) {
@@ -130,9 +146,6 @@ class UserMentioning extends HActiveRecord
             $notification->target_object_id = $this->object_id;
             $notification->save();
         }
-
-
-        return parent::afterSave();
     }
 
     /**
