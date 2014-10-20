@@ -105,7 +105,6 @@ class Comment extends HActiveRecordContentAddon {
 
         // Send Notifications
         NewCommentNotification::fire($this);
-        AlsoCommentedNotification::fire($this);
         
         // Handle mentioned users
         UserMentioning::parse($this, $this->message);

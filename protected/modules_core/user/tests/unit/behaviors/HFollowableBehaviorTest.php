@@ -28,14 +28,14 @@
  */
 class HFollowableBehaviorTest extends CDbTestCase
 {
-    
+
     public $fixtures = array(':user_follow', ':user', ':space');
 
     public function testFollow()
     {
         // Already followed by fixture
         $user = User::model()->findByPk(2);
-        $this->assertFalse($user->follow());
+        $this->assertTrue($user->follow());
 
         // Follow 
         $user = User::model()->findByPk(3);
