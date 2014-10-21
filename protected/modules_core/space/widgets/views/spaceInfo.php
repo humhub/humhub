@@ -20,32 +20,32 @@
                          src="<?php echo $space->getProfileImage()->getUrl(); ?>"
                          data-src="holder.js/80x80" alt="80x80" style="width: 80px; height: 80px;"/>
 
-                    <!-- check if the current user is the profile owner and can change the images -->
-                    <?php //if (Yii::app()->user->id == $this->getUser()->id) { ?>
-                    <form class="fileupload" id="spaceimageupload" action="" method="POST" enctype="multipart/form-data"
-                          style="position: absolute; top: 0; left: 0; opacity: 0; height: 80px; width: 80px;">
-                        <input type="file" name="spacefiles[]">
-                    </form>
+                    <!-- check if the current user has admin rights for this space -->
+                    <?php if ($space->isAdmin(Yii::app()->user->id)) : ?>
+                        <form class="fileupload" id="spaceimageupload" action="" method="POST" enctype="multipart/form-data"
+                              style="position: absolute; top: 0; left: 0; opacity: 0; height: 80px; width: 80px;">
+                            <input type="file" name="spacefiles[]">
+                        </form>
 
-                    <div class="image-upload-loader" id="space-image-upload-loader" style="padding-top: 35px;">
-                        <div class="progress image-upload-progess-bar" id="space-image-upload-bar">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="00"
-                                 aria-valuemin="0"
-                                 aria-valuemax="100" style="width: 0%;">
+                        <div class="image-upload-loader" id="space-image-upload-loader" style="padding-top: 35px;">
+                            <div class="progress image-upload-progess-bar" id="space-image-upload-bar">
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="00"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 0%;">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="image-upload-buttons" id="space-image-upload-buttons">
-                        <a herf="#" onclick="javascript:$('#spaceimageupload input').click();" class="btn btn-info btn-sm"><i
-                                class="fa fa-cloud-upload"></i></a>
-                        <a id="profile-image-upload-edit-button"
-                           style="<?php if (!$space->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
-                           href="<?php echo Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)); ?>"
-                           class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
-                                class="fa fa-edit"></i></a>
-                    </div>
-                    <?php //} ?>
+                        <div class="image-upload-buttons" id="space-image-upload-buttons">
+                            <a herf="#" onclick="javascript:$('#spaceimageupload input').click();" class="btn btn-info btn-sm"><i
+                                    class="fa fa-cloud-upload"></i></a>
+                            <a id="profile-image-upload-edit-button"
+                               style="<?php if (!$space->getProfileImage()->hasImage()) { echo 'display: none;'; } ?>"
+                               href="<?php echo Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)); ?>"
+                               class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
+                                    class="fa fa-edit"></i></a>
+                        </div>
+                    <?php endif; ?>
 
                 </div>
                 <strong><?php echo $space->name; ?></strong>

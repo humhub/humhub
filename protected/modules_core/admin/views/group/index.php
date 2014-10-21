@@ -6,7 +6,7 @@
             <?php echo Yii::t('AdminModule.views_groups_index', 'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.'); ?>
         </p>
 
-        <?php echo HHtml::link("Create new group", array('//admin/group/edit'), array('class' => 'btn btn-primary')); ?>
+        <?php echo HHtml::link(Yii::t('AdminModule.views_groups_index', "Create new group"), array('//admin/group/edit'), array('class' => 'btn btn-primary')); ?>
         <br>
 
 

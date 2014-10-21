@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Search' => 'Suchen',
+  'Search members' => 'Suche nach Mitgliedern',
   '<strong>Manage</strong> your space members' => '<strong>Space-Mitglieder</strong> verwalten',
   '<strong>Outstanding</strong> sended invitations' => '<strong>Ausstehende</strong> versendete Einladungen',
   '<strong>Outstanding</strong> user requests' => '<strong>Ausstehende</strong> Benutzeranfragen',

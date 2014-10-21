@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Delete</strong> group' => '',
-  'Delete group' => '',
-  'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:' => '',
+  '<strong>Delete</strong> group' => '<strong>Apagar</strong> grupo',
+  'Delete group' => 'Apagar grupo',
+  'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:' => 'Para apagar o grupo <strong>"{group}"</strong> você precisa definir um grupo alternativo para os usuários existentes:',
 );

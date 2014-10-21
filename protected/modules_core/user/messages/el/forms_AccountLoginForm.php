@@ -17,8 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Incorrect username/email or password.' => '',
-  'Remember me next time' => '',
-  'Your account has not been activated by our staff yet.' => '',
-  'Your account is suspended.' => '',
+  'Current password' => '',
+  'New password' => '',
+  'New password confirm' => '',
+  'Incorrect username/email or password.' => 'Λάθος όνομα χρήστη/e-mail ή κωδικού προσβασης',
+  'Remember me next time' => 'Θυμήσου με την επόμενη φορά',
+  'Your account has not been activated by our staff yet.' => 'Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα από τον διαχειριστή του δικτύου.',
+  'Your account is suspended.' => 'Ο λογαριασμός σας έχει καταργηθεί',
 );

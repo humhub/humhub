@@ -1,5 +1,9 @@
 <?php
 return array (
+  'Can share' => '',
+  'Search' => 'Поиск',
+  'Search members' => 'Поиск участников',
+  'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '',
   '<strong>Manage</strong> your space members' => '<strong>Управление</strong> участниками пространства',
   '<strong>Outstanding</strong> sended invitations' => '<strong>Оставшиеся</strong> приглашения',
   '<strong>Outstanding</strong> user requests' => '<strong>Оставшиеся</strong> запросы',
@@ -9,7 +13,6 @@ return array (
   'Allow this user to<br>make content public' => 'Разрешить пользователю<br/>добавлять собственные материалы',
   'Are you sure, that you want to remove this member from this space?' => 'Вы уверенны что хотите удалить этого пользователя из текущего пространства?',
   'Can invite' => 'Может приглашать других',
-  'Can share' => '',
   'Change space owner' => 'Менять пользователя',
   'Decline' => 'Отклонить',
   'External users who invited by email, will be not listed here.' => 'Не зарегистрированные пользователи, приглашенные по электронной почте не будут перечислены здесь.',
@@ -23,7 +26,6 @@ return array (
   'Space owner' => 'Владелец пространства',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Заявки на вступление в пространство. ',
   'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Приглашенные, но не вступившие участники.',
-  'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '',
   'User' => 'Пользователь',
   'Yes, remove' => 'Да, удалить',
 );

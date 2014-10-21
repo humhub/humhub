@@ -21,7 +21,7 @@ return array (
   'E-Mail sender name' => '',
   'Encryption' => '',
   'Mail Transport Type' => '',
-  'Password' => '',
-  'Port number' => '',
-  'Username' => '',
+  'Password' => 'Senha',
+  'Port number' => 'Número da porta',
+  'Username' => 'Nome de usuário',
 );

@@ -21,7 +21,7 @@
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Total groups'); ?></strong><br><br>
 
             <input id="groups-total" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
-                   data-fgcolor="#34c7ff" data-skin="tron"
+                   data-fgcolor="#7191a8" data-skin="tron"
                    data-thickness=".2" value="0"
                    data-max="<?php echo $statsTotalGroups; ?>"
                    style="width: 75px; position: absolute; margin-top: 53.57142857142857px; margin-left: -112.5px; font-size: 37.5px; border: none; background-image: none; font-family: Arial; font-weight: bold; text-align: center; color: rgb(255, 236, 3); padding: 0px; -webkit-appearance: none; background-position: initial initial; background-repeat: initial initial;">
@@ -39,7 +39,7 @@
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Average members'); ?></strong><br><br>
 
             <input id="group-average" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
-                   data-fgcolor="#34c7ff"
+                   data-fgcolor="#7191a8"
                    data-skin="tron"
                    data-thickness=".2" value="0"
                    data-max="<?php echo $statsTotalUsers; ?>"

@@ -16,9 +16,9 @@
     <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, when other users comment or like your posts.'); ?>
     <?php
     echo $form->dropDownList($model, 'receive_email_notifications', array(
-        User::RECEIVE_EMAIL_NEVER => 'Never',
-        User::RECEIVE_EMAIL_WHEN_OFFLINE => 'When I´m Offline',
-        User::RECEIVE_EMAIL_ALWAYS => 'Always',
+        User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
+        User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),
+        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always'),
     ), array('id' => 'reg_group', 'class' => 'form-control'));
     ?>
 

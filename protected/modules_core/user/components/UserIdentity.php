@@ -17,7 +17,7 @@ class UserIdentity extends CUserIdentity
     const ERROR_SUSPENDED = 11;
 
     /**
-     * @var Intger Users id
+     * @var Integer Users id
      */
     private $_id;
 

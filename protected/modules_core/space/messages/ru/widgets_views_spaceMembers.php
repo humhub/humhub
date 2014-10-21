@@ -2,7 +2,7 @@
 return array (
   '<strong>New</strong> member request' => '<strong>Новые</strong> запросы',
   '<strong>Space</strong> members' => '<strong>Участники</strong>',
-  'Accept invite' => '',
+  'Accept invite' => 'Принять приглашение',
   'Become member' => 'Вступить',
   'Cancel pending membership application' => '',
   'Deny invite' => 'Заблокировать приглашение',

@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Member</strong> Group Directory' => '<strong>Membres</strong> du groupe d\'annuaire',
+  '<strong>Member</strong> Group Directory' => 'Annuaire des <strong>membres de groupes</strong>',
   'show all members' => 'Voir tous les membres',
 );

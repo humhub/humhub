@@ -22,10 +22,10 @@
             <div class="form-group form-group-search">
 
 
-                <input type="text" class="form-control form-search" placeholder="Search members" name="search"
+                <input type="text" class="form-control form-search" placeholder="<?php echo Yii::t('SpaceModule.views_admin_members', "Search members"); ?>" name="search"
                        value="<?php echo CHtml::encode($search); ?>"/>
                 <br/>
-                <?php echo CHtml::submitButton("Search", array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                <?php echo CHtml::submitButton(Yii::t('SpaceModule.views_admin_members', "Search"), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
 
             </div>
 

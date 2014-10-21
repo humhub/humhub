@@ -44,16 +44,16 @@
         <hr>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'join_policy'); ?>
-            <?php $joinPolicies = array(0 => Yii::t('SpaceModule.views_admin_edit', 'Only by invite'), 1 => Yii::t('SpaceModule.views_admin_edit', 'Invite and request'), 2 => Yii::t('SpaceModule.views_admin_edit', 'For everyone')); ?>
+            <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')); ?>
             <?php echo $form->dropDownList($model, 'join_policy', $joinPolicies, array('class' => 'form-control', 'id' => 'join_policy_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'))); ?>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
             <?php $visibilities = array(
-                0 => Yii::t('SpaceModule.views_admin_edit', 'Invisible'),
-                1 => Yii::t('SpaceModule.views_admin_edit', 'Visible for network users'),
-                2 => Yii::t('SpaceModule.views_admin_edit', 'Visible for all')
+                0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+                1 => Yii::t('SpaceModule.base', 'Public (Visible)')
+                /*2 => Yii::t('SpaceModule.base', 'Visible for all')*/
              ); ?>
             <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
             <?php echo $form->error($model, 'visibility'); ?>
