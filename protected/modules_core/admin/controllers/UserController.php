@@ -4,14 +4,16 @@
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     public $subLayout = "/_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -22,7 +24,8 @@ class UserController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow',
                 'expression' => 'Yii::app()->user->isAdmin()'
@@ -36,7 +39,8 @@ class UserController extends Controller {
     /**
      * Returns a List of Users
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         $model = new User('search');
         $model->super_admin = '';
@@ -55,7 +59,8 @@ class UserController extends Controller {
      *
      * @return type
      */
-    public function actionEdit() {
+    public function actionEdit()
+    {
 
         $_POST = Yii::app()->input->stripClean($_POST);
 
@@ -166,10 +171,116 @@ class UserController extends Controller {
         $this->render('edit', array('form' => $form));
     }
 
+    public function actionAdd()
+    {
+        $_POST = Yii::app()->input->stripClean($_POST);
+
+        $userModel = new User('register');
+        $userPasswordModel = new UserPassword('newPassword');
+        $profileModel = $userModel->profile;
+        $profileModel->scenario = 'register';
+
+        // Build Form Definition
+        $definition = array();
+        $definition['elements'] = array();
+
+        $groupModels = Group::model()->findAll(array('order' => 'name'));
+        $defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
+        $groupFieldType = "dropdownlist";
+        if ($defaultUserGroup != "") {
+            $groupFieldType = "hidden";
+        } else if (count($groupModels) == 1) {
+            $groupFieldType = "hidden";
+            $defaultUserGroup = $groupModels[0]->id;
+        }
+
+        // Add User Form
+        $definition['elements']['User'] = array(
+            'type' => 'form',
+            'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
+            'elements' => array(
+                'username' => array(
+                    'type' => 'text',
+                    'class' => 'form-control',
+                    'maxlength' => 25,
+                ),
+                'email' => array(
+                    'type' => 'text',
+                    'class' => 'form-control',
+                    'maxlength' => 25,
+                ),
+                'group_id' => array(
+                    'type' => $groupFieldType,
+                    'class' => 'form-control',
+                    'items' => CHtml::listData($groupModels, 'id', 'name'),
+                    'value' => $defaultUserGroup,
+                ),
+            ),
+        );
+
+        // Add User Password Form
+        $definition['elements']['UserPassword'] = array(
+            'type' => 'form',
+            #'title' => 'Password',
+            'elements' => array(
+                'newPassword' => array(
+                    'type' => 'password',
+                    'class' => 'form-control',
+                    'maxlength' => 255,
+                ),
+                'newPasswordConfirm' => array(
+                    'type' => 'password',
+                    'class' => 'form-control',
+                    'maxlength' => 255,
+                ),
+            ),
+        );
+
+        // Add Profile Form
+        $definition['elements']['Profile'] = array_merge(array('type' => 'form'), $profileModel->getFormDefinition());
+
+        // Get Form Definition
+        $definition['buttons'] = array(
+            'save' => array(
+                'type' => 'submit',
+                'class' => 'btn btn-primary',
+                'label' => Yii::t('UserModule.controllers_AuthController', 'Create account'),
+            ),
+        );
+
+        $form = new HForm($definition);
+        $form['User']->model = $userModel;
+        $form['UserPassword']->model = $userPasswordModel;
+        $form['Profile']->model = $profileModel;
+
+        if ($form->submitted('save') && $form->validate()) {
+
+            $this->forcePostRequest();
+
+            $form['User']->model->status = User::STATUS_ENABLED;
+            if ($form['User']->model->save()) {
+                // Save User Profile
+                $form['Profile']->model->user_id = $form['User']->model->id;
+                $form['Profile']->model->save();
+
+                // Save User Password
+                $form['UserPassword']->model->user_id = $form['User']->model->id;
+                $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
+                $form['UserPassword']->model->save();
+
+                $this->redirect($this->createUrl('index'));
+                return;
+            }
+        }
+
+        $this->render('add', array('form' => $form));
+    }
+
     /**
      * Deletes a user permanently
      */
-    public function actionDelete() {
+    public function actionDelete()
+    {
 
         $id = (int) Yii::app()->request->getQuery('id');
         $doit = (int) Yii::app()->request->getQuery('doit');

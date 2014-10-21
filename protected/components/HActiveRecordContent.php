@@ -126,14 +126,19 @@ class HActiveRecordContent extends HActiveRecord
     public function afterFind()
     {
         $this->content = Content::model()->findByAttributes(array('object_model' => get_class($this), 'object_id' => $this->getPrimaryKey()));
-        $this->content->setUnderlyingObject($this);
-
+        
+        if ($this->content !== null) {
+            $this->content->setUnderlyingObject($this);
+       }
+ 
         parent::afterFind();
     }
 
     public function afterDelete()
     {
-        $this->content->delete();
+        if ($this->content !== null) {
+            $this->content->delete();
+        }
         parent::afterDelete();
     }
 

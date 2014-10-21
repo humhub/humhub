@@ -1,7 +1,15 @@
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
     <div class="panel-body">
-
+        <ul class="nav nav-pills">
+            <li class="active"><a
+                    href="<?php echo $this->createUrl('index'); ?>"><?php echo Yii::t('AdminModule.views_user_index', 'Overview'); ?></a>
+            </li>
+            <li>
+                <a href="<?php echo $this->createUrl('add'); ?>"><?php echo Yii::t('AdminModule.views_user_index', 'Add new user'); ?></a>
+            </li>
+        </ul>
+        <p />
         <p>
             <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>
         </p>
@@ -41,9 +49,9 @@
                     'updateButtonUrl' => 'Yii::app()->createUrl("//admin/user/edit", array("id"=>$data->id));',
                     'htmlOptions' => array('width' => '90px'),
                     'buttons' => array
-                    (
-                        'view' => array
                         (
+                        'view' => array
+                            (
                             'label' => '<i class="fa fa-eye"></i>',
                             'imageUrl' => false,
                             'options' => array(
@@ -56,7 +64,7 @@
                             ),
                         ),
                         'update' => array
-                        (
+                            (
                             'label' => '<i class="fa fa-pencil"></i>',
                             'imageUrl' => false,
                             'options' => array(
@@ -69,7 +77,7 @@
                             ),
                         ),
                         'deleteOwn' => array
-                        (
+                            (
                             'label' => '<i class="fa fa-times"></i>',
                             'visible' => '$data->id != Yii::app()->user->id', //cannot delete yourself
                             'imageUrl' => false,
@@ -98,7 +106,6 @@
             ),
             'pagerCssClass' => 'pagination-container',
         ));
-
         ?>
 
     </div>
