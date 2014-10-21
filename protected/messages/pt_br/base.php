@@ -3,7 +3,7 @@ return array (
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Conteúdo fonte Addon deve ser exemplo de HActiveRecordContent ou HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Não foi possível determinar o conteúdo!',
   'Could not find content of addon!' => 'Não foi possível encontrar o conteúdo !',
-  'Could not find requested module!' => 'ão foi possível encontrar o módulo solicitado!',
+  'Could not find requested module!' => 'Não foi possível encontrar o módulo solicitado!',
   'It looks like you may have taken the wrong turn.' => 'Parece que você pode ter tomado o caminho errado.',
   'Module is not on this content container enabled!' => 'O módulo não está habilitado para este container!',
   'Nothing found with your input.' => 'Nada foi encontrado.',

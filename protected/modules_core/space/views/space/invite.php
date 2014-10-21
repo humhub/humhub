@@ -18,8 +18,8 @@
             <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="active"><a href="#internal" data-toggle="tab">Pick users</a></li>
-                        <li class=""><a href="#external" data-toggle="tab">Invite by email</a></li>
+                        <li class="active"><a href="#internal" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a></li>
+                        <li class=""><a href="#external" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a></li>
                     </ul>
                 </div>
                 <br/>
@@ -54,7 +54,7 @@
 
                         <div class="form-group">
                             <?php //echo $form->label($model, 'inviteExternal'); ?>
-                            <?php echo $form->textArea($model, 'inviteExternal', array('class' => 'form-control', 'rows' => '3', 'id' => 'email_invite', 'placeholder' => 'Email addresses')); ?>
+                            <?php echo $form->textArea($model, 'inviteExternal', array('class' => 'form-control', 'rows' => '3', 'id' => 'email_invite', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses'))); ?>
                             <?php echo $form->error($model, 'inviteExternal'); ?>
                         </div>
                     </div>

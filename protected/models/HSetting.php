@@ -420,6 +420,11 @@ class HSetting extends HActiveRecord
         if (function_exists('opcache_reset')) {
             opcache_invalidate($configFile);
         }
+        
+        if (function_exists('apc_compile_file')) {
+            apc_compile_file($configFile);
+        }
+        
     }
 
     /**

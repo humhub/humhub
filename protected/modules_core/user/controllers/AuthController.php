@@ -213,7 +213,7 @@ class AuthController extends Controller
                 'username' => array(
                     'type' => 'text',
                     'class' => 'form-control',
-                    'maxlength' => 32,
+                    'maxlength' => 25,
                 ),
                 'group_id' => array(
                     'type' => $groupFieldType,

@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-   <div class="panel-heading"><strong>About</strong> this user</div>
+   <div class="panel-heading"><?php echo Yii::t('UserModule.views_profile_about', '<strong>About</strong> this user'); ?></div>
 
     <div class="panel-body">
 

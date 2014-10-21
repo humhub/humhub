@@ -37,6 +37,8 @@ return array (
   'Remove' => '',
   'Request message' => '',
   'Revoke invitation' => '',
+  'Search' => '',
+  'Search members' => '',
   'Space owner' => '',
   'The following users waiting for an approval to enter this space. Please take some action now.' => '',
   'The following users were already invited to this space, but didn\'t follow the invitation until now.' => '',

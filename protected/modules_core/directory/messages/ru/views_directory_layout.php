@@ -4,5 +4,5 @@ return array (
   'Groups' => 'Группы',
   'Members' => 'Пользователи',
   'Spaces' => 'Пространства',
-  'User profile posts' => 'Сообщения',
+  'User profile posts' => 'Сообщения из профиля пользователя',
 );

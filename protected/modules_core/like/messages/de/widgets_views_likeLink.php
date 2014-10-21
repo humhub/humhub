@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Like' => 'Like',
-  'Unlike' => 'Unlike',
+  'Like' => 'Gefällt mir',
+  'Unlike' => 'Gefällt mir nicht mehr',
   ' likes this.' => ' gefällt das.',
   '<strong>You</strong> like this.' => '<strong>Dir</strong> gefällt das.',
   '<strong>You</strong><br>' => '<strong>Dir</strong><br>',

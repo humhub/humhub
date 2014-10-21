@@ -17,9 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Advanced access settings' => '',
   'Invite and request' => '',
+  'Join Policy' => '',
   'Please write down a small description for other users.' => '',
   'Public (Visible)' => '',
+  'Visibility' => '',
   ' Invite and request' => 'Запросы и приглашения',
   '<strong>Create</strong> new space' => '<strong>Создать</strong> новое пространство',
   'Also non-members can see this<br>space, but have no access' => 'Пользователи не являющиеся участниками пространства могут видеть его,<br>но не имеют доступа',

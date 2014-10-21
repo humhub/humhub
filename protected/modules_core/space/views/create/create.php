@@ -30,7 +30,7 @@
             </div>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
-               style="font-size: 11px;"><i class="fa fa-caret-right"></i> Advanced access settings</a>
+               style="font-size: 11px;"><i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?></a>
 
             <div id="collapse-access-settings" class="panel-collapse collapse">
                 <br/>
@@ -39,46 +39,46 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="">Join Policy</label>
+                        <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Join Policy'); ?></label>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can be only added<br>by invitation'); ?>">
                                        <?php echo $form->radioButton($model, 'join_policy', array('value' => 0, 'uncheckValue' => null, 'id' => 'invite_radio', 'checked' => '')); ?>
-                                       <?php echo Yii::t('SpaceModule.views_create_create', 'Only by invite'); ?>
+                                       <?php echo Yii::t('SpaceModule.base', 'Only by invite'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can also apply for a<br>membership to this space'); ?>">
                                        <?php echo $form->radioButton($model, 'join_policy', array('value' => 1, 'uncheckValue' => null, 'id' => 'request_radio', 'checked' => 'checked')); ?>
-                                       <?php echo Yii::t('SpaceModule.views_create_create', ' Invite and request'); ?>
+                                       <?php echo Yii::t('SpaceModule.base', ' Invite and request'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Every user can enter your space<br>without your approval'); ?>">
                                        <?php echo $form->radioButton($model, 'join_policy', array('value' => 2, 'uncheckValue' => null, 'id' => 'everyone_radio', 'checked' => '')); ?>
-                                       <?php echo Yii::t('SpaceModule.views_create_create', 'Everyone can enter'); ?>
+                                       <?php echo Yii::t('SpaceModule.base', 'Everyone can enter'); ?>
                             </label>
                         </div>
                         <br/>
                     </div>
                     <div class="col-md-6">
-                        <label for="">Visibility</label>
+                        <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></label>
 
                         <?php if (Yii::app()->user->canCreatePublicSpace() && Yii::app()->user->canCreatePrivateSpace()): ?>
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'Also non-members can see this<br>space, but have no access'); ?>">
                                            <?php echo $form->radioButton($model, 'visibility', array('value' => 1, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => 'checked')); ?>
-                                           <?php echo Yii::t('SpaceModule.views_create_create', 'Public (Visible)'); ?>
+                                           <?php echo Yii::t('SpaceModule.base', 'Public (Visible)'); ?>
                                 </label>
                             </div>
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'This space will be hidden<br>for all non-members'); ?>">
                                            <?php echo $form->radioButton($model, 'visibility', array('value' => 0, 'uncheckValue' => null, 'id' => 'private_radio', 'checked' => '')); ?>
-                                           <?php echo Yii::t('SpaceModule.views_create_create', 'Private (Invisible)'); ?>
+                                           <?php echo Yii::t('SpaceModule.base', 'Private (Invisible)'); ?>
                                 </label>
                             </div>
                         <?php elseif (Yii::app()->user->canCreatePublicSpace()): ?>

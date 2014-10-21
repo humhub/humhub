@@ -1,6 +1,9 @@
 <?php
 return array (
-  ' Invite and request' => ' Einladen und anfragen',
+  'Advanced access settings' => 'Erweiterte Rechteeinstellungen',
+  'Join Policy' => 'Zugriffsmöglichkeiten',
+  'Visibility' => 'Sichtbarkeit',
+  ' Invite and request' => ' Einladung und Anfragen',
   '<strong>Create</strong> new space' => '<strong>Neuen Space</strong> erstellen',
   'Also non-members can see this<br>space, but have no access' => 'Auch Nicht-Mitglieder können diesen<br />Space sehen, haben aber keinen Zugang',
   'Create' => 'Erstellen',

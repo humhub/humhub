@@ -36,7 +36,7 @@ The principle of theming in **HumHub** is overwriting. To build a new theme, you
 ---
 
 ## Custom CSS
-If your theme is activated, you have to tell **HumHub**, where he find new **CSS** or **JavaScript** files. To do that, you have to copy the **head.php** from:
+If your theme is activated, you have to tell **HumHub**, where to find new **CSS** or **JavaScript** files. To do that, you have to copy the **head.php** from:
 
     /protected/views/layout/
 

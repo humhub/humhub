@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Email addresses' => 'E-Mail-Adressen',
+  'Invite by email' => 'Per E-Mail einladen',
+  'Pick users' => 'Benutzer auswählen',
   '<strong>Invite</strong> members' => 'Mitglieder <strong>einladen</strong>',
   'Add an user' => 'Benutzer hinzufügen',
   'Close' => 'Schließen',

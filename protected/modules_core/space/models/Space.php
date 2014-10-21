@@ -36,17 +36,17 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 {
 
     // Join Policies
-    const JOIN_POLICY_NONE = 0;  // No Self Join Possible
+    const JOIN_POLICY_NONE = 0; // No Self Join Possible
     const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
-    const JOIN_POLICY_FREE = 2;  // Free for All
+    const JOIN_POLICY_FREE = 2; // Free for All
     // Visibility
-    const VISIBILITY_NONE = 0;  // Always invisible
+    const VISIBILITY_NONE = 0; // Always invisible
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2;   // Free for All
+    const VISIBILITY_ALL = 2; // Free for All
     // Status
-    const STATUS_DISABLED = 0;  // Disabled
-    const STATUS_ENABLED = 1;   // Enabled
-    const STATUS_ARCHIVED = 2;  // Archived
+    const STATUS_DISABLED = 0; // Disabled
+    const STATUS_ENABLED = 1; // Enabled
+    const STATUS_ARCHIVED = 2; // Archived
 
     public $ownerUsernameSearch;
 
@@ -177,19 +177,19 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return array(
             'id' => 'ID',
             'wall_id' => 'Wall',
-            'name' => 'Name',
-            'description' => 'Description',
-            'website' => 'Website URL (optional)',
-            'join_policy' => 'Join Policy',
-            'ldap_dn' => 'Ldap DN',
-            'visibility' => 'Visibility',
-            'status' => 'Status',
-            'tags' => 'Tags',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
+            'name' => Yii::t('SpaceModule.models_Space', 'Name'),
+            'description' => Yii::t('SpaceModule.models_Space', 'Description'),
+            'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
+            'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
+            'ldap_dn' => Yii::t('SpaceModule.models_Space', 'Ldap DN'),
+            'visibility' => Yii::t('SpaceModule.models_Space', 'Visibility'),
+            'status' => Yii::t('SpaceModule.models_Space', 'Status'),
+            'tags' => Yii::t('SpaceModule.models_Space', 'Tags'),
+            'created_at' => Yii::t('SpaceModule.models_Space', 'Created At'),
+            'created_by' => Yii::t('SpaceModule.models_Space', 'Created By'),
+            'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
-            'ownerUsernameSearch' => 'Owner',
+            'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
         );
     }
 
@@ -202,13 +202,13 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return array(
             // Coming soon
             'active' => array(
-                'condition' => $this->getTableAlias().'.status=' . self::STATUS_ENABLED,
+                'condition' => $this->getTableAlias() . '.status=' . self::STATUS_ENABLED,
             ),
             'visible' => array(
-                'condition' => $this->getTableAlias().'.visibility != ' . Space::VISIBILITY_NONE,
+                'condition' => $this->getTableAlias() . '.visibility != ' . Space::VISIBILITY_NONE,
             ),
             'recently' => array(
-                'order' => $this->getTableAlias().'.created_at DESC',
+                'order' => $this->getTableAlias() . '.created_at DESC',
                 'limit' => 10,
             ),
         );

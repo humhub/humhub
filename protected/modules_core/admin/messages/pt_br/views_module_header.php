@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Available updates' => '',
-  'Browse online' => '',
-  'Installed' => '',
+  'Available updates' => 'Atualizações disponíveis',
+  'Browse online' => 'Encontrar online',
+  'Installed' => 'Instalado',
 );

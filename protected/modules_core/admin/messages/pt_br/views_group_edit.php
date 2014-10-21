@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Create</strong> new group' => '',
-  '<strong>Edit</strong> group' => '',
-  'Delete' => '',
-  'Description' => '',
-  'Group name' => '',
+  '<strong>Create</strong> new group' => '<strong>Criar</strong> novo grupo',
+  '<strong>Edit</strong> group' => '<strong>Modificar</strong> grupo',
+  'Delete' => 'Apagar',
+  'Description' => 'Descrição',
+  'Group name' => 'Nome do Grupo',
   'Ldap DN' => '',
-  'Save' => '',
+  'Save' => 'Salvar',
 );
