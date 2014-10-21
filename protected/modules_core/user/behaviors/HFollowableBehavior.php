@@ -144,15 +144,21 @@ class HFollowableBehavior extends CActiveRecordBehavior
      * Returns an array of users which are followers of this object.
      * 
      * @param CDbCriteria $eCriteria e.g. for limit the result
+     * @param boolean $withNotifications only return followers with enabled notifications
      * @return Array of Users
      */
-    public function getFollowers($eCriteria = null)
+    public function getFollowers($eCriteria = null, $withNotification=false)
     {
         $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN user_follow ON t.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model=:object_model';
         $criteria->condition = 'user_follow.user_id IS NOT NULL';
         $criteria->params = array(':object_id' => $this->getOwner()->getPrimaryKey(), ':object_model' => get_class($this->getOwner()));
-
+        
+        if ($withNotification) {
+            $criteria->condition .= ' AND user_follow.send_notifications=1';
+        }
+        
+        
         if ($eCriteria !== null) {
             $criteria->mergeWith($eCriteria);
         }

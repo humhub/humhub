@@ -6,22 +6,32 @@
  * @package humhub.modules_core.comment.notifications
  * @since 0.5
  */
-class NewCommentNotification extends Notification {
+class NewCommentNotification extends Notification
+{
 
     public $webView = "comment.views.notifications.newComment";
     public $mailView = "application.modules_core.comment.views.notifications.newComment_mail";
 
-    public static function fire($comment) {
+    /**
+     * Sends an notifcation to everybody who is involved/following in this content
+     * with notifications.
+     * 
+     * @param HActiveRecordContentAddon $comment
+     */
+    public static function fire($comment)
+    {
 
-        // Get Comment Root
-        $createdByUserId = $comment->content->created_by;
+        foreach ($comment->content->getUnderlyingObject()->getFollowers(null, true) as $user) {
 
-        if ($createdByUserId != $comment->created_by) {
+            if ($user->id == $comment->created_by) {
+                continue;
+            }
 
-            // Send Notification to owner
             $notification = new Notification();
             $notification->class = "NewCommentNotification";
-            $notification->user_id = $createdByUserId;
+            $notification->user_id = $user->id;
+
+            // Optional
             $notification->space_id = $comment->space_id;
 
             $notification->source_object_model = "Comment";

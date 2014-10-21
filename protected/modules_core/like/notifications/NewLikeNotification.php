@@ -19,29 +19,19 @@ class NewLikeNotification extends Notification
      */
     public static function fire($like)
     {
+        foreach ($like->content->getUnderlyingObject()->getFollowers(null, true) as $user) {
 
-        // Determine Space Id if exists
-        $spaceId = "";
-        if ($like->content->container instanceof Space) {
-            $spaceId = $like->content->container->id;
-        }
+            if ($user->id == $like->created_by) {
+                continue;
+            }
 
-        // Determine who created the liked content / content addon
-        $createdBy = "";
-        if ($like->source instanceof HActiveRecordContent) {
-            $createdBy = $like->source->content->created_by;
-        } elseif ($like->source instanceof HActiveRecordContentAddon) {
-            $createdBy = $like->source->created_by;
-        }
-
-        if ($createdBy != "" && $createdBy != $like->created_by) {
-
-            // Send Notification to owner
             $notification = new Notification();
-
             $notification->class = "NewLikeNotification";
-            $notification->user_id = $createdBy;
-            $notification->space_id = $spaceId;
+            $notification->user_id = $user->id;
+
+            if ($like->content->container instanceof Space) {
+                $notification->space_id = $like->content->space_id;
+            }
 
             $notification->source_object_model = "Like";
             $notification->source_object_id = $like->id;
