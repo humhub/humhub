@@ -28,43 +28,34 @@
  * @property string $preview
  *
  * @package humhub.models
- * @since 0.5 */
-class UrlOembed extends HActiveRecord {
-
-    /**
-     * List of OEmbed Providers
-     *
-     * @todo Make me dynamic
-     * @var type
-     */
-    public static $provider = array(
-        "vimeo.com" => "http://vimeo.com/api/oembed.json?scheme=https&url=",
-        "youtube.com" => "http://www.youtube.com/oembed?scheme=https&url=",
-        "youtu.be" => "http://www.youtube.com/oembed?scheme=https&url=",
-        "soundcloud.com" => "https://soundcloud.com/oembed?url=",
-        "slideshare.net" => "https://www.slideshare.net/api/oembed/2?url=",
-    );
+ * @since 0.5
+ */
+class UrlOembed extends HActiveRecord
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Url the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'url_oembed';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('url, preview', 'required'),
             array('url', 'length', 'max' => 255),
@@ -78,7 +69,8 @@ class UrlOembed extends HActiveRecord {
      *
      * @param type $url
      */
-    public static function GetOEmbed($url) {
+    public static function GetOEmbed($url)
+    {
 
         // Check if the given URL has OEmbed Support
         if (UrlOembed::HasOEmbedSupport($url)) {
@@ -101,9 +93,8 @@ class UrlOembed extends HActiveRecord {
      *
      * @param type $text
      */
-    public static function preload($text) {
-
-
+    public static function preload($text)
+    {
         preg_replace_callback('/http(.*?)(\s|$)/i', function($match) {
 
             $url = $match[0];
@@ -122,7 +113,8 @@ class UrlOembed extends HActiveRecord {
      * @param type $url
      * @return string
      */
-    public static function loadUrl($url) {
+    public static function loadUrl($url)
+    {
 
         $urlOembed = new UrlOembed();
         $urlOembed->url = $url;
@@ -150,10 +142,11 @@ class UrlOembed extends HActiveRecord {
     /**
      * Returns the OEmbed API Url if exists
      */
-    public function getProviderUrl() {
-        foreach (UrlOembed::$provider as $providerBaseUrl => $providerAPI) {
+    public function getProviderUrl()
+    {
+        foreach (UrlOembed::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($this->url, $providerBaseUrl) !== false) {
-                return $providerAPI . urlencode($this->url) . "&format=json&maxwidth=450";
+                return str_replace("%url%", urlencode($this->url), $providerAPI);
             }
         }
         return "";
@@ -165,8 +158,9 @@ class UrlOembed extends HActiveRecord {
      * @param type $url
      * @return boolean
      */
-    public static function HasOEmbedSupport($url) {
-        foreach (UrlOembed::$provider as $providerBaseUrl => $providerAPI) {
+    public static function HasOEmbedSupport($url)
+    {
+        foreach (UrlOembed::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($url, $providerBaseUrl) !== false) {
                 return true;
             }
@@ -180,13 +174,38 @@ class UrlOembed extends HActiveRecord {
      * @param type $url
      * @return type
      */
-    public static function fetchUrl($url) {
+    public static function fetchUrl($url)
+    {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
         $return = curl_exec($curl);
         curl_close($curl);
         return $return;
+    }
+
+    /**
+     * Returns all available OEmbed providers
+     * 
+     * @return array
+     */
+    public static function getProviders()
+    {
+        $providers = HSetting::GetText('oembedProviders');
+        if ($providers != "") {
+            return CJSON::decode($providers);
+        }
+        return array();
+    }
+
+    /**
+     * Saves an array of available OEmbed providers
+     * 
+     * @param array $providers
+     */
+    public static function setProviders($providers)
+    {
+        HSetting::SetText('oembedProviders', CJSON::encode($providers));
     }
 
 }

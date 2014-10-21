@@ -550,6 +550,71 @@ class SettingController extends Controller
     }
 
     /**
+     * List of OEmbed Providers
+     */
+    public function actionOEmbed()
+    {
+        $providers = UrlOembed::getProviders();
+        $this->render('oembed', array('providers' => $providers));
+    }
+
+    /**
+     * Add or edit an OEmbed Provider
+     */
+    public function actionOEmbedEdit()
+    {
+
+        $form = new OEmbedProviderForm;
+
+        $prefix = Yii::app()->request->getParam('prefix');
+        $providers = UrlOembed::getProviders();
+
+        if (isset($providers[$prefix])) {
+            $form->prefix = $prefix;
+            $form->endpoint = $providers[$prefix];
+        }
+
+        // uncomment the following code to enable ajax-based validation
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'oembed-edit-form') {
+            echo CActiveForm::validate($form);
+            Yii::app()->end();
+        }
+
+        if (isset($_POST['OEmbedProviderForm'])) {
+            $_POST['OEmbedProviderForm'] = Yii::app()->input->stripClean($_POST['OEmbedProviderForm']);
+            $form->attributes = $_POST['OEmbedProviderForm'];
+
+            if ($form->validate()) {
+
+                if ($prefix && isset($providers[$prefix])) {
+                    unset($providers[$prefix]);
+                }
+                $providers[$form->prefix] = $form->endpoint;
+                UrlOembed::setProviders($providers);
+
+                $this->redirect(Yii::app()->createUrl('//admin/setting/oembed'));
+            }
+        }
+
+        $this->render('oembed_edit', array('model' => $form, 'prefix' => $prefix));
+    }
+
+    /**
+     * Deletes OEmbed Provider
+     */
+    public function actionOEmbedDelete()
+    {
+        $prefix = Yii::app()->request->getParam('prefix');
+        $providers = UrlOembed::getProviders();
+
+        if (isset($providers[$prefix])) {
+            unset($providers[$prefix]);
+            UrlOembed::setProviders($providers);
+        }
+        $this->redirect(Yii::app()->createUrl('//admin/setting/oembed'));
+    }
+
+    /**
      * Self Test
      */
     public function actionSelfTest()

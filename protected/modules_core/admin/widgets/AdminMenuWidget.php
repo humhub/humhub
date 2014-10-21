@@ -217,12 +217,23 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
 
+
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'OEmbed Provider'),
+            'url' => Yii::app()->createUrl('admin/setting/oembed'),
+            'icon' => '<i class="fa fa-cloud"></i>',
+            'group' => 'settings',
+            'sortOrder' => 1200,
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && (Yii::app()->controller->action->id == 'oembed' || Yii::app()->controller->action->id == 'oembedEdit')),
+            'isVisible' => Yii::app()->user->isAdmin(),
+        ));
+        
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Self test & update'),
             'url' => Yii::app()->createUrl('admin/setting/selftest'),
             'icon' => '<i class="fa fa-warning"></i>',
             'group' => 'settings',
-            'sortOrder' => 1100,
+            'sortOrder' => 1300,
             'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'selftest'),
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
