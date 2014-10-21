@@ -67,6 +67,9 @@
             // check if a submit is allowed
             if ($('#comment_input_<?php echo $comment->id; ?>_contenteditable').attr('data-submit') == 'true') {
 
+                // hide all tooltips (specially for file upload button)
+                $('.tt').tooltip('hide');
+
                 // emulate the click event
                 $('#comment_edit_post_<?php echo $comment->id; ?>').focus();
                 $('#comment_edit_post_<?php echo $comment->id; ?>').click();
