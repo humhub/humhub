@@ -41,7 +41,7 @@ class DefaultController extends CController
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->createUrl('gii/default/index'));
+				$this->redirect(array('index'));
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
@@ -53,6 +53,6 @@ class DefaultController extends CController
 	public function actionLogout()
 	{
 		Yii::app()->user->logout(false);
-		$this->redirect(Yii::app()->createUrl('gii/default/index'));
+		$this->redirect(array('index'));
 	}
 }

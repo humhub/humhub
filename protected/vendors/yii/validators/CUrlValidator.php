@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -72,7 +72,7 @@ class CUrlValidator extends CValidator
 	 * Validates a static value to see if it is a valid URL.
 	 * Note that this method does not respect {@link allowEmpty} property.
 	 * This method is provided so that you can call it directly without going through the model validation rule mechanism.
-	 * @param mixed $value the value to be validated
+	 * @param string $value the value to be validated
 	 * @return mixed false if the the value is not a valid URL, otherwise the possibly modified value ({@see defaultScheme})
 	 * @since 1.1.1
 	 */
@@ -80,11 +80,11 @@ class CUrlValidator extends CValidator
 	{
 		if(is_string($value) && strlen($value)<2000)  // make sure the length is limited to avoid DOS attacks
 		{
-			if($this->validateIDN)
-				$value=$this->encodeIDN($value);
-
 			if($this->defaultScheme!==null && strpos($value,'://')===false)
 				$value=$this->defaultScheme.'://'.$value;
+
+			if($this->validateIDN)
+				$value=$this->encodeIDN($value);
 
 			if(strpos($this->pattern,'{schemes}')!==false)
 				$pattern=str_replace('{schemes}','('.implode('|',$this->validSchemes).')',$this->pattern);
@@ -160,27 +160,45 @@ if(jQuery.trim(value)!='') {
 
 	/**
 	 * Converts given IDN to the punycode.
-	 * @param $value IDN to be converted.
+	 * @param string $value IDN to be converted.
 	 * @return string resulting punycode.
 	 * @since 1.1.13
 	 */
 	private function encodeIDN($value)
 	{
-		require_once(Yii::getPathOfAlias('system.vendors.idna_convert').DIRECTORY_SEPARATOR.'idna_convert.class.php');
-		$idnaConvert=new idna_convert();
-		return $idnaConvert->encode($value);
+		if(preg_match_all('/^(.*):\/\/([^\/]+)(.*)$/',$value,$matches))
+		{
+			if(function_exists('idn_to_ascii'))
+				$value=$matches[1][0].'://'.idn_to_ascii($matches[2][0]).$matches[3][0];
+			else
+			{
+				require_once(Yii::getPathOfAlias('system.vendors.Net_IDNA2.Net').DIRECTORY_SEPARATOR.'IDNA2.php');
+				$idna=new Net_IDNA2();
+				$value=$matches[1][0].'://'.@$idna->encode($matches[2][0]).$matches[3][0];
+			}
+		}
+		return $value;
 	}
 
 	/**
 	 * Converts given punycode to the IDN.
-	 * @param $value punycode to be converted.
+	 * @param string $value punycode to be converted.
 	 * @return string resulting IDN.
 	 * @since 1.1.13
 	 */
 	private function decodeIDN($value)
 	{
-		require_once(Yii::getPathOfAlias('system.vendors.idna_convert').DIRECTORY_SEPARATOR.'idna_convert.class.php');
-		$idnaConvert=new idna_convert();
-		return $idnaConvert->decode($value);
+		if(preg_match_all('/^(.*):\/\/([^\/]+)(.*)$/',$value,$matches))
+		{
+			if(function_exists('idn_to_utf8'))
+				$value=$matches[1][0].'://'.idn_to_utf8($matches[2][0]).$matches[3][0];
+			else
+			{
+				require_once(Yii::getPathOfAlias('system.vendors.Net_IDNA2.Net').DIRECTORY_SEPARATOR.'IDNA2.php');
+				$idna=new Net_IDNA2();
+				$value=$matches[1][0].'://'.@$idna->decode($matches[2][0]).$matches[3][0];
+			}
+		}
+		return $value;
 	}
 }

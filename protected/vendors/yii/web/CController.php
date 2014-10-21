@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -807,7 +807,7 @@ class CController extends CBaseController
 	}
 
 	/**
-	 * This method is invoked after the specified is rendered by calling {@link render()}.
+	 * This method is invoked after the specified view is rendered by calling {@link render()}.
 	 * Note that this method is invoked BEFORE {@link processOutput()}.
 	 * You may override this method to do some postprocessing for the view rendering.
 	 * @param string $view the view that has been rendered

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -46,7 +46,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Constructor.
 	 * Initializes the list with an array or an iterable object.
-	 * @param array $data the intial data. Default is null, meaning no initialization.
+	 * @param array $data the initial data. Default is null, meaning no initialization.
 	 * @param boolean $readOnly whether the list is read-only
 	 * @throws CException If data is not null and neither an array nor an iterator.
 	 */
@@ -225,7 +225,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	 * If the merge is recursive, the following algorithm is performed:
 	 * <ul>
 	 * <li>the map data is saved as $a, and the source data is saved as $b;</li>
-	 * <li>if $a and $b both have an array indxed at the same string key, the arrays will be merged using this algorithm;</li>
+	 * <li>if $a and $b both have an array indexed at the same string key, the arrays will be merged using this algorithm;</li>
 	 * <li>any integer-indexed elements in $b will be appended to $a and reindexed accordingly;</li>
 	 * <li>any string-indexed elements in $b will overwrite elements in $a with the same index;</li>
 	 * </ul>
@@ -272,7 +272,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	 * For integer-keyed elements, the elements from the latter array will
 	 * be appended to the former array.
 	 * @param array $a array to be merged to
-	 * @param array $b array to be merged from. You can specifiy additional
+	 * @param array $b array to be merged from. You can specify additional
 	 * arrays via third argument, fourth argument etc.
 	 * @return array the merged array (the original arrays are not changed.)
 	 * @see mergeWith

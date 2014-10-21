@@ -1,0 +1,502 @@
+         Upgrading Instructions for Yii Framework v1.1.15
+         ================================================
+
+!!!IMPORTANT!!!
+
+The following upgrading instructions are cumulative. That is,
+if you want to upgrade from version A to version C and there is
+version B between A and C, you need to following the instructions
+for both A and B.
+
+General upgrade instructions
+----------------------------
+- Make a backup.
+- Clean up your 'assets' folder.
+- Replace 'framework' dir with the new one or point GIT to a fresh
+  release and update.
+- Check if everything is OK, if not — revert from backup and post
+  issues to Yii issue tracker.
+
+
+Upgrading from v1.1.14
+----------------------
+
+
+Upgrading from v1.1.13
+----------------------
+
+- CActiveRecord::count() now respects group by and having. If your code relied
+  on ignoring it your application may break and should be updated.
+
+- Vendors: phlymail's Net_IDNA was replaced by PEAR Net_IDNA2. The latter library is better maintained than the former.
+  In case your code relies on bundled phlymail's Net_IDNA you should change it a bit. Old way of encoding IDNs:
+
+      require_once(Yii::getPathOfAlias('system.vendors.idna_convert').DIRECTORY_SEPARATOR.'idna_convert.class.php');
+      $idnaConvert=new idna_convert();
+      $result=$idnaConvert->encode($value);
+
+  New:
+
+      require_once(Yii::getPathOfAlias('system.vendors.Net_IDNA2.Net').DIRECTORY_SEPARATOR.'IDNA2.php');
+      $idna=new Net_IDNA2();
+      $result=$idna->encode($value);
+
+- CAPTCHA appearance has been changed. Non-free Duality.ttf font (used by CCaptchaAction) replaced by open/free
+  SpicyRice.ttf. New font is distributed under SIL Open Font License version 1.1. Do not forget to adjust font path
+  in case your application relies on Duality.ttf font file.
+
+- CSecurityManager::computeHMAC() method is now public and third parameter has been added. You must change signature
+  of this method in the extended child class to fit new circumstances. Otherwise an E_STRICT error will be issued.
+
+- CClientScript::registerScriptFile() and CClientScript::registerScript() methods signature changed.
+  Update your subclasses that override registerScriptFile() or registerScript() if any.
+
+- CActiveRecord::refreshMetaData() now clears meta data for all objects of the particular Active Record class.
+  Also CActiveRecord::refreshMetaData() will not create new meta data at once - new CActiveRecordMetaData instance
+  will be created on the first demand.
+
+- Oracle related note: in case you're using COciSchema::resetSequence() or CDbSchema::resetSequence() methods with
+  the Oracle database, keep in mind that its behavior has changed to be consistent with the same methods for
+  the other database management systems. Please refer to its documentation for more details and don't forget
+  to adjust your code respectively.
+
+- Signature of the CJuiInputWidget::resolveNameID() method has changed. If you're overriding this method you must
+  change your code to fit it. This method now accepts two parameters, it means you have to adjust code of the
+  overlapped descendant method signature as follows:
+
+      protected function resolveNameID($nameProperty='name',$attributeProperty='attribute')
+
+  And ancestor method call to:
+
+      parent::resolveNameID($nameProperty,$attributeProperty);
+
+- In case you've used your own relation types extended from `CHasOneRelation` or
+  `CHasManyRelation` make sure you update these to reflect moving `through` property
+  from both these to `CActiveRelation`.
+
+- CSecurityManager::generateRandomKey() has been deprecated in favor of CSecurityManager::generateRandomString().
+  Try not to use it anymore and avoid CSecurityManager::generateRandomKey() method in your code.
+
+Upgrading from v1.1.12
+----------------------
+- Both jQuery and jQueryUI were updated. Check [jQuery UI upgrade guide](http://jqueryui.com/upgrade-guide/1.9/)
+  and [jQuery release notes](http://blog.jquery.com/2012/08/09/jquery-1-8-released/).
+
+- We completed the behavior of CFormatter::sizeFormat() which has been introduced in Yii 1.1.11. If you are using it with your own translation file
+  you have to move your translations to the `yii` category in `yii.php` file  which is handled by the application component `coreMessages`.
+  We also fixed the default translation strings to be correct English and apply to choice format, so you have to adjust your translation file keys.
+
+- Be sure to clean all your existing cache during the upgrade. The cache values from CDbCommand has been
+  changed to an array to be able to store false values (returned when no records are found).
+
+- Make sure all your event handlers in behaviors are public methods, as we are not supporting protected methods as event handlers anymore.
+
+- We fixed the calls to CActiveRecord::beforeFind() for consistency so that beforeFind() now always gets called for every relation
+  on eager loading even if the main query does not return a result. This has been the case for all CActiveRecord::find*()-methods
+  already but now also applies for findBySql() and findAllBySql().
+
+- Criteria modification in CActiveRecord::beforeFind() did not apply to the query when model was loaded in a relational context.
+  Since version 1.1.13 changes to query criteria made in beforeFind() now also apply to the query when model is loaded in a relational context.
+  The main problem here is that you can not use the `t`-alias for your table anymore, you have to change your code to
+  use the table alias currently in use as this is different in relational context.
+  You can get that alias by calling `$this->getTableAlias();` in your active record class
+  or `$this->owner->getTableAlias()` in behavior context.
+
+  Example:
+     $criteria->condition = 't.myfield = 1';
+  You need to change that to:
+     $alias = $this->owner->getTableAlias();
+     $criteria->condition = $alias.'.myfield = 1';
+
+- Make sure you are using `CCaptcha::checkRequirements()` method for checking whether CAPTCHA could be rendered successfully in your environment.
+  `extension_loaded('gd')` expression is not enough and wrong because CAPTCHA could be rendered via ImageMagick with fallback to GD since 1.1.13
+  (thus checking code is not simple as it seems).
+
+- In case you're using MSSQL driver make sure authentication credentials you use have permissions to use
+  `sys.extended_properties` system view. This is critical for retrieving additional metadata on tables.
+
+Upgrading from v1.1.11
+----------------------
+- Changes in CCookieCollection::add() (introduced in 1.1.11) were reverted as they were triggering E_STRICT on some old PHP-versions
+  If your application relies on these newly added changes. You should change your code from
+
+		$cookies->add(new CHttpCookie($name, $value));
+  to
+		$cookies[$name] = new CHttpCookie($name, $value);
+
+
+- CActiveRecord::resetScope() method signature changed. Please update your subclasses that override resetScope() if any.
+
+Upgrading from v1.1.10
+----------------------
+- API of public method CConsoleCommand::confirm() changed. If you are overriding this method make sure to update your code.
+  The method now has a 2nd parameter for the default value which will be used if no selection is made, so you have to
+  adjust the signature to fit
+
+      public function confirm($message,$default=false)
+
+  and the parent call to
+
+      parent::confirm($message,$default);
+
+- API of protected method CConsoleCommand::afterAction() changed, if you are overriding this method make sure to update your code.
+  method now has a 3rd parameter for application exit code, so you have to adjust the signature to fit
+
+      protected function afterAction($action,$params,$exitCode=0)
+
+  and the parent call to
+
+      parent::afterAction($action,$params,$exitCode);
+
+- CDateFormat::format() now will return null if the parameter $time is null. Previously it would return 1/1/1970.
+
+- If you are using CJavaScript::encode in your application with parameter coming
+  from user input, set second argument to true:
+
+      CJavaScript::encode($userInput, true);
+
+  It will disable prefixing parameters with "js:". If you need to pass JavaScript
+  expression it's now preferrable to wrap these with CJavaScriptExpression:
+
+      CJavaScript::encode(new CJavaScriptExpression('alert("Yii!");'), true);
+
+  Note that second "safe" parameter doesn't affect CJavaScriptExpression in any way.
+
+
+Upgrading from v1.1.9
+---------------------
+- Previously xSendFile() was returning false if the file was not found.
+  This has been removed to allow relative file paths. If you are relying on this check,
+  you will need to do it manually before calling xSendFile().
+
+Upgrading from v1.1.8
+---------------------
+- CConfiguration::createObject, CController::paginate and CHtml::getActiveId deprecated since 1.0.x were removed. Use
+  Yii::createComponent, new CPagination directly and CHtml::activeId respectively.
+
+- In CErrorHandler::handleException() the checking for ajax call has been removed
+  as it was preventing to customize the display of the exception during an ajax call.
+
+- Previously in case of validation error the CSS "error" class was not added to the row container at all when
+  checkBoxList or radioButtonList where used. This is fixed now and proper "error" CSS class is added to the row
+  container but in case of validation error, all labels from the list are shown in red because of the CSS rule.
+
+  To fix this and display only the attribute label in red:
+
+  in <projectdir>/css/form.css the line:
+
+     div.form div.error label
+
+  should be changed to
+
+     div.form div.error label:first-child
+
+- If you've used "through" ActiveRecord option in your relation definitions it's good to update code as shown below.
+  Old style of defining this option still works but is now deprecated.
+
+  Change
+
+~~~
+class Group extends CActiveRecord
+{
+    public function relations()
+    {
+  		return array(
+  			'roles'=>array(self::HAS_MANY,'Role','group_id'),
+  			'users'=>array(self::HAS_MANY,'User','user_id','through'=>'roles'),
+  		);
+  	}
+}
+~~~
+
+  to
+
+~~~
+class Group extends CActiveRecord
+{
+    public function relations()
+  	{
+  		return array(
+  			'roles'=>array(self::HAS_MANY,'Role','group_id'),
+  			'users'=>array(self::HAS_MANY,'User',array('user_id'=>'id'),'through'=>'roles'),
+  		);
+  	}
+}
+~~~
+
+
+Upgrading from v1.1.7
+---------------------
+- CDbAuthManager will now quote columns and tables referenced in its SQL code.
+  If your auth tables were created in a case-insensitive fashion (e.g. on PostgreSQL)
+  while your DBMS is case-sensitive, this change may cause DB query errors.
+  To fix this issue, you will have to rename the table names and columns, or re-create
+  the auth tables by following the SQL code given in framework/web/auth/*.sql.
+- jQuery was upgraded to 1.6.1. Check your client side code and if you have issues consider
+  downgrading to 1.5.1 or 1.4.4.
+
+
+Upgrading from v1.1.6
+---------------------
+- Make sure you are using latest stable PHPUnit 3.5 if you are using unit tests.
+
+
+Upgrading from v1.1.5
+---------------------
+- In CActiveRecord::relations(), if a relation involves composite foreign keys, the foreign key
+  columns must be separated by commas now. Previously, the columns can be separated by either
+  commas or spaces. If your mode code are generated by Gii or yiic shell, you do not need to
+  worry about this.
+- CLDR data was updated to a newest available version so data formats, month
+  names and other regional data can be changed.
+
+
+Upgrading from v1.1.4
+---------------------
+- CHtml will no longer render null attributes for HTML tags. This means if $htmlOptions is
+  array('class'=>null), it will no longer render the 'class' attribute in the HTML tag.
+  it would render the class attribute as class="". We expect this will not cause much trouble
+  in upgrading. However, in case problems happen, you may set the attribute to be an empty string
+  to solve them.
+
+- Now by default CWebLogRoute does not render logs in FireBug for ajax calls.
+  To get logs rendered for ajax calls in FireBug set CWebLogRoute::ignoreAjaxInFireBug to false
+
+- The implementation of CCache::flush() was changed a little. Child classes should now implement
+  a flushValues() method. If you use any custom cache class with flush functionality, you should
+  rename the flush method accordingly.
+
+- The prompt and empty options used in CHtml methods will NOT be HTML-encoded anymore. It will now
+  always convert ">" and "<" into "&gt;" and "lt;", respectively. This should be sufficient in most
+  cases. But if your application uses some other special characters, or if you allow user inputs
+  to be used as prompt and empty text labels, please call CHtml::encode() explicitly on these option
+  values.
+
+
+Upgrading from v1.1.3
+---------------------
+- Zii was merged into Yii so if you are using SVN to keep framework
+  up to date, you'll need to delete 'framework/zii' and then update it.
+
+Upgrading from v1.1.2
+---------------------
+- When using the skin feature, you now need to explicitly configure
+  the 'enableSkin' property of 'widgetFactory' application component
+  to be true. Also, if you have configured the 'widgets' property, you
+  should rename it to be 'skinnableWidgets'. These changes are due to
+  the introduction of the global widget customization feature.
+  Please see the guide (the "Theming" section) for more details.
+
+- CAutoComplete is now deprecated and will be removed in Yii 1.2. Consider
+  using CJuiAutoComplete.
+
+- Now it's not possible to reuse CActiveFinder. So if you have code like this:
+
+  $finder = Post::model()->with('comments');
+  $posts1 = $finder->findAll();
+  …
+  $posts2 = $finder->findAll();
+
+  you should rewrite it to:
+
+  $posts1 = Post::model()->with('comments');
+  …
+  $posts2 = Post::model()->with('comments');
+
+- The 'condition' declared in the scopes of the related AR classes will now
+  be put in the 'ON' clause of the JOIN statement when performing relational AR queries.
+
+
+Upgrading from v1.1.1
+---------------------
+
+Upgrading from v1.1.0
+---------------------
+- CHtml::beginForm() will automatically generate hidden fields to represent
+  the parameters in the query string when the form uses GET method.
+  To avoid submitting duplicated query parameters, you may use createUrl()
+  to explicitly specify the action of the form. You may also need to remove
+  the hidden fields that you previously render for the same purpose.
+
+- The code generated by yiic tool is changed. If you are using yiic tool
+  to generate new CRUD code on a previously generated skeleton, you are recommended
+  to run "yiic webapp" again to re-generate the skeleton. Make sure you backup
+  your work before you do this.
+
+- CMenu now renders the 'active' CSS class for the 'li' tag instead of the
+  hyperlink tag. You should adjust your CSS code accordingly if you use CMenu
+  in your application.
+
+- CUrlManager::parsePathInfo() is changed to be non-static. If you override
+  this method or your existing code calls this method directly (neither is common),
+  you need to change your code accordingly.
+
+- CController::forward() will exit the application by default now. If you want
+  to keep the old behavior, you may pass false as the second parameter.
+
+- The jQuery copy included in the framework has been upgraded to version 1.4.2.
+  This may cause some incompatibility problems to your existing jQuery code or plugins.
+  If you want to keep using version 1.3.2, you may do so by configuring
+  CClientScript::scriptMap property.
+
+- The default theme for JQuery UI widgets was changed from 'smoothness' to 'base'.
+  If you are using 'smoothness', you will need to manually download this theme from
+  jqueryui.com and configure the 'theme' property of the JQuery UI widgets accordingly.
+
+
+Upgrading from v1.1rc
+---------------------
+- CRudColumn is renamed as CButtonColumn
+- CDataColumn.dataField and dataExpression are renamed as name and value, respectively
+- The alias name for the primary table in an AR query is fixed to be 't'
+
+Upgrading from v1.1b
+--------------------
+
+Upgrading from v1.1a
+--------------------
+- CSort::attributes is changed. Now the array keys refer to attribute names
+  and array values refer to virtual attribute definitions. Please read the
+  API documentation for this property to learn more details. This change will
+  affect your code only when you explicitly specify this property.
+
+Upgrading from v1.0.x
+---------------------
+- Application and module parameter names are changed to be case-sensitive.
+  In 1.0.x, they are case-insensitive.
+
+- For tabular input, using Field[$i] is not valid anymore. Attribute names
+  should look like [$i]Field in order to support array-typed fields
+  (e.g. [$i]Field[$index]).
+
+- Please read the Guide for further details on how to upgrade from v1.0.x to v1.1.
+
+Upgrading from v1.0.12
+----------------------
+
+Upgrading from v1.0.11
+----------------------
+
+Upgrading from v1.0.10
+----------------------
+
+Upgrading from v1.0.9
+---------------------
+
+Upgrading from v1.0.8
+---------------------
+- ActiveRecord lazy loading is changed for optimization purpose. Previously,
+  when lazy loading occurs, the related table will be joined with the primary
+  table. Now, the related table will be queried without joining the primary table.
+  As a result, if you are using lazy loading and the corresponding relation
+  declaration includes reference to the primary table, the query will fail.
+  To fix this problem, please specify the lazy loading query options with the
+  actual primary table column values.
+
+Upgrading from v1.0.7
+---------------------
+- A directory imported using Yii::import() will have precedence over
+  any existing include paths. For example, if we import 'application.models.*',
+  then the corresponding directory will be searched before any other
+  existing include paths. This also means, a directory imported later will
+  have precedence over directories imported earlier. Previously, this order
+  was reversed. This change may affect you if you have several classes with
+  the same name and they are imported via different directories. You will need
+  to adjust the import order of these directories to make sure your existing
+  applications are not broken due to this change.
+
+
+Upgrading from v1.0.6
+---------------------
+- Default named scope will no longer be applied to INSERT, UPDATE and
+  DELETE queries. It is only applied to SELECT queries. You should be aware
+  of this change if you override CActiveRecord::defaultScope() in your code.
+
+- The signature of CWebUser::logout() is changed. If you override this method,
+  you will need to modify your method declaration accordingly.
+
+
+Upgrading from v1.0.5
+---------------------
+
+
+Upgrading from v1.0.4
+---------------------
+- CWebUser::checkAccess() takes an additional parameter to allow caching
+  the access check results. If you override this method, you will need to
+  modify your method declaration accordingly. Because the new parameter will
+  enable caching the access check results by default, please double check
+  your code containing this method call to make sure the behavior is as expected.
+
+- CDateParser has been renamed to CDateTimeParser
+
+
+Upgrading from v1.0.3
+---------------------
+- The signature of CWebModule::init() is modified. Its parameter is removed.
+  If your application uses modules, you have to modify your module class
+  files accordingly.
+
+
+Upgrading from v1.0.2
+---------------------
+- Controllers that are organized in subdirectories are now referenced
+  using the ID format "path/to/xyz". Previously it was "path.to.xyz".
+  If you use "path.to.xyz" in your application, you have to modify it
+  to "path/to/xyz".
+
+- CHtml::coreScript() is removed. If you used this in your application,
+  please use the following alternative:
+
+  Yii::app()->clientScript->registerCoreScript($name);
+
+
+Upgrading from v1.0.1
+---------------------
+- Due to the introduction of the scenario-based massive assignment feature,
+  we removed CActiveRecord::protectedAttributes(). Please use safeAttributes()
+  to specify which attributes are safe to be massively assigned.
+
+  For more details about scenario-based assignment and validation,
+  please read the following tutorial section:
+
+  http://www.yiiframework.com/doc/guide/form.model#securing-attribute-assignments
+
+- The signature of CModel::validate() has been changed to:
+
+  CModel::validate($scenario='', $attributes=null)
+
+  That is, the order of the two parameters has been swapped. If your application
+  contains code that invokes the validate() method (of either a CFormModel
+  or a CActiveRecord object) with some parameter, please make sure you fix
+  the parameter order.
+
+- The usage of CActiveRecord::with() and the 'with' option in relations
+  has been changed. In order to query child relations, we should specify the 'with'
+  parameter/option like the following now:
+
+  Post::model()->with(array('comments', 'author.profile'))->findAll();
+
+  Previously, this should be written as:
+
+  Post::model()->with(array('comments', 'author'=>'profile'))->findAll();
+
+  If your code does not involve child relations (like 'profile' in the above),
+  nothing needs to be changed.
+
+  This change has been introduced in order to support dynamic relational
+  query options. For example, we can specify that comments be sorted in
+  descending order (assuming in the relations() method it is specified as
+  ascending order):
+
+  Post::model()->with(array(
+      'comments'=>array('order'=>'createTime DESC'),
+      'author.profile',
+  ))->findAll();
+
+
+Upgrading from v1.0.0
+---------------------
+- An $scenario parameter is added to both CModel::beforeValidate() and afterValidate().
+  If you override these methods in your child classes (form models, AR classes),
+  make sure you change the method signature accordingly.

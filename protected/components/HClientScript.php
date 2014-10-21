@@ -24,7 +24,8 @@
  * @package humhub.components
  * @since 0.5
  */
-class HClientScript extends CClientScript {
+class HClientScript extends CClientScript
+{
 
     /**
      * @var array the registered HTML code blocks (key => code)
@@ -37,26 +38,11 @@ class HClientScript extends CClientScript {
      * @param String $name
      * @param String $value
      */
-    public function setJavascriptVariable($name, $value) {
+    public function setJavascriptVariable($name, $value)
+    {
 
         $jsCode = "var " . $name . " = '" . $value . "';\n";
         $this->registerScript('jsVar_' . $name, $jsCode, CClientScript::POS_BEGIN);
-    }
-
-    /**
-     * Registers a script file
-     *
-     * @param String $src
-     * @param String $position
-     */
-    public function registerScriptFile($src, $position = NULL) {
-
-        #    if(Yii::app()->getRequest()->getIsAjaxRequest()) {
-        #         Yii::app()->clientScript->registerScript('loadScript_'.$src, "loadJavaScript(\"".$src."\");", CClientScript::POS_BEGIN);
-        #      } else {
-        return parent::registerScriptFile($src, $position);
-        #        }
-        #registerScriptFile
     }
 
     /**
@@ -66,7 +52,8 @@ class HClientScript extends CClientScript {
      *
      * @return CClientScript the CClientScript object itself (to support method chaining, available since version 1.1.5).
      */
-    public function registerHtml($id, $html) {
+    public function registerHtml($id, $html)
+    {
 
         $this->hasScripts = true;
 
@@ -82,7 +69,8 @@ class HClientScript extends CClientScript {
      *
      * @param string $output the output to be inserted with scripts.
      */
-    public function renderBodyEnd(&$output) {
+    public function renderBodyEnd(&$output)
+    {
         if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]) && !count($this->htmls) == 0)
             return;
 

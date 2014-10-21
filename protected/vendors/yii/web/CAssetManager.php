@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -223,14 +223,14 @@ class CAssetManager extends CApplicationComponent
 				if(!is_dir($dstDir))
 				{
 					mkdir($dstDir,$this->newDirMode,true);
-					chmod($dstDir,$this->newDirMode);
+					@chmod($dstDir,$this->newDirMode);
 				}
 
 				if($this->linkAssets && !is_file($dstFile)) symlink($src,$dstFile);
 				elseif(@filemtime($dstFile)<@filemtime($src))
 				{
 					copy($src,$dstFile);
-					chmod($dstFile,$this->newFileMode);
+					@chmod($dstFile,$this->newFileMode);
 				}
 
 				return $this->_published[$path]=$this->getBaseUrl()."/$dir/$fileName";

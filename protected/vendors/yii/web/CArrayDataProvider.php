@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -18,7 +18,9 @@
  *
  * Elements in the raw data array may be either objects (e.g. model objects)
  * or associative arrays (e.g. query results of DAO).
- *
+ * Make sure to set the {@link keyField} property to the name of the field that uniquely
+ * identifies a data record or false if you do not have such a field.
+ * 
  * CArrayDataProvider may be used in the following way:
  * <pre>
  * $rawData=Yii::app()->db->createCommand('SELECT * FROM tbl_user')->queryAll();
@@ -47,8 +49,9 @@
 class CArrayDataProvider extends CDataProvider
 {
 	/**
-	 * @var string the name of key field. Defaults to 'id'. If it's set to false,
-	 * keys of $rawData array are used.
+	 * @var string the name of the key field. This is a field that uniquely identifies a
+	 * data record. In database this would be the primary key.
+	 * Defaults to 'id'. If it's set to false, keys of {@link rawData} array are used.
 	 */
 	public $keyField='id';
 	/**

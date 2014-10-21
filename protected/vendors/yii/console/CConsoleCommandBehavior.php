@@ -4,7 +4,7 @@
  *
  * @author Evgeny Blinov <e.a.blinov@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -35,7 +35,7 @@ class CConsoleCommandBehavior extends CBehavior
 	}
 	/**
 	 * Responds to {@link CConsoleCommand::onBeforeAction} event.
-	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
+	 * Override this method and make it public if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
 	 * @param CConsoleCommandEvent $event event parameter
 	 */
 	protected function beforeAction($event)
@@ -44,7 +44,7 @@ class CConsoleCommandBehavior extends CBehavior
 
 	/**
 	 * Responds to {@link CConsoleCommand::onAfterAction} event.
-	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
+	 * Override this method and make it public if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
 	 * @param CConsoleCommandEvent $event event parameter
 	 */
 	protected function afterAction($event)

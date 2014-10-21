@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -43,6 +43,7 @@ class CRangeValidator extends CValidator
 	 * If there is any error, the error message is added to the object.
 	 * @param CModel $object the object being validated
 	 * @param string $attribute the attribute being validated
+	 * @throws CException if given {@link range} is not an array
 	 */
 	protected function validateAttribute($object,$attribute)
 	{
@@ -51,12 +52,24 @@ class CRangeValidator extends CValidator
 			return;
 		if(!is_array($this->range))
 			throw new CException(Yii::t('yii','The "range" property must be specified with a list of values.'));
-		if(!$this->not && !in_array($value,$this->range,$this->strict))
+		$result = false;
+		if($this->strict)
+			$result=in_array($value,$this->range,true);
+		else
+		{
+			foreach($this->range as $r)
+			{
+				$result=(strcmp($r,$value)===0);
+				if($result)
+					break;
+			}
+		}
+		if(!$this->not && !$result)
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} is not in the list.');
 			$this->addError($object,$attribute,$message);
 		}
-		elseif($this->not && in_array($value,$this->range,$this->strict))
+		elseif($this->not && $result)
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} is in the list.');
 			$this->addError($object,$attribute,$message);
@@ -67,6 +80,7 @@ class CRangeValidator extends CValidator
 	 * Returns the JavaScript needed for performing client-side validation.
 	 * @param CModel $object the data object being validated
 	 * @param string $attribute the name of the attribute to be validated.
+	 * @throws CException if given {@link range} is not an array
 	 * @return string the client-side validation script.
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7

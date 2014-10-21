@@ -338,7 +338,7 @@
     <keyword match="yellow"/>
     <keyword match="ActiveBorder"/>
     <keyword match="ActiveCaption"/>
-    <keyword match="AppSpace"/>
+    <keyword match="AppWorkspace"/>
     <keyword match="Background"/>
     <keyword match="ButtonFace"/>
     <keyword match="ButtonHighlight"/>

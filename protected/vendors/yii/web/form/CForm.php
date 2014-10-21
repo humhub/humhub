@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -56,6 +56,10 @@
  * has a type which specifies what kind of input should be used. The rest of the array elements
  * (e.g. 'maxlength') in an input specification are rendered as HTML element attributes
  * when the input field is rendered. The {@link buttons} property is configured similarly.
+ *
+ * If you're going to use AJAX and/or client form validation with the enabled error summary
+ * you have to set {@link $showErrors} property to true. Please refer to it's documentation
+ * for more details.
  *
  * For more details about configuring form elements, please refer to {@link CFormInputElement}
  * and {@link CFormButtonElement}.
@@ -115,6 +119,21 @@ class CForm extends CFormElement implements ArrayAccess
 	 */
 	public $showErrorSummary=false;
 	/**
+	 * @var boolean|null whether error elements of the form attributes should be rendered. There are three possible
+	 * valid values: null, true and false.
+	 *
+	 * Defaults to null meaning that {@link $showErrorSummary} will be used as value. This is done mainly to keep
+	 * backward compatibility with existing applications. If you want to use error summary with AJAX and/or client
+	 * validation you have to set this property to true (recall that {@link CActiveForm::error()} should be called
+	 * for each attribute that is going to be AJAX and/or client validated).
+	 *
+	 * False value means that the error elements of the form attributes shall not be displayed. True value means that
+	 * the error elements of the form attributes will be rendered.
+	 *
+	 * @since 1.1.14
+	 */
+	public $showErrors;
+	/**
 	 * @var array the configuration used to create the active form widget.
 	 * The widget will be used to render the form tag and the error messages.
 	 * The 'class' option is required, which specifies the class of the widget.
@@ -149,6 +168,8 @@ class CForm extends CFormElement implements ArrayAccess
 		if($parent===null)
 			$parent=Yii::app()->getController();
 		parent::__construct($config,$parent);
+		if($this->showErrors===null)
+			$this->showErrors=!$this->showErrorSummary;
 		$this->init();
 	}
 
@@ -216,7 +237,7 @@ class CForm extends CFormElement implements ArrayAccess
 	{
 		if($this->_model!==null)
 		{
-			$class=get_class($this->_model);
+			$class=CHtml::modelName($this->_model);
 			if(strcasecmp($this->getRoot()->method,'get'))
 			{
 				if(isset($_POST[$class]))

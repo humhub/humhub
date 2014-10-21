@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -183,7 +183,7 @@ class CDbCriteria extends CComponent
 		}
 		if (!empty($map))
 		{
-			$sqlContentFieldNames = array(
+			$sqlContentFieldNames=array(
 				'select',
 				'condition',
 				'order',
@@ -191,8 +191,14 @@ class CDbCriteria extends CComponent
 				'join',
 				'having',
 			);
-			foreach($sqlContentFieldNames as $fieldName)
-				$this->$fieldName=strtr($this->$fieldName,$map);
+			foreach($sqlContentFieldNames as $field)
+			{
+				if(is_array($this->$field))
+					foreach($this->$field as $k=>$v)
+						$this->{$field}[$k]=strtr($v,$map);
+				else
+					$this->$field=strtr($this->$field,$map);
+			}
 		}
 		$this->params=$params;
 	}

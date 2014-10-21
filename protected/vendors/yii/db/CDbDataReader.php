@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -137,7 +137,7 @@ class CDbDataReader extends CComponent implements Iterator, Countable
 	/**
 	 * Closes the reader.
 	 * This frees up the resources allocated for executing this SQL statement.
-	 * Read attemps after this method call are unpredictable.
+	 * Read attempts after this method call are unpredictable.
 	 */
 	public function close()
 	{

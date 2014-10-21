@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@ spl_autoload_unregister(array('YiiBase','autoload'));
 require_once('PHPUnit/Autoload.php');
 spl_autoload_register(array('YiiBase','autoload')); // put yii's autoloader at the end
 
-if (in_array('phpunit_autoload', spl_autoload_functions())) { // PHPUnit >= 3.7 'phpunit_alutoload' was obsoleted
+if (in_array('phpunit_autoload', spl_autoload_functions())) { // PHPUnit >= 3.7 'phpunit_autoload' was obsoleted
     spl_autoload_unregister('phpunit_autoload');
     Yii::registerAutoloader('phpunit_autoload');
 }

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -61,6 +61,27 @@ class CFileHelper
 			self::mkdir($dst,$options,true);
 
 		self::copyDirectoryRecursive($src,$dst,'',$fileTypes,$exclude,$level,$options);
+	}
+
+	/**
+	 * Removes a directory recursively.
+	 * @param string $directory to be deleted recursively.
+	 * @since 1.1.14
+	 */
+	public static function removeDirectory($directory)
+	{
+		$items=glob($directory.DIRECTORY_SEPARATOR.'{,.}*',GLOB_MARK | GLOB_BRACE);
+		foreach($items as $item)
+		{
+			if(basename($item)=='.' || basename($item)=='..')
+				continue;
+			if(substr($item,-1)==DIRECTORY_SEPARATOR)
+				self::removeDirectory($item);
+			else
+				unlink($item);
+		}
+		if(is_dir($directory))
+			rmdir($directory);
 	}
 
 	/**
@@ -130,7 +151,7 @@ class CFileHelper
 				{
 					copy($path,$dst.DIRECTORY_SEPARATOR.$file);
 					if(isset($options['newFileMode']))
-						chmod($dst.DIRECTORY_SEPARATOR.$file,$options['newFileMode']);
+						@chmod($dst.DIRECTORY_SEPARATOR.$file,$options['newFileMode']);
 				}
 				elseif($level)
 					self::copyDirectoryRecursive($path,$dst.DIRECTORY_SEPARATOR.$file,$base.'/'.$file,$fileTypes,$exclude,$level-1,$options);
@@ -270,10 +291,9 @@ class CFileHelper
 	 * Shared environment safe version of mkdir. Supports recursive creation.
 	 * For avoidance of umask side-effects chmod is used.
 	 *
-	 * @static
 	 * @param string $dst path to be created
-	 * @param array $options newDirMode element used, must contain access bitmask.
-	 * @param boolean $recursive
+	 * @param array $options newDirMode element used, must contain access bitmask
+	 * @param boolean $recursive whether to create directory structure recursive if parent dirs do not exist
 	 * @return boolean result of mkdir
 	 * @see mkdir
 	 */
@@ -285,7 +305,7 @@ class CFileHelper
 
 		$mode=isset($options['newDirMode']) ? $options['newDirMode'] : 0777;
 		$res=mkdir($dst, $mode);
-		chmod($dst,$mode);
+		@chmod($dst,$mode);
 		return $res;
 	}
 }

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -63,7 +63,7 @@ class CUploadedFile extends CComponent
 	 * Returns all uploaded files for the given model attribute.
 	 * @param CModel $model the model instance
 	 * @param string $attribute the attribute name. For tabular file uploading, this can be in the format of "[$i]attributeName", where $i stands for an integer index.
-	 * @return array array of CUploadedFile objects.
+	 * @return CUploadedFile[] array of CUploadedFile objects.
 	 * Empty array is returned if no available file was found for the given attribute.
 	 */
 	public static function getInstances($model, $attribute)
@@ -92,7 +92,7 @@ class CUploadedFile extends CComponent
 	 * If multiple files were uploaded and saved as 'Files[0]', 'Files[1]',
 	 * 'Files[n]'..., you can have them all by passing 'Files' as array name.
 	 * @param string $name the name of the array of files
-	 * @return array the array of CUploadedFile objects. Empty array is returned
+	 * @return CUploadedFile[] the array of CUploadedFile objects. Empty array is returned
 	 * if no adequate upload was found. Please note that this array will contain
 	 * all files from all subarrays regardless how deeply nested they are.
 	 */
@@ -104,7 +104,7 @@ class CUploadedFile extends CComponent
 		$len=strlen($name);
 		$results=array();
 		foreach(array_keys(self::$_files) as $key)
-			if(0===strncmp($key, $name, $len) && self::$_files[$key]->getError()!=UPLOAD_ERR_NO_FILE)
+			if(0===strncmp($key, $name.'[', $len+1) && self::$_files[$key]->getError()!=UPLOAD_ERR_NO_FILE)
 				$results[] = self::$_files[$key];
 		return $results;
 	}
@@ -183,6 +183,8 @@ class CUploadedFile extends CComponent
 
 	/**
 	 * Saves the uploaded file.
+	 * Note: this method uses php's move_uploaded_file() method. As such, if the target file ($file) 
+	 * already exists it is overwritten.
 	 * @param string $file the file path used to save the uploaded file
 	 * @param boolean $deleteTempFile whether to delete the temporary file after saving.
 	 * If true, you will not be able to save the uploaded file again in the current request.

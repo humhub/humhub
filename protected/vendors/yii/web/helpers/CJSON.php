@@ -329,7 +329,7 @@ class CJSON
 			// based on investigation, native fails sometimes returning null.
 			// see: http://gggeek.altervista.org/sw/article_20070425.html
 			// As of PHP 5.3.6 it still fails on some valid JSON strings
-			if(!is_null($json))
+			if($json !== null)
 				return $json;
 		}
 

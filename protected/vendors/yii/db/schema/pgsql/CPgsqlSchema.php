@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -23,21 +23,21 @@ class CPgsqlSchema extends CDbSchema
 	 * @var array the abstract column types mapped to physical column types.
 	 * @since 1.1.6
 	 */
-    public $columnTypes=array(
-        'pk' => 'serial NOT NULL PRIMARY KEY',
-        'string' => 'character varying (255)',
-        'text' => 'text',
-        'integer' => 'integer',
-        'float' => 'double precision',
-        'decimal' => 'numeric',
-        'datetime' => 'timestamp',
-        'timestamp' => 'timestamp',
-        'time' => 'time',
-        'date' => 'date',
-        'binary' => 'bytea',
-        'boolean' => 'boolean',
+	public $columnTypes=array(
+		'pk' => 'serial NOT NULL PRIMARY KEY',
+		'string' => 'character varying (255)',
+		'text' => 'text',
+		'integer' => 'integer',
+		'float' => 'double precision',
+		'decimal' => 'numeric',
+		'datetime' => 'timestamp',
+		'timestamp' => 'timestamp',
+		'time' => 'time',
+		'date' => 'date',
+		'binary' => 'bytea',
+		'boolean' => 'boolean',
 		'money' => 'decimal(19,4)',
-    );
+	);
 
 	private $_sequences=array();
 
@@ -56,25 +56,27 @@ class CPgsqlSchema extends CDbSchema
 	/**
 	 * Resets the sequence value of a table's primary key.
 	 * The sequence will be reset such that the primary key of the next new row inserted
-	 * will have the specified value or 1.
+	 * will have the specified value or max value of a primary key plus one (i.e. sequence trimming).
 	 * @param CDbTableSchema $table the table schema whose primary key sequence will be reset
-	 * @param mixed $value the value for the primary key of the next new row inserted. If this is not set,
-	 * the next new row's primary key will have a value 1.
+	 * @param integer|null $value the value for the primary key of the next new row inserted.
+	 * If this is not set, the next new row's primary key will have the max value of a primary
+	 * key plus one (i.e. sequence trimming).
 	 * @since 1.1
 	 */
 	public function resetSequence($table,$value=null)
 	{
-		if($table->sequenceName!==null)
-		{
-			$seq='"'.$table->sequenceName.'"';
-			if(strpos($seq,'.')!==false)
-				$seq=str_replace('.','"."',$seq);
-			if($value===null)
-				$value="(SELECT COALESCE(MAX(\"{$table->primaryKey}\"),0) FROM {$table->rawName}) + 1";
-			else
-				$value=(int)$value;
-			$this->getDbConnection()->createCommand("SELECT SETVAL('$seq', $value, false)")->execute();
-		}
+		if($table->sequenceName===null)
+			return;
+		$sequence='"'.$table->sequenceName.'"';
+		if(strpos($sequence,'.')!==false)
+			$sequence=str_replace('.','"."',$sequence);
+		if($value!==null)
+			$value=(int)$value;
+		else
+			$value="(SELECT COALESCE(MAX(\"{$table->primaryKey}\"),0) FROM {$table->rawName})+1";
+		$this->getDbConnection()
+			->createCommand("SELECT SETVAL('$sequence',$value,false)")
+			->execute();
 	}
 
 	/**
@@ -289,7 +291,7 @@ SELECT attnum, attname FROM pg_catalog.pg_attribute WHERE
 			SELECT oid FROM pg_catalog.pg_namespace WHERE nspname=:schema
 		)
 	)
-    AND attnum IN ({$indices})
+	AND attnum IN ({$indices})
 EOD;
 		$command=$this->getDbConnection()->createCommand($sql);
 		$command->bindValue(':table',$table->name);
@@ -421,5 +423,15 @@ EOD;
 	public function dropIndex($name, $table)
 	{
 		return 'DROP INDEX '.$this->quoteTableName($name);
+	}
+
+	/**
+	 * Creates a command builder for the database.
+	 * This method may be overridden by child classes to create a DBMS-specific command builder.
+	 * @return CPgsqlCommandBuilder command builder instance.
+	 */
+	protected function createCommandBuilder()
+	{
+		return new CPgsqlCommandBuilder($this);
 	}
 }

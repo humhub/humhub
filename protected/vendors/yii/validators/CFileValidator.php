@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -26,6 +26,7 @@
  *
  * When using CFileValidator with an active record, the following code is often used:
  * <pre>
+ *  $model->attribute = CUploadedFile::getInstance($model, "attribute");
  *  if($model->save())
  *  {
  *     // single upload
@@ -178,6 +179,7 @@ class CFileValidator extends CValidator
 	 * @param CModel $object the object being validated
 	 * @param string $attribute the attribute being validated
 	 * @param CUploadedFile $file uploaded file passed to check against a set of rules
+	 * @throws CException if failed to upload the file
 	 */
 	protected function validateFile($object, $attribute, $file)
 	{
@@ -195,7 +197,7 @@ class CFileValidator extends CValidator
 		elseif($error==UPLOAD_ERR_CANT_WRITE)
 			throw new CException(Yii::t('yii','Failed to write the uploaded file "{file}" to disk.',array('{file}'=>$file->getName())));
 		elseif(defined('UPLOAD_ERR_EXTENSION') && $error==UPLOAD_ERR_EXTENSION)  // available for PHP 5.2.0 or above
-			throw new CException(Yii::t('yii','File upload was stopped by extension.'));
+			throw new CException(Yii::t('yii','A PHP extension stopped the file upload.'));
 
 		if($this->minSize!==null && $file->getSize()<$this->minSize)
 		{

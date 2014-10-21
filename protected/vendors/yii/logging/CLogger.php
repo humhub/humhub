@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -120,7 +120,8 @@ class CLogger extends CComponent
 	 * satisfying both filter conditions will be returned.
 	 *
 	 * @param string $levels level filter
-	 * @param string $categories category filter
+	 * @param array|string $categories category filter
+	 * @param array|string $except list of log categories to ignore
 	 * @return array list of messages. Each array element represents one message
 	 * with the following structure:
 	 * array(
@@ -177,7 +178,7 @@ class CLogger extends CComponent
 	/**
 	 * Filter function used to filter included and excluded categories
 	 * @param array $value element to be filtered
-	 * @param integer index of the values array to be used for check
+	 * @param integer $index index of the values array to be used for check
 	 * @return boolean true if valid timing entry, false if not.
 	 */
 	private function filterAllCategories($value, $index)

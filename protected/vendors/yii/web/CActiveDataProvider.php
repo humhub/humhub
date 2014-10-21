@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,6 +24,10 @@
  *         'order'=>'create_time DESC',
  *         'with'=>array('author'),
  *     ),
+ *     'countCriteria'=>array(
+ *         'condition'=>'status=1',
+ *         // 'order' and 'with' clauses have no meaning for the count query
+ *     ),
  *     'pagination'=>array(
  *         'pageSize'=>20,
  *     ),
@@ -32,6 +36,8 @@
  * </pre>
  *
  * @property CDbCriteria $criteria The query criteria.
+ * @property CDbCriteria $countCriteria The count query criteria. This property is available
+ * since 1.1.14
  * @property CSort $sort The sorting object. If this is false, it means the sorting is disabled.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -58,7 +64,14 @@ class CActiveDataProvider extends CDataProvider
 	 */
 	public $keyAttribute;
 
+	/**
+	 * @var CDbCriteria
+	 */
 	private $_criteria;
+	/**
+	 * @var CDbCriteria
+	 */
+	private $_countCriteria;
 
 	/**
 	 * Constructor.
@@ -71,14 +84,14 @@ class CActiveDataProvider extends CDataProvider
 		if(is_string($modelClass))
 		{
 			$this->modelClass=$modelClass;
-			$this->model=CActiveRecord::model($this->modelClass);
+			$this->model=$this->getModel($this->modelClass);
 		}
 		elseif($modelClass instanceof CActiveRecord)
 		{
 			$this->modelClass=get_class($modelClass);
 			$this->model=$modelClass;
 		}
-		$this->setId($this->modelClass);
+		$this->setId(CHtml::modelName($this->model));
 		foreach($config as $key=>$value)
 			$this->$key=$value;
 	}
@@ -96,12 +109,35 @@ class CActiveDataProvider extends CDataProvider
 
 	/**
 	 * Sets the query criteria.
-	 * @param mixed $value the query criteria. This can be either a CDbCriteria object or an array
+	 * @param CDbCriteria|array $value the query criteria. This can be either a CDbCriteria object or an array
 	 * representing the query criteria.
 	 */
 	public function setCriteria($value)
 	{
 		$this->_criteria=$value instanceof CDbCriteria ? $value : new CDbCriteria($value);
+	}
+
+	/**
+	 * Returns the count query criteria.
+	 * @return CDbCriteria the count query criteria.
+	 * @since 1.1.14
+	 */
+	public function getCountCriteria()
+	{
+		if($this->_countCriteria===null)
+			return $this->getCriteria();
+		return $this->_countCriteria;
+	}
+
+	/**
+	 * Sets the count query criteria.
+	 * @param CDbCriteria|array $value the count query criteria. This can be either a CDbCriteria object
+	 * or an array representing the query criteria.
+	 * @since 1.1.14
+	 */
+	public function setCountCriteria($value)
+	{
+		$this->_countCriteria=$value instanceof CDbCriteria ? $value : new CDbCriteria($value);
 	}
 
 	/**
@@ -114,6 +150,19 @@ class CActiveDataProvider extends CDataProvider
 		if(($sort=parent::getSort($className))!==false)
 			$sort->modelClass=$this->modelClass;
 		return $sort;
+	}
+
+	/**
+	 * Given active record class name returns new model instance.
+	 *
+	 * @param string $className active record class name.
+	 * @return CActiveRecord active record model instance.
+	 *
+	 * @since 1.1.14
+	 */
+	protected function getModel($className)
+	{
+		return CActiveRecord::model($className);
 	}
 
 	/**
@@ -176,7 +225,7 @@ class CActiveDataProvider extends CDataProvider
 		$baseCriteria=$this->model->getDbCriteria(false);
 		if($baseCriteria!==null)
 			$baseCriteria=clone $baseCriteria;
-		$count=$this->model->count($this->getCriteria());
+		$count=$this->model->count($this->getCountCriteria());
 		$this->model->setDbCriteria($baseCriteria);
 		return $count;
 	}

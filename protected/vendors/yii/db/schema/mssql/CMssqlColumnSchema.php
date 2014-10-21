@@ -5,7 +5,7 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -19,20 +19,20 @@
 class CMssqlColumnSchema extends CDbColumnSchema
 {
 
-     /**
-     * Initializes the column with its DB type and default value.
-     * This sets up the column's PHP type, size, precision, scale as well as default value.
-     * @param string $dbType the column's DB type
-     * @param mixed $defaultValue the default value
-     */
-     public function init($dbType, $defaultValue)
-     {
-        if ($defaultValue=='(NULL)')
-        {
-            $defaultValue=null;
-        }
-        parent::init($dbType, $defaultValue);
-     }
+	/**
+	 * Initializes the column with its DB type and default value.
+	 * This sets up the column's PHP type, size, precision, scale as well as default value.
+	 * @param string $dbType the column's DB type
+	 * @param mixed $defaultValue the default value
+	 */
+	public function init($dbType, $defaultValue)
+	{
+		if ($defaultValue=='(NULL)')
+		{
+			$defaultValue=null;
+		}
+		parent::init($dbType, $defaultValue);
+	}
 
 
 	/**

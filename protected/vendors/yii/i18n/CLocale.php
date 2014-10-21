@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -92,6 +92,7 @@ class CLocale extends CComponent
 	 * Since the constructor is protected, please use {@link getInstance}
 	 * to obtain an instance of the specified locale.
 	 * @param string $id the locale ID (e.g. en_US)
+	 * @throws CException if given locale id is not recognized
 	 */
 	protected function __construct($id)
 	{
@@ -316,7 +317,7 @@ class CLocale extends CComponent
 	 */
 	public function getPluralRules()
 	{
-		return isset($this->_data['pluralRules']) ? $this->_data['pluralRules'] : array();
+		return isset($this->_data['pluralRules']) ? $this->_data['pluralRules'] : array(0=>'true');
 	}
 
 	/**
@@ -417,17 +418,17 @@ class CLocale extends CComponent
 	public function getLocaleDisplayName($id=null, $category='languages')
 	{
 		$id = $this->getCanonicalID($id);
-		if (($category == 'languages') && ($id=$this->getLanguageID($id)) && (isset($this->_data[$category][$id])))
+		if (($category == 'languages') && (isset($this->_data[$category][$id])))
 		{
 			return $this->_data[$category][$id];
 		}
-		elseif (($category == 'scripts') && ($id=$this->getScriptID($id)) && (isset($this->_data[$category][$id])))
+		elseif (($category == 'scripts') && ($val=$this->getScriptID($id)) && (isset($this->_data[$category][$val])))
 		{
-			return $this->_data[$category][$id];
+			return $this->_data[$category][$val];
 		}
-		elseif (($category == 'territories') && ($id=$this->getTerritoryID($id)) && (isset($this->_data[$category][$id])))
+		elseif (($category == 'territories') && ($val=$this->getTerritoryID($id)) && (isset($this->_data[$category][$val])))
 		{
-			return $this->_data[$category][$id];
+			return $this->_data[$category][$val];
 		}
 		elseif (isset($this->_data[$category][$id]))
 		{
@@ -445,6 +446,7 @@ class CLocale extends CComponent
 	 */
 	public function getLanguage($id)
 	{
+		$id = $this->getLanguageID($id);
 		return $this->getLocaleDisplayName($id, 'languages');
 	}
 

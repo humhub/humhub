@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,7 +22,7 @@
  * If an SQL statement returns results (such as a SELECT SQL), the results
  * can be accessed via the returned {@link CDbDataReader}.
  *
- * CDbCommand supports SQL statment preparation and parameter binding.
+ * CDbCommand supports SQL statement preparation and parameter binding.
  * Call {@link bindParam} to bind a PHP variable to a parameter in SQL.
  * Call {@link bindValue} to bind a value to an SQL parameter.
  * When binding a parameter, the SQL statement is automatically prepared.
@@ -47,7 +47,7 @@
  * @property string $from The FROM part (without 'FROM' ) in the query.
  * @property string $where The WHERE part (without 'WHERE' ) in the query.
  * @property mixed $join The join part in the query. This can be an array representing
- * multiple join fragments, or a string representing a single jojin fragment.
+ * multiple join fragments, or a string representing a single join fragment.
  * Each join fragment will contain the proper join operator (e.g. LEFT JOIN).
  * @property string $group The GROUP BY part (without 'GROUP BY' ) in the query.
  * @property string $having The HAVING part (without 'HAVING' ) in the query.
@@ -200,6 +200,7 @@ class CDbCommand extends CComponent
 	 * this may improve performance.
 	 * For SQL statement with binding parameters, this method is invoked
 	 * automatically.
+	 * @throws CDbException if CDbCommand failed to prepare the SQL statement
 	 */
 	public function prepare()
 	{
@@ -310,7 +311,7 @@ class CDbCommand extends CComponent
 	 * Please also note that all values are treated as strings in this case, if you need them to be handled as
 	 * their real data types, you have to use {@link bindParam} or {@link bindValue} instead.
 	 * @return integer number of rows affected by the execution.
-	 * @throws CException execution failed
+	 * @throws CDbException execution failed
 	 */
 	public function execute($params=array())
 	{
@@ -463,6 +464,7 @@ class CDbCommand extends CComponent
 	 * you cannot bind parameters or values using {@link bindParam} or {@link bindValue}, and vice versa.
 	 * Please also note that all values are treated as strings in this case, if you need them to be handled as
 	 * their real data types, you have to use {@link bindParam} or {@link bindValue} instead.
+	 * @throws CDbException if CDbCommand failed to execute the SQL statement
 	 * @return mixed the method execution result
 	 */
 	private function queryInternal($method,$mode,$params=array())
@@ -549,6 +551,7 @@ class CDbCommand extends CComponent
 	 * query options are supported: {@link select}, {@link distinct}, {@link from},
 	 * {@link where}, {@link join}, {@link group}, {@link having}, {@link order},
 	 * {@link limit}, {@link offset} and {@link union}.
+	 * @throws CDbException if "from" key is not present in given query parameter
 	 * @return string the SQL statement
 	 * @since 1.1.6
 	 */
@@ -1313,7 +1316,7 @@ class CDbCommand extends CComponent
 	 * @param string $table the name of the table to be created. The name will be properly quoted by the method.
 	 * @param array $columns the columns (name=>definition) in the new table.
 	 * @param string $options additional SQL fragment that will be appended to the generated SQL.
-	 * @return integer number of rows affected by the execution.
+	 * @return integer 0 is always returned. See {@link http://php.net/manual/en/pdostatement.rowcount.php} for more information.
 	 * @since 1.1.6
 	 */
 	public function createTable($table, $columns, $options=null)
@@ -1325,7 +1328,7 @@ class CDbCommand extends CComponent
 	 * Builds and executes a SQL statement for renaming a DB table.
 	 * @param string $table the table to be renamed. The name will be properly quoted by the method.
 	 * @param string $newName the new table name. The name will be properly quoted by the method.
-	 * @return integer number of rows affected by the execution.
+	 * @return integer 0 is always returned. See {@link http://php.net/manual/en/pdostatement.rowcount.php} for more information.
 	 * @since 1.1.6
 	 */
 	public function renameTable($table, $newName)
@@ -1336,7 +1339,7 @@ class CDbCommand extends CComponent
 	/**
 	 * Builds and executes a SQL statement for dropping a DB table.
 	 * @param string $table the table to be dropped. The name will be properly quoted by the method.
-	 * @return integer number of rows affected by the execution.
+	 * @return integer 0 is always returned. See {@link http://php.net/manual/en/pdostatement.rowcount.php} for more information.
 	 * @since 1.1.6
 	 */
 	public function dropTable($table)
@@ -1474,6 +1477,7 @@ class CDbCommand extends CComponent
 	/**
 	 * Generates the condition string that will be put in the WHERE part
 	 * @param mixed $conditions the conditions that will be put in the WHERE part.
+	 * @throws CDbException if unknown operator is used
 	 * @return string the condition string to put in the WHERE part
 	 */
 	private function processConditions($conditions)

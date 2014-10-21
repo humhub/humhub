@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -27,7 +27,7 @@
  * Options are bound to action parameters via parameter names. For example, the following
  * action method will allow us to run a command with <code>yiic sitemap --type=News</code>:
  * <pre>
- * class SitemapCommand {
+ * class SitemapCommand extends CConsoleCommand {
  *     public function actionIndex($type) {
  *         ....
  *     }
@@ -274,9 +274,9 @@ abstract class CConsoleCommand extends CComponent
 		$help='Usage: '.$this->getCommandRunner()->getScriptName().' '.$this->getName();
 		$options=$this->getOptionHelp();
 		if(empty($options))
-			return $help;
+			return $help."\n";
 		if(count($options)===1)
-			return $help.' '.$options[0];
+			return $help.' '.$options[0]."\n";
 		$help.=" <action>\nActions:\n";
 		foreach($options as $option)
 			$help.='    '.$option."\n";
@@ -308,7 +308,14 @@ abstract class CConsoleCommand extends CComponent
 				{
 					$optional=$param->isDefaultValueAvailable();
 					$defaultValue=$optional ? $param->getDefaultValue() : null;
+					if(is_array($defaultValue)) {
+						$defaultValue = str_replace(array("\r\n", "\n", "\r"), "", print_r($defaultValue, true));
+					}
 					$name=$param->getName();
+
+					if($name==='args')
+						continue;
+
 					if($optional)
 						$help.=" [--$name=$defaultValue]";
 					else
@@ -494,6 +501,7 @@ abstract class CConsoleCommand extends CComponent
 			'/(c)hild$/i' => '\1hildren',
 			'/(h)uman$/i' => '\1umans',
 			'/(m)an$/i' => '\1en',
+			'/(s)taff$/i' => '\1taff',
 			'/(t)ooth$/i' => '\1eeth',
 			'/(p)erson$/i' => '\1eople',
 			'/([m|l])ouse$/i' => '\1ice',

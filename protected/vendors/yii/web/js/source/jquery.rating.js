@@ -1,11 +1,9 @@
 /*
- ### jQuery Star Rating Plugin v3.14 - 2012-01-26 ###
+ ### jQuery Star Rating Plugin v4.11 - 2013-03-14 ###
  * Home: http://www.fyneworks.com/jquery/star-rating/
  * Code: http://code.google.com/p/jquery-star-rating-plugin/
  *
-	* Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
+	* Licensed under http://en.wikipedia.org/wiki/MIT_License
  ###
 */
 
@@ -14,7 +12,7 @@
 /*# AVOID COLLISIONS #*/
 	
 	// IE6 Background Image Fix
-	if ($.browser.msie) try { document.execCommand("BackgroundImageCache", false, true)} catch(e) { };
+	if ((!$.support.opacity && !$.support.style)) try { document.execCommand("BackgroundImageCache", false, true)} catch(e) { };
 	// Thanks to http://www.visualjquery.com/rating/rating_redux.html
 	
 	// plugin initialization
@@ -28,7 +26,7 @@
 				var args = arguments;
 				return this.each(function(){
 					$.fn.rating.apply($(this), args);
-				});
+    });
 			};
 			// Invoke API method handler
 			$.fn.rating[arguments[0]].apply(this, $.makeArray(arguments).slice(1) || []);
@@ -60,7 +58,7 @@
 			// FIX: http://code.google.com/p/jquery-star-rating-plugin/issues/detail?id=23
 			var raters = context.data('rating');
 			if(!raters || raters.call!=$.fn.rating.calls) raters = { count:0, call:$.fn.rating.calls };
-			var rater = raters[eid];
+			var rater = raters[eid] || context.data('rating'+eid);
 			
 			// if rater is available, verify that the control still exists
 			if(rater) control = rater.data('rating');
@@ -100,17 +98,17 @@
 				// Create 'cancel' button
 				rater.append(
 					control.cancel = $('<div class="rating-cancel"><a title="' + control.cancel + '">' + control.cancelValue + '</a></div>')
-					.mouseover(function(){
+					.on('mouseover',function(){
 						$(this).rating('drain');
 						$(this).addClass('star-rating-hover');
 						//$(this).rating('focus');
 					})
-					.mouseout(function(){
+					.on('mouseout',function(){
 						$(this).rating('draw');
 						$(this).removeClass('star-rating-hover');
 						//$(this).rating('blur');
 					})
-					.click(function(){
+					.on('click',function(){
 					 $(this).rating('select');
 					})
 					.data('rating', control)
@@ -118,8 +116,8 @@
 				
 			}; // first element of group
 			
-			// insert rating star
-			var star = $('<div class="star-rating rater-'+ control.serial +'"><a title="' + (this.title || this.value) + '">' + this.value + '</a></div>');
+			// insert rating star (thanks Jan Fanslau rev125 for blind support https://code.google.com/p/jquery-star-rating-plugin/issues/detail?id=125)
+			var star = $('<div role="text" aria-label="'+ this.title +'" class="star-rating rater-'+ control.serial +'"><a title="' + (this.title || this.value) + '">' + this.value + '</a></div>');
 			rater.append(star);
 			
 			// inherit attributes from input element
@@ -150,15 +148,15 @@
 			 // Enable hover css effects
 				star.addClass('star-rating-live')
 				 // Attach mouse events
-					.mouseover(function(){
+					.on('mouseover',function(){
 						$(this).rating('fill');
 						$(this).rating('focus');
 					})
-					.mouseout(function(){
+					.on('mouseout',function(){
 						$(this).rating('draw');
 						$(this).rating('blur');
 					})
-					.click(function(){
+					.on('click',function(){
 						$(this).rating('select');
 					})
 				;
@@ -169,17 +167,18 @@
 			
 			// set current select for links
 			if(this.nodeName=="A"){
-				if($(this).hasClass('selected'))
-				control.current = star;
-			};
+    if($(this).hasClass('selected'))
+     control.current = star;
+   };
 			
 			// hide input element
 			input.hide();
 			
 			// backward compatibility, form element to plugin
-			input.change(function(){
-				$(this).rating('select');
-			});
+			input.on('change.rating',function(event){
+				if(event.selfTriggered) return false;
+    $(this).rating('select');
+   });
 			
 			// attach reference to star to input element and vice-versa
 			star.data('rating.input', input.data('rating.star', star));
@@ -194,7 +193,8 @@
 			rater.data('rating', control);
 			star.data('rating', control);
 			context.data('rating', raters);
-		}); // each element
+			context.data('rating'+eid, rater); // required for ajax forms
+  }); // each element
 		
 		// Initialize ratings (first draw)
 		$('.rating-to-be-drawn').rating('draw').removeClass('rating-to-be-drawn');
@@ -236,7 +236,7 @@
 			if(control.readOnly) return;
 			// Reset all stars and highlight them up to this element
 			this.rating('drain');
-			this.prevAll().andSelf().filter('.rater-'+ control.serial).addClass('star-rating-hover');
+			this.prevAll().addBack().filter('.rater-'+ control.serial).addClass('star-rating-hover');
 		},// $.fn.rating.fill
 		
 		drain: function() { // drain all the stars.
@@ -252,12 +252,9 @@
 			// Clear all stars
 			this.rating('drain');
 			// Set control value
-			if(control.current){
-				control.current.data('rating.input').attr('checked','checked');
-				control.current.prevAll().andSelf().filter('.rater-'+ control.serial).addClass('star-rating-on');
-			}
-			else
-			 $(control.inputs).removeAttr('checked');
+			var current = $( control.current );//? control.current.data('rating.input') : null );
+			var starson = current.length ? current.prevAll().addBack().filter('.rater-'+ control.serial) : null;
+			if(starson)	starson.addClass('star-rating-on');
 			// Show/hide 'cancel' button
 			control.cancel[control.readOnly || control.required?'hide':'show']();
 			// Add/remove read-only classes to remove hand pointer
@@ -269,57 +266,49 @@
 		
 		
 		select: function(value,wantCallBack){ // select a value
-					
-					// ***** MODIFICATION *****
-					// Thanks to faivre.thomas - http://code.google.com/p/jquery-star-rating-plugin/issues/detail?id=27
-					//
-					// ***** LIST OF MODIFICATION *****
-					// ***** added Parameter wantCallBack : false if you don't want a callback. true or undefined if you want postback to be performed at the end of this method'
-					// ***** recursive calls to this method were like : ... .rating('select') it's now like .rating('select',undefined,wantCallBack); (parameters are set.)
-					// ***** line which is calling callback
-					// ***** /LIST OF MODIFICATION *****
-			
 			var control = this.data('rating'); if(!control) return this;
 			// do not execute when control is in read-only mode
 			if(control.readOnly) return;
 			// clear selection
 			control.current = null;
 			// programmatically (based on user input)
-			if(typeof value!='undefined'){
+			if(typeof value!='undefined' || this.length>1){
 			 // select by index (0 based)
 				if(typeof value=='number')
-					return $(control.stars[value]).rating('select',undefined,wantCallBack);
+ 			 return $(control.stars[value]).rating('select',undefined,wantCallBack);
 				// select by literal value (must be passed as a string
-				if(typeof value=='string')
+				if(typeof value=='string'){
 					//return
 					$.each(control.stars, function(){
+ 					//console.log($(this).data('rating.input'), $(this).data('rating.input').val(), value, $(this).data('rating.input').val()==value?'BINGO!':'');
 						if($(this).data('rating.input').val()==value) $(this).rating('select',undefined,wantCallBack);
 					});
+					// don't break the chain
+  			return this;
+				};
 			}
-			else
+			else{
 				control.current = this[0].tagName=='INPUT' ?
 				 this.data('rating.star') :
 					(this.is('.rater-'+ control.serial) ? this : null);
-
+			};
 			// Update rating control state
 			this.data('rating', control);
 			// Update display
 			this.rating('draw');
-			// find data for event
-			var input = $( control.current ? control.current.data('rating.input') : null );
+			// find current input and its sibblings
+			var current = $( control.current ? control.current.data('rating.input') : null );
+			var lastipt = $( control.inputs ).filter(':checked');
+			var deadipt = $( control.inputs ).not(current);
+			// check and uncheck elements as required
+			deadipt.prop('checked',false);//.removeAttr('checked');
+			current.prop('checked',true);//.attr('checked','checked');
+			// trigger change on current or last selected input
+			$(current.length? current : lastipt ).trigger({ type:'change', selfTriggered:true });
 			// click callback, as requested here: http://plugins.jquery.com/node/1655
-					
-					// **** MODIFICATION *****
-					// Thanks to faivre.thomas - http://code.google.com/p/jquery-star-rating-plugin/issues/detail?id=27
-					//
-					//old line doing the callback :
-					//if(control.callback) control.callback.apply(input[0], [input.val(), $('a', control.current)[0]]);// callback event
-					//
-					//new line doing the callback (if i want :)
-					if((wantCallBack ||wantCallBack == undefined) && control.callback) control.callback.apply(input[0], [input.val(), $('a', control.current)[0]]);// callback event
-					//to ensure retro-compatibility, wantCallBack must be considered as true by default
-					// **** /MODIFICATION *****
-					
+			if((wantCallBack || wantCallBack == undefined) && control.callback) control.callback.apply(current[0], [current.val(), $('a', control.current)[0]]);// callback event
+			// don't break the chain
+			return this;
   },// $.fn.rating.select
 		
 		
@@ -368,23 +357,18 @@
 			//NB.: These don't need to be pre-defined (can be undefined/null) so let's save some code!
 			//half:     false,         // just a shortcut to control.split = 2
 			//required: false,         // disables the 'cancel' button so user can only select one of the specified values
-			//readOnly: false,         // disable rating plugin interaction/ values cannot be changed
-			//focus:    function(){},  // executed when stars are focused
+			//readOnly: false,         // disable rating plugin interaction/ values cannot be.one('change',		//focus:    function(){},  // executed when stars are focused
 			//blur:     function(){},  // executed when stars are focused
 			//callback: function(){},  // executed when a star is clicked
-	}; //} });
+ }; //} });
 	
 	/*--------------------------------------------------------*/
 	
-	/*
-		### Default implementation ###
-		The plugin will attach itself to file inputs
-		with the class 'multi' when the page loads
-	*/
-	$(function(){
-		$('input[type=radio].star').rating();
-	});
 	
+	  // auto-initialize plugin
+				$(function(){
+				 $('input[type=radio].star').rating();
+				});
 	
 	
 /*# AVOID COLLISIONS #*/

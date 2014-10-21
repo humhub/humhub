@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -18,6 +18,9 @@
  * with '.1'. All existing log files are moved backwards one place, i.e., '.2'
  * to '.3', '.1' to '.2'. The property {@link setMaxLogFiles maxLogFiles}
  * specifies how many files to be kept.
+ * If the property {@link rotateByCopy} is true, the primary log file will be
+ * rotated by a copy and truncated (to be more compatible with log tailers)
+ * otherwise it will be rotated by being renamed.
  *
  * @property string $logPath Directory storing log files. Defaults to application runtime path.
  * @property string $logFile Log file name. Defaults to 'application.log'.
@@ -46,7 +49,12 @@ class CFileLogRoute extends CLogRoute
 	 * @var string log file name
 	 */
 	private $_logFile='application.log';
-
+	/**
+	 * @var boolean Whether to rotate primary log by copy and truncate
+	 * which is more compatible with log tailers. Defaults to false.
+	 * @since 1.1.14
+	 */
+	public $rotateByCopy=false;
 
 	/**
 	 * Initializes the route.
@@ -135,15 +143,26 @@ class CFileLogRoute extends CLogRoute
 	 */
 	protected function processLogs($logs)
 	{
+		$text='';
+		foreach($logs as $log)
+			$text.=$this->formatLogMessage($log[0],$log[1],$log[2],$log[3]);
+
 		$logFile=$this->getLogPath().DIRECTORY_SEPARATOR.$this->getLogFile();
-		if(@filesize($logFile)>$this->getMaxFileSize()*1024)
-			$this->rotateFiles();
 		$fp=@fopen($logFile,'a');
 		@flock($fp,LOCK_EX);
-		foreach($logs as $log)
-			@fwrite($fp,$this->formatLogMessage($log[0],$log[1],$log[2],$log[3]));
-		@flock($fp,LOCK_UN);
-		@fclose($fp);
+		if(@filesize($logFile)>$this->getMaxFileSize()*1024)
+		{
+			$this->rotateFiles();
+			@flock($fp,LOCK_UN);
+			@fclose($fp);
+			@file_put_contents($logFile,$text,FILE_APPEND|LOCK_EX);
+		}
+		else
+		{
+			@fwrite($fp,$text);
+			@flock($fp,LOCK_UN);
+			@fclose($fp);
+		}
 	}
 
 	/**
@@ -166,6 +185,19 @@ class CFileLogRoute extends CLogRoute
 			}
 		}
 		if(is_file($file))
-			@rename($file,$file.'.1'); // suppress errors because it's possible multiple processes enter into this section
+		{
+			// suppress errors because it's possible multiple processes enter into this section
+			if($this->rotateByCopy)
+			{
+				@copy($file,$file.'.1');
+				if($fp=@fopen($file,'a'))
+				{
+					@ftruncate($fp,0);
+					@fclose($fp);
+				}
+			}
+			else
+				@rename($file,$file.'.1');
+		}
 	}
 }

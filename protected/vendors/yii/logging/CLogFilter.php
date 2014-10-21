@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -42,6 +42,14 @@ class CLogFilter extends CComponent implements ILogFilter
 	 * Note that a variable must be accessible via $GLOBALS. Otherwise it won't be logged.
 	 */
 	public $logVars=array('_GET','_POST','_FILES','_COOKIE','_SESSION','_SERVER');
+	/**
+	 * @var callable or function which will be used to dump context information.
+	 * Defaults to `var_export`. If you're experiencing issues with circular references
+	 * problem change it to `print_r`. Any kind of callable (static methods, user defined
+	 * functions, lambdas, etc.) could also be used.
+	 * @since 1.1.14
+	 */
+	public $dumper='var_export';
 
 
 	/**
@@ -94,12 +102,39 @@ class CLogFilter extends CComponent implements ILogFilter
 		if($this->logUser && ($user=Yii::app()->getComponent('user',false))!==null)
 			$context[]='User: '.$user->getName().' (ID: '.$user->getId().')';
 
-		foreach($this->logVars as $name)
+		if($this->dumper==='var_export' || $this->dumper==='print_r')
 		{
-			if(!empty($GLOBALS[$name]))
-				$context[]="\${$name}=".var_export($GLOBALS[$name],true);
+			foreach($this->logVars as $name)
+				if(($value=$this->getGlobalsValue($name))!==null)
+					$context[]="\${$name}=".call_user_func($this->dumper,$value,true);
+		}
+		else
+		{
+			foreach($this->logVars as $name)
+				if(($value=$this->getGlobalsValue($name))!==null)
+					$context[]="\${$name}=".call_user_func($this->dumper,$value);
 		}
 
 		return implode("\n\n",$context);
+	}
+
+	/**
+	 * @param string[] $path
+	 * @return string|null
+	 */
+	private function getGlobalsValue(&$path)
+	{
+		if(is_scalar($path))
+			return !empty($GLOBALS[$path]) ? $GLOBALS[$path] : null;
+		$pathAux=$path;
+		$parts=array();
+		$value=$GLOBALS;
+		do
+		{
+			$value=$value[$parts[]=array_shift($pathAux)];
+		}
+		while(!empty($value) && !empty($pathAux) && !is_string($value));
+		$path=implode('.',$parts);
+		return $value;
 	}
 }

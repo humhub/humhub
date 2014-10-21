@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -46,7 +46,7 @@
  *             'url'=>'http://www.yiiframework.com/',
  *         ),
  *     ),
- * ))?>
+ * ));
  * </pre>
  *
  * By default, the first tab will be activated. To activate a different tab
@@ -135,7 +135,10 @@ class CTabView extends CWidget
 		}
 
 		$htmlOptions=$this->htmlOptions;
-		$htmlOptions['id']=$this->getId();
+		if(isset($this->htmlOptions['id']))
+			$this->id=$this->htmlOptions['id'];
+		else
+			$htmlOptions['id']=$this->id;
 		if(!isset($htmlOptions['class']))
 			$htmlOptions['class']=self::CSS_CLASS;
 

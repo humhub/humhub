@@ -191,7 +191,7 @@ return array (
   'The verification code is incorrect.' => '검증 코드가 올바르지 않습니다.',
   'The view path "{path}" is not a valid directory.' => '뷰 패스 "{path}"는 올바른 디렉토리가 아닙니다.',
   'Theme directory "{directory}" does not exist.' => '테마 디렉터리 "{directory}"가 존재하지 않습니다.',
-  'This content requires the <a href="http://www.adobe.com/go/getflash/">Adobe Flash Player</a>.' => '이 콘텐츠는 <a href="http://www.adobe.com/go/getflash/"> Adobe Flash Player </ a>가 필요합니다.',
+  'This content requires the <a href="http://www.adobe.com/go/getflash/">Adobe Flash Player</a>.' => '이 콘텐츠는 <a href="http://www.adobe.com/go/getflash/"> Adobe Flash Player </a>가 필요합니다.',
   'Unable to add an item whose name is the same as an existing item.' => '이미 있는 항목과 같은 이름의 항목을 추가할 수 없습니다.',
   'Unable to change the item name. The name "{name}" is already used by another item.' => '항목의 이름을 변경할 수 없습니다. 그 이름 "{name}"은 이미 다른 항목으로 사용되고 있습니다.',
   'Unable to create application state file "{file}". Make sure the directory containing the file exists and is writable by the Web server process.' => '응용 프로그램 상태 파일 "{file}"를 만들 수 없습니다. 파일 디렉토리가 있는지, 웹 서버 프로세스가 쓸 수 있는지를 확인하십시오.',

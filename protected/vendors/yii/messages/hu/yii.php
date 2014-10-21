@@ -189,7 +189,7 @@ return array (
 '{attribute} is too small (minimum is {min}).' => '{attribute} túl kicsi (minimum {min} lehet).',
 '{attribute} must be a number.' => '{attribute} csak szám lehet.',
 '{attribute} must be an integer.' => '{attribute} csak egész szám lehet.',
-'{attribute} must be repeated exactly.' => '{attribute} pontosan kell megismételni.',
+'{attribute} must be repeated exactly.' => 'Ismételje meg pontosan a {attribute} mezőbe írtakat.',
 '{attribute} must be {type}.' => '{attribute} csak {type} lehet.',
 '{className} does not support add() functionality.' => '{className} nem támogatja az add() lehetőséget.',
 '{className} does not support delete() functionality.' => '{className} nem támogatja a delete() lehetőséget.',

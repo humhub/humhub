@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -31,7 +31,6 @@ Yii::import('system.test.CTestCase');
  * corresponding to a fixture data row using <code>$this->posts('first post')</code>.
  * Note, here 'first post' refers to a key to a row in the original fixture data.
  *
- * @property CDbFixtureManager $fixtureManager The database fixture manager.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @package system.test
@@ -52,6 +51,7 @@ abstract class CDbTestCase extends CTestCase
 	 * PHP magic method.
 	 * This method is overridden so that named fixture data can be accessed like a normal property.
 	 * @param string $name the property name
+	 * @throws Exception if unknown property is used
 	 * @return mixed the property value
 	 */
 	public function __get($name)
@@ -67,6 +67,7 @@ abstract class CDbTestCase extends CTestCase
 	 * This method is overridden so that named fixture ActiveRecord instances can be accessed in terms of a method call.
 	 * @param string $name method name
 	 * @param string $params method parameters
+	 * @throws Exception if unknown method is used
 	 * @return mixed the property value
 	 */
 	public function __call($name,$params)

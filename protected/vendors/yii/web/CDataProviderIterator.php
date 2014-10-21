@@ -4,7 +4,7 @@
  *
  * @author Charles Pick <charles.pick@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2012 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -51,7 +51,7 @@ class CDataProviderIterator extends CComponent implements Iterator, Countable
 		$this->_totalItemCount=$dataProvider->getTotalItemCount();
 
 		if(($pagination=$this->_dataProvider->getPagination())===false)
-			$this->_dataProvider->setPagination(new CPagination());
+			$this->_dataProvider->setPagination($pagination=new CPagination());
 
 		if($pageSize!==null)
 			$pagination->setPageSize($pageSize);

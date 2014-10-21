@@ -16,7 +16,7 @@ class CrudCode extends CCodeModel
 			array('model, controller, baseControllerClass', 'required'),
 			array('model', 'match', 'pattern'=>'/^\w+[\w+\\.]*$/', 'message'=>'{attribute} should only contain word characters and dots.'),
 			array('controller', 'match', 'pattern'=>'/^\w+[\w+\\/]*$/', 'message'=>'{attribute} should only contain word characters and slashes.'),
-			array('baseControllerClass', 'match', 'pattern'=>'/^[a-zA-Z_]\w*$/', 'message'=>'{attribute} should only contain word characters.'),
+			array('baseControllerClass', 'match', 'pattern'=>'/^[a-zA-Z_][\w\\\\]*$/', 'message'=>'{attribute} should only contain word characters and backslashes.'),
 			array('baseControllerClass', 'validateReservedWord', 'skipOnError'=>true),
 			array('model', 'validateModel'),
 			array('baseControllerClass', 'sticky'),

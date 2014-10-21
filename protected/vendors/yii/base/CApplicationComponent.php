@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -47,7 +47,7 @@ abstract class CApplicationComponent extends CComponent implements IApplicationC
 	}
 
 	/**
-	 * Checks if this application component bas been initialized.
+	 * Checks if this application component has been initialized.
 	 * @return boolean whether this application component has been initialized (ie, {@link init()} is invoked).
 	 */
 	public function getIsInitialized()

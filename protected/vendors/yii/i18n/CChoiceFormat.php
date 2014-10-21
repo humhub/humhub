@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,19 +15,21 @@
  * <pre>
  * 'expr1#message1|expr2#message2|expr3#message3'
  * </pre>
- * where each expression should be a valid PHP expression with 'n' as the only variable.
- * For example, 'n==1' and 'n%10==2 && n>10' are both valid expressions.
- * The variable 'n' will take the given number value, and if an expression evaluates true,
+ * where each expression should be a valid PHP expression with <code>'n'</code> as the only variable.
+ * For example, <code>'n==1'</code> and <code>'n%10==2 && n>10'</code> are both valid expressions.
+ * The variable <code>'n'</code> will take the given number value, and if an expression evaluates true,
  * the corresponding message will be returned.
  *
- * For example, given the candidate messages 'n==1#one|n==2#two|n>2#others' and
- * the number value 2, the resulting message will be 'two'.
+ * For example, given the candidate messages <code>'n==1#one|n==2#two|n>2#others'</code> and
+ * the number value 2, the resulting message will be <code>'two'</code>.
  *
- * For expressions like 'n==1', we can also use a shortcut '1'. So the above example
- * candidate messages can be simplified as '1#one|2#two|n>2#others'.
+ * For expressions like <code>'n==1'</code>, we can also use a shortcut <code>'1'</code>. So the above example
+ * candidate messages can be simplified as <code>'1#one|2#two|n>2#others'</code>.
  *
  * In case the given number doesn't select any message, the last candidate message
  * will be returned.
+ *
+ * The PHP expressions will be evaluated using {@link evaluate}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @package system.i18n

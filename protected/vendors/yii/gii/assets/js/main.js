@@ -31,7 +31,7 @@ $(document).ready(function() {
 	});
 
 
-	$('.form.gii .row input, .form.gii .row textarea, .form.gii .row select, .with-tooltip').not('.no-tooltip, .no-tooltip *').tooltip({
+	$('.form.gii .row input, .form.gii .row textarea, .form.gii .row select, .with-tooltip').not('.no-tooltip, .no-tooltip *').tooltip2({
 		position: "center right",
 		offset: [-2, 10]
 	});

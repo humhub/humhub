@@ -37,5 +37,5 @@ return array (
   'Total 1 result.|Total {count} results.' => '合計{count}個',
   'Update' => '更新',
   'View' => '表示',
-  '{class} must specify "model" and "attribute" or "name" property values.' => '{class}は"model"と"attribute"または"name"プロパティ値を指定しなければいけません。',
+  '{class} must specify "model" and "{attribute}" or "{name}" property values.' => '{class}は"model"と"{attribute}"または"{name}"のプロパティ値を指定しなければいけません。',
 );

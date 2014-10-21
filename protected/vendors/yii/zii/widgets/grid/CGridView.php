@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -111,18 +111,34 @@ class CGridView extends CBaseListView
 	public $rowCssClass=array('odd','even');
 	/**
 	 * @var string a PHP expression that is evaluated for every table body row and whose result
-	 * is used as the CSS class name for the row. In this expression, the variable <code>$row</code>
-	 * stands for the row number (zero-based), <code>$data</code> is the data model associated with
-	 * the row, and <code>$this</code> is the grid object.
+	 * is used as the CSS class name for the row. In this expression, you can use the following variables:
+	 * <ul>
+	 *   <li><code>$row</code> the row number (zero-based)</li>
+	 *   <li><code>$data</code> the data model for the row</li>
+	 *   <li><code>$this</code> the grid view object</li>
+	 * </ul>
+	 * The PHP expression will be evaluated using {@link evaluateExpression}.
+	 *
+	 * A PHP expression can be any PHP code that has a value. To learn more about what an expression is,
+	 * please refer to the {@link http://www.php.net/manual/en/language.expressions.php php manual}.
 	 * @see rowCssClass
-	 * @deprecated in 1.1.13
+	 * @deprecated in 1.1.13 in favor of {@link rowHtmlOptionsExpression}
 	 */
 	public $rowCssClassExpression;
 	/**
 	 * @var string a PHP expression that is evaluated for every table body row and whose result
-	 * is used as additional HTML attributes for the row. In this expression, the variable <code>$row</code>
-	 * stands for the row number (zero-based), <code>$data</code> is the data model associated with
-	 * the row, and <code>$this</code> is the grid object.
+	 * is used as additional HTML attributes for the row. The expression should return an
+	 * array whose key value pairs correspond to html attribute and value.
+	 * In this expression, you can use the following variables:
+	 * <ul>
+	 *   <li><code>$row</code> the row number (zero-based)</li>
+	 *   <li><code>$data</code> the data model for the row</li>
+	 *   <li><code>$this</code> the grid view object</li>
+	 * </ul>
+	 * The PHP expression will be evaluated using {@link evaluateExpression}.
+	 *
+	 * A PHP expression can be any PHP code that has a value. To learn more about what an expression is,
+	 * please refer to the {@link http://www.php.net/manual/en/language.expressions.php php manual}.
 	 * @since 1.1.13
 	 */
 	public $rowHtmlOptionsExpression;
@@ -189,6 +205,13 @@ class CGridView extends CBaseListView
 	 * @since 1.1.8
 	 */
 	public $ajaxUrl;
+	/**
+	 * @var string the type ('GET' or 'POST') of the AJAX requests. If not set, 'GET' will be used.
+	 * You can set this to 'POST' if you are filtering by many fields at once and have a problem with GET query string length.
+	 * Note that in POST mode direct links and {@link enableHistory} feature may not work correctly!
+	 * @since 1.1.14
+	 */
+	public $ajaxType;
 	/**
 	 * @var string a javascript function that will be invoked before an AJAX update occurs.
 	 * The function signature is <code>function(id,options)</code> where 'id' refers to the ID of the grid view,
@@ -305,6 +328,8 @@ class CGridView extends CBaseListView
 	 * @since 1.1.11
 	 */
 	public $enableHistory=false;
+
+
 	/**
 	 * Initializes the grid view.
 	 * This method will initialize required property values and instantiate {@link columns} objects.
@@ -419,6 +444,8 @@ class CGridView extends CBaseListView
 		);
 		if($this->ajaxUrl!==null)
 			$options['url']=CHtml::normalizeUrl($this->ajaxUrl);
+		if($this->ajaxType!==null)
+			$options['ajaxType']=strtoupper($this->ajaxType);
 		if($this->enablePagination)
 			$options['pageVar']=$this->dataProvider->getPagination()->pageVar;
 		foreach(array('beforeAjaxUpdate', 'afterAjaxUpdate', 'ajaxUpdateError', 'selectionChanged') as $event)

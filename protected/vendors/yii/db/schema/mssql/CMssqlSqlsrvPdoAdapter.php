@@ -4,7 +4,7 @@
  *
  * @author Timur Ruziev <resurtm@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2012 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,7 +24,7 @@ class CMssqlSqlsrvPdoAdapter extends PDO
 	 * string it returns empty string. But when parameter is not specified at all it's working as expected
 	 * and returns actual last inserted ID (like other PDO drivers).
 	 *
-	 * @param string|null the sequence name. Defaults to null.
+	 * @param string|null $sequence the sequence name. Defaults to null.
 	 * @return integer last inserted ID value.
 	 */
 	public function lastInsertId($sequence=null)

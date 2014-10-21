@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -47,7 +47,8 @@ class CCaptchaValidator extends CValidator
 		if($this->allowEmpty && $this->isEmpty($value))
 			return;
 		$captcha=$this->getCaptchaAction();
-		if(!$captcha->validate($value,$this->caseSensitive))
+		// reason of array checking is explained here: https://github.com/yiisoft/yii/issues/1955
+		if(is_array($value) || !$captcha->validate($value,$this->caseSensitive))
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','The verification code is incorrect.');
 			$this->addError($object,$attribute,$message);
@@ -56,6 +57,7 @@ class CCaptchaValidator extends CValidator
 
 	/**
 	 * Returns the CAPTCHA action object.
+	 * @throws CException if {@link action} is invalid
 	 * @return CCaptchaAction the action object
 	 * @since 1.1.7
 	 */

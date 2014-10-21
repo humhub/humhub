@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -53,7 +53,7 @@ class CCacheDependency extends CComponent implements ICacheDependency
 		if ($this->reuseDependentData)
 		{
 			$hash=$this->getHash();
-			if (!isset(self::$_reusableData[$hash]['dependentData']))
+			if(!isset(self::$_reusableData[$hash]['dependentData']))
 				self::$_reusableData[$hash]['dependentData']=$this->generateDependentData();
 			$this->_data=self::$_reusableData[$hash]['dependentData'];
 		}
@@ -69,13 +69,9 @@ class CCacheDependency extends CComponent implements ICacheDependency
 		if ($this->reuseDependentData)
 		{
 			$hash=$this->getHash();
-			if (!isset(self::$_reusableData[$hash]['hasChanged']))
-			{
-				if (!isset(self::$_reusableData[$hash]['dependentData']))
-					self::$_reusableData[$hash]['dependentData']=$this->generateDependentData();
-				self::$_reusableData[$hash]['hasChanged']=self::$_reusableData[$hash]['dependentData']!=$this->_data;
-			}
-			return self::$_reusableData[$hash]['hasChanged'];
+			if(!isset(self::$_reusableData[$hash]['dependentData']))
+				self::$_reusableData[$hash]['dependentData']=$this->generateDependentData();
+			return self::$_reusableData[$hash]['dependentData']!=$this->_data;
 		}
 		else
 			return $this->generateDependentData()!=$this->_data;
@@ -88,6 +84,15 @@ class CCacheDependency extends CComponent implements ICacheDependency
 	public function getDependentData()
 	{
 		return $this->_data;
+	}
+
+	/**
+	 * Resets cached data for reusable dependencies.
+	 * @since 1.1.14
+	 */
+	public static function resetReusableData()
+	{
+		self::$_reusableData=array();
 	}
 
 	/**

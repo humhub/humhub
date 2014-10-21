@@ -4,15 +4,15 @@
  *
  * @author Jonah Turnquist <poppitypop@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
- /**
+/**
  * CTimestampBehavior will automatically fill date and time related attributes.
  *
  * CTimestampBehavior will automatically fill date and time related attributes when the active record
- * is created and/or upadated.
+ * is created and/or updated.
  * You may specify an active record model to use this behavior like so:
  * <pre>
  * public function behaviors(){
@@ -42,35 +42,38 @@
 
 class CTimestampBehavior extends CActiveRecordBehavior {
 	/**
-	* @var mixed The name of the attribute to store the creation time.  Set to null to not
-	* use a timestamp for the creation attribute.  Defaults to 'create_time'
-	*/
+	 * @var mixed The name of the attribute to store the creation time.  Set to null to not
+	 * use a timestamp for the creation attribute.  Defaults to 'create_time'
+	 */
 	public $createAttribute = 'create_time';
 	/**
-	* @var mixed The name of the attribute to store the modification time.  Set to null to not
-	* use a timestamp for the update attribute.  Defaults to 'update_time'
-	*/
+	 * @var mixed The name of the attribute to store the modification time.  Set to null to not
+	 * use a timestamp for the update attribute.  Defaults to 'update_time'
+	 */
 	public $updateAttribute = 'update_time';
 
 	/**
-	* @var bool Whether to set the update attribute to the creation timestamp upon creation.
-	* Otherwise it will be left alone.  Defaults to false.
-	*/
+	 * @var bool Whether to set the update attribute to the creation timestamp upon creation.
+	 * Otherwise it will be left alone.  Defaults to false.
+	 */
 	public $setUpdateOnCreate = false;
 
 	/**
-	* @var mixed The expression that will be used for generating the timestamp.
-	* This can be either a string representing a PHP expression (e.g. 'time()'),
-	* or a {@link CDbExpression} object representing a DB expression (e.g. new CDbExpression('NOW()')).
-	* Defaults to null, meaning that we will attempt to figure out the appropriate timestamp
-	* automatically. If we fail at finding the appropriate timestamp, then it will
-	* fall back to using the current UNIX timestamp
-	*/
+	 * @var mixed The expression that will be used for generating the timestamp.
+	 * This can be either a string representing a PHP expression (e.g. 'time()'),
+	 * or a {@link CDbExpression} object representing a DB expression (e.g. new CDbExpression('NOW()')).
+	 * Defaults to null, meaning that we will attempt to figure out the appropriate timestamp
+	 * automatically. If we fail at finding the appropriate timestamp, then it will
+	 * fall back to using the current UNIX timestamp.
+	 *
+	 * A PHP expression can be any PHP code that has a value. To learn more about what an expression is,
+	 * please refer to the {@link http://www.php.net/manual/en/language.expressions.php php manual}.
+	 */
 	public $timestampExpression;
 
 	/**
-	* @var array Maps column types to database method
-	*/
+	 * @var array Maps column types to database method
+	 */
 	protected static $map = array(
 			'datetime'=>'NOW()',
 			'timestamp'=>'NOW()',
@@ -78,11 +81,11 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 	);
 
 	/**
-	* Responds to {@link CModel::onBeforeSave} event.
-	* Sets the values of the creation or modified attributes as configured
-	*
-	* @param CModelEvent $event event parameter
-	*/
+	 * Responds to {@link CModel::onBeforeSave} event.
+	 * Sets the values of the creation or modified attributes as configured
+	 *
+	 * @param CModelEvent $event event parameter
+	 */
 	public function beforeSave($event) {
 		if ($this->getOwner()->getIsNewRecord() && ($this->createAttribute !== null)) {
 			$this->getOwner()->{$this->createAttribute} = $this->getTimestampByAttribute($this->createAttribute);
@@ -93,11 +96,11 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 	}
 
 	/**
-	* Gets the approprate timestamp depending on the column type $attribute is
-	*
-	* @param string $attribute $attribute
-	* @return mixed timestamp (eg unix timestamp or a mysql function)
-	*/
+	 * Gets the appropriate timestamp depending on the column type $attribute is
+	 *
+	 * @param string $attribute $attribute
+	 * @return mixed timestamp (eg unix timestamp or a mysql function)
+	 */
 	protected function getTimestampByAttribute($attribute) {
 		if ($this->timestampExpression instanceof CDbExpression)
 			return $this->timestampExpression;
@@ -109,11 +112,11 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 	}
 
 	/**
-	* Returns the approprate timestamp depending on $columnType
-	*
-	* @param string $columnType $columnType
-	* @return mixed timestamp (eg unix timestamp or a mysql function)
-	*/
+	 * Returns the appropriate timestamp depending on $columnType
+	 *
+	 * @param string $columnType $columnType
+	 * @return mixed timestamp (eg unix timestamp or a mysql function)
+	 */
 	protected function getTimestampByColumnType($columnType) {
 		return isset(self::$map[$columnType]) ? new CDbExpression(self::$map[$columnType]) : time();
 	}

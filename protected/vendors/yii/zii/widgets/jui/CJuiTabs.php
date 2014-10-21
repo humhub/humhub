@@ -4,7 +4,7 @@
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -13,7 +13,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
 /**
  * CJuiTabs displays a tabs widget.
  *
- * CJuiTabs encapsulates the {@link http://jqueryui.com/demos/tabs/ JUI tabs}
+ * CJuiTabs encapsulates the {@link http://jqueryui.com/tabs/ JUI tabs}
  * plugin.
  *
  * To use this widget, you may insert the following code in a view:
@@ -34,8 +34,24 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * By configuring the {@link options} property, you may specify the options
  * that need to be passed to the JUI tabs plugin. Please refer to
- * the {@link http://jqueryui.com/demos/tabs/ JUI tabs} documentation
- * for possible options (name-value pairs).
+ * the {@link http://api.jqueryui.com/tabs/ JUI Tabs API} documentation
+ * for possible options (name-value pairs) and
+ * {@link http://jqueryui.com/tabs/ JUI Tabs page} for general
+ * description and demo.
+ *
+ * Note, in case you're using &lt;base/&gt; HTML tag you may run into the
+ * issue when jQuery UI uses altered base URL to load content, but not
+ * the base URL content was loaded from. (Developer may expect both behavior
+ * in different cases.) For this occasion consider using absolute URL
+ * generation as follows:
+ *
+ * <pre>
+ * $this->widget('zii.widgets.jui.CJuiTabs',array(
+ *     'tabs'=>array(
+ *         'Dynamic Tab'=>array('ajax'=>$this->createAbsoluteUrl('tab/content/route')),
+ *     ),
+ * ));
+ * </pre>
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @package zii.widgets.jui

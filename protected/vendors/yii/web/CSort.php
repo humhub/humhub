@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -237,7 +237,7 @@ class CSort extends CComponent
 		else
 		{
 			if($this->modelClass!==null)
-				$schema=CActiveRecord::model($this->modelClass)->getDbConnection()->getSchema();
+				$schema=$this->getModel($this->modelClass)->getDbConnection()->getSchema();
 			$orders=array();
 			foreach($directions as $attribute=>$descending)
 			{
@@ -257,7 +257,7 @@ class CSort extends CComponent
 						if(($pos=strpos($attribute,'.'))!==false)
 							$attribute=$schema->quoteTableName(substr($attribute,0,$pos)).'.'.$schema->quoteColumnName(substr($attribute,$pos+1));
 						else
-							$attribute=($criteria===null || $criteria->alias===null ? CActiveRecord::model($this->modelClass)->getTableAlias(true) : $schema->quoteTableName($criteria->alias)).'.'.$schema->quoteColumnName($attribute);
+							$attribute=($criteria===null || $criteria->alias===null ? $this->getModel($this->modelClass)->getTableAlias(true) : $schema->quoteTableName($criteria->alias)).'.'.$schema->quoteColumnName($attribute);
 					}
 					$orders[]=$descending?$attribute.' DESC':$attribute;
 				}
@@ -327,7 +327,7 @@ class CSort extends CComponent
 		elseif(is_string($definition))
 			$attribute=$definition;
 		if($this->modelClass!==null)
-			return CActiveRecord::model($this->modelClass)->getAttributeLabel($attribute);
+			return $this->getModel($this->modelClass)->getAttributeLabel($attribute);
 		else
 			return $attribute;
 	}
@@ -422,7 +422,7 @@ class CSort extends CComponent
 		if($this->attributes!==array())
 			$attributes=$this->attributes;
 		elseif($this->modelClass!==null)
-			$attributes=CActiveRecord::model($this->modelClass)->attributeNames();
+			$attributes=$this->getModel($this->modelClass)->attributeNames();
 		else
 			return false;
 		foreach($attributes as $name=>$definition)
@@ -434,13 +434,26 @@ class CSort extends CComponent
 			}
 			elseif($definition==='*')
 			{
-				if($this->modelClass!==null && CActiveRecord::model($this->modelClass)->hasAttribute($attribute))
+				if($this->modelClass!==null && $this->getModel($this->modelClass)->hasAttribute($attribute))
 					return $attribute;
 			}
 			elseif($definition===$attribute)
 				return $attribute;
 		}
 		return false;
+	}
+
+	/**
+	 * Given active record class name returns new model instance.
+	 *
+	 * @param string $className active record class name.
+	 * @return CActiveRecord active record model instance.
+	 *
+	 * @since 1.1.14
+	 */
+	protected function getModel($className)
+	{
+		return CActiveRecord::model($className);
 	}
 
 	/**

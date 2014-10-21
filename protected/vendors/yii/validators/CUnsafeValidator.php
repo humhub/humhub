@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -25,7 +25,8 @@ class CUnsafeValidator extends CValidator
 	public $safe=false;
 	/**
 	 * Validates the attribute of the object.
-	 * If there is any error, the error message is added to the object.
+	 * This validator does not do any validation as it is meant
+	 * to only mark attributes as unsafe.
 	 * @param CModel $object the object being validated
 	 * @param string $attribute the attribute being validated
 	 */

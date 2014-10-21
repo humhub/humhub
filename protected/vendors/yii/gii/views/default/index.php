@@ -5,7 +5,7 @@
 </p>
 <ul>
 	<?php foreach($this->module->controllerMap as $name=>$config): ?>
-	<li><?php echo CHtml::link(ucwords(CHtml::encode($name).' generator'),array('/gii/'.$name));?></li>
+	<li><?php echo CHtml::link(ucwords(CHtml::encode($name).' generator'),array($name.'/index'));?></li>
 	<?php endforeach; ?>
 </ul>
 

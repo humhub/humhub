@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,7 +24,7 @@
  * <ul>
  * <li>raw: the attribute value will not be changed at all.</li>
  * <li>text: the attribute value will be HTML-encoded when rendering.</li>
- * <li>ntext: the {@link formatNtext} method will be called to format the attribute value as a HTML-encoded plain text with newlines converted as the HTML &lt;br /&gt; tags.</li>
+ * <li>ntext: the {@link formatNtext} method will be called to format the attribute value as a HTML-encoded plain text with newlines converted as the HTML &lt;br /&gt; or &lt;p&gt;&lt;/p&gt; tags.</li>
  * <li>html: the attribute value will be purified and then returned.</li>
  * <li>date: the {@link formatDate} method will be called to format the attribute value as a date.</li>
  * <li>time: the {@link formatTime} method will be called to format the attribute value as a time.</li>
@@ -34,10 +34,13 @@
  * <li>email: the {@link formatEmail} method will be called to format the attribute value as a mailto link.</li>
  * <li>image: the {@link formatImage} method will be called to format the attribute value as an image tag where the attribute value is the image URL.</li>
  * <li>url: the {@link formatUrl} method will be called to format the attribute value as a hyperlink where the attribute value is the URL.</li>
+ * <li>size: the {@link formatSize} method will be called to format the attribute value, interpreted as a number of bytes, as a size in human readable form.</li>
  * </ul>
  *
  * By default, {@link CApplication} registers {@link CFormatter} as an application component whose ID is 'format'.
  * Therefore, one may call <code>Yii::app()->format->boolean(1)</code>.
+ * You might want to replace this component with {@link CLocalizedFormatter} to enable formatting based on the
+ * current locale settings.
  *
  * @property CHtmlPurifier $htmlPurifier The HTML purifier instance.
  *
@@ -115,6 +118,7 @@ class CFormatter extends CApplicationComponent
 	 * @param mixed $value the value to be formatted
 	 * @param string $type the data type. This must correspond to a format method available in CFormatter.
 	 * For example, we can use 'text' here because there is method named {@link formatText}.
+	 * @throws CException if given type is unknown
 	 * @return string the formatted data
 	 */
 	public function format($value,$type)
@@ -148,13 +152,29 @@ class CFormatter extends CApplicationComponent
 	}
 
 	/**
-	 * Formats the value as a HTML-encoded plain text and converts newlines with HTML br tags.
+	 * Formats the value as a HTML-encoded plain text and converts newlines with HTML &lt;br /&gt; or
+	 * &lt;p&gt;&lt;/p&gt; tags.
 	 * @param mixed $value the value to be formatted
+	 * @param boolean $paragraphs whether newlines should be converted to HTML &lt;p&gt;&lt;/p&gt; tags,
+	 * false by default meaning that HTML &lt;br /&gt; tags will be used
+	 * @param boolean $removeEmptyParagraphs whether empty paragraphs should be removed, defaults to true;
+	 * makes sense only when $paragraphs parameter is true
 	 * @return string the formatted result
 	 */
-	public function formatNtext($value)
+	public function formatNtext($value,$paragraphs=false,$removeEmptyParagraphs=true)
 	{
-		return nl2br(CHtml::encode($value));
+		$value=CHtml::encode($value);
+		if($paragraphs)
+		{
+			$value='<p>'.str_replace(array("\r\n", "\n", "\r"), '</p><p>',$value).'</p>';
+			if($removeEmptyParagraphs)
+     			$value=preg_replace('/(<\/p><p>){2,}/i','</p><p>',$value);
+			return $value;
+		}
+		else
+		{
+			return nl2br($value);
+		}
 	}
 
 	/**
@@ -200,7 +220,12 @@ class CFormatter extends CApplicationComponent
 		return date($this->datetimeFormat,$this->normalizeDateValue($value));
 	}
 
-	private function normalizeDateValue($time)
+	/**
+	 * Normalizes an expression as a timestamp.
+	 * @param mixed $time the time expression to be normalized
+	 * @return int the normalized result as a UNIX timestamp
+	 */
+	protected function normalizeDateValue($time)
 	{
 		if(is_string($time))
 		{

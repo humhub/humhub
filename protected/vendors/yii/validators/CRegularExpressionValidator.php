@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -39,6 +39,7 @@ class CRegularExpressionValidator extends CValidator
 	 * If there is any error, the error message is added to the object.
 	 * @param CModel $object the object being validated
 	 * @param string $attribute the attribute being validated
+	 * @throws CException if given {@link pattern} is empty
 	 */
 	protected function validateAttribute($object,$attribute)
 	{
@@ -47,7 +48,10 @@ class CRegularExpressionValidator extends CValidator
 			return;
 		if($this->pattern===null)
 			throw new CException(Yii::t('yii','The "pattern" property must be specified with a valid regular expression.'));
-		if((!$this->not && !preg_match($this->pattern,$value)) || ($this->not && preg_match($this->pattern,$value)))
+		// reason of array checking explained here: https://github.com/yiisoft/yii/issues/1955
+		if(is_array($value) ||
+			(!$this->not && !preg_match($this->pattern,$value)) ||
+			($this->not && preg_match($this->pattern,$value)))
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} is invalid.');
 			$this->addError($object,$attribute,$message);
@@ -58,6 +62,7 @@ class CRegularExpressionValidator extends CValidator
 	 * Returns the JavaScript needed for performing client-side validation.
 	 * @param CModel $object the data object being validated
 	 * @param string $attribute the name of the attribute to be validated.
+	 * @throws CException if given {@link pattern} is empty
 	 * @return string the client-side validation script.
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -26,7 +26,7 @@
  *   'allow',  // or 'deny'
  * 
  *   // optional, list of action IDs (case insensitive) that this rule applies to
- *   // if not specified, rule applies to all actions
+ *   // if not specified or empty, rule applies to all actions
  *   'actions'=>array('edit', 'delete'),
  * 
  *   // optional, list of controller IDs (case insensitive) that this rule applies to
@@ -50,6 +50,9 @@
  *   'verbs'=>array('GET', 'POST'),
  * 
  *   // optional, a PHP expression whose value indicates whether this rule applies
+ *   // The PHP expression will be evaluated using {@link evaluateExpression}.
+ *   // A PHP expression can be any PHP code that has a value. To learn more about what an expression is,
+ *   // please refer to the {@link http://www.php.net/manual/en/language.expressions.php php manual}.
  *   'expression'=>'!$user->isGuest && $user->level==2',
  * 
  *   // optional, the customized error message to be displayed
@@ -200,7 +203,7 @@ class CAccessRule extends CComponent
 	 */
 	public $actions;
 	/**
-	 * @var array list of controler IDs that this rule applies to. The comparison is case-insensitive.
+	 * @var array list of controller IDs that this rule applies to. The comparison is case-insensitive.
 	 */
 	public $controllers;
 	/**
@@ -235,6 +238,11 @@ class CAccessRule extends CComponent
 	 * function foo($user, $rule) { ... }
 	 * </pre>
 	 * where $user is the current application user object and $rule is this access rule.
+	 *
+	 * The PHP expression will be evaluated using {@link evaluateExpression}.
+	 *
+	 * A PHP expression can be any PHP code that has a value. To learn more about what an expression is,
+	 * please refer to the {@link http://www.php.net/manual/en/language.expressions.php php manual}.
 	 */
 	public $expression;
 	/**
@@ -298,7 +306,7 @@ class CAccessRule extends CComponent
 	 */
 	protected function isControllerMatched($controller)
 	{
-		return empty($this->controllers) || in_array(strtolower($controller->getId()),$this->controllers);
+		return empty($this->controllers) || in_array(strtolower($controller->getUniqueId()),$this->controllers);
 	}
 
 	/**

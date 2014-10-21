@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -41,6 +41,15 @@ class CFileCache extends CCache
 	 * The value of this property should not exceed 16 (less than 3 is recommended).
 	 */
 	public $directoryLevel=0;
+	/**
+	 * @var boolean whether cache entry expiration time should be embedded into a physical file.
+	 * Defaults to false meaning that the file modification time will be used to store expire value.
+	 * True value means that first ten bytes of the file would be reserved and used to store expiration time.
+	 * On some systems PHP is not allowed to change file modification time to be in future even with 777
+	 * permissions, so this property could be useful in this case.
+	 * @since 1.1.14
+	 */
+	public $embedExpiry=false;
 
 	private $_gcProbability=100;
 	private $_gced=false;
@@ -98,13 +107,13 @@ class CFileCache extends CCache
 	 * Retrieves a value from cache with a specified key.
 	 * This is the implementation of the method declared in the parent class.
 	 * @param string $key a unique key identifying the cached value
-	 * @return string the value stored in cache, false if the value is not in the cache or expired.
+	 * @return string|boolean the value stored in cache, false if the value is not in the cache or expired.
 	 */
 	protected function getValue($key)
 	{
 		$cacheFile=$this->getCacheFile($key);
-		if(($time=@filemtime($cacheFile))>time())
-			return @file_get_contents($cacheFile);
+		if(($time=$this->filemtime($cacheFile))>time())
+			return @file_get_contents($cacheFile,false,null,$this->embedExpiry ? 10 : -1);
 		elseif($time>0)
 			@unlink($cacheFile);
 		return false;
@@ -134,10 +143,10 @@ class CFileCache extends CCache
 		$cacheFile=$this->getCacheFile($key);
 		if($this->directoryLevel>0)
 			@mkdir(dirname($cacheFile),0777,true);
-		if(@file_put_contents($cacheFile,$value,LOCK_EX)!==false)
+		if(@file_put_contents($cacheFile,$this->embedExpiry ? $expire.$value : $value,LOCK_EX)!==false)
 		{
 			@chmod($cacheFile,0777);
-			return @touch($cacheFile,$expire);
+			return $this->embedExpiry ? true : @touch($cacheFile,$expire);
 		}
 		else
 			return false;
@@ -155,7 +164,7 @@ class CFileCache extends CCache
 	protected function addValue($key,$value,$expire)
 	{
 		$cacheFile=$this->getCacheFile($key);
-		if(@filemtime($cacheFile)>time())
+		if($this->filemtime($cacheFile)>time())
 			return false;
 		return $this->setValue($key,$value,$expire);
 	}
@@ -212,9 +221,22 @@ class CFileCache extends CCache
 			$fullPath=$path.DIRECTORY_SEPARATOR.$file;
 			if(is_dir($fullPath))
 				$this->gc($expiredOnly,$fullPath);
-			elseif($expiredOnly && @filemtime($fullPath)<time() || !$expiredOnly)
+			elseif($expiredOnly && $this->filemtime($fullPath)<time() || !$expiredOnly)
 				@unlink($fullPath);
 		}
 		closedir($handle);
+	}
+
+	/**
+	 * Returns cache file modification time. {@link $embedExpiry} aware.
+	 * @param string $path to the file, modification time to be retrieved from.
+	 * @return integer file modification time.
+	 */
+	private function filemtime($path)
+	{
+		if($this->embedExpiry)
+			return (int)@file_get_contents($path,false,null,0,10);
+		else
+			return @filemtime($path);
 	}
 }

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -66,14 +66,14 @@ class CClientScript extends CApplicationComponent
 	 * <pre>
 	 * array(
 	 *   'package-name'=>array(
-     *     'basePath'=>'alias of the directory containing the script files',
-     *     'baseUrl'=>'base URL for the script files',
-     *     'js'=>array(list of js files relative to basePath/baseUrl),
-     *     'css'=>array(list of css files relative to basePath/baseUrl),
-     *     'depends'=>array(list of dependent packages),
-     *   ),
-     *   ......
-     * )
+	 *     'basePath'=>'alias of the directory containing the script files',
+	 *     'baseUrl'=>'base URL for the script files',
+	 *     'js'=>array(list of js files relative to basePath/baseUrl),
+	 *     'css'=>array(list of css files relative to basePath/baseUrl),
+	 *     'depends'=>array(list of dependent packages),
+	 *   ),
+	 *   ......
+	 * )
 	 * </pre>
 	 *
 	 * The JS and CSS files listed are relative to 'basePath'.
@@ -234,10 +234,10 @@ class CClientScript extends CApplicationComponent
 
 		if(isset($this->scriptFiles[self::POS_BEGIN]))
 		{
-			foreach($this->scriptFiles[self::POS_BEGIN] as $key=>$scriptFile)
+			foreach($this->scriptFiles[self::POS_BEGIN] as $scriptFile=>$scriptFileValue)
 			{
 				if(isset($map[$scriptFile]))
-					unset($this->scriptFiles[self::POS_BEGIN][$key]);
+					unset($this->scriptFiles[self::POS_BEGIN][$scriptFile]);
 				else
 					$map[$scriptFile]=true;
 			}
@@ -247,7 +247,7 @@ class CClientScript extends CApplicationComponent
 		{
 			foreach($this->scriptFiles[self::POS_END] as $key=>$scriptFile)
 			{
-				if(isset($map[$scriptFile]))
+				if(isset($map[$key]))
 					unset($this->scriptFiles[self::POS_END][$key]);
 			}
 		}
@@ -278,12 +278,12 @@ class CClientScript extends CApplicationComponent
 		$this->cssFiles=$cssFiles;
 
 		$jsFiles=array();
-		foreach($this->scriptFiles as $position=>$scripts)
+		foreach($this->scriptFiles as $position=>$scriptFiles)
 		{
 			$jsFiles[$position]=array();
-			foreach($scripts as $key=>$script)
+			foreach($scriptFiles as $scriptFile=>$scriptFileValue)
 			{
-				$name=basename($script);
+				$name=basename($scriptFile);
 				if(isset($this->scriptMap[$name]))
 				{
 					if($this->scriptMap[$name]!==false)
@@ -295,10 +295,43 @@ class CClientScript extends CApplicationComponent
 						$jsFiles[$position][$this->scriptMap['*.js']]=$this->scriptMap['*.js'];
 				}
 				else
-					$jsFiles[$position][$key]=$script;
+					$jsFiles[$position][$scriptFile]=$scriptFileValue;
 			}
 		}
 		$this->scriptFiles=$jsFiles;
+	}
+
+	/**
+	 * Composes script HTML block from the given script values,
+	 * attempting to group scripts at single 'script' tag if possible.
+	 * @param array $scripts script values to process.
+	 * @return string HTML output
+	 */
+	protected function renderScriptBatch(array $scripts)
+	{
+		$html = '';
+		$scriptBatches = array();
+		foreach($scripts as $scriptValue)
+		{
+			if(is_array($scriptValue))
+			{
+				$scriptContent = $scriptValue['content'];
+				unset($scriptValue['content']);
+				$scriptHtmlOptions = $scriptValue;
+			}
+			else
+			{
+				$scriptContent = $scriptValue;
+				$scriptHtmlOptions = array();
+			}
+			$key=serialize(ksort($scriptHtmlOptions));
+			$scriptBatches[$key]['htmlOptions']=$scriptHtmlOptions;
+			$scriptBatches[$key]['scripts'][]=$scriptContent;
+		}
+		foreach($scriptBatches as $scriptBatch)
+			if(!empty($scriptBatch['scripts']))
+				$html.=CHtml::script(implode("\n",$scriptBatch['scripts']),$scriptBatch['htmlOptions'])."\n";
+		return $html;
 	}
 
 	/**
@@ -335,8 +368,8 @@ class CClientScript extends CApplicationComponent
 		{
 			if(isset($this->scriptFiles[$this->coreScriptPosition]))
 			{
-				foreach($this->scriptFiles[$this->coreScriptPosition] as $url)
-					$jsFiles[$url]=$url;
+				foreach($this->scriptFiles[$this->coreScriptPosition] as $url => $value)
+					$jsFiles[$url]=$value;
 			}
 			$this->scriptFiles[$this->coreScriptPosition]=$jsFiles;
 		}
@@ -361,12 +394,17 @@ class CClientScript extends CApplicationComponent
 		{
 			if(isset($this->scriptFiles[self::POS_HEAD]))
 			{
-				foreach($this->scriptFiles[self::POS_HEAD] as $scriptFile)
-					$html.=CHtml::scriptFile($scriptFile)."\n";
+				foreach($this->scriptFiles[self::POS_HEAD] as $scriptFileValueUrl=>$scriptFileValue)
+				{
+					if(is_array($scriptFileValue))
+						$html.=CHtml::scriptFile($scriptFileValueUrl,$scriptFileValue)."\n";
+					else
+						$html.=CHtml::scriptFile($scriptFileValueUrl)."\n";
+				}
 			}
 
 			if(isset($this->scripts[self::POS_HEAD]))
-				$html.=CHtml::script(implode("\n",$this->scripts[self::POS_HEAD]))."\n";
+				$html.=$this->renderScriptBatch($this->scripts[self::POS_HEAD]);
 		}
 
 		if($html!=='')
@@ -389,11 +427,16 @@ class CClientScript extends CApplicationComponent
 		$html='';
 		if(isset($this->scriptFiles[self::POS_BEGIN]))
 		{
-			foreach($this->scriptFiles[self::POS_BEGIN] as $scriptFile)
-				$html.=CHtml::scriptFile($scriptFile)."\n";
+			foreach($this->scriptFiles[self::POS_BEGIN] as $scriptFileUrl=>$scriptFileValue)
+			{
+				if(is_array($scriptFileValue))
+					$html.=CHtml::scriptFile($scriptFileUrl,$scriptFileValue)."\n";
+				else
+					$html.=CHtml::scriptFile($scriptFileUrl)."\n";
+			}
 		}
 		if(isset($this->scripts[self::POS_BEGIN]))
-			$html.=CHtml::script(implode("\n",$this->scripts[self::POS_BEGIN]))."\n";
+			$html.=$this->renderScriptBatch($this->scripts[self::POS_BEGIN]);
 
 		if($html!=='')
 		{
@@ -421,8 +464,13 @@ class CClientScript extends CApplicationComponent
 		$html='';
 		if(isset($this->scriptFiles[self::POS_END]))
 		{
-			foreach($this->scriptFiles[self::POS_END] as $scriptFile)
-				$html.=CHtml::scriptFile($scriptFile)."\n";
+			foreach($this->scriptFiles[self::POS_END] as $scriptFileUrl=>$scriptFileValue)
+			{
+				if(is_array($scriptFileValue))
+					$html.=CHtml::scriptFile($scriptFileUrl,$scriptFileValue)."\n";
+				else
+					$html.=CHtml::scriptFile($scriptFileUrl)."\n";
+			}
 		}
 		$scripts=isset($this->scripts[self::POS_END]) ? $this->scripts[self::POS_END] : array();
 		if(isset($this->scripts[self::POS_READY]))
@@ -440,7 +488,7 @@ class CClientScript extends CApplicationComponent
 				$scripts[]=implode("\n",$this->scripts[self::POS_LOAD]);
 		}
 		if(!empty($scripts))
-			$html.=CHtml::script(implode("\n",$scripts))."\n";
+			$html.=$this->renderScriptBatch($scripts);
 
 		if($fullPage)
 			$output=str_replace('<###end###>',$html,$output);
@@ -588,14 +636,22 @@ class CClientScript extends CApplicationComponent
 	 * <li>CClientScript::POS_BEGIN : the script is inserted at the beginning of the body section.</li>
 	 * <li>CClientScript::POS_END : the script is inserted at the end of the body section.</li>
 	 * </ul>
+	 * @param array $htmlOptions additional HTML attributes
 	 * @return CClientScript the CClientScript object itself (to support method chaining, available since version 1.1.5).
 	 */
-	public function registerScriptFile($url,$position=null)
+	public function registerScriptFile($url,$position=null,array $htmlOptions=array())
 	{
 		if($position===null)
 			$position=$this->defaultScriptFilePosition;
 		$this->hasScripts=true;
-		$this->scriptFiles[$position][$url]=$url;
+		if(empty($htmlOptions))
+			$value=$url;
+		else
+		{
+			$value=$htmlOptions;
+			$value['src']=$url;
+		}
+		$this->scriptFiles[$position][$url]=$value;
 		$params=func_get_args();
 		$this->recordCachingAction('clientScript','registerScriptFile',$params);
 		return $this;
@@ -613,18 +669,28 @@ class CClientScript extends CApplicationComponent
 	 * <li>CClientScript::POS_LOAD : the script is inserted in the window.onload() function.</li>
 	 * <li>CClientScript::POS_READY : the script is inserted in the jQuery's ready function.</li>
 	 * </ul>
+	 * @param array $htmlOptions additional HTML attributes
+	 * Note: HTML attributes are not allowed for script positions "CClientScript::POS_LOAD" and "CClientScript::POS_READY".
 	 * @return CClientScript the CClientScript object itself (to support method chaining, available since version 1.1.5).
 	 */
-	public function registerScript($id,$script,$position=null)
+	public function registerScript($id,$script,$position=null,array $htmlOptions=array())
 	{
-                if($position===null)
+		if($position===null)
 			$position=$this->defaultScriptPosition;
 		$this->hasScripts=true;
-		$this->scripts[$position][$id]=$script;
+		if(empty($htmlOptions))
+			$scriptValue=$script;
+		else
+		{
+			if($position==self::POS_LOAD || $position==self::POS_READY)
+				throw new CException(Yii::t('yii','Script HTML options are not allowed for "CClientScript::POS_LOAD" and "CClientScript::POS_READY".'));
+			$scriptValue=$htmlOptions;
+			$scriptValue['content']=$script;
+		}
+		$this->scripts[$position][$id]=$scriptValue;
 		if($position===self::POS_READY || $position===self::POS_LOAD)
 			$this->registerCoreScript('jquery');
 		$params=func_get_args();
-                
 		$this->recordCachingAction('clientScript','registerScript',$params);
 		return $this;
 	}

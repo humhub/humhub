@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -52,17 +52,22 @@ class CDateValidator extends CValidator
 		if($this->allowEmpty && $this->isEmpty($value))
 			return;
 
-		$formats=is_string($this->format) ? array($this->format) : $this->format;
 		$valid=false;
-		foreach($formats as $format)
+
+		// reason of array checking is explained here: https://github.com/yiisoft/yii/issues/1955
+		if(!is_array($value))
 		{
-			$timestamp=CDateTimeParser::parse($value,$format,array('month'=>1,'day'=>1,'hour'=>0,'minute'=>0,'second'=>0));
-			if($timestamp!==false)
+			$formats=is_string($this->format) ? array($this->format) : $this->format;
+			foreach($formats as $format)
 			{
-				$valid=true;
-				if($this->timestampAttribute!==null)
-					$object->{$this->timestampAttribute}=$timestamp;
-				break;
+				$timestamp=CDateTimeParser::parse($value,$format,array('month'=>1,'day'=>1,'hour'=>0,'minute'=>0,'second'=>0));
+				if($timestamp!==false)
+				{
+					$valid=true;
+					if($this->timestampAttribute!==null)
+						$object->{$this->timestampAttribute}=$timestamp;
+					break;
+				}
 			}
 		}
 

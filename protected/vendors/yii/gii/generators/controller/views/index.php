@@ -16,6 +16,7 @@ one or several controller actions and their corresponding views.</p>
 				<li><code>admin/user</code> generates <code>admin/UserController.php</code>.
 					If the application has an <code>admin</code> module enabled,
 					it will generate <code>UserController</code> within the module instead.
+					Make sure to write module name in the correct case if it has a camelCase name.
 				</li>
 			</ul>
 		</div>

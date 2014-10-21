@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -41,6 +41,13 @@ class CRequiredValidator extends CValidator
 	 */
 	public $strict=false;
 	/**
+	 * @var boolean whether the value should be trimmed with php trim() function when comparing strings.
+	 * When set to false, the attribute value is not considered empty when it contains spaces.
+	 * Defaults to true, meaning the value will be trimmed.
+	 * @since 1.1.14
+	 */
+	public $trim=true;
+	/**
 	 * Validates the attribute of the object.
 	 * If there is any error, the error message is added to the object.
 	 * @param CModel $object the object being validated
@@ -58,7 +65,7 @@ class CRequiredValidator extends CValidator
 				$this->addError($object,$attribute,$message);
 			}
 		}
-		elseif($this->isEmpty($value,true))
+		elseif($this->isEmpty($value,$this->trim))
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} cannot be blank.');
 			$this->addError($object,$attribute,$message);
@@ -97,8 +104,12 @@ if(value!=" . CJSON::encode($this->requiredValue) . ") {
 			$message=strtr($message, array(
 				'{attribute}'=>$object->getAttributeLabel($attribute),
 			));
+			if($this->trim)
+				$emptyCondition = "jQuery.trim(value)==''";
+			else
+				$emptyCondition = "value==''";
 			return "
-if(jQuery.trim(value)=='') {
+if({$emptyCondition}) {
 	messages.push(".CJSON::encode($message).");
 }
 ";

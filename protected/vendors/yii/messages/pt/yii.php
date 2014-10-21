@@ -235,7 +235,7 @@ return array (
   'You are not authorized to perform this action.' => 'Você não está autorizado a realizar essa operação.',
   'Your request is invalid.' => 'Sua requisição é inválida.',
   'Your request is not valid.' => 'Sua solicitação não é válida.',
-  '{attribute} "{value}" has already been taken.' => '{attribute} "{value}" já tem sido pego.',
+  '{attribute} "{value}" has already been taken.' => '{attribute} "{value}" já existe.',
   '{attribute} "{value}" is invalid.' => '{attribute} "{value}" é inválido.',
   '{attribute} cannot accept more than {limit} files.' => '{attribute} não aceita mais que {limit} arquivo(s).',
   '{attribute} cannot be blank.' => '{attribute} não pode ser vazio.',

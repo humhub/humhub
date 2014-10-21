@@ -28,4 +28,4 @@ $this->menu=array(
 
 <h1>Update <?php echo $this->modelClass." <?php echo \$model->{$this->tableSchema->primaryKey}; ?>"; ?></h1>
 
-<?php echo "<?php echo \$this->renderPartial('_form', array('model'=>\$model)); ?>"; ?>
+<?php echo "<?php \$this->renderPartial('_form', array('model'=>\$model)); ?>"; ?>

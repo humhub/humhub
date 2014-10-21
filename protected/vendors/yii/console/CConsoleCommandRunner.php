@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,6 +12,7 @@
  * CConsoleCommandRunner manages commands and executes the requested command.
  *
  * @property string $scriptName The entry script name.
+ * @property CConsoleCommand $command The currently active command.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @package system.console
@@ -41,6 +42,7 @@ class CConsoleCommandRunner extends CComponent
 	public $commands=array();
 
 	private $_scriptName;
+	private $_command;
 
 	/**
 	 * Executes the requested command.
@@ -61,10 +63,14 @@ class CConsoleCommandRunner extends CComponent
 		else
 			$name='help';
 
+		$oldCommand=$this->_command;
 		if(($command=$this->createCommand($name))===null)
 			$command=$this->createCommand('help');
+		$this->_command=$command;
 		$command->init();
-		return $command->run($args);
+		$exitCode=$command->run($args);
+		$this->_command=$oldCommand;
+		return $exitCode;
 	}
 
 	/**
@@ -73,6 +79,25 @@ class CConsoleCommandRunner extends CComponent
 	public function getScriptName()
 	{
 		return $this->_scriptName;
+	}
+
+	/**
+	 * Returns the currently running command.
+	 * @return CConsoleCommand|null the currently active command.
+	 * @since 1.1.14
+	 */
+	public function getCommand()
+	{
+		return $this->_command;
+	}
+
+	/**
+	 * @param CConsoleCommand $value the currently active command.
+	 * @since 1.1.14
+	 */
+	public function setCommand($value)
+	{
+		$this->_command=$value;
 	}
 
 	/**

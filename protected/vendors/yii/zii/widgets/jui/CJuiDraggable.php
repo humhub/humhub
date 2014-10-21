@@ -4,7 +4,7 @@
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -13,7 +13,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
 /**
  * CJuiDraggable displays a draggable widget.
  *
- * CJuiDraggable encapsulates the {@link http://jqueryui.com/demos/draggable/ JUI Draggable}
+ * CJuiDraggable encapsulates the {@link http://jqueryui.com/draggable/ JUI Draggable}
  * plugin.
  *
  * To use this widget, you may insert the following code in a view:
@@ -32,8 +32,10 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * By configuring the {@link options} property, you may specify the options
  * that need to be passed to the JUI Draggable plugin. Please refer to
- * the {@link http://jqueryui.com/demos/draggable/ JUI Draggable} documentation
- * for possible options (name-value pairs).
+ * the {@link http://api.jqueryui.com/draggable/ JUI Draggable API} documentation
+ * for possible options (name-value pairs) and
+ * {@link http://jqueryui.com/draggable/ JUI Draggable page} for general
+ * description and demo.
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @package zii.widgets.jui

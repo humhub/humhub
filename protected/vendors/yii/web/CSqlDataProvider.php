@@ -87,7 +87,7 @@ class CSqlDataProvider extends CDataProvider
 			$order=$sort->getOrderBy();
 			if(!empty($order))
 			{
-				if(preg_match('/\s+order\s+by\s+[\w\s,]+$/i',$command->text))
+				if(preg_match('/\s+order\s+by\s+[\w\s,\.]+$/i',$command->text))
 					$command->text.=', '.$order;
 				else
 					$command->text.=' ORDER BY '.$order;
@@ -115,8 +115,15 @@ class CSqlDataProvider extends CDataProvider
 	protected function fetchKeys()
 	{
 		$keys=array();
-		foreach($this->getData() as $i=>$data)
-			$keys[$i]=$data[$this->keyField];
+		if($data=$this->getData())
+		{
+			if(is_object(reset($data)))
+				foreach($data as $i=>$item)
+					$keys[$i]=$item->{$this->keyField};
+			else
+				foreach($data as $i=>$item)
+					$keys[$i]=$item[$this->keyField];
+		}
 		return $keys;
 	}
 

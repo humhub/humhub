@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC
 	"-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="language" content="fr"/>
 <title>Page Non trouvée</title>
 <style type="text/css">
 /*<![CDATA[*/
@@ -21,7 +22,6 @@ p {font-family:"Verdana";font-weight:normal;color:black;font-size:9pt;margin-top
 <h2><?php echo nl2br(CHtml::encode($data['message'])); ?></h2>
 <p>
 L'URL demandée n'existe pas sur ce serveur.
-If you entered the URL manually please check your spelling and try again.
 Si vous avez saisi l'URL manuellement, vérifiez la, et réessayez.
 </p>
 <p>

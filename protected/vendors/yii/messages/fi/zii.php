@@ -37,5 +37,5 @@ return array (
   'Total 1 result.|Total {count} results.' => 'Yhteensä 1 tulos.|Yhteensä {count} tulosta.',
   'Update' => 'Päivitä',
   'View' => 'Näytä',
-  '{class} must specify "model" and "attribute" or "name" property values.' => 'Luokan {class} pitää määrittää "model"- ja "attribute"- tai "name"-ominaisuuksien arvot.',
+  '{class} must specify "model" and "{attribute}" or "{name}" property values.' => '{class}-luokan täytyy määrittää "model"- ja "{attribute}"- tai "{name}"-ominaisuuksien arvot.',
 );

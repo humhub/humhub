@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -56,7 +56,7 @@ class CPhpAuthManager extends CAuthManager
 	/**
 	 * Performs access check for the specified user.
 	 * @param string $itemName the name of the operation that need access check
-	 * @param mixed $userId the user ID. This should can be either an integer and a string representing
+	 * @param mixed $userId the user ID. This can be either an integer or a string representing
 	 * the unique identifier of a user. See {@link IWebUser::getId}.
 	 * @param array $params name-value pairs that would be passed to biz rules associated
 	 * with the tasks and roles assigned to the user.

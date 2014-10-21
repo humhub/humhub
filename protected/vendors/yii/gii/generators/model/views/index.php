@@ -80,16 +80,17 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 			'options'=>array(
 				'minLength'=>'0',
 				'focus'=>new CJavaScriptExpression('function(event,ui) {
-					$("#'.CHtml::activeId($model,'tableName').'").val(ui.item.label);
+					$("#'.CHtml::activeId($model,'tableName').'").val(ui.item.label).change();
 					return false;
 				}')
 			),
 			'htmlOptions'=>array(
 				'id'=>CHtml::activeId($model,'tableName'),
-				'size'=>'65'
+				'size'=>'65',
+				'data-tooltip'=>'#tableName-tooltip'
 			),
 		)); ?>
-		<div class="tooltip">
+		<div class="tooltip" id="tableName-tooltip">
 		This refers to the table name that a new model class should be generated for
 		(e.g. <code>tbl_user</code>). It can contain schema name, if needed (e.g. <code>public.tbl_post</code>).
 		You may also enter <code>*</code> (or <code>schemaName.*</code> for a particular DB schema)
@@ -133,6 +134,16 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 			You should disable this option if your database contains too many tables.
 		</div>
 		<?php echo $form->error($model,'buildRelations'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'commentsAsLabels'); ?>
+		<?php echo $form->checkBox($model,'commentsAsLabels'); ?>
+		<div class="tooltip">
+			Whether comments specified for the table columns should be used as the new model's attribute labels.
+			In case your RDBMS doesn't support feature of commenting columns or column comment wasn't set,
+			column name would be used as the attribute name base.
+		</div>
+		<?php echo $form->error($model,'commentsAsLabels'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

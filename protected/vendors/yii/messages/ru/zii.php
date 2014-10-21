@@ -37,5 +37,5 @@ return array (
   'Total 1 result.|Total {count} results.' => 'Всего {count} результат.|Всего {count} результата.|{count} результатов.|{count} результата.',
   'Update' => 'Редактировать',
   'View' => 'Просмотреть',
-  '{class} must specify "model" and "attribute" or "name" property values.' => 'В классе {class} должны быть заданы значения свойств "model" и "attribute", либо значение "name".',
+  '{class} must specify "model" and "{attribute}" or "{name}" property values.' => 'В классе {class} должны быть заданы значения свойств "model" и "{attribute}", либо значение "{name}".',
 );
