@@ -72,6 +72,9 @@
             // check if a submit is allowed
             if ($('#post_input_<?php echo $post->id; ?>_contenteditable').attr('data-submit') == 'true') {
 
+                // hide all tooltips (specially for file upload button)
+                $('.tt').tooltip('hide');
+
                 // emulate the click event
                 $('#post_edit_post_<?php echo $post->id; ?>').focus();
                 $('#post_edit_post_<?php echo $post->id; ?>').click();
