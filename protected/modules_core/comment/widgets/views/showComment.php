@@ -69,8 +69,10 @@
             <?php
             print HHtml::enrichText($comment->message);
             ?>
-            <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
+
         </span>
+
+        <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
 
         <div class="wall-entry-controls">
             <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>

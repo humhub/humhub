@@ -50,8 +50,8 @@
     $('#post_input_<?php echo $post->id; ?>_contenteditable').focus();
 
     // Hide file area of post
-    $('#post-<?php echo $post->id; ?>').find('.post-files').hide();
-    $('#post-<?php echo $post->id; ?>').find('.files').hide();
+    $('#post-files-<?php echo $post->id; ?>').hide();
+    $('#files-<?php echo $post->id; ?>').hide();
 
     // add attribute to manage the enter/submit event (prevent submit, if user press enter to insert an item from atwho plugin)
     $('#post_input_<?php echo $post->id; ?>_contenteditable').attr('data-submit', 'true');

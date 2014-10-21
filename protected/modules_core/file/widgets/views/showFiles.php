@@ -12,7 +12,7 @@
 <?php if (count($files) != 0) : ?>
 
     <!-- Show Images as Thumbnails -->
-    <div class="post-files">
+    <div class="post-files" id="post-files-<?php echo $this->object->getPrimaryKey(); ?>">
         <?php foreach ($files as $file) : ?>
             <?php if ($file->getMimeBaseType() == "image") : ?>
                 <?php
@@ -28,7 +28,7 @@
 
     <!-- Show List of all files -->
     <hr>
-    <ul class="files" style="list-style: none; margin: 0;">
+    <ul class="files" style="list-style: none; margin: 0;" id="files-<?php echo $this->object->getPrimaryKey(); ?>">
         <?php foreach ($files as $file) : ?>
             <li class="mime <?php echo HHtml::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
