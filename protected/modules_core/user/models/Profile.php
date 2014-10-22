@@ -147,8 +147,13 @@ class Profile extends HActiveRecord
                 // Mark field as editable when we are on adminEdit scenario
                 if ($this->scenario == 'adminEdit') {
                     $profileField->editable = true;
+                    
+                    // Dont allow editing of ldap syned fields - will be overwritten on next ldap sync.
+                    if ($this->user->auth_mode == User::AUTH_MODE_LDAP && $profileField->ldap_attribute != "") {
+                        $profileField->editable = false;
+                    }
                 }
-
+                
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
             }
