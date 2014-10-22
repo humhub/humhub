@@ -43,21 +43,21 @@
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can be only added<br>by invitation'); ?>">
-                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 0, 'uncheckValue' => null, 'id' => 'invite_radio', 'checked' => '')); ?>
+                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 0, 'uncheckValue' => null, 'id' => 'invite_radio', 'checked' => (HSetting::Get('defaultJoinPolicy', 'space') == 0) ? 'checked' : '')); ?>
                                        <?php echo Yii::t('SpaceModule.base', 'Only by invite'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can also apply for a<br>membership to this space'); ?>">
-                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 1, 'uncheckValue' => null, 'id' => 'request_radio', 'checked' => 'checked')); ?>
+                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 1, 'uncheckValue' => null, 'id' => 'request_radio', 'checked' => (HSetting::Get('defaultJoinPolicy', 'space') == 1) ? 'checked' : '')); ?>
                                        <?php echo Yii::t('SpaceModule.base', ' Invite and request'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Every user can enter your space<br>without your approval'); ?>">
-                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 2, 'uncheckValue' => null, 'id' => 'everyone_radio', 'checked' => '')); ?>
+                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 2, 'uncheckValue' => null, 'id' => 'everyone_radio', 'checked' => (HSetting::Get('defaultJoinPolicy', 'space') == 2) ? 'checked' : '')); ?>
                                        <?php echo Yii::t('SpaceModule.base', 'Everyone can enter'); ?>
                             </label>
                         </div>
@@ -70,14 +70,14 @@
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'Also non-members can see this<br>space, but have no access'); ?>">
-                                           <?php echo $form->radioButton($model, 'visibility', array('value' => 1, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => 'checked')); ?>
+                                           <?php echo $form->radioButton($model, 'visibility', array('value' => 1, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 1) ? 'checked' : '')); ?>
                                            <?php echo Yii::t('SpaceModule.base', 'Public (Visible)'); ?>
                                 </label>
                             </div>
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'This space will be hidden<br>for all non-members'); ?>">
-                                           <?php echo $form->radioButton($model, 'visibility', array('value' => 0, 'uncheckValue' => null, 'id' => 'private_radio', 'checked' => '')); ?>
+                                           <?php echo $form->radioButton($model, 'visibility', array('value' => 0, 'uncheckValue' => null, 'id' => 'private_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 0) ? 'checked' : '')); ?>
                                            <?php echo Yii::t('SpaceModule.base', 'Private (Invisible)'); ?>
                                 </label>
                             </div>
