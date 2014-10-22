@@ -57,6 +57,10 @@ class HEditorWidget extends HWidget
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.atwho.min.js', CClientScript::POS_END);
         Yii::app()->clientScript->registerCssFile($assetPrefix . '/jquery.atwho.css');
 
+        $this->inputContent = HHtml::translateEmojis($this->inputContent);
+        $this->inputContent = HHtml::translateMentioning($this->inputContent);
+        $this->inputContent = nl2br($this->inputContent);
+
     }
 
     public function run() {

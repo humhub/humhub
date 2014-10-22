@@ -14,7 +14,7 @@
     /* Modify textarea for mention input */
     $this->widget('application.widgets.HEditorWidget', array(
         'id' => 'post_input_' . $post->id,
-        'inputContent' => HHtml::enrichText($post->message),
+        'inputContent' => $post->message,
     ));
     ?>
 
