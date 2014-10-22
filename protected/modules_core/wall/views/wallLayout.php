@@ -62,6 +62,7 @@
 
     </div>
     <hr/>
+
     <!-- show content -->
     <div class="content" id="wall_content_<?php echo $object->getUniqueId(); ?>">
         <?php echo $content; ?>

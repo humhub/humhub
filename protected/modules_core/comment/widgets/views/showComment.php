@@ -74,14 +74,12 @@ $canDelete = $comment->canDelete();
         </h4>
 
 
-        <span class="content" id="comment_editarea_<?php echo $comment->id; ?>">
-            <?php
-            print HHtml::enrichText($comment->message);
-            ?>
+        <div class="content" id="comment_editarea_<?php echo $comment->id; ?>">
+            <span id="comment-message-<?php echo $comment->id; ?>"><?php print HHtml::enrichText($comment->message); ?></span>
+            <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
+        </div>
 
-        </span>
 
-        <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
 
         <div class="wall-entry-controls">
             <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
@@ -92,8 +90,8 @@ $canDelete = $comment->canDelete();
 
 <?php if ($justEdited): ?>
     <script type="text/javascript">
-        $('#comment_editarea_<?php echo $comment->id; ?>').addClass('highlight');
-        $('#comment_editarea_<?php echo $comment->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
+        $('#comment-message-<?php echo $comment->id; ?>').addClass('highlight');
+        $('#comment-message-<?php echo $comment->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
     </script>
 <?php endif; ?>    
 

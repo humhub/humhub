@@ -18,19 +18,20 @@
         </span>
         <a class="more-link-post hidden" id="more-link-post-<?php echo $post->id; ?>" data-state="down"
            style="margin: 20px 0 20px 0;" href="javascript:showMore(<?php echo $post->id; ?>);"><i
-                class="fa fa-arrow-down"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Read full post...'); ?></a>
-            <?php $this->endContent(); ?>
+                class="fa fa-arrow-down"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Read full post...'); ?>
+        </a>
+        <?php $this->endContent(); ?>
     </div>
 </div>
 
 <script type="text/javascript">
 
     <?php if ($justEdited): ?>
-        $('#post-content-<?php echo $post->id; ?>').addClass('highlight');
-        $('#post-content-<?php echo $post->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
+    $('#post-content-<?php echo $post->id; ?>').addClass('highlight');
+    $('#post-content-<?php echo $post->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
     <?php endif; ?>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         // save the count of characters
         var _words = '<?php echo strlen(HHtml::enrichText($post->message)); ?>';
