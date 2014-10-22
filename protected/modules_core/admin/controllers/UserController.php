@@ -103,6 +103,15 @@ class UserController extends Controller
                 'super_admin' => array(
                     'type' => 'checkbox',
                 ),
+                'auth_mode' => array(
+                    'type' => 'dropdownlist',
+                    'disabled' => 'disabled',
+                    'class' => 'form-control',
+                    'items' => array(
+                        User::AUTH_MODE_LOCAL => Yii::t('AdminModule.controllers_UserController', 'Local'),
+                        User::AUTH_MODE_LDAP => Yii::t('AdminModule.controllers_UserController', 'LDAP'),
+                    ),
+                ),
                 'status' => array(
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
