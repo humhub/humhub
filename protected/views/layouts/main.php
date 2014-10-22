@@ -5,9 +5,6 @@
     <!-- start: Meta -->
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-    <meta name="description" content="HumHub - Social Collaboration Software">
-    <meta name="author" content="The HumHub Project">
-    <meta name="keyword" content="HumHub, Social Intranet, Social Enterprise, Social Collaboration">
     <!-- end: Meta -->
 
     <!-- start: Mobile Specific -->
