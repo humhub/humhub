@@ -398,6 +398,7 @@ textarea {
 }
 .comment .media {
   position: relative !important;
+  margin-top: 0;
 }
 .comment .media .nav-pills.preferences {
   display: none;
