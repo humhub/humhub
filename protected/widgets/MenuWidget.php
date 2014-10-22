@@ -27,7 +27,8 @@
  * @since 0.5
  * @author Luke
  */
-class MenuWidget extends CWidget {
+class MenuWidget extends CWidget
+{
 
     /**
      * @var Array of items
@@ -60,7 +61,8 @@ class MenuWidget extends CWidget {
      * This method mainly normalizes the {@link items} property.
      * If this method is overridden, make sure the parent implementation is invoked.
      */
-    public function init() {
+    public function init()
+    {
 
         // Intercept this controller
         Yii::app()->interceptor->intercept($this);
@@ -79,7 +81,8 @@ class MenuWidget extends CWidget {
      *
      * @param CEvent $event the event parameter
      */
-    public function onInit($event) {
+    public function onInit($event)
+    {
         $this->raiseEvent('onInit', $event);
     }
 
@@ -88,7 +91,8 @@ class MenuWidget extends CWidget {
      *
      * @param Array $item with item definitions
      */
-    public function addItem($item) {
+    public function addItem($item)
+    {
 
         if (!isset($item['label']))
             $item['label'] = 'Unnamed';
@@ -101,7 +105,9 @@ class MenuWidget extends CWidget {
 
         if (!isset($item['group']))
             $item['group'] = '';
-
+ 
+        if (!isset($item['target']))
+            $item['target'] = '';
 
         if (!isset($item['sortOrder']))
             $item['sortOrder'] = 1000;
@@ -124,7 +130,8 @@ class MenuWidget extends CWidget {
      *
      * @param Array $itemGroup with group definition
      */
-    public function addItemGroup($itemGroup) {
+    public function addItemGroup($itemGroup)
+    {
 
         if (!isset($itemGroup['id']))
             $itemGroup['id'] = 'default';
@@ -150,7 +157,8 @@ class MenuWidget extends CWidget {
      * @param String $group limits the items to a specified group
      * @return Array a list of items with definition
      */
-    public function getItems($group = "") {
+    public function getItems($group = "")
+    {
 
         $this->sortItems();
 
@@ -168,7 +176,8 @@ class MenuWidget extends CWidget {
     /**
      * Sorts the item attribute by sortOrder
      */
-    private function sortItems() {
+    private function sortItems()
+    {
 
         usort($this->items, function($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
@@ -184,7 +193,8 @@ class MenuWidget extends CWidget {
     /**
      * Sorts Item Groups by sortOrder Field
      */
-    private function sortItemGroups() {
+    private function sortItemGroups()
+    {
 
         usort($this->itemGroups, function($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
@@ -202,7 +212,8 @@ class MenuWidget extends CWidget {
      *
      * @return Array of item group definitions
      */
-    public function getItemGroups() {
+    public function getItemGroups()
+    {
         $this->sortItemGroups();
         return $this->itemGroups;
     }
@@ -210,7 +221,8 @@ class MenuWidget extends CWidget {
     /**
      * Executes the Menu Widget
      */
-    public function run() {
+    public function run()
+    {
 
         // Fire Event
         if ($this->hasEventHandler('onRun'))
@@ -223,7 +235,8 @@ class MenuWidget extends CWidget {
      * This event is raised before run is performed.
      * @param CEvent $event the event parameter
      */
-    public function onRun($event) {
+    public function onRun($event)
+    {
         $this->raiseEvent('onRun', $event);
     }
 
