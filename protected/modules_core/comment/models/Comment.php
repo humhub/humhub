@@ -172,4 +172,24 @@ class Comment extends HActiveRecordContentAddon
         return Yii::t('CommentModule.models_comment', 'Comment') . " \"" . Helpers::truncateText($this->message, 40) . "\"";
     }
 
+    public function canDelete($userId = "")
+    {
+
+        if ($userId == "")
+            $userId = Yii::app()->user->id;
+
+        if ($this->created_by == $userId)
+            return true;
+
+        if (Yii::app()->user->isAdmin()) {
+            return true;
+        }
+
+        if ($this->content->container instanceof Space && $this->content->container->isAdmin($userId)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

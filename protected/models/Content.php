@@ -285,14 +285,19 @@ class Content extends CActiveRecord
     public function canDelete($userId = "")
     {
 
-        if (HSetting::Get('canAdminAlwaysDeleteContent', 'security') == 1 && Yii::app()->user->isAdmin())
-            return true;
-
         if ($userId == "")
             $userId = Yii::app()->user->id;
 
         if ($this->created_by == $userId)
             return true;
+        
+        if (Yii::app()->user->isAdmin()) {
+            return true;
+        }
+
+        if ($this->container instanceof Space && $this->container->isAdmin($userId)) {
+            return true;
+        }
 
         return false;
     }

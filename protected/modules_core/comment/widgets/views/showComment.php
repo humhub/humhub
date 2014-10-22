@@ -9,40 +9,49 @@
  * @since 0.5
  */
 ?>
+<?php
+$canWrite = $comment->canWrite();
+$canDelete = $comment->canDelete();
+?>
 
 <div class="media" id="comment_<?php echo $comment->id; ?>">
-    <?php if ($comment->canDelete()) : ?>
+    <?php if ($canWrite || $canDelete) : ?>
 
         <ul class="nav nav-pills preferences">
             <li class="dropdown ">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-angle-down"></i></a>
 
                 <ul class="dropdown-menu pull-right">
-                    <li>
-                        <?php
-                        echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
-                            'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_editarea_" . $comment->id . "').replaceWith(html); $('#comment_input_" . $comment->id . "_contenteditable').focus(); }"
-                        ));
-                        ?>
-                    </li>
-                    <li>
 
-                        <!-- load modal confirm widget -->
-                        <?php
-                        $this->widget('application.widgets.ModalConfirmWidget', array(
-                            'uniqueID' => 'modal_commentdelete_' . $comment->id,
-                            'linkOutput' => 'a',
-                            'title' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
-                            'message' => Yii::t('CommentModule.widgets_views_showComment', 'Do you really want to delete this comment?'),
-                            'buttonTrue' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                            'buttonFalse' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel'),
-                            'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                            'linkHref' => $this->createUrl("//comment/comment/delete", array('model' => $comment->object_model, 'id' => $comment->object_id, 'cid' => $comment->id)),
-                            'confirmJS' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }"
-                        ));
-                        ?>
+                    <?php if ($canWrite): ?>
+                        <li>
+                            <?php
+                            echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> Edit', Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
+                                'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_editarea_" . $comment->id . "').replaceWith(html); $('#comment_input_" . $comment->id . "_contenteditable').focus(); }"
+                            ));
+                            ?>
+                        </li>
+                    <?php endif; ?>
 
-                    </li>
+                    <?php if ($canDelete): ?>
+                        <li>
+
+                            <!-- load modal confirm widget -->
+                            <?php
+                            $this->widget('application.widgets.ModalConfirmWidget', array(
+                                'uniqueID' => 'modal_commentdelete_' . $comment->id,
+                                'linkOutput' => 'a',
+                                'title' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
+                                'message' => Yii::t('CommentModule.widgets_views_showComment', 'Do you really want to delete this comment?'),
+                                'buttonTrue' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
+                                'buttonFalse' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel'),
+                                'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
+                                'linkHref' => $this->createUrl("//comment/comment/delete", array('model' => $comment->object_model, 'id' => $comment->object_id, 'cid' => $comment->id)),
+                                'confirmJS' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }"
+                            ));
+                            ?>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </li>
         </ul>
