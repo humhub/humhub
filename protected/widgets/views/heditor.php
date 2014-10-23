@@ -86,6 +86,24 @@
             }
         })
 
+        $('#<?php echo $id; ?>_contenteditable').on('paste',function(event) {
+
+            // disable standard behavior
+            event.preventDefault();
+
+            // get clipbord content
+            var text = (event.originalEvent || event).clipboardData.getData('text/html');
+
+            // create jQuey object and paste content
+            var $result = $('<div></div>').append($(text))
+
+            // set plain text at current cursor position
+            insertTextAtCursor($result.text());
+        })
+
+
+
+
         $('#<?php echo $id; ?>_contenteditable').keypress(function (e) {
             if (e.which == 13) {
                 // insert a space by hitting enter for a clean convert of user guids
