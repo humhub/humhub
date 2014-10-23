@@ -2,7 +2,7 @@ Requirements
 ============
 
 ### General Requirements:
-* PHP 5.3+
+* PHP 5.4+
 * MySQL
 * Apache 2.x
 * PHP CUrl  Extension <http://de1.php.net/manual/en/curl.setup.php>
