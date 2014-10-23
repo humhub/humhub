@@ -92,7 +92,7 @@ class UserUrlRule extends CBaseUrlRule
             return self::$loadedUserNamesByGuid[$guid];
         }
 
-        $user = User::model()->findByAttributes(array('guid' => $guid));
+        $user = User::model()->resetScope()->findByAttributes(array('guid' => $guid));
         
         if ($user != null) {
             self::$loadedUserNamesByGuid[$guid] = $user->username;
