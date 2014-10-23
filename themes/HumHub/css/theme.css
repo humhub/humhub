@@ -975,6 +975,9 @@ table td a:hover {
   height: 60px;
   background: url('../img/loader.gif') no-repeat center center;
 }
+#wallStream .loader {
+  background: url('../img/loader_body.gif') no-repeat center center;
+}
 .loader-small {
   height: 32px;
   width: 32px;
