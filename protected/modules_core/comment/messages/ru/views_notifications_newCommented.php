@@ -17,5 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% commented your %contentTitle%.' => '%displayName% прокомментировал ваш %contentTitle%.',
+  '%displayName% commented %contentTitle%.' => '',
+  '%displayName% commented your %contentTitle%.' => '@@%displayName% прокомментировал ваш %contentTitle%.@@',
 );

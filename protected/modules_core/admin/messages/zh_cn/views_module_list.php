@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  '<strong>Currently</strong> installed modules' => '@@<strong>当前</strong> 已安装模块@@',
   '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
   'Are you sure? *ALL* module data will be lost!' => '确定吗？所有模块数据将被删除！',
   'Are you sure? *ALL* module related data and files will be lost!' => '确定吗？所有模块相关的数据和文件会丢失！',
@@ -26,5 +27,4 @@ return array (
   'More info' => '更多信息',
   'Set as default' => '设置为默认',
   'Uninstall' => '卸载',
-  '<strong>Currently</strong> installed modules' => '<strong>当前</strong> 已安装模块',
 );

@@ -17,6 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Maximum file size has been {maxFileSize} reached!' => '',
+  'This file type is not allowed!' => '',
   'Created By' => 'Создан',
   'Created at' => 'Дата/время создания',
   'File name' => 'Название',

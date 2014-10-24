@@ -29,6 +29,7 @@ return array (
   'Logging' => '',
   'Mailing' => '',
   'Modules' => '',
+  'OEmbed Provider' => '',
   'Security & Roles' => '',
   'Self test & update' => '',
   'Settings' => '',

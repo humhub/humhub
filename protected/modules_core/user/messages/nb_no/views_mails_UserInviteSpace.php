@@ -21,4 +21,6 @@ return array (
                                                         to join this space.' => '',
   'You got a <strong>space</strong> invite' => '',
   'invited you to the space:' => '',
+  '<br>A social network to increase your communication and teamwork.<br>Register now
+                                                        to join this space.' => '@@@@',
 );

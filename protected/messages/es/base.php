@@ -17,6 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  '<strong>Latest</strong> updates' => '',
+  'Delete' => '@@Eliminar@@',
+  'Email settings' => '@@Configuraciones de correo electrónico@@',
   'Account settings' => 'Configuraciones de la cuenta',
   'Administration' => 'Administración',
   'Back to dashboard' => 'Volver al Panel de Control',
@@ -25,8 +28,6 @@ return array (
   'Could not determine content container!' => '¡No se pudo determinar el contenedor de contenido!',
   'Could not find content of addon!' => '¡No se pudo encontrar el contenido del complemento!',
   'Could not find requested module!' => '¡No se pudo encontrar el módulo solicitado!',
-  'Delete' => 'Eliminar',
-  'Email settings' => 'Configuraciones de correo electrónico',
   'Error' => 'Error',
   'Expand' => 'Ampliar',
   'Insufficent permissions to create content!' => '¡Permisos insuficientes para crear contenido!',

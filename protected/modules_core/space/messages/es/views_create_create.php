@@ -20,14 +20,14 @@ return array (
   'Advanced access settings' => '',
   'Join Policy' => '',
   'Visibility' => '',
-  ' Invite and request' => 'Invitación y solicitud',
+  ' Invite and request' => '@@Invitación y solicitud@@',
+  'Everyone can enter' => '@@Todo el mundo puede entrar@@',
   '<strong>Create</strong> new space' => '<strong>Crear</strong> nuevo espacio',
   'Also non-members can see this<br>space, but have no access' => 'Los no miembros pueden ver este<br>
 espacio, pero no tienen acceso',
   'Create' => 'Crear',
   'Every user can enter your space<br>without your approval' => 'Todos los usuarios pueden entrar en este<br>
 espacio sin necesitar aprobación',
-  'Everyone can enter' => 'Todo el mundo puede entrar',
   'For everyone' => 'Para todo el mundo',
   'How you want to name your space?' => '¿Cómo quieres llamar a tu espacio?',
   'Invite and request' => 'Invitación y solicitud',
