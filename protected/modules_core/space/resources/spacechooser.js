@@ -116,8 +116,12 @@ $(document).ready(function() {
 
         } else if (event.keyCode == 13) {
 
-            // move to selected space, by hitting enter
-            window.location.href = $('#space-menu-dropdown li ul li.selected a').attr('href');
+            // check if one space is selected
+            if ($('#space-menu-spaces li').hasClass("selected")) {
+
+                // move to selected space, by hitting enter
+                window.location.href = $('#space-menu-dropdown li ul li.selected a').attr('href');
+            }
 
         } else {
 
