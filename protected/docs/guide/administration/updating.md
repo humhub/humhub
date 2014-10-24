@@ -1,6 +1,10 @@
 Updating
 =========
 
+If you are using custom themes or modules, please check these guides before updating!
+* [Theme Migration](https://github.com/humhub/humhub/blob/master/protected/docs/guide/theming/migrate.md)
+* [Module Migration](https://github.com/humhub/humhub/blob/master/protected/docs/guide/developer/migrate.md)
+
 ## The Git Way
 
 * First, backup ALL your files & database
