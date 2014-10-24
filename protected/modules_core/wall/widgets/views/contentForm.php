@@ -116,12 +116,13 @@ if (Yii::app()->getController()->id == 'dashboard') {
                 ));
                 ?>
                 <script>
+                    $('#fileUploaderButton_contentFormFiles').bind('fileuploaddone', function (e, data) {
+                        $('.btn_container').show();
+                    });
+                    
                     $('#fileUploaderButton_contentFormFiles').bind('fileuploadprogressall', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
-                        if (progress == 100) {
-                            // show form buttons
-                            $('.btn_container').show();
-                        } else {
+                        if (progress != 100) {
                             // Fix: remove focus from upload button to hide tooltip
                             $('#post_submit_button').focus();
 
