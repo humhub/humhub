@@ -92,16 +92,15 @@
             event.preventDefault();
 
             // get clipbord content
-            var text = (event.originalEvent || event).clipboardData.getData('text/html');
+            var text = event.originalEvent.clipboardData.getData('text/plain');
 
             // create jQuey object and paste content
-            var $result = $('<div></div>').append($(text))
+            var $result = $('<div></div>').append(text);
 
             // set plain text at current cursor position
             insertTextAtCursor($result.text());
+
         })
-
-
 
 
         $('#<?php echo $id; ?>_contenteditable').keypress(function (e) {
@@ -110,7 +109,6 @@
                 insertTextAtCursor(' ');
             }
         });
-
 
     });
 
