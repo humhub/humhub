@@ -34,5 +34,5 @@ return array (
   'User not found!' => 'ユーザーは見つかりませんでした',
   'Welcome to %appName%' => 'ようこそ %appName% さん',
   'You cannot create public visible content!' => 'パブリックコンテンツを作成することはできません！',
-  'Your daily summary' => 'あなたの日課',
+  'Your daily summary' => '本日の要約',
 );
