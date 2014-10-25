@@ -2,7 +2,7 @@
 
 <?php echo Yii::t('LikeModule.views_activities_Like', '{userDisplayName} likes {contentTitle}', array(
     '{userDisplayName}' => '<strong>' . $user->displayName . '</strong>',
-    '{contentTitle}' => $target->getContentTitle(),
+    '{contentTitle}' => ActivityModule::formatOutput($target->getContentTitle()),
 )); ?>
 
 <?php $this->endContent(); ?>
