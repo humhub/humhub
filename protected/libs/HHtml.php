@@ -339,6 +339,10 @@ class HHtml extends CHtml
      */
     public static function getMimeIconClassByExtension($ext)
     {
+
+        // lowercase string
+        $ext = strtolower($ext);
+
         // Word
         if ($ext == 'doc' || $ext == 'docx') {
             return "mime-word";
