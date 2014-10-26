@@ -50,7 +50,7 @@ class HMailMessage extends YiiMailMessage {
             if (isset(Yii::app()->controller))
                 $controller = Yii::app()->controller;
             else
-                $controller = new CController('YiiMail');
+                $controller = new Controller('YiiMail');
 
             // File Path to Template
             $viewPath = "";
