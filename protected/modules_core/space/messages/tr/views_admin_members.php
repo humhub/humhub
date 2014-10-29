@@ -45,4 +45,5 @@ return array (
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Tüm ayrıcalıklara ve süper admin yetkilerine olan mekan sahipleri ve mekan oluşturan normal kullanıcılar. Burda başka bir kullanıcı ile rolleri değiştirebilirsiniz.',
   'User' => 'Kullanıcı',
   'Yes, remove' => 'Evet, sil',
+  'Save' => 'Kaydet',
 );
