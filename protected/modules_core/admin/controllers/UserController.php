@@ -216,7 +216,7 @@ class UserController extends Controller
                 'email' => array(
                     'type' => 'text',
                     'class' => 'form-control',
-                    'maxlength' => 25,
+                    'maxlength' => 100,
                 ),
                 'group_id' => array(
                     'type' => $groupFieldType,
