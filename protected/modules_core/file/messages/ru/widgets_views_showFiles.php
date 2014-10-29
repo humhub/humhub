@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Attached Files:' => 'Прикреплённые файлы:',
+  'Attached Files:' => '@@Прикреплённые файлы:@@',
   'Close' => 'Закрыть',
 );

@@ -28,4 +28,5 @@ return array (
   'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Приглашенные, но не вступившие участники.',
   'User' => 'Пользователь',
   'Yes, remove' => 'Да, удалить',
+  'Save' => 'Сохранить',
 );

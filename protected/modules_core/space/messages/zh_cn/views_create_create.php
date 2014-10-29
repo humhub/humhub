@@ -17,13 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Invite and request' => '邀请或请求',
+  ' Invite and request' => '@@邀请或请求@@',
+  'Everyone can enter' => '@@每一个用户都能进入你的空间@@',
   '<strong>Create</strong> new space' => '<strong>创建</strong> 新版块',
   'Advanced access settings' => '访问权限设置',
   'Also non-members can see this<br>space, but have no access' => '所有人可见',
   'Create' => '创 建',
   'Every user can enter your space<br>without your approval' => '无需批准，每一个用户都能进入你的空间',
-  'Everyone can enter' => '每一个用户都能进入你的空间',
   'For everyone' => '每个用户',
   'How you want to name your space?' => '你打算怎样给你的版块命名？',
   'Invite and request' => '邀请和请求',

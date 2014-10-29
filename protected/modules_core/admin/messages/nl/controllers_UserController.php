@@ -21,6 +21,8 @@ return array (
   'Delete' => '',
   'Disabled' => '',
   'Enabled' => '',
+  'LDAP' => '',
+  'Local' => '',
   'Save' => '',
   'Unapproved' => '',
   'User not found!' => '',

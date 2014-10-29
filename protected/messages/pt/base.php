@@ -17,18 +17,19 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  '<strong>Latest</strong> updates' => '',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
   'Could not determine content container!' => '',
   'Could not find content of addon!' => '',
   'Module is not on this content container enabled!' => '',
   'Welcome to %appName%' => '',
+  'Delete' => '@@Remover@@',
+  'Email settings' => '@@Configurações de email@@',
   'Account settings' => 'Configurações da Conta',
   'Administration' => 'Administração',
   'Back to dashboard' => 'Voltar para dashboard',
   'Collapse' => 'Recolher',
   'Could not find requested module!' => 'O módulo requisitado não pôde ser encontrado!',
-  'Delete' => 'Remover',
-  'Email settings' => 'Configurações de email',
   'Error' => 'Erro',
   'Expand' => 'Expandir',
   'Insufficent permissions to create content!' => 'Permissões insuficientes para criar o conteúdo!',

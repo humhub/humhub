@@ -188,7 +188,7 @@ class HHtml extends CHtml
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
-        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
+        $text = preg_replace_callback('/https?:\/\/(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
@@ -339,6 +339,10 @@ class HHtml extends CHtml
      */
     public static function getMimeIconClassByExtension($ext)
     {
+
+        // lowercase string
+        $ext = strtolower($ext);
+
         // Word
         if ($ext == 'doc' || $ext == 'docx') {
             return "mime-word";

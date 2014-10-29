@@ -17,6 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'LDAP' => '',
+  'Local' => '',
   'Become this user' => '成为这个用户',
   'Delete' => '删除',
   'Disabled' => '生效',

@@ -17,17 +17,17 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'For everyone' => '@@所有人可见@@',
+  'Invisible' => '@@不可见@@',
+  'Invite and request' => '@@邀请和请求@@',
+  'Only by invite' => '@@只能被邀请@@',
+  'Visible for all' => '@@所有人可见@@',
+  'Visible for network users' => '@@网络用户可见@@',
   '<strong>General</strong> space settings' => '<strong>常规</ strong>空间设置',
   'Archive' => '存档',
   'Choose the kind of membership you want to provide for this workspace.' => '选择你想为这个版块的哪种会员。',
   'Choose the security level for this workspace to define the visibleness.' => '选择这个版块的安全级别来定义可见性。',
   'Delete' => '删除',
-  'For everyone' => '所有人可见',
-  'Invisible' => '不可见',
-  'Invite and request' => '邀请和请求',
-  'Only by invite' => '只能被邀请',
   'Save' => '保存',
   'Unarchive' => '取消存档',
-  'Visible for all' => '所有人可见',
-  'Visible for network users' => '网络用户可见',
 );

@@ -198,7 +198,7 @@ class Notification extends HActiveRecord {
      * @return type
      */
     public function getMailOut() {
-        $controller = new CController('MailX');
+        $controller = new Controller('MailX');
         $viewPath = Yii::getPathOfAlias($this->mailView) . '.php';
 
         if ($viewPath == ".php")

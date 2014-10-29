@@ -139,11 +139,17 @@ class HWebModule extends CWebModule
      */
     public function getImage()
     {
-        if (is_file($this->getAssetsPath() . DIRECTORY_SEPARATOR . 'module_image.png')) {
-            return $this->getAssetsUrl() . '/module_image.png';
-        }
+	    if (is_file($this->getAssetsPath() . DIRECTORY_SEPARATOR . 'module_image.png')) {
+		    return $this->getAssetsUrl() . '/module_image.png';
+	    }
+	    if (Yii::app()->theme && Yii::app()->theme != "") {
+		    // get default image from theme (if exists)
+		    $image = Yii::app()->theme->getFileUrl('/img/default_module.jpg');
+	    } else {
+		    $image = Yii::app()->getBaseUrl() . '/img/default_module.jpg';
+	    }
 
-        return Yii::app()->baseUrl . '/img/default_module.jpg';
+	    return $image;
     }
 
     /**
@@ -385,7 +391,7 @@ class HWebModule extends CWebModule
 
     /**
      * Indicates that module acts as Space Module.
-     * 
+     *
      * @return boolean
      */
     public function isSpaceModule()
@@ -398,7 +404,7 @@ class HWebModule extends CWebModule
 
     /**
      * Indicates that module acts as User Module.
-     * 
+     *
      * @return boolean
      */
     public function isUserModule()

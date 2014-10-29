@@ -28,4 +28,5 @@ return array (
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Der Space-Besitzer ist der Super-Administrator eines Spaces mit allen Rechten und üblicherweise der Ersteller des Spaces. Hier kannst du diese Rolle einem anderen Benutzer übertragen.',
   'User' => 'Benutzer',
   'Yes, remove' => 'Ja, entfernen',
+  'Save' => 'Speichern',
 );

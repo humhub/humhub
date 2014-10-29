@@ -17,7 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>管理</strong> 你的版块成员' => '',
+  '<strong>Manage</strong> your space members' => '',
+  '<strong>管理</strong> 你的版块成员' => '@@@@',
   '<strong>Outstanding</strong> sended invitations' => '<strong>突出</strong> 发送邀请',
   '<strong>Outstanding</strong> user requests' => '<strong>突出</strong> 用户请求',
   '<strong>Remove</strong> member' => '<strong>删除</strong> 成员',
@@ -45,4 +46,5 @@ return array (
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '该版块拥有者是所有的特权和一般的版块创作者的空间超级管理员。在这里，你可以改变这个角色给其他用户',
   'User' => '用户',
   'Yes, remove' => '是，删除',
+  'Save' => '保存',
 );

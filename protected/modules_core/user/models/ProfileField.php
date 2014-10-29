@@ -333,7 +333,7 @@ class ProfileField extends HActiveRecord
 
     /**
      * Returns the translation category 
-     * Defaults to: UserModule.profile
+     * Defaults to: models_Profile
      * 
      * @return string
      */
@@ -344,7 +344,7 @@ class ProfileField extends HActiveRecord
             return $this->translation_category;
         }
 
-        return "UserModule.profile";
+        return "UserModule.models_Profile";
     }
 
     

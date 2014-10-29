@@ -45,4 +45,5 @@ return array (
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'El dueño del espacio es el super administrador de un espacio con todos los privilegios y normalmente es el creador del espacio. Aqui puedes cambiar este rol a otro usuario.',
   'User' => 'Usuario',
   'Yes, remove' => 'Si, borrar',
+  'Save' => 'Guardar',
 );
