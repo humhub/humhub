@@ -269,6 +269,9 @@ textarea {
 .media .media-body .content {
   margin-right: 35px;
 }
+.content span {
+  word-wrap: break-word;
+}
 .panel {
   position: relative;
 }
