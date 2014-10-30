@@ -1170,6 +1170,9 @@ img.bounceIn {
   -moz-animation-duration: 800ms;
   animation-duration: 800ms;
 }
+.login-screen {
+  margin-top: -120px;
+}
 .outside .text {
   color: #ffffff;
   font-size: 12px;
