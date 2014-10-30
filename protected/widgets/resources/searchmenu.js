@@ -9,26 +9,6 @@ $(document).ready(function () {
     var chosenSearch = "";
 
     /**
-     * Open search menu
-     */
-    $('#search-menu').click(function () {
-
-        // use setIntervall to setting the focus
-        var searchFocus = setInterval(setFocus, 10);
-
-        function setFocus() {
-            // set focus
-            $('#search-menu-search').focus();
-
-            // stop interval
-            clearInterval(searchFocus);
-        }
-
-
-    })
-
-
-    /**
      * Show and navigate through search resutls depends on user input
      */
     $('#search-menu-search').keyup(function (event) {

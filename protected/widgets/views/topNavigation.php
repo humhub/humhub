@@ -22,7 +22,7 @@
 
 <li class="dropdown visible-xs visible-sm">
     <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
-        <i class="fa fa-arrow-circle-o-down"></i><br>
+        <i class="fa fa-align-justify"></i><br>
         <?php echo Yii::t('base', 'Menu'); ?>
         <b class="caret"></b></a>
     <ul class="dropdown-menu pull-right">

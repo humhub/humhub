@@ -599,6 +599,9 @@ nav-pills.preferences {
   right: 40px;
   top: 11px;
 }
+.login-screen {
+  margin-top: -70px;
+}
 .mime {
   background-repeat: no-repeat;
   background-position: 0 0;
