@@ -132,7 +132,7 @@ class Profile extends HActiveRecord
 
             $category = array(
                 'type' => 'form',
-                'title' => $profileFieldCategory->title,
+                'title' => Yii::t($profileFieldCategory->getTranslationCategory(), $profileFieldCategory->title),
                 'elements' => array(),
             );
 

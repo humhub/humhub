@@ -46,4 +46,5 @@ return array (
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '该版块拥有者是所有的特权和一般的版块创作者的空间超级管理员。在这里，你可以改变这个角色给其他用户',
   'User' => '用户',
   'Yes, remove' => '是，删除',
+  'Save' => '保存',
 );
