@@ -64,6 +64,25 @@ class HTheme extends CTheme {
         return $themes;
     }
 
+    /**
+     * Get file from theme directory, if it's exists, else from main directory
+     *
+     * @param      $file
+     * @param bool $absolute
+     *
+     * @return string
+     */
+    public function getFileUrl($file, $absolute = false)
+    {
+        $file = ltrim($file,'/');
+        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . Yii::app()->theme->getName() . DIRECTORY_SEPARATOR . $file;
+
+        if (file_exists($path)) {
+            return $this->getBaseUrl($absolute) . '/'.$file;
+        }
+
+        return Yii::app()->getBaseUrl($absolute) .'/'.$file;
+    }
 }
 
 ?>
