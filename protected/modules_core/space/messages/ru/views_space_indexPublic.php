@@ -1,7 +1,7 @@
 <?php
 return array (
   'Accept Invite' => 'Принять приглашение',
-  'Become member' => 'Стал участником',
+  'Become member' => 'Стать участником',
   'Cancel membership' => 'Отмена членства',
   'Cancel pending membership application' => '',
   'Deny Invite' => 'Запретить приглашение',

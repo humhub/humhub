@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Upload files' => 'Carica files',
+  'Upload files' => 'Carica file',
 );
