@@ -41,6 +41,7 @@ return array (
   'Nothing found with your input.' => '',
   'Oooops...' => '',
   'Results' => '',
+  'Save' => '',
   'Search' => '',
   'Search for users and spaces' => '',
   'Show more results' => '',

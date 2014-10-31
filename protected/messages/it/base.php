@@ -18,6 +18,7 @@
  */
 return array (
   '<strong>Latest</strong> updates' => '',
+  'Save' => '',
   'Delete' => '@@Cancella@@',
   'Email settings' => '@@Impostazioni email@@',
   'Account settings' => 'Impostazioni account',

@@ -18,6 +18,7 @@
  */
 return array (
   '<strong>Latest</strong> updates' => '',
+  'Save' => '',
   'Delete' => '@@削除@@',
   'Email settings' => '@@メールの設定@@',
   'Account settings' => 'アカウント設定',

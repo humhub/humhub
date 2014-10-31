@@ -23,6 +23,7 @@ return array (
   'Could not find content of addon!' => '',
   'Could not find requested module!' => '',
   'Module is not on this content container enabled!' => '',
+  'Save' => '',
   'Delete' => '@@ลบ@@',
   'Email settings' => '@@ตั้งค่าอีเมลล์@@',
   'Account settings' => 'ตั้งค่าบัญชี',

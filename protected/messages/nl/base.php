@@ -23,6 +23,7 @@ return array (
   'Could not determine content container!' => '',
   'Expand' => '',
   'Module is not on this content container enabled!' => '',
+  'Save' => '',
   'Delete' => '@@Verwijder@@',
   'Email settings' => '@@Emailinstellingen@@',
   'Account settings' => 'Accountinstellingen',

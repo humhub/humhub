@@ -23,6 +23,7 @@ return array (
   'Could not find content of addon!' => '',
   'Could not find requested module!' => '',
   'Module is not on this content container enabled!' => '',
+  'Save' => '',
   'Delete' => '@@Διαγραφή@@',
   'Email settings' => '@@Ρυθμίσεις email@@',
   'Account settings' => 'Ρυθμίσεις λογαριασμού',

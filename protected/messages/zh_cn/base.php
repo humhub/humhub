@@ -27,6 +27,7 @@ return array (
   'Nothing found with your input.' => '',
   'Oooops...' => '',
   'Results' => '',
+  'Save' => '',
   'User Approvals' => '',
   'You cannot create public visible content!' => '',
   'Your daily summary' => '',

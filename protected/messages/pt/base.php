@@ -22,6 +22,7 @@ return array (
   'Could not determine content container!' => '',
   'Could not find content of addon!' => '',
   'Module is not on this content container enabled!' => '',
+  'Save' => '',
   'Welcome to %appName%' => '',
   'Delete' => '@@Remover@@',
   'Email settings' => '@@Configurações de email@@',

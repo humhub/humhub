@@ -21,6 +21,7 @@ return array (
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
   'Could not determine content container!' => '',
   'It looks like you may have taken the wrong turn.' => '',
+  'Save' => '',
   'Delete' => '@@Slett@@',
   'Email settings' => '@@E-postinnstillinger@@',
   'Account settings' => 'Innstillinger',

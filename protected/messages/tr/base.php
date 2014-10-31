@@ -18,6 +18,7 @@
  */
 return array (
   '<strong>Latest</strong> updates' => '',
+  'Save' => '',
   'Delete' => '@@Sil@@',
   'Email settings' => '@@Eposta ayarları@@',
   'Account settings' => 'Hesap ayarları',
