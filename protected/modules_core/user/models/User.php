@@ -430,6 +430,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
         // Delete wall entries
         WallEntry::model()->deleteAllByAttributes(array('wall_id' => $this->wall_id));
 
+        // Delete user profile
+        Profile::model()->deleteAllByAttributes(array('user_id'=>$this->id));
+        
         // Deletes all content created by this user
         foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
             $content->delete();
