@@ -16,7 +16,7 @@ return array (
   'Phone Private' => 'Личный телефон',
   'Phone Work' => 'Рабочий телефон',
   'Skype Nickname' => 'Имя в Skype',
-  'State' => 'Штат',
+  'State' => 'Регион',
   'Street' => 'Улица',
   'Title' => 'Обращение',
   'Twitter URL' => 'Страница Twitter',

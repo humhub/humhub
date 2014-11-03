@@ -2,7 +2,7 @@
 return array (
   '<strong>Account</strong> Menu' => '<strong>Меню</strong> настроек учетной записи',
   '<strong>Notifications</strong>' => 'Уведомления',
-  '<strong>Space</strong> Menu' => 'Меню <strong>Пространства</strong>',
+  '<strong>Space</strong> Menu' => '<strong>Меню</strong> Пространства',
   '<strong>Start</strong> space guide' => '<strong>Начать</strong> тур по пространству',
   'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Не пропустите ничего! <br /><br /> Эта иконка будет информировать вас о том, что качается лично вас.',
   'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Меню настроек учетной записи дает вам доступ к личным настройкам и позволяет редактировать то, что увидят о вас остальные.',

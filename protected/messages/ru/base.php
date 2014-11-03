@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Save' => '',
-  'Delete' => '@@Удалить@@',
-  'Email settings' => '@@Настройки E-Mail@@',
+  'Save' => 'Сохранить',
+  'Delete' => 'Удалить',
+  'Email settings' => 'Настройки E-Mail',
   '<strong>Latest</strong> updates' => '<strong>Последние</strong> обновления',
   'Account settings' => 'Настройки аккаунта',
   'Administration' => 'Администрирование',
@@ -23,7 +23,7 @@ return array (
   'Menu' => 'Меню',
   'Module is not on this content container enabled!' => 'Модуль не включён в этой оболочке контента',
   'My profile' => 'Мой профиль',
-  'New profile image' => 'Ваше новое изображение',
+  'New profile image' => 'Новое изображение профиля',
   'Nothing found with your input.' => 'Ничего не найдено по вашему запросу.',
   'Oooops...' => 'Ой...',
   'Results' => 'Результаты',

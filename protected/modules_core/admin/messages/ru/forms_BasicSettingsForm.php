@@ -5,5 +5,5 @@ return array (
   'Default space' => 'Пространство по-умолчанию',
   'Invalid space' => 'Неверное пространство',
   'Name of the application' => 'Название приложения',
-  'Show introduction tour for new users' => 'Показывать преветственный тур для новых пользователей',
+  'Show introduction tour for new users' => 'Показывать приветственный тур для новых пользователей',
 );

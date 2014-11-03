@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Dashboard' => 'Панель управления',
+  'Dashboard' => 'Главная',
 );

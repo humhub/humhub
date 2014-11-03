@@ -6,7 +6,7 @@ return array (
   'File' => 'Файл',
   'No caching (Testing only!)' => 'Нет кэширования (только тестирование!)',
   'No theme' => 'Нет темы',
-  'None - shows dropdown in user registration.' => 'Нет - показывает в выпадающем регистрации пользователя.',
+  'None - shows dropdown in user registration.' => 'Нет - показывать в драпанул при регистрации пользователя.',
   'Saved' => 'Сохранено',
-  'Saved and flushed cache' => 'Сохранено со сбросом кеша',
+  'Saved and flushed cache' => 'Сохранено, кеш сброшен',
 );
