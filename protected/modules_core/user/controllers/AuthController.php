@@ -351,6 +351,7 @@ class AuthController extends Controller
             $output['userName'] = $httpSession->user->username;
             $output['fullName'] = $httpSession->user->displayName;
             $output['email'] = $httpSession->user->email;
+            $output['superadmin'] = $httpSession->user->super_admin;
         }
 
         print CJSON::encode($output);
