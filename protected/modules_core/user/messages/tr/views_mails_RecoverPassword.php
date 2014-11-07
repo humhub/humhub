@@ -18,8 +18,8 @@
  */
 return array (
   '<strong>Password</strong> recovery' => '',
-  'Hello {displayName}, ' => '',
-  'Login' => '',
+  'Hello {displayName}, ' => 'Merhaba {displayName}, ',
+  'Login' => 'Giriş',
   'You have requested a new password.' => '',
   'Your new password is: <strong>{password}</strong>' => '',
   'Your username is: <strong>{username}</strong>' => '',
