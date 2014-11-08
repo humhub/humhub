@@ -413,12 +413,12 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
             SpaceInviteDeclinedNotification::fire($membership->originator_user_id, $user, $this->getOwner());
         }
 
-        // Delete Membership
-        SpaceMembership::model()->deleteAllByAttributes(array(
+        foreach (SpaceMembership::model()->findAllByAttributes(array(
             'user_id' => $userId,
             'space_id' => $this->getOwner()->id,
-        ));
-
+        )) as $membership) {
+            $membership->delete();
+        }
 
         // Cleanup Notifications
         SpaceApprovalRequestNotification::remove($userId, $this->getOwner());
