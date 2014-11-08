@@ -412,7 +412,7 @@ class StreamAction extends CAction
 
         // Show only content with attached files
         if (in_array('entry_files', $this->filters)) {
-            $this->sqlWhere .= " AND (SELECT id FROM file WHERE file.object_model=content.object_model AND file.object_id=content.object_id) IS NOT NULL";
+            $this->sqlWhere .= " AND (SELECT id FROM file WHERE file.object_model=content.object_model AND file.object_id=content.object_id LIMIT 1) IS NOT NULL";
         }
 
         // Setup Post specific filters
