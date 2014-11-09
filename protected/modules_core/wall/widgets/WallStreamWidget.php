@@ -6,7 +6,8 @@
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class WallStreamWidget extends HWidget {
+class WallStreamWidget extends HWidget
+{
 
     /**
      * Type of Stream (Wall::TYPE_*)
@@ -27,14 +28,25 @@ class WallStreamWidget extends HWidget {
     /**
      * Path to Stream Action to use
      *
-     * @var type
+     * @var string
      */
     public $streamAction = "//wall/wall/stream";
 
     /**
+     * Number of stream content loaded by request.
+     * 
+     * Should be at least 4, because its possible to stick at maximum 3 object
+     * Otherwise sticky system may break the wall
+     * 
+     * @var int
+     */
+    public $wallObjectStreamLimit = 4;
+
+    /**
      * Inits the Wall Stream Widget
      */
-    public function init() {
+    public function init()
+    {
 
         if ($this->contentContainer != null) {
             $this->type = get_class($this->contentContainer);
@@ -56,11 +68,8 @@ class WallStreamWidget extends HWidget {
     /**
      * Creates the Wall Widget
      */
-    public function run() {
-
-        // Should be at least 4, because its possible to stick at maximum 3 object
-        // Otherwise sticky system may break the wall
-        $wallObjectStreamLimit = 4;
+    public function run()
+    {
 
         // Save Wall Type
         Wall::$currentType = $this->type;
@@ -71,8 +80,8 @@ class WallStreamWidget extends HWidget {
         }
 
         // Set some Urls for this wall
-        $reloadUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $wallObjectStreamLimit, 'from' => 'lastEntryId', 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
-        $startUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $wallObjectStreamLimit, 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
+        $reloadUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $this->wallObjectStreamLimit, 'from' => 'lastEntryId', 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
+        $startUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $this->wallObjectStreamLimit, 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
         $singleEntryUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => 1, 'from' => 'fromEntryId'));
 
         // Render It
