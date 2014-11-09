@@ -20,25 +20,25 @@
             // step 0
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_interface', '<strong>Dashboard</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_interface', "This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here."); ?>"
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_interface', '<strong>Dashboard</strong>')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_interface', "This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.")); ?>
         },
         {
             element: "#icon-notifications",
-            title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Notifications</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_index', 'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', '<strong>Notifications</strong>')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', 'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.')); ?>,
             placement: "bottom"
         },
         {
             element: ".dropdown.account",
-            title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Account</strong> Menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_index', 'The account menu gives you access to your private settings and allows you to manage your public profile.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', '<strong>Account</strong> Menu')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', 'The account menu gives you access to your private settings and allows you to manage your public profile.')); ?>,
             placement: "bottom"
         },
         {
             element: "#space-menu",
-            title: "<?php echo Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> Menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_index', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:'); ?> <br><br><a href='javascript:gotoSpace = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_index", "<strong>Start</strong> space guide"); ?></a><br><br>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> Menu')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')); ?> + "<br><br><a href='javascript:gotoSpace = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_index", "<strong>Start</strong> space guide"); ?></a><br><br>",
             placement: "bottom"
         }
     ]);
