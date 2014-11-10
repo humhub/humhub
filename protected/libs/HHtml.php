@@ -188,7 +188,7 @@ class HHtml extends CHtml
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
-        $text = preg_replace_callback('/https?:\/\/(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
+        $text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
@@ -198,8 +198,8 @@ class HHtml extends CHtml
                     return $oembed;
                 }
             }
-
-            return HHtml::link($match[0], $match[0], array('target' => '_blank'));
+            
+            return HHtml::link($match[1], $match[1], array('target' => '_blank')).$match[2];
         }, $text);
 
         // get user and space details from guids
