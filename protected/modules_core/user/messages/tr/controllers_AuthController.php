@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Account' => '',
-  'Create account' => '',
+  'Account' => 'Hesap',
+  'Create account' => 'Hesap Oluştur',
 );
