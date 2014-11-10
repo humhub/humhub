@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Account</strong> settings' => '',
-  'Delete account' => '',
-  'E-Mail' => '',
-  'Modules' => '',
-  'Notifications' => '',
-  'Password' => '',
-  'Profile' => '',
-  'Settings' => '',
+  '<strong>Account</strong> settings' => '<strong>Hesap</strong> ayarları',
+  'Delete account' => 'Hesabı Sil',
+  'E-Mail' => 'E-posta',
+  'Modules' => 'Modüller',
+  'Notifications' => 'Bildirimler',
+  'Password' => 'Şifre',
+  'Profile' => 'Profil',
+  'Settings' => 'Ayarlar',
 );

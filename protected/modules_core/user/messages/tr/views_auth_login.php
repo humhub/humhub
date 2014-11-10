@@ -17,16 +17,16 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Please</strong> sign in' => '',
+  '<strong>Please</strong> sign in' => '<strong>Giriş</strong> yap',
   '<strong>Sign</strong> up' => '',
   'Create a new one.' => '',
   'Don\'t have an account? Join the network by entering your e-mail address.' => '',
   'Forgot your password?' => '',
-  'If you\'re already a member, please login with your username/email and password.' => '',
-  'Register' => '',
-  'Remember me next time' => '',
-  'Sign in' => '',
-  'email' => '',
-  'password' => '',
-  'username or email' => '',
+  'If you\'re already a member, please login with your username/email and password.' => 'Üye iseniz Kullanıcı Adı/ E-posta ve şifreniz ile giriş yapınız.',
+  'Register' => 'Kayıt Ol',
+  'Remember me next time' => 'Beni Hatırla',
+  'Sign in' => 'Giriş Yap',
+  'email' => 'E-posta',
+  'password' => 'Şifre',
+  'username or email' => 'Kullanıcı Adı / E-posta',
 );
