@@ -9,8 +9,8 @@
 /* BEGIN Light Italic */
 @font-face {
   font-family: 'Open Sans';
-  src: url("./fonts/Light/OpenSans-LightItalic.eot?v=1.1.0");
-  src: url("./fonts/Light/OpenSans-LightItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("./fonts/Light/OpenSans-LightItalic.woff?v=1.1.0") format("woff"), url("./fonts/Light/OpenSans-LightItalic.ttf?v=1.1.0") format("truetype"), url("./fonts/Light/OpenSans-LightItalic.svg?v=1.1.0#OpenSansLightItalic") format("svg");
+  src: url("./fonts/LightItalic/OpenSans-LightItalic.eot?v=1.1.0");
+  src: url("./fonts/LightItalic/OpenSans-LightItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("./fonts/LightItalic/OpenSans-LightItalic.woff?v=1.1.0") format("woff"), url("./fonts/LightItalic/OpenSans-LightItalic.ttf?v=1.1.0") format("truetype"), url("./fonts/LightItalic/OpenSans-LightItalic.svg?v=1.1.0#OpenSansLightItalic") format("svg");
   font-weight: 300;
   font-style: italic; }
 /* END Light Italic */
@@ -25,8 +25,8 @@
 /* BEGIN Italic */
 @font-face {
   font-family: 'Open Sans';
-  src: url("./fonts/Light/OpenSans-Italic.eot?v=1.1.0");
-  src: url("./fonts/Light/OpenSans-Italic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("./fonts/Light/OpenSans-Italic.woff?v=1.1.0") format("woff"), url("./fonts/Light/OpenSans-Italic.ttf?v=1.1.0") format("truetype"), url("./fonts/Light/OpenSans-Italic.svg?v=1.1.0#OpenSansItalic") format("svg");
+  src: url("./fonts/Italic/OpenSans-Italic.eot?v=1.1.0");
+  src: url("./fonts/Italic/OpenSans-Italic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("./fonts/Italic/OpenSans-Italic.woff?v=1.1.0") format("woff"), url("./fonts/Italic/OpenSans-Italic.ttf?v=1.1.0") format("truetype"), url("./fonts/Italic/OpenSans-Italic.svg?v=1.1.0#OpenSansItalic") format("svg");
   font-weight: normal;
   font-style: italic; }
 /* END Italic */
