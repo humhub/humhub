@@ -248,7 +248,7 @@ class StreamAction extends CAction
             $user = $underlyingObject->content->user;
 
             $output .= Yii::app()->getController()->renderPartial(
-                    'wall.views.wallEntry', array(
+                    'application.modules_core.wall.views.wallEntry', array(
                 'entry' => $entry,
                 'user' => $user,
                 'mode' => $this->mode,

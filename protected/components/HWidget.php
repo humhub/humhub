@@ -85,35 +85,12 @@ class HWidget extends CWidget
      */
     public function getViewFile($viewName)
     {
-
         // a path alias e.g. application.modules.x.y.z.
-        if (strpos($viewName, '.')) {
-
-
-            if (($theme = Yii::app()->getTheme()) !== null) {
-                $viewNameTheme = $viewName;
-
-                
-                
-                // Replace: application.views -> webroot.themes.CURRENTTHEME.views
-                $viewNameTheme = str_replace('application.views.', 'webroot.themes.' . $theme->getName() . '.views.', $viewNameTheme);
-
-                // Replace: application.modules[_core].MODULEID.widgets.views -> webroot.themes.CURRENTTHEME.views.MODULEID.widgets
-                $viewNameTheme = preg_replace('/application\.modules(?:_core)?\.(.*?)\.views\.(.*)/i', 'webroot.themes.' . $theme->getName() . '.views.\1.\2', $viewNameTheme);
-
-                // Replace: application.widget.views TO webroot.theme.THEMENAME.widget.views 
-                $viewNameTheme = str_replace('application.widgets.views', 'webroot.themes.' . $theme->getName() . '.views.widgets', $viewNameTheme);
-
-                $viewFile = Yii::getPathOfAlias($viewNameTheme);
-
-                // Check if File exists
-                if (is_file($viewFile . '.php')) {
-                    return Yii::app()->findLocalizedFile($viewFile . '.php');
-                }
+        if (strpos($viewName, '.') && ($theme = Yii::app()->getTheme()) !== null) {
+            $themedFile = $theme->getViewFileAliased($viewName);
+            if ($themedFile) {
+                return $themedFile;
             }
-
-
-            // Fall Back to default
         }
         return parent::getViewFile($viewName);
     }
