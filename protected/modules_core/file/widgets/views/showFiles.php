@@ -12,7 +12,7 @@
 <?php if (count($files) != 0) : ?>
 
     <!-- Show Images as Thumbnails -->
-    <div class="post-files" id="post-files-<?php echo $this->object->getPrimaryKey(); ?>">
+    <div class="post-files" id="post-files-<?php echo $this->object->getUniqueId(); ?>">
         <?php foreach ($files as $file) : ?>
             <?php if ($file->getMimeBaseType() == "image") : ?>
                 <?php
