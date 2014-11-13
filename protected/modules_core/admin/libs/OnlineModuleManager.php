@@ -153,6 +153,7 @@ class OnlineModuleManager
                 $http = new Zend_Http_Client($url, array(
                     'adapter' => 'Zend_Http_Client_Adapter_Curl',
                     'curloptions' => $this->getCurlOptions(),
+                    'timeout' => 30
                 ));
 
                 $response = $http->request();
@@ -199,6 +200,7 @@ class OnlineModuleManager
             $http = new Zend_Http_Client($url, array(
                 'adapter' => 'Zend_Http_Client_Adapter_Curl',
                 'curloptions' => $this->getCurlOptions(),
+                'timeout' => 30
             ));
 
             $response = $http->request();
