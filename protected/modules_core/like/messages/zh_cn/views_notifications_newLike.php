@@ -18,5 +18,4 @@
  */
 return array (
   '%displayName% likes %contentTitle%.' => '',
-  '%displayName% likes your %contentTitle%.' => '@@%displayName% 赞了你的 %contentTitle%.@@',
 );

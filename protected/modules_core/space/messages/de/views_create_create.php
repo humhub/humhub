@@ -17,8 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Invite and request' => '@@ Einladung und Anfragen@@',
-  'Everyone can enter' => '@@Jeder kann eintreten@@',
   '<strong>Create</strong> new space' => '<strong>Neuen Space</strong> erstellen',
   'Advanced access settings' => 'Erweiterte Rechteeinstellungen',
   'Also non-members can see this<br>space, but have no access' => 'Auch Nicht-Mitglieder können diesen<br />Space sehen, haben aber keinen Zugang',

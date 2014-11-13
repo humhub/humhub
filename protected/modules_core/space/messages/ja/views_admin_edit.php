@@ -17,12 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'For everyone' => '@@みんなのために@@',
-  'Invisible' => '@@不可視@@',
-  'Invite and request' => '@@招待し要求@@',
-  'Only by invite' => '@@招待者のみ@@',
-  'Visible for all' => '@@すべて閲覧可能@@',
-  'Visible for network users' => '@@ネットワークユーザも閲覧可能@@',
   '<strong>General</strong> space settings' => '<strong>General</strong> スペースの設定',
   'Archive' => '保管庫',
   'Choose the kind of membership you want to provide for this workspace.' => 'このワークスペースを提供したいメンバーシップの種類を選択してください。',

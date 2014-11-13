@@ -30,13 +30,4 @@ return array (
   'Space name' => '',
   'Space owner' => '',
   'View space' => '',
-  'By Invite' => '@@@@',
-  'By invite' => '@@@@',
-  'Everbody' => '@@@@',
-  'Free' => '@@@@',
-  'Invisible' => '@@@@',
-  'Invite & Request' => '@@@@',
-  'Invite / Request' => '@@@@',
-  'Registrated only' => '@@@@',
-  'Visible' => '@@@@',
 );

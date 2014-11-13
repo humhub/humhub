@@ -18,5 +18,4 @@
  */
 return array (
   '%displayName% commented %contentTitle%.' => '',
-  '%displayName% commented your %contentTitle%.' => '@@%contentTitle% içeriğini %displayName% yorumladı.@@',
 );

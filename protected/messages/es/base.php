@@ -17,9 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Save' => '',
-  'Delete' => '@@Eliminar@@',
-  'Email settings' => '@@Configuraciones de correo electrónico@@',
   '<strong>Latest</strong> updates' => '<strong>Últimas</strong> actualizaciones',
   'Account settings' => 'Configuraciones de la cuenta',
   'Administration' => 'Administración',

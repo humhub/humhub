@@ -17,7 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Manage</strong> user profiles' => '@@<strong>Gestisci</strong> profili utente@@',
   '<strong>Manage</strong> profiles fields' => '<strong>Gestisci</strong> campi dei profili',
   'Add new category' => 'Aggiungi nuova categoria',
   'Add new field' => 'Aggiungi nuovo campo',

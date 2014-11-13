@@ -17,7 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Hide year in profile' => '@@隐藏年@@',
   '%y Years' => '%y 年',
   'Birthday field options' => '生日区域选项',
 );

@@ -36,6 +36,4 @@ return array (
   'Visibility' => '',
   'space description' => '',
   'space name' => '',
-  ' Invite and request' => '@@@@',
-  'Everyone can enter' => '@@@@',
 );

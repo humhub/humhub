@@ -18,7 +18,6 @@
  */
 return array (
   '<strong>Space</strong> Modules' => '',
-  'Modules' => '@@Modüller@@',
   'Activated' => 'Aktive edildi',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Emin misiniz? Bu alan için *TÜM * modül verileri silinecek!',
   'Configure' => 'Yapılandırma',

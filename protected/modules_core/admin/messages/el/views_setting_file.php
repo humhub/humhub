@@ -22,5 +22,4 @@ return array (
   'Current Image Libary: {currentImageLibary}' => '',
   'PHP reported a maximum of {maxUploadSize} MB' => '',
   'Save' => '',
-  '(comma separated)' => '@@@@',
 );

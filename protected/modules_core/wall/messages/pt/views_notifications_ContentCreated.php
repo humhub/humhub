@@ -18,5 +18,4 @@
  */
 return array (
   '{userName} created a new {contentTitle}.' => '',
-  '{userName} notified you about a new {contentTitle}.' => '@@@@',
 );

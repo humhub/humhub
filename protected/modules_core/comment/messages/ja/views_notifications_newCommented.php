@@ -18,5 +18,4 @@
  */
 return array (
   '%displayName% commented %contentTitle%.' => '',
-  '%displayName% commented your %contentTitle%.' => '@@%displayName%さんが、あなたの%contentTitle%にコメントしました。@@',
 );

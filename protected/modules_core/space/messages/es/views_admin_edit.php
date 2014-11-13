@@ -17,12 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'For everyone' => '@@Para todo el mundo@@',
-  'Invisible' => '@@Invisible@@',
-  'Invite and request' => '@@Invitación y solicitud@@',
-  'Only by invite' => '@@Solo por invitación@@',
-  'Visible for all' => '@@Visible para todos@@',
-  'Visible for network users' => '@@Visible para usuarios de la red@@',
   '<strong>General</strong> space settings' => 'Ajustes <strong>generales</strong> del espacio',
   'Archive' => 'Archivo',
   'Choose the kind of membership you want to provide for this workspace.' => 'Elige el tipo de suscripción que quieres dar a este espacio.',

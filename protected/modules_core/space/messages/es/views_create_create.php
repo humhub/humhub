@@ -20,8 +20,6 @@ return array (
   'Advanced access settings' => '',
   'Join Policy' => '',
   'Visibility' => '',
-  ' Invite and request' => '@@Invitación y solicitud@@',
-  'Everyone can enter' => '@@Todo el mundo puede entrar@@',
   '<strong>Create</strong> new space' => '<strong>Crear</strong> nuevo espacio',
   'Also non-members can see this<br>space, but have no access' => 'Los no miembros pueden ver este<br>
 espacio, pero no tienen acceso',

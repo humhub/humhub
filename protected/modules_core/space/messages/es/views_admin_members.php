@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Save' => '',
   'Search' => '',
   'Search members' => '',
   '<strong>Manage</strong> your space members' => '<strong>Gestiona</strong> tus miembros del espacio',

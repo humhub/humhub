@@ -24,10 +24,4 @@ return array (
   'Delete' => '',
   'Save' => '',
   'Unarchive' => '',
-  'For everyone' => '@@@@',
-  'Invisible' => '@@@@',
-  'Invite and request' => '@@@@',
-  'Only by invite' => '@@@@',
-  'Visible for all' => '@@@@',
-  'Visible for network users' => '@@@@',
 );

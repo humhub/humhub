@@ -17,12 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'For everyone' => '@@Herkes için@@',
-  'Invisible' => '@@Görünmez@@',
-  'Invite and request' => '@@Davet ve istek@@',
-  'Only by invite' => '@@Sadece davet et@@',
-  'Visible for all' => '@@Tümü görünür@@',
-  'Visible for network users' => '@@Ağ kullanıcıları görebilir@@',
   '<strong>General</strong> space settings' => '<strong>Genel</strong> mekan ayarları',
   'Archive' => 'Arşiv',
   'Choose the kind of membership you want to provide for this workspace.' => 'Bu çalışma alanı için geçerli bir üyelik türü seçin.',

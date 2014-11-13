@@ -18,5 +18,4 @@
  */
 return array (
   '%displayName% likes %contentTitle%.' => '',
-  '%displayName% likes your %contentTitle%.' => '@@%displayName% aime %contentTitle%.@@',
 );

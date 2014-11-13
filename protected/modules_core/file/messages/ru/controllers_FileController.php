@@ -17,10 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Internal Error: Could not store file!' => '@@Внутренняя ошибка: Ну удалось сохранить файл!@@',
-  'Maximum file size has been {maxFileSize} reached!' => '@@Был достигнуть максимальный размер файла {maxFileSize}!@@',
-  'No file received!' => '@@Файл не получен!@@',
-  'This file type is not allowed!' => '@@Этот тип файла не поддерживается!@@',
   'Could not find requested file!' => 'Не удалось найти запрашиваемый файл!',
   'Insufficient permissions!' => 'Недостаточно полномочий!',
 );

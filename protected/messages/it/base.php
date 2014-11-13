@@ -18,9 +18,6 @@
  */
 return array (
   '<strong>Latest</strong> updates' => '',
-  'Save' => '',
-  'Delete' => '@@Cancella@@',
-  'Email settings' => '@@Impostazioni email@@',
   'Account settings' => 'Impostazioni account',
   'Administration' => 'Amministrazione',
   'Back to dashboard' => 'Torna al pannello di controllo',

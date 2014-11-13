@@ -17,8 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Invite and request' => '@@邀请或请求@@',
-  'Everyone can enter' => '@@每一个用户都能进入你的空间@@',
   '<strong>Create</strong> new space' => '<strong>创建</strong> 新版块',
   'Advanced access settings' => '访问权限设置',
   'Also non-members can see this<br>space, but have no access' => '所有人可见',

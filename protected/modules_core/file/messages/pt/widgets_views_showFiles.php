@@ -18,5 +18,4 @@
  */
 return array (
   'Close' => '',
-  'Attached Files:' => '@@@@',
 );

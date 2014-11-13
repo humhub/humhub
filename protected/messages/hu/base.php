@@ -41,7 +41,6 @@ return array (
   'Nothing found with your input.' => '',
   'Oooops...' => '',
   'Results' => '',
-  'Save' => '',
   'Search' => '',
   'Search for users and spaces' => '',
   'Show more results' => '',
@@ -52,6 +51,4 @@ return array (
   'Welcome to %appName%' => '',
   'You cannot create public visible content!' => '',
   'Your daily summary' => '',
-  'Delete' => '@@@@',
-  'Email settings' => '@@@@',
 );

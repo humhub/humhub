@@ -37,6 +37,7 @@ return array (
   'Remove' => '',
   'Request message' => '',
   'Revoke invitation' => '',
+  'Save' => '',
   'Search' => '',
   'Search members' => '',
   'Space owner' => '',

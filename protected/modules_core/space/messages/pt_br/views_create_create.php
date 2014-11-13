@@ -19,8 +19,6 @@
 return array (
   'This space will be hidden<br>for all non-members' => '',
   'Users can also apply for a<br>membership to this space' => '',
-  ' Invite and request' => '@@Convite e pedido@@',
-  'Everyone can enter' => '@@Todos podem entrar@@',
   '<strong>Create</strong> new space' => '<strong>Criar</strong> novo espaço',
   'Advanced access settings' => 'Configurações avançadas de acesso',
   'Also non-members can see this<br>space, but have no access' => 'Os não-membros também poderão visualizar este<br>espaço, mas não terão acesso',

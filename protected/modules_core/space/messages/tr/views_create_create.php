@@ -20,8 +20,6 @@ return array (
   'Advanced access settings' => '',
   'Join Policy' => '',
   'Visibility' => '',
-  ' Invite and request' => '@@Davet ve istek@@',
-  'Everyone can enter' => '@@Herkes katılabilir@@',
   '<strong>Create</strong> new space' => '<strong>Yeni</strong> mekan oluştur',
   'Also non-members can see this<br>space, but have no access' => 'Üye olmayanlar bu mekanı<br>görebilir, fakat erişemezler.',
   'Create' => 'Oluştur',

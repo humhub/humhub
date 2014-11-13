@@ -23,5 +23,4 @@ return array (
   'Image Magick convert command (optional)' => '',
   'Maximum upload file size (in MB)' => '',
   'Use X-Sendfile for File Downloads' => '',
-  'Forbidden file extensions' => '@@@@',
 );

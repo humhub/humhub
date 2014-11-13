@@ -18,7 +18,6 @@
  */
 return array (
   'Allowed file extensions' => '',
-  'Forbidden file extensions' => '@@Extensions de fichier interdite@@',
   'Convert command not found!' => 'Commande de conversion non trouvée !',
   'Got invalid image magick response! - Correct command?' => 'Réponse de "Image Magick" incorrecte - Votre commande est-elle juste ?',
   'Image Magick convert command (optional)' => 'Commande de conversion "Image Magick" (optionnel)',

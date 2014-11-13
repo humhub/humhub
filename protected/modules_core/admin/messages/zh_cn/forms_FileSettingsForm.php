@@ -18,7 +18,6 @@
  */
 return array (
   'Allowed file extensions' => '',
-  'Forbidden file extensions' => '@@禁止的文件扩展名@@',
   'Convert command not found!' => '反转命令没有找到',
   'Got invalid image magick response! - Correct command?' => '有无效的图像Magick响应！正确的命令？',
   'Image Magick convert command (optional)' => '图像Magick反转命令（可选）',
