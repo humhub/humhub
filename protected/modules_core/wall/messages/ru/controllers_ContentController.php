@@ -7,5 +7,5 @@ To however stick this item, unstick another before!' => 'Достигнуто м
 
 Вы можете прикрепить только две записи за раз.
 Чтобы все же прикрепить эту запись, открепите любую другую!',
-  'Could not load requested object!' => 'не могу загрузить запрошенный объект!',
+  'Could not load requested object!' => 'Не могу загрузить запрошенный объект!',
 );

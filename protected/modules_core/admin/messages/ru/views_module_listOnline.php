@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Modules</strong> directory' => '<strong>Папка</strong> модулей',
+  '<strong>Modules</strong> directory' => '<strong>Директория</strong> модулей',
   '<strong>Online</strong> available modules' => '<strong>Онлайн</strong>-доступные модули',
   'Install' => 'Установить',
   'Latest compatible version:' => 'Последняя совместимая версия:',

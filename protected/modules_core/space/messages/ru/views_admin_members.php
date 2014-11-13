@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Can share' => '',
+  'Can share' => 'Может делиться',
   'Search' => 'Поиск',
   'Search members' => 'Поиск участников',
-  'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '',
+  'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Владелец пространства супер админ пространства со всеми привилегиями создателя пространства. Здесь вы можете изменить эту роль другому пользователю.',
   '<strong>Manage</strong> your space members' => '<strong>Управление</strong> участниками пространства',
   '<strong>Outstanding</strong> sended invitations' => '<strong>Оставшиеся</strong> приглашения',
   '<strong>Outstanding</strong> user requests' => '<strong>Оставшиеся</strong> запросы',

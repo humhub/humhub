@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Scope' => '',
+  'Scope' => 'Сфера',
   'Strength' => 'Сила',
 );

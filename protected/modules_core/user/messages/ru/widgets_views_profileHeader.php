@@ -5,7 +5,7 @@ return array (
   '<strong>Something</strong> went wrong' => '<strong>Что-то</strong> пошло не так',
   'Edit account' => 'Редактировать аккаунт',
   'Followers' => 'Подписчиков:',
-  'Following' => 'Подписан на:',
+  'Following' => 'Подписан (а) на:',
   'Ok' => 'Ок',
   'Spaces' => 'Пространств',
 );

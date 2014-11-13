@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Space</strong> Settings' => '<strong>Настройки</strong> пространств',
+  '<strong>Space</strong> Settings' => '<strong>Настройки</strong> Пространств',
   'Save' => 'Сохранить',
 );
