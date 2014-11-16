@@ -129,7 +129,7 @@ class UserPassword extends HActiveRecord {
      */
     public function validatePassword($password) {
 
-        if ($this->password == $this->hashPassword($password))
+        if (CPasswordHelper::same($this->password, $this->hashPassword($password)))
             return true;
 
         return false;
@@ -175,27 +175,6 @@ class UserPassword extends HActiveRecord {
      */
     private function generateSalt() {
         return uniqid(mt_rand(), true);
-    }
-
-    /**
-     * Sets a random user password 
-     * 
-     * @return new Password
-     */
-    public function setRandomPassword() {
-
-        $length = 7;
-        $chars = "abcdefghijkmnopqrstuvwxyz023456789$";
-
-        srand((double) microtime() * 1000000);
-
-        $newPassword = '';
-        for ($i = 1; $i <= $length; $i++) {
-            $newPassword .= substr($chars, rand() % strlen($chars) - 1, 1);
-        }
-
-        $this->setPassword($newPassword);
-        return $newPassword;
     }
 
 }
