@@ -17,7 +17,8 @@
  *                    
  * 
  */
-class UserPassword extends HActiveRecord {
+class UserPassword extends HActiveRecord
+{
 
     /**
      * Additional Fields for Scenarios
@@ -30,7 +31,8 @@ class UserPassword extends HActiveRecord {
     /**
      * Init, detect supported hashing 
      */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
@@ -51,21 +53,24 @@ class UserPassword extends HActiveRecord {
      * @param string $className active record class name.
      * @return UserPassword the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'user_password';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
 
         $rules = array();
 
@@ -107,7 +112,8 @@ class UserPassword extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'user' => array(self::BELONGS_TO, 'user', 'user_id'),
         );
@@ -116,7 +122,8 @@ class UserPassword extends HActiveRecord {
     /**
      * Before saving an new record, cleanup all old user passwords
      */
-    public function afterSave() {
+    public function afterSave()
+    {
         UserPassword::model()->deleteAllByAttributes(array('user_id' => $this->user_id), 'id != :id ', array(':id' => $this->id));
         return parent::afterSave();
     }
@@ -127,7 +134,8 @@ class UserPassword extends HActiveRecord {
      * @param string $password unhashed
      * @return boolean Success
      */
-    public function validatePassword($password) {
+    public function validatePassword($password)
+    {
 
         if (CPasswordHelper::same($this->password, $this->hashPassword($password)))
             return true;
@@ -143,7 +151,8 @@ class UserPassword extends HActiveRecord {
      * @param type $salt
      * @return Hashed password
      */
-    private function hashPassword($password) {
+    private function hashPassword($password)
+    {
         $password .= $this->salt;
 
         if ($this->algorithm == 'sha1md5') {
@@ -162,19 +171,11 @@ class UserPassword extends HActiveRecord {
      * 
      * @param string $password
      */
-    public function setPassword($newPassword) {
-        $this->salt = $this->generateSalt();
+    public function setPassword($newPassword)
+    {
+        $this->salt = UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
-    }
-
-    /**
-     * Generates some salt
-     * 
-     * @return string salt
-     */
-    private function generateSalt() {
-        return uniqid(mt_rand(), true);
     }
 
 }
