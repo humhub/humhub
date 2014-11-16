@@ -51,6 +51,8 @@
 
     $(document).ready(function () {
 
+	    var originalTitle = document.title;
+
         // set the ID for the last loaded activity entry to 1
         var notificationLastLoadedEntryId = 0;
 
@@ -143,8 +145,6 @@
                     // format time
                     $('span.time').timeago();
                 }
-
-
             });
         }
 
@@ -169,10 +169,13 @@
 
                 // show or hide the badge for new notifications
                 if ($newNotifications == 0) {
+	                document.title = originalTitle;
                     $('#badge-notifications').css('display', 'none');
                     $('#mark-seen-link').css('display', 'none');
                     $('#icon-notifications .fa').removeClass("animated swing");
                 } else {
+
+	                document.title = '('+$newNotifications+') '+originalTitle;
                     $('#badge-notifications').empty();
                     $('#badge-notifications').append($newNotifications);
                     $('#mark-seen-link').css('display', 'inline');
