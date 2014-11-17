@@ -3,9 +3,6 @@
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
-        <br/>
-
-        <h1><?php echo Yii::t('AdminModules.module_listUpdates', '<strong>Available</strong> Updates'); ?></h1>
 
         <?php if (count($modules) == 0): ?>
 
@@ -14,6 +11,7 @@
         <?php endif; ?>
 
         <?php foreach ($modules as $module): ?>
+            <hr/>
 
             <?php
             $moduleImageUrl = Yii::app()->baseUrl . '/img/default_module.jpg';

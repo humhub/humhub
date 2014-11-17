@@ -20,7 +20,7 @@
 
 /**
  * Module Controller controls all third party modules in a humhub installation.
- * 
+ *
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
@@ -77,7 +77,7 @@ class ModuleController extends Controller
 
     /**
      * Enables a module
-     * 
+     *
      * @throws CHttpException
      */
     public function actionEnable()
@@ -99,7 +99,7 @@ class ModuleController extends Controller
 
     /**
      * Disables a module
-     * 
+     *
      * @throws CHttpException
      */
     public function actionDisable()
@@ -140,7 +140,7 @@ class ModuleController extends Controller
 
     /**
      * Uninstalls a custom module
-     * 
+     *
      * @throws CHttpException
      */
     public function actionUninstall()
@@ -169,7 +169,7 @@ class ModuleController extends Controller
 
     /**
      * Updates a module with the most recent version online
-     * 
+     *
      * @throws CHttpException
      */
     public function actionUpdate()
@@ -199,10 +199,23 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
+        $keyword = Yii::app()->request->getParam('keyword', "");
+
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules();
 
-        $this->render('listOnline', array('modules' => $modules));
+        if ($keyword != "") {
+            $results = array();
+            foreach ($modules as $module) {
+                if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
+                    array_push($results, $module);
+                }
+            }
+            $modules = $results;
+        }
+
+        $this->render('listOnline', array('modules' => $modules, 'keyword' => $keyword));
+
     }
 
     /**
@@ -218,7 +231,7 @@ class ModuleController extends Controller
 
     /**
      * Returns more information about an installed module.
-     * 
+     *
      * @throws CHttpException
      */
     public function actionInfo()
@@ -241,8 +254,8 @@ class ModuleController extends Controller
     }
 
     /**
-     * Sets default enabled/disabled on User or/and Space Modules 
-     * 
+     * Sets default enabled/disabled on User or/and Space Modules
+     *
      * @throws CHttpException
      */
     public function actionSetAsDefault()

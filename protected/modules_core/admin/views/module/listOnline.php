@@ -3,12 +3,37 @@
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
+        <br/><br/>
+
+        <!-- search form -->
+
+        <?php echo CHtml::form(Yii::app()->createUrl('//admin/module/listOnline', array()), 'post', array('class' => 'form-search')); ?>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="form-group form-group-search">
+                    <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('AdminModules.module_listOnline', 'search for available modules online'))); ?>
+                    <?php echo CHtml::submitButton(Yii::t('AdminModules.module_listOnline', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <?php echo CHtml::endForm(); ?>
+
         <br/>
 
-        <h1><?php echo Yii::t('AdminModule.views_module_listOnline', '<strong>Online</strong> available modules'); ?></h1>
+        <?php if (count($modules) == 0) : ?>
+
+            <div class="text-center">
+                <em><?php echo Yii::t('AdminModules.module_listOnline', 'No modules found!'); ?></em>
+                <br/><br/>
+            </div>
+
+        <?php else: ?>
+
 
         <?php foreach ($modules as $module): ?>
-
+            <hr/>
             <div class="media">
 
                 <?php
@@ -53,7 +78,7 @@
                     </div>
                 </div>
             </div>
-
         <?php endforeach; ?>
+        <?php endif;?>
     </div>
 </div>
