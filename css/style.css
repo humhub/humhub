@@ -558,11 +558,6 @@ ul.tour-list li.completed a {
   clear: both;
   display: block;
 }
-nav-pills.preferences {
-  position: absolute;
-  right: 1px;
-  top: 1px;
-}
 .wall-entry-controls {
   font-size: 12px;
   margin-top: 10px;
