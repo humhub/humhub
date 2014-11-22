@@ -90,6 +90,12 @@ class Profile extends HActiveRecord
          * Yii::t('UserModule.models_Profile', 'State')
          * Yii::t('UserModule.models_Profile', 'About')
          * 
+         * Yii::t('UserModule.models_Profile', 'Gender')
+         * Yii::t('UserModule.models_Profile', 'Male')
+         * Yii::t('UserModule.models_Profile', 'Female')
+         * Yii::t('UserModule.models_Profile', 'Custom')
+         * Yii::t('UserModule.models_Profile', 'Hide year in profile')         * 
+         * 
          * Yii::t('UserModule.models_Profile', 'Phone Private')
          * Yii::t('UserModule.models_Profile', 'Phone Work')
          * Yii::t('UserModule.models_Profile', 'Mobile')
@@ -147,13 +153,13 @@ class Profile extends HActiveRecord
                 // Mark field as editable when we are on adminEdit scenario
                 if ($this->scenario == 'adminEdit') {
                     $profileField->editable = true;
-                    
+
                     // Dont allow editing of ldap syned fields - will be overwritten on next ldap sync.
                     if ($this->user->auth_mode == User::AUTH_MODE_LDAP && $profileField->ldap_attribute != "") {
                         $profileField->editable = false;
                     }
                 }
-                
+
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
             }
