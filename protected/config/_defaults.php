@@ -126,7 +126,10 @@ return array(
             'hu' => 'Magyar',
             'nb_no' => 'Nnorsk bokmål',
             'zh_cn' => '简体中文',
-            'an' => 'Aragonés'
+            'an' => 'Aragonés',
+            'vi' => 'Tiếng Việt',
+            'sv' => 'Svenska',
+            'cs' => 'čeština',            
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
