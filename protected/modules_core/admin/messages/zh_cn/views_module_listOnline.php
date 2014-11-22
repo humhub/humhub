@@ -18,7 +18,6 @@
  */
 return array (
   '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
-  '<strong>Online</strong> available modules' => '<strong>在线</strong> 可用模块',
   'Install' => '安装',
   'Latest compatible version:' => '最新兼容版本:',
   'Latest version:' => '最新版本:',

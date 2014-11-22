@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
+  'Reset password' => '',
   '<strong>Password</strong> recovery' => '<strong>找回</strong> 密码',
   'Back' => '返回',
-  'Get new password' => '获取新的密码',
-  'Just enter your e-mail address. We´ll send you a new one!' => '请输入您的电子邮件地址。我们将给你一个新的密码！',
   'enter security code above' => '输入上面的安全码',
   'your email' => '你的邮箱',
 );
