@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>User</strong> tags' => 'Метки пользователя',
+  '<strong>User</strong> tags' => 'Интересы пользователя',
 );

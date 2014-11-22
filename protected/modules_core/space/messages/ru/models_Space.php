@@ -4,7 +4,7 @@ return array (
   'Created By' => 'Создано',
   'Description' => 'Описание',
   'Join Policy' => 'Полномочия',
-  'Ldap DN' => '',
+  'Ldap DN' => 'Ldap DN',
   'Name' => 'Имя',
   'Owner' => 'Владелец',
   'Status' => 'Статус',

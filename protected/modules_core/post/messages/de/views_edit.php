@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Edit your post...' => 'Bearbeite deinen Eintrag ...',
+  'Edit your post...' => 'Bearbeite deinen Beitrag ...',
 );

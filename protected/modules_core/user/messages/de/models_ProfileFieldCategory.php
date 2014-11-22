@@ -7,7 +7,7 @@ return array (
   'General' => 'Allgemein',
   'ID' => 'ID',
   'Module' => 'Modul',
-  'Social bookmarks' => 'Soziale Bookmarks',
+  'Social bookmarks' => 'Soziale Lesezeichen',
   'Sort order' => 'Sortierung',
   'Title' => 'Titel',
   'Translation Category ID' => 'Übersetzungs-Kategorie-ID',

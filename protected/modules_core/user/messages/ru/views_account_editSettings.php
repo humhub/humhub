@@ -1,6 +1,6 @@
 <?php
 return array (
   '<strong>User</strong> settings' => '<strong>Настройки</strong> данных пользователя',
-  'Getting Started' => 'Начало',
+  'Getting Started' => 'Панель тура по сайту',
   'Save' => 'Сохранить',
 );

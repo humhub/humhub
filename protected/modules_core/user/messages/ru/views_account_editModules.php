@@ -5,5 +5,5 @@ return array (
   'Configure' => 'Настроить',
   'Disable' => 'Выключить',
   'Enable' => 'Включить',
-  'Enhance your profile with modules.' => 'Улучшить профиль с помощью модулей',
+  'Enhance your profile with modules.' => 'Расширить профиль с помощью модулей.',
 );
