@@ -244,7 +244,7 @@ $.fn.userpicker = function (options) {
                     }
 
                     // build <li> entry
-                    var str = '<li id="user_' + json[i].guid + '"><a style="' + _takenStyle + '" data-taken="' + _takenData + '" tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName + '\', \'' + uniqueID + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
+                    var str = '<li id="user_' + json[i].guid + '"><a style="' + _takenStyle + '" data-taken="' + _takenData + '" tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName.replace(/&#039;/g, "\\'") + '\', \'' + uniqueID + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
 
                     // append the entry to the <ul> list
                     $('#' + uniqueID + '_userpicker').append(str);

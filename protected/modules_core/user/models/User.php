@@ -415,6 +415,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         HSearch::getInstance()->deleteModel($this);
 
+        // Delete user session
+        UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
+        
         // Delete Profile Image
         $this->getProfileImage()->delete();
 
