@@ -43,7 +43,7 @@
         </ul>
 
         <?php if ($itemCount != 0): ?>
-            <div class="pull-right"><?php echo HHtml::postLink('Flush entries', array('flush'), array('class'=>'btn btn-danger')); ?></div>
+            <div class="pull-right"><?php echo HHtml::postLink(Yii::t('AdminModule.views_logging_index', 'Flush entries'), array('flush'), array('class'=>'btn btn-danger')); ?></div>
         <?php endif; ?>
     
 
