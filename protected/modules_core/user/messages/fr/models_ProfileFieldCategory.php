@@ -10,7 +10,7 @@ return array (
   'Social bookmarks' => 'Favoris sociaux',
   'Sort order' => 'Ordre de tri',
   'Title' => 'Titre',
-  'Translation Category ID' => '',
+  'Translation Category ID' => 'Identifiant de la catégorie de traduction',
   'Updated at' => 'Mis à jour à',
   'Updated by' => 'Mis à jour par',
   'Visibility' => 'Visibilité',

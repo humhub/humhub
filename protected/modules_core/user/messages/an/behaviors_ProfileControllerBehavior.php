@@ -1,4 +1,4 @@
 <?php
 return array (
-  'User not found!' => ' ',
+  'User not found!' => ' Gebruikers niet gevonden!',
 );

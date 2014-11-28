@@ -1,15 +1,15 @@
 <?php
 return array (
-  '<strong>Please</strong> sign in' => '<strong>Connectez</strong> vous',
-  '<strong>Sign</strong> up' => '<strong>Connectez</strong> vous',
+  '<strong>Please</strong> sign in' => '<strong>Connexion</strong>',
+  '<strong>Sign</strong> up' => '<strong>Inscription</strong>',
   'Create a new one.' => 'Créer un nouveau.',
-  'Don\'t have an account? Join the network by entering your e-mail address.' => 'Vous n\'avez pas de compte ? Rejoignez nous en indiquant votre adresse email.',
+  'Don\'t have an account? Join the network by entering your e-mail address.' => 'Vous n\'avez pas de compte ? Rejoignez nous en indiquant votre adresse e-mail.',
   'Forgot your password?' => 'Mot de passe perdu ?',
-  'If you\'re already a member, please login with your username/email and password.' => 'Si vous être déjà inscrit, merci de vous connecter avec votre nom d\'utilisateur/email et mot de passe.',
-  'Register' => 'Enregistrez vous',
+  'If you\'re already a member, please login with your username/email and password.' => 'Si vous être déjà inscrit, merci de vous connecter avec votre nom d\'utilisateur/e-mail et mot de passe.',
+  'Register' => 'Enregistrez-vous',
   'Remember me next time' => 'Se souvenir de moi',
   'Sign in' => 'Se connecter',
-  'email' => 'email',
+  'email' => 'e-mail',
   'password' => 'mot de passe',
-  'username or email' => 'nom d\'utilisateur ou email',
+  'username or email' => 'nom d\'utilisateur ou e-mail',
 );
