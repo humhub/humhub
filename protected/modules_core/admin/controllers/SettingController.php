@@ -518,7 +518,7 @@ class SettingController extends Controller
                 $form->allowedExtensions = HSetting::Set('allowedExtensions', strtolower($form->allowedExtensions), 'file');
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
                 $this->redirect(Yii::app()->createUrl('//admin/setting/file'));
             }
