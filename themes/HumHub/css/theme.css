@@ -902,6 +902,10 @@ a.list-group-item.active {
 .ekko-lightbox .modal-content .modal-footer {
   padding: 0 10px 10px 10px;
 }
+.ekko-lightbox-nav-overlay a,
+.ekko-lightbox-nav-overlay a:hover {
+  color: #7191a8;
+}
 .progress {
   height: 10px;
   margin-bottom: 15px;
