@@ -82,17 +82,14 @@
             // check if a submit is allowed
             if ($('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit') == 'true') {
 
+                // get plain input text from contenteditable DIV
+                $('#newCommentForm_<?php echo $id; ?>').val(getPlainInput($('#newCommentForm_<?php echo $id; ?>_contenteditable').clone()));
+
                 // set focus to submit button
                 $('#comment_create_post_<?php echo $id; ?>').focus();
 
-                // set timeout for to complete the getPlainInput function (HEditorWidget)
-                setTimeout(submitCommentForm, 10);
-
-                function submitCommentForm() {
-                    // emulate the click event
-                    $('#comment_create_post_<?php echo $id; ?>').click();
-                }
-
+                // emulate the click event
+                $('#comment_create_post_<?php echo $id; ?>').click();
 
             }
         }

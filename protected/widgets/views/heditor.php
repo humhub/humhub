@@ -94,26 +94,33 @@ $(document).ready(function () {
         if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
             $(this).html(placeholder);
             $(this).addClass('atwho-placeholder');
-        } else {
-            $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
         }
     })
 
     $('#<?php echo $id; ?>_contenteditable').on('paste', function (event) {
 
+
         // disable standard behavior
         event.preventDefault();
 
-        // get clipbord content
-        var text = event.originalEvent.clipboardData.getData('text/plain');
+        // create variable for clipboard content
+        var text = "";
 
-        // create jQuey object and paste content
+        if (event.originalEvent.clipboardData) {
+            // get clipboard data (Firefox, Webkit)
+            var text = event.originalEvent.clipboardData.getData('text/plain');
+        } else if (window.clipboardData) {
+            // get clipboard data (IE)
+            var text = window.clipboardData.getData("Text");
+        }
+
+        // create jQuery object and paste content
         var $result = $('<div></div>').append(text);
 
         // set plain text at current cursor position
         insertTextAtCursor($result.text());
 
-    })
+    });
 
 
     $('#<?php echo $id; ?>_contenteditable').keypress(function (e) {
@@ -133,7 +140,8 @@ $(document).ready(function () {
         $(this).attr('data-query', '0');
     });
 
-});
+})
+;
 
 
 /**
