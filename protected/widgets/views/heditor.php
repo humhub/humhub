@@ -91,11 +91,11 @@ $(document).ready(function () {
     })
     // add placeholder text, if input is empty
     $('#<?php echo $id; ?>_contenteditable').focusout(function () {
-        if ($(this).html() == "" || $(this).html() == " ") {
+        if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
             $(this).html(placeholder);
             $(this).addClass('atwho-placeholder');
         } else {
-            $('#<?php echo $id; ?>').val(getPlanInput($(this).clone()));
+            $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
         }
     })
 
@@ -141,7 +141,7 @@ $(document).ready(function () {
  * @param element jQuery contenteditable div element
  * @returns plain text
  */
-function getPlanInput(element) {
+function getPlainInput(element) {
 
     // GENERATE USER GUIDS
     var userCount = element.find('.atwho-user').length;
