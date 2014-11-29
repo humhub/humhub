@@ -94,6 +94,8 @@ $(document).ready(function () {
         if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
             $(this).html(placeholder);
             $(this).addClass('atwho-placeholder');
+        } else {
+            $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
         }
     })
 
