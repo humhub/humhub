@@ -185,6 +185,7 @@ class HHtml extends CHtml
     public static function enrichText($text)
     {
 
+        
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
@@ -250,6 +251,7 @@ class HHtml extends CHtml
     public static function translateEmojis($text, $show = true)
     {
         $emojis = array('Ambivalent', 'Angry', 'Confused', 'Cool', 'Frown', 'Gasp', 'Grin', 'Heart', 'Hearteyes', 'Laughing', 'Naughty', 'Slant', 'Smile', 'Wink', 'Yuck');
+        
         return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
@@ -257,6 +259,7 @@ class HHtml extends CHtml
                 }
                 return '';
             }
+            return $hit[0];
         }, $text);
     }
 
