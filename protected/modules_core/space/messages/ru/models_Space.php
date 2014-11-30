@@ -10,7 +10,7 @@ return array (
   'Status' => 'Статус',
   'Tags' => 'Теги',
   'Updated At' => 'Обновлено в',
-  'Visibility' => 'Видимость',
+  'Visibility' => 'Отображение',
   'Website URL (optional)' => 'URL вебсайта (опционально)',
   'You cannot create private visible spaces!' => 'Вы не можете создавать приватные видимые пространства!',
   'You cannot create public visible spaces!' => 'Вы не можете создавать публичные видимые пространства!',

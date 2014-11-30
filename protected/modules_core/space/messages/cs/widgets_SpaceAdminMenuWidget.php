@@ -1,8 +1,8 @@
 <?php
 return array (
   '<strong>Space</strong> preferences' => '<strong>Nastavení</strong> prostoru',
-  'Archive' => '',
-  'Back to workspace' => '',
+  'Archive' => 'Archivovat',
+  'Back to workspace' => 'Zpátky do pracovního prostoru',
   'Delete' => 'Smazat',
   'General' => 'Obecné',
   'Members' => 'Členové',

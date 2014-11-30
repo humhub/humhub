@@ -25,7 +25,7 @@ return array (
   'Oooops...' => 'Jejda...',
   'Results' => 'Výsledky',
   'Search' => 'Hledat',
-  'Search for users and spaces' => 'Hledat mezi uživateli a místy',
+  'Search for users and spaces' => 'Hledat mezi uživateli a prostory',
   'Show more results' => 'Zobrazit další výsledky',
   'Sorry, nothing found!' => 'Bohužel, nebylo nic nalezeno!',
   'Space not found!' => 'Místo nebylo nalezeno!',

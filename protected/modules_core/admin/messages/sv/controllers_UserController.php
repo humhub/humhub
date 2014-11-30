@@ -2,8 +2,8 @@
 return array (
   'Become this user' => 'Bli denna användare',
   'Delete' => 'Ta bort',
-  'Disabled' => '',
-  'Enabled' => '',
+  'Disabled' => 'Avaktiverad',
+  'Enabled' => 'Aktiverad',
   'LDAP' => '',
   'Local' => 'Lokal',
   'Save' => 'Spara',

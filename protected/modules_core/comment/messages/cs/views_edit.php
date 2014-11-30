@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Edit your comment...' => 'Upravit komentář',
+  'Edit your comment...' => 'Upravit komentář...',
 );

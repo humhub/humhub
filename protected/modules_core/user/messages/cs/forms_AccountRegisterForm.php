@@ -1,4 +1,4 @@
 <?php
 return array (
-  'E-Mail' => '@E-mail@',
+  'E-Mail' => 'E-mail',
 );

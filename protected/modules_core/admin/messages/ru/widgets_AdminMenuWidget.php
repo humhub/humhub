@@ -1,12 +1,12 @@
 <?php
 return array (
-  'OEmbed Provider' => 'Поставщики служб',
+  'OEmbed Provider' => 'Поставщик службы',
   '<strong>Administration</strong> menu' => '<strong>Меню</strong> администратора',
   'About' => 'Версия',
   'Authentication' => 'Аутентификация',
   'Basic' => 'Основные',
   'Caching' => 'Кеширование',
-  'Cron jobs' => 'Задачи Cron',
+  'Cron jobs' => 'Планировщик задач',
   'Design' => 'Дизайн',
   'Files' => 'Файлы',
   'Groups' => 'Группы',

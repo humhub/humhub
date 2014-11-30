@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => '<strong>Administrace</strong>',
+  '<strong>Administration</strong> menu' => '<strong>Menu</strong> administrace',
   'About' => 'O aplikaci',
   'Authentication' => 'Ověřování',
   'Basic' => 'Základní',
@@ -14,9 +14,9 @@ return array (
   'Modules' => 'Moduly',
   'OEmbed Provider' => 'OEmbed ověřování',
   'Security & Roles' => 'Zabezpečení a role',
-  'Self test & update' => '',
+  'Self test & update' => 'Samotestování & aktualizace',
   'Settings' => 'Nastavení',
-  'Spaces' => 'Místa',
+  'Spaces' => 'Prostory',
   'Statistics' => 'Statistiky',
   'User approval' => 'Schvalování uživatelů',
   'User profiles' => 'Profily uživatelů',
