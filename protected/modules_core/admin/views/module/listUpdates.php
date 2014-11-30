@@ -6,7 +6,7 @@
 
         <?php if (count($modules) == 0): ?>
 
-            <div><?php echo Yii::t('AdminModules.module_listUpdates', 'All modules are up to date!'); ?></div>
+            <div><?php echo Yii::t('AdminModule.module_listUpdates', 'All modules are up to date!'); ?></div>
 
         <?php endif; ?>
 

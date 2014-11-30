@@ -13,7 +13,7 @@
             <div class="col-md-6">
                 <div class="form-group form-group-search">
                     <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('AdminModules.module_listOnline', 'search for available modules online'))); ?>
-                    <?php echo CHtml::submitButton(Yii::t('AdminModules.module_listOnline', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo CHtml::submitButton(Yii::t('AdminModule.module_listOnline', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>
@@ -25,7 +25,7 @@
         <?php if (count($modules) == 0) : ?>
 
             <div class="text-center">
-                <em><?php echo Yii::t('AdminModules.module_listOnline', 'No modules found!'); ?></em>
+                <em><?php echo Yii::t('AdminModule.module_listOnline', 'No modules found!'); ?></em>
                 <br/><br/>
             </div>
 
@@ -51,7 +51,7 @@
                     <h4 class="media-heading"><?php echo $module['name']; ?>
                         <?php if (Yii::app()->moduleManager->isInstalled($module['id'])): ?>
                             <small><span
-                                    class="label label-success"><?php echo Yii::t('AdminModules.module_listOnline', 'Installed'); ?>
+                                    class="label label-success"><?php echo Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
                             </small></span>
                         <?php endif; ?>
                     </h4>
