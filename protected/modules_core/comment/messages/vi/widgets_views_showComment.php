@@ -21,5 +21,6 @@ return array (
   'Cancel' => '',
   'Delete' => '',
   'Do you really want to delete this comment?' => '',
+  'Edit' => '',
   'Updated :timeago' => '',
 );

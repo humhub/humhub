@@ -17,10 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add a member to notify' => '增加一个成员',
-  'Make private' => '改为私有',
-  'Make public' => '改为公共',
   'Move to archive' => '移动到档案',
-  'Notify members' => '通知成员',
   'Unarchive' => '解压',
 );

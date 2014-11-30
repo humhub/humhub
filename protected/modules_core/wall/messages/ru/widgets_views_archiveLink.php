@@ -17,10 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add a member to notify' => 'Добавить пользователя для оповещения',
-  'Make private' => 'Сделать приватным',
-  'Make public' => 'Сделать публичным',
   'Move to archive' => 'Переместить в архив',
-  'Notify members' => 'Оповещать пользователей',
   'Unarchive' => 'Разархивировать',
 );

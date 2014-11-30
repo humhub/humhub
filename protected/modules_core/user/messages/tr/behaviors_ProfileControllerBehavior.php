@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'User not found!' => '',
+  'User not found!' => 'Kullanıcı Bulunamadı',
 );
