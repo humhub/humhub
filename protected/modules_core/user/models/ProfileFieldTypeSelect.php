@@ -44,6 +44,7 @@ class ProfileFieldTypeSelect extends ProfileFieldType
                         'elements' => array(
                             'options' => array(
                                 'type' => 'textarea',
+                                'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
                                 'class' => 'form-control',
                                 'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                             ),

@@ -18,6 +18,7 @@
  */
 return array (
   'About' => '',
+  'Birthday' => '',
   'Custom' => '',
   'Facebook URL' => '',
   'Female' => '',

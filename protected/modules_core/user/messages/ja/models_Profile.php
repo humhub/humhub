@@ -18,6 +18,7 @@
  */
 return array (
   'About' => '',
+  'Birthday' => '',
   'City' => '',
   'Country' => '',
   'Custom' => '',

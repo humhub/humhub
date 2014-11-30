@@ -17,11 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Custom' => '',
-  'Female' => '',
-  'Gender' => '',
-  'Hide year in profile' => '',
-  'Male' => '',
+  'Birthday' => 'Geburtstag',
+  'Custom' => 'Unbestimmt',
+  'Female' => 'Weiblich',
+  'Gender' => 'Geschlecht',
+  'Hide year in profile' => 'Jahrgang/Alter verbergen',
+  'Male' => 'Männlich',
   'About' => 'Über',
   'City' => 'Ort',
   'Country' => 'Land',

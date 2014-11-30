@@ -89,6 +89,8 @@ class Profile extends HActiveRecord
          * Yii::t('UserModule.models_Profile', 'Country')
          * Yii::t('UserModule.models_Profile', 'State')
          * Yii::t('UserModule.models_Profile', 'About')
+         * Yii::t('UserModule.models_Profile', 'Birthday')
+         * Yii::t('UserModule.models_Profile', 'Hide year in profile')
          * 
          * Yii::t('UserModule.models_Profile', 'Gender')
          * Yii::t('UserModule.models_Profile', 'Male')
