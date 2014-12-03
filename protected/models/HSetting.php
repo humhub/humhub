@@ -417,7 +417,7 @@ class HSetting extends HActiveRecord
 
         file_put_contents($configFile, $content);
 
-        if (function_exists('opcache_reset')) {
+        if (function_exists('opcache_invalidate')) {
             opcache_invalidate($configFile);
         }
         
