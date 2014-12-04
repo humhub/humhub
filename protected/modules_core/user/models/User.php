@@ -143,7 +143,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 array('email', 'email'),
                 array('group_id', 'numerical'),
                 array('email', 'unique', 'caseSensitive' => false, 'className' => 'User'),
-                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß+-._ ]/', 'message' => Yii::t('UserModule.models_User', 'Username must consist of letters, numbers and spaces only')),
+                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß\+\-\._ ]/', 'message' => Yii::t('UserModule.models_User', 'Username can contain only letters, numbers, spaces and special characters (+-._)')),
                 array('username', 'length', 'max' => 25, 'min' => 4),
             );
         }
