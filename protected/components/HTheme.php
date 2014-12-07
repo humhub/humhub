@@ -21,7 +21,7 @@
 /**
  * HTheme is an overwrite of CTheme
  *
- * This is caused by our view path for modules is also separeted into modules/ folders.
+ * This is caused by our view path for modules is also separated into modules/ folders.
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
@@ -105,6 +105,27 @@ class HTheme extends CTheme
         return Yii::app()->getBaseUrl($absolute) . '/' . $file;
     }
 
+    /**
+     * Searches for a themed version of an language message file
+     *
+     * @param string $messageFile
+     * @return string
+     */
+    public function getMessageFile($messageFile)
+    {
+    	// Replace: application.messages -> webroot.themes.CURRENTTHEME.messages
+    	$themeMessageFile = str_replace(Yii::app()->basePath, $this->basePath, $messageFile);
+    	
+    	// Replace: application.modules[_core].MODULEID.messages -> webroot.themes.CURRENTTHEME.messages.MODULEID
+    	$themeMessageFile = preg_replace('/modules(?:_core)?\/(.*?)\/messages\/(.*)\/(.*)/i', 'messages/\1/\2/\3', $themeMessageFile);
+    	
+    	// Check if file exists
+    	if (is_file($themeMessageFile)) {
+    		return $themeMessageFile;
+    	}
+    
+    	return $messageFile;
+    }
 }
 
 ?>
