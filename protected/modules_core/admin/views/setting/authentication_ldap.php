@@ -88,6 +88,14 @@
             <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;'); ?></p>
         </div>
 
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($model, 'refreshUsers', array('readonly' => HSetting::IsFixed('refreshUsers', 'authentication_ldap'))); ?> <?php echo $model->getAttributeLabel('refreshUsers'); ?>
+                </label>
+            </div>
+        </div>
+
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication_ldap', 'Save'), array('class' => 'btn btn-primary')); ?>
