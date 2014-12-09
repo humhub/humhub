@@ -79,8 +79,7 @@ class SpaceController extends Controller
      */
     public function actionIndex()
     {
-        $this->pageTitle = HSetting::Get('name') . " - " . $this->getSpace()->name;
-
+        $this->pageTitle = $this->getSpace()->name;
 
         if ($this->getSpace()->isMember()) {
 
