@@ -369,7 +369,12 @@ class HSetting extends HActiveRecord
                 $mail['transportOptions']['encryption'] = HSetting::Get('encryption', 'mailing');
 
             if (HSetting::Get('port', 'mailing'))
-                $mail['transportOptions']['port'] = HSetting::Get('port', 'mailing');
+            	$mail['transportOptions']['port'] = HSetting::Get('port', 'mailing');
+            
+            if (HSetting::Get('allowSelfSignedCerts', 'mailing')) {
+            	$mail['transportOptions']['options']['ssl']['allow_self_signed'] = true;
+            	$mail['transportOptions']['options']['ssl']['verify_peer'] = false;
+            }
         }
         $config['components']['mail'] = $mail;
 

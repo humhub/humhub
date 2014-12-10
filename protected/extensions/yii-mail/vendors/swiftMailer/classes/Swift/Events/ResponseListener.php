@@ -8,22 +8,17 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Events/EventListener.php';
-//@require 'Swift/Events/ResponseEvent.php';
-
 /**
  * Listens for responses from a remote SMTP server.
- * @package Swift
- * @subpackage Events
- * @author Chris Corbyn
+ *
+ * @author     Chris Corbyn
  */
 interface Swift_Events_ResponseListener extends Swift_Events_EventListener
 {
-  
-  /**
-   * Invoked immediately following a response coming back.
-   * @param Swift_Events_ResponseEvent $evt
-   */
-  public function responseReceived(Swift_Events_ResponseEvent $evt);
-  
+    /**
+     * Invoked immediately following a response coming back.
+     *
+     * @param Swift_Events_ResponseEvent $evt
+     */
+    public function responseReceived(Swift_Events_ResponseEvent $evt);
 }

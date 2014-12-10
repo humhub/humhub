@@ -15,6 +15,7 @@ class MailingSettingsForm extends CFormModel {
     public $password;
     public $port;
     public $encryption;
+    public $allowSelfSignedCerts;
 
     /**
      * Declares the validation rules.
@@ -23,10 +24,11 @@ class MailingSettingsForm extends CFormModel {
         return array(
             array('transportType, systemEmailAddress, systemEmailName', 'required'),
             array('transportType', 'in', 'range'=>array('php', 'smtp')),
-            array('encryption', 'in', 'range'=>array('', 'ssl')),
+            array('encryption', 'in', 'range'=>array('', 'ssl', 'tls')),
+        	array('allowSelfSignedCerts', 'boolean'),
             array('systemEmailAddress', 'email'),
             array('port', 'numerical', 'integerOnly' => true, 'min'=>1, 'max'=>65535),
-            array('transportType, hostname, username, password, port, encryption, systemEmailAddress, systemEmailName', 'length', 'max' => 255),
+            array('transportType, hostname, username, password, port, encryption, allowSelfSignedCerts, systemEmailAddress, systemEmailName', 'length', 'max' => 255),
         );
     }
 
@@ -44,6 +46,7 @@ class MailingSettingsForm extends CFormModel {
             'password' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Password'),
             'port' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Port number'),
             'encryption' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Encryption'),
+        	'allowSelfSignedCerts' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Allow Self-Signed Certificates?'),
         );
     }
 
