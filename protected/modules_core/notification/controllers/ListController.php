@@ -43,13 +43,14 @@ class ListController extends Controller
     {
 
         // the id from the last entry loaded
-        $lastEntryId = Yii::app()->request->getParam('from');
+        $lastEntryId = (int) Yii::app()->request->getParam('from');
 
         // create database query
         $criteria = new CDbCriteria();
         if ($lastEntryId > 0) {
             // start from last entry id loaded
-            $criteria->condition = 'id<' . $lastEntryId;
+            $criteria->condition = 'id<:lastEntryId';
+            $criteria->params = array(':lastEntryId' => $lastEntryId);
         }
         $criteria->order = 'seen ASC, created_at DESC';
         $criteria->limit = 6;

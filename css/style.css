@@ -269,6 +269,9 @@ textarea {
 .media .media-body .content {
   margin-right: 35px;
 }
+.content span {
+  word-wrap: break-word;
+}
 .panel {
   position: relative;
 }
@@ -460,6 +463,20 @@ ul.tour-list li.completed a {
 .contentForm_options {
   margin-top: 10px;
 }
+.oembed_snippet {
+  position: relative;
+  padding-bottom: 55%;
+  padding-top: 15px;
+  height: 0;
+  overflow: hidden;
+}
+.oembed_snippet iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 .contentForm-upload-list {
   padding-left: 0;
 }
@@ -541,11 +558,6 @@ ul.tour-list li.completed a {
   clear: both;
   display: block;
 }
-nav-pills.preferences {
-  position: absolute;
-  right: 1px;
-  top: 1px;
-}
 .wall-entry-controls {
   font-size: 12px;
   margin-top: 10px;
@@ -595,6 +607,9 @@ nav-pills.preferences {
   position: absolute;
   right: 40px;
   top: 11px;
+}
+.login-screen {
+  margin-top: -70px;
 }
 .mime {
   background-repeat: no-repeat;
@@ -695,6 +710,54 @@ input.placeholder,
 textarea.placeholder {
   padding: 0 0 0 10px;
   color: #999999;
+}
+.ekko-lightbox-container {
+  position: relative;
+}
+.ekko-lightbox-nav-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+}
+.ekko-lightbox-nav-overlay a {
+  z-index: 100;
+  display: block;
+  width: 49%;
+  height: 100%;
+  padding-top: 35%;
+  font-size: 30px;
+  color: #ffffff;
+  opacity: 0;
+  text-decoration: none;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.ekko-lightbox-nav-overlay a:hover {
+  color: #ffffff;
+}
+.ekko-lightbox-nav-overlay a:empty {
+  width: 49%;
+}
+.ekko-lightbox a:hover {
+  text-decoration: none;
+  opacity: 1;
+}
+.ekko-lightbox .glyphicon-chevron-left {
+  left: 0;
+  float: left;
+  padding-left: 15px;
+  text-align: left;
+}
+.ekko-lightbox .glyphicon-chevron-right {
+  right: 0;
+  float: right;
+  padding-right: 15px;
+  text-align: right;
 }
 @media (max-width: 767px) {
   .topbar {

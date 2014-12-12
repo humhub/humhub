@@ -18,56 +18,56 @@
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', "Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive."); ?>"
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong>')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', "Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive.")); ?>
         },
         {
             element: ".space-nav-container .panel:eq(0)",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> navigation menu'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'This is where you can navigate the space – where you find which modules are active or available for the particular space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the space admin can manage the space\'s modules.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> navigation menu')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'This is where you can navigate the space – where you find which modules are active or available for the particular space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the space admin can manage the space\'s modules.')); ?>,
             placement: "right"
         },
         {
             element: ".space-nav-container .panel:eq(1)",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> preferences'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> preferences')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.')); ?>,
             placement: "right"
         },
         {
             element: "#contentFormBody",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Writing</strong> posts'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'New posts can be written and posted here.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Writing</strong> posts')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'New posts can be written and posted here.')); ?>,
             placement: "bottom"
         },
         {
             element: ".wall-entry:eq(0)",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Posts</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Posts</strong>')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.')); ?>,
             placement: "bottom"
         },
         {
             element: ".space-info",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> info'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'Give other useres a brief idea what the space is about. You can add the basic information here.<br /><br />The space admin can insert and change the space\'s cover photo either by clicking on it or by drag&drop.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> info')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'Give other useres a brief idea what the space is about. You can add the basic information here.<br /><br />The space admin can insert and change the space\'s cover photo either by clicking on it or by drag&drop.')); ?>,
             placement: "left"
         },
         {
             element: ".panel-activities",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Most recent</strong> activities'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'To keep you up to date, other users\' most recent activities in this space will be displayed here.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Most recent</strong> activities')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'To keep you up to date, other users\' most recent activities in this space will be displayed here.')); ?>,
             placement: "left"
         },
         {
             element: "#space-members-panel",
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> members'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', 'All users who are a member of this space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.'); ?>",
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong> members')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'All users who are a member of this space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.')); ?>,
             placement: "left"
         },
         {
             orphan: true,
             backdrop: true,
-            title: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Yay! You\'re done.</strong>'); ?>",
-            content: "<?php echo Yii::t('TourModule.widgets_views_guide_spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: "); ?> <a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_guide_spaces", "<strong>Profile Guide</strong>"); ?></a><br><br>"
+            title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Yay! You\'re done.</strong>')); ?>,
+            content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ")); ?> + "<a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_guide_spaces", "<strong>Profile Guide</strong>"); ?></a><br><br>"
         }
     ]);
 

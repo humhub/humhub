@@ -3,15 +3,13 @@
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
-        <br/>
-
-        <h1><?php echo Yii::t('AdminModules.module_list', '<strong>Currently</strong> installed modules'); ?></h1>
 
         <?php if (count($installedModules) == 0): ?>
-            <div><?php echo Yii::t('AdminModules.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
+            <div><?php echo Yii::t('AdminModule.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
         <?php endif; ?>
 
         <?php foreach ($installedModules as $moduleId => $module) : ?>
+            <hr/>
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                      style="width: 64px; height: 64px;"
@@ -22,7 +20,7 @@
                         <small>
                             <?php if ($module->isEnabled()) : ?>
                                 <span
-                                    class="label label-success"><?php echo Yii::t('AdminModules.module_list', 'Activated'); ?></span>
+                                    class="label label-success"><?php echo Yii::t('AdminModule.module_list', 'Activated'); ?></span>
                                 <?php endif; ?>
                         </small>
                     </h4>
@@ -32,7 +30,7 @@
 
                     <div class="module-controls">
 
-                        <?php echo Yii::t('AdminModules.module_list', 'Version:'); ?> <?php echo $module->getVersion(); ?>
+                        <?php echo Yii::t('AdminModule.module_list', 'Version:'); ?> <?php echo $module->getVersion(); ?>
 
                         <?php if ($module->isEnabled()) : ?>
                             <?php if ($module->getConfigUrl()) : ?>
@@ -42,7 +40,7 @@
                             <?php if ($module->isSpaceModule() || $module->isUserModule()): ?>
                                 &middot; <?php echo HHtml::link(Yii::t('AdminModule.views_module_list', 'Set as default'), array('//admin/module/setAsDefault', 'moduleId' => $moduleId), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
                             <?php endif; ?>
-                                
+
                             &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
 
                         <?php else: ?>

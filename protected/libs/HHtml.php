@@ -185,10 +185,11 @@ class HHtml extends CHtml
     public static function enrichText($text)
     {
 
+        
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
-        $text = preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
+        $text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
@@ -198,8 +199,8 @@ class HHtml extends CHtml
                     return $oembed;
                 }
             }
-
-            return HHtml::link($match[0], $match[0], array('target' => '_blank'));
+            
+            return HHtml::link($match[1], $match[1], array('target' => '_blank')).$match[2];
         }, $text);
 
         // get user and space details from guids
@@ -219,7 +220,7 @@ class HHtml extends CHtml
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
-        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s|\.)@', function($hit) use(&$buildAnchors) {
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s|\.|")@', function($hit) use(&$buildAnchors) {
             if ($hit[1] == 'u') {
                 $user = User::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($user !== null) {
@@ -250,6 +251,7 @@ class HHtml extends CHtml
     public static function translateEmojis($text, $show = true)
     {
         $emojis = array('Ambivalent', 'Angry', 'Confused', 'Cool', 'Frown', 'Gasp', 'Grin', 'Heart', 'Hearteyes', 'Laughing', 'Naughty', 'Slant', 'Smile', 'Wink', 'Yuck');
+        
         return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
@@ -257,6 +259,7 @@ class HHtml extends CHtml
                 }
                 return '';
             }
+            return $hit[0];
         }, $text);
     }
 
@@ -339,6 +342,10 @@ class HHtml extends CHtml
      */
     public static function getMimeIconClassByExtension($ext)
     {
+
+        // lowercase string
+        $ext = strtolower($ext);
+
         // Word
         if ($ext == 'doc' || $ext == 'docx') {
             return "mime-word";

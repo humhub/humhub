@@ -1,5 +1,6 @@
 <?php
 return array (
+  '<strong>Latest</strong> updates' => '<strong>Ultimi</strong> aggiornamenti',
   'Account settings' => 'Impostazioni account',
   'Administration' => 'Amministrazione',
   'Back to dashboard' => 'Torna al pannello di controllo',
@@ -8,8 +9,6 @@ return array (
   'Could not determine content container!' => 'Non posso determinare il contenuto del container!',
   'Could not find content of addon!' => 'Impossibile trovare l\'addon richiesto!',
   'Could not find requested module!' => 'Impossibile trovare il modulo richiesto!',
-  'Delete' => 'Cancella',
-  'Email settings' => 'Impostazioni email',
   'Error' => 'Errore',
   'Expand' => 'Espandi',
   'Insufficent permissions to create content!' => 'Permessi non sufficienti per creare il contenuto!',

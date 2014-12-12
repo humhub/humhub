@@ -17,17 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>General</strong> space settings' => '',
-  'Archive' => '',
-  'Choose the kind of membership you want to provide for this workspace.' => '',
-  'Choose the security level for this workspace to define the visibleness.' => '',
-  'Delete' => '',
-  'For everyone' => '',
-  'Invisible' => '',
-  'Invite and request' => '',
-  'Only by invite' => '',
-  'Save' => '',
-  'Unarchive' => '',
-  'Visible for all' => '',
-  'Visible for network users' => '',
+  '<strong>General</strong> space settings' => '<strong>Ustawienia</strong> ogólne strefy',
+  'Archive' => 'Archiwizuj',
+  'Choose the kind of membership you want to provide for this workspace.' => 'Wybierz rodzaj członkostwa który chcesz zapewnić tej grupie roboczej.',
+  'Choose the security level for this workspace to define the visibleness.' => 'Wybierz poziom bezpieczeństwa dla tej grupy roboczej aby zdefiniować widoczność. ',
+  'Delete' => 'Usuń',
+  'Save' => 'Zapisz',
+  'Unarchive' => 'Przywróć z archiwum',
 );

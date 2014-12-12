@@ -27,7 +27,7 @@
  * @since 0.5
  * @author Luke
  */
-class MenuWidget extends CWidget
+class MenuWidget extends HWidget
 {
 
     /**

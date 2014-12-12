@@ -26,5 +26,4 @@ return array (
   'More info' => '更多信息',
   'Set as default' => '设置为默认',
   'Uninstall' => '卸载',
-  '<strong>Currently</strong> installed modules' => '<strong>当前</strong> 已安装模块',
 );

@@ -17,8 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Manage</strong> profiles fields' => '',
-  'Add new category' => '',
-  'Add new field' => '',
-  '<strong>Manage</strong> user profiles' => '@@@@',
+  '<strong>Manage</strong> profiles fields' => '<strong>Zarządzaj</strong> polami profilu',
+  'Add new category' => 'Dodaj nową kategorię',
+  'Add new field' => 'Dodaj nowe pole ',
 );

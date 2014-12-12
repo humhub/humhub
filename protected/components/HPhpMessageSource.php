@@ -93,19 +93,26 @@ class HPhpMessageSource extends CPhpMessageSource {
                 $extensionCategory = substr($category, $pos + 1);
                 // First check if there's an extension registered for this class.
                 if (isset($this->extensionPaths[$extensionClass]))
-                    $this->_files[$category][$language] = Yii::getPathOfAlias($this->extensionPaths[$extensionClass]) . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $extensionCategory . '.php';
+                    $messageFile = Yii::getPathOfAlias($this->extensionPaths[$extensionClass]) . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $extensionCategory . '.php';
                 else {
                     // No extension registered, need to find it.
                     try {
                         $class = new ReflectionClass($extensionClass);
-                        $this->_files[$category][$language] = dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'messages' . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $extensionCategory . '.php';
+                        $messageFile = dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'messages' . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $extensionCategory . '.php';
                     } catch (Exception $e) {
                         return "";
                     }
                 }
-            } else
-                $this->_files[$category][$language] = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.php';
+            } else 
+                $messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.php';
         }
+        if (Yii::app()->theme && Yii::app()->theme != "") {
+        	$this->_files[$category][$language] = Yii::app()->theme->getMessageFile($messageFile);
+        }
+        else {
+        	$this->_files[$category][$language] = $messageFile;
+        }
+        
         return $this->_files[$category][$language];
     }
 

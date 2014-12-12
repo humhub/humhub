@@ -3,17 +3,15 @@
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
-        <br/>
-
-        <h1><?php echo Yii::t('AdminModules.module_listUpdates', '<strong>Available</strong> Updates'); ?></h1>
 
         <?php if (count($modules) == 0): ?>
 
-            <div><?php echo Yii::t('AdminModules.module_listUpdates', 'All modules are up to date!'); ?></div>
+            <div><?php echo Yii::t('AdminModule.module_listUpdates', 'All modules are up to date!'); ?></div>
 
         <?php endif; ?>
 
         <?php foreach ($modules as $module): ?>
+            <hr/>
 
             <?php
             $moduleImageUrl = Yii::app()->baseUrl . '/img/default_module.jpg';

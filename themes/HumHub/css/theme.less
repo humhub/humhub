@@ -165,6 +165,13 @@ h4 {
     text-align: center;
     min-height: 49px;
 
+    &:hover,
+    &:focus {
+      border-bottom: 3px solid @colorInfo2;
+      background-color: @colorBackground1;
+      color: @colorFont3;
+    }
+
     i {
       font-size: 14px;
     }
@@ -1189,6 +1196,10 @@ a.list-group-item.active {
       padding: 0 10px 10px 10px;
     }
   }
+}
+
+.ekko-lightbox-nav-overlay a, .ekko-lightbox-nav-overlay a:hover {
+  color: @colorPrimary3;
 }
 
 //

@@ -7,6 +7,7 @@
 class AuthenticationLdapSettingsForm extends CFormModel {
 
     public $enabled;
+    public $refreshUsers;
     public $username;
     public $password;
     public $hostname;
@@ -31,7 +32,7 @@ class AuthenticationLdapSettingsForm extends CFormModel {
     public function rules() {
 
         return array(
-            array('enabled, usernameAttribute, username, password, hostname, port, baseDn, loginFilter, userFilter',  'length', 'max' => 255),
+            array('enabled, refreshUsers, usernameAttribute, username, password, hostname, port, baseDn, loginFilter, userFilter',  'length', 'max' => 255),
             array('encryption', 'in', 'range'=>array('', 'ssl', 'tls')),
         );
     }
@@ -44,6 +45,7 @@ class AuthenticationLdapSettingsForm extends CFormModel {
     public function attributeLabels() {
         return array(
             'enabled' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Enable LDAP Support'),
+            'refreshUsers' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Fetch/Update Users Automatically'),
             'username' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username'),
             'password' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Password'),
             'encryption' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Encryption'),

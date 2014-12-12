@@ -1,10 +1,10 @@
 <?php
 return array (
-  'E-Mail sender address' => 'Email Absender Adresse',
-  'E-Mail sender name' => 'Email Absender Name',
+  'E-Mail sender address' => 'E-Mail Absenderadresse',
+  'E-Mail sender name' => 'E-Mail Absendername',
   'Encryption' => 'Verschlüsselung',
   'Mail Transport Type' => 'Mail Transport Typ',
   'Password' => 'Passwort',
-  'Port number' => 'Port Nummer',
+  'Port number' => 'Portnummer',
   'Username' => 'Benutzername',
 );

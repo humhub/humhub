@@ -17,11 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modules</strong> directory' => '',
-  '<strong>Online</strong> available modules' => '',
-  'Install' => '',
-  'Latest compatible version:' => '',
-  'Latest version:' => '',
-  'More info' => '',
-  'No compatible module version found!' => '',
+  '<strong>Modules</strong> directory' => '<strong>Katalog</strong> modułów',
+  'Install' => 'Zainstaluj',
+  'Latest compatible version:' => 'Ostatnia kompatybilna wersja:',
+  'Latest version:' => 'Ostatnia wersja:',
+  'More info' => 'Więcej informacji',
+  'No compatible module version found!' => 'Nie znaleziono kompatybilnej wersji modułu! ',
 );

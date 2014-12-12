@@ -82,4 +82,11 @@ class LoggingController extends Controller
         ));
     }
 
+    public function actionFlush()
+    {
+        $this->forcePostRequest();
+        Logging::model()->deleteAll();
+        $this->redirect($this->createUrl('index'));
+    }
+
 }

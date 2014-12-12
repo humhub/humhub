@@ -1,11 +1,12 @@
 <?php
 return array (
+  'OEmbed Provider' => 'Поставщик службы',
   '<strong>Administration</strong> menu' => '<strong>Меню</strong> администратора',
-  'About' => 'О',
+  'About' => 'Версия',
   'Authentication' => 'Аутентификация',
-  'Basic' => 'Базовые',
+  'Basic' => 'Основные',
   'Caching' => 'Кеширование',
-  'Cron jobs' => 'Задачи Cron',
+  'Cron jobs' => 'Планировщик задач',
   'Design' => 'Дизайн',
   'Files' => 'Файлы',
   'Groups' => 'Группы',
@@ -16,8 +17,8 @@ return array (
   'Self test & update' => 'Тестирование и обновление',
   'Settings' => 'Настройки',
   'Spaces' => 'Пространства',
-  'Statistics' => 'Статистики',
-  'User approval' => 'Подтверждение пользователей',
+  'Statistics' => 'Статистика',
+  'User approval' => 'Подтверждение регистрации',
   'User profiles' => 'Профили пользователей',
   'Users' => 'Пользователи',
 );

@@ -1,0 +1,22 @@
+<?php
+return array (
+  '<strong>Create</strong> new space' => '<strong>Crea</strong> un nou espai',
+  'Advanced access settings' => 'Configuració avançada',
+  'Also non-members can see this<br>space, but have no access' => 'També no membres poden veure aquest<br>espai, però no poden tenir accés',
+  'Create' => 'Crea',
+  'Every user can enter your space<br>without your approval' => 'Tothom pot entrar a l\'espai<br>sense la teva aprovació',
+  'For everyone' => 'Per tothom',
+  'How you want to name your space?' => 'Quin nom li vols posar a l\'espai?',
+  'Invite and request' => 'Invitació i petició',
+  'Join Policy' => 'Política d\'admissió',
+  'Only by invite' => 'Només per invitació',
+  'Please write down a small description for other users.' => 'Si us plau, escriu una descripció per als membre.',
+  'Private (Invisible)' => 'Privat (Invisible)',
+  'Public (Visible)' => 'Públic (Visible)',
+  'This space will be hidden<br>for all non-members' => 'Aquest espai s\'amagarà<br>per a tots els no membres',
+  'Users can also apply for a<br>membership to this space' => 'Els membres només poden demanar<br>pertànyer a aquest espai',
+  'Users can be only added<br>by invitation' => 'Els membres només poden ser afegits<br>per invitació',
+  'Visibility' => 'Visibilitat',
+  'space description' => 'descripció de l\'espai',
+  'space name' => 'nom de l\'espai',
+);

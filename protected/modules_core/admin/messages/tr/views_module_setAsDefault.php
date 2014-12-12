@@ -1,6 +1,6 @@
 <?php
 return array (
-  '%moduleName% - Set as default module' => '',
+  '%moduleName% - Set as default module' => '%moduleName% - Varsayılan modül olarak ayarla',
   'Activated' => 'Aktif',
   'Always activated' => 'Daima aktif',
   'Close' => 'Kapat',

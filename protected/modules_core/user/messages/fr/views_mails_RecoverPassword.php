@@ -1,9 +1,8 @@
 <?php
 return array (
-  '<strong>Password</strong> recovery' => 'Récupération de <strong>Mot de passe</strong>',
-  'Hello {displayName}, ' => 'Bonjour {displayName}, ',
-  'Login' => 'Login',
-  'You have requested a new password.' => 'Vous avez demandé un nouveau mot de passe.',
-  'Your new password is: <strong>{password}</strong>' => 'Votre nouveau mot de passe est : <strong>{password}</strong>',
-  'Your username is: <strong>{username}</strong>' => 'Votre nom d\'utilisateur est : <strong>{username}</strong>',
+  'Hello {displayName}' => 'Bonjour {displayName}',
+  'If you don\'t use this link within 24 hours, it will expire.' => 'Veuillez utiliser ce lien endéans les 24 heures. Passé ce délai, il expirera automatiquement.',
+  'Please use the following link within the next day to reset your password.' => 'Merci d\'utiliser le lien suivant endéans les 24 heures pour réinitialiser votre mot de passe.',
+  'Reset Password' => 'Réinitialiser le mot de passe',
+  '<strong>Password</strong> recovery' => 'Récupération de <strong>mot de passe</strong>',
 );

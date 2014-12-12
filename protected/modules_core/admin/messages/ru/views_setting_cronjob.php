@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>CronJob</strong> settings' => '<strong>Настройки</strong> Cron',
+  '<strong>CronJob</strong> settings' => '<strong>Настройки</strong> планировщика задач',
   'Crontab of user: {user}' => 'Действия Cron пользователя: {user}',
   'Last run (daily):' => 'Последний запуск (ежедневный):',
   'Last run (hourly):' => 'Последный запуск (ежечасный):',

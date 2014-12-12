@@ -17,7 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'You cannot delete yourself!' => 'Você não pode se excluir!',
+  'LDAP' => '',
+  'Local' => '',
   'Become this user' => 'Torne-se este usuário',
   'Delete' => 'Apagar',
   'Disabled' => 'Desabilitado',
@@ -25,4 +26,5 @@ return array (
   'Save' => 'Salvar',
   'Unapproved' => 'Não aprovado',
   'User not found!' => 'Usuário não encontrado!',
+  'You cannot delete yourself!' => 'Você não pode se excluir!',
 );

@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Authentication mode' => 'Режим проверки',
   'Created At' => 'Создано',
   'Created by' => 'Создано пользователем',
   'Email' => 'Email',

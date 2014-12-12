@@ -17,10 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not find requested file!' => '',
-  'Insufficient permissions!' => '',
-  'Internal Error: Could not store file!' => '',
-  'Maximum file size has been {maxFileSize} reached!' => '',
-  'No file received!' => '',
-  'This file type is not allowed!' => '',
+  'Could not find requested file!' => 'Nie można znaleźć żądanego pliku! ',
+  'Insufficient permissions!' => 'Niedostateczne uprawnienia ',
 );

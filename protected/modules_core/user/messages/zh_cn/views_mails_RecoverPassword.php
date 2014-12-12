@@ -17,10 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Hello {displayName}' => '',
+  'If you don\'t use this link within 24 hours, it will expire.' => '',
+  'Please use the following link within the next day to reset your password.' => '',
+  'Reset Password' => '',
   '<strong>Password</strong> recovery' => '找回密码',
-  'Hello {displayName}, ' => '你好 {displayName}',
-  'Login' => '登录',
-  'You have requested a new password.' => '你已请求到了一个新密码',
-  'Your new password is: <strong>{password}</strong>' => '你的新密码是: <strong>{password}</strong>',
-  'Your username is: <strong>{username}</strong>' => '你的用户名是<strong>{username}</strong>',
 );

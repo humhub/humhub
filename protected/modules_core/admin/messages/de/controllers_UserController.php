@@ -1,6 +1,7 @@
 <?php
 return array (
-  'You cannot delete yourself!' => 'Administratoren können sich nicht selbst löschen!',
+  'LDAP' => 'LDAP',
+  'Local' => 'Lokal',
   'Become this user' => 'Werden Sie dieser Benutzer',
   'Delete' => 'Löschen',
   'Disabled' => 'Deaktivieren',
@@ -8,4 +9,5 @@ return array (
   'Save' => 'Speichern',
   'Unapproved' => 'Nicht genehmigt',
   'User not found!' => 'Benutzer nicht gefunden!',
+  'You cannot delete yourself!' => 'Administratoren können sich nicht selbst löschen!',
 );

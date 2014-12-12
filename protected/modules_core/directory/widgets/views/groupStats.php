@@ -17,46 +17,32 @@
         <?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
     </div>
     <div class="panel-body">
-        <div style="text-align: center;">
+        <div class="knob-container" style="text-align: center; opacity: 0;">
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Total groups'); ?></strong><br><br>
 
             <input id="groups-total" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
                    data-fgcolor="#7191a8" data-skin="tron"
-                   data-thickness=".2" value="0"
+                   data-thickness=".2" value="<?php echo $statsTotalGroups; ?>"
                    data-max="<?php echo $statsTotalGroups; ?>"
-                   style="width: 75px; position: absolute; margin-top: 53.57142857142857px; margin-left: -112.5px; font-size: 37.5px; border: none; background-image: none; font-family: Arial; font-weight: bold; text-align: center; color: rgb(255, 236, 3); padding: 0px; -webkit-appearance: none; background-position: initial initial; background-repeat: initial initial;">
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    // animate stats
-                    animateKnob('#groups-total', <?php echo $statsTotalGroups; ?>);
-                });
-            </script>
+                   style="font-size: 25px !important; margin-top: 44px !important;">
         </div>
 
         <hr>
 
-        <div style="text-align: center;">
+        <div class="knob-container" style="text-align: center; opacity: 0;">
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Average members'); ?></strong><br><br>
 
             <input id="group-average" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
                    data-fgcolor="#7191a8"
                    data-skin="tron"
-                   data-thickness=".2" value="0"
+                   data-thickness=".2" value="<?php echo $statsAvgMembers; ?>"
                    data-max="<?php echo $statsTotalUsers; ?>"
-                   style="width: 75px; position: absolute; margin-top: 53.57142857142857px; margin-left: -112.5px; font-size: 37.5px; border: none; background-image: none; font-family: Arial; font-weight: bold; text-align: center; color: rgb(255, 236, 3); padding: 0px; -webkit-appearance: none; background-position: initial initial; background-repeat: initial initial;">
+                   style="font-size: 25px !important; margin-top: 44px !important;">
         </div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                // animate stats
-                animateKnob('#group-average', <?php echo $statsAvgMembers; ?>);
-            });
-        </script>
-
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>
-                :</strong> <?php echo $statsTopGroup->name; ?>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>:</strong> <?php echo $statsTopGroup->name; ?>
         </div>
     </div>
 </div>
@@ -64,20 +50,6 @@
 <script>
     $(function () {
         $(".knob").knob();
+        $(".knob-container").css( "opacity", 1 );
     });
-
-
-    //animate the stats
-    function animateKnob(id, value) {
-
-        $(id).animate({value: value}, {
-            duration: 1000,
-            easing: 'swing',
-            step: function () {
-                $(id).val(Math.round(this.value)).trigger('change');
-            }
-        })
-    }
-
-
 </script>

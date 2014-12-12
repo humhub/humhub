@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  '<strong>Latest</strong> updates' => '',
   'Account settings' => '',
   'Administration' => '',
   'Back to dashboard' => '',
@@ -25,8 +26,6 @@ return array (
   'Could not determine content container!' => '',
   'Could not find content of addon!' => '',
   'Could not find requested module!' => '',
-  'Delete' => '',
-  'Email settings' => '',
   'Error' => '',
   'Expand' => '',
   'Insufficent permissions to create content!' => '',

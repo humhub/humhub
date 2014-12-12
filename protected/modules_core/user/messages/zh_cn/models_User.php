@@ -17,12 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Authentication mode' => '',
+  'ID' => '',
   'Created At' => '创建时间',
   'Created by' => '创建人',
   'Email' => '电子邮件',
   'Group' => '组',
   'Guid' => '组用户ID',
-  'ID' => '',
   'Invalid language!' => '无效的语言',
   'Language' => '语言',
   'New user needs approval' => '新用户需要审核',

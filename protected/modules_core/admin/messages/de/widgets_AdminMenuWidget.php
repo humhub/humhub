@@ -1,5 +1,6 @@
 <?php
 return array (
+  'OEmbed Provider' => 'OEmbed Anbieter',
   '<strong>Administration</strong> menu' => '<strong>Administrations-</strong> Menü',
   'About' => 'Über',
   'Authentication' => 'Authentifizierung',

@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% likes your %contentTitle%.' => '',
+  '%displayName% likes %contentTitle%.' => '%displayName% lubi %contentTitle% ',
 );

@@ -1,5 +1,7 @@
 <?php
 return array (
+  'LDAP' => 'LDAP',
+  'Local' => 'Локальный',
   'Become this user' => 'Войти как данный пользователь',
   'Delete' => 'Удалить',
   'Disabled' => 'Отключен',

@@ -21,6 +21,4 @@ return array (
   'Installed version:' => '安装版本:',
   'Latest compatible Version:' => '最新兼容版本:',
   'Update' => '更新',
-  'All modules are up to date!' => '所有模块都已是最新版本！',
-  '<strong>Available</strong> Updates' => 'dddd',
 );

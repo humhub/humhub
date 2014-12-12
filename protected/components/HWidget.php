@@ -25,7 +25,8 @@
  * @package humhub.components
  * @since 0.5
  */
-class HWidget extends CWidget {
+class HWidget extends CWidget
+{
 
     /**
      * @var array view paths for different types of widgets
@@ -45,16 +46,17 @@ class HWidget extends CWidget {
      * @param type $checkTheme
      * @return String
      */
-    public function getViewPath($checkTheme = false) {
+    public function getViewPath($checkTheme = false)
+    {
 
         // Fastlane
         $className = get_class($this);
-        
+
 
         if ($checkTheme && ($theme = Yii::app()->getTheme()) !== null) {
             if (isset(self::$_viewPaths[$className]))
                 return self::$_viewPaths[$className];
-            
+
             //   /themes/myTheme/views/
             $path = $theme->getViewPath() . DIRECTORY_SEPARATOR;
 
@@ -71,7 +73,6 @@ class HWidget extends CWidget {
             $class = new ReflectionClass($className);
             return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
         }
-
     }
 
     /**
@@ -82,31 +83,14 @@ class HWidget extends CWidget {
      * @return string the view file path. False if the view file does not exist
      * @see CApplication::findLocalizedFile
      */
-    public function getViewFile($viewName) {
-
+    public function getViewFile($viewName)
+    {
         // a path alias e.g. application.modules.x.y.z.
-        if (strpos($viewName, '.')) {
-
-
-            if (($theme = Yii::app()->getTheme()) !== null) {
-                // Replace application.modules[_core].MODULEID.widgets.views
-                //      in
-                //          webroot.themes.CURRENTTHEME.views.MODULEID.widgets
-                $viewNameTheme = $viewName;
-                $viewNameTheme = str_replace('application.views.', 'webroot.themes.' . $theme->getName() . '.views.', $viewNameTheme);
-                $viewNameTheme = preg_replace('/application\.modules(?:_core)?\.(.*?)\.views\.(.*)/i', 'webroot.themes.' . $theme->getName() . '.views.\1.\2', $viewNameTheme);
-                #$viewNameTheme = preg_replace('/widgets\.views/', 'widgets', $viewNameTheme);
-
-                $viewFile = Yii::getPathOfAlias($viewNameTheme);
-
-                // Check if File exists
-                if (is_file($viewFile . '.php')) {
-                    return Yii::app()->findLocalizedFile($viewFile . '.php');
-                }
+        if (strpos($viewName, '.') && ($theme = Yii::app()->getTheme()) !== null) {
+            $themedFile = $theme->getViewFileAliased($viewName);
+            if ($themedFile) {
+                return $themedFile;
             }
-
-
-            // Fall Back to default
         }
         return parent::getViewFile($viewName);
     }
@@ -120,7 +104,8 @@ class HWidget extends CWidget {
      *
      * @return String The Id of Module
      */
-    public function getModuleId() {
+    public function getModuleId()
+    {
 
         // Get Directory of current widget class
         $reflector = new ReflectionClass(get_class($this));
@@ -144,7 +129,8 @@ class HWidget extends CWidget {
      * @param String $ampersand
      * @return String url
      */
-    public function createUrl($action, $params = array(), $ampersand = '&') {
+    public function createUrl($action, $params = array(), $ampersand = '&')
+    {
         return $this->getController()->createUrl($this->actionPrefix . $action, $params, $ampersand);
     }
 

@@ -96,11 +96,14 @@ class ProfileImage
         if (file_exists($this->getPath($prefix))) {
             $path .= '/uploads/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
+	        $path .= '.jpg';
+        } elseif (is_object(Yii::app()->theme)) {
+	        // get default image from theme (if exists)
+	        $path = Yii::app()->theme->getFileUrl('/img/' . $this->defaultImage . '.jpg', true);
         } else {
-            $path .= '/img/';
-            $path .= $this->defaultImage;
+	        $path .= '/img/' . $this->defaultImage;
+	        $path .= '.jpg';
         }
-        $path .= '.jpg';
 
         $path .= '?cacheId=' . $cacheId;
         return $path;

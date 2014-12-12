@@ -1,10 +1,10 @@
 <?php
 return array (
   '<strong>Something</strong> went wrong' => '<strong>Quelque chose</strong> n\'a pas fonctionné',
-  'Edit account' => 'Modifier le compte',
+  'Edit account' => 'Modifier votre compte',
   'Follow' => 'Suivre',
   'Followers' => 'Vous suivent',
-  'Following' => 'Suivant',
+  'Following' => 'Vous suivez',
   'Ok' => 'Ok',
   'Spaces' => 'Espaces',
   'Unfollow' => 'Ne plus suivre',

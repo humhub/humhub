@@ -17,5 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Text Field Options' => '',
+  'Default value' => '',
+  'Maximum length' => '',
+  'Minimum length' => '',
+  'Regular Expression: Error message' => '',
+  'Regular Expression: Validator' => '',
+  'Validator' => '',
+  'Text Field Options' => 'Opzioni del campo di testo',
 );

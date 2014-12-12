@@ -18,7 +18,6 @@
  */
 return array (
   '<strong>Modules</strong> directory' => '',
-  '<strong>Online</strong> available modules' => '',
   'Install' => '',
   'Latest compatible version:' => '',
   'Latest version:' => '',

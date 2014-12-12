@@ -39,7 +39,7 @@ TDB
 Addon (HActiveRecordContentAddon)
 ---------------------------------
 
-Each content addon is liked to a content object which can be accessed via
+Each content addon is linked to a content object which can be accessed via
 ``content`` attribute.
 
 Base Class: HActiveRecordContentAddon

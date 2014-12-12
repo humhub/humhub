@@ -60,6 +60,7 @@ class ProfileFieldTypeDateTime extends ProfileFieldType
                         'elements' => array(
                             'showTimePicker' => array(
                                 'type' => 'checkbox',
+                                'label' => Yii::t('UserModule.models_ProfileFieldTypeDateTime', 'Show date/time picker'),
                                 'class' => 'form-control',
                             ),
                         )

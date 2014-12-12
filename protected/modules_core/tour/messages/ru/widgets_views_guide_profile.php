@@ -4,11 +4,7 @@ return array (
   '<strong>Edit</strong> account' => '<strong>Редактировать</strong> учетную запись',
   '<strong>Hurray!</strong> The End.' => '<strong>Урра!</strong> Конец.',
   '<strong>Hurray!</strong> You\'re done!' => '<strong>Урра!</strong> Вы сделали это!',
-  '<strong>Profile</strong> menu' => '
-
-Меню учетной записи
-
-',
+  '<strong>Profile</strong> menu' => 'Меню учетной записи',
   '<strong>Profile</strong> photo' => 'Аватар',
   '<strong>Profile</strong> stream' => 'Поток',
   '<strong>User profile</strong>' => '<strong>Профиль пользователя</strong>',

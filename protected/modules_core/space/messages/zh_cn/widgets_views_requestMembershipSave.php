@@ -17,7 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Choose a space... ' => '选择一个版块',
   'Close' => '关 闭',
   'Request workspace membership' => '请求成为成员',
   'Your request was successfully submitted to the workspace administrators.' => '您的请求已成功提交给了管理员',

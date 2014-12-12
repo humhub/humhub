@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Dropdown space order' => '',
   'Default pagination size (Entries per page)' => 'Tamanho padrão da paginação (Resultados por página)',
   'Display Name (Format)' => 'Exibir Nome (Formato)',
   'Theme' => 'Tema',

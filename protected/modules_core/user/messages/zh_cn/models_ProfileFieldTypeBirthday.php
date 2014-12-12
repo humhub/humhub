@@ -19,5 +19,4 @@
 return array (
   '%y Years' => '%y 年',
   'Birthday field options' => '生日区域选项',
-  'Hide year in profile'=>'隐藏年',
 );
