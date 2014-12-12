@@ -8,23 +8,20 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/SwiftException.php';
-
 /**
  * I/O Exception class.
- * @package Swift
- * @author Chris Corbyn
+ *
+ * @author  Chris Corbyn
  */
 class Swift_IoException extends Swift_SwiftException
 {
-  
-  /**
-   * Create a new IoException with $message.
-   * @param string $message
-   */
-  public function __construct($message)
-  {
-    parent::__construct($message);
-  }
-  
+    /**
+     * Create a new IoException with $message.
+     *
+     * @param string $message
+     */
+    public function __construct($message)
+    {
+        parent::__construct($message);
+    }
 }

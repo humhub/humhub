@@ -366,6 +366,7 @@ class SettingController extends Controller
 
         $form->port = HSetting::Get('port', 'mailing');
         $form->encryption = HSetting::Get('encryption', 'mailing');
+        $form->allowSelfSignedCerts = HSetting::Get('allowSelfSignedCerts', 'mailing');
         $form->systemEmailAddress = HSetting::Get('systemEmailAddress', 'mailing');
         $form->systemEmailName = HSetting::Get('systemEmailName', 'mailing');
 
@@ -388,6 +389,7 @@ class SettingController extends Controller
                     $form->password = HSetting::Set('password', $form->password, 'mailing');
                 $form->port = HSetting::Set('port', $form->port, 'mailing');
                 $form->encryption = HSetting::Set('encryption', $form->encryption, 'mailing');
+                $form->allowSelfSignedCerts = HSetting::Set('allowSelfSignedCerts', $form->allowSelfSignedCerts, 'mailing');
                 $form->systemEmailAddress = HSetting::Set('systemEmailAddress', $form->systemEmailAddress, 'mailing');
                 $form->systemEmailName = HSetting::Set('systemEmailName', $form->systemEmailName, 'mailing');
 
@@ -398,7 +400,7 @@ class SettingController extends Controller
             }
         }
 
-        $encryptionTypes = array('' => 'None', 'ssl' => 'SSL');
+        $encryptionTypes = array('' => 'None', 'ssl' => 'SSL', 'tls' => 'TLS');
         $transportTypes = array('php' => 'PHP', 'smtp' => 'SMTP');
 
         $this->render('mailing_server', array('model' => $form, 'encryptionTypes' => $encryptionTypes, 'transportTypes' => $transportTypes));
