@@ -130,6 +130,8 @@ return array(
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
             'cs' => 'čeština',            
+            'da' => 'dansk',
+            'uz' => 'Ўзбек'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
