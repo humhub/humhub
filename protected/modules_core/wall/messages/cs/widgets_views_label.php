@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Archived' => 'Archivované',
+  'Archived' => 'Archivováno',
   'Public' => 'Veřejné',
-  'Sticked' => 'Připevněné',
+  'Sticked' => 'Připnuto',
 );

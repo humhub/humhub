@@ -4,8 +4,8 @@ return array (
   'Maximum number of sticked items reached!
 
 You can stick only two items at once.
-To however stick this item, unstick another before!' => 'Dosažen maximální počet připevněných položek!
+To however stick this item, unstick another before!' => 'Byl dosažen maximální počet připevněných položek!
 
 Můžete připevnit pouze dvě položky najednou.
-Chcete-li však přesto připevnit tuto položku odlepte předchozí!',
+Pokud chcete přesto tento příspěvek připevnit, odepněte předchozí.',
 );

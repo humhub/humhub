@@ -3,7 +3,7 @@ return array (
   'Created At' => 'Vytvořeno',
   'Created By' => 'Vytvořil(a)',
   'Description' => 'Popis',
-  'Join Policy' => 'Jak se lze stát členem',
+  'Join Policy' => 'Jak se lze stát členem?',
   'Ldap DN' => 'Viditelnost',
   'Name' => 'Jméno skupiny',
   'Owner' => 'Vlastník',
@@ -13,6 +13,6 @@ return array (
   'Updated by' => 'Aktualizoval(a)',
   'Visibility' => 'Viditelnost',
   'Website URL (optional)' => 'URL související webové stránky (volitelné)',
-  'You cannot create private visible spaces!' => 'Nemáte oprávnění vytvářet neveřejná místa!',
-  'You cannot create public visible spaces!' => 'Nemáte oprávnění vytvářet veřejná místa!',
+  'You cannot create private visible spaces!' => 'Nemáte oprávnění vytvářet neveřejné prostory!',
+  'You cannot create public visible spaces!' => 'Nemáte oprávnění vytvářet veřejné prostory!',
 );

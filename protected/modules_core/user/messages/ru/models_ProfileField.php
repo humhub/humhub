@@ -23,5 +23,5 @@ return array (
   'Type Config' => 'Тип конфигурации',
   'Updated at' => 'Обновлено',
   'Updated by' => 'Обновлено пользователем',
-  'Visible' => 'Видимое',
+  'Visible' => 'Отображается',
 );

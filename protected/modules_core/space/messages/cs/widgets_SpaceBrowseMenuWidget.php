@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Admin' => 'Administrátor',
+  'Admin' => 'Správce',
   'Members' => 'Členové',
   'My Space List' => '',
   'My space summary' => '',
