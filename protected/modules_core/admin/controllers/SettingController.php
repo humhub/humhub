@@ -113,6 +113,7 @@ class SettingController extends Controller
         $form->internalRequireApprovalAfterRegistration = HSetting::Get('needApproval', 'authentication_internal');
         $form->internalAllowAnonymousRegistration = HSetting::Get('anonymousRegistration', 'authentication_internal');
         $form->defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
+        $form->defaultUserIdleTimeoutSec = HSetting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'authentication-settings-form') {
             echo CActiveForm::validate($form);
@@ -128,7 +129,8 @@ class SettingController extends Controller
                 $form->internalRequireApprovalAfterRegistration = HSetting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
                 $form->internalAllowAnonymousRegistration = HSetting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
                 $form->defaultUserGroup = HSetting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
-
+                $form->defaultUserIdleTimeoutSec = HSetting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
+                
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
@@ -158,6 +160,7 @@ class SettingController extends Controller
 
         // Load Defaults
         $form->enabled = HSetting::Get('enabled', 'authentication_ldap');
+        $form->refreshUsers = HSetting::Get('refreshUsers', 'authentication_ldap');
         $form->username = HSetting::Get('username', 'authentication_ldap');
         $form->password = HSetting::Get('password', 'authentication_ldap');
         $form->hostname = HSetting::Get('hostname', 'authentication_ldap');
@@ -183,6 +186,7 @@ class SettingController extends Controller
 
             if ($form->validate()) {
                 HSetting::Set('enabled', $form->enabled, 'authentication_ldap');
+                HSetting::Set('refreshUsers', $form->refreshUsers, 'authentication_ldap');
                 HSetting::Set('hostname', $form->hostname, 'authentication_ldap');
                 HSetting::Set('port', $form->port, 'authentication_ldap');
                 HSetting::Set('encryption', $form->encryption, 'authentication_ldap');
