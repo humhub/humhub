@@ -116,14 +116,17 @@ class HHtml extends CHtml
     /**
      * Creates a Time Ago compat stamp
      *
-     * @param type $timestamp
-     * @return type
+     * @param mixed $timestamp Unixtime or datetime
+     * @return String Timeago span
      */
     public static function timeago($timestamp)
     {
         if (is_numeric($timestamp)) {
             $timestamp = date('Y-m-d H:i:s', $timestamp);
         }
+
+        // Convert timestamp to ISO 8601 
+        $timestamp = date("c", strtotime($timestamp));
 
         Yii::app()->clientScript->registerScript('timeago', '$(".time").timeago();');
         return '<span class="time" title="' . $timestamp . '">' . $timestamp . '</span>';
@@ -185,7 +188,7 @@ class HHtml extends CHtml
     public static function enrichText($text)
     {
 
-        
+
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
@@ -199,8 +202,8 @@ class HHtml extends CHtml
                     return $oembed;
                 }
             }
-            
-            return HHtml::link($match[1], $match[1], array('target' => '_blank')).$match[2];
+
+            return HHtml::link($match[1], $match[1], array('target' => '_blank')) . $match[2];
         }, $text);
 
         // get user and space details from guids
@@ -251,7 +254,7 @@ class HHtml extends CHtml
     public static function translateEmojis($text, $show = true)
     {
         $emojis = array('Ambivalent', 'Angry', 'Confused', 'Cool', 'Frown', 'Gasp', 'Grin', 'Heart', 'Hearteyes', 'Laughing', 'Naughty', 'Slant', 'Smile', 'Wink', 'Yuck');
-        
+
         return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {

@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Fetch/Update Users Automatically' => '',
   'Base DN' => '基于DN',
   'Enable LDAP Support' => '生效LDAP支持',
   'Encryption' => '加密',

@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Text area field options' => 'Možnosti textového pole',
+  'Text area field options' => 'Nastavení pole Textové pole',
 );

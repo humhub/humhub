@@ -5,5 +5,5 @@ return array (
   'Default space' => 'Espacio por defecto',
   'Invalid space' => 'Espacio no válido',
   'Name of the application' => 'Nombre de la aplicación',
-  'Show introduction tour for new users' => 'Mostrar guía de introduccion a los nuevos usuarios',
+  'Show introduction tour for new users' => 'Mostrar guía de introducción a los nuevos usuarios',
 );

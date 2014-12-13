@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Updated :timeago' => 'Aktualizoval :timeago',
-  'in' => 'v',
+  'Updated :timeago' => 'změněno :timeago',
+  'in' => 'v prostoru',
 );

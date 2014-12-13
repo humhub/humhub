@@ -1,6 +1,6 @@
 <?php
 return array (
   'Create new space' => 'Vytvořit nový prostor',
-  'My spaces' => 'Moje prostory',
+  'My spaces' => 'Mé prostory',
   'Search' => 'Hledat',
 );

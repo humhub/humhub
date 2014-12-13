@@ -31,6 +31,6 @@ return array (
   'Updated at' => '',
   'Updated by' => '',
   'Username' => '',
-  'Username must consist of letters, numbers and spaces only' => '',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
   'Wall' => '',
 );

@@ -45,7 +45,7 @@
                 array(
                     'class' => 'CButtonColumn',
                     'template' => '{view}{update}{deleteOwn}',
-                    'viewButtonUrl' => 'Yii::app()->createUrl("//user/profile", array("guid"=>$data->guid));',
+                    'viewButtonUrl' => 'Yii::app()->createUrl("//user/profile", array("uguid"=>$data->guid));',
                     'updateButtonUrl' => 'Yii::app()->createUrl("//admin/user/edit", array("id"=>$data->id));',
                     'htmlOptions' => array('width' => '90px'),
                     'buttons' => array

@@ -3,5 +3,5 @@ return array (
   '<strong>Group</strong> stats' => '<strong>Statistiky</strong> skupin',
   'Average members' => 'Průměrně členů',
   'Top Group' => 'Top skupina',
-  'Total groups' => 'Celkově skupin',
+  'Total groups' => 'Skupin celkem',
 );

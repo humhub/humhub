@@ -7,7 +7,7 @@ return array (
   'General' => 'Obecné',
   'ID' => 'ID',
   'Module' => 'Modul',
-  'Social bookmarks' => 'Záložky na sociálních sítích',
+  'Social bookmarks' => 'Sociální sítě',
   'Sort order' => 'Pořadí',
   'Title' => 'Název',
   'Translation Category ID' => 'Překlad ID kategorie',
