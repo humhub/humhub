@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>New</strong> member request' => '<strong>Nová</strong> žádost člena',
+  '<strong>New</strong> member request' => '<strong>Nová</strong> žádost o členství',
   '<strong>Space</strong> members' => '<strong>Členové</strong> prostoru',
   'Accept invite' => 'Přijmout pozvání',
   'Become member' => 'Stát se členem',
@@ -10,5 +10,5 @@ return array (
   'Invite' => 'Pozvat',
   'Leave space' => 'Opustit prostor',
   'Request membership' => 'Požádat o členství',
-  'Unfollow' => 'Nesledovat',
+  'Unfollow' => 'Přestat sledovat',
 );

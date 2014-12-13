@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Permalink</strong> to this post' => '<strong>Permanentní</strong> odkaz na tento příspěvek',
+  '<strong>Permalink</strong> to this post' => '<strong>Odkaz</strong> na tento příspěvek',
   'Close' => 'Zavřít',
   'Permalink' => 'Odkaz',
 );

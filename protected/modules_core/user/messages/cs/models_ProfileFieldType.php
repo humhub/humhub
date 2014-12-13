@@ -1,9 +1,9 @@
 <?php
 return array (
   'Birthday' => 'Datum narození',
-  'Datetime' => 'Datum a čas',
+  'Datetime' => 'Datum/čas',
   'Number' => 'Číslo',
-  'Select List' => 'Seznam výběru',
+  'Select List' => 'Seznam možností',
   'Text' => 'Text',
   'Text Area' => 'Textové pole',
 );

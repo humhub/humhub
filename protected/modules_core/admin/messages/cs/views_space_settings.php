@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Space</strong> Settings' => '<strong>Nastavení</strong> míst',
+  '<strong>Space</strong> Settings' => '<strong>Nastavení</strong> prostorů',
   'Save' => 'Uložit',
 );

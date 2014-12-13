@@ -2,10 +2,10 @@
 return array (
   'Default Space' => 'Výchozí prostor',
   'Description' => 'Popis',
-  'Group Administrators' => 'Administrátoři skupiny',
+  'Group Administrators' => 'Správci skupiny',
   'ID' => 'ID',
-  'LDAP DN' => '',
-  'Members can create private spaces' => 'Členové mohou vytvořit soukromý prostor',
-  'Members can create public spaces' => 'Členové mohou vytvořit veřejný prostor',
+  'LDAP DN' => 'Rozlišovací jméno LDAP',
+  'Members can create private spaces' => 'Členové mohou vytvářet neveřejné prostory',
+  'Members can create public spaces' => 'Členové mohou vytvářet veřejné prostory',
   'Name' => 'Název',
 );

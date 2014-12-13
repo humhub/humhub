@@ -14,7 +14,7 @@ return array (
   'Modules' => 'Moduly',
   'OEmbed Provider' => 'OEmbed ověřování',
   'Security & Roles' => 'Zabezpečení a role',
-  'Self test & update' => 'Samotestování & aktualizace',
+  'Self test & update' => 'Vnitřní diagnostika & aktualizace',
   'Settings' => 'Nastavení',
   'Spaces' => 'Prostory',
   'Statistics' => 'Statistiky',

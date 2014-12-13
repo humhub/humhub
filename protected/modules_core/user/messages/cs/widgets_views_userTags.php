@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>User</strong> tags' => '<strong>Uživatelské</strong> štítky',
+  '<strong>User</strong> tags' => '<strong>Štítky</strong> uživatele',
 );
