@@ -554,6 +554,51 @@ class SettingController extends Controller
     }
 
     /**
+     * Proxy Settings
+     */
+    public function actionProxy()
+    {
+        Yii::import('admin.forms.*');
+
+        $form = new ProxySettingsForm;
+
+        // uncomment the following code to enable ajax-based validation
+/*        if (isset($_POST['ajax']) && $_POST['ajax'] === 'design-settings-form') {
+            echo CActiveForm::validate($form);
+            Yii::app()->end();
+        }*/
+
+        if (isset($_POST['ProxySettingsForm'])) {
+            $_POST['ProxySettingsForm'] = Yii::app()->input->stripClean($_POST['ProxySettingsForm']);
+            $form->attributes = $_POST['ProxySettingsForm'];
+
+            if ($form->validate()) {
+
+                HSetting::Set('enabled', $form->enabled, 'proxy');
+                HSetting::Set('server', $form->server, 'proxy');
+                HSetting::Set('port', $form->port, 'proxy');
+                HSetting::Set('user', $form->user, 'proxy');
+                HSetting::Set('password', $form->password, 'proxy');
+                HSetting::Set('noproxy', $form->noproxy, 'proxy');
+
+                // set flash message
+                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_ProxyController', 'Saved'));
+
+                $this->redirect(Yii::app()->createUrl('//admin/setting/proxy'));
+            }
+        } else {
+            $form->enabled = HSetting::Get('enabled', 'proxy');
+            $form->server = HSetting::Get('server', 'proxy');
+            $form->port = HSetting::Get('port', 'proxy');
+            $form->user = HSetting::Get('user', 'proxy');
+            $form->password = HSetting::Get('password', 'proxy');
+            $form->noproxy = HSetting::Get('noproxy', 'proxy');
+        }
+
+        $this->render('proxy', array('model' => $form));
+    }
+
+    /**
      * List of OEmbed Providers
      */
     public function actionOEmbed()

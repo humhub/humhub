@@ -8,6 +8,9 @@ class ProxySettingsForm extends CFormModel {
     public $enabled;
     public $server;
     public $port;
+    public $user;
+    public $password;
+    public $noproxy;
 
     /**
      * Declares the validation rules.
@@ -15,8 +18,8 @@ class ProxySettingsForm extends CFormModel {
     public function rules() {
 
         return array(
-            array('enabled, server', 'length', 'max'=>255),
-            array('port', 'numerical', 'integerOnly' => true, 'max'=>65535, 'min'=>0),
+            array('enabled, server, user, password, noproxy', 'length', 'max'=>255),
+            array('port', 'numerical', 'integerOnly' => true, 'max'=>65535, 'min'=>1),
         );
     }
 
@@ -30,6 +33,9 @@ class ProxySettingsForm extends CFormModel {
             'enabled' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Enabled'),
             'server' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Server'),
             'port' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Port'),
+            'user' => Yii::t('AdminModule.forms_ProxySettingsForm', 'User'),
+            'password' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Password'),
+            'noproxy' => Yii::t('AdminModule.forms_ProxySettingsForm', 'No Proxy Hosts'),
         );
     }
 
