@@ -216,11 +216,27 @@ class OnlineModuleManager
 
     private function getCurlOptions()
     {
-        return array(
+        $options = array(
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_CAINFO => Yii::getPathOfAlias('application.config.ssl_certs') . DIRECTORY_SEPARATOR . 'humhub.crt'
         );
+
+        if (HSetting::Get('enabled', 'proxy')) {
+            $options[CURLOPT_PROXY] = HSetting::Get('server', 'proxy');
+            $options[CURLOPT_PROXYPORT] = HSetting::Get('port', 'proxy');
+            if (defined('CURLOPT_PROXYUSERNAME')) {
+                $options[CURLOPT_PROXYUSERNAME] = HSetting::Get('user', 'proxy');
+            }
+            if (defined('CURLOPT_PROXYPASSWORD')) {
+                $options[CURLOPT_PROXYPASSWORD] = HSetting::Get('pass', 'proxy');
+            }
+            if (defined('CURLOPT_NOPROXY')) {
+                $options[CURLOPT_NOPROXY] = HSetting::Get('noproxy', 'proxy');
+            }
+        }
+
+        return $options;
     }
 
 }

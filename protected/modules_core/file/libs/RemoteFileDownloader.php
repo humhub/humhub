@@ -58,6 +58,20 @@ class RemoteFileDownloader
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
                 curl_setopt($ch, CURLOPT_HEADER, true);
 
+                if (HSetting::Get('enabled', 'proxy')) {
+                    curl_setopt($ch, CURLOPT_PROXY, HSetting::Get('server', 'proxy'));
+                    curl_setopt($ch, CURLOPT_PROXYPORT, HSetting::Get('port', 'proxy'));
+                    if (defined('CURLOPT_PROXYUSERNAME')) {
+                        curl_setopt($ch, CURLOPT_PROXYUSERNAME, HSetting::Get('user', 'proxy'));
+                    }
+                    if (defined('CURLOPT_PROXYPASSWORD')) {
+                        curl_setopt($ch, CURLOPT_PROXYPASSWORD, HSetting::Get('pass', 'proxy'));
+                    }
+                    if (defined('CURLOPT_NOPROXY')) {
+                        curl_setopt($ch, CURLOPT_NOPROXY, HSetting::Get('noproxy', 'proxy'));
+                    }
+                }
+
                 $ret = curl_exec($ch);
                 $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
                 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
