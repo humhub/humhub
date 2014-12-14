@@ -158,7 +158,7 @@ class Profile extends HActiveRecord
 
                 }
                 // Dont allow editing of ldap syned fields - will be overwritten on next ldap sync.
-                if ($this->user->auth_mode == User::AUTH_MODE_LDAP && $profileField->ldap_attribute != "") {
+                if ($this->user !== null && $this->user->auth_mode == User::AUTH_MODE_LDAP && $profileField->ldap_attribute != "") {
                     $profileField->editable = false;
                 }
 
