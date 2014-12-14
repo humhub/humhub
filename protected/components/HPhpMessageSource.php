@@ -106,7 +106,7 @@ class HPhpMessageSource extends CPhpMessageSource {
             } else 
                 $messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.php';
         }
-        if (Yii::app()->theme && Yii::app()->theme != "") {
+        if (is_object(Yii::app()->theme)) {
         	$this->_files[$category][$language] = Yii::app()->theme->getMessageFile($messageFile);
         }
         else {
