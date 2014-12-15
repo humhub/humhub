@@ -58,6 +58,21 @@
                        href="<?php echo Yii::app()->createUrl('//user/account/cropBannerImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
+                    <?php
+                    $this->widget('application.widgets.ModalConfirmWidget', array(
+                                  'uniqueID' => 'modal_bannerimagedelete',
+                                  'linkOutput' => 'a',
+                                  'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
+                                  'message' => Yii::t('UserModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
+                                  'buttonTrue' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete'),
+                                  'buttonFalse' => Yii::t('UserModule.widgets_views_deleteBanner', 'Cancel'),
+                                  'linkContent' => '<i class="fa fa-times"></i>',
+                                  'class' => 'btn btn-danger btn-sm',
+                                  'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
+                                  'linkHref' => $this->createUrl("//user/account/deleteProfileImage", array('type' => 'banner')),
+                                  'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                                 )); 
+                    ?>
                 </div>
 
             <?php } ?>
@@ -100,6 +115,21 @@
                        href="<?php echo Yii::app()->createUrl('//user/account/cropProfileImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
+                    <?php
+                    $this->widget('application.widgets.ModalConfirmWidget', array(
+                                  'uniqueID' => 'modal_profileimagedelete',
+                                  'linkOutput' => 'a',
+                                  'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
+                                  'message' => Yii::t('UserModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
+                                  'buttonTrue' => Yii::t('UserModule.widgets_views_deleteImage', 'Delete'),
+                                  'buttonFalse' => Yii::t('UserModule.widgets_views_deleteImage', 'Cancel'),
+                                  'linkContent' => '<i class="fa fa-times"></i>',
+                                  'class' => 'btn btn-danger btn-sm',
+                                  'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
+                                  'linkHref' => $this->createUrl("//user/account/deleteProfileImage", array('type' => 'profile')),
+                                  'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                                 )); 
+                    ?>
                 </div>
             <?php } ?>
 
