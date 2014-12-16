@@ -149,6 +149,10 @@ class ConsoleUser extends CApplicationComponent implements IWebUser {
     function getAuthTimeout() {
     	return HSetting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
     }
+    
+    function setAuthTimeout() {
+    	return true;
+    }
 }
 
 ?>
