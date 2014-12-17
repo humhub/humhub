@@ -15,6 +15,7 @@
     	<?php echo Yii::t('UserModule.views_account_changeEmail', '<strong>Current E-mail address</strong>'); ?>
     	<br /><?php echo Yii::app()->user->getModel()->email ?>
     </div>
+    <hr/>
     <div class="form-group">
         <?php echo $form->labelEx($model, 'currentPassword'); ?>
         <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 45)); ?>
