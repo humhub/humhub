@@ -21,10 +21,10 @@ class ShowFilesWidget extends HWidget
     {
         $files = File::getFilesOfObject($this->object);
         $this->render('showFiles', array('files' => $files, 
-        								'maxPreviewImageWidth' => HSetting::Get('maxPreviewImageWidth', 'file'),
-        								'maxPreviewImageHeight' => HSetting::Get('maxPreviewImageHeight', 'file'),
-        								'hideImageFileInfo' => HSetting::Get('hideImageFileInfo', 'file')
-        			));
+        		'maxPreviewImageWidth' => HSetting::Get('maxPreviewImageWidth', 'file'),
+        		'maxPreviewImageHeight' => HSetting::Get('maxPreviewImageHeight', 'file'),
+        		'hideImageFileInfo' => HSetting::Get('hideImageFileInfo', 'file')
+        ));
     }
 
 }
