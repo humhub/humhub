@@ -504,6 +504,9 @@ class SettingController extends Controller
         $form = new FileSettingsForm;
         $form->imageMagickPath = HSetting::Get('imageMagickPath', 'file');
         $form->maxFileSize = HSetting::Get('maxFileSize', 'file') / 1024 / 1024;
+        $form->maxPreviewImageWidth = HSetting::Get('maxPreviewImageWidth', 'file');
+        $form->maxPreviewImageHeight = HSetting::Get('maxPreviewImageHeight', 'file');
+        $form->hideImageFileInfo = HSetting::Get('hideImageFileInfo', 'file');
         $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
         $form->allowedExtensions = HSetting::Get('allowedExtensions', 'file');
 
@@ -520,6 +523,9 @@ class SettingController extends Controller
             if ($form->validate()) {
                 $form->imageMagickPath = HSetting::Set('imageMagickPath', $form->imageMagickPath, 'file');
                 $form->maxFileSize = HSetting::Set('maxFileSize', $form->maxFileSize * 1024 * 1024, 'file');
+                $form->maxPreviewImageWidth = HSetting::Set('maxPreviewImageWidth', $form->maxPreviewImageWidth, 'file');
+                $form->maxPreviewImageHeight = HSetting::Set('maxPreviewImageHeight', $form->maxPreviewImageHeight, 'file');
+                $form->hideImageFileInfo = HSetting::Set('hideImageFileInfo', $form->hideImageFileInfo, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
                 $form->allowedExtensions = HSetting::Set('allowedExtensions', strtolower($form->allowedExtensions), 'file');
 

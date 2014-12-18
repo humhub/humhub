@@ -32,7 +32,28 @@
                 </label>
             </div>
         </div>
-
+        
+		<div class="form-group">
+            <?php echo $form->labelEx($model, 'maxPreviewImageWidth'); ?>
+            <?php echo $form->textField($model, 'maxPreviewImageWidth', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxPreviewImageWidth', 'file'))); ?>
+        	<p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'If not set, width will default to 200px.') ?></p>
+        </div>
+        
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'maxPreviewImageHeight'); ?>
+            <?php echo $form->textField($model, 'maxPreviewImageHeight', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxPreviewImageHeight', 'file'))); ?>
+        	     	<p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'If not set, height will default to 200px.') ?></p>
+        </div>
+        
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($model, 'hideImageFileInfo', array('disabled' => HSetting::IsFixed('hideImageFileInfo', 'file'))); ?>
+                    <?php echo $model->getAttributeLabel('hideImageFileInfo'); ?>
+                </label>
+            </div>
+        </div>
+        
         <div class="form-group">
             <?php echo $form->labelEx($model, 'allowedExtensions'); ?>
             <?php echo $form->textField($model, 'allowedExtensions', array('class' => 'form-control')); ?>
