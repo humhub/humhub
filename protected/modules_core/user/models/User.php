@@ -143,7 +143,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 array('email', 'email'),
                 array('group_id', 'numerical'),
                 array('email', 'unique', 'caseSensitive' => false, 'className' => 'User'),
-                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß ]/', 'message' => Yii::t('UserModule.models_User', 'Username must consist of letters, numbers and spaces only')),
+                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß\+\-\._ ]/', 'message' => Yii::t('UserModule.models_User', 'Username can contain only letters, numbers, spaces and special characters (+-._)')),
+                array('username', 'length', 'max' => 25, 'min' => 4),
             );
         }
 
@@ -154,7 +155,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $rules[] = array('username', 'unique', 'caseSensitive' => false, 'className' => 'User');
         $rules[] = array('email', 'unique', 'caseSensitive' => false, 'className' => 'User');
         $rules[] = array('email,tags', 'length', 'max' => 100);
-        $rules[] = array('username', 'length', 'max' => 25);
+        $rules[] = array('username', 'length', 'max' => 25, 'min' => 4);
         $rules[] = array('language', 'length', 'max' => 5);
         $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email, last_login', 'safe');
@@ -196,7 +197,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'tags' => Yii::t('UserModule.models_User', 'Tags'),
             'auth_mode' => Yii::t('UserModule.models_User', 'Authentication mode'),
             'language' => Yii::t('UserModule.models_User', 'Language'),
-
             'created_at' => Yii::t('UserModule.models_User', 'Created At'),
             'created_by' => Yii::t('UserModule.models_User', 'Created by'),
             'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
@@ -415,6 +415,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         HSearch::getInstance()->deleteModel($this);
 
+        // Delete user session
+        UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
+        
         // Delete Profile Image
         $this->getProfileImage()->delete();
 
@@ -429,6 +432,9 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         // Delete wall entries
         WallEntry::model()->deleteAllByAttributes(array('wall_id' => $this->wall_id));
+
+        // Delete user profile
+        Profile::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
         // Deletes all content created by this user
         foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
@@ -585,11 +591,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
         $format = HSetting::Get('displayNameFormat');
 
         if ($format == '{profile.firstname} {profile.lastname}')
-            $name = $this->profile->firstname . " " . $this->profile->lastname;
+            $name = CHtml::encode($this->profile->firstname . " " . $this->profile->lastname);
 
         // Return always username as fallback
         if ($name == '')
-            return $this->username;
+            return CHtml::encode($this->username);
 
         return $name;
     }

@@ -85,7 +85,7 @@ class Controller extends EController
 
         // Temporary force set the system timezone to avoid php 5.5+ warnings until we create an admin/config option for that
         date_default_timezone_set(@date_default_timezone_get());
-        
+
         return parent::init();
     }
 
@@ -217,6 +217,32 @@ class Controller extends EController
     public function setPageTitle($value)
     {
         $this->_pageTitle = $value;
+    }
+
+    public function getViewFile($viewName)
+    {
+
+        // Adds simple themeing support to console applications
+        if (Yii::app() instanceof CConsoleApplication) {
+            if (Yii::app()->theme && Yii::app()->theme != "") {
+                $themeName = Yii::app()->theme;
+
+                if (strpos($viewName, '.')) {
+                    // Replace application.modules[_core].MODULEID.widgets.views
+                    //      in
+                    //          webroot.themes.CURRENTTHEME.views.MODULEID.widgets
+                    $viewNameTheme = $viewName;
+                    $viewNameTheme = str_replace('application.views.', 'webroot.themes.' . $themeName . '.views.', $viewNameTheme);
+                    $viewNameTheme = preg_replace('/application\.modules(?:_core)?\.(.*?)\.views\.(.*)/i', 'webroot.themes.' . $themeName . '.views.\1.\2', $viewNameTheme);
+                    $viewFile = Yii::getPathOfAlias($viewNameTheme);
+                    if (is_file($viewFile . '.php')) {
+                        return Yii::app()->findLocalizedFile($viewFile . '.php');
+                    }
+                }
+            }
+        }
+
+        return parent::getViewFile($viewName);
     }
 
 }

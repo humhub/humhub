@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Possible values' => '',
   'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '每行一个选项。关键词＝>值格式（例如 是= >是）',
   'Please select:' => '请选择：',
   'Select field options' => '选择区域选项',

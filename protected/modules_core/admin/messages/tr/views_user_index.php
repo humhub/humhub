@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Add new user' => 'Yeni kullanıcı ekle',
+  'Overview' => 'Genel Bakış',
   '<strong>Manage</strong> users' => '<strong>Kullanıcıları</strong> yönet',
   'Admin' => 'Yönetici',
   'All' => 'Hepsi',

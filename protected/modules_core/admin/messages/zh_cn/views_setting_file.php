@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '(comma separated)' => '(逗号分隔)',
+  'Comma separated list. Leave empty to allow all.' => '',
   '<strong>File</strong> settings' => '<strong>文件</strong> 设置',
   'Current Image Libary: {currentImageLibary}' => '当前图片库：{currentImageLibary}',
   'PHP reported a maximum of {maxUploadSize} MB' => 'PHP最大上传大小 {maxUploadSize} MB',

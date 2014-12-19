@@ -2,7 +2,7 @@
 
 <?php echo Yii::t('LikeModule.views_notifications_newLike', "%displayName% likes %contentTitle%.", array(
     '%displayName%' => '<strong>' . $creator->displayName . '</strong>',
-    '%contentTitle%' => $targetObject->getContentTitle()
+    '%contentTitle%' => NotificationModule::formatOutput($targetObject->getContentTitle())
 ));
 ?>
 <?php $this->endContent(); ?>

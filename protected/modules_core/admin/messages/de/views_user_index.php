@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Add new user' => 'Neuen Benutzer hinzufügen',
+  'Overview' => 'Übersicht',
   '<strong>Manage</strong> users' => '<strong>Verwaltung</strong> der Benutzer',
   'Admin' => 'Administrator',
   'All' => 'Alle',

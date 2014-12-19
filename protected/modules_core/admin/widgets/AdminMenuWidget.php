@@ -189,6 +189,15 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Proxy'),
+            'url' => Yii::app()->createUrl('admin/setting/proxy'),
+            'icon' => '<i class="fa fa-sitemap"></i>',
+            'group' => 'settings',
+            'sortOrder' => 800,
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'proxy'),
+            'isVisible' => Yii::app()->user->isAdmin(),
+        ));
+        $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
             'url' => Yii::app()->createUrl('admin/setting/statistic'),
             'icon' => '<i class="fa fa-bar-chart-o"></i>',

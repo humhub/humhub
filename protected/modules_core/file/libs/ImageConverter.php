@@ -24,7 +24,8 @@
  * @package humhub.modules_core.file.libs
  * @since 0.5
  */
-class ImageConverter {
+class ImageConverter
+{
 
     /**
      * Transforms given File to Jpeg
@@ -33,11 +34,12 @@ class ImageConverter {
      * @param String $targetFile
      * @param String $originalFileName (provide this when sourceFile has no extension e.g. tempfile)
      */
-    public static function TransformToJpeg($sourceFile, $targetFile) {
+    public static function TransformToJpeg($sourceFile, $targetFile)
+    {
 
         if (HSetting::Get('imageMagickPath', 'file')) {
             $convertCommand = HSetting::Get('imageMagickPath', 'file');
-            $command = $convertCommand . " {$sourceFile} {$targetFile}";
+            $command = $convertCommand . " \"{$sourceFile}\" \"{$targetFile}\"";
             $ret = passthru($command);
         } else {
             $gdImage = self::getGDImageByFile($sourceFile);
@@ -62,7 +64,8 @@ class ImageConverter {
      * @param String $targetFile
      * @param Array $options
      */
-    public static function Resize($sourceFile, $targetFile, $options = array()) {
+    public static function Resize($sourceFile, $targetFile, $options = array())
+    {
 
         if (!isset($options['width']))
             $options['width'] = 0;
@@ -87,7 +90,8 @@ class ImageConverter {
      * @param type $targetFile
      * @param type $options
      */
-    private static function ResizeGD($sourceFile, $targetFile, $options = array()) {
+    private static function ResizeGD($sourceFile, $targetFile, $options = array())
+    {
 
         $width = $options['width'];
         $height = $options['height'];
@@ -232,7 +236,8 @@ class ImageConverter {
      * @param type $targetFile
      * @param type $options
      */
-    private static function ResizeImageMagick($sourceFile, $targetFile, $options = array()) {
+    private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
+    {
         $convertCommand = HSetting::Get('imageMagickPath', 'file');
         $width = (int) $options['width'];
         $height = (int) $options['height'];
@@ -240,15 +245,15 @@ class ImageConverter {
         if ($options['mode'] == 'max') {
 
             if ($width && $height)
-                $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize '{$width}x{$height}>' {$targetFile}";
+                $command = $convertCommand . "  -quality 100 -density 300 \"{$sourceFile}\" -resize '{$width}x{$height}>' \"{$targetFile}\"";
             elseif ($width)
-                $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize '{$width}x>' {$targetFile}";
+                $command = $convertCommand . "  -quality 100 -density 300 \"{$sourceFile}\" -resize '{$width}x>' \"{$targetFile}\"";
             elseif ($height)
-                $command = $convertCommand . "  -quality 100 -density 300 {$sourceFile} -resize 'x{$height}>' {$targetFile}";
+                $command = $convertCommand . "  -quality 100 -density 300 \"{$sourceFile}\" -resize 'x{$height}>' \"{$targetFile}\"";
 
             $ret = passthru($command);
         } elseif ($options['mode'] == 'force') {
-            $command = $convertCommand . " {$sourceFile} -gravity center -quality 100 -resize {$width}x{$height}^ -extent {$width}x{$height}  {$targetFile}";
+            $command = $convertCommand . " \"{$sourceFile}\" -gravity center -quality 100 -resize {$width}x{$height}^ -extent {$width}x{$height}  \"{$targetFile}\"";
             $ret = passthru($command);
         }
     }
@@ -259,7 +264,8 @@ class ImageConverter {
      * @param String $fileName
      * @return resource GD Image
      */
-    public static function getGDImageByFile($fileName) {
+    public static function getGDImageByFile($fileName)
+    {
 
         list($width, $height, $imageType) = getimagesize($fileName);
 

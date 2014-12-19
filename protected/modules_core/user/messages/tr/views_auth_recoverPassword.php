@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Password</strong> recovery' => '',
-  'Back' => '',
-  'Get new password' => '',
-  'Just enter your e-mail address. We´ll send you a new one!' => '',
-  'enter security code above' => '',
-  'your email' => '',
+  '<strong>Password</strong> recovery' => 'Şifre Kurtarma',
+  'Back' => 'Geri',
+  'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
+  'Reset password' => '',
+  'enter security code above' => 'Yeni Şifre',
+  'your email' => 'E-posta Adresin',
 );

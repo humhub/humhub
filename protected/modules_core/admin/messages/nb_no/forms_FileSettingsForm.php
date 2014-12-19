@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Allowed file extensions' => '',
   'Convert command not found!' => '',
-  'Forbidden file extensions' => '',
   'Got invalid image magick response! - Correct command?' => '',
   'Image Magick convert command (optional)' => '',
   'Maximum upload file size (in MB)' => '',

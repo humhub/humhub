@@ -17,12 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Authentication mode' => '',
+  'ID' => '',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
   'Created At' => '创建时间',
   'Created by' => '创建人',
   'Email' => '电子邮件',
   'Group' => '组',
   'Guid' => '组用户ID',
-  'ID' => '',
   'Invalid language!' => '无效的语言',
   'Language' => '语言',
   'New user needs approval' => '新用户需要审核',
@@ -30,6 +32,5 @@ return array (
   'Updated at' => '修改时间',
   'Updated by' => '修改人',
   'Username' => '用户名',
-  'Username must consist of letters, numbers and spaces only' => '用户名必须包含字母，数字',
   'Wall' => '墙',
 );

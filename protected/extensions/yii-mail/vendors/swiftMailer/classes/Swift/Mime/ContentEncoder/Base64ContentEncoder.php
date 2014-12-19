@@ -8,74 +8,60 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Mime/ContentEncoder.php';
-//@require 'Swift/Encoder/Base64Encoder.php';
-//@require 'Swift/InputByteStream.php';
-//@require 'Swift/OutputByteStream.php';
-
 /**
  * Handles Base 64 Transfer Encoding in Swift Mailer.
- * @package Swift
- * @subpackage Mime
- * @author Chris Corbyn
+ *
+ * @author     Chris Corbyn
  */
-class Swift_Mime_ContentEncoder_Base64ContentEncoder
-  extends Swift_Encoder_Base64Encoder
-  implements Swift_Mime_ContentEncoder
+class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base64Encoder implements Swift_Mime_ContentEncoder
 {
-  
-  /**
-   * Encode stream $in to stream $out.
-   * @param Swift_OutputByteStream $in
-   * @param Swift_InputByteStream $out
-   * @param int $firstLineOffset
-   * @param int $maxLineLength, optional, 0 indicates the default of 76 bytes
-   */
-  public function encodeByteStream(
-    Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0,
-    $maxLineLength = 0)
-  {
-    if (0 >= $maxLineLength || 76 < $maxLineLength)
+    /**
+     * Encode stream $in to stream $out.
+     *
+     * @param Swift_OutputByteStream $os
+     * @param Swift_InputByteStream  $is
+     * @param int                    $firstLineOffset
+     * @param int                    $maxLineLength,  optional, 0 indicates the default of 76 bytes
+     */
+    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0)
     {
-      $maxLineLength = 76;
-    }
-    
-    $remainder = 0;
-    
-    while (false !== $bytes = $os->read(8190))
-    {
-      $encoded = base64_encode($bytes);
-      $encodedTransformed = '';
-      $thisMaxLineLength = $maxLineLength - $remainder - $firstLineOffset;
-      
-      while ($thisMaxLineLength < strlen($encoded))
-      {
-        $encodedTransformed .= substr($encoded, 0, $thisMaxLineLength) . "\r\n";
-        $firstLineOffset = 0;
-        $encoded = substr($encoded, $thisMaxLineLength);
-        $thisMaxLineLength = $maxLineLength;
+        if (0 >= $maxLineLength || 76 < $maxLineLength) {
+            $maxLineLength = 76;
+        }
+
         $remainder = 0;
-      }
-      
-      if (0 < $remainingLength = strlen($encoded))
-      {
-        $remainder += $remainingLength;
-        $encodedTransformed .= $encoded;
-        $encoded = null;
-      }
-      
-      $is->write($encodedTransformed);
+
+        while (false !== $bytes = $os->read(8190)) {
+            $encoded = base64_encode($bytes);
+            $encodedTransformed = '';
+            $thisMaxLineLength = $maxLineLength - $remainder - $firstLineOffset;
+
+            while ($thisMaxLineLength < strlen($encoded)) {
+                $encodedTransformed .= substr($encoded, 0, $thisMaxLineLength)."\r\n";
+                $firstLineOffset = 0;
+                $encoded = substr($encoded, $thisMaxLineLength);
+                $thisMaxLineLength = $maxLineLength;
+                $remainder = 0;
+            }
+
+            if (0 < $remainingLength = strlen($encoded)) {
+                $remainder += $remainingLength;
+                $encodedTransformed .= $encoded;
+                $encoded = null;
+            }
+
+            $is->write($encodedTransformed);
+        }
     }
-  }
-  
-  /**
-   * Get the name of this encoding scheme.
-   * Returns the string 'base64'.
-   * @return string
-   */
-  public function getName()
-  {
-    return 'base64';
-  }
-  
+
+    /**
+     * Get the name of this encoding scheme.
+     * Returns the string 'base64'.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'base64';
+    }
 }

@@ -202,7 +202,7 @@
 
 
     <hr>
-    <?php echo CHtml::submitButton("Save", array('class' => 'btn btn-primary')); ?>
+    <?php echo CHtml::submitButton(Yii::t('SpaceModule.views_admin_members', "Save"), array('class' => 'btn btn-primary')); ?>
 
     <!-- show flash message after saving -->
     <?php $this->widget('application.widgets.DataSavedWidget'); ?>

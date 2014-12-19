@@ -4,7 +4,13 @@ Installation
 1. Grab the source and put them somewhere into htdocs, either
   - `git clone https://github.com/humhub/humhub.git` (__recommended__, for this you need git, obviously)
   - or download <https://github.com/humhub/humhub/archive/master.zip>
-2. Create an empty mysql database
+2. Create an empty mysql database (utf8) e.g.
+  ```sql
+  CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
+  GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_changeme';
+  FLUSH PRIVILEGES;
+  
+  ```
 3. Make following directories/files writable by webserver
     - /assets
     - /protected/runtime

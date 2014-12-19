@@ -20,5 +20,4 @@ return array (
   '<strong>Manage</strong> profiles fields' => '',
   'Add new category' => '',
   'Add new field' => '',
-  '<strong>Manage</strong> user profiles' => '@@<strong>Gérer</strong> les profils Utilisateur@@',
 );

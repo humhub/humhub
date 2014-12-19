@@ -17,5 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Default value' => '',
+  'Maximum length' => '',
+  'Minimum length' => '',
+  'Regular Expression: Error message' => '',
+  'Regular Expression: Validator' => '',
+  'Validator' => '',
   'Text Field Options' => '文本类型选项',
 );

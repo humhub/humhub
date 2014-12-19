@@ -204,5 +204,19 @@ class WebUser extends CWebUser
         }
         return $this->_model;
     }
-
+	
+    /**
+     * If request is ajax, do not update auth status
+     * @override 
+     */
+    protected function updateAuthStatus()
+    {
+    	if (Yii::app()->request->isAjaxRequest)
+    		return;
+    	
+    	parent::updateAuthStatus();
+    	
+    	
+    }
+    
 }

@@ -77,8 +77,7 @@ abstract class HActiveRecord extends CActiveRecord
         if ($userId != 0) {
             //not a new record, so just set the last updated time and last updated user id
             $this->updated_at = new CDbExpression('NOW()');
-            if ($this->updated_by == "")
-                $this->updated_by = $userId;
+            $this->updated_by = $userId;
         }
 
 

@@ -2,13 +2,16 @@
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_logging_index', '<strong>Error</strong> logging'); ?></div>
     <div class="panel-body">
 
+        
         <div>
             <?php echo Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', array("{count}" => $itemCount)); ?>
-            <span
-                class="pull-right"><?php echo Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', array("{count}" => $pageSize)); ?></span>
+            
+            <span class="pull-right"><?php echo Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', array("{count}" => $pageSize)); ?></span>
         </div>
 
         <hr>
+        
+        
 
         <ul class="media-list">
             <?php foreach ($entries as $entry) : ?>
@@ -28,17 +31,21 @@
                         ?>
 
                         <h4 class="media-heading">
-                            <span class="label <?php echo $labelClass; ?>"><?php echo $entry->level; ?></span>&nbsp;
+                            <span class="label <?php echo $labelClass; ?>"><?php echo CHtml::encode($entry->level); ?></span>&nbsp;
                             <?php echo date('r', $entry->logtime); ?>&nbsp;
-                            <span class="pull-right"><?php echo $entry->category; ?></span>
+                            <span class="pull-right"><?php echo CHtml::encode($entry->category); ?></span>
                         </h4>
-                        <?php echo $entry->message; ?>
+                        <?php echo CHtml::encode($entry->message); ?>
                     </div>
                 </li>
 
             <?php endforeach; ?>
         </ul>
 
+        <?php if ($itemCount != 0): ?>
+            <div class="pull-right"><?php echo HHtml::postLink(Yii::t('AdminModule.views_logging_index', 'Flush entries'), array('flush'), array('class'=>'btn btn-danger')); ?></div>
+        <?php endif; ?>
+    
 
         <center>
             <?php

@@ -17,7 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Available updates' => '',
   'Browse online' => '',
-  'Installed' => '',
+  'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => '',
+  'Available updates' => 'Beschikbare updates',
+  'Installed' => 'Geïnstalleerd',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Administrator users' => 'Usuarios administrador',
+  'Administrator users' => 'Usuarios administradores',
   'Default space' => 'Espacio por defecto',
   'Description' => 'Descripción',
   'Invalid space' => 'Espacio no válido',

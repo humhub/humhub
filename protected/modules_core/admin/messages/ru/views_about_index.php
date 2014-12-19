@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>About</strong> HumHub' => '<strong>О</strong> HumHub',
+  '<strong>About</strong> HumHub' => '<strong>Версия</strong> HumHub',
 );

@@ -12,13 +12,13 @@
 <?php if (count($files) != 0) : ?>
 
     <!-- Show Images as Thumbnails -->
-    <div class="post-files" id="post-files-<?php echo $this->object->getPrimaryKey(); ?>">
+    <div class="post-files" id="post-files-<?php echo $this->object->getUniqueId(); ?>">
         <?php foreach ($files as $file) : ?>
             <?php if ($file->getMimeBaseType() == "image") : ?>
                 <?php
                 //Note: We need to add "#.jpeg" to the full url for image  detection of ekko lightbox.
                 ?>
-                <a data-toggle="lightbox" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                <a data-toggle="lightbox" data-gallery="<?php if (count($files) > 1) { echo "gallery-". $this->object->getUniqueId(); } ?>" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                     <img src='<?php echo $file->getPreviewImageUrl(200, 200); ?>'>
                 </a>
             <?php endif; ?>

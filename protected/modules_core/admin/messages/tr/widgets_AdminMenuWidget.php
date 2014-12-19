@@ -1,5 +1,6 @@
 <?php
 return array (
+  'OEmbed Provider' => 'OEmbed  Sağlayıcı',
   '<strong>Administration</strong> menu' => '<strong>Yönetici</strong> Menüsü',
   'About' => 'Hakkında',
   'Authentication' => 'Kimlik doğrulama',

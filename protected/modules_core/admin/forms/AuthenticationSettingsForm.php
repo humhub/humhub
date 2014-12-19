@@ -10,6 +10,7 @@ class AuthenticationSettingsForm extends CFormModel {
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
     public $defaultUserGroup;
+    public $defaultUserIdleTimeoutSec;
 
     /**
      * Declares the validation rules.
@@ -18,6 +19,8 @@ class AuthenticationSettingsForm extends CFormModel {
         return array(
             array('internalUsersCanInvite, internalAllowAnonymousRegistration, internalRequireApprovalAfterRegistration', 'safe'),
             array('defaultUserGroup', 'exist', 'attributeName' => 'id', 'className' => 'Group', 'allowEmpty' => true),
+        	array('defaultUserIdleTimeoutSec', 'numerical', 'integerOnly' => true, 'min'=>20),
+        	array('defaultUserIdleTimeoutSec', 'length', 'max' => 10)
         );
     }
 
@@ -32,6 +35,7 @@ class AuthenticationSettingsForm extends CFormModel {
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Anonymous users can register'),
             'internalUsersCanInvite' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Members can invite external users by email'),
             'defaultUserGroup' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user group for new users'),
+        	'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user idle timeout, auto-logout (in seconds, optional)'),
         );
     }
 

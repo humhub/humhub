@@ -1,0 +1,22 @@
+<?php
+return array (
+  '<strong>Most recent</strong> activities' => '<strong>Poslední</strong> aktivita',
+  '<strong>Posts</strong>' => '<strong>Příspěvky</strong>',
+  '<strong>Profile Guide</strong>' => '<strong>Průvodce profilem</strong>',
+  '<strong>Space</strong>' => '<strong>Prostor</strong>',
+  '<strong>Space</strong> info' => '<strong>Informace</strong> o prostoru',
+  '<strong>Space</strong> members' => '<strong>Členové</strong> prostoru',
+  '<strong>Space</strong> navigation menu' => '<strong>Menu</strong> prostoru',
+  '<strong>Space</strong> preferences' => '<strong>Nastavení</strong> prostoru',
+  '<strong>Writing</strong> posts' => '<strong>Psaní</strong> příspěvků',
+  '<strong>Yay! You\'re done.</strong>' => '<strong>A je to!</strong>',
+  'All users who are a member of this space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.' => 'Zde uvidíte všechny uživatele, kteří jsou členy tohoto prostoru.<br /><br />Přidat či pozvat nového uživatele může každý, kdo k tomu dostal práva od správce prostoru.',
+  'Give other useres a brief idea what the space is about. You can add the basic information here.<br /><br />The space admin can insert and change the space\'s cover photo either by clicking on it or by drag&drop.' => 'Tímto uživatelům krátce představíte, čeho se prostor týká. Můžete zde uvést základní informace.<br /><br />Přidat nebo změnit obrázek prostoru může pouze správce prostoru – buď kliknutím na obrázek nebo pomocí drag&drop.',
+  'New posts can be written and posted here.' => 'Nové příspěvky můžete psát zde.',
+  'Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive.' => 'Jakmile vstoupíte do prostoru nebo vytvoříte nový, můžete v něm pracovat na projektech, diskutovat o různých tématech nebo jen sdílet s dalšími členy prostoru zajímavé informace.<br><br>Je zde také mnoho modulů, kterými můžete prostor přizpůsobit – doplnit takové funkce, které potřebujete.',
+  'That\'s it for the space guide.<br><br>To carry on with the user profile guide, click here: ' => 'To by byl průvodce prostorem.<br><br>Pokud chcete pokračovat na průvodce uživatelským profilem, klikněte zde: ',
+  'This is where you can navigate the space – where you find which modules are active or available for the particular space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the space admin can manage the space\'s modules.' => 'Pomocí tohoto menu se pohybujete uvnitř prostoru. Jednotlivé sekce prostoru mohou být tvořené moduly, které jsou aktivní právě pro ten konkrétní prostor, ve kterém se nacházíte – např. ankety, úkoly nebo poznámky.<br><br>Spravovat tyto moduly může pouze správce prostoru.',
+  'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.' => 'Toto menu je viditelné pouze pro správce prostoru. Zde můžete měnit nastavení prostoru, přidávat/odebírat členy a zapínat/vypínat moduly pro tento prostor.',
+  'To keep you up to date, other users\' most recent activities in this space will be displayed here.' => 'Abyste byl(a) stále v obraze, uvidíte zde poslední aktivitu uživatelů tohoto prostoru.',
+  'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.' => 'Zde se budou objevovat vaše příspěvky i příspěvky ostatních uživatelů.<br><br>Ty se dají následně následně komentovat a označovat tlačítkem Líbí se mi.',
+);

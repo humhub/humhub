@@ -18,6 +18,6 @@
  */
 return array (
   '<strong>Password</strong> recovery!' => '',
-  'You\'ve got an e-mail with a new password.' => '',
+  'We’ve sent you an email containing a link that will allow you to reset your password.' => '',
   'back to home' => '',
 );

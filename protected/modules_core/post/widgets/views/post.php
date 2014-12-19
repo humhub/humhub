@@ -41,7 +41,7 @@
             // show more-button
             $('#more-link-post-<?php echo $post->id; ?>').removeClass('hidden');
             // set limited height
-            $('#post-content-<?php echo $post->id; ?>').css('max-height', '310px');
+            $('#post-content-<?php echo $post->id; ?>').css({'display': 'block', 'max-height': '310px'});
         }
     });
 

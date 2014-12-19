@@ -115,7 +115,7 @@
         <?php
         // Follow Handling
         if (!$space->isMember()) {
-            if ($space->isFollowedBy()) {
+            if ($space->isFollowedByUser()) {
                 print CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', "Unfollow"), $this->createUrl('//space/space/unfollow', array('sguid' => $space->guid)), array('class' => 'btn btn-primary'));
             } else {
                 print CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', "Follow"), $this->createUrl('//space/space/follow', array('sguid' => $space->guid)), array('class' => 'btn btn-primary'));

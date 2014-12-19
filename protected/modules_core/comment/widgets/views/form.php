@@ -28,27 +28,25 @@
         'uploaderId' => 'comment_upload_' . $id,
         'fileListFieldName' => 'fileList',
     ));
-    ?>    
+    ?>
 
     <?php
     echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
-        'beforeSend' => "function() {
-                $('#newCommentForm_" . $id . "').blur();
-                }",
-        'success' => "function(html) {
+            'type' => 'POST',
+            'success' => "function(html) {
             
             $('#comments_area_" . $id . "').html(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
-            $('#newCommentForm_" . $id . "_contenteditable').html('". Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') ."');
+            $('#newCommentForm_" . $id . "_contenteditable').html('" . Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') . "');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
             resetUploader('comment_upload_" . $id . "');
 
         }",
-            ), array(
-        'id' => "comment_create_post_" . $id,
-        'class' => 'btn btn-small btn-primary',
+        ), array(
+            'id' => "comment_create_post_" . $id,
+            'class' => 'btn btn-small btn-primary',
             'style' => 'position: absolute; left: -90000000px; opacity: 0;',
-            )
+        )
     );
     ?>
 
@@ -60,7 +58,7 @@
     $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
         'uploaderId' => 'comment_upload_' . $id,
     ));
-    ?>    
+    ?>
 </div>
 
 <script>
@@ -84,9 +82,15 @@
             // check if a submit is allowed
             if ($('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit') == 'true') {
 
-                // emulate the click event
+                // get plain input text from contenteditable DIV
+                $('#newCommentForm_<?php echo $id; ?>').val(getPlainInput($('#newCommentForm_<?php echo $id; ?>_contenteditable').clone()));
+
+                // set focus to submit button
                 $('#comment_create_post_<?php echo $id; ?>').focus();
+
+                // emulate the click event
                 $('#comment_create_post_<?php echo $id; ?>').click();
+
             }
         }
 

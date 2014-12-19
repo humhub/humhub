@@ -1,6 +1,6 @@
 <?php
 return array (
-  'As owner you cannot revoke your membership!' => 'En tant que propriétaire, vous ne pouvez révoquer votre participation !',
+  'As owner you cannot revoke your membership!' => 'En tant que propriétaire, vous ne pouvez pas révoquer votre participation !',
   'Could not request membership!' => 'Demande de participation impossible !',
   'There is no pending invite!' => 'Aucune invitation en attente !',
   'This action is only available for workspace members!' => 'Cette action n\'est disponible que pour les membres de cet espace !',

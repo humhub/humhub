@@ -126,7 +126,7 @@ class ProfileFieldCategory extends HActiveRecord
             return $this->translation_category;
         }
 
-        return "UserModule.profile";
+        return "UserModule.models_ProfileFieldCategory";
     }
 
 }

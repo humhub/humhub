@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Upload</strong> error' => 'Erro no <strong>Upload</strong>',
+  '<strong>Upload</strong> error' => 'Erro para enviar arquivo',
   'Close' => 'Fechar',
 );

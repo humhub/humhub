@@ -155,7 +155,7 @@ class Activity extends HActiveRecordContent
      */
     public function getMailOut()
     {
-        $controller = new CController('MailX');
+        $controller = new Controller('MailX');
 
         // Determine View
         $view = 'application.modules_core.activity.views.activities.' . $this->type . "_mail";

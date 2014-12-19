@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Allowed file extensions' => '',
   'Convert command not found!' => '反转命令没有找到',
-  'Forbidden file extensions' => '禁止的文件扩展名',
   'Got invalid image magick response! - Correct command?' => '有无效的图像Magick响应！正确的命令？',
   'Image Magick convert command (optional)' => '图像Magick反转命令（可选）',
   'Maximum upload file size (in MB)' => '最大上传文件大小（MB）',

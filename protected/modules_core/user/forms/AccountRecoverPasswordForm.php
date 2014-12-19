@@ -56,22 +56,22 @@ class AccountRecoverPasswordForm extends CFormModel {
     public function recoverPassword() {
 
         $user = User::model()->findByAttributes(array('email' => $this->email));
-
+        
         // Switch to users language
         Yii::app()->language = Yii::app()->user->language;
 
-        // Set New Password
-        $userPassword = new UserPassword();
-        $userPassword->user_id = $user->id;
-        $newPassword = $userPassword->setRandomPassword();
-        $userPassword->save();
-
+        $token = UUID::v4();
+        $user->setSetting('passwordRecoveryToken', $token.'.'.time(), 'user');
+        
         $message = new HMailMessage();
         $message->view = "application.modules_core.user.views.mails.RecoverPassword";
         $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
         $message->addTo($this->email);
         $message->subject = Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery');
-        $message->setBody(array('user' => $user, 'newPassword' => $newPassword), 'text/html');
+        $message->setBody(array(
+            'user' => $user, 
+            'linkPasswordReset' => Yii::app()->createAbsoluteUrl("//user/auth/resetPassword", array('token'=>$token, 'guid'=>$user->guid))
+        ), 'text/html');
         Yii::app()->mail->send($message);
     }
 

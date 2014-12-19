@@ -149,7 +149,7 @@ class HSetting extends HActiveRecord
     }
 
     /**
-     * Returns a rext entry from the registry table
+     * Returns a text entry from the registry table
      *
      * @param type $name
      * @param type $moduleId
@@ -284,7 +284,8 @@ class HSetting extends HActiveRecord
         if ($this->module_id != 'mailing' &&
                 $this->module_id != 'cache' &&
                 $this->name != 'name' &&
-                $this->name != 'theme'
+                $this->name != 'theme' && 
+                $this->name != 'authentication_internal'
         ) {
             return;
         }
@@ -307,7 +308,8 @@ class HSetting extends HActiveRecord
                 $this->module_id != 'cache' &&
                 $this->name != 'name' &&
                 $this->name != 'defaultLanguage' &&
-                $this->name != 'theme'
+                $this->name != 'theme' &&
+                $this->module_id != 'authentication_internal'
         ) {
             return;
         }
@@ -343,7 +345,13 @@ class HSetting extends HActiveRecord
         $config['components']['cache'] = array(
             'class' => $cacheClass,
         );
-
+		
+        // Add User settings
+        $config['components']['user'] = array( );
+        if (HSetting::Get('defaultUserIdleTimeoutSec', 'authentication_internal')) {
+        	$config['components']['user']['authTimeout'] = HSetting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
+        }
+        
         // Install Mail Component
         $mail = array(
             'class' => 'ext.yii-mail.YiiMail',
@@ -369,7 +377,12 @@ class HSetting extends HActiveRecord
                 $mail['transportOptions']['encryption'] = HSetting::Get('encryption', 'mailing');
 
             if (HSetting::Get('port', 'mailing'))
-                $mail['transportOptions']['port'] = HSetting::Get('port', 'mailing');
+            	$mail['transportOptions']['port'] = HSetting::Get('port', 'mailing');
+            
+            if (HSetting::Get('allowSelfSignedCerts', 'mailing')) {
+            	$mail['transportOptions']['options']['ssl']['allow_self_signed'] = true;
+            	$mail['transportOptions']['options']['ssl']['verify_peer'] = false;
+            }
         }
         $config['components']['mail'] = $mail;
 
@@ -417,7 +430,7 @@ class HSetting extends HActiveRecord
 
         file_put_contents($configFile, $content);
 
-        if (function_exists('opcache_reset')) {
+        if (function_exists('opcache_invalidate')) {
             opcache_invalidate($configFile);
         }
         
@@ -428,7 +441,7 @@ class HSetting extends HActiveRecord
     }
 
     /**
-     * Checks if inital data like settings, groups are installed.
+     * Checks if initial data like settings, groups are installed.
      * 
      * @return Boolean Is Installed
      */

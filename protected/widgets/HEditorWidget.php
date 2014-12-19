@@ -53,8 +53,9 @@ class HEditorWidget extends HWidget
 
         // load resources
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources/at', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.caret.min.js', CClientScript::POS_END);
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.atwho.min.js', CClientScript::POS_END);
+        
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.caret.min.js');
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jquery.atwho.min.js');
         Yii::app()->clientScript->registerCssFile($assetPrefix . '/jquery.atwho.css');
 
         $this->inputContent = HHtml::translateEmojis($this->inputContent);

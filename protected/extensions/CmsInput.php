@@ -164,7 +164,7 @@ class CmsInput extends CApplicationComponent
      */
     public function stripClean($str)
     {
-        return $this->xssClean($this->stripTags($str));
+        return $this->stripTags($this->xssClean($str));
     }
     
     /**

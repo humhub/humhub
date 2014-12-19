@@ -2,7 +2,7 @@
 
     <div class="panel-profile-header">
 
-        <div class="image-upload-container" style="width: 100%; height: 100%;">
+        <div class="image-upload-container" style="width: 100%; height: 100%; overflow:hidden;">
             <!-- profile image output-->
             <img class="img-profile-header-background" id="user-banner-image"
                  src="<?php echo $user->getProfileBannerImage()->getUrl(); ?>"

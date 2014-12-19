@@ -66,6 +66,18 @@
                 <?php echo $form->labelEx($model, 'encryption'); ?>
                 <?php echo $form->dropDownList($model, 'encryption', $encryptionTypes, array('class' => 'form-control', 'readonly' => HSetting::IsFixed('encryption', 'mailing'))); ?>
             </div>
+            
+            <div id="encryptionOptions">
+            	<div class="form-group">
+            		<strong>Encryption Options</strong>
+            		<div class="checkbox">
+                		<label>
+                			<?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('allowSelfSignedCerts', 'mailing'))); ?>
+							<?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
+            			</label>
+            		</div>
+            	</div>
+            </div>
         </div>
         <hr>
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_mailing_server', 'Save'), array('class' => 'btn btn-primary')); ?>
@@ -92,7 +104,17 @@
         }
     });
 
+    if ($("#MailingSettingsForm_encryption option:selected").val() == '') {
+        $("#encryptionOptions").hide();
+    }
 
+    $('#MailingSettingsForm_encryption').on('change', function() {
+        if ($("#MailingSettingsForm_encryption option:selected").val() == '') {
+            $("#encryptionOptions").hide();
+        } else {
+            $("#encryptionOptions").show();
+        }
+    });
 </script>    
 
 

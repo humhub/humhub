@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Super Admins can delete each content object' => 'Los Super Admins pueden borrar cada objeto contenido',
+  'Super Admins can delete each content object' => 'Los superadministradores pueden borrar cada objeto contenido',
 );

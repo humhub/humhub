@@ -37,7 +37,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                 'userSearchUrl' => $userSearchUrl,
                 'maxUsers' => 10,
                 'userGuid' => Yii::app()->user->guid,
-                'placeholderText' => Yii::t('WallModule.widgets_views_archiveLink', 'Add a member to notify'),
+                'placeholderText' => Yii::t('WallModule.widgets_views_contentForm', 'Add a member to notify'),
                 'focus' => true,
             ));
             ?>
@@ -80,7 +80,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         $('.label-public').addClass('hidden');
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
-                        $('#contentForm_message_contenteditable').html('" . Yii::t("PostModule.widgets_views_postForm", "Whats on your mind?") . "');
+                        $('#contentForm_message_contenteditable').html('" . Yii::t("WallModule.widgets_views_contentForm", "Whats on your mind?") . "');
                         $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
 
 
@@ -116,12 +116,13 @@ if (Yii::app()->getController()->id == 'dashboard') {
                 ));
                 ?>
                 <script>
+                    $('#fileUploaderButton_contentFormFiles').bind('fileuploaddone', function (e, data) {
+                        $('.btn_container').show();
+                    });
+                    
                     $('#fileUploaderButton_contentFormFiles').bind('fileuploadprogressall', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
-                        if (progress == 100) {
-                            // show form buttons
-                            $('.btn_container').show();
-                        } else {
+                        if (progress != 100) {
                             // Fix: remove focus from upload button to hide tooltip
                             $('#post_submit_button').focus();
 
@@ -137,7 +138,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                 <!-- content sharing -->
                 <div class="pull-right">
 
-                    <span class="label label-success label-public hidden">Public</span>
+                    <span class="label label-success label-public hidden"><?php echo Yii::t('WallModule.widgets_views_contentForm', 'Public'); ?></span>
 
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
@@ -146,13 +147,13 @@ if (Yii::app()->getController()->id == 'dashboard') {
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
-                                            class="fa fa-bell"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Notify members'); ?>
+                                            class="fa fa-bell"></i> <?php echo Yii::t('WallModule.widgets_views_contentForm', 'Notify members'); ?>
                                     </a>
                                 </li>
                                 <?php if (get_class($this->contentContainer) == 'Space' && $this->contentContainer->canShare()): /* can create public content */ ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
-                                                class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Make public'); ?>
+                                                class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.widgets_views_contentForm', 'Make public'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>
@@ -198,11 +199,11 @@ if (Yii::app()->getController()->id == 'dashboard') {
     function changeVisibility() {
         if ($('#contentForm_visibility').attr('checked') != 'checked') {
             $('#contentForm_visibility').attr('checked', 'checked');
-            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Make private'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('WallModule.widgets_views_contentForm', 'Make private'); ?>');
             $('.label-public').removeClass('hidden');
         } else {
             $('#contentForm_visibility').removeAttr('checked');
-            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Make public'); ?>');
+            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('WallModule.widgets_views_contentForm', 'Make public'); ?>');
             $('.label-public').addClass('hidden');
         }
     }

@@ -129,16 +129,12 @@ class AuthController extends Controller
 
     /**
      * Recover Password Action
-     *
-     * @todo check local auth_mode
+     * Generates an password reset token and sends an e-mail to the user.
      */
     public function actionRecoverPassword()
     {
 
         $model = new AccountRecoverPasswordForm;
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
         if (isset($_POST['AccountRecoverPasswordForm'])) {
 
@@ -162,6 +158,59 @@ class AuthController extends Controller
         $this->render('recoverPassword', array(
             'model' => $model,
         ));
+    }
+
+    /**
+     * Resets users password based on given token
+     */
+    public function actionResetPassword()
+    {
+
+        $user = User::model()->findByAttributes(array('guid' => Yii::app()->request->getQuery('guid')));
+
+        if ($user === null || !$this->checkPasswordResetToken($user, Yii::app()->request->getQuery('token'))) {
+            throw new CHttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
+        }
+
+        $model = new UserPassword('newPassword');
+
+        if (isset($_POST['UserPassword'])) {
+            $model->attributes = $_POST['UserPassword'];
+
+            if ($model->validate()) {
+
+                // Clear password reset token
+                $user->setSetting('passwordRecoveryToken', '', 'user');
+
+                $model->user_id = $user->id;
+                $model->setPassword($model->newPassword);
+                $model->save();
+
+                return $this->render('resetPassword_success');
+            }
+        }
+
+        $this->render('resetPassword', array(
+            'model' => $model,
+        ));
+    }
+
+    private function checkPasswordResetToken($user, $token)
+    {
+        // Saved token - Format: randomToken.generationTime
+        $savedTokenInfo = $user->getSetting('passwordRecoveryToken', 'user');
+
+        if ($savedTokenInfo !== "") {
+            list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
+            if (CPasswordHelper::same($generatedToken, $token)) {
+                // Check token generation time
+                if ($generationTime + (24 * 60 * 60) >= time()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -351,6 +400,7 @@ class AuthController extends Controller
             $output['userName'] = $httpSession->user->username;
             $output['fullName'] = $httpSession->user->displayName;
             $output['email'] = $httpSession->user->email;
+            $output['superadmin'] = $httpSession->user->super_admin;
         }
 
         print CJSON::encode($output);

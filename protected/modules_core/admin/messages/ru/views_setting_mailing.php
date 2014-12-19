@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Mailing</strong> defaults' => '<strong>Настройки</strong> сообщений',
+  '<strong>Mailing</strong> defaults' => '<strong>Настройки</strong> рассылок',
   'Activities' => 'Действия',
   'Always' => 'Всегда',
   'Daily summary' => 'Суммарно за день',

@@ -20,5 +20,4 @@ return array (
   '<strong>Manage</strong> profiles fields' => '<strong>管理</strong> 属性域',
   'Add new category' => '增加新类',
   'Add new field' => '增加新域',
-  '<strong>Manage</strong> user profiles' => '<strong>管理</strong> 用户信息',
 );

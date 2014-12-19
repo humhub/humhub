@@ -141,11 +141,18 @@ class ConsoleUser extends CApplicationComponent implements IWebUser {
     function getName() {
         return $this->getDisplayName();
     }
-
+    
     public function loginRequired() {
         return false;
     }
 
+    function getAuthTimeout() {
+    	return HSetting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
+    }
+    
+    function setAuthTimeout() {
+    	return true;
+    }
 }
 
 ?>

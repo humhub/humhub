@@ -45,10 +45,12 @@ class ProfileFieldTypeNumber extends ProfileFieldType {
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Number field options'),
                         'elements' => array(
                             'maxValue' => array(
+                                'label' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Maximum value'),                                
                                 'type' => 'text',
                                 'class' => 'form-control',
                             ),
                             'minValue' => array(
+                                'label' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Minimum value'),                                
                                 'type' => 'text',
                                 'class' => 'form-control',
                             ),

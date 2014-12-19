@@ -1,12 +1,14 @@
 <?php
 return array (
+  'Maximum file size has been {maxFileSize} reached!' => 'La massima grandezza del file {maxFileSize} è stata raggiunta!',
+  'This file type is not allowed!' => 'Questo tipo di file non è consentito!',
   'Created By' => 'Creato da',
   'Created at' => 'Creato il',
   'File name' => 'Nome file',
   'Guid' => 'Guid',
   'ID' => 'ID',
-  'Invalid Mime-Type' => 'Mine-Type non valido',
-  'Mime Type' => 'Mine Type',
+  'Invalid Mime-Type' => 'Mime-Type non valido',
+  'Mime Type' => 'Mime Type',
   'Size' => 'Dimensione',
   'Title' => 'Titolo',
   'Updated at' => 'Aggiornato il',

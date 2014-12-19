@@ -4,6 +4,6 @@ return array (
   'Members' => 'Membres',
   'My Space List' => 'Ma liste d\'espaces',
   'My space summary' => 'Résumé de l\'espace',
-  'Space directory' => 'Annuaire d\'espaces',
+  'Space directory' => 'Annuaire des espaces',
   'Spaces' => 'Espaces',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
+  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Nous venons de vous envoyer un e-mail contenant le lien qui vous permettra de réinitialiser votre mot de passe.',
   '<strong>Password</strong> recovery!' => '<strong>Mot de passe</strong> récupéré !',
-  'You\'ve got an e-mail with a new password.' => 'Vous avez reçu un email avec le nouveau mot de passe.',
   'back to home' => 'Retour à l\'accueil',
 );

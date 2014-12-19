@@ -294,6 +294,7 @@ class ConfigController extends Controller
         // Authentication
         HSetting::Set('authInternal', '1', 'authentication');
         HSetting::Set('authLdap', '0', 'authentication');
+        HSetting::Set('refreshUsers', '1', 'authentication_ldap');
         HSetting::Set('needApproval', '0', 'authentication_internal');
         HSetting::Set('anonymousRegistration', '1', 'authentication_internal');
         HSetting::Set('internalUsersCanInvite', '1', 'authentication_internal');

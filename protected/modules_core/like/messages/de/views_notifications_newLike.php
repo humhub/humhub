@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% likes your %contentTitle%.' => '%displayName% gefällt dein %contentTitle%.',
+  '%displayName% likes %contentTitle%.' => '%displayName%  gefällt %contentTitle%.',
 );

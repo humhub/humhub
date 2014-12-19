@@ -263,7 +263,7 @@
             this.modal.find('.modal-content').animate({width: width_inc_padding}, 200);
             this.modal.find('.modal-dialog').animate({width: width_inc_padding + 20}, 200);
             this.lightbox_container.find('a').css('padding-top', function () {
-                return $(this).parent().height() / 2;
+                //return $(this).parent().height() / 2;
             });
             return this;
         },

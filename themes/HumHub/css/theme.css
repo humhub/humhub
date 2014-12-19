@@ -91,6 +91,12 @@ h4 {
   text-align: center;
   min-height: 49px;
 }
+#topbar-second .nav > li > a:hover,
+#topbar-second .nav > li > a:focus {
+  border-bottom: 3px solid #4cd9c0;
+  background-color: #f7f7f7;
+  color: #555555;
+}
 #topbar-second .nav > li > a i {
   font-size: 14px;
 }
@@ -901,6 +907,10 @@ a.list-group-item.active {
 }
 .ekko-lightbox .modal-content .modal-footer {
   padding: 0 10px 10px 10px;
+}
+.ekko-lightbox-nav-overlay a,
+.ekko-lightbox-nav-overlay a:hover {
+  color: #7191a8;
 }
 .progress {
   height: 10px;

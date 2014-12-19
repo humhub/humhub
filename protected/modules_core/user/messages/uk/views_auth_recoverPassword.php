@@ -19,8 +19,8 @@
 return array (
   '<strong>Password</strong> recovery' => '',
   'Back' => '',
-  'Get new password' => '',
-  'Just enter your e-mail address. We´ll send you a new one!' => '',
+  'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
+  'Reset password' => '',
   'enter security code above' => '',
   'your email' => '',
 );

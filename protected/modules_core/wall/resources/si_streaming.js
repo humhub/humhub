@@ -23,6 +23,25 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
     this.sorting = "c";
 
+    /**
+     * Return parseHtml result and delete dublicated entries from container
+     * @param {object} json JSON object
+     * @param {object} container Container with entries
+     * @returns {string} HTML string
+     */
+    function parseEntriesHtml(json, container) {
+        function removeDublicates(entryIds, container) {
+            for (var i = 0, count = entryIds.length; i < count; i++) {
+                if ($(container).find('#wallEntry_' + entryIds[i]).length) {
+                    $("#wallEntry_" + entryIds[i]).remove();
+                }
+            }
+        }
+        if (typeof container !== 'undefined') {
+            removeDublicates(json.entryIds, container);
+        }
+        return parseHtml(json.output);
+    }
 
     /**
      * Clear Stream
@@ -100,7 +119,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
         jQuery.getJSON(url, function (json) {
             streamDiv = $(me.baseDiv).find(".s2_singleContent");
             //$(json.output).appendTo(streamDiv).fadeIn('fast');
-            $(streamDiv).append(parseHtml(json.output));
+            $(streamDiv).append(parseEntriesHtml(json,streamDiv ));
 
             me.lastEntryLoaded = true;
             me.loadedEntryCount += json.counter;
@@ -162,7 +181,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
             streamDiv = $(me.baseDiv).find(".s2_streamContent");
             //$(json.output).appendTo(streamDiv).fadeIn('fast');
-            $(streamDiv).append(parseHtml(json.output));
+            $(streamDiv).append(parseEntriesHtml(json,streamDiv ));
 
             me.lastLoadedEntryId = json.lastEntryId;
             me.onNewEntries();
@@ -214,7 +233,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
             me.loadedEntryCount += 1;
 
             streamDiv = $(me.baseDiv).find(".s2_streamContent");
-            $(parseHtml(json.output)).prependTo($(streamDiv)).fadeIn('fast');
+            $(parseEntriesHtml(json)).prependTo($(streamDiv)).fadeIn('fast');
 
             me.onNewEntries();
 
@@ -260,7 +279,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
                 streamDiv = $(me.baseDiv).find(".s2_streamContent");
                 //$(json.output).appendTo(streamDiv).fadeIn('fast');
-                $(streamDiv).append(parseHtml(json.output));
+                $(streamDiv).append(parseEntriesHtml(json,streamDiv ));
 
                 me.lastLoadedEntryId = json.lastEntryId;
                 me.onNewEntries();
@@ -387,7 +406,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
         // Load Entry
         jQuery.getJSON(url, function (json) {
-            $("#wallEntry_" + wallEntryId).replaceWith(parseHtml(json.output));
+            $("#wallEntry_" + wallEntryId).replaceWith(parseEntriesHtml(json));
             me.onNewEntries();
         });
     };

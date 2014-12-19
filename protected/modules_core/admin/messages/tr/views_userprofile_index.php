@@ -17,8 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Manage</strong> profiles fields' => '',
-  'Add new category' => '',
-  'Add new field' => '',
-  '<strong>Manage</strong> user profiles' => '@@<strong>Kullanıcı Profillerini</strong> yönet@@',
+  '<strong>Manage</strong> profiles fields' => '<strong>Profil</strong> alanlarını yönet',
+  'Add new category' => 'Yeni kategori ekle',
+  'Add new field' => 'Yeni alan ekle',
 );

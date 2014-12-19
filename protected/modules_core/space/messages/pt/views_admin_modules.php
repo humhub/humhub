@@ -25,5 +25,4 @@ return array (
   'Disable' => '',
   'Enable' => '',
   'Enhance this space with modules.' => '',
-  'Modules' => '@@@@',
 );

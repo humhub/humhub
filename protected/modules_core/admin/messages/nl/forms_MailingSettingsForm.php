@@ -17,11 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'E-Mail sender address' => '',
-  'E-Mail sender name' => '',
-  'Encryption' => '',
-  'Mail Transport Type' => '',
-  'Password' => '',
-  'Port number' => '',
-  'Username' => '',
+  'Allow Self-Signed Certificates?' => '',
+  'E-Mail sender address' => 'Naam van e-mail afzender',
+  'E-Mail sender name' => 'E-mail van e-mail afzender',
+  'Encryption' => 'Encryptie',
+  'Mail Transport Type' => 'Mail transporttype',
+  'Password' => 'Wachtwoord',
+  'Port number' => 'Poortnummer',
+  'Username' => 'Gebruikersnaam',
 );

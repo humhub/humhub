@@ -1,8 +1,7 @@
 <?php
 return array (
-  '<strong>Space</strong> Modules' => '',
-  'Enhance this space with modules.' => '',
-  'Modules' => 'Модули',
+  'Enhance this space with modules.' => 'Расширьте возможности этого пространства с помощью модулей.',
+  '<strong>Space</strong> Modules' => '<strong>Модули</strong> Пространства',
   'Activated' => 'Активирован',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Вы уверены? Вся информация связанная с этим пространством будет удалена!',
   'Configure' => 'Настроить',

@@ -107,8 +107,11 @@ class Comment extends HActiveRecordContentAddon
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         UserMentioning::parse($this, $this->message);
 
-        // Send Notifications
-        NewCommentNotification::fire($this);
+        if ($this->isNewRecord) {
+            // Send Notifications
+            NewCommentNotification::fire($this);
+        }
+        
 
         return parent::afterSave();
     }

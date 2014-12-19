@@ -17,10 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Password</strong> recovery' => '',
-  'Hello {displayName}, ' => '',
-  'Login' => '',
-  'You have requested a new password.' => '',
-  'Your new password is: <strong>{password}</strong>' => '',
-  'Your username is: <strong>{username}</strong>' => '',
+  'Hello {displayName}' => '',
+  'If you don\'t use this link within 24 hours, it will expire.' => '',
+  'Please use the following link within the next day to reset your password.' => '',
+  'Reset Password' => '',
+  '<strong>Password</strong> recovery' => 'recupero <strong>password</strong>',
 );
