@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Confirm</strong> post deleting' => '',
-  'Cancel' => '',
-  'Delete' => '',
-  'Do you really want to delete this post? All likes and comments will be lost!' => '',
+  '<strong>Confirm</strong> post deleting' => 'Gönderi silinmesini <strong>Onayla</strong>',
+  'Cancel' => 'İptal',
+  'Delete' => 'Sil',
+  'Do you really want to delete this post? All likes and comments will be lost!' => 'Bu gönderiyi silmek istediğine emin misin? Tüm yorumlar ve beğeniler kaybolacak!',
 );

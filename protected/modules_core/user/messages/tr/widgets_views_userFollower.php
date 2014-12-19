@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Following</strong> user' => '',
-  '<strong>User</strong> followers' => '',
+  '<strong>Following</strong> user' => '<strong>Takip edilen</strong> kullanıcı',
+  '<strong>User</strong> followers' => '<strong>Kullanıcı</strong> takipçileri',
 );

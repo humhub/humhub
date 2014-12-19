@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Confirm</strong> comment deleting' => '',
-  'Cancel' => '',
-  'Do you really want to delete this comment?' => '',
-  'Edit' => '',
-  'Updated :timeago' => '',
+  '<strong>Confirm</strong> comment deleting' => 'Yorum silme işlemini <strong>onayla</strong>',
+  'Cancel' => 'İptal',
+  'Do you really want to delete this comment?' => 'Bu yorumu silmek istediğine emin misin?',
+  'Edit' => 'Düzenle',
+  'Updated :timeago' => 'Güncellendi :timeago',
   'Delete' => 'Sil',
 );

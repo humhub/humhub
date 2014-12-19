@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Activated' => '',
-  'No modules installed yet. Install some to enhance the functionality!' => '',
-  'Version:' => '',
+  'Activated' => 'Aktifleştirildi',
+  'No modules installed yet. Install some to enhance the functionality!' => 'Daha hiç modül yüklenmedi. Fonksiyonelliği artırmak için modül yükle!',
+  'Version:' => 'Versiyon:',
 );

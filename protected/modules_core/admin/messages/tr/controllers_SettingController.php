@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not load LDAP! - Check PHP Extension' => '',
+  'Could not load LDAP! - Check PHP Extension' => 'LDAP yüklenemedi! - PHP Eklentisini kontrol t',
   'APC' => 'APC',
   'Database' => 'Veritabanı',
   'File' => 'Dosya',

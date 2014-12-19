@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Comma separated list. Leave empty to allow all.' => '',
+  'Comma separated list. Leave empty to allow all.' => 'Virgülle ayrılmış liste. Hepsine izin vermek için boş bırak',
   '<strong>File</strong> settings' => '<strong>Dosya</strong> Ayarları',
   'Current Image Libary: {currentImageLibary}' => 'Geçerli Resim Kütüphanesi: {currentImageLibary}',
   'PHP reported a maximum of {maxUploadSize} MB' => 'PHP maksimum sunulan {maxUploadSize} MB',

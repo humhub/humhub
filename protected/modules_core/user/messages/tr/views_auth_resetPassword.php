@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Change</strong> your password' => '',
-  '<strong>Password</strong> reset' => '',
-  'Back' => '',
-  'Change password' => '',
+  '<strong>Change</strong> your password' => 'Şifreni <strong>Değiştir</strong>',
+  '<strong>Password</strong> reset' => '<strong>Şifreni</strong> sıfırla',
+  'Back' => 'Geri',
+  'Change password' => 'Şifre değiştir',
 );
