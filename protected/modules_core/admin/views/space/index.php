@@ -49,7 +49,7 @@
                 else if ($data->visibility == Space::VISIBILITY_REGISTERED_ONLY)
                     return Yii::t('SpaceModule.base', 'Public (Visible)');
                 else if ($data->visibility == Space::VISIBILITY_ALL)
-                    return '(not longer supported)';
+                    return '(no longer supported)';
 
                 return $data->visibility;
             }
