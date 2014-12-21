@@ -72,9 +72,9 @@ list($className, $modelId) = explode("_", $id);
     <a href="<?php echo $this->createUrl('//like/like/userlist', array('className' => $className, 'id' => $modelId)); ?>"
        class="tt" data-toggle="modal"
        data-placement="top" title="" data-target="#globalModal"
-       data-original-title="<?php echo $userlist; ?>">(<span
-            class="<?php echo $id . "-LikeCount"; ?>">0</span>)</a>
+       data-original-title="<?php echo $userlist; ?>"><span
+            class="<?php echo $id . "-LikeCount"; ?>"></span></a>
 <?php } else { ?>
-    (<span class="<?php echo $id . "-LikeCount"; ?>">0</span>)
+    <span class="<?php echo $id . "-LikeCount"; ?>"></span>
 <?php } ?>
 

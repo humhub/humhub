@@ -18,6 +18,7 @@
  */
 return array (
   'OEmbed Provider' => '',
+  'Proxy' => '',
   '<strong>Administration</strong> menu' => '<strong>管理</strong> 菜单',
   'About' => '关于',
   'Authentication' => '权限设置',

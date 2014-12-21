@@ -151,6 +151,15 @@ class FileController extends Controller
             $options = array(
                 'saveName' => $fileName,
             );
+            if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') === 0) {
+                // set nginx specific X-Sendfile header name
+                $options['xHeader'] = 'X-Accel-Redirect';
+                // make path relative to docroot
+                $docroot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
+                if (substr($filePath, 0, strlen($docroot)) == $docroot) {
+                    $filePath = substr($filePath, strlen($docroot));
+                }
+            }
             Yii::app()->getRequest()->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $options);
         }
     }

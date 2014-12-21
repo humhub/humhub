@@ -19,7 +19,7 @@
                 //Note: We need to add "#.jpeg" to the full url for image  detection of ekko lightbox.
                 ?>
                 <a data-toggle="lightbox" data-gallery="<?php if (count($files) > 1) { echo "gallery-". $this->object->getUniqueId(); } ?>" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
-                    <img src='<?php echo $file->getPreviewImageUrl(200, 200); ?>'>
+                    <img src='<?php echo $file->getPreviewImageUrl($maxPreviewImageWidth ? $maxPreviewImageWidth : 200, $maxPreviewImageHeight ? $maxPreviewImageHeight : 200); ?>'>
                 </a>
             <?php endif; ?>
 
@@ -30,6 +30,9 @@
     <hr>
     <ul class="files" style="list-style: none; margin: 0;" id="files-<?php echo $this->object->getPrimaryKey(); ?>">
         <?php foreach ($files as $file) : ?>
+        	<?php if ($file->getMimeBaseType() == "image" && $hideImageFileInfo)
+					continue;
+        	?>
             <li class="mime <?php echo HHtml::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
                         class="filename"><?php echo Helpers::trimText($file->file_name, 40); ?></span></a>

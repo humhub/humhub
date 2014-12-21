@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> your space members' => '<strong>Správa</strong> členů místa',
+  '<strong>Manage</strong> your space members' => '<strong>Správa</strong> členů prostoru',
   '<strong>Outstanding</strong> sended invitations' => '<strong>Nevyřízené</strong> odeslané pozvánky',
   '<strong>Outstanding</strong> user requests' => '<strong>Nevyřízené</strong> žádosti uživatelů',
   '<strong>Remove</strong> member' => '<strong>Odstranit</strong> člena',

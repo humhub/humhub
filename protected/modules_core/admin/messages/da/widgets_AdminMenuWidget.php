@@ -30,6 +30,7 @@ return array (
   'Mailing' => '',
   'Modules' => '',
   'OEmbed Provider' => '',
+  'Proxy' => '',
   'Security & Roles' => '',
   'Self test & update' => '',
   'Settings' => '',

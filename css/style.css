@@ -312,18 +312,25 @@ textarea {
   pointer-events: none;
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* FF3.6+ */
+
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.58)));
   /* Chrome,Safari4+ */
+
   background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* Chrome10+,Safari5.1+ */
+
   background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* Opera 11.10+ */
+
   background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* IE10+ */
+
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* W3C */
+
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#94000000', GradientType=0);
   /* IE6-9 */
+
 }
 .panel-profile .panel-profile-header .img-profile-data h1 {
   font-size: 30px;
@@ -498,6 +505,10 @@ ul.tour-list li.completed a {
 .post-files,
 .oembed_snippet {
   margin-top: 10px;
+}
+.post-files,
+img {
+  padding: 1px;
 }
 .comment_create,
 .content_edit {
