@@ -18,6 +18,7 @@
  */
 return array (
   'OEmbed Provider' => '',
+  'Proxy' => '',
   '<strong>Administration</strong> menu' => 'Menu d\'<strong>Administration</strong>',
   'About' => 'À Propos ...',
   'Authentication' => 'Authentification',

@@ -17,8 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'LDAP' => '',
+  'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => '',
   '<strong>Authentication</strong> - Basic' => '<strong>Autenticação</strong> - Básica',
   'Basic' => 'Básica',
-  'LDAP' => '',
   'Save' => 'Salvar',
 );
