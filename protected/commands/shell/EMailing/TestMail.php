@@ -31,8 +31,8 @@ class TestMail extends HConsoleCommand {
         print "-------------------------------------------------------------------------\n\n";
 
         if (!isset($args[0]) || ($args[0] == "")) {
-            print "\n Run with parameter [email]!\n" .
-                    print "\n\n";
+            print "\n Run with parameter [email]!\n";
+            print "\n\n";
             exit;
         }
         $email = $args[0];

@@ -66,6 +66,11 @@ class ModalConfirmWidget extends HWidget {
     public $class;
 
     /**
+     * @var String style for the displaying link
+     */
+    public $style;
+
+    /**
      * @var String content for the displaying link
      */
     public $linkContent;
@@ -104,6 +109,7 @@ class ModalConfirmWidget extends HWidget {
             'buttonTrue' => $this->buttonTrue,
             'buttonFalse' => $this->buttonFalse,
             'class' => $this->class,
+            'style' => $this->style,
             'linkContent' => $this->linkContent,
             'linkHref' => $this->linkHref,
             'linkTooltipText' => $this->linkTooltipText,

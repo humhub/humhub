@@ -12,6 +12,7 @@
 
 
         <?php foreach ($availableModules as $moduleId => $module): ?>
+            <hr>
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                      style="width: 64px; height: 64px;"
@@ -49,7 +50,7 @@
                             New Update for this module is available! <a href="#">See details</a>
                         </div>-->
             <!-- End: Module update message for the future -->
-            <hr>
+
         <?php endforeach; ?>
 
     </div>

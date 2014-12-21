@@ -21,6 +21,7 @@ return array (
   'Logging' => '',
   'Mailing' => '',
   'OEmbed Provider' => '',
+  'Proxy' => '',
   'Self test & update' => '',
   '<strong>Administration</strong> menu' => '<strong>Administração</strong> menu',
   'About' => 'Sobre',

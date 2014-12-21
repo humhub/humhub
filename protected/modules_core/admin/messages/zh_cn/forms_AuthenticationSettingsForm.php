@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Default user idle timeout, auto-logout (in seconds, optional)' => '',
   'Anonymous users can register' => '任何人都能注册',
   'Default user group for new users' => '缺省用户组能注册',
   'Members can invite external users by email' => '会员可以通过电子邮件邀请新用户',

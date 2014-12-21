@@ -131,7 +131,8 @@ return array(
             'sv' => 'Svenska',
             'cs' => 'čeština',            
             'da' => 'dansk',
-            'uz' => 'Ўзбек'
+            'uz' => 'Ўзбек',
+            'fa_ir' => 'فارسی'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
