@@ -72,5 +72,8 @@ function initLikeModule() {
  * @returns {undefined} 
  */
 function updateLikeCounters(className, id, count) {
-    $('.' + className + "_" + id + "-LikeCount").html(count);
+	$('.' + className + "_" + id + "-LikeCount").hide();
+	if (count > 0)
+    	$('.' + className + "_" + id + "-LikeCount").show();
+	$('.' + className + "_" + id + "-LikeCount").html('(' + count + ')');
 }
