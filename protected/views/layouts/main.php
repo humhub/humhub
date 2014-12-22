@@ -29,6 +29,7 @@
     <!--[if lt IE 9]>
     <script src="<?php echo Yii::app()->baseUrl; ?>/js/html5shiv.js"></script>
     <link id="ie-style" href="<?php echo Yii::app()->baseUrl; ?>/css/ie.css" rel="stylesheet">
+    <script src="<?php echo Yii::app()->baseUrl; ?>/js/respond.min.js"></script>
     <![endif]-->
 
     <!--[if IE 9]>
