@@ -4,6 +4,7 @@
 <head>
     <!-- start: Meta -->
     <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <!-- end: Meta -->
 
