@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Email addresses' => '',
-  'Invite by email' => '',
-  'Pick users' => '',
+  'Email addresses' => 'Email adresleri',
+  'Invite by email' => 'Email ile davet et',
+  'Pick users' => 'Kullanıcıları seç',
   '<strong>Invite</strong> members' => '<strong>Üye</strong> davet et',
   'Add an user' => 'Kullanıcı ekle',
   'Close' => 'Kapat',

@@ -19,8 +19,8 @@
 return array (
   '<strong>Password</strong> recovery' => 'Şifre Kurtarma',
   'Back' => 'Geri',
-  'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
-  'Reset password' => '',
+  'Just enter your e-mail address. We´ll send you recovery instructions!' => 'Sadece mail adresini gir. Sana şifreni kurtarma adımlarını göndereceğiz.',
+  'Reset password' => 'Şifre sıfırla',
   'enter security code above' => 'Yeni Şifre',
   'your email' => 'E-posta Adresin',
 );

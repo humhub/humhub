@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Remove panel' => '',
-  '<strong>Getting</strong> Started' => '',
-  '<strong>Guide:</strong> Administration (Modules)' => '',
-  '<strong>Guide:</strong> Overview' => '',
-  '<strong>Guide:</strong> Spaces' => '',
-  '<strong>Guide:</strong> User profile' => '',
-  'Get to know your way around the site\'s most important features with the following guides:' => '',
+  ' Remove panel' => ' Paneli kaldır',
+  '<strong>Getting</strong> Started' => '<strong>Başlarken</strong>',
+  '<strong>Guide:</strong> Administration (Modules)' => '<strong>Rehber:</strong> Yönetim (Modüller)',
+  '<strong>Guide:</strong> Overview' => '<strong>Rehber:</strong> Genel bakış',
+  '<strong>Guide:</strong> Spaces' => '<strong>Rehber:</strong> Mekanlar',
+  '<strong>Guide:</strong> User profile' => '<strong>Rehber:</strong> Kullanıcı profili',
+  'Get to know your way around the site\'s most important features with the following guides:' => 'Takip eden adımlarla sitenin en önemli özelliklerini tanıyın:',
 );

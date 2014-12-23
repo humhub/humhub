@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add a member to notify' => '',
-  'Make private' => '',
-  'Make public' => '',
-  'Notify members' => '',
-  'Public' => '',
-  'Whats on your mind?' => '',
+  'Add a member to notify' => 'Bilgilendirme için bir kullanıcı ekle',
+  'Make private' => 'Gizli yap',
+  'Make public' => 'Açık yap',
+  'Notify members' => 'Üyeleri bilgilendir',
+  'Public' => 'Açık',
+  'Whats on your mind?' => 'Aklında ne var?',
 );

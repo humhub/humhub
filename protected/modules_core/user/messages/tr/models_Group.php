@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default Space' => '',
-  'Description' => '',
-  'Group Administrators' => '',
+  'Default Space' => 'Varsayılan Mekan',
+  'Description' => 'Açıklama',
+  'Group Administrators' => 'Grup Yöneticisi',
   'ID' => '',
   'LDAP DN' => '',
-  'Members can create private spaces' => '',
-  'Members can create public spaces' => '',
-  'Name' => '',
+  'Members can create private spaces' => 'Üyeler gizli mekan oluşturabilir',
+  'Members can create public spaces' => 'Üyeler açık mekan oluşturabilir',
+  'Name' => 'İsim',
 );

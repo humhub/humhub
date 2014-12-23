@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modify</strong> your title image' => '',
-  'Close' => '',
-  'Save' => '',
-  'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '',
+  '<strong>Modify</strong> your title image' => 'Başlık fotoğrafını <strong>değiştir</strong>',
+  'Close' => 'Kapat',
+  'Save' => 'Kaydet',
+  'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => 'Kullanıcı fotoğrafı olarak kullanmak istediğin alanı seç ve <strong>Kaydet</strong> e tıkla',
 );

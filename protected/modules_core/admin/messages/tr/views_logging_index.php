@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Flush entries' => '',
+  'Flush entries' => 'Tüm girdileri sil',
   '<strong>Error</strong> logging' => '<strong>Hata</strong> günlüğü',
   'Displaying {count} entries per page.' => 'Sayfabaşına görüntülenen girdiler {count}',
   'Total {count} entries found.' => 'Toplam bulunan girdiler {count}',

@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Birthday' => '',
-  'Datetime' => '',
-  'Number' => '',
+  'Birthday' => 'Doğumgünü',
+  'Datetime' => 'Tarih zamanı',
+  'Number' => 'Rakam',
   'Select List' => '',
-  'Text' => '',
-  'Text Area' => '',
+  'Text' => 'Yazı',
+  'Text Area' => 'Yazı alanı',
 );
