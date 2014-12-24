@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not load requested object!' => '',
+  'Could not load requested object!' => 'İstenen obje yüklenemedi',
   'Maximum number of sticked items reached!
 
 You can stick only two items at once.

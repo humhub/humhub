@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Write a new comment...' => '',
+  'Write a new comment...' => 'Yeni bir yorum yaz...',
   'Post' => 'Gönderi',
 );

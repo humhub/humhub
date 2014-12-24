@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%y Years' => '',
-  'Birthday field options' => '',
+  '%y Years' => '%y Yıl',
+  'Birthday field options' => 'Doğumgünü alanı seçenekleri',
 );

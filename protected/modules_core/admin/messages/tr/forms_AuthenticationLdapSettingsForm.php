@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Fetch/Update Users Automatically' => '',
+  'Fetch/Update Users Automatically' => 'Kullanıcıları Otomatik Getir/Güncelle',
   'Base DN' => 'DN Temeli',
   'Enable LDAP Support' => 'LDAP desteği aktif',
   'Encryption' => 'Şifreleme',

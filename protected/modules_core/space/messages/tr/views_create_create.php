@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Advanced access settings' => '',
+  'Advanced access settings' => 'Gelişmiş erişim ayarları ',
   'Join Policy' => '',
-  'Visibility' => '',
+  'Visibility' => 'Görünüm',
   '<strong>Create</strong> new space' => '<strong>Yeni</strong> mekan oluştur',
   'Also non-members can see this<br>space, but have no access' => 'Üye olmayanlar bu mekanı<br>görebilir, fakat erişemezler.',
   'Create' => 'Oluştur',

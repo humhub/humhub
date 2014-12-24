@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => '',
+  'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => 'Modüller HumHub un fonksiyonelliğini artırır. Burada HumHub Marketten modül yekleyebilir veya yönetebilirsin.',
   'Available updates' => 'Mevcut güncellemeler',
   'Browse online' => 'Çevrimiçi gözat',
   'Installed' => 'Yüklü',

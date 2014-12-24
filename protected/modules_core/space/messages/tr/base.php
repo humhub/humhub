@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Invite and request' => '',
-  'Everyone can enter' => '',
-  'Invite and request' => '',
-  'Only by invite' => '',
+  ' Invite and request' => ' Davet et ve İstek yolla',
+  'Everyone can enter' => 'Herkes girebilir',
+  'Invite and request' => 'Davet et ve İstek yolla',
+  'Only by invite' => 'Sadece davelliler',
   'Private (Invisible)' => '',
   'Public (Visible)' => '',
   'Visible for all' => '',

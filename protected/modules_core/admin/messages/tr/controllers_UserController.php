@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'LDAP' => '',
-  'Local' => '',
-  'You cannot delete yourself!' => '',
+  'LDAP' => 'LDAP',
+  'Local' => 'Yerel',
+  'You cannot delete yourself!' => 'Kendini silemezsin!',
   'Become this user' => 'Bu kullanıcı ol',
   'Delete' => 'Sil',
   'Disabled' => 'Devre dışı',
