@@ -8,7 +8,7 @@ return array (
   'Back to stream' => 'Voltar para a linha do tempo',
   'Content with attached files' => 'Conteúdo com arquivo anexo',
   'Created by me' => 'Criado por mim',
-  'Creation time' => 'Hora criada',
+  'Creation time' => 'Hora de criação',
   'Filter' => 'Filtro',
   'Include archived posts' => 'Incluar publicações arquivadas',
   'Last update' => 'Última atualização',

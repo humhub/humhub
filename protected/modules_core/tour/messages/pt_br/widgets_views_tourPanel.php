@@ -22,6 +22,6 @@ return array (
   '<strong>Guide:</strong> Administration (Modules)' => '<strong>Guia:</strong> Administração (Módulos)',
   '<strong>Guide:</strong> Overview' => '<strong>Guia:</strong> Visão geral',
   '<strong>Guide:</strong> Spaces' => '<strong>Guia:</strong> Espaços',
-  '<strong>Guide:</strong> User profile' => 'Perfil do usuário',
+  '<strong>Guide:</strong> User profile' => '<strong>Guia:</strong> Perfil do usuário',
   'Get to know your way around the site\'s most important features with the following guides:' => 'Conheça seu caminho pelos recusos mais importantes do site com os seguintes guias:',
 );

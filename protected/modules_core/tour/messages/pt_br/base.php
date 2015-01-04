@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'End guide' => 'Terminar guia',
+  'End guide' => 'Terminar',
   'Next »' => 'Próximo »',
   '« Prev' => '« Anterior',
 );

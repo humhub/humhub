@@ -23,7 +23,7 @@ return array (
   'OEmbed Provider' => 'Provedor OEmbed',
   'Proxy' => '',
   'Self test & update' => 'Auto teste & atualização',
-  '<strong>Administration</strong> menu' => '<strong>Administração</strong> menu',
+  '<strong>Administration</strong> menu' => '<strong>Administração</strong>',
   'About' => 'Sobre',
   'Authentication' => 'Autenticação',
   'Basic' => 'Básico',

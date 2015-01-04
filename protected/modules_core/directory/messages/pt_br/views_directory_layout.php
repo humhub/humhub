@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Directory</strong> menu' => '<strong>Diretório</strong> menu',
+  '<strong>Directory</strong> menu' => '<strong>Diretório</strong>',
   'Groups' => 'Grupos',
   'Members' => 'Membros',
   'Spaces' => 'Espaços',

@@ -24,7 +24,7 @@ return array (
   'General' => 'Geral',
   'ID' => '',
   'Module' => 'Módulo',
-  'Social bookmarks' => 'Favoritos sociais',
+  'Social bookmarks' => 'Redes sociais',
   'Sort order' => 'Ordem de listagem',
   'Title' => 'Título',
   'Translation Category ID' => 'ID da Categoria de Tradução',

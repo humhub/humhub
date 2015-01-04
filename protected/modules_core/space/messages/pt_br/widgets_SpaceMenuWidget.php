@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Space</strong> menu' => '<strong>Espaço</strong> menu',
+  '<strong>Space</strong> menu' => '<strong>Espaço</strong>',
   'Admin' => 'Admin',
   'Members' => 'Membros',
-  'Stream' => 'Stream',
+  'Stream' => 'Linha do tempo',
 );

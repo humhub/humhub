@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>New</strong> member request' => '<strong>Novo</strong> pedido de membro',
-  '<strong>Space</strong> members' => '<strong>Espaço</strong> membros',
+  '<strong>Space</strong> members' => '<strong>Membros</strong>',
   'Accept invite' => 'Aceitar convite',
   'Become member' => 'Seja membro',
   'Cancel pending membership application' => 'Cancelar requisição de participação',

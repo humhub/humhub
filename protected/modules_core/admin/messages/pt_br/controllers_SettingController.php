@@ -20,7 +20,7 @@ return array (
   'APC' => 'APC',
   'Could not load LDAP! - Check PHP Extension' => 'Não pode carregar LDAP! - Cheque a extensão PHP',
   'No caching (Testing only!)' => 'Sem cache (Somente teste!)',
-  'None - shows dropdown in user registration.' => 'None - mostra uma lista de registro de usuários.',
+  'None - shows dropdown in user registration.' => 'Nenhum - mostra uma lista de registro de usuários.',
   'Saved and flushed cache' => 'Cache salvo e liberado',
   'Database' => 'Banco de dados',
   'File' => 'Arquivo',

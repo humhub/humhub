@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> preferences' => '<strong>Espaço</strong> preferências',
+  '<strong>Space</strong> preferences' => '<strong>Preferêcias</strong>',
   'Archive' => 'Arquivo',
   'Back to workspace' => 'Voltar para o espaço de trabalho',
   'Delete' => 'Apagar',
