@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Invites' => '',
-  'New user by e-mail (comma separated)' => '',
-  'User is already member!' => '',
-  'User not found!' => '',
-  '{email} is already registered!' => '',
-  '{email} is not valid!' => '',
+  'Invites' => 'Convites',
+  'New user by e-mail (comma separated)' => 'Novos usuários por e-mail (separados por vírgula)',
+  'User is already member!' => 'Usuário já é membro!',
+  'User not found!' => 'Usuário não encontrado!',
+  '{email} is already registered!' => '{email} já cadastrado!',
+  '{email} is not valid!' => '{email} não é válido!',
 );

@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'As owner you cannot revoke your membership!' => '',
-  'Could not request membership!' => '',
-  'There is no pending invite!' => '',
-  'This action is only available for workspace members!' => '',
-  'You are not allowed to join this space!' => '',
+  'As owner you cannot revoke your membership!' => 'Como proprietário você não pode retirar sua participação!',
+  'Could not request membership!' => 'Não podemos requisitar sua participação!',
+  'There is no pending invite!' => 'Não há pedidos de convite!',
+  'This action is only available for workspace members!' => 'Esta ação está disponível apenas para membros do espaço!',
+  'You are not allowed to join this space!' => 'Você não está autorizado a participar deste espaço!',
 );

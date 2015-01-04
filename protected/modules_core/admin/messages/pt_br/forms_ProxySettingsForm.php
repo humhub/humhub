@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Enabled' => '',
-  'No Proxy Hosts' => '',
-  'Password' => '',
-  'Port' => '',
-  'Server' => '',
-  'User' => '',
+  'Enabled' => 'Habilitado',
+  'No Proxy Hosts' => 'Nenhum servidor de proxy',
+  'Password' => 'Senha',
+  'Port' => 'Porta',
+  'Server' => 'Servidor',
+  'User' => 'Usuário',
 );

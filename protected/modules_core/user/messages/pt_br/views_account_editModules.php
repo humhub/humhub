@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>User</strong> modules' => '',
-  'Are you really sure? *ALL* module data for your profile will be deleted!' => '',
-  'Configure' => '',
-  'Disable' => '',
-  'Enable' => '',
-  'Enhance your profile with modules.' => '',
+  '<strong>User</strong> modules' => '<strong>Módulos</strong> do usuário',
+  'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Você tem certeza? *TODOS* os dados dos módulos do seu perfil serão apagados!',
+  'Configure' => 'Configurar',
+  'Disable' => 'Desabilitar',
+  'Enable' => 'Habilitar',
+  'Enhance your profile with modules.' => 'Melhorar seu perfil com módulos.',
 );

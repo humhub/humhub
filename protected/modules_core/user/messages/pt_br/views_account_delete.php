@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Delete</strong> account' => '',
-  'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => '',
-  'Delete account' => '',
-  'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.' => '',
+  '<strong>Delete</strong> account' => '<strong>Apagar</strong> conta',
+  'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => 'Você tem certeza em apagar sua conta?<br />Todas o conteúdo de suas publicações será apagado!',
+  'Delete account' => 'Apagar conta',
+  'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.' => 'Desculpe, como proprietário desta área você não está habilitado em apagar sua conta!<br />Por favor altere para outro proprietário ou apague-a.',
 );

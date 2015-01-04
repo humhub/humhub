@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Edit</strong> user' => '<strong>Modificando/strong> usuário',
+  '<strong>Edit</strong> user' => '<strong>Editar</strong> usuário',
 );

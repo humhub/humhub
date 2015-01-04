@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Birthday' => '',
-  'Datetime' => '',
-  'Number' => '',
-  'Select List' => '',
-  'Text' => '',
-  'Text Area' => '',
+  'Birthday' => 'Nascimento',
+  'Datetime' => 'Data hora',
+  'Number' => 'Número',
+  'Select List' => 'Lista de seleção',
+  'Text' => 'Texto',
+  'Text Area' => 'Área de Texto',
 );

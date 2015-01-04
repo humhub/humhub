@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Confirm</strong></strong> your new email address' => '',
-  'Confirm' => '',
-  'Hello' => '',
-  'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '',
+  '<strong>Confirm</strong></strong> your new email address' => '<strong>Confirme</strong> seu novo email',
+  'Confirm' => 'Confirmar',
+  'Hello' => 'Olá',
+  'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Você pediu para mudar seu email.<br>Seu novo email é {newemail}.<br><br>Para confirmar seu novo e-mail por favor clique no botão abaixo.',
 );

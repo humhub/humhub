@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum value' => '',
-  'Minimum value' => '',
-  'Number field options' => '',
+  'Maximum value' => 'Valor máximo',
+  'Minimum value' => 'Valor mínimo',
+  'Number field options' => 'Opções do campo numérico',
 );

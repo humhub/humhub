@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Alphabetical' => '',
-  'Last visit' => '',
+  'Alphabetical' => 'Alfabética',
+  'Last visit' => 'Última visita',
   '<strong>Design</strong> settings' => '<strong>Aparência</strong> configurações',
   'Firstname Lastname (e.g. John Doe)' => 'Primeiro e último nome (ex: João Silva)',
   'Save' => 'Salvar',

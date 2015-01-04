@@ -17,14 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Accept Invite' => '',
-  'Become member' => '',
-  'Cancel membership' => '',
-  'Cancel pending membership application' => '',
-  'Deny Invite' => '',
-  'Follow' => '',
-  'Request membership' => '',
-  'Unfollow' => '',
-  'You are the owner of this workspace.' => '',
-  'created by' => '',
+  'Accept Invite' => 'Aceitar convite',
+  'Become member' => 'Tornar-se membro',
+  'Cancel membership' => 'Cancelar participação',
+  'Cancel pending membership application' => 'Cancelar pedido de participação',
+  'Deny Invite' => 'Negar convite',
+  'Follow' => 'Seguir',
+  'Request membership' => 'Requisitar participação',
+  'Unfollow' => 'Parar de seguir',
+  'You are the owner of this workspace.' => 'Você é o proprietário deste espaço.',
+  'created by' => 'criado por',
 );

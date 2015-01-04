@@ -18,7 +18,7 @@
  */
 return array (
   '<br>A social network to increase your communication and teamwork.<br>Register now
-                                                        to join this space.' => '',
-  'You got a <strong>space</strong> invite' => '',
-  'invited you to the space:' => '',
+                                                        to join this space.' => '<br>Uma rede social para aumentar sua comunicação e trabalho de equipe.<br>Registre-se agora para entrar neste espaço.',
+  'You got a <strong>space</strong> invite' => 'Você recebeu um convite para um <strong>espaço</strong>',
+  'invited you to the space:' => 'Convidou você para o espaço:',
 );

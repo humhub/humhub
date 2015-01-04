@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Invite and request' => '',
-  'Everyone can enter' => '',
-  'Invite and request' => '',
-  'Only by invite' => '',
-  'Private (Invisible)' => '',
-  'Public (Visible)' => '',
-  'Visible for all' => '',
+  ' Invite and request' => ' Convite e pedido',
+  'Everyone can enter' => 'Todos podem entrar',
+  'Invite and request' => 'Convite e pedido',
+  'Only by invite' => 'Somente por convite',
+  'Private (Invisible)' => 'Privado (Invisível)',
+  'Public (Visible)' => 'Público (Visível)',
+  'Visible for all' => 'Visivel para todos',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Não foi possível excluir o usuário que é dono de um espaço! Nome do espaço: {spacename}',
 );

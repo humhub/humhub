@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Account</strong> Menu' => '',
-  '<strong>Notifications</strong>' => '',
-  '<strong>Space</strong> Menu' => '',
-  '<strong>Start</strong> space guide' => '',
-  'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
-  'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
-  'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => '',
+  '<strong>Account</strong> Menu' => '<strong>Conta</strong>',
+  '<strong>Notifications</strong>' => '<strong>Notificações</strong>',
+  '<strong>Space</strong> Menu' => '<strong>Espaço</strong>',
+  '<strong>Start</strong> space guide' => '<strong>Começar</strong> o guia do espaço',
+  'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Não perca o caminho das coisas!<br /><br />Este ícone manterá você informado das atividades e publicações que dizem respeito a você.',
+  'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'O menu da conta dará acesso as suas configurações de privacidade e permitirá gerenciar seu perfil público.',
+  'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => 'Este é o menu mais importante e provavelmente o mais usado!<br><br>O próximo guia irá mostrar você como:',
 );

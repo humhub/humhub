@@ -17,13 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Invite</strong> members' => '',
-  'Add an user' => '',
-  'Close' => '',
-  'Email addresses' => '',
-  'Invite by email' => '',
-  'Pick users' => '',
-  'Send' => '',
-  'To invite users to this space, please type their names below to find and pick them.' => '',
-  'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => '',
+  '<strong>Invite</strong> members' => '<strong>Convide</strong> membros',
+  'Add an user' => 'Adicionar um usuário',
+  'Close' => 'Fechar',
+  'Email addresses' => 'Endereço de email',
+  'Invite by email' => 'Convidar por email',
+  'Pick users' => 'Selecionar usuários',
+  'Send' => 'Enviar',
+  'To invite users to this space, please type their names below to find and pick them.' => 'Convidar usuários para este espaço, por favor digite os nomes deles abaixo para encontra-los e selecioná-los.',
+  'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => 'Você pode convidar usuários externos, que não estão registrados agora. Somente digite os endereços de email deles separados por vírgula.',
 );

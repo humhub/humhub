@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Request</strong> space membership' => '',
-  'Close' => '',
-  'Please shortly introduce yourself, to become an approved member of this space.' => '',
-  'Send' => '',
+  '<strong>Request</strong> space membership' => '<strong>Requisição</strong> de inclusão de membro',
+  'Close' => 'Fechar',
+  'Please shortly introduce yourself, to become an approved member of this space.' => 'Por favor, apresente-se brevemente para ser aprovado como membro destes espaço.',
+  'Send' => 'Enviar',
 );

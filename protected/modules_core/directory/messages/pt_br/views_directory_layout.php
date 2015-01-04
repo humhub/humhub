@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Directory</strong> menu' => '',
-  'Groups' => '',
-  'Members' => '',
-  'Spaces' => '',
-  'User profile posts' => '',
+  '<strong>Directory</strong> menu' => '<strong>Diretório</strong> menu',
+  'Groups' => 'Grupos',
+  'Members' => 'Membros',
+  'Spaces' => 'Espaços',
+  'User profile posts' => 'Publicações nos perfis de usuários',
 );

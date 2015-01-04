@@ -19,10 +19,10 @@
 return array (
   'Caching' => '',
   'Logging' => '',
-  'Mailing' => '',
-  'OEmbed Provider' => '',
+  'Mailing' => 'Envio de Email',
+  'OEmbed Provider' => 'Provedor OEmbed',
   'Proxy' => '',
-  'Self test & update' => '',
+  'Self test & update' => 'Auto teste & atualização',
   '<strong>Administration</strong> menu' => '<strong>Administração</strong> menu',
   'About' => 'Sobre',
   'Authentication' => 'Autenticação',

@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} declined your invite for the space {spaceName}' => '',
+  '{userName} declined your invite for the space {spaceName}' => '{userName} rejeitou o convite do espaço {spaceName}',
 );

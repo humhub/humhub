@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Cancel' => '',
-  'Please shortly introduce yourself, to become a approved member of this workspace.' => '',
-  'Request workspace membership' => '',
-  'Send' => '',
+  'Cancel' => 'Cancelar',
+  'Please shortly introduce yourself, to become a approved member of this workspace.' => 'Por favor, introduza brevemente você para ser aprovado como membro.',
+  'Request workspace membership' => 'Requisitar inclusão como membro',
+  'Send' => 'Enviar',
 );

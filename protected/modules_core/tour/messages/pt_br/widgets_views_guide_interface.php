@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Dashboard</strong>' => '',
-  'This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.' => '',
+  '<strong>Dashboard</strong>' => '<strong>Linha do Tempo</strong>',
+  'This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.' => 'Esta é a sua linha do tempo.<br><br>Qualquer nova atividade ou publicação que deve te interessar será apresentada aqui.',
 );

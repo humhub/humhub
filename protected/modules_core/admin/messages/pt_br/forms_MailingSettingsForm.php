@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Allow Self-Signed Certificates?' => '',
-  'E-Mail sender address' => '',
-  'E-Mail sender name' => '',
-  'Encryption' => '',
-  'Mail Transport Type' => '',
+  'Allow Self-Signed Certificates?' => 'Permitir certificados auto-assinados?',
+  'E-Mail sender address' => 'Email de quem envia',
+  'E-Mail sender name' => 'Nome de quem envia',
+  'Encryption' => 'Encriptação',
+  'Mail Transport Type' => 'Tipo de transporte de email',
   'Password' => 'Senha',
   'Port number' => 'Número da porta',
   'Username' => 'Nome de usuário',
