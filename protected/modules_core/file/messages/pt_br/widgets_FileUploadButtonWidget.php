@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Upload</strong> error' => '',
-  'Close' => '',
-  'Could not upload File:' => '',
+  '<strong>Upload</strong> error' => '<strong>Envio</strong> com erro',
+  'Close' => 'Fechar',
+  'Could not upload File:' => 'Não pode enviar o arquivo:',
 );

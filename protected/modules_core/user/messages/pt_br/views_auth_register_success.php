@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Registration</strong> successful!' => '',
-  'Please check your email and follow the instructions!' => '',
-  'back to home' => '',
+  '<strong>Registration</strong> successful!' => '<strong>Registrado</strong> com sucesso!',
+  'Please check your email and follow the instructions!' => 'Por favor verifique seu email e siga as instruções!',
+  'back to home' => 'Voltar para o início',
 );

@@ -17,17 +17,17 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Authentication</strong> - LDAP' => '',
-  'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
+  '<strong>Authentication</strong> - LDAP' => '<strong>Autenticação</strong> - LDAP',
+  'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'O TLS/SSL é fortemente recomendado em ambientes de produção para previnir senhas de serem transmitidas em forma de textos visíveis.',
   'Basic' => 'Básico',
-  'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
+  'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Define aplicações de filtros quando o login é requisitado. %uid substitui o nome do usuário na ação de login. Exemplo: &quot;(sAMAccountName=%s)&quot; ou &quot;(uid=%s)&quot;',
   'LDAP' => '',
-  'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => '',
-  'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
+  'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'Atributo LDAP para nome de usuário. Exemplo: &quotuid&quot; ou &quot;sAMAccountName&quot;',
+  'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limite de acesso para usuários nestes critérios. Exemplo: &quot(objectClass=posixAccount)&quot; ou &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',
   'Save' => 'Salvar',
-  'Status: Error! (Message: {message})' => '',
-  'Status: OK! ({userCount} Users)' => '',
-  'The default base DN used for searching for accounts.' => '',
-  'The default credentials password (used only with username above).' => '',
-  'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => '',
+  'Status: Error! (Message: {message})' => 'Estado: Erro! (Mensagem: {message})',
+  'Status: OK! ({userCount} Users)' => 'Etado: OK! ({userCount} Usuários)',
+  'The default base DN used for searching for accounts.' => 'O padrão de base DN usado para procurar contas.',
+  'The default credentials password (used only with username above).' => 'O padrão de credencial de senhas (usado apenas com os nomes de usuários acima).',
+  'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'O padrão de credencial de nomes de usuários. Alguns servidores requerem o formato DN. Isto deve ser fornecido no formato DN se os servidores LDAP requerirem um DN para vincular e o vínculo deve ser possível com nomes de usuários simples.',
 );

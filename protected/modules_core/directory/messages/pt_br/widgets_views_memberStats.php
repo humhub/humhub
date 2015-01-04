@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Member</strong> stats' => '',
-  '<strong>New</strong> people' => '',
-  'Follows somebody' => '',
-  'Online right now' => '',
-  'Total users' => '',
+  '<strong>Member</strong> stats' => '<strong>Membros</strong> estados',
+  '<strong>New</strong> people' => '<strong>Novas</strong> pessoas',
+  'Follows somebody' => 'Seguindo alguém',
+  'Online right now' => 'Online agora',
+  'Total users' => 'Total de usuários',
 );

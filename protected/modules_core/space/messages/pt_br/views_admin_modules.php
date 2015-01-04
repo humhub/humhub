@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> Modules' => '',
-  'Activated' => '',
-  'Are you sure? *ALL* module data for this space will be deleted!' => '',
-  'Configure' => '',
-  'Currently there are no modules available for this space!' => '',
-  'Disable' => '',
-  'Enable' => '',
-  'Enhance this space with modules.' => '',
+  '<strong>Space</strong> Modules' => '<strong>Espaço</strong> Módulos',
+  'Activated' => 'Ativado',
+  'Are you sure? *ALL* module data for this space will be deleted!' => 'Você tem certeza? *TODAS* as informações do módulo deste espaço serão deletadas!',
+  'Configure' => 'Configurar',
+  'Currently there are no modules available for this space!' => 'Não há módulos instalados neste espaço',
+  'Disable' => 'Desabilitar',
+  'Enable' => 'Habilitar',
+  'Enhance this space with modules.' => 'Melhore este espaço com módulos.',
 );

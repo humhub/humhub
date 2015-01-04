@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Password</strong> recovery' => '',
-  'Hello {displayName}' => '',
-  'If you don\'t use this link within 24 hours, it will expire.' => '',
-  'Please use the following link within the next day to reset your password.' => '',
-  'Reset Password' => '',
+  '<strong>Password</strong> recovery' => '<strong>Recuperar</strong> senha',
+  'Hello {displayName}' => 'Olá {displayName}',
+  'If you don\'t use this link within 24 hours, it will expire.' => 'Se você não usar este link em 24 horas, ele irá expirar.',
+  'Please use the following link within the next day to reset your password.' => 'Por favor uso o link até o próximo dia para para resetar sua senha.',
+  'Reset Password' => 'Resetar Senha',
 );

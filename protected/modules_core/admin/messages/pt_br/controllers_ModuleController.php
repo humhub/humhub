@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not uninstall module first! Module is protected.' => '',
-  'Module path %path% is not writeable!' => '',
+  'Could not uninstall module first! Module is protected.' => 'Não pode desistalar módulo! Módulo está protegido.',
+  'Module path %path% is not writeable!' => 'O caminho do módulo %path% não está escrevível!',
   'Could not find requested module!' => 'Não foi possível encontrar o módulo requisitado!',
 );

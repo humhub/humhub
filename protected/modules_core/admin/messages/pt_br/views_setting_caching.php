@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Cache</strong> Settings' => '',
-  'Save & Flush Caches' => '',
+  '<strong>Cache</strong> Settings' => '<strong>Cache</strong> Configurações',
+  'Save & Flush Caches' => 'Salvar & Descarregar Caches',
 );

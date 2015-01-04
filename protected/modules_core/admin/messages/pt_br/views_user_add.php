@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Add</strong> user' => '',
+  '<strong>Add</strong> user' => '<strong>Adicionar</strong> usuário',
 );

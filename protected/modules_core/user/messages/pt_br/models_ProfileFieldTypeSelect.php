@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
-  'Please select:' => '',
-  'Possible values' => '',
-  'Select field options' => '',
+  'One option per line. Key=>Value Format (e.g. yes=>Yes)' => 'Uma opção por linha. id=>Formato do valor (ex: sim=>Sim)',
+  'Please select:' => 'Por favor selecione:',
+  'Possible values' => 'Possíveis valores',
+  'Select field options' => 'Opções de campos de seleção',
 );

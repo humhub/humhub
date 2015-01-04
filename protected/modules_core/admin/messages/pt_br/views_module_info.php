@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'More information: <strong>%moduleName%</strong>' => '',
-  'This module doesn\'t provide further informations.' => '',
+  'More information: <strong>%moduleName%</strong>' => 'Mais informação: <strong>%moduleName%</strong>',
+  'This module doesn\'t provide further informations.' => 'Este módulo não fornece mais informações.',
 );

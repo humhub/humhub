@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not extract module!' => '',
-  'Could not fetch module list online! (%error%)' => '',
-  'Could not get module info online! (%error%)' => '',
-  'Download of module failed!' => '',
-  'Module directory %modulePath% is not writeable!' => '',
-  'Module directory for module %moduleId% already exists!' => '',
-  'Module download failed! (%error%)' => '',
-  'No compatible module version found!' => '',
+  'Could not extract module!' => 'Não pode extrair o módulo!',
+  'Could not fetch module list online! (%error%)' => 'Não pode resgatar lista de módulos online! (%error%)',
+  'Could not get module info online! (%error%)' => 'Não pode pegar a informação do módulo online! (%error%)',
+  'Download of module failed!' => 'O download do módulo falhou!',
+  'Module directory %modulePath% is not writeable!' => 'O diretório do módulo %modulePath% não tem permissão de escrita!',
+  'Module directory for module %moduleId% already exists!' => 'Diretório do módulo %moduleId% já existe!',
+  'Module download failed! (%error%)' => 'O download do módulo falhou!',
+  'No compatible module version found!' => 'Compatibilidade da versão do módulo não é compatível!',
 );

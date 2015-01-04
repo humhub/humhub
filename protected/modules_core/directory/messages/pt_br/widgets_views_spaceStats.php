@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>New</strong> spaces' => '',
-  '<strong>Space</strong> stats' => '',
-  'Most members' => '',
-  'Private spaces' => '',
-  'Total spaces' => '',
+  '<strong>New</strong> spaces' => '<strong>Novos</strong> espaços',
+  '<strong>Space</strong> stats' => '<strong>Espaço</strong> estados',
+  'Most members' => 'Principais membros',
+  'Private spaces' => 'Espaços privado',
+  'Total spaces' => 'Total de espaços',
 );

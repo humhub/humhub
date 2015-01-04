@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modules</strong> directory' => '',
-  'Are you sure? *ALL* module data will be lost!' => '',
-  'Are you sure? *ALL* module related data and files will be lost!' => '',
+  '<strong>Modules</strong> directory' => '<strong>Módulos</strong> diretório',
+  'Are you sure? *ALL* module data will be lost!' => 'Você tem certeza? *TODAS* as informações dos módulos serão perdidas!',
+  'Are you sure? *ALL* module related data and files will be lost!' => 'Você tem certeza? *TODOS* os dados e arquivos relacionados aos módulos serão perdidos!',
   'Configure' => 'Configurar',
   'Disable' => 'Desabilitar',
   'Enable' => 'Habilitar',

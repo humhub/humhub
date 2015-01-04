@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Comma separated list. Leave empty to allow all.' => '',
+  'Comma separated list. Leave empty to allow all.' => 'Lista separada por vírgula. Deixar campo vazio para permitir tudo.',
   '<strong>File</strong> settings' => '<strong>Arquivos</strong> configurações',
   'Current Image Libary: {currentImageLibary}' => 'Biblioteca de Imagem Atual: {currentImageLibary}',
   'PHP reported a maximum of {maxUploadSize} MB' => 'O PHP permite um máximo de {maxUploadSize} MB',

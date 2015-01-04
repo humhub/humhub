@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> directory' => '',
-  'No spaces found!' => '',
-  'Search' => '',
-  'You are a member of this space' => '',
-  'search for spaces' => '',
+  '<strong>Space</strong> directory' => '<strong>Espaços</strong> diretório',
+  'No spaces found!' => 'Nenhum espaço encontrado!',
+  'Search' => 'Procurar',
+  'You are a member of this space' => 'Você é um membro deste espaço',
+  'search for spaces' => 'Procurar por espaços',
 );

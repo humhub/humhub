@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Modify</strong> your profile image' => '',
-  'Close' => '',
-  'Save' => '',
-  'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '',
+  '<strong>Modify</strong> your profile image' => '<strong>Modificar</strong> sua imagem de perfil',
+  'Close' => 'Fechar',
+  'Save' => 'Salvar',
+  'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => 'Selecione a área da imagem que deseja usar como avatar e clique em <strong>Salvar</strong>',
 );

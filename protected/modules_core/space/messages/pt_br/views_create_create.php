@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'This space will be hidden<br>for all non-members' => '',
-  'Users can also apply for a<br>membership to this space' => '',
+  'This space will be hidden<br>for all non-members' => 'Este espaço será escondido<br>para todos os não membros',
+  'Users can also apply for a<br>membership to this space' => 'Usuários poderão participar<br>deste espaço',
   '<strong>Create</strong> new space' => '<strong>Criar</strong> novo espaço',
   'Advanced access settings' => 'Configurações avançadas de acesso',
   'Also non-members can see this<br>space, but have no access' => 'Os não-membros também poderão visualizar este<br>espaço, mas não terão acesso',

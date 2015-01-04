@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Delete</strong> space' => '',
-  'Are you sure, that you want to delete this space? All published content will be removed!' => '',
-  'Delete' => '',
-  'Please provide your password to continue!' => '',
+  '<strong>Delete</strong> space' => '<strong>Apagar</strong> espaço',
+  'Are you sure, that you want to delete this space? All published content will be removed!' => 'Você tem certeza em apagar este espaço? Todos os conteúdos publicados serão removidos!',
+  'Delete' => 'Apagar',
+  'Please provide your password to continue!' => 'Por favor forneça a senha para continuar!',
 );

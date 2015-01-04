@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% created a new post.' => '',
+  '%displayName% created a new post.' => '%displayName% criou uma nova publicação.',
 );
