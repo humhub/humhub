@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Submit' => 'Envoyer',
+  'Submit' => 'Publier',
 );
