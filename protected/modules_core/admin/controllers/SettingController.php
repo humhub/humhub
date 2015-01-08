@@ -509,6 +509,7 @@ class SettingController extends Controller
         $form->hideImageFileInfo = HSetting::Get('hideImageFileInfo', 'file');
         $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
         $form->allowedExtensions = HSetting::Get('allowedExtensions', 'file');
+        $form->showFilesWidgetBlacklist = HSetting::Get('showFilesWidgetBlacklist','file');
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'file-settings-form') {
@@ -528,6 +529,7 @@ class SettingController extends Controller
                 $form->hideImageFileInfo = HSetting::Set('hideImageFileInfo', $form->hideImageFileInfo, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
                 $form->allowedExtensions = HSetting::Set('allowedExtensions', strtolower($form->allowedExtensions), 'file');
+                $form->showFilesWidgetBlacklist = HSetting::Set('showFilesWidgetBlacklist',$form->showFilesWidgetBlacklist,'file');
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
