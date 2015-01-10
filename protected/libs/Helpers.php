@@ -24,7 +24,8 @@
  * @package humhub.libs
  * @since 0.5
  */
-class Helpers {
+class Helpers
+{
 
     /**
      * Shorten a text string
@@ -32,7 +33,8 @@ class Helpers {
      * @param integer $length - Count of characters to show
      *
      * */
-    public static function truncateText($text, $length) {
+    public static function truncateText($text, $length)
+    {
 
         $length = abs((int) $length);
         if (strlen($text) > $length) {
@@ -43,7 +45,8 @@ class Helpers {
         return($text);
     }
 
-    public static function trimText($text, $length) {
+    public static function trimText($text, $length)
+    {
 
         $length = abs((int) $length);
         $textlength = mb_strlen($text);
@@ -64,7 +67,8 @@ class Helpers {
      * @param type $len
      * @return type
      */
-    public static function substru($str, $from, $len) {
+    public static function substru($str, $from, $len)
+    {
         return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
     }
 
@@ -72,7 +76,8 @@ class Helpers {
      * Get a readable time format from seconds
      * @param string $sekunden - Seconds you will formatting
      * */
-    public static function getFormattedTime($sekunden) {
+    public static function getFormattedTime($sekunden)
+    {
 
         $negative = false;
         $minus = "";
@@ -109,7 +114,8 @@ class Helpers {
      * @param String $val 
      * @return int bytes
      */
-    public static function GetBytesOfPHPIniValue($val) {
+    public static function GetBytesOfPHPIniValue($val)
+    {
         $val = trim($val);
         $last = strtolower($val[strlen($val) - 1]);
         switch ($last) {
@@ -123,15 +129,33 @@ class Helpers {
 
         return $val;
     }
-    
-    
+
     /**
      * Returns a unique string
      * 
      * @return string unique
      */
-    public static function GetUniqeId() {
+    public static function GetUniqeId()
+    {
         return str_replace('.', '', uniqid('', true));
+    }
+
+    /**
+     * Checks if the class has this class as one of its parents 
+     * 
+     * @param string $className
+     * @param string $type
+     * @return boolean
+     */
+    public static function CheckClassType($className, $type = "")
+    {
+        $className = preg_replace("/[^a-z0-9_]/i", "", $className);
+
+        if (class_exists($className) && is_subclass_of($className, $type)) {
+            return true;
+        }
+        
+        throw new CException("Invalid class type!");
     }
 
 }

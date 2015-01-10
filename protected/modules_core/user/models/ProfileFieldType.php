@@ -54,17 +54,19 @@ class ProfileFieldType extends CFormModel
 
         $types = array();
         foreach (self::getFieldTypes() as $className => $title) {
-            $instance = new $className;
-            if ($profileField != null) {
-                $instance->profileField = $profileField;
+            if (Helpers::CheckClassType($className, 'ProfileFieldType')) {
+                $instance = new $className;
+                if ($profileField != null) {
+                    $instance->profileField = $profileField;
 
 
-                // Seems current type, so try load data
-                if ($profileField->field_type_class == $className) {
-                    $instance->load();
+                    // Seems current type, so try load data
+                    if ($profileField->field_type_class == $className) {
+                        $instance->load();
+                    }
                 }
+                $types[] = $instance;
             }
-            $types[] = $instance;
         }
         return $types;
     }
@@ -224,8 +226,6 @@ class ProfileFieldType extends CFormModel
         $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
         return $labels;
     }
-
-
 
 }
 
