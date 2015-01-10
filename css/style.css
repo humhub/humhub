@@ -47,6 +47,12 @@ hr {
 textarea {
   height: 1.5em;
 }
+.truncate {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .topbar {
   position: fixed;
   display: block;
