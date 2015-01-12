@@ -25,7 +25,7 @@ return array (
   'Search members' => 'Поиск участников',
   'Space owner' => 'Владелец пространства',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Заявки на вступление в пространство. ',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Приглашенные, но не вступившие участники.',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => 'Приглашенные, но не вступившие участники.',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Владелец пространства супер админ пространства со всеми привилегиями создателя пространства. Здесь вы можете изменить эту роль другому пользователю.',
   'User' => 'Пользователь',
   'Yes, remove' => 'Да, удалить',

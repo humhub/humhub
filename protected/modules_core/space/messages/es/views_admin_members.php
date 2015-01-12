@@ -42,7 +42,7 @@ return array (
   'Revoke invitation' => 'Revocar invitación',
   'Space owner' => 'Dueño del espacio',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Los siguientes usuarios están esperando aprobación para entrar en este espacio. Por favor, haz algo al respecto.',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Los siguientes usuarios han sido invitados a este espacio, pero no han seguido la invitación todavia.',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => 'Los siguientes usuarios han sido invitados a este espacio, pero no han seguido la invitación todavia.',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'El dueño del espacio es el super administrador de un espacio con todos los privilegios y normalmente es el creador del espacio. Aqui puedes cambiar este rol a otro usuario.',
   'User' => 'Usuario',
   'Yes, remove' => 'Si, borrar',

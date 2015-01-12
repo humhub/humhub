@@ -25,7 +25,7 @@ return array (
   'Search members' => 'Hledat členy',
   'Space owner' => 'Vlastník místa',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Následující uživatelé čekají na schválení pro vstup do tohoto prostoru. Udělejte si prosím chvíli, ať nemusí čekat dlouho.',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Následující uživatelé jsou již pozváni do tohoto prostoru, ale dosud se pozvánkou nezabývali.',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => 'Následující uživatelé jsou již pozváni do tohoto prostoru, ale dosud se pozvánkou nezabývali.',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Vlastník prostoru je nejvyšší administrátor prostoru se všemi právy, obvykle jde i o toho, kdo prostor vytvořil. Zde můžete předat tuto roli jinému uživateli.',
   'User' => 'Uživatel',
   'Yes, remove' => 'Ano, odstranit',

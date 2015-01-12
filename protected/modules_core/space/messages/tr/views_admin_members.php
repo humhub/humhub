@@ -42,7 +42,7 @@ return array (
   'Revoke invitation' => 'Daveti geri al',
   'Space owner' => 'Mekan sahibi',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Aşağıdaki kullanıcılar mekana katılmak için onay bekliyor. Lütfen bir aksiyon seçin.',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Aşağıdaki kullanıcılar zaten bu mekana davet edildi, fakat şimdiye kadar daveti takip etmediler.',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => 'Aşağıdaki kullanıcılar zaten bu mekana davet edildi, fakat şimdiye kadar daveti takip etmediler.',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Tüm ayrıcalıklara ve süper admin yetkilerine olan mekan sahipleri ve mekan oluşturan normal kullanıcılar. Burda başka bir kullanıcı ile rolleri değiştirebilirsiniz.',
   'User' => 'Kullanıcı',
   'Yes, remove' => 'Evet, sil',

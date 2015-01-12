@@ -42,7 +42,7 @@ return array (
   'Search members' => '',
   'Space owner' => '',
   'The following users waiting for an approval to enter this space. Please take some action now.' => '',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => '',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => '',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '',
   'User' => '',
   'Yes, remove' => '',

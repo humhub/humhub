@@ -42,7 +42,7 @@ return array (
   'Search members' => 'Szukaj członków',
   'Space owner' => 'Właściciel strefy',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Następujący użytkownicy oczekują na zatwierdzenie możliwości dołączenia do strefy. Proszę zajmij stanowisko w tej sprawie.',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Następujący użytkownicy zostali dotychczas zaproszeni do tej strefy, ale nie obserwowali aż do teraz zaproszenia.',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => 'Następujący użytkownicy zostali dotychczas zaproszeni do tej strefy, ale nie obserwowali aż do teraz zaproszenia.',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Właścicielem strefy jest super administrator z wszystkimi uprawnieniami i zwykle jest twórcą tej strefy. Tutaj możesz przyznać tę rolę innemu użytkownikowi.',
   'User' => 'Użytkownik',
   'Yes, remove' => 'Tak, usuń ',

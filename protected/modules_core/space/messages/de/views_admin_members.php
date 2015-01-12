@@ -25,7 +25,7 @@ return array (
   'Search members' => 'Suche nach Mitgliedern',
   'Space owner' => 'Space-Besitzer',
   'The following users waiting for an approval to enter this space. Please take some action now.' => 'Die folgenden Benutzer warten auf Freischaltung, diesen Space zu betreten.',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => 'Die folgenden Benutzer wurden bereits in diesen Space eingeladen, sind der Einladung bisher aber nicht gefolgt.',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => 'Die folgenden Benutzer wurden bereits in diesen Space eingeladen, sind der Einladung bisher aber nicht gefolgt.',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => 'Der Space-Besitzer ist der Super-Administrator eines Spaces mit allen Rechten und üblicherweise der Ersteller des Spaces. Hier kannst du diese Rolle einem anderen Benutzer übertragen.',
   'User' => 'Benutzer',
   'Yes, remove' => 'Ja, entfernen',

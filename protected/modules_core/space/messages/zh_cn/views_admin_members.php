@@ -42,7 +42,7 @@ return array (
   'Search members' => '搜索成员',
   'Space owner' => '版块拥有者',
   'The following users waiting for an approval to enter this space. Please take some action now.' => '以下用户等待批准进入这个版块。请处理。',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => '以下用户已被邀请进入这个版块，目前为止还没加入',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => '以下用户已被邀请进入这个版块，目前为止还没加入',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '该版块拥有者是所有的特权和一般的版块创作者的空间超级管理员。在这里，你可以改变这个角色给其他用户',
   'User' => '用户',
   'Yes, remove' => '是，删除',

@@ -274,7 +274,7 @@
     </div>
     <div class="panel-body">
         <p>
-            <?php echo Yii::t('SpaceModule.views_admin_members', "The following users were already invited to this space, but didn't follow the invitation until now."); ?>
+            <?php echo Yii::t('SpaceModule.views_admin_members', "The following users were already invited to this space, but haven't accepted the invitation yet."); ?>
             <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <br/>
                 <?php echo Yii::t('SpaceModule.views_admin_members', "External users who invited by email, will be not listed here."); ?>
