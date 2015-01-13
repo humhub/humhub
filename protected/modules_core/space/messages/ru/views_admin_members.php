@@ -2,7 +2,7 @@
 return array (
   'Save' => 'Сохранить',
   '<strong>Manage</strong> your space members' => '<strong>Управление</strong> участниками пространства',
-  '<strong>Outstanding</strong> sended invitations' => '<strong>Оставшиеся</strong> приглашения',
+  '<strong>Outstanding</strong> sent invitations' => '<strong>Оставшиеся</strong> приглашения',
   '<strong>Outstanding</strong> user requests' => '<strong>Оставшиеся</strong> запросы',
   '<strong>Remove</strong> member' => '<strong>Удалить</strong> пользователя',
   'Accept' => 'Подтвердить',

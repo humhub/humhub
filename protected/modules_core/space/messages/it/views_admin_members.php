@@ -19,7 +19,7 @@
 return array (
   'Save' => '',
   '<strong>Manage</strong> your space members' => '<strong>Gestisci</strong> i membri del tuo space',
-  '<strong>Outstanding</strong> sended invitations' => 'Inviti inviati <strong>In sospeso</strong>',
+  '<strong>Outstanding</strong> sent invitations' => 'Inviti inviati <strong>In sospeso</strong>',
   '<strong>Outstanding</strong> user requests' => 'Utenti richiesti <strong>In sospeso</strong>',
   '<strong>Remove</strong> member' => '<strong>Rimuovi</strong> membro',
   'Accept' => 'Accetta',

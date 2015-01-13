@@ -19,7 +19,7 @@
 return array (
   'Save' => '',
   '<strong>Manage</strong> your space members' => '<strong>Zarządzaj</strong> użytkownikami strefy',
-  '<strong>Outstanding</strong> sended invitations' => '<strong>Oczekujące</strong> wysłane zaproszenia',
+  '<strong>Outstanding</strong> sent invitations' => '<strong>Oczekujące</strong> wysłane zaproszenia',
   '<strong>Outstanding</strong> user requests' => '<strong>Oczekujące</strong> podania użytkowników ',
   '<strong>Remove</strong> member' => '<strong>Usuń</strong> członka',
   'Accept' => 'Akceptuj',

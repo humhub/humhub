@@ -270,7 +270,7 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Outstanding</strong> sended invitations'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Outstanding</strong> sent invitations'); ?>
     </div>
     <div class="panel-body">
         <p>

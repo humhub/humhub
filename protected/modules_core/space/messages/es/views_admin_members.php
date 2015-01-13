@@ -21,7 +21,7 @@ return array (
   'Search' => '',
   'Search members' => '',
   '<strong>Manage</strong> your space members' => '<strong>Gestiona</strong> tus miembros del espacio',
-  '<strong>Outstanding</strong> sended invitations' => 'Invitaciones enviadas <strong>pendientes</strong>',
+  '<strong>Outstanding</strong> sent invitations' => 'Invitaciones enviadas <strong>pendientes</strong>',
   '<strong>Outstanding</strong> user requests' => 'Solicitudes de usuarios <strong>pendientes</strong>',
   '<strong>Remove</strong> member' => '<strong>Eliminar</strong> usuario',
   'Accept' => 'Aceptar',

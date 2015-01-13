@@ -21,7 +21,7 @@ return array (
   'Search' => 'Ara',
   'Search members' => 'Üyelerde ara',
   '<strong>Manage</strong> your space members' => '<strong>Mekan üyelerini</strong> yönet',
-  '<strong>Outstanding</strong> sended invitations' => '<strong>Gönderilmeyi</strong> bekleyen davetler',
+  '<strong>Outstanding</strong> sent invitations' => '<strong>Gönderilmeyi</strong> bekleyen davetler',
   '<strong>Outstanding</strong> user requests' => '<strong>Gönderilmeyi</strong> bekleyen istekler',
   '<strong>Remove</strong> member' => '<strong>Üyeyi</strong> sil',
   'Accept' => 'Onayla',

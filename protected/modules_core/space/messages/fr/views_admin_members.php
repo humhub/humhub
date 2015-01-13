@@ -4,7 +4,7 @@ return array (
   'Search' => 'Rechercher',
   'Search members' => 'Rechercher des membres',
   '<strong>Manage</strong> your space members' => '<strong>Gérez</strong> les membres de votre espace',
-  '<strong>Outstanding</strong> sended invitations' => '<strong>Invitations</strong> envoyées',
+  '<strong>Outstanding</strong> sent invitations' => '<strong>Invitations</strong> envoyées',
   '<strong>Outstanding</strong> user requests' => '<strong>Demandes</strong> d\'utilisateurs en attente',
   '<strong>Remove</strong> member' => '<strong>Retirer</strong> le membre',
   'Accept' => 'Accepter',

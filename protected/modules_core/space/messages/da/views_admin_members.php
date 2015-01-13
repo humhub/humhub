@@ -18,7 +18,7 @@
  */
 return array (
   '<strong>Manage</strong> your space members' => '',
-  '<strong>Outstanding</strong> sended invitations' => '',
+  '<strong>Outstanding</strong> sent invitations' => '',
   '<strong>Outstanding</strong> user requests' => '',
   '<strong>Remove</strong> member' => '',
   'Accept' => '',

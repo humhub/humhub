@@ -19,7 +19,7 @@
 return array (
   '<strong>Manage</strong> your space members' => '',
   'Save' => '',
-  '<strong>Outstanding</strong> sended invitations' => '<strong>突出</strong> 发送邀请',
+  '<strong>Outstanding</strong> sent invitations' => '<strong>突出</strong> 发送邀请',
   '<strong>Outstanding</strong> user requests' => '<strong>突出</strong> 用户请求',
   '<strong>Remove</strong> member' => '<strong>删除</strong> 成员',
   'Accept' => '接受',
