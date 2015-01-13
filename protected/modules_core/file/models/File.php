@@ -341,6 +341,11 @@ class File extends HActiveRecord
         }
 
         $this->file_name = $pathInfo['filename'];
+        
+        if ($this->file_name == "") {
+            $this->file_name = "Unnamed";
+        }
+        
         if (isset($pathInfo['extension']))
             $this->file_name .= "." . trim($pathInfo['extension']);
     }
