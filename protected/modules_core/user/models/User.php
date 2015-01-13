@@ -504,7 +504,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
 
         // split tags string into individual tags
-        return preg_split("/[;,# ]+/", $this->tags);
+        return preg_split("/[;,#]+/", $this->tags);
     }
 
     /**
