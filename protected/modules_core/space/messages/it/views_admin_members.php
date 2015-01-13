@@ -33,7 +33,7 @@ return array (
   'External users who invited by email, will be not listed here.' => 'Gli utenti esterni invitati tramite email non saranno elencati qui.',
   'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.' => 'Nello spazio qui sotto vedi tutti i membri attivi di questo space. Puoi modificare i loro privilegi o rimuoverli da questo space.',
   'Is admin' => 'E\' amministratore',
-  'Make this user to an admin' => 'Rendi questo utente un amministratore',
+  'Make this user an admin' => 'Rendi questo utente un amministratore',
   'No, cancel' => 'No, annulla',
   'Remove' => 'Rimuovi',
   'Request message' => 'Richiesta messaggio',

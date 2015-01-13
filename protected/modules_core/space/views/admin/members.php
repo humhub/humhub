@@ -51,7 +51,7 @@
                                  title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Allow this user to<br>make content public'); ?>"></i>
                 </th>
                 <th><?php echo Yii::t('SpaceModule.views_admin_members', "Is admin"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
-                                title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Make this user to an admin'); ?>"></i>
+                                title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Make this user an admin'); ?>"></i>
                 </th>
                 <th></th>
             </tr>

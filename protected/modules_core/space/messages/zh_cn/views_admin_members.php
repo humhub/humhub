@@ -33,7 +33,7 @@ return array (
   'External users who invited by email, will be not listed here.' => '邮件邀请的用户，不会在这里列出',
   'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.' => '在下面的区域中，你看到这个空间的所有成员。您可以编辑或删除自己的特权。',
   'Is admin' => '是管理员',
-  'Make this user to an admin' => '让这个用户成为管理员',
+  'Make this user an admin' => '让这个用户成为管理员',
   'No, cancel' => '不，取消',
   'Remove' => '删除',
   'Request message' => '请求消息',

@@ -35,7 +35,7 @@ return array (
   'External users who invited by email, will be not listed here.' => 'Kimler eposta ile davet gönderebilir, burada listelenmez.',
   'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.' => 'Aşağıdaki mekanda aktif kullanıcılara bakın. Ayrıcalıklarını düzenleyebilir ya da kaldırabilirsiniz.',
   'Is admin' => 'Yönetici',
-  'Make this user to an admin' => 'Bu kullanıcıyı yönetici yap',
+  'Make this user an admin' => 'Bu kullanıcıyı yönetici yap',
   'No, cancel' => 'Hayır, iptal',
   'Remove' => 'Sil',
   'Request message' => 'İstek mesajı',

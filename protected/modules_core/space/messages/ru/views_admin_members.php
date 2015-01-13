@@ -16,7 +16,7 @@ return array (
   'External users who invited by email, will be not listed here.' => 'Не зарегистрированные пользователи, приглашенные по электронной почте не будут перечислены здесь.',
   'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.' => 'Список участников пространства. Вы можете отредактировать их привилегии или удалить их.',
   'Is admin' => 'Администратор',
-  'Make this user to an admin' => 'Сделать администратором',
+  'Make this user an admin' => 'Сделать администратором',
   'No, cancel' => 'Нет, отменить',
   'Remove' => 'Удалить',
   'Request message' => 'Сообщение',

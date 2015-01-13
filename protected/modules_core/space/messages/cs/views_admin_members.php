@@ -15,7 +15,7 @@ return array (
   'External users who invited by email, will be not listed here.' => 'Externí uživatelé, kteří byli pozváni e-mailem, zde nebudou uvedeni.',
   'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.' => 'Níže můžete vidět všechny aktivní uživatele tohoto prostoru. Můžete upravovat jejich oprávnění nebo je z prostoru odebrat.',
   'Is admin' => 'Je správcem',
-  'Make this user to an admin' => 'Přidělit tomuto uživateli<br>správcovská oprávnění k tomuto prostoru',
+  'Make this user an admin' => 'Přidělit tomuto uživateli<br>správcovská oprávnění k tomuto prostoru',
   'No, cancel' => 'Ne, zrušit',
   'Remove' => 'Odstranit',
   'Request message' => 'Zpráva k žádosti',
