@@ -25,9 +25,17 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo Yii::t($field->getTranslationCategory(), $field->title); ?></label>
 
+
+								<?php if ( strtolower($field->title) == 'about' ) { ?>
+                                <div class="col-sm-9">
+                                    <p class="form-control-static"><?php echo HHtml::enrichText($field->getUserValue($user, false)); ?></p>
+                                </div>
+								<?php } else { ?>
                                 <div class="col-sm-9">
                                     <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>
                                 </div>
+								<?php } ?>
+                            </div>
                             </div>
 
 
