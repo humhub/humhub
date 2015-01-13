@@ -63,6 +63,7 @@
     min-height: 36px;
     height: auto;
     padding-right: 30px;
+    word-wrap: break-word;
 }
 
 .atwho-input p {
