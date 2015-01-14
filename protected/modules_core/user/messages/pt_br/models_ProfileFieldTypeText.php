@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default value' => '',
-  'Maximum length' => '',
-  'Minimum length' => '',
-  'Regular Expression: Error message' => '',
-  'Regular Expression: Validator' => '',
-  'Text Field Options' => '',
-  'Validator' => '',
+  'Default value' => 'Valor padrão',
+  'Maximum length' => 'Tamanho máximo',
+  'Minimum length' => 'Tamanho mínimo',
+  'Regular Expression: Error message' => 'Expressão Regular: Mensagem de erro',
+  'Regular Expression: Validator' => 'Expressão Regular: Validador',
+  'Text Field Options' => 'Opção do campo texto',
+  'Validator' => 'Validador',
 );

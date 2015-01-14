@@ -18,7 +18,7 @@
  */
 return array (
   'Cache Backend' => '',
-  'Default Expire Time (in seconds)' => '',
+  'Default Expire Time (in seconds)' => 'Tempo padrão para expirar (em segundos)',
   'PHP APC Extension missing - Type not available!' => '',
   'PHP SQLite3 Extension missing - Type not available!' => '',
 );

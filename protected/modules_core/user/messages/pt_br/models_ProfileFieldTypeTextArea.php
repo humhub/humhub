@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Text area field options' => '',
+  'Text area field options' => 'Opções do campo da área de texto',
 );

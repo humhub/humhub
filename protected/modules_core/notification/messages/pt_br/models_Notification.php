@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not determine redirect url for this kind of source object!' => '',
-  'Could not load notification source object to redirect to!' => '',
+  'Could not determine redirect url for this kind of source object!' => 'Não pudemos determinar o direcionamento de url para este tipo de objeto de origem!',
+  'Could not load notification source object to redirect to!' => 'Não pudemos carregar a notificação do objeto de origem para ser redirecionado!',
 );

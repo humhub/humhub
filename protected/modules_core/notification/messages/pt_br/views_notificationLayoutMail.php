@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'see online' => '',
-  'via' => '',
+  'see online' => 'ver online',
+  'via' => 'por',
 );

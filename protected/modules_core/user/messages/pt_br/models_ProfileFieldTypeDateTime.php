@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Date(-time) field options' => '',
-  'Show date/time picker' => '',
+  'Date(-time) field options' => 'Opções de campos de data(-tempo)',
+  'Show date/time picker' => 'Mostrar selecionador de data/tempo',
 );

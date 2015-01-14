@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>OEmbed</strong> Provider' => '',
-  'Add new provider' => '',
-  'Currently active providers:' => '',
-  'Currently no provider active!' => '',
+  '<strong>OEmbed</strong> Provider' => '<strong>OEmbed<strong> Provedor',
+  'Add new provider' => 'Adicionar novo provedor',
+  'Currently active providers:' => 'Provedores ativos:',
+  'Currently no provider active!' => 'Nenhum provedor ativado!',
 );

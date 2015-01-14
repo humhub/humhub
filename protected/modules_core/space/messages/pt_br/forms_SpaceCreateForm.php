@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Space title is already in use!' => '',
-  'Title' => '',
-  'Type' => '',
+  'Space title is already in use!' => 'Título do espaço já está em uso!',
+  'Title' => 'Título',
+  'Type' => 'Tipo',
 );

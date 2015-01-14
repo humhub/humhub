@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Installed' => '',
-  'No modules found!' => '',
-  'Search' => '',
+  'Installed' => 'Instalado',
+  'No modules found!' => 'Nenhum módulo instalado!',
+  'Search' => 'Procurar',
 );

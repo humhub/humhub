@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Error</strong> logging' => '',
-  'Displaying {count} entries per page.' => '',
-  'Flush entries' => '',
-  'Total {count} entries found.' => '',
+  '<strong>Error</strong> logging' => '<strong>Erros</strong> registrados',
+  'Displaying {count} entries per page.' => 'Apresentando {count} entradas por página',
+  'Flush entries' => 'Descarregar entradas',
+  'Total {count} entries found.' => 'Total de {count} entradas encontradas.',
 );

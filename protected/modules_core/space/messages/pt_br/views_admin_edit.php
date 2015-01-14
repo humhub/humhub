@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>General</strong> space settings' => '',
-  'Archive' => '',
-  'Choose the kind of membership you want to provide for this workspace.' => '',
-  'Choose the security level for this workspace to define the visibleness.' => '',
-  'Delete' => '',
-  'Save' => '',
-  'Unarchive' => '',
+  '<strong>General</strong> space settings' => '<strong>Configurações</strong> gerais do espaço',
+  'Archive' => 'Arquivar',
+  'Choose the kind of membership you want to provide for this workspace.' => 'Escolha o tipo de participação que você quer fornecer para este espaço.',
+  'Choose the security level for this workspace to define the visibleness.' => 'Escolha o nível de segurança que irá definir a visibilidade deste espaço.',
+  'Delete' => 'Apagar',
+  'Save' => 'Salvar',
+  'Unarchive' => 'Desarquivar',
 );

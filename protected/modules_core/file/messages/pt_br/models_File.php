@@ -17,17 +17,17 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Created By' => '',
-  'Created at' => '',
-  'File name' => '',
+  'Created By' => 'Criado por',
+  'Created at' => 'Criado em',
+  'File name' => 'Nome do arquivo',
   'Guid' => '',
   'ID' => '',
-  'Invalid Mime-Type' => '',
-  'Maximum file size has been {maxFileSize} reached!' => '',
-  'Mime Type' => '',
-  'Size' => '',
-  'This file type is not allowed!' => '',
-  'Title' => '',
-  'Updated at' => '',
-  'Updated by' => '',
+  'Invalid Mime-Type' => 'Tipo de arquivo inválido',
+  'Maximum file size has been {maxFileSize} reached!' => 'O tamanho máquina de {maxFileSize} foi atingido!',
+  'Mime Type' => 'Tipo de arquivo',
+  'Size' => 'Tamanho',
+  'This file type is not allowed!' => 'Este tipo de arquivo não é permitido!',
+  'Title' => 'Título',
+  'Updated at' => 'Atualizado em',
+  'Updated by' => 'Atualizado por',
 );

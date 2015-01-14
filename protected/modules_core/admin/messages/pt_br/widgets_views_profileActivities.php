@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Click here to review' => '',
-  'New approval requests' => '',
-  'One or more user needs your approval as group admin.' => '',
+  'Click here to review' => 'Clique aqui para revisar',
+  'New approval requests' => 'Novas requisições de aprovação',
+  'One or more user needs your approval as group admin.' => 'Um ou mais usuários precisa de sua aprovação como administrador do grupo.',
 );

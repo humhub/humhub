@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} requests membership for the space {spaceName}' => '',
+  '{userName} requests membership for the space {spaceName}' => '{userName} solicitou participar do espaço {spaceName}',
 );

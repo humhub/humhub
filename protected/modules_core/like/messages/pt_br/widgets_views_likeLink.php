@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' likes this.' => '',
-  '<strong>You</strong> like this.' => '',
-  '<strong>You</strong><br>' => '',
-  'Like' => '',
-  'Unlike' => '',
-  'and {count} more like this.' => '',
+  ' likes this.' => 'curtiu isso.',
+  '<strong>You</strong> like this.' => '<strong>Você</strong> curtiu isso.',
+  '<strong>You</strong><br>' => '<strong>Você</strong><br>',
+  'Like' => 'Curtir',
+  'Unlike' => 'Descutir',
+  'and {count} more like this.' => 'e mais {count} curtiram isso.',
 );

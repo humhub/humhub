@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Define here default settings for new spaces.' => '',
-  'Overview' => '',
-  'Settings' => '',
+  'Define here default settings for new spaces.' => 'Defina aqui as configurações padrões para novos espaços.',
+  'Overview' => 'Visão geral',
+  'Settings' => 'Configurações',
   '<strong>Manage</strong> spaces' => '<strong>Gerenciar</strong> espaços',
   'All' => 'Todos',
   'Delete space' => 'Apagar espaço',

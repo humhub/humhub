@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'APC' => '',
-  'Could not load LDAP! - Check PHP Extension' => '',
-  'No caching (Testing only!)' => '',
-  'None - shows dropdown in user registration.' => '',
-  'Saved and flushed cache' => '',
+  'APC' => 'APC',
+  'Could not load LDAP! - Check PHP Extension' => 'Não pode carregar LDAP! - Cheque a extensão PHP',
+  'No caching (Testing only!)' => 'Sem cache (Somente teste!)',
+  'None - shows dropdown in user registration.' => 'Nenhum - mostra uma lista de registro de usuários.',
+  'Saved and flushed cache' => 'Cache salvo e liberado',
   'Database' => 'Banco de dados',
   'File' => 'Arquivo',
   'No theme' => 'Sem tema',

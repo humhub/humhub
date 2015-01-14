@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add new user' => '',
-  'In this overview you can find every registered user and manage him.' => '',
-  'Overview' => '',
+  'Add new user' => 'Adicionar novo usuário',
+  'In this overview you can find every registered user and manage him.' => 'Nesta visão geral você pode encontrar todos os usuários registrados e gerenciá-los.',
+  'Overview' => 'Visão geral',
   '<strong>Manage</strong> users' => '<strong>Gerenciando</strong> usuários',
   'Admin' => 'Administrador',
   'All' => 'Todos',

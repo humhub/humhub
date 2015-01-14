@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Collapse' => '',
-  'Read full post...' => '',
+  'Collapse' => 'Reduzir',
+  'Read full post...' => 'Ler a publicação completa...',
 );
