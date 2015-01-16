@@ -29,7 +29,7 @@ return array (
   'Show more results' => 'نمایش نتایج بیشتر',
   'Sorry, nothing found!' => 'متأسفانه موردی یافت نشد!',
   'Space not found!' => 'انجمن پیدا نشد!',
-  'User Approvals' => '',
+  'User Approvals' => 'تأیید کاربران',
   'User not found!' => 'کاربر پیدا نشد!',
   'Welcome to %appName%' => 'به %appName% خوش‌آمدید',
   'You cannot create public visible content!' => 'شما نمی‌توانید محتوای عمومی قابل دید تولید کنید!',

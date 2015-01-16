@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Save' => '',
-  'Search' => '',
-  'Search members' => '',
+  'Save' => 'Guardar',
+  'Search' => 'Buscar',
+  'Search members' => 'Buscar miembros',
   '<strong>Manage</strong> your space members' => '<strong>Gestiona</strong> tus miembros del espacio',
   '<strong>Outstanding</strong> sent invitations' => 'Invitaciones enviadas <strong>pendientes</strong>',
   '<strong>Outstanding</strong> user requests' => 'Solicitudes de usuarios <strong>pendientes</strong>',
