@@ -6,7 +6,7 @@ return array (
   'Guid' => 'Guid',
   'ID' => 'ID',
   'Invalid Mime-Type' => '',
-  'Maximum file size has been {maxFileSize} reached!' => '',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => '',
   'Mime Type' => '',
   'Size' => 'Mida',
   'This file type is not allowed!' => 'Aquest tipus d\'arxiu no està permès!',

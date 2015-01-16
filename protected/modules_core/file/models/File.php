@@ -369,7 +369,7 @@ class File extends HActiveRecord
     public function validateSize($attribute, $params)
     {
         if ($this->size > HSetting::Get('maxFileSize', 'file')) {
-            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size has been {maxFileSize} reached!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file')))));
+            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file')))));
         }
     }
 

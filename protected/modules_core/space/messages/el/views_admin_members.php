@@ -18,7 +18,7 @@
  */
 return array (
   '<strong>Manage</strong> your space members' => '',
-  '<strong>Outstanding</strong> sended invitations' => '',
+  '<strong>Outstanding</strong> sent invitations' => '',
   '<strong>Outstanding</strong> user requests' => '',
   '<strong>Remove</strong> member' => '',
   'Accept' => '',
@@ -32,7 +32,7 @@ return array (
   'External users who invited by email, will be not listed here.' => '',
   'In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.' => '',
   'Is admin' => '',
-  'Make this user to an admin' => '',
+  'Make this user an admin' => '',
   'No, cancel' => '',
   'Remove' => '',
   'Request message' => '',
@@ -42,7 +42,7 @@ return array (
   'Search members' => '',
   'Space owner' => '',
   'The following users waiting for an approval to enter this space. Please take some action now.' => '',
-  'The following users were already invited to this space, but didn\'t follow the invitation until now.' => '',
+  'The following users were already invited to this space, but haven\'t accepted the invitation yet.' => '',
   'The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.' => '',
   'User' => '',
   'Yes, remove' => '',
