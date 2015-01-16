@@ -99,7 +99,7 @@
                     <li class="dropdown account">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <div class="user-title pull-left hidden-xs">
-                                <strong><?php echo Yii::app()->user->displayName; ?></strong><br/><span><?php echo Yii::app()->user->getModel()->profile->title; ?></span>
+                                <strong><?php echo Yii::app()->user->displayName; ?></strong><br/><span class="truncate"><?php echo Yii::app()->user->getModel()->profile->title; ?></span>
                             </div>
 
                             <img id="user-account-image" class="img-rounded"
