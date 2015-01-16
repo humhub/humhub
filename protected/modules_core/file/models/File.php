@@ -259,7 +259,7 @@ class File extends HActiveRecord
             return "";
         }
 
-        $imageInfo = getimagesize($originalFilename);
+        $imageInfo = @getimagesize($originalFilename);
 
         // Check if we got any dimensions - invalid image
         if (!isset($imageInfo[0]) || !isset($imageInfo[1])) {
