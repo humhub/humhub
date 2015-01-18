@@ -58,26 +58,26 @@
 
             </small>
         </h4>
-        <!--- social --->
-        	<!--- youtube --->
+        <!-- social -->
+        	<!-- youtube -->
 				<?php if ($object->content->user->profile->url_youtube !=NULL): ?>
 				<a href='<?php echo $object->content->user->profile->url_youtube; ?>' target="_blank"> 
 					<img src="img/ytube.png">
 				</a>
 				<?php endif; ?>
-			<!--- skype --->
+			<!-- skype -->
 				<?php if ($object->content->user->profile->im_skype !=NULL): ?>
 				<a href='skype:<?php echo $object->content->user->profile->im_skype; ?>?chat'> 
 					<img src="img/skype.png">
 				</a>
 				<?php endif; ?>
-			<!--- Facebook --->
+			<!-- Facebook -->
 				<?php if ($object->content->user->profile->url_facebook !=NULL): ?>
 				<a href='<?php echo $object->content->user->profile->url_facebook; ?>' target="_blank"> 
 					<img src="img/fb.png">
 				</a>
 				<?php endif; ?>
-		<!--- / social --->
+		<!-- / social -->
         
         <h5><?php echo $object->content->user->profile->title; ?></h5>
 
