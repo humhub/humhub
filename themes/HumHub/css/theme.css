@@ -1,5 +1,6 @@
 /*@colorPrimary3: #526e82;*/
 body {
+  overflow: scroll;
   background-color: #ededed;
   color: #777777;
   font-family: 'Open Sans', sans-serif;
