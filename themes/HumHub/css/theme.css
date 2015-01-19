@@ -3,6 +3,7 @@ body {
   background-color: #ededed;
   color: #777777;
   font-family: 'Open Sans', sans-serif;
+  overflow-y: scroll;
 }
 body a,
 body a:hover {
