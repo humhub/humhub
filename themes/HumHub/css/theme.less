@@ -44,8 +44,9 @@ body {
   font-family: 'Open Sans', sans-serif;
   overflow-y: scroll;
 
-  a, a:hover {
+  a, a:hover, a:focus, a:active, a.active {
     color: @colorFont3;
+    text-decoration: none;
   }
 }
 
@@ -138,10 +139,6 @@ h4 {
     }
   }
 
-  .nav > .dropdown a:hover, .nav > .open > a {
-    //background-color: @colorPrimary3;
-  }
-
   .dropdown.account > a, .dropdown.account.open > a, .dropdown.account > a:hover, .dropdown.account.open > a:hover {
     background-color: @colorPrimary3;
   }
@@ -167,10 +164,12 @@ h4 {
     min-height: 49px;
 
     &:hover,
+    &:active,
     &:focus {
       border-bottom: 3px solid @colorInfo2;
       background-color: @colorBackground1;
       color: @colorFont3;
+      text-decoration: none;
     }
 
     i {
