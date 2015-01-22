@@ -52,7 +52,7 @@
 
                 <div class="media-body" id="space-description"
                      style="overflow: hidden; max-height: 55px; font-size: 13px;">
-                    <?php echo $space->description; ?>
+                    <?php echo CHtml::encode($space->description); ?>
                 </div>
                 <a class="btn btn-default btn-xs pull-right hidden" id="more-button" style="margin-top: 5px;"
                    href="javascript:showMoreInfo();"><i class="fa fa-arrow-down"></i> more</a>

@@ -6,7 +6,7 @@
 <meta name="viewport" content="initial-scale=1.0"/>
 <meta name="format-detection" content="telephone=no"/>
 
-<title><?php echo Yii::app()->name; ?></title>
+<title><?php echo CHtml::encode(Yii::app()->name); ?></title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
 <style type="text/css">
 
@@ -553,7 +553,7 @@ td[class="image-124px"] img {
                                                                     <span
                                                                         style="text-decoration: none; color: #ffffff;"><a
                                                                             href="<?php echo Yii::app()->createAbsoluteUrl('//'); ?>"
-                                                                            style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#ffffff; font-weight:600; text-align:left;"><?php echo Yii::app()->name; ?></a></span>
+                                                                            style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#ffffff; font-weight:600; text-align:left;"><?php echo CHtml::encode(Yii::app()->name); ?></a></span>
 
                                                                 </td>
                                                             </tr>

@@ -65,7 +65,7 @@ $canDelete = $comment->canDelete();
     </a>
 
     <div class="media-body">
-        <h4 class="media-heading"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo $user->displayName; ?></a>
+        <h4 class="media-heading"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
             <small><?php echo HHtml::timeago($comment->created_at); ?>
                 <?php if ($comment->created_at != $comment->updated_at): ?>
                     (<?php echo Yii::t('CommentModule.widgets_views_showComment', 'Updated :timeago', array(':timeago' => HHtml::timeago($comment->updated_at))); ?>)

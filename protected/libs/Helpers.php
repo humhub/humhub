@@ -149,7 +149,7 @@ class Helpers
      */
     public static function CheckClassType($className, $type = "")
     {
-        $className = preg_replace("/[^a-z0-9_]/i", "", $className);
+        $className = preg_replace("/[^a-z0-9]/i", "", $className);
 
         if (class_exists($className) && is_subclass_of($className, $type)) {
             return true;

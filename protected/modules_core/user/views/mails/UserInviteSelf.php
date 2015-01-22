@@ -30,7 +30,7 @@
                                                         style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
                                                                     <span style="color: #555555; font-weight: 300;">
-                                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', array('%appName%' => '<strong>' . Yii::app()->name . '</strong>')); ?>
+                                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', array('%appName%' => '<strong>' . CHtml::encode(Yii::app()->name) . '</strong>')); ?>
                                                                     </span>
                                                     </td>
                                                 </tr>
@@ -93,7 +93,7 @@
                                                 <tr>
                                                     <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:center; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%. Please click on the button below to proceed with your registration.', array('%appName%' => Yii::app()->name)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%. Please click on the button below to proceed with your registration.', array('%appName%' => CHtml::encode(Yii::app()->name))); ?>
 
                                                     </td>
                                                 </tr>

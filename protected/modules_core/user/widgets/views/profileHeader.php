@@ -40,8 +40,8 @@
 
             <!-- show user name and title -->
             <div class="img-profile-data">
-                <h1><?php echo $user->displayName; ?></h1>
-                <h2><?php echo $user->profile->title; ?></h2>
+                <h1><?php echo CHtml::encode($user->displayName); ?></h1>
+                <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->

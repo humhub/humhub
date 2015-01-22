@@ -13,7 +13,7 @@
     <?php //echo $form->errorSummary($model); ?>
     <div class="form-group">
     	<?php echo Yii::t('UserModule.views_account_changeEmail', '<strong>Current E-mail address</strong>'); ?>
-    	<br /><?php echo Yii::app()->user->getModel()->email ?>
+    	<br /><?php echo CHtml::encode(Yii::app()->user->getModel()->email) ?>
     </div>
     <hr/>
     <div class="form-group">

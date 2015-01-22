@@ -29,7 +29,7 @@
                                                         style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
                                                                     <span style="color: #555555; font-weight: 300;">
-                                                                        <?php echo Yii::t('base', 'Welcome to %appName%', array('%appName%' => '<strong>' . Yii::app()->name . '</strong>')); ?>
+                                                                        <?php echo Yii::t('base', 'Welcome to %appName%', array('%appName%' => '<strong>' . CHtml::encode(Yii::app()->name) . '</strong>')); ?>
                                                                         <br/>
                                                                     </span>
                                                     </td>
