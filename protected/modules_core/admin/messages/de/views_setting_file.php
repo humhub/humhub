@@ -17,6 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Comma separated list. Leave empty to show file list for all objects on wall.' => '',
+  'If not set, height will default to 200px.' => '',
+  'If not set, width will default to 200px.' => '',
   '<strong>File</strong> settings' => '<strong>Datei</strong> Einstellungen',
   'Comma separated list. Leave empty to allow all.' => 'Komma separierte Liste (CSV). Leer lassen um alle zu erlauben.',
   'Current Image Libary: {currentImageLibary}' => 'Derzeitige Bild Bibliothek: {currentImageLibary}',
