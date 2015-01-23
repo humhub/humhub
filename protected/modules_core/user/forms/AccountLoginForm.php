@@ -30,10 +30,10 @@ class AccountLoginForm extends CFormModel
             array('username, password', 'required'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
+            array('username,password,verifyCode','required','on'=>'captchaRequired'),
+            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(),'on'=>'captchaRequired'),
             // password needs to be authenticated
             array('password', 'authenticate'),
-            array('username,password,verifyCode','required','on'=>'captchaRequired'),
-            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements())
         );
     }
 

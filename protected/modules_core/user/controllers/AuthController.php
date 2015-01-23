@@ -30,7 +30,7 @@ class AuthController extends Controller
     public $subLayout = "_layout";
 
     public $attempts = 5; // allowed 5 attempts
-    public $counter;
+    public $counter=1;
     
     public function actions()
     {
@@ -85,6 +85,8 @@ class AuthController extends Controller
             else {
                 $this->counter = Yii::app()->session->itemAt('captchaRequired') + 1;
                 Yii::app()->session->add('captchaRequired',$this->counter);
+                if($this->captchaRequired())
+                    $model->scenario="captchaRequired";
             }
         }
 
