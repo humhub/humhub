@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Space</strong> menu' => '<strong>Espaço</strong> menu',
+  '<strong>Space</strong> menu' => 'Menu do <strong>Espaço</strong>',
   'Admin' => 'Admin',
   'Members' => 'Membros',
   'Stream' => 'Stream',

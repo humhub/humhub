@@ -47,6 +47,9 @@ class SpaceInviteAcceptedNotification extends Notification {
         $notification->target_object_model = "Space";
         $notification->target_object_id = $space->id;
 
+        if(!isset(Yii::app()->user->id))
+            $notification->created_by = $invitedUser->id;
+
         $notification->save();
     }
 

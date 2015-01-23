@@ -17,6 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Hide file info (name, size) for images on wall' => '',
+  'Hide file list widget from showing files for these objects on wall.' => '',
+  'Maximum preview image height (in pixels, optional)' => '',
+  'Maximum preview image width (in pixels, optional)' => '',
   'Allowed file extensions' => 'Erlaubte  Datei Erweiterungen',
   'Convert command not found!' => 'Befehl zum Konvertieren nicht gefunden!',
   'Got invalid image magick response! - Correct command?' => 'Ungültige Image Magick Antwort - Korrektes Kommando?',
