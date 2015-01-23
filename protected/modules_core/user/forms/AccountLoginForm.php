@@ -16,7 +16,8 @@ class AccountLoginForm extends CFormModel
     public $password;
     public $rememberMe;
     private $_identity;
-
+    public $verifyCode;
+    
     /**
      * Declares the validation rules.
      * The rules state that username and password are required,
@@ -31,6 +32,8 @@ class AccountLoginForm extends CFormModel
             array('rememberMe', 'boolean'),
             // password needs to be authenticated
             array('password', 'authenticate'),
+            array('username,password,verifyCode','required','on'=>'captchaRequired'),
+            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements())
         );
     }
 
