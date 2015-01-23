@@ -29,6 +29,9 @@ class AuthController extends Controller
 
     public $subLayout = "_layout";
 
+    public $attempts = 5; // allowed 5 attempts
+    public $counter;
+    
     public function actions()
     {
         return array(
@@ -57,8 +60,8 @@ class AuthController extends Controller
 
         $ntlmAutoLogin = false;
 
-        $model = new AccountLoginForm;
-
+        $model = $this->captchaRequired() ? new AccountLoginForm('captchaRequired') : new AccountLoginForm;
+   
         //TODO: Solve this via events!
         if (Yii::app()->getModule('zsso') != null) {
             ZSsoModule::beforeActionLogin();
@@ -79,6 +82,10 @@ class AuthController extends Controller
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login())
                 $this->redirect(Yii::app()->user->returnUrl);
+            else {
+                $this->counter = Yii::app()->session->itemAt('captchaRequired') + 1;
+                Yii::app()->session->add('captchaRequired',$this->counter);
+            }
         }
 
         // Always clear password
@@ -405,6 +412,11 @@ class AuthController extends Controller
 
         print CJSON::encode($output);
         Yii::app()->end();
+    }
+    
+    private function captchaRequired()
+    {
+        return Yii::app()->session->itemAt('captchaRequired') >= $this->attempts;
     }
 
 }

@@ -297,17 +297,23 @@ class SpaceController extends Controller
                     // Invite existing members
                     foreach ($model->getInvites() as $user) {
                         $space->inviteMember($user->id, Yii::app()->user->id);
+                        $statusInvite=$space->getMembership($user->id)->status;
                     }
 
                     if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
                         // Invite non existing members
                         foreach ($model->getInvitesExternal() as $email) {
-                            $space->inviteMemberByEMail($email, Yii::app()->user->id);
+                            $statusInvite=($space->inviteMemberByEMail($email, Yii::app()->user->id))? SpaceMembership::STATUS_INVITED : false;
                         }
                     }
 
                     // close modal
-                    $this->renderModalClose();
+                    //$this->renderModalClose();
+                    
+                    $output = $this->renderPartial('statusInvite', array('status' => $statusInvite));   
+                    Yii::app()->clientScript->render($output);
+                    echo $output;
+                    Yii::app()->end();
                 }
             }
         }
@@ -337,6 +343,7 @@ class SpaceController extends Controller
         // Check there are really an Invite
         if ($membership->status == SpaceMembership::STATUS_INVITED) {
             $space->addMember(Yii::app()->user->id);
+            //SpaceInviteAcceptedNotification::fire($membership->originator_user_id, Yii::app()->user, $space);
         }
 
         $this->redirect($space->getUrl());

@@ -342,52 +342,59 @@ class User extends HActiveRecordContentContainer implements ISearchable
             HSearch::getInstance()->addModel($this);
         }
 
-        if ($this->isNewRecord) {
-
-            $userInvite = UserInvite::model()->findByAttributes(array('email' => $this->email));
-            if ($userInvite !== null) {
-                // User was invited to a space
-                if ($userInvite->source == UserInvite::SOURCE_INVITE) {
-                    $space = Space::model()->findByPk($userInvite->space_invite_id);
-                    if ($space != null) {
-                        $space->addMember($this->id);
-                    }
-                }
-
-                // Delete/Cleanup Invite Entry
-                $userInvite->delete();
-            }
-
-            // Auto Assign User to the Group Space
-            $group = Group::model()->findByPk($this->group_id);
-            if ($group != null && $group->space_id != "") {
-                $space = Space::model()->findByPk($group->space_id);
-                if ($space !== null) {
-                    $space->addMember($this->id);
-                }
-            }
-
-            $this->notifyGroupAdminsForApproval();
-
-            // Auto Add User to the default spaces
-            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
-                $space->addMember($this->id);
-            }
-
-            // Create new wall record for this user
-            $wall = new Wall();
-            $wall->type = Wall::TYPE_USER;
-            $wall->object_model = 'User';
-            $wall->object_id = $this->id;
-            $wall->save();
-
-            $this->wall_id = $wall->id;
-            $this->wall = $wall;
-            User::model()->updateByPk($this->id, array('wall_id' => $wall->id));
+        if ($this->isNewRecord){
+            if(User::STATUS_ENABLED) 
+                $this->setUpApproved();  
+            else 
+                $this->notifyGroupAdminsForApproval();
         }
 
 
         return parent::afterSave();
+    }
+    
+    public function setUpApproved(){
+        
+        $userInvite = UserInvite::model()->findByAttributes(array('email' => $this->email));
+        if ($userInvite !== null) {
+            // User was invited to a space
+            if ($userInvite->source == UserInvite::SOURCE_INVITE) {
+                $space = Space::model()->findByPk($userInvite->space_invite_id);
+                if ($space != null) {
+                    $space->addMember($this->id);
+                }
+            }
+        
+            // Delete/Cleanup Invite Entry
+            $userInvite->delete();
+        }
+        
+        // Auto Assign User to the Group Space
+        $group = Group::model()->findByPk($this->group_id);
+        if ($group != null && $group->space_id != "") {
+            $space = Space::model()->findByPk($group->space_id);
+            if ($space !== null) {
+                $space->addMember($this->id);
+            }
+        }
+        
+        //
+        
+        // Auto Add User to the default spaces
+        foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
+            $space->addMember($this->id);
+        }
+        
+        // Create new wall record for this user
+        $wall = new Wall();
+        $wall->type = Wall::TYPE_USER;
+        $wall->object_model = 'User';
+        $wall->object_id = $this->id;
+        $wall->save();
+        
+        $this->wall_id = $wall->id;
+        $this->wall = $wall;
+        User::model()->updateByPk($this->id, array('wall_id' => $wall->id));
     }
 
     /**
