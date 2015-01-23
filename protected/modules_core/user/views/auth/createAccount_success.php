@@ -11,7 +11,7 @@
 ?>
 
 <div class="container" style="text-align: center;">
-    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+    <h1 id="app-title" class="animated fadeIn"><?php echo CHtml::encode(Yii::app()->name); ?></h1>
     <br/>
     <div class="row">
         <div class="panel panel-default animated fadeIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">

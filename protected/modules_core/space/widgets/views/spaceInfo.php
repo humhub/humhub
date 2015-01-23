@@ -48,7 +48,7 @@
                     <?php endif; ?>
 
                 </div>
-                <strong><?php echo $space->name; ?></strong>
+                <strong><?php echo CHtml::encode($space->name); ?></strong>
 
                 <div class="media-body" id="space-description"
                      style="overflow: hidden; max-height: 55px; font-size: 13px;">

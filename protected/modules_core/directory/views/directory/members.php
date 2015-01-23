@@ -86,7 +86,7 @@
                                 <?php if ($user->group != null) { ?>
                                 <small>(<?php echo CHtml::encode($user->group->name); ?>)</small><?php } ?>
                         </h4>
-                        <h5><?php echo $user->profile->title; ?></h5>
+                        <h5><?php echo CHtml::encode($user->profile->title); ?></h5>
 
                         <?php $tag_count = 0; ?>
                         <?php if ($user->tags) : ?>
