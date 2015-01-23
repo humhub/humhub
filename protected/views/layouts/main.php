@@ -227,6 +227,10 @@
 </div>
 <!-- end: Modal -->
 
+<!-- start: render additional foot -->
+<?php $this->renderPartial('//layouts/foot'); ?>
+<!-- end: render additional foot -->
+
 <script type="text/javascript">
 
     // Replace the standard checkbox and radio buttons
