@@ -41,17 +41,6 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
                 <?php echo $form->error($model, 'password'); ?>
             </div>
 
-            <?php if($model->scenario == 'captchaRequired'): ?>
-                <div class="form-group">
-
-                    <?php $this->widget('CCaptcha'); ?>
-                    <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_login', 'Letters shown on image above.'))); //echo CHtml::activeTextField($model,'verifyCode'); ?>
-                    <?php echo $form->error($model, 'verifyCode'); ?>
-                        
-                    <div><?php echo Yii::t('UserModule.views_auth_login', 'Letters are not case-sensitive.');?></div>
-                </div>
-                <?php endif; ?>
-            
             <div class="checkbox">
                 <label>
                     <?php echo $form->checkBox($model, 'rememberMe'); ?> <?php echo Yii::t('UserModule.views_auth_login', 'Remember me next time'); ?>
