@@ -79,6 +79,7 @@ class ApprovalController extends Controller {
                 $approveFormModel->send($model->email);
                 $model->status = User::STATUS_ENABLED;
                 $model->save();
+                $model->setUpApproved();
                 $this->redirect(Yii::app()->createUrl('admin/approval'));
             }
         } else {
