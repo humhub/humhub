@@ -129,11 +129,12 @@ return array(
             'an' => 'Aragonés',
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
-            'cs' => 'čeština',            
+            'cs' => 'čeština',
             'da' => 'dansk',
             'uz' => 'Ўзбек',
             'fa_ir' => 'فارسی',
-            'bg' => 'български'
+            'bg' => 'български',
+            'sk' => 'slovenčina'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
