@@ -140,8 +140,10 @@ class File extends HActiveRecord
         if ($this->cUploadedFile !== null && $this->cUploadedFile instanceof CUploadedFile) {
             $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
 
-            rename($this->cUploadedFile->getTempName(), $newFilename);
-            @chmod($newFilename, 0744);
+            if (is_uploaded_file($this->cUploadedFile->getTempName())) {
+                move_uploaded_file($this->cUploadedFile->getTempName(), $newFilename);
+                @chmod($newFilename, 0744);
+            } 
         }
 
         // Set file by given contents
