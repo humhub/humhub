@@ -20,36 +20,54 @@
 
 /**
  * Index Controller shows a simple welcome page.
- * 
+ *
  * @author luke
  */
-class IndexController extends Controller {
+class IndexController extends Controller
+{
 
     /**
-     * @var String layout to use 
+     *
+     * @var String layout to use
      */
     public $layout = '_layout';
 
     /**
      * Index View just provides a welcome page
      */
-    public function actionIndex() {
-
+    public function actionIndex()
+    {
+        
         // Render Template
-        $this->render('index', array());
+        $model = new ChooseLanguageForm();
+        
+        if (($language = Yii::app()->request->getPreferredAvailableLanguage())) {
+            Yii::app()->request->cookies['language']->value = $language;
+            Yii::app()->setLanguage($model->language);
+            $model->language = $language;
+        }
+        
+        if (isset($_POST['ChooseLanguageForm'])) {
+            $_POST['ChooseLanguageForm'] = Yii::app()->input->stripClean($_POST['ChooseLanguageForm']);
+            $model->attributes = $_POST['ChooseLanguageForm'];
+            
+            if ($model->validate()) {
+                Yii::app()->request->cookies['language'] = new CHttpCookie('language', $model->language);
+                Yii::app()->setLanguage($model->language);
+            }
+        }
+        $this->render('index', array('model' => $model));
     }
 
     /**
      * Checks if we need to call SetupController or ConfigController.
      */
-    public function actionGo() {
-        
+    public function actionGo()
+    {
         if ($this->getModule()->checkDBConnection()) {
             $this->redirect(Yii::app()->createUrl('//installer/setup/init'));
         } else {
             $this->redirect(Yii::app()->createUrl('//installer/setup/prerequisites'));
         }
-        
     }
-    
 }
