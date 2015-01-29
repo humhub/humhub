@@ -166,7 +166,12 @@ class HLdap
                 $user->guid = $guid;
             }
             $user->status = User::STATUS_ENABLED;
-            $user->auth_mode = User::AUTH_MODE_LDAP;
+            $authMode = HSetting::Get('authMode', 'authentication_ldap');
+            if ($authMode == 'local')
+                $user->auth_mode = User::AUTH_MODE_LOCAL;
+            else
+                $user->auth_mode = User::AUTH_MODE_LDAP;
+
             $user->group_id = 1;
 
             Yii::log('Create ldap user ' . $username . '!', CLogger::LEVEL_INFO, 'authentication_ldap');
@@ -193,6 +198,7 @@ class HLdap
         }
 
         if ($user->validate()) {
+            $wasNewRecord = $user->isNewRecord;
 
             // Only Save user when something is changed
             if ($userChanged || $user->isNewRecord)
@@ -207,6 +213,11 @@ class HLdap
 
             if ($user->profile->validate()) {
                 $user->profile->save();
+
+                // Send the Welcome email for new LDAP users using local authentication
+                // after saving the profile so that we can use the display name in the email body.
+                if ($wasNewRecord && $user->auth_mode == User::AUTH_MODE_LOCAL)
+                    $user->sendWelcomeEmailWithPaswordRecoveryToken();
 
                 // Update Space Mapping
                 foreach (Space::model()->findAll('ldap_dn != ""') as $space) {

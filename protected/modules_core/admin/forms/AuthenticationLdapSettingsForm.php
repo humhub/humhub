@@ -19,11 +19,17 @@ class AuthenticationLdapSettingsForm extends CFormModel {
     public $loginFilter;
     public $userFilter;
     public $usernameAttribute;
+    public $authMode;
     
    public $encryptionTypes = array(
         '' => 'None',
         'tls' => 'TLS (aka SSLV2)',
         'ssl' => 'SSL',
+    );
+
+    public $authModeTypes = array(
+        'ldap' => 'LDAP',
+        'local' => 'Local Database',
     );
 
     /**
@@ -34,6 +40,7 @@ class AuthenticationLdapSettingsForm extends CFormModel {
         return array(
             array('enabled, refreshUsers, usernameAttribute, username, password, hostname, port, baseDn, loginFilter, userFilter',  'length', 'max' => 255),
             array('encryption', 'in', 'range'=>array('', 'ssl', 'tls')),
+            array('authMode', 'in', 'range'=>array('ldap', 'local')),
         );
     }
 
@@ -55,6 +62,7 @@ class AuthenticationLdapSettingsForm extends CFormModel {
             'loginFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Login Filter'),
             'userFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'User Filer'),
             'usernameAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username Attribute'),
+            'authMode' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Authentication Mode'),
         );
     }
 
