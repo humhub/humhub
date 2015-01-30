@@ -92,8 +92,8 @@ class AuthController extends Controller
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()){
                $user = User::model()->findByPk(Yii::app()->user->id);    
-                if (Yii::app()->session->itemAt('language') && Yii::app()->session->itemAt('language') != $user->language) {
-                    $user->language = Yii::app()->session->itemAt('language');
+                if ((Yii::app()->session->itemAt('language') && Yii::app()->session->itemAt('language') != $user->language) || Yii::app()->getLanguage() != $user->language) {
+                    $user->language = Yii::app()->session->itemAt('language') ? Yii::app()->session->itemAt('language') : Yii::app()->getLanguage();
                     $user->save();
                 }
                 $this->redirect(Yii::app()->user->returnUrl);
