@@ -143,7 +143,7 @@ class File extends HActiveRecord
             if (is_uploaded_file($this->cUploadedFile->getTempName())) {
                 move_uploaded_file($this->cUploadedFile->getTempName(), $newFilename);
                 @chmod($newFilename, 0744);
-            } 
+            }
         }
 
         // Set file by given contents
@@ -194,13 +194,21 @@ class File extends HActiveRecord
 
     /**
      * Returns the Url of the File
+     * 
+     * @param string $suffix
+     * @param boolean $absolute
+     * @return string
      */
-    public function getUrl($suffix = "")
+    public function getUrl($suffix = "", $absolute = true)
     {
         $params = array();
         $params['guid'] = $this->guid;
         if ($suffix) {
             $params['suffix'] = $suffix;
+        }
+
+        if (!$absolute) {
+            return Yii::app()->getController()->createUrl('//file/file/download', $params);
         }
 
         return Yii::app()->getController()->createAbsoluteUrl('//file/file/download', $params);
@@ -343,11 +351,11 @@ class File extends HActiveRecord
         }
 
         $this->file_name = $pathInfo['filename'];
-        
+
         if ($this->file_name == "") {
             $this->file_name = "Unnamed";
         }
-        
+
         if (isset($pathInfo['extension']))
             $this->file_name .= "." . trim($pathInfo['extension']);
     }
