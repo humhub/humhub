@@ -125,7 +125,7 @@ class UrlOembed extends HActiveRecord
             $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
             if ($jsonOut != "") {
                 $data = CJSON::decode($jsonOut);
-                if ($data['type'] === "video" || $data['type'] === 'rich') {
+                if ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo') {
                     $html = "<div class='oembed_snippet'>" . $data['html'] . "</div>";
                 }
             }
