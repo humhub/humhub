@@ -1,3 +1,4 @@
+<?php if(!isset($this->contentOnly) || !$this->contentOnly) {?>
 <li class="<?php if (!$notification->seen) : ?>new<?php endif; ?>">
     <a href="<?php echo $notification->getUrl(); ?>">
         <div class="media">
@@ -32,3 +33,7 @@
         <i class="<?php echo $iconClass; ?>"></i>
     <?php endif; ?>
 </li>
+<?php } 
+else {
+    echo $content;
+}?>
