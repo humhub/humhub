@@ -343,7 +343,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         if ($this->isNewRecord){
-            if(User::STATUS_ENABLED) 
+            if($this->status == User::STATUS_ENABLED) 
                 $this->setUpApproved();  
             else 
                 $this->notifyGroupAdminsForApproval();
