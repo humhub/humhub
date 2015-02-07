@@ -556,8 +556,12 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'username' => $this->username,
         );
 
-        foreach ($this->profile->getProfileFields() as $profileField) {
-            $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+        $profile = $this->getProfile();
+
+        if (!$profile->isNewRecord) {
+            foreach ($profile->getProfileFields() as $profileField) {
+                $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+            }
         }
 
         return $attributes;
