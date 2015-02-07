@@ -179,6 +179,7 @@ class UrlOembed extends HActiveRecord
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         if (HSetting::Get('enabled', 'proxy')) {
             curl_setopt($curl, CURLOPT_PROXY, HSetting::Get('server', 'proxy'));
             curl_setopt($curl, CURLOPT_PROXYPORT, HSetting::Get('port', 'proxy'));
