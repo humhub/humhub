@@ -49,7 +49,7 @@ class Profile extends HActiveRecord
             if (!$profileField->visible && $this->scenario != 'adminEdit')
                 continue;
 
-            if (!$profileField->editable && $this->scenario != 'adminEdit')
+            if (!$profileField->editable && $this->scenario != 'adminEdit' && $this->scenario != 'register')
                 continue;
 
             if ($this->scenario == 'register' && !$profileField->show_at_registration)
@@ -152,6 +152,10 @@ class Profile extends HActiveRecord
                 if ($this->scenario == 'register' && !$profileField->show_at_registration)
                     continue;
 
+                // Mark field as editable when we are on register scenario and field should be shown at registration
+                if ($this->scenario == 'register' && $profileField->show_at_registration)
+                    $profileField->editable = true;
+                
                 // Mark field as editable when we are on adminEdit scenario
                 if ($this->scenario == 'adminEdit') {
                     $profileField->editable = true;
