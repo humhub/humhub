@@ -18,6 +18,10 @@
  */
 return array (
   'Allowed file extensions' => '',
+  'Hide file info (name, size) for images on wall' => '',
+  'Hide file list widget from showing files for these objects on wall.' => '',
+  'Maximum preview image height (in pixels, optional)' => '',
+  'Maximum preview image width (in pixels, optional)' => '',
   'Convert command not found!' => 'Comando Converti non trovato',
   'Got invalid image magick response! - Correct command?' => 'Risposta non valida di Image Magick! - Comando corretto?',
   'Image Magick convert command (optional)' => 'Comando Converti di Image Magick (opzionale)',

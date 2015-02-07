@@ -12,12 +12,12 @@
                     </a>
 
                     <div class="media-body">
-                        <h3 class="media-heading"><?php echo $space->name; ?></h3>
+                        <h3 class="media-heading"><?php echo CHtml::encode($space->name); ?></h3>
                         <?php echo Yii::t('SpaceModule.views_space_indexPublic', 'created by'); ?> <a
-                            href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getSpaceOwner()->guid)); ?>"><?php echo $space->getSpaceOwner()->displayName; ?></a>
+                            href="<?php echo Yii::app()->createUrl('//user/profile', array('uguid' => $space->getSpaceOwner()->guid)); ?>"><?php echo CHtml::encode($space->getSpaceOwner()->displayName); ?></a>
                             <?php if ($space->description != "") { ?>
                             <hr>
-                            <?php echo $space->description; ?>
+                            <?php echo CHtml::encode($space->description); ?>
                         <?php } ?>
                         <br/>
                         <!-- start: space tags -->

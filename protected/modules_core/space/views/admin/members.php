@@ -85,7 +85,7 @@
                     <td>
                         <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
                         <br/>
-                        <?php echo $user->profile->title; ?>
+                        <?php echo CHtml::encode($user->profile->title); ?>
 
                     </td>
 
@@ -187,7 +187,7 @@
                             <?php foreach ($space->memberships as $membership) : ?>
                                 <?php if ($membership->user == null) continue; ?>
                                 <option
-                                    value="<?php echo $membership->user->id; ?>" <?php if ($space->isSpaceOwner($membership->user->id)): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
+                                    value="<?php echo $membership->user->id; ?>" <?php if ($space->isSpaceOwner($membership->user->id)): ?> selected <?php endif; ?>><?php echo CHtml::encode($membership->user->displayName); ?></option>
                             <?php endforeach; ?>
                         </select>
 
@@ -247,7 +247,7 @@
                         <td>
                             <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
                             <br/>
-                            <?php echo $user->profile->title; ?>
+                            <?php echo CHtml::encode($user->profile->title); ?>
                         </td>
                         <td>
                             <?php echo CHtml::encode($membership->request_message); ?>
@@ -306,7 +306,7 @@
                     <td>
                         <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
                         <br/>
-                        <?php echo $user->profile->title; ?>
+                        <?php echo CHtml::encode($user->profile->title); ?>
                     </td>
                     <td width="100px">
                         <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>

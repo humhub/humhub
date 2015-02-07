@@ -16,7 +16,7 @@ $followers = $user->getFollowers(array('limit' => 16));
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo $follower->displayName; ?></strong><br><?php echo $follower->profile->title; ?>">
+                         data-original-title="<strong><?php echo CHtml::encode($follower->displayName); ?></strong><br><?php echo CHtml::encode($follower->profile->title); ?>">
                 </a>
             <?php endforeach; ?>
         </div>
@@ -44,7 +44,7 @@ $following = $user->getFollowingObjects('User', array('limit' => 16));
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo $followingUser->displayName; ?></strong><br><?php echo $followingUser->profile->title; ?>">
+                         data-original-title="<strong><?php echo CHtml::encode($followingUser->displayName); ?></strong><br><?php echo CHtml::encode($followingUser->profile->title); ?>">
                 </a>
             <?php endforeach; ?>
         </div>

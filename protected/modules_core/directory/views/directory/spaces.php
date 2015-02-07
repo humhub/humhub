@@ -84,8 +84,8 @@
                        <?php } ?>
 
                     <div class="media-body">
-                        <h4 class="media-heading"><a href="<?php echo $space->getUrl(); ?>"><?php echo $space->name; ?></a></h4>
-                        <h5><?php echo Helpers::truncateText($space->description, 100); ?></h5>
+                        <h4 class="media-heading"><a href="<?php echo $space->getUrl(); ?>"><?php echo CHtml::encode($space->name); ?></a></h4>
+                        <h5><?php echo CHtml::encode(Helpers::truncateText($space->description, 100)); ?></h5>
 
                         <?php $tag_count = 0; ?>
                         <?php if ($space->tags) : ?>

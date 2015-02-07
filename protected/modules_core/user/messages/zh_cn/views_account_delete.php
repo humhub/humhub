@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Enter your password to continue' => '',
   '<strong>Delete</strong> account' => '<strong>删除</strong> 帐户',
   'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => '你确定想删除你的账户？<br />你发表的内容将被删除',
   'Delete account' => '删除帐户',

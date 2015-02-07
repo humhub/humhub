@@ -9,7 +9,7 @@
             if ($space->guid == $currentSpaceGuid) {
                 echo "active";
             }
-            ?>"><a href="<?php echo $this->createUrl('//space/space', array('sguid' => $space->guid)); ?>"><?php print Helpers::trimText($space->name, 35); ?></a></li>
+            ?>"><a href="<?php echo $this->createUrl('//space/space', array('sguid' => $space->guid)); ?>"><?php print CHtml::encode(Helpers::trimText($space->name, 35)); ?></a></li>
             <?php endforeach; ?>
     </ul>
     <br>

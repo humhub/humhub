@@ -1,7 +1,7 @@
 <?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>
 
 <?php echo Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrote a new comment ", array(
-    '%displayName%' => '<strong>'. $user->displayName .'</strong>'
+    '%displayName%' => '<strong>'. CHtml::encode($user->displayName) .'</strong>'
 ));
 ?>
 "<?php
