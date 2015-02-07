@@ -74,14 +74,8 @@ class PermaController extends Controller {
         $model = Yii::app()->request->getParam('model');
 
         // Check given model
-        if (!class_exists($model)) {
+        if (!Helpers::CheckClassType($model, 'HActiveRecord')) {
             throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Unknown content class!'));
-        }
-
-        // Load Model and check type
-        $foo = new $model;
-        if (!$foo instanceof HActiveRecordContent && !$foo instanceof HActiveRecordContentAddon) {
-            throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Invalid content class!'));
         }
 
         $model = call_user_func(array($model, 'model'));

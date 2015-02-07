@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'New user by e-mail (comma separated)' => '',
+  'New user by e-mail (comma separated)' => 'e-mail adresi ile yeni kullanıcı (virgülle ayılmış)',
   'Invites' => 'Davetler',
   'User is already member!' => 'Kullanıcı zaten üye',
   'User not found!' => 'Kullanıcı bulunamadı!',

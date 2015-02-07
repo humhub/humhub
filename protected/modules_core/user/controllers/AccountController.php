@@ -152,6 +152,10 @@ class AccountController extends Controller
             $this->forcePostRequest();
             $profile->save();
 
+            // Save user to force reindex to search
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            $user->save();
+            
             // set flash message
             Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
@@ -439,6 +443,32 @@ class AccountController extends Controller
         }
 
         $this->renderPartial('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::app()->user->getModel()), false, true);
+    }
+
+    /**
+     * Deletes the profile image or profile banner
+     */
+    public function actionDeleteProfileImage()
+    {
+        $this->forcePostRequest();
+
+        $type = Yii::app()->request->getParam('type', 'profile');
+
+        $json = array('type' => $type);
+
+        $image = NULL;
+        if ($type == 'profile') {
+            $image = new ProfileImage(Yii::app()->user->guid);
+        } elseif ($type == 'banner') {
+            $image = new ProfileBannerImage(Yii::app()->user->guid);
+        }
+
+        if ($image) {
+            $image->delete();
+            $json['defaultUrl'] = $image->getUrl();
+        }
+
+        $this->renderJson($json);
     }
 
 }

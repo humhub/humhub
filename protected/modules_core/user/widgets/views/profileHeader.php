@@ -40,8 +40,8 @@
 
             <!-- show user name and title -->
             <div class="img-profile-data">
-                <h1><?php echo $user->displayName; ?></h1>
-                <h2><?php echo $user->profile->title; ?></h2>
+                <h1><?php echo CHtml::encode($user->displayName); ?></h1>
+                <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
@@ -58,6 +58,21 @@
                        href="<?php echo Yii::app()->createUrl('//user/account/cropBannerImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
+                    <?php
+                    $this->widget('application.widgets.ModalConfirmWidget', array(
+                                  'uniqueID' => 'modal_bannerimagedelete',
+                                  'linkOutput' => 'a',
+                                  'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
+                                  'message' => Yii::t('UserModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
+                                  'buttonTrue' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete'),
+                                  'buttonFalse' => Yii::t('UserModule.widgets_views_deleteBanner', 'Cancel'),
+                                  'linkContent' => '<i class="fa fa-times"></i>',
+                                  'class' => 'btn btn-danger btn-sm',
+                                  'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
+                                  'linkHref' => $this->createUrl("//user/account/deleteProfileImage", array('type' => 'banner')),
+                                  'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                                 )); 
+                    ?>
                 </div>
 
             <?php } ?>
@@ -67,10 +82,34 @@
 
         <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
 
-            <!-- profile image output-->
-            <img class="img-rounded profile-user-photo" id="user-profile-image"
-                 src="<?php echo $user->getProfileImage()->getUrl(); ?>"
-                 data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
+            <?php
+                           
+                /* Get original profile image URL */
+                                   
+                $profileImageExt = pathinfo($user->getProfileImage()->getUrl(), PATHINFO_EXTENSION);
+                                   
+                $profileImageOrig = preg_replace('/.[^.]*$/', '', $user->getProfileImage()->getUrl());
+                $defaultImage = (basename($user->getProfileImage()->getUrl()) == 'default_user.jpg' || basename($user->getProfileImage()->getUrl()) == 'default_user.jpg?cacheId=0') ? true : false;
+                $profileImageOrig = $profileImageOrig .'_org.' . $profileImageExt;
+                                   
+                if (!$defaultImage) {
+                                   
+            ?>
+                   
+                <!-- profile image output-->
+                <a data-toggle="lightbox" data-gallery="" href="<?php echo $profileImageOrig; ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                    <img class="img-rounded profile-user-photo" id="user-profile-image"
+                        src="<?php echo $user->getProfileImage()->getUrl(); ?>"
+                            data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
+                </a>
+                           
+            <?php } else { ?>
+                           
+                <img class="img-rounded profile-user-photo" id="user-profile-image"
+                    src="<?php echo $user->getProfileImage()->getUrl(); ?>"
+                        data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
+                                             
+            <?php } ?>
 
             <!-- check if the current user is the profile owner and can change the images -->
             <?php if ($isProfileOwner) { ?>
@@ -100,6 +139,21 @@
                        href="<?php echo Yii::app()->createUrl('//user/account/cropProfileImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
+                    <?php
+                    $this->widget('application.widgets.ModalConfirmWidget', array(
+                                  'uniqueID' => 'modal_profileimagedelete',
+                                  'linkOutput' => 'a',
+                                  'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
+                                  'message' => Yii::t('UserModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
+                                  'buttonTrue' => Yii::t('UserModule.widgets_views_deleteImage', 'Delete'),
+                                  'buttonFalse' => Yii::t('UserModule.widgets_views_deleteImage', 'Cancel'),
+                                  'linkContent' => '<i class="fa fa-times"></i>',
+                                  'class' => 'btn btn-danger btn-sm',
+                                  'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
+                                  'linkHref' => $this->createUrl("//user/account/deleteProfileImage", array('type' => 'profile')),
+                                  'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                                 )); 
+                    ?>
                 </div>
             <?php } ?>
 

@@ -38,6 +38,7 @@ $(function() {
                     $('#profile-image-upload-loader').hide();
                     $('#profile-image-upload-bar .progress-bar').css('width', '0%');
                     $('#profile-image-upload-edit-button').show();
+                    $('#deleteLinkPost_modal_profileimagedelete').show();
 
 
                 }
@@ -75,6 +76,7 @@ $(function() {
                     $('#banner-image-upload-loader').hide();
                     $('#banner-image-upload-bar .progress-bar').css('width', '0%');
                     $('#banner-image-upload-edit-button').show();
+                    $('#deleteLinkPost_modal_bannerimagedelete').show();
 
 
                 }
@@ -104,6 +106,12 @@ function handleUploadError(json) {
 
 }
 
+function resetProfileImage(jsonResp) {
+    json = jQuery.parseJSON(jsonResp);
+    $('#'+json.type+'-image-upload-edit-button').hide();
+    $('#deleteLinkPost_modal_'+json.type+'imagedelete').hide();
+    $('#user-'+json.type+'-image').attr('src', json.defaultUrl);
+}
 
 $(document).ready(function() {
 

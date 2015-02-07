@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum file size has been {maxFileSize} reached!' => '',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => '',
   'This file type is not allowed!' => '',
   'Created By' => '作成者',
   'Created at' => 'で作成',

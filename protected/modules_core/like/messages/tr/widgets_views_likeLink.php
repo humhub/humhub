@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Like' => '',
-  'Unlike' => '',
+  'Like' => 'Beğen',
+  'Unlike' => 'Beğenme',
   ' likes this.' => 'beğendi.',
   '<strong>You</strong> like this.' => '<strong>Bunu</strong> beğendin.',
   '<strong>You</strong><br>' => '<strong>Sen</strong><br>',

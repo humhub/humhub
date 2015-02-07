@@ -1,11 +1,11 @@
 <?php
 return array (
   '<strong>Latest</strong> updates' => 'Atualizações',
-  'Account settings' => 'Configurações de conta',
+  'Account settings' => 'Configurações da conta',
   'Administration' => 'Administração',
-  'Back to dashboard' => 'Voltar para painel de controle',
-  'Collapse' => 'Fechar',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Conteúdo fonte Addon deve ser exemplo de HActiveRecordContent ou HActiveRecordContentAddon!',
+  'Back to dashboard' => 'Voltar para o painel',
+  'Collapse' => 'Colapso',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Conteúdo fonte Addon deve ser instância de HActiveRecordContent ou HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Não foi possível determinar o conteúdo!',
   'Could not find content of addon!' => 'Não foi possível encontrar o conteúdo !',
   'Could not find requested module!' => 'Não foi possível encontrar o módulo solicitado!',

@@ -218,6 +218,7 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
             $userInvite->save();
             $userInvite->sendInviteMail();
         }
+        return true;
     }
 
     /**
@@ -334,6 +335,11 @@ class SpaceModelMembershipBehavior extends CActiveRecordBehavior
             $membership->invite_role = 0;
             $membership->admin_role = 0;
             $membership->share_role = 0;
+            
+            $userInvite = UserInvite::model()->findByAttributes(array('email' => $user->email));
+            if ($userInvite !== null && $userInvite->source == UserInvite::SOURCE_INVITE) {
+                SpaceInviteAcceptedNotification::fire($userInvite->user_originator_id, $user, $this->getOwner());
+            }
         } else {
 
             // User is already member

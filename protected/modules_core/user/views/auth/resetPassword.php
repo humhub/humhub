@@ -2,7 +2,7 @@
 $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', '<strong>Password</strong> reset');
 ?>
 <div class="container" style="text-align: center;">
-    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+    <h1 id="app-title" class="animated fadeIn"><?php echo CHtml::encode(Yii::app()->name); ?></h1>
     <br>
 
     <div class="row">

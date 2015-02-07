@@ -39,14 +39,14 @@ for ($i = 0; $i < count($likes); $i++) {
         // check, if you liked
         if ($likes[$i]->getUser()->guid != Yii::app()->user->guid) {
             // output, if an other user liked
-            $userlist .= "<strong>" . $likes[$i]->getUser()->displayName . "</strong>" . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
+            $userlist .= "<strong>" . CHtml::encode($likes[$i]->getUser()->displayName) . "</strong>" . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
         }
     } else {
 
         // check, if you liked
         if ($likes[$i]->getUser()->guid != Yii::app()->user->guid) {
             // output, if an other user liked
-            $userlist .= "<strong>" . $likes[$i]->getUser()->displayName . "</strong><br>";
+            $userlist .= "<strong>" . CHtml::encode($likes[$i]->getUser()->displayName) . "</strong><br>";
         }
 
         // check if exists more user as limited
@@ -72,9 +72,9 @@ list($className, $modelId) = explode("_", $id);
     <a href="<?php echo $this->createUrl('//like/like/userlist', array('className' => $className, 'id' => $modelId)); ?>"
        class="tt" data-toggle="modal"
        data-placement="top" title="" data-target="#globalModal"
-       data-original-title="<?php echo $userlist; ?>">(<span
-            class="<?php echo $id . "-LikeCount"; ?>">0</span>)</a>
+       data-original-title="<?php echo $userlist; ?>"><span
+            class="<?php echo $id . "-LikeCount"; ?>"></span></a>
 <?php } else { ?>
-    (<span class="<?php echo $id . "-LikeCount"; ?>">0</span>)
+    <span class="<?php echo $id . "-LikeCount"; ?>"></span>
 <?php } ?>
 

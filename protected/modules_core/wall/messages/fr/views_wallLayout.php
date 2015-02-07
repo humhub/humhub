@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Updated :timeago' => 'Actualisé il y a:',
+  'Updated :timeago' => 'actualisé il y a :timeago',
   'in' => 'dans',
 );

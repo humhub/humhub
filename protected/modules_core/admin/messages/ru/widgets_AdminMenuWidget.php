@@ -1,6 +1,6 @@
 <?php
 return array (
-  'OEmbed Provider' => 'Поставщик службы',
+  'Proxy' => 'Прокси',
   '<strong>Administration</strong> menu' => '<strong>Меню</strong> администратора',
   'About' => 'Версия',
   'Authentication' => 'Идентификация',
@@ -13,6 +13,7 @@ return array (
   'Logging' => 'Журнал ошибок',
   'Mailing' => 'Рассылки',
   'Modules' => 'Модули',
+  'OEmbed Provider' => 'Поставщик службы',
   'Security & Roles' => 'Безопасность и Роли',
   'Self test & update' => 'Тестирование и обновление',
   'Settings' => 'Настройки',

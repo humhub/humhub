@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> Modules' => '',
+  '<strong>Space</strong> Modules' => '<strong>Mekan</strong> Modülleri',
   'Activated' => 'Aktive edildi',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Emin misiniz? Bu alan için *TÜM * modül verileri silinecek!',
   'Configure' => 'Yapılandırma',

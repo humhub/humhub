@@ -6,7 +6,7 @@ return array (
   'Guid' => 'Guid ',
   'ID' => 'Identyfikator ',
   'Invalid Mime-Type' => 'Nieprawidłowy typ mime ',
-  'Maximum file size has been {maxFileSize} reached!' => 'Maksymalny rozmiar pliku {maxFileSize} został osiągnięty! ',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => 'Maksymalny rozmiar pliku {maxFileSize} został osiągnięty! ',
   'Mime Type' => 'Typ mime ',
   'Size' => 'Rozmiar ',
   'This file type is not allowed!' => 'Takie rozszerzenie pliku jest niedozwolone! ',

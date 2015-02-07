@@ -51,7 +51,7 @@
                                  title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Allow this user to<br>make content public'); ?>"></i>
                 </th>
                 <th><?php echo Yii::t('SpaceModule.views_admin_members', "Is admin"); ?> <i class="fa fa-info-circle tt" data-toggle="tooltip" data-placement="top"
-                                title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Make this user to an admin'); ?>"></i>
+                                title="<?php echo Yii::t('SpaceModule.views_admin_members', 'Make this user an admin'); ?>"></i>
                 </th>
                 <th></th>
             </tr>
@@ -85,7 +85,7 @@
                     <td>
                         <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
                         <br/>
-                        <?php echo $user->profile->title; ?>
+                        <?php echo CHtml::encode($user->profile->title); ?>
 
                     </td>
 
@@ -187,7 +187,7 @@
                             <?php foreach ($space->memberships as $membership) : ?>
                                 <?php if ($membership->user == null) continue; ?>
                                 <option
-                                    value="<?php echo $membership->user->id; ?>" <?php if ($space->isSpaceOwner($membership->user->id)): ?> selected <?php endif; ?>><?php echo $membership->user->displayName; ?></option>
+                                    value="<?php echo $membership->user->id; ?>" <?php if ($space->isSpaceOwner($membership->user->id)): ?> selected <?php endif; ?>><?php echo CHtml::encode($membership->user->displayName); ?></option>
                             <?php endforeach; ?>
                         </select>
 
@@ -247,7 +247,7 @@
                         <td>
                             <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
                             <br/>
-                            <?php echo $user->profile->title; ?>
+                            <?php echo CHtml::encode($user->profile->title); ?>
                         </td>
                         <td>
                             <?php echo CHtml::encode($membership->request_message); ?>
@@ -270,11 +270,11 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Outstanding</strong> sended invitations'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Outstanding</strong> sent invitations'); ?>
     </div>
     <div class="panel-body">
         <p>
-            <?php echo Yii::t('SpaceModule.views_admin_members', "The following users were already invited to this space, but didn't follow the invitation until now."); ?>
+            <?php echo Yii::t('SpaceModule.views_admin_members', "The following users were already invited to this space, but haven't accepted the invitation yet."); ?>
             <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <br/>
                 <?php echo Yii::t('SpaceModule.views_admin_members', "External users who invited by email, will be not listed here."); ?>
@@ -306,7 +306,7 @@
                     <td>
                         <strong><?php echo CHtml::link($user->displayName, $user->getProfileUrl()); ?></strong>
                         <br/>
-                        <?php echo $user->profile->title; ?>
+                        <?php echo CHtml::encode($user->profile->title); ?>
                     </td>
                     <td width="100px">
                         <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>

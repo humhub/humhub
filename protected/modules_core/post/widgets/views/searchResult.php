@@ -37,9 +37,9 @@ foreach ($post->content->getWallEntries() as $wallEntry) {
             ?>
 
             <div class="media-body">
-                <strong><?php echo $target->name; ?> </strong><br>
+                <strong><?php echo CHtml::encode($target->name); ?> </strong><br>
 
-                <span class="content"><?php echo Helpers::truncateText($post->message, 200); ?></span>
+                <span class="content"><?php echo CHtml::encode(Helpers::truncateText($post->message, 200)); ?></span>
 
             </div>
         </div>

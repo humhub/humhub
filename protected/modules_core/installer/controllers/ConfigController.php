@@ -308,6 +308,9 @@ class ConfigController extends Controller
 
         // File
         HSetting::Set('maxFileSize', '1048576', 'file');
+        HSetting::Set('maxPreviewImageWidth', '200', 'file');
+        HSetting::Set('maxPreviewImageHeight', '200', 'file');
+        HSetting::Set('hideImageFileInfo', '0', 'file');
 
         // Caching
         HSetting::Set('type', 'CFileCache', 'cache');

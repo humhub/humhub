@@ -3,11 +3,11 @@
 </div>
 
 <div class="panel-body">
-    <p><?php echo Yii::t('UserModule.views_account_editModules', 'Enhance your profile with modules.'); ?></p><br>
+    <p><?php echo Yii::t('UserModule.views_account_editModules', 'Enhance your profile with modules.'); ?></p>
 
-    <ul class = "media-list">
         <?php foreach ($availableModules as $moduleId => $module): ?>
-            <li class="media">
+            <hr>
+            <div class="media">
                 <a class="pull-left" href="#">
                     <img src="<?php echo $module->getUserModuleImage(); ?>"
                          class="" width="64" height="64">
@@ -18,16 +18,15 @@
 
                     <?php if ($user->isModuleEnabled($module->getId())) : ?>
                         <?php if ($user->canDisableModule($moduleId)): ?>
-                            <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Disable'), array('//user/account/disableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-mini btn-danger', 'confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
+                            <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Disable'), array('//user/account/disableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-sm btn-danger', 'confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
                         <?php endif; ?>
                         <?php if ($module->getUserModuleConfigUrl($user)) : ?>
-                            <?php echo CHtml::link(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getUserModuleConfigUrl($user), array('class' => 'btn btn-mini')); ?>
+                            <?php echo CHtml::link(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getUserModuleConfigUrl($user), array('class' => 'btn btn-sm')); ?>
                         <?php endif; ?>
                     <?php else: ?>
-                        <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Enable'), array('//user/account/enableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-mini btn-success')); ?>
+                        <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Enable'), array('//user/account/enableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-sm btn-primary')); ?>
                     <?php endif; ?>
                 </div>
-            </li>
+            </div>
         <?php endforeach; ?>
-    </ul>
 </div>

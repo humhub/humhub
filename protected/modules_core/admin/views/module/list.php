@@ -5,6 +5,7 @@
         <?php echo $this->renderPartial('_header'); ?>
 
         <?php if (count($installedModules) == 0): ?>
+            <br>
             <div><?php echo Yii::t('AdminModule.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
         <?php endif; ?>
 

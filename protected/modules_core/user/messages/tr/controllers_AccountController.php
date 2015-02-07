@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Invalid link! Please make sure that you entered the entire url.' => '',
-  'Save profile' => '',
-  'Saved' => '',
-  'The entered e-mail address is already in use by another user.' => '',
-  'You cannot change your e-mail address here.' => '',
-  'You cannot change your password here.' => '',
+  'Invalid link! Please make sure that you entered the entire url.' => 'Geçersiz link! Lütfen url nin tamamını girdiğinizden emin olun.',
+  'Save profile' => 'Profili kaydet',
+  'Saved' => 'Kaydedildi',
+  'The entered e-mail address is already in use by another user.' => 'Girdiğin mail adresi zaten başka bir kullanıcı tarafından kullanımda.',
+  'You cannot change your e-mail address here.' => 'Burada mail adresini değiştiremezsin.',
+  'You cannot change your password here.' => 'Burada şifreni değiştiremezsin.',
 );

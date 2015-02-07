@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Registration</strong> successful!' => '',
-  'Please check your email and follow the instructions!' => '',
-  'back to home' => '',
+  '<strong>Registration</strong> successful!' => '<strong>Kayıt</strong> başarılı!',
+  'Please check your email and follow the instructions!' => 'Lütfen email adresini kontrol et ve bilgilere uy!',
+  'back to home' => 'Anasayfaya dön',
 );

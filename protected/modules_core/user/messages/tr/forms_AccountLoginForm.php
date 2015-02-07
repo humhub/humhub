@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Current password' => '',
-  'Incorrect username/email or password.' => '',
-  'New password' => '',
-  'New password confirm' => '',
-  'Remember me next time' => '',
-  'Your account has not been activated by our staff yet.' => '',
-  'Your account is suspended.' => '',
+  'Current password' => 'Şuanki şifre',
+  'Incorrect username/email or password.' => 'Yanlış kullanıcı adı/email veya şifre',
+  'New password' => 'Yeni şifre',
+  'New password confirm' => 'Yeni şifre doğrula',
+  'Remember me next time' => 'Daha sonra hatırla',
+  'Your account has not been activated by our staff yet.' => 'Hesabın çalışanlar taradından daha aktive edilmedi.',
+  'Your account is suspended.' => 'Hesabın banlandı.',
 );

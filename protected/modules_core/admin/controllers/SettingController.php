@@ -213,7 +213,7 @@ class SettingController extends Controller
             $enabled = true;
             try {
                 if (HLdap::getInstance()->ldap !== null) {
-                    $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_ONE);
+                    $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_SUB);
                 } else {
                     $errorMessage = Yii::t('AdminModule.controllers_SettingController', 'Could not load LDAP! - Check PHP Extension');
                 }
@@ -504,8 +504,12 @@ class SettingController extends Controller
         $form = new FileSettingsForm;
         $form->imageMagickPath = HSetting::Get('imageMagickPath', 'file');
         $form->maxFileSize = HSetting::Get('maxFileSize', 'file') / 1024 / 1024;
+        $form->maxPreviewImageWidth = HSetting::Get('maxPreviewImageWidth', 'file');
+        $form->maxPreviewImageHeight = HSetting::Get('maxPreviewImageHeight', 'file');
+        $form->hideImageFileInfo = HSetting::Get('hideImageFileInfo', 'file');
         $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
         $form->allowedExtensions = HSetting::Get('allowedExtensions', 'file');
+        $form->showFilesWidgetBlacklist = HSetting::Get('showFilesWidgetBlacklist','file');
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'file-settings-form') {
@@ -520,8 +524,12 @@ class SettingController extends Controller
             if ($form->validate()) {
                 $form->imageMagickPath = HSetting::Set('imageMagickPath', $form->imageMagickPath, 'file');
                 $form->maxFileSize = HSetting::Set('maxFileSize', $form->maxFileSize * 1024 * 1024, 'file');
+                $form->maxPreviewImageWidth = HSetting::Set('maxPreviewImageWidth', $form->maxPreviewImageWidth, 'file');
+                $form->maxPreviewImageHeight = HSetting::Set('maxPreviewImageHeight', $form->maxPreviewImageHeight, 'file');
+                $form->hideImageFileInfo = HSetting::Set('hideImageFileInfo', $form->hideImageFileInfo, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
                 $form->allowedExtensions = HSetting::Set('allowedExtensions', strtolower($form->allowedExtensions), 'file');
+                $form->showFilesWidgetBlacklist = HSetting::Set('showFilesWidgetBlacklist',$form->showFilesWidgetBlacklist,'file');
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));

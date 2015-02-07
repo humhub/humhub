@@ -6,7 +6,7 @@ return array (
   'Guid' => 'Globální ID',
   'ID' => 'ID',
   'Invalid Mime-Type' => 'Neplatný Mime-Type',
-  'Maximum file size has been {maxFileSize} reached!' => 'Byl překročen povolený limit maximální velikosti souboru {maxFileSize}!',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => 'Byl překročen povolený limit maximální velikosti souboru {maxFileSize}!',
   'Mime Type' => 'Mime typ',
   'Size' => 'Velikost',
   'This file type is not allowed!' => 'Tento typ souboru není povolen!',

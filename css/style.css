@@ -499,6 +499,10 @@ ul.tour-list li.completed a {
 .oembed_snippet {
   margin-top: 10px;
 }
+.post-files img {
+  vertical-align: top;
+  margin-bottom: 3px;
+}
 .comment_create,
 .content_edit {
   position: relative;

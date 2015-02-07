@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Permalink</strong> to this post' => '',
-  'Close' => '',
-  'Permalink' => '',
+  '<strong>Permalink</strong> to this post' => 'Gönderim için <strong>Permalink</strong>',
+  'Close' => 'Kapat',
+  'Permalink' => 'Permalink',
 );

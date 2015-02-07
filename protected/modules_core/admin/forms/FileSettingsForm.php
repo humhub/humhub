@@ -8,8 +8,12 @@ class FileSettingsForm extends CFormModel {
 
     public $imageMagickPath;
     public $maxFileSize;
+    public $maxPreviewImageWidth;
+    public $maxPreviewImageHeight;
+    public $hideImageFileInfo;
     public $useXSendfile;
     public $allowedExtensions;
+    public $showFilesWidgetBlacklist;
 
     /**
      * Declares the validation rules.
@@ -17,9 +21,9 @@ class FileSettingsForm extends CFormModel {
     public function rules() {
         return array(
             array('imageMagickPath', 'checkImageMagick'),
-            array('maxFileSize, useXSendfile', 'numerical', 'integerOnly' => true),
-            array('imageMagickPath, maxFileSize', 'safe'),
-            array('allowedExtensions', 'safe'),
+            array('maxFileSize, useXSendfile, maxPreviewImageWidth, maxPreviewImageHeight, hideImageFileInfo', 'numerical', 'integerOnly' => true),
+            array('imageMagickPath, maxFileSize, maxPreviewImageWidth, maxPreviewImageHeight', 'safe'),
+            array('allowedExtensions, showFilesWidgetBlacklist', 'safe'),
 
         );
     }
@@ -34,7 +38,11 @@ class FileSettingsForm extends CFormModel {
             'imageMagickPath' => Yii::t('AdminModule.forms_FileSettingsForm', 'Image Magick convert command (optional)'),
             'maxFileSize' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum upload file size (in MB)'),
             'useXSendfile' => Yii::t('AdminModule.forms_FileSettingsForm', 'Use X-Sendfile for File Downloads'),
+        	'maxPreviewImageWidth' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image width (in pixels, optional)'),
+        	'maxPreviewImageHeight' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image height (in pixels, optional)'),
+        	'hideImageFileInfo' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file info (name, size) for images on wall'),
             'allowedExtensions' =>  Yii::t('AdminModule.forms_FileSettingsForm', 'Allowed file extensions'),
+            'showFilesWidgetBlacklist' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file list widget from showing files for these objects on wall.'),
         );
     }
 

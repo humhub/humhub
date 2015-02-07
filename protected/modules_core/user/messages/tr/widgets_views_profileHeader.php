@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Something</strong> went wrong' => '',
-  'Edit account' => '',
-  'Follow' => '',
-  'Followers' => '',
-  'Following' => '',
-  'Ok' => '',
-  'Spaces' => '',
-  'Unfollow' => '',
+  '<strong>Something</strong> went wrong' => '<strong>Birşeyler</strong> yanlış',
+  'Edit account' => 'Hesabı düzenle',
+  'Follow' => 'Takip et',
+  'Followers' => 'Takipçiler',
+  'Following' => 'Takip edilenler',
+  'Ok' => 'Tamam',
+  'Spaces' => 'Mekanlar',
+  'Unfollow' => 'Takibi Bırak',
 );

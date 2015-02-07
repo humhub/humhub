@@ -1,4 +1,4 @@
 <?php
 return array (
-  '{userDisplayName} likes {contentTitle}' => '{userDisplayName} le gusta {contentTitle}',
+  '{userDisplayName} likes {contentTitle}' => 'A {userDisplayName} le gusta {contentTitle}',
 );

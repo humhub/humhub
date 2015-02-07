@@ -23,8 +23,8 @@
             ?>
 
             <div class="media-body">
-                <h4 class="media-heading"><?php echo $space->name; ?></h4>
-                <span><?php echo Helpers::truncateText($space->description, 30); ?></span>
+                <h4 class="media-heading"><?php echo CHtml::encode($space->name); ?></h4>
+                <span><?php echo CHtml::encode(Helpers::truncateText($space->description, 30)); ?></span>
 
             </div>
         </div>

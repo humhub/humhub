@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Define here default settings for new spaces.' => '',
-  'Overview' => '',
-  'Settings' => '',
+  'Define here default settings for new spaces.' => 'Yeni mekanlar için varsayılan ayarları tanımla',
+  'Overview' => 'Genel bakış',
+  'Settings' => 'Ayarlar',
   '<strong>Manage</strong> spaces' => '<strong>Mekan</strong> Yönetimi',
   'All' => 'Hepsi',
   'Delete space' => 'Mekan sil',
