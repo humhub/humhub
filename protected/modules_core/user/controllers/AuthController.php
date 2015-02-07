@@ -44,8 +44,7 @@ class AuthController extends Controller
      * Displays the login page
      */
     public function actionLogin()
-    {
-
+    {   
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::app()->user->isGuest) {
             $this->redirect(Yii::app()->user->returnUrl);
@@ -53,7 +52,21 @@ class AuthController extends Controller
 
         // Show/Allow Anonymous Registration
         $canRegister = HSetting::Get('anonymousRegistration', 'authentication_internal');
-
+        $languageModel = new ChooseLanguageForm();
+        if (($language = Yii::app()->request->getPreferredAvailableLanguage())) {
+            Yii::app()->setLanguage($language);
+            $languageModel->language = $language;
+        }
+        
+        if (isset($_POST['ChooseLanguageForm'])) {
+            $_POST['ChooseLanguageForm'] = Yii::app()->input->stripClean($_POST['ChooseLanguageForm']);
+            $languageModel->attributes = $_POST['ChooseLanguageForm'];
+            
+            if ($languageModel->validate()) {
+                Yii::app()->session->add('language', $languageModel->language);
+                Yii::app()->setLanguage($languageModel->language);
+            }
+        }
 
         $ntlmAutoLogin = false;
 
@@ -77,8 +90,14 @@ class AuthController extends Controller
             $model->attributes = $_POST['AccountLoginForm'];
 
             // validate user input and redirect to the previous page if valid
-            if ($model->validate() && $model->login())
+            if ($model->validate() && $model->login()){
+               $user = User::model()->findByPk(Yii::app()->user->id);    
+                if ((Yii::app()->session->itemAt('language') && Yii::app()->session->itemAt('language') != $user->language) || Yii::app()->getLanguage() != $user->language) {
+                    $user->language = Yii::app()->session->itemAt('language') ? Yii::app()->session->itemAt('language') : Yii::app()->getLanguage();
+                    $user->save();
+                }
                 $this->redirect(Yii::app()->user->returnUrl);
+            }
         }
 
         // Always clear password
@@ -124,7 +143,7 @@ class AuthController extends Controller
 
 
         // display the login form
-        $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
+        $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister, 'languageModel' => $languageModel));
     }
 
     /**
