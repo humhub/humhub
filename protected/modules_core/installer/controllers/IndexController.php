@@ -40,19 +40,19 @@ class IndexController extends Controller
         
         // Render Template
         $model = new ChooseLanguageForm();
-        
+  
         if (($language = Yii::app()->request->getPreferredAvailableLanguage())) {
-            Yii::app()->request->cookies['language']->value = $language;
+            Yii::app()->request->cookies['language'] = new CHttpCookie('language', $language);
             Yii::app()->setLanguage($model->language);
             $model->language = $language;
         }
-        
-        if (isset($_POST['ChooseLanguageForm'])) {
+
+        if (isset($_POST['ChooseLanguageForm'])) {       
             $_POST['ChooseLanguageForm'] = Yii::app()->input->stripClean($_POST['ChooseLanguageForm']);
             $model->attributes = $_POST['ChooseLanguageForm'];
             
             if ($model->validate()) {
-                Yii::app()->request->cookies['language'] = new CHttpCookie('language', $model->language);
+                Yii::app()->request->cookies['language']->value =  $model->language;
                 Yii::app()->setLanguage($model->language);
             }
         }
