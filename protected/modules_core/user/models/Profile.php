@@ -155,7 +155,6 @@ class Profile extends HActiveRecord
                 // Mark field as editable when we are on adminEdit scenario
                 if ($this->scenario == 'adminEdit') {
                     $profileField->editable = true;
-
                 }
                 // Dont allow editing of ldap syned fields - will be overwritten on next ldap sync.
                 if ($this->user !== null && $this->user->auth_mode == User::AUTH_MODE_LDAP && $profileField->ldap_attribute != "") {
@@ -222,11 +221,20 @@ class Profile extends HActiveRecord
      * @param ProfileFieldCategory $category
      * @return Array ProfileFields
      */
-    public function getProfileFields(ProfileFieldCategory $category)
+    public function getProfileFields(ProfileFieldCategory $category = null)
     {
         $fields = array();
 
-        foreach (ProfileField::model()->findAllByAttributes(array('profile_field_category_id' => $category->id, 'visible' => 1), array('order' => 'sort_order')) as $field) {
+        $criteria = new CDbCriteria();
+
+        if ($category !== null) {
+            $criteria->condition = "profile_field_category_id=:catId AND ";
+            $criteria->params = array(':catId' => $category->id);
+        }
+        $criteria->condition .= "visible = 1";
+        $criteria->order = "sort_order";
+
+        foreach (ProfileField::model()->findAll($criteria) as $field) {
 
             if ($field->getUserValue($this->user) != "") {
                 $fields[] = $field;

@@ -152,6 +152,10 @@ class AccountController extends Controller
             $this->forcePostRequest();
             $profile->save();
 
+            // Save user to force reindex to search
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            $user->save();
+            
             // set flash message
             Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
