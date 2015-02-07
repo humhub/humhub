@@ -92,9 +92,9 @@
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Hello'); ?> <?php echo $user->displayName; ?>,<br><br>
+                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Hello'); ?> <?php echo CHtml::encode($user->displayName); ?>,<br><br>
 
-                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.', array('{newemail}' => $newEmail)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.', array('{newemail}' => CHtml::encode($newEmail))); ?>
 
                                                     </td>
                                                 </tr>

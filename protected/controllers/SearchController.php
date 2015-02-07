@@ -186,10 +186,10 @@ class SearchController extends Controller
                     $result = array();
                     $result['guid'] = $object->guid;
                     if ($object instanceof Space) {
-                        $result['name'] = $object->name;
+                        $result['name'] = CHtml::encode($object->name);
                         $result['type'] = 's';
                     } elseif  ($object instanceof User) {
-                        $result['name'] = $object->displayName;
+                        $result['name'] = CHtml::encode($object->displayName);
                         $result['type'] = 'u';
                     }
                     $result['image'] = $object->getProfileImage()->getUrl();

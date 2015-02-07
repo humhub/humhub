@@ -22,7 +22,7 @@
                      height="40" width="40" alt="40x40" data-src="holder.js/40x40"
                      style="width: 40px; height: 40px;"
                      data-toggle="tooltip" data-placement="top" title=""
-                     data-original-title="<strong><?php echo $space->name; ?></strong>">
+                     data-original-title="<strong><?php echo CHtml::encode($space->name); ?></strong>">
             </a>
         <?php endforeach; ?>
     </div>
@@ -65,7 +65,7 @@
         <?php if (isset($statsSpaceMostMembers->name)) { ?>
             <div style="text-align: center;">
                 <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Most members'); ?>:
-                </strong> <?php echo $statsSpaceMostMembers->name; ?>
+                </strong> <?php echo CHtml::encode($statsSpaceMostMembers->name); ?>
             </div>
         <?php } ?>
     </div>

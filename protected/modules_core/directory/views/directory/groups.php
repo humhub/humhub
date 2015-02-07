@@ -18,14 +18,14 @@
         <?php foreach ($groups as $group) : ?>
             <?php $users = User::model()->active()->findAllByAttributes(array('group_id' => $group->id), array('limit' => 30)); ?>
             <?php if (count($users) != 0) { ?>
-                <h1><?php echo $group->name; ?></h1>
+                <h1><?php echo CHtml::encode($group->name); ?></h1>
                 <?php $user_count = 0; ?>
                 <?php $users = User::model()->active()->findAllByAttributes(array('group_id' => $group->id), array('limit' => 30)); ?>
 
                 <?php foreach ($users as $user) : ?>
                     <a id="<?php echo $user->guid; ?>" href="<?php echo $user->getUrl(); ?>">
                         <img data-toggle="tooltip" data-placement="top" title=""
-                             data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->profile->title; ?>"
+                             data-original-title="<strong><?php echo CHtml::encode($user->displayName); ?></strong><br><?php echo CHtml::encode($user->profile->title); ?>"
                              src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                              height="40"
                              width="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"></a>

@@ -2,7 +2,7 @@
 
 <?php
 echo Yii::t('PostModule.views_activities_PostCreated', '%displayName% created a new post.', array(
-    '%displayName%' => '<strong>' . $user->displayName . '</strong>'
+    '%displayName%' => '<strong>' . CHtml::encode($user->displayName) . '</strong>'
 ));
 ?>
 <br />

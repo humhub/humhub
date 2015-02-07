@@ -173,7 +173,7 @@ class SpaceController extends Controller
 
         foreach ($users as $user) {
             $userInfo['guid'] = $user->guid;
-            $userInfo['displayName'] = $user->displayName;
+            $userInfo['displayName'] = CHtml::encode($user->displayName);
             $userInfo['email'] = $user->email;
             $userInfo['image'] = $user->getProfileImage()->getUrl();
             $userInfo['link'] = $user->getProfileUrl();

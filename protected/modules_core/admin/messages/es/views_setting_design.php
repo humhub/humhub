@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Alphabetical' => '',
-  'Last visit' => '',
+  'Alphabetical' => 'Alfabético',
+  'Last visit' => 'Última visita',
   '<strong>Design</strong> settings' => 'Ajustes de <strong>diseño</strong>',
   'Firstname Lastname (e.g. John Doe)' => 'Nombre y Apellido (p.ej. John Doe)',
   'Save' => 'Guardar',

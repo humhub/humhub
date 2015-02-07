@@ -1,7 +1,7 @@
 <?php
 return array (
   'Define here default settings for new spaces.' => 'Define aquí la configuració por defecto para los nuevos espacios.',
-  'Overview' => '',
+  'Overview' => 'Resúmen',
   'Settings' => 'Configuraciones',
   '<strong>Manage</strong> spaces' => '<strong>Gestionar</strong> espacios',
   'All' => 'Todos',

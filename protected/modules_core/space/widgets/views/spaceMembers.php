@@ -13,19 +13,19 @@
                         <td align="left" valign="top" width="30">
 
 
-                            <a href="<?php echo $user->profileUrl; ?>" alt="<?php echo $user->displayName ?>">
+                            <a href="<?php echo $user->profileUrl; ?>" alt="<?php echo CHtml::encode($user->displayName) ?>">
                                 <img class="img-rounded tt img_margin"
                                      src="<?php echo $user->getProfileImage()->getUrl(); ?>" height="24" width="24"
                                      alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;"
                                      data-toggle="tooltip" data-placement="top" title=""
-                                     data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->profile->title; ?>"/>
+                                     data-original-title="<strong><?php echo CHtml::encode($user->displayName); ?></strong><br><?php echo CHtml::encode($user->profile->title); ?>"/>
                             </a>
 
 
                         </td>
 
                         <td align="left" valign="top">
-                            <strong><?php echo $user->displayName ?></strong><br>
+                            <strong><?php echo CHtml::encode($user->displayName) ?></strong><br>
                             <?php echo CHtml::encode($membership->request_message); ?><br>
 
                             <hr>
@@ -65,7 +65,7 @@
                     <img src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;" data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo $user->displayName; ?></strong><br><?php echo $user->profile->title; ?>">
+                         data-original-title="<strong><?php echo CHtml::encode($user->displayName); ?></strong><br><?php echo CHtml::encode($user->profile->title); ?>">
                 </a>
                 <?php if ($space->isAdmin($user->id)) { ?>
                     <!-- output, if user is admin of this space -->

@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => $model->displayName)); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => CHtml::encode($model->displayName))); ?></div>
     <div class="panel-body">
 
 <?php

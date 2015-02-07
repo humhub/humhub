@@ -88,7 +88,7 @@
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Hello {displayName}', array('{displayName}' => $user->displayName)); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Hello {displayName}', array('{displayName}' => CHtml::encode($user->displayName))); ?>
                                                         <br><br>
                                                         <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Please use the following link within the next day to reset your password.'); ?>
                                                         <br>

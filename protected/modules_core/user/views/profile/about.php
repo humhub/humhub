@@ -11,7 +11,7 @@
             <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
                 <li class="<?php echo $firstClass;
                 $firstClass = ""; ?>"><a href="#profile-category-<?php echo $category->id; ?>"
-                                         data-toggle="tab"><?php echo Yii::t($category->getTranslationCategory(), $category->title); ?></a>
+                                         data-toggle="tab"><?php echo CHtml::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -28,7 +28,7 @@
 
                             <div class="form-group">
                                 <label
-                                    class="col-sm-3 control-label"><?php echo Yii::t($field->getTranslationCategory(), $field->title); ?></label>
+                                    class="col-sm-3 control-label"><?php echo CHtml::encode(Yii::t($field->getTranslationCategory(), $field->title)); ?></label>
 
 
                                 <?php if (strtolower($field->title) == 'about') { ?>
@@ -41,7 +41,7 @@
                                     </div>
                                 <?php } ?>
                             </div>
-                            
+
                         <?php endforeach; ?>
 
                     </form>
