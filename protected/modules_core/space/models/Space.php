@@ -105,6 +105,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         if ($this->scenario == 'edit') {
             $rules = array(
                 array('name', 'required'),
+                array('guid', 'required'),
+                array('guid', 'length', 'max' => 25),
                 array('name', 'unique', 'caseSensitive' => false, 'className' => 'Space', 'message' => '{attribute} "{value}" is already in use! '),
                 array('website', 'url'),
                 array('description, tags', 'safe'),
@@ -124,6 +126,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         // will receive user inputs.
         return array(
             array('name', 'required'),
+            array('guid', 'length', 'max' => 25),
             array('wall_id, join_policy, visibility, auto_add_new_members, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('name, website', 'length', 'max' => 45),
             array('ldap_dn', 'length', 'max' => 255),
@@ -176,6 +179,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     {
         return array(
             'id' => 'ID',
+            'guid' => 'URL - path of space',
             'wall_id' => 'Wall',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),

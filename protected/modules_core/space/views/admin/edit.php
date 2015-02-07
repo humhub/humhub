@@ -22,6 +22,11 @@
             <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'maxlength' => 45)); ?>
             <?php echo $form->error($model, 'name'); ?>
         </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'guid'); ?>
+            <?php echo $form->textField($model, 'guid', array('class' => 'form-control', 'maxlength' => 25)); ?>
+            <?php echo $form->error($model, 'guid'); ?>
+        </div>
 
 
         <div class="form-group">
