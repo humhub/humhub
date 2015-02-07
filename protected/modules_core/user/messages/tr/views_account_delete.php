@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'Enter your password to continue' => '',
   '<strong>Delete</strong> account' => 'Hesabı <strong>Sil</strong>',
   'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => 'Hesabını silmek istediğine emin misin?<br />Tüm yayında olan gönderilerin kaldırılacak! ',
   'Delete account' => 'Hesabı sil',

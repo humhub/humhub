@@ -68,7 +68,7 @@
                                                                                 (<?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'via'); ?>
                                                                                 <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $notification->space->guid)); ?>"
                                                                                    style="text-decoration: none; color: #555555;">
-                                                                                    <?php echo $notification->space->name; ?>
+                                                                                    <?php echo CHtml::encode($notification->space->name); ?>
                                                                                 </a>)
                                                                             <?php endif; ?>
 

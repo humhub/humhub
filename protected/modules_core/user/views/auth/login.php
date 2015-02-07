@@ -14,8 +14,8 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
 
 
 <div class="container" style="text-align: center;">
-	<h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
-	<br>
+    <h1 id="app-title" class="animated fadeIn"><?php echo CHtml::encode(Yii::app()->name); ?></h1>
+    <br>
 
 	<div class="panel panel-default animated bounceIn" id="login-form"
 		style="max-width: 300px; margin: 0 auto 20px; text-align: left;">

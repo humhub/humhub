@@ -17,8 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Comma separated list. Leave empty to allow all.' => '',
-  '<strong>File</strong> settings' => '<strong>Arquivos</strong> configurações',
+  'Comma separated list. Leave empty to show file list for all objects on wall.' => '',
+  'If not set, height will default to 200px.' => '',
+  'If not set, width will default to 200px.' => '',
+  '<strong>File</strong> settings' => 'Configurações de <strong>arquivos</strong>',
+  'Comma separated list. Leave empty to allow all.' => 'Lista separada por vírgulas. Deixe em branco para permitir todos.',
   'Current Image Libary: {currentImageLibary}' => 'Biblioteca de Imagem Atual: {currentImageLibary}',
   'PHP reported a maximum of {maxUploadSize} MB' => 'O PHP permite um máximo de {maxUploadSize} MB',
   'Save' => 'Salvar',

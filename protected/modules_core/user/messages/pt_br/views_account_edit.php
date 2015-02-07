@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>User</strong> details' => '<strong>Usuário</strong> detalhes',
+  '<strong>User</strong> details' => '<strong>Detalhes do usuário</strong>',
 );

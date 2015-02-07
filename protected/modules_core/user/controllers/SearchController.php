@@ -95,7 +95,7 @@ class SearchController extends Controller
             if ($user != null) {
                 $userInfo = array();
                 $userInfo['guid'] = $user->guid;
-                $userInfo['displayName'] = $user->displayName;
+                $userInfo['displayName'] = CHtml::encode($user->displayName);
                 $userInfo['image'] = $user->getProfileImage()->getUrl();
                 $userInfo['link'] = $user->getUrl();
                 $results[] = $userInfo;

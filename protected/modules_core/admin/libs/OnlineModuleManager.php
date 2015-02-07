@@ -219,6 +219,8 @@ class OnlineModuleManager
         $options = array(
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
             CURLOPT_CAINFO => Yii::getPathOfAlias('application.config.ssl_certs') . DIRECTORY_SEPARATOR . 'humhub.crt'
         );
 

@@ -42,7 +42,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>:</strong> <?php echo $statsTopGroup->name; ?>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>:</strong> <?php echo CHtml::encode($statsTopGroup->name); ?>
         </div>
     </div>
 </div>
