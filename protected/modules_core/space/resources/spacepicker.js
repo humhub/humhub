@@ -214,9 +214,8 @@ $.fn.spacepicker = function(options) {
 
 
                 for (var i = 0; i < json.length; i++) {
-
                     // build <li> entry
-                    var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + addslashes(json[i].title) + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].title + '</a></li>';
+                    var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + addslashes(htmlDecode(json[i].title)) + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].title + '</a></li>';
 
                     // append the entry to the <ul> list
                     $('#spacepicker').append(str);
@@ -331,4 +330,8 @@ function parseSpaceInput() {
 function addslashes(str) {
 
 	return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+}
+
+function htmlDecode(value) {
+    return $("<textarea/>").html(value).text();
 }
