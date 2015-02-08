@@ -90,6 +90,17 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
         return "";
     }
 
+    /**
+     * Returns the display name of content container
+     * 
+     * @since 0.11.0
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return "Container: " . get_class($this) . " - " . $this->getPrimaryKey();
+    }
+
 }
 
 ?>

@@ -23,9 +23,17 @@
  * @package humhub.interfaces
  * @since 0.5
  */
-interface IContentContainer {
+interface IContentContainer
+{
 
     public function getProfileImage();
 
     public function getUrl();
+
+    /**
+     * Returns the display name of the container
+     * 
+     * @since 0.11.0
+     */
+    public function getDisplayName();
 }
