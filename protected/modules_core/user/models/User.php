@@ -342,10 +342,10 @@ class User extends HActiveRecordContentContainer implements ISearchable
             HSearch::getInstance()->addModel($this);
         }
 
-        if ($this->isNewRecord) {
-            if (User::STATUS_ENABLED)
-                $this->setUpApproved();
-            else
+        if ($this->isNewRecord){
+            if($this->status == User::STATUS_ENABLED) 
+                $this->setUpApproved();  
+            else 
                 $this->notifyGroupAdminsForApproval();
         }
 
