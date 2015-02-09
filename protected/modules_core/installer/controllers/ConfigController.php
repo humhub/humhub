@@ -325,6 +325,8 @@ class ConfigController extends Controller
         HSetting::Set('enable', 1, 'tour');
         HSetting::Set('defaultLanguage', Yii::app()->getLanguage());
 
+        // Notification
+        HSetting::Set('enable_html5_desktop_notifications', 1, 'notification');
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory;

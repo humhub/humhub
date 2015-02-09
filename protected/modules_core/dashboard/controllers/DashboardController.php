@@ -26,6 +26,7 @@
  */
 class DashboardController extends Controller {
 
+    public $contentOnly = true;
     /**
      * @return array action filters
      */
@@ -147,15 +148,30 @@ class DashboardController extends Controller {
             $json['workspaces'][] = $info;
         }
 
-        // New notification count
-        $sql = "SELECT count(id)
-		FROM notification
-		WHERE  user_id = :user_id AND seen != 1";
-        $connection = Yii::app()->db;
-        $command = $connection->createCommand($sql);
-        $userId = Yii::app()->user->id;
-        $command->bindParam(":user_id", $userId);
-        $json['newNotifications'] = $command->queryScalar();
+        $user = Yii::app()->user->getModel();
+        
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'user_id = :user_id';
+        $criteria->addCondition('seen != 1');
+        $criteria->params = array('user_id' => $user->id);
+        
+        $json['newNotifications'] = Notification::model()->count($criteria);
+        $json['notifications'] = array();
+        $criteria->addCondition('desktop_notified = 0');
+        $notifications = Notification::model()->findAll($criteria);
+        
+        foreach ($notifications as $notification) {
+            if ($user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'))) {
+                $info = $notification->getOut();
+                $info = strip_tags($info);
+                $info = str_replace("\n", "", $info);
+                $info = str_replace("\r", "", $info);
+                $json['notifications'][] = $info;
+            }
+            $notification->desktop_notified = 1;
+            $notification->update();
+        } 
+        
 
         print CJSON::encode($json);
         Yii::app()->end();

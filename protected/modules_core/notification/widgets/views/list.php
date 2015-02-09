@@ -181,6 +181,11 @@
                     $('#mark-seen-link').css('display', 'inline');
                     $('#badge-notifications').fadeIn('fast');
                     $('#icon-notifications .fa').addClass("animated swing");
+
+                    var $notifications = json.notifications;
+                    for(var i=0; i<$notifications.length; i++){
+                    	notify.createNotification("Notification", {body: $("<span />", { html: $notifications[i] }).text(), icon: "ico/alert.ico"})
+                    }
                 }
 
             })
