@@ -139,7 +139,7 @@ class DashboardController extends Controller {
             $workspace = $membership->workspace;
 
             $info = array();
-            $info['name'] = $workspace->name;
+            $info['name'] = CHtml::encode($workspace->name);
             #$info['id'] = $workspace->id;	# should be hidden at frontend
             $info['guid'] = $workspace->guid;
             $info['totalItems'] = $workspace->countItems();

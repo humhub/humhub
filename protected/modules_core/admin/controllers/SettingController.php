@@ -213,7 +213,7 @@ class SettingController extends Controller
             $enabled = true;
             try {
                 if (HLdap::getInstance()->ldap !== null) {
-                    $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_ONE);
+                    $userCount = HLdap::getInstance()->ldap->count(HSetting::Get('userFilter', 'authentication_ldap'), HSetting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_SUB);
                 } else {
                     $errorMessage = Yii::t('AdminModule.controllers_SettingController', 'Could not load LDAP! - Check PHP Extension');
                 }

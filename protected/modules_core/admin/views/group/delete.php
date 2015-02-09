@@ -19,7 +19,7 @@
     <div class="panel-body">
 
 <p>
-<?php echo Yii::t('AdminModule.views_group_delete', 'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:', array('{group}' => $group->name)); ?>
+<?php echo Yii::t('AdminModule.views_group_delete', 'To delete the group <strong>"{group}"</strong> you need to set an alternative group for existing users:', array('{group}' => CHtml::encode($group->name))); ?>
 </p>
 
 

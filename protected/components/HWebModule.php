@@ -139,17 +139,17 @@ class HWebModule extends CWebModule
      */
     public function getImage()
     {
-	    if (is_file($this->getAssetsPath() . DIRECTORY_SEPARATOR . 'module_image.png')) {
-		    return $this->getAssetsUrl() . '/module_image.png';
-	    }
-	    if (Yii::app()->theme && Yii::app()->theme != "") {
-		    // get default image from theme (if exists)
-		    $image = Yii::app()->theme->getFileUrl('/img/default_module.jpg');
-	    } else {
-		    $image = Yii::app()->getBaseUrl() . '/img/default_module.jpg';
-	    }
+        if (is_file($this->getAssetsPath() . DIRECTORY_SEPARATOR . 'module_image.png')) {
+            return $this->getAssetsUrl() . '/module_image.png';
+        }
+        if (Yii::app()->theme && Yii::app()->theme != "") {
+            // get default image from theme (if exists)
+            $image = Yii::app()->theme->getFileUrl('/img/default_module.jpg');
+        } else {
+            $image = Yii::app()->getBaseUrl() . '/img/default_module.jpg';
+        }
 
-	    return $image;
+        return $image;
     }
 
     /**
@@ -367,7 +367,7 @@ class HWebModule extends CWebModule
     {
         if ($this->_assetsUrl === null) {
             if ($this->getPath() != "") {
-                $this->_assetsUrl = Yii::app()->getAssetManager()->publish($this->getAssetsPath());
+                $this->_assetsUrl = Yii::app()->getAssetManager()->publish($this->getAssetsPath(), false, -1, YII_DEBUG);
             }
         }
         return $this->_assetsUrl;

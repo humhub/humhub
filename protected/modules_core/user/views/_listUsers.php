@@ -44,11 +44,11 @@
 
 
                                 <div class="media-body">
-                                    <h4 class="media-heading"><?php echo $user->displayName; ?>
+                                    <h4 class="media-heading"><?php echo CHtml::encode($user->displayName); ?>
                                         <?php if ($user->group != null) { ?>
-                                            <small>(<?php echo $user->group->name; ?>)</small><?php } ?>
+                                            <small>(<?php echo CHtml::encode($user->group->name); ?>)</small><?php } ?>
                                     </h4>
-                                    <h5><?php echo $user->profile->title; ?></h5>
+                                    <h5><?php echo CHtml::encode($user->profile->title); ?></h5>
                                 </div>
                             </div>
                         </a>

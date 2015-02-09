@@ -22,7 +22,7 @@
 
         <?php echo $form->errorSummary($model); ?>
         <div class="form-group">
-            <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 45)); ?>
+            <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_account_delete', 'Enter your password to continue'), 'maxlength' => 45)); ?>
         </div>
         <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_delete', 'Delete account'), array('class' => 'btn btn-danger')); ?>
 

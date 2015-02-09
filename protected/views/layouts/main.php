@@ -92,7 +92,7 @@
         <div class="container">
             <div class="topbar-brand">
                 <a class="navbar-brand hidden-xs"
-                   href="<?php echo Yii::app()->createUrl('//'); ?>"><?php echo Yii::app()->name; ?></a>
+                   href="<?php echo Yii::app()->createUrl('//'); ?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
             </div>
 
             <div class="topbar-actions pull-right">
@@ -101,7 +101,7 @@
                     <li class="dropdown account">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <div class="user-title pull-left hidden-xs">
-                                <strong><?php echo Yii::app()->user->displayName; ?></strong><br/><span class="truncate"><?php echo Yii::app()->user->getModel()->profile->title; ?></span>
+                                <strong><?php echo CHtml::encode(Yii::app()->user->displayName); ?></strong><br/><span class="truncate"><?php echo CHtml::encode(Yii::app()->user->getModel()->profile->title); ?></span>
                             </div>
 
                             <img id="user-account-image" class="img-rounded"

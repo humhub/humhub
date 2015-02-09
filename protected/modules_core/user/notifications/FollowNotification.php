@@ -26,6 +26,12 @@ class FollowNotification extends Notification
         
         $notification->save();
     }
+
+    public function redirectToTarget()
+    {
+        $user = $this->getTargetObject();
+        Yii::app()->getController()->redirect($user->getUrl());
+    }
 }
 
 ?>

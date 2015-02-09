@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Latest</strong> updates' => '<strong>Últimas</strong> actualizaciones',
-  'Account settings' => 'Configuraciones de la cuenta',
+  'Account settings' => 'Configuración de la cuenta',
   'Administration' => 'Administración',
   'Back to dashboard' => 'Volver al Panel de Control',
   'Collapse' => 'Cerrar',

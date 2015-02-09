@@ -13,6 +13,6 @@ return array (
   'Updated by' => 'Modificado por',
   'Visibility' => 'Visibilidade',
   'Website URL (optional)' => 'Website (opcional)',
-  'You cannot create private visible spaces!' => '',
-  'You cannot create public visible spaces!' => '',
+  'You cannot create private visible spaces!' => 'Você não pode criar espaços visíveis privados!',
+  'You cannot create public visible spaces!' => 'Você não pode criar espaços públicos visíveis!',
 );

@@ -40,7 +40,7 @@
     <div class="media-body">
         <!-- show username with link and creation time-->
         <h4 class="media-heading"><a
-                href="<?php echo $object->content->user->getProfileUrl(); ?>"><?php echo $object->content->user->displayName; ?></a>
+                href="<?php echo $object->content->user->getProfileUrl(); ?>"><?php echo CHtml::encode($object->content->user->displayName); ?></a>
             <small><?php echo HHtml::timeago($object->content->created_at); ?>
                 
                 <?php if ($object->content->created_at != $object->content->updated_at): ?>
@@ -50,7 +50,7 @@
 
                 <!-- show space name -->
                 <?php if (Wall::$currentType != Wall::TYPE_SPACE && $object->content->container instanceof Space): ?>
-                    <?php echo Yii::t('WallModule.views_wallLayout', 'in'); ?> <strong><a href="<?php echo $object->content->container->getUrl(); ?>"><?php echo $object->content->container->name; ?></a></strong>
+                    <?php echo Yii::t('WallModule.views_wallLayout', 'in'); ?> <strong><a href="<?php echo $object->content->container->getUrl(); ?>"><?php echo CHtml::encode($object->content->container->name); ?></a></strong>
                 <?php endif; ?>
 
                 <!-- show labels -->
@@ -58,7 +58,7 @@
 
             </small>
         </h4>
-        <h5><?php echo $object->content->user->profile->title; ?></h5>
+        <h5><?php echo CHtml::encode($object->content->user->profile->title); ?></h5>
 
     </div>
     <hr/>

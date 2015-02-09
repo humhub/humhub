@@ -125,7 +125,7 @@ class HLdap
 
             foreach (User::model()->findAllByAttributes(array('auth_mode' => User::AUTH_MODE_LDAP), 'status!=' . User::STATUS_DISABLED) as $user) {
                 if (!in_array($user->id, $ldapUserIds)) {
-                    // User not longer available in ldap
+                    // User no longer available in ldap
                     $user->status = User::STATUS_DISABLED;
                     $user->save();
 
