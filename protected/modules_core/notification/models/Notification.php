@@ -121,6 +121,11 @@ class Notification extends HActiveRecord {
                 $this->seen = 0;
             }
         }
+        
+        $userOnline = UserHttpSession::model()->exists('user_id = '.$this->user_id);
+        if(!$userOnline){
+            $this->desktop_notified = 1;
+        }
 
         return parent::beforeSave();
     }

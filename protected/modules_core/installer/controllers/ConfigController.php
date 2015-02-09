@@ -324,6 +324,8 @@ class ConfigController extends Controller
         // Basic
         HSetting::Set('enable', 1, 'tour');
 
+        // Notification
+        HSetting::Set('enable_html5_desktop_notifications', 1, 'notification');
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory;

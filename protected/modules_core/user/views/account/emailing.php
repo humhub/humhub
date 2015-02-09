@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Email</strong> Notifications'); ?>
+    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Desktop</strong> Notifications'); ?>
 </div>
 <div class="panel-body">
     <?php
@@ -10,8 +10,28 @@
     ?>
 
     <?php echo $form->errorSummary($model); ?>
-
+    
     <strong><?php echo Yii::t('UserModule.views_account_emailing', 'Notifications'); ?></strong><br />
+
+    <div class="form-group">
+		<div class="checkbox">
+			<label>
+                    <?php echo $form->checkBox($model, 'enable_html5_desktop_notifications'); ?> <?php echo $model->getAttributeLabel('enable_html5_desktop_notifications'); ?>
+                </label>
+		</div>
+	</div>
+   
+</div>
+
+<hr />
+
+<div class="panel-heading">
+    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Email</strong> Notifications'); ?>
+</div>
+<div class="panel-body">
+
+
+	<strong><?php echo Yii::t('UserModule.views_account_emailing', 'Notifications'); ?></strong><br />
 
     <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, when other users comment or like your posts.'); ?>
     <?php
@@ -25,7 +45,7 @@
     <hr>
 
 
-    <strong><?php echo Yii::t('UserModule.views_account_emailing', 'Activities'); ?></strong><br />
+	<strong><?php echo Yii::t('UserModule.views_account_emailing', 'Activities'); ?></strong><br />
     <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, by every activity from other users you follow or work<br>together in workspaces.'); ?>
     <?php
     echo $form->dropDownList($model, 'receive_email_activities', array(
