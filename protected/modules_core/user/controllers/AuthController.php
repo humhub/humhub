@@ -52,11 +52,13 @@ class AuthController extends Controller
 
         // Show/Allow Anonymous Registration
         $canRegister = HSetting::Get('anonymousRegistration', 'authentication_internal');
+        
+        $language = (Yii::app()->session->itemAt('language')) ?   Yii::app()->session->itemAt('language') : Yii::app()->request->getPreferredAvailableLanguage();
+        Yii::app()->setLanguage($language);
+        
         $languageModel = new ChooseLanguageForm();
-        if (($language = Yii::app()->request->getPreferredAvailableLanguage())) {
-            Yii::app()->setLanguage($language);
-            $languageModel->language = $language;
-        }
+        $languageModel->language = $language;
+        
         
         if (isset($_POST['ChooseLanguageForm'])) {
             $_POST['ChooseLanguageForm'] = Yii::app()->input->stripClean($_POST['ChooseLanguageForm']);
@@ -129,6 +131,7 @@ class AuthController extends Controller
 
                     $userInvite->email = $registerModel->email;
                     $userInvite->source = UserInvite::SOURCE_SELF;
+                    $userInvite->language = $language;
                     $userInvite->save();
 
                     $userInvite->sendInviteMail();
@@ -252,6 +255,9 @@ class AuthController extends Controller
         if (!$userInvite)
             throw new CHttpException(404, 'Token not found!');
 
+        if($userInvite->language)
+            Yii::app()->setLanguage($userInvite->language);
+        
         $userModel = new User('register');
         $userModel->email = $userInvite->email;
         $userPasswordModel = new UserPassword('newPassword');
@@ -333,6 +339,7 @@ class AuthController extends Controller
 
             // Registe User
             $form['User']->model->email = $userInvite->email;
+            $form['User']->model->language = Yii::app()->getLanguage();
             if ($form['User']->model->save()) {
 
                 // Save User Profile
