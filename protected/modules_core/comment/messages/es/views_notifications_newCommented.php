@@ -1,4 +1,4 @@
 <?php
 return array (
-  '%displayName% commented %contentTitle%.' => '%displayName% comentó tu %contentTitle%.',
+  '%displayName% commented %contentTitle%.' => '%displayName% comentó %contentTitle%.',
 );
