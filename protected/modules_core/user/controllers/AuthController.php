@@ -54,6 +54,9 @@ class AuthController extends Controller
         $canRegister = HSetting::Get('anonymousRegistration', 'authentication_internal');
         
         $language = (Yii::app()->session->itemAt('language')) ?   Yii::app()->session->itemAt('language') : Yii::app()->request->getPreferredAvailableLanguage();
+        if(!$language){
+            $language = HSetting::get('defaultLanguage');
+        }
         Yii::app()->setLanguage($language);
         
         $languageModel = new ChooseLanguageForm();
