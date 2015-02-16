@@ -76,7 +76,7 @@ class GroupController extends Controller
 
         // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-group-form') {
-            echo CActiveForm::validate($model);
+            echo CActiveForm::validate($group);
             Yii::app()->end();
         }
 
