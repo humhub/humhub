@@ -5,7 +5,12 @@
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'basic-settings-form',
-            'enableAjaxValidation' => false,
+            'enableAjaxValidation' => true,
+            'clientOptions' => array(
+                'validateOnSubmit' => true,
+                'validateOnType' => false,
+                'validateOnChange' => false
+            )
         ));
         ?>
 
@@ -14,12 +19,14 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'name'); ?>
             <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('name'))); ?>
+            <?php echo $form->error($model,'name'); ?>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'baseUrl'); ?>
             <?php echo $form->textField($model, 'baseUrl', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('baseUrl'))); ?>
             <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'E.g. http://example.com/humhub'); ?></p>
+            <?php echo $form->error($model, 'baseUrl'); ?>
         </div>
 
         <div class="form-group">
