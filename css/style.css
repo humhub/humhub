@@ -358,6 +358,12 @@ textarea {
     padding-bottom: 30px;
   }
 }
+.modal-open {
+  overflow: visible;
+}
+.modal {
+  overflow-y: visible;
+}
 .modal-dialog-extra-small {
   width: 400px;
 }
