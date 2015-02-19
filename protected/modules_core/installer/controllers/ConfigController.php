@@ -365,7 +365,7 @@ class ConfigController extends Controller
         $field->required = 1;
         $field->show_at_registration = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
+            $field->fieldType->maxLength = 20;
             $field->fieldType->save();
         } else {
             throw new CHttpException(500, print_r($field->getErrors(), true));
@@ -382,7 +382,7 @@ class ConfigController extends Controller
         $field->required = 1;
         $field->is_system = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
+            $field->fieldType->maxLength = 30;
             $field->fieldType->save();
         }
 
@@ -395,7 +395,7 @@ class ConfigController extends Controller
         $field->field_type_class = 'ProfileFieldTypeText';
         $field->is_system = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
+            $field->fieldType->maxLength = 50;
             $field->fieldType->save();
         }
 
