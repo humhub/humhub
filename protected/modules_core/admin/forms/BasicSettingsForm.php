@@ -24,6 +24,7 @@ class BasicSettingsForm extends CFormModel {
             array('defaultSpaceGuid', 'checkSpaceGuid'),
             array('tour', 'safe'),
             array('logo', 'file', 'types' => 'jpg, png, jpeg, tiff', 'maxSize' => 3 * 1024 * 1024, 'allowEmpty' => true),
+            array('logo', 'dimensionValidation', 'skipOnError'=> true), 
         );
     }
 
@@ -64,4 +65,16 @@ class BasicSettingsForm extends CFormModel {
         }
     }
 
+    
+    public function dimensionValidation($attribute,$param){
+
+    if(is_object($this->logo)){
+
+        list($width, $height) = getimagesize($this->logo->tempName);
+        if($height < 50)
+          $this->addError('logo','Logo size should have at least 50px of height');
+    }  
+
+}
+    
 }
