@@ -55,7 +55,7 @@
                     <?php echo CHtml::encode($space->description); ?>
                 </div>
                 <a class="btn btn-default btn-xs pull-right hidden" id="more-button" style="margin-top: 5px;"
-                   href="javascript:showMoreInfo();"><i class="fa fa-arrow-down"></i> more</a>
+                   href="javascript:showMoreInfo();"><i class="fa fa-arrow-down"></i> <?php echo Yii::t('SpaceModule.widgets_views_spaceInfo', 'more'); ?></a>
             </div>
         </div>
     </div>

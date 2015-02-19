@@ -49,13 +49,22 @@ class SettingController extends Controller
             echo CActiveForm::validate($form);
             Yii::app()->end();
         }
-
+        
+        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/uploadLogo.js');
+        
         if (isset($_POST['BasicSettingsForm'])) {
             $_POST['BasicSettingsForm'] = Yii::app()->input->stripClean($_POST['BasicSettingsForm']);
             $form->attributes = $_POST['BasicSettingsForm'];
+            
+            $files = CUploadedFile::getInstancesByName('logo');
+            if(count($files) != 0){
+                $file = $files[0];
+                $form->logo = $file;
+            }
+           
 
             if ($form->validate()) {
-
                 HSetting::Set('name', $form->name);
                 HSetting::Set('baseUrl', $form->baseUrl);
                 HSetting::Set('defaultLanguage', $form->defaultLanguage);
@@ -79,7 +88,10 @@ class SettingController extends Controller
                         $space->save();
                     }
                 }
-
+                if($form->logo){
+                    $logoImage = new LogoImage();
+                    $logoImage->setNew($form->logo);
+                }
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
@@ -90,16 +102,35 @@ class SettingController extends Controller
             $form->baseUrl = HSetting::Get('baseUrl');
             $form->defaultLanguage = HSetting::Get('defaultLanguage');
             $form->tour = HSetting::Get('enable', 'tour');
+            
 
             $form->defaultSpaceGuid = "";
             foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
                 $form->defaultSpaceGuid .= $defaultSpace->guid . ",";
             }
+            
+           
         }
-
-        $this->render('index', array('model' => $form));
+        
+        $this->render('index', array('model' => $form, 'logo' => new LogoImage()));
     }
+    
+    
+    public function actionDeleteLogoImage()
+    {
+        $this->forcePostRequest();
+    
+        $image = NULL;
+        
+        $image = new LogoImage();
 
+        if ($image->hasImage()) {
+            $image->delete();
+        }
+    
+        $this->renderJson(array());
+    }
+    
     /**
      * Returns a List of Users
      */
@@ -663,6 +694,8 @@ class SettingController extends Controller
      */
     public function actionOEmbedDelete()
     {
+        
+        $this->forcePostRequest();
         $prefix = Yii::app()->request->getParam('prefix');
         $providers = UrlOembed::getProviders();
 

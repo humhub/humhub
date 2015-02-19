@@ -138,9 +138,10 @@ class HHtml extends CHtml
      * @param type $text
      * @param type $url
      * @param array $htmlOptions
+     * @param array $postParams 
      * @return string
      */
-    public static function postLink($text, $url = '#', $htmlOptions = array())
+    public static function postLink($text, $url = '#', $htmlOptions = array(), $postParams = array())
     {
 
         $id = "";
@@ -164,6 +165,9 @@ class HHtml extends CHtml
         // Generate this at the end of the page
         $hiddenFormHtml = "<div style='display:none'>";
         $hiddenFormHtml .= self::beginForm($url, 'POST', array('id' => 'postLink_' . $id));
+        foreach ($postParams as $postParamKey => $postParamValue) {
+            $hiddenFormHtml .= self::hiddenField($postParamKey, $postParamValue);
+        }
         $hiddenFormHtml .= self::endForm();
         $hiddenFormHtml .= "</div>";
 
@@ -238,7 +242,7 @@ class HHtml extends CHtml
                     if ($buildAnchors) {
                         return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . CHtml::encode($space->name) . '</a></span>' . $hit[3];
                     }
-                    return " @" . CHtml::encode($space->name). $hit[3];
+                    return " @" . CHtml::encode($space->name) . $hit[3];
                 }
             }
             return $hit[0];

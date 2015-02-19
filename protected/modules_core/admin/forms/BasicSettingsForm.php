@@ -11,6 +11,7 @@ class BasicSettingsForm extends CFormModel {
     public $defaultLanguage;
     public $defaultSpaceGuid;
     public $tour;
+    public $logo;
 
     /**
      * Declares the validation rules.
@@ -22,6 +23,8 @@ class BasicSettingsForm extends CFormModel {
             array('defaultLanguage', 'in', 'range' => array_keys(Yii::app()->params['availableLanguages'])),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
             array('tour', 'safe'),
+            array('logo', 'file', 'types' => 'jpg, png, jpeg, tiff', 'maxSize' => 3 * 1024 * 1024, 'allowEmpty' => true),
+            array('logo', 'dimensionValidation', 'skipOnError'=> true), 
         );
     }
 
@@ -36,7 +39,8 @@ class BasicSettingsForm extends CFormModel {
             'baseUrl' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default language'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
-            'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users')
+            'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
+            'logo' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Your logo')
         );
     }
 
@@ -61,4 +65,16 @@ class BasicSettingsForm extends CFormModel {
         }
     }
 
+    
+    public function dimensionValidation($attribute,$param){
+
+    if(is_object($this->logo)){
+
+        list($width, $height) = getimagesize($this->logo->tempName);
+        if($height < 50)
+          $this->addError('logo','Logo size should have at least 50px of height');
+    }  
+
+}
+    
 }
