@@ -105,6 +105,10 @@ class FileController extends Controller
             $output['title'] = $file->title;
             $output['size'] = $file->size;
             $output['mimeIcon'] = HHtml::getMimeIconClassByExtension($file->getExtension());
+            $output['mimeBaseType'] = $file->getMimeBaseType();
+            $output['mimeSubType'] = $file->getMimeSubType();
+            $output['url'] = $file->getUrl("", false);
+            $output['thumbnailUrl'] = $file->getPreviewImageUrl(200,200);
         } else {
             $output['error'] = true;
             $output['errors'] = $file->getErrors();
@@ -114,7 +118,6 @@ class FileController extends Controller
         $output['size'] = $file->size;
         $output['deleteUrl'] = "";
         $output['deleteType'] = "";
-        $output['url'] = "";
         $output['thumbnailUrl'] = "";
 
         return $output;

@@ -180,7 +180,7 @@ class ProfileFieldTypeText extends ProfileFieldType {
         if (!$raw && $this->validator == self::VALIDATOR_EMAIL) {
             return HHtml::link($value, $value);
         } elseif (!$raw && $this->validator == self::VALIDATOR_URL) {
-            return HHtml::link($value, $value);
+            return HHtml::link($value, $value, array('target'=> '_blank'));
         }
 
         return $value;

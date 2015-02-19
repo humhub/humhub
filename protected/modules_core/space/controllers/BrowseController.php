@@ -84,8 +84,8 @@ class BrowseController extends Controller {
                 if ($workspace != null) {
                     $wsInfo = array();
                     $wsInfo['guid'] = $workspace->guid;
-                    $wsInfo['title'] = $workspace->name;
-                    $wsInfo['tags'] = $workspace->tags;
+                    $wsInfo['title'] = CHtml::encode($workspace->name);
+                    $wsInfo['tags'] = CHtml::encode($workspace->tags);
                     $wsInfo['image'] = $workspace->getProfileImage()->getUrl();
                     $wsInfo['link'] = $workspace->getUrl();
                     #$results[] = $wsInfo;

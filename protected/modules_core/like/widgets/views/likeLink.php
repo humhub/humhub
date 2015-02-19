@@ -39,14 +39,14 @@ for ($i = 0; $i < count($likes); $i++) {
         // check, if you liked
         if ($likes[$i]->getUser()->guid != Yii::app()->user->guid) {
             // output, if an other user liked
-            $userlist .= "<strong>" . $likes[$i]->getUser()->displayName . "</strong>" . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
+            $userlist .= "<strong>" . CHtml::encode($likes[$i]->getUser()->displayName) . "</strong>" . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
         }
     } else {
 
         // check, if you liked
         if ($likes[$i]->getUser()->guid != Yii::app()->user->guid) {
             // output, if an other user liked
-            $userlist .= "<strong>" . $likes[$i]->getUser()->displayName . "</strong><br>";
+            $userlist .= "<strong>" . CHtml::encode($likes[$i]->getUser()->displayName) . "</strong><br>";
         }
 
         // check if exists more user as limited

@@ -182,10 +182,22 @@ class ModuleManager extends CApplicationComponent
             return;
         }
 
+        // Handle Submodules
+        if (!isset($definition['modules'])) {
+            $definition['modules'] = array();
+        }
+        
+        // Append URL Rules
+        if (isset($definition['urlManagerRules'])) {
+            Yii::app()->urlManager->addRules($definition['urlManagerRules'], false);
+        }
+         
+        
         // Register Yii Module
         Yii::app()->setModules(array(
             $definition['id'] => array(
-                'class' => $definition['class']
+                'class' => $definition['class'],
+                'modules' => $definition['modules']
             ),
         ));
 
@@ -202,6 +214,7 @@ class ModuleManager extends CApplicationComponent
                 );
             }
         }
+        
     }
 
     /**

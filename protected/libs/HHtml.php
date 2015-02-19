@@ -125,7 +125,7 @@ class HHtml extends CHtml
             $timestamp = date('Y-m-d H:i:s', $timestamp);
         }
 
-        // Convert timestamp to ISO 8601 
+        // Convert timestamp to ISO 8601
         $timestamp = date("c", strtotime($timestamp));
 
         Yii::app()->clientScript->registerScript('timeago', '$(".time").timeago();');
@@ -138,9 +138,10 @@ class HHtml extends CHtml
      * @param type $text
      * @param type $url
      * @param array $htmlOptions
+     * @param array $postParams 
      * @return string
      */
-    public static function postLink($text, $url = '#', $htmlOptions = array())
+    public static function postLink($text, $url = '#', $htmlOptions = array(), $postParams = array())
     {
 
         $id = "";
@@ -164,6 +165,9 @@ class HHtml extends CHtml
         // Generate this at the end of the page
         $hiddenFormHtml = "<div style='display:none'>";
         $hiddenFormHtml .= self::beginForm($url, 'POST', array('id' => 'postLink_' . $id));
+        foreach ($postParams as $postParamKey => $postParamValue) {
+            $hiddenFormHtml .= self::hiddenField($postParamKey, $postParamValue);
+        }
         $hiddenFormHtml .= self::endForm();
         $hiddenFormHtml .= "</div>";
 
@@ -217,7 +221,7 @@ class HHtml extends CHtml
 
     /**
      * Translate guids from users to username
-     * 
+     *
      * @param strint $text Contains the complete message
      * @param boolean $buildAnchors Wrap the username with a link to the profile, if it's true
      */
@@ -228,17 +232,17 @@ class HHtml extends CHtml
                 $user = User::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($user !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . $user->getDisplayName() . '</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . CHtml::encode($user->getDisplayName()) . '</a></span>' . $hit[3];
                     }
-                    return " @" . $user->getDisplayName() . $hit[3];
+                    return " @" . CHtml::encode($user->getDisplayName()) . $hit[3];
                 }
             } elseif ($hit[1] == 's') {
                 $space = Space::model()->findByAttributes(array('guid' => $hit[2]));
                 if ($space !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . $space->name . '</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . CHtml::encode($space->name) . '</a></span>' . $hit[3];
                     }
-                    return " @" . $space->name . $hit[3];
+                    return " @" . CHtml::encode($space->name) . $hit[3];
                 }
             }
             return $hit[0];
@@ -247,7 +251,7 @@ class HHtml extends CHtml
 
     /**
      * Replace emojis from text to img tag
-     * 
+     *
      * @param string $text Contains the complete message
      * @param string $show show smilies or remove it (for activities and notifications)
      */

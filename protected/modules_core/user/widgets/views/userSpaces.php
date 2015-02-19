@@ -25,7 +25,7 @@
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo $space->name; ?></strong>">
+                         data-original-title="<strong><?php echo CHtml::encode($space->name); ?></strong>">
                 </a>
             <?php endforeach; ?>
         </div>

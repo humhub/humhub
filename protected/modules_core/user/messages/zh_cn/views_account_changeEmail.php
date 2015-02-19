@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  '<strong>Current E-mail address</strong>' => '',
   '<strong>Change</strong> E-mail' => '<strong>修改</strong> 电子邮箱',
   'Save' => '保存',
 );
