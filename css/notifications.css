@@ -16,10 +16,6 @@
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
 
-body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
-}
-
 .warningMsg {
     background: #ff4500 url("http://cdn1.iconfinder.com/data/icons/crystalproject/128x128/apps/alert.png") no-repeat 10px center;
     border: 5px solid #8b0000;
