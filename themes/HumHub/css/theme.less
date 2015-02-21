@@ -878,7 +878,7 @@ textarea {
   resize: none;
 }
 
-select {
+select.form-control {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -887,17 +887,16 @@ select {
   background-position: right 13px;
 
   overflow: hidden;
-  width: 120%;
 
 }
 
 /* Firefox hack */
-@-moz-document url-prefix() {
+/*@-moz-document url-prefix() {
   select {
     background-image: none !important;
     padding: 5px 12px !important;
   }
-}
+}*/
 
 // Placeholder text
 ::-webkit-input-placeholder {
@@ -1499,6 +1498,10 @@ ul.tour-list {
       color: @colorFont4;
     }
   }
+}
+
+.powered, .powered a {
+  color: #b8c7d3 !important;
 }
 
 //

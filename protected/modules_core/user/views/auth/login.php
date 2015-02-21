@@ -23,19 +23,6 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
 		<div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_login', '<strong>Please</strong> sign in'); ?></div>
 
 		<div class="panel-body">
-        
-            <?php
-            $form = $this->beginWidget('CActiveForm', array(
-                'id' => 'choose-language-form',
-                'enableAjaxValidation' => false
-            ));
-            ?>
-            <div class="form-group">
-                <?php echo $form->labelEx($languageModel, 'language'); ?>
-                <?php echo $form->dropDownList($languageModel, 'language', Yii::app()->params['availableLanguages'], array('class' => 'form-control', 'submit' => '')); ?>
-                <?php echo $form->error($languageModel, 'language'); ?>
-            </div>
-            <?php $this->endWidget(); ?>
             
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -113,6 +100,27 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
 	</div>
 
     <?php endif; ?>
+
+
+
+
+
+    <div class="text text-center animated fadeIn">
+
+        <?php echo Yii::t('base', "Choose language:"); ?> &nbsp;
+        <div class="langSwitcher">
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'choose-language-form',
+                'enableAjaxValidation' => false
+            ));
+            ?>
+
+            <?php echo $form->dropDownList($languageModel, 'language', Yii::app()->params['availableLanguages'], array('submit' => '')); ?>
+
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
 
 </div>
 
