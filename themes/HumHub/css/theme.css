@@ -678,12 +678,12 @@ select {
   width: 120%;
 }
 /* Firefox hack */
-@-moz-document url-prefix() {
+/*@-moz-document url-prefix() {
   select {
     background-image: none !important;
     padding: 5px 12px !important;
   }
-}
+}*/
 ::-webkit-input-placeholder {
   color: #bebebe !important;
 }
