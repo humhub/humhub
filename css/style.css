@@ -755,7 +755,6 @@ ul.tour-list li.completed a {
 }
 .markdown-render a,
 .markdown-render a:visited {
-  color: #4CD9C0 !important;
   background-color: inherit;
   text-decoration: none;
 }
