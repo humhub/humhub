@@ -1244,3 +1244,7 @@ img.bounceIn {
 .outside .install-header.install-header-small .install-header-title {
   padding: 3% 30px 0 30px;
 }
+.markdown-render a,
+.markdown-render a:visited {
+  color: #4CD9C0 !important;
+}
