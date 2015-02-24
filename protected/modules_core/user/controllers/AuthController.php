@@ -158,7 +158,9 @@ class AuthController extends Controller
      */
     public function actionRecoverPassword()
     {
-
+        $language = (Yii::app()->session->itemAt('language')) ? Yii::app()->session->itemAt('language') : HSetting::get('defaultLanguage');
+        Yii::app()->setLanguage($language);
+        
         $model = new AccountRecoverPasswordForm;
 
         if (isset($_POST['AccountRecoverPasswordForm'])) {
