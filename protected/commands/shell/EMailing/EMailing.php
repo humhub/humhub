@@ -57,7 +57,8 @@ class EMailing extends HConsoleCommand
         $defaultLanguage = Yii::app()->language;
         
         foreach ($users as $user) {
-
+            if(empty($user->email)) continue;
+		
             print "Processing : " . $user->email . ": ";
 
             // Switch to users language if set

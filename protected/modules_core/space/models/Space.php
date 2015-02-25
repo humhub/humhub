@@ -634,4 +634,15 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         }
     }
 
+    /**
+     * Returns display name (title) of space
+     * 
+     * @since 0.11.0
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->name;
+    }
+
 }

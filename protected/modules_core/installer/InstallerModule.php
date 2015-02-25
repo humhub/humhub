@@ -86,5 +86,12 @@ class InstallerModule extends HWebModule
         $config['params']['installed'] = true;
         HSetting::setConfiguration($config);
     }
+    
+    public function beforeControllerAction($controller, $action) {
+      
+        if(Yii::app()->request->cookies['language'])
+            Yii::app()->setLanguage(Yii::app()->request->cookies['language']->value);
+        return true;
+    }
 
 }

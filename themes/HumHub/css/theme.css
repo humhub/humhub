@@ -667,7 +667,7 @@ h4 {
 textarea {
   resize: none;
 }
-select {
+select.form-control {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -675,7 +675,6 @@ select {
   background-repeat: no-repeat;
   background-position: right 13px;
   overflow: hidden;
-  width: 120%;
 }
 /* Firefox hack */
 /*@-moz-document url-prefix() {
@@ -1135,6 +1134,10 @@ ul.tour-list li a {
 }
 ul.tour-list li.completed a {
   color: #bebebe;
+}
+.powered,
+.powered a {
+  color: #b8c7d3 !important;
 }
 .errorMessage {
   color: #ff8989;

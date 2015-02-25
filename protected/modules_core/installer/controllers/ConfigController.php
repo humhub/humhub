@@ -285,9 +285,9 @@ class ConfigController extends Controller
             return;
 
         // Rebuild Search
-        HSearch::getInstance()->rebuild();
+        
+        HSearch::getInstance()->rebuild();   
         HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
-
         HSetting::Set('paginationSize', 10);
         HSetting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 
@@ -323,6 +323,7 @@ class ConfigController extends Controller
 
         // Basic
         HSetting::Set('enable', 1, 'tour');
+        HSetting::Set('defaultLanguage', Yii::app()->getLanguage());
 
         // Notification
         HSetting::Set('enable_html5_desktop_notifications', 1, 'notification');

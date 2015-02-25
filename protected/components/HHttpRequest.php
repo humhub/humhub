@@ -44,6 +44,22 @@ class HHttpRequest extends CHttpRequest {
         return true;
     }
 
+    public function getPreferredAvailableLanguage()
+    {
+       
+        $preferedLanguages = $this->getPreferredLanguages();
+        $languages = array_keys(Yii::app()->params['availableLanguages']);
+        
+        foreach ($preferedLanguages as $preferredLanguage) {       
+            foreach ($languages as $language) {
+                $preferredLanguage = CLocale::getCanonicalID($preferredLanguage);
+                if ($language === $preferredLanguage) {
+                    return $language;
+                }
+            }  
+        }
+        return false;
+    }
 }
 
 ?>

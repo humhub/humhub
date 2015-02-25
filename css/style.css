@@ -713,6 +713,9 @@ ul.tour-list li.completed a {
   padding: 20px 20px 20px 20px;
   background: #F8F8F8;
 }
+.langSwitcher {
+  display: inline-block;
+}
 .markdown-render h1,
 .markdown-render h2,
 .markdown-render h3,
