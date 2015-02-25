@@ -18,6 +18,6 @@ return array (
   'Posts only' => 'Solo entradas',
   'Posts with links' => 'Entradas con enlaces',
   'Show all' => 'Mostrar todo',
-  'Sorting' => 'Ordenación',
+  'Sorting' => 'Ordenar',
   'Where I´m involved' => 'En los que estoy involucrado',
 );

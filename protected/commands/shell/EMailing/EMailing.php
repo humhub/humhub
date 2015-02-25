@@ -25,7 +25,8 @@
  * @package humhub.commands.shell.EMailing
  * @since 0.5
  */
-class EMailing extends HConsoleCommand {
+class EMailing extends HConsoleCommand
+{
 
     private $mode = "hourly"; // daily
 
@@ -35,7 +36,8 @@ class EMailing extends HConsoleCommand {
      * @param type $args
      */
 
-    public function run($args) {
+    public function run($args)
+    {
 
         $this->printHeader('E-Mail Interface');
 
@@ -49,12 +51,22 @@ class EMailing extends HConsoleCommand {
         $this->mode = $args[0];
         Yii::import("application.modules_core.wall.*", true);
 
-        $users = User::model()->with('httpSessions')->findAllByAttributes(array('status'=>User::STATUS_ENABLED));
+        $users = User::model()->with('httpSessions')->findAllByAttributes(array('status' => User::STATUS_ENABLED));
 
+        // Save systems default language - before switching to users language
+        $defaultLanguage = Yii::app()->language;
+        
         foreach ($users as $user) {
 
             print "Processing : " . $user->email . ": ";
 
+            // Switch to users language if set
+            if ($user->language !== "") {
+                Yii::app()->language = $user->language;
+            } else {
+                Yii::app()->language = $defaultLanguage;
+            }
+            
             $notificationContent = $this->getNotificationContent($user);
             $activityContent = $this->getActivityContent($user);
 
@@ -96,7 +108,8 @@ class EMailing extends HConsoleCommand {
      * @param type $user
      * @return string email output
      */
-    private function getNotificationContent($user) {
+    private function getNotificationContent($user)
+    {
 
         $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', HSetting::Get('receive_email_notifications', 'mailing'));
 
@@ -153,7 +166,8 @@ class EMailing extends HConsoleCommand {
      * @param type $user
      * @return string
      */
-    private function getActivityContent($user) {
+    private function getActivityContent($user)
+    {
 
         $receive_email_activities = $user->getSetting("receive_email_activities", 'core', HSetting::Get('receive_email_activities', 'mailing'));
 

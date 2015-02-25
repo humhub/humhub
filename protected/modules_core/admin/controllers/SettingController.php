@@ -663,6 +663,8 @@ class SettingController extends Controller
      */
     public function actionOEmbedDelete()
     {
+        
+        $this->forcePostRequest();
         $prefix = Yii::app()->request->getParam('prefix');
         $providers = UrlOembed::getProviders();
 

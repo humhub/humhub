@@ -42,7 +42,6 @@ body {
   background-color: @colorBackground2;
   color: #777777;
   font-family: 'Open Sans', sans-serif;
-  overflow-y: scroll;
 
   a, a:hover, a:focus, a:active, a.active {
     color: @colorFont3;
@@ -893,12 +892,12 @@ select {
 }
 
 /* Firefox hack */
-@-moz-document url-prefix() {
+/*@-moz-document url-prefix() {
   select {
     background-image: none !important;
     padding: 5px 12px !important;
   }
-}
+}*/
 
 // Placeholder text
 ::-webkit-input-placeholder {
@@ -1654,6 +1653,15 @@ img.bounceIn {
     .install-header-title {
       padding: 3% 30px 0 30px;
     }
+  }
+
+}
+
+// Markdown overrides
+.markdown-render {
+
+  a, a:visited {
+    color: #4CD9C0 !important;
   }
 
 }

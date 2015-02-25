@@ -358,6 +358,12 @@ textarea {
     padding-bottom: 30px;
   }
 }
+.modal-open {
+  overflow: visible;
+}
+.modal {
+  overflow-y: visible;
+}
 .modal-dialog-extra-small {
   width: 400px;
 }
@@ -706,6 +712,51 @@ ul.tour-list li.completed a {
   height: 100%;
   padding: 20px 20px 20px 20px;
   background: #F8F8F8;
+}
+.markdown-render h1,
+.markdown-render h2,
+.markdown-render h3,
+.markdown-render h4,
+.markdown-render h5,
+.markdown-render h6 {
+  font-weight: bold !important;
+}
+.markdown-render h1 {
+  font-size: 28px !important;
+}
+.markdown-render h2 {
+  font-size: 24px !important;
+}
+.markdown-render h3 {
+  font-size: 18px !important;
+}
+.markdown-render h4 {
+  font-size: 16px !important;
+}
+.markdown-render h5 {
+  font-size: 14px !important;
+}
+.markdown-render h6 {
+  color: #999999;
+  font-size: 14px !important;
+}
+.markdown-render pre {
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+}
+.markdown-render pre code {
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 12px !important;
+}
+.markdown-render a,
+.markdown-render a:visited {
+  background-color: inherit;
+  text-decoration: none;
+}
+.markdown-render img {
+  max-width: 100%;
 }
 .highlight {
   background-color: #fffbc1;
