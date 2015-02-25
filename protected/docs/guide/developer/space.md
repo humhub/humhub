@@ -14,7 +14,7 @@ SpaceModuleBehavior to your Module Class.
 
             return array(
                 'SpaceModuleBehavior' => array(
-                    'class' => 'application.modules_core.space.SpaceModuleBehavior',
+                    'class' => 'application.modules_core.space.behaviors.SpaceModuleBehavior',
                 ),
             );
         }
@@ -77,7 +77,8 @@ Define callback in your module to add item.
 By adding the SpaceControllerBehavior you are able to access current space in your controllers.
 Make sure you always pass the current space guid (sguid) in your urls. 
 
-When using the method createContainerUrl (provided by SpaceControllerBehavior or UserControllerBehavior)  the current space or user guid is automatically added to urls.
+When using the method createContainerUrl (provided by SpaceControllerBehavior or UserControllerBehavior) the
+current space or user guid is automatically added to urls.
 
 ```php
 
@@ -90,7 +91,7 @@ When using the method createContainerUrl (provided by SpaceControllerBehavior or
     {
         return array(
             'SpaceControllerBehavior' => array(
-                'class' => 'application.modules_core.space.SpaceControllerBehavior',
+                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
             ),
         );
     }
