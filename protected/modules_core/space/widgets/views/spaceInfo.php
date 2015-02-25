@@ -105,11 +105,11 @@
 
         if (_state == "more") {
             $('#space-description').css('max-height', '2000px');
-            $('#more-button').html('<i class="fa fa-arrow-up"></i> less');
+            $('#more-button').html('<i class="fa fa-arrow-up"></i> <?php echo Yii::t('SpaceModule.widgets_views_spaceInfo', 'less'); ?>');
             _state = "less"
         } else {
             $('#space-description').css('max-height', '55px');
-            $('#more-button').html('<i class="fa fa-arrow-down"></i> more');
+            $('#more-button').html('<i class="fa fa-arrow-down"></i> <?php echo Yii::t('SpaceModule.widgets_views_spaceInfo', 'more'); ?>');
             _state = "more"
         }
 
