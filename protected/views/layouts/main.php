@@ -21,7 +21,7 @@
     <link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css?ver=<?php echo $ver; ?>" rel="stylesheet">
     <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css?ver=<?php echo $ver; ?>" rel="stylesheet">
     <link href="<?php echo Yii::app()->baseUrl; ?>/css/flatelements.css?ver=<?php echo $ver; ?>" rel="stylesheet">
-     <link href="<?php echo Yii::app()->baseUrl; ?>/css/notifications.css" type="text/css" rel="stylesheet"/>
+    
     <!-- end: CSS -->
 
 
@@ -54,12 +54,11 @@
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.ui.widget.js?ver=<?php echo $ver; ?>"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.fileupload.js?ver=<?php echo $ver; ?>"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.color-2.1.0.min.js?ver=<?php echo $ver; ?>"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/desktop-notify-min.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/desktop-notify-config.js"></script>
+    
     <!-- start: render additional head (css and js files) -->
     <?php $this->renderPartial('//layouts/head'); ?>
-    <!-- end: render additional head -->
 
+    <!-- end: render additional head -->
 
     <!-- Global app functions -->
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js?ver=<?php echo $ver; ?>"></script>
@@ -83,11 +82,15 @@
 
 <body>
     
-<?php if (!Yii::app()->user->isGuest) { ?>
+<?php if (!Yii::app()->user->isGuest) { 
 
-
+    $user = Yii::app()->user->getModel();
+    if($user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'))){?>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/desktop-notify-min.js"></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/desktop-notify-config.js"></script>
+    <?php }?>
+    
     <!-- start: first top navigation bar -->
-
     <div id="topbar-first" class="topbar">
         <div class="container">
             <div class="topbar-brand">
