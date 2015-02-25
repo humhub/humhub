@@ -37,6 +37,7 @@ class SpaceControllerBehavior extends CBehavior
      * will thrown.
      *
      * @return Space
+     * @throws CHttpException
      */
     public function getSpace()
     {
