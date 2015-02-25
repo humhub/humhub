@@ -84,8 +84,9 @@ class LogoImage
         }
 
         $this->delete();
-        ImageConverter::TransformToJpeg($file, $this->getPath());
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'mode' => 'max'));
+        move_uploaded_file($file,  $this->getPath());
+
+        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max'));
     }
 
     /**

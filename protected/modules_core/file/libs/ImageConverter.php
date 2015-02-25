@@ -212,8 +212,10 @@ class ImageConverter
         // Create new Image
         $newGdImage = imagecreatetruecolor($width, $height);
         imagecopyresampled($newGdImage, $gdImage, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
-
+        imagecolortransparent($newGdImage, imagecolorallocate($newGdImage, 0, 0, 0));
+        
         list($hw, $hx, $imageType) = getimagesize($sourceFile);
+        
         switch ($imageType) {
             case IMAGETYPE_PNG:
                 imagepng($newGdImage, $targetFile);
