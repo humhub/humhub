@@ -176,7 +176,8 @@ class SelfTest {
 
         // Check Runtime Directory
         $title = 'Permissions - Runtime';
-        if (is_writeable(Yii::app()->runtimePath)) {
+        $path = Yii::app()->runtimePath;
+        if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
@@ -242,5 +243,3 @@ class SelfTest {
     }
 
 }
-
-?>
