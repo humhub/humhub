@@ -48,10 +48,10 @@ class DatabaseForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'hostname' => Yii::t('InstallerModule.base', 'Hostname'),
-            'username' => Yii::t('InstallerModule.base', 'Username'),
-            'password' => Yii::t('InstallerModule.base', 'Password'),
-            'database' => Yii::t('InstallerModule.base', 'Name of Database'),
+            'hostname' => Yii::t('InstallerModule.forms_DatabaseForm', 'Hostname'),
+            'username' => Yii::t('InstallerModule.forms_DatabaseForm', 'Username'),
+            'password' => Yii::t('InstallerModule.forms_DatabaseForm', 'Password'),
+            'database' => Yii::t('InstallerModule.forms_DatabaseForm', 'Name of Database'),
         );
     }
 

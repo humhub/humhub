@@ -172,7 +172,7 @@ class ConfigController extends Controller
             'save' => array(
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
-                'label' => Yii::t('InstallerModule.base', 'Create Admin Account'),
+                'label' => Yii::t('InstallerModule.controllers_ConfigController', 'Create Admin Account'),
             ),
         );
 
