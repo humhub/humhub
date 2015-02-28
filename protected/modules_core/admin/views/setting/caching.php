@@ -4,10 +4,13 @@
 
         <?php   $form = $this->beginWidget('CActiveForm', array(
             'id' => 'cache-settings-form',
-            'enableAjaxValidation' => false,
+            'enableAjaxValidation' => true,
+            'clientOptions' => array(
+                'validateOnType' => false,
+                'validateOnChange' => false,
+                'validateOnSubmit' => true
+            )
         )); ?>
-
-        <?php echo $form->errorSummary($model); ?>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'type'); ?>
@@ -18,6 +21,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'expireTime'); ?>
             <?php echo $form->textField($model, 'expireTime', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('expireTime', 'cache'))); ?>
+            <?php echo $form->error($model, 'expireTime'); ?>
             <br>
         </div>
 

@@ -256,11 +256,29 @@ class UserController extends Controller
                 'label' => Yii::t('UserModule.controllers_AuthController', 'Create account'),
             ),
         );
+        
+        // Configure Form to trigger ajax validation.
+        $definition['activeForm'] = array(
+            'class' => 'CActiveForm',
+            'id' => 'add-user-form',
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => true,
+            'clientOptions' => array(
+                'validateOnSubmit' => true,
+                'validateOnChange' => false,
+                'validateOnType' => false,
+            )
+        );
 
         $form = new HForm($definition);
         $form['User']->model = $userModel;
         $form['UserPassword']->model = $userPasswordModel;
         $form['Profile']->model = $profileModel;
+        
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'add-user-form') {
+            echo CActiveForm::validate(array($userModel, $userPasswordModel, $profileModel));
+            Yii::app()->end();
+        }
 
         if ($form->submitted('save') && $form->validate()) {
 

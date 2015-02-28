@@ -6,11 +6,14 @@
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'file-settings-form',
-            'enableAjaxValidation' => false,
+            'enableAjaxValidation' => true,
+            'clientOptions' => array(
+                'validateOnType' => false,
+                'validateOnChange' => false,
+                'validateOnSubmit' => true
+            )
         ));
         ?>
-
-        <?php echo $form->errorSummary($model); ?>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'imageMagickPath'); ?>
@@ -21,6 +24,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'maxFileSize'); ?>
             <?php echo $form->textField($model, 'maxFileSize', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxFileSize', 'file'))); ?>
+            <?php echo $form->error($model, 'maxFileSize'); ?>
             <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'PHP reported a maximum of {maxUploadSize} MB', array('{maxUploadSize}' => $maxUploadSize)); ?></p>
         </div>
 
@@ -34,15 +38,17 @@
         </div>
         
 		<div class="form-group">
-            <?php echo $form->labelEx($model, 'maxPreviewImageWidth'); ?>
-            <?php echo $form->textField($model, 'maxPreviewImageWidth', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxPreviewImageWidth', 'file'))); ?>
+                    <?php echo $form->labelEx($model, 'maxPreviewImageWidth'); ?>
+                    <?php echo $form->textField($model, 'maxPreviewImageWidth', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxPreviewImageWidth', 'file'))); ?>
+                    <?php echo $form->error($model, 'maxPreviewImageWidth'); ?>
         	<p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'If not set, width will default to 200px.') ?></p>
         </div>
         
         <div class="form-group">
             <?php echo $form->labelEx($model, 'maxPreviewImageHeight'); ?>
             <?php echo $form->textField($model, 'maxPreviewImageHeight', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('maxPreviewImageHeight', 'file'))); ?>
-        	     	<p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'If not set, height will default to 200px.') ?></p>
+            <?php echo $form->error($model, 'maxPreviewImageHeight'); ?>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'If not set, height will default to 200px.') ?></p>
         </div>
         
         <div class="form-group">
@@ -65,7 +71,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'showFilesWidgetBlacklist'); ?>
             <?php echo $form->textField($model, 'showFilesWidgetBlacklist', array('class' => 'form-control')); ?>
-            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Comma separated list. Leave empty to show file list for all objects on wall.') ?></p>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Comma separated list. Leave empty to show filenames together with files for all objects.') ?></p>
         </div>
         
         <hr>

@@ -50,6 +50,7 @@ class Group extends HActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('name, description', 'required'),
             array('can_create_public_spaces, can_create_private_spaces', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 45),
             array('ldap_dn', 'length', 'max' => 255),

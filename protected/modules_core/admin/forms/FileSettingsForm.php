@@ -38,11 +38,11 @@ class FileSettingsForm extends CFormModel {
             'imageMagickPath' => Yii::t('AdminModule.forms_FileSettingsForm', 'Image Magick convert command (optional)'),
             'maxFileSize' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum upload file size (in MB)'),
             'useXSendfile' => Yii::t('AdminModule.forms_FileSettingsForm', 'Use X-Sendfile for File Downloads'),
-        	'maxPreviewImageWidth' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image width (in pixels, optional)'),
-        	'maxPreviewImageHeight' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image height (in pixels, optional)'),
-        	'hideImageFileInfo' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file info (name, size) for images on wall'),
+            'maxPreviewImageWidth' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image width (in pixels, optional)'),
+            'maxPreviewImageHeight' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image height (in pixels, optional)'),
+            'hideImageFileInfo' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file info (name, size) for images on wall'),
             'allowedExtensions' =>  Yii::t('AdminModule.forms_FileSettingsForm', 'Allowed file extensions'),
-            'showFilesWidgetBlacklist' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file list widget from showing files for these objects on wall.'),
+            'showFilesWidgetBlacklist' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide listing filenames together with files for these objects (case sensitive, optional)'),
         );
     }
 
