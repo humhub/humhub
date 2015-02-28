@@ -15,21 +15,26 @@
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'mailing-settings-form',
-            'enableAjaxValidation' => false,
+            'enableAjaxValidation' => true,
+            'clientOptions' => array(
+                'validateOnType' => false,
+                'validateOnChange' => false,
+                'validateOnSubmit' => true
+            )
         ));
         ?>
-
-        <?php echo $form->errorSummary($model); ?>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'systemEmailAddress'); ?>
             <?php echo $form->textField($model, 'systemEmailAddress', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('systemEmailAddress', 'mailing'))); ?>
+            <?php echo $form->error($model, 'systemEmailAddress'); ?>
         </div>
 
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'systemEmailName'); ?>
             <?php echo $form->textField($model, 'systemEmailName', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('systemEmailName', 'mailing'))); ?>
+            <?php echo $form->error($model, 'systemEmailName'); ?>
         </div>
 
 
@@ -45,21 +50,25 @@
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'hostname'); ?>
                 <?php echo $form->textField($model, 'hostname', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('hostname', 'mailing'))); ?>
+                <?php echo $form->error($model, 'hostname'); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'username'); ?>
                 <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('username', 'mailing'))); ?>
+                <?php echo $form->error($model, 'username'); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'password'); ?>
                 <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('password', 'mailing'))); ?>
+                <?php echo $form->error($model, 'password'); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'port'); ?>
                 <?php echo $form->textField($model, 'port', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('port', 'mailing'))); ?>
+                <?php echo $form->error($model, 'port'); ?>
             </div>
 
             <div class="form-group">
@@ -72,8 +81,8 @@
             		<strong>Encryption Options</strong>
             		<div class="checkbox">
                 		<label>
-                			<?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('allowSelfSignedCerts', 'mailing'))); ?>
-							<?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
+                                    <?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('allowSelfSignedCerts', 'mailing'))); ?>
+                                    <?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
             			</label>
             		</div>
             	</div>

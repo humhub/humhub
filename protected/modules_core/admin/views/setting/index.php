@@ -14,8 +14,6 @@
         ));
         ?>
 
-        <?php echo $form->errorSummary($model); ?>
-
         <div class="form-group">
             <?php echo $form->labelEx($model, 'name'); ?>
             <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('name'))); ?>
@@ -25,8 +23,8 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'baseUrl'); ?>
             <?php echo $form->textField($model, 'baseUrl', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('baseUrl'))); ?>
-            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'E.g. http://example.com/humhub'); ?></p>
             <?php echo $form->error($model, 'baseUrl'); ?>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'E.g. http://example.com/humhub'); ?></p>
         </div>
 
         <div class="form-group">

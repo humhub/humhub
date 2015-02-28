@@ -6,11 +6,14 @@
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'design-settings-form',
-            'enableAjaxValidation' => false,
+            'enableAjaxValidation' => true,
+            'clientOptions' => array(
+                'validateOnType' => false,
+                'validateOnChange' => false,
+                'validateOnSubmit' => true
+            )
         ));
         ?>
-
-        <?php echo $form->errorSummary($model); ?><br>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'theme'); ?>
@@ -20,6 +23,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'paginationSize'); ?>
             <?php echo $form->textField($model, 'paginationSize', array('class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'paginationSize'); ?>
         </div>
 
         <div class="form-group">
