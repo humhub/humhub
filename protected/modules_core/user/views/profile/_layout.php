@@ -3,10 +3,12 @@
     <div class="row">
 
         <div class="col-md-9">
-            <?php $this->widget('application.modules_core.user.widgets.ProfileHeaderWidget');?>
+            <?php $this->widget('application.modules_core.user.widgets.ProfileHeaderWidget'); ?>
             <div class="row">
                 <div class="profile-nav-container col-md-3">
-                    <?php $this->widget('application.modules_core.user.widgets.ProfileMenuWidget', array()); ?>
+                    <?php if (!Yii::app()->user->isGuest || $this->getUser()->visibility == User::VISIBILITY_ALL) : ?>
+                        <?php $this->widget('application.modules_core.user.widgets.ProfileMenuWidget', array()); ?>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-9">
                     <?php echo $content; ?>

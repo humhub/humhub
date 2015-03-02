@@ -63,7 +63,7 @@
                     <!-- Follow Handling -->
                     <div class="pull-right">
                         <?php
-                        if (!$space->isMember()) {
+                        if (!Yii::app()->user->isGuest && !$space->isMember()) {
                             $followed = $space->isFollowedByUser();
                             echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . $space->createUrl('//space/space/follow') . '", "' . $space->id . '")', array('class' => 'btn btn-success btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $space->id));
                             echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . $space->createUrl('//space/space/unfollow') . '", "' . $space->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $space->id));

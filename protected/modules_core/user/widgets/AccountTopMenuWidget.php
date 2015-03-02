@@ -19,42 +19,17 @@
  */
 
 /**
- * This widget is used include the comments functionality to a wall entry.
+ * Description of AccountWidget
  *
- * Normally it shows a excerpt of all comments, but provides the functionality
- * to show all comments.
- *
- * @package humhub.modules_core.comment
- * @since 0.5
+ * @author luke
  */
-class CommentFormWidget extends HWidget
+class AccountTopMenuWidget extends HWidget
 {
 
-    /**
-     * Content Object
-     */
-    public $object;
-
-    /**
-     * Executes the widget.
-     */
     public function run()
     {
-
-        if (Yii::app()->user->isGuest)
-            return "";
         
-        $modelName = $this->object->content->object_model;
-        $modelId = $this->object->content->object_id;
-        $id = $modelName . "_" . $modelId;
-
-        $this->render('form', array(
-            'modelName' => $modelName,
-            'modelId' => $modelId,
-            'id' => $modelName . "_" . $modelId,
-        ));
+        return $this->render('accountTopMenu');
     }
 
 }
-
-?>

@@ -32,7 +32,7 @@ class ProfileController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -59,6 +59,10 @@ class ProfileController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::app()->user->isGuest && $this->getUser()->visibility == User::VISIBILITY_REGISTERED_ONLY) {
+            return $this->render('members_only', array('user' => $this->getUser()));
+        }
+
         $this->render('index');
     }
 
@@ -67,6 +71,10 @@ class ProfileController extends Controller
      */
     public function actionAbout()
     {
+        if (Yii::app()->user->isGuest && $this->getUser()->visibility == User::VISIBILITY_REGISTERED_ONLY) {
+            return $this->render('members_only', array('user' => $this->getUser()));
+        }
+
         $this->render('about', array('user' => $this->getUser()));
     }
 

@@ -31,7 +31,7 @@ class CommentController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -141,7 +141,7 @@ class CommentController extends Controller
         $message = Yii::app()->request->getParam('message', "");
         $message = Yii::app()->input->stripClean(trim($message));
 
-        if ($message != "") {
+        if ($message != "" && !Yii::app()->user->isGuest) {
 
             $comment = new Comment;
             $comment->message = $message;

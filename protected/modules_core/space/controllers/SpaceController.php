@@ -52,7 +52,7 @@ class SpaceController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -90,16 +90,6 @@ class SpaceController extends Controller
 
             $this->render('indexPublic', array('space' => $this->getSpace()));
         }
-    }
-
-    /**
-     * List Members of the Space
-     *
-     */
-    public function actionMembers()
-    {
-        $this->getSpace();
-        $this->render('members');
     }
 
     /**
@@ -156,10 +146,10 @@ class SpaceController extends Controller
         foreach ($parts as $part) {
             $i++;
             $condition .= " AND (u.email LIKE :match{$i} OR "
-                . "u.username LIKE :match{$i} OR "
-                . "p.firstname LIKE :match{$i} OR "
-                . "p.lastname LIKE :match{$i} OR "
-                . "p.title LIKE :match{$i})";
+                    . "u.username LIKE :match{$i} OR "
+                    . "p.firstname LIKE :match{$i} OR "
+                    . "p.lastname LIKE :match{$i} OR "
+                    . "p.title LIKE :match{$i})";
 
             $params[':match' . $i] = "%" . $part . "%";
         }
@@ -215,7 +205,7 @@ class SpaceController extends Controller
         $space = $this->getSpace();
 
         // Check if we have already some sort of membership
-        if ($space->getMembership(Yii::app()->user->id) != null) {
+        if (Yii::app()->user->isGuest || $space->getMembership(Yii::app()->user->id) != null) {
             throw new CHttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'Could not request membership!'));
         }
 
@@ -291,26 +281,26 @@ class SpaceController extends Controller
 
                 // check if both invite inputs are empty
                 if ($model->invite == "" && $model->inviteExternal == "") {
-
+                    
                 } else {
 
                     // Invite existing members
                     foreach ($model->getInvites() as $user) {
                         $space->inviteMember($user->id, Yii::app()->user->id);
-                        $statusInvite=$space->getMembership($user->id)->status;
+                        $statusInvite = $space->getMembership($user->id)->status;
                     }
 
                     if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
                         // Invite non existing members
                         foreach ($model->getInvitesExternal() as $email) {
-                            $statusInvite=($space->inviteMemberByEMail($email, Yii::app()->user->id))? SpaceMembership::STATUS_INVITED : false;
+                            $statusInvite = ($space->inviteMemberByEMail($email, Yii::app()->user->id)) ? SpaceMembership::STATUS_INVITED : false;
                         }
                     }
 
                     // close modal
                     //$this->renderModalClose();
-                    
-                    $output = $this->renderPartial('statusInvite', array('status' => $statusInvite));   
+
+                    $output = $this->renderPartial('statusInvite', array('status' => $statusInvite));
                     Yii::app()->clientScript->render($output);
                     echo $output;
                     Yii::app()->end();

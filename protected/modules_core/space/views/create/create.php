@@ -67,11 +67,21 @@
                         <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></label>
 
                         <?php if (Yii::app()->user->canCreatePublicSpace() && Yii::app()->user->canCreatePrivateSpace()): ?>
+
+                            <?php if (HSetting::Get('allowGuestAccess', 'authentication_internal')) : ?>
+                                <div class="radio">
+                                    <label class="tt" data-toggle="tooltip" data-placement="top">
+                                        <?php echo $form->radioButton($model, 'visibility', array('value' => 2, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 2) ? 'checked' : '')); ?>
+                                        <?php echo Yii::t('SpaceModule.base', 'Public (Members & Guests)'); ?>
+                                    </label>
+                                </div>                        
+                            <?php endif; ?>
+
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'Also non-members can see this<br>space, but have no access'); ?>">
                                            <?php echo $form->radioButton($model, 'visibility', array('value' => 1, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 1) ? 'checked' : '')); ?>
-                                           <?php echo Yii::t('SpaceModule.base', 'Public (Visible)'); ?>
+                                           <?php echo Yii::t('SpaceModule.base', 'Public (Members only)'); ?>
                                 </label>
                             </div>
                             <div class="radio">

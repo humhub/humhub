@@ -23,6 +23,19 @@
         <?php echo $form->error($model, 'language'); ?>
     </div>
 
+    <?php if (HSetting::Get('allowGuestAccess', 'authentication_internal')): ?>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'visibility'); ?>
+            <?php
+            echo $form->dropDownList($model, 'visibility', array(
+                1 => Yii::t('UserModule.views_account_editSettings', 'Registered users only'),
+                2 => Yii::t('UserModule.views_account_editSettings', 'Visible for all (also unregistered users)'),
+                    ), array('class' => 'form-control'));
+            ?>
+            <?php echo $form->error($model, 'visibility'); ?>
+        </div>
+    <?php endif; ?>
+
     <strong><?php echo Yii::t('UserModule.views_account_editSettings', 'Getting Started'); ?></strong>
     <div class="form-group">
         <div class="checkbox">

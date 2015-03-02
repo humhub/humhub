@@ -145,6 +145,8 @@ class SettingController extends Controller
         $form->internalAllowAnonymousRegistration = HSetting::Get('anonymousRegistration', 'authentication_internal');
         $form->defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
         $form->defaultUserIdleTimeoutSec = HSetting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
+        $form->allowGuestAccess = HSetting::Get('allowGuestAccess', 'authentication_internal');
+        $form->defaultUserProfileVisibility = HSetting::Get('defaultUserProfileVisibility', 'authentication_internal');
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'authentication-settings-form') {
             echo CActiveForm::validate($form);
@@ -161,6 +163,11 @@ class SettingController extends Controller
                 $form->internalAllowAnonymousRegistration = HSetting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
                 $form->defaultUserGroup = HSetting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
                 $form->defaultUserIdleTimeoutSec = HSetting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
+                $form->allowGuestAccess = HSetting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
+                
+                if (HSetting::Get('allowGuestAccess', 'authentication_internal')) {
+                    $form->defaultUserProfileVisibility = HSetting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
+                }
                 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));

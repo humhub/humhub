@@ -42,7 +42,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     // Visibility
     const VISIBILITY_NONE = 0; // Always invisible
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2; // Free for All
+    const VISIBILITY_ALL = 2; // Visible for all (also guests)
     // Status
     const STATUS_DISABLED = 0; // Disabled
     const STATUS_ENABLED = 1; // Enabled
@@ -366,6 +366,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function canJoin($userId = "")
     {
+        if (Yii::app()->user->isGuest) {
+            return false;
+        }
+
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -435,6 +439,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function canInvite($userId = "")
     {
+        if (Yii::app()->user->isGuest) {
+            return false;
+        }
 
         if ($userId == 0)
             $userId = Yii::app()->user->id;

@@ -290,7 +290,7 @@ class Content extends CActiveRecord
 
         if ($this->created_by == $userId)
             return true;
-        
+
         if (Yii::app()->user->isAdmin()) {
             return true;
         }
@@ -313,6 +313,23 @@ class Content extends CActiveRecord
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
+
+
+        // For guests users
+        if (Yii::app()->user->isGuest) {
+            if ($this->visibility == 1) {
+                if ($this->container instanceof Space) {
+                    if ($this->container->visibility == Space::VISIBILITY_ALL) {
+                        return true;
+                    }
+                } elseif ($this->container instanceof User) {
+                    if ($this->container->visibility == User::VISIBILITY_ALL) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         if ($this->visibility == 0) {
             // Space/User Content Access Check

@@ -48,7 +48,7 @@ class LikeController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -102,7 +102,7 @@ class LikeController extends Controller
 
         $attributes = array('object_model' => $this->model, 'object_id' => $this->id, 'created_by' => Yii::app()->user->id);
         $like = Like::model()->findByAttributes($attributes);
-        if ($like == null) {
+        if ($like == null && !Yii::app()->user->isGuest) {
 
             // Create Like Object
             $like = new Like();
@@ -123,9 +123,11 @@ class LikeController extends Controller
         $this->forcePostRequest();
         $this->loadTarget();
 
-        $attributes = array('object_model' => $this->model, 'object_id' => $this->id, 'created_by' => Yii::app()->user->id);
-        $like = Like::model()->findByAttributes($attributes);
-        $like->delete();
+        if (!Yii::app()->user->isGuest) {
+            $attributes = array('object_model' => $this->model, 'object_id' => $this->id, 'created_by' => Yii::app()->user->id);
+            $like = Like::model()->findByAttributes($attributes);
+            $like->delete();
+        }
 
         $this->actionShowLikes();
     }

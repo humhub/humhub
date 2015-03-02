@@ -11,6 +11,7 @@
  * @property string $username
  * @property string $email
  * @property integer $super_admin
+ * @property integer $visiblity
  * @property integer $status
  * @property string $auth_mode
  * @property string $tags
@@ -57,10 +58,17 @@ class User extends HActiveRecordContentContainer implements ISearchable
     const RECEIVE_EMAIL_ALWAYS = 3;
 
     /**
+     * Visibility Modes
+     */
+    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
+    const VISIBILITY_ALL = 2; // Visible for all (also guests)
+
+    /**
      * Loaded User Profile
      *
      * @var type
      */
+
     protected $_profile;
 
     /**
@@ -149,7 +157,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         $rules = array();
-        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by', 'numerical', 'integerOnly' => true);
+        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by, visibility', 'numerical', 'integerOnly' => true);
         $rules[] = array('email', 'email');
         $rules[] = array('guid', 'length', 'max' => 45);
         $rules[] = array('username', 'unique', 'caseSensitive' => false, 'className' => 'User');
@@ -193,6 +201,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'wall_id' => Yii::t('UserModule.models_User', 'Wall'),
             'group_id' => Yii::t('UserModule.models_User', 'Group'),
             'username' => Yii::t('UserModule.models_User', 'Username'),
+            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
             'email' => Yii::t('UserModule.models_User', 'Email'),
             'tags' => Yii::t('UserModule.models_User', 'Tags'),
             'auth_mode' => Yii::t('UserModule.models_User', 'Authentication mode'),
@@ -307,6 +316,13 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
             }
 
+            if (HSetting::Get('allowGuestAccess', 'authentication_internal')) {
+                // Set users profile default visibility to all
+                if (HSetting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
+                    $this->visibility = User::VISIBILITY_ALL;
+                }
+            }
+
             $this->last_activity_email = new CDbExpression('NOW()');
 
             // Set Status
@@ -342,10 +358,10 @@ class User extends HActiveRecordContentContainer implements ISearchable
             HSearch::getInstance()->addModel($this);
         }
 
-        if ($this->isNewRecord){
-            if($this->status == User::STATUS_ENABLED) 
-                $this->setUpApproved();  
-            else 
+        if ($this->isNewRecord) {
+            if ($this->status == User::STATUS_ENABLED)
+                $this->setUpApproved();
+            else
                 $this->notifyGroupAdminsForApproval();
         }
 
