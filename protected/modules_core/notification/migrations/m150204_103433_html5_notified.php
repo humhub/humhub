@@ -8,7 +8,7 @@ class m150204_103433_html5_notified extends EDbMigration
             
             $this->insert('setting', array(
                 'name' => 'enable_html5_desktop_notifications',
-                'value' => 1,
+                'value' => 0,
                 'module_id' => 'notification'
             ));
         }
