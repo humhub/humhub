@@ -16,5 +16,11 @@
                      data-original-title="<strong><?php echo CHtml::encode($space->name); ?></strong>">
             </a>
         <?php endforeach; ?>
+
+        <?php if ($showMoreButton): ?>
+            <br />
+            <br />
+            <?php echo HHtml::link(Yii::t('DirectoryModule.widgets_views_newSpaces', 'See all'), array('//directory/directory/spaces'), array('class'=>'btn btn-xl btn-primary')); ?>
+        <?php endif; ?>
     </div>
 </div>

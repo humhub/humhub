@@ -10,6 +10,8 @@
 class NewMembersWidget extends HWidget
 {
 
+    public $showMoreButton = false;
+
     /**
      * Executes the widgets
      */
@@ -21,6 +23,7 @@ class NewMembersWidget extends HWidget
         // Render widgets view
         $this->render('newMembers', array(
             'newUsers' => $newUsers, // new users
+            'showMoreButton' => $this->showMoreButton
         ));
     }
 

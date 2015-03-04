@@ -15,5 +15,12 @@
                      data-original-title="<strong><?php echo CHtml::encode($user->displayName); ?></strong><br><?php echo CHtml::encode($user->profile->title); ?>">
             </a>
         <?php endforeach; ?>
+
+        <?php if ($showMoreButton): ?>
+            <br />
+            <br />
+            <?php echo HHtml::link(Yii::t('DirectoryModule.widgets_views_newMembers', 'See all'), array('//directory/directory/members'), array('class' => 'btn btn-xl btn-primary')); ?>
+        <?php endif; ?>
+
     </div>
 </div>

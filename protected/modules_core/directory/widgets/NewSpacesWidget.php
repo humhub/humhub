@@ -10,6 +10,8 @@
 class NewSpacesWidget extends HWidget
 {
 
+    public $showMoreButton = false;
+
     /**
      * Executes the widgets
      */
@@ -26,6 +28,7 @@ class NewSpacesWidget extends HWidget
 
         $this->render('newSpaces', array(
             'newSpaces' => $newSpaces,
+            'showMoreButton' => $this->showMoreButton
         ));
     }
 
