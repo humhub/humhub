@@ -21,9 +21,7 @@
         <link href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css?ver=<?php echo $ver; ?>" rel="stylesheet">
         <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css?ver=<?php echo $ver; ?>" rel="stylesheet">
         <link href="<?php echo Yii::app()->baseUrl; ?>/css/flatelements.css?ver=<?php echo $ver; ?>" rel="stylesheet">
-
         <!-- end: CSS -->
-
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -146,8 +144,6 @@
 
         <?php $this->widget('application.modules_core.tour.widgets.TourWidget', array()); ?>
 
-
-
         <!-- start: show content (and check, if exists a sublayout -->
         <?php if (isset($this->subLayout) && $this->subLayout != "") : ?>
             <?php echo $this->renderPartial($this->subLayout, array('content' => $content)); ?>
@@ -169,46 +165,6 @@
         </div>
         <!-- end: Modal -->
 
-        <script type="text/javascript">
-
-            // Replace the standard checkbox and radio buttons
-            $('body').find(':checkbox, :radio').flatelements();
-
-            $(document).ready(function() {
-
-                /* Ensures after hide modal content is removed. */
-                $('#globalModal').on('hidden.bs.modal', function(e) {
-                    $(this).removeData('bs.modal');
-
-                    // just close modal and reset modal content to default (shows the loader)
-                    $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
-                })
-
-            });
-
-            // call this after every ajax loading
-            $(document).ajaxComplete(function(event, xhr, settings) {
-
-                // show Tooltips on elements inside the views, which have the class 'tt'
-                $('.tt').tooltip({
-                    html: true,
-                    container: 'body'
-                });
-
-                // show Popovers on elements inside the views, which have the class 'po'
-                $('.po').popover({html: true});
-
-                // activate placeholder text for older browsers (specially IE)
-                $('input, textarea').placeholder();
-
-            });
-
-            $('#globalModal').on('shown.bs.modal', function(e) {
-                // reduce the standard modal width
-                $('.modal-dialog').css('width', '300px');
-            })
-
-        </script>
         <?php echo HSetting::GetText('trackingHtmlCode'); ?>
     </body>
 </html>

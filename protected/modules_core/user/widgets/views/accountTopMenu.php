@@ -1,6 +1,6 @@
 <?php if (Yii::app()->user->isGuest): ?>
 
-    <a href="<?php echo $this->createUrl('//user/auth/login'); ?>" class="btn btn-lg" data-toggle="modal" data-target="#globalModal">Sign in / up</a>
+    <a href="<?php echo $this->createUrl('//user/auth/login'); ?>" class="btn btn-enter" data-toggle="modal" data-target="#globalModal">Sign in / up</a>
 
 
 <?php else: ?>

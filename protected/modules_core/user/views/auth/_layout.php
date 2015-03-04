@@ -5,9 +5,3 @@
     </div>
 </div>
 
-<style type="text/css">
-    body {
-        background-color: #7191a8 !important;
-    }
-</style>
-

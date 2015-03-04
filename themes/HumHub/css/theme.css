@@ -27,6 +27,12 @@ h4 {
 .text-center {
   text-align: center !important;
 }
+.login-container {
+  background: #7191a8;
+}
+#account-login-form .form-group {
+  margin-bottom: 10px;
+}
 .topbar .dropdown-header {
   font-weight: 300;
   color: #bebebe;
@@ -46,6 +52,13 @@ h4 {
 }
 #topbar-first .btn-group > a {
   background-color: #819db2;
+}
+#topbar-first .btn-enter {
+  background-color: #819db2;
+  margin: 6px 0;
+}
+#topbar-first .btn-enter:hover {
+  background-color: #8aa5b8;
 }
 #topbar-first .media-list a {
   color: #555555;
@@ -320,7 +333,7 @@ h4 {
   margin-bottom: 1px;
 }
 .well hr {
-  margin: 5px 0 10px 0;
+  margin: 15px 0 10px 0;
   border-top: 1px solid #d9d9d9;
 }
 .well table > thead {
@@ -1197,6 +1210,9 @@ img.bounceIn {
 .outside .text a {
   color: #ffffff;
   text-decoration: underline;
+}
+.outside .panel a {
+  color: #4cd9c0;
 }
 .outside h1,
 .outside h2 {

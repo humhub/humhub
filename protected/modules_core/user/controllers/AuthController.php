@@ -20,13 +20,15 @@
 
 /**
  * AuthController handles all authentication tasks.
- * 
+ *
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
 class AuthController extends Controller
 {
 
+    //public $layout = '//layouts/main1';
+    public $layout = "application.modules_core.user.views.layouts.main_auth";
     public $subLayout = "_layout";
 
     public function actions()
@@ -45,6 +47,7 @@ class AuthController extends Controller
      */
     public function actionLogin()
     {
+
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::app()->user->isGuest) {
             $this->redirect(Yii::app()->user->returnUrl);
@@ -254,7 +257,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Create an account 
+     * Create an account
      *
      * This action is called after e-mail validation.
      */
@@ -389,8 +392,8 @@ class AuthController extends Controller
         }
 
         $this->render('createAccount', array(
-            'form' => $form,
-            'needAproval' => $needApproval)
+                'form' => $form,
+                'needAproval' => $needApproval)
         );
     }
 

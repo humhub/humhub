@@ -405,6 +405,9 @@ textarea {
   height: 20px;
   width: 20px;
 }
+.comment-container {
+  margin-top: 10px;
+}
 .comment .media {
   position: relative !important;
   margin-top: 0;
@@ -413,6 +416,12 @@ textarea {
   display: none;
   right: -3px;
   top: -3px;
+}
+.comment.guest-mode .media:last-child .wall-entry-controls {
+  margin-bottom: 0px;
+}
+.comment.guest-mode .media:last-child hr {
+  display: none;
 }
 ul.tag_input {
   list-style: none;
@@ -571,7 +580,7 @@ ul.tour-list li.completed a {
 .wall-entry-controls {
   font-size: 12px;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 .tags .tag {
   margin-top: 5px;

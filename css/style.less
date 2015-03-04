@@ -527,6 +527,11 @@ textarea {
 }
 
 // comments
+
+.comment-container {
+  margin-top: 10px;
+}
+
 .comment {
 
   .media {
@@ -540,7 +545,19 @@ textarea {
 
     }
   }
+}
 
+.comment.guest-mode {
+  .media:last-child {
+
+    .wall-entry-controls {
+      margin-bottom: 0px;
+    }
+
+    hr {
+      display: none;
+    }
+  }
 }
 
 // User- & Space picker
@@ -742,7 +759,7 @@ ul.tour-list {
 .wall-entry-controls {
   font-size: 12px;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 // Tags

@@ -5,14 +5,20 @@
             <h4 class="modal-title" id="myModalLabel"><strong>Join</strong> the network</h4>
         </div>
         <div class="modal-body">
-            <br />
+            <br/>
+
             <div class="text-center">
                 <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                    <li class="<?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>"><a href="#login" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a></li>
-                    <li class="<?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>"><a href="#register" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a></li>
+                    <li class="<?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-login"><a href="#login"
+                                                                                                          data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
+                    </li>
+                    <li class="<?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-register"><a
+                            href="#register"
+                            data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
+                    </li>
                 </ul>
             </div>
-            <br/>            
+            <br/>
 
             <div class="tab-content">
                 <div class="tab-pane <?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>" id="login">
@@ -37,12 +43,13 @@
                         <?php echo $form->error($model, 'password'); ?>
                     </div>
 
-                    <div class="checkbox">
-                        <label>
-                            <?php echo $form->checkBox($model, 'rememberMe'); ?> <?php echo Yii::t('UserModule.views_auth_login', 'Remember me next time'); ?>
-                        </label>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <?php echo $form->checkBox($model, 'rememberMe'); ?> <?php echo Yii::t('UserModule.views_auth_login', 'Remember me next time'); ?>
+                            </label>
+                        </div>
                     </div>
-
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -50,18 +57,18 @@
                             echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('//user/auth/login'), array(
                                 'type' => 'POST',
                                 'success' => 'function(html){ $("#globalModal").html(html); }',
-                                    ), array('class' => 'btn btn-primary', 'id' => 'loginBtn'));
+                            ), array('class' => 'btn btn-primary', 'id' => 'loginBtn'));
                             ?>
                         </div>
                         <div class="col-md-8 text-right">
                             <small>
                                 <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                                <br />
+                                <br/>
                                 <?php
                                 echo HHtml::ajaxLink(Yii::t('UserModule.views_auth_login', 'Create a new one.'), array('//user/auth/recoverPassword'), array(
                                     'type' => 'POST',
                                     'success' => 'function(html){ $("#globalModal").html(html); }',
-                                        ), array('class' => '', 'id' => 'recoverPasswordBtn'));
+                                ), array('class' => '', 'id' => 'recoverPasswordBtn'));
                                 ?>
                             </small>
                         </div>
@@ -69,7 +76,8 @@
 
                     <?php $this->endWidget(); ?>
                 </div>
-                <div class="tab-pane <?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>" id="register">
+                <div class="tab-pane <?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>"
+                     id="register">
 
                     <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                     <?php
@@ -89,15 +97,35 @@
                     echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_login', 'Register'), array('//user/auth/login'), array(
                         'type' => 'POST',
                         'success' => 'function(html){ $("#globalModal").html(html); }',
-                            ), array('class' => 'btn btn-primary', 'id' => 'registerBtn'));
+                    ), array('class' => 'btn btn-primary', 'id' => 'registerBtn'));
                     ?>
 
                     <?php $this->endWidget(); ?>
 
                 </div>
-            </div>    
+            </div>
         </div>
 
     </div>
 
 </div>
+
+<script type="text/javascript">
+    // Replace the standard checkbox and radio buttons
+    $('body').find(':checkbox, :radio').flatelements();
+
+
+    $(document).ready(function () {
+        $('#login_username').focus();
+
+    });
+
+    $('.tab-register a').on('shown.bs.tab', function (e) {
+        $('#register-email').focus();
+    })
+
+    $('.tab-login a').on('shown.bs.tab', function (e) {
+        $('#login_username').focus();
+    })
+
+</script>

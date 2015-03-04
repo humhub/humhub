@@ -16,8 +16,8 @@
 ?>
 
 
-<div class="well well-small" style="display: none;" id="comment_<?php echo $id; ?>">
-    <div class="comment" id="comments_area_<?php echo $id; ?>">
+<div class="well well-small comment-container" style="display: none;" id="comment_<?php echo $id; ?>">
+    <div class="comment <?php if (Yii::app()->user->isGuest): ?>guest-mode<?php endif; ?>" id="comments_area_<?php echo $id; ?>">
         <?php if ($isLimited): ?>
             <?php
             // Create an ajax link, which loads all comments upon request
@@ -46,5 +46,7 @@
         // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
         $('#comment_<?php echo $id; ?>').show();
 <?php } ?>
+
+
 
 </script>
