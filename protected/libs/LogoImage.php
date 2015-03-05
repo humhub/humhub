@@ -6,13 +6,14 @@ class LogoImage
     /**
      * @var Integer height of the image
      */
-    protected $height = 50;
+    protected $height = 40;
 
     /**
      * @var String folder name inside the uploads directory
      */
     protected $folder_images = "logo_image";
 
+    protected $file_type = 'jpg';
 
     public function __construct()
     {
@@ -37,7 +38,7 @@ class LogoImage
 
 
         if (file_exists($this->getPath())) {
-            $path .= '/uploads/' . $this->folder_images . '/logo.jpg';
+            $path .= '/uploads/' . $this->folder_images . '/logo.'.$this->file_type;
         }
         $path .= '?cacheId=' . $cacheId;
         return $path;
@@ -65,7 +66,7 @@ class LogoImage
         if (!is_dir($path))
             mkdir($path);
 
-        $path .= 'logo.jpg';
+        $path .= 'logo.'.$this->file_type;
 
         return $path;
     }
@@ -78,15 +79,17 @@ class LogoImage
      */
     public function setNew($file)
     {
-
+        $file_type = $this->file_type;
+        
         if ($file instanceof CUploadedFile) {
+            $file_type = $file->getExtensionName();
             $file = $file->getTempName();
         }
 
         $this->delete();
         move_uploaded_file($file,  $this->getPath());
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max'));
+        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max', 'transparent' => ($file_type == 'png' && ImageConverter::checkTransparent($this->getPath()))));
     }
 
     /**

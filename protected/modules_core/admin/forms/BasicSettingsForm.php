@@ -71,8 +71,8 @@ class BasicSettingsForm extends CFormModel {
     if(is_object($this->logo)){
 
         list($width, $height) = getimagesize($this->logo->tempName);
-        if($height < 50)
-          $this->addError('logo','Logo size should have at least 50px of height');
+        if($height < 40)
+          $this->addError('logo','Logo size should have at least 40px of height');
     }  
 
 }

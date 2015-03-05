@@ -1,5 +1,5 @@
 <?php if($logo->hasImage()){?>
-    <a class="navbar-brand hidden-xs" style="height: 50px; padding: 0px;"
+    <a class="navbar-brand hidden-xs" style="height: 50px; padding: 0px;padding:5px;"
     	href="<?php echo Yii::app()->createUrl('//'); ?>"> 
     	   <img class="img-rounded" src="<?php echo $logo->getUrl();?>"
     	id="img-logo"/>
