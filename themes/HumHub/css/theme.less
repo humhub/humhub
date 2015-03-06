@@ -69,6 +69,20 @@ h4 {
   text-align: center !important;
 }
 
+
+//
+// x) Login
+// --------------------------------------------------
+.login-container {
+  background: #7191a8;
+}
+
+#account-login-form {
+  .form-group {
+    margin-bottom: 10px;
+  }
+}
+
 //
 // x) Topbar
 // --------------------------------------------------
@@ -79,7 +93,7 @@ h4 {
     color: @colorFont4;
 
     .dropdown-header-link a {
-      color: #4cd9c0 !important;
+      color: @colorInfo2 !important;
     }
   }
 }
@@ -98,6 +112,15 @@ h4 {
 
   .btn-group > a {
     background-color: lighten(@colorPrimary3, 5%);
+  }
+
+  .btn-enter {
+    background-color: lighten(@colorPrimary3, 5%);
+    margin: 6px 0;
+  }
+
+  .btn-enter:hover {
+    background-color: lighten(@colorPrimary3, 8%);
   }
 
   .media-list {
@@ -454,7 +477,7 @@ h4 {
   margin-bottom: 1px;
 
   hr {
-    margin: 5px 0 10px 0;
+    margin: 15px 0 10px 0;
     border-top: 1px solid darken(@colorBackground2, 8%);
   }
 
@@ -1594,6 +1617,11 @@ img.bounceIn {
       color: #ffffff;
       text-decoration: underline;
     }
+
+  }
+
+  .panel a {
+    color: @colorInfo2;
   }
 
   h1, h2 {

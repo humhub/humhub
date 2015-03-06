@@ -23,7 +23,7 @@ class BasicSettingsForm extends CFormModel {
             array('defaultLanguage', 'in', 'range' => array_keys(Yii::app()->params['availableLanguages'])),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
             array('tour', 'safe'),
-            array('logo', 'file', 'types' => 'jpg, png, jpeg, tiff', 'maxSize' => 3 * 1024 * 1024, 'allowEmpty' => true),
+            array('logo', 'file', 'types' => 'jpg, png, jpeg', 'maxSize' => 3 * 1024 * 1024, 'allowEmpty' => true),
             array('logo', 'dimensionValidation', 'skipOnError'=> true), 
         );
     }

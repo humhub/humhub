@@ -192,7 +192,7 @@
             <div class="controls controls-account pull-right">
                 <!-- start: User following -->
                 <?php
-                if (!$user->isCurrentUser()) {
+                if (!$user->isCurrentUser() && !Yii::app()->user->isGuest) {
                     if ($user->isFollowedByUser()) {
                         print HHtml::postLink(Yii::t("UserModule.widgets_views_profileHeader", "Unfollow"), $user->createUrl('//user/profile/unfollow'), array('class' => 'btn btn-primary'));
                     } else {

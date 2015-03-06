@@ -19,16 +19,11 @@
         <?php endif; ?>
         <div class="list-group">
             <?php foreach ($items as $item) : ?>
-                <a href="<?php echo $item['url']; ?>"
-                   target="<?php echo $item['target']; ?>" 
-                   class="list-group-item <?php if ($item['isActive']): ?>active <?php endif; ?><?php if (isset($item['id'])) {echo $item['id'];} ?>">
-                    <?php echo $item['icon']; ?>
-                    <span><?php echo $item['label']; ?></span>
-                </a>
+                <?php $item['htmlOptions']['class'] .= " list-group-item"; ?>
+                <?php echo HHtml::link($item['icon']."<span>".$item['label']."</span>", $item['url'], $item['htmlOptions']); ?>
             <?php endforeach; ?>
         </div>
     <?php endforeach; ?>
 
 </div>
 <!-- end: list-group navi for large devices -->
-

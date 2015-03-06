@@ -58,7 +58,7 @@ class AccountController extends Controller
         
         $model->tags = Yii::app()->user->getModel()->tags;
         $model->show_introduction_tour = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
-
+        $model->visibility = Yii::app()->user->getModel()->visibility;
 
         if (isset($_POST['AccountSettingsForm'])) {
 
@@ -72,6 +72,7 @@ class AccountController extends Controller
                 $user = Yii::app()->user->getModel();
                 $user->language = $model->language;
                 $user->tags = $model->tags;
+                $user->visibility = $model->visibility;
                 $user->save();
 
                 Yii::app()->user->reload();

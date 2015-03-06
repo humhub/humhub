@@ -6,7 +6,7 @@
         
         <div class="alert alert-info">
 
-            © 2010 - 2014 The HumHub Project
+            © 2010 - <?php echo date("Y") ?> The HumHub Project
 
         </div>
 

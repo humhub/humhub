@@ -1,6 +1,6 @@
 /**
  * Holds all already loaded javascript libaries
- * 
+ *
  * @type HashTable
  */
 var currentLoadedJavaScripts = new HashTable();
@@ -9,9 +9,9 @@ var currentLoadedJavaScripts = new HashTable();
 /**
  * Looks for script tags inside the given string and checks if the files
  * are already loaded.
- * 
+ *
  * When already loaded, the scripts will ignored.
- * 
+ *
  * @returns {undefined}
  */
 function parseHtml(htmlString) {
@@ -39,17 +39,15 @@ function parseHtml(htmlString) {
 }
 
 
-
 /**
  * Hashtable
- * 
- * Javscript Class which represents a hashtable. 
- * 
+ *
+ * Javscript Class which represents a hashtable.
+ *
  * @param {type} obj
  * @returns {HashTable}
  */
-function HashTable(obj)
-{
+function HashTable(obj) {
     this.length = 0;
     this.items = {};
     for (var p in obj) {
@@ -59,8 +57,7 @@ function HashTable(obj)
         }
     }
 
-    this.setItem = function(key, value)
-    {
+    this.setItem = function (key, value) {
         var previous = undefined;
         if (this.hasItem(key)) {
             previous = this.items[key];
@@ -72,17 +69,15 @@ function HashTable(obj)
         return previous;
     }
 
-    this.getItem = function(key) {
+    this.getItem = function (key) {
         return this.hasItem(key) ? this.items[key] : undefined;
     }
 
-    this.hasItem = function(key)
-    {
+    this.hasItem = function (key) {
         return this.items.hasOwnProperty(key);
     }
 
-    this.removeItem = function(key)
-    {
+    this.removeItem = function (key) {
         if (this.hasItem(key)) {
             previous = this.items[key];
             this.length--;
@@ -94,8 +89,7 @@ function HashTable(obj)
         }
     }
 
-    this.keys = function()
-    {
+    this.keys = function () {
         var keys = [];
         for (var k in this.items) {
             if (this.hasItem(k)) {
@@ -105,8 +99,7 @@ function HashTable(obj)
         return keys;
     }
 
-    this.values = function()
-    {
+    this.values = function () {
         var values = [];
         for (var k in this.items) {
             if (this.hasItem(k)) {
@@ -116,7 +109,7 @@ function HashTable(obj)
         return values;
     }
 
-    this.each = function(fn) {
+    this.each = function (fn) {
         for (var k in this.items) {
             if (this.hasItem(k)) {
                 fn(k, this.items[k]);
@@ -124,9 +117,46 @@ function HashTable(obj)
         }
     }
 
-    this.clear = function()
-    {
+    this.clear = function () {
         this.items = {}
         this.length = 0;
     }
 }
+
+
+// Replace the standard checkbox and radio buttons
+$('body').find(':checkbox, :radio').flatelements();
+
+$(document).ready(function () {
+
+    /* Ensures after hide modal content is removed. */
+    $('#globalModal').on('hidden.bs.modal', function (e) {
+        $(this).removeData('bs.modal');
+
+        // just close modal and reset modal content to default (shows the loader)
+        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
+    })
+
+});
+
+// call this after every ajax loading
+$(document).ajaxComplete(function (event, xhr, settings) {
+
+    // show Tooltips on elements inside the views, which have the class 'tt'
+    $('.tt').tooltip({
+        html: true,
+        container: 'body'
+    });
+
+    // show Popovers on elements inside the views, which have the class 'po'
+    $('.po').popover({html: true});
+
+    // activate placeholder text for older browsers (specially IE)
+    $('input, textarea').placeholder();
+
+});
+
+$('#globalModal').on('shown.bs.modal', function (e) {
+    // reduce the standard modal width
+    $('.modal-dialog').css('width', '300px');
+})

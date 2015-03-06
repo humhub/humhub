@@ -1,11 +1,4 @@
-<?php
-/**
- * Created by Andreas Strobel
- * Date: 25.06.13
- */
-?>
 <div class="container">
-    <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-8">
             <?php
@@ -30,5 +23,4 @@
             ?>
         </div>
     </div>
-
 </div>

@@ -15,6 +15,9 @@ class TourWidget extends HWidget
      */
     public function run()
     {
+        if (Yii::app()->user->isGuest)
+            return;
+
         // Active tour flag not set
         if (!isset($_GET['tour'])) {
             return;

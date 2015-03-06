@@ -24,6 +24,14 @@
 
         <?php echo $form->errorSummary($model); ?>
 
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($model, 'allowGuestAccess'); ?> <?php echo $model->getAttributeLabel('allowGuestAccess'); ?>
+                </label>
+            </div>
+        </div>        
         <div class="form-group">
             <div class="checkbox">
                 <label>
@@ -56,9 +64,16 @@
         <div class="form-group">
             <?php echo $form->labelEx($model, 'defaultUserIdleTimeoutSec'); ?>
             <?php echo $form->textField($model, 'defaultUserIdleTimeoutSec', array('class' => 'form-control', 'readonly' => HSetting::IsFixed('defaultUserIdleTimeoutSec', 'authentication_internal'))); ?>
-        	 <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
         </div>
-            
+
+
+            <div class="form-group">
+                <?php echo $form->labelEx($model, 'defaultUserProfileVisibility'); ?>
+                <?php echo $form->dropDownList($model, 'defaultUserProfileVisibility', array(1 => 'Visible for members only', 2 => 'Visible for members+guests'), array('class' => 'form-control', 'readonly' => (!HSetting::Get('allowGuestAccess', 'authentication_internal')))); ?>
+                <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
+            </div>
+
         <hr/>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication', 'Save'), array('class' => 'btn btn-primary')); ?>

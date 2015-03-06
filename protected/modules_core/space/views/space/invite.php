@@ -18,8 +18,8 @@
             <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="active"><a href="#internal" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a></li>
-                        <li class=""><a href="#external" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a></li>
+                        <li class="active tab-internal"><a href="#internal" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a></li>
+                        <li class="tab-external"><a href="#external" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a></li>
                     </ul>
                 </div>
                 <br/>
@@ -101,6 +101,14 @@
     <?php endif; ?>
 
     <?php endif; ?>
+
+    $('.tab-internal a').on('shown.bs.tab', function (e) {
+        $('#invite_tag_input_field').focus();
+    })
+
+    $('.tab-external a').on('shown.bs.tab', function (e) {
+        $('#email_invite').focus();
+    })
 
 
 </script>
