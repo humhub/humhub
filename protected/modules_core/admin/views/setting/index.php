@@ -60,7 +60,7 @@
        
             <img class="img-rounded" id="logo-image"
                 src="<?php if($logo->hasImage()) echo $logo->getUrl(); ?>"
-                data-src="holder.js/140x140" alt="<?php echo Yii::app()->name; ?>" style="max-height: 50px;"/>
+                data-src="holder.js/140x140" alt="<?php echo Yii::app()->name; ?>" style="max-height: 40px;"/>
 
                 <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
                     <a href="#" onclick="javascript:$('#logo').click();" class="btn btn-info btn-sm"><i
