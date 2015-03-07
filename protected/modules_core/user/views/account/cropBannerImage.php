@@ -38,9 +38,9 @@
                     'formElementWidth' => 'CropProfileImageForm_cropW',
                     'formElementHeight' => 'CropProfileImageForm_cropH',
                     'jCropOptions' => array(
-                        'aspectRatio' => '2.8333',
+                        'aspectRatio' => '6.3',
                         'boxWidth' => 400,
-                        'setSelect' => array(0, 0, 200, 75),
+                        'setSelect' => array(0, 0, 267, 48),
                     ),
                         )
                 );
