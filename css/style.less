@@ -382,6 +382,7 @@ textarea {
 
     .img-profile-header-background {
       border-radius: 3px;
+      min-height: 110px;
     }
 
     .img-profile-data {
@@ -409,6 +410,10 @@ textarea {
         font-weight: 100;
         margin-bottom: 7px;
         color: #fff;
+        max-width: 600px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       h2 {
@@ -1134,6 +1139,15 @@ input.placeholder, textarea.placeholder {
     .arrow {
       margin-left: -142px !important;
     }
+  }
+
+  .panel-profile-controls {
+    padding-left: 0px !important;
+    padding-top: 50px;
+  }
+
+  .panel-profile .panel-profile-header .img-profile-data h1 {
+    font-size: 20px !important;
   }
 
 }

@@ -297,6 +297,7 @@ textarea {
 }
 .panel-profile .panel-profile-header .img-profile-header-background {
   border-radius: 3px;
+  min-height: 110px;
 }
 .panel-profile .panel-profile-header .img-profile-data {
   position: absolute;
@@ -330,6 +331,10 @@ textarea {
   font-weight: 100;
   margin-bottom: 7px;
   color: #fff;
+  max-width: 600px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .panel-profile .panel-profile-header .img-profile-data h2 {
   font-size: 16px;
@@ -862,5 +867,12 @@ textarea.placeholder {
   }
   #dropdown-notifications .arrow {
     margin-left: -142px !important;
+  }
+  .panel-profile-controls {
+    padding-left: 0px !important;
+    padding-top: 50px;
+  }
+  .panel-profile .panel-profile-header .img-profile-data h1 {
+    font-size: 20px !important;
   }
 }
