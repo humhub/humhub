@@ -527,11 +527,28 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
-     * Counts all posts of current workspace
+     * Counts all posts of current space
      *
      * @return Integer
      */
     public function countPosts()
+    {
+        /*
+          $criteria = new CDbCriteria();
+          $criteria->condition = "content.space_id=:space_id";
+          $criteria->params = array(':space_id' => $this->id);
+          return Post::model()->with('content')->count($criteria);
+         */
+        return Content::model()->countByAttributes(array('object_model' => 'Post', 'space_id' => $this->id));
+    }
+
+
+    /**
+     * Counts all followers of current space
+     *
+     * @return Integer
+     */
+    public function countFollowers()
     {
         /*
           $criteria = new CDbCriteria();

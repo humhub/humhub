@@ -17,12 +17,12 @@
 
                 <?php
                 // set standard padding for banner progressbar
-                $padding = '140px 350px';
+                $padding = '90px 350px';
 
                 // if the default banner image is displaying
                 if (!$user->getProfileBannerImage()->hasImage()) {
                     // change padding to the lower image height
-                    $padding = '70px 350px';
+                    $padding = '50px 350px';
                 }
                 ?>
 
