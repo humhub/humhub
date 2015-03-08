@@ -204,6 +204,12 @@ h4 {
 .media .content .files a {
   color: #555555;
 }
+.module-installed {
+  opacity: 0.5;
+}
+.module-installed .label-success {
+  background-color: #d7d7d7;
+}
 .modal .dropdown-menu,
 .panel .dropdown-menu,
 .nav-tabs .dropdown-menu {

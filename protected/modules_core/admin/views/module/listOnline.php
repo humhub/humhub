@@ -34,7 +34,7 @@
 
         <?php foreach ($modules as $module): ?>
             <hr/>
-            <div class="media">
+            <div class="media <?php if (Yii::app()->moduleManager->isInstalled($module['id'])): ?>module-installed<?php endif; ?>">
 
                 <?php
                 $moduleImageUrl = Yii::app()->baseUrl. '/img/default_module.jpg';
@@ -67,7 +67,7 @@
                             <?php endif; ?>
 
                             <?php if (!Yii::app()->moduleManager->isInstalled($module['id'])): ?>
-                                &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listOnline', 'Install'), $this->createUrl('install', array('moduleId' => $module['id'])), array('style'=>'font-weight:bold')); ?>
+                                &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_listOnline', 'Install'), $this->createUrl('install', array('moduleId' => $module['id'])), array('style'=>'font-weight:bold', 'class' => 'process')); ?>
                             <?php endif; ?>
 
                         <?php else : ?>
@@ -82,3 +82,26 @@
         <?php endif;?>
     </div>
 </div>
+
+<!-- start: Modal -->
+<div class="modal" id="processModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><?php echo Yii::t('AdminModule.views_module_list', 'Processing...') ?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end: Modal -->
+
+<script type="text/javascript">
+
+    $('.process').click(function () {
+        $('#processModal').modal('show');
+    })
+
+</script>
