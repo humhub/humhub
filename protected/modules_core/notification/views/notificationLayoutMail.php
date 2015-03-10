@@ -34,16 +34,21 @@
                                                 <tr>
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
-                                                        <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
-                                                            <img
-                                                                src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
-                                                                width="50"
-                                                                alt=""
-                                                                style="max-width:50px; display:block !important; border-radius: 4px;"
-                                                                border="0" hspace="0" vspace="0"/>
-                                                        </a>
-                                                        <!-- END: USER IMAGE -->
+                                                        
+                                                        <!-- check if variable exists and is true -->
+                                                        <?php if (empty($hideUserImage)): ?>
+                                                            <!-- START: USER IMAGE -->
+                                                            <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
+                                                                <img
+                                                                    src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
+                                                                    width="50"
+                                                                    alt=""
+                                                                    style="max-width:50px; display:block !important; border-radius: 4px;"
+                                                                    border="0" hspace="0" vspace="0"/>
+                                                            </a>
+                                                            <!-- END: USER IMAGE -->
+                                                        <?php endif; ?>
+                                                        
                                                     </td>
 
 
