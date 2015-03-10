@@ -22,7 +22,7 @@
     <!-- end: show wall entry options -->
 
     <a href="<?php echo $object->content->user->getProfileUrl(); ?>" class="pull-left">
-        <img class="media-object img-rounded user-image" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"
+        <img class="media-object img-rounded user-image user-<?php echo $object->content->user->guid; ?>" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"
              src="<?php echo $object->content->user->getProfileImage()->getUrl(); ?>"
              width="40" height="40"/>
     </a>
