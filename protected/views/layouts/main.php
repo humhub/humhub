@@ -152,7 +152,6 @@
         <?php endif; ?>
         <!-- end: show content -->
 
-
         <!-- start: Modal (every lightbox will/should use this construct to show content)-->
         <div class="modal" id="globalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -164,6 +163,11 @@
             </div>
         </div>
         <!-- end: Modal -->
+
+        <script type="text/javascript">
+            // Replace the standard checkbox and radio buttons
+            $('body').find(':checkbox, :radio').flatelements();
+        </script>
 
         <?php echo HSetting::GetText('trackingHtmlCode'); ?>
     </body>

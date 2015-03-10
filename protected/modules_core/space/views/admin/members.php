@@ -333,4 +333,8 @@
         $('#space-owner-link i').removeClass('fa-caret-down');
         $('#space-owner-link i').addClass('fa-caret-right');
     })
+
+
+
+
 </script>
