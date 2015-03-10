@@ -9,8 +9,9 @@
 
             <div class="text-center">
                 <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                    <li class="<?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-login"><a href="#login"
-                                                                                                          data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
+                    <li class="<?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-login"><a
+                            href="#login"
+                            data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
                     </li>
                     <li class="<?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-register"><a
                             href="#register"
@@ -54,7 +55,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <?php
-                            echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('//user/auth/login'), array(
+                            echo HHtml::ajaxSubmitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('//user/auth/login'), array(
                                 'type' => 'POST',
                                 'success' => 'function(html){ $("#globalModal").html(html); }',
                             ), array('class' => 'btn btn-primary', 'id' => 'loginBtn'));
@@ -94,7 +95,7 @@
                     <hr>
 
                     <?php
-                    echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_login', 'Register'), array('//user/auth/login'), array(
+                    echo HHtml::ajaxSubmitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('//user/auth/login'), array(
                         'type' => 'POST',
                         'success' => 'function(html){ $("#globalModal").html(html); }',
                     ), array('class' => 'btn btn-primary', 'id' => 'registerBtn'));
