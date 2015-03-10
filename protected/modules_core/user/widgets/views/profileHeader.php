@@ -6,7 +6,7 @@
             <!-- profile image output-->
             <img class="img-profile-header-background" id="user-banner-image"
                  src="<?php echo $user->getProfileBannerImage()->getUrl(); ?>"
-                 width="100%" style="width: 100%;">
+                 width="100%" style="width: 100%; max-height: 192px;">
 
             <!-- check if the current user is the profile owner and can change the images -->
             <?php if ($isProfileOwner) { ?>
