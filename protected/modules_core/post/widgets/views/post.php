@@ -34,7 +34,7 @@
     $(document).ready(function () {
 
         // save the count of characters
-        var _words = '<?php echo strlen(HHtml::enrichText($post->message)); ?>';
+        var _words = '<?php echo strlen(strip_tags(HHtml::enrichText($post->message))); ?>';
 
 
         var _postHeight = $('#post-content-<?php echo $post->id; ?>').outerHeight();
