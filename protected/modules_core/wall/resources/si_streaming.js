@@ -21,7 +21,7 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
 
     this.filters = "";
 
-    this.sorting = "c";
+    this.sorting = "u";
 
     /**
      * Return parseHtml result and delete dublicated entries from container
