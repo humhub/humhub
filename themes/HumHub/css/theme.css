@@ -167,6 +167,11 @@ h4 {
 .media .media-body h4.media-heading a {
   color: #555555;
 }
+.media .media-body h4.media-heading a.post-date:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  cursor: hand;
+}
 .media .media-body h4.media-heading small,
 .media .media-body h4.media-heading small a {
   font-size: 11px;
