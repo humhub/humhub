@@ -90,7 +90,7 @@
         <div class="container">
             <div class="topbar-brand">
                 <a class="navbar-brand hidden-xs"
-                   href="<?php echo Yii::app()->createUrl('//'); ?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+                   href="<?php echo Yii::app()->createUrl('//'); ?>"><img class='navbar-brand-logo' src="/img/logo.png"></a>
             </div>
 
             <div class="topbar-actions pull-right">
