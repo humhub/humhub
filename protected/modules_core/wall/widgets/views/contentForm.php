@@ -1,8 +1,4 @@
-<div class="panel panel-default <?php
-if (Yii::app()->getController()->id == 'dashboard') {
-    echo 'hidden';
-}
-?>">
+<div class="panel panel-default">
     <div class="panel-body" id="contentFormBody">
 
         <?php echo CHtml::form('', 'POST'); ?>
