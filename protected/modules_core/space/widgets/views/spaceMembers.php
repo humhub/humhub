@@ -54,9 +54,9 @@
 
     <div class="panel-heading"><?php echo Yii::t('SpaceModule.widgets_views_spaceMembers', '<strong>Space</strong> members'); ?></div>
     <div class="panel-body">
-        <?php if (count($space->membershipsLimited) != 0) : ?>
+        <?php if (count($space->memberships) != 0) : ?>
             <?php $ix = 0; ?>
-            <?php foreach ($space->membershipsLimited as $membership) : ?>
+            <?php foreach ($space->memberships as $membership) : ?>
                 <?php $user = User::model()->findByPk($membership->user_id); ?>
                 <?php if ($user == null || $user->status != User::STATUS_ENABLED) continue; ?>
                 <?php if ($ix > 23) break; ?>

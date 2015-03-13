@@ -1,5 +1,5 @@
 <?php
-$followers = $user->getFollowers(array('limit' => 16));
+$followers = $user->getFollowers();
 ?>
 <?php if (count($followers) > 0) { ?>
     <div class="panel panel-default follower" id="profile-follower-panel">
@@ -24,7 +24,7 @@ $followers = $user->getFollowers(array('limit' => 16));
 <?php } ?>
 
 <?php
-$following = $user->getFollowingObjects('User', array('limit' => 16));
+$following = $user->getFollowingObjects('User');
 ?>
 <?php if (count($following) > 0) { ?>
     <div class="panel panel-default follower" id="profile-following-panel">

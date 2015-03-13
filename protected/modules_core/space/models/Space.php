@@ -157,11 +157,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
                 'order' => 'admin_role DESC, share_role DESC'
             ),
             // Approved Membership Only
-            'membershipsLimited' => array(self::HAS_MANY, 'SpaceMembership', 'space_id',
-                'condition' => 'status=' . SpaceMembership::STATUS_MEMBER,
-                'order' => 'admin_role DESC, share_role DESC',
-                'limit' => 50,
-            ),
+            // 'membershipsLimited' => array(self::HAS_MANY, 'SpaceMembership', 'space_id',
+            //     'condition' => 'status=' . SpaceMembership::STATUS_MEMBER,
+            //     'order' => 'admin_role DESC, share_role DESC',
+            //     'limit' => 50,
+            // ),
             'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
             'createdBy' => array(self::BELONGS_TO, 'User', 'created_by'),
             'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
