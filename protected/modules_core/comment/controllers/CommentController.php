@@ -171,6 +171,8 @@ class CommentController extends Controller
             }
 
             $comment->save();
+            $target->updated_at = new CDbExpression('NOW()');
+	    $target->save();
             File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
         }
 
