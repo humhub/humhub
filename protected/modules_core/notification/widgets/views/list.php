@@ -63,7 +63,7 @@
         var _notificationUrl = '<?php echo $this->createUrl('//notification/list/index', array('from' => 'lastEntryId', 'ajax' => 1)); ?>';
 
         // Open the notification menu
-        $('#icon-notifications').click(function () {
+        $('#icon-notifications').parent().on('shown.bs.dropdown', function () {
 
             // reset variables by dropdown reopening
             notificationLastLoadedEntryId = 0;
@@ -76,11 +76,11 @@
             if (notificationLastEntryReached == false) {
 
                 // load notifications
-                loadNotificationEntries();
+                loadNotificationEntries(function() { markNotificationsAsSeen() });
 
+            } else {
+	        markNotificationsAsSeen();
             }
-
-
         })
 
 
@@ -113,7 +113,7 @@
         var notification_placeholder = "<?php echo Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.') ?>"
 
 
-        function loadNotificationEntries() {
+        function loadNotificationEntries(callback) {
 
             // replace placeholder name with the id from the last loaded entry
             var _modifiedNotificationUrl = _notificationUrl.replace('lastEntryId', notificationLastLoadedEntryId)
@@ -145,6 +145,7 @@
                     // format time
                     $('span.time').timeago();
                 }
+		typeof callback === 'function' && callback();
             });
         }
 
