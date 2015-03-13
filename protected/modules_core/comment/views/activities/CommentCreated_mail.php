@@ -1,7 +1,7 @@
 <?php $this->beginContent('application.modules_core.activity.views.activityLayoutMail', array('activity' => $activity, 'showSpace' => true)); ?>
 
 <?php echo Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrote a new comment ", array(
-    '%displayName%' => '<strong>'. CHtml::encode($user->displayName) .'</strong>'
+    '%displayName%' => '<a href="' . $user->getUrl() . '">'. CHtml::encode($user->displayName) .'</a>'
 ));
 ?>
 
