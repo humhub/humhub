@@ -112,6 +112,11 @@ textarea {
   position: relative;
   z-index: 2;
 }
+
+.topbar-brand img {
+  margin-top: -8px;
+}
+
 #topbar-first .topbar-actions {
   position: relative;
   z-index: 3;
