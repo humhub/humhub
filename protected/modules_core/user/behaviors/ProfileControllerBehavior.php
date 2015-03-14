@@ -57,8 +57,12 @@ class ProfileControllerBehavior extends CBehavior
 
     public function checkAccess()
     {
-        if ($this->user->status == User::STATUS_NEED_APPROVAL)
-            throw new CHttpException(404, 'This user account is not approved yet!');
+        if ($this->user->status == User::STATUS_NEED_APPROVAL) {
+            throw new CHttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This user account is not approved yet!'));
+        }
+        if ($this->user->visibility != User::VISIBILITY_ALL && Yii::app()->user->isGuest) {
+            throw new CHttpException(402, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'You need to login to view this user profile!'));
+        }
     }
 
     /**

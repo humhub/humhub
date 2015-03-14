@@ -26,13 +26,21 @@
 class ProfileHeaderWidget extends HWidget
 {
 
-    protected $user;
+    public $user;
     protected $isProfileOwner = false;
 
 
     public function init()
     {
-        $this->user = $this->getController()->getUser();
+    
+        /**
+         * Try to autodetect current user by controller
+         */
+        if ($this->user === null) {
+            $this->user = $this->getController()->getUser();
+        }
+        
+        
         $this->isProfileOwner = (Yii::app()->user->id == $this->user->id);
 
         // Only include uploading javascripts on own user profiles
