@@ -80,16 +80,7 @@ class SpaceController extends Controller
     public function actionIndex()
     {
         $this->pageTitle = $this->getSpace()->name;
-
-        if ($this->getSpace()->isMember()) {
-
-            $this->render('index', array());
-        } else {
-
-            $this->subLayout = "_layoutPublic";
-
-            $this->render('indexPublic', array('space' => $this->getSpace()));
-        }
+        $this->render('index', array());
     }
 
     /**
