@@ -28,10 +28,8 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class SpaceController extends Controller
+class SpaceController extends ContentContainerController
 {
-
-    public $subLayout = "_layout";
 
     /**
      * @return array action filters
@@ -56,20 +54,6 @@ class SpaceController extends Controller
             ),
             array('deny', // deny all users
                 'users' => array('*'),
-            ),
-        );
-    }
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
-    {
-        return array(
-            'SpaceControllerBehavior' => array(
-                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
             ),
         );
     }

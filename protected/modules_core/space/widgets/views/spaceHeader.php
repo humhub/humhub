@@ -185,7 +185,7 @@
                 </div>
 
                 <div class="pull-left entry">
-                    <span class="count">?</span><br>
+                    <span class="count"><?php echo $space->getFollowerCount(); ?></span><br>
                     <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
                 </div>
 

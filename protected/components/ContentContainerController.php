@@ -52,6 +52,13 @@ class ContentContainerController extends Controller
     public $autoCheckContainerAccess = true;
 
     /**
+     * Hides containers sidebar in containers layout
+     * 
+     * @since 0.11
+     */
+    public $hideSidebar = false;
+
+    /**
      * @return array action filters
      */
     public function filters()
@@ -104,7 +111,7 @@ class ContentContainerController extends Controller
             ));
 
             Yii::app()->params['currentSpace'] = $this->contentContainer;
-            
+
             $this->subLayout = "application.modules_core.space.views.space._layout";
         } elseif ($userGuid != "") {
 
