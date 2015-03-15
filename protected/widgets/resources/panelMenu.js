@@ -33,10 +33,12 @@ function checkPanelMenuCookie($id) {
     if ($.cookie('pm_' + $id) == undefined) {
 
         // if not, create new cookie with current panel state
-        $.cookie('pm_' + $id, 'expanded', 5*365);
-    } else if ($.cookie('pm_' + $id) == 'collapsed') {
+        $.cookie('pm_' + $id, 'collapsed', 5*365);
+    } 
 
-       // collapse panel, if cookie is 'collapsed'
+    if ($.cookie('pm_' + $id) == undefined || $.cookie('pm_' + $id) == 'collapsed') {
+
+       // collapse panel, if cookie is 'collapsed' or undefined.
        $('#' + $id + ' .panel-body').css({
             overflow: 'hidden',
             display: 'none'
