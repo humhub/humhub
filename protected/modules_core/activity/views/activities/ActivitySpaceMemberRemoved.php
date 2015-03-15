@@ -3,14 +3,14 @@
 <?php if ($workspace != null && Wall::$currentType != Wall::TYPE_SPACE): ?>
 
     <?php echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberRemoved', "%displayName% left the space %spaceName%", array(
-        '%displayName%' => '<strong>' . CHtml::encode($user->displayName) . '</strong>',
-        '%spaceName%' => '<strong>' . CHtml::encode(Helpers::truncateText($workspace->name, 40)) . '</strong>'
+        '%displayName%' => '<a href="' . $user->getUrl() . '">' . CHtml::encode($user->displayName) . '</a>',
+        '%spaceName%' => '<a href="' . $workspace->getUrl() . '">' . CHtml::encode(Helpers::truncateText($workspace->name, 40)) . '</a>'
     )); ?>
 
 <?php else: ?>
 
     <?php echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberRemoved', "%displayName% left this space.", array(
-        '%displayName%' => '<strong>' . CHtml::encode($user->displayName) . '</strong>'
+        '%displayName%' => '<a href="' . $user->getUrl() . '">' . CHtml::encode($user->displayName) . '</a>'
     )); ?>
 
 <?php endif; ?>
