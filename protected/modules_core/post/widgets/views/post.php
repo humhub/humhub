@@ -24,6 +24,7 @@
     </div>
 </div>
 
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
 <script type="text/javascript">
 
     <?php if ($justEdited): ?>
