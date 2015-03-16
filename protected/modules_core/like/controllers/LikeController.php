@@ -8,26 +8,8 @@
  * @package humhub.modules_core.like.controllers
  * @since 0.5
  */
-class LikeController extends Controller
+class LikeController extends ContentAddonController
 {
-
-    /**
-     * The Object to be liked
-     * Must be a subclass of HActiveRecordContent or HActiveRecordContentAddon
-     *
-     * @var Object
-     */
-    protected $targetObject = null;
-
-    /**
-     * @var string Model of Record to be liked (e.g. Post)
-     */
-    protected $model;
-
-    /**
-     * @var integer Primary Key Model of Record (e.g. Post) to be liked (e.g. 1)
-     */
-    protected $id;
 
     /**
      * @return array action filters
@@ -57,57 +39,21 @@ class LikeController extends Controller
     }
 
     /**
-     * Loads the target object, checks rights & co
-     */
-    protected function loadTarget()
-    {
-        $this->model = Yii::app()->request->getQuery('className', '');
-        $this->id = (int) Yii::app()->request->getQuery('id', '');
-
-        $this->model = Yii::app()->input->stripClean(trim($this->model));
-
-        // Check if like class exists
-        if (!class_exists($this->model)) {
-            throw new CHttpException(500, Yii::t('LikeModule.controllers_LikeController', 'Could not find target class!'));
-        }
-
-        $model = $this->model;
-        $this->targetObject = $model::model()->findByPk($this->id);
-
-        // Error Target not found
-        if ($this->targetObject == null) {
-            throw new CHttpException(500, Yii::t('LikeModule.controllers_LikeController', 'Could not find target record!'));
-        }
-
-        // Error Target not found
-        if (is_subclass_of($this->targetObject, 'HActiveRecordContent')) {
-            if (!$this->targetObject->content->canRead())
-                throw new CHttpException(401, Yii::t('LikeModule.controllers_LikeController', 'Access denied!'));
-        } elseif (is_subclass_of($this->targetObject, 'HActiveRecordContentAddon')) {
-            if (!$this->targetObject->content->canRead())
-                throw new CHttpException(401, Yii::t('LikeModule.controllers_LikeController', 'Access denied!'));
-        } else {
-            throw new CHttpException(500, Yii::t('LikeModule.controllers_LikeController', 'Invalid class given!'));
-        }
-    }
-
-    /**
      * Creates a new like
      */
     public function actionLike()
     {
 
         $this->forcePostRequest();
-        $this->loadTarget();
 
-        $attributes = array('object_model' => $this->model, 'object_id' => $this->id, 'created_by' => Yii::app()->user->id);
+        $attributes = array('object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::app()->user->id);
         $like = Like::model()->findByAttributes($attributes);
         if ($like == null && !Yii::app()->user->isGuest) {
 
             // Create Like Object
             $like = new Like();
-            $like->object_model = $this->model;
-            $like->object_id = $this->id;
+            $like->object_model = $this->contentModel;
+            $like->object_id = $this->contentId;
             $like->save();
         }
 
@@ -121,10 +67,9 @@ class LikeController extends Controller
     {
 
         $this->forcePostRequest();
-        $this->loadTarget();
 
         if (!Yii::app()->user->isGuest) {
-            $attributes = array('object_model' => $this->model, 'object_id' => $this->id, 'created_by' => Yii::app()->user->id);
+            $attributes = array('object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::app()->user->id);
             $like = Like::model()->findByAttributes($attributes);
             $like->delete();
         }
@@ -138,11 +83,9 @@ class LikeController extends Controller
     public function actionShowLikes()
     {
 
-        $this->loadTarget();
-
         // Some Meta Infos
         $currentUserLiked = false;
-        $likes = Like::GetLikes($this->model, $this->id);
+        $likes = Like::GetLikes($this->contentModel, $this->contentId);
         foreach ($likes as $like) {
             if ($like->getUser()->id == Yii::app()->user->id) {
                 $currentUserLiked = true;
@@ -162,11 +105,8 @@ class LikeController extends Controller
      */
     public function actionUserList()
     {
-
-        $this->loadTarget();
-
         $page = (int) Yii::app()->request->getParam('page', 1);
-        $total = Like::model()->count('object_model=:omodel AND object_id=:oid', array(':omodel' => $this->model, 'oid' => $this->id));
+        $total = Like::model()->count('object_model=:omodel AND object_id=:oid', array(':omodel' => $this->contentModel, 'oid' => $this->contentId));
 
         $usersPerPage = HSetting::Get('paginationSize');
 
@@ -175,7 +115,7 @@ class LikeController extends Controller
                 "WHERE l.object_model=:omodel AND l.object_id=:oid AND u.status=" . User::STATUS_ENABLED . " " .
                 "ORDER BY l.created_at DESC " .
                 "LIMIT " . intval(($page - 1) * $usersPerPage) . "," . intval($usersPerPage);
-        $params = array(':omodel' => $this->model, ':oid' => $this->id);
+        $params = array(':omodel' => $this->contentModel, ':oid' => $this->contentId);
 
         $pagination = new CPagination($total);
         $pagination->setPageSize($usersPerPage);

@@ -26,7 +26,7 @@ $canDelete = $comment->canDelete();
                     <?php if ($canWrite): ?>
                         <li>
                             <?php
-                            echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> '. Yii::t('CommentModule.widgets_views_showComment', 'Edit'), Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
+                            echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> '. Yii::t('CommentModule.widgets_views_showComment', 'Edit'), Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('contentModel'=> $comment->object_model, 'contentId'=>$comment->object_id, 'id' => $comment->id)), array(
                                 'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_editarea_" . $comment->id . "').replaceWith(html); $('#comment_input_" . $comment->id . "_contenteditable').focus(); }"
                             ));
                             ?>
@@ -46,7 +46,7 @@ $canDelete = $comment->canDelete();
                                 'buttonTrue' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
                                 'buttonFalse' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel'),
                                 'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                                'linkHref' => $this->createUrl("//comment/comment/delete", array('model' => $comment->object_model, 'id' => $comment->object_id, 'cid' => $comment->id)),
+                                'linkHref' => $this->createUrl("//comment/comment/delete", array('contentModel' => $comment->object_model, 'contentId' => $comment->object_id, 'id' => $comment->id)),
                                 'confirmJS' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }"
                             ));
                             ?>

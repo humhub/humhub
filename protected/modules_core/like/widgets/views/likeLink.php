@@ -74,7 +74,7 @@ list($className, $modelId) = explode("_", $id);
 <?php if (count($likes) > 0) { ?>
 
     <!-- Create link to show all users, who liked this -->
-    <a href="<?php echo $this->createUrl('//like/like/userlist', array('className' => $className, 'id' => $modelId)); ?>"
+    <a href="<?php echo $this->createUrl('//like/like/userlist', array('contentModel' => $className, 'contentId' => $modelId)); ?>"
        class="tt" data-toggle="modal"
        data-placement="top" title="" data-target="#globalModal"
        data-original-title="<?php echo $userlist; ?>"><span

@@ -5,6 +5,8 @@
         'enableAjaxValidation' => false,
     ));
     ?>
+    <?php echo CHtml::hiddenField('contentModel', $contentModel); ?>
+    <?php echo CHtml::hiddenField('contentId', $contentId); ?>
     <?php echo $form->textArea($comment, 'message', array('class' => 'form-control', 'id' => 'comment_input_' . $comment->id, 'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'))); ?>
 
     <!-- create contenteditable div for HEditorWidget to place the data -->
