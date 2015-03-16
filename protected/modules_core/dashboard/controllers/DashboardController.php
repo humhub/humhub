@@ -150,7 +150,7 @@ class DashboardController extends Controller {
         // New notification count
         $sql = "SELECT count(id)
 		FROM notification
-		WHERE  user_id = :user_id AND seen != 1";
+		WHERE  user_id = :user_id AND seen != 1 AND source_object_model != 'Like'";
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $userId = Yii::app()->user->id;
