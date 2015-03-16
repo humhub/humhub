@@ -192,16 +192,17 @@
             </div>
             <!-- end: User statistics -->
 
-
             <div class="controls controls-account pull-right">
-                <?php if ($space->canInvite()) { ?>
-
-                    <!-- user invite button -->
-                    <?php
-                    echo CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', 'Invite'), $this->createUrl('//space/space/invite', array('sguid' => $space->guid)), array('class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
-                    ?>
-
-                <?php } ?>
+                <?php
+                $this->widget('application.modules_core.space.widgets.SpaceHeaderControlsWidget', array(
+                    'space' => $space,
+                    'widgets' => array(
+                        array('application.modules_core.space.widgets.SpaceInviteButtonWidget', array('space' => $space), array()),
+                        array('application.modules_core.space.widgets.SpaceMembershipButtonWidget', array('space' => $space), array()),
+                        array('application.modules_core.space.widgets.SpaceFollowButtonWidget', array('space' => $space), array()),
+                    )
+                ));
+                ?>
             </div>
 
         </div>
