@@ -19,25 +19,25 @@
  */
 
 /**
- * SpaceFollowButtonWidget 
+ * ProfileEditButtonWidget 
  *
  * @author luke
- * @package humhub.modules_core.space.widgets
+ * @package humhub.modules_core.user.widgets
  * @since 0.11
  */
-class SpaceFollowButtonWidget extends HWidget
+class ProfileEditButtonWidget extends HWidget
 {
 
-    public $space;
+    public $user;
 
     public function run()
     {
-        if (Yii::app()->user->isGuest || $this->space->isMember()) {
+        if (Yii::app()->user->isGuest || !$this->user->isCurrentUser()) {
             return;
         }
 
-        $this->render('followButton', array(
-            'space' => $this->space,
+        $this->render('profileEditButton', array(
+            'user' => $this->user,
         ));
     }
 
