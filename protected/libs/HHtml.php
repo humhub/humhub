@@ -196,8 +196,8 @@ class HHtml extends CHtml
         $maxOembedCount = 3; // Maximum OEmbeds
         $oembedCount = 0; // OEmbeds used
 
-        $text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
-
+        $urls = array();
+        $text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount, &$urls) {
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
                 $oembed = UrlOembed::GetOembed($match[0]);
@@ -206,7 +206,7 @@ class HHtml extends CHtml
                     return $oembed;
                 }
             }
-
+            $urls[] = [$match[1], $match[2]];
             return HHtml::link($match[1], $match[1], array('target' => '_blank')) . $match[2];
         }, $text);
 
@@ -215,6 +215,13 @@ class HHtml extends CHtml
 
         // create image tag for emojis
         $text = self::translateEmojis($text);
+
+        if (count($urls)) {
+            $text .= '<hr>';
+            foreach ($urls as $url) {
+                $text .= HHtml::link($url[0], $url[0], array('target' => '_blank', 'class' => 'embedly-card')) . $url[1];
+            }
+        }
 
         return nl2br($text);
     }
