@@ -190,6 +190,19 @@
 
 
             <div class="controls controls-account pull-right">
+                <!-- start: User followsme -->
+                <?php
+                if (!$user->isCurrentUser()) {
+                    $me = Yii::app()->user->model;
+                    if ($me->isFollowedByUser($user->id)) {
+                        echo "following you";
+                    } else {
+                        echo "not following you";
+                    }
+                }
+                ?>
+                <!-- end: User followme -->
+
                 <!-- start: User following -->
                 <?php
                 if (!$user->isCurrentUser()) {
