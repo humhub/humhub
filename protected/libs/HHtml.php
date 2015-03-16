@@ -207,7 +207,7 @@ class HHtml extends CHtml
                 }
             }
             $urls[] = [$match[1], $match[2]];
-            return HHtml::link($match[1], $match[1], array('target' => '_blank')) . $match[2];
+            return  HHtml::link($match[1], $match[1], array('target' => '_blank')) . $match[2];
         }, $text);
 
         // get user and space details from guids
@@ -219,7 +219,9 @@ class HHtml extends CHtml
         if (count($urls)) {
             $text .= '<hr>';
             foreach ($urls as $url) {
-                $text .= HHtml::link($url[0], $url[0], array('target' => '_blank', 'class' => 'embedly-card')) . $url[1];
+                $text .= '<span class="fetfrip-toggle" data-id="dropdown-toggle"><i class="fa fa-times pull-right"></i>' . 
+                            HHtml::link($url[0], $url[0], array('target' => '_blank', 'class' => 'embedly-card')) . $url[1]
+                        . '</span>' ;
             }
         }
 
