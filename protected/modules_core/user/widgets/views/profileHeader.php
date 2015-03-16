@@ -190,6 +190,18 @@
 
 
             <div class="controls controls-account pull-right">
+                <!-- start: User followsme -->
+                <?php
+                if (!$user->isCurrentUser()) {
+                    $me = Yii::app()->user->model;
+                    if ($me->isFollowedByUser($user->id)) { ?>
+                        <span class="label label-success"><?php echo Yii::t('WallModule.widgets_views_label', 'Following you'); ?></span>
+                    <?php
+                    } 
+                }
+                ?>
+                <!-- end: User followme -->
+
                 <!-- start: User following -->
                 <?php
                 if (!$user->isCurrentUser()) {
