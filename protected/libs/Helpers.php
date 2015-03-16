@@ -58,20 +58,24 @@ class Helpers
 
         return($text);
     }
-    
-    /* *
-	 * Compare two arrays values
-	 * @param array $a - First array to compare against..
-	 * @param array $b - Second array
-	 *
-	 * convert Objects: Helpers::arrayCompVal((array)$obj1, (array)$obj2)
-	 * 
-	 * */
-	public static function arrayCompVal($a, $b) {
-		if (!is_array($a) || !is_array($b)) return false;
-		sort($a); sort($b);
-		return $a == $b;	
-	} 
+
+    /*     *
+     * Compare two arrays values
+     * @param array $a - First array to compare against..
+     * @param array $b - Second array
+     *
+     * convert Objects: Helpers::arrayCompVal((array)$obj1, (array)$obj2)
+     * 
+     * */
+
+    public static function arrayCompVal($a, $b)
+    {
+        if (!is_array($a) || !is_array($b))
+            return false;
+        sort($a);
+        sort($b);
+        return $a == $b;
+    }
 
     /**
      * Temp Function to use UTF8 SubStr
@@ -165,11 +169,19 @@ class Helpers
     {
         $className = preg_replace("/[^a-z0-9]/i", "", $className);
 
-        if (class_exists($className) && is_subclass_of($className, $type)) {
-            return true;
+        if (is_array($type)) {
+            foreach ($type as $t) {
+                if (class_exists($className) && is_subclass_of($className, $t)) {
+                    return true;
+                }
+            }
+        } else {
+            if (class_exists($className) && is_subclass_of($className, $type)) {
+                return true;
+            }
         }
-        
-        throw new CException("Invalid class type!");
+
+        throw new CException("Invalid class type! |" . $className . "|");
     }
 
 }
