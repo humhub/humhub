@@ -35,7 +35,7 @@
             'type' => 'POST',
             'success' => "function(html) {
             
-            $('#comments_area_" . $id . "').html(html);
+            $('#comments_area_" . $id . "').append(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
             $('#newCommentForm_" . $id . "_contenteditable').html('" . Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') . "');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');

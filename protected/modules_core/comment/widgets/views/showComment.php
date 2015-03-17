@@ -47,7 +47,7 @@ $canDelete = $comment->canDelete();
                                 'buttonFalse' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel'),
                                 'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
                                 'linkHref' => $this->createUrl("//comment/comment/delete", array('contentModel' => $comment->object_model, 'contentId' => $comment->object_id, 'id' => $comment->id)),
-                                'confirmJS' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }"
+                                'confirmJS' => "function(html) { $('#comment_".$comment->id."').slideUp(); }"
                             ));
                             ?>
                         </li>

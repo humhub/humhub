@@ -31,7 +31,7 @@
     ?>    
 
     <?php
-    echo HHtml::ajaxButton('Save', array('//comment/comment/edit', 'id' => $comment->id), array(
+    echo HHtml::ajaxButton('Save', array('//comment/comment/edit', 'id' => $comment->id, 'contentModel' => $comment->object_model, 'contentId' => $comment->object_id), array(
         'type' => 'POST',
         'success' => 'function(html){  $("#comment_' . $comment->id . '").replaceWith(html); }',
             ), array('class' => 'btn btn-primary', 'id' => 'comment_edit_post_' . $comment->id, 'style' => 'position: absolute; left: -90000000px; opacity: 0;'));

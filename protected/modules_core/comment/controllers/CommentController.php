@@ -48,20 +48,19 @@ class CommentController extends ContentAddonController
         $criteria->params = array(':model' => get_class($this->parentContent), ':id' => $this->parentContent->getPrimaryKey());
 
         $pagination = new CPagination(Comment::GetCommentCount(get_class($this->parentContent), $this->parentContent->getPrimaryKey()));
-        $pagination->setPageSize(HSetting::Get('paginationSize'));
+        $pagination->setPageSize($this->module->commentsBlockLoadSize);
         $pagination->applyLimit($criteria);
 
         $comments = array_reverse(Comment::model()->findAll($criteria));
 
-        $output = $this->widget('application.modules_core.comment.widgets.CommentsPaginationWidget', array('pagination' => $pagination, 'object' => $this->parentContent), true);
+        $output = $this->widget('application.modules_core.comment.widgets.CommentsShowMoreWidget', array('pagination' => $pagination, 'object' => $this->parentContent), true);
         foreach ($comments as $comment) {
             $output .= $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);
         }
-        $output .= $this->widget('application.modules_core.comment.widgets.CommentsPaginationWidget', array('pagination' => $pagination, 'object' => $this->parentContent), true);
 
         if (Yii::app()->request->getParam('mode') == 'popup') {
             $id = get_class($this->parentContent) . "_" . $this->parentContent->getPrimaryKey();
-            $this->renderPartial('showPopup', array('object' => $target, 'output' => $output, 'id' => $id), false, true);
+            $this->renderPartial('showPopup', array('object' => $this->parentContent, 'output' => $output, 'id' => $id), false, true);
         } else {
             Yii::app()->clientScript->render($output);
             echo $output;
@@ -88,9 +87,14 @@ class CommentController extends ContentAddonController
             $comment->save();
 
             File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
-        }
 
-        return $this->actionShow();
+            $output = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array(
+                'comment' => $comment,
+                'justEdited' => true
+                    ), true);
+            Yii::app()->clientScript->render($output);
+            echo $output;
+        }
     }
 
     public function actionEdit()
@@ -114,8 +118,8 @@ class CommentController extends ContentAddonController
                         'comment' => $this->contentAddon,
                         'justEdited' => true
                             ), true);
-
-                    echo Yii::app()->clientScript->render($output);
+                    Yii::app()->clientScript->render($output);
+                    echo $output;
                     return;
                 }
             }
@@ -145,8 +149,6 @@ class CommentController extends ContentAddonController
         } else {
             throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Insufficent permissions!'));
         }
-
-        return $this->actionShow();
     }
 
 }

@@ -9,6 +9,16 @@
 class CommentModule extends HWebModule
 {
 
+    /**
+     * Maximum comments to load at once
+     * 
+     * @var int
+     */
+    public $commentsBlockLoadSize = 25;
+
+    /**
+     * @var boolean
+     */
     public $isCoreModule = true;
 
     /**
