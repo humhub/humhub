@@ -72,15 +72,5 @@
                 <?php } ?>
             <?php endforeach; ?>
         <?php endif; ?>
-
-        <?php if ($space->canInvite()) { ?>
-
-            <!-- user invite button -->
-            <?php
-            echo CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', 'Invite'), $this->createUrl('//space/space/invite', array('sguid' => $space->guid)), array('class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
-            ?>
-
-        <?php } ?>
-
     </div>
 </div>
