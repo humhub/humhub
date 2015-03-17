@@ -34,7 +34,7 @@
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_oembed_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php if ($prefix != ""): ?>
-            <?php echo HHtml::link(Yii::t('AdminModule.views_setting_oembed_edit', 'Delete'), $this->createUrl('oembedDelete', array('prefix' => $prefix)), array('class' => 'btn btn-danger pull-right')); ?>
+            <?php echo HHtml::postLink(Yii::t('AdminModule.views_setting_oembed_edit', 'Delete'), $this->createUrl('oembedDelete'), array('class' => 'btn btn-danger pull-right'), array('prefix' => $prefix)); ?>
         <?php endif; ?>
         <?php $this->endWidget(); ?>
 

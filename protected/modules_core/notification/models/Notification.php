@@ -82,9 +82,14 @@ class Notification extends HActiveRecord {
     protected function instantiate($attributes) {
 
         $className = $attributes['class'];
-        // Instanciate correct Asset Model
-        $model = new $className(null);
-        return $model;
+
+        if (Helpers::CheckClassType($className, 'Notification')) {
+            // Instanciate correct Asset Model
+            $model = new $className(null);
+            return $model;
+        } 
+        
+        return null;
     }
 
     /**

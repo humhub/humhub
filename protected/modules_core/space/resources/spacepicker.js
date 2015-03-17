@@ -165,8 +165,11 @@ $.fn.spacepicker = function(options) {
 
             } else if (event.keyCode == 13 || event.keyCode == 9) {
 
-                // simulate click event
-                window.location.href = $('#spacepicker .selected a').attr('href');
+                var href = $('#spacepicker .selected a').attr('href');
+                // simulate click event when href is not undefined.
+                if (href !== undefined) {
+                    window.location.href = href;
+                }
 
             } else {
 
@@ -214,9 +217,8 @@ $.fn.spacepicker = function(options) {
 
 
                 for (var i = 0; i < json.length; i++) {
-
                     // build <li> entry
-                    var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].title + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].title + '</a></li>';
+                    var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + addslashes(htmlDecode(json[i].title)) + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].title + '</a></li>';
 
                     // append the entry to the <ul> list
                     $('#spacepicker').append(str);
@@ -264,7 +266,6 @@ $.fn.spacepicker = function(options) {
 
 // Add a space tag for invitation
 function addSpaceTag(guid, image_url, name) {
-
 
     // Building a new <li> entry
     var _tagcode = '<li class="spaceInput" id="' + guid + '"><img class="img-rounded" src="' + image_url + '" alt="' + name + '" width="24" height="24" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" />' + name + '<i class="fa fa-times-circle"></i></li>';
@@ -329,3 +330,11 @@ function parseSpaceInput() {
 
 }
 
+function addslashes(str) {
+
+	return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+}
+
+function htmlDecode(value) {
+    return $("<textarea/>").html(value).text();
+}

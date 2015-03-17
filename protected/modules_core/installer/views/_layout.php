@@ -30,7 +30,7 @@
                 <img src="<?php echo $this->module->assetsUrl; ?>/humhub-logo-white.png" alt="Logo">
             </a>
         <?php else : ?>
-            <h1 class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+            <h1 class="animated fadeIn"><?php echo CHtml::encode(Yii::app()->name); ?></h1>
         <?php endif; ?>
     </div>
     <?php echo $content; ?>

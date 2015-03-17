@@ -11,11 +11,11 @@
                 <!-- Show space image, if you are outside from a space -->
                 <div class="media-body">
                     <!-- Show content -->
-                    <strong><?php echo $space->name; ?></strong>
+                    <strong><?php echo CHtml::encode($space->name); ?></strong>
 
                     <div id="space-badge-<?php echo $count; ?>" class="badge badge-space pull-right" style="display:none;">0</div>
                     <br>
-                    <p><?php echo Helpers::truncateText($space->description, 60); ?></p>
+                    <p><?php echo CHtml::encode(Helpers::truncateText($space->description, 60)); ?></p>
                 </div>
             </div>
         </a>

@@ -43,8 +43,9 @@ body {
   color: #777777;
   font-family: 'Open Sans', sans-serif;
 
-  a, a:hover {
+  a, a:hover, a:focus, a:active, a.active {
     color: @colorFont3;
+    text-decoration: none;
   }
 }
 
@@ -137,10 +138,6 @@ h4 {
     }
   }
 
-  .nav > .dropdown a:hover, .nav > .open > a {
-    //background-color: @colorPrimary3;
-  }
-
   .dropdown.account > a, .dropdown.account.open > a, .dropdown.account > a:hover, .dropdown.account.open > a:hover {
     background-color: @colorPrimary3;
   }
@@ -166,10 +163,12 @@ h4 {
     min-height: 49px;
 
     &:hover,
+    &:active,
     &:focus {
       border-bottom: 3px solid @colorInfo2;
       background-color: @colorBackground1;
       color: @colorFont3;
+      text-decoration: none;
     }
 
     i {
@@ -893,12 +892,12 @@ select {
 }
 
 /* Firefox hack */
-@-moz-document url-prefix() {
+/*@-moz-document url-prefix() {
   select {
     background-image: none !important;
     padding: 5px 12px !important;
   }
-}
+}*/
 
 // Placeholder text
 ::-webkit-input-placeholder {
@@ -1654,6 +1653,15 @@ img.bounceIn {
     .install-header-title {
       padding: 3% 30px 0 30px;
     }
+  }
+
+}
+
+// Markdown overrides
+.markdown-render {
+
+  a, a:visited {
+    color: #4CD9C0 !important;
   }
 
 }

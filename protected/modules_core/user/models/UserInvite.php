@@ -146,16 +146,19 @@ class UserInvite extends HActiveRecord {
             $message->view = "application.modules_core.user.views.mails.UserInviteSelf";
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($this->email);
-            $message->subject = 'Registration Link';
+            $message->subject = Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link');
             $message->setBody(array('token' => $this->token), 'text/html');
             Yii::app()->mail->send($message);
         } elseif ($this->source == self::SOURCE_INVITE) {
 
+            // Switch to systems default language
+            Yii::app()->language = HSetting::Get('defaultLanguage');
+            
             $message = new HMailMessage();
             $message->view = "application.modules_core.user.views.mails.UserInviteSpace";
             $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
             $message->addTo($this->email);
-            $message->subject = 'Space Invite';
+            $message->subject = Yii::t('UserModule.views_mails_UserInviteSpace', 'Space Invite');
             $message->setBody(array(
                 'originator' => $this->userOriginator,
                 'originatorName' => $this->userOriginator->displayName,
@@ -163,6 +166,12 @@ class UserInvite extends HActiveRecord {
                 'workspaceName' => $this->workspaceInvite->name,
                     ), 'text/html');
             Yii::app()->mail->send($message);
+            
+            // Switch back to users language
+            if (Yii::app()->user->language !== "") {
+                Yii::app()->language = Yii::app()->user->language; 
+            }
+            
         }
     }
 

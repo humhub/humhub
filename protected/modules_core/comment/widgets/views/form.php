@@ -63,62 +63,66 @@
 
 <script>
 
-    // add attribute to manage the enter/submit event (prevent submit, if user press enter to insert an item from atwho plugin)
-    $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
+    $(document).ready(function () {
 
-    // Fire click event for comment button by typing enter
-    $('#newCommentForm_<?php echo $id; ?>_contenteditable').keydown(function (event) {
+        // add attribute to manage the enter/submit event (prevent submit, if user press enter to insert an item from atwho plugin)
+        $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
 
-
-        // by pressing enter without shift
-        if (event.keyCode == 13 && event.shiftKey == false) {
-
-            // prevent default behavior
-            event.cancelBubble = true;
-            event.returnValue = false;
-            event.preventDefault();
+        // Fire click event for comment button by typing enter
+        $('#newCommentForm_<?php echo $id; ?>_contenteditable').keydown(function (event) {
 
 
-            // check if a submit is allowed
-            if ($('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit') == 'true') {
+            // by pressing enter without shift
+            if (event.keyCode == 13 && event.shiftKey == false) {
 
-                // get plain input text from contenteditable DIV
-                $('#newCommentForm_<?php echo $id; ?>').val(getPlainInput($('#newCommentForm_<?php echo $id; ?>_contenteditable').clone()));
+                // prevent default behavior
+                event.cancelBubble = true;
+                event.returnValue = false;
+                event.preventDefault();
 
-                // set focus to submit button
-                $('#comment_create_post_<?php echo $id; ?>').focus();
 
-                // emulate the click event
-                $('#comment_create_post_<?php echo $id; ?>').click();
+                // check if a submit is allowed
+                if ($('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit') == 'true') {
 
+                    // get plain input text from contenteditable DIV
+                    $('#newCommentForm_<?php echo $id; ?>').val(getPlainInput($('#newCommentForm_<?php echo $id; ?>_contenteditable').clone()));
+
+                    // set focus to submit button
+                    $('#comment_create_post_<?php echo $id; ?>').focus();
+
+                    // emulate the click event
+                    $('#comment_create_post_<?php echo $id; ?>').click();
+
+                }
             }
-        }
 
-        return event.returnValue;
+            return event.returnValue;
 
-    });
+        });
 
-    // set the size for one row (Firefox)
-    $('#newCommentForm_<?php echo $id; ?>').css({height: '36px'});
+        // set the size for one row (Firefox)
+        $('#newCommentForm_<?php echo $id; ?>').css({height: '36px'});
 
-    // add autosize function to input
-    $('.autosize').autosize();
+        // add autosize function to input
+        $('.autosize').autosize();
 
 
-    $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("shown.atwho", function (event, flag, query) {
-        // prevent the submit event, by changing the attribute
-        $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'false');
-    });
+        $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("shown.atwho", function (event, flag, query) {
+            // prevent the submit event, by changing the attribute
+            $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'false');
+        });
 
-    $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("hidden.atwho", function (event, flag, query) {
+        $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("hidden.atwho", function (event, flag, query) {
 
-        var interval = setInterval(changeSubmitState, 10);
+            var interval = setInterval(changeSubmitState, 10);
 
-        // allow the submit event, by changing the attribute (with delay, to prevent the first enter event for insert an item from atwho plugin)
-        function changeSubmitState() {
-            $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
-            clearInterval(interval);
-        }
+            // allow the submit event, by changing the attribute (with delay, to prevent the first enter event for insert an item from atwho plugin)
+            function changeSubmitState() {
+                $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
+                clearInterval(interval);
+            }
+        });
+
     });
 
 </script>

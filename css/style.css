@@ -312,25 +312,18 @@ textarea {
   pointer-events: none;
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* FF3.6+ */
-
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.58)));
   /* Chrome,Safari4+ */
-
   background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* Chrome10+,Safari5.1+ */
-
   background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* Opera 11.10+ */
-
   background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* IE10+ */
-
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.58) 100%);
   /* W3C */
-
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#94000000', GradientType=0);
   /* IE6-9 */
-
 }
 .panel-profile .panel-profile-header .img-profile-data h1 {
   font-size: 30px;
@@ -364,6 +357,12 @@ textarea {
     padding-top: 30px;
     padding-bottom: 30px;
   }
+}
+.modal-open {
+  overflow: visible;
+}
+.modal {
+  overflow-y: visible;
 }
 .modal-dialog-extra-small {
   width: 400px;
@@ -506,9 +505,9 @@ ul.tour-list li.completed a {
 .oembed_snippet {
   margin-top: 10px;
 }
-.post-files,
-img {
-  padding: 1px;
+.post-files img {
+  vertical-align: top;
+  margin-bottom: 3px;
 }
 .comment_create,
 .content_edit {
@@ -713,6 +712,51 @@ img {
   height: 100%;
   padding: 20px 20px 20px 20px;
   background: #F8F8F8;
+}
+.markdown-render h1,
+.markdown-render h2,
+.markdown-render h3,
+.markdown-render h4,
+.markdown-render h5,
+.markdown-render h6 {
+  font-weight: bold !important;
+}
+.markdown-render h1 {
+  font-size: 28px !important;
+}
+.markdown-render h2 {
+  font-size: 24px !important;
+}
+.markdown-render h3 {
+  font-size: 18px !important;
+}
+.markdown-render h4 {
+  font-size: 16px !important;
+}
+.markdown-render h5 {
+  font-size: 14px !important;
+}
+.markdown-render h6 {
+  color: #999999;
+  font-size: 14px !important;
+}
+.markdown-render pre {
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+}
+.markdown-render pre code {
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 12px !important;
+}
+.markdown-render a,
+.markdown-render a:visited {
+  background-color: inherit;
+  text-decoration: none;
+}
+.markdown-render img {
+  max-width: 100%;
 }
 .highlight {
   background-color: #fffbc1;

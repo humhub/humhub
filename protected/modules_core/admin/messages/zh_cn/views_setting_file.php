@@ -18,6 +18,9 @@
  */
 return array (
   'Comma separated list. Leave empty to allow all.' => '',
+  'Comma separated list. Leave empty to show file list for all objects on wall.' => '',
+  'If not set, height will default to 200px.' => '',
+  'If not set, width will default to 200px.' => '',
   '<strong>File</strong> settings' => '<strong>文件</strong> 设置',
   'Current Image Libary: {currentImageLibary}' => '当前图片库：{currentImageLibary}',
   'PHP reported a maximum of {maxUploadSize} MB' => 'PHP最大上传大小 {maxUploadSize} MB',

@@ -34,10 +34,22 @@
     $(document).ready(function () {
 
         // save the count of characters
-        var _words = '<?php echo strlen(HHtml::enrichText($post->message)); ?>';
+        var _words = '<?php echo strlen(strip_tags(HHtml::enrichText($post->message))); ?>';
 
 
-        if (_words > 1100) {
+        var _postHeight = $('#post-content-<?php echo $post->id; ?>').outerHeight();
+
+
+        /*        if (_words > 1100) {
+         // show more-button
+         $('#more-link-post-
+        <?php echo $post->id; ?>').removeClass('hidden');
+         // set limited height
+         $('#post-content-
+        <?php echo $post->id; ?>').css({'display': 'block', 'max-height': '310px'});
+         }*/
+
+        if (_postHeight > 310) {
             // show more-button
             $('#more-link-post-<?php echo $post->id; ?>').removeClass('hidden');
             // set limited height
@@ -51,10 +63,8 @@
         var _state = $('#more-link-post-' + post_id).attr('data-state');
 
         if (_state == "down") {
-            // show full content
-            $('#post-content-' + post_id).animate({
-                'max-height': '2000px'
-            }, 800);
+
+            $('#post-content-' + post_id).css('max-height', '2000px');
 
             // set new link content
             $('#more-link-post-' + post_id).html('<i class="fa fa-arrow-up"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Collapse'); ?>');

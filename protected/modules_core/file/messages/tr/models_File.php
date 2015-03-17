@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum file size has been {maxFileSize} reached!' => 'Maksimum dosya büyüklüğüne {maxFileSize} ulaşıldı',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => 'Maksimum dosya büyüklüğüne {maxFileSize} ulaşıldı',
   'This file type is not allowed!' => 'Bu dosya türü için izin yok!',
   'Created By' => 'Oluşturan',
   'Created at' => 'Oluşturulma',

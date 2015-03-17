@@ -5,8 +5,12 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 body a,
-body a:hover {
+body a:hover,
+body a:focus,
+body a:active,
+body a.active {
   color: #555555;
+  text-decoration: none;
 }
 h4 {
   font-weight: 300;
@@ -92,10 +96,12 @@ h4 {
   min-height: 49px;
 }
 #topbar-second .nav > li > a:hover,
+#topbar-second .nav > li > a:active,
 #topbar-second .nav > li > a:focus {
   border-bottom: 3px solid #4cd9c0;
   background-color: #f7f7f7;
   color: #555555;
+  text-decoration: none;
 }
 #topbar-second .nav > li > a i {
   font-size: 14px;
@@ -672,12 +678,12 @@ select {
   width: 120%;
 }
 /* Firefox hack */
-@-moz-document url-prefix() {
+/*@-moz-document url-prefix() {
   select {
     background-image: none !important;
     padding: 5px 12px !important;
   }
-}
+}*/
 ::-webkit-input-placeholder {
   color: #bebebe !important;
 }
@@ -1237,4 +1243,8 @@ img.bounceIn {
 }
 .outside .install-header.install-header-small .install-header-title {
   padding: 3% 30px 0 30px;
+}
+.markdown-render a,
+.markdown-render a:visited {
+  color: #4CD9C0 !important;
 }

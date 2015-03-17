@@ -27,6 +27,7 @@ Table of Bootstrap modifications:
 body {
   padding-top: 130px;
   background-color: #f4f4f4;
+
 }
 
 a:hover {
@@ -453,6 +454,14 @@ textarea {
   }
 }
 
+.modal-open {
+  overflow: visible;
+}
+
+.modal {
+  overflow-y: visible;
+}
+
 .modal-dialog-extra-small {
   width: 400px;
 }
@@ -652,8 +661,11 @@ ul.tour-list {
   margin-top: 10px;
 }
 
-.post-files, img {
-	padding: 1px;
+.post-files {
+  img {
+    vertical-align: top;
+    margin-bottom: 3px;
+  }
 }
 
 .comment_create, .content_edit {
@@ -926,6 +938,59 @@ ul.tour-list {
 
   }
 
+}
+
+// Markdown
+.markdown-render {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold !important;
+  }
+
+  h1 {
+    font-size: 28px !important;
+  }
+
+  h2 {
+    font-size: 24px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  h4 {
+    font-size: 16px !important;
+  }
+
+  h5 {
+    font-size: 14px !important;
+  }
+
+  h6 {
+    color: #999999;
+    font-size: 14px !important;
+  }
+
+  pre {
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+
+    code {
+      padding: 10px;
+      border-radius: 3px;
+      font-size: 12px !important;
+    }
+  }
+
+  a, a:visited {
+    background-color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    max-width: 100%;
+  }
 }
 
 //

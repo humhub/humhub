@@ -54,12 +54,16 @@ class CommentController extends Controller
 
         // Request Params
         $targetModelClass = Yii::app()->request->getParam('model');
-        $targetModelId = (int)Yii::app()->request->getParam('id');
+        $targetModelId = (int) Yii::app()->request->getParam('id');
 
         $targetModelClass = Yii::app()->input->stripClean(trim($targetModelClass));
 
         if ($targetModelClass == "" || $targetModelId == "") {
             throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Model & Id Parameter required!'));
+        }
+
+        if (!Helpers::CheckClassType($targetModelClass, 'HActiveRecordContent')) {
+            throw new CHttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Invalid target class given'));
         }
 
         $model = call_user_func(array($targetModelClass, 'model'));
@@ -123,7 +127,6 @@ class CommentController extends Controller
 
         $id = get_class($target) . "_" . $target->id;
         $this->renderPartial('show', array('object' => $target, 'output' => $output, 'id' => $id), false, true);
-
     }
 
     /**
@@ -169,12 +172,10 @@ class CommentController extends Controller
 
             $comment->save();
             File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
-
         }
 
         return $this->actionShow();
     }
-
 
     public function actionEdit()
     {
@@ -188,7 +189,7 @@ class CommentController extends Controller
                 $model->attributes = $_POST['Comment'];
                 if ($model->validate()) {
                     $model->save();
-                    
+
                     // Reload comment to get populated updated_at field
                     $model = Comment::model()->findByPk($id);
 
@@ -201,12 +202,9 @@ class CommentController extends Controller
             }
 
             $this->renderPartial('edit', array('comment' => $model), false, true);
-
-
         } else {
             throw new CHttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
         }
-
     }
 
     /**
@@ -218,7 +216,7 @@ class CommentController extends Controller
 
         $this->forcePostRequest();
         $target = $this->loadTargetModel();
-        $commentId = (int)Yii::app()->request->getParam('cid', "");
+        $commentId = (int) Yii::app()->request->getParam('cid', "");
 
         $comment = Comment::model()->findByPk($commentId);
 

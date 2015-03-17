@@ -19,6 +19,5 @@
 return array (
   'Could not find requested content!' => 'İstenen içerik bulunamadı!',
   'Could not find requested permalink!' => 'İstenen permalink bulunamadı!',
-  'Invalid content class!' => 'Geçersiz içerik sınıfı!',
   'Unknown content class!' => 'Bilinmeyen içerik sınıfı!',
 );

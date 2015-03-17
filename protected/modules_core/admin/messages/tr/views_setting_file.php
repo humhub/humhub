@@ -17,8 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Comma separated list. Leave empty to allow all.' => 'Virgülle ayrılmış liste. Hepsine izin vermek için boş bırak',
+  'Comma separated list. Leave empty to show file list for all objects on wall.' => '',
+  'If not set, height will default to 200px.' => '',
+  'If not set, width will default to 200px.' => '',
   '<strong>File</strong> settings' => '<strong>Dosya</strong> Ayarları',
+  'Comma separated list. Leave empty to allow all.' => 'Virgülle ayrılmış liste. Hepsine izin vermek için boş bırak',
   'Current Image Libary: {currentImageLibary}' => 'Geçerli Resim Kütüphanesi: {currentImageLibary}',
   'PHP reported a maximum of {maxUploadSize} MB' => 'PHP maksimum sunulan {maxUploadSize} MB',
   'Save' => 'Kaydet',

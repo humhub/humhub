@@ -115,7 +115,7 @@
                                    <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $originator->guid)); ?>"
                                       style="text-decoration: none; color: #555555; font-weight: 300;">
                                        <!-- START: USER NAME -->
-                                       <?php echo $originator->displayName; ?>
+                                       <?php echo CHtml::encode($originator->displayName); ?>
                                        <!-- END: USER NAME -->
                                    </a>
                                  </span>
@@ -188,8 +188,8 @@
 
                                                         <!-- START: CONTENT -->
                                                         <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'invited you to the space:'); ?>
-                                                        <strong><?php echo $workspaceName; ?></strong>
-                                                        at <?php echo Yii::app()->name; ?>.<?php echo Yii::t('UserModule.views_mails_UserInviteSpace', '<br>A social network to increase your communication and teamwork.<br>Register now
+                                                        <strong><?php echo CHtml::encode($workspaceName); ?></strong>
+                                                        at <?php echo CHtml::encode(Yii::app()->name); ?>.<?php echo Yii::t('UserModule.views_mails_UserInviteSpace', '<br>A social network to increase your communication and teamwork.<br>Register now
                                                         to join this space.'); ?><br/>
                                                         &nbsp;
                                                         <!-- END: CONTENT -->
