@@ -41,12 +41,23 @@ class CommentController extends ContentAddonController
      */
     public function actionShow()
     {
-        $comments = Comment::model()->findAllByAttributes(array('object_model' => get_class($this->parentContent), 'object_id' => $this->parentContent->getPrimaryKey()));
 
-        $output = "";
+        $criteria = new CDbCriteria();
+        $criteria->order = "created_at DESC";
+        $criteria->condition = "object_model=:model AND object_id=:id";
+        $criteria->params = array(':model' => get_class($this->parentContent), ':id' => $this->parentContent->getPrimaryKey());
+
+        $pagination = new CPagination(Comment::GetCommentCount(get_class($this->parentContent), $this->parentContent->getPrimaryKey()));
+        $pagination->setPageSize(HSetting::Get('paginationSize'));
+        $pagination->applyLimit($criteria);
+
+        $comments = array_reverse(Comment::model()->findAll($criteria));
+
+        $output = $this->widget('application.modules_core.comment.widgets.CommentsPaginationWidget', array('pagination' => $pagination, 'object' => $this->parentContent), true);
         foreach ($comments as $comment) {
             $output .= $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);
         }
+        $output .= $this->widget('application.modules_core.comment.widgets.CommentsPaginationWidget', array('pagination' => $pagination, 'object' => $this->parentContent), true);
 
         if (Yii::app()->request->getParam('mode') == 'popup') {
             $id = get_class($this->parentContent) . "_" . $this->parentContent->getPrimaryKey();
