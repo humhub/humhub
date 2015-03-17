@@ -158,6 +158,7 @@ h4 {
 }
 .media .media-body {
   font-size: 13px;
+  margin-left: 40px;
 }
 .media .media-body h4.media-heading {
   font-size: 14px;
