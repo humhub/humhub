@@ -124,18 +124,22 @@ class Comment extends HActiveRecordContentAddon
      * @param type $limit
      * @return type
      */
-    public static function GetCommentsLimited($model, $id, $limit = 2)
+    public static function GetCommentsLimited($model, $id, $limit = 2, $startid=null)
     {
-        $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
+        $cacheID = sprintf("commentsLimited_%s_%s_%s_%s", $model, $id, $limit, $startid);
         $comments = Yii::app()->cache->get($cacheID);
 
         if ($comments === false) {
-            $commentCount = self::GetCommentCount($model, $id);
 
             $criteria = new CDbCriteria;
             $criteria->order = "updated_at ASC";
-            $criteria->offset = ($commentCount - 2);
-            $criteria->limit = "2";
+            $criteria->limit = $limit;
+            if ($startid) {
+                $criteria->condition = 'id > ' . (int)$startid;
+            } else {
+                $commentCount = self::GetCommentCount($model, $id);
+                $criteria->offset = ($commentCount - $limit);
+            }
 
             $comments = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
             Yii::app()->cache->set($cacheID, $comments, HSetting::Get('expireTime', 'cache'));
