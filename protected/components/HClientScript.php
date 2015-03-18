@@ -71,7 +71,7 @@ class HClientScript extends CClientScript
      */
     public function renderBodyEnd(&$output)
     {
-        if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]) && !count($this->htmls) == 0)
+        if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]) && count($this->htmls) == 0)
             return;
 
         $fullPage = 0;
