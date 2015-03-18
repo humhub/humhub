@@ -165,8 +165,11 @@ $.fn.spacepicker = function(options) {
 
             } else if (event.keyCode == 13 || event.keyCode == 9) {
 
-                // simulate click event
-                window.location.href = $('#spacepicker .selected a').attr('href');
+                var href = $('#spacepicker .selected a').attr('href');
+                // simulate click event when href is not undefined.
+                if (href !== undefined) {
+                    window.location.href = href;
+                }
 
             } else {
 

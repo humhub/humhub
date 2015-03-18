@@ -1,11 +1,11 @@
 <div class="panel panel-default animated fadeIn">
 
     <div class="install-header install-header-small" style="background-image: url('<?php echo $this->module->assetsUrl; ?>/humhub-install-header.jpg');">
-        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.base', '<strong>System</strong> Check'); ?></h2>
+        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.views_setup_prerequisites', '<strong>System</strong> Check'); ?></h2>
     </div>
 
     <div class="panel-body">
-        <p><?php echo Yii::t('InstallerModule.base', 'This overview shows all system requirements of HumHub.'); ?></p>
+        <p><?php echo Yii::t('InstallerModule.views_setup_prerequisites', 'This overview shows all system requirements of HumHub.'); ?></p>
 
         <hr/>
             <div class="prerequisites-list">
@@ -37,16 +37,16 @@
 
             <?php if (!$hasError): ?>
                 <div class="alert alert-success">
-                    <?php echo Yii::t('InstallerModule.base', 'Congratulations! Everything is ok and ready to start over!'); ?>
+                    <?php echo Yii::t('InstallerModule.views_setup_prerequisites', 'Congratulations! Everything is ok and ready to start over!'); ?>
                 </div>
             <?php endif; ?>
 
             <hr>
 
-        <?php echo HHtml::link('<i class="fa fa-repeat"></i> '. Yii::t('InstallerModule.base','Check again'), array('//installer/setup/prerequisites'), array('class' => 'btn btn-info')); ?>
+        <?php echo HHtml::link('<i class="fa fa-repeat"></i> '. Yii::t('InstallerModule.views_setup_prerequisites','Check again'), array('//installer/setup/prerequisites'), array('class' => 'btn btn-info')); ?>
 
         <?php if (!$hasError): ?>
-                <?php echo HHtml::link(Yii::t('InstallerModule.base','Next'). ' <i class="fa fa-arrow-circle-right"></i>', array('//installer/setup/database'), array('class' => 'btn btn-primary')); ?>
+                <?php echo HHtml::link(Yii::t('InstallerModule.views_setup_prerequisites','Next'). ' <i class="fa fa-arrow-circle-right"></i>', array('//installer/setup/database'), array('class' => 'btn btn-primary')); ?>
             <?php endif; ?>
 
 
