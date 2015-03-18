@@ -49,8 +49,7 @@ return CMap::mergeArray($pre_config, array(
                     'themeClass' => 'HTheme',
                 ),
                 'errorHandler' => array(
-                    // use 'site/error' action to display errors
-                    'errorAction' => '//site/error',
+                    'errorAction' => '//error/index',
                 ),
             ),
         ));

@@ -70,7 +70,7 @@ class SpaceControllerBehavior extends CBehavior
     {
 
         if ($this->space->visibility != Space::VISIBILITY_ALL && Yii::app()->user->isGuest) {
-            throw new CHttpException(402, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
+            throw new CHttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 
         // Save users last action on this space
