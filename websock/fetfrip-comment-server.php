@@ -25,7 +25,14 @@ class commentServer extends WebSocketServer {
 
   protected function process ($ws, $data) {
     $api = new Api($this, $ws);
-    $this->send($ws, $api->command($data));
+    $commands = explode('#', $data);
+    if (count($commands)) {
+        foreach ($commands as $command) {
+            if (strlen($command)) {
+                $this->send($ws, $api->command($command));
+            }
+        }
+    }
   }
 
   protected function connected ($ws) {

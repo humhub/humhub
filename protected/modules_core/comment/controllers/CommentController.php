@@ -247,7 +247,7 @@ class CommentController extends Controller
     {                                                                                                                                                                          
         $target = $this->loadTargetModel();                                                                                                                                    
         $cid = (int) Yii::app()->request->getParam('cid', "");
-        $comments = Comment::GetCommentsLimited(get_class($target), $target->id, 5, $cid);                                                                                                        
+        $comments = Comment::GetCommentsFrom(get_class($target), $target->id, 5, $cid);                                                                                                        
         $output = "";
         foreach ($comments as $comment) {
             $output .= $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);

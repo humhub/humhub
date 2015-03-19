@@ -21,19 +21,16 @@ class Api {
     }
 
     private function _command_last($commands) {
-       $id = $this->caller->getClient($this->ws->id, 'post_id');
+       $id = $commands[1];
+       $cid = $commands[2];
        $cookie = $this->getCookie();
-       $c = $this->getUrlContent(sprintf("%s?r=%s&model=%s&id=%d&cid", $this->base, 'comment/comment/apicomment','Post', $id, $commands[1]), $cookie);
+       $c = $this->getUrlContent(sprintf("%s?r=%s&model=%s&id=%d&cid=%d", $this->base, 'comment/comment/apicomment','Post', $id, $cid), $cookie);
 
-       return json_encode(['command' => 'last', 'post_id' => $id, 'status'=> 'success', 'data' => $c]);
+       return json_encode(['command' => 'last', 'post_id' => $id, 'startafter' => $cid, 'status'=> 'success', 'data' => $c]);
     }
 
-    private function _command_id($commands) {
-        $this->caller->setClient($this->ws->id, 'post_id', $commands[1]);
-        return json_encode([ 'command' => 'id', 'post_id' => $commands[1], 'status' => 'success']);
-    }
     private function _command_count($commands) {
-        $id = $this->caller->getClient($this->ws->id, 'post_id');
+        $id = $commands[1];
         $cookie = $this->getCookie();
         $c = $this->getUrlContent(sprintf("%s?r=%s&model=%s&id=%d", $this->base, 'comment/comment/apicount','Post', $id), $cookie);
         return json_encode([ 'command' => 'count', 'post_id' => $id, 'status' => 'success', 'data' => $c]);
