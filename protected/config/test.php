@@ -14,6 +14,9 @@ return CMap::mergeArray(require (dirname(__FILE__) . '/main.php'), array(
                 'cache' => array(
                     'class' => 'CDummyCache',
                 ),
+                'themeManager' => array(
+                    'basePath' => realpath(dirname(__FILE__) . '/../themes'),
+                ),
             ),
             'import' => array(
                 'system.test.*',

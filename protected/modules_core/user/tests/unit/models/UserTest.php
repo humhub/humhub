@@ -72,6 +72,8 @@ class UserTest extends CDbTestCase
      */
     public function testCreateGroupSpaceAdd()
     {
+        HSetting::Set('needApproval', 0, 'authentication_internal');
+
         $space = Space::model()->findByPk(1);
 
         $user = new User();
@@ -84,6 +86,7 @@ class UserTest extends CDbTestCase
 
     public function testInviteToSpace()
     {
+        HSetting::Set('needApproval', 0, 'authentication_internal');
 
         $userInvite = new UserInvite();
         $userInvite->user_originator_id = 1;
@@ -93,7 +96,6 @@ class UserTest extends CDbTestCase
         $this->assertTrue($userInvite->save());
 
         $space = Space::model()->findByPk(2);
-
         $user = new User();
         $user->username = "TestSpaceInvite";
         $user->group_id = 1;

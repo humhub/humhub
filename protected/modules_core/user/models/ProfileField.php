@@ -326,7 +326,7 @@ class ProfileField extends HActiveRecord
      *
      * @return type
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true)
     {
         return $this->fieldType->getUserValue($user, $raw);
     }

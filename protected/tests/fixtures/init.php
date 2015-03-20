@@ -60,13 +60,14 @@ $field->sort_order = 100;
 $field->profile_field_category_id = $cGeneral->id;
 $field->field_type_class = 'ProfileFieldTypeText';
 $field->ldap_attribute = 'givenName';
-$field->is_system = true;
-$field->required = true;
-$field->show_at_registration = true;
+$field->is_system = 1;
+$field->required = 1;
+$field->show_at_registration = 1;
 if ($field->save()) {
     $field->fieldType->maxLength = 100;
     $field->fieldType->save();
 }
+
 
 $field = new ProfileField();
 $field->internal_name = "lastname";
@@ -75,9 +76,9 @@ $field->sort_order = 200;
 $field->profile_field_category_id = $cGeneral->id;
 $field->field_type_class = 'ProfileFieldTypeText';
 $field->ldap_attribute = 'sn';
-$field->show_at_registration = true;
-$field->required = true;
-$field->is_system = true;
+$field->show_at_registration = 1;
+$field->required = 1;
+$field->is_system = 1;
 if ($field->save()) {
     $field->fieldType->maxLength = 100;
     $field->fieldType->save();
