@@ -56,6 +56,13 @@
             // set limited height
             $('#post-content-<?php echo $post->id; ?>').css({'display': 'block', 'max-height': '310px'});
         }
+
+        $('body').on('click', ".fetfrip-toggle i",
+              function (e) {
+                       $(e.target).closest('.fetfrip-toggle').hide();
+              }
+        );
+
     });
 
     function showMore(post_id) {
