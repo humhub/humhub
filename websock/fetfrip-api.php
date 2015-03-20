@@ -26,7 +26,7 @@ class Api {
        $cookie = $this->getCookie();
        $c = $this->getUrlContent(sprintf("%s?r=%s&model=%s&id=%d&cid=%d", $this->base, 'comment/comment/apicomment','Post', $id, $cid), $cookie);
 
-       return json_encode(['command' => 'last', 'post_id' => $id, 'startafter' => $cid, 'status'=> 'success', 'data' => $c]);
+       return json_encode(['command' => 'last', 'post_id' => $id, 'startafter' => $cid, 'status'=> 'success', 'data' => json_decode($c)]);
     }
 
     private function _command_count($commands) {

@@ -248,11 +248,11 @@ class CommentController extends Controller
         $target = $this->loadTargetModel();                                                                                                                                    
         $cid = (int) Yii::app()->request->getParam('cid', "");
         $comments = Comment::GetCommentsFrom(get_class($target), $target->id, 5, $cid);                                                                                                        
-        $output = "";
+        $output = [];
         foreach ($comments as $comment) {
-            $output .= $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);
+            $output[$comment->id] = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);
         }
-        die($output);
+        die(json_encode($output));
     }   
 
 
