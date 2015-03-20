@@ -9,6 +9,9 @@ require_once($yiit);
 $appClass = dirname(__FILE__) . '/../components/WebApplication.php';
 require_once($appClass);
 
+require_once(dirname(__FILE__).'/libs/HDbTestCase.php');
+
+
 Yii::createApplication('WebApplication', $config);
 
 Yii::import('application.vendors.*');

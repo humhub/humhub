@@ -20,6 +20,7 @@ return CMap::mergeArray(require (dirname(__FILE__) . '/main.php'), array(
             ),
             'import' => array(
                 'system.test.*',
+                'system.test.libs.*',
             ),
             'params' => array(
                 'installed' => false,
