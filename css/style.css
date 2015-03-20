@@ -604,6 +604,10 @@ ul.tour-list li.completed a {
   border-radius: 2px;
   padding: 4px 8px;
   text-transform: uppercase;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .placeholder {
   padding: 15px;
