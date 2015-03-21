@@ -128,14 +128,12 @@ class Comment extends HActiveRecordContentAddon
     {
         $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
         $comments = Yii::app()->cache->get($cacheID);
-
         if ($comments === false) {
             $commentCount = self::GetCommentCount($model, $id);
-
             $criteria = new CDbCriteria;
             $criteria->order = "updated_at ASC";
-            $criteria->offset = ($commentCount - 2);
-            $criteria->limit = "2";
+            $criteria->offset = ($commentCount - $limit);
+            $criteria->limit = $limit;
 
             $comments = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
             Yii::app()->cache->set($cacheID, $comments, HSetting::Get('expireTime', 'cache'));
@@ -193,6 +191,23 @@ class Comment extends HActiveRecordContentAddon
         }
 
         return false;
+    }
+    
+    public static function GetCommentsFrom($model, $id, $limit = 5, $startid=-1)
+    {
+        $cacheID = sprintf("commentsFrom_%s_%s_%s_%s", $model, $id, $limit, $startid);
+        $comments = Yii::app()->cache->get($cacheID);
+        if ($comments === false || $startid !== null) {
+            $criteria = new CDbCriteria;
+            $criteria->order = "updated_at ASC";
+            $criteria->limit = $limit;
+            $criteria->condition = 'id > ' . (int)$startid;
+
+            $comments = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
+            Yii::app()->cache->set($cacheID, $comments, HSetting::Get('expireTime', 'cache'));
+        }
+
+        return $comments;
     }
 
 }

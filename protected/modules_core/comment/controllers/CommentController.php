@@ -238,4 +238,22 @@ class CommentController extends Controller
         return $this->actionShow();
     }
 
+    public function actionApiCount()                                                                                                                                           
+    {                                                                                                                                                                          
+        $target = $this->loadTargetModel();                                                                                                                                    
+        die(Comment::GetCommentCount(get_class($target), $target->id));                                                                                                        
+    }   
+    public function actionApiComment()                                                                                                                                           
+    {                                                                                                                                                                          
+        $target = $this->loadTargetModel();                                                                                                                                    
+        $cid = (int) Yii::app()->request->getParam('cid', "");
+        $comments = Comment::GetCommentsFrom(get_class($target), $target->id, 5, $cid);                                                                                                        
+        $output = [];
+        foreach ($comments as $comment) {
+            $output[$comment->id] = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment), true);
+        }
+        die(json_encode($output));
+    }   
+
+
 }

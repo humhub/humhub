@@ -24,7 +24,25 @@
     </div>
 </div>
 
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    var includes = [
+        '//cdn.embedly.com/widgets/platform.js'
+    ];
+    for (i in includes) {
+        var scripts = $('body').data('scripts');
+        if (!scripts) {scripts=""}
+        var name = escape(includes[i].split('/').pop().replace('.',''));
+        var avail = scripts.match(name);
+        if (!avail) {
+            console.log(avail);
+            var script = $("<script>");
+            script.attr('src', includes[i]);
+            script.attr('data-src', name);
+            $('head').append(script);
+            $('body').data('scripts', scripts + ',' + name);
+        }
+    }
+</script>
 <script type="text/javascript">
 
     <?php if ($justEdited): ?>

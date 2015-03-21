@@ -17,6 +17,15 @@ class CommentsWidget extends HWidget
      */
     public $object;
 
+    public function init() 
+    {
+        Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->assetManager->publish(
+                        Yii::getPathOfAlias('application.modules_core.comment.resources') . '/ws.js'
+                ), CClientScript::POS_BEGIN
+        );
+    }
+
     /**
      * Executes the widget.
      */
