@@ -5,7 +5,7 @@ class Api {
     public function __construct($caller, $ws) {
         $this->ws = $ws;
         $this->caller = $caller;
-        $this->base = "https://faraday.mobilada.net/~yalazi/fetfrip/index.php";
+        $this->base = "http://fetfrip.com/index.php";
     }
     private function getCookie() {
         try {
