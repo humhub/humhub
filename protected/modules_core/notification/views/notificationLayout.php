@@ -4,13 +4,15 @@
         <div class="media">
 
             <!-- show user image -->
+            <?php  if (empty($hideUserImage)): ?>
             <img class="media-object img-rounded pull-left"
                  data-src="holder.js/32x32" alt="32x32"
                  style="width: 32px; height: 32px;"
                  src="<?php echo $notification->creator->getProfileImage()->getUrl(); ?>">
+                 <?php endif; ?>
 
             <!-- show space image -->
-            <?php if ($notification->space != null) : ?>
+            <?php if (empty($hideSpaceImage) && $notification->space != null) : ?>
             <img class="media-object img-rounded img-space pull-left"
                  data-src="holder.js/20x20" alt="20x20"
                  style="width: 20px; height: 20px;"

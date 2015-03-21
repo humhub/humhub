@@ -31,7 +31,7 @@ $(function() {
                     } else {
                         $('#user-account-image').attr('src', data.result.files.url + '&c=' + Math.random());
                         $('#user-profile-image').attr('src', data.result.files.url + '&c=' + Math.random());
-                        $('.user-image').attr('src', data.result.files.url + '&c=' + Math.random());
+                        $('.user-' + userGuid).attr('src', data.result.files.url + '&c=' + Math.random());
                         $('#user-profile-image').addClass('animated bounceIn');
                     }
 
@@ -106,12 +106,7 @@ function handleUploadError(json) {
 
 }
 
-function resetProfileImage(jsonResp) {
-    json = jQuery.parseJSON(jsonResp);
-    $('#'+json.type+'-image-upload-edit-button').hide();
-    $('#deleteLinkPost_modal_'+json.type+'imagedelete').hide();
-    $('#user-'+json.type+'-image').attr('src', json.defaultUrl);
-}
+
 
 $(document).ready(function() {
 

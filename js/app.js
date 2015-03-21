@@ -124,9 +124,6 @@ function HashTable(obj) {
 }
 
 
-// Replace the standard checkbox and radio buttons
-$('body').find(':checkbox, :radio').flatelements();
-
 $(document).ready(function () {
 
     /* Ensures after hide modal content is removed. */

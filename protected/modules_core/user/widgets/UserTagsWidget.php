@@ -7,15 +7,15 @@
  * @since 0.5
  * @author andystrobel
  */
-class UserTagsWidget extends HWidget {
+class UserTagsWidget extends HWidget
+{
+    public $user;
 
-    public function run() {
-
-        $user = Yii::app()->getController()->getUser();
-
-
-        $this->render('userTags', array('user' => $user));
+    public function run()
+    {
+        $this->render('userTags', array('user' => $this->user));
     }
 
 }
+
 ?>

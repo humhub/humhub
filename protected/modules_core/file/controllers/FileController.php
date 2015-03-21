@@ -27,6 +27,11 @@ class FileController extends Controller
     public function accessRules()
     {
         return array(
+            array('allow',
+                'users' => array((HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),    
+                'actions' => array('download'),
+                
+            ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
             ),
@@ -108,7 +113,7 @@ class FileController extends Controller
             $output['mimeBaseType'] = $file->getMimeBaseType();
             $output['mimeSubType'] = $file->getMimeSubType();
             $output['url'] = $file->getUrl("", false);
-            $output['thumbnailUrl'] = $file->getPreviewImageUrl(200,200);
+            $output['thumbnailUrl'] = $file->getPreviewImageUrl(200, 200);
         } else {
             $output['error'] = true;
             $output['errors'] = $file->getErrors();

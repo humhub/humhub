@@ -11,8 +11,8 @@
 <div id="comment_create_form_<?php echo $id; ?>" class="comment_create">
 
     <?php echo CHtml::form("#"); ?>
-    <?php echo CHtml::hiddenField('model', $modelName); ?>
-    <?php echo CHtml::hiddenField('id', $modelId); ?>
+    <?php echo CHtml::hiddenField('contentModel', $modelName); ?>
+    <?php echo CHtml::hiddenField('contentId', $modelId); ?>
 
     <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
 
@@ -35,7 +35,7 @@
             'type' => 'POST',
             'success' => "function(html) {
             
-            $('#comments_area_" . $id . "').html(html);
+            $('#comments_area_" . $id . "').append(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
             $('#newCommentForm_" . $id . "_contenteditable').html('" . Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') . "');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');

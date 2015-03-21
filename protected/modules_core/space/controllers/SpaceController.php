@@ -28,10 +28,8 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class SpaceController extends Controller
+class SpaceController extends ContentContainerController
 {
-
-    public $subLayout = "_layout";
 
     /**
      * @return array action filters
@@ -52,24 +50,10 @@ class SpaceController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
+                'users' => array("@", (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
-            ),
-        );
-    }
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
-    {
-        return array(
-            'SpaceControllerBehavior' => array(
-                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
             ),
         );
     }
@@ -80,16 +64,7 @@ class SpaceController extends Controller
     public function actionIndex()
     {
         $this->pageTitle = $this->getSpace()->name;
-
-        if ($this->getSpace()->isMember()) {
-
-            $this->render('index', array());
-        } else {
-
-            $this->subLayout = "_layoutPublic";
-
-            $this->render('indexPublic', array('space' => $this->getSpace()));
-        }
+        $this->render('index', array());
     }
 
     /**

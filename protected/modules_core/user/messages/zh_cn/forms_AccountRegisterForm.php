@@ -17,5 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'E-Mail is already in use! - Try forgot password.' => '',
   'E-Mail' => '电子邮件',
 );

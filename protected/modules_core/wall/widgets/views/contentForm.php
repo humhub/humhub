@@ -82,6 +82,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         $('#public').attr('checked', false);
                         $('#contentForm_message_contenteditable').html('" . Yii::t("WallModule.widgets_views_contentForm", "Whats on your mind?") . "');
                         $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
+                        jQuery('.contentForm_options').fadeOut();
 
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)

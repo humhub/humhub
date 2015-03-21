@@ -7,18 +7,22 @@
         <div class="modal-body">
             <br/>
 
-            <div class="text-center">
-                <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                    <li class="<?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-login"><a href="#login"
-                                                                                                          data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
-                    </li>
-                    <li class="<?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-register"><a
-                            href="#register"
-                            data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
-                    </li>
-                </ul>
-            </div>
-            <br/>
+            <?php if ($canRegister) : ?>
+                <div class="text-center">
+                    <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
+                        <li class="<?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-login"><a
+                                href="#login"
+                                data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
+                        </li>
+                        <li class="<?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?> tab-register"><a
+                                href="#register"
+                                data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
+                        </li>
+                    </ul>
+                </div>
+                <br/>
+            <?php endif; ?>
+
 
             <div class="tab-content">
                 <div class="tab-pane <?php echo (!isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>" id="login">
@@ -54,10 +58,10 @@
                     <div class="row">
                         <div class="col-md-4">
                             <?php
-                            echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('//user/auth/login'), array(
+                            echo HHtml::ajaxSubmitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('//user/auth/login'), array(
                                 'type' => 'POST',
                                 'success' => 'function(html){ $("#globalModal").html(html); }',
-                            ), array('class' => 'btn btn-primary', 'id' => 'loginBtn'));
+                                    ), array('class' => 'btn btn-primary', 'id' => 'loginBtn'));
                             ?>
                         </div>
                         <div class="col-md-8 text-right">
@@ -68,7 +72,7 @@
                                 echo HHtml::ajaxLink(Yii::t('UserModule.views_auth_login', 'Create a new one.'), array('//user/auth/recoverPassword'), array(
                                     'type' => 'POST',
                                     'success' => 'function(html){ $("#globalModal").html(html); }',
-                                ), array('class' => '', 'id' => 'recoverPasswordBtn'));
+                                        ), array('class' => '', 'id' => 'recoverPasswordBtn'));
                                 ?>
                             </small>
                         </div>
@@ -76,33 +80,36 @@
 
                     <?php $this->endWidget(); ?>
                 </div>
-                <div class="tab-pane <?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>"
-                     id="register">
 
-                    <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
-                    <?php
-                    $form = $this->beginWidget('CActiveForm', array(
-                        'id' => 'account-register-form',
-                        'enableAjaxValidation' => false,
-                    ));
-                    ?>
+                <?php if ($canRegister) : ?>
+                    <div class="tab-pane <?php echo (isset($_POST['AccountRegisterForm'])) ? "active" : ""; ?>"
+                         id="register">
 
-                    <div class="form-group">
-                        <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email'))); ?>
-                        <?php echo $form->error($registerModel, 'email'); ?>
+                        <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                        <?php
+                        $form = $this->beginWidget('CActiveForm', array(
+                            'id' => 'account-register-form',
+                            'enableAjaxValidation' => false,
+                        ));
+                        ?>
+
+                        <div class="form-group">
+                            <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email'))); ?>
+                            <?php echo $form->error($registerModel, 'email'); ?>
+                        </div>
+                        <hr>
+
+                        <?php
+                        echo HHtml::ajaxSubmitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('//user/auth/login'), array(
+                            'type' => 'POST',
+                            'success' => 'function(html){ $("#globalModal").html(html); }',
+                                ), array('class' => 'btn btn-primary', 'id' => 'registerBtn'));
+                        ?>
+
+                        <?php $this->endWidget(); ?>
+
                     </div>
-                    <hr>
-
-                    <?php
-                    echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_login', 'Register'), array('//user/auth/login'), array(
-                        'type' => 'POST',
-                        'success' => 'function(html){ $("#globalModal").html(html); }',
-                    ), array('class' => 'btn btn-primary', 'id' => 'registerBtn'));
-                    ?>
-
-                    <?php $this->endWidget(); ?>
-
-                </div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -115,16 +122,16 @@
     $('body').find(':checkbox, :radio').flatelements();
 
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#login_username').focus();
 
     });
 
-    $('.tab-register a').on('shown.bs.tab', function (e) {
+    $('.tab-register a').on('shown.bs.tab', function(e) {
         $('#register-email').focus();
     })
 
-    $('.tab-login a').on('shown.bs.tab', function (e) {
+    $('.tab-login a').on('shown.bs.tab', function(e) {
         $('#login_username').focus();
     })
 

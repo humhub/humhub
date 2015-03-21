@@ -7,16 +7,19 @@
  * @since 0.5
  * @author Luke
  */
-class UserSpacesWidget extends HWidget {
+class UserSpacesWidget extends HWidget
+{
 
-    public function run() {
+    public $user;
+
+    public function run()
+    {
 
         $showSpaces = 30;
         $spaces = array();
-        $user = Yii::app()->getController()->getUser();
         $i = 0;
 
-        foreach (SpaceMembership::GetUserSpaces($user->id) as $space) {
+        foreach (SpaceMembership::GetUserSpaces($this->user->id) as $space) {
             if ($space->visibility == Space::VISIBILITY_NONE)
                 continue;
             if ($space->status != Space::STATUS_ENABLED)
@@ -33,4 +36,5 @@ class UserSpacesWidget extends HWidget {
     }
 
 }
+
 ?>

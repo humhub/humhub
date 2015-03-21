@@ -29,7 +29,7 @@
 
             <hr>
             <?php
-            echo HHtml::ajaxButton(Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'), array('//user/auth/recoverPassword'), array(
+            echo HHtml::ajaxSubmitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'), array('//user/auth/recoverPassword'), array(
                 'type' => 'POST',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
                     ), array('class' => 'btn btn-primary', 'id' => 'recoverPasswordBtn'));

@@ -7,16 +7,22 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceAdminMenuWidget extends MenuWidget {
+class SpaceAdminMenuWidget extends MenuWidget
+{
 
+    public $space;
     public $template = "application.widgets.views.leftNavigation";
 
-    public function init() {
+    public function init()
+    {
 
-// Reckon the current controller is a valid space controller
-// (Needs to implement the SpaceControllerBehavior)
-        $spaceGuid = Yii::app()->getController()->getSpace()->guid;
-        $space = Yii::app()->getController()->getSpace();
+        /**
+         * Backward compatibility - try to auto load space based on current
+         * controller.
+         */
+        if ($this->space === null) {
+            $this->space = Yii::app()->getController()->getSpace();
+        }
 
 
         $this->addItemGroup(array(
@@ -26,11 +32,11 @@ class SpaceAdminMenuWidget extends MenuWidget {
         ));
 
         // check user rights
-        if ($space->isAdmin()) {
+        if ($this->space->isAdmin()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'General'),
                 'group' => 'admin',
-                'url' => Yii::app()->createUrl('//space/admin/edit', array('sguid' => $spaceGuid)),
+                'url' => $this->space->createUrl('//space/admin/edit'),
                 'icon' => '<i class="fa fa-cogs"></i>',
                 'sortOrder' => 100,
                 'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "edit"),
@@ -38,11 +44,11 @@ class SpaceAdminMenuWidget extends MenuWidget {
         }
 
         // check user rights
-        if ($space->isAdmin()) {
+        if ($this->space->isAdmin()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
                 'group' => 'admin',
-                'url' => Yii::app()->createUrl('//space/admin/members', array('sguid' => $spaceGuid)),
+                'url' => $this->space->createUrl('//space/admin/members'),
                 'icon' => '<i class="fa fa-group"></i>',
                 'sortOrder' => 200,
                 'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "members"),
@@ -50,35 +56,16 @@ class SpaceAdminMenuWidget extends MenuWidget {
         }
 
         // check user rights
-        if ($space->isAdmin()) {
+        if ($this->space->isAdmin()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Modules'),
                 'group' => 'admin',
-                'url' => Yii::app()->createUrl('//space/admin/modules', array('sguid' => $spaceGuid)),
+                'url' => $this->space->createUrl('//space/admin/modules'),
                 'icon' => '<i class="fa fa-rocket"></i>',
                 'sortOrder' => 300,
                 'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "modules"),
             ));
         }
-
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Archive'),
-#            'url' => Yii::app()->createUrl('//space/admin/archive', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 400,
-#            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "archive"),
-#        ));
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Delete'),
-#            'url' => Yii::app()->createUrl('//space/admin/delete', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 500,
-#            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "delete"),
-#        ));
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Back to workspace'),
-#            'url' => Yii::app()->createUrl('//space/space', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 1000,
-#        ));
-
 
         parent::init();
     }

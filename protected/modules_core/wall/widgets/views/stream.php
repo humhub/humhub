@@ -16,8 +16,6 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('WallModule.widgets_views_stream', 'Filter'); ?> <b
                 class="caret"></b></a>
         <ul class="dropdown-menu">
-            <!--<li><a href="#"><i class="fa fa-checkfa fa-check-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Show all'); ?></a></li>-->
-
             <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i
                         class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Where I´m involved'); ?></a>
             </li>
@@ -70,6 +68,8 @@
         <div class="loader streamLoader"></div>
 
         <div class="emptyStreamMessage">
+            
+            
             <?php if ($type == Wall::TYPE_COMMUNITY): ?>
                 <div class="placeholder placeholder-empty-stream">
                     <?php echo Yii::t('WallModule.widgets_views_stream', '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...'); ?>

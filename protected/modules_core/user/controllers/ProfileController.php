@@ -8,10 +8,8 @@
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class ProfileController extends Controller
+class ProfileController extends ContentContainerController
 {
-
-    public $subLayout = "_layout";
 
     /**
      * @return array action filters
@@ -36,20 +34,6 @@ class ProfileController extends Controller
             ),
             array('deny', // deny all users
                 'users' => array('*'),
-            ),
-        );
-    }
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
-    {
-        return array(
-            'ProfileControllerBehavior' => array(
-                'class' => 'application.modules_core.user.behaviors.ProfileControllerBehavior',
             ),
         );
     }
