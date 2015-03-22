@@ -2,9 +2,12 @@
 
 /**
  * Wall Stream Widget creates a wall widget.
- *
+ * 
+ * *** DEPRECATED since 0.11 use StreamWidget instead! ***
+ * 
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
+ * @deprecated since version 0.11
  */
 class WallStreamWidget extends HWidget
 {
@@ -54,13 +57,13 @@ class WallStreamWidget extends HWidget
 
         Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->assetManager->publish(
-                        Yii::getPathOfAlias('application.modules_core.wall.resources') . '/si_streaming.js'
+                        Yii::getPathOfAlias('application.modules_core.wall.assets.deprecated') . '/si_streaming.js'
                 ), CClientScript::POS_BEGIN
         );
 
         Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->assetManager->publish(
-                        Yii::getPathOfAlias('application.modules_core.wall.resources') . '/wall.js'
+                        Yii::getPathOfAlias('application.modules_core.wall.assets') . '/wall.js'
                 ), CClientScript::POS_BEGIN
         );
     }
@@ -85,7 +88,7 @@ class WallStreamWidget extends HWidget
         $singleEntryUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => 1, 'from' => 'fromEntryId'));
 
         // Render It
-        $this->render('stream', array(
+        $this->render('stream_deprecated', array(
             'type' => $this->type,
             'reloadUrl' => $reloadUrl,
             'startUrl' => $startUrl,

@@ -3,9 +3,12 @@
 /**
  * StreamAction returns a list of wall entries.
  *
+ * *** DEPRECATED since 0.11 use BaseStreamAction / ContentContainerStreamAction instead! ***
+ * 
  * @package humhub.modules_core.wall
  * @since 0.5
  * @author Luke
+ * @deprecated since version 0.11
  */
 class StreamAction extends CAction
 {
@@ -393,7 +396,6 @@ class StreamAction extends CAction
             if ($space->visibility != Space::VISIBILITY_ALL && Yii::app()->user->isGuest) {
                 $this->sqlWhere .= " AND 1=2";
             }
-            
         } elseif ($this->type == Wall::TYPE_USER) {
 
             $user = User::model()->findByAttributes(array('guid' => $this->typeGuid));

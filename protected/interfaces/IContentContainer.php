@@ -36,4 +36,14 @@ interface IContentContainer
      * @since 0.11.0
      */
     public function getDisplayName();
+
+    /**
+     * Indiciates the given or current user can access private content
+     * of this container.
+     * 
+     * @since 0.11.0
+     * @param User $u
+     * @return boolean
+     */
+    public function canAccessPrivateContent(User $u = null);
 }

@@ -28,7 +28,7 @@
 
 
     <?php
-    echo HHtml::ajaxButton('Save', array('//post/post/edit', 'id' => $post->id, 'wallType' => $wallType), array(
+    echo HHtml::ajaxButton('Save', array('//post/post/edit', 'id' => $post->id), array(
         'type' => 'POST',
         'success' => 'function(html){ $("#post-' . $post->id . '").replaceWith(html); }',
             ), array('class' => 'btn btn-primary', 'id' => 'post_edit_post_' . $post->id, 'style' => 'position: absolute; left: -90000000px; opacity: 0;'));

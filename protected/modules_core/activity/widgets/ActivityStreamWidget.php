@@ -7,43 +7,60 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityStreamWidget extends HWidget {
-
-    protected $themePath = 'modules/activity';
-
-    /**
-     * @var String type of activity stream (dashboard, space, user)
-     */
-    public $type;
+class ActivityStreamWidget extends HWidget
+{
 
     /**
-     * @var String guid of space or user
+     * Optional content container if this stream belongs to one
+     *
+     * @var HActiveRecordContentContainer
      */
-    public $guid;
+    public $contentContainer;
+
+    /**
+     * Path to Stream Action to use
+     *
+     * @var string
+     */
+    public $streamAction = "";
 
     /**
      * Inits the activity stream widget
      */
-    public function init() {
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+    public function init()
+    {
+        if ($this->streamAction == "") {
+            throw new CHttpException(500, 'You need to set the streamAction attribute to use this widget!');
+        }
+
+        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../assets', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/activies.js');
+
+        Yii::app()->clientScript->setJavascriptVariable('activityStreamUrl', $this->getStreamUrl());
+        Yii::app()->clientScript->setJavascriptVariable('activityPermaLinkUrl', Yii::app()->createUrl('//wall/perma/wallEntry'));
     }
 
     /**
      * Runs the activity widget
      */
-    public function run() {
-
-        // Save Wall Type
-        Wall::$currentType = $this->type;
-
-        $javascriptVariablePass = "var activityReloadUrl = '" . Yii::app()->createUrl('//wall/wall/streamActivity', array('type' => $this->type, 'guid' => $this->guid, 'limit' => 10, 'from' => 'lastEntryId')) . "';\n";
-        $javascriptVariablePass .= "var activityStartUrl = '" . Yii::app()->createUrl('//wall/wall/streamActivity', array('type' => $this->type, 'guid' => $this->guid, 'limit' => 10)) . "';\n";
-        $javascriptVariablePass .= "var activityPermaLinkUrl = '" . Yii::app()->createUrl('//wall/perma/wallEntry') . "';\n";
-
-        Yii::app()->clientScript->registerScript('activityUrls', $javascriptVariablePass, CClientScript::POS_BEGIN);
-
+    public function run()
+    {
         $this->render('activityStream', array());
+    }
+
+    protected function getStreamUrl()
+    {
+        $params = array(
+            'limit' => '10',
+            'from' => '-from-',
+            'mode' => BaseStreamAction::MODE_ACTIVITY
+        );
+
+        if ($this->contentContainer) {
+            return $this->contentContainer->createUrl($this->streamAction, $params);
+        }
+
+        return Yii::app()->createUrl($this->streamAction, $params);
     }
 
 }

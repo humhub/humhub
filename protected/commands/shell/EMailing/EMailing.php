@@ -55,10 +55,11 @@ class EMailing extends HConsoleCommand
 
         // Save systems default language - before switching to users language
         $defaultLanguage = Yii::app()->language;
-        
+
         foreach ($users as $user) {
-            if(empty($user->email)) continue;
-		
+            if (empty($user->email))
+                continue;
+
             print "Processing : " . $user->email . ": ";
 
             // Switch to users language if set
@@ -67,7 +68,7 @@ class EMailing extends HConsoleCommand
             } else {
                 Yii::app()->language = $defaultLanguage;
             }
-            
+
             $notificationContent = $this->getNotificationContent($user);
             $activityContent = $this->getActivityContent($user);
 
@@ -195,34 +196,34 @@ class EMailing extends HConsoleCommand
             }
         }
 
-
         $lastMailDate = $user->last_activity_email;
         if ($lastMailDate == "" || $lastMailDate == "0000-00-00 00:00:00") {
             $lastMailDate = new CDbExpression('NOW() - INTERVAL 24 HOUR');
         }
 
+        $action = new DashboardStreamAction(null, 'console');
+        $action->limit = 50;
+        $action->mode = BaseStreamAction::MODE_ACTIVITY;
+        $action->user = $user;
+        $action->init();
 
-        // Get Stream contents
-        $action = new StreamAction(null, 'console');
-        $action->mode = StreamAction::MODE_ACTIVITY;
-        $action->type = Wall::TYPE_DASHBOARD;
-        $action->userId = $user->id;
-        $action->userWallId = $user->wall_id;
-        $action->wallEntryLimit = 50;
-        $action->wallEntryDateTo = $lastMailDate;
-        $activities = $action->runConsole();
+        $action->criteria->condition .= " AND 1=2";
+        
+        // Limit results to last activity mail
+        $action->criteria->condition .= " AND wall_entry.created_at > :maxDate";
+        $action->criteria->params[':maxDate'] = $lastMailDate;
+
+        $output = "";
+        foreach ($action->getWallEntries() as $wallEntry) {
+            $output .= $wallEntry->content->getUnderlyingObject()->getMailOut();
+        }
 
         # Save last run
         $user->last_activity_email = new CDbExpression('NOW()');
         $user->save();
 
-        // Nothin new
-        if ($activities['counter'] == 0) {
-            return "";
-        }
-
         // Return Output
-        return $activities['output'];
+        return $output;
     }
 
 }

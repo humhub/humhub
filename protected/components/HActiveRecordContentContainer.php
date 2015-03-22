@@ -101,6 +101,11 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
         return "Container: " . get_class($this) . " - " . $this->getPrimaryKey();
     }
 
+    public function canAccessPrivateContent(User $user = null)
+    {
+        return false;
+    }
+
 }
 
 ?>

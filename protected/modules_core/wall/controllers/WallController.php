@@ -6,13 +6,16 @@
  * @package humhub.modules_core.wall.controllers
  * @since 0.5
  * @author Luke
+ * @deprecated since version 0.11
  */
-class WallController extends Controller {
+class WallController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -23,7 +26,8 @@ class WallController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
@@ -33,25 +37,5 @@ class WallController extends Controller {
             ),
         );
     }
-
-    /**
-     * Actions
-     *
-     * @return type
-     */
-    public function actions() {
-        return array(
-            'stream' => array(
-                'class' => 'application.modules_core.wall.StreamAction',
-                'mode' => 'normal',
-            ),
-            'streamActivity' => array(
-                'class' => 'application.modules_core.wall.StreamAction',
-                'mode' => 'activity'
-            ),
-        );
-    }
-    
-
 
 }

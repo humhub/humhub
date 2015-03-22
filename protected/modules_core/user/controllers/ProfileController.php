@@ -38,15 +38,22 @@ class ProfileController extends ContentContainerController
         );
     }
 
+    public function actions()
+    {
+        return array(
+            'stream' => array(
+                'class' => 'application.modules_core.wall.ContentContainerStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
+                'contentContainer' => $this->getUser()
+            ),
+        );
+    }
+
     /**
      *
      */
     public function actionIndex()
     {
-        if (Yii::app()->user->isGuest && $this->getUser()->visibility == User::VISIBILITY_REGISTERED_ONLY) {
-            return $this->render('members_only', array('user' => $this->getUser()));
-        }
-
         $this->render('index');
     }
 
@@ -55,10 +62,6 @@ class ProfileController extends ContentContainerController
      */
     public function actionAbout()
     {
-        if (Yii::app()->user->isGuest && $this->getUser()->visibility == User::VISIBILITY_REGISTERED_ONLY) {
-            return $this->render('members_only', array('user' => $this->getUser()));
-        }
-
         $this->render('about', array('user' => $this->getUser()));
     }
 

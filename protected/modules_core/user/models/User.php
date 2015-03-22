@@ -573,7 +573,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         );
 
         $profile = $this->getProfile();
-        
+
         if (!$profile->isNewRecord) {
             foreach ($profile->getProfileFields() as $profileField) {
                 $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
@@ -603,14 +603,14 @@ class User extends HActiveRecordContentContainer implements ISearchable
             return $this->_profile;
 
         $this->_profile = Profile::model()->findByPk($this->id);
-        
+
         if ($this->_profile == null) {
             // Maybe new user?
             $this->_profile = new Profile();
             $this->_profile->user_id = $this->id;
         }
-       $this->_profile->user = $this;
- 
+        $this->_profile->user = $this;
+
         return $this->_profile;
     }
 
@@ -685,6 +685,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         return false;
+    }
+
+    public function canAccessPrivateContent(User $user = null)
+    {
+        return ($this->isCurrentUser());
     }
 
 }

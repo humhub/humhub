@@ -40,6 +40,16 @@ class DirectoryController extends Controller
         );
     }
 
+    public function actions()
+    {
+        return array(
+            'stream' => array(
+                'class' => 'application.modules_core.directory.UserPostsStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
+            ),
+        );
+    }
+
     /**
      * Index Action, redirects to member actions
      */

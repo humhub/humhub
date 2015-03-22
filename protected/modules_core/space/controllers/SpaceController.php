@@ -58,6 +58,17 @@ class SpaceController extends ContentContainerController
         );
     }
 
+    public function actions()
+    {
+        return array(
+            'stream' => array(
+                'class' => 'application.modules_core.wall.ContentContainerStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
+                'contentContainer' => $this->getSpace()
+             ),
+        );
+    }
+
     /**
      * Generic Start Action for Profile
      */

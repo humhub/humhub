@@ -14,8 +14,7 @@ function activityShowItem(wallEntryId) {
 
 $(document).ready(function () {
 
-    // set the ID for the last loaded activity entry to 1
-    var activityLastLoadedEntryId = 1;
+    var activityLastLoadedEntryId = "";
 
     // save if the last entries are already loaded
     var activityLastEntryReached = false;
@@ -62,13 +61,10 @@ $(document).ready(function () {
      */
     function loadMoreActivities() {
 
-        // save url for activity reloads
-        var _url = activityReloadUrl.replace('lastEntryId', activityLastLoadedEntryId);
 
-        if (activityLastLoadedEntryId == 1) {
-            // save url for the first loading
-            _url = activityStartUrl;
-        }
+
+        // save url for activity reloads
+        var _url = activityStreamUrl.replace('-from-', activityLastLoadedEntryId);
 
         // show loader
         $("#activityLoader").show();
@@ -76,7 +72,7 @@ $(document).ready(function () {
         // load json
         jQuery.getJSON(_url, function (json) {
 
-            if (activityLastLoadedEntryId == 1 && json.counter == 0) {
+            if (activityLastLoadedEntryId == "" && json.counter == 0) {
 
                 // show placeholder if no results exists
                 $("#activityEmpty").show();

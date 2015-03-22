@@ -56,6 +56,16 @@ class DashboardController extends Controller
         );
     }
 
+    public function actions()
+    {
+        return array(
+            'stream' => array(
+                'class' => 'application.modules_core.dashboard.DashboardStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
+            ),
+        );
+    }
+
     /**
      * Dashboard Index
      *
@@ -84,7 +94,7 @@ class DashboardController extends Controller
         if (Yii::app()->user->isGuest) {
             return CJSON::encode($json);
         }
-        
+
         $criteria = new CDbCriteria();
         $criteria->order = 'last_visit DESC';
 

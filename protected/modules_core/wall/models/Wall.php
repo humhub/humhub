@@ -22,7 +22,8 @@
  *
  * @package humhub.modules_core.wall.models
  */
-class Wall extends HActiveRecord {
+class Wall extends HActiveRecord
+{
 
     const TYPE_USER = 'User';
     const TYPE_SPACE = 'Space';
@@ -34,7 +35,9 @@ class Wall extends HActiveRecord {
      *
      * @return type
      */
-    public function behaviors() {
+
+    public function behaviors()
+    {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
@@ -47,9 +50,9 @@ class Wall extends HActiveRecord {
      * Saves the current Wall Mode, find maybe a better place for this var.
      *
      * Wall::$currentType = "dashboard";  // user, workspace
-     *
+     * 
+     * @deprecated since version 0.11
      */
-
     static $currentType = "";
 
     /**
@@ -57,21 +60,24 @@ class Wall extends HActiveRecord {
      * @param string $className active record class name.
      * @return Wall the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'wall';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -87,7 +93,8 @@ class Wall extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(

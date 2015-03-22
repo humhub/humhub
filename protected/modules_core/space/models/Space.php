@@ -542,7 +542,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         return Content::model()->countByAttributes(array('object_model' => 'Post', 'space_id' => $this->id));
     }
 
-
     /**
      * Counts all followers of current space
      *
@@ -667,6 +666,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     public function getDisplayName()
     {
         return $this->name;
+    }
+
+    public function canAccessPrivateContent(User $user = null)
+    {
+        return ($this->isMember());
     }
 
 }
