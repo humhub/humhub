@@ -25,7 +25,8 @@
  * @since 0.5
  * @author Luke
  */
-class SelfTest {
+class SelfTest
+{
 
     /**
      * Get Results of the Application SelfTest.
@@ -37,7 +38,8 @@ class SelfTest {
      *
      * @return Array
      */
-    public static function getResults() {
+    public static function getResults()
+    {
         /**
          * ['title']
          * ['state']    = OK, WARNING, ERROR
@@ -109,6 +111,20 @@ class SelfTest {
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
                 'hint' => 'Install Curl Extension'
+            );
+        }
+        // Checks ZIP Extension
+        $title = 'PHP - ZIP Extension';
+        if (class_exists('ZipArchive')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PHP Zip Extension'
             );
         }
 
@@ -237,8 +253,8 @@ class SelfTest {
                 'state' => 'ERROR',
                 'hint' => 'Make ' . $path . " writable for the webserver/php!"
             );
-        }        
-        
+        }
+
         return $checks;
     }
 
