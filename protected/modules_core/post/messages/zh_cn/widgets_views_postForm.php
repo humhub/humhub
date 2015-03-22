@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Whats on your mind?' => '你想说些什么？',
+  'What\'s on your mind?' => '你想说些什么？',
 );
