@@ -276,7 +276,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         if ($this->isNewRecord) {
             // Create new wall record for this space
             $wall = new Wall();
-            $wall->type = Wall::TYPE_SPACE;
             $wall->object_model = 'Space';
             $wall->object_id = $this->id;
             $wall->save();

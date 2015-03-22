@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'wall':
  * @property integer $id
- * @property string $type
  * @property string $object_model
  * @property integer $object_id
  * @property string $created_at
@@ -25,10 +24,13 @@
 class Wall extends HActiveRecord
 {
 
+    /**
+     * @deprecated since version 0.11
+     */
     const TYPE_USER = 'User';
     const TYPE_SPACE = 'Space';
-    const TYPE_DASHBOARD = 'Dashboard'; // meta, not in db
-    const TYPE_COMMUNITY = 'Community'; // meta, not in db
+    const TYPE_DASHBOARD = 'Dashboard';
+    const TYPE_COMMUNITY = 'Community';
 
     /**
      * Add mix-ins to this model
@@ -82,11 +84,7 @@ class Wall extends HActiveRecord
         // will receive user inputs.
         return array(
             array('created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('type', 'length', 'max' => 45),
             array('created_at, updated_at', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('id, type, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search'),
         );
     }
 

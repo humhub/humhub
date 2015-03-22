@@ -403,7 +403,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         // Create new wall record for this user
         $wall = new Wall();
-        $wall->type = Wall::TYPE_USER;
         $wall->object_model = 'User';
         $wall->object_id = $this->id;
         $wall->save();
