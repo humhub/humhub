@@ -210,13 +210,13 @@ class ImageConverter
         }
  
         // Create new Image
+        $newGdImage = imagecreatetruecolor($width, $height);
+        
         if(isset($options['transparent']) && $options['transparent']){
-            $newGdImage = imagecreate($width, $height);
-            $colourBlack = imagecolorallocate($newGdImage, 0, 0, 0);
-            imagecolortransparent($newGdImage, $colourBlack);
-        }
-        else{
-            $newGdImage = imagecreatetruecolor($width, $height);  
+            imagealphablending($newGdImage, false);
+            imagesavealpha($newGdImage, true);
+            $transparent = imagecolorallocatealpha($newGdImage, 255, 255, 255, 127);
+            imagefilledrectangle($newGdImage, 0, 0, $width, $height, $transparent);
         }
         
         imagecopyresampled($newGdImage, $gdImage, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
