@@ -28,14 +28,14 @@ class File extends HActiveRecord
 
     /**
      * Uploaded File or File Content
-     * 
-     * @var type 
+     *
+     * @var type
      */
     private $cUploadedFile = null;
 
     /**
      * New content of the file
-     * 
+     *
      * @var string
      */
     public $newFileContent = null;
@@ -53,7 +53,7 @@ class File extends HActiveRecord
     /**
      * Returns all files belongs to a given HActiveRecord Object.
      * @todo Add chaching
-     * 
+     *
      * @param HActiveRecord $object
      * @return Array of File instances
      */
@@ -136,7 +136,7 @@ class File extends HActiveRecord
 
     protected function afterSave()
     {
-        // Set new uploaded file 
+        // Set new uploaded file
         if ($this->cUploadedFile !== null && $this->cUploadedFile instanceof CUploadedFile) {
             $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
 
@@ -194,7 +194,7 @@ class File extends HActiveRecord
 
     /**
      * Returns the Url of the File
-     * 
+     *
      * @param string $suffix
      * @param boolean $absolute
      * @return string
@@ -216,8 +216,8 @@ class File extends HActiveRecord
 
     /**
      * Returns the filename
-     * 
-     * @param string $prefix 
+     *
+     * @param string $prefix
      * @return string
      */
     public function getFilename($prefix = "")
@@ -296,7 +296,7 @@ class File extends HActiveRecord
 
     /**
      * Checks if given file can read.
-     * 
+     *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
      */
@@ -312,7 +312,7 @@ class File extends HActiveRecord
 
     /**
      * Checks if given file can deleted.
-     * 
+     *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all unless there is method canWrite or canDelete implemented.
      */
@@ -362,13 +362,13 @@ class File extends HActiveRecord
 
     public function validateExtension($attribute, $params)
     {
-        $allowedExtensions = HSetting::Get('allowedExtensions', 'file');
+        $allowedExtensions = HSetting::GetText('allowedExtensions', 'file');
 
         if ($allowedExtensions != "") {
             $extension = $this->getExtension();
             $extension = trim(strtolower($extension));
 
-            $allowed = array_map('trim', explode(",", HSetting::Get('allowedExtensions', 'file')));
+            $allowed = array_map('trim', explode(",", HSetting::GetText('allowedExtensions', 'file')));
 
             if (!in_array($extension, $allowed)) {
                 $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));

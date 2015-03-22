@@ -49,20 +49,20 @@ class SettingController extends Controller
             echo CActiveForm::validate($form);
             Yii::app()->end();
         }
-        
+
         $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/uploadLogo.js');
-        
+
         if (isset($_POST['BasicSettingsForm'])) {
             $_POST['BasicSettingsForm'] = Yii::app()->input->stripClean($_POST['BasicSettingsForm']);
             $form->attributes = $_POST['BasicSettingsForm'];
-            
+
             $files = CUploadedFile::getInstancesByName('logo');
-            if(count($files) != 0){
+            if (count($files) != 0) {
                 $file = $files[0];
                 $form->logo = $file;
             }
-           
+
 
             if ($form->validate()) {
                 HSetting::Set('name', $form->name);
@@ -88,7 +88,7 @@ class SettingController extends Controller
                         $space->save();
                     }
                 }
-                if($form->logo){
+                if ($form->logo) {
                     $logoImage = new LogoImage();
                     $logoImage->setNew($form->logo);
                 }
@@ -102,35 +102,32 @@ class SettingController extends Controller
             $form->baseUrl = HSetting::Get('baseUrl');
             $form->defaultLanguage = HSetting::Get('defaultLanguage');
             $form->tour = HSetting::Get('enable', 'tour');
-            
+
 
             $form->defaultSpaceGuid = "";
             foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
                 $form->defaultSpaceGuid .= $defaultSpace->guid . ",";
             }
-            
-           
         }
-        
+
         $this->render('index', array('model' => $form, 'logo' => new LogoImage()));
     }
-    
-    
+
     public function actionDeleteLogoImage()
     {
         $this->forcePostRequest();
-    
+
         $image = NULL;
-        
+
         $image = new LogoImage();
 
         if ($image->hasImage()) {
             $image->delete();
         }
-    
+
         $this->renderJson(array());
     }
-    
+
     /**
      * Returns a List of Users
      */
@@ -164,11 +161,11 @@ class SettingController extends Controller
                 $form->defaultUserGroup = HSetting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
                 $form->defaultUserIdleTimeoutSec = HSetting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
                 $form->allowGuestAccess = HSetting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
-                
+
                 if (HSetting::Get('allowGuestAccess', 'authentication_internal')) {
                     $form->defaultUserProfileVisibility = HSetting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
                 }
-                
+
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
@@ -286,7 +283,7 @@ class SettingController extends Controller
             Yii::app()->cache->flush();
             ModuleManager::flushCache();
 
-            // Delete also published assets 
+            // Delete also published assets
             foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(Yii::app()->getAssetManager()->getBasePath(), FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
 
                 // Do not remove .gitignore in assets folder
@@ -546,8 +543,8 @@ class SettingController extends Controller
         $form->maxPreviewImageHeight = HSetting::Get('maxPreviewImageHeight', 'file');
         $form->hideImageFileInfo = HSetting::Get('hideImageFileInfo', 'file');
         $form->useXSendfile = HSetting::Get('useXSendfile', 'file');
-        $form->allowedExtensions = HSetting::Get('allowedExtensions', 'file');
-        $form->showFilesWidgetBlacklist = HSetting::Get('showFilesWidgetBlacklist','file');
+        $form->allowedExtensions = HSetting::GetText('allowedExtensions', 'file');
+        $form->showFilesWidgetBlacklist = HSetting::GetText('showFilesWidgetBlacklist', 'file');
 
         // Ajax Validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'file-settings-form') {
@@ -556,7 +553,6 @@ class SettingController extends Controller
         }
 
         if (isset($_POST['FileSettingsForm'])) {
-            $_POST['FileSettingsForm'] = Yii::app()->input->stripClean($_POST['FileSettingsForm']);
             $form->attributes = $_POST['FileSettingsForm'];
 
             if ($form->validate()) {
@@ -566,8 +562,8 @@ class SettingController extends Controller
                 $form->maxPreviewImageHeight = HSetting::Set('maxPreviewImageHeight', $form->maxPreviewImageHeight, 'file');
                 $form->hideImageFileInfo = HSetting::Set('hideImageFileInfo', $form->hideImageFileInfo, 'file');
                 $form->useXSendfile = HSetting::Set('useXSendfile', $form->useXSendfile, 'file');
-                $form->allowedExtensions = HSetting::Set('allowedExtensions', strtolower($form->allowedExtensions), 'file');
-                $form->showFilesWidgetBlacklist = HSetting::Set('showFilesWidgetBlacklist',$form->showFilesWidgetBlacklist,'file');
+                $form->allowedExtensions = HSetting::SetText('allowedExtensions', strtolower($form->allowedExtensions), 'file');
+                $form->showFilesWidgetBlacklist = HSetting::SetText('showFilesWidgetBlacklist', $form->showFilesWidgetBlacklist, 'file');
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -611,10 +607,10 @@ class SettingController extends Controller
         $form = new ProxySettingsForm;
 
         // uncomment the following code to enable ajax-based validation
-/*        if (isset($_POST['ajax']) && $_POST['ajax'] === 'design-settings-form') {
-            echo CActiveForm::validate($form);
-            Yii::app()->end();
-        }*/
+        /*        if (isset($_POST['ajax']) && $_POST['ajax'] === 'design-settings-form') {
+          echo CActiveForm::validate($form);
+          Yii::app()->end();
+          } */
 
         if (isset($_POST['ProxySettingsForm'])) {
             $_POST['ProxySettingsForm'] = Yii::app()->input->stripClean($_POST['ProxySettingsForm']);
@@ -701,7 +697,7 @@ class SettingController extends Controller
      */
     public function actionOEmbedDelete()
     {
-        
+
         $this->forcePostRequest();
         $prefix = Yii::app()->request->getParam('prefix');
         $providers = UrlOembed::getProviders();
