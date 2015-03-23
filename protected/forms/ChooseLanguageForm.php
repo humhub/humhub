@@ -1,8 +1,8 @@
-<?php 
+<?php
 
-class ChooseLanguageForm extends CFormModel {
+class ChooseLanguageForm extends CFormModel
+{
 
-    
     public $language;
 
     /**
@@ -10,20 +10,23 @@ class ChooseLanguageForm extends CFormModel {
      *
      * @return Array Validation Rules
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
-            array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('base', 'Invalid language!')),
+            array('language', 'in', 'range' => array_keys(Yii::app()->params['availableLanguages'])),
         );
     }
 
     /**
      * Declares attribute labels.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'language' => Yii::t('base', 'Language'),
         );
     }
 
 }
+
 ?>

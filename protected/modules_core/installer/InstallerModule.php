@@ -28,13 +28,13 @@ class InstallerModule extends HWebModule
 {
 
     public $isCoreModule = true;
-
     private $_assetsUrl;
 
-    public function getAssetsUrl()     {
+    public function getAssetsUrl()
+    {
         if ($this->_assetsUrl === null)
             $this->_assetsUrl = Yii::app()->getAssetManager()->publish(
-                Yii::getPathOfAlias('installer.resources')
+                    Yii::getPathOfAlias('installer.resources')
             );
         return $this->_assetsUrl;
     }
@@ -52,15 +52,13 @@ class InstallerModule extends HWebModule
      */
     public function checkDBConnection()
     {
-
-
         try {
             // call setActive with true to open connection.
             Yii::app()->db->setActive(true);
             // return the current connection state.
             return Yii::app()->db->getActive();
         } catch (Exception $e) {
-
+            
         }
 
         return false;
@@ -85,13 +83,6 @@ class InstallerModule extends HWebModule
         $config = HSetting::getConfiguration();
         $config['params']['installed'] = true;
         HSetting::setConfiguration($config);
-    }
-    
-    public function beforeControllerAction($controller, $action) {
-      
-        if(Yii::app()->request->cookies['language'])
-            Yii::app()->setLanguage(Yii::app()->request->cookies['language']->value);
-        return true;
     }
 
 }

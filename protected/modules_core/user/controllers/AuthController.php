@@ -55,27 +55,6 @@ class AuthController extends Controller
 
         // Show/Allow Anonymous Registration
         $canRegister = HSetting::Get('anonymousRegistration', 'authentication_internal');
-
-        $language = (Yii::app()->session->itemAt('language')) ? Yii::app()->session->itemAt('language') : Yii::app()->request->getPreferredAvailableLanguage();
-        if (!$language) {
-            $language = HSetting::get('defaultLanguage');
-        }
-        Yii::app()->setLanguage($language);
-
-        $languageModel = new ChooseLanguageForm();
-        $languageModel->language = $language;
-
-
-        if (isset($_POST['ChooseLanguageForm'])) {
-            $_POST['ChooseLanguageForm'] = Yii::app()->input->stripClean($_POST['ChooseLanguageForm']);
-            $languageModel->attributes = $_POST['ChooseLanguageForm'];
-
-            if ($languageModel->validate()) {
-                Yii::app()->session->add('language', $languageModel->language);
-                Yii::app()->setLanguage($languageModel->language);
-            }
-        }
-
         $model = new AccountLoginForm;
 
         //TODO: Solve this via events!
@@ -91,17 +70,11 @@ class AuthController extends Controller
 
         // collect user input data
         if (isset($_POST['AccountLoginForm'])) {
-
-            #$_POST['AccountLoginForm'] = Yii::app()->input->stripClean($_POST['AccountLoginForm']);
             $model->attributes = $_POST['AccountLoginForm'];
 
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()) {
                 $user = User::model()->findByPk(Yii::app()->user->id);
-                if ((Yii::app()->session->itemAt('language') && Yii::app()->session->itemAt('language') != $user->language) || Yii::app()->getLanguage() != $user->language) {
-                    $user->language = Yii::app()->session->itemAt('language') ? Yii::app()->session->itemAt('language') : Yii::app()->getLanguage();
-                    $user->save();
-                }
 
                 if (Yii::app()->request->isAjaxRequest) {
                     $this->htmlRedirect(Yii::app()->user->returnUrl);
@@ -126,8 +99,6 @@ class AuthController extends Controller
             }
 
             if (isset($_POST['AccountRegisterForm'])) {
-                $_POST['AccountRegisterForm'] = Yii::app()->input->stripClean($_POST['AccountRegisterForm']);
-
                 $registerModel->attributes = $_POST['AccountRegisterForm'];
 
                 if ($registerModel->validate()) {
@@ -135,12 +106,13 @@ class AuthController extends Controller
                     // Try Load an invite
                     $userInvite = UserInvite::model()->findByAttributes(array('email' => $registerModel->email));
 
-                    if (!$userInvite)
+                    if ($userInvite === null) {
                         $userInvite = new UserInvite();
+                    }
 
                     $userInvite->email = $registerModel->email;
                     $userInvite->source = UserInvite::SOURCE_SELF;
-                    $userInvite->language = $language;
+                    $userInvite->language = Yii::app()->language;
                     $userInvite->save();
 
                     $userInvite->sendInviteMail();
@@ -154,9 +126,9 @@ class AuthController extends Controller
         }
 
         if (Yii::app()->request->isAjaxRequest) {
-            $this->renderPartial('login_modal', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister, 'languageModel' => $languageModel), false, true);
+            $this->renderPartial('login_modal', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister), false, true);
         } else {
-            $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister, 'languageModel' => $languageModel));
+            $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
         }
     }
 
@@ -166,14 +138,9 @@ class AuthController extends Controller
      */
     public function actionRecoverPassword()
     {
-        $language = (Yii::app()->session->itemAt('language')) ? Yii::app()->session->itemAt('language') : HSetting::get('defaultLanguage');
-        Yii::app()->setLanguage($language);
-
         $model = new AccountRecoverPasswordForm;
 
         if (isset($_POST['AccountRecoverPasswordForm'])) {
-
-            $_POST['AccountRecoverPasswordForm'] = Yii::app()->input->stripClean($_POST['AccountRecoverPasswordForm']);
             $model->attributes = $_POST['AccountRecoverPasswordForm'];
 
             if ($model->validate()) {
@@ -392,8 +359,8 @@ class AuthController extends Controller
         }
 
         $this->render('createAccount', array(
-                'form' => $form,
-                'needAproval' => $needApproval)
+            'form' => $form,
+            'needAproval' => $needApproval)
         );
     }
 
@@ -403,9 +370,15 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-
+        $language = Yii::app()->user->language;
+        
         Yii::app()->user->logout();
 
+        // Store users language in session
+        if ($language != "") {
+            Yii::app()->request->cookies['language'] = new CHttpCookie('language', $language);
+        }
+ 
         $this->redirect(Yii::app()->homeUrl);
     }
 

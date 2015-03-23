@@ -19,36 +19,22 @@
  */
 
 /**
- * Index Controller shows a simple welcome page.
+ * LanguageChooser
  *
  * @author luke
+ * @since 0.11
  */
-class IndexController extends Controller
+class LanguageChooser extends HWidget
 {
 
     /**
-     *
-     * @var String layout to use
+     * Displays / Run the Widget
      */
-    public $layout = '_layout';
-
-    /**
-     * Index View just provides a welcome page
-     */
-    public function actionIndex()
+    public function run()
     {
-        $this->render('index', array());
+        $model = new ChooseLanguageForm();
+        $model->language = Yii::app()->getLanguage();
+        $this->render('languageChooser', array('model' => $model, 'languages' => Yii::app()->params['availableLanguages']));
     }
 
-    /**
-     * Checks if we need to call SetupController or ConfigController.
-     */
-    public function actionGo()
-    {
-        if ($this->getModule()->checkDBConnection()) {
-            $this->redirect(Yii::app()->createUrl('//installer/setup/init'));
-        } else {
-            $this->redirect(Yii::app()->createUrl('//installer/setup/prerequisites'));
-        }
-    }
 }
