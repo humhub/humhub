@@ -1,12 +1,13 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_index', '<strong>Basic</strong> settings'); ?></div>
+    <div
+        class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_index', '<strong>Basic</strong> settings'); ?></div>
     <div class="panel-body">
 
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'basic-settings-form',
             'enableAjaxValidation' => false,
-            'htmlOptions' => array('enctype'=>'multipart/form-data'),
+            'htmlOptions' => array('enctype' => 'multipart/form-data'),
         ));
         ?>
 
@@ -42,6 +43,7 @@
 
 
         <strong>Introduction tour</strong>
+
         <div class="form-group">
             <div class="checkbox">
                 <label>
@@ -49,41 +51,7 @@
                 </label>
             </div>
         </div>
-        
-        
-        
-        <?php echo $form->labelEx($model, 'logo'); ?>
-        <?php echo $form->fileField($model, 'logo', array('id' => 'logo', 'style' => 'display: none', 'name' => 'logo[]'));?>
-        <?php echo $form->error($model, 'logo'); ?>
 
-        <div class="image-upload-container" id ="logo-upload">
-       
-            <img class="img-rounded" id="logo-image"
-                src="<?php if($logo->hasImage()) echo $logo->getUrl(); ?>"
-                data-src="holder.js/140x140" alt="<?php echo Yii::app()->name; ?>" style="max-height: 40px;"/>
-
-                <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
-                    <a href="#" onclick="javascript:$('#logo').click();" class="btn btn-info btn-sm"><i
-                            class="fa fa-cloud-upload"></i></a>
-            
-                    <?php
-                    $this->widget('application.widgets.ModalConfirmWidget', array(
-                                  'uniqueID' => 'modal_logoimagedelete',
-                                  'linkOutput' => 'a',
-                                  'title' => Yii::t('AdminModule.views_setting_index', '<strong>Confirm</strong> image deleting'),
-                                  'message' => Yii::t('UserModule.views_setting_index', 'Do you really want to delete your logo image?'),
-                                  'buttonTrue' => Yii::t('AdminModule.views_setting_index', 'Delete'),
-                                  'buttonFalse' => Yii::t('AdminModule.views_setting_index', 'Cancel'),
-                                  'linkContent' => '<i class="fa fa-times"></i>',
-                                  'class' => 'btn btn-danger btn-sm',
-                                  'style' => $logo->hasImage() ? '' : 'display: none;',
-                                  'linkHref' => $this->createUrl("//admin/setting/deleteLogoImage"),
-                                  'confirmJS' => 'function(jsonResp) { resetLogoImage(jsonResp); }'
-                                 )); 
-                    ?>
-                </div>
-        </div>
-        
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), array('class' => 'btn btn-primary')); ?>

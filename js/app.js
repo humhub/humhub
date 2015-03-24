@@ -127,7 +127,7 @@ function HashTable(obj) {
 /**
  * setModalLoader
  *
- * Javscript Class which represents a hashtable.
+ * Change buttons with loader
  *
  */
 function setModalLoader() {

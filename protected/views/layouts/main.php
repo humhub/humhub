@@ -108,7 +108,7 @@
 <div id="topbar-first" class="topbar">
     <div class="container">
         <div class="topbar-brand hidden-xs">
-            <?php $this->widget('application.widgets.TopLogoWidget', array()); ?>
+            <?php $this->widget('application.widgets.LogoWidget', array()); ?>
         </div>
 
         <div class="topbar-actions pull-right">

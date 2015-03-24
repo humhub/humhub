@@ -50,19 +50,9 @@ class SettingController extends Controller
             Yii::app()->end();
         }
 
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/uploadLogo.js');
-
         if (isset($_POST['BasicSettingsForm'])) {
             $_POST['BasicSettingsForm'] = Yii::app()->input->stripClean($_POST['BasicSettingsForm']);
             $form->attributes = $_POST['BasicSettingsForm'];
-
-            $files = CUploadedFile::getInstancesByName('logo');
-            if (count($files) != 0) {
-                $file = $files[0];
-                $form->logo = $file;
-            }
-
 
             if ($form->validate()) {
                 HSetting::Set('name', $form->name);
@@ -88,10 +78,7 @@ class SettingController extends Controller
                         $space->save();
                     }
                 }
-                if ($form->logo) {
-                    $logoImage = new LogoImage();
-                    $logoImage->setNew($form->logo);
-                }
+
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
@@ -110,7 +97,7 @@ class SettingController extends Controller
             }
         }
 
-        $this->render('index', array('model' => $form, 'logo' => new LogoImage()));
+        $this->render('index', array('model' => $form));
     }
 
     public function actionDeleteLogoImage()
@@ -458,9 +445,18 @@ class SettingController extends Controller
             Yii::app()->end();
         }
 
+        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/uploadLogo.js');
+
         if (isset($_POST['DesignSettingsForm'])) {
             $_POST['DesignSettingsForm'] = Yii::app()->input->stripClean($_POST['DesignSettingsForm']);
             $form->attributes = $_POST['DesignSettingsForm'];
+
+            $files = CUploadedFile::getInstancesByName('logo');
+            if (count($files) != 0) {
+                $file = $files[0];
+                $form->logo = $file;
+            }
 
             if ($form->validate()) {
 
@@ -468,6 +464,11 @@ class SettingController extends Controller
                 HSetting::Set('paginationSize', $form->paginationSize);
                 HSetting::Set('displayNameFormat', $form->displayName);
                 HSetting::Set('spaceOrder', $form->spaceOrder, 'space');
+
+                if ($form->logo) {
+                    $logoImage = new LogoImage();
+                    $logoImage->setNew($form->logo);
+                }
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -483,7 +484,7 @@ class SettingController extends Controller
 
         $themes = HTheme::getThemes();
         //$themes[''] = Yii::t('AdminModule.controllers_SettingController', 'No theme');
-        $this->render('design', array('model' => $form, 'themes' => $themes));
+        $this->render('design', array('model' => $form, 'themes' => $themes, 'logo' => new LogoImage()));
     }
 
     /**
