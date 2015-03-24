@@ -83,13 +83,20 @@ class ApprovalController extends Controller {
                 $this->redirect(Yii::app()->createUrl('admin/approval'));
             }
         } else {
-            $approveFormModel->subject = "Account Request for '" . $model->displayName . "' has been approved.";
-            $approveFormModel->message = "Hello {$model->displayName},<br><br>\n\n" .
-                    "your account has been activated.<br><br>\n" .
-                    "Click here to login:<br>\n" .
-                    "<a href='" . Yii::app()->createAbsoluteUrl("//user/auth/login") . "'>" . Yii::app()->createAbsoluteUrl("//user/auth/login") . "</a><br><br>\n" .
-                    "Kind Regards<br>\n" .
-                    Yii::app()->user->model->displayName . "<br><br>\n\n";
+            $approveFormModel->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", array('{displayName}' => CHtml::encode($model->displayName)));
+            $approveFormModel->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
+  
+   your account has been activated.<br><br> 
+   
+   Click here to login:<br>
+   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
+   
+   Kind Regards<br>
+   {AdminName}<br><br>', array(
+                        '{displayName}' => CHtml::encode($model->displayName),
+                        '{loginURL}' => Yii::app()->createAbsoluteUrl("//user/auth/login"),
+                        '{AdminName}' => Yii::app()->user->model->displayName,
+                    ));
         }
 
 
@@ -127,11 +134,16 @@ class ApprovalController extends Controller {
                 $this->redirect(Yii::app()->createUrl('admin/approval'));
             }
         } else {
-            $approveFormModel->subject = "Account Request for '" . $user->displayName . "' has been declined.";
-            $approveFormModel->message = "Hello {$user->displayName} ,<br><br>\n\n" .
-                    "your account request has been declined.<br><br>\n\n" .
-                    "Kind Regards<br>\n" .
-                    Yii::app()->user->model->displayName . "<br><br>";
+            $approveFormModel->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', array('{displayName}' => CHtml::encode($user->displayName)));
+            $approveFormModel->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
+  
+   your account request has been declined.<br><br> 
+      
+   Kind Regards<br>
+   {AdminName}<br><br>', array(
+                        '{displayName}' => CHtml::encode($user->displayName),
+                        '{AdminName}' => Yii::app()->user->model->displayName,
+                    ));
         }
 
         $this->render('approveUserDecline', array('model' => $user, 'approveFormModel' => $approveFormModel));

@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Whats on your mind?' => '¿Qué tienes en mente?',
+  'What\'s on your mind?' => '¿Qué tienes en mente?',
 );

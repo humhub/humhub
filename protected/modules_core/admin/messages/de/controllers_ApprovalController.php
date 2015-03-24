@@ -18,4 +18,34 @@
  */
 return array (
   'User not found!' => 'Benutzer nicht gefunden!',
+  'Account Request for \'{displayName}\' has been approved.' => 'Zugang für \'{displayName}\' wurde genehmigt.',
+  'Hello {displayName},<br><br>
+  
+   your account has been activated.<br><br> 
+   
+   Click here to login:<br>
+   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
+   
+   Kind Regards<br>
+   {AdminName}<br><br>' =>  'Hallo {displayName},<br><br>
+   
+   dein Zugang wurde aktiviert.<br><br>
+   
+   Klicke hier um dich anzumelden:<br>
+   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
+   
+   mit freundlichen Grüßen<br>
+   {AdminName}<br><br>',
+   'Account Request for \'{displayName}\' has been declined.' => 'Zugang für \'{displayName}\' wurde abgelehnt.',
+   'Hello {displayName},<br><br>
+  
+   your account request has been declined.<br><br> 
+      
+   Kind Regards<br>
+   {AdminName}<br><br>' => 'Hallo {displayName},<br><br>
+  
+   deine Zugangsanfrage wurde abgelehnt.<br><br> 
+      
+   mit freundlichen Grüßen<br>
+   {AdminName}<br><br>'
 );
