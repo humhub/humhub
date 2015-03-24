@@ -863,9 +863,11 @@ textarea.placeholder {
   }
   #space-menu-dropdown {
     width: 300px !important;
+    max-height: 250px !important;
   }
   #search-menu-dropdown {
     width: 300px !important;
+    max-height: 250px !important;
   }
   .notifications {
     position: inherit !important;
@@ -884,11 +886,5 @@ textarea.placeholder {
   }
   .panel-profile .panel-profile-header .img-profile-data h1 {
     font-size: 20px !important;
-  }
-}
-@media screen and (max-width: 768px) {
-  #space-menu-dropdown .media-list,
-  #search-menu-dropdown .media-list {
-    max-height: 250px;
   }
 }

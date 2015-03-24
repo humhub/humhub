@@ -46,6 +46,11 @@
                 // hide notification badge at the top menu
                 $('#badge-notifications').css('display', 'none');
                 $('#mark-seen-link').css('display', 'none');
+
+                // remove notification count from page title
+                var pageTitle = $('title').text().replace(/\(.+?\)/g, '');
+                $('title').text(pageTitle);
+
             }});
     }
 
