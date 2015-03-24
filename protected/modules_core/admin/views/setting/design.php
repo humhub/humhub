@@ -7,6 +7,7 @@
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'design-settings-form',
             'enableAjaxValidation' => false,
+            'htmlOptions' => array('enctype' => 'multipart/form-data'),
         ));
         ?>
 
@@ -41,9 +42,11 @@
             <div class="image-upload-container" id="logo-upload">
 
                 <img class="img-rounded" id="logo-image"
-                     src="<?php if ($logo->hasImage()) {
+                     src="<?php
+                     if ($logo->hasImage()) {
                          echo $logo->getUrl();
-                     } ?>"
+                     }
+                     ?>"
                      data-src="holder.js/140x140"
                      alt="<?php echo Yii::t('AdminModule.views_setting_index', "You're using no logo at the moment. Upload your logo now."); ?>"
                      style="max-height: 40px;"/>
@@ -77,7 +80,7 @@
         <!-- show flash message after saving -->
         <?php $this->widget('application.widgets.DataSavedWidget'); ?>
 
-        <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
     </div>
 </div>

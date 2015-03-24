@@ -7,7 +7,6 @@
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'basic-settings-form',
             'enableAjaxValidation' => false,
-            'htmlOptions' => array('enctype' => 'multipart/form-data'),
         ));
         ?>
 
