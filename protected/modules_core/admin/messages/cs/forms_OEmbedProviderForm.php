@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Endpoint Url' => '',
-  'Url Prefix' => 'Předpona adresy',
+  'Endpoint Url' => 'URL veřejné API provozovatele',
+  'Url Prefix' => 'Doména provozovatele',
 );
