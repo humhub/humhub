@@ -59,14 +59,6 @@ textarea {
   height: 1.5em;
 }
 
-
-input[type=text], input[type=password], input[type=select] {
-  /* Remove First */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
 //
 // 2) Topbar
 // --------------------------------------------------
@@ -548,17 +540,6 @@ input[type=text], input[type=password], input[type=select] {
 //
 // 8) HumHub Components
 // --------------------------------------------------
-
-// Ajax loader
-.loader {
-  height: 60px;
-  background: url('../img/loader.gif') no-repeat center center;
-}
-
-.loader-small {
-  height: 20px;
-  width: 20px;
-}
 
 // comments
 
@@ -1122,6 +1103,71 @@ input.placeholder, textarea.placeholder {
   padding-right: 15px;
   text-align: right;
 }
+
+// SpinKit (Loader)
+.sk-spinner-three-bounce.sk-spinner {
+  margin: 0 auto;
+  width: 70px;
+  text-align: center;
+}
+
+// Ajax loader
+.loader {
+  padding: 30px 0;
+
+
+  .sk-spinner-three-bounce div {
+    width: 12px;
+    height: 12px;
+    background-color: #428bca;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
+    animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
+    /* Prevent first frame from flickering when animation starts */
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+
+  .sk-spinner-three-bounce .sk-bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+
+  .sk-spinner-three-bounce .sk-bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+
+  @-webkit-keyframes sk-threeBounceDelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    }
+
+    40% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes sk-threeBounceDelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    }
+
+    40% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+}
+
+.loader-modal {
+  padding: 8px 0;
+}
+
 
 //
 // 10) Responsive modifications

@@ -19,7 +19,7 @@
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_memberStats', 'Total users'); ?></strong><br><br>
 
             <input id="user-total" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
-                   data-fgcolor="#7191a8" data-skin="tron"
+                   data-fgcolor="#638392" data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsTotalUsers; ?>"
                    data-max="<?php echo $statsTotalUsers; ?>"
                    style="font-size: 25px !important; margin-top: 44px !important;">
@@ -31,7 +31,7 @@
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_memberStats', 'Online right now'); ?></strong><br><br>
 
             <input id="user-online" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
-                   data-fgcolor="#4cd9c0"
+                   data-fgcolor="#72dce8"
                    data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsUserOnline; ?>"
                    data-max="<?php echo $statsTotalUsers; ?>"

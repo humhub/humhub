@@ -91,7 +91,13 @@
                 <h4 class="modal-title"><?php echo Yii::t('AdminModule.views_module_list', 'Processing...') ?></h4>
             </div>
             <div class="modal-body">
-                <div class="loader"></div>
+                <div class="loader" style="padding-top: 0;">
+                    <div class="sk-spinner sk-spinner-three-bounce">
+                        <div class="sk-bounce1"></div>
+                        <div class="sk-bounce2"></div>
+                        <div class="sk-bounce3"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

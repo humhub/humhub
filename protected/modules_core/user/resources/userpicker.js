@@ -224,7 +224,7 @@ $.fn.userpicker = function (options) {
         $('#' + uniqueID + '_userpicker li').remove();
 
         // show loader while loading
-        $('#' + uniqueID + '_userpicker').html('<li><div class="loader"></div></li>');
+        $('#' + uniqueID + '_userpicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
 
         jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function (json) {
 

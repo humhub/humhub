@@ -124,6 +124,18 @@ function HashTable(obj) {
 }
 
 
+/**
+ * setModalLoader
+ *
+ * Javscript Class which represents a hashtable.
+ *
+ */
+function setModalLoader() {
+    $(".modal-footer .btn").hide();
+    $(".modal-footer .loader").removeClass("hidden");
+}
+
+
 $(document).ready(function () {
 
     /* Ensures after hide modal content is removed. */
@@ -131,7 +143,7 @@ $(document).ready(function () {
         $(this).removeData('bs.modal');
 
         // just close modal and reset modal content to default (shows the loader)
-        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"></div></div></div></div>');
+        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></div>');
     })
 
 });

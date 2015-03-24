@@ -20,7 +20,7 @@
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Total spaces'); ?></strong><br><br>
 
             <input id="spaces-total" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
-                   data-fgcolor="#7191a8" data-skin="tron"
+                   data-fgcolor="#638392" data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsCountSpaces; ?>"
                    data-max="<?php echo $statsCountSpaces; ?>"
                    style="font-size: 25px !important; margin-top: 44px !important;">
@@ -32,7 +32,7 @@
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Private spaces'); ?></strong><br><br>
 
             <input id="spaces-private" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
-                   data-fgcolor="#7191a8"
+                   data-fgcolor="#638392"
                    data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsCountSpacesHidden; ?>"
                    data-max="<?php echo $statsCountSpaces; ?>"

@@ -52,7 +52,7 @@
 
             <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.views_admin_cropImage', 'Save'), Yii::app()->createAbsoluteUrl('//space/admin/cropImage', array('guid' => $space->guid)), array(
                 'type' => 'POST',
-                'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
+                'beforeSend' => 'function(){ setModalLoader();; }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
             ), array('class' => 'btn btn-primary'));
 
@@ -63,8 +63,12 @@
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_admin_cropImage', 'Close'); ?></button>
 
-            <div class="col-md-1 modal-loader">
-                <div id="invite-loader" class="loader loader-small hidden"></div>
+            <div id="crop-loader" class="loader loader-modal hidden">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
             </div>
         </div>
 

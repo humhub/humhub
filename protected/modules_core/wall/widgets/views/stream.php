@@ -61,11 +61,17 @@
 
 <div id="wallStream">
 
-    <!-- DIV for an normal wall stream -->
+    <!-- DIV for a normal wall stream -->
     <div class="s2_stream" style="display:none">
 
         <div class="s2_streamContent"></div>
-        <div class="loader streamLoader"></div>
+        <div class="loader streamLoader">
+            <div class="sk-spinner sk-spinner-three-bounce">
+                <div class="sk-bounce1"></div>
+                <div class="sk-bounce2"></div>
+                <div class="sk-bounce3"></div>
+            </div>
+        </div>
 
         <div class="emptyStreamMessage">
 

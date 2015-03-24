@@ -32,17 +32,17 @@
             <div id="cropimage">
                 <?php
                 $this->widget('ext.yii-jcrop.jCropWidget', array(
-                    'imageUrl' => $profileImage->getUrl('_org') . "?nocache=" . time(),
-                    'formElementX' => 'CropProfileImageForm_cropX',
-                    'formElementY' => 'CropProfileImageForm_cropY',
-                    'formElementWidth' => 'CropProfileImageForm_cropW',
-                    'formElementHeight' => 'CropProfileImageForm_cropH',
-                    'jCropOptions' => array(
-                        'aspectRatio' => '6.3',
-                        'boxWidth' => 400,
-                        'setSelect' => array(0, 0, 267, 48),
-                    ),
-                        )
+                        'imageUrl' => $profileImage->getUrl('_org') . "?nocache=" . time(),
+                        'formElementX' => 'CropProfileImageForm_cropX',
+                        'formElementY' => 'CropProfileImageForm_cropY',
+                        'formElementWidth' => 'CropProfileImageForm_cropW',
+                        'formElementHeight' => 'CropProfileImageForm_cropH',
+                        'jCropOptions' => array(
+                            'aspectRatio' => '6.3',
+                            'boxWidth' => 400,
+                            'setSelect' => array(0, 0, 267, 48),
+                        ),
+                    )
                 );
                 ?>
             </div>
@@ -54,9 +54,9 @@
             <?php
             echo HHtml::ajaxButton(Yii::t('UserModule.views_profile_cropBannerImage', 'Save'), Yii::app()->createAbsoluteUrl('//space/admin/cropBannerImage', array('guid' => $space->guid)), array(
                 'type' => 'POST',
-                'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
+                'beforeSend' => 'function(){ setModalLoader(); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
-                    ), array('class' => 'btn btn-primary'));
+            ), array('class' => 'btn btn-primary'));
             ?>
 
             <?php //echo CHtml::submitButton(Yii::t('UserModule.views_profile_cropBannerImage', 'Save'), array('class' => 'btn btn-primary'));  ?>
@@ -64,10 +64,16 @@
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?></button>
 
-            <div class="col-md-1 modal-loader">
-                <div id="invite-loader" class="loader loader-small hidden"></div>
+
+            <div id="crop-loader" class="loader loader-modal hidden">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
             </div>
         </div>
+
 
         <?php $this->endWidget(); ?>
 

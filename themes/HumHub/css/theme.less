@@ -1,37 +1,27 @@
 //
 // Color variables
 // --------------------------------------------------
+
+// Background colors
 @colorBackground1: #f7f7f7;
 @colorBackground2: #ededed;
 @colorBackground3: #d7d7d7;
 @colorBackground4: #b2b2b2;
 
-@colorDanger1: #ff8989;
+// Bootstrap colors
+@colorDanger: #ff8989;
+@colorInfo: #72dce8;
+//@colorInfo: #69d6dd;
+@colorInfoLight: #dffcff;
+@colorWarning: #fdd198;
+//@colorPrimary: #7191a8;
+@colorPrimary: #638392;
 
-@colorInfo1: #8de1d2;
-@colorInfo2: #4cd9c0;
-@colorInfo3: #41c0a9;
-@colorInfo4: #ebf6f3;
-
-//@colorWarning1: #fad587;
-@colorWarning1: #fdd198;
-@colorWarning2: #e8e0c5;
-@colorPrimary1: #99b5c9;
-@colorPrimary2: #7191a8;
-@colorPrimary3: #7191a8;
-/*@colorPrimary3: #526e82;*/
-@colorPrimary4: #3b5060;
-
-// blue touch
+// Font colors
 @colorFont1: #bac2c7;
-// title
 @colorFont2: #7a7a7a;
-// body
-//@colorFont3: #9d9d9d;
 @colorFont3: #555555;
-// body light
 @colorFont4: #bebebe;
-// dark topbar font
 @colorFont5: #aeaeae;
 
 //
@@ -47,6 +37,7 @@ body {
     color: @colorFont3;
     text-decoration: none;
   }
+
 }
 
 h4 {
@@ -69,6 +60,12 @@ h4 {
   text-align: center !important;
 }
 
+input[type=text], input[type=password], input[type=select] {
+  /* Remove First */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 
 //
 // x) Login
@@ -93,13 +90,13 @@ h4 {
     color: @colorFont4;
 
     .dropdown-header-link a {
-      color: @colorInfo2 !important;
+      color: @colorInfo !important;
     }
   }
 }
 
 #topbar-first {
-  background-color: @colorPrimary3;
+  background-color: @colorPrimary;
   color: white;
 
   a {
@@ -111,16 +108,16 @@ h4 {
   }
 
   .btn-group > a {
-    background-color: lighten(@colorPrimary3, 5%);
+    background-color: lighten(@colorPrimary, 5%);
   }
 
   .btn-enter {
-    background-color: lighten(@colorPrimary3, 5%);
+    background-color: lighten(@colorPrimary, 5%);
     margin: 6px 0;
   }
 
   .btn-enter:hover {
-    background-color: lighten(@colorPrimary3, 8%);
+    background-color: lighten(@colorPrimary, 8%);
   }
 
   .media-list {
@@ -134,11 +131,11 @@ h4 {
       color: @colorFont3;
 
       i.accepted {
-        color: @colorInfo2 !important;
+        color: @colorInfo !important;
       }
 
       i.declined {
-        color: @colorDanger1 !important;
+        color: @colorDanger !important;
       }
     }
 
@@ -162,7 +159,7 @@ h4 {
   }
 
   .dropdown.account > a, .dropdown.account.open > a, .dropdown.account > a:hover, .dropdown.account.open > a:hover {
-    background-color: @colorPrimary3;
+    background-color: @colorPrimary;
   }
 
 }
@@ -188,7 +185,7 @@ h4 {
     &:hover,
     &:active,
     &:focus {
-      border-bottom: 3px solid @colorInfo2;
+      border-bottom: 3px solid @colorInfo;
       background-color: @colorBackground1;
       color: @colorFont3;
       text-decoration: none;
@@ -217,7 +214,7 @@ h4 {
   }
 
   .nav > li > a:hover, .nav .open > a, .nav > li.active {
-    border-bottom: 3px solid @colorInfo2;
+    border-bottom: 3px solid @colorInfo;
     background-color: @colorBackground1;
     color: @colorFont3;
   }
@@ -250,13 +247,13 @@ h4 {
   }
 
   li.new {
-    border-left: 3px solid @colorInfo4;
-    background-color: @colorInfo4;
+    border-left: 3px solid @colorInfoLight;
+    background-color: @colorInfoLight;
   }
 
   li:hover, li.selected {
     background-color: @colorBackground1;
-    border-left: 3px solid @colorInfo2;
+    border-left: 3px solid @colorInfo;
   }
 
 }
@@ -300,7 +297,7 @@ h4 {
       font-size: 85%;
 
       a {
-        color: @colorInfo2;
+        color: @colorInfo;
       }
     }
   }
@@ -309,7 +306,7 @@ h4 {
     //color: @colorFont1;
 
     a {
-      color: @colorInfo2;
+      color: @colorInfo;
     }
 
   }
@@ -362,7 +359,7 @@ h4 {
     }
 
     li:hover, li.selected {
-      border-left: 3px solid @colorInfo2;
+      border-left: 3px solid @colorInfo;
       background-color: @colorBackground1 !important;
     }
   }
@@ -409,7 +406,7 @@ h4 {
       font-size: 12px;
 
       .count {
-        color: @colorInfo2;
+        color: @colorInfo;
         font-weight: 600;
         font-size: 20px;
         line-height: 0.8em;
@@ -423,7 +420,7 @@ h4 {
       font-size: 75%;
     }
     small a {
-      color: @colorInfo2;
+      color: @colorInfo;
 
     }
   }
@@ -431,26 +428,26 @@ h4 {
 }
 
 .panel-danger {
-  border: 2px solid @colorDanger1;
+  border: 2px solid @colorDanger;
 
   .panel-heading {
-    color: @colorDanger1;
+    color: @colorDanger;
   }
 }
 
 .panel-success {
-  border: 2px solid @colorInfo2;
+  border: 2px solid @colorInfo;
 
   .panel-heading {
-    color: @colorInfo2;
+    color: @colorInfo;
   }
 }
 
 .panel-warning {
-  border: 2px solid @colorWarning1;
+  border: 2px solid @colorWarning;
 
   .panel-heading {
-    color: @colorWarning1;
+    color: @colorWarning;
   }
 }
 
@@ -511,17 +508,17 @@ h4 {
 .nav-pills, .nav-tabs, .account {
 
   .dropdown-menu {
-    background-color: @colorPrimary3;
+    background-color: @colorPrimary;
     border: none;
 
     li.divider {
-      background-color: darken(@colorPrimary3, 5%);
+      background-color: darken(@colorPrimary, 5%);
       border-bottom: none;
       margin: 9px 1px !important;
     }
 
     li {
-      border-left: 3px solid @colorPrimary3;
+      border-left: 3px solid @colorPrimary;
 
       a {
         color: white;
@@ -543,9 +540,9 @@ h4 {
     }
 
     li:hover, li.selected {
-      border-left: 3px solid @colorInfo2;
+      border-left: 3px solid @colorInfo;
       color: #ffffff !important;
-      background-color: darken(@colorPrimary3, 5%) !important;
+      background-color: darken(@colorPrimary, 5%) !important;
     }
   }
 }
@@ -559,7 +556,7 @@ h4 {
   .dropdown.open {
 
     .dropdown-toggle, .dropdown-toggle:hover {
-      background-color: @colorPrimary3;
+      background-color: @colorPrimary;
     }
   }
 
@@ -588,7 +585,7 @@ h4 {
     color: @colorFont3;
 
     a {
-      color: @colorInfo2;
+      color: @colorInfo;
     }
   }
 
@@ -598,7 +595,7 @@ h4 {
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-  background-color: @colorPrimary3;
+  background-color: @colorPrimary;
 }
 
 // Nav-Tabs
@@ -615,53 +612,13 @@ h4 {
 .tab-content .tab-pane {
 
   a {
-    color: @colorInfo2;
+    color: @colorInfo;
   }
 
   .form-group {
     margin-bottom: 5px;
   }
 }
-
-/*.nav-tabs {
-  border-bottom-width: 2px;
-  border-bottom: 1px solid #ddd;
-
-  li {
-    font-weight: 300;
-    font-size: 16px;
-    margin-bottom: 6px;
-  }
-
-}
-
-.tab-content .tab-pane {
-
-  a {
-    color: @colorInfo2;
-  }
-
-  .form-group {
-    margin-bottom: 5px;
-  }
-}
-
-.nav-tabs {
-  li > a {
-    margin-right: 2px;
-    line-height: 1.428571429;
-    border: none;
-    border-radius: none;
-    color: @colorFont1;
-    padding: 0 10px 3px 10px;
-  }
-
-  li > a:hover {
-    background: none;
-    color: @colorFont3;
-  }
-
-}*/
 
 .nav-tabs.tabs-center {
   li {
@@ -675,14 +632,6 @@ h4 {
     padding: 5px 7px;
   }
 }
-
-/*.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-  color: @colorFont3;
-  cursor: default;
-  background-color: #fff;
-  border: none;
-
-}*/
 
 .nav .caret, .nav .caret:hover, .nav .caret:active {
   border-top-color: @colorFont3;
@@ -698,11 +647,6 @@ h4 {
   border-top-color: @colorFont3;
   border-bottom-color: @colorFont3;
 }
-
-/*.nav-tabs > li {
-  font-size: 11px;
-  font-weight: 600;
-}*/
 
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
   border-color: #ededed;
@@ -728,7 +672,6 @@ h4 {
   margin-bottom: 0;
   font-size: 14px;
   font-weight: 600;
-  /*padding: 6px 14px;*/
   padding: 8px 16px;
 }
 
@@ -772,99 +715,178 @@ h4 {
   }
 }
 
+.btn-default[disabled] {
+  background: lighten(@colorBackground2, 5%);
+
+  &:hover,
+  &:focus {
+    background: lighten(@colorBackground2, 5%);
+  }
+
+  &:active,
+  &.active {
+    background: lighten(@colorBackground2, 5%);
+  }
+}
+
 .btn-primary {
-  background: @colorPrimary3;
+  background: @colorPrimary;
   color: white !important;
 
   &:hover,
   &:focus {
-    background: darken(@colorPrimary3, 5%);
+    background: darken(@colorPrimary, 5%);
     text-decoration: none;
   }
 
   &:active,
   &.active {
     outline: 0;
-    background: darken(@colorPrimary3, 5%);
+    background: darken(@colorPrimary, 5%);
+  }
+}
+
+.btn-primary[disabled] {
+  background: lighten(@colorPrimary, 5%);
+
+  &:hover,
+  &:focus {
+    background: lighten(@colorPrimary, 5%);
+  }
+
+  &:active,
+  &.active {
+    background: lighten(@colorPrimary, 5%);
   }
 }
 
 .btn-info {
-  background: @colorInfo2;
+  background: @colorInfo;
   color: white !important;
 
   &:hover,
   &:focus {
-    background: darken(@colorInfo2, 5%) !important;
+    background: darken(@colorInfo, 5%) !important;
     text-decoration: none;
   }
 
   &:active,
   &.active {
     outline: 0;
-    background: darken(@colorInfo2, 5%);
+    background: darken(@colorInfo, 5%);
   }
 }
+
+.btn-info[disabled] {
+  background: lighten(@colorInfo, 5%);
+
+  &:hover,
+  &:focus {
+    background: lighten(@colorInfo, 5%);
+  }
+
+  &:active,
+  &.active {
+    background: lighten(@colorInfo, 5%);
+  }
+}
+
 
 .btn-danger {
-  background: @colorDanger1;
+  background: @colorDanger;
   color: white !important;
 
   &:hover,
   &:focus {
-    background: darken(@colorDanger1, 5%);
+    background: darken(@colorDanger, 5%);
     text-decoration: none;
   }
 
   &:active,
   &.active {
     outline: 0;
-    background: darken(@colorDanger1, 5%);
+    background: darken(@colorDanger, 5%);
   }
 }
+
+.btn-danger[disabled] {
+  background: lighten(@colorDanger, 5%);
+
+  &:hover,
+  &:focus {
+    background: lighten(@colorDanger, 5%);
+  }
+
+  &:active,
+  &.active {
+    background: lighten(@colorDanger, 5%);
+  }
+}
+
 
 .btn-success {
-  background: @colorInfo2;
+  background: @colorInfo;
   color: white !important;
 
   &:hover,
   &:focus {
-    background: darken(@colorInfo2, 5%);
+    background: darken(@colorInfo, 5%);
     text-decoration: none;
   }
 
   &:active,
   &.active {
     outline: 0;
-    background: darken(@colorInfo2, 5%);
+    background: darken(@colorInfo, 5%);
   }
 }
+
+.btn-success[disabled] {
+  background: lighten(@colorInfo, 5%);
+
+  &:hover,
+  &:focus {
+    background: lighten(@colorInfo, 5%);
+  }
+
+  &:active,
+  &.active {
+    background: lighten(@colorInfo, 5%);
+  }
+}
+
 
 .btn-warning {
-  background: @colorWarning1;
+  background: @colorWarning;
   color: white !important;
 
   &:hover,
   &:focus {
-    background: darken(@colorWarning1, 2%);
+    background: darken(@colorWarning, 2%);
     text-decoration: none;
   }
 
   &:active,
   &.active {
     outline: 0;
-    background: darken(@colorWarning1, 2%);
+    background: darken(@colorWarning, 2%);
   }
 }
 
-//
-// Button-Groups
-// --------------------------------------------------
+.btn-warning[disabled] {
+  background: lighten(@colorWarning, 5%);
 
-/*.btn-group {
-  border: 2px solid @colorPrimary3;
-  border-radius: 6px;
-}*/
+  &:hover,
+  &:focus {
+    background: lighten(@colorWarning, 5%);
+  }
+
+  &:active,
+  &.active {
+    background: lighten(@colorWarning, 5%);
+  }
+}
+
 
 //
 // Forms
@@ -880,8 +902,7 @@ h4 {
   box-shadow: none;
 
   &:focus {
-    //border-color: @colorInfo2;
-    border: 2px solid @colorInfo2;
+    border: 2px solid @colorInfo;
     outline: 0;
     box-shadow: none;
   }
@@ -921,14 +942,6 @@ select.form-control {
   overflow: hidden;
 
 }
-
-/* Firefox hack */
-/*@-moz-document url-prefix() {
-  select {
-    background-image: none !important;
-    padding: 5px 12px !important;
-  }
-}*/
 
 // Placeholder text
 ::-webkit-input-placeholder {
@@ -984,35 +997,35 @@ a.label-default:hover {
 }
 
 .label-info {
-  background-color: @colorInfo2;
+  background-color: @colorInfo;
 }
 
 a.label-info:hover {
-  background: darken(@colorInfo2, 5%) !important;
+  background: darken(@colorInfo, 5%) !important;
 }
 
 .label-danger {
-  background-color: @colorDanger1;
+  background-color: @colorDanger;
 }
 
 a.label-danger:hover {
-  background: darken(@colorDanger1, 5%) !important;
+  background: darken(@colorDanger, 5%) !important;
 }
 
 .label-success {
-  background-color: @colorInfo2;
+  background-color: @colorInfo;
 }
 
 a.label-success:hover {
-  background: darken(@colorInfo2, 5%) !important;
+  background: darken(@colorInfo, 5%) !important;
 }
 
 .label-warning {
-  background-color: @colorWarning1;
+  background-color: @colorWarning;
 }
 
 a.label-warning:hover {
-  background: darken(@colorWarning1, 5%) !important;
+  background: darken(@colorWarning, 5%) !important;
 }
 
 //
@@ -1092,47 +1105,8 @@ a.list-group-item:hover, a.list-group-item.active, a.list-group-item.active:hove
   z-index: 2;
   color: @colorFont3;
   background-color: @colorBackground1;
-  border-left: 3px solid @colorInfo2 !important;
+  border-left: 3px solid @colorInfo !important;
 }
-
-/*.list-group-item:first-child {
-  border-top: none;
-}
-
-.list-group-item {
-  background-color: white;
-  border: none;
-  padding: 6px 15px;
-  line-height: 20px;
-  font-weight: 600;
-  font-size: 13px;
-  font-weight: 600;
-  border-left: 3px solid red !important;
-
-}
-
-a.list-group-item {
-  color: @colorFont3;
-}
-
-.list-group-item:hover, list-group-item.active:hover {
-  background: @colorBackground1;
-  color: @colorFont3;
-  padding-left: 12px;
-  border-left: 3px solid @colorInfo2;
-}
-
-a.list-group-item.active:hover {
-  padding-left: 13px;
-}
-
-a.list-group-item.active {
-  background: @colorBackground1;
-  color: @colorFont3;
-  border: none;
-  padding-left: 13px;
-  border-left: 3px solid @colorInfo2;
-}*/
 
 //
 // Modal
@@ -1204,11 +1178,6 @@ a.list-group-item.active {
       margin-top: 0;
     }
 
-    .modal-loader {
-      position: absolute;
-      right: 30px;
-      bottom: 30px;
-    }
   }
 }
 
@@ -1229,7 +1198,7 @@ a.list-group-item.active {
 }
 
 .ekko-lightbox-nav-overlay a, .ekko-lightbox-nav-overlay a:hover {
-  color: @colorPrimary3;
+  color: @colorPrimary;
 }
 
 //
@@ -1244,7 +1213,7 @@ a.list-group-item.active {
 }
 
 .progress-bar-info {
-  background-color: @colorInfo2;
+  background-color: @colorInfo;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -1253,7 +1222,7 @@ a.list-group-item.active {
 // Tooltips
 // --------------------------------------------------
 .tooltip-inner {
-  background-color: @colorPrimary3;
+  background-color: @colorPrimary;
   max-width: 400px;
   text-align: left;
   font-weight: 300;
@@ -1262,28 +1231,28 @@ a.list-group-item.active {
 
 .tooltip {
   &.top .tooltip-arrow {
-    border-top-color: @colorPrimary3;
+    border-top-color: @colorPrimary;
   }
   &.top-left .tooltip-arrow {
-    border-top-color: @colorPrimary3;
+    border-top-color: @colorPrimary;
   }
   &.top-right .tooltip-arrow {
-    border-top-color: @colorPrimary3;
+    border-top-color: @colorPrimary;
   }
   &.right .tooltip-arrow {
-    border-right-color: @colorPrimary3;
+    border-right-color: @colorPrimary;
   }
   &.left .tooltip-arrow {
-    border-left-color: @colorPrimary3;
+    border-left-color: @colorPrimary;
   }
   &.bottom .tooltip-arrow {
-    border-bottom-color: @colorPrimary3;
+    border-bottom-color: @colorPrimary;
   }
   &.bottom-left .tooltip-arrow {
-    border-bottom-color: @colorPrimary3;
+    border-bottom-color: @colorPrimary;
   }
   &.bottom-right .tooltip-arrow {
-    border-bottom-color: @colorPrimary3;
+    border-bottom-color: @colorPrimary;
   }
 }
 
@@ -1296,8 +1265,6 @@ a.list-group-item.active {
 // Tables
 // --------------------------------------------------
 table {
-
-  //border-bottom: 1px solid #ddd;
 
   th {
     font-size: 11px;
@@ -1316,7 +1283,7 @@ table {
 
   td {
     a:hover {
-      color: @colorInfo2;
+      color: @colorInfo;
     }
   }
 
@@ -1329,21 +1296,6 @@ table {
 //
 // x) HumHub Components
 // --------------------------------------------------
-
-// Ajax loader
-.loader {
-  height: 60px;
-  background: url('../img/loader.gif') no-repeat center center;
-}
-
-#wallStream .loader {
-  background: url('../img/loader_body.gif') no-repeat center center;
-}
-
-.loader-small {
-  height: 32px;
-  width: 32px;
-}
 
 // CGridView
 .grid-view .filters input, .grid-view .filters select {;
@@ -1387,7 +1339,7 @@ table {
 
 // User- & Space picker
 .userInput, .spaceInput {
-  background-color: @colorInfo2;
+  background-color: @colorInfo;
   font-weight: 600;
 }
 
@@ -1434,23 +1386,23 @@ ul.tag_input {
 }
 
 ul.tag_input.focus {
-  border: 2px solid @colorInfo2;
+  border: 2px solid @colorInfo;
   outline: 0;
   box-shadow: none;
 }
 
 // Member sign for directory list
 .space-member-sign {
-  color: @colorInfo2;
+  color: @colorInfo;
 }
 
 .file_upload_remove_link, .file_upload_remove_link:hover {
-  color: @colorDanger1;
+  color: @colorDanger;
 }
 
 // Contentform error
 #contentFormError {
-  color: @colorDanger1;
+  color: @colorDanger;
 }
 
 // fileupload button
@@ -1482,7 +1434,7 @@ ul.tag_input.focus {
 // Flash message after saving
 .data-saved {
   padding-left: 10px;
-  color: @colorInfo2;
+  color: @colorInfo;
 }
 
 .wallFilterPanel {
@@ -1521,7 +1473,7 @@ ul.tour-list {
   li {
 
     a {
-      color: @colorInfo2;
+      color: @colorInfo;
     }
   }
 
@@ -1542,12 +1494,12 @@ ul.tour-list {
 
 // Errror handling
 .errorMessage {
-  color: @colorDanger1;
+  color: @colorDanger;
 }
 
 // Errror handling
 .error {
-  border-color: @colorDanger1 !important;
+  border-color: @colorDanger !important;
 }
 
 //
@@ -1561,16 +1513,16 @@ ul.tour-list {
 
 // atwho Plugin
 .atwho-view .cur {
-  border-left: 3px solid @colorInfo2;
+  border-left: 3px solid @colorInfo;
   background-color: #f7f7f7 !important;
 }
 
 .atwho-user, .atwho-space, .atwho-input a {
-  color: @colorInfo2;
+  color: @colorInfo;
 }
 
 .atwho-input a:hover {
-  color: @colorInfo2;
+  color: @colorInfo;
 }
 
 .atwho-view strong {
@@ -1591,6 +1543,29 @@ ul.tour-list {
 
   .jp-play-bar {
     background: #cacaca;
+  }
+}
+
+// Ajax loader
+.loader {
+  padding: 30px 0;
+
+  .sk-spinner-three-bounce div {
+    background-color: @colorInfo;
+  }
+
+}
+
+.loader-modal {
+  padding: 8px 0;
+}
+
+.loader-postform {
+  padding: 9px 0;
+
+  .sk-spinner-three-bounce.sk-spinner {
+    text-align: left;
+    margin: 0;
   }
 }
 
@@ -1630,7 +1605,7 @@ img.bounceIn {
   }
 
   .panel a {
-    color: @colorInfo2;
+    color: @colorInfo;
   }
 
   h1, h2 {
@@ -1651,15 +1626,15 @@ img.bounceIn {
     }
 
     .check-ok {
-      color: @colorInfo2;
+      color: @colorInfo;
     }
 
     .check-warning {
-      color: @colorWarning1
+      color: @colorWarning
     }
 
     .check-error {
-      color: @colorDanger1;
+      color: @colorDanger;
     }
 
     .prerequisites-list {
