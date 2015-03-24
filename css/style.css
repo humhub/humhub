@@ -223,6 +223,12 @@ textarea {
   max-height: 400px;
   overflow: auto;
 }
+@media screen and (max-width: 768px) {
+  #topbar-second #space-menu-dropdown .media-list,
+  #topbar-second #search-menu-dropdown .media-list {
+    max-height: 250px;
+  }
+}
 #topbar-second #space-menu-dropdown form,
 #topbar-second #search-menu-dropdown form {
   margin: 10px;
@@ -878,5 +884,11 @@ textarea.placeholder {
   }
   .panel-profile .panel-profile-header .img-profile-data h1 {
     font-size: 20px !important;
+  }
+}
+@media screen and (max-width: 768px) {
+  #space-menu-dropdown .media-list,
+  #search-menu-dropdown .media-list {
+    max-height: 250px;
   }
 }
