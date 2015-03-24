@@ -22,5 +22,5 @@ return array (
   'Make public' => 'Açık yap',
   'Notify members' => 'Üyeleri bilgilendir',
   'Public' => 'Açık',
-  'Whats on your mind?' => 'Aklında ne var?',
+  'What\'s on your mind?' => 'Aklında ne var?',
 );
