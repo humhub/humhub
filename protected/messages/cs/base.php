@@ -5,7 +5,7 @@ return array (
   'Administration' => 'Administrace',
   'Back to dashboard' => 'Zpět na nástěnku',
   'Collapse' => 'Sbalit',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Doplněk Content musí být instancí buď HActiveRecordContent nebo HActiveRecordContentAddon!',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon musí být buď instancí objektu HActiveRecordContent nebo HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Nebylo možné zvolit obsahový kontejner.',
   'Could not find content of addon!' => 'Nebylo možné nalézt obsah dolpňku!',
   'Could not find requested module!' => 'Nebylo možné nalézt požadovaný modul!',

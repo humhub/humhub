@@ -5,7 +5,7 @@ return array (
   'Follow' => 'Seguir',
   'Followers' => 'Seguidores',
   'Following' => 'Seguindo',
-  'Ok' => '',
+  'Ok' => 'Ok',
   'Spaces' => 'Espaços',
   'Unfollow' => 'Deixar de seguir',
 );

@@ -5,7 +5,7 @@ return array (
   'Created by' => 'Criado por',
   'Description' => 'Descrição',
   'General' => 'Geral',
-  'ID' => '',
+  'ID' => 'ID',
   'Module' => 'Módulo',
   'Social bookmarks' => 'Bookmarks sociais',
   'Sort order' => 'Ordenar',

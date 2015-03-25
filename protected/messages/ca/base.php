@@ -8,7 +8,7 @@ return array (
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
   'Could not determine content container!' => '',
   'Could not find content of addon!' => '',
-  'Could not find requested module!' => '',
+  'Could not find requested module!' => 'No s\'ha pogut trobar el mòdul sol·licitat!',
   'Error' => 'Error',
   'Expand' => 'Amplia',
   'Insufficent permissions to create content!' => '',

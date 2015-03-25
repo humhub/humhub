@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Collapse' => '',
+  'Collapse' => 'Μίκρυνε',
   'Read full post...' => 'Διάβασε ολόκληρη την ανάρτηση...',
 );
