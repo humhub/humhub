@@ -10,7 +10,7 @@ return array (
   'Social bookmarks' => '',
   'Sort order' => 'Xếp theo thứ tự',
   'Title' => 'Tiêu đề',
-  'Translation Category ID' => '',
+  'Translation Category ID' => 'Dịch ID chuyên mục',
   'Updated at' => 'Cập nhật lúc',
   'Updated by' => 'Cập nhật bởi',
   'Visibility' => '',

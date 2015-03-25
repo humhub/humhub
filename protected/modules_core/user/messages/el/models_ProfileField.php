@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Created at' => '',
+  'Created at' => 'Δημιουργήθηκε στις',
   'Created by' => 'Δημιουργήθηκε από',
   'Description' => 'Περιγραφή',
   'Editable' => '',
@@ -21,7 +21,7 @@ return array (
   'Title' => 'Τίτλος',
   'Translation Category ID' => '',
   'Type Config' => '',
-  'Updated at' => '',
-  'Updated by' => '',
+  'Updated at' => 'Ανανεώθηκε στις',
+  'Updated by' => 'Ανανεώθηκε από',
   'Visible' => 'Ορατό',
 );

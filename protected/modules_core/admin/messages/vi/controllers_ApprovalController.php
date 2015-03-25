@@ -17,5 +17,5 @@ return array (
       
    Kind Regards<br>
    {AdminName}<br><br>' => '',
-  'User not found!' => '',
+  'User not found!' => 'Không tìm thấy người dùng!',
 );
