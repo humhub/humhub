@@ -36,14 +36,29 @@ class SettingController extends Controller
         );
     }
 
+    public function actionIndex()
+    {
+        $this->redirect($this->createUrl('basic'));
+    }
+
     /**
      * Returns a List of Users
      */
-    public function actionIndex()
+    public function actionBasic()
     {
         Yii::import('admin.forms.*');
 
         $form = new BasicSettingsForm;
+        $form->name = HSetting::Get('name');
+        $form->baseUrl = HSetting::Get('baseUrl');
+        $form->defaultLanguage = HSetting::Get('defaultLanguage');
+        $form->dashboardShowProfilePostForm = HSetting::Get('showProfilePostForm', 'dashboard');
+        $form->tour = HSetting::Get('enable', 'tour');
+        
+        $form->defaultSpaceGuid = "";
+        foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
+            $form->defaultSpaceGuid .= $defaultSpace->guid . ",";
+        }
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'basic-settings-form') {
             echo CActiveForm::validate($form);
@@ -59,6 +74,7 @@ class SettingController extends Controller
                 HSetting::Set('baseUrl', $form->baseUrl);
                 HSetting::Set('defaultLanguage', $form->defaultLanguage);
                 HSetting::Set('enable', $form->tour, 'tour');
+                HSetting::Set('showProfilePostForm', $form->dashboardShowProfilePostForm, 'dashboard');
 
                 $spaceGuids = explode(",", $form->defaultSpaceGuid);
 
@@ -81,23 +97,10 @@ class SettingController extends Controller
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
-
-                $this->redirect(Yii::app()->createUrl('//admin/setting/index'));
-            }
-        } else {
-            $form->name = HSetting::Get('name');
-            $form->baseUrl = HSetting::Get('baseUrl');
-            $form->defaultLanguage = HSetting::Get('defaultLanguage');
-            $form->tour = HSetting::Get('enable', 'tour');
-
-
-            $form->defaultSpaceGuid = "";
-            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $defaultSpace) {
-                $form->defaultSpaceGuid .= $defaultSpace->guid . ",";
+                $this->redirect(Yii::app()->createUrl('//admin/setting/basic'));
             }
         }
-
-        $this->render('index', array('model' => $form));
+        $this->render('basic', array('model' => $form));
     }
 
     public function actionDeleteLogoImage()

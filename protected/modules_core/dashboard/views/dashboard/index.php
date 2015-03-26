@@ -2,9 +2,11 @@
     <div class="row">
         <div class="col-md-8">
             <?php
-            $this->widget('application.modules_core.post.widgets.PostFormWidget', array(
-                'contentContainer' => Yii::app()->user->model
-            ));
+            if ($showProfilePostForm) {
+                $this->widget('application.modules_core.post.widgets.PostFormWidget', array(
+                    'contentContainer' => Yii::app()->user->model
+                ));
+            }
             ?>
 
             <?php
