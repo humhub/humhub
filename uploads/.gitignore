@@ -1,0 +1,6 @@
+# Ignore everything in this directory
+*
+!.gitignore
+!file
+!profile_image
+
