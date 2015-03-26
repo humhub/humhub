@@ -6,7 +6,7 @@ return array (
   'Editable' => 'Modificabile',
   'Field Type could not be changed!' => 'Il tipo di campo non può essere cambiato!',
   'Fieldtype' => 'Tipo di campo',
-  'ID' => '',
+  'ID' => 'ID',
   'Internal Name' => 'Nome interno',
   'Internal name already in use!' => 'Il nome interno è già in uso!',
   'Internal name could not be changed!' => 'Il nome interno non può essere cambiato!',

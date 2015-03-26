@@ -77,7 +77,9 @@ class DashboardController extends Controller
         if (Yii::app()->user->isGuest) {
             $this->render('index_guest', array());
         } else {
-            $this->render('index', array());
+            $this->render('index', array(
+                'showProfilePostForm' => HSetting::Get('showProfilePostForm', 'dashboard')
+            ));
         }
     }
 

@@ -5,5 +5,5 @@ return array (
   'Make public' => 'Обнародовать',
   'Notify members' => 'Уведомлять пользователей',
   'Public' => 'Обнародованное',
-  'Whats on your mind?' => 'О чем вы думаете?',
+  'What\'s on your mind?' => 'О чем вы думаете?',
 );

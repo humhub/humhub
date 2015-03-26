@@ -22,5 +22,5 @@ return array (
   'Make public' => '',
   'Notify members' => '',
   'Public' => '',
-  'Whats on your mind?' => '',
+  'What\'s on your mind?' => '',
 );

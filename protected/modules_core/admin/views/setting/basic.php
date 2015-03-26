@@ -41,12 +41,16 @@
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'New users will automatically added to these space(s).'); ?></p>
 
 
-        <strong>Introduction tour</strong>
-
+        <strong><?php echo Yii::t('AdminModule.views_setting_index', 'Dashboard'); ?></strong>
         <div class="form-group">
             <div class="checkbox">
                 <label>
                     <?php echo $form->checkBox($model, 'tour'); ?> <?php echo $model->getAttributeLabel('tour'); ?>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($model, 'dashboardShowProfilePostForm'); ?> <?php echo $model->getAttributeLabel('dashboardShowProfilePostForm'); ?>
                 </label>
             </div>
         </div>
