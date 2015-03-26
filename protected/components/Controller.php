@@ -241,7 +241,7 @@ class Controller extends EController
     protected function handleLocale()
     {
 
-        $isGuest = (($this->module != null && $this->module->id == 'installer') || Yii::app()->user->isGuest);
+        $isGuest = (!Yii::app()->params['installed'] || Yii::app()->user->isGuest);
 
         if ($isGuest) {
 
