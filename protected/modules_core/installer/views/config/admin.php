@@ -1,7 +1,7 @@
 <div id="create-admin-account-form" class="panel panel-default animated fadeIn">
 
-    <div class="install-header install-header-small" style="background-image: url('<?php echo $this->module->assetsUrl; ?>/humhub-install-header.jpg');">
-        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.views_config_admin', '<strong>Admin</strong> Account'); ?></h2>
+    <div class="panel-heading">
+        <?php echo Yii::t('InstallerModule.views_config_admin', '<strong>Admin</strong> Account'); ?>
     </div>
 
     <div class="panel-body">

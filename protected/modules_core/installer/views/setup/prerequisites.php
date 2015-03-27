@@ -1,7 +1,7 @@
 <div class="panel panel-default animated fadeIn">
 
-    <div class="install-header install-header-small" style="background-image: url('<?php echo $this->module->assetsUrl; ?>/humhub-install-header.jpg');">
-        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.views_setup_prerequisites', '<strong>System</strong> Check'); ?></h2>
+    <div class="panel-heading">
+        <?php echo Yii::t('InstallerModule.views_setup_prerequisites', '<strong>System</strong> Check'); ?>
     </div>
 
     <div class="panel-body">
@@ -43,7 +43,7 @@
 
             <hr>
 
-        <?php echo HHtml::link('<i class="fa fa-repeat"></i> '. Yii::t('InstallerModule.views_setup_prerequisites','Check again'), array('//installer/setup/prerequisites'), array('class' => 'btn btn-info')); ?>
+        <?php echo HHtml::link('<i class="fa fa-repeat"></i> '. Yii::t('InstallerModule.views_setup_prerequisites','Check again'), array('//installer/setup/prerequisites'), array('class' => 'btn btn-default')); ?>
 
         <?php if (!$hasError): ?>
                 <?php echo HHtml::link(Yii::t('InstallerModule.views_setup_prerequisites','Next'). ' <i class="fa fa-arrow-circle-right"></i>', array('//installer/setup/database'), array('class' => 'btn btn-primary')); ?>

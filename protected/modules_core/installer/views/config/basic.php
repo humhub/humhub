@@ -1,7 +1,7 @@
 <div id="name-form" class="panel panel-default animated fadeIn">
 
-    <div class="install-header install-header-small" style="background-image: url('<?php echo $this->module->assetsUrl; ?>/humhub-install-header.jpg');">
-        <h2 class="install-header-title"><?php echo Yii::t('InstallerModule.views_config_basic', 'Social Network <strong>Name</strong>'); ?></h2>
+    <div class="panel-heading">
+        <?php echo Yii::t('InstallerModule.views_config_basic', 'Social Network <strong>Name</strong>'); ?>
     </div>
 
     <div class="panel-body">

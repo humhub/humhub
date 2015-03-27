@@ -12,6 +12,7 @@
 @colorDanger: #ff8989;
 @colorInfo: #6fdbe8;
 @colorInfo2: #61c2d0;
+@colorSuccess: #97d271;
 @colorInfoLight: #dffcff;
 @colorWarning: #fdd198;
 @colorPrimary: #638392;
@@ -462,6 +463,39 @@ input[type=text], input[type=password], input[type=select] {
 
     h3 {
       margin-top: 0px;
+    }
+  }
+
+  .powered, .powered a {
+    color: @colorFont1 !important;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .fa {
+    width: 18px;
+  }
+
+  .check-ok {
+    color: @colorSuccess;
+  }
+
+  .check-warning {
+    color: @colorWarning
+  }
+
+  .check-error {
+    color: @colorDanger;
+  }
+
+  .prerequisites-list {
+    ul {
+      list-style: none;
+      padding-left: 15px;
+
+      li {
+        padding-bottom: 5px;
+      }
     }
   }
 
@@ -1620,53 +1654,6 @@ img.bounceIn {
       padding: 15px;
     }
 
-    .fa {
-      width: 18px;
-    }
-
-    .check-ok {
-      color: @colorInfo;
-    }
-
-    .check-warning {
-      color: @colorWarning
-    }
-
-    .check-error {
-      color: @colorDanger;
-    }
-
-    .prerequisites-list {
-      ul {
-        list-style: none;
-        padding-left: 15px;
-
-        li {
-          padding-bottom: 5px;
-        }
-      }
-    }
-  }
-
-  .install-header {
-    position: relative;
-    text-align: center;
-    height: 152px;
-    background-position: top center;
-    border-radius: 3px;
-    border: 3px solid #ffffff;
-
-    .install-header-title {
-      padding: 6% 30px 0 30px;
-    }
-  }
-
-  .install-header.install-header-small {
-    height: 110px;
-
-    .install-header-title {
-      padding: 3% 30px 0 30px;
-    }
   }
 
 }
