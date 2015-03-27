@@ -85,6 +85,37 @@ class AccountController extends Controller
     }
 
     /**
+     * User Account Privacy Settings
+     *
+     */
+    public function actionEditPrivacy()
+    {
+    	$user = Yii::app()->user->getModel();
+    	$model = new AccountPrivacyForm();
+    	$model->displayProfileFollowerInfo = $user->getSetting("displayProfileFollowerInfo", 'privacy', HSetting::Get('defaultDisplayProfileFollowerInfo', 'privacy_default'));
+    	$model->displayProfileFollowingInfo = $user->getSetting("displayProfileFollowingInfo", 'privacy', HSetting::Get('defaultDisplayProfileFollowingInfo', 'privacy_default'));
+    	$model->displayProfileSpaceInfo = $user->getSetting("displayProfileSpaceInfo", 'privacy', HSetting::Get('defaultDisplayProfileSpaceInfo', 'privacy_default'));
+    	
+    	if (isset($_POST['AccountPrivacyForm'])) {
+    
+    		$_POST['AccountPrivacyForm'] = Yii::app()->input->stripClean($_POST['AccountPrivacyForm']);
+    		$model->attributes = $_POST['AccountPrivacyForm'];
+    
+    		if ($model->validate()) {
+    			$user->setSetting("displayProfileFollowerInfo", $model->displayProfileFollowerInfo, 'privacy');
+    			$user->setSetting("displayProfileFollowingInfo", $model->displayProfileFollowingInfo, 'privacy');
+    			$user->setSetting("displayProfileSpaceInfo", $model->displayProfileSpaceInfo, 'privacy');
+    			
+    			Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
+    		}
+    	}
+    	
+    	$displayProfileInfoOptions = array('open' => 'Visible to all Users', 'hide' => 'Hide from all Users');
+    
+    	$this->render('editPrivacy', array('model' => $model, 'displayProfileInfoOptions' => $displayProfileInfoOptions));
+    }
+    
+    /**
      * Allows the user to enable user specifc modules
      */
     public function actionEditModules()

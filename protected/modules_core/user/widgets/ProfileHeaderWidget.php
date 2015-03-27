@@ -29,6 +29,7 @@ class ProfileHeaderWidget extends HWidget
     protected $user;
     protected $isProfileOwner = false;
 
+    public $privacySettings = array();
 
     public function init()
     {
@@ -49,7 +50,8 @@ class ProfileHeaderWidget extends HWidget
     {
         $this->render('profileHeader', array(
             'user' => $this->user,
-            'isProfileOwner' => $this->isProfileOwner
+            'isProfileOwner' => $this->isProfileOwner,
+        	'privacySettings' => $this->privacySettings
         ));
     }
 

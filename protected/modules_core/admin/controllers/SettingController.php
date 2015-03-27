@@ -37,7 +37,7 @@ class SettingController extends Controller
     }
 
     /**
-     * Returns a List of Users
+     * Display Admin Control Panel
      */
     public function actionIndex()
     {
@@ -101,7 +101,7 @@ class SettingController extends Controller
     }
 
     /**
-     * Returns a List of Users
+     * Display Authentication Settings
      */
     public function actionAuthentication()
     {
@@ -147,9 +147,9 @@ class SettingController extends Controller
 
         $this->render('authentication', array('model' => $form, 'groups' => $groups));
     }
-
+    
     /**
-     * Returns a List of Users
+     * Display Authentication -> LDAP Settings
      */
     public function actionAuthenticationLdap()
     {
@@ -226,7 +226,50 @@ class SettingController extends Controller
     }
 
     /**
-     * Caching Options
+     * Display Privacy Settings
+     */
+    public function actionPrivacy()
+    {
+    	Yii::import('admin.forms.*');
+    
+    	$form = new PrivacySettingsForm;
+    	$form->defaultDisplayProfileFollowerInfo = HSetting::Get('defaultDisplayProfileFollowerInfo', 'privacy_default');
+		$form->allowUserOverrideFollowerSetting = HSetting::Get('allowUserOverrideFollowerSetting', 'privacy_default');
+    	$form->defaultDisplayProfileFollowingInfo = HSetting::Get('defaultDisplayProfileFollowingInfo', 'privacy_default');
+    	$form->allowUserOverrideFollowingSetting = HSetting::Get('allowUserOverrideFollowingSetting', 'privacy_default');
+    	$form->defaultDisplayProfileSpaceInfo = HSetting::Get('defaultDisplayProfileSpaceInfo', 'privacy_default');
+    	$form->allowUserOverrideSpaceSetting = HSetting::Get('allowUserOverrideSpaceSetting', 'privacy_default');
+
+    	if (isset($_POST['ajax']) && $_POST['ajax'] === 'privacy-settings-form') {
+    		echo CActiveForm::validate($form);
+    		Yii::app()->end();
+    	}
+    
+    	if (isset($_POST['PrivacySettingsForm'])) {
+    		$_POST['PrivacySettingsForm'] = Yii::app()->input->stripClean($_POST['PrivacySettingsForm']);
+    		$form->attributes = $_POST['PrivacySettingsForm'];
+    
+    		if ($form->validate()) {
+    			$form->defaultDisplayProfileFollowerInfo = HSetting::Set('defaultDisplayProfileFollowerInfo', $form->defaultDisplayProfileFollowerInfo, 'privacy_default');
+    			$form->allowUserOverrideFollowerSetting = HSetting::Set('allowUserOverrideFollowerSetting', $form->allowUserOverrideFollowerSetting, 'privacy_default');
+    			$form->defaultDisplayProfileFollowingInfo = HSetting::Set('defaultDisplayProfileFollowingInfo', $form->defaultDisplayProfileFollowingInfo, 'privacy_default');
+    			$form->allowUserOverrideFollowingSetting = HSetting::Set('allowUserOverrideFollowingSetting', $form->allowUserOverrideFollowingSetting, 'privacy_default');
+    			$form->defaultDisplayProfileSpaceInfo = HSetting::Set('defaultDisplayProfileSpaceInfo', $form->defaultDisplayProfileSpaceInfo, 'privacy_default');
+    			$form->allowUserOverrideSpaceSetting = HSetting::Set('allowUserOverrideSpaceSetting', $form->allowUserOverrideSpaceSetting, 'privacy_default');
+    
+    			// set flash message
+    			Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+    
+    			$this->redirect(Yii::app()->createUrl('//admin/setting/privacy'));
+    		}
+    	}
+    	
+    	$displayProfileInfoOptions = array('open' => 'Visible to all Users', 'hide' => 'Hide from all Users');
+    	$this->render('privacy', array('model' => $form, 'displayProfileInfoOptions' => $displayProfileInfoOptions));
+    }
+    
+    /**
+     * Caching Settings
      */
     public function actionCaching()
     {
@@ -353,7 +396,7 @@ class SettingController extends Controller
     }
 
     /**
-     * E-Mail Mailing Settings
+     * E-Mail Mailing -> Server settings
      */
     public function actionMailingServer()
     {
@@ -409,7 +452,7 @@ class SettingController extends Controller
     }
 
     /**
-     * E-Mail Mailing Settings
+     * Design Settings
      */
     public function actionDesign()
     {
@@ -554,7 +597,7 @@ class SettingController extends Controller
     }
 
     /**
-     * Caching Options
+     * Cron Job Settings
      */
     public function actionCronJob()
     {

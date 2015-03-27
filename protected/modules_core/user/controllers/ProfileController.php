@@ -12,7 +12,14 @@ class ProfileController extends Controller
 {
 
     public $subLayout = "_layout";
-
+	
+    public $privacySettings = array(
+    	'displayFollowerInfo' => true,
+    	'displayFollowingInfo' => true,
+    	'displaySpaceInfo' => true,
+    );
+   
+    
     /**
      * @return array action filters
      */
@@ -59,7 +66,8 @@ class ProfileController extends Controller
      */
     public function actionIndex()
     {
-        $this->render('index');
+    	$this->setPrivacySettings();
+    	$this->render('index', array('privacySettings' => $this->privacySettings));
     }
 
     /**
@@ -67,7 +75,8 @@ class ProfileController extends Controller
      */
     public function actionAbout()
     {
-        $this->render('about', array('user' => $this->getUser()));
+    	$this->setPrivacySettings();
+    	$this->render('about', array('user' => $this->getUser(), 'privacySettings' => $this->privacySettings));
     }
 
     /**
@@ -91,6 +100,41 @@ class ProfileController extends Controller
         $this->redirect($this->getUser()->getUrl());
     }
 
+    
+    /**
+    * Determine User privacy settings
+    */
+    private function setPrivacySettings()
+    {
+    	$user = $this->getUser();
+    	
+    	// Display "Follower" Info
+    	if (((HSetting::Get('defaultDisplayProfileFollowerInfo', 'privacy_default') == 'hide') && 
+    			!(HSetting::Get('allowUserOverrideFollowerSetting', 'privacy_default'))) ||
+    			((HSetting::Get('allowUserOverrideFollowerSetting', 'privacy_default')) &&
+    			($user->getSetting("displayProfileFollowerInfo", 'privacy') == 'hide')))
+    	{
+    		$this->privacySettings['displayFollowerInfo'] = false;
+    	}
+    	
+    	// Display "Following" Info
+    	if (((HSetting::Get('defaultDisplayProfileFollowingInfo', 'privacy_default') == 'hide') &&
+    			!(HSetting::Get('allowUserOverrideFollowingSetting', 'privacy_default'))) ||
+    			((HSetting::Get('allowUserOverrideFollowingSetting', 'privacy_default')) &&
+    					($user->getSetting("displayProfileFollowingInfo", 'privacy') == 'hide')))
+    	{
+    		$this->privacySettings['displayFollowingInfo'] = false;
+    	}
+    	
+    	// Display "Space" Info
+    	if (((HSetting::Get('defaultDisplayProfileSpaceInfo', 'privacy_default') == 'hide') &&
+    			!(HSetting::Get('allowUserOverrideSpaceSetting', 'privacy_default'))) ||
+    			((HSetting::Get('allowUserOverrideSpaceSetting', 'privacy_default')) &&
+    					($user->getSetting("displayProfileSpaceInfo", 'privacy') == 'hide')))
+    	{
+    		$this->privacySettings['displaySpaceInfo'] = false;
+    	}
+    }
 }
 
 ?>

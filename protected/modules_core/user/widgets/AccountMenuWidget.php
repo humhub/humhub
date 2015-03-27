@@ -37,7 +37,21 @@ class AccountMenuWidget extends MenuWidget {
             'sortOrder' => 110,
             'isActive' => (Yii::app()->controller->action->id == "editSettings"),
         ));
-
+	
+        // Only show if admin has allowed user to override default settings
+        if (HSetting::Get('allowUserOverrideFollowerSetting', 'privacy_default') || 
+        	HSetting::Get('allowUserOverrideFollowingSetting', 'privacy_default') || 
+        	HSetting::Get('allowUserOverrideSpaceSetting', 'privacy_default')) {
+        	
+        	$this->addItem(array(
+        			'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Privacy'),
+        			'icon' => '<i class="fa fa-eye"></i>',
+        			'group' => 'account',
+        			'url' => Yii::app()->createUrl('//user/account/editPrivacy'),
+        			'sortOrder' => 115,
+        			'isActive' => (Yii::app()->controller->action->id == "editPrivacy"),
+        	));
+        }
         
         // Only show this page when really user specific modules available
         if (count(Yii::app()->user->getModel()->getAvailableModules()) != 0) {

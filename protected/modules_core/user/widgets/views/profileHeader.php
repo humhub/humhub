@@ -167,24 +167,30 @@
         <div class="panel-profile-controls">
             <!-- start: User statistics -->
             <div class="statistics pull-left">
-
+        	
+            	<?php if ($privacySettings['displayFollowerInfo']) : ?>
                 <div class="pull-left entry">
                     <span class="count"><?php echo $user->getFollowerCount(); ?></span></a>
                     <br>
                     <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
                 </div>
-
+				<?php endif ?>
+				
+				<?php if ($privacySettings['displayFollowingInfo']) : ?>
                 <div class="pull-left entry">
                     <span class="count"><?php echo $user->getFollowingCount('User') + $user->getFollowingCount('Space'); ?></span>
                     <br>
                     <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
                 </div>
-
+				<?php endif ?>
+				
+				<?php if ($privacySettings['displaySpaceInfo']) : ?>
                 <div class="pull-left entry">
                     <span class="count"><?php echo count($user->spaces); ?></span><br>
                     <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
                 </div>
-
+				<?php endif ?>
+				
             </div>
             <!-- end: User statistics -->
 

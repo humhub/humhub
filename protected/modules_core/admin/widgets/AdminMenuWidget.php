@@ -107,6 +107,15 @@ class AdminMenuWidget extends MenuWidget
             'isVisible' => Yii::app()->user->isAdmin(),
         ));
         $this->addItem(array(
+        		'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Privacy'),
+        		'url' => Yii::app()->createUrl('admin/setting/privacy'),
+        		'icon' => '<i class="fa fa-eye"></i>',
+        		'group' => 'settings',
+        		'sortOrder' => 150,
+        		'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'admin' && Yii::app()->controller->id == 'setting' && Yii::app()->controller->action->id == 'privacy'),
+        		'isVisible' => Yii::app()->user->isAdmin(),
+        ));
+        $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Design'),
             'url' => Yii::app()->createUrl('admin/setting/design'),
             'icon' => '<i class="fa fa-magic"></i>',
