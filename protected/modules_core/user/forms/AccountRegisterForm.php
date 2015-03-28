@@ -10,6 +10,7 @@
 class AccountRegisterForm extends CFormModel {
 
     public $email;
+    public $verifyCode;
 
     /**
      * Declares the validation rules.
@@ -19,6 +20,7 @@ class AccountRegisterForm extends CFormModel {
             array('email', 'required'),
             array('email', 'email'),
             array('email', 'uniqueEmailValidator'),
+            array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements()),
         );
     }
 
