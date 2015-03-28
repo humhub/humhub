@@ -106,9 +106,9 @@ class WebUser extends CWebUser
      *
      * @return int
      */
-    public function isAdmin()
+    public function isAdmin($id = false)
     {
-        $user = $this->loadUser(Yii::app()->user->id);
+        $user = ($id) ? $this->loadUser($id) : $this->loadUser(Yii::app()->user->id);
 
         if ($user->super_admin == 1) {
             return true;
