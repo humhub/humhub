@@ -718,8 +718,8 @@ class SettingController extends Controller
      */
     public function actionSelfTest()
     {
-        Yii::import('application.commands.shell.ZMigrateCommand');
-        $migrate = ZMigrateCommand::AutoMigrate();
+        Yii::import('application.commands.shell.HUpdateCommand');
+        $migrate = HUpdateCommand::AutoUpdate();
 
         $this->render('selftest', array('checks' => SelfTest::getResults(), 'migrate' => $migrate,
         ));

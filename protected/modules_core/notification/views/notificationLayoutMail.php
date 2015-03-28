@@ -36,7 +36,7 @@
                                                     <td valign="top" align="left" style="padding-right:20px;">
                                                         
                                                         <!-- check if variable exists and is true -->
-                                                        <?php if (empty($hideUserImage)): ?>
+                                                        <?php if ($notification->getCreator() !== null && empty($hideUserImage)): ?>
                                                             <!-- START: USER IMAGE -->
                                                             <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
                                                                 <img

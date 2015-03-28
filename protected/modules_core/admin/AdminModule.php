@@ -9,27 +9,35 @@ class AdminModule extends HWebModule
 
     public $isCoreModule = true;
 
+    /**
+     * Should the marketplace be enabled
+     * 
+     * @var boolean
+     */
+    public $marketplaceEnabled = true;
+
+    /**
+     * URL to HumHub Marketplace API
+     * 
+     * @var string
+     */
+    public $marketplaceApiUrl = "https://www.humhub.com/api/v1/modules/";
+
+    /**
+     * Enforce valid marketplace ssl certificate
+     * 
+     * @var boolean
+     */
+    public $marketplaceApiValidateSsl = true;
+
     public function init()
     {
-
         $this->setImport(array(
             'admin.models.*',
             'admin.forms.*',
             'admin.libs.*',
             'admin.*',
         ));
-    }
-
-    /**
-     * On Init of Dashboard Sidebar, add the approve notification widget
-     *
-     * @param type $event
-     */
-    public static function onDashboardSidebarInit($event)
-    {
-        if (Yii::app()->user->canApproveUsers()) {
-            $event->sender->addWidget('application.modules_core.admin.widgets.ApprovalDashboardWidget', array(), array('sortOrder' => 99));
-        }
     }
 
 }
