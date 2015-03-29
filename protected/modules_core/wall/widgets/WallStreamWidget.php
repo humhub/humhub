@@ -87,8 +87,17 @@ class WallStreamWidget extends HWidget
         $startUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => $this->wallObjectStreamLimit, 'filters' => 'filter_placeholder', 'sort' => 'sort_placeholder'));
         $singleEntryUrl = Yii::app()->createUrl($this->streamAction, array('type' => $this->type, 'guid' => $guid, 'limit' => 1, 'from' => 'fromEntryId'));
 
+        $view = 'stream_deprecated';
+
+        /**
+         * For backward compatiblity use modules 'stream' view
+         */
+        if (get_class($this) != 'WallStreamWidget') {
+            $view = 'stream';
+        }
+        
         // Render It
-        $this->render('stream_deprecated', array(
+        $this->render($view, array(
             'type' => $this->type,
             'reloadUrl' => $reloadUrl,
             'startUrl' => $startUrl,
