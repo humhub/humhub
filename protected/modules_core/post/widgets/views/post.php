@@ -67,7 +67,7 @@
             $('#post-content-' + post_id).css('max-height', '2000px');
 
             // set new link content
-            $('#more-link-post-' + post_id).html('<i class="fa fa-arrow-up"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Collapse'); ?>');
+            $('#more-link-post-' + post_id).html('<i class="fa fa-arrow-up"></i> <?php echo CHtml::encode(Yii::t('PostModule.widgets_views_post', 'Collapse')); ?>');
 
             // update link state
             $('#more-link-post-' + post_id).attr('data-state', 'up');
@@ -77,7 +77,7 @@
             $('#post-content-' + post_id).css('max-height', '310px');
 
             // set new link content
-            $('#more-link-post-' + post_id).html('<i class="fa fa-arrow-down"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Read full post...'); ?>');
+            $('#more-link-post-' + post_id).html('<i class="fa fa-arrow-down"></i> <?php echo CHtml::encode(Yii::t('PostModule.widgets_views_post', 'Read full post...')); ?>');
 
             // update link state
             $('#more-link-post-' + post_id).attr('data-state', 'down');

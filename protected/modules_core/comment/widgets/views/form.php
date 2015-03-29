@@ -37,7 +37,7 @@
             
             $('#comments_area_" . $id . "').append(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
-            $('#newCommentForm_" . $id . "_contenteditable').html('" . Yii::t('CommentModule.widgets_views_form', 'Write a new comment...') . "');
+            $('#newCommentForm_" . $id . "_contenteditable').html('" . CHtml::encode(Yii::t('CommentModule.widgets_views_form', 'Write a new comment...')) . "');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
             resetUploader('comment_upload_" . $id . "');
 
