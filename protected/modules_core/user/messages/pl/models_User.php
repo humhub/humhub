@@ -1,7 +1,5 @@
 <?php
 return array (
-  'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
-  'Visibility' => '',
   'Authentication mode' => 'Tryb uwierzytelniania ',
   'Created At' => 'Utworzone o',
   'Created by' => 'Utworzone przez',
@@ -16,5 +14,7 @@ return array (
   'Updated at' => 'Zaktualizowany o',
   'Updated by' => 'Zaktualizowany przez',
   'Username' => 'Nazwa użytkownika',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
+  'Visibility' => 'Widzialna',
   'Wall' => 'Tablica ',
 );

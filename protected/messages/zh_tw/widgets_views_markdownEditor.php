@@ -6,5 +6,5 @@ return array (
   'Enter a url (e.g. http://example.com)' => '',
   'Please wait while uploading...' => '',
   'Target' => '',
-  'Title' => '',
+  'Title' => '標題',
 );

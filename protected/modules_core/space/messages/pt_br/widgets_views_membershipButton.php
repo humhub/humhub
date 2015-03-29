@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Accept Invite' => '',
-  'Become member' => '',
-  'Cancel membership' => '',
-  'Cancel pending membership application' => '',
-  'Deny Invite' => '',
-  'Request membership' => '',
+  'Accept Invite' => 'Aceitar Convite',
+  'Become member' => 'Seja membro',
+  'Cancel membership' => 'Cancelar assinatura como membro',
+  'Cancel pending membership application' => 'Cancelar pedido pendente de adesão',
+  'Deny Invite' => 'Recusar Convite',
+  'Request membership' => 'Pedido de adesão',
 );

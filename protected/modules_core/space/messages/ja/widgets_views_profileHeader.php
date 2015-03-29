@@ -2,7 +2,7 @@
 return array (
   '<strong>Something</strong> went wrong' => '',
   'Followers' => '',
-  'Members' => '',
+  'Members' => 'メンバー',
   'Ok' => '',
   'Posts' => '',
 );

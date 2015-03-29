@@ -2,9 +2,9 @@
 return array (
   'Add image/file' => '',
   'Add link' => '',
-  'Close' => '',
+  'Close' => 'Đóng',
   'Enter a url (e.g. http://example.com)' => '',
   'Please wait while uploading...' => '',
   'Target' => '',
-  'Title' => '',
+  'Title' => 'Tiêu đề',
 );

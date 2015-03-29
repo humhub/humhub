@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Visibility' => '',
   'Authentication mode' => 'Kimlik Doğrulama modu',
   'Created At' => 'Oluşturulma zamanı',
   'Created by' => 'Oluşturan',
@@ -16,5 +15,6 @@ return array (
   'Updated by' => 'Güncelleyen',
   'Username' => 'Kullanıcı adı',
   'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Kullanıcı adı sadece harfler, rakamlar, boşluk ve özel karakter (+-._) içerebilir',
+  'Visibility' => 'Görünüm',
   'Wall' => 'Duvar',
 );

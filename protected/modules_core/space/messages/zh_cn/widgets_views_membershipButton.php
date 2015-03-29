@@ -1,9 +1,9 @@
 <?php
 return array (
   'Accept Invite' => '',
-  'Become member' => '',
+  'Become member' => '成为成员',
   'Cancel membership' => '',
-  'Cancel pending membership application' => '',
+  'Cancel pending membership application' => '取消成员申请',
   'Deny Invite' => '',
-  'Request membership' => '',
+  'Request membership' => '请求成员',
 );

@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Visibility' => '',
   'Authentication mode' => 'Modo de autenticación',
   'Created At' => 'Creado el',
   'Created by' => 'Creado por',
@@ -16,5 +15,6 @@ return array (
   'Updated by' => 'Actualizado por',
   'Username' => 'Nombre de usuario',
   'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'El nombre de usuario sólo puede contener letras, números, espacios y caracteres especiales (+-._)',
+  'Visibility' => 'Visibilidad',
   'Wall' => 'Muro',
 );

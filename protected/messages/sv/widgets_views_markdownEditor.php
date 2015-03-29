@@ -2,7 +2,7 @@
 return array (
   'Add image/file' => '',
   'Add link' => '',
-  'Close' => '',
+  'Close' => 'Stäng',
   'Enter a url (e.g. http://example.com)' => '',
   'Please wait while uploading...' => '',
   'Target' => '',

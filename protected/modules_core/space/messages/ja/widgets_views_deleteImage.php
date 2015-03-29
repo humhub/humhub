@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> image deleting' => '',
-  'Cancel' => '',
-  'Delete' => '',
+  'Cancel' => 'キャンセル',
+  'Delete' => '削除',
   'Do you really want to delete your profile image?' => '',
 );
