@@ -15,5 +15,6 @@ return array (
   'Updated by' => '',
   'Username' => '',
   'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
+  'Visibility' => '',
   'Wall' => '',
 );

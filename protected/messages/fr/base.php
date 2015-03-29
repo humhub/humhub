@@ -1,5 +1,9 @@
 <?php
 return array (
+  'Back' => '',
+  'Choose language:' => '',
+  'Language' => '',
+  'Login' => '',
   '<strong>Latest</strong> updates' => '<strong>Dernières</strong> mises à jour',
   'Account settings' => 'Paramètres du compte',
   'Administration' => 'Administration',

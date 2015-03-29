@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Show all' => '@@Mostra totes@@',
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ningú ha publicat res encara.</b><br>Sigues el primer i publica alguna cosa...',
   '<b>This profile stream is still empty</b>' => '<b>Encara no hi ha activitat en aquest perfil</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Aquest espai encara està buit!</b><br>Comença publicant alguna cosa...',
@@ -17,7 +18,6 @@ return array (
   'Only public posts' => 'Només publicacions públiques',
   'Posts only' => 'Només publicacions',
   'Posts with links' => 'Publicacions amb enllaços',
-  'Show all' => 'Mostra totes',
   'Sorting' => 'Ordena',
   'Where I´m involved' => 'On estic involucrat',
 );

@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Logo upload' => '',
+  'Show user profile post form on dashboard' => '',
   'Base URL' => 'URL de Base',
   'Default language' => 'Langage par défaut',
   'Default space' => 'Espace par défaut',

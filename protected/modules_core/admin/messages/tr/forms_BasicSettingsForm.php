@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Logo upload' => '',
+  'Show user profile post form on dashboard' => '',
   'Base URL' => 'Temel URL',
   'Default language' => 'Varsayılan dil',
   'Default space' => 'Varsayılan alan',

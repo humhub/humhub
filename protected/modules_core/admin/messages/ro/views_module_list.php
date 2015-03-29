@@ -7,6 +7,7 @@ return array (
   'Disable' => '',
   'Enable' => '',
   'More info' => '',
+  'Processing...' => '',
   'Set as default' => '',
   'Uninstall' => '',
 );

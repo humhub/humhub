@@ -4,7 +4,6 @@ return array (
   'Created At' => '',
   'Created by' => '',
   'Email' => '',
-  'Group' => 'Grupp',
   'Guid' => '',
   'ID' => '',
   'Invalid language!' => '',
@@ -13,7 +12,9 @@ return array (
   'Tags' => '',
   'Updated at' => '',
   'Updated by' => '',
-  'Username' => 'Användarnamn',
   'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
+  'Visibility' => '',
   'Wall' => '',
+  'Group' => 'Grupp',
+  'Username' => 'Användarnamn',
 );

@@ -1,5 +1,9 @@
 <?php
 return array (
+  'Back' => '',
+  'Choose language:' => '',
+  'Language' => '',
+  'Login' => '',
   '<strong>Latest</strong> updates' => '<strong>Poslední</strong> události',
   'Account settings' => 'Nastavení účtu',
   'Administration' => 'Administrace',

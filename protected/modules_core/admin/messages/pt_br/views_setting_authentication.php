@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => '',
   '<strong>Authentication</strong> - Basic' => '<strong>Autenticação</strong> - Básica',
   'Basic' => 'Básica',
   'LDAP' => 'LDAP',

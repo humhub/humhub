@@ -1,7 +1,7 @@
 <?php
 return array (
+  'Visibility' => '',
   'Authentication mode' => 'Modo de autenticación',
-  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'El nombre de usuario sólo puede contener letras, números, espacios y caracteres especiales (+-._)',
   'Created At' => 'Creado el',
   'Created by' => 'Creado por',
   'Email' => 'Correo electrónico',
@@ -15,5 +15,6 @@ return array (
   'Updated at' => 'Actualizado el',
   'Updated by' => 'Actualizado por',
   'Username' => 'Nombre de usuario',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'El nombre de usuario sólo puede contener letras, números, espacios y caracteres especiales (+-._)',
   'Wall' => 'Muro',
 );

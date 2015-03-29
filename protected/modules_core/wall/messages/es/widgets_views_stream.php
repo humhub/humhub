@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Show all' => '@@Mostrar todo@@',
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Nadie ha escrito nada aún.</b><br/>Marca un comienzo y escribe algo...',
   '<b>This profile stream is still empty</b>' => '<b>La actividad de este perfil aún está vacia</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>¡Este espacio está aun vacio!</b><br/>Empieza por escribir algo aqui...',
@@ -17,7 +18,6 @@ return array (
   'Only public posts' => 'Solo entradas públicas',
   'Posts only' => 'Solo entradas',
   'Posts with links' => 'Entradas con enlaces',
-  'Show all' => 'Mostrar todo',
   'Sorting' => 'Ordenar',
   'Where I´m involved' => 'En los que estoy involucrado',
 );

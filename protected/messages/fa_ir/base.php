@@ -1,11 +1,15 @@
 <?php
 return array (
+  'Back' => '',
+  'Choose language:' => '',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
+  'Language' => '',
+  'Login' => '',
   '<strong>Latest</strong> updates' => '<strong>آخرین</strong> به‌روز‌رسانی‌ها',
   'Account settings' => 'تنظیمات حساب کاربری',
   'Administration' => 'مدیریت',
   'Back to dashboard' => 'بازگشت به خانه',
   'Collapse' => 'جمع شدن',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
   'Could not determine content container!' => 'نگهدارنده‌ی محتوا قابل شناسایی نیست!',
   'Could not find content of addon!' => 'محتوای افزونه پیدا‌نشد!',
   'Could not find requested module!' => 'ماژول درخواست‌شده پیدا‌نشد!',

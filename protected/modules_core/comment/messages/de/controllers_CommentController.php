@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Model & Id Parameter required!' => 'Mode & ID Parameter erforderlich!',
+  'Could not delete comment!' => '@@Kann Kommentar nicht löschen!@@',
+  'Invalid target class given' => '@@Ungültige Zielklasse@@',
+  'Model & Id Parameter required!' => '@@Mode & ID Parameter erforderlich!@@',
+  'Target not found!' => '@@Ziel nicht gefunden!@@',
   'Access denied!' => 'Zugriff verweigert!',
-  'Could not delete comment!' => 'Kann Kommentar nicht löschen!',
   'Insufficent permissions!' => 'Unzureichende Berechtigungen!',
-  'Invalid target class given' => 'Ungültige Zielklasse',
-  'Target not found!' => 'Ziel nicht gefunden!',
 );

@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Login' => '',
+  'New user?' => '',
   '<strong>Invite</strong> members' => '<strong>Пригласить</strong> членов',
   'Add an user' => 'Добавить пользователя',
   'Close' => 'Закрыть',

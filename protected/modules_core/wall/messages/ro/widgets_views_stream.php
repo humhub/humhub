@@ -17,7 +17,7 @@ return array (
   'Only public posts' => '',
   'Posts only' => '',
   'Posts with links' => '',
-  'Show all' => '',
   'Sorting' => '',
   'Where I´m involved' => '',
+  'Show all' => '@@@@',
 );

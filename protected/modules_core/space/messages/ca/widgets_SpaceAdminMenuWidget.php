@@ -1,10 +1,10 @@
 <?php
 return array (
   '<strong>Space</strong> preferences' => '',
-  'Archive' => '',
-  'Back to workspace' => '',
-  'Delete' => 'Suprimeix',
   'General' => '',
+  'Archive' => '@@@@',
+  'Back to workspace' => '@@@@',
+  'Delete' => '@@Suprimeix@@',
   'Members' => 'Membres',
   'Modules' => 'Mòduls',
 );

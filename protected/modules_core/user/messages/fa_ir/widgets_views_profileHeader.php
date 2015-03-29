@@ -1,11 +1,11 @@
 <?php
 return array (
   '<strong>Something</strong> went wrong' => '',
-  'Edit account' => '',
-  'Follow' => 'دنبال‌کردن',
   'Followers' => '',
   'Following' => '',
   'Ok' => '',
+  'Edit account' => '@@@@',
+  'Follow' => '@@دنبال‌کردن@@',
+  'Unfollow' => '@@انصراف از دنبال‌کردن@@',
   'Spaces' => 'انجمن‌ها',
-  'Unfollow' => 'انصراف از دنبال‌کردن',
 );

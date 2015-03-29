@@ -1,6 +1,8 @@
 <?php
 return array (
   'Base URL' => '',
+  'Logo upload' => '',
+  'Show user profile post form on dashboard' => '',
   'Default language' => 'Standard språk',
   'Default space' => 'Standard nätverk',
   'Invalid space' => 'Ogiltigt nätverk',

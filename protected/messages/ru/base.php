@@ -1,5 +1,9 @@
 <?php
 return array (
+  'Back' => '',
+  'Choose language:' => '',
+  'Language' => '',
+  'Login' => '',
   '<strong>Latest</strong> updates' => '<strong>Последние</strong> обновления',
   'Account settings' => 'Настройки аккаунта',
   'Administration' => 'Администрирование',

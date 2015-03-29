@@ -1,11 +1,12 @@
 <?php
 return array (
+  'Guid' => '',
+  'Visibility' => '',
   'Authentication mode' => 'Modo de autenticação',
   'Created At' => 'Criado em',
   'Created by' => 'Criado por',
   'Email' => 'E-mail',
   'Group' => 'Grupo',
-  'Guid' => '',
   'ID' => 'ID',
   'Invalid language!' => 'Língua inválida!',
   'Language' => 'Língua',

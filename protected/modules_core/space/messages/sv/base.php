@@ -1,5 +1,9 @@
 <?php
 return array (
+  'Public (Members & Guests)' => '',
+  'Public (Members only)' => '',
+  'Public (Registered users only)' => '',
+  'Visible for all (members and guests)' => '',
   ' Invite and request' => 'Inbjudan och begäran',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kan inte ta bort användare som är nätverkets ägare! Namn på nätverket: {spaceName}',
   'Everyone can enter' => 'Vem som helst kan gå med',

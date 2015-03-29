@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Login' => '',
+  'New user?' => '',
   '<strong>Invite</strong> members' => '<strong>Pozvat</strong> členy',
   'Add an user' => 'Přidat uživatele',
   'Close' => 'Zavřít',

@@ -6,6 +6,10 @@ return array (
   'Invite and request' => '',
   'Only by invite' => '',
   'Private (Invisible)' => '',
+  'Public (Members & Guests)' => '',
+  'Public (Members only)' => '',
+  'Public (Registered users only)' => '',
   'Public (Visible)' => '',
   'Visible for all' => '',
+  'Visible for all (members and guests)' => '',
 );

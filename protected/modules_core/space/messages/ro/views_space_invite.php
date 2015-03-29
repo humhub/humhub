@@ -5,6 +5,8 @@ return array (
   'Close' => '',
   'Email addresses' => '',
   'Invite by email' => '',
+  'Login' => '',
+  'New user?' => '',
   'Pick users' => '',
   'Send' => '',
   'To invite users to this space, please type their names below to find and pick them.' => '',

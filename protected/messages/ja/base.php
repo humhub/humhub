@@ -1,6 +1,10 @@
 <?php
 return array (
   '<strong>Latest</strong> updates' => '',
+  'Back' => '',
+  'Choose language:' => '',
+  'Language' => '',
+  'Login' => '',
   'Account settings' => 'アカウント設定',
   'Administration' => '管理',
   'Back to dashboard' => 'ダッシュボードへ戻る',

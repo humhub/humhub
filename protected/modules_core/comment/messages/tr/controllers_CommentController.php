@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Model & Id Parameter required!' => 'Model & Id Parametresi gerekli!',
+  'Could not delete comment!' => '@@Yorumu silinemedi!@@',
+  'Invalid target class given' => '@@Verilen hedef sınıfı geçersiz@@',
+  'Model & Id Parameter required!' => '@@Model & Id Parametresi gerekli!@@',
+  'Target not found!' => '@@Hedef bulunamadı!@@',
   'Access denied!' => 'Erişim engellendi!',
-  'Could not delete comment!' => 'Yorumu silinemedi!',
   'Insufficent permissions!' => 'Yetersiz izinler!',
-  'Invalid target class given' => 'Verilen hedef sınıfı geçersiz',
-  'Target not found!' => 'Hedef bulunamadı!',
 );
