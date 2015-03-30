@@ -127,7 +127,7 @@
 .datepicker table tr td.today.disabled:hover {
     color: #ffffff;
     text-shadow: none;
-    background: #638392;
+    background: #708fa0;
 }
 
 .datepicker table tr td.range.today,
@@ -136,7 +136,7 @@
 .datepicker table tr td.range.today.disabled:hover {
     color: #ffffff;
     text-shadow: none;
-    background: #638392;
+    background: #708fa0;
 }
 
 .bootstrap-datetimepicker-widget td.today:before {

@@ -79,15 +79,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-    color: #4cd9c0 !important;
+    color: #6fdbe8 !important;
 }
 
 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-    color: #4cd9c0 !important;
+    color: #6fdbe8 !important;
 }
 
 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-    color: #4cd9c0 !important;
+    color: #6fdbe8 !important;
 }
 
 table td, table tr {
