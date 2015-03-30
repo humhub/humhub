@@ -164,38 +164,40 @@
 
         <div class="panel-profile-controls">
             <!-- start: User statistics -->
-            <div class="statistics pull-left">
+            <div class="row">
+                <div class="statistics col-sm-12 col-md-6">
 
-                <div class="pull-left entry">
-                    <span class="count"><?php echo $user->getFollowerCount(); ?></span></a>
-                    <br>
-                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo $user->getFollowerCount(); ?></span></a>
+                        <br>
+                        <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                    </div>
+
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo $user->getFollowingCount('User') + $user->getFollowingCount('Space'); ?></span>
+                        <br>
+                        <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
+                    </div>
+
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo count($user->spaces); ?></span><br>
+                        <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
+                    </div>
+
                 </div>
+                <!-- end: User statistics -->
 
-                <div class="pull-left entry">
-                    <span class="count"><?php echo $user->getFollowingCount('User') + $user->getFollowingCount('Space'); ?></span>
-                    <br>
-                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
+                <div class="controls controls-header text-right col-sm-12 col-md-6">
+                    <?php
+                    $this->widget('application.modules_core.user.widgets.ProfileHeaderControlsWidget', array(
+                        'user' => $user,
+                        'widgets' => array(
+                            array('application.modules_core.user.widgets.ProfileEditButtonWidget', array('user' => $user), array()),
+                            array('application.modules_core.user.widgets.UserFollowButtonWidget', array('user' => $user), array()),
+                        )
+                    ));
+                    ?>
                 </div>
-
-                <div class="pull-left entry">
-                    <span class="count"><?php echo count($user->spaces); ?></span><br>
-                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
-                </div>
-
-            </div>
-            <!-- end: User statistics -->
-
-            <div class="controls controls-account pull-right">
-                <?php
-                $this->widget('application.modules_core.user.widgets.ProfileHeaderControlsWidget', array(
-                    'user' => $user,
-                    'widgets' => array(
-                        array('application.modules_core.user.widgets.ProfileEditButtonWidget', array('user' => $user), array()),
-                        array('application.modules_core.user.widgets.UserFollowButtonWidget', array('user' => $user), array()),
-                    )
-                ));
-                ?>
             </div>
         </div>
     </div>

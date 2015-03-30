@@ -170,39 +170,41 @@
 
         <div class="panel-profile-controls">
             <!-- start: User statistics -->
-            <div class="statistics pull-left">
+            <div class="row">
+                <div class="statistics col-sm-12 col-md-6">
 
-                <div class="pull-left entry">
-                    <span class="count"><?php echo $space->countPosts(); ?></span></a>
-                    <br>
-                    <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo $space->countPosts(); ?></span></a>
+                        <br>
+                        <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
+                    </div>
+
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo count($space->memberships); ?></span>
+                        <br>
+                        <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
+                    </div>
+
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo $space->getFollowerCount(); ?></span><br>
+                        <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                    </div>
+
                 </div>
+                <!-- end: User statistics -->
 
-                <div class="pull-left entry">
-                    <span class="count"><?php echo count($space->memberships); ?></span>
-                    <br>
-                    <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
+                <div class="controls controls-header text-right col-sm-12 col-md-6">
+                    <?php
+                    $this->widget('application.modules_core.space.widgets.SpaceHeaderControlsWidget', array(
+                        'space' => $space,
+                        'widgets' => array(
+                            array('application.modules_core.space.widgets.SpaceInviteButtonWidget', array('space' => $space), array()),
+                            array('application.modules_core.space.widgets.SpaceMembershipButtonWidget', array('space' => $space), array()),
+                            array('application.modules_core.space.widgets.SpaceFollowButtonWidget', array('space' => $space), array()),
+                        )
+                    ));
+                    ?>
                 </div>
-
-                <div class="pull-left entry">
-                    <span class="count"><?php echo $space->getFollowerCount(); ?></span><br>
-                    <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
-                </div>
-
-            </div>
-            <!-- end: User statistics -->
-
-            <div class="controls controls-account pull-right">
-                <?php
-                $this->widget('application.modules_core.space.widgets.SpaceHeaderControlsWidget', array(
-                    'space' => $space,
-                    'widgets' => array(
-                        array('application.modules_core.space.widgets.SpaceInviteButtonWidget', array('space' => $space), array()),
-                        array('application.modules_core.space.widgets.SpaceMembershipButtonWidget', array('space' => $space), array()),
-                        array('application.modules_core.space.widgets.SpaceFollowButtonWidget', array('space' => $space), array()),
-                    )
-                ));
-                ?>
             </div>
 
         </div>

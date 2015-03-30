@@ -935,3 +935,9 @@ textarea.placeholder {
     font-size: 20px !important;
   }
 }
+@media (max-width: 991px) {
+  .controls-header {
+    margin-top: 40px;
+    text-align: left !important;
+  }
+}
