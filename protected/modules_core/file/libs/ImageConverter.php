@@ -43,6 +43,7 @@ class ImageConverter
             $ret = passthru($command);
         } else {
             $gdImage = self::getGDImageByFile($sourceFile);
+            $gdImage = self::fixOrientation($gdImage, $sourceFile);
             imagejpeg($gdImage, $targetFile, 100);
             imagedestroy($gdImage);
         }
@@ -97,7 +98,7 @@ class ImageConverter
         $height = $options['height'];
 
         $gdImage = self::getGDImageByFile($sourceFile);
-
+        $gdImage = self::fixOrientation($gdImage, $sourceFile);
 
         $sourceWidth = imagesx($gdImage);
         $sourceHeight = imagesy($gdImage);
@@ -208,21 +209,21 @@ class ImageConverter
                 $height = $sourceHeight;
             }
         }
- 
+
         // Create new Image
         $newGdImage = imagecreatetruecolor($width, $height);
-        
-        if(isset($options['transparent']) && $options['transparent']){
+
+        if (isset($options['transparent']) && $options['transparent']) {
             imagealphablending($newGdImage, false);
             imagesavealpha($newGdImage, true);
             $transparent = imagecolorallocatealpha($newGdImage, 255, 255, 255, 127);
             imagefilledrectangle($newGdImage, 0, 0, $width, $height, $transparent);
         }
-        
+
         imagecopyresampled($newGdImage, $gdImage, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
-        
+
         list($hw, $hx, $imageType) = getimagesize($sourceFile);
-        
+
         switch ($imageType) {
             case IMAGETYPE_PNG:
                 imagepng($newGdImage, $targetFile);
@@ -292,24 +293,44 @@ class ImageConverter
 
         return $gdImage;
     }
-    
-    public static function checkTransparent($im) {
-        
+
+    public static function fixOrientation($image, $filename)
+    {
+        $exif = exif_read_data($filename);
+        if (is_array($exif) && !empty($exif['Orientation'])) {
+            switch ($exif['Orientation']) {
+                case 8:
+                    $image = imagerotate($image, 90, 0);
+                    break;
+                case 3:
+                    $image = imagerotate($image, 180, 0);
+                    break;
+                case 6:
+                    $image = imagerotate($image, -90, 0);
+                    break;
+            }
+        }
+
+        return $image;
+    }
+
+    public static function checkTransparent($im)
+    {
+
         $im = self::getGDImageByFile($im);
-        
+
         $width = imagesx($im); // Get the width of the image
         $height = imagesy($im); // Get the height of the image
-    
         // We run the image pixel by pixel and as soon as we find a transparent pixel we stop and return true.
-        for($i = 0; $i < $width; $i++) {
-            for($j = 0; $j < $height; $j++) {
+        for ($i = 0; $i < $width; $i++) {
+            for ($j = 0; $j < $height; $j++) {
                 $rgba = imagecolorat($im, $i, $j);
-                if(($rgba & 0x7F000000) >> 24) {
+                if (($rgba & 0x7F000000) >> 24) {
                     return true;
                 }
             }
         }
-    
+
         // If we dont find any pixel the function will return false.
         return false;
     }

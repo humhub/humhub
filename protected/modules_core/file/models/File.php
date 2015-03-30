@@ -144,6 +144,15 @@ class File extends HActiveRecord
                 move_uploaded_file($this->cUploadedFile->getTempName(), $newFilename);
                 @chmod($newFilename, 0744);
             }
+            
+            /**
+             * For uploaded jpeg files convert them again - to handle special
+             * exif attributes (e.g. orientation)
+             */
+            if ($this->cUploadedFile->getType() == 'image/jpeg') {
+                ImageConverter::TransformToJpeg($newFilename, $newFilename);
+            }
+            
         }
 
         // Set file by given contents
