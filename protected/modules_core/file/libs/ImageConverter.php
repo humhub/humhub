@@ -296,7 +296,7 @@ class ImageConverter
 
     public static function fixOrientation($image, $filename)
     {
-        $exif = exif_read_data($filename);
+        $exif = @exif_read_data($filename);
         if (is_array($exif) && !empty($exif['Orientation'])) {
             switch ($exif['Orientation']) {
                 case 8:
