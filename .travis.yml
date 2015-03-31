@@ -1,0 +1,13 @@
+language: php
+
+services: mysql
+
+before_script:
+  - mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
+  - cd tests
+  
+php:
+    - 5.4
+    - 5.5
+    - 5.6
+    
