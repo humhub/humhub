@@ -9,7 +9,7 @@ return CMap::mergeArray(require (dirname(__FILE__) . '/main.php'), array(
                 'db' => array(
                     'connectionString' => 'mysql:host=localhost;dbname=humhub_test',
                     'username' => 'root',
-                    'password' => '123qwe',
+                    'password' => '',
                 ),
                 'cache' => array(
                     'class' => 'CDummyCache',
