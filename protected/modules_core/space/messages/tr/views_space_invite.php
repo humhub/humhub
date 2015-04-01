@@ -6,7 +6,7 @@ return array (
   'Email addresses' => 'Email adresleri',
   'Invite by email' => 'Email ile davet et',
   'Login' => 'Giriş',
-  'New user?' => '',
+  'New user?' => 'Yeni kullanıcı?',
   'Pick users' => 'Kullanıcıları seç',
   'Send' => 'Gönder',
   'To invite users to this space, please type their names below to find and pick them.' => 'Bu mekana kullanıcıları davet etmek, bulmak ve onları almak için aşağıya isimlerini yazınız.',

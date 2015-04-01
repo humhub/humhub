@@ -5,7 +5,7 @@ return array (
   'Administration' => 'Администрирование',
   'Back' => 'Назад',
   'Back to dashboard' => 'Вернуться на главную',
-  'Choose language:' => '',
+  'Choose language:' => 'Выберите язык:',
   'Collapse' => 'Свернуть',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Источник Content Addon должен быть сущностью HActiveRecordContent либо HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Не удалось определить оболочку контента!',

@@ -8,5 +8,5 @@ return array (
   'E.g. http://example.com/humhub' => 'P.ej. http://example.com/humhub',
   'New users will automatically added to these space(s).' => 'Los nuevos usuarios serán automáticamente añadidos a estos espacios.',
   'Save' => 'Guardar',
-  'You\'re using no logo at the moment. Upload your logo now.' => '',
+  'You\'re using no logo at the moment. Upload your logo now.' => 'No estás usando un logo ahora. Sube tu logo ahora.',
 );

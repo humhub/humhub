@@ -5,7 +5,7 @@ return array (
   'Administration' => 'Administración',
   'Back' => 'Atrás',
   'Back to dashboard' => 'Volver al Panel de Control',
-  'Choose language:' => '',
+  'Choose language:' => 'Escoge idioma:',
   'Collapse' => 'Cerrar',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '¡La fuente de Contenido del Complemento debe ser una instancia de HActiveRecordContent ó HActiveRecordContentAddon!',
   'Could not determine content container!' => '¡No se pudo determinar el contenedor de contenido!',

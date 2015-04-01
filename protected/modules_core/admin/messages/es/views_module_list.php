@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Processing...' => '',
   '<strong>Modules</strong> directory' => 'Directorio de <strong>módulos</strong>',
   'Are you sure? *ALL* module data will be lost!' => '¿Estás seguro? ¡*TODOS* los datos del módulo se perderán!',
   'Are you sure? *ALL* module related data and files will be lost!' => '¿Estás seguro? ¡*TODOS* los archivos y datos relacionados con el módulo se perderán!',
@@ -8,6 +7,7 @@ return array (
   'Disable' => 'Deshabilitar',
   'Enable' => 'Habilitar',
   'More info' => 'Más información',
+  'Processing...' => 'Procesando...',
   'Set as default' => 'Establecer como predeterminado',
   'Uninstall' => 'Desinstalar',
 );
