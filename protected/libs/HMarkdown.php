@@ -48,8 +48,8 @@ class HMarkdown extends cebe\markdown\GithubMarkdown
             }
         }
         $block['url'] = $this->handleInternalUrls($block['url']);
-        return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
-                . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+        return '<a href="' . $block['url'] . '"'
+                . (empty($block['title']) ? '' : ' title="' . $block['title'] . '"')
                 . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
 
@@ -69,6 +69,11 @@ class HMarkdown extends cebe\markdown\GithubMarkdown
                 . ' alt="' . htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"'
                 . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
                 . ($this->html5 ? '>' : ' />');
+    }
+
+    protected function renderAutoUrl($block)
+    {
+        return CHtml::link($block[1], $block[1]);
     }
 
     /**

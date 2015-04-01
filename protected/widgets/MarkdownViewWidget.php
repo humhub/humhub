@@ -55,7 +55,7 @@ class MarkdownViewWidget extends HWidget
 
     public function init()
     {
-        if (!Helpers::CheckClassType($this->parserClass, "cebe\markdown\Markdown")) {
+        if (!Helpers::CheckClassType($this->parserClass, "cebe\markdown\Parser")) {
             throw new CException("Invalid markdown parser class given!");
         }
 

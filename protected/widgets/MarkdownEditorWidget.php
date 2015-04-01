@@ -72,7 +72,9 @@ class MarkdownEditorWidget extends HWidget
 
     public function run()
     {
-        $this->render('markdownEditor');
+        $this->render('markdownEditor', array(
+            'fieldId' => $this->fieldId
+        ));
     }
 
 }

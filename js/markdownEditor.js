@@ -2,6 +2,9 @@
 var newFile = "";
 
 function initMarkdownEditor(elementId) {
+    
+    $("body").append($("#markdownEditor_dialogs_"+elementId).html());
+
     $("#" + elementId).markdown({
         iconlibrary: 'fa',
         additionalButtons: [
@@ -12,31 +15,36 @@ function initMarkdownEditor(elementId) {
                             title: "Add link",
                             icon: {glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link'},
                             callback: function(e) {
-                                newFile = "";
-                                $('#addLinkModal').modal('show');
-                                $('#addLinkModalUploadForm').show();
-                                $('#addLinkTitle').val(e.getSelection().text);
+                                addLinkModal = $('#addLinkModal_'+elementId);
+                                linkTitleField = addLinkModal.find('.linkTitle');
+                                linkTargetField = addLinkModal.find('.linkTarget');
+                                
+                                
+                                addLinkModal.find(".close").off('click');
+                                
+                                
+                                addLinkModal.modal('show');
 
-                                // FIXME @Struppi
-                                if ($('#addLinkTitle').val() == "") {
-                                    $('#addLinkTitle').focus();
+                                linkTitleField.val(e.getSelection().text);
+                                if (linkTitleField.val() == "") {
+                                    linkTitleField.focus();
                                 } else {
-                                    $('#addLinkTarget').focus();
+                                    linkTargetField.focus();
                                 }
 
-                                $('#addLinkButton').off('click');
-                                $('#addLinkButton').on('click', function() {
-                                    chunk = "[" + $('#addLinkTitle').val() + "](" + $('#addLinkTarget').val() + ")";
+                                addLinkModal.find('.addLinkButton').off('click');
+                                addLinkModal.find('.addLinkButton').on('click', function() {
+                                    chunk = "[" + linkTitleField.val() + "](" + linkTargetField.val() + ")";
                                     selected = e.getSelection(), content = e.getContent(),
                                             e.replaceSelection(chunk);
                                     cursor = selected.start;
                                     e.setSelection(cursor, cursor + chunk.length);
-                                    $('#addLinkModal').modal('hide')
+                                    addLinkModal.modal('hide')
                                 });
 
-                                $('#addLinkModal').on('hide.bs.modal', function(ee) {
-                                    $('#addLinkTitle').val("");
-                                    $('#addLinkTarget').val("");
+                                addLinkModal.on('hide.bs.modal', function(ee) {
+                                    linkTitleField.val("");
+                                    linkTargetField.val("");
                                 })
                             }
                         },
@@ -46,10 +54,13 @@ function initMarkdownEditor(elementId) {
                             icon: {glyph: 'glyphicon glyphicon-picture', fa: 'fa fa-picture-o', 'fa-3': 'icon-picture'},
                             callback: function(e) {
                                 newFile = "";
-                                $('#addImageModal').modal('show');
-                                $('#addImageModalUploadForm').show();
-                                $('#addImageModalProgress').hide();
-                                $('#addImageModal').on('hide.bs.modal', function(ee) {
+
+                                addFileModal = $('#addFileModal_'+elementId);
+                                addFileModal.modal('show');
+                                addFileModal.find(".uploadForm").show();
+                                addFileModal.find(".uploadProgress").hide();
+                                
+                                addFileModal.on('hide.bs.modal', function(ee) {
                                     if (newFile != "") {
                                         if (newFile.mimeBaseType == "image") {
                                             chunk = "![" + newFile.name + "](file-guid-" + newFile.guid + ")";
@@ -76,25 +87,24 @@ function initMarkdownEditor(elementId) {
                     markdown: e.getContent(),
                 }
             }).done(function(previewHtml) {
-                $('#markdownpreview').html(previewHtml);
+                $('#markdownpreview_'+elementId).html(previewHtml);
             });
-            var previewContent = "<div id='markdownpreview'><div class='loader'></div></div>";
+            var previewContent = "<div id='markdownpreview_"+elementId+"'><div class='loader'></div></div>";
             return previewContent;
         }
     });
 
-    $('#fileUploadProgress').hide();
-    $('#fileUploaderButton').fileupload({
+    $('#addFileModal_'+elementId).find(".uploadProgress").hide();
+    $('#addFileModal_'+elementId).find('.fileUploadButton').fileupload({
         dataType: 'json',
         done: function(e, data) {
             $.each(data.result.files, function(index, file) {
+                addFileModal = $('#addFileModal_'+elementId);
                 if (!file.error) {
                     newFile = file;
-
-                    hiddenValueField = $('#fileUploaderHiddenGuidField');
+                    hiddenValueField = $('#fileUploaderHiddenGuidField_'+elementId);
                     hiddenValueField.val(hiddenValueField.val() + "," + file.guid);
-
-                    $('#addImageModal').modal('hide');
+                    addFileModal.modal('hide');
                 } else {
                     alert("file upload error");
                 }
@@ -102,12 +112,14 @@ function initMarkdownEditor(elementId) {
         },
         progressall: function(e, data) {
             newFile = "";
+            addFileModal = $('#addFileModal_'+elementId);            
+            
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#addImageModalUploadForm').hide();
-            $('#addImageModalProgress').show();
+            addFileModal.find(".uploadForm").hide();
+            addFileModal.find(".uploadProgress").show();
             if (progress == 100) {
-                $('#addImageModalProgress').hide();
-                $('#addImageModalUploadForm').hide();
+                addFileModal.find(".uploadProgress").hide();
+                addFileModal.find(".uploadForm").hide();
             }
         }
     }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
