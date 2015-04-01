@@ -57,7 +57,7 @@ function HashTable(obj) {
         }
     }
 
-    this.setItem = function (key, value) {
+    this.setItem = function(key, value) {
         var previous = undefined;
         if (this.hasItem(key)) {
             previous = this.items[key];
@@ -69,15 +69,15 @@ function HashTable(obj) {
         return previous;
     }
 
-    this.getItem = function (key) {
+    this.getItem = function(key) {
         return this.hasItem(key) ? this.items[key] : undefined;
     }
 
-    this.hasItem = function (key) {
+    this.hasItem = function(key) {
         return this.items.hasOwnProperty(key);
     }
 
-    this.removeItem = function (key) {
+    this.removeItem = function(key) {
         if (this.hasItem(key)) {
             previous = this.items[key];
             this.length--;
@@ -89,7 +89,7 @@ function HashTable(obj) {
         }
     }
 
-    this.keys = function () {
+    this.keys = function() {
         var keys = [];
         for (var k in this.items) {
             if (this.hasItem(k)) {
@@ -99,7 +99,7 @@ function HashTable(obj) {
         return keys;
     }
 
-    this.values = function () {
+    this.values = function() {
         var values = [];
         for (var k in this.items) {
             if (this.hasItem(k)) {
@@ -109,7 +109,7 @@ function HashTable(obj) {
         return values;
     }
 
-    this.each = function (fn) {
+    this.each = function(fn) {
         for (var k in this.items) {
             if (this.hasItem(k)) {
                 fn(k, this.items[k]);
@@ -117,7 +117,7 @@ function HashTable(obj) {
         }
     }
 
-    this.clear = function () {
+    this.clear = function() {
         this.items = {}
         this.length = 0;
     }
@@ -136,10 +136,10 @@ function setModalLoader() {
 }
 
 
-$(document).ready(function () {
+$(document).ready(function() {
 
     /* Ensures after hide modal content is removed. */
-    $('#globalModal').on('hidden.bs.modal', function (e) {
+    $('#globalModal').on('hidden.bs.modal', function(e) {
         $(this).removeData('bs.modal');
 
         // just close modal and reset modal content to default (shows the loader)
@@ -149,7 +149,7 @@ $(document).ready(function () {
 });
 
 // call this after every ajax loading
-$(document).ajaxComplete(function (event, xhr, settings) {
+$(document).ajaxComplete(function(event, xhr, settings) {
 
     // show Tooltips on elements inside the views, which have the class 'tt'
     $('.tt').tooltip({
@@ -165,7 +165,30 @@ $(document).ajaxComplete(function (event, xhr, settings) {
 
 });
 
-$('#globalModal').on('shown.bs.modal', function (e) {
+$('#globalModal').on('shown.bs.modal', function(e) {
     // reduce the standard modal width
     $('.modal-dialog').css('width', '300px');
 })
+
+
+$(document).on('show.bs.modal', '.modal', function(event) {
+    $(this).appendTo($('body'));
+});
+$(document).on('shown.bs.modal', '.modal.in', function(event) {
+    setModalsAndBackdropsOrder();
+});
+$(document).on('hidden.bs.modal', '.modal', function(event) {
+    setModalsAndBackdropsOrder();
+});
+
+
+function setModalsAndBackdropsOrder() {
+    var modalZIndex = 1040;
+    $('.modal.in').each(function(index) {
+        var $modal = $(this);
+        modalZIndex++;
+        $modal.css('zIndex', modalZIndex);
+        $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+    });
+    $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+}
