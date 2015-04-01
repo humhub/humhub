@@ -13,10 +13,14 @@ Installation
   ```
 3. Make following directories/files writable by webserver
     - /assets
-    - /protected/runtime
-    - /protected/modules
     - /protected/config/local
+    - /protected/modules
+    - /protected/runtime
+    - /protected/yiic
+    - /protected/yiic.bat
+    - /protected/yiic.php
     - /uploads/*
+
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 E-Mail Configuration
