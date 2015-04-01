@@ -136,7 +136,8 @@ return array(
             'fa_ir' => 'فارسی',
             'bg' => 'български',
             'sk' => 'slovenčina',
-            'ro' => 'română'
+            'ro' => 'română',
+            'ar' => 'العربية/عربي‎‎',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
