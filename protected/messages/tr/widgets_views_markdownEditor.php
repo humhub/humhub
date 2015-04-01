@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Title of your link' => '',
   'Add image/file' => 'Resim/Dosya Ekle',
   'Add link' => 'Link Ekle',
   'Close' => 'Kapat',

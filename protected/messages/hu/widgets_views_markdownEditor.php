@@ -7,4 +7,5 @@ return array (
   'Please wait while uploading...' => '',
   'Target' => '',
   'Title' => '',
+  'Title of your link' => '',
 );

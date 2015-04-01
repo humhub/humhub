@@ -2,9 +2,10 @@
 return array (
   'Add image/file' => '',
   'Add link' => '',
-  'Close' => 'ปิด',
   'Enter a url (e.g. http://example.com)' => '',
   'Please wait while uploading...' => '',
   'Target' => '',
+  'Title of your link' => '',
+  'Close' => 'ปิด',
   'Title' => 'Título',
 );

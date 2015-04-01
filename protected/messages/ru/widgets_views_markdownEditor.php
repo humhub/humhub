@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Title of your link' => '',
   'Add image/file' => 'Добавить изображение/файл',
   'Add link' => 'Добавить ссылку',
   'Close' => 'Закрыть',
