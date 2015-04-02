@@ -30,5 +30,4 @@ If you are using custom themes or modules, please check these guides before upda
 ## From 0.10.1 to 0.11.0
 You may also need to run these commands to rebuild space, and user lists for the Directory
 * Run `php /path/to/humhub/protected/yiic search_rebuild`
-* Run `php /path/to/humhub/protected/yiic search_optimized` 
-
+* Run `php /path/to/humhub/protected/yiic search_optimize`
