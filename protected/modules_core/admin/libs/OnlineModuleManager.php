@@ -173,8 +173,12 @@ class OnlineModuleManager
 
                 $module = Yii::app()->moduleManager->getModule($moduleId);
 
-                if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
-                    $updates[$moduleId] = $moduleInfo;
+                if ($module !== null) {
+                    if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
+                        $updates[$moduleId] = $moduleInfo;
+                    }
+                } else {
+                    Yii::log("Could not load module: " . $moduleId . " to get updates", CLogger::LEVEL_ERROR);
                 }
             }
         }
