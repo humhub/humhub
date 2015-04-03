@@ -88,7 +88,11 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
                     'enableAjaxValidation' => false,
                 ));
                 ?>
-
+                <div class="form-group">
+                    <?php $this->widget('CCaptcha'); ?>
+                    <?php echo $form->textField($registerModel, 'verifyCode', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_login', 'enter security code above'))); ?>
+                    <?php echo $form->error($registerModel, 'verifyCode'); ?>
+                </div>
                 <div class="form-group">
                     <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email'))); ?>
                     <?php echo $form->error($registerModel, 'email'); ?>
