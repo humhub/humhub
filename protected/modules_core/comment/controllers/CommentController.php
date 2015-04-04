@@ -88,6 +88,9 @@ class CommentController extends ContentAddonController
 
             File::attachPrecreated($comment, Yii::app()->request->getParam('fileList'));
 
+            // Reload comment to get populated created_at field
+            $comment = Comment::model()->findByPk($comment->id);
+
             $output = $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array(
                 'comment' => $comment,
                 'justEdited' => true
