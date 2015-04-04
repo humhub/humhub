@@ -18,7 +18,7 @@ Installation
     - /protected/runtime
     - /uploads/*
 
-4. Make the following files executable by the webserver
+4. Make the following files executable
     - /protected/yiic
     - /protected/yiic.bat
     - /protected/yiic.php
