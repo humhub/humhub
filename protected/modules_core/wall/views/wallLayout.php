@@ -28,7 +28,7 @@
     </a>
 
     <!-- Show space image, if you are outside from a space -->
-    <?php if (!Yii::app()->controller instanceof ContentContainerController): ?>
+    <?php if (!Yii::app()->controller instanceof ContentContainerController && $object->content->container instanceof Space): ?>
         <a href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $object->content->container->guid)); ?>"
            class="pull-left">
             <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
