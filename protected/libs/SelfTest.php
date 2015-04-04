@@ -83,6 +83,21 @@ class SelfTest
                 'hint' => 'Install GD Extension'
             );
         }
+        
+        // Checks GD Extension
+        $title = 'PHP - EXIF Extension';
+        if (function_exists('exif_read_data')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install EXIF Extension'
+            );
+        }
 
         // Checks CURL Extension
         $title = 'PHP - Multibyte String Functions';

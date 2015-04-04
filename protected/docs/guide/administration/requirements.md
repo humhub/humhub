@@ -10,6 +10,7 @@ Requirements
 * PHP Multibyte String Support <http://php.net/manual/en/mbstring.setup.php> 
 * PHP PDO MySQL Extension (http://www.php.net/manual/en/ref.pdo-mysql.php)
 * PHP Zip Extension (http://php.net/manual/en/book.zip.php)
+* PHP EXIF Extension (http://php.net/manual/de/book.exif.php)
 
 ### Optional:
 * ImageMagick
