@@ -35,6 +35,7 @@
         $this->widget('application.modules_core.space.widgets.SpacePickerWidget', array(
             'inputId' => 'space_select',
             'model' => $model,
+            'maxSpaces' => 50,
             'attribute' => 'defaultSpaceGuid'
         ));
         ?>
