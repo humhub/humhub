@@ -259,7 +259,8 @@ class Controller extends EController
             if (isset(Yii::app()->request->cookies['language'])) {
                 $language = (string) Yii::app()->request->cookies['language'];
                 if (!array_key_exists($language, Yii::app()->params['availableLanguages'])) {
-                    throw new CHttpException(500, 'Invalid language cookie!');
+                    Yii::app()->request->cookies['language'] = new CHttpCookie('language', 'en');
+                    $language = 'en';
                 }
             }
 
