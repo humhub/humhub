@@ -207,7 +207,7 @@ class EMailing extends HConsoleCommand
         $action->user = $user;
         $action->init();
 
-        $action->criteria->condition .= " AND 1=2";
+        //$action->criteria->condition .= " AND 1=2";
         
         // Limit results to last activity mail
         $action->criteria->condition .= " AND wall_entry.created_at > :maxDate";
