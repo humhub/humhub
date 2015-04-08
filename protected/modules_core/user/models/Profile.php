@@ -79,7 +79,7 @@ class Profile extends HActiveRecord
 
         /**
          * Hack for Yii Messages Command
-         * 
+         *
          * Yii::t('UserModule.models_Profile', 'Firstname')
          * Yii::t('UserModule.models_Profile', 'Lastname')
          * Yii::t('UserModule.models_Profile', 'Title')
@@ -91,13 +91,13 @@ class Profile extends HActiveRecord
          * Yii::t('UserModule.models_Profile', 'About')
          * Yii::t('UserModule.models_Profile', 'Birthday')
          * Yii::t('UserModule.models_Profile', 'Hide year in profile')
-         * 
+         *
          * Yii::t('UserModule.models_Profile', 'Gender')
          * Yii::t('UserModule.models_Profile', 'Male')
          * Yii::t('UserModule.models_Profile', 'Female')
          * Yii::t('UserModule.models_Profile', 'Custom')
-         * Yii::t('UserModule.models_Profile', 'Hide year in profile')         * 
-         * 
+         * Yii::t('UserModule.models_Profile', 'Hide year in profile')         *
+         *
          * Yii::t('UserModule.models_Profile', 'Phone Private')
          * Yii::t('UserModule.models_Profile', 'Phone Work')
          * Yii::t('UserModule.models_Profile', 'Mobile')
@@ -105,7 +105,7 @@ class Profile extends HActiveRecord
          * Yii::t('UserModule.models_Profile', 'Skype Nickname')
          * Yii::t('UserModule.models_Profile', 'MSN')
          * Yii::t('UserModule.models_Profile', 'XMPP Jabber Address')
-         * 
+         *
          * Yii::t('UserModule.models_Profile', 'Url')
          * Yii::t('UserModule.models_Profile', 'Facebook URL')
          * Yii::t('UserModule.models_Profile', 'LinkedIn URL')
@@ -155,7 +155,7 @@ class Profile extends HActiveRecord
                 // Mark field as editable when we are on register scenario and field should be shown at registration
                 if ($this->scenario == 'register' && $profileField->show_at_registration)
                     $profileField->editable = true;
-                
+
                 // Mark field as editable when we are on adminEdit scenario
                 if ($this->scenario == 'adminEdit') {
                     $profileField->editable = true;
@@ -185,6 +185,19 @@ class Profile extends HActiveRecord
     }
 
     /**
+     *
+     */
+    public function afterSave()
+    {
+      try {
+        $this->user->searchSync();
+      } catch (Exception $ex) {
+        throw new Exception ($ex->getMessage(), $ex->getCode());
+      }
+      return parent::afterSave();
+    }
+
+    /**
      * Checks if the given column name already exists on the profile table.
      *
      * @param String $name
@@ -199,7 +212,7 @@ class Profile extends HActiveRecord
 
     /**
      * Returns all profile field categories with some user data
-     * 
+     *
      * @todo Optimize me
      * @return Array ProfileFieldCategory
      */
@@ -220,7 +233,7 @@ class Profile extends HActiveRecord
 
     /**
      * Returns all profile fields with user data by given category
-     * 
+     *
      * @todo Optimize me
      * @param ProfileFieldCategory $category
      * @return Array ProfileFields

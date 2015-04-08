@@ -356,6 +356,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
         if ($this->status == User::STATUS_ENABLED) {
             HSearch::getInstance()->addModel($this);
+            $this->searchSync();
         }
 
         if ($this->isNewRecord) {
@@ -367,6 +368,15 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
 
         return parent::afterSave();
+    }
+
+    public function searchSync()
+    {
+      // TODO: refactor this into a module similar to HSearch
+      $url      = 'http://localhost:9292/users';
+      $data     = CJSON::encode($this->createSearchableJSON());
+      $response = Yii::app()->curl->postJSON($url, $data);
+      error_log($response);
     }
 
     public function setUpApproved()
@@ -529,6 +539,13 @@ class User extends HActiveRecordContentContainer implements ISearchable
         return preg_split("/[;,#]+/", $this->tags);
     }
 
+    public function getTagsClean() {
+      foreach ($this->getTags() as $tag) {
+        $tags[] = trim($tag);
+      }
+      return $tags;
+    }
+
     /**
      * Checks if given userId can write to this users wall
      *
@@ -689,6 +706,20 @@ class User extends HActiveRecordContentContainer implements ISearchable
     public function canAccessPrivateContent(User $user = null)
     {
         return ($this->isCurrentUser());
+    }
+
+    public function createSearchableJSON() {
+      $search = ['person' => [
+        'id' => $this->guid,
+        'username' => $this->username,
+        'email'    => $this->email,
+        'fullname' => $this->getDisplayName(),
+        'tags'     => $this->getTagsClean(),
+        'role'     => [],
+        'type'     => ''
+      ]];
+
+      return $search;
     }
 
 }
