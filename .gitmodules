@@ -1,3 +1,6 @@
 [submodule "protected/extensions/curl"]
 	path = protected/extensions/curl
 	url = https://github.com/ctembreull/curl
+[submodule "themes/CoMotion"]
+	path = themes/CoMotion
+	url = https://github.com/brysmi/CoMotion
