@@ -376,7 +376,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
       $url      = 'http://localhost:9292/users';
       $data     = CJSON::encode($this->createSearchableJSON());
       $response = Yii::app()->curl->postJSON($url, $data);
-      error_log($response);
     }
 
     public function setUpApproved()
