@@ -38,6 +38,10 @@ return CMap::mergeArray($pre_config, array(
                     'class' => 'application.modules_core.user.components.WebUser',
                     'loginUrl' => array('//user/auth/login'),
                 ),
+                'curl' => array(
+                  'class'   => 'ext.curl.Curl',
+                  'options' => array()
+                ),
                 'request' => array(
                     'class' => 'HHttpRequest',
                     'enableCsrfValidation' => true,
