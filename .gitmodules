@@ -1,0 +1,3 @@
+[submodule "protected/extensions/curl"]
+	path = protected/extensions/curl
+	url = https://github.com/ctembreull/curl
