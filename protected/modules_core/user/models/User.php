@@ -356,7 +356,12 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
         if ($this->status == User::STATUS_ENABLED) {
             HSearch::getInstance()->addModel($this);
-            $this->searchSync();
+
+            try {
+              $this->searchSync();
+            } catch (Exception $ex) {
+              throw new Exception ($ex->getMessage(), $ex->getCode());
+            }
         }
 
         if ($this->isNewRecord) {
