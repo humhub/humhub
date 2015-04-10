@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Archived' => '',
-  'Public' => '',
-  'Sticked' => '',
+  'Archived' => 'أرشيف',
+  'Public' => 'عام',
+  'Sticked' => 'مثبت',
 );
