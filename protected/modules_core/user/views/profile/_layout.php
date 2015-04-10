@@ -15,7 +15,10 @@
             </div>
         <?php else: ?>
             <div class="col-md-7 layout-content-container">
-                <?php echo $content; ?>
+                <?php
+                  $this->widget('application.modules_core.user.widgets.RecommendationWidget', array('user' => $this->getUser()));
+                  echo $content;
+                ?>
             </div>
             <div class="col-md-3 layout-sidebar-container">
                 <?php
