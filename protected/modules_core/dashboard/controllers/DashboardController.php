@@ -65,6 +65,21 @@ class DashboardController extends Controller {
     }
 
     /**
+     * Dashboard Frame
+     *
+     * Show recent wall entries for this user
+     */
+    public function actionFrame() {
+
+        // contains the current version to show the welcome modal
+        $version = 1;
+        $url = Yii::app()->getRequest()->getQuery('url');
+        $this->layout = '/layouts/frame';
+
+        $this->render('frame', array('version' => $version, 'url' => $url));
+    }
+
+    /**
      * Page which shows all current workspaces
      */
     public function actionSpaces() {
