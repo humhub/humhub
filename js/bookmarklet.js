@@ -1,0 +1,1 @@
+javascript:void((function()%7Bvar e%3Ddocument.createElement(%27script%27)%3Be.setAttribute(%27type%27,%27text/javascript%27)%3Be.setAttribute(%27src%27,%27http://fetfrip.com/js/fetfrip.js?v=21%27)%3Bdocument.body.appendChild(e)%7D)())
