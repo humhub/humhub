@@ -28,7 +28,8 @@
  * @package humhub.commands.shell.Maintain
  * @since 0.5
  */
-class IntegrityChecker extends HConsoleCommand {
+class IntegrityChecker extends HConsoleCommand
+{
 
     public $simulate = false;
 
@@ -37,7 +38,8 @@ class IntegrityChecker extends HConsoleCommand {
      *
      * @param type $args
      */
-    public function run($args) {
+    public function run($args)
+    {
 
         $this->printHeader('Integrity Checker');
 
@@ -57,7 +59,8 @@ class IntegrityChecker extends HConsoleCommand {
     /**
      * Do general tasks used application whide
      */
-    protected function doBaseTasks() {
+    protected function doBaseTasks()
+    {
 
         $this->showTestHeadline("Checking application base structure");
 
@@ -72,7 +75,8 @@ class IntegrityChecker extends HConsoleCommand {
      *
      * @param type $event
      */
-    public function onRun($event) {
+    public function onRun($event)
+    {
         $this->raiseEvent('onRun', $event);
     }
 
@@ -80,16 +84,29 @@ class IntegrityChecker extends HConsoleCommand {
      * Shows a headline in console
      * @param type $title
      */
-    public function showTestHeadline($title) {
+    public function showTestHeadline($title)
+    {
         print "*** " . $title . "\n";
     }
 
     /**
      * Use this method to show a fix
-     * @param type $msg
+     * @param string $msg
      */
-    public function showFix($msg) {
+    public function showFix($msg)
+    {
         print "\t" . $msg . "\n";
+    }
+
+    /**
+     * Use this method to show a warning
+     * 
+     * @since 0.11.2
+     * @param string $msg
+     */
+    public function showWarning($msg)
+    {
+        print "\tWARNING: " . $msg . "\n";
     }
 
 }
