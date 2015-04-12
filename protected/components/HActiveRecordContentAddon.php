@@ -92,6 +92,11 @@ class HActiveRecordContentAddon extends HActiveRecord
             return null;
         }
 
+        if (!class_exists($className)) {
+            Yii::log("Source class of content addon not found (".$className.") not found!", CLogger::LEVEL_ERROR);
+            return null;            
+        }
+        
         $this->_source = $className::model()->findByPk($pk);
         return $this->_source;
     }

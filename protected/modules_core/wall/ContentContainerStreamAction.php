@@ -36,8 +36,13 @@ class ContentContainerStreamAction extends BaseStreamAction
         parent::init();
 
         // Get Content Container by Param
-        $this->criteria->condition .= " AND wall_entry.wall_id = " . $this->contentContainer->wall_id;
-
+        if ($this->contentContainer->wall_id != "") {
+            $this->criteria->condition .= " AND wall_entry.wall_id = ".$this->contentContainer->wall_id;
+        } else {
+            Yii::log("No wall id for content container ".get_class($this->contentContainer)." - ".$this->contentContainer->getPrimaryKey()." set - stopped stream action!", CLogger::LEVEL_ERROR);
+            $this->criteria->condition .= " AND 1=2";
+        }
+        
         /**
          * Limit to public posts when no member
          */
