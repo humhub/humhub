@@ -20,6 +20,34 @@
         </div>
       </li>
 
+      <li>
+        <div class="container">
+          <img src="/humhub/img/default_user.jpg?cacheId=0" />
+          <div class="thermometer">
+            <span class="empty"><span>99</span></span>
+            <span class="full"><span>%</span></span>
+          </div>
+        </div>
+        <div class="legend">
+          <span class="p">&nbsp;</span>
+          <p>C. Tembreull</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="container">
+          <img src="/humhub/img/default_user.jpg?cacheId=0" />
+          <div class="thermometer">
+            <span class="empty"><span>99</span></span>
+            <span class="full"><span>%</span></span>
+          </div>
+        </div>
+        <div class="legend">
+          <span class="p">&nbsp;</span>
+          <p>C. Tembreull</p>
+        </div>
+      </li>
+
 
     </ul>
   </div>
