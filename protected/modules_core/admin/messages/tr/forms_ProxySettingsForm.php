@@ -1,9 +1,9 @@
 <?php
 return array (
   'Enabled' => 'Etkin',
-  'No Proxy Hosts' => '',
+  'No Proxy Hosts' => 'Proxy Sunucu yok',
   'Password' => 'Şifre',
   'Port' => 'Port',
-  'Server' => '',
+  'Server' => 'Sunucu',
   'User' => 'Kullanıcı',
 );

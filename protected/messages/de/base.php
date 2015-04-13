@@ -5,7 +5,7 @@ return array (
   'Administration' => 'Administration',
   'Back' => 'Zurück',
   'Back to dashboard' => 'Zurück zum Dashboard',
-  'Choose language:' => '',
+  'Choose language:' => 'Sprache wählen:',
   'Collapse' => 'Einklappen',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Die Quelle des Addons muss eine Instanz von HActiveRecordContent oder HActiveRecordContentAddon sein!',
   'Could not determine content container!' => 'Kann Content Container nicht finden.',

@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Add image/file' => '',
-  'Add link' => '',
-  'Enter a url (e.g. http://example.com)' => '',
+  'Add image/file' => 'Adicionar imagem / arquivo',
+  'Add link' => 'Adicionar Link',
+  'Close' => 'Fechar',
+  'Enter a url (e.g. http://example.com)' => 'Digite uma URL',
   'Please wait while uploading...' => '',
   'Target' => '',
-  'Title of your link' => '',
-  'Close' => 'Fechar',
   'Title' => 'Tìtulo',
+  'Title of your link' => 'Título do seu link',
 );

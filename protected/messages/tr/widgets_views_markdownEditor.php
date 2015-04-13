@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Title of your link' => '',
   'Add image/file' => 'Resim/Dosya Ekle',
   'Add link' => 'Link Ekle',
   'Close' => 'Kapat',
@@ -8,4 +7,5 @@ return array (
   'Please wait while uploading...' => 'Yüklenirken lütfen bekleyin...',
   'Target' => 'Hedef',
   'Title' => 'Başlık',
+  'Title of your link' => 'Bağlantı Başlığı',
 );

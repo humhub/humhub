@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Title of your link' => '',
   'Add image/file' => 'Добавить изображение/файл',
   'Add link' => 'Добавить ссылку',
   'Close' => 'Закрыть',
@@ -8,4 +7,5 @@ return array (
   'Please wait while uploading...' => 'Пожалуйста, подождите пока загружается ...',
   'Target' => 'Цель',
   'Title' => 'Заголовок',
+  'Title of your link' => 'Название вашей ссылки',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
   '<strong>Profile</strong> menu' => '<strong>Меню</strong> профиля',
-  'About' => 'Обо мне',
+  'About' => 'Информация',
   'Stream' => 'Поток',
 );

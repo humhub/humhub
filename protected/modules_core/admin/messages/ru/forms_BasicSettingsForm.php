@@ -7,5 +7,5 @@ return array (
   'Logo upload' => 'Загрузить логотип',
   'Name of the application' => 'Название приложения',
   'Show introduction tour for new users' => 'Показывать приветственный тур для новых пользователей',
-  'Show user profile post form on dashboard' => 'Показать почтовую форму пользователя в панели События',
+  'Show user profile post form on dashboard' => 'Показать поле ввода сообщений профиля в панели События',
 );
