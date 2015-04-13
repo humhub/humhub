@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Turn off notifications' => '',
-  'Turn on notifications' => '',
+  'Turn off notifications' => 'إلغاء التنبيهات',
+  'Turn on notifications' => 'تفعيل التنبيهات',
 );
