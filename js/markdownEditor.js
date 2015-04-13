@@ -12,7 +12,7 @@ function initMarkdownEditor(elementId) {
                     name: "groupCustom",
                     data: [{
                             name: "cmdLinkWiki",
-                            title: "Add link",
+                            title: "URL/Link",
                             icon: {glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link'},
                             callback: function(e) {
                                 addLinkModal = $('#addLinkModal_'+elementId);
@@ -50,7 +50,7 @@ function initMarkdownEditor(elementId) {
                         },
                         {
                             name: "cmdImgWiki",
-                            title: "Add image/file",
+                            title: "Image/File",
                             icon: {glyph: 'glyphicon glyphicon-picture', fa: 'fa fa-picture-o', 'fa-3': 'icon-picture'},
                             callback: function(e) {
                                 newFile = "";
