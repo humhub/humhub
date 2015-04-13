@@ -71,7 +71,7 @@ class LikeController extends ContentAddonController
         if (!Yii::app()->user->isGuest) {
             $attributes = array('object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::app()->user->id);
             $like = Like::model()->findByAttributes($attributes);
-            if (!empty($like)) {
+            if ($like != null) {
                 $like->delete();
             }
         }
