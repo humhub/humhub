@@ -27,33 +27,33 @@ if (file_exists($defaults['params']['dynamicConfigFile'])) {
 }
 
 return CMap::mergeArray($pre_config, array(
-            // application components
-            'components' => array(
-                // Session specific settings
-                'session' => array(
-                ),
-                'user' => array(
-                    // enable cookie-based authentication
-                    'allowAutoLogin' => true,
-                    'class' => 'application.modules_core.user.components.WebUser',
-                    'loginUrl' => array('//user/auth/login'),
-                ),
-                'curl' => array(
-                  'class'   => 'ext.curl.Curl',
-                  'options' => array()
-                ),
-                'request' => array(
-                    'class' => 'HHttpRequest',
-                    'enableCsrfValidation' => true,
-                ),
-                'clientScript' => array(
-                    'class' => 'HClientScript',
-                ),
-                'themeManager' => array(
-                    'themeClass' => 'HTheme',
-                ),
-                'errorHandler' => array(
-                    'errorAction' => '//error/index',
-                ),
-            ),
-        ));
+  // application components
+  'components' => array(
+    // Session specific settings
+    'session' => array(),
+    'user' => array(
+      // enable cookie-based authentication
+      'allowAutoLogin' => true,
+      'class' => 'application.modules_core.user.components.WebUser',
+      'loginUrl' => array('//user/auth/login'),
+    ),
+    'curl' => array(
+      'class'   => 'ext.curl.Curl',
+      'options' => array()
+    ),
+    'request' => array(
+      'class' => 'HHttpRequest',
+      'enableCsrfValidation' => true,
+    ),
+    'clientScript' => array(
+      'class' => 'HClientScript',
+    ),
+    'themeManager' => array(
+      'themeClass' => 'HTheme',
+    ),
+    'errorHandler' => array(
+      'errorAction' => '//error/index',
+    ),
+  ),
+  'params' => require_once(dirname(__FILE__).'/local.php')
+));

@@ -353,15 +353,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
         // Search Stuff
         if (!$this->isNewRecord) {
             HSearch::getInstance()->deleteModel($this);
+            //HSync::getInstance()->deleteUser($this->guid);
         }
         if ($this->status == User::STATUS_ENABLED) {
             HSearch::getInstance()->addModel($this);
-
-            try {
-              $this->searchSync();
-            } catch (Exception $ex) {
-              throw new Exception ($ex->getMessage(), $ex->getCode());
-            }
+            HSync::getInstance()->addUser($this->createSearchableJSON());
         }
 
         if ($this->isNewRecord) {
@@ -373,14 +369,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
 
         return parent::afterSave();
-    }
-
-    public function searchSync()
-    {
-      // TODO: refactor this into a module similar to HSearch
-      $url      = 'http://localhost:9292/users';
-      $data     = CJSON::encode($this->createSearchableJSON());
-      $response = Yii::app()->curl->postJSON($url, $data);
     }
 
     public function setUpApproved()
@@ -486,6 +474,12 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         return parent::beforeDelete();
+    }
+
+    protected function afterDelete() {
+      HSync::getInstance()->deleteUser($this->guid);
+
+      return parent::afterDelete();
     }
 
     /**

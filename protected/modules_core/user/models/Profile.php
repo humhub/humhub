@@ -189,11 +189,7 @@ class Profile extends HActiveRecord
      */
     public function afterSave()
     {
-      try {
-        $this->user->searchSync();
-      } catch (Exception $ex) {
-        throw new Exception ($ex->getMessage(), $ex->getCode());
-      }
+      HSync::getInstance()->addUser($this->user->createSearchableJSON());
       return parent::afterSave();
     }
 
