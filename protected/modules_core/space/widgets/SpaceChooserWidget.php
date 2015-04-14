@@ -8,6 +8,7 @@
  */
 class SpaceChooserWidget extends HWidget
 {
+    public $comotion_ui = false;
 
     public function init()
     {
@@ -23,10 +24,15 @@ class SpaceChooserWidget extends HWidget
      */
     public function run()
     {
-        if (Yii::app()->user->isGuest)
-            return;
+        if (Yii::app()->user->isGuest) {
+          return;
+        }
 
-        $this->render('spaceChooser', array());
+        if ($this->comotion_ui) {
+          $this->render('spaceChooser_comotion', array());
+        } else {
+          $this->render('spaceChooser', array());
+        }
     }
 
 }

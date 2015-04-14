@@ -112,10 +112,27 @@
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/desktop-notify-config.js"></script>
 <?php endif; ?>
 
+<nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left navmenu-inverse offcanvas" role="navigation">
+  <a class="navmenu-brand" href="#">Brand</a>
+  <ul class="nav navmenu-nav">
+    <?php $this->widget('application.modules_core.space.widgets.SpaceChooserWidget', array('comotion_ui' => true)); ?>
+    <li class="divider"></li>
+  </ul>
+</nav>
+
+
+
 <!-- start: first top navigation bar -->
 <div id="topbar-first" class="topbar">
     <div class="container">
+        <div class="topbar-actions pull-left">
+          <div data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+            <span class="glyphicon glyphicon-hamburger-menu white">hb</span>
+          </div>
+        </div>
+
         <div class="topbar-brand hidden-xs">
+
             <?php $this->widget('application.widgets.LogoWidget', array()); ?>
         </div>
 
@@ -143,8 +160,6 @@
 <div id="topbar-second" class="topbar">
     <div class="container">
         <ul class="nav ">
-            <!-- load space chooser widget -->
-            <?php $this->widget('application.modules_core.space.widgets.SpaceChooserWidget', array()); ?>
 
             <!-- load navigation from widget -->
             <?php $this->widget('application.widgets.TopMenuWidget', array()); ?>
@@ -168,9 +183,7 @@
     </div>
 </div>
 
-<!-- end: second top navigation bar -->
 
-<?php $this->widget('application.modules_core.tour.widgets.TourWidget', array()); ?>
 
 <!-- start: show content (and check, if exists a sublayout -->
 <?php if (isset($this->subLayout) && $this->subLayout != "") : ?>
