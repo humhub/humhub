@@ -76,7 +76,6 @@
 
     <!-- start: render additional head (css and js files) -->
     <?php $this->renderPartial('//layouts/head'); ?>
-
     <!-- end: render additional head -->
 
     <!-- Global app functions -->
@@ -115,8 +114,7 @@
 <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left navmenu-inverse offcanvas" role="navigation">
   <a class="navmenu-brand" href="#">Brand</a>
   <ul class="nav navmenu-nav">
-    <?php $this->widget('application.modules_core.space.widgets.SpaceChooserWidget', array('comotion_ui' => true)); ?>
-    <li class="divider"></li>
+    <li><!-- stuff goes here --></li>
   </ul>
 </nav>
 
