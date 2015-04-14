@@ -22,3 +22,4 @@ uploads/profile_image/banner/*
 nbproject
 .idea/*
 .gitmodules
+.DS_Store
