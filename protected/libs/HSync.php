@@ -47,7 +47,7 @@ class HSync extends CComponent
 
   public function deleteUser($user) {
     $config = Yii::app()->params['sync'];
-    $path   = self::$api_url.'/'.$config['paths']['user'].'/'
+    $path   = self::$api_url.'/'.$config['paths']['user'].'/';
 
     if (is_array($user)) {
       $path = $path . $user['guid'];
