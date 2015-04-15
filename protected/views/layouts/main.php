@@ -112,10 +112,12 @@
 <?php endif; ?>
 
 <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left navmenu-inverse offcanvas" role="navigation">
-  <a class="navmenu-brand" href="#">Brand</a>
-  <ul class="nav navmenu-nav">
-    <li><!-- stuff goes here --></li>
-  </ul>
+  <?php
+    $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget', array(
+      'comotion' => true
+    ));
+  ?>
+  <!-- <a class="navmenu-brand" href="#">Brand</a> -->
 </nav>
 
 

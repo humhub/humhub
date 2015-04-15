@@ -25,11 +25,13 @@
  */
 class AccountTopMenuWidget extends HWidget
 {
+    public  $comotion = false;
+    private $view     = 'accountTopMenu';
 
     public function run()
     {
-        
-        return $this->render('accountTopMenu');
+      $this->view .= ($this->comotion ? '_comotion' : '');
+      return $this->render($this->view);
     }
 
 }
