@@ -26,21 +26,22 @@
 class ProfileHeaderWidget extends HWidget
 {
 
-    public $user;
+    public    $user;
     protected $isProfileOwner = false;
+    public    $comotion       = false;
 
 
     public function init()
     {
-    
+
         /**
          * Try to autodetect current user by controller
          */
         if ($this->user === null) {
             $this->user = $this->getController()->getUser();
         }
-        
-        
+
+
         $this->isProfileOwner = (Yii::app()->user->id == $this->user->id);
 
         // Only include uploading javascripts on own user profiles
@@ -57,10 +58,11 @@ class ProfileHeaderWidget extends HWidget
 
     public function run()
     {
-        $this->render('profileHeader', array(
-            'user' => $this->user,
-            'isProfileOwner' => $this->isProfileOwner
-        ));
+      $view = $this->comotion ? 'profileHeader_comotion' : 'profileHeader';
+      $this->render($view, array(
+        'user'           => $this->user,
+        'isProfileOwner' => $this->isProfileOwner
+      ));
     }
 
 }

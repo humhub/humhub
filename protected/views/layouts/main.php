@@ -122,64 +122,69 @@
 
 <!-- start: first top navigation bar -->
 <div id="topbar-first" class="topbar">
-    <div class="container">
-        <div class="topbar-actions pull-left">
-          <div data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
-            <span class="glyphicon glyphicon-hamburger-menu white">hb</span>
-          </div>
-        </div>
-
-        <div class="topbar-brand hidden-xs">
-
-            <?php $this->widget('application.widgets.LogoWidget', array()); ?>
-        </div>
-
-        <div class="topbar-actions pull-right">
-            <?php $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget'); ?>
-        </div>
-
-        <div class="notifications pull-right">
-
-            <!-- global notifications dropdown -->
-            <?php $this->widget('application.modules_core.notification.widgets.NotificationListWidget'); ?>
-
-            <!-- Notification addon widget for modules -->
-            <?php $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array())); ?>
-
-        </div>
-
+  <div class="container">
+    <div class="notifications pull-right">
+      <div class="btn-group">
+        <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
     </div>
 
+    <!--
+    <div class="topbar-brand hidden-xs">
+        <?php
+          // $this->widget('application.widgets.LogoWidget', array());
+        ?>
+    </div>
+
+    <div class="topbar-actions pull-right">
+        <?php
+          // $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget');
+        ?>
+    </div>
+
+    <div class="notifications pull-right">
+        <?php
+          // $this->widget('application.modules_core.notification.widgets.NotificationListWidget');
+          // $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array()));
+        ?>
+    </div>
+    -->
+  </div>
 </div>
 <!-- end: first top navigation bar -->
 
 
 <!-- start: second top navigation bar -->
+<!--
 <div id="topbar-second" class="topbar">
-    <div class="container">
-        <ul class="nav ">
+  <div class="container">
+    <ul class="nav ">
+      <?php
+        // $this->widget('application.widgets.TopMenuWidget', array());
+      ?>
+    </ul>
 
-            <!-- load navigation from widget -->
-            <?php $this->widget('application.widgets.TopMenuWidget', array()); ?>
+    <ul class="nav pull-right" id="search-menu-nav">
+      <li class="dropdown">
+        <a href="#" id="search-menu" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-search"></i>
+        </a>
+        <ul class="dropdown-menu pull-right" id="search-menu-dropdown">
+          <?php
+            // $this->widget('application.widgets.TopMenuRightStackWidget', array(
+            //  'widgets' => array(
+            //    array('application.widgets.SearchMenuWidget', array())
+            //  )
+            // ));
+          ?>
         </ul>
-
-        <ul class="nav pull-right" id="search-menu-nav">
-            <li class="dropdown">
-                <a href="#" id="search-menu" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-search"></i></a>
-                <ul class="dropdown-menu pull-right" id="search-menu-dropdown">
-                    <?php
-                    $this->widget('application.widgets.TopMenuRightStackWidget', array(
-                        'widgets' => array(
-                            array('application.widgets.SearchMenuWidget', array())
-                        )
-                    ));
-                    ?>
-                </ul>
-            </li>
-        </ul>
-    </div>
+      </li>
+    </ul>
+  </div>
 </div>
+-->
 
 
 
