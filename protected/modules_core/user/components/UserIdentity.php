@@ -49,7 +49,7 @@ class UserIdentity extends CUserIdentity
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
             $this->errorCode = self::ERROR_NOT_APPROVED;
         } else {
-            $this->onSuccessfulAuthenticate($user);
+            $this->onSuccessfulAuthenticate($this->getUser());
         }
 
         return !$this->errorCode;
