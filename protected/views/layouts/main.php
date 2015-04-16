@@ -78,6 +78,11 @@
     <?php $this->renderPartial('//layouts/head'); ?>
     <!-- end: render additional head -->
 
+    <script type="text/javascript"
+      src="//maps.googleapis.com/maps/api/js?key=AIzaSyApfAEDQx11EyCou2TrTmR5kEtPYmgsBkg"></script>
+    <script type="text/javascript"
+      src="<?php echo Yii::app()->baseUrl; ?>/js/comotion-geolocation.js?ver=<?php echo $ver; ?>"></script>
+
     <!-- Global app functions -->
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/app.js?ver=<?php echo $ver; ?>"></script>
     <!-- end: JavaScript -->
