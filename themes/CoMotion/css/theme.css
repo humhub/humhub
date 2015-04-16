@@ -1503,7 +1503,7 @@ ul.sideswipe li div.legend span {
   height: 18px;
 }
 ul.sideswipe li div.legend span.p {
-  background: url('/humhub/themes/CoMotion/img/role/role_p_360.png') 0 0 no-repeat;
+  background: url('../img/role/role_p_360.png') 0 0 no-repeat;
 }
 ul.sideswipe li div.legend p {
   display: block;
