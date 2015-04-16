@@ -1411,3 +1411,107 @@ img.bounceIn {
 .btn-warning[disabled].active {
   background: #fddcb1;
 }
+.border-box {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+ul.sideswipe {
+  display: block;
+  clear: both;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  list-style-type: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+ul.sideswipe li {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+  top: 0px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 1px solid #eeedf6;
+  margin: 0 0 0 10px;
+  padding: 5px;
+}
+ul.sideswipe li div {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+ul.sideswipe li div.container {
+  position: relative;
+}
+ul.sideswipe li div.container img {
+  width: 128px;
+  height: 130px;
+  margin: 0;
+  padding: 0;
+}
+ul.sideswipe li div.container div.thermometer {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 30px;
+  height: 130px;
+  z-index: 2;
+  font-size: 25px;
+}
+ul.sideswipe li div.container div.thermometer span {
+  position: absolute;
+  display: block;
+  width: 100%;
+  left: 0;
+}
+ul.sideswipe li div.container div.thermometer span span {
+  text-align: center;
+}
+ul.sideswipe li div.container div.thermometer span.empty {
+  top: 0;
+  height: 31px;
+  color: #009edb;
+  background-color: rgba(238, 237, 246, 0.8);
+}
+ul.sideswipe li div.container div.thermometer span.empty span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0 0 -8px 0;
+}
+ul.sideswipe li div.container div.thermometer span.full {
+  bottom: 0;
+  height: 99px;
+  color: #eeedf6;
+  background-color: rgba(0, 158, 219, 0.8);
+}
+ul.sideswipe li div.container div.thermometer span.full span {
+  margin: -8px 0 0 0;
+}
+ul.sideswipe li div.legend {
+  margin: 5px 0 0 0;
+}
+ul.sideswipe li div.legend span {
+  display: block;
+  float: left;
+  width: 18px;
+  height: 18px;
+}
+ul.sideswipe li div.legend span.p {
+  background: url('/humhub/themes/CoMotion/img/role/role_p_360.png') 0 0 no-repeat;
+}
+ul.sideswipe li div.legend p {
+  display: block;
+  float: left;
+  width: 110px;
+  height: 18px;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 13px;
+  color: #929497;
+}

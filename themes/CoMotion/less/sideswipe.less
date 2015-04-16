@@ -1,0 +1,130 @@
+.border-box {
+  box-sizing:         border-box;
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+}
+
+
+ul.sideswipe {
+  display: block;
+  clear:   both;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  list-style-type: none;
+
+  width:   100%;
+
+  margin:  0;
+  padding: 0;
+
+  li {
+    position: relative;
+    display:  inline-block;
+    width:    140px;
+    top:      0px;
+
+    white-space: nowrap;
+    .border-box;
+
+    border:  1px solid #eeedf6;
+    margin:  0 0 0 10px;
+    padding: 5px;
+
+    div {
+      width:   100%;
+      margin:  0;
+      padding: 0;
+
+      &.container {
+        position: relative;
+        img {
+          width:    128px;
+          height:   130px;
+          margin:   0;
+          padding:  0;
+        }
+
+        div.thermometer {
+          position: absolute;
+          top:      0px;
+          right:    0px;
+          width:    30px;
+          height:   130px;
+          z-index:  2;
+
+          font-size: 25px;
+
+          span {
+            position: absolute;
+            display:  block;
+            width:    100%;
+            left:     0;
+
+            span {
+              text-align: center;
+            }
+
+            &.empty {
+              top: 0;
+              height: 31px;
+              color:  #009edb;
+              background-color: rgba(238, 237, 246, 0.8);
+
+              span {
+                position: absolute;
+                bottom:   0;
+                left:     0;
+                margin:   0 0 -8px 0;
+              }
+            }
+
+            &.full {
+              bottom: 0;
+              height: 99px;
+              color:  #eeedf6;
+              background-color: rgba(0, 158, 219, 0.8);
+
+              span {
+                margin: -8px 0 0 0;
+              }
+            }
+          }
+        }
+      }
+
+      &.legend {
+        margin: 5px 0 0 0;
+
+        span {
+          display: block;
+          float:   left;
+          width:   18px;
+          height:  18px;
+
+          &.p {
+            background: url('/humhub/themes/CoMotion/img/role/role_p_360.png') 0 0 no-repeat;
+          }
+        }
+
+        p {
+          display: block;
+          float:   left;
+          width:   110px;
+          height:  18px;
+          margin-bottom: 0;
+          text-align: center;
+          font-size: 13px;
+          color:     #929497;
+        }
+
+
+
+      }
+
+
+
+    }
+  }
+
+}
