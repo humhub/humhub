@@ -8,7 +8,7 @@
 
       <li>
         <div class="container">
-          <img src="/humhub/img/default_user.jpg?cacheId=0" />
+          <img src="<?php echo Yii::app()->baseUrl; ?>/img/default_user.jpg" />
           <div class="thermometer">
             <span class="empty"><span>99</span></span>
             <span class="full"><span>%</span></span>
@@ -22,7 +22,7 @@
 
       <li>
         <div class="container">
-          <img src="/humhub/img/default_user.jpg?cacheId=0" />
+          <img src="<?php echo Yii::app()->baseUrl; ?>/img/default_user.jpg" />
           <div class="thermometer">
             <span class="empty"><span>99</span></span>
             <span class="full"><span>%</span></span>
@@ -36,7 +36,7 @@
 
       <li>
         <div class="container">
-          <img src="/humhub/img/default_user.jpg?cacheId=0" />
+          <img src="<?php echo Yii::app()->baseUrl; ?>/img/default_user.jpg" />
           <div class="thermometer">
             <span class="empty"><span>99</span></span>
             <span class="full"><span>%</span></span>
