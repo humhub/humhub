@@ -1,7 +1,7 @@
 <div class="container profile-layout-container">
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="">
       <?php
         $this->widget('application.modules_core.user.widgets.ProfileHeaderWidget', array(
           'user'     => $this->getUser(),
