@@ -15,18 +15,43 @@ body {
   color					   : #929497;
 }
 
+h1 {
+	font-size: 	@font-size-h1;
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 	@font-size-h2;
+}
+
+h3 {
+	font-size: 	@font-size-h3;
+	font-weight: normal;
+}
+
+h4 {
+	font-size: 	@font-size-h4;
+}
+
+h5 {
+	font-size: 	@font-size-h5;
+}
+
+
 h1,h2,h3,h4,h5 {
   font-family              : @font-family-headline;
 }
 
-h1,h2 {
+h1 {
   color                    : @purple;
-  display                  : block;
+ // display                  : block;
 }
+
+
 
 h3,h4,h5 {
   color                    : @base;
-  font-weight              : 700;
+  // font-weight              : 700;
 }
 
 p {
@@ -121,7 +146,16 @@ img {
 //   padding: 10px;
 // }
 
+//
+// CoMotion
+// -------------------------
 
+.comotion-profile-data {
+		padding-left: 20px;
+		h3 {
+			margin-top: 5px;
+		}
+}
 
 .text-center {
   text-align                : center !important;
@@ -796,11 +830,11 @@ input[type=select] {
 }
 
 .form-control {
-  border: 2px solid #929497;
+  border: 1px solid #cccccc;
   box-shadow: none;
 
   &:focus {
-    border: 2px solid #b7a57a;
+    border: 1px solid #cccccc;
     outline: 0;
     box-shadow: none;
   }
@@ -1552,3 +1586,45 @@ img.bounceIn {
   }
 
 }
+
+//
+// Menu
+// ------------------------------
+
+.navmenu {
+	background-color: #4b2e84;
+}
+
+.navmenu p {
+	color: #fff;
+}
+
+.navmenu-inverse .navmenu-nav>li>a, 
+.navbar-inverse .navbar-offcanvas .navmenu-nav>li>a {
+  color: #fff;
+}
+
+.navmenu-inverse .navmenu-nav>li>a:hover, 
+.navbar-inverse .navbar-offcanvas .navmenu-nav>li>a:hover {
+  color: #b7a57a;
+}
+
+.navmenu div {
+	padding-top: 10px;
+	padding-left: 30px;
+}
+
+.navmenu-nav {
+	padding-left: 15px;
+}
+
+.topbar {
+	padding-left: 10px;
+}
+
+#topbar-first .btn-group > a {
+	background-color: #4b2e84;
+}
+
+
+

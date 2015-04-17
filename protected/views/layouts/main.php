@@ -132,10 +132,10 @@
   <div class="container">
     <div class="notifications pull-right">
       <div class="btn-group">
-        <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+       <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
           <i class="fa fa-bars"></i>
-        </a>
-      </div>
+        </a>        	
+     </div>
     </div>
 
     <!--

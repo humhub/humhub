@@ -11,6 +11,6 @@
   <?php } ?>
   <div class="comotion-profile-data">
     <h1><?php echo CHtml::encode($user->displayName); ?></h1>
-    <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
+    <h3><?php echo CHtml::encode($user->profile->title); ?></h3>
   </div>
 </div>

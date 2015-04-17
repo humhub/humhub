@@ -143,6 +143,23 @@ body {
   background-color: #fff;
   color: #929497;
 }
+h1 {
+  font-size: 28px;
+  font-weight: normal;
+}
+h2 {
+  font-size: 20px;
+}
+h3 {
+  font-size: 18px;
+  font-weight: normal;
+}
+h4 {
+  font-size: 14px;
+}
+h5 {
+  font-size: 11px;
+}
 h1,
 h2,
 h3,
@@ -150,16 +167,13 @@ h4,
 h5 {
   font-family: "Encode Sans Compressed", sans-serif;
 }
-h1,
-h2 {
+h1 {
   color: #4b2e83;
-  display: block;
 }
 h3,
 h4,
 h5 {
   color: #949494;
-  font-weight: 700;
 }
 p {
   font-family: "Open Sans", sans-serif;
@@ -208,6 +222,12 @@ img.responsive {
 .heading {
   background-color: #4b2e83;
   color: #b7a57a;
+}
+.comotion-profile-data {
+  padding-left: 20px;
+}
+.comotion-profile-data h3 {
+  margin-top: 5px;
 }
 .text-center {
   text-align: center !important;
@@ -696,11 +716,11 @@ input[type=select] {
   margin-bottom: 0;
 }
 .form-control {
-  border: 2px solid #929497;
+  border: 1px solid #cccccc;
   box-shadow: none;
 }
 .form-control:focus {
-  border: 2px solid #b7a57a;
+  border: 1px solid #cccccc;
   outline: 0;
   box-shadow: none;
 }
@@ -994,7 +1014,7 @@ table td a:hover {
 }
 .grid-view .filters input,
 .grid-view .filters select {
-  border: 2px solid #929497;
+  border: 1px solid #cccccc;
   box-shadow: none;
   border-radius: 4px;
   font-size: 12px;
@@ -1002,7 +1022,7 @@ table td a:hover {
 }
 .grid-view .filters input:focus,
 .grid-view .filters select:focus {
-  border: 2px solid #b7a57a;
+  border: 1px solid #cccccc;
   outline: 0;
   box-shadow: none;
 }
@@ -1229,6 +1249,36 @@ img.bounceIn {
 .markdown-render a:visited {
   color: #b7a57a !important;
 }
+.navmenu {
+  background-color: #4b2e84;
+}
+.navmenu p {
+  color: #fff;
+}
+.navmenu-inverse .navmenu-nav > li > a,
+.navbar-inverse .navbar-offcanvas .navmenu-nav > li > a {
+  color: #fff;
+}
+.navmenu-inverse .navmenu-nav > li > a:hover,
+.navbar-inverse .navbar-offcanvas .navmenu-nav > li > a:hover {
+  color: #b7a57a;
+}
+.navmenu div {
+  padding-top: 10px;
+  padding-left: 30px;
+}
+.navmenu-nav {
+  padding-left: 15px;
+}
+.topbar {
+  padding-left: 10px;
+}
+#topbar-first .btn-group > a {
+  background-color: #4b2e84;
+}
+.topbar {
+  background-image: url(../../img/logos/comotion_logo.png);
+}
 .btn {
   border: none;
   -webkit-box-shadow: none;
@@ -1240,7 +1290,7 @@ img.bounceIn {
   outline: none !important;
   margin-bottom: 0;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: Normal;
   padding: 8px 16px;
 }
 .input.btn {
@@ -1312,12 +1362,12 @@ img.bounceIn {
   background: #563596;
 }
 .btn-info {
-  background: #b7a57a;
+  background: #4b2e84;
   color: white !important;
 }
 .btn-info:hover,
 .btn-info:focus {
-  background: #ae9a69 !important;
+  background: #402771 !important;
   text-decoration: none;
 }
 .btn-info:active,
