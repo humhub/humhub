@@ -142,6 +142,7 @@ body {
   -webkit-text-size-adjust: none;
   background-color: #fff;
   color: #929497;
+  padding-top: : 50px;
 }
 h1 {
   font-size: 28px;
@@ -228,6 +229,10 @@ img.responsive {
 }
 .comotion-profile-data h3 {
   margin-top: 5px;
+}
+.profile-user-photo {
+  width: 100%;
+  max-width: 480px;
 }
 .text-center {
   text-align: center !important;
@@ -1276,9 +1281,6 @@ img.bounceIn {
 #topbar-first .btn-group > a {
   background-color: #4b2e84;
 }
-.topbar {
-  background-image: url(../../img/logos/comotion_logo.png);
-}
 .btn {
   border: none;
   -webkit-box-shadow: none;
@@ -1565,3 +1567,28 @@ ul.sideswipe li div.legend p {
   font-size: 13px;
   color: #929497;
 }
+/* Large desktop */
+@media (min-width: 1200px) {
+  body {
+    padding-top: 130px;
+  }
+}
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+  body {
+    padding-top: 130px;
+  }
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+  body {
+    padding-top: 50px;
+  }
+}
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  body {
+    padding-top: 50px;
+  }
+}
+/*# sourceMappingURL=theme.css.map */
