@@ -19,6 +19,11 @@
       </a>
     </li>
     <li>
+      <a href="<?php echo $this->createUrl('//user/account/edit'); ?>">
+        <i class="fa fa-user"></i> <?php echo Yii::t("UserModule.widgets_views_profileEditButton", "Edit account"); ?>
+      </a>
+    </li>
+    <li>
       <a href="<?php echo $this->createUrl('//user/account/edit') ?>">
         <i class="fa fa-edit"></i> <?php echo Yii::t('base', 'Account settings'); ?>
       </a>
