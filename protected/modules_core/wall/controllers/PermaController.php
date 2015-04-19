@@ -1,18 +1,26 @@
 <?php
 
 /**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+/**
  * PermaController is used to create permanent links to content.
  *
  * @package humhub.modules_core.wall.controllers
  * @since 0.5
  * @author Luke
  */
-class PermaController extends Controller {
+class PermaController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -23,7 +31,8 @@ class PermaController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -39,7 +48,8 @@ class PermaController extends Controller {
      *
      * This is mainly used by ActivityStream or Permalinks.
      */
-    public function actionWallEntry() {
+    public function actionWallEntry()
+    {
 
         // Id of wall entry
         $id = Yii::app()->request->getParam('id', "");
@@ -58,30 +68,16 @@ class PermaController extends Controller {
     }
 
     /**
-     * On given Content Class and id redirect the user to it.
+     * Redirects to given HActiveRecordContent or HActiveRecordContentAddon
      */
-    public function actionContent() {
-
-        $content = Content::model()->findByAttributes(array('object_model' => Yii::app()->request->getParam('model'), 'object_id' => Yii::app()->request->getParam('id')));
-        if ($content != null) {
-            $url = $this->createUrl('WallEntry', array('id' => $content->getFirstWallEntryId()));
-            $this->redirect($url);
-
-            return;
-        }
-
+    public function actionContent()
+    {
         $id = (int) Yii::app()->request->getParam('id', "");
         $model = Yii::app()->request->getParam('model');
 
         // Check given model
-        if (!class_exists($model)) {
-            throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Unknown content class!'));
-        }
-
-        // Load Model and check type
-        $foo = new $model;
-        if (!$foo instanceof HActiveRecordContent && !$foo instanceof HActiveRecordContentAddon) {
-            throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Invalid content class!'));
+        if (!Helpers::CheckClassType($model, array('HActiveRecordContent', 'HActiveRecordContentAddon'))) {
+            throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Invalid model given!'));
         }
 
         $model = call_user_func(array($model, 'model'));
@@ -91,8 +87,7 @@ class PermaController extends Controller {
             throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Could not find requested content!'));
         }
 
-        $url = $this->createUrl('WallEntry', array('id' => $object->content->getFirstWallEntryId()));
-        $this->redirect($url);
+        $this->redirect($object->content->getUrl());
     }
 
 }

@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 /**
@@ -290,7 +278,7 @@ class Content extends CActiveRecord
 
         if ($this->created_by == $userId)
             return true;
-        
+
         if (Yii::app()->user->isAdmin()) {
             return true;
         }
@@ -313,6 +301,23 @@ class Content extends CActiveRecord
 
         if ($userId == "")
             $userId = Yii::app()->user->id;
+
+
+        // For guests users
+        if (Yii::app()->user->isGuest) {
+            if ($this->visibility == 1) {
+                if ($this->container instanceof Space) {
+                    if ($this->container->visibility == Space::VISIBILITY_ALL) {
+                        return true;
+                    }
+                } elseif ($this->container instanceof User) {
+                    if ($this->container->visibility == User::VISIBILITY_ALL) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         if ($this->visibility == 0) {
             // Space/User Content Access Check
@@ -338,9 +343,6 @@ class Content extends CActiveRecord
                 }
             }
         }
-
-
-
 
         return true;
     }
@@ -571,6 +573,32 @@ class Content extends CActiveRecord
             $ids[] = $entry->id;
         }
         return $ids;
+    }
+
+    /**
+     * Returns the url of this content.
+     * 
+     * By default is returns the url of the wall entry.
+     * 
+     * Optionally it's possible to create an own getUrl method in the underlying
+     * HActiveRecordContent (e.g. Post) to overwrite this behavior. 
+     * e.g. in case there is no wall entry available for this content.
+     * 
+     * @since 0.11.1
+     */
+    public function getUrl()
+    {
+        if (method_exists($this->getUnderlyingObject(), 'getUrl')) {
+            return $this->getUnderlyingObject()->getUrl();
+        }
+
+        $firstWallEntryId = $this->getFirstWallEntryId();
+
+        if ($firstWallEntryId == "") {
+            throw new CException("Could not create url for content!");
+        }
+
+        return Yii::app()->createUrl('//wall/perma/wallEntry', array('id' => $firstWallEntryId));
     }
 
     /**

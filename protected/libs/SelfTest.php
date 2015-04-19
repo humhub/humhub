@@ -25,7 +25,8 @@
  * @since 0.5
  * @author Luke
  */
-class SelfTest {
+class SelfTest
+{
 
     /**
      * Get Results of the Application SelfTest.
@@ -37,7 +38,8 @@ class SelfTest {
      *
      * @return Array
      */
-    public static function getResults() {
+    public static function getResults()
+    {
         /**
          * ['title']
          * ['state']    = OK, WARNING, ERROR
@@ -81,6 +83,21 @@ class SelfTest {
                 'hint' => 'Install GD Extension'
             );
         }
+        
+        // Checks GD Extension
+        $title = 'PHP - EXIF Extension';
+        if (function_exists('exif_read_data')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install EXIF Extension'
+            );
+        }
 
         // Checks CURL Extension
         $title = 'PHP - Multibyte String Functions';
@@ -109,6 +126,20 @@ class SelfTest {
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
                 'hint' => 'Install Curl Extension'
+            );
+        }
+        // Checks ZIP Extension
+        $title = 'PHP - ZIP Extension';
+        if (class_exists('ZipArchive')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PHP Zip Extension'
             );
         }
 
@@ -176,7 +207,8 @@ class SelfTest {
 
         // Check Runtime Directory
         $title = 'Permissions - Runtime';
-        if (is_writeable(Yii::app()->runtimePath)) {
+        $path = Yii::app()->runtimePath;
+        if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
@@ -236,11 +268,9 @@ class SelfTest {
                 'state' => 'ERROR',
                 'hint' => 'Make ' . $path . " writable for the webserver/php!"
             );
-        }        
-        
+        }
+
         return $checks;
     }
 
 }
-
-?>

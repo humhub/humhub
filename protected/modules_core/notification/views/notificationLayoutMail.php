@@ -34,16 +34,21 @@
                                                 <tr>
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
-                                                        <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
-                                                            <img
-                                                                src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
-                                                                width="50"
-                                                                alt=""
-                                                                style="max-width:50px; display:block !important; border-radius: 4px;"
-                                                                border="0" hspace="0" vspace="0"/>
-                                                        </a>
-                                                        <!-- END: USER IMAGE -->
+                                                        
+                                                        <!-- check if variable exists and is true -->
+                                                        <?php if ($notification->getCreator() !== null && empty($hideUserImage)): ?>
+                                                            <!-- START: USER IMAGE -->
+                                                            <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
+                                                                <img
+                                                                    src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
+                                                                    width="50"
+                                                                    alt=""
+                                                                    style="max-width:50px; display:block !important; border-radius: 4px;"
+                                                                    border="0" hspace="0" vspace="0"/>
+                                                            </a>
+                                                            <!-- END: USER IMAGE -->
+                                                        <?php endif; ?>
+                                                        
                                                     </td>
 
 
@@ -68,7 +73,7 @@
                                                                                 (<?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'via'); ?>
                                                                                 <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $notification->space->guid)); ?>"
                                                                                    style="text-decoration: none; color: #555555;">
-                                                                                    <?php echo $notification->space->name; ?>
+                                                                                    <?php echo CHtml::encode($notification->space->name); ?>
                                                                                 </a>)
                                                                             <?php endif; ?>
 

@@ -63,10 +63,13 @@ class UserUrlRule extends CBaseUrlRule
             if (isset($parts[1])) {
 
                 $user = User::model()->findByAttributes(array('username' => $parts[1]));
-
+                /* Set default page */
+                if (!isset($parts[2])) {
+                    $parts[2] = 'home'; 
+                }
                 if ($user !== null) {
                     $_GET['uguid'] = $user->guid;
-                    if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
+                    if (substr($parts[2], 0, 4) == 'home') {
                         $temp = 1;
                         return 'user/profile/index'. str_replace('home', '', $parts[2], $temp);
                     } else {

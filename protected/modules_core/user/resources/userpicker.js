@@ -184,8 +184,11 @@ $.fn.userpicker = function (options) {
 
             } else if (event.keyCode == 13 || event.keyCode == 9) {
 
-                // simulate click event
-                window.location.href = $('#' + uniqueID + '_userpicker .selected a').attr('href');
+                var href = $('#' + uniqueID + '_userpicker .selected a').attr('href');
+                // simulate click event when href is not undefined.
+                if (href !== undefined) {
+                    window.location.href = href;
+                }
 
             } else {
 
@@ -221,7 +224,7 @@ $.fn.userpicker = function (options) {
         $('#' + uniqueID + '_userpicker li').remove();
 
         // show loader while loading
-        $('#' + uniqueID + '_userpicker').html('<li><div class="loader"></div></li>');
+        $('#' + uniqueID + '_userpicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
 
         jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function (json) {
 

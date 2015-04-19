@@ -24,12 +24,16 @@
  * @package humhub.controllers
  * @since 0.5
  */
-class DashboardController extends Controller {
+class DashboardController extends Controller
+{
+
+    public $contentOnly = true;
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -40,13 +44,24 @@ class DashboardController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+            array('allow',
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
-            array('deny', // deny all users
+            array('deny',
                 'users' => array('*'),
+            ),
+        );
+    }
+
+    public function actions()
+    {
+        return array(
+            'stream' => array(
+                'class' => 'application.modules_core.dashboard.DashboardStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
             ),
         );
     }
@@ -56,75 +71,31 @@ class DashboardController extends Controller {
      *
      * Show recent wall entries for this user
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
-        // contains the current version to show the welcome modal
-        $version = 1;
-
-        $this->render('index', array('version' => $version));
-    }
-
-    /**
-     * Page which shows all current workspaces
-     */
-    public function actionSpaces() {
-
-        $pageSize = 5;
-
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'visibility != ' . Space::VISIBILITY_NONE;
-        $criteria->order = 'id DESC';
-        //$criteria->params = array (':id'=>$id);
-
-        $workspaceCount = Space::model()->count($criteria);
-
-        $pages = new CPagination($workspaceCount);
-        $pages->setPageSize($pageSize);
-        $pages->applyLimit($criteria);  // the trick is here!
-
-        $workspaces = Space::model()->findAll($criteria);
-
-        $this->render('workspaces', array(
-            'workspaces' => $workspaces,
-            'pages' => $pages,
-            'workspaceCount' => $workspaceCount,
-            'pageSize' => $pageSize,
-        ));
-    }
-
-    /**
-     * Page which shows all people
-     */
-    public function actionPeople() {
-
-        $criteria = new CDbCriteria();
-        //$criteria->condition = 'visibility != '.Space::VISIBILITY_NONE;
-        $criteria->order = 'firstname ASC';
-
-        $userCount = User::model()->count($criteria);
-
-        $pages = new CPagination($userCount);
-        $pages->setPageSize(HSetting::Get('paginationSize'));
-        $pages->applyLimit($criteria);  // the trick is here!
-
-        $users = User::model()->findAll($criteria);
-
-        $this->render('people', array(
-            'users' => $users,
-            'pages' => $pages,
-            'userCount' => $userCount,
-            'pageSize' => HSetting::Get('paginationSize'),
-        ));
+        if (Yii::app()->user->isGuest) {
+            $this->render('index_guest', array());
+        } else {
+            $this->render('index', array(
+                'showProfilePostForm' => HSetting::Get('showProfilePostForm', 'dashboard')
+            ));
+        }
     }
 
     /**
      * Returns a JSON Object which contains a lot of informations about
      * current states like new posts on workspaces
      */
-    public function actionGetFrontEndInfo() {
+    public function actionGetFrontEndInfo()
+    {
 
         $json = array();
         $json['workspaces'] = array();
+
+        if (Yii::app()->user->isGuest) {
+            return CJSON::encode($json);
+        }
 
         $criteria = new CDbCriteria();
         $criteria->order = 'last_visit DESC';
@@ -138,7 +109,7 @@ class DashboardController extends Controller {
             $workspace = $membership->workspace;
 
             $info = array();
-            $info['name'] = $workspace->name;
+            $info['name'] = CHtml::encode($workspace->name);
             #$info['id'] = $workspace->id;	# should be hidden at frontend
             $info['guid'] = $workspace->guid;
             $info['totalItems'] = $workspace->countItems();
@@ -147,15 +118,30 @@ class DashboardController extends Controller {
             $json['workspaces'][] = $info;
         }
 
-        // New notification count
-        $sql = "SELECT count(id)
-		FROM notification
-		WHERE  user_id = :user_id AND seen != 1";
-        $connection = Yii::app()->db;
-        $command = $connection->createCommand($sql);
-        $userId = Yii::app()->user->id;
-        $command->bindParam(":user_id", $userId);
-        $json['newNotifications'] = $command->queryScalar();
+        $user = Yii::app()->user->getModel();
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'user_id = :user_id';
+        $criteria->addCondition('seen != 1');
+        $criteria->params = array('user_id' => $user->id);
+
+        $json['newNotifications'] = Notification::model()->count($criteria);
+        $json['notifications'] = array();
+        $criteria->addCondition('desktop_notified = 0');
+        $notifications = Notification::model()->findAll($criteria);
+
+        foreach ($notifications as $notification) {
+            if ($user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'))) {
+                $info = $notification->getOut();
+                $info = strip_tags($info);
+                $info = str_replace("\n", "", $info);
+                $info = str_replace("\r", "", $info);
+                $json['notifications'][] = $info;
+            }
+            $notification->desktop_notified = 1;
+            $notification->update();
+        }
+
 
         print CJSON::encode($json);
         Yii::app()->end();

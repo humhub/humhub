@@ -16,13 +16,13 @@
 ?>
 
 
-<div class="well well-small" style="display: none;" id="comment_<?php echo $id; ?>">
-    <div class="comment" id="comments_area_<?php echo $id; ?>">
+<div class="well well-small comment-container" style="display: none;" id="comment_<?php echo $id; ?>">
+    <div class="comment <?php if (Yii::app()->user->isGuest): ?>guest-mode<?php endif; ?>" id="comments_area_<?php echo $id; ?>">
         <?php if ($isLimited): ?>
             <?php
             // Create an ajax link, which loads all comments upon request
             $showAllLabel = Yii::t('CommentModule.widgets_views_comments', 'Show all {total} comments.', array('{total}' => $total));
-            $reloadUrl = CHtml::normalizeUrl(Yii::app()->createUrl('comment/comment/show', array('model' => $modelName, 'id' => $modelId)));
+            $reloadUrl = CHtml::normalizeUrl(Yii::app()->createUrl('comment/comment/show', array('contentModel' => $modelName, 'contentId' => $modelId)));
             echo HHtml::ajaxLink($showAllLabel, $reloadUrl, array(
                 'success' => "function(html) { $('#comments_area_" . $id . "').html(html); }",
                     ), array('id' => $id . "_showAllLink", 'class' => 'show show-all-link'));
@@ -46,5 +46,7 @@
         // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
         $('#comment_<?php echo $id; ?>').show();
 <?php } ?>
+
+
 
 </script>

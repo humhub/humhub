@@ -1,7 +1,7 @@
 <?php
 return array (
   'APC' => 'APC',
-  'Could not load LDAP! - Check PHP Extension' => 'Nelze načíst PHP rozšíření LDAP!',
+  'Could not load LDAP! - Check PHP Extension' => 'Nelze načíst LDAP – zkontrolujte rozšíření PHP!',
   'Database' => 'Databáze',
   'File' => 'Soubor',
   'No caching (Testing only!)' => 'Bez cache (pouze pro testování!)',

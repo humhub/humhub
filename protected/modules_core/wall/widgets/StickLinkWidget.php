@@ -9,7 +9,8 @@
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class StickLinkWidget extends HWidget {
+class StickLinkWidget extends HWidget
+{
 
     /**
      * Content Object with SIContentBehaviour
@@ -20,7 +21,8 @@ class StickLinkWidget extends HWidget {
     /**
      * Inits the widget and set some important javascript variables.
      */
-    public function init() {
+    public function init()
+    {
 
         Yii::app()->clientScript->setJavascriptVariable(
                 "wallStickLinkUrl", Yii::app()->createUrl('//wall/content/stick', array('className' => '-className-', 'id' => '-id-'))
@@ -34,7 +36,12 @@ class StickLinkWidget extends HWidget {
     /**
      * Executes the widget.
      */
-    public function run() {
+    public function run()
+    {
+        if (!Yii::app()->controller instanceof ContentContainerController || !$this->content->content->canStick()) {
+            return;
+        }
+
         $this->render('stickLink', array(
             'object' => $this->content,
             'model' => $this->content->content->object_model,

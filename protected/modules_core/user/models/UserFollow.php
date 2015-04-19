@@ -78,6 +78,13 @@ class UserFollow extends HActiveRecord
 
         return parent::beforeSave();
     }
+    
+    public function afterSave(){
+        
+        if($this->isNewRecord && $this->object_model=='User'){
+            FollowNotification::fire($this);
+        }
+    }
 
     protected function beforeDelete()
     {
@@ -91,6 +98,7 @@ class UserFollow extends HActiveRecord
             }
         }
 
+        FollowNotification::remove('UserFollow', $this->id);
         return parent::beforeDelete();
     }
 

@@ -7,6 +7,7 @@ return array (
   'Disable' => 'Отключить',
   'Enable' => 'Включить',
   'More info' => 'Подробнее',
+  'Processing...' => 'Выполняется...',
   'Set as default' => 'Установить по-умолчанию',
   'Uninstall' => 'Удалить',
 );

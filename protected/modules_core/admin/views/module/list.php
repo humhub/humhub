@@ -1,5 +1,6 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
+    <div
+        class="panel-heading"><?php echo Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
     <div class="panel-body">
 
         <?php echo $this->renderPartial('_header'); ?>
@@ -20,9 +21,8 @@
                     <h4 class="media-heading"><?php echo $module->getName(); ?>
                         <small>
                             <?php if ($module->isEnabled()) : ?>
-                                <span
-                                    class="label label-success"><?php echo Yii::t('AdminModule.module_list', 'Activated'); ?></span>
-                                <?php endif; ?>
+                                <span class="label label-success"><?php echo Yii::t('AdminModule.module_list', 'Activated'); ?></span>
+                            <?php endif; ?>
                         </small>
                     </h4>
 
@@ -45,7 +45,7 @@
                             &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Disable'), array('//admin/module/disable', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
 
                         <?php else: ?>
-                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId), array('style' => 'font-weight:bold')); ?>
+                            &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId), array('style' => 'font-weight:bold', 'class' => 'process')); ?>
                         <?php endif; ?>
 
                         <?php if (Yii::app()->moduleManager->canUninstall($moduleId)): ?>
@@ -61,3 +61,32 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+<!-- start: Modal -->
+<div class="modal" id="processModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><?php echo Yii::t('AdminModule.views_module_list', 'Processing...') ?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="loader" style="padding-top: 0;">
+                    <div class="sk-spinner sk-spinner-three-bounce">
+                        <div class="sk-bounce1"></div>
+                        <div class="sk-bounce2"></div>
+                        <div class="sk-bounce3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end: Modal -->
+
+<script type="text/javascript">
+
+    $('.process').click(function () {
+        $('#processModal').modal('show');
+    })
+
+</script>

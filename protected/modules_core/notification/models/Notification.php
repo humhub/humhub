@@ -22,7 +22,8 @@
  * @package humhub.modules_core.notification.models
  * @since 0.5
  */
-class Notification extends HActiveRecord {
+class Notification extends HActiveRecord
+{
 
     /**
      * Normally a notification is set to seen, after we clicked at it.
@@ -40,21 +41,24 @@ class Notification extends HActiveRecord {
      * @param string $className active record class name.
      * @return Notification the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'notification';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -70,7 +74,8 @@ class Notification extends HActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -79,18 +84,25 @@ class Notification extends HActiveRecord {
         );
     }
 
-    protected function instantiate($attributes) {
+    protected function instantiate($attributes)
+    {
 
         $className = $attributes['class'];
-        // Instanciate correct Asset Model
-        $model = new $className(null);
-        return $model;
+
+        if (Helpers::CheckClassType($className, 'Notification')) {
+            // Instanciate correct Asset Model
+            $model = new $className(null);
+            return $model;
+        }
+
+        return null;
     }
 
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => 'ID',
             'class' => 'Class',
@@ -108,7 +120,8 @@ class Notification extends HActiveRecord {
         );
     }
 
-    protected function beforeSave() {
+    protected function beforeSave()
+    {
 
         if ($this->isNewRecord) {
 
@@ -117,10 +130,16 @@ class Notification extends HActiveRecord {
             }
         }
 
+        $userOnline = UserHttpSession::model()->exists('user_id = ' . $this->user_id);
+        if (!$userOnline) {
+            $this->desktop_notified = 1;
+        }
+
         return parent::beforeSave();
     }
 
-    public static function remove($model, $id) {
+    public static function remove($model, $id)
+    {
         $notifications = Notification::model()->findAllByAttributes(array('target_object_model' => $model, 'target_object_id' => $id));
         foreach ($notifications as $notification) {
             $notification->delete();
@@ -142,7 +161,8 @@ class Notification extends HActiveRecord {
 
      */
 
-    public function getSourceObject() {
+    public function getSourceObject()
+    {
 
         $model = $this->source_object_model;
         $pk = $this->source_object_id;
@@ -153,7 +173,8 @@ class Notification extends HActiveRecord {
         return $model::model()->findByPk($pk);
     }
 
-    public function getTargetObject() {
+    public function getTargetObject()
+    {
 
         $model = $this->target_object_model;
         $pk = $this->target_object_id;
@@ -164,7 +185,8 @@ class Notification extends HActiveRecord {
         return $model::model()->findByPk($pk);
     }
 
-    public function getUrl() {
+    public function getUrl()
+    {
         return Yii::app()->createUrl("//notification/entry", array('id' => $this->id));
     }
 
@@ -174,7 +196,8 @@ class Notification extends HActiveRecord {
      * Source Object must be a instance of HActiveRecordContent or HActiveRecordContentAddon
      * If not, overwrite this function.
      */
-    public function redirectToTarget() {
+    public function redirectToTarget()
+    {
 
         $sourceObj = $this->getSourceObject();
         if ($sourceObj == null) {
@@ -197,7 +220,8 @@ class Notification extends HActiveRecord {
      *
      * @return type
      */
-    public function getMailOut() {
+    public function getMailOut()
+    {
         $controller = new Controller('MailX');
         $viewPath = Yii::getPathOfAlias($this->mailView) . '.php';
 
@@ -213,7 +237,8 @@ class Notification extends HActiveRecord {
         );
     }
 
-    public function markAsSeen() {
+    public function markAsSeen()
+    {
         $this->seen = 1;
         $this->save();
     }
@@ -223,7 +248,8 @@ class Notification extends HActiveRecord {
      *
      * @return type
      */
-    public function getOut() {
+    public function getOut()
+    {
 
         $out = Yii::app()->getController()->renderPartial(
                 $this->webView, array(

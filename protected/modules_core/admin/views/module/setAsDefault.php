@@ -18,13 +18,14 @@
                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".'); ?>
             </p>
 
-            <br />
+            <br/>
 
             <div class="row">
 
                 <?php if ($module->isSpaceModule()): ?>
                     <div class="col-md-6">
                         <label for=""><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Spaces'); ?></label>
+
                         <div class="radio">
                             <label>
                                 <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 0, 'uncheckValue' => null, 'checked' => ($model->spaceDefaultState == 0))); ?>
@@ -48,7 +49,9 @@
                 <?php endif; ?>
                 <?php if ($module->isUserModule()): ?>
                     <div class="col-md-6">
-                        <label for=""><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'User Profiles'); ?></label>
+                        <label
+                            for=""><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'User Profiles'); ?></label>
+
                         <div class="radio">
                             <label>
                                 <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 0, 'uncheckValue' => null, 'checked' => ($model->userDefaultState == 0))); ?>
@@ -70,23 +73,29 @@
                         <br/>
                     </div>
                 <?php endif; ?>
-            </div>            
+            </div>
         </div>
         <div class="modal-footer">
 
             <?php
             echo HHtml::ajaxSubmitButton(Yii::t('AdminModule.views_module_setAsDefault', 'Save'), array('//admin/module/setAsDefault', 'moduleId' => $module->getId()), array(
                 'type' => 'POST',
-                'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
+                'beforeSend' => 'function(){ setModalLoader(); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
-                    ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
+            ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
             ?>
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Close'); ?></button>
 
-            <div class="col-md-1 modal-loader">
-                <div id="invite-loader" class="loader loader-small hidden"></div>
+
+            <div id="default-loader" class="loader loader-modal hidden">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
             </div>
+
         </div>
 
         <?php $this->endWidget(); ?>

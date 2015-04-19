@@ -6,7 +6,7 @@
 <meta name="viewport" content="initial-scale=1.0"/>
 <meta name="format-detection" content="telephone=no"/>
 
-<title><?php echo Yii::app()->name; ?></title>
+<title><?php echo CHtml::encode(Yii::app()->name); ?></title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
 <style type="text/css">
 
@@ -79,15 +79,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-    color: #4cd9c0 !important;
+    color: #6fdbe8 !important;
 }
 
 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-    color: #4cd9c0 !important;
+    color: #6fdbe8 !important;
 }
 
 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-    color: #4cd9c0 !important;
+    color: #6fdbe8 !important;
 }
 
 table td, table tr {
@@ -553,7 +553,7 @@ td[class="image-124px"] img {
                                                                     <span
                                                                         style="text-decoration: none; color: #ffffff;"><a
                                                                             href="<?php echo Yii::app()->createAbsoluteUrl('//'); ?>"
-                                                                            style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#ffffff; font-weight:600; text-align:left;"><?php echo Yii::app()->name; ?></a></span>
+                                                                            style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#ffffff; font-weight:600; text-align:left;"><?php echo CHtml::encode(Yii::app()->name); ?></a></span>
 
                                                                 </td>
                                                             </tr>

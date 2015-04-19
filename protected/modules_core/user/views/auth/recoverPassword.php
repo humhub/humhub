@@ -2,7 +2,7 @@
 $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery');
 ?>
 <div class="container" style="text-align: center;">
-    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+    <?php $this->widget('application.widgets.LogoWidget', array('place' => 'login')); ?>
     <br>
 
     <div class="row">

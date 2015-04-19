@@ -5,6 +5,8 @@ return array (
   'Close' => 'Zavřít',
   'Email addresses' => 'E-mailové adresy',
   'Invite by email' => 'Pozvat e-mailem',
+  'Login' => 'Přihlásit se',
+  'New user?' => '',
   'Pick users' => 'Vybrat uživatele',
   'Send' => 'Odeslat',
   'To invite users to this space, please type their names below to find and pick them.' => 'Pokud chcete pozvat do tohoto prostoru další uživatele, začněte psát jejich jména a poté je vyberte ze seznamu.',

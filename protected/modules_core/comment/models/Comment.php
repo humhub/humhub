@@ -133,9 +133,9 @@ class Comment extends HActiveRecordContentAddon
             $commentCount = self::GetCommentCount($model, $id);
 
             $criteria = new CDbCriteria;
-            $criteria->order = "updated_at ASC";
-            $criteria->offset = ($commentCount - 2);
-            $criteria->limit = "2";
+            $criteria->order = "created_at ASC";
+            $criteria->offset = ($commentCount - $limit);
+            $criteria->limit = $limit;
 
             $comments = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
             Yii::app()->cache->set($cacheID, $comments, HSetting::Get('expireTime', 'cache'));

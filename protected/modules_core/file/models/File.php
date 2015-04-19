@@ -28,14 +28,14 @@ class File extends HActiveRecord
 
     /**
      * Uploaded File or File Content
-     * 
-     * @var type 
+     *
+     * @var type
      */
     private $cUploadedFile = null;
 
     /**
      * New content of the file
-     * 
+     *
      * @var string
      */
     public $newFileContent = null;
@@ -53,7 +53,7 @@ class File extends HActiveRecord
     /**
      * Returns all files belongs to a given HActiveRecord Object.
      * @todo Add chaching
-     * 
+     *
      * @param HActiveRecord $object
      * @return Array of File instances
      */
@@ -136,12 +136,23 @@ class File extends HActiveRecord
 
     protected function afterSave()
     {
-        // Set new uploaded file 
+        // Set new uploaded file
         if ($this->cUploadedFile !== null && $this->cUploadedFile instanceof CUploadedFile) {
             $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
 
-            rename($this->cUploadedFile->getTempName(), $newFilename);
-            @chmod($newFilename, 0744);
+            if (is_uploaded_file($this->cUploadedFile->getTempName())) {
+                move_uploaded_file($this->cUploadedFile->getTempName(), $newFilename);
+                @chmod($newFilename, 0744);
+            }
+            
+            /**
+             * For uploaded jpeg files convert them again - to handle special
+             * exif attributes (e.g. orientation)
+             */
+            if ($this->cUploadedFile->getType() == 'image/jpeg') {
+                ImageConverter::TransformToJpeg($newFilename, $newFilename);
+            }
+            
         }
 
         // Set file by given contents
@@ -192,8 +203,12 @@ class File extends HActiveRecord
 
     /**
      * Returns the Url of the File
+     *
+     * @param string $suffix
+     * @param boolean $absolute
+     * @return string
      */
-    public function getUrl($suffix = "")
+    public function getUrl($suffix = "", $absolute = true)
     {
         $params = array();
         $params['guid'] = $this->guid;
@@ -201,13 +216,17 @@ class File extends HActiveRecord
             $params['suffix'] = $suffix;
         }
 
+        if (!$absolute) {
+            return Yii::app()->getController()->createUrl('//file/file/download', $params);
+        }
+
         return Yii::app()->getController()->createAbsoluteUrl('//file/file/download', $params);
     }
 
     /**
      * Returns the filename
-     * 
-     * @param string $prefix 
+     *
+     * @param string $prefix
      * @return string
      */
     public function getFilename($prefix = "")
@@ -259,7 +278,7 @@ class File extends HActiveRecord
             return "";
         }
 
-        $imageInfo = getimagesize($originalFilename);
+        $imageInfo = @getimagesize($originalFilename);
 
         // Check if we got any dimensions - invalid image
         if (!isset($imageInfo[0]) || !isset($imageInfo[1])) {
@@ -286,7 +305,7 @@ class File extends HActiveRecord
 
     /**
      * Checks if given file can read.
-     * 
+     *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
      */
@@ -302,7 +321,7 @@ class File extends HActiveRecord
 
     /**
      * Checks if given file can deleted.
-     * 
+     *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all unless there is method canWrite or canDelete implemented.
      */
@@ -341,19 +360,24 @@ class File extends HActiveRecord
         }
 
         $this->file_name = $pathInfo['filename'];
+
+        if ($this->file_name == "") {
+            $this->file_name = "Unnamed";
+        }
+
         if (isset($pathInfo['extension']))
             $this->file_name .= "." . trim($pathInfo['extension']);
     }
 
     public function validateExtension($attribute, $params)
     {
-        $allowedExtensions = HSetting::Get('allowedExtensions', 'file');
+        $allowedExtensions = HSetting::GetText('allowedExtensions', 'file');
 
         if ($allowedExtensions != "") {
             $extension = $this->getExtension();
             $extension = trim(strtolower($extension));
 
-            $allowed = array_map('trim', explode(",", HSetting::Get('allowedExtensions', 'file')));
+            $allowed = array_map('trim', explode(",", HSetting::GetText('allowedExtensions', 'file')));
 
             if (!in_array($extension, $allowed)) {
                 $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));
@@ -364,7 +388,7 @@ class File extends HActiveRecord
     public function validateSize($attribute, $params)
     {
         if ($this->size > HSetting::Get('maxFileSize', 'file')) {
-            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size has been {maxFileSize} reached!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file')))));
+            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::app()->format->formatSize(HSetting::Get('maxFileSize', 'file')))));
         }
     }
 

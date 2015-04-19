@@ -178,7 +178,7 @@ class ProfileField extends HActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "") {
+        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, 'ProfileFieldType')) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);
@@ -326,7 +326,7 @@ class ProfileField extends HActiveRecord
      *
      * @return type
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true)
     {
         return $this->fieldType->getUserValue($user, $raw);
     }

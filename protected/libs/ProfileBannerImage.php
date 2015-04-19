@@ -43,12 +43,12 @@ class ProfileBannerImage
     /**
      * @var Integer width of the Image
      */
-    protected $width = 850;
+    protected $width = 1134;
 
     /**
      * @var Integer height of the Image
      */
-    protected $height = 300;
+    protected $height = 192;
 
     /**
      * @var String folder name inside the uploads directory
@@ -172,7 +172,7 @@ class ProfileBannerImage
     {
         $this->delete();
         ImageConverter::TransformToJpeg($file->getTempName(), $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width' => 850, 'mode' => 'max'));
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width' => 1134, 'mode' => 'max'));
         ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width' => $this->width, 'height' => $this->height));
     }
 

@@ -41,6 +41,9 @@ class CommentFormWidget extends HWidget
     public function run()
     {
 
+        if (Yii::app()->user->isGuest)
+            return "";
+        
         $modelName = $this->object->content->object_model;
         $modelId = $this->object->content->object_id;
         $id = $modelName . "_" . $modelId;

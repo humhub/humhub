@@ -13,10 +13,12 @@ class TourModule extends HWebModule
 
     public static function onDashboardSidebarInit($event)
     {
-        if (HSetting::Get('enable', 'tour') == 1 && Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour")  != 1) {
+        if (Yii::app()->user->isGuest)
+            return;
+
+        if (HSetting::Get('enable', 'tour') == 1 && Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour") != 1) {
             $event->sender->addWidget('application.modules_core.tour.widgets.TourDashboardWidget', array(), array('sortOrder' => 0));
         }
     }
 
-  
 }

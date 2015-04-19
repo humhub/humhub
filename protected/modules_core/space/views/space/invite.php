@@ -18,8 +18,12 @@
             <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="active"><a href="#internal" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a></li>
-                        <li class=""><a href="#external" data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a></li>
+                        <li class="active tab-internal"><a href="#internal"
+                                                           data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a>
+                        </li>
+                        <li class="tab-external"><a href="#external"
+                                                    data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a>
+                        </li>
                     </ul>
                 </div>
                 <br/>
@@ -67,15 +71,19 @@
 
             <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.views_space_invite', 'Send'), array('//space/space/invite', 'sguid' => $space->guid), array(
                 'type' => 'POST',
-                'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
+                'beforeSend' => 'function(){ setModalLoader(); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
             ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
             ?>
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_invite', 'Close'); ?></button>
 
-            <div class="col-md-1 modal-loader">
-                <div id="invite-loader" class="loader loader-small hidden"></div>
+            <div id="invite-loader" class="loader loader-modal hidden">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
             </div>
         </div>
 
@@ -101,6 +109,14 @@
     <?php endif; ?>
 
     <?php endif; ?>
+
+    $('.tab-internal a').on('shown.bs.tab', function (e) {
+        $('#invite_tag_input_field').focus();
+    })
+
+    $('.tab-external a').on('shown.bs.tab', function (e) {
+        $('#email_invite').focus();
+    })
 
 
 </script>

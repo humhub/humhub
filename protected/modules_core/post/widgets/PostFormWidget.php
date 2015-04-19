@@ -7,11 +7,17 @@
  * @package humhub.modules_core.post.widgets
  * @since 0.5
  */
-class PostFormWidget extends ContentFormWidget {
+class PostFormWidget extends ContentFormWidget
+{
 
     public $submitUrl = 'post/post/post';
 
-    public function renderForm() {
+    public function renderForm()
+    {
+
+        if (Yii::app()->user->isGuest)
+            return;
+
         $this->form = $this->render('postForm', array(), true);
     }
 

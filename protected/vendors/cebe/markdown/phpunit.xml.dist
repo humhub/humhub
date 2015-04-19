@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="./tests/bootstrap.php"
+		colors="true"
+		convertErrorsToExceptions="true"
+		convertNoticesToExceptions="true"
+		convertWarningsToExceptions="true"
+		stopOnFailure="false">
+		<testsuites>
+			<testsuite name="Markdown Test Suite">
+				<file>./tests/ParserTest.php</file>
+
+				<file>./tests/MarkdownTest.php</file>
+				<file>./tests/MarkdownOLStartNumTest.php</file>
+				
+				<file>./tests/GithubMarkdownTest.php</file>
+				
+				<file>./tests/MarkdownExtraTest.php</file>
+			</testsuite>
+		</testsuites>
+		<filter>
+			<blacklist>
+				<directory>./vendor</directory>
+				<directory>./tests</directory>
+			</blacklist>
+		</filter>
+</phpunit>
+

@@ -28,10 +28,8 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class SpaceController extends Controller
+class SpaceController extends ContentContainerController
 {
-
-    public $subLayout = "_layout";
 
     /**
      * @return array action filters
@@ -52,7 +50,7 @@ class SpaceController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array("@", (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -60,17 +58,14 @@ class SpaceController extends Controller
         );
     }
 
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
+    public function actions()
     {
         return array(
-            'SpaceControllerBehavior' => array(
-                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
-            ),
+            'stream' => array(
+                'class' => 'application.modules_core.wall.ContentContainerStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
+                'contentContainer' => $this->getSpace()
+             ),
         );
     }
 
@@ -80,26 +75,7 @@ class SpaceController extends Controller
     public function actionIndex()
     {
         $this->pageTitle = $this->getSpace()->name;
-
-        if ($this->getSpace()->isMember()) {
-
-            $this->render('index', array());
-        } else {
-
-            $this->subLayout = "_layoutPublic";
-
-            $this->render('indexPublic', array('space' => $this->getSpace()));
-        }
-    }
-
-    /**
-     * List Members of the Space
-     *
-     */
-    public function actionMembers()
-    {
-        $this->getSpace();
-        $this->render('members');
+        $this->render('index', array());
     }
 
     /**
@@ -156,10 +132,10 @@ class SpaceController extends Controller
         foreach ($parts as $part) {
             $i++;
             $condition .= " AND (u.email LIKE :match{$i} OR "
-                . "u.username LIKE :match{$i} OR "
-                . "p.firstname LIKE :match{$i} OR "
-                . "p.lastname LIKE :match{$i} OR "
-                . "p.title LIKE :match{$i})";
+                    . "u.username LIKE :match{$i} OR "
+                    . "p.firstname LIKE :match{$i} OR "
+                    . "p.lastname LIKE :match{$i} OR "
+                    . "p.title LIKE :match{$i})";
 
             $params[':match' . $i] = "%" . $part . "%";
         }
@@ -173,7 +149,7 @@ class SpaceController extends Controller
 
         foreach ($users as $user) {
             $userInfo['guid'] = $user->guid;
-            $userInfo['displayName'] = $user->displayName;
+            $userInfo['displayName'] = CHtml::encode($user->displayName);
             $userInfo['email'] = $user->email;
             $userInfo['image'] = $user->getProfileImage()->getUrl();
             $userInfo['link'] = $user->getProfileUrl();
@@ -215,7 +191,7 @@ class SpaceController extends Controller
         $space = $this->getSpace();
 
         // Check if we have already some sort of membership
-        if ($space->getMembership(Yii::app()->user->id) != null) {
+        if (Yii::app()->user->isGuest || $space->getMembership(Yii::app()->user->id) != null) {
             throw new CHttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'Could not request membership!'));
         }
 
@@ -291,23 +267,29 @@ class SpaceController extends Controller
 
                 // check if both invite inputs are empty
                 if ($model->invite == "" && $model->inviteExternal == "") {
-
+                    
                 } else {
 
                     // Invite existing members
                     foreach ($model->getInvites() as $user) {
                         $space->inviteMember($user->id, Yii::app()->user->id);
+                        $statusInvite = $space->getMembership($user->id)->status;
                     }
 
                     if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) {
                         // Invite non existing members
                         foreach ($model->getInvitesExternal() as $email) {
-                            $space->inviteMemberByEMail($email, Yii::app()->user->id);
+                            $statusInvite = ($space->inviteMemberByEMail($email, Yii::app()->user->id)) ? SpaceMembership::STATUS_INVITED : false;
                         }
                     }
 
                     // close modal
-                    $this->renderModalClose();
+                    //$this->renderModalClose();
+
+                    $output = $this->renderPartial('statusInvite', array('status' => $statusInvite));
+                    Yii::app()->clientScript->render($output);
+                    echo $output;
+                    Yii::app()->end();
                 }
             }
         }
@@ -337,6 +319,7 @@ class SpaceController extends Controller
         // Check there are really an Invite
         if ($membership->status == SpaceMembership::STATUS_INVITED) {
             $space->addMember(Yii::app()->user->id);
+            //SpaceInviteAcceptedNotification::fire($membership->originator_user_id, Yii::app()->user, $space);
         }
 
         $this->redirect($space->getUrl());

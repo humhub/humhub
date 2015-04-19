@@ -1,4 +1,4 @@
 <?php
 return array (
-  '{userName} invited you to the space {spaceName}' => '{userName} te invita al espacio {spaceName}',
+  '{userName} invited you to the space {spaceName}' => '{userName} te ha invitado al espacio {spaceName}',
 );

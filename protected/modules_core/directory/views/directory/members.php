@@ -64,7 +64,7 @@
                     <!-- Follow Handling -->
                     <div class="pull-right">
                         <?php
-                        if (!$user->isCurrentUser()) {
+                        if (!Yii::app()->user->isGuest && !$user->isCurrentUser()) {
                             $followed = $user->isFollowedByUser();
                             echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . $user->createUrl('//user/profile/follow') . '", "' . $user->id . '")', array('class' => 'btn btn-success btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $user->id));
                             echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . $user->createUrl('//user/profile/unfollow') . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $user->id));
@@ -82,11 +82,11 @@
 
                     <div class="media-body">
                         <h4 class="media-heading"><a
-                                href="<?php echo $user->getUrl(); ?>"><?php echo $user->displayName; ?></a>
+                                href="<?php echo $user->getUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
                                 <?php if ($user->group != null) { ?>
-                                <small>(<?php echo $user->group->name; ?>)</small><?php } ?>
+                                <small>(<?php echo CHtml::encode($user->group->name); ?>)</small><?php } ?>
                         </h4>
-                        <h5><?php echo $user->profile->title; ?></h5>
+                        <h5><?php echo CHtml::encode($user->profile->title); ?></h5>
 
                         <?php $tag_count = 0; ?>
                         <?php if ($user->tags) : ?>

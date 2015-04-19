@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Struppi
  * Date: 17.12.13
  * Time: 12:49
  */
-
 class SpaceChooserWidget extends HWidget
 {
 
@@ -23,9 +23,12 @@ class SpaceChooserWidget extends HWidget
      */
     public function run()
     {
+        if (Yii::app()->user->isGuest)
+            return;
 
         $this->render('spaceChooser', array());
     }
+
 }
 
 ?>

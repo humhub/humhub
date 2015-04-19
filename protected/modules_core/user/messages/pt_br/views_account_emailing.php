@@ -1,5 +1,7 @@
 <?php
 return array (
+  '<strong>Desktop</strong> Notifications' => '',
+  'Get a desktop notification when you are online.' => '',
   '<strong>Email</strong> Notifications' => '<strong>Email</strong> Notificações',
   'Activities' => 'Atividades',
   'Always' => 'Sempre',

@@ -57,8 +57,10 @@ class AccountRecoverPasswordForm extends CFormModel {
 
         $user = User::model()->findByAttributes(array('email' => $this->email));
         
-        // Switch to users language
-        Yii::app()->language = Yii::app()->user->language;
+        // Switch to users language - if specified
+        if ($user->language !== "") {
+            Yii::app()->language = $user->language;
+        }
 
         $token = UUID::v4();
         $user->setSetting('passwordRecoveryToken', $token.'.'.time(), 'user');

@@ -70,7 +70,7 @@ class NotificationModule extends HWebModule
 
             // Check if Space still exists
             if ($notification->space_id != "" && $notification->space == null) {
-                $integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems not longer exists!");
+                $integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!");
                 if (!$integrityChecker->simulate)
                     $notification->delete();
                 continue;
@@ -79,7 +79,7 @@ class NotificationModule extends HWebModule
             // Check if Space still exists
             $user = User::model()->findByPk($notification->created_by);
             if ($user == null) {
-                $integrityChecker->showFix("Deleting notification id " . $notification->id . " user not longer exists!");
+                $integrityChecker->showFix("Deleting notification id " . $notification->id . " user no longer exists!");
                 if (!$integrityChecker->simulate)
                     $notification->delete();
                 continue;

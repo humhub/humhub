@@ -17,10 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Allowed file extensions' => '',
-  'Convert command not found!' => '',
-  'Got invalid image magick response! - Correct command?' => '',
-  'Image Magick convert command (optional)' => '',
-  'Maximum upload file size (in MB)' => '',
-  'Use X-Sendfile for File Downloads' => '',
+  'Hide file info (name, size) for images on wall' => '',
+  'Hide file list widget from showing files for these objects on wall.' => '',
+  'Maximum preview image height (in pixels, optional)' => '',
+  'Maximum preview image width (in pixels, optional)' => '',
+  'Allowed file extensions' => 'Permitir extensões de arquivo',
+  'Convert command not found!' => 'Comando de conversão não encontrado!',
+  'Got invalid image magick response! - Correct command?' => 'Recebeu uma resposta inválida do Image Magick! - Comando correto?',
+  'Image Magick convert command (optional)' => 'Comando de conversão do Image Magick (opcional)',
+  'Maximum upload file size (in MB)' => 'Tamanho máximo de arquivo (em MB)',
+  'Use X-Sendfile for File Downloads' => 'Usar X-Sendfile para baixar arquivos',
 );

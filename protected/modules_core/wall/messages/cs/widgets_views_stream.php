@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Show all' => '@@Zobrazit vše@@',
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...',
   '<b>This profile stream is still empty</b>' => '<b>Zatím zde není žádný příspěvek.</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...',
@@ -17,7 +18,6 @@ return array (
   'Only public posts' => 'Pouze veřejné příspěvky',
   'Posts only' => 'Jen příspěvky',
   'Posts with links' => 'Příspěvky s odkazem',
-  'Show all' => 'Zobrazit vše',
   'Sorting' => 'Řazení',
   'Where I´m involved' => 'Jsem zmíněn(a)',
 );

@@ -4,7 +4,7 @@ return array (
   'Created By' => 'Creato da',
   'Description' => 'Descrizione',
   'Join Policy' => 'Policy di aggiunta',
-  'Ldap DN' => '',
+  'Ldap DN' => 'Ldap DN',
   'Name' => 'Nome',
   'Owner' => 'Proprietario',
   'Status' => 'Stato',

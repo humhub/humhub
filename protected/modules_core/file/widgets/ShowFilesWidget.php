@@ -19,12 +19,15 @@ class ShowFilesWidget extends HWidget
      */
     public function run()
     {
-        $files = File::getFilesOfObject($this->object);
-        $this->render('showFiles', array('files' => $files, 
-        		'maxPreviewImageWidth' => HSetting::Get('maxPreviewImageWidth', 'file'),
-        		'maxPreviewImageHeight' => HSetting::Get('maxPreviewImageHeight', 'file'),
-        		'hideImageFileInfo' => HSetting::Get('hideImageFileInfo', 'file')
-        ));
+        $blacklisted_objects = explode(',', HSetting::GetText('showFilesWidgetBlacklist','file'));
+        if (!in_array(get_class($this->object), $blacklisted_objects)) {
+            $files = File::getFilesOfObject($this->object);
+            $this->render('showFiles', array('files' => $files,
+                            'maxPreviewImageWidth' => HSetting::Get('maxPreviewImageWidth', 'file'),
+                            'maxPreviewImageHeight' => HSetting::Get('maxPreviewImageHeight', 'file'),
+                            'hideImageFileInfo' => HSetting::Get('hideImageFileInfo', 'file')
+            ));
+        }
     }
 
 }

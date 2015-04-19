@@ -7,15 +7,14 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceMemberWidget extends HWidget {
+class SpaceMemberWidget extends HWidget
+{
 
-    //public $template = "application.widgets.views.leftNavigation";
+    public $space;
 
-    public function run() {
-
-        //$spaceGuid = Yii::app()->getController()->getSpace()->guid;
-
-        $this->render('spaceMembers', array('space' => Yii::app()->getController()->getSpace()));
+    public function run()
+    {
+        $this->render('spaceMembers', array('space' => $this->space));
     }
 
 }

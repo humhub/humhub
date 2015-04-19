@@ -15,27 +15,23 @@
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
 </head>
-<style type="text/css">
-    body {
-        background-color: #7191a8 !important;
-    }
-</style>
-
 <body>
 
-<div class="container installer outside" style="margin: 0 auto; max-width: 700px;">
+<div class="container installer" style="margin: 0 auto; max-width: 700px;">
     <div class="logo">
         <?php if (Yii::app()->name == "HumHub") : ?>
             <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
-                <img src="<?php echo $this->module->assetsUrl; ?>/humhub-logo-white.png" alt="Logo">
+                <img src="<?php echo $this->module->assetsUrl; ?>/humhub-logo.png" alt="Logo">
             </a>
         <?php else : ?>
-            <h1 class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+            <h1 class="animated fadeIn"><?php echo CHtml::encode(Yii::app()->name); ?></h1>
         <?php endif; ?>
     </div>
     <?php echo $content; ?>
-    <div class="text text-center animated fadeIn">
+    <div class="text text-center powered">
         Powered by <a href="http://www.humhub.org" target="_blank">HumHub</a>
+        <br>
+        <br>
     </div>
 </div>
 

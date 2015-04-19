@@ -30,6 +30,7 @@ class AccountSettingsForm extends CFormModel
     public $tags;
     public $language;
     public $show_introduction_tour;
+    public $visibility;
 
     /**
      * Declares the validation rules.
@@ -39,7 +40,7 @@ class AccountSettingsForm extends CFormModel
         return array(
             array('language', 'length', 'max' => 5),
             array('tags', 'length', 'max' => 100),
-            array('show_introduction_tour', 'numerical', 'integerOnly' => true),            
+            array('show_introduction_tour, visibility', 'numerical', 'integerOnly' => true),            
             array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.forms_AccountSettingsForm', 'Invalid language!')),
         );
     }
@@ -55,6 +56,7 @@ class AccountSettingsForm extends CFormModel
             'tags' => Yii::t('UserModule.forms_AccountSettingsForm', 'Tags'),
             'language' => Yii::t('UserModule.forms_AccountSettingsForm', 'Language'),
             'show_introduction_tour' => Yii::t('UserModule.forms_AccountSettingsForm', 'Hide panel on dashboard'),
+            'visibility' => Yii::t('UserModule.forms_AccountSettingsForm', 'Profile visibility'),
         );
     }
 

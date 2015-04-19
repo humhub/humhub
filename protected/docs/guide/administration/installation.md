@@ -11,12 +11,18 @@ Installation
   FLUSH PRIVILEGES;
   
   ```
-3. Make following directories/files writable by webserver
+3. Make the following directories/files writable by the webserver
     - /assets
-    - /protected/runtime
-    - /protected/modules
     - /protected/config/local
+    - /protected/modules
+    - /protected/runtime
     - /uploads/*
+
+4. Make the following files executable
+    - /protected/yiic
+    - /protected/yiic.bat
+    - /protected/yiic.php
+
 4. Open installation folder in browser (e.g. http://localhost/humhub)
 
 E-Mail Configuration

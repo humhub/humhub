@@ -14,14 +14,17 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
 
 
 <div class="container" style="text-align: center;">
-    <h1 id="app-title" class="animated fadeIn"><?php echo Yii::app()->name; ?></h1>
+
+    <?php $this->widget('application.widgets.LogoWidget', array('place' => 'login')); ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn" id="login-form" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+    <div class="panel panel-default animated bounceIn" id="login-form"
+         style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_login', '<strong>Please</strong> sign in'); ?></div>
 
         <div class="panel-body">
+
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'account-login-form',
@@ -55,7 +58,8 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
                 <div class="col-md-8 text-right">
                     <small>
                         <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                        <a href="<?php echo $this->createUrl('//user/auth/recoverPassword'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
+                        <a
+                            href="<?php echo $this->createUrl('//user/auth/recoverPassword'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
                     </small>
                 </div>
             </div>
@@ -69,7 +73,8 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
     <br>
 
     <?php if ($canRegister) : ?>
-        <div id="register-form" class="panel panel-default animated bounceInLeft"
+        <div id="register-form"
+             class="panel panel-default animated bounceInLeft"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
             <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_login', '<strong>Sign</strong> up') ?></div>
@@ -97,6 +102,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', '<strong>Please</strong
 
     <?php endif; ?>
 
+    <?php $this->widget('application.widgets.LanguageChooser'); ?>
 </div>
 
 <script type="text/javascript">

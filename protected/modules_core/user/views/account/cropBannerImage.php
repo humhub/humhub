@@ -38,9 +38,9 @@
                     'formElementWidth' => 'CropProfileImageForm_cropW',
                     'formElementHeight' => 'CropProfileImageForm_cropH',
                     'jCropOptions' => array(
-                        'aspectRatio' => '2.8333',
+                        'aspectRatio' => '6.3',
                         'boxWidth' => 400,
-                        'setSelect' => array(0, 0, 200, 75),
+                        'setSelect' => array(0, 0, 267, 48),
                     ),
                         )
                 );
@@ -54,7 +54,7 @@
             <?php
             echo HHtml::ajaxButton(Yii::t('UserModule.views_profile_cropBannerImage', 'Save'), array('//user/account/cropBannerImage'), array(
                 'type' => 'POST',
-                'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
+                'beforeSend' => 'function(){ setModalLoader(); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
                     ), array('class' => 'btn btn-primary'));
             ?>
@@ -64,9 +64,13 @@
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?></button>
 
-            <div class="col-md-1 modal-loader">
-                <div id="invite-loader" class="loader loader-small hidden"></div>
-            </div>
+                <div id="invite-loader" class="loader loader-modal hidden">
+                    <div class="sk-spinner sk-spinner-three-bounce">
+                        <div class="sk-bounce1"></div>
+                        <div class="sk-bounce2"></div>
+                        <div class="sk-bounce3"></div>
+                    </div>
+                </div>
         </div>
 
         <?php $this->endWidget(); ?>

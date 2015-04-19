@@ -31,7 +31,7 @@
             <?php
             echo CHtml::ajaxButton(Yii::t('SpaceModule.views_space_requestMembership', 'Send'), array('//space/space/requestMembershipForm', 'sguid' => $space->guid), array(
                 'type' => 'POST',
-                'beforeSend' => 'function(){ jQuery("#send-loader").removeClass("hidden"); }',
+                'beforeSend' => 'function(){ setModalLoader(); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
             ), array('class' => 'btn btn-primary'));
             ?>
@@ -40,9 +40,14 @@
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Close'); ?></button>
 
-            <div class="col-md-1 modal-loader">
-                <div id="send-loader" class="loader loader-small hidden"></div>
+            <div id="send-loader" class="loader loader-modal hidden">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
             </div>
+
         </div>
 
         <?php $this->endWidget(); ?>
@@ -58,8 +63,8 @@
 
     // Shake modal after wrong validation
     <?php if ($form->errorSummary($model) != null) { ?>
-        $('.modal-dialog').removeClass('fadeIn');
-        $('.modal-dialog').addClass('shake');
+    $('.modal-dialog').removeClass('fadeIn');
+    $('.modal-dialog').addClass('shake');
     <?php } ?>
 
 </script>

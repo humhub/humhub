@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Maximum file size has been {maxFileSize} reached!' => 'La massima grandezza del file {maxFileSize} è stata raggiunta!',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => 'La massima grandezza del file {maxFileSize} è stata raggiunta!',
   'This file type is not allowed!' => 'Questo tipo di file non è consentito!',
   'Created By' => 'Creato da',
   'Created at' => 'Creato il',

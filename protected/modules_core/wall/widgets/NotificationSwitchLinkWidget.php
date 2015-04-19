@@ -22,6 +22,11 @@ class NotificationSwitchLinkWidget extends HWidget
      */
     public function run()
     {
+        if (Yii::app()->user->isGuest) {
+            return;
+        }
+        
+        
         $this->render('notificationSwitchLink', array(
             'content' => $this->content,
             'state' => $this->content->isFollowedByUser(Yii::app()->user->id, true)

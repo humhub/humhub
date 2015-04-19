@@ -49,7 +49,7 @@ class SearchController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -186,10 +186,10 @@ class SearchController extends Controller
                     $result = array();
                     $result['guid'] = $object->guid;
                     if ($object instanceof Space) {
-                        $result['name'] = $object->name;
+                        $result['name'] = CHtml::encode($object->name);
                         $result['type'] = 's';
                     } elseif  ($object instanceof User) {
-                        $result['name'] = $object->displayName;
+                        $result['name'] = CHtml::encode($object->displayName);
                         $result['type'] = 'u';
                     }
                     $result['image'] = $object->getProfileImage()->getUrl();

@@ -105,10 +105,17 @@ class MenuWidget extends HWidget
 
         if (!isset($item['group']))
             $item['group'] = '';
- 
-        if (!isset($item['target']))
-            $item['target'] = '';
 
+        if (!isset($item['htmlOptions']))
+            $item['htmlOptions'] = array();
+        
+        /**
+         * @deprecated since version 0.11 use directly htmlOptions instead
+         */
+        if (isset($item['target'])) {
+            $item['htmlOptions']['target'] = $item['target'];
+        }
+ 
         if (!isset($item['sortOrder']))
             $item['sortOrder'] = 1000;
 
@@ -118,10 +125,23 @@ class MenuWidget extends HWidget
         if (!isset($item['isActive']))
             $item['isActive'] = false;
 
-
         if (isset($item['isVisible']) && !$item['isVisible'])
             return;
 
+        
+        // Build Item CSS Class
+        if (!isset($item['htmlOptions']['class']))
+            $item['htmlOptions']['class'] = "";
+        
+        if ($item['isActive']) {
+            $item['htmlOptions']['class'] .= " active";
+        }
+        
+        if (isset($item['id'])) {
+            $item['htmlOptions']['class'] .= " ".$item['id'];
+        }
+        
+        
         $this->items[] = $item;
     }
 

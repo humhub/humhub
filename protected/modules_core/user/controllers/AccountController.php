@@ -58,7 +58,7 @@ class AccountController extends Controller
         
         $model->tags = Yii::app()->user->getModel()->tags;
         $model->show_introduction_tour = Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour");
-
+        $model->visibility = Yii::app()->user->getModel()->visibility;
 
         if (isset($_POST['AccountSettingsForm'])) {
 
@@ -72,6 +72,7 @@ class AccountController extends Controller
                 $user = Yii::app()->user->getModel();
                 $user->language = $model->language;
                 $user->tags = $model->tags;
+                $user->visibility = $model->visibility;
                 $user->save();
 
                 Yii::app()->user->reload();
@@ -152,6 +153,10 @@ class AccountController extends Controller
             $this->forcePostRequest();
             $profile->save();
 
+            // Save user to force reindex to search
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            $user->save();
+            
             // set flash message
             Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
@@ -220,6 +225,7 @@ class AccountController extends Controller
 
         $model->receive_email_activities = $user->getSetting("receive_email_activities", 'core', HSetting::Get('receive_email_activities', 'mailing'));
         $model->receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', HSetting::Get('receive_email_notifications', 'mailing'));
+        $model->enable_html5_desktop_notifications = $user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'));
 
         if (isset($_POST['AccountEmailingForm'])) {
             $model->attributes = Yii::app()->input->stripClean($_POST['AccountEmailingForm']);
@@ -227,6 +233,7 @@ class AccountController extends Controller
             if ($model->validate()) {
                 $user->setSetting("receive_email_activities", $model->receive_email_activities);
                 $user->setSetting("receive_email_notifications", $model->receive_email_notifications);
+                $user->setSetting('enable_html5_desktop_notifications', $model->enable_html5_desktop_notifications);
 
                 Yii::app()->user->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
             }

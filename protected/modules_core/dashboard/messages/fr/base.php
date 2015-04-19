@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Dashboard' => 'Tableau de bord',
+  'Dashboard' => 'Fil d\'actualité',
 );

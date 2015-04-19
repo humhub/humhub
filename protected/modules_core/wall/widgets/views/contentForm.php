@@ -1,8 +1,4 @@
-<div class="panel panel-default <?php
-if (Yii::app()->getController()->id == 'dashboard') {
-    echo 'hidden';
-}
-?>">
+<div class="panel panel-default">
     <div class="panel-body" id="contentFormBody">
 
         <?php echo CHtml::form('', 'POST'); ?>
@@ -54,6 +50,14 @@ if (Yii::app()->getController()->id == 'dashboard') {
 
             <div class="btn_container">
 
+                <div id="postform-loader" class="loader loader-postform hidden">
+                    <div class="sk-spinner sk-spinner-three-bounce">
+                        <div class="sk-bounce1"></div>
+                        <div class="sk-bounce2"></div>
+                        <div class="sk-bounce3"></div>
+                    </div>
+                </div>
+
                 <?php
                 $url = CHtml::normalizeUrl(Yii::app()->createUrl($submitUrl));
                 echo HHtml::ajaxSubmitButton($submitButtonText, $url, array(
@@ -64,6 +68,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                     $('#contentFormError').hide();
                     $('#contentFormError').empty();
                 }",
+                        'beforeSend' => 'function(){ $("#contentFormError").hide(); $("#contentFormError li").remove(); $(".contentForm_options .btn").hide(); $("#postform-loader").removeClass("hidden"); }',
                         'success' => "function(response) {
                     if (response.success) {
 
@@ -71,6 +76,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         currentStream.prependEntry(response.wallEntryId);
 
                         // Reset Form (Empty State)
+                        jQuery('.contentForm_options').hide();
                         $('.contentForm').filter(':text').val('');
                         $('.contentForm').filter('textarea').val('').trigger('autosize.resize');
                         $('.contentForm').attr('checked', false);
@@ -80,9 +86,8 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         $('.label-public').addClass('hidden');
                         $('#contentFrom_files').val('');
                         $('#public').attr('checked', false);
-                        $('#contentForm_message_contenteditable').html('" . Yii::t("WallModule.widgets_views_contentForm", "Whats on your mind?") . "');
+                        $('#contentForm_message_contenteditable').html('" . CHtml::encode(Yii::t("WallModule.widgets_views_contentForm", "What's on your mind?")) . "');
                         $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
-
 
                         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
                         resetUploader('contentFormFiles');
@@ -104,6 +109,8 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         });
 
                     }
+
+                     $('.contentForm_options .btn').show(); $('#postform-loader').addClass('hidden');
              }",
                     ), array('id' => "post_submit_button", 'class' => 'btn btn-info')
                 );
@@ -131,6 +138,7 @@ if (Yii::app()->getController()->id == 'dashboard') {
                         }
                     });
                 </script>
+
 
                 <!-- public checkbox -->
                 <?php echo CHtml::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>

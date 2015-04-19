@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'wall':
  * @property integer $id
- * @property string $type
  * @property string $object_model
  * @property integer $object_id
  * @property string $created_at
@@ -22,19 +21,25 @@
  *
  * @package humhub.modules_core.wall.models
  */
-class Wall extends HActiveRecord {
+class Wall extends HActiveRecord
+{
 
+    /**
+     * @deprecated since version 0.11
+     */
     const TYPE_USER = 'User';
     const TYPE_SPACE = 'Space';
-    const TYPE_DASHBOARD = 'Dashboard'; // meta, not in db
-    const TYPE_COMMUNITY = 'Community'; // meta, not in db
+    const TYPE_DASHBOARD = 'Dashboard';
+    const TYPE_COMMUNITY = 'Community';
 
     /**
      * Add mix-ins to this model
      *
      * @return type
      */
-    public function behaviors() {
+
+    public function behaviors()
+    {
         return array(
             'HUnderlyingObjectBehavior' => array(
                 'class' => 'application.behaviors.HUnderlyingObjectBehavior',
@@ -47,9 +52,9 @@ class Wall extends HActiveRecord {
      * Saves the current Wall Mode, find maybe a better place for this var.
      *
      * Wall::$currentType = "dashboard";  // user, workspace
-     *
+     * 
+     * @deprecated since version 0.11
      */
-
     static $currentType = "";
 
     /**
@@ -57,37 +62,37 @@ class Wall extends HActiveRecord {
      * @param string $className active record class name.
      * @return Wall the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'wall';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
             array('created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('type', 'length', 'max' => 45),
             array('created_at, updated_at', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('id, type, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search'),
         );
     }
 
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(

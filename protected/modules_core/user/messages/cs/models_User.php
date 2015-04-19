@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Uživatelské jméno může obsahovat pouze písmena, čísla, mezery a speciální znaky (+-._)',
   'Authentication mode' => 'Způsob ověření',
   'Created At' => 'Vytvořeno',
   'Created by' => 'Vytvořil(a)',
@@ -15,5 +14,7 @@ return array (
   'Updated at' => 'Změněno',
   'Updated by' => 'Změnil(a)',
   'Username' => 'Uživatelské jméno',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Uživatelské jméno může obsahovat pouze písmena, čísla, mezery a speciální znaky (+-._)',
+  'Visibility' => 'Viditelnost',
   'Wall' => 'Nástěnka',
 );

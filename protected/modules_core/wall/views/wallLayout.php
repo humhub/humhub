@@ -22,13 +22,13 @@
     <!-- end: show wall entry options -->
 
     <a href="<?php echo $object->content->user->getProfileUrl(); ?>" class="pull-left">
-        <img class="media-object img-rounded user-image" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"
+        <img class="media-object img-rounded user-image user-<?php echo $object->content->user->guid; ?>" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"
              src="<?php echo $object->content->user->getProfileImage()->getUrl(); ?>"
              width="40" height="40"/>
     </a>
 
     <!-- Show space image, if you are outside from a space -->
-    <?php if (Wall::$currentType != Wall::TYPE_SPACE && $object->content->container instanceof Space): ?>
+    <?php if (!Yii::app()->controller instanceof ContentContainerController && $object->content->container instanceof Space): ?>
         <a href="<?php echo Yii::app()->createUrl('//space/space', array('sguid' => $object->content->container->guid)); ?>"
            class="pull-left">
             <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
@@ -40,17 +40,16 @@
     <div class="media-body">
         <!-- show username with link and creation time-->
         <h4 class="media-heading"><a
-                href="<?php echo $object->content->user->getProfileUrl(); ?>"><?php echo $object->content->user->displayName; ?></a>
+                href="<?php echo $object->content->user->getProfileUrl(); ?>"><?php echo CHtml::encode($object->content->user->displayName); ?></a>
             <small><?php echo HHtml::timeago($object->content->created_at); ?>
-                
+
                 <?php if ($object->content->created_at != $object->content->updated_at): ?>
-                    (<?php echo Yii::t('WallModule.views_wallLayout', 'Updated :timeago', array (':timeago'=>HHtml::timeago($object->content->updated_at))); ?>)
+                    (<?php echo Yii::t('WallModule.views_wallLayout', 'Updated :timeago', array(':timeago' => HHtml::timeago($object->content->updated_at))); ?>)
                 <?php endif; ?>
-                
 
                 <!-- show space name -->
-                <?php if (Wall::$currentType != Wall::TYPE_SPACE && $object->content->container instanceof Space): ?>
-                    <?php echo Yii::t('WallModule.views_wallLayout', 'in'); ?> <strong><a href="<?php echo $object->content->container->getUrl(); ?>"><?php echo $object->content->container->name; ?></a></strong>
+                <?php if (!Yii::app()->controller instanceof ContentContainerController && $object->content->container instanceof Space): ?>
+                    <?php echo Yii::t('WallModule.views_wallLayout', 'in'); ?> <strong><a href="<?php echo $object->content->container->getUrl(); ?>"><?php echo CHtml::encode($object->content->container->name); ?></a></strong>
                 <?php endif; ?>
 
                 <!-- show labels -->
@@ -58,7 +57,7 @@
 
             </small>
         </h4>
-        <h5><?php echo $object->content->user->profile->title; ?></h5>
+        <h5><?php echo CHtml::encode($object->content->user->profile->title); ?></h5>
 
     </div>
     <hr/>

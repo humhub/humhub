@@ -11,6 +11,7 @@
  * @property string $username
  * @property string $email
  * @property integer $super_admin
+ * @property integer $visiblity
  * @property integer $status
  * @property string $auth_mode
  * @property string $tags
@@ -57,10 +58,17 @@ class User extends HActiveRecordContentContainer implements ISearchable
     const RECEIVE_EMAIL_ALWAYS = 3;
 
     /**
+     * Visibility Modes
+     */
+    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
+    const VISIBILITY_ALL = 2; // Visible for all (also guests)
+
+    /**
      * Loaded User Profile
      *
      * @var type
      */
+
     protected $_profile;
 
     /**
@@ -149,7 +157,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         $rules = array();
-        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by', 'numerical', 'integerOnly' => true);
+        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by, visibility', 'numerical', 'integerOnly' => true);
         $rules[] = array('email', 'email');
         $rules[] = array('guid', 'length', 'max' => 45);
         $rules[] = array('username', 'unique', 'caseSensitive' => false, 'className' => 'User');
@@ -193,6 +201,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'wall_id' => Yii::t('UserModule.models_User', 'Wall'),
             'group_id' => Yii::t('UserModule.models_User', 'Group'),
             'username' => Yii::t('UserModule.models_User', 'Username'),
+            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
             'email' => Yii::t('UserModule.models_User', 'Email'),
             'tags' => Yii::t('UserModule.models_User', 'Tags'),
             'auth_mode' => Yii::t('UserModule.models_User', 'Authentication mode'),
@@ -307,6 +316,13 @@ class User extends HActiveRecordContentContainer implements ISearchable
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
             }
 
+            if (HSetting::Get('allowGuestAccess', 'authentication_internal')) {
+                // Set users profile default visibility to all
+                if (HSetting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
+                    $this->visibility = User::VISIBILITY_ALL;
+                }
+            }
+
             $this->last_activity_email = new CDbExpression('NOW()');
 
             // Set Status
@@ -343,51 +359,57 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         if ($this->isNewRecord) {
-
-            $userInvite = UserInvite::model()->findByAttributes(array('email' => $this->email));
-            if ($userInvite !== null) {
-                // User was invited to a space
-                if ($userInvite->source == UserInvite::SOURCE_INVITE) {
-                    $space = Space::model()->findByPk($userInvite->space_invite_id);
-                    if ($space != null) {
-                        $space->addMember($this->id);
-                    }
-                }
-
-                // Delete/Cleanup Invite Entry
-                $userInvite->delete();
-            }
-
-            // Auto Assign User to the Group Space
-            $group = Group::model()->findByPk($this->group_id);
-            if ($group != null && $group->space_id != "") {
-                $space = Space::model()->findByPk($group->space_id);
-                if ($space !== null) {
-                    $space->addMember($this->id);
-                }
-            }
-
-            $this->notifyGroupAdminsForApproval();
-
-            // Auto Add User to the default spaces
-            foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
-                $space->addMember($this->id);
-            }
-
-            // Create new wall record for this user
-            $wall = new Wall();
-            $wall->type = Wall::TYPE_USER;
-            $wall->object_model = 'User';
-            $wall->object_id = $this->id;
-            $wall->save();
-
-            $this->wall_id = $wall->id;
-            $this->wall = $wall;
-            User::model()->updateByPk($this->id, array('wall_id' => $wall->id));
+            if ($this->status == User::STATUS_ENABLED)
+                $this->setUpApproved();
+            else
+                $this->notifyGroupAdminsForApproval();
         }
 
 
         return parent::afterSave();
+    }
+
+    public function setUpApproved()
+    {
+
+        $userInvite = UserInvite::model()->findByAttributes(array('email' => $this->email));
+        if ($userInvite !== null) {
+            // User was invited to a space
+            if ($userInvite->source == UserInvite::SOURCE_INVITE) {
+                $space = Space::model()->findByPk($userInvite->space_invite_id);
+                if ($space != null) {
+                    $space->addMember($this->id);
+                }
+            }
+
+            // Delete/Cleanup Invite Entry
+            $userInvite->delete();
+        }
+
+        // Auto Assign User to the Group Space
+        $group = Group::model()->findByPk($this->group_id);
+        if ($group != null && $group->space_id != "") {
+            $space = Space::model()->findByPk($group->space_id);
+            if ($space !== null) {
+                $space->addMember($this->id);
+            }
+        }
+
+        //
+        // Auto Add User to the default spaces
+        foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
+            $space->addMember($this->id);
+        }
+
+        // Create new wall record for this user
+        $wall = new Wall();
+        $wall->object_model = 'User';
+        $wall->object_id = $this->id;
+        $wall->save();
+
+        $this->wall_id = $wall->id;
+        $this->wall = $wall;
+        User::model()->updateByPk($this->id, array('wall_id' => $wall->id));
     }
 
     /**
@@ -417,7 +439,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
         // Delete user session
         UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
-        
+
         // Delete Profile Image
         $this->getProfileImage()->delete();
 
@@ -504,7 +526,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
 
         // split tags string into individual tags
-        return preg_split("/[;,# ]+/", $this->tags);
+        return preg_split("/[;,#]+/", $this->tags);
     }
 
     /**
@@ -533,7 +555,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
      */
     public function getSearchAttributes()
     {
-        return array(
+        $attributes = array(
             // Assignment
             'belongsToType' => 'User',
             'belongsToId' => $this->id,
@@ -548,6 +570,16 @@ class User extends HActiveRecordContentContainer implements ISearchable
             'status' => $this->status,
             'username' => $this->username,
         );
+
+        $profile = $this->getProfile();
+
+        if (!$profile->isNewRecord) {
+            foreach ($profile->getProfileFields() as $profileField) {
+                $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+            }
+        }
+
+        return $attributes;
     }
 
     /**
@@ -570,11 +602,13 @@ class User extends HActiveRecordContentContainer implements ISearchable
             return $this->_profile;
 
         $this->_profile = Profile::model()->findByPk($this->id);
+
         if ($this->_profile == null) {
             // Maybe new user?
             $this->_profile = new Profile();
             $this->_profile->user_id = $this->id;
         }
+        $this->_profile->user = $this;
 
         return $this->_profile;
     }
@@ -588,14 +622,15 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
 
         $name = '';
+
         $format = HSetting::Get('displayNameFormat');
 
         if ($format == '{profile.firstname} {profile.lastname}')
-            $name = CHtml::encode($this->profile->firstname . " " . $this->profile->lastname);
+            $name = $this->profile->firstname . " " . $this->profile->lastname;
 
         // Return always username as fallback
-        if ($name == '')
-            return CHtml::encode($this->username);
+        if ($name == '' || $name == ' ')
+            return $this->username;
 
         return $name;
     }
@@ -650,6 +685,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         return false;
+    }
+
+    public function canAccessPrivateContent(User $user = null)
+    {
+        return ($this->isCurrentUser());
     }
 
 }

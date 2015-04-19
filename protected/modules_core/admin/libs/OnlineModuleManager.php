@@ -26,11 +26,6 @@
 class OnlineModuleManager
 {
 
-    /**
-     * URL to the HumHub Module Store API
-     */
-    const HUMHUB_ONLINE_API_URL = "https://www.humhub.org/modules/api/";
-
     private $_modules = null;
 
     /**
@@ -143,7 +138,7 @@ class OnlineModuleManager
             return $this->_modules;
         }
 
-        $url = self::HUMHUB_ONLINE_API_URL . "list?version=" . urlencode(HVersion::VERSION) . "&installId=" . HSetting::Get('installationId', 'admin');
+        $url = Yii::app()->getModule('admin')->marketplaceApiUrl . "list?version=" . urlencode(HVersion::VERSION) . "&installId=" . HSetting::Get('installationId', 'admin');
 
         try {
 
@@ -178,8 +173,12 @@ class OnlineModuleManager
 
                 $module = Yii::app()->moduleManager->getModule($moduleId);
 
-                if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
-                    $updates[$moduleId] = $moduleInfo;
+                if ($module !== null) {
+                    if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
+                        $updates[$moduleId] = $moduleInfo;
+                    }
+                } else {
+                    Yii::log("Could not load module: " . $moduleId . " to get updates", CLogger::LEVEL_ERROR);
                 }
             }
         }
@@ -194,7 +193,7 @@ class OnlineModuleManager
     {
 
         // get all module informations
-        $url = self::HUMHUB_ONLINE_API_URL . "info?id=" . urlencode($moduleId) . "&version=" . HVersion::VERSION . "&installId=" . HSetting::Get('installationId', 'admin');
+        $url = Yii::app()->getModule('admin')->marketplaceApiUrl . "info?id=" . urlencode($moduleId) . "&version=" . HVersion::VERSION . "&installId=" . HSetting::Get('installationId', 'admin');
         try {
 
             $http = new Zend_Http_Client($url, array(
@@ -214,13 +213,40 @@ class OnlineModuleManager
         return $moduleInfo;
     }
 
+    /**
+     * Returns latest HumHub Version
+     */
+    public function getLatestHumHubVersion()
+    {
+        $url = Yii::app()->getModule('admin')->marketplaceApiUrl . "getLatestVersion?version=" . HVersion::VERSION . "&installId=" . HSetting::Get('installationId', 'admin');
+        try {
+            $http = new Zend_Http_Client($url, array(
+                'adapter' => 'Zend_Http_Client_Adapter_Curl',
+                'curloptions' => $this->getCurlOptions(),
+                'timeout' => 30
+            ));
+            $response = $http->request();
+            $json = CJSON::decode($response->getBody());
+            if (isset($json['latestVersion'])) {
+                return $json['latestVersion'];
+            }
+        } catch (Exception $ex) {
+            Yii::log('Could not get latest HumHub Version!' . $ex->getMessage(), CLogger::LEVEL_ERROR);
+        }
+
+        return "";
+    }
+
     private function getCurlOptions()
     {
         $options = array(
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_CAINFO => Yii::getPathOfAlias('application.config.ssl_certs') . DIRECTORY_SEPARATOR . 'humhub.crt'
+            CURLOPT_SSL_VERIFYPEER => (Yii::app()->getModule('admin')->marketplaceApiValidateSsl) ? true : false,
+            CURLOPT_SSL_VERIFYHOST => (Yii::app()->getModule('admin')->marketplaceApiValidateSsl) ? 2 : 0,
+            CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_CAINFO => Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cacert.pem'
         );
+
 
         if (HSetting::Get('enabled', 'proxy')) {
             $options[CURLOPT_PROXY] = HSetting::Get('server', 'proxy');

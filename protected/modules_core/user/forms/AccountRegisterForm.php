@@ -23,15 +23,15 @@ class AccountRegisterForm extends CFormModel {
     }
 
     public function uniqueEMailValidator($attribute, $params) {
-        
+
         $email = User::model()->resetScope()->findByAttributes(array('email' => $this->$attribute));
         if ($email !== null) {
-            $this->addError($attribute, 'E-Mail is already in use! - Try forgot password.');
+            $this->addError($attribute, Yii::t('UserModule.forms_AccountRegisterForm', 'E-Mail is already in use! - Try forgot password.'));
         }
-        
-    } 
-    
-    
+
+    }
+
+
     /**
      * Declares customized attribute labels.
      * If not declared here, an attribute would have a label that is

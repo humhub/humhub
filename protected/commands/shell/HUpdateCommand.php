@@ -33,7 +33,7 @@ class HUpdateCommand extends HConsoleCommand
      * 
      * @var boolean
      */
-    protected $interactive;
+    public $interactive = 1;
 
     /**
      * Got errors during update
@@ -48,9 +48,12 @@ class HUpdateCommand extends HConsoleCommand
         return parent::init();
     }
 
-    public function actionIndex($args, $interactive = 1)
+    public function actionIndex($args, $interactive = null)
     {
-        $this->interactive = $interactive;
+        
+        if ($interactive != null) {
+            $this->interactive = $interactive;
+        }
 
         print "*** Begin Migrations ***\n\n";
         $this->runMigrations();
@@ -68,6 +71,8 @@ class HUpdateCommand extends HConsoleCommand
         }
         $this->printLine();
         print "\n";
+
+        Notification::model()->deleteAllByAttributes(array('class' => 'HumHubUpdateNotification'));
     }
 
     /**
@@ -109,7 +114,6 @@ class HUpdateCommand extends HConsoleCommand
         return parent::confirm($message, $default);
     }
 
-    
     /**
      * Shows help message
      * 
@@ -128,6 +132,25 @@ EXAMPLES
  * yiic update
 
 EOD;
+    }
+
+    public static function AutoUpdate()
+    {
+        $runner = new CConsoleCommandRunner();
+        $runner->commands = array(
+            'update' => array(
+                'class' => 'applications.commands.shell.HUpdateCommand',
+                'interactive' => false,
+            ),
+        );
+
+        $args = array('yiic', 'update', '--interactive=0');
+        ob_start();
+        $runner->run($args);
+
+        Yii::app()->db->schema->refresh();
+
+        return htmlentities(ob_get_clean(), null, Yii::app()->charset);
     }
 
 }

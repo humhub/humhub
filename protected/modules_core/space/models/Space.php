@@ -42,7 +42,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     // Visibility
     const VISIBILITY_NONE = 0; // Always invisible
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2; // Free for All
+    const VISIBILITY_ALL = 2; // Visible for all (also guests)
     // Status
     const STATUS_DISABLED = 0; // Disabled
     const STATUS_ENABLED = 1; // Enabled
@@ -276,7 +276,6 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         if ($this->isNewRecord) {
             // Create new wall record for this space
             $wall = new Wall();
-            $wall->type = Wall::TYPE_SPACE;
             $wall->object_model = 'Space';
             $wall->object_id = $this->id;
             $wall->save();
@@ -366,6 +365,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function canJoin($userId = "")
     {
+        if (Yii::app()->user->isGuest) {
+            return false;
+        }
+
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::app()->user->id;
@@ -435,6 +438,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function canInvite($userId = "")
     {
+        if (Yii::app()->user->isGuest) {
+            return false;
+        }
 
         if ($userId == 0)
             $userId = Yii::app()->user->id;
@@ -520,11 +526,27 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
-     * Counts all posts of current workspace
+     * Counts all posts of current space
      *
      * @return Integer
      */
     public function countPosts()
+    {
+        /*
+          $criteria = new CDbCriteria();
+          $criteria->condition = "content.space_id=:space_id";
+          $criteria->params = array(':space_id' => $this->id);
+          return Post::model()->with('content')->count($criteria);
+         */
+        return Content::model()->countByAttributes(array('object_model' => 'Post', 'space_id' => $this->id));
+    }
+
+    /**
+     * Counts all followers of current space
+     *
+     * @return Integer
+     */
+    public function countFollowers()
     {
         /*
           $criteria = new CDbCriteria();
@@ -632,6 +654,22 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         if (!Yii::app()->user->canCreatePrivateSpace() && $this->$attribute == 0) {
             $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create private visible spaces!'));
         }
+    }
+
+    /**
+     * Returns display name (title) of space
+     * 
+     * @since 0.11.0
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->name;
+    }
+
+    public function canAccessPrivateContent(User $user = null)
+    {
+        return ($this->isMember());
     }
 
 }

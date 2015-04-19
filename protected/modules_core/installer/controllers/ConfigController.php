@@ -172,7 +172,7 @@ class ConfigController extends Controller
             'save' => array(
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
-                'label' => Yii::t('InstallerModule.base', 'Create Admin Account'),
+                'label' => Yii::t('InstallerModule.controllers_ConfigController', 'Create Admin Account'),
             ),
         );
 
@@ -285,9 +285,9 @@ class ConfigController extends Controller
             return;
 
         // Rebuild Search
-        HSearch::getInstance()->rebuild();
+        
+        HSearch::getInstance()->rebuild();   
         HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
-
         HSetting::Set('paginationSize', 10);
         HSetting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 
@@ -323,7 +323,10 @@ class ConfigController extends Controller
 
         // Basic
         HSetting::Set('enable', 1, 'tour');
+        HSetting::Set('defaultLanguage', Yii::app()->getLanguage());
 
+        // Notification
+        HSetting::Set('enable_html5_desktop_notifications', 0, 'notification');
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory;
@@ -362,7 +365,7 @@ class ConfigController extends Controller
         $field->required = 1;
         $field->show_at_registration = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
+            $field->fieldType->maxLength = 20;
             $field->fieldType->save();
         } else {
             throw new CHttpException(500, print_r($field->getErrors(), true));
@@ -379,7 +382,7 @@ class ConfigController extends Controller
         $field->required = 1;
         $field->is_system = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
+            $field->fieldType->maxLength = 30;
             $field->fieldType->save();
         }
 
@@ -392,7 +395,7 @@ class ConfigController extends Controller
         $field->field_type_class = 'ProfileFieldTypeText';
         $field->is_system = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
+            $field->fieldType->maxLength = 50;
             $field->fieldType->save();
         }
 

@@ -14,10 +14,16 @@
 ?>
 
 <?php if ($mode == CommentLinkWidget::MODE_POPUP): ?>
-    <a href="<?php echo $this->createUrl('//comment/comment/showPopup', array('model' => $objectModel, 'id' => $objectId)); ?>"
+    <a href="<?php echo $this->createUrl('//comment/comment/show', array('contentModel' => $objectModel, 'contentId' => $objectId, 'mode' => 'popup')); ?>"
        class="" data-toggle="modal"
        title="" data-target="#globalModal"
        data-original-title="Comments">Comments (<?php echo $this->getCommentsCount(); ?>)</a>
 <?php else: ?>
-    <?php echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment") . "", "#", array('onClick' => "$('#comment_" . $id . "').show();$('#newCommentForm_" . $id . "_contenteditable').focus();return false;")); ?>
+    <?php
+    if (Yii::app()->user->isGuest) {
+        echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment"), Yii::app()->user->loginUrl, array('data-target' => '#globalModal', 'data-toggle' => 'modal'));
+    } else {
+        echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment"), "#", array('onClick' => "$('#comment_" . $id . "').show();$('#newCommentForm_" . $id . "_contenteditable').focus();return false;"));
+    }
+    ?>
 <?php endif; ?>

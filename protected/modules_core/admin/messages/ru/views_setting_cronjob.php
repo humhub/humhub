@@ -5,6 +5,6 @@ return array (
   'Last run (daily):' => 'Последний запуск (ежедневный):',
   'Last run (hourly):' => 'Последный запуск (ежечасный):',
   'Never' => 'Никогда',
-  'Or Crontab of root user' => 'или действия Cron root-пользователя',
+  'Or Crontab of root user' => 'Или действия Cron root-пользователя',
   'Please make sure following cronjobs are installed:' => 'Пожалуйста, убедитесь, что все задачи Cron установлены:',
 );
