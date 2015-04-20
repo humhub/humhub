@@ -230,6 +230,10 @@ img.responsive {
 .comotion-profile-data h2 {
   margin-top: 8px;
 }
+.comotion-profile-data h2 em {
+  font-style: normal;
+  color: #4b2e83;
+}
 .comotion-profile-data h3 {
   margin-top: 5px;
 }

@@ -86,18 +86,22 @@
 
             <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
             <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
-            <h2>I am a <?php echo CHtml::encode($user->profile->role); ?>
-            seeking a <?php echo CHtml::encode($user->profile->seeking); ?></h2>
+            <h2>I am a <em><?php echo CHtml::encode($user->profile->role); ?></em>
+            seeking a <em><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em></h2>
 
             <!-- TODO: CONNECT and MESSAGE buttons -->
 
             <hr/>
+            <?php if ($user->profile->about != "") { ?>
+                <div class="comotion-profile-about">
+                    <h3>About</h3>
+                    <p><?php echo CHtml::encode($user->profile->about); ?></p>
+                </div>
+            <?php } ?>
 
-            About
-
-            <?php echo CHtml::encode($user->profile->about); ?>
-
-            <?php echo CHtml::encode($user->profile->url_twitter); ?>
+            <?php if ($user->profile->url_twitter != "") { ?>
+                <p><?php echo CHtml::encode($user->profile->url_twitter); ?></p>
+            <?php } ?>
         </div>
 
     </div>
