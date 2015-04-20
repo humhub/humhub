@@ -126,8 +126,9 @@
                 </div>
 
                 <div class="image-upload-buttons" id="profile-image-upload-buttons">
-                    <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"><i
-                            class="fa fa-cloud-upload"></i></a>
+                    <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm">
+                        <i class="fa fa-cloud-upload"></i>
+                    </a>
                     <a id="profile-image-upload-edit-button"
                        style="<?php
                        if (!$user->getProfileImage()->hasImage()) {
