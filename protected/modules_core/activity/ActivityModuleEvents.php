@@ -104,6 +104,13 @@ class ActivityModuleEvents
                 if (!$integrityChecker->simulate)
                     $a->delete();
             }
+
+            $content = Content::model()->findByAttributes(array('object_model' => 'Activity', 'object_id' => $a->id));
+            if ($content === null) {
+                $integrityChecker->showFix("Deleting activity id " . $a->id . " without corresponding content record!");
+                if (!$integrityChecker->simulate)
+                    $a->delete();
+            }
         }
     }
 
