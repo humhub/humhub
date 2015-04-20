@@ -10,12 +10,14 @@ var RecommendationList = React.createClass({
 
   componentDidMount: function() {
     // do the AJAX thing here
+    // console.log(this.props)
   },
 
   render: function() {
     var matches = [];
+    var base_url = this.props.base_url
     this.props.data.forEach(function(match) {
-      matches.push(<RecommendedUser key={match.guid} person={match} />);
+      matches.push(<RecommendedUser base_url={base_url} key={match.guid} person={match} />);
     });
 
     return (
@@ -28,13 +30,16 @@ var RecommendationList = React.createClass({
 
 var RecommendedUser = React.createClass({
   render: function() {
-    var emptyStyle = {height: 30 + (100 - this.props.person.score) + 'px'};
-    var fullStyle  = {height: this.props.person.score + 'px'};
+
+    var emptyStyle = {height: Math.min(110, 30 + (100 - this.props.person.score)) + 'px'};
+    var fullStyle  = {height: Math.max(this.props.person.score, 20) + 'px'};
+
+    console.log(this.props)
 
     return(
       <li key={this.props.person.guid}>
         <div className='container'>
-          <img src='' />
+          <img src={this.props.base_url + '/img/default_user.jpg'} />
           <div className='thermometer'>
             <span className='empty' style={emptyStyle}>
               <span>{this.props.person.score}</span>
@@ -55,5 +60,6 @@ var RecommendedUser = React.createClass({
 
 var STUB_DATA = [
   {name: "Alan One", guid: "abc-def-ghi", role: 'p', score: 77},
-  {name: "Beta Bob", guid: "rst-uvw-xyz", role: 'p', score: 92}
+  {name: "Beta Bob", guid: "rst-uvw-xyz", role: 'p', score: 92},
+  {name: "Tertiary Ted", guid: "xxx-xxx-xxx", role: 'p', score: 5}
 ]

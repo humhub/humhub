@@ -1,54 +1,18 @@
-
-
-
-<div id="" class="panel panel-default" data-user-id="<?php echo $user->guid; ?>">
-  <div class="panel-body">
-    <!-- scratch ui -->
-    <ul class="sideswipe">
-
-      <li>
-        <div class="container">
-          <img src="<?php echo Yii::app()->baseUrl; ?>/img/default_user.jpg" />
-          <div class="thermometer">
-            <span class="empty"><span>99</span></span>
-            <span class="full"><span>%</span></span>
-          </div>
-        </div>
-        <div class="legend">
-          <span class="p">&nbsp;</span>
-          <p>C. Tembreull</p>
-        </div>
-      </li>
-
-      <li>
-        <div class="container">
-          <img src="<?php echo Yii::app()->baseUrl; ?>/img/default_user.jpg" />
-          <div class="thermometer">
-            <span class="empty"><span>99</span></span>
-            <span class="full"><span>%</span></span>
-          </div>
-        </div>
-        <div class="legend">
-          <span class="p">&nbsp;</span>
-          <p>C. Tembreull</p>
-        </div>
-      </li>
-
-      <li>
-        <div class="container">
-          <img src="<?php echo Yii::app()->baseUrl; ?>/img/default_user.jpg" />
-          <div class="thermometer">
-            <span class="empty"><span>99</span></span>
-            <span class="full"><span>%</span></span>
-          </div>
-        </div>
-        <div class="legend">
-          <span class="p">&nbsp;</span>
-          <p>C. Tembreull</p>
-        </div>
-      </li>
-
-
-    </ul>
+<!-- mode 1: global user recommendations -->
+<div class="panel panel-default">
+  <div id="recommendedUsers" class="panel-body"
+    data-base-url="<?php echo Yii::app()->baseUrl; ?>"
+    data-in-userid="asdfasdflkjasdf">
   </div>
 </div>
+<script type="text/jsx">
+  var container = $("#recommendedUsers");
+  $(document).ready(function() {
+    React.render(
+      <RecommendationList base_url={container.attr('data-base-url')}
+        data={STUB_DATA}
+        in_userid={container.attr('data-in-userid')} />,
+      container[0]
+    );
+  });
+</script>
