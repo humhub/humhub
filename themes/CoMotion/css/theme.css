@@ -1570,13 +1570,13 @@ ul.sideswipe li div.legend p {
 /* Large desktop */
 @media (min-width: 1200px) {
   body {
-    padding-top: 130px;
+    padding-top: 50px;
   }
 }
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
   body {
-    padding-top: 130px;
+    padding-top: 50px;
   }
 }
 /* Landscape phone to portrait tablet */
