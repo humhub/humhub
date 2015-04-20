@@ -1473,7 +1473,6 @@ ul.sideswipe {
   clear: both;
   overflow-x: auto;
   overflow-y: hidden;
-  white-space: nowrap;
   list-style-type: none;
   width: 100%;
   margin: 0;
@@ -1489,7 +1488,7 @@ ul.sideswipe li {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   border: 1px solid #eeedf6;
-  margin: 0 0 0 10px;
+  margin: 0 10px 0 0;
   padding: 5px;
 }
 ul.sideswipe li div {
@@ -1557,6 +1556,15 @@ ul.sideswipe li div.legend span {
 ul.sideswipe li div.legend span.p {
   background: url('../img/role/role_p_360.png') 0 0 no-repeat;
 }
+ul.sideswipe li div.legend span.i {
+  background: url('../img/role/role_i_360.png') 0 0 no-repeat;
+}
+ul.sideswipe li div.legend span.c {
+  background: url('../img/role/role_c_360.png') 0 0 no-repeat;
+}
+ul.sideswipe li div.legend span.s {
+  background: url('../img/role/role_s_360.png') 0 0 no-repeat;
+}
 ul.sideswipe li div.legend p {
   display: block;
   float: left;
@@ -1591,4 +1599,3 @@ ul.sideswipe li div.legend p {
     padding-top: 50px;
   }
 }
-/*# sourceMappingURL=theme.css.map */

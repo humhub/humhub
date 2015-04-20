@@ -1,23 +1,42 @@
 var RecommendationList = React.createClass({
-  componentWillMount: function() {
-    var proto  = 'http';
-    var host   = 'ec2-52-1-155-234.compute-1.amazonaws.com';
-    var port   = '81';
-    var route  = '/users/' + this.props.in_userid + '/recommendations/' + this.props.out_userid;
-    var url    = proto + '://' + host + ':' + port + route;
-    this.setState({source: url});
+  getInitialState: function() {
+    return {
+      source: '',
+      data:   []
+    }
   },
 
+  componentWillMount: function() {},
   componentDidMount: function() {
-    // do the AJAX thing here
-    // console.log(this.props)
+    var proto = 'http';
+    var host  = 'localhost';
+    var port  = '9292';
+
+    if (this.props.out_userid) {
+      var route = '';
+    } else {
+      var route = '/users/' + this.props.in_userid + '/connections/recommended';
+    }
+    var url = proto + '://' + host + ':' + port + route;
+    this.setState({source: url})
+
+    $.get(url, function(result) {
+      if (this.isMounted()) {
+        this.setState({
+          source: url,
+          data:   result
+        })
+      }
+    }.bind(this));
+
   },
 
   render: function() {
+    console.log(this.state);
     var matches = [];
     var base_url = this.props.base_url
-    this.props.data.forEach(function(match) {
-      matches.push(<RecommendedUser base_url={base_url} key={match.guid} person={match} />);
+    this.state.data.forEach(function(match) {
+      matches.push(<RecommendedUser base_url={base_url} key={match.id} person={match} />);
     });
 
     return (
@@ -31,28 +50,29 @@ var RecommendationList = React.createClass({
 var RecommendedUser = React.createClass({
   render: function() {
 
-    var emptyStyle = {height: Math.min(110, 30 + (100 - this.props.person.score)) + 'px'};
-    var fullStyle  = {height: Math.max(this.props.person.score, 20) + 'px'};
+    var score      = parseInt(this.props.person.score * 100);
+    var role_class = this.props.person.role.substring(0, 1);
+    var emptyStyle = {height: Math.min(110, 30 + (100 - score)) + 'px'};
+    var fullStyle  = {height: Math.max(score, 20) + 'px'};
 
-    console.log(this.props)
-
+    console.log(this.props.person);
     return(
-      <li key={this.props.person.guid}>
+      <li key={this.props.person.id}>
         <div className='container'>
           <img src={this.props.base_url + '/img/default_user.jpg'} />
           <div className='thermometer'>
             <span className='empty' style={emptyStyle}>
-              <span>{this.props.person.score}</span>
+              <span>{score}</span>
             </span>
             <span className='full' style={fullStyle}>
               <span>%</span>
             </span>
           </div>
         </div>
-        <div class='legend'>
-          <span className={this.props.person.role}>&nbsp;</span>
+        <div className='legend'>
+          <span className={role_class}>&nbsp;</span>
           <p>
-            <a href={'http://localhost/'}>
+            <a href={this.props.base_url + '/index.php?r=user/profile&uguid=' + this.props.person.id}>
               {this.props.person.name}
             </a>
           </p>

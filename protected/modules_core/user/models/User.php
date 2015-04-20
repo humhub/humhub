@@ -713,7 +713,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
         'email'    => $this->email,
         'fullname' => $this->getDisplayName(),
         'tags'     => $this->getTagsClean(),
-        'role'     => [],
+        'role'     => $this->profile->role,
         'type'     => ''
       ]];
 

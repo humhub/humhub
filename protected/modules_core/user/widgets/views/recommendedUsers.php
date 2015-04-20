@@ -1,4 +1,5 @@
 <!-- mode 1: global user recommendations -->
+<h2>Connections</h2>
 <div class="panel panel-default">
   <div id="recommendedUsers" class="panel-body"
     data-base-url="<?php echo Yii::app()->baseUrl; ?>"
@@ -10,7 +11,7 @@
   $(document).ready(function() {
     React.render(
       <RecommendationList base_url={container.attr('data-base-url')}
-        data={STUB_DATA}
+        data={[]}
         in_userid={container.attr('data-in-userid')} />,
       container[0]
     );
