@@ -2,7 +2,7 @@
 <div class="panel panel-default">
   <div id="recommendedUsers" class="panel-body"
     data-base-url="<?php echo Yii::app()->baseUrl; ?>"
-    data-in-userid="asdfasdflkjasdf">
+    data-in-userid="<?php echo $user->guid ?>">
   </div>
 </div>
 <script type="text/jsx">

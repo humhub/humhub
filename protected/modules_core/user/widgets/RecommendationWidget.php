@@ -31,8 +31,8 @@ class RecommendationWidget extends HWidget
       // display the "which users match me best" view
       $this->render('recommendedUsers', array('user' => $this->user));
     } else {
-      // display the "how this user matches me" view
-      $this->render('userMatchStrength', array('user' => $this->user));
+      // display the "how this user's network matches me" view
+      $this->render('userMatchStrength', array('user' => $this->user, 'out_user' => Yii::app()->user));
     }
 
   }

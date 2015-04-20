@@ -51,7 +51,11 @@ var RecommendedUser = React.createClass({
         </div>
         <div class='legend'>
           <span className={this.props.person.role}>&nbsp;</span>
-          <p><a href={'http://localhost/'}>{this.props.person.name}</a></p>
+          <p>
+            <a href={'http://localhost/'}>
+              {this.props.person.name}
+            </a>
+          </p>
         </div>
       </li>
     )
@@ -61,5 +65,6 @@ var RecommendedUser = React.createClass({
 var STUB_DATA = [
   {name: "Alan One", guid: "abc-def-ghi", role: 'p', score: 77},
   {name: "Beta Bob", guid: "rst-uvw-xyz", role: 'p', score: 92},
-  {name: "Tertiary Ted", guid: "xxx-xxx-xxx", role: 'p', score: 5}
+  {name: "Tertiary Ted", guid: "xxx-xxx-xxx", role: 'p', score: 5},
+  {name: "Q. Quatermain", guid: "yyy-yyy-yyy", role: 'r', score: 99}
 ]

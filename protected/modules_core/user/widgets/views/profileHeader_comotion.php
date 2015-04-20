@@ -5,7 +5,7 @@
         src="<?php echo $user->getProfileImage()->getUrl(); ?>"
         />
   <?php if (!$isProfileOwner) { ?>
-    <div>Match</div>
+    <div>XX%</div>
   <?php } ?>
   <div class="comotion-profile-data">
     <h1><?php echo CHtml::encode($user->displayName); ?></h1>
