@@ -76,16 +76,28 @@
                 ));
                 ?>
             </div>
-        <?php } else { ?>
-            <div>XX%</div>
+        <?php } ?>
+        <?php if (!$isProfileOwner) { ?>
+            <!-- <div>XX%</div> -->
         <?php } ?>
         </div>
         <div class="comotion-profile-data">
             <h1><?php echo CHtml::encode($user->displayName); ?></h1>
 
             <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
-            Headline: <?php echo CHtml::encode($user->profile->headline); ?><br/>
-            Role: <?php echo CHtml::encode($user->profile->role); ?><br/>
+            <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
+            <h2>I am a <?php echo CHtml::encode($user->profile->role); ?>
+            seeking a <?php echo CHtml::encode($user->profile->seeking); ?></h2>
+
+            <!-- TODO: CONNECT and MESSAGE buttons -->
+
+            <hr/>
+
+            About
+
+            <?php echo CHtml::encode($user->profile->about); ?>
+
+            <?php echo CHtml::encode($user->profile->url_twitter); ?>
         </div>
 
     </div>
