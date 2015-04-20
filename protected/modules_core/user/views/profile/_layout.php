@@ -12,7 +12,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="">
       <?php
         $this->widget('application.modules_core.user.widgets.RecommendationWidget', array('user' => $this->getUser()));
         echo $content;
