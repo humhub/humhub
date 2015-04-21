@@ -76,31 +76,50 @@
                 ));
                 ?>
             </div>
-        <?php } else { ?>
-            <div id="compat-box" class="compatibility-container"
-              data-base-url="<?php echo Yii::app()->baseUrl; ?>"
-              data-in-userid="<?php echo Yii::app()->user->guid ?>"
-              data-out-userid="<?php echo $user->guid ?>">
-            </div>
-            <script type="text/jsx" >
-              var container = $('#compat-box');
-              $(document).ready(function() {
-                React.render(
-                  <UserCompatibility base_url={container.attr('data-base-url')}
-                    in_userid={container.attr('data-in-userid')}
-                    out_userid={container.attr('data-out-userid')} />,
-                  container[0]
-                );
-              });
-            </script>
+        <?php } ?>
+        <?php if (!$isProfileOwner) { ?>
+          <div id="compat-box" class="compatibility-container"
+            data-base-url="<?php echo Yii::app()->baseUrl; ?>"
+            data-in-userid="<?php echo Yii::app()->user->guid ?>"
+            data-out-userid="<?php echo $user->guid ?>">
+          </div>
+          <script type="text/jsx" >
+            var container = $('#compat-box');
+            $(document).ready(function() {
+              React.render(
+                <UserCompatibility base_url={container.attr('data-base-url')}
+                  in_userid={container.attr('data-in-userid')}
+                  out_userid={container.attr('data-out-userid')} />,
+                container[0]
+              );
+            });
+          </script>
         <?php } ?>
         </div>
         <div class="comotion-profile-data">
             <h1><?php echo CHtml::encode($user->displayName); ?></h1>
 
             <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
-            Headline: <?php echo CHtml::encode($user->profile->headline); ?><br/>
-            Role: <?php echo CHtml::encode($user->profile->role); ?><br/>
+            <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
+            <h2>I am a <em><?php echo CHtml::encode($user->profile->role); ?></em>
+            seeking a <em><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em></h2>
+
+            <!-- FOLLOW BUTTON -->
+            <?php $this->widget('application.modules_core.user.widgets.UserFollowButtonWidget', array('user' => $user)) ?>
+
+            <!-- TODO: CONNECT and MESSAGE buttons -->
+
+            <hr/>
+            <?php if ($user->profile->about != "") { ?>
+                <div class="comotion-profile-about">
+                    <h3>About</h3>
+                    <p><?php echo CHtml::encode($user->profile->about); ?></p>
+                </div>
+            <?php } ?>
+
+            <?php if ($user->profile->url_twitter != "") { ?>
+                <p><?php echo CHtml::encode($user->profile->url_twitter); ?></p>
+            <?php } ?>
         </div>
 
     </div>

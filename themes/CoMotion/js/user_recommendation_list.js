@@ -9,8 +9,8 @@ var RecommendationList = React.createClass({
   componentWillMount: function() {},
   componentDidMount: function() {
     var proto = 'http';
-    var host  = 'www.demus-maxim.us';
-    var port  = '81';
+    var host  = 'localhost';
+    var port  = '9292';
 
     if (this.props.out_userid) {
       var route = '';

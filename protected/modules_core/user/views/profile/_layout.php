@@ -14,7 +14,6 @@
   <div class="row">
     <div class="">
       <?php
-        $this->widget('application.modules_core.user.widgets.RecommendationWidget', array('user' => $this->getUser()));
         echo $content;
       ?>
     </div>

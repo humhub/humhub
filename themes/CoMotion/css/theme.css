@@ -227,6 +227,13 @@ img.responsive {
 .comotion-profile-data {
   padding-left: 20px;
 }
+.comotion-profile-data h2 {
+  margin-top: 8px;
+}
+.comotion-profile-data h2 em {
+  font-style: normal;
+  color: #4b2e83;
+}
 .comotion-profile-data h3 {
   margin-top: 5px;
 }
@@ -1599,3 +1606,4 @@ ul.sideswipe li div.legend p {
     padding-top: 50px;
   }
 }
+/*# sourceMappingURL=theme.css.map */
