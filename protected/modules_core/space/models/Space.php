@@ -242,7 +242,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         $criteria->compare('description', $this->description, true);
         $criteria->compare('website', $this->website, true);
         $criteria->compare('join_policy', $this->join_policy);
-        $criteria->compare('visibility', $this->visibility);
+        $criteria->compare('t.visibility', $this->visibility);
         $criteria->compare('tags', $this->tags, true);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('created_by', $this->created_by);
