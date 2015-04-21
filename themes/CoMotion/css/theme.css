@@ -142,7 +142,6 @@ body {
   -webkit-text-size-adjust: none;
   background-color: #fff;
   color: #929497;
-  padding-top: : 50px;
 }
 h1 {
   font-size: 28px;
@@ -224,8 +223,9 @@ img.responsive {
   background-color: #4b2e83;
   color: #b7a57a;
 }
-.comotion-profile-data {
+.comotion-content {
   padding-left: 20px;
+  padding-right: 20px;
 }
 .comotion-profile-data h2 {
   margin-top: 8px;
@@ -1627,24 +1627,24 @@ ul.sideswipe li div.legend p {
 /* Large desktop */
 @media (min-width: 1200px) {
   body {
-    padding-top: 50px;
+    padding-top: 100px;
   }
 }
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
   body {
-    padding-top: 50px;
+    padding-top: 100px;
   }
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
   body {
-    padding-top: 50px;
+    padding-top: 100px;
   }
 }
 /* Landscape phones and down */
 @media (max-width: 480px) {
   body {
-    padding-top: 50px;
+    padding-top: 100px;
   }
 }
