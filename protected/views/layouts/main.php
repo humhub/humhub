@@ -167,9 +167,11 @@
 <div id="topbar-second" class="topbar">
   <div class="container">
     <ul class="nav ">
-      <?php
-        $this->widget('application.widgets.TopMenuWidget', array());
-      ?>
+<!-- load space chooser widget -->
+        <?php $this->widget('application.modules_core.space.widgets.SpaceChooserWidget', array()); ?>
+
+            <!-- load navigation from widget -->
+        <?php $this->widget('application.widgets.TopMenuWidget', array()); ?>
     </ul>
 
     <ul class="nav pull-right" id="search-menu-nav">
