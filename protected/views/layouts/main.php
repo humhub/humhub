@@ -125,40 +125,38 @@
   <!-- <a class="navmenu-brand" href="#">Brand</a> -->
 </nav>
 
-
-
 <!-- start: first top navigation bar -->
 <div id="topbar-first" class="topbar">
-  <div class="container">
-    <div class="notifications pull-right">
-      <div class="btn-group">
-       <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
-          <i class="fa fa-bars"></i>
-        </a>        	
-     </div>
-    </div>
+    <div class="container">
+        <div class="notifications pull-right">
+<!--             <div class="btn-group">
+                <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div> -->
+        </div>
 
-    <!--
-    <div class="topbar-brand hidden-xs">
-        <?php
-          // $this->widget('application.widgets.LogoWidget', array());
-        ?>
-    </div>
 
-    <div class="topbar-actions pull-right">
-        <?php
-          // $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget');
-        ?>
-    </div>
+        <div class="topbar-brand hidden-xs">
+            <?php
+                // $this->widget('application.widgets.LogoWidget', array());
+            ?>
+        </div>
 
-    <div class="notifications pull-right">
-        <?php
-          // $this->widget('application.modules_core.notification.widgets.NotificationListWidget');
-          // $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array()));
-        ?>
+        <div class="topbar-actions pull-right">
+            <?php
+            $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget');
+            ?>
+        </div>
+
+        <div class="notifications pull-right">
+            <?php
+                // $this->widget('application.modules_core.notification.widgets.NotificationListWidget');
+                // $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array()));
+            ?>
+        </div>
+
     </div>
-    -->
-  </div>
 </div>
 <!-- end: first top navigation bar -->
 
