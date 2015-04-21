@@ -564,29 +564,7 @@ class CI_Security {
             return FALSE;
         }
 
-        // Unfortunately, none of the following PRNGs is guaranteed to exist ...
-        if (defined(MCRYPT_DEV_URANDOM) && ($output = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM)) !== FALSE)
-        {
-            return $output;
-        }
-
-
-        if (is_readable('/dev/urandom') && ($fp = fopen('/dev/urandom', 'rb')) !== FALSE)
-        {
-            $output = fread($fp, $length);
-            fclose($fp);
-            if ($output !== FALSE)
-            {
-                return $output;
-            }
-        }
-
-        if (function_exists('openssl_random_pseudo_bytes'))
-        {
-            return openssl_random_pseudo_bytes($length);
-        }
-
-        return FALSE;
+        return Yii::app()->getSecurityManager()->generateRandomBytes($length);
     }
 
     // --------------------------------------------------------------------
