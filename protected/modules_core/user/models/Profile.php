@@ -257,4 +257,14 @@ class Profile extends HActiveRecord
         return $fields;
     }
 
+    public function a_an($str) {
+      $vowels = array('a', 'e', 'i', 'o', 'u');
+
+      if (in_array(substr($str, 0, 1), $vowels)) {
+        return 'an';
+      } else {
+        return 'a';
+      }
+    }
+
 }

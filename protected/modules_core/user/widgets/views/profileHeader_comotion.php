@@ -104,9 +104,12 @@
             <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
 
             <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
-            
-            <h2>I am a <em><?php echo CHtml::encode($user->profile->role); ?></em>
-            seeking a <em><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em></h2>
+
+            <h2>I am <?php echo $user->profile->a_an($user->profile->role) ?>
+              <em><?php echo CHtml::encode($user->profile->role); ?></em>
+              seeking <?php echo $user->profile->a_an($user->profile->seeking) ?>
+              <em><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em>
+            </h2>
 
             <!-- FOLLOW BUTTON -->
             <?php $this->widget('application.modules_core.user.widgets.UserFollowButtonWidget', array('user' => $user)) ?>
