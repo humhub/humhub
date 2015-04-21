@@ -125,52 +125,53 @@
   <!-- <a class="navmenu-brand" href="#">Brand</a> -->
 </nav>
 
-
-
 <!-- start: first top navigation bar -->
 <div id="topbar-first" class="topbar">
-  <div class="container">
-    <div class="notifications pull-right">
-      <div class="btn-group">
-       <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
-          <i class="fa fa-bars"></i>
-        </a>        	
-     </div>
-    </div>
+    <div class="container">
+        <div class="offcanvas-menu">
+<!--             <div class="btn-group">
+                <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div> -->
+        </div>
 
-    <!--
-    <div class="topbar-brand hidden-xs">
-        <?php
-          // $this->widget('application.widgets.LogoWidget', array());
-        ?>
-    </div>
 
-    <div class="topbar-actions pull-right">
-        <?php
-          // $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget');
-        ?>
-    </div>
+        <div class="topbar-brand hidden-xs">
+            <?php
+                // $this->widget('application.widgets.LogoWidget', array());
+            ?>
+        </div>
 
-    <div class="notifications pull-right">
-        <?php
-          // $this->widget('application.modules_core.notification.widgets.NotificationListWidget');
-          // $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array()));
-        ?>
+        <!-- this will be deprecated and replaced with sidebar menu (above) -->
+        <div class="topbar-actions pull-right">
+            <?php
+            $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget');
+            ?>
+        </div>
+
+        <div class="notifications pull-right">
+            <?php
+                // $this->widget('application.modules_core.notification.widgets.NotificationListWidget');
+                // $this->widget('application.widgets.NotificationAddonWidget', array('widgets' => array()));
+            ?>
+        </div>
+
     </div>
-    -->
-  </div>
 </div>
 <!-- end: first top navigation bar -->
 
 
 <!-- start: second top navigation bar -->
-<!--
+
 <div id="topbar-second" class="topbar">
   <div class="container">
     <ul class="nav ">
-      <?php
-        // $this->widget('application.widgets.TopMenuWidget', array());
-      ?>
+<!-- load space chooser widget -->
+        <?php $this->widget('application.modules_core.space.widgets.SpaceChooserWidget', array()); ?>
+
+            <!-- load navigation from widget -->
+        <?php $this->widget('application.widgets.TopMenuWidget', array()); ?>
     </ul>
 
     <ul class="nav pull-right" id="search-menu-nav">
@@ -180,18 +181,18 @@
         </a>
         <ul class="dropdown-menu pull-right" id="search-menu-dropdown">
           <?php
-            // $this->widget('application.widgets.TopMenuRightStackWidget', array(
-            //  'widgets' => array(
-            //    array('application.widgets.SearchMenuWidget', array())
-            //  )
-            // ));
+            $this->widget('application.widgets.TopMenuRightStackWidget', array(
+             'widgets' => array(
+               array('application.widgets.SearchMenuWidget', array())
+             )
+            ));
           ?>
         </ul>
       </li>
     </ul>
   </div>
 </div>
--->
+
 
 
 

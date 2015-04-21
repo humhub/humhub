@@ -1,4 +1,5 @@
 <!-- mode 1: global user recommendations -->
+<div class="comotion-content">
 <h2>Connections</h2>
 <div class="panel panel-default">
   <div id="recommendedUsers" class="panel-body"
@@ -17,3 +18,4 @@
     );
   });
 </script>
+</div>
