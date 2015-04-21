@@ -117,6 +117,10 @@ class UserIdentity extends CUserIdentity
         } elseif ($user->auth_mode == User::AUTH_MODE_LDAP) {
             // Authenticate via LDAP
             if (HLdap::getInstance()->authenticate($user->username, $this->password)) {
+
+                // Reload user object - because we may updated the user while LDAP authentication
+                $user = $this->getUser();
+                
                 return true;
             }
         } else {
