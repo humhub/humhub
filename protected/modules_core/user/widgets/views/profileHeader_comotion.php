@@ -77,7 +77,22 @@
                 ?>
             </div>
         <?php } else { ?>
-            <div>XX%</div>
+            <div id="compat-box" class="compatibility-container"
+              data-base-url="<?php echo Yii::app()->baseUrl; ?>"
+              data-in-userid="<?php echo Yii::app()->user->guid ?>"
+              data-out-userid="<?php echo $user->guid ?>">
+            </div>
+            <script type="text/jsx" >
+              var container = $('#compat-box');
+              $(document).ready(function() {
+                React.render(
+                  <UserCompatibility base_url={container.attr('data-base-url')}
+                    in_userid={container.attr('data-in-userid')}
+                    out_userid={container.attr('data-out-userid')} />,
+                  container[0]
+                );
+              });
+            </script>
         <?php } ?>
         </div>
         <div class="comotion-profile-data">

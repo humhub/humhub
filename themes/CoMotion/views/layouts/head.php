@@ -17,4 +17,5 @@
 <script type="text/javascript" src="http://fb.me/react-0.13.2.js"></script>
 <script type="text/javascript" src="http://fb.me/JSXTransformer-0.13.2.js"></script>
 <script type="text/jsx" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/user_recommendation_list.js"></script>
+<script type="text/jsx" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/user_compatibility.js"></script>
 <!-- end: JS -->
