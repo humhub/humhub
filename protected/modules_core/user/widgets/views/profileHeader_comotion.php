@@ -34,7 +34,7 @@
         <!-- check if the current user is the profile owner and can change the images -->
         <?php if ($isProfileOwner) { ?>
             <form class="fileupload" id="profilefileupload" action="" method="POST" enctype="multipart/form-data"
-                  style="position: absolute; top: 0; left: 0; opacity: 0; height: 300px; width: 300px;">
+                  style="position: absolute; top: 0; left: 0; opacity: 0; height: 350px; width: 350px;">
                 <input type="file" name="profilefiles[]">
             </form>
 
