@@ -239,7 +239,7 @@ img.responsive {
 }
 .profile-user-photo {
   width: 100%;
-  max-width: 480px;
+  max-width: 350px;
 }
 .text-center {
   text-align: center !important;
@@ -1495,7 +1495,7 @@ ul.sideswipe li {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   border: 1px solid #eeedf6;
-  margin: 0 10px 0 0;
+  margin: 0 10px 10px 0;
   padding: 5px;
 }
 ul.sideswipe li a {
