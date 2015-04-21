@@ -1,4 +1,5 @@
 # Ignore everything in this directory
 *
 !.gitignore
+!index.html
 
