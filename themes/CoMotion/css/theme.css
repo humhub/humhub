@@ -142,7 +142,6 @@ body {
   -webkit-text-size-adjust: none;
   background-color: #fff;
   color: #929497;
-  padding-top: : 50px;
 }
 h1 {
   font-size: 28px;
@@ -1585,25 +1584,25 @@ ul.sideswipe li div.legend p {
 /* Large desktop */
 @media (min-width: 1200px) {
   body {
-    padding-top: 50px;
+    padding-top: 120px;
   }
 }
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
   body {
-    padding-top: 50px;
+    padding-top: 120px;
   }
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
   body {
-    padding-top: 50px;
+    padding-top: 120px;
   }
 }
 /* Landscape phones and down */
 @media (max-width: 480px) {
   body {
-    padding-top: 50px;
+    padding-top: 120px;
   }
 }
 /*# sourceMappingURL=theme.css.map */

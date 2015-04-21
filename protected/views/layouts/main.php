@@ -164,12 +164,12 @@
 
 
 <!-- start: second top navigation bar -->
-<!--
+
 <div id="topbar-second" class="topbar">
   <div class="container">
     <ul class="nav ">
       <?php
-        // $this->widget('application.widgets.TopMenuWidget', array());
+        $this->widget('application.widgets.TopMenuWidget', array());
       ?>
     </ul>
 
@@ -180,18 +180,18 @@
         </a>
         <ul class="dropdown-menu pull-right" id="search-menu-dropdown">
           <?php
-            // $this->widget('application.widgets.TopMenuRightStackWidget', array(
-            //  'widgets' => array(
-            //    array('application.widgets.SearchMenuWidget', array())
-            //  )
-            // ));
+            $this->widget('application.widgets.TopMenuRightStackWidget', array(
+             'widgets' => array(
+               array('application.widgets.SearchMenuWidget', array())
+             )
+            ));
           ?>
         </ul>
       </li>
     </ul>
   </div>
 </div>
--->
+
 
 
 
