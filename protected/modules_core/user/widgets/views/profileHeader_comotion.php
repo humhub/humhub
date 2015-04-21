@@ -1,7 +1,7 @@
 <div class="comotion-profile comotion-profile-header">
 
     <!-- TODO: port inline style to css -->
-    <div class="image-upload-container profile-user-photo-container" style="width: 320px; height: 320px">
+    <div class="image-upload-container profile-user-photo-container">
 
         <?php
         /* Get original profile image URL */
@@ -20,14 +20,14 @@
                data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                 <img class="profile-user-photo" id="user-profile-image"
                      src="<?php echo $user->getProfileImage()->getUrl(); ?>"
-                     data-src="holder.js/320x320" alt="320x320" style="width: 320px; height: 320px;"/>
+                     data-src="holder.js/320x320" alt="320x320"/>
             </a>
 
         <?php } else { ?>
 
             <img class="profile-user-photo" id="user-profile-image"
                  src="<?php echo $user->getProfileImage()->getUrl(); ?>"
-                 data-src="holder.js/320x320" alt="320x320" style="width: 320px; height: 320px;"/>
+                 data-src="holder.js/320x320" alt="320x320"/>
 
         <?php } ?>
 
@@ -96,11 +96,15 @@
           </script>
         <?php } ?>
         </div>
-        <div class="comotion-profile-data">
+
+        <!-- TODO: Create a widget for profile data (this is not a header) -->
+        <div class="comotion-content comotion-profile-data">
             <h1><?php echo CHtml::encode($user->displayName); ?></h1>
 
             <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
+
             <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
+            
             <h2>I am a <em><?php echo CHtml::encode($user->profile->role); ?></em>
             seeking a <em><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em></h2>
 
@@ -122,5 +126,4 @@
             <?php } ?>
         </div>
 
-    </div>
 </div>

@@ -4,7 +4,7 @@
 $this->widget('application.modules_core.user.widgets.RecommendationWidget', array('user' => $this->getUser()));
 ?>
 
-<div class="comotion-events-placeholder">
+<div class="comotion-content comotion-events-placeholder">
   <h3>Events</h3>
   <h4><?php echo $this->getUser()->displayName ?> is attending:</h4>
   <img src="<?php echo Yii::app()->theme->baseUrl ?>/img/fake_events_360.png" />
@@ -24,7 +24,7 @@ $this->widget('application.modules_core.wall.widgets.StreamWidget', array(
 ));
 ?>
 
-<div class="comotion-interests-placeholder">
+<div class="comotion-content comotion-interests-placeholder">
   <h3>Interests</h3>
   <div>Interests</div>
 </div>
