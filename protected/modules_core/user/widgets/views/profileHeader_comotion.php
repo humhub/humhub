@@ -78,13 +78,13 @@
             </div>
         <?php } ?>
         <?php if (!$isProfileOwner) { ?>
-          <div id="compat-box" class="compatibility-container"
+          <div id="compat_box" class="compatibility-container"
             data-base-url="<?php echo Yii::app()->baseUrl; ?>"
             data-in-userid="<?php echo Yii::app()->user->guid ?>"
             data-out-userid="<?php echo $user->guid ?>">
           </div>
           <script type="text/jsx" >
-            var container = $('#compat-box');
+            var container = $('#compat_box');
             $(document).ready(function() {
               React.render(
                 <UserCompatibility base_url={container.attr('data-base-url')}
