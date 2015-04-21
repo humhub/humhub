@@ -271,6 +271,7 @@ class BaseStreamAction extends CAction
         $json['counter'] = count($entries);
         $json['entryIds'] = $generatedWallEntryIds;
 
+        header('Content-type: application/json');
         echo CJSON::encode($json);
         Yii::app()->end();
     }
