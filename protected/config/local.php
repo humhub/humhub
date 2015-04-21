@@ -2,7 +2,7 @@
   'sync' => array (
     'proto' => 'http',
     'host'  => 'localhost',
-    'port'  => '9292',
+    'port'  => '81',
     'index' => 'comotion',
     'paths' => array (
       'user'    => 'users',
