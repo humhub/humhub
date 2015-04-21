@@ -128,7 +128,7 @@
 <!-- start: first top navigation bar -->
 <div id="topbar-first" class="topbar">
     <div class="container">
-        <div class="notifications pull-right">
+        <div class="offcanvas-menu">
 <!--             <div class="btn-group">
                 <a href="#" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
                     <i class="fa fa-bars"></i>
@@ -143,6 +143,7 @@
             ?>
         </div>
 
+        <!-- this will be deprecated and replaced with sidebar menu (above) -->
         <div class="topbar-actions pull-right">
             <?php
             $this->widget('application.modules_core.user.widgets.AccountTopMenuWidget');
