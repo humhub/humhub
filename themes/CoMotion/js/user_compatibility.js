@@ -26,7 +26,7 @@ var UserCompatibility = React.createClass({
   },
 
   componentDidUpdate: function() {
-    $('#compat_box').empty();
+    $('#chart').empty();
     var score = parseInt(this.state.data.score * 100);
     var data = [
       { 'population': score },
@@ -48,7 +48,7 @@ var UserCompatibility = React.createClass({
         .sort(null)
         .value(function(d) { return d.population; });
 
-    var svg = d3.select("#compat_box").insert("svg")
+    var svg = d3.select("#chart").insert("svg")
         .attr("width", width)
         .attr("height", height)
         .insert("g")
@@ -67,7 +67,11 @@ var UserCompatibility = React.createClass({
   render: function() {
     var score = parseInt(this.state.data.score * 100);
     return(
-      <div></div>
+      <div>
+        <div id='chart-percent'>{score}</div>
+        <div id='chart-center'></div>
+        <div id='chart'></div>
+      </div>
     )
   }
 })
