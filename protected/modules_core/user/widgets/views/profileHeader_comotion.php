@@ -121,9 +121,24 @@
                 </div>
             <?php } ?>
 
-            <?php if ($user->profile->url_twitter != "") { ?>
-                <p><?php echo CHtml::encode($user->profile->url_twitter); ?></p>
+            <!-- TODO: Create a social profiles widget? -->
+            <ul class="fa-ul">
+            <?php if ($user->profile->url_linkedin != "") { ?>
+                <li><a href="<?php echo CHtml::encode($user->profile->url_linkedin); ?>" target="_blank"><i class="fa-li fa fa-linkedin"></i>LinkedIn</a></li>
             <?php } ?>
+            <?php if ($user->profile->url_facebook != "") { ?>
+                <li><a href="<?php echo CHtml::encode($user->profile->url_facebook); ?>" target="_blank"><i class="fa-li fa fa-facebook"></i>Facebook</a></li>
+            <?php } ?>
+            <?php if ($user->profile->url_instagram != "") { ?>
+                <li><a href="<?php echo CHtml::encode($user->profile->url_instagram); ?>" target="_blank"><i class="fa-li fa fa-instagram"></i>Instagram</a></li>
+            <?php } ?>
+            <?php if ($user->profile->url_researchgate != "") { ?>
+                <li><a href="<?php echo CHtml::encode($user->profile->url_researchgate); ?>" target="_blank"><i class="fa-li ai ai-researchgate"></i>ResearchGate</a></li>
+            <?php } ?>
+            <?php if ($user->profile->url_twitter != "") { ?>
+                <li><a href="<?php echo CHtml::encode($user->profile->url_twitter); ?>" target="_blank"><i class="fa-li fa fa-twitter"></i>Twitter</a></li>
+            <?php } ?>
+            </ul>
         </div>
 
 </div>

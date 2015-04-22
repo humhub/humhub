@@ -21,6 +21,9 @@
     <link
         href="<?php echo Yii::app()->baseUrl; ?>/resources/font-awesome/css/font-awesome.min.css?ver=<?php echo $ver; ?>"
         rel="stylesheet">
+    <link
+        href="<?php echo Yii::app()->baseUrl; ?>/resources/academicons/academicons.css?ver=<?php echo $ver; ?>"
+        rel="stylesheet">
     <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-wysihtml5.css?ver=<?php echo $ver; ?>"
           rel="stylesheet">
     <link href="<?php echo Yii::app()->baseUrl; ?>/css/flatelements.css?ver=<?php echo $ver; ?>" rel="stylesheet">
