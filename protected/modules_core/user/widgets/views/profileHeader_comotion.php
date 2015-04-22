@@ -131,19 +131,29 @@
             <!-- TODO: Create a social profiles widget? -->
             <ul class="fa-ul">
             <?php if ($user->profile->url_linkedin != "") { ?>
-                <li><a href="<?php echo CHtml::encode($user->profile->url_linkedin); ?>" target="_blank"><i class="fa-li fa fa-linkedin"></i>LinkedIn</a></li>
+                <li><i class="fa-li fa fa-linkedin"></i>LinkedIn 
+                  <a href="<?php echo CHtml::encode($user->profile->url_linkedin); ?>" target="_blank"><?php echo CHtml::encode($user->profile->url_linkedin); ?></a>
+                </li>
             <?php } ?>
             <?php if ($user->profile->url_facebook != "") { ?>
-                <li><a href="<?php echo CHtml::encode($user->profile->url_facebook); ?>" target="_blank"><i class="fa-li fa fa-facebook"></i>Facebook</a></li>
+                <li><i class="fa-li fa fa-facebook"></i>Facebook 
+                  <a href="<?php echo CHtml::encode($user->profile->url_facebook); ?>" target="_blank"><?php echo CHtml::encode($user->profile->url_facebook); ?></a>
+                </li>
             <?php } ?>
             <?php if ($user->profile->url_instagram != "") { ?>
-                <li><a href="<?php echo CHtml::encode($user->profile->url_instagram); ?>" target="_blank"><i class="fa-li fa fa-instagram"></i>Instagram</a></li>
+                <li><i class="fa-li fa fa-instagram"></i>Instagram 
+                  <a href="<?php echo CHtml::encode($user->profile->url_instagram); ?>" target="_blank"><?php echo CHtml::encode($user->profile->url_instagram); ?></a>
+                </li>
             <?php } ?>
             <?php if ($user->profile->url_researchgate != "") { ?>
-                <li><a href="<?php echo CHtml::encode($user->profile->url_researchgate); ?>" target="_blank"><i class="fa-li ai ai-researchgate"></i>ResearchGate</a></li>
+                <li><i class="fa-li ai ai-researchgate"></i>ResearchGate 
+                  <a href="<?php echo CHtml::encode($user->profile->url_researchgate); ?>" target="_blank"><?php echo CHtml::encode($user->profile->url_researchgate); ?></a>
+                </li>
             <?php } ?>
             <?php if ($user->profile->url_twitter != "") { ?>
-                <li><a href="<?php echo CHtml::encode($user->profile->url_twitter); ?>" target="_blank"><i class="fa-li fa fa-twitter"></i>Twitter</a></li>
+                <li><i class="fa-li fa fa-twitter"></i>Twitter 
+                  <a href="<?php echo CHtml::encode($user->profile->url_twitter); ?>" target="_blank"><?php echo CHtml::encode($user->profile->url_twitter); ?></a>
+                </li>
             <?php } ?>
             </ul>
         </div>
