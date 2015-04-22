@@ -1,8 +1,12 @@
 <!-- mode 1: global user recommendations -->
-<div class="comotion-content">
-<h2>Connections</h2>
-<div class="panel panel-default">
-  <div id="recommendedUsers" class="panel-body"
+<style>
+.user-profile-connections{ padding-left: 15px;}
+
+</style>
+<div class="user-profile-connections">
+<h2 class="">Connections</h2>
+<div class="">
+  <div id="recommendedUsers" class=""
     data-base-url="<?php echo Yii::app()->baseUrl; ?>"
     data-in-userid="<?php echo $user->guid ?>">
   </div>

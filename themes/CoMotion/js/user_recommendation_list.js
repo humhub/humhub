@@ -71,11 +71,11 @@ var RecommendedUser = React.createClass({
         </div>
         <div className='legend'>
           <span className={role_class}>&nbsp;</span>
-          <p>
+         
             <a href={this.props.base_url + '/index.php?r=user/profile&uguid=' + this.props.person.id}>
               {this.props.person.name}
             </a>
-          </p>
+        
         </div>
       </li>
     )
