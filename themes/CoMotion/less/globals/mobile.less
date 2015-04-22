@@ -1,4 +1,5 @@
 // Mobile Styles & Media Queries
+// from bootstrap
 
 /* Large desktop */
 @media (min-width: 1200px) {
@@ -18,8 +19,35 @@
 @media (max-width: 767px) {
   body {
     padding-top: 100px;
+    overflow-x: hidden;
   }
-}
+
+  .container{
+    padding: 0;
+  }
+  .topbar{
+    padding: 0;
+  }
+  .offcanvas-menu{ max-width: 320px; }
+  .profile-layout-container{
+    margin: auto auto;
+    padding: 0;
+    width: 100%;
+
+    .row{
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+  }
+
+
+  .image-upload-container{
+    width: 100%;
+  }
+
+
+} 
 
 /* Landscape phones and down */
 @media (max-width: 480px) {

@@ -223,35 +223,6 @@ img.responsive {
   background-color: #4b2e83;
   color: #b7a57a;
 }
-.comotion-content {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.comotion-profile-data h2 {
-  margin-top: 8px;
-}
-.comotion-profile-data h2 em {
-  font-style: normal;
-  color: #4b2e83;
-}
-.comotion-profile-data h3 {
-  margin-top: 5px;
-}
-.profile-user-photo {
-  width: 100%;
-  max-width: 350px;
-}
-.text-center {
-  text-align: center !important;
-}
-input[type=text],
-input[type=password],
-input[type=select] {
-  /* Remove First */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
 .login-container {
   background: #4b2e83;
 }
@@ -318,6 +289,8 @@ input[type=select] {
 #topbar-second {
   background-color: #ffffff;
   background-image: none;
+  -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid #d4d4d4;
 }
@@ -584,6 +557,8 @@ input[type=select] {
   font-size: 11px;
 }
 .img-rounded {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
   border-radius: 3px;
 }
 .nav-pills .dropdown-menu,
@@ -645,6 +620,8 @@ input[type=select] {
 .popover {
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 .popover .popover-title {
@@ -958,6 +935,7 @@ a.list-group-item.active:focus {
 }
 .progress-bar-info {
   background-color: #b7a57a;
+  -webkit-box-shadow: none;
   box-shadow: none;
 }
 .tooltip-inner {
@@ -1085,6 +1063,7 @@ table td a:hover {
   margin-left: 90px;
 }
 ul.tag_input {
+  -webkit-box-shadow: none;
   box-shadow: none;
   border: 2px solid #4b2e83;
 }
@@ -1210,15 +1189,18 @@ ul.tour-list li.completed a {
 .modal-dialog.fadeIn,
 .modal-dialog.pulse {
   -webkit-animation-duration: 200ms;
+  -moz-animation-duration: 200ms;
   animation-duration: 200ms;
 }
 .panel.pulse,
 .panel.fadeIn {
   -webkit-animation-duration: 200ms;
+  -moz-animation-duration: 200ms;
   animation-duration: 200ms;
 }
 img.bounceIn {
   -webkit-animation-duration: 800ms;
+  -moz-animation-duration: 800ms;
   animation-duration: 800ms;
 }
 .outside .text {
@@ -1277,8 +1259,41 @@ img.bounceIn {
 #topbar-first .btn-group > a {
   background-color: #4b2e84;
 }
+.comotion-content {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.comotion-profile-data h2 {
+  margin-top: 8px;
+}
+.comotion-profile-data h2 em {
+  font-style: normal;
+  color: #4b2e83;
+}
+.comotion-profile-data h3 {
+  margin-top: 5px;
+}
+.profile-user-photo {
+  width: 100%;
+  max-width: 350px;
+}
+.image-upload-container {
+  min-width: 320px;
+}
+.text-center {
+  text-align: center !important;
+}
+input[type=text],
+input[type=password],
+input[type=select] {
+  /* Remove First */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 .btn {
   border: none;
+  -webkit-box-shadow: none;
   box-shadow: none;
   -moz-box-shadow: none;
   background-image: none;
@@ -1628,6 +1643,28 @@ ul.sideswipe li div.legend p {
 @media (max-width: 767px) {
   body {
     padding-top: 100px;
+    overflow-x: hidden;
+  }
+  .container {
+    padding: 0;
+  }
+  .topbar {
+    padding: 0;
+  }
+  .offcanvas-menu {
+    max-width: 320px;
+  }
+  .profile-layout-container {
+    margin: auto auto;
+    padding: 0;
+    width: 100%;
+  }
+  .profile-layout-container .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .image-upload-container {
+    width: 100%;
   }
 }
 /* Landscape phones and down */
@@ -1636,3 +1673,4 @@ ul.sideswipe li div.legend p {
     padding-top: 100px;
   }
 }
+/*# sourceMappingURL=theme.css.map */
