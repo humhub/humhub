@@ -103,6 +103,10 @@
 
             <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
 
+            <?php if ($user->profile->organization != "") { ?>
+              <h4><?php echo CHtml::encode($user->profile->organization); ?></h4>
+            <?php } ?>
+
             <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
 
             <h2>I am <?php echo $user->profile->a_an($user->profile->role) ?>
