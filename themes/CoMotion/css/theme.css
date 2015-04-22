@@ -1483,8 +1483,17 @@ ul.sideswipe li {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   border: 1px solid #eeedf6;
-  margin: 0 10px 0 0;
+  margin: 0 10px 10px 0;
   padding: 5px;
+}
+ul.sideswipe li a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 1002;
 }
 ul.sideswipe li div {
   width: 100%;
@@ -1549,16 +1558,16 @@ ul.sideswipe li div.legend span {
   height: 18px;
 }
 ul.sideswipe li div.legend span.p {
-  background: url('../img/role/role_p_360.png') 0 0 no-repeat;
+  background: url('../img/role/role_p.png') 0 0 no-repeat;
 }
 ul.sideswipe li div.legend span.i {
-  background: url('../img/role/role_i_360.png') 0 0 no-repeat;
+  background: url('../img/role/role_i.png') 0 0 no-repeat;
 }
 ul.sideswipe li div.legend span.c {
-  background: url('../img/role/role_c_360.png') 0 0 no-repeat;
+  background: url('../img/role/role_c.png') 0 0 no-repeat;
 }
 ul.sideswipe li div.legend span.s {
-  background: url('../img/role/role_s_360.png') 0 0 no-repeat;
+  background: url('../img/role/role_s.png') 0 0 no-repeat;
 }
 ul.sideswipe li div.legend p {
   display: block;
@@ -1569,6 +1578,39 @@ ul.sideswipe li div.legend p {
   text-align: center;
   font-size: 13px;
   color: #929497;
+}
+#compat_box {
+  width: 89px;
+  height: 89px;
+  position: absolute;
+  margin-top: -46px;
+  right: 10px;
+  z-index: 3000;
+}
+#chart-percent {
+  position: absolute;
+  right: 9px;
+  top: 24px;
+  z-index: 3003;
+  width: 56px;
+  height: 56px;
+  color: #128bd3;
+  font-size: 30px;
+}
+#chart-percent:after {
+  font-size: 11px;
+  line-height: 30px;
+  content: '%';
+}
+#chart-center {
+  position: absolute;
+  top: 17px;
+  right: 16px;
+  z-index: 3001;
+  width: 56px;
+  height: 56px;
+  background: #fff;
+  border-radius: 50%;
 }
 /* Large desktop */
 @media (min-width: 1200px) {
@@ -1594,4 +1636,3 @@ ul.sideswipe li div.legend p {
     padding-top: 100px;
   }
 }
-/*# sourceMappingURL=theme.css.map */
