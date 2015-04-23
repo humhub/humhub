@@ -27,13 +27,14 @@ class RecommendationWidget extends HWidget
 
   public function run() {
 
+    
     if ($this->isProfileOwner) {
       // display the "which users match me best" view
-      $this->render('recommendedUsers', array('user' => $this->user));
+      $this->render('userMatchStrength', array('user' => $this->user, 'out_user' => $this->user));
     } else {
       // display the "how this user's network matches me" view
       $this->render('userMatchStrength', array('user' => $this->user, 'out_user' => Yii::app()->user));
     }
-
+    
   }
 }
