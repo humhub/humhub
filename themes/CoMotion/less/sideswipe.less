@@ -30,15 +30,8 @@ ul.sideswipe {
     margin:  0 10px 10px 0;
     padding: 5px;
 
-    a {
-      position: absolute;
-      top:      0;
-      left:     0;
-      display:  block;
-      width:    100%;
-      height:   100%;
-      z-index:  1002;
-    }
+    
+
 
 
 
@@ -107,11 +100,21 @@ ul.sideswipe {
       &.legend {
         margin: 5px 0 0 0;
 
+        a{
+
+        }
+
         span {
           display: block;
           float:   left;
           width:   18px;
           height:  18px;
+
+          &.name{
+            width: 75%;
+            overflow-x: hidden;
+            margin-left: 7px;
+          }
 
           &.p {
             background: url('../img/role/role_p.png') 0 0 no-repeat;

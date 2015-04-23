@@ -57,27 +57,26 @@ var RecommendedUser = React.createClass({
 
     console.log(this.props.person);
     return(
-      <li key={this.props.person.id}>
-        <div className='container'>
-          <img src={this.props.base_url + '/img/default_user.jpg'} />
-          <div className='thermometer'>
-            <span className='empty' style={emptyStyle}>
-              <span>{score}</span>
-            </span>
-            <span className='full' style={fullStyle}>
-              <span>%</span>
-            </span>
+      <a href={this.props.base_url + '/index.php?r=user/profile&uguid=' + this.props.person.id}>
+  
+        <li key={this.props.person.id}>
+          <div className='container'>
+            <img src={this.props.base_url + '/img/default_user.jpg'} />
+            <div className='thermometer'>
+              <span className='empty' style={emptyStyle}>
+                <span>{score}</span>
+              </span>
+              <span className='full' style={fullStyle}>
+                <span>%</span>
+              </span>
+            </div>
           </div>
-        </div>
-        <div className='legend'>
-          <span className={role_class}>&nbsp;</span>
-         
-            <a href={this.props.base_url + '/index.php?r=user/profile&uguid=' + this.props.person.id}>
-              {this.props.person.name}
-            </a>
-        
-        </div>
-      </li>
+          <div className='legend'>
+            <span className={role_class}>&nbsp;</span>        
+            <span className="name">{this.props.person.name}</span>
+          </div>
+        </li>
+      </a>
     )
   }
 });
