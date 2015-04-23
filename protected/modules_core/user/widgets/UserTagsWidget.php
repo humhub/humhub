@@ -13,7 +13,7 @@ class UserTagsWidget extends HWidget
 
     public function run()
     {
-        $this->render('userTags', array('user' => $this->user));
+        $this->render('userTags_comotion', array('user' => $this->user));
     }
 
 }

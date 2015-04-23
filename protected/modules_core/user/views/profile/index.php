@@ -23,8 +23,7 @@ $this->widget('application.modules_core.wall.widgets.StreamWidget', array(
             '',
 ));
 ?>
-
-<div class="comotion-content comotion-interests-placeholder">
-  <h3>Interests</h3>
-  <div>Interests</div>
-</div>
+<!-- interests -->
+<?php
+  $this->widget('application.modules_core.user.widgets.userTagsWidget', array('user' => $this->getUser()));
+?>
