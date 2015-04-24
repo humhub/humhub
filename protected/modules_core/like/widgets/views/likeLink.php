@@ -14,9 +14,9 @@
 ?>
 
 <?php if (Yii::app()->user->isGuest): ?>
-    <?php echo CHtml::link(Yii::t('LikeModule.widgets_views_likeLink', 'Like'), Yii::app()->user->loginUrl, array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+     <i class="likelinkicon"><?php echo CHtml::link(Yii::t('LikeModule.widgets_views_likeLink', 'Like'), Yii::app()->user->loginUrl, array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
 <?php else: ?>
-    <a href="#" id="<?php echo $id . "-LikeLink"; ?>" class="like likeAnchor"
+     <i class="likelinkicon"><a href="#" id="<?php echo $id . "-LikeLink"; ?>" class="like likeAnchor"
        style="<?php if ($currentUserLiked): ?>display:none<?php endif; ?>"><?php echo Yii::t('LikeModule.widgets_views_likeLink', 'Like'); ?></a>
    <?php endif; ?>
 <a href="#" id="<?php echo $id . "-UnlikeLink"; ?>" class="unlike likeAnchor"
