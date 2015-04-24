@@ -111,16 +111,15 @@
             <h3><?php echo CHtml::encode($user->profile->headline); ?></h3>
 
             <h2>I am <?php echo $user->profile->a_an($user->profile->role) ?>
-              <em><?php echo CHtml::encode($user->profile->role); ?></em>
+              <em class="<?= $user->profile->role; ?>-color"><?php echo CHtml::encode($user->profile->role); ?></em>
               seeking <?php echo $user->profile->a_an($user->profile->seeking) ?>
-              <em><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em>
+              <em class="<?= $user->profile->seeking; ?>-color"><span class="role"><?php echo CHtml::encode($user->profile->seeking); ?></em>
             </h2>
 
             <!-- FOLLOW BUTTON -->
             <?php $this->widget('application.modules_core.user.widgets.UserFollowButtonWidget', array('user' => $user)) ?>
 
             <!-- TODO: CONNECT and MESSAGE buttons -->
-
             <hr/>
             <?php if ($user->profile->about != "") { ?>
                 <div class="comotion-profile-about">

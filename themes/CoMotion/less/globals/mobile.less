@@ -46,7 +46,36 @@
     width: 100%;
   }
 
+  .profile-interests{
+    h3{
+      margin-left: 15px;
+    }
 
+    > div{ margin-left: 15px;}
+    p{
+      padding: 0;
+      line-height: 32px;
+      margin: 0;
+      &::before{
+        content: '\00BB';
+        color: @gold;
+        font-size: 32px;
+        font-weight: bolder;
+      }
+
+      
+
+      a{
+        margin-top: 0;
+        line-height: 32px;
+      }
+    }
+  }
+
+  .user-profile-activities{
+    padding-left: 15px;
+    max-width: 320px;
+  }
 } 
 
 /* Landscape phones and down */

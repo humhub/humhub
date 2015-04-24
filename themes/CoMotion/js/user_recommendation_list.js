@@ -61,7 +61,7 @@ var RecommendedUser = React.createClass({
   
         <li key={this.props.person.id}>
           <div className='container'>
-            <img src={this.props.base_url + '/img/default_user.jpg'} />
+            <img src={this.props.base_url + '/uploads/profile_image/' + this.props.person.id +'.jpg'}/>
             <div className='thermometer'>
               <span className='empty' style={emptyStyle}>
                 <span>{score}</span>

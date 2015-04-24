@@ -1270,6 +1270,18 @@ img.bounceIn {
   font-style: normal;
   color: #4b2e83;
 }
+.comotion-profile-data h2 em.staff-color {
+  color: #06557c;
+}
+.comotion-profile-data h2 em.catalyzer-color {
+  color: #00a5d8;
+}
+.comotion-profile-data h2 em.innovator-color {
+  color: #ffc408;
+}
+.comotion-profile-data h2 em.partner-color {
+  color: #fa5e20;
+}
 .comotion-profile-data h3 {
   margin-top: 5px;
 }
@@ -1602,13 +1614,12 @@ ul.sideswipe li div.legend p {
   position: absolute;
   margin-top: -46px;
   right: 10px;
-  z-index: 3000;
 }
 #chart-percent {
   position: absolute;
   right: 9px;
   top: 24px;
-  z-index: 3003;
+  z-index: 3;
   width: 56px;
   height: 56px;
   color: #128bd3;
@@ -1623,7 +1634,6 @@ ul.sideswipe li div.legend p {
   position: absolute;
   top: 17px;
   right: 16px;
-  z-index: 3001;
   width: 56px;
   height: 56px;
   background: #fff;
@@ -1667,6 +1677,31 @@ ul.sideswipe li div.legend p {
   }
   .image-upload-container {
     width: 100%;
+  }
+  .profile-interests h3 {
+    margin-left: 15px;
+  }
+  .profile-interests > div {
+    margin-left: 15px;
+  }
+  .profile-interests p {
+    padding: 0;
+    line-height: 32px;
+    margin: 0;
+  }
+  .profile-interests p::before {
+    content: '\00BB';
+    color: #b7a57a;
+    font-size: 32px;
+    font-weight: bolder;
+  }
+  .profile-interests p a {
+    margin-top: 0;
+    line-height: 32px;
+  }
+  .user-profile-activities {
+    padding-left: 15px;
+    max-width: 320px;
   }
 }
 /* Landscape phones and down */
