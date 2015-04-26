@@ -19,7 +19,7 @@
        title="" data-target="#globalModal"
        data-original-title="Comments">Comments (<?php echo $this->getCommentsCount(); ?>)</a>
 <?php else: ?>
-     <i class="commenticon"><?php
+     <i class="commenticon"></i><?php
     if (Yii::app()->user->isGuest) {
         echo CHtml::link(Yii::t('CommentModule.widgets_views_link', "Comment"), Yii::app()->user->loginUrl, array('data-target' => '#globalModal', 'data-toggle' => 'modal'));
     } else {
