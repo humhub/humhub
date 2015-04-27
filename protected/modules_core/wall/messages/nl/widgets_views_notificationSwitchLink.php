@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Turn off notifications' => 'Notificaties aan',
-  'Turn on notifications' => 'Notificaties uit',
+  'Turn off notifications' => 'Notificaties uitzetten',
+  'Turn on notifications' => 'Notificaties aanzetten',
 );

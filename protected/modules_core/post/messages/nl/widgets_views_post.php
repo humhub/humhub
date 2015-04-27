@@ -1,5 +1,5 @@
 <?php
 return array (
   'Collapse' => 'Inklappen',
-  'Read full post...' => '',
+  'Read full post...' => 'Lees volledig bericht...',
 );

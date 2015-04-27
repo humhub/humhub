@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Post' => '',
-  'Write a new comment...' => '',
+  'Post' => 'نشر',
+  'Write a new comment...' => 'كتابة رد جديد...',
 );

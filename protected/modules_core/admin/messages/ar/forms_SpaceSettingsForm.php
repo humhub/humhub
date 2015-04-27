@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Default Join Policy' => '',
-  'Default Visibility' => '',
+  'Default Join Policy' => 'صلاحيات الإنضمام القياسية',
+  'Default Visibility' => 'نوعية الظهور القياسية',
 );

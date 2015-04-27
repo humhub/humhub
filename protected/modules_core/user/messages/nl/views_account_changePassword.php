@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Change</strong> password' => '<strong>Verander</strong> wachtwoord',
+  '<strong>Change</strong> password' => '<strong>Wijzig</strong> wachtwoord',
   'Save' => 'Bewaar',
 );

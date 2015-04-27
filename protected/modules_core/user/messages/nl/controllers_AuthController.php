@@ -1,5 +1,5 @@
 <?php
 return array (
   'Account' => 'Account',
-  'Create account' => 'Maak account',
+  'Create account' => 'Maak een account aan',
 );

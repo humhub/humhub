@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Saved' => 'Bewaard',
+  'Saved' => 'Opgeslagen',
 );

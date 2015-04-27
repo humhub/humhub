@@ -1,5 +1,5 @@
 <?php
 return array (
-  '%y Years' => '%y jaren',
+  '%y Years' => '%y jaar',
   'Birthday field options' => 'Geboortedatum veld opties',
 );

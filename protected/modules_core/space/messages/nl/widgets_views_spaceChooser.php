@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Create new space' => '',
-  'My spaces' => '',
+  'Create new space' => 'Maak nieuwe ruimte aan',
+  'My spaces' => 'Mijn ruimtes',
   'Search' => 'Zoek',
 );

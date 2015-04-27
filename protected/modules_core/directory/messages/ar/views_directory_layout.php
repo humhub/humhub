@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Directory</strong> menu' => '',
-  'Groups' => '',
-  'Members' => '',
-  'Spaces' => '',
-  'User profile posts' => '',
+  '<strong>Directory</strong> menu' => 'قائمة الدليل',
+  'Groups' => 'المجموعات',
+  'Members' => 'الأعضاء',
+  'Spaces' => 'الباحات',
+  'User profile posts' => 'موضوعات الصفحات الشخصية',
 );

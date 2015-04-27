@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Close' => '',
+  'Close' => 'إغلاق',
 );

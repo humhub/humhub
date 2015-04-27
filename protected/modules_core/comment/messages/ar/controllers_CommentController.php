@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Access denied!' => '',
-  'Insufficent permissions!' => '',
+  'Access denied!' => 'لم يتم السماح!',
+  'Insufficent permissions!' => 'ليست لديك الصلاحيات اللازمة!',
 );

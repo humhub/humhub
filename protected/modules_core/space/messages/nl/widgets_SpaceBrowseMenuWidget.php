@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin' => '',
+  'Admin' => 'Admin',
   'Members' => 'Leden',
-  'My Space List' => '',
-  'My space summary' => '',
-  'Space directory' => '',
-  'Spaces' => '',
+  'My Space List' => 'Mijn Ruimte Lijst',
+  'My space summary' => 'Mijn ruimte overzicht',
+  'Space directory' => 'Ruimte overzicht',
+  'Spaces' => 'Ruimtes',
 );

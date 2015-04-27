@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Could not find requested file!' => '',
-  'Insufficient permissions!' => '',
+  'Could not find requested file!' => 'لم يتم ايجاد الملف المطلوب',
+  'Insufficient permissions!' => 'ليست لديك الصلاحيات اللازمة!',
 );

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Endpoint Url' => '',
-  'Url Prefix' => '',
+  'Endpoint Url' => '@Endpoint Url@',
+  'Url Prefix' => '@Url Prefix@',
 );

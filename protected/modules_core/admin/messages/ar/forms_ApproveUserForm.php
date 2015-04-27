@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Message' => '',
-  'Subject' => '',
+  'Message' => 'النص',
+  'Subject' => 'الموضوع',
 );

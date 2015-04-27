@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Directory</strong> menu' => '',
+  '<strong>Directory</strong> menu' => '<strong>Overzicht</strong> menu',
   'Groups' => 'Groepen',
   'Members' => 'Leden',
-  'Spaces' => '',
-  'User profile posts' => '',
+  'Spaces' => 'Ruimtes',
+  'User profile posts' => 'Profiel berichten',
 );

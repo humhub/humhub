@@ -1,4 +1,4 @@
 <?php
 return array (
-  '%displayName% likes %contentTitle%.' => '',
+  '%displayName% likes %contentTitle%.' => '%displayName% اعجبه %contentTitle%.',
 );

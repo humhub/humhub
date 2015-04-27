@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Administrator users' => '',
+  'Administrator users' => 'Administrators',
   'Default space' => 'Standaard ruimte',
   'Description' => 'Beschrijving',
   'Invalid space' => 'Ongeldige ruimte',
-  'Ldap DN' => '',
+  'Ldap DN' => 'LDAP DN',
   'Name' => 'Naam',
 );

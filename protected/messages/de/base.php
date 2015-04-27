@@ -19,7 +19,7 @@ return array (
   'Keyword:' => 'Suchbegriff:',
   'Language' => 'Sprache',
   'Latest news' => 'Neuigkeiten',
-  'Login' => '',
+  'Login' => 'Anmelden',
   'Logout' => 'Ausloggen',
   'Menu' => 'Menü',
   'Module is not on this content container enabled!' => 'Dieses Modul ist in diesem Content Container nicht aktiviert!',

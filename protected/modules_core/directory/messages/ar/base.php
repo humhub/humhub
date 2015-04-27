@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Directory' => '',
+  'Directory' => 'الدليل',
 );
