@@ -33,9 +33,17 @@ class SpaceUrlRule extends CBaseUrlRule
     {
 
         if (isset($params['sguid'])) {
+            
+            /* Can we use a name instead? */
+            $space = Space::model()->findByAttributes(array('guid' => $params['sguid']));
+            if(strlen($space->name) == mb_strlen($space->name, 'utf-8') && !is_array((Space::model()->findByAttributes(array('name' => $space->name))))) {
+                $params['sguid'] = $space->attributes['name'];
+            }
+            
             if ($route == 'space/space' || $route == 'space/space/index') {
                 $route = "home";
             }
+            
             $url = "s/" . urlencode($params['sguid']) . "/" . $route;
             unset($params['sguid']);
             $url = rtrim($url . '/' . $manager->createPathInfo($params, '/', '/'), '/');
@@ -50,20 +58,23 @@ class SpaceUrlRule extends CBaseUrlRule
         if (substr($pathInfo, 0, 2) == "s/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                $space = Space::model()->findByAttributes(array('guid' => $parts[1]));
-
-                if ($space !== null) {
-                    
-                    $_GET['sguid'] = $space->guid;
-                    if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
-                        $temp = 1;
-                        return 'space/space/index'. str_replace('home', '', $parts[2], $temp);
-                    } else {
-                        return $parts[2];
+                
+                /* Are we handling a GUID or Name? */
+                if (($space = @Space::model()->findByAttributes(array('guid' => $parts[1]))) == false) {
+                    if (($space = @Space::model()->findByAttributes(array('name' => urldecode(trim($parts[1]))))) == false && !is_array($space)) {
+                        throw new CHttpException('404', Yii::t('SpaceModule.components_SpaceUrlRule', 'Space not found!'));
                     }
-                } else {
-                    throw new CHttpException('404', Yii::t('SpaceModule.components_SpaceUrlRule', 'Space not found!'));
                 }
+                   
+                // What's this? 
+                $_GET['sguid'] = $space->guid;
+                
+                if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
+                    return 'space/space/index';
+                } else {
+                    return $parts[2];
+                }
+
             }
         }
         return false;
