@@ -140,6 +140,7 @@
 
                 if (json.counter == 0) {
                     $("#dropdown-notifications ul.media-list").append('<li class="placeholder">' + notification_placeholder + '</li>');
+                    notificationLastEntryReached = true;
                 } else {
 
                     // save id from the last entry for the next loading
