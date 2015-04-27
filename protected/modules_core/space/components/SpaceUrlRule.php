@@ -37,7 +37,7 @@ class SpaceUrlRule extends CBaseUrlRule
             /* Can we use a name instead? */
             $space = Space::model()->findByAttributes(array('guid' => $params['sguid']));
             if(strlen($space->name) == mb_strlen($space->name, 'utf-8') && !is_array((Space::model()->findByAttributes(array('name' => $space->name))))) {
-                $params['sguid'] = $space->attributes['name'];
+                $params['sguid'] = $space->name;
             }
             
             if ($route == 'space/space' || $route == 'space/space/index') {
