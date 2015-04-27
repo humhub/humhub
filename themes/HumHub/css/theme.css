@@ -1235,3 +1235,24 @@ img.bounceIn {
 .markdown-render a:visited {
   color: #6fdbe8 !important;
 }
+
+/* Like & Comment İcon */
+i.likelinkicon {
+  background-image: url('/themes/HumHub/img/like-comment.png');
+  background-size: auto;   
+  display: inline-block;
+  background-position: -1px 0px;
+  margin: 5px 5px -2px 0px;
+  height: 14px;
+  width: 14px;
+}
+
+i.commenticon {
+  background-image: url('/themes/HumHub/img/like-comment.png');
+  background-size: auto;   
+  display: inline-block;
+  background-position: 16px -1px;
+  margin: 5px 5px -2px 0px;
+  height: 14px;
+  width: 14px;
+}
