@@ -218,7 +218,7 @@
 
                              <span style="color: #ffffff; font-weight: 300;">
                                <a href="<?php echo Yii::app()->createAbsoluteUrl("user/auth/createAccount", array('token' => $token)); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                   <strong><?php echo Yii::t('MailModule.views_mails_UserInviteSpace', 'Sign up now'); ?></strong>
+                                   <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'Sign up now'); ?></strong>
                                </a>
                              </span>
                                                     </td>
