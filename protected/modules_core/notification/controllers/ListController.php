@@ -80,13 +80,10 @@ class ListController extends Controller
 
         // compete action
         Yii::app()->end();
-
     }
-
 
     public function actionMarkAsSeen()
     {
-
         // build query
         $criteria = new CDbCriteria();
         $criteria->condition = 'seen=0';
@@ -101,6 +98,47 @@ class ListController extends Controller
 
         // compete action
         Yii::app()->end();
+    }
+
+    /**
+     * Returns new notifications 
+     */
+    public function actionGetUpdateJson()
+    {
+        print self::getUpdateJson();
+        Yii::app()->end();
+    }
+
+    /**
+     * Returns a JSON which contains 
+     * - Number of new / unread notification
+     * - Notification Output for new HTML5 Notifications
+     * 
+     * @return string JSON String
+     */
+    public static function getUpdateJson()
+    {
+        $user = Yii::app()->user->getModel();
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'user_id = :user_id';
+        $criteria->addCondition('seen != 1');
+        $criteria->params = array('user_id' => $user->id);
+
+        $json['newNotifications'] = Notification::model()->count($criteria);
+
+        $json['notifications'] = array();
+        $criteria->addCondition('desktop_notified = 0');
+        $notifications = Notification::model()->findAll($criteria);
+        foreach ($notifications as $notification) {
+            if ($user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'))) {
+                $json['notifications'][] = $notification->getTextOut();
+            }
+            $notification->desktop_notified = 1;
+            $notification->update();
+        }
+
+        return CJSON::encode($json);
     }
 
 }

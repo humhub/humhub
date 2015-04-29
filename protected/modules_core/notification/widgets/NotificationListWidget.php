@@ -18,7 +18,10 @@ class NotificationListWidget extends HWidget
         if (Yii::app()->user->isGuest)
             return;
 
-        $this->render('list', array());
+        Yii::import('application.modules_core.notification.controllers.ListController');
+        $this->render('list', array(
+            'updateJson' => ListController::getUpdateJson()
+        ));
     }
 
 }

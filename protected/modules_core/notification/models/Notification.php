@@ -268,4 +268,15 @@ class Notification extends HActiveRecord
         return $out;
     }
 
+    /**
+     * Returns notification text for HTML5 Notification
+     * 
+     * @return String
+     */
+    public function getTextOut()
+    {
+        $text = strip_tags($this->getOut());
+        return str_replace(array("\n", "\r"), array("", ""), $text);
+    }
+
 }

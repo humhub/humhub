@@ -83,47 +83,4 @@ class DashboardController extends Controller
         }
     }
 
-    /**
-     * Returns a JSON Object which contains a lot of informations about
-     * current states like new posts on workspaces
-     */
-    public function actionGetFrontEndInfo()
-    {
-
-        $json = array();
-
-
-        if (Yii::app()->user->isGuest) {
-            return CJSON::encode($json);
-        }
-
-        $user = Yii::app()->user->getModel();
-
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'user_id = :user_id';
-        $criteria->addCondition('seen != 1');
-        $criteria->params = array('user_id' => $user->id);
-
-        $json['newNotifications'] = Notification::model()->count($criteria);
-        $json['notifications'] = array();
-        $criteria->addCondition('desktop_notified = 0');
-        $notifications = Notification::model()->findAll($criteria);
-
-        foreach ($notifications as $notification) {
-            if ($user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'))) {
-                $info = $notification->getOut();
-                $info = strip_tags($info);
-                $info = str_replace("\n", "", $info);
-                $info = str_replace("\r", "", $info);
-                $json['notifications'][] = $info;
-            }
-            $notification->desktop_notified = 1;
-            $notification->update();
-        }
-
-
-        print CJSON::encode($json);
-        Yii::app()->end();
-    }
-
 }
