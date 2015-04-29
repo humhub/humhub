@@ -58,15 +58,16 @@ class SpaceUrlRule extends CBaseUrlRule
         if (substr($pathInfo, 0, 2) == "s/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                
+				
                 /* Are we handling a GUID or Name? */
-                if (($space = @Space::model()->findByAttributes(array('guid' => $parts[1]))) == false) {
-                    if (($space = @Space::model()->findByAttributes(array('name' => urldecode(trim($parts[1]))))) == false && !is_array($space)) {
-                        throw new CHttpException('404', Yii::t('SpaceModule.components_SpaceUrlRule', 'Space not found!'));
-                    }
+				$space = $this->isGuid($parts[1]) ? Space::model()->findByAttributes(array('guid' => $parts[1])) 
+                    : Space::model()->findByAttributes(array('name' => urldecode(trim($parts[1]))));
+
+	    		/* Not valid space or multiple occurrences. */
+                if (!is_object($space)) {
+                    throw new CHttpException('404', Yii::t('SpaceModule.components_SpaceUrlRule', 'Space not found!'));
                 }
                    
-                // What's this? 
                 $_GET['sguid'] = $space->guid;
                 
                 if (!isset($parts[2]) || substr($parts[2], 0, 4) == 'home') {
@@ -79,5 +80,12 @@ class SpaceUrlRule extends CBaseUrlRule
         }
         return false;
     }
+	
+	public static function isGuid($guid) {
+		if (preg_match('/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i', $guid)) {
+			return true;
+		}
+		return false;
+	}
 
 }
