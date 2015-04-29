@@ -60,7 +60,7 @@ class SpaceUrlRule extends CBaseUrlRule
             if (isset($parts[1])) {
 				
                 /* Are we handling a GUID or Name? */
-				$space = $this->isGuid($parts[1]) ? Space::model()->findByAttributes(array('guid' => $parts[1])) 
+                $space = $this->isGuid($parts[1]) ? Space::model()->findByAttributes(array('guid' => $parts[1])) 
                     : Space::model()->findByAttributes(array('name' => urldecode(trim($parts[1]))));
 
 	    		/* Not valid space or multiple occurrences. */
