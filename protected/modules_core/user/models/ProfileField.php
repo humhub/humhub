@@ -196,6 +196,7 @@ class ProfileField extends HActiveRecord
     {
 
         $categories = ProfileFieldCategory::model()->findAll(array('order' => 'sort_order'));
+        $profileFieldTypes = new ProfileFieldType();
         $definition = array(
             'ProfileField' => array(
                 'type' => 'form',
@@ -251,7 +252,7 @@ class ProfileField extends HActiveRecord
                     ),
                     'field_type_class' => array(
                         'type' => 'dropdownlist',
-                        'items' => ProfileFieldType::getFieldTypes(),
+                        'items' => $profileFieldTypes->getFieldTypes(),
                         'class' => 'form-control',
                     ),
                 )
@@ -312,7 +313,8 @@ class ProfileField extends HActiveRecord
                 $this->addError('field_type_class', Yii::t('UserModule.models_ProfileField', 'Field Type could not be changed!'));
             }
         } else {
-            if (!key_exists($this->field_type_class, ProfileFieldType::getFieldTypes())) {
+            $profileFieldTypes = new ProfileFieldType();
+            if (!key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
                 $this->addError('field_type_class', Yii::t('UserModule.models_ProfileField', 'Invalid field type!'));
             }
         }
