@@ -115,8 +115,8 @@ class UserProfileController extends Controller {
             $field = new ProfileField;
 
         // Get all Available Field Class Instances, also bind current profilefield to the type
-        $fieldTypes = ProfileFieldType::getTypeInstances($field);
-
+        $profileFieldTypes = new ProfileFieldType();
+        $fieldTypes = $profileFieldTypes->getTypeInstances();
         // Build Form Definition
         $definition = array();
 
