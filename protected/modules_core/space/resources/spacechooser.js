@@ -2,7 +2,7 @@
  * Handling space chooser user input
  */
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     var chosen = []; // Array for visible space menu entries
     var arrPosition = ""; // Save the current position inside the chosen array
@@ -10,31 +10,30 @@ $(document).ready(function() {
     /**
      * Open space chooser and load user spaces 
      */
-    $('#space-menu').click(function() {
+    $('#space-menu').click(function () {
 
-        // load user spaces
-        $.ajax({
-            'url': scSpaceListUrl,
-            'cache': false,
-            'data': jQuery(this).parents("form").serialize(),
-            'success': function(html) {
+        if (jQuery('#space-menu-spaces').hasClass('notLoaded')) {
+            // load user spaces
+            jQuery('#space-menu-spaces').removeClass('notLoaded');
+            $.ajax({
+                'url': scSpaceListUrl,
+                'cache': false,
+                'data': jQuery(this).parents("form").serialize(),
+                'success': function (html) {
 
-                // show loaded space entries
-                jQuery("#loader_spaces").replaceWith(html)
+                    // show loaded space entries
+                    jQuery("#loader_spaces").replaceWith(html)
 
-                // show new activities for spaces
-                getSpaceEntries();
+                    // fill array with visible space entries
+                    $("#space-menu-dropdown ul li").each(function (index) {
+                        chosen.push(index);
+                    });
 
-                // fill array with visible space entries
-                $("#space-menu-dropdown ul li").each(function(index) {
-                    chosen.push(index);
-                });
+                    // select the first space entry
+                    $('#space-menu-dropdown li ul li:eq(' + chosen[0] + ')').addClass('selected');
 
-                // select the first space entry
-                $('#space-menu-dropdown li ul li:eq(' + chosen[0] + ')').addClass('selected');
-
-            }});
-
+                }});
+        }
         // use setIntervall to setting the focus
         var spaceFocus = setInterval(setFocus, 10);
 
@@ -48,38 +47,9 @@ $(document).ready(function() {
     })
 
     /**
-     * Open space chooser and load user spaces
-     */
-    function getSpaceEntries() {
-
-        // load data
-        jQuery.getJSON(scSpaceEntryUrl, function(json) {
-
-            for (var i = 0; i < json.workspaces.length; i++) {
-
-                if (json.workspaces[i].newItems == 0) {
-                    jQuery('#space-badge-' + i).css('display', 'none')
-
-                } else {
-                    //jQuery('#space-badge-' + i).css('display', 'block')
-                    jQuery('#space-badge-' + i).fadeIn('slow');
-                }
-
-                jQuery('#space-badge-' + i).empty();
-                jQuery('#space-badge-' + i).append(json.workspaces[i].newItems);
-
-
-                //$newItemsCounter += parseInt(json.workspaces[i].newItems);
-
-            }
-        })
-    }
-
-    /**
      * Show and navigate through spaces depends on user input
      */
-    $('#space-menu-search').keyup(function(event) {
-
+    $('#space-menu-search').keyup(function (event) {
 
         if (event.keyCode == 40) {
 
@@ -140,7 +110,7 @@ $(document).ready(function() {
             chosen = [];
             arrPosition = "";
 
-            $("#space-menu-dropdown li ul li").each(function(index) {
+            $("#space-menu-dropdown li ul li").each(function (index) {
 
                 // remove selected classes from all space entries
                 $('#space-menu-dropdown li ul li').removeClass('selected');
@@ -191,7 +161,7 @@ $(document).ready(function() {
     /**
      * Disable enter key
      */
-    $('#space-menu-search').keypress(function(event) {
+    $('#space-menu-search').keypress(function (event) {
         if (event.keyCode == 13) {
             // deactivate the standard press event
             event.preventDefault();
@@ -203,7 +173,7 @@ $(document).ready(function() {
     /**
      * Click handler to reset user input
      */
-    $('#space-search-reset').click(function() {
+    $('#space-search-reset').click(function () {
         resetSpaceSearch();
     })
 
@@ -221,7 +191,7 @@ $(document).ready(function() {
         // set focus to input field
         $('#space-menu-search').focus();
 
-        $("#space-menu-dropdown li ul li").each(function() {
+        $("#space-menu-dropdown li ul li").each(function () {
 
             // show all space entries
             $(this).css('display', 'block');

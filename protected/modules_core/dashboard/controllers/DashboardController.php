@@ -91,31 +91,10 @@ class DashboardController extends Controller
     {
 
         $json = array();
-        $json['workspaces'] = array();
+
 
         if (Yii::app()->user->isGuest) {
             return CJSON::encode($json);
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->order = 'last_visit DESC';
-
-        $memberships = SpaceMembership::model()->with('workspace')->findAllByAttributes(array(
-            'user_id' => Yii::app()->user->id,
-            'status' => SpaceMembership::STATUS_MEMBER
-                ), $criteria);
-
-        foreach ($memberships as $membership) {
-            $workspace = $membership->workspace;
-
-            $info = array();
-            $info['name'] = CHtml::encode($workspace->name);
-            #$info['id'] = $workspace->id;	# should be hidden at frontend
-            $info['guid'] = $workspace->guid;
-            $info['totalItems'] = $workspace->countItems();
-            $info['newItems'] = $membership->countNewItems();
-
-            $json['workspaces'][] = $info;
         }
 
         $user = Yii::app()->user->getModel();

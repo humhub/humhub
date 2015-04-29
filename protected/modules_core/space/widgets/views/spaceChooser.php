@@ -31,7 +31,7 @@
 
         <li class="divider"></li>
         <li>
-            <ul class="media-list" id="space-menu-spaces">
+            <ul class="media-list notLoaded" id="space-menu-spaces">
                 <li id="loader_spaces">
                     <div class="loader">
                         <div class="sk-spinner sk-spinner-three-bounce">
