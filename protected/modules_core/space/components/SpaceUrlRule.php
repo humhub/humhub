@@ -80,12 +80,12 @@ class SpaceUrlRule extends CBaseUrlRule
         }
         return false;
     }
-	
-	public static function isGuid($guid) {
-		if (preg_match('/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i', $guid)) {
-			return true;
-		}
-		return false;
+    
+    public static function isGuid($guid) {
+        if (preg_match('/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i', $guid)) {
+	    return true;
 	}
+	return false;
+    }
 
 }
