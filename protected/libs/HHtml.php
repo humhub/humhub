@@ -189,7 +189,7 @@ class HHtml extends CHtml
      *      nl2br
      *      oembed urls
      */
-    public static function enrichText($text)
+    public static function enrichText($text $markdown = false)
     {
 
 
@@ -209,6 +209,9 @@ class HHtml extends CHtml
 
             return HHtml::link($match[1], $match[1], array('target' => '_blank')) . $match[2];
         }, $text);
+
+        // parse simple markdown
+        $text = self::simpleMarkdown($text, $markdown)
 
         // get user and space details from guids
         $text = self::translateMentioning($text, true);
@@ -269,6 +272,48 @@ class HHtml extends CHtml
             return $hit[0];
         }, $text);
     }
+    
+    /**
+    * Parse string with Simple Markdwon
+    * @param $text string
+	* @param $markdown true | false
+    * @return string
+    */
+    public static function simpleMarkdown($text, $markdown = false) { 
+	
+        $simpleMarkdown = array(
+                                '/'.preg_quote('###').'(.*)/i',
+                                '/'.preg_quote('##').'(.*)/i',
+                                '/'.preg_quote('#').'(.*)/i',
+                                '/'.preg_quote('###').'(.*)'.preg_quote('###').'/i',
+                                '/'.preg_quote('##').'(.*)'.preg_quote('##').'/i',
+                                '/'.preg_quote('#').'(.*)'.preg_quote('#').'/i',
+                                '/'.preg_quote('***').'(.*)'.preg_quote('***').'/i',
+                                '/'.preg_quote('**').'(.*)'.preg_quote('**').'/i',
+                                '/'.preg_quote('__').'(.*)'.preg_quote('__').'/i',
+                                '/'.preg_quote('*').'(.*)'.preg_quote('*').'/i',
+                                '/'.preg_quote('_').'(.*)'.preg_quote('_').'/i'
+                               );
+        if ($markdown) {
+            $smReplacement = array(
+                                   '<h3>$1</h3>',
+                                   '<h2>$1</h2>',
+                                   '<h1>$1</h1>',
+                                   '<h3>$1</h3>',
+                                   '<h2>$1</h2>',
+                                   '<h1>$1</h1>',
+                                   '<i>$1</i>',
+                                   '<i>$1</i>',
+                                   '<strong>$1</strong>',
+                                   '<strong>$1</strong>',
+                                   '<i><strong>$1</strong></i>'
+                                  );
+        } else {
+            $smReplacement = '$1';
+		}
+		
+	    return preg_replace($simpleMarkdown, $smReplacement, $text);
+	}
 
     /**
      * ActiveForm Variant of DateTime Field
