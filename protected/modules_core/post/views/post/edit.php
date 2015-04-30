@@ -8,7 +8,7 @@
     <?php echo $form->textArea($post, 'message', array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
 
     <!-- create contenteditable div for HEditorWidget to place the data -->
-    <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input" contenteditable="true"><?php echo HHtml::enrichText($post->message); ?></div>
+    <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input" contenteditable="true"><?php echo nl2br($post->message); ?></div>
 
     <?php
     /* Modify textarea for mention input */
