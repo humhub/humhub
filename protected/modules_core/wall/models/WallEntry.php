@@ -54,7 +54,7 @@ class WallEntry extends HActiveRecord {
     public function relations() {
         return array(
             'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
-            'content' => array(self::BELONGS_TO, 'Content', 'content_id'),
+            'content' => array(self::BELONGS_TO, 'Content', 'content_id', 'alias' => 'c'),
         );
     }
 

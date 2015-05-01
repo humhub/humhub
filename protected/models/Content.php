@@ -132,7 +132,7 @@ class Content extends CActiveRecord
         return array(
             'wallEntries' => array(self::HAS_MANY, 'WallEntry', 'content_id'),
             'space' => array(self::BELONGS_TO, 'Space', 'space_id'),
-            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id', 'alias' => 'user'),
         );
     }
 

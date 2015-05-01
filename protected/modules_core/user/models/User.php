@@ -96,20 +96,22 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
     public function defaultScope()
     {
+        $alias = $this->getTableAlias(false,false);
         return array(
             // Per default show only content of users which are enabled or disabled
-            'condition' => "status='" . self::STATUS_ENABLED . "' OR status='" . self::STATUS_DISABLED . "'",
+            'condition' => $alias . ".status='" . self::STATUS_ENABLED . "' OR " . $alias . ".status='" . self::STATUS_DISABLED . "'",
         );
     }
 
     public function scopes()
     {
+        $alias = $this->getTableAlias();
         return array(
             'unapproved' => array(
-                'condition' => "status = '" . self::STATUS_NEED_APPROVAL . "'",
+                'condition' => $alias . ".status = '" . self::STATUS_NEED_APPROVAL . "'",
             ),
             'active' => array(
-                'condition' => 'status = ' . self::STATUS_ENABLED,
+                'condition' => $alias . '.status = ' . self::STATUS_ENABLED,
             ),
             'recently' => array(
                 'order' => 'created_at DESC',

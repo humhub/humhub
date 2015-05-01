@@ -132,6 +132,8 @@ class BaseStreamAction extends CAction
     public function setupCriteria()
     {
         $this->criteria->alias = 'wall_entry';
+        $this->criteria->with = array('content', 'content.user');
+        
         $this->criteria->join = 'LEFT JOIN content ON wall_entry.content_id = content.id';
         $this->criteria->join .= ' LEFT JOIN user creator ON creator.id = content.created_by';
 
