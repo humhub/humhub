@@ -7,7 +7,8 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityWidget extends HWidget {
+class ActivityWidget extends HWidget
+{
 
     protected $themePath = 'modules/activity';
 
@@ -24,7 +25,8 @@ class ActivityWidget extends HWidget {
     /**
      * Runs the Widget
      */
-    public function run() {
+    public function run()
+    {
 
         // Possible Security Flaw: Check type!
         $type = $this->activity->type;
@@ -40,9 +42,9 @@ class ActivityWidget extends HWidget {
         }
 
         // When element is assigned to a workspace, assign variable
-        $workspace = null;
+        $space = null;
         if ($this->activity->content->space_id != "") {
-            $workspace = Space::model()->findByPk($this->activity->content->space_id);
+            $space = $this->activity->content->space;
         }
 
         // User that fired the activity
@@ -70,8 +72,9 @@ class ActivityWidget extends HWidget {
             'wallEntryId' => $wallEntryId,
             'user' => $user,
             'target' => $underlyingObject,
-            //'contentTarget' => $contentTarget,
-            'workspace' => $workspace
+            'space' => $space,
+            // Deprecated
+            'workspace' => $space
         ));
     }
 
