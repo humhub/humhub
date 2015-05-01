@@ -29,3 +29,5 @@ Bundled Software / Libaries
 * Cebe Markdown - https://github.com/cebe/markdown
 * Highlight.js - https://highlightjs.org/
 * Bootstrap Markdown - http://www.codingdrama.com/bootstrap-markdown/
+* JShrink - https://github.com/tedious/JShrink
+* CSSCompressor - http://www.yiiframework.com/extension/minifyclientscript/

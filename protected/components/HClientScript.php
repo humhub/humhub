@@ -33,6 +33,57 @@ class HClientScript extends CClientScript
     public $htmls = array();
 
     /**
+     * Combine Js Files
+     * 
+     * @var boolean
+     */
+    public $enableCombineJs = true;
+
+    /**
+     * Combine Js Files in Debug Mode
+     * 
+     * @since 0.12.0
+     * @var boolean
+     */
+    public $enableCombineJsInDebug = false;
+
+    /**
+     * Should javascript files be minified
+     * Requires enabled enableCombineJs option.
+     * 
+     * Only affects Javascript's without .min.js extension.
+     * 
+     * @since 0.12.0
+     * @var boolean
+     */
+    public $enableMinifyJs = false;
+
+    /**
+     * Combine Css Files
+     * 
+     * @since 0.12.0
+     * @var boolean
+     */
+    public $enableCombineCss = true;
+
+    /**
+     * Combine Css Files in Debug Mode
+     * 
+     * @since 0.12.0
+     * @var boolean
+     */
+    public $enableCombineCssInDebug = false;
+
+    /**
+     * Should CSS files be minified
+     * Requires enabled enableCombineCss option.
+     * 
+     * @since 0.12.0
+     * @var boolean
+     */
+    public $enableMinifyCss = false;
+
+    /**
      * Method to inject a javascript variable
      *
      * @param String $name
@@ -74,6 +125,8 @@ class HClientScript extends CClientScript
         if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]) && count($this->htmls) == 0)
             return;
 
+        $this->combineJs(self::POS_END);
+
         $fullPage = 0;
         $output = preg_replace('/(<\\/body\s*>)/is', '<###end###>$1', $output, 1, $fullPage);
         $html = '';
@@ -110,6 +163,146 @@ class HClientScript extends CClientScript
             $output = str_replace('<###end###>', $html, $output);
         else
             $output = $output . $html;
+    }
+
+    public function renderHead(&$output)
+    {
+        $this->combineCss();
+        $this->combineJs(self::POS_HEAD);
+
+        parent::renderHead($output);
+    }
+
+    public function renderBodyBegin(&$output)
+    {
+        $this->combineJs(self::POS_BEGIN);
+        parent::renderBodyBegin($output);
+    }
+
+    /**
+     * Combines and optionally compresses used CSS files on a given position.
+     * If running on debug mode - the files remain changed.
+     * 
+     * @since 0.12.0
+     */
+    protected function combineCss()
+    {
+        if (!$this->enableCombineCss || (YII_DEBUG && !$this->enableCombineCssInDebug)) {
+            return;
+        }
+
+        // Cache Id
+        $cacheId = $this->getCombineHash(implode("-", array_keys($this->cssFiles)));
+        $cacheFileName = $cacheId . ".css";
+
+        // Combine when not exist yet
+        if (!file_exists($this->getCombinePath() . DIRECTORY_SEPARATOR . $cacheFileName)) {
+            $combined = "";
+            foreach ($this->cssFiles as $src => $media) {
+                $scriptFile = str_replace(Yii::app()->getBaseUrl(), Yii::getPathOfAlias('webroot'), $src);
+                $css = file_get_contents($scriptFile);
+                $css = preg_replace_callback("#url\s*\(\s*['\"]?([^'\"\)]+)['\"]?\)#", function ($match) use ($src) {
+                    return "url('" . dirname($src) . '/' . $match[1] . "')";
+                }, $css);
+
+                $combined .= $css;
+            }
+
+            if ($this->enableCombineCss) {
+                Yii::import('ext.wbkrnl.CssCompressor', true);
+                $combined = CssCompressor::deflate($combined);
+            }
+
+            file_put_contents($this->getCombinePath() . DIRECTORY_SEPARATOR . $cacheFileName, $combined);
+        }
+
+        // Clean old uncombined script
+        $this->cssFiles = array();
+
+        // Add combined script
+        $this->registerCssFile($this->getCombineUrl() . DIRECTORY_SEPARATOR . $cacheFileName);
+    }
+
+    /**
+     * Combines and optionally compresses used Javascript files on a given position.
+     * If running on debug mode - the files remain changed.
+     * 
+     * @param integer $position the position of the JavaScript code.See CClientScript::POS_*
+     * 
+     * @since 0.12.0
+     */
+    protected function combineJs($pos)
+    {
+        if (!$this->enableCombineJs || (YII_DEBUG && !$this->enableCombineJsInDebug)) {
+            return;
+        }
+
+        if (isset($this->scriptFiles[$pos])) {
+            // Cache Id
+            $cacheId = $this->getCombineHash(implode("-", $this->scriptFiles[$pos]));
+            $cacheFileName = $cacheId . ".js";
+
+            // Combine when not exist yet
+            if (!file_exists($this->getCombinePath() . DIRECTORY_SEPARATOR . $cacheFileName)) {
+                $combined = "";
+                foreach ($this->scriptFiles[$pos] as $src => $scriptFile) {
+                    $scriptFile = str_replace(Yii::app()->getBaseUrl(), Yii::getPathOfAlias('webroot'), $scriptFile);
+
+                    if ($this->enableMinifyJs && (strpos($scriptFile, '.min.js') === false)) {
+                        Yii::import('ext.JShrink.Minifier', true);
+                        $combined .= \JShrink\Minifier::minify(file_get_contents($scriptFile));
+                    } else {
+                        $combined .= file_get_contents($scriptFile);
+                    }
+                }
+                file_put_contents($this->getCombinePath() . DIRECTORY_SEPARATOR . $cacheFileName, $combined);
+            }
+
+            // Clean old uncombined script
+            $this->scriptFiles[$pos] = array();
+
+            // Add combined script
+            $this->registerScriptFile($this->getCombineUrl() . DIRECTORY_SEPARATOR . $cacheFileName, $pos);
+        }
+    }
+
+    /**
+     * Generates short hash for combined JS/CSS Files
+     * Includes version number.
+     * 
+     * @since 0.12.0
+     * @param string $string
+     * @return strng
+     */
+    protected function getCombineHash($string)
+    {
+        return sprintf('%x', crc32($string . HVersion::VERSION));
+    }
+
+    /**
+     * Path to store combined CSS/JS Files
+     * 
+     * @since 0.12.0
+     * @return string
+     */
+    protected function getCombinePath()
+    {
+        $p = Yii::app()->assetManager->basePath . DIRECTORY_SEPARATOR . 'comp';
+        if (!is_dir($p)) {
+            mkdir($p);
+        }
+        return $p;
+    }
+
+    /**
+     * URL of combined CSS/JS Files
+     * 
+     * @since 0.12.0
+     * @return string
+     */
+    protected function getCombineUrl()
+    {
+        return Yii::app()->assetManager->baseUrl . DIRECTORY_SEPARATOR . 'comp';
     }
 
 }
