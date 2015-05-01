@@ -21,8 +21,15 @@
         <p>
             <?php echo Yii::t('AdminModule.views_about_index', 'Currently installed version: %currentVersion%', array('%currentVersion%' => '<strong>' . HVersion::VERSION . '</strong>')); ?><br />
         </p>
-
         <br />
+
+        <?php if (YII_DEBUG) : ?>
+            <p class="alert alert-danger">
+                <strong><?php echo Yii::t('AdminModule.views_about_index', 'HumHub is currently in debug mode. Disable it when running on production!'); ?></strong><br />
+                <?php echo Yii::t('AdminModule.views_about_index', 'See installation manual for more details.'); ?>
+            </p>
+        <?php endif; ?>
+
         <hr />
         <p>
             <span class="pull-right">
