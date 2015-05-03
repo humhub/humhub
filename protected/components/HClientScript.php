@@ -200,12 +200,20 @@ class HClientScript extends CClientScript
             $combined = "";
             foreach ($this->cssFiles as $src => $media) {
                 $scriptFile = str_replace(Yii::app()->getBaseUrl(), Yii::getPathOfAlias('webroot'), $src);
-                $css = file_get_contents($scriptFile);
-                $css = preg_replace_callback("#url\s*\(\s*['\"]?([^'\"\)]+)['\"]?\)#", function ($match) use ($src) {
-                    return "url('" . dirname($src) . '/' . $match[1] . "')";
-                }, $css);
+                // If we're on root
+                if (Yii::app()->getBaseUrl() == "") {
+                    $scriptFile = Yii::getPathOfAlias('webroot') . $scriptFile;
+                }
+                if (is_file($scriptFile) && is_readable($scriptFile)) {
+                    $css = file_get_contents($scriptFile);
+                    $css = preg_replace_callback("#url\s*\(\s*['\"]?([^'\"\)]+)['\"]?\)#", function ($match) use ($src) {
+                        return "url('" . dirname($src) . '/' . $match[1] . "')";
+                    }, $css);
 
-                $combined .= $css;
+                    $combined .= $css;
+                } else {
+                    Yii::log("Could not open CSS file to combine: " . $scriptFile, CLogger::LEVEL_ERROR);
+                }
             }
 
             if ($this->enableCombineCss) {
@@ -247,12 +255,20 @@ class HClientScript extends CClientScript
                 $combined = "";
                 foreach ($this->scriptFiles[$pos] as $src => $scriptFile) {
                     $scriptFile = str_replace(Yii::app()->getBaseUrl(), Yii::getPathOfAlias('webroot'), $scriptFile);
+                    // If we're on root
+                    if (Yii::app()->getBaseUrl() == "") {
+                        $scriptFile = Yii::getPathOfAlias('webroot') . $scriptFile;
+                    }
+                    if (is_file($scriptFile) && is_readable($scriptFile)) {
 
-                    if ($this->enableMinifyJs && (strpos($scriptFile, '.min.js') === false)) {
-                        Yii::import('ext.JShrink.Minifier', true);
-                        $combined .= \JShrink\Minifier::minify(file_get_contents($scriptFile));
+                        if ($this->enableMinifyJs && (strpos($scriptFile, '.min.js') === false)) {
+                            Yii::import('ext.JShrink.Minifier', true);
+                            $combined .= \JShrink\Minifier::minify(file_get_contents($scriptFile));
+                        } else {
+                            $combined .= file_get_contents($scriptFile);
+                        }
                     } else {
-                        $combined .= file_get_contents($scriptFile);
+                        Yii::log("Could not open CSS file to combine: " . $scriptFile, CLogger::LEVEL_ERROR);
                     }
                 }
                 file_put_contents($this->getCombinePath() . DIRECTORY_SEPARATOR . $cacheFileName, $combined);
