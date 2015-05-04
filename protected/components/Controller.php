@@ -82,6 +82,14 @@ class Controller extends EController
         return parent::init();
     }
 
+    public function beforeAction($action)
+    {
+        if (Yii::app()->request->enableCsrfValidation) {
+            Yii::app()->request->validateCsrfToken(new CEvent());
+        }
+        return parent::beforeAction($action);
+    }
+
     /**
      * Create Redirect for AJAX Requests which output goes into HTML content.
      * Is an alternative method to redirect, for ajax responses.

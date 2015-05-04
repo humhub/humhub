@@ -25,15 +25,22 @@
  * @package humhub.components
  * @since 0.5
  */
-class HHttpRequest extends CHttpRequest {
+class HHttpRequest extends CHttpRequest
+{
 
+    /**
+     * CSRF Token parameter name
+     * 
+     * @var string
+     */
     public $csrfTokenName = 'CSRF_TOKEN';
 
     /**
      * Returns whether this is an AJAX (XMLHttpRequest) request.
      * @return boolean whether this is an AJAX (XMLHttpRequest) request.
      */
-    public function getIsAjaxRequest() {
+    public function getIsAjaxRequest()
+    {
 
         if (!parent::getIsAjaxRequest()) {
             if (isset($_REQUEST['ajax'])) {
@@ -44,22 +51,32 @@ class HHttpRequest extends CHttpRequest {
         return true;
     }
 
+    protected function normalizeRequest()
+    {
+        // Disable CSRF Validation on this stage
+        // Will be now handled by HController onBeforeAction to ease disabling per action
+        $this->enableCsrfValidation = false;
+        parent::normalizeRequest();
+        $this->enableCsrfValidation = true;
+    }
+
     public function getPreferredAvailableLanguage()
     {
-       
+
         $preferedLanguages = $this->getPreferredLanguages();
         $languages = array_keys(Yii::app()->params['availableLanguages']);
-        
-        foreach ($preferedLanguages as $preferredLanguage) {       
+
+        foreach ($preferedLanguages as $preferredLanguage) {
             foreach ($languages as $language) {
                 $preferredLanguage = CLocale::getCanonicalID($preferredLanguage);
                 if ($language === $preferredLanguage) {
                     return $language;
                 }
-            }  
+            }
         }
         return false;
     }
+
 }
 
 ?>
