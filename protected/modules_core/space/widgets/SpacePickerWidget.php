@@ -26,7 +26,8 @@
  * @since 0.5
  * @author Luke
  */
-class SpacePickerWidget extends HWidget {
+class SpacePickerWidget extends HWidget
+{
 
     /**
      * Id of input element which should replaced
@@ -52,21 +53,30 @@ class SpacePickerWidget extends HWidget {
     public $maxSpaces = 10;
 
     /**
-     * @var CModel the data model associated with this widget.
+     * @var CModel the data model associated with this widget. (Optional)
      */
     public $model = null;
 
     /**
-     * @var string the attribute associated with this widget.
+     * @var string the attribute associated with this widget. (Optional)
      * The name can contain square brackets (e.g. 'name[1]') which is used to collect tabular data input.
      */
     public $attribute = null;
 
     /**
+     * Initial value
+     * Comma separated list of space guids
+     * 
+     * @var string
+     */
+    public $value = "";
+
+    /**
      * Inits the User Picker
      *
      */
-    public function init() {
+    public function init()
+    {
         if ($this->spaceSearchUrl == "")
             $this->spaceSearchUrl = Yii::app()->getController()->createUrl('//space/browse/searchJson', array('keyword' => '-keywordPlaceholder-'));
 
@@ -77,19 +87,18 @@ class SpacePickerWidget extends HWidget {
     /**
      * Displays / Run the Widgets
      */
-    public function run() {
-
+    public function run()
+    {
         // Try to get current field value, when model & attribute attributes are specified.
-        $currentValue = "";
         if ($this->model != null && $this->attribute != null) {
             $attribute = $this->attribute;
-            $currentValue = $this->model->$attribute;
+            $this->value = $this->model->$attribute;
         }
 
         $this->render('spacePicker', array(
             'spaceSearchUrl' => $this->spaceSearchUrl,
             'maxSpaces' => $this->maxSpaces,
-            'currentValue' => $currentValue,
+            'currentValue' => $this->value,
             'inputId' => $this->inputId,
         ));
     }
