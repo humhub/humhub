@@ -21,7 +21,7 @@
         'linkContent' => '<i class="fa fa-link"></i> ' . Yii::t('WallModule.widgets_views_permaLink', 'Permalink'),
         'linkHref' => '',
         'confirmJS' => 'function(jsonResp) { wallDelete(jsonResp); }',
-        'modalShownJS' => '$("#permalink-txt-'. $id .'").focus(); $("#permalink-txt-'. $id .'").select();'
+        'modalShownJS' => 'setTimeout(function(){$("#permalink-txt-'. $id .'").focus(); $("#permalink-txt-'. $id .'").select();}, 1);'
     ));
 
     ?>
