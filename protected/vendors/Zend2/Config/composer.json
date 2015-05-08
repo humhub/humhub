@@ -1,0 +1,29 @@
+{
+    "name": "zendframework/zend-config",
+    "description": "provides a nested object property based user interface for accessing this configuration data within application code",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "config"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Config\\": ""
+        }
+    },
+    "target-dir": "Zend/Config",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "suggest": {
+        "zendframework/zend-json": "Zend\\Json to use the Json reader or writer classes",
+        "zendframework/zend-servicemanager": "Zend\\ServiceManager for use with the Config Factory to retrieve reader and writer instances"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

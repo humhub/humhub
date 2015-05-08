@@ -1,0 +1,40 @@
+{
+    "name": "zendframework/zend-validator",
+    "description": "provides a set of commonly needed validators",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "validator"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Validator\\": ""
+        }
+    },
+    "target-dir": "Zend/Validator",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "require-dev": {
+        "zendframework/zend-filter": "self.version",
+        "zendframework/zend-i18n": "self.version",
+        "zendframework/zend-math": "self.version",
+        "zendframework/zend-servicemanager": "self.version"
+    },
+    "suggest": {
+        "zendframework/zend-db": "Zend\\Db component",
+        "zendframework/zend-filter": "Zend\\Filter component, required by the Digits validator",
+        "zendframework/zend-i18n": "Zend\\I18n component to allow translation of validation error messages as well as to use the various Date validators",
+        "zendframework/zend-math": "Zend\\Math component",
+        "zendframework/zend-resources": "Translations of validator messages",
+        "zendframework/zend-servicemanager": "Zend\\ServiceManager component to allow using the ValidatorPluginManager and validator chains",
+        "zendframework/zend-uri": "Zend\\Uri component, required by the Uri and Sitemap\\Loc validators"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

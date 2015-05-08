@@ -1,0 +1,27 @@
+{
+    "name": "zendframework/zend-version",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "version"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Version\\": ""
+        }
+    },
+    "target-dir": "Zend/Version",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "suggest": {
+        "zendframework/zend-json": "To check latest version hosted in GitHub"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

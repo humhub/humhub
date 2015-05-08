@@ -1,0 +1,32 @@
+{
+    "name": "zendframework/zend-form",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "form"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Form\\": ""
+        }
+    },
+    "target-dir": "Zend/Form",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-inputfilter": "self.version",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "require-dev": {
+        "zendframework/zendservice-recaptcha": "*"
+    },
+    "suggest": {
+        "zendframework/zendservice-recaptcha": "ZendService\\ReCaptcha component"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

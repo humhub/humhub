@@ -1,0 +1,26 @@
+{
+    "name": "zendframework/zend-text",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "text"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Text\\": ""
+        }
+    },
+    "target-dir": "Zend/Text",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-stdlib": "self.version",
+        "zendframework/zend-servicemanager": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

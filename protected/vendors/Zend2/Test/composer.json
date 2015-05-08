@@ -1,0 +1,33 @@
+{
+    "name": "zendframework/zend-test",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "test"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Test\\": ""
+        }
+    },
+    "target-dir": "Zend/Test",
+    "require": {
+        "php": ">=5.3.3",
+        "phpunit/PHPUnit": "3.7.*",
+        "zendframework/zend-dom": "self.version",
+        "zendframework/zend-eventmanager": "self.version",
+        "zendframework/zend-http": "self.version",
+        "zendframework/zend-mvc": "self.version",
+        "zendframework/zend-servicemanager": "self.version",
+        "zendframework/zend-stdlib": "self.version",
+        "zendframework/zend-uri": "self.version",
+        "zendframework/zend-view": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

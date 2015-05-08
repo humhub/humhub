@@ -1,0 +1,24 @@
+{
+    "name": "zendframework/zend-permissions-rbac",
+    "description": "provides a role-based access control management",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "Rbac"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Permissions\\Rbac\\": ""
+        }
+    },
+    "target-dir": "Zend/Permissions/Rbac",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

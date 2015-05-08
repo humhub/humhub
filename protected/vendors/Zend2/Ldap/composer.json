@@ -1,0 +1,25 @@
+{
+    "name": "zendframework/zend-ldap",
+    "description": "provides support for LDAP operations including but not limited to binding, searching and modifying entries in an LDAP directory",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "ldap"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Ldap\\": ""
+        }
+    },
+    "target-dir": "Zend/Ldap",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

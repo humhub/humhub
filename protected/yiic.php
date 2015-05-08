@@ -16,8 +16,10 @@ defined('YII_DEBUG') or define('YII_DEBUG',true);
 require_once(dirname(__FILE__).'/vendors/yii/yii.php');
 require_once(dirname(__FILE__).'/components/HConsoleApplication.php');
 
+
 $app=Yii::createApplication('HConsoleApplication', $config);
 
+Yii::setPathOfAlias('Zend',Yii::getPathOfAlias('application.vendors.Zend2'));
 Yii::setPathOfAlias('webroot', realpath(dirname(__FILE__). '/..'));
 
 // Add Yii Commands

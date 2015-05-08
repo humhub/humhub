@@ -31,6 +31,8 @@ require_once($appClass);
 
 $app = Yii::createApplication('WebApplication', $config);
 
+Yii::setPathOfAlias('Zend',Yii::getPathOfAlias('application.vendors.Zend2'));
+        
 Yii::import('application.vendors.*');
 EZendAutoloader::$prefixes = array('Zend', 'Custom');
 Yii::import("ext.yiiext.components.zendAutoloader.EZendAutoloader", true);

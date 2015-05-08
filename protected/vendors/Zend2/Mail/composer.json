@@ -1,0 +1,32 @@
+{
+    "name": "zendframework/zend-mail",
+    "description": "provides generalized functionality to compose and send both text and MIME-compliant multipart e-mail messages",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "mail"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Mail\\": ""
+        }
+    },
+    "target-dir": "Zend/Mail",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-crypt": "self.version",
+        "zendframework/zend-loader": "self.version",
+        "zendframework/zend-mime": "self.version",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "suggest": {
+        "zendframework/zend-validator": "Zend\\Validator component",
+        "zendframework/zend-servicemanager": "Zend\\ServiceManager component"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

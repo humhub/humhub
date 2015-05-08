@@ -1,0 +1,28 @@
+{
+    "name": "zendframework/zend-xmlrpc",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "xmlrpc"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\XmlRpc\\": ""
+        }
+    },
+    "target-dir": "Zend/XmlRpc",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-http": "self.version",
+        "zendframework/zend-math": "self.version",
+        "zendframework/zend-server": "self.version",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "name": "zendframework/zend-view",
+    "description": "provides a system of helpers, output filters, and variable escaping",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "view"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\View\\": ""
+        }
+    },
+    "target-dir": "Zend/View",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-eventmanager": "self.version",
+        "zendframework/zend-loader": "self.version",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "suggest": {
+        "zendframework/zend-filter": "Zend\\Filter component",
+        "zendframework/zend-servicemanager": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

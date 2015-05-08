@@ -1,0 +1,28 @@
+{
+    "name": "zendframework/zend-paginator",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "paginator"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Paginator\\": ""
+        }
+    },
+    "target-dir": "Zend/Paginator",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "suggest": {
+        "zendframework/zend-cache":"To support cache feature"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}

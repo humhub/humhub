@@ -1,0 +1,25 @@
+{
+    "name": "zendframework/zend-console",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "console"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zend\\Console\\": ""
+        }
+    },
+    "target-dir": "Zend/Console",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
+        }
+    }
+}
