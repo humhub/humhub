@@ -38,7 +38,7 @@ class HEditorWidget extends HWidget
     /**
      * JSON Search URL
      */
-    public $searchUrl = "//search/mentioning";
+    public $searchUrl = "//search/search/mentioning";
 
 
     public $inputContent = "";

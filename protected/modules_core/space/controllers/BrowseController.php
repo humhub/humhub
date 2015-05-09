@@ -7,14 +7,16 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class BrowseController extends Controller {
+class BrowseController extends Controller
+{
 
     public $subLayout = "application.modules_core.space.views.browse._layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -25,7 +27,8 @@ class BrowseController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -41,63 +44,30 @@ class BrowseController extends Controller {
      *
      * It can be filtered by by keyword.
      */
-    public function actionSearchJson() {
-        $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
-        $page = (int) Yii::app()->request->getParam('page', 1); // current page (pagination)
-        $limit = (int) Yii::app()->request->getParam('limit', HSetting::Get('paginationSize')); // current page (pagination)
-        $keyword = Yii::app()->input->stripClean($keyword);
-        $hitCount = 0;
+    public function actionSearchJson()
+    {
 
-        $query = "model:Space ";
-        if (strlen($keyword) > 2) {
+        $keyword = Yii::app()->request->getParam('keyword', "");
+        $page = (int) Yii::app()->request->getParam('page', 1);
+        $limit = (int) Yii::app()->request->getParam('limit', HSetting::Get('paginationSize'));
 
-            // Include Keyword
-            if (strpos($keyword, "@") === false) {
-                $keyword = str_replace(".", "", $keyword);
-                $query .= "AND (title:" . $keyword . "* OR tags:" . $keyword . "*)";
-            }
-        }
-
-        //, $limit, $page
-        $hits = new ArrayObject(
-                HSearch::getInstance()->Find($query
-        ));
-
-        $hitCount = count($hits);
-
-        // Limit Hits
-        $hits = new LimitIterator($hits->getIterator(), ($page - 1) * $limit, $limit);
-
+        $searchResultSet = Yii::app()->search->find($keyword, [
+            'model' => 'Space',
+            'page' => $page,
+            'pageSize' => $limit
+        ]);
 
         $json = array();
-        #$json['totalHits'] = $hitCount;
-        #$json['limit'] = $limit;
-        #$results = array();
-        foreach ($hits as $hit) {
-            $doc = $hit->getDocument();
-            $model = $doc->getField("model")->value;
+        foreach ($searchResultSet->getResultInstances() as $space) {
+            $spaceInfo = array();
+            $spaceInfo['guid'] = $space->guid;
+            $spaceInfo['title'] = CHtml::encode($space->name);
+            $spaceInfo['tags'] = CHtml::encode($space->tags);
+            $spaceInfo['image'] = $space->getProfileImage()->getUrl();
+            $spaceInfo['link'] = $space->getUrl();
 
-            if ($model == "Space") {
-                $workspaceId = $doc->getField('pk')->value;
-                $workspace = Space::model()->findByPk($workspaceId);
-
-                if ($workspace != null) {
-                    $wsInfo = array();
-                    $wsInfo['guid'] = $workspace->guid;
-                    $wsInfo['title'] = CHtml::encode($workspace->name);
-                    $wsInfo['tags'] = CHtml::encode($workspace->tags);
-                    $wsInfo['image'] = $workspace->getProfileImage()->getUrl();
-                    $wsInfo['link'] = $workspace->getUrl();
-                    #$results[] = $wsInfo;
-                    $json[] = $wsInfo;
-                } else {
-                    Yii::log("Could not load workspace with id " . $userId . " from search index!", CLogger::LEVEL_ERROR);
-                }
-            } else {
-                Yii::log("Got no workspace hit from search index!", CLogger::LEVEL_ERROR);
-            }
+            $json[] = $spaceInfo;
         }
-        #$json['results'] = $results;
 
         print CJSON::encode($json);
         Yii::app()->end();

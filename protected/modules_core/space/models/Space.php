@@ -263,12 +263,10 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     protected function afterSave()
     {
 
-        // Try To Delete Search Model
-        HSearch::getInstance()->deleteModel($this);
-
-        // Newer index a hidden workspace
-        if ($this->visibility != self::VISIBILITY_NONE) {
-            HSearch::getInstance()->addModel($this);
+        if ($this->status != self::VISIBILITY_NONE) {
+            Yii::app()->search->update($this);
+        } else {
+            Yii::app()->search->delete($this);
         }
 
         $userId = $this->created_by;
@@ -326,7 +324,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             }
         }
 
-        HSearch::getInstance()->deleteModel($this);
+        Yii::app()->search->delete($this);
 
         $this->getProfileImage()->delete();
 
@@ -487,17 +485,8 @@ class Space extends HActiveRecordContentContainer implements ISearchable
      */
     public function getSearchAttributes()
     {
-
         return array(
-            // Assignment
-            'belongsToType' => 'Space',
-            'belongsToId' => $this->id,
-            'belongsToGuid' => $this->guid,
-            'model' => 'Space',
-            'pk' => $this->id,
             'title' => $this->name,
-            'url' => Yii::app()->createUrl('workspace/show', array('guid' => $this->guid)),
-            // Some Indexed fields
             'tags' => $this->tags,
             'description' => $this->description,
         );
@@ -670,6 +659,11 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     public function canAccessPrivateContent(User $user = null)
     {
         return ($this->isMember());
+    }
+
+    public function getWallOut()
+    {
+        return Yii::app()->getController()->widget('application.modules_core.space.widgets.SpaceWallWidget', array('space' => $this), true);
     }
 
 }

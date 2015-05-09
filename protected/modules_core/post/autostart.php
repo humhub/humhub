@@ -11,7 +11,7 @@ Yii::app()->moduleManager->register(array(
     // Events to Catch
     'events' => array(
         array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('PostModule', 'onIntegrityCheck')),
-        array('class' => 'HSearch', 'event' => 'onRebuild', 'callback' => array('PostModule', 'onSearchRebuild')),
+        array('class' => 'HSearchComponent', 'event' => 'onRebuild', 'callback' => array('PostModule', 'onSearchRebuild')),
     ),
 ));
 ?>

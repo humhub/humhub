@@ -185,9 +185,9 @@ class ConfigController extends Controller
         if (isset($_POST['Profile'])) {
             $_POST['Profile'] = Yii::app()->input->stripClean($_POST['Profile']);
         }
-        
+
         if (isset($_GET['Profile'])) {
-            $_GET['Profile'] = Yii::app()->input->stripClean($_GET['Profile']);        
+            $_GET['Profile'] = Yii::app()->input->stripClean($_GET['Profile']);
         }
 
         if ($form->submitted('save') && $form->validate()) {
@@ -284,9 +284,8 @@ class ConfigController extends Controller
         if (HSetting::Get('paginationSize') == 10)
             return;
 
-        // Rebuild Search
-        
-        HSearch::getInstance()->rebuild();   
+        Yii::app()->search->rebuild();
+
         HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
         HSetting::Set('paginationSize', 10);
         HSetting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');

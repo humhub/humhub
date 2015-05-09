@@ -30,9 +30,9 @@ class SpaceModule extends HWebModule
     public static function onSearchRebuild($event)
     {
         foreach (Space::model()->findAll() as $obj) {
-            if ($obj->visibility != Space::VISIBILITY_NONE)
-                HSearch::getInstance()->addModel($obj);
-            print "s";
+            if ($obj->visibility != Space::VISIBILITY_NONE) {
+                Yii::app()->search->add($obj);
+            }
         }
     }
 

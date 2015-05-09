@@ -55,6 +55,20 @@ class Post extends HActiveRecordContent implements ISearchable
     }
 
     /**
+     * Add mix-ins to this model
+     *
+     * @return type
+     */
+    public function behaviors()
+    {
+        return array(
+            'HSearchableBehavior' => array(
+                'class' => 'application.modules_core.search.behaviors.HSearchableBehavior',
+            ),
+        );
+    }
+
+    /**
      * Before Delete, remove LikeCount (Cache) of target object.
      * Remove activity
      */
@@ -71,7 +85,7 @@ class Post extends HActiveRecordContent implements ISearchable
 
         // Prebuild Previews for URLs in Message
         UrlOembed::preload($this->message);
-        
+
         // Check if Post Contains an Url
         if (preg_match('/http(.*?)(\s|$)/i', $this->message)) {
             // Set Filter Flag
@@ -101,7 +115,7 @@ class Post extends HActiveRecordContent implements ISearchable
 
         // Handle mentioned users
         UserMentioning::parse($this, $this->message);
-        
+
         return true;
     }
 
@@ -121,45 +135,10 @@ class Post extends HActiveRecordContent implements ISearchable
      */
     public function getSearchAttributes()
     {
-
-        $belongsToType = "";
-        $belongsToGuid = "";
-        $belongsToId = "";
-        if ($this->content->space_id != "") {
-            $belongsToType = "Space";
-            $belongsToId = $this->content->space_id;
-            $workspace = Space::model()->findByPk($belongsToId);
-            if ($workspace != null)
-                $belongsToGuid = $workspace->guid;
-        } else if ($this->content->user_id != "") {
-            $belongsToType = "User";
-            $belongsToId = $this->content->user_id;
-            $user = User::model()->findByPk($belongsToId);
-            if ($user != null)
-                $belongsToGuid = $user->guid;
-        }
-
         return array(
-            // Assignment
-            'belongsToType' => $belongsToType,
-            'belongsToId' => $belongsToId,
-            'belongsToGuid' => $belongsToGuid,
-            'model' => 'Post',
-            'pk' => $this->id,
-            'title' => "Post",
-            'url' => Yii::app()->createUrl('post/post/show', array('id' => $this->id)),
-            // Some Indexed fields
             'message' => $this->message,
             'url' => $this->url,
         );
-    }
-
-    /**
-     * Returns the Search Result Output
-     */
-    public function getSearchResult()
-    {
-        return Yii::app()->getController()->widget('application.modules_core.post.widgets.PostSearchResultWidget', array('post' => $this), true);
     }
 
     /**

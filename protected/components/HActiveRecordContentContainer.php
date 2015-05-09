@@ -106,6 +106,11 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
         return false;
     }
 
+    public function getWallOut()
+    {
+        return "Default Wall Output for Class " . get_class($this);
+    }
+
 }
 
 ?>

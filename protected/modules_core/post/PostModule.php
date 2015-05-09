@@ -68,8 +68,7 @@ class PostModule extends HWebModule
     public static function onSearchRebuild($event)
     {
         foreach (Post::model()->findAll() as $obj) {
-            #    HSearch::getInstance()->addModel($obj);
-            print "p";
+            Yii::app()->search->add($obj);
         }
     }
 

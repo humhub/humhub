@@ -96,7 +96,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
 
     public function defaultScope()
     {
-        $alias = $this->getTableAlias(false,false);
+        $alias = $this->getTableAlias(false, false);
         return array(
             // Per default show only content of users which are enabled or disabled
             'condition' => $alias . ".status='" . self::STATUS_ENABLED . "' OR " . $alias . ".status='" . self::STATUS_DISABLED . "'",
@@ -351,13 +351,10 @@ class User extends HActiveRecordContentContainer implements ISearchable
      */
     protected function afterSave()
     {
-
-        // Search Stuff
-        if (!$this->isNewRecord) {
-            HSearch::getInstance()->deleteModel($this);
-        }
         if ($this->status == User::STATUS_ENABLED) {
-            HSearch::getInstance()->addModel($this);
+            Yii::app()->search->update($this);
+        } else {
+            Yii::app()->search->delete($this);
         }
 
         if ($this->isNewRecord) {
@@ -437,7 +434,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
             }
         }
 
-        HSearch::getInstance()->deleteModel($this);
+        Yii::app()->search->delete($this);
 
         // Delete user session
         UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
@@ -558,19 +555,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
     public function getSearchAttributes()
     {
         $attributes = array(
-            // Assignment
-            'belongsToType' => 'User',
-            'belongsToId' => $this->id,
-            'belongsToGuid' => $this->guid,
-            'model' => 'User',
-            'pk' => $this->id,
-            'title' => $this->getDisplayName(),
-            'url' => $this->getUrl(),
-            'tags' => $this->tags,
             'email' => $this->email,
-            'groupId' => $this->group_id,
-            'status' => $this->status,
             'username' => $this->username,
+            'firstname' => $this->profile->firstname,
+            'lastname' => $this->profile->lastname,
+            'title' => $this->profile->title,
         );
 
         $profile = $this->getProfile();
@@ -582,14 +571,6 @@ class User extends HActiveRecordContentContainer implements ISearchable
         }
 
         return $attributes;
-    }
-
-    /**
-     * Returns the Search Result Output
-     */
-    public function getSearchResult()
-    {
-        return Yii::app()->getController()->widget('application.modules_core.user.widgets.UserSearchResultWidget', array('user' => $this), true);
     }
 
     /**
@@ -692,6 +673,11 @@ class User extends HActiveRecordContentContainer implements ISearchable
     public function canAccessPrivateContent(User $user = null)
     {
         return ($this->isCurrentUser());
+    }
+
+    public function getWallOut()
+    {
+        return Yii::app()->getController()->widget('application.modules_core.user.widgets.UserWallWidget', array('user' => $this), true);
     }
 
 }

@@ -54,10 +54,8 @@ class UserModuleEvents
      */
     public static function onSearchRebuild($event)
     {
-
         foreach (User::model()->findAll() as $obj) {
-            HSearch::getInstance()->addModel($obj);
-            print "u";
+            Yii::app()->search->add($obj);
         }
     }
 

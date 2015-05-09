@@ -245,11 +245,6 @@ class Content extends CActiveRecord
             $entry->delete();
         }
 
-        // remove from search index
-        if ($this->object_model instanceof ISearchable) {
-            HSearch::getInstance()->deleteModel($this->getContentObject());
-        }
-
         return parent::beforeDelete();
     }
 

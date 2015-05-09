@@ -55,8 +55,11 @@ return array(
             'connectionID' => 'db',
             'sessionName' => 'sin',
         ),
+        'search' => array(
+            'class' => 'application.modules_core.search.engine.ZendLuceneSearch',
+        ),
         'request' => array(
-        //'enableCsrfValidation' => true,
+            'enableCsrfValidation' => true,
         ),
         // Caching (Will replaced at runtime)
         'cache' => array(

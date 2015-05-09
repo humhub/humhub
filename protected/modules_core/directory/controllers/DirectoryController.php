@@ -69,48 +69,30 @@ class DirectoryController extends Controller
      */
     public function actionMembers()
     {
+        $keyword = Yii::app()->request->getParam('keyword', "");
+        $page = (int) Yii::app()->request->getParam('page', 1);
+        $_GET['keyword'] = $keyword; // Fix for post var
 
-        $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
-        $page = (int) Yii::app()->request->getParam('page', 1); // current page (pagination)
-
-        $keyword = Yii::app()->input->stripClean($keyword);
-
-        $hits = array();
-        $query = "";
-        $hitCount = 0;
-
-        // Build Lucene Query
-        $query = "model:User";
-        $sortField = null;
-        if ($keyword != "") {
-            $query .= " AND " . $keyword;
-        } else {
-            #$sortField = ' title';
-        }
-
-        // Execute Lucene Search
-        $hits = new ArrayObject(HSearch::getInstance()->Find($query, $sortField));
-        $hitCount = count($hits);
-
-        // Limit Hits
-        $hits = new LimitIterator($hits->getIterator(), ($page - 1) * HSetting::Get('paginationSize'), HSetting::Get('paginationSize'));
+        $searchResultSet = Yii::app()->search->find($keyword, [
+            'model' => 'User',
+            'page' => $page,
+            'pageSize' => HSetting::Get('paginationSize')
+        ]);
 
         // Create Pagination Class
-        $pages = new CPagination($hitCount);
-        $pages->setPageSize(HSetting::Get('paginationSize'));
-        $_GET['keyword'] = $keyword; // Fix for post var
-        // Add Meber Statistic Sidebar
+        $pagination = new CPagination($searchResultSet->total);
+        $pagination->setPageSize($searchResultSet->pageSize);
+
+        // Add Member Statistic Sidebar
         Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
             $event->sender->addWidget('application.modules_core.directory.widgets.NewMembersWidget', array(), array('sortOrder' => 10));
             $event->sender->addWidget('application.modules_core.directory.widgets.MemberStatisticsWidget', array(), array('sortOrder' => 20));
         });
 
         $this->render('members', array(
-            'keyword' => $keyword, // current search keyword
-            'hits' => $hits, // found hits
-            'pages' => $pages, // CPagination
-            'hitCount' => $hitCount, // number of hits
-            'pageSize' => HSetting::Get('paginationSize'), // pagesize
+            'keyword' => $keyword,
+            'users' => $searchResultSet->getResultInstances(),
+            'pagination' => $pagination
         ));
     }
 
@@ -124,51 +106,31 @@ class DirectoryController extends Controller
     public function actionSpaces()
     {
 
-        $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
-        $page = (int) Yii::app()->request->getParam('page', 1); // current page (pagination)
+        $keyword = Yii::app()->request->getParam('keyword', "");
+        $page = (int) Yii::app()->request->getParam('page', 1);
+        $_GET['keyword'] = $keyword; // Fix for post var
 
-        $keyword = Yii::app()->input->stripClean($keyword);
-
-        $hits = array();
-        $query = "";
-        $hitCount = 0;
-
-
-        $sortField = null;
-        $query = "model:Space";
-        if ($keyword != "") {
-            $query .= " AND " . $keyword;
-        } else {
-            $sortField = 'title';
-        }
-
-        //$hits = new ArrayObject(
-        //                HSearch::getInstance()->Find($query, HSetting::Get('paginationSize'), $page
-        //        ));
-
-        $hits = new ArrayObject(HSearch::getInstance()->Find($query, $sortField));
-
-        $hitCount = count($hits);
-
-        // Limit Hits
-        $hits = new LimitIterator($hits->getIterator(), ($page - 1) * HSetting::Get('paginationSize'), HSetting::Get('paginationSize'));
+        $searchResultSet = Yii::app()->search->find($keyword, [
+            'model' => 'Space',
+            'page' => $page,
+            'sortField' => ($keyword == '') ? 'title' : null,
+            'pageSize' => HSetting::Get('paginationSize')
+        ]);
 
         // Create Pagination Class
-        $pages = new CPagination($hitCount);
-        $pages->setPageSize(HSetting::Get('paginationSize'));
-        $_GET['keyword'] = $keyword; // Fix for post var
-        // Add Meber Statistic Sidebar
+        $pagination = new CPagination($searchResultSet->total);
+        $pagination->setPageSize($searchResultSet->pageSize);
+
+        // Add Space Statistic Sidebar
         Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
             $event->sender->addWidget('application.modules_core.directory.widgets.NewSpacesWidget', array(), array('sortOrder' => 10));
             $event->sender->addWidget('application.modules_core.directory.widgets.SpaceStatisticsWidget', array(), array('sortOrder' => 20));
         });
 
         $this->render('spaces', array(
-            'keyword' => $keyword, // current search keyword
-            'hits' => $hits, // found hits
-            'pages' => $pages, // CPagination
-            'hitCount' => $hitCount, // number of hits
-            'pageSize' => HSetting::Get('paginationSize'), // pagesize
+            'keyword' => $keyword,
+            'spaces' => $searchResultSet->getResultInstances(),
+            'pagination' => $pagination
         ));
     }
 
@@ -179,7 +141,6 @@ class DirectoryController extends Controller
      */
     public function actionGroups()
     {
-
         $groups = Group::model()->findAll();
 
         // Add Meber Statistic Sidebar
@@ -201,31 +162,6 @@ class DirectoryController extends Controller
      */
     public function actionUserPosts()
     {
-
-        /*
-          // Stats
-          $statsCountPosts = Post::model()->count();
-          //$statsCountProfilePosts = Post::model()->count('space_id is null');
-          $statsCountProfilePosts = 0;
-
-          $statsCountComments = Comment::model()->count();
-          $statsCountLikes = Like::model()->count();
-
-          $statsUserTopPosts = User::model()->find('id = (SELECT created_by FROM post GROUP BY created_by ORDER BY count(*) DESC LIMIT 1)');
-          $statsUserTopComments = User::model()->find('id = (SELECT created_by id  FROM comment GROUP BY created_by ORDER BY count(*) DESC LIMIT 1)');
-          $statsUserTopLikes = User::model()->find('id = (SELECT created_by  FROM `like`  GROUP BY created_by ORDER BY count(*) DESC LIMIT 1)');
-
-          $this->render('userPosts', array(
-          'statsCountPosts' => $statsCountPosts,
-          'statsCountProfilePosts' => $statsCountProfilePosts,
-          'statsCountComments' => $statsCountComments,
-          'statsCountLikes' => $statsCountLikes,
-          'statsUserTopPosts' => $statsUserTopPosts,
-          'statsUserTopComments' => $statsUserTopComments,
-          'statsUserTopLikes' => $statsUserTopLikes,
-          ));
-         */
-
         $this->render('userPosts', array());
     }
 

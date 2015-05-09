@@ -73,9 +73,6 @@ class ZCronRunner extends HConsoleCommand {
                 $this->onHourlyRun(new CEvent($this));
 
             print "- Optimizing Search Index\n";
-            // Optimize Search Index
-            HSearch::getInstance()->Optimize();
-
             if (HSetting::Get('enabled', 'authentication_ldap') && HSetting::Get('refreshUsers', 'authentication_ldap')) {
                 print "- Updating LDAP Users\n";
                 HLdap::getInstance()->refreshUsers();

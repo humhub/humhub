@@ -5,7 +5,6 @@
  *
  * This configuration file only affects only the console application.
  */
-
 $defaults = require (dirname(__FILE__) . '/_defaults.php');
 $pre_config = CMap::mergeArray($defaults, require ($defaults['params']['dynamicConfigFile']));
 
@@ -45,10 +44,9 @@ return CMap::mergeArray($pre_config, array(
             ),
             'commandMap' => array(
                 'message' => 'application.commands.shell.ZMessageCommand',
-                'search_rebuild' => 'application.commands.shell.SearchIndexer.Rebuilder',
-                'search_optimize' => 'application.commands.shell.SearchIndexer.Optimize',
                 'integritychecker' => 'application.commands.shell.Maintain.IntegrityChecker',
                 'space' => 'application.modules_core.space.console.SpaceCliTool',
+                'search' => 'application.modules_core.search.console.SearchCli',
                 'emailing' => 'application.commands.shell.EMailing.EMailing',
                 'cron' => 'application.commands.shell.ZCron.ZCronRunner',
                 'cache' => 'application.commands.shell.HCacheCommand',

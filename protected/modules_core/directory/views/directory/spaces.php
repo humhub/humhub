@@ -20,9 +20,6 @@
 
     <div class="panel-body">
 
-        <!-- search form -->
-
-
         <?php echo CHtml::form(Yii::app()->createUrl('//directory/directory/spaces', array()), 'post', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>
@@ -37,26 +34,17 @@
         <?php echo CHtml::endForm(); ?>
 
 
-        <?php if ($hitCount == 0): ?>
+        <?php if (count($spaces) == 0): ?>
             <p><?php echo Yii::t('DirectoryModule.views_directory_spaces', 'No spaces found!'); ?></p>
         <?php endif; ?>
 
     </div>
 
     <hr>
-
     <ul class="media-list">
 
         <!-- BEGIN: Results -->
-
-        <?php foreach ($hits as $hit) : ?>
-            <?php
-            $doc = $hit->getDocument();
-            $model = $doc->getField("model")->value;
-
-            $spaceId = $doc->getField('pk')->value;
-            $space = Space::model()->findByPk($spaceId);
-            ?>
+        <?php foreach ($spaces as $space) : ?>
             <li>
                 <div class="media">
 
@@ -109,22 +97,8 @@
 </div>
 
 <div class="pagination-container">
-    <?php
-    $this->widget('CLinkPager', array(
-        'currentPage' => $pages->getCurrentPage(),
-        'itemCount' => $hitCount,
-        'pageSize' => $pageSize,
-        'maxButtonCount' => 5,
-        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
-        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
-        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
-        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
-        'header' => '',
-        'htmlOptions' => array('class' => 'pagination'),
-    ));
-    ?>
+    <?php $this->widget('HLinkPager', array('pages' => $pagination)); ?>
 </div>
-
 
 <script type="text/javascript">
     // ajax request to follow the user
@@ -132,7 +106,7 @@
         jQuery.ajax({
             url: url,
             type: "POST",
-            'success': function() {
+            'success': function () {
                 $("#button_follow_" + id).addClass('hide');
                 $("#button_unfollow_" + id).removeClass('hide');
             }});
@@ -143,11 +117,10 @@
         jQuery.ajax({
             url: url,
             type: "POST",
-            'success': function() {
+            'success': function () {
                 $("#button_follow_" + id).removeClass('hide');
                 $("#button_unfollow_" + id).addClass('hide');
             }});
     }
 
 </script>
-

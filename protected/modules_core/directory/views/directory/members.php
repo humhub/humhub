@@ -35,9 +35,7 @@
         </div>
         <?php echo CHtml::endForm(); ?>
 
-
-
-        <?php if ($hitCount == 0): ?>
+        <?php if (count($users) == 0): ?>
             <p><?php echo Yii::t('DirectoryModule.views_directory_members', 'No members found!'); ?></p>
         <?php endif; ?>
 
@@ -46,19 +44,8 @@
 
     <ul class="media-list">
         <!-- BEGIN: Results -->
-        <?php foreach ($hits as $hit) : ?>
-            <?php
-            $doc = $hit->getDocument();
-            $model = $doc->getField("model")->value;
-            $userId = $doc->getField('pk')->value;
-            $user = User::model()->findByPk($userId);
-
-            // Check for null user, if there are "zombies" in search index
-            if ($user == null)
-                continue;
-            ?>
+        <?php foreach ($users as $user) : ?>
             <li>
-
                 <div class="media">
 
                     <!-- Follow Handling -->
@@ -113,24 +100,9 @@
 
 </div>
 
-
 <div class="pagination-container">
-    <?php
-    $this->widget('CLinkPager', array(
-        'currentPage' => $pages->getCurrentPage(),
-        'itemCount' => $hitCount,
-        'pageSize' => $pageSize,
-        'maxButtonCount' => 5,
-        'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
-        'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
-        'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
-        'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
-        'header' => '',
-        'htmlOptions' => array('class' => 'pagination'),
-    ));
-    ?>
+    <?php $this->widget('HLinkPager', array('pages' => $pagination)); ?>
 </div>
-
 
 <script type="text/javascript">
 
@@ -139,7 +111,7 @@
         jQuery.ajax({
             url: url,
             type: "POST",
-            'success': function() {
+            'success': function () {
                 $("#button_follow_" + id).addClass('hide');
                 $("#button_unfollow_" + id).removeClass('hide');
             }});
@@ -150,7 +122,7 @@
         jQuery.ajax({
             url: url,
             type: "POST",
-            'success': function() {
+            'success': function () {
                 $("#button_follow_" + id).removeClass('hide');
                 $("#button_unfollow_" + id).addClass('hide');
             }});
