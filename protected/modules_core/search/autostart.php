@@ -10,12 +10,10 @@ Yii::app()->moduleManager->register(array(
         'application.modules_core.search.engine.*',
         'application.modules_core.search.libs.*',
     ),
-
     // Events to Catch
     'events' => array(
-        array('class' => 'User', 'event' => 'onBeforeDelete', 'callback' => array('SpaceModule', 'onUserDelete')),
-        array('class' => 'HSearch', 'event' => 'onRebuild', 'callback' => array('SpaceModule', 'onSearchRebuild')),
         array('class' => 'TopMenuRightStackWidget', 'event' => 'onInit', 'callback' => array('SearchModuleEvents', 'onTopMenuRightInit')),
+        array('class' => 'Comment', 'event' => 'onAfterSave', 'callback' => array('SearchModuleEvents', 'onAfterSaveComment')),
     ),
 ));
 ?>

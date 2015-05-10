@@ -19,4 +19,13 @@ class SearchModuleEvents
         $event->sender->addWidget('application.modules_core.search.widgets.SearchMenuWidget');
     }
 
+    public static function onAfterSaveComment($event)
+    {
+        $comment = $event->sender;
+
+        if ($comment->content->getUnderlyingObject() instanceof ISearchable) {
+            Yii::app()->search->update($comment->content->getUnderlyingObject());
+        }
+    }
+
 }

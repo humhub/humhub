@@ -39,7 +39,7 @@ class ZendLuceneSearch extends HSearchComponent
         if ($obj instanceof HActiveRecordContent) {
             $comments = "";
             foreach (Comment::model()->findAllByAttributes(array('object_id' => $obj->getPrimaryKey(), 'object_model' => get_class($obj))) as $comment) {
-                $comments .= $comment->message;
+                $comments .= " ".$comment->message;
             }
             $doc->addField(ZendSearch\Lucene\Document\Field::Text('comments', $comments, 'UTF-8'));
         }
