@@ -44,10 +44,11 @@ class ZendLuceneSearch extends HSearchComponent
             $doc->addField(ZendSearch\Lucene\Document\Field::Text('comments', $comments, 'UTF-8'));
         }
 
-
-        print ".";
+        if (Yii::app() instanceof CConsoleApplication) {
+            print ".";
+        }
+        
         $index->addDocument($doc);
-
         $index->commit();
     }
 

@@ -82,7 +82,7 @@ class Controller extends EController
         return parent::init();
     }
 
-    public function beforeAction($action)
+    protected function beforeAction($action)
     {
         if (Yii::app()->request->enableCsrfValidation) {
             Yii::app()->request->validateCsrfToken(new CEvent());
