@@ -121,18 +121,3 @@ function wallUnarchive(className, id) {
         }
     });
 }
-
-/**
- * Wall Delete
- * 
- * Delete Link & Co
- * 
- * @param {type} jsonResp
- * @returns {undefined}
- */
-function wallDelete(jsonResp) {
-	json = jQuery.parseJSON(jsonResp);
-	$.each(json.wallEntryIds, function(i, wallEntryId) {
-		currentStream.deleteEntry(wallEntryId); // wall - stream.js function
-	});	
-}

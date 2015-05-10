@@ -36,6 +36,10 @@ class ArchiveLinkWidget extends HWidget {
      * Executes the widget.
      */
     public function run() {
+        if (!Yii::app()->controller instanceof ContentContainerController || !$this->content->content->canArchive()) {
+            return;
+        }        
+        
         $this->render('archiveLink', array(
             'object' => $this->content,
             'model' => $this->content->content->object_model,

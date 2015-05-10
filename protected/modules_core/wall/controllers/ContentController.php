@@ -44,33 +44,23 @@ class ContentController extends Controller
      */
     public function actionDelete()
     {
-
         $this->forcePostRequest();
+        $json = [
+            'success' => 'false'
+        ];
 
-        // Json Array
-        $json = array();
-        $json['success'] = false;
+        $model = Yii::app()->request->getParam('model');
+        $id = (int) Yii::app()->request->getParam('id');
 
-        $model = Yii::app()->request->getParam('model', "");
-        $id = (int) Yii::app()->request->getParam('id', 1);
+        $contentObj = Content::get($model, $id);
 
-        $content = Content::get($model, $id);
-
-        if ($content->content->canDelete()) {
-
-            // Save wall entry ids which belongs to this post
-            $json['wallEntryIds'] = array();
-
-            // Wall Entry Ids
-            foreach ($content->content->getWallEntries() as $entry) {
-                $json['wallEntryIds'][] = $entry->id;
-            }
-
-            $json['wallEntryIds'][] = 0;
-
-            if ($content->delete()) {
-                $json['success'] = true;
-            }
+        if ($contentObj !== null && $contentObj->content->canDelete() && $contentObj->delete()) {
+            $json = [
+                'success' => true,
+                'uniqueId' => $contentObj->getUniqueId(),
+                'model' => $model,
+                'pk' => $id
+            ];
         }
 
         echo CJSON::encode($json);

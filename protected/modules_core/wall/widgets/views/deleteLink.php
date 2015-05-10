@@ -22,7 +22,7 @@
         'buttonFalse' => Yii::t('WallModule.widgets_views_deleteLink', 'Cancel'),
         'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('WallModule.widgets_views_deleteLink', 'Delete'),
         'linkHref' => $this->createUrl("//wall/content/delete", array('model' => $model, 'id' => $id)),
-        'confirmJS' => 'function(jsonResp) { wallDelete(jsonResp); }'
+        'confirmJS' => 'function(jsonResp) { json = jQuery.parseJSON(jsonResp); $(".wall_"+json.uniqueId).remove(); }'
     ));
 
     ?>
