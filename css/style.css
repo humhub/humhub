@@ -226,7 +226,7 @@ textarea {
 @media screen and (max-width: 768px) {
   #topbar-second #space-menu-dropdown .media-list,
   #topbar-second #search-menu-dropdown .media-list {
-    max-height: 250px;
+    max-height: 200px;
   }
 }
 #topbar-second #space-menu-dropdown form,
@@ -910,7 +910,6 @@ textarea.placeholder {
   }
   #space-menu-dropdown {
     width: 300px !important;
-    max-height: 250px !important;
   }
   #search-menu-dropdown {
     width: 300px !important;
