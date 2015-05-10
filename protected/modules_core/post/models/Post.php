@@ -124,7 +124,7 @@ class Post extends HActiveRecordContent implements ISearchable
      */
     public function getWallOut()
     {
-        return Yii::app()->getController()->widget('application.modules_core.post.widgets.PostWidget', array('post' => $this), true);
+        return Yii::app()->getController()->widget('application.modules_core.post.widgets.PostWallWidget', array('post' => $this), true);
     }
 
     /**

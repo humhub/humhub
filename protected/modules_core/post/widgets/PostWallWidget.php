@@ -6,7 +6,7 @@
  * @package humhub.modules_core.post.widgets
  * @since 0.5
  */
-class PostWidget extends HWidget
+class PostWallWidget extends HWidget
 {
 
     /**
@@ -31,7 +31,7 @@ class PostWidget extends HWidget
 
         $user = $this->post->creator;
 
-        $this->render('post', array(
+        $this->render('postWall', array(
             'post' => $this->post,
             'user' => $user,
             'justEdited' => $this->justEdited
