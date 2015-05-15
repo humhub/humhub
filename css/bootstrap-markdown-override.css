@@ -16,4 +16,13 @@
     color: #555555;
     font-size: 14px;
     background: #fff !important;
+    border-top: none;
+    border-bottom: none;
 }
+
+
+.md-editor > textarea:focus {
+     border: 0;
+     outline: 0;
+     box-shadow: none;
+ }
