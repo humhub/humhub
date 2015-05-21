@@ -85,7 +85,7 @@ $(document).ready(function () {
         $(this).removeClass('atwho-placeholder');
 
         if ($(this).html() == placeholder) {
-            $(this).html(' ');
+            $(this).html('');
             $(this).focus();
         }
     })
