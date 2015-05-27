@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Member</strong> directory' => '',
-  'Follow' => '',
-  'No members found!' => '',
+  '<strong>Member</strong> directory' => '<strong>Medlems</strong> bibliotek',
+  'Follow' => 'Følg',
+  'No members found!' => 'Ingen medlemmer fundet!',
   'Search' => 'Søg',
-  'Unfollow' => '',
-  'search for members' => '',
+  'Unfollow' => 'Ikke følg',
+  'search for members' => 'søg efter medlemmer',
 );

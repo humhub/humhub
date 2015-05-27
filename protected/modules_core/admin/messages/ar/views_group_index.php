@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Manage</strong> groups' => '',
-  'Description' => '',
-  'Group name' => '',
-  'Search for description' => '',
-  'Search for group name' => '',
+  '<strong>Manage</strong> groups' => '<strong>صيانة</strong> المجموعات',
+  'Description' => 'الوصف',
+  'Group name' => 'اسم المجموعة',
+  'Search for description' => 'بحث عن وصف',
+  'Search for group name' => 'بحث عن اسم مجموعة',
 );

@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Processing...' => '',
   '<strong>Modules</strong> directory' => '<strong>Seznam</strong> modulů',
   'Are you sure? *ALL* module data will be lost!' => 'Opravdu chcete smazat tento modul? *Veškerá* data modulu budou smazána!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Opravdu chcete smazat tento modul? *Veškerá* data a soubory modulu budou smazány.',
@@ -8,6 +7,7 @@ return array (
   'Disable' => 'Vypnout',
   'Enable' => 'Zapnout',
   'More info' => 'Více informací',
+  'Processing...' => 'Provádím...',
   'Set as default' => 'Nastavit jako výchozí',
   'Uninstall' => 'Odinstalovat',
 );

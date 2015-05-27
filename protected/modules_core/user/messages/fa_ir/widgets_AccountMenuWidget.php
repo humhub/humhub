@@ -1,11 +1,11 @@
 <?php
 return array (
-  '<strong>Account</strong> settings' => '',
-  'Delete account' => '',
-  'E-Mail' => '',
+  '<strong>Account</strong> settings' => 'تنظیمات <strong>حساب کاربری</strong>',
+  'Delete account' => 'حذف حساب کاربری',
+  'E-Mail' => 'ایمیل',
   'Modules' => 'ماژول‌ها',
   'Notifications' => 'اعلان‌ها',
   'Password' => 'گذرواژه',
-  'Profile' => '',
+  'Profile' => 'پروفایل',
   'Settings' => 'تنطیمات',
 );

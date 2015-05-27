@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Mailing</strong> settings' => '',
-  'Defaults' => '',
-  'SMTP Options' => '',
+  '<strong>Mailing</strong> settings' => '<strong>Mail</strong> indstillinger',
+  'Defaults' => 'Standarder',
+  'SMTP Options' => 'SMTP valg',
   'Save' => 'Gem',
-  'Server Settings' => '',
+  'Server Settings' => 'Server Indstillinger',
 );

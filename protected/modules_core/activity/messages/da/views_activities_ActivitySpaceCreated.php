@@ -1,5 +1,5 @@
 <?php
 return array (
-  '%displayName% created the new space %spaceName%' => '%displayName% skabt det nye rum %spaceName%',
-  '%displayName% created this space.' => '%displayName% skabte dette rum.',
+  '%displayName% created the new space %spaceName%' => '%displayName% har oprettet den nye side %spaceName%',
+  '%displayName% created this space.' => '%displayName% oprettede denne side.',
 );

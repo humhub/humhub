@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Something</strong> went wrong' => '',
-  'Followers' => '',
+  '<strong>Something</strong> went wrong' => '<strong>یک قسمت</strong> ایراد دارد',
+  'Followers' => 'دنبال‌کننده‌ها',
   'Members' => 'اعضا',
-  'Ok' => '',
-  'Posts' => '',
+  'Ok' => 'Ok',
+  'Posts' => 'پست‌ها',
 );

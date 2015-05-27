@@ -15,7 +15,7 @@ return array (
   'List' => 'Список',
   'Please wait while uploading...' => 'Пожалуйста, подождите пока загружается ...',
   'Preview' => 'Предпросмотр',
-  'Quote' => 'Цитировать',
+  'Quote' => 'Цитата',
   'Target' => 'Цель',
   'Title' => 'Заголовок',
   'Title of your link' => 'Название вашей ссылки',

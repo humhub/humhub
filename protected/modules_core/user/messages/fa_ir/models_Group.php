@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Default Space' => '',
+  'Default Space' => 'انجمن پیش‌فرض',
   'Description' => 'توضیحات',
-  'Group Administrators' => '',
+  'Group Administrators' => 'مدیرهای گروه',
   'ID' => 'شناسه',
-  'LDAP DN' => '',
-  'Members can create private spaces' => '',
-  'Members can create public spaces' => '',
+  'LDAP DN' => 'LDAP DN',
+  'Members can create private spaces' => 'اعضا می‌توانند انجمن‌های خصوصی ایجادکنند.',
+  'Members can create public spaces' => 'اعضا می‌توانند انجمن‌های عمومی ایجادکنند.',
   'Name' => 'نام',
 );

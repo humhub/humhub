@@ -5,6 +5,6 @@ return array (
   'Delete' => 'حذف',
   'Description' => 'توضیحات',
   'Group name' => 'نام گروه',
-  'Ldap DN' => '',
+  'Ldap DN' => 'Ldap DN',
   'Save' => 'ذخیره',
 );

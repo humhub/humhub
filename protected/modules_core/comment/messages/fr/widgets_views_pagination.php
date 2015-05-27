@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Show %count% more comments' => '',
+  'Show %count% more comments' => 'Afficher %count% autres commentaires',
 );

@@ -5,7 +5,7 @@ return array (
   'Disabled' => 'Désactivé',
   'Enabled' => 'Activé',
   'LDAP' => 'LDAP',
-  'Local' => '',
+  'Local' => 'Local',
   'Save' => 'Sauvegarder',
   'Unapproved' => 'Non Approuvé',
   'User not found!' => 'Utilisateur Non Trouvé !',
