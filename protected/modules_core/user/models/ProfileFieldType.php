@@ -79,7 +79,7 @@ class ProfileFieldType extends CFormModel {
     public function getTypeInstances($profileField = null) {
 
         $types = array();
-        foreach ($this->fieldTypes as $className => $title) {
+        foreach ($this->getFieldTypes() as $className => $title) {
             if (Helpers::CheckClassType($className, 'ProfileFieldType')) {
                 $instance = new $className;
                 if ($profileField != null) {

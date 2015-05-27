@@ -4,22 +4,25 @@
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
-class UserProfileController extends Controller {
+class UserProfileController extends Controller
+{
 
     public $subLayout = "/_layout";
 
-    public function behaviors() {
-    	return array(
-    			'HReorderContentBehavior' => array(
-    					'class' => 'application.behaviors.HReorderContentBehavior',
-    			)
-    	);
-    }    
-    
+    public function behaviors()
+    {
+        return array(
+            'HReorderContentBehavior' => array(
+                'class' => 'application.behaviors.HReorderContentBehavior',
+            )
+        );
+    }
+
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -30,7 +33,8 @@ class UserProfileController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow',
                 'expression' => 'Yii::app()->user->isAdmin()'
@@ -45,14 +49,16 @@ class UserProfileController extends Controller {
      * Shows overview of all
      *
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->render('index', array());
     }
 
     /**
      * Edits a Profile Field Category
      */
-    public function actionEditCategory() {
+    public function actionEditCategory()
+    {
 
         $id = (int) Yii::app()->request->getQuery('id');
 
@@ -60,8 +66,8 @@ class UserProfileController extends Controller {
         if ($category == null)
             $category = new ProfileFieldCategory;
 
-        $category->translation_category = $category->getTranslationCategory();        
-        
+        $category->translation_category = $category->getTranslationCategory();
+
         // uncomment the following code to enable ajax-based validation
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-userprofile-editcategory') {
             echo CActiveForm::validate($category);
@@ -84,7 +90,8 @@ class UserProfileController extends Controller {
     /**
      * Deletes a Profile Field Category
      */
-    public function actionDeleteCategory() {
+    public function actionDeleteCategory()
+    {
 
         $this->forcePostRequest();
 
@@ -102,7 +109,8 @@ class UserProfileController extends Controller {
         $this->redirect(Yii::app()->createUrl('//admin/userprofile'));
     }
 
-    public function actionEditField() {
+    public function actionEditField()
+    {
 
         // XSS Protection
         $_POST = Yii::app()->input->stripClean($_POST);
@@ -116,7 +124,8 @@ class UserProfileController extends Controller {
 
         // Get all Available Field Class Instances, also bind current profilefield to the type
         $profileFieldTypes = new ProfileFieldType();
-        $fieldTypes = $profileFieldTypes->getTypeInstances();
+        $fieldTypes = $profileFieldTypes->getTypeInstances($field);
+
         // Build Form Definition
         $definition = array();
 
@@ -183,14 +192,15 @@ class UserProfileController extends Controller {
 
         $this->render('editField', array('form' => $form, 'field' => $field));
     }
-    
+
     /**
      * Reorder Fields action.
      * @uses behaviors.ReorderContentBehavior
      */
-    public function actionReorderFields() {
-    	// generate json response
-    	echo json_encode($this->reorderContent('ProfileField', 200, 'The item order was successfully changed.'));
+    public function actionReorderFields()
+    {
+        // generate json response
+        echo json_encode($this->reorderContent('ProfileField', 200, 'The item order was successfully changed.'));
     }
 
 }
