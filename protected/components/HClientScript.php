@@ -41,7 +41,7 @@ class HClientScript extends CClientScript
     public function setJavascriptVariable($name, $value)
     {
 
-        $jsCode = "var " . $name . " = '" . $value . "';\n";
+        $jsCode = "var " . $name . " = ' . json_encode($value) . ";\n";
         $this->registerScript('jsVar_' . $name, $jsCode, CClientScript::POS_BEGIN);
     }
 
