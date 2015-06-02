@@ -5,7 +5,7 @@ return array (
   'Bold' => 'Fett',
   'Close' => 'Schließen',
   'Code' => 'Code',
-  'Enter a url (e.g. http://example.com)' => 'Trage eine URL ein (zB http://example.com)',
+  'Enter a url (e.g. http://example.com)' => 'Trage eine URL ein (z.B. http://example.com)',
   'Heading' => 'Überschrift',
   'Image' => 'Bild',
   'Image/File' => 'Bild/Datei',

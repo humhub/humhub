@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Edit your comment...' => '',
+  'Edit your comment...' => 'Editează-ți comentariul...',
 );

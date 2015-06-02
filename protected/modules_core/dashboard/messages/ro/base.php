@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Dashboard' => '',
+  'Dashboard' => 'Panou',
 );
