@@ -138,6 +138,8 @@ return array(
             'sk' => 'slovenčina',
             'ro' => 'română',
             'ar' => 'العربية/عربي‎‎',
+            'ko' => '한국어',
+            'id' => 'Bahasa Indonesia',
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
