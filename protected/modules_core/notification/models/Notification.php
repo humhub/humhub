@@ -34,7 +34,7 @@ class Notification extends HActiveRecord
      */
     public $seenWithoutClick = false;
     public $webView = "comment.views.notifications.newComment";
-    public $mailView = "application.module.comment.views.notifications.newComment_mail";
+    public $mailView = "application.modules_core.comment.views.notifications.newComment_mail";
 
     /**
      * Returns the static model of the specified AR class.
