@@ -6,7 +6,7 @@ return array (
   'Back' => 'Voltar',
   'Back to dashboard' => 'Voltar para o painel',
   'Choose language:' => 'Escolha o idioma:',
-  'Collapse' => 'Colapso',
+  'Collapse' => 'Minimizar',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Conteúdo fonte Addon deve ser instância de HActiveRecordContent ou HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Não foi possível determinar o conteúdo!',
   'Could not find content of addon!' => 'Não foi possível encontrar o conteúdo !',
