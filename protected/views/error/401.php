@@ -10,7 +10,7 @@
             <br />
             <hr>
 
-            <?php echo HHtml::link(Yii::t('base', 'Login'), Yii::app()->user->loginUrl, array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-target' => '#globalModal')); ?>
+            <?php echo HHtml::link(Yii::t('base', 'Login'), Yii::app()->user->loginUrl, array('class' => 'btn btn-success')); ?>
             <a href="javascript:history.back();" class="btn btn-primary  pull-right"><?php echo Yii::t('base', 'Back'); ?></a>
         </div>
     </div>
