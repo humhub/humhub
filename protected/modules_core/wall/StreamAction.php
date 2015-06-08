@@ -466,7 +466,7 @@ class StreamAction extends CAction
         // Posts only
         if (in_array('model_posts', $this->filters)) {
             $this->sqlWhere .= " AND content.object_model='Post'";
-            ;
+            
         }
 
         // Visibility filters
