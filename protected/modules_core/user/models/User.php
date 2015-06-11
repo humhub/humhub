@@ -97,8 +97,8 @@ class User extends HActiveRecordContentContainer implements ISearchable
     public function defaultScope()
     {
         return array(
-            // Per default show only content of users which are enabled or disabled
-            'condition' => "status='" . self::STATUS_ENABLED . "' OR status='" . self::STATUS_DISABLED . "'",
+            // Per default show content of users which are enabled, unapproved or disabled
+            'condition' => "status='" . self::STATUS_ENABLED . "' OR status='" . self::STATUS_NEED_APPROVAL . "' OR status='" . self::STATUS_DISABLED . "'",
         );
     }
 
