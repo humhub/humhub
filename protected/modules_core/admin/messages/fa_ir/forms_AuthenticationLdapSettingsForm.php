@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Base DN' => '',
+  'Base DN' => 'DN پایه',
   'Enable LDAP Support' => 'فعال‌‌سازی پشتیبانی LDAP',
   'Encryption' => 'رمزگذاری',
   'Fetch/Update Users Automatically' => 'گرفتن/به‌روز‌رسانی اتوماتیک کاربران',

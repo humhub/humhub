@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Installed' => '',
-  'No modules found!' => '',
-  'Search' => '',
+  'Installed' => 'تم التنصيب',
+  'No modules found!' => 'لا توجد موديولات!',
+  'Search' => 'بحث',
 );

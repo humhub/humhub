@@ -4,7 +4,7 @@ return array (
   'Created By' => 'ایجادشده توسط',
   'Description' => 'توضیحات',
   'Join Policy' => 'سیاست پیوستن',
-  'Ldap DN' => '',
+  'Ldap DN' => 'Ldap DN',
   'Name' => 'نام',
   'Owner' => 'دارنده',
   'Status' => 'وضعیت',

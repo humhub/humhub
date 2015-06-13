@@ -5,7 +5,7 @@ return array (
   'Created by' => 'Criado por',
   'Email' => 'E-mail',
   'Group' => 'Grupo',
-  'Guid' => '',
+  'Guid' => '@@',
   'ID' => 'ID',
   'Invalid language!' => 'Língua inválida!',
   'Language' => 'Língua',

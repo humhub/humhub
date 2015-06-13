@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Installed' => '',
-  'No modules found!' => '',
+  'Installed' => 'Installeret',
+  'No modules found!' => 'Ingen moduler fundet!',
   'Search' => 'Søg',
 );

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Post' => '',
-  'Write a new comment...' => '',
+  'Post' => 'Postează',
+  'Write a new comment...' => 'Scrie un comentariu nou...',
 );

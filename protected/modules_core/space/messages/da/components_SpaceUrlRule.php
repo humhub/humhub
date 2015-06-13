@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Space not found!' => 'Rum ikke fundet!',
+  'Space not found!' => 'Side ikke fundet!',
 );

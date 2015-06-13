@@ -4,7 +4,7 @@ return array (
   'Description' => 'Description',
   'Group Administrators' => 'Administrateur(s) du groupe',
   'ID' => 'ID',
-  'LDAP DN' => '',
+  'LDAP DN' => 'LDAP DN',
   'Members can create private spaces' => 'Les membres peuvent créer des espaces privés',
   'Members can create public spaces' => 'Les membres peuvent créer des espaces public',
   'Name' => 'Nom',

@@ -5,5 +5,5 @@ return array (
   'Make public' => 'Maak publiek',
   'Notify members' => 'Breng leden op de hoogte',
   'Public' => 'Publiek',
-  'What\'s on your mind?' => 'Laat een bericht achter',
+  'What\'s on your mind?' => 'Plaats een bericht',
 );

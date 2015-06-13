@@ -5,7 +5,7 @@ return array (
   'Administration' => 'Administrace',
   'Back' => 'Zpět',
   'Back to dashboard' => 'Zpět na nástěnku',
-  'Choose language:' => '',
+  'Choose language:' => 'Vyberte jazyk:',
   'Collapse' => 'Sbalit',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon musí být buď instancí objektu HActiveRecordContent nebo HActiveRecordContentAddon!',
   'Could not determine content container!' => 'Nebylo možné zvolit obsahový kontejner.',

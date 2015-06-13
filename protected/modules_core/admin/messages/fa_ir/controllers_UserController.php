@@ -4,7 +4,7 @@ return array (
   'Delete' => 'حذف',
   'Disabled' => 'غیرفعال شده',
   'Enabled' => 'فعال شده',
-  'LDAP' => '',
+  'LDAP' => 'LDAP',
   'Local' => 'محلی',
   'Save' => 'ذخیره',
   'Unapproved' => 'تایید نشده',

@@ -5,10 +5,10 @@ return array (
   'Encryption' => '',
   'Fetch/Update Users Automatically' => '',
   'Hostname' => '',
-  'Login Filter' => '',
+  'Login Filter' => 'Filtre d\'inici de sessió',
   'Password' => 'Contrasenya',
-  'Port' => '',
+  'Port' => 'Port',
   'User Filer' => '',
-  'Username' => '',
+  'Username' => 'Nom d\'usuari',
   'Username Attribute' => '',
 );

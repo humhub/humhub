@@ -14,7 +14,7 @@ return array (
   'Updated at' => 'Mis à jour à',
   'Updated by' => 'Mis à jour par',
   'Username' => 'Nom d\'utilisateur',
-  'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Le nom d\'utilisateur ne peut contenir que des lettres, chiffres, espaces et les caractères spéciaux (+ - . _)',
   'Visibility' => 'Visibilité',
   'Wall' => 'Mur',
 );

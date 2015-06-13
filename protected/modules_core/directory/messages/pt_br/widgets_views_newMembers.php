@@ -1,4 +1,4 @@
 <?php
 return array (
-  'See all' => '',
+  'See all' => 'Ver todos',
 );

@@ -1,13 +1,13 @@
 <?php
 return array (
-  'Become this user' => '',
-  'Delete' => '',
-  'Disabled' => '',
-  'Enabled' => '',
-  'LDAP' => '',
-  'Local' => '',
+  'Become this user' => 'Bliv denne bruger',
+  'Delete' => 'Slet',
+  'Disabled' => 'Deaktiveret',
+  'Enabled' => 'Aktiveret',
+  'LDAP' => 'LDAP',
+  'Local' => 'Lokal',
   'Save' => 'Gem',
-  'Unapproved' => '',
+  'Unapproved' => 'Ikke-godkendt',
   'User not found!' => 'Bruger ikke fundet!',
-  'You cannot delete yourself!' => '',
+  'You cannot delete yourself!' => 'Du kan ikke slette dig selv!',
 );

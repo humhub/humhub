@@ -1,7 +1,7 @@
 <?php
 return array (
   'Hostname' => 'نام میزبان',
-  'Name of Database' => '',
+  'Name of Database' => 'نام پایگاه‌داده',
   'Password' => 'گذرواژه',
   'Username' => 'نام کاربری',
 );

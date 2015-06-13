@@ -6,7 +6,7 @@ return array (
   'Description' => 'Description',
   'General' => 'Général',
   'ID' => 'ID',
-  'Module' => '',
+  'Module' => 'Module',
   'Social bookmarks' => 'Favoris sociaux',
   'Sort order' => 'Ordre de tri',
   'Title' => 'Titre',

@@ -1,7 +1,7 @@
 <?php
 return array (
   'Hostname' => 'Hostname',
-  'Name of Database' => '',
+  'Name of Database' => 'Databáze',
   'Password' => 'Heslo',
   'Username' => 'Uživatelské jméno',
 );

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Collapse' => '',
-  'Read full post...' => '',
+  'Collapse' => 'تصغير',
+  'Read full post...' => 'قراءة الموضوع كاملاً...',
 );

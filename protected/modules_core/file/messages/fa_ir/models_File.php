@@ -7,7 +7,7 @@ return array (
   'ID' => 'شناسه',
   'Invalid Mime-Type' => 'Mime-Type نامعتبر',
   'Maximum file size ({maxFileSize}) has been exceeded!' => 'حداکثر مجاز سایز فایل ({maxFileSize}) رعایت نشده‌است.',
-  'Mime Type' => '',
+  'Mime Type' => 'Mime Type',
   'Size' => 'سایز',
   'This file type is not allowed!' => 'این نوع فایل مجاز نیست!',
   'Title' => 'عنوان',
