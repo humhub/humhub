@@ -36,7 +36,7 @@ class AccountChangeUsernameForm extends CFormModel {
         return array(
             array('currentPassword, newUsername', 'required'),
             array('currentPassword', 'CheckPasswordValidator'),
-            array('newUsername', 'length', 'max' => 25),
+            array('newUsername', 'length', 'max' => 25, 'min' => 5),
         	array('newUsername', 'UsernameValidator'),
             array('newUsername', 'unique', 'attributeName' => 'username', 'caseSensitive' => false, 'className' => 'User', 'message' => '{attribute} "{value}" is already in use!'),
         );
