@@ -37,7 +37,12 @@
                                     </div>
                                 <?php } else { ?>
                                     <div class="col-sm-9">
-                                        <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>
+                                        <p class="form-control-static"><?php 
+                                            if($field['field_type_class'] == 'ProfileFieldTypeTextArea') {
+                                                echo nl2br($field->getUserValue($user, false)); 
+                                            } else {
+                                                echo $field->getUserValue($user, false);
+                                            } ?></p>
                                     </div>
                                 <?php } ?>
                             </div>
