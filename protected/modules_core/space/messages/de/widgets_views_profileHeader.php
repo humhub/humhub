@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Something</strong> went wrong' => 'Ein <strong>Fehler</strong> ist aufgetreten',
-  'Followers' => 'Folger',
+  'Followers' => 'Follower',
   'Members' => 'Mitglieder',
   'Ok' => 'Ok',
   'Posts' => '',
