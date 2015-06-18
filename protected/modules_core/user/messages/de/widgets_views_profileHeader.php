@@ -4,7 +4,7 @@ return array (
   'Follow' => '@@Folgen@@',
   'Unfollow' => '@@Nicht mehr folgen@@',
   '<strong>Something</strong> went wrong' => 'Ein <strong>Fehler</strong> ist aufgetreten',
-  'Followers' => 'Folger',
+  'Followers' => 'Follower',
   'Following' => 'Folgend',
   'Ok' => 'Ok',
   'Spaces' => 'Spaces',
