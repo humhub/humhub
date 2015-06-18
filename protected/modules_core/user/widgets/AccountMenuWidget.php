@@ -62,6 +62,14 @@ class AccountMenuWidget extends MenuWidget {
 
         // LDAP users cannot change their e-mail address
         if (Yii::app()->user->getAuthMode() != User::AUTH_MODE_LDAP) {
+        	$this->addItem(array(
+        			'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Username'),
+        			'icon' => '<i class="fa fa-pencil"></i>',
+        			'group' => 'account',
+        			'url' => Yii::app()->createUrl('//user/account/changeUsername/'),
+        			'sortOrder' => 250,
+        			'isActive' => (Yii::app()->controller->action->id == "changeUsername"),
+        	));
             $this->addItem(array(
                 'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'E-Mail'),
                 'icon' => '<i class="fa fa-paper-plane"></i>',

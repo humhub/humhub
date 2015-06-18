@@ -274,6 +274,36 @@ class AccountController extends Controller
 
         $this->render('changeEmail', array('model' => $model));
     }
+    
+    /**
+     * Change Current Username
+     *
+     */
+    public function actionChangeUsername()
+    {
+    
+    	$user = User::model()->findByPk(Yii::app()->user->id);
+    	if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
+    		throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+    	}
+    
+    	$model = new AccountChangeUsernameForm;
+    
+    	if (isset($_POST['AccountChangeUsernameForm'])) {
+    		$_POST['AccountChangeUsernameForm'] = Yii::app()->input->stripClean($_POST['AccountChangeUsernameForm']);
+    		$model->attributes = $_POST['AccountChangeUsernameForm'];
+    
+    		if ($model->validate()) {
+    
+    			$model->changeUsername();
+    			$this->render('changeUsername_success', array('model' => $model));
+    			
+    			return;
+    		}
+    	}
+    
+    	$this->render('changeUsername', array('model' => $model));
+    }
 
     /**
      * After the user validated his email
