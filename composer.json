@@ -1,0 +1,58 @@
+{
+    "name": "humhub/humhub",
+    "description": "TBD",
+    "keywords": ["humhub", "yii2", "framework"],
+    "homepage": "http://www.humhub.com/",
+    "type": "project",
+    "license": "AGPL-3.0",
+    "support": {
+        "issues": "https://github.com/humhub/humhub/issues?state=open",
+        "forum": "http://community.humhub.com",
+        "wiki": "http://community.humhub.com",
+        "irc": "irc://irc.freenode.net/humhub",
+        "source": "https://github.com/humhub/humhub"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": ">=2.0.4",
+        "yiisoft/yii2-bootstrap": "*",
+        "yiisoft/yii2-swiftmailer": "*",
+        "raoul2000/yii2-jcrop-widget": "*",
+        "yiisoft/yii2-jui": "^2.0"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-faker": "*"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "vendor-dir": "protected/vendor"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "protected/runtime": "0777",
+                    "assets": "0777",
+                    "protected/yii": "0755",
+                    "protected/modules": "0755"
+                }
+            ],
+            "generateCookieValidationKey": [
+                "protected/config/web.php"
+            ]
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "protected/vendor/npm",
+            "bower-asset-library": "protected/vendor/bower"
+        }
+    }
+}
