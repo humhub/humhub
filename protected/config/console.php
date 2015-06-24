@@ -1,61 +1,38 @@
 <?php
 
-/**
- * Console Default Configuration
- *
- * This configuration file only affects only the console application.
- */
-$defaults = require (dirname(__FILE__) . '/_defaults.php');
-$pre_config = CMap::mergeArray($defaults, require ($defaults['params']['dynamicConfigFile']));
+Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 
-return CMap::mergeArray($pre_config, array(
-            'preload' => array('log'),
-            'behaviors' => array(
-                'viewRenderer' => 'HConsoleApplicationBehavior',
-            ),
-            'components' => array(
-                'request' => array(
-                    'class' => 'HHttpRequest',
-                ),
-                'user' => array(
-                    'class' => 'ConsoleUser',
-                ),
-                'log' => array(
-                    'class' => 'CLogRouter',
-                    'routes' => array(
-                        array(
-                            'class' => 'CFileLogRoute',
-                            'levels' => 'error, warning',
-                        ),
-                    ),
-                ),
-            ),
-            // autoloading model and component classes
-            'import' => array(
-                'application.models.*',
-                'application.forms.*',
-                'application.components.*',
-                'application.vendors.yii.cli.commands.*',
-                'application.libs.*',
-                'application.commands.shell.*',
-                'application.modules_core.user.components.*',
-                'ext.EZendAutoloader.EZendAutoloader',
-                'ext.migrate-command.*',
-            ),
-            'commandMap' => array(
-                'message' => 'application.commands.shell.ZMessageCommand',
-                'integritychecker' => 'application.commands.shell.Maintain.IntegrityChecker',
-                'space' => 'application.modules_core.space.console.SpaceCliTool',
-                'search' => 'application.modules_core.search.console.SearchCli',
-                'emailing' => 'application.commands.shell.EMailing.EMailing',
-                'cron' => 'application.commands.shell.ZCron.ZCronRunner',
-                'cache' => 'application.commands.shell.HCacheCommand',
-                'module' => 'application.modules_core.admin.console.ModuleTool',
-                'update' => 'application.commands.shell.HUpdateCommand',
-                'migrate' => array(
-                    'class' => 'application.commands.shell.ZMigrateCommand',
-                    'migrationPath' => 'application.migrations',
-                    'migrationTable' => 'migration',
-                ),
-            ),
-        ));
+$params = require(__DIR__ . '/params.php');
+$db = require(__DIR__ . '/db.php');
+
+return [
+    'id' => 'basic-console',
+    'basePath' => dirname(__DIR__),
+    'bootstrap' => ['log', 'gii', 'humhub\components\bootstrap\ModuleAutoLoader'],
+    'controllerNamespace' => 'humhub\commands',
+    'modules' => [
+        'gii' => 'yii\gii\Module',
+    ],
+    'components' => [
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
+        ],
+        'log' => [
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+                [
+                    'class' => 'yii\log\DbTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+            ],
+        ],
+        'moduleManager' => [
+            'class' => '\humhub\components\ModuleManager'
+        ],        
+        'db' => $db,
+    ],
+    'params' => $params,
+];
