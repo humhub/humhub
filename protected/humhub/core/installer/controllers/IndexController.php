@@ -18,6 +18,14 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\installer\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use humhub\core\user\models\Group;
+use humhub\core\user\models\User;
+use yii\helpers\Url;
+
 /**
  * Index Controller shows a simple welcome page.
  *
@@ -27,17 +35,11 @@ class IndexController extends Controller
 {
 
     /**
-     *
-     * @var String layout to use
-     */
-    public $layout = '_layout';
-
-    /**
      * Index View just provides a welcome page
      */
     public function actionIndex()
     {
-        $this->render('index', array());
+        return $this->render('index', array());
     }
 
     /**
@@ -45,10 +47,11 @@ class IndexController extends Controller
      */
     public function actionGo()
     {
-        if ($this->getModule()->checkDBConnection()) {
-            $this->redirect(Yii::app()->createUrl('//installer/setup/init'));
+        if ($this->module->checkDBConnection()) {
+            return $this->redirect(Url::to(['setup/init']));
         } else {
-            $this->redirect(Yii::app()->createUrl('//installer/setup/prerequisites'));
+            return $this->redirect(Url::to(['setup/rerequisites']));
         }
     }
+
 }

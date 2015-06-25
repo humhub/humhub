@@ -18,13 +18,16 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\installer\forms;
+
 /**
  * DatabaseForm holds all required database settings.
  *
  * @package humhub.modules_core.installer.forms
  * @since 0.5
  */
-class DatabaseForm extends CFormModel {
+class DatabaseForm extends \yii\base\Model
+{
 
     public $hostname;
     public $username;
@@ -34,9 +37,10 @@ class DatabaseForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
-            array('hostname, username, database', 'required'),
+            array(['hostname', 'username', 'database'], 'required'),
             array('password', 'safe'),
         );
     }
@@ -46,7 +50,8 @@ class DatabaseForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'hostname' => Yii::t('InstallerModule.forms_DatabaseForm', 'Hostname'),
             'username' => Yii::t('InstallerModule.forms_DatabaseForm', 'Username'),

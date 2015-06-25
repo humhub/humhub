@@ -1,3 +1,11 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use humhub\models\Setting;
+use yii\helpers\Url;
+use humhub\core\user\models\User;
+?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
@@ -8,12 +16,8 @@
 
         <p><?php echo Yii::t('InstallerModule.views_config_basic', 'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)'); ?></p>
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'basic-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+
+        <?php $form = CActiveForm::begin(); ?>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'name'); ?>
@@ -25,7 +29,7 @@
 
         <?php echo CHtml::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), array('class' => 'btn btn-primary')); ?>
 
-        <?php $this->endWidget(); ?>
+        <?php CActiveForm::end(); ?>
     </div>
 </div>
 
@@ -37,10 +41,10 @@
     })
 
     // Shake panel after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
-    $('#name-form').removeClass('fadeIn');
-    $('#name-form').addClass('shake');
-    <?php } ?>
+<?php if ($model->hasErrors()) { ?>
+        $('#name-form').removeClass('fadeIn');
+        $('#name-form').addClass('shake');
+<?php } ?>
 
 </script>
 

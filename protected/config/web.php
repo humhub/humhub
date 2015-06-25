@@ -2,7 +2,6 @@
 
 $params = require(__DIR__ . '/params.php');
 
-
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -84,6 +83,12 @@ if (YII_ENV_DEV) {
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = 'yii\gii\Module';
+}
+
+if (is_file(__DIR__ . '/dynamic.php')) {
+    return yii\helpers\ArrayHelper::merge(
+                    $config, require(__DIR__ . '/dynamic.php')
+    );
 }
 
 return $config;

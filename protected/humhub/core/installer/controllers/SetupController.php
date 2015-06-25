@@ -18,6 +18,14 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\installer\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use humhub\core\user\models\Group;
+use humhub\core\user\models\User;
+use yii\helpers\Url;
+
 /**
  * SetupController checks prerequisites and is responsible for database
  * connection and schema setup.
@@ -28,16 +36,11 @@
 class SetupController extends Controller
 {
 
-    /**
-     * @var String layout to use
-     */
-    public $layout = '_layout';
-
     const PASSWORD_PLACEHOLDER = 'n0thingToSeeHere!';
 
     public function actionIndex()
     {
-        $this->redirect(Yii::app()->createUrl('prerequisites'));
+        return $this->redirect(Url::to(['prerequisites']));
     }
 
     /**
@@ -48,8 +51,7 @@ class SetupController extends Controller
      */
     public function actionPrerequisites()
     {
-
-        $checks = SelfTest::getResults();
+        $checks = \humhub\libs\SelfTest::getResults();
 
         $hasError = false;
         foreach ($checks as $check) {
@@ -58,7 +60,7 @@ class SetupController extends Controller
         }
 
         // Render Template
-        $this->render('prerequisites', array('checks' => $checks, 'hasError' => $hasError));
+        return $this->render('prerequisites', array('checks' => $checks, 'hasError' => $hasError));
     }
 
     /**
@@ -81,7 +83,7 @@ class SetupController extends Controller
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'database-form') {
             echo CActiveForm::validate($form);
-            Yii::app()->end();
+            Yii::$app->end();
         }
 
         if (isset($_POST['DatabaseForm'])) {
@@ -96,7 +98,7 @@ class SetupController extends Controller
                     $password = $config['components']['db']['password'];
 
                 // Create Test DB Connection
-                Yii::app()->setComponent('db', array(
+                Yii::$app->setComponent('db', array(
                     'connectionString' => $connectionString,
                     'username' => $form->username,
                     'password' => $password,
@@ -106,7 +108,7 @@ class SetupController extends Controller
 
                 try {
                     // Check DB Connection
-                    Yii::app()->db->getServerVersion();
+                    Yii::$app->db->getServerVersion();
 
                     // Write Config
                     $config['components']['db']['connectionString'] = $connectionString;
@@ -121,9 +123,8 @@ class SetupController extends Controller
                     HSetting::setConfiguration($config);
 
                     $success = true;
-                    
+
                     $this->redirect(array('init'));
-                    
                 } catch (Exception $e) {
                     $errorMessage = $e->getMessage();
                 }
@@ -153,20 +154,19 @@ class SetupController extends Controller
     public function actionInit()
     {
 
-        if (!$this->getModule()->checkDBConnection())
-            $this->redirect(Yii::app()->createUrl('//installer/setup/database'));
+        if (!$this->module->checkDBConnection())
+            $this->redirect(Url::to(['/installer/setup/database']));
 
         // Flush Caches
-        Yii::app()->cache->flush();
+        Yii::$app->cache->flush();
 
         // Disable max execution time to avoid timeouts during database installation
         @ini_set('max_execution_time', 0);
-        
-        // Migrate Up Database
-        Yii::import('application.commands.shell.ZMigrateCommand');
-        ZMigrateCommand::AutoMigrate();
 
-        $this->redirect(Yii::app()->createUrl('//installer/config/index'));
+        // Migrate Up Database
+        $result = \humhub\commands\MigrateController::webMigrateAll();
+
+        return $this->redirect(Url::to(['/installer/config/index']));
     }
 
 }

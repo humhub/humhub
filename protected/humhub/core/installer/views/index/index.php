@@ -1,3 +1,9 @@
+<?php
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
+
 <div class="panel panel-default animated fadeIn">
 
     <div class="panel-body text-center">
@@ -8,7 +14,7 @@
         <br>
         <hr>
         <br>
-        <?php echo HHtml::link(Yii::t('InstallerModule.views_index_index', "Next") . ' <i class="fa fa-arrow-circle-right"></i>', array('go'), array('class' => 'btn btn-lg btn-primary')); ?>
+        <?php echo Html::a(Yii::t('InstallerModule.views_index_index', "Next") . ' <i class="fa fa-arrow-circle-right"></i>', Url::to(['go']), array('class' => 'btn btn-lg btn-primary')); ?>
         <br>
         <br>
     </div>
@@ -16,4 +22,4 @@
 
 </div>
 
-<?php $this->widget('application.widgets.LanguageChooser'); ?>
+<?php echo humhub\widgets\LanguageChooser::widget(); ?>

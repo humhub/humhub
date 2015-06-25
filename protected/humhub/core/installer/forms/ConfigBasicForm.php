@@ -18,20 +18,26 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\installer\forms;
+
+use Yii;
+
 /**
  * ConfigBasicForm holds basic application settings.
  *
  * @package humhub.modules_core.installer.forms
  * @since 0.5
  */
-class ConfigBasicForm extends CFormModel {
+class ConfigBasicForm extends \yii\base\Model
+{
 
     public $name;
 
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('name', 'required'),
         );
@@ -42,7 +48,8 @@ class ConfigBasicForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'name' => Yii::t('InstallerModule.forms_ConfigBasicForm', 'Name of your network'),
         );

@@ -18,6 +18,16 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\installer\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use humhub\core\space\models\Space;
+use humhub\core\user\models\User;
+use humhub\core\user\models\Password;
+use yii\helpers\Url;
+use humhub\models\Setting;
+
 /**
  * ConfigController allows inital configuration of humhub.
  * E.g. Name of Network, Root User
@@ -31,37 +41,37 @@ class ConfigController extends Controller
 {
 
     /**
-     * @var String layout to use
-     */
-    public $layout = '_layout';
-
-    /**
      * Before each config controller action check if
      *  - Database Connection works
      *  - Database Migrated Up
      *  - Not already configured (e.g. update)
      *
-     * @param type $action
+     * @param boolean 
      */
-    protected function beforeAction($action)
+    public function beforeAction($action)
     {
+        if (parent::beforeAction($action)) {
 
-        // Flush Caches
-        Yii::app()->cache->flush();
+            // Flush Caches
+            Yii::$app->cache->flush();
 
-        // Database Connection seems not to work
-        if (!$this->getModule()->checkDBConnection()) {
-            $this->redirect(Yii::app()->createUrl('//installer/setup/'));
-        }
-
-        // When not at index action, verify that database is not already configured
-        if ($action->id != 'finished') {
-            if ($this->getModule()->isConfigured()) {
-                $this->redirect($this->createUrl('finished'));
+            // Database Connection seems not to work
+            if (!$this->module->checkDBConnection()) {
+                $this->redirect(Url::to(['/installer/setup']));
+                return false;
             }
-        }
 
-        return true;
+            // When not at index action, verify that database is not already configured
+            if ($action->id != 'finished') {
+                if ($this->module->isConfigured()) {
+                    $this->redirect(Url::to(['finished']));
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -71,13 +81,13 @@ class ConfigController extends Controller
     public function actionIndex()
     {
 
-        if (HSetting::Get('name') == "") {
-            HSetting::Set('name', "HumHub");
+        if (Setting::Get('name') == "") {
+            Setting::Set('name', "HumHub");
         }
 
-        $this->setupInitialData();
+        \humhub\core\installer\libs\InitialData::bootstrap();
 
-        $this->redirect(Yii::app()->createUrl('//installer/config/basic'));
+        return $this->redirect(Url::to(['//installer/config/basic']));
     }
 
     /**
@@ -85,29 +95,16 @@ class ConfigController extends Controller
      */
     public function actionBasic()
     {
-        Yii::import('installer.forms.*');
+        $form = new \humhub\core\installer\forms\ConfigBasicForm();
+        $form->name = Setting::Get('name');
 
-        $form = new ConfigBasicForm;
-        $form->name = HSetting::Get('name');
-
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'basic-form') {
-            echo CActiveForm::validate($form);
-            Yii::app()->end();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            Setting::Set('name', $form->name);
+            Setting::Set('systemEmailName', $form->name, 'mailing');
+            return $this->redirect(Url::to(['/installer/config/admin']));
         }
 
-        if (isset($_POST['ConfigBasicForm'])) {
-            $_POST['ConfigBasicForm'] = Yii::app()->input->stripClean($_POST['ConfigBasicForm']);
-            $form->attributes = $_POST['ConfigBasicForm'];
-
-            if ($form->validate()) {
-                // Set some default settings
-                HSetting::Set('name', $form->name);
-                HSetting::Set('systemEmailName', $form->name, 'mailing');
-                $this->redirect(Yii::app()->createUrl('//installer/config/admin'));
-            }
-        }
-
-        $this->render('basic', array('model' => $form));
+        return $this->render('basic', array('model' => $form));
     }
 
     /**
@@ -118,12 +115,13 @@ class ConfigController extends Controller
      */
     public function actionAdmin()
     {
-        Yii::import('installer.forms.*');
 
-        $userModel = new User('register');
-        $userPasswordModel = new UserPassword('newPassword');
+        $userModel = new User();
+        $userModel->scenario = 'registration';
+        $userPasswordModel = new Password();
+        $userPasswordModel->scenario = 'registration';
         $profileModel = $userModel->profile;
-        $profileModel->scenario = 'register';
+        $profileModel->scenario = 'registration';
 
         // Build Form Definition
         $definition = array();
@@ -132,7 +130,6 @@ class ConfigController extends Controller
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
-            #'title' => 'Account',
             'elements' => array(
                 'username' => array(
                     'type' => 'text',
@@ -148,7 +145,7 @@ class ConfigController extends Controller
         );
 
         // Add User Password Form
-        $definition['elements']['UserPassword'] = array(
+        $definition['elements']['Password'] = array(
             'type' => 'form',
             'elements' => array(
                 'newPassword' => array(
@@ -176,49 +173,37 @@ class ConfigController extends Controller
             ),
         );
 
-        $form = new HForm($definition);
-        $form['User']->model = $userModel;
-        $form['User']->model->group_id = 1;
-        $form['UserPassword']->model = $userPasswordModel;
-        $form['Profile']->model = $profileModel;
-
-        if (isset($_POST['Profile'])) {
-            $_POST['Profile'] = Yii::app()->input->stripClean($_POST['Profile']);
-        }
-
-        if (isset($_GET['Profile'])) {
-            $_GET['Profile'] = Yii::app()->input->stripClean($_GET['Profile']);
-        }
+        $form = new \humhub\compat\HForm($definition);
+        $form->models['User'] = $userModel;
+        $form->models['User']->group_id = 1;
+        $form->models['Password'] = $userPasswordModel;
+        $form->models['Profile'] = $profileModel;
 
         if ($form->submitted('save') && $form->validate()) {
-            $this->forcePostRequest();
 
-            if (HSetting::Get('secret') == "") {
-                HSetting::Set('secret', UUID::v4());
+            if (Setting::Get('secret') == "") {
+                Setting::Set('secret', \humhub\libs\UUID::v4());
             }
 
-            $form['User']->model->status = User::STATUS_ENABLED;
-            $form['User']->model->super_admin = true;
-            $form['User']->model->language = '';
-            $form['User']->model->last_activity_email = new CDbExpression('NOW()');
-            $form['User']->model->save();
+            $form->models['User']->status = User::STATUS_ENABLED;
+            $form->models['User']->super_admin = true;
+            $form->models['User']->language = '';
+            $form->models['User']->last_activity_email = new \yii\db\Expression('NOW()');
+            $form->models['User']->save();
 
-            $form['Profile']->model->user_id = $form['User']->model->id;
-            $form['Profile']->model->title = "System Administration";
-            $form['Profile']->model->save();
+            $form->models['Profile']->user_id = $form->models['User']->id;
+            $form->models['Profile']->title = "System Administration";
+            $form->models['Profile']->save();
 
             // Save User Password
-            $form['UserPassword']->model->user_id = $form['User']->model->id;
-            $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
-            $form['UserPassword']->model->save();
+            $form->models['Password']->user_id = $form->models['User']->id;
+            $form->models['Password']->setPassword($form->models['Password']->newPassword);
+            $form->models['Password']->save();
 
-            $userId = $form['User']->model->id;
+            $userId = $form->models['User']->id;
 
             // Switch Identity
-            Yii::import('application.modules_core.user.components.*');
-            $newIdentity = new UserIdentity($form['User']->model->username, '');
-            $newIdentity->fakeAuthenticate();
-            Yii::app()->user->login($newIdentity);
+            Yii::$app->user->switchIdentity($form->models['User']);
 
             // Create Welcome Space
             $space = new Space();
@@ -230,20 +215,20 @@ class ConfigController extends Controller
             $space->auto_add_new_members = 1;
             $space->save();
 
-            $profileImage = new ProfileImage($space->guid);
-            $profileImage->setNew($this->getModule()->getPath() . DIRECTORY_SEPARATOR . "resources" . DIRECTORY_SEPARATOR . 'welcome_space.jpg');
+            $profileImage = new \humhub\libs\ProfileImage($space->guid);
+            $profileImage->setNew(Yii::getAlias("@webroot/resources/installer/welcome_space.jpg"));
 
             // Add Some Post to the Space
-            $post = new Post();
+            $post = new \humhub\core\post\models\Post();
             $post->message = "Yay! I've just installed HumHub :-)";
             $post->content->container = $space;
-            $post->content->visibility = Content::VISIBILITY_PUBLIC;
+            $post->content->visibility = \humhub\core\content\models\Content::VISIBILITY_PUBLIC;
             $post->save();
 
-            $this->redirect($this->createUrl('finished'));
+            return $this->redirect(Url::to(['finished']));
         }
 
-        $this->render('admin', array('form' => $form));
+        return $this->render('admin', array('hForm' => $form));
     }
 
     /**
@@ -253,23 +238,23 @@ class ConfigController extends Controller
     {
 
         // Should not happen
-        if (HSetting::Get('secret') == "") {
+        if (Setting::Get('secret') == "") {
             throw new CException("Finished without secret setting!");
         }
 
         // Rewrite whole configuration file, also sets application
         // in installed state.
-        HSetting::RewriteConfiguration();
+        \humhub\libs\DynamicConfig::rewrite();
 
         // Set to installed
         $this->module->setInstalled();
 
         try {
-            Yii::app()->user->logout();
+            Yii::$app->user->logout();
         } catch (Exception $e) {
             ;
         }
-        $this->render('finished');
+        return $this->render('finished');
     }
 
     /**
@@ -279,442 +264,7 @@ class ConfigController extends Controller
      */
     private function setupInitialData()
     {
-
-        // Seems database is already initialized
-        if (HSetting::Get('paginationSize') == 10)
-            return;
-
-        Yii::app()->search->rebuild();
-
-        HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
-        HSetting::Set('paginationSize', 10);
-        HSetting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
-
-        // Authentication
-        HSetting::Set('authInternal', '1', 'authentication');
-        HSetting::Set('authLdap', '0', 'authentication');
-        HSetting::Set('refreshUsers', '1', 'authentication_ldap');
-        HSetting::Set('needApproval', '0', 'authentication_internal');
-        HSetting::Set('anonymousRegistration', '1', 'authentication_internal');
-        HSetting::Set('internalUsersCanInvite', '1', 'authentication_internal');
-
-        // Mailing
-        HSetting::Set('transportType', 'php', 'mailing');
-        HSetting::Set('systemEmailAddress', 'social@example.com', 'mailing');
-        HSetting::Set('systemEmailName', 'My Social Network', 'mailing');
-        HSetting::Set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY, 'mailing');
-        HSetting::Set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE, 'mailing');
-
-        // File
-        HSetting::Set('maxFileSize', '1048576', 'file');
-        HSetting::Set('maxPreviewImageWidth', '200', 'file');
-        HSetting::Set('maxPreviewImageHeight', '200', 'file');
-        HSetting::Set('hideImageFileInfo', '0', 'file');
-
-        // Caching
-        HSetting::Set('type', 'CFileCache', 'cache');
-        HSetting::Set('expireTime', '3600', 'cache');
-        HSetting::Set('installationId', md5(uniqid("", true)), 'admin');
-
-        // Design
-        HSetting::Set('theme', "HumHub");
-        HSetting::Set('spaceOrder', 0, 'space');
-
-        // Basic
-        HSetting::Set('enable', 1, 'tour');
-        HSetting::Set('defaultLanguage', Yii::app()->getLanguage());
-
-        // Notification
-        HSetting::Set('enable_html5_desktop_notifications', 0, 'notification');
-
-        // Add Categories
-        $cGeneral = new ProfileFieldCategory;
-        $cGeneral->title = "General";
-        $cGeneral->sort_order = 100;
-        $cGeneral->visibility = 1;
-        $cGeneral->is_system = 1;
-        $cGeneral->description = '';
-        $cGeneral->save();
-
-        $cCommunication = new ProfileFieldCategory;
-        $cCommunication->title = "Communication";
-        $cCommunication->sort_order = 200;
-        $cCommunication->visibility = 1;
-        $cCommunication->is_system = 1;
-        $cCommunication->description = '';
-        $cCommunication->save();
-
-        $cSocial = new ProfileFieldCategory;
-        $cSocial->title = "Social bookmarks";
-        $cSocial->sort_order = 300;
-        $cSocial->visibility = 1;
-        $cSocial->is_system = 1;
-        $cSocial->description = '';
-        $cSocial->save();
-
-        // Add Fields
-        $field = new ProfileField();
-        $field->internal_name = "firstname";
-        $field->title = 'Firstname';
-        $field->sort_order = 100;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->ldap_attribute = 'givenName';
-        $field->is_system = 1;
-        $field->required = 1;
-        $field->show_at_registration = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 20;
-            $field->fieldType->save();
-        } else {
-            throw new CHttpException(500, print_r($field->getErrors(), true));
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "lastname";
-        $field->title = 'Lastname';
-        $field->sort_order = 200;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->ldap_attribute = 'sn';
-        $field->show_at_registration = 1;
-        $field->required = 1;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 30;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "title";
-        $field->title = 'Title';
-        $field->sort_order = 300;
-        $field->ldap_attribute = 'title';
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 50;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "gender";
-        $field->title = 'Gender';
-        $field->sort_order = 300;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeSelect';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->options = "male=>Male\nfemale=>Female\ncustom=>Custom";
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "street";
-        $field->title = 'Street';
-        $field->sort_order = 400;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 150;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "zip";
-        $field->title = 'Zip';
-        $field->sort_order = 500;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->is_system = 1;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        if ($field->save()) {
-            $field->fieldType->maxLength = 10;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "city";
-        $field->title = 'City';
-        $field->sort_order = 600;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "country";
-        $field->title = 'Country';
-        $field->sort_order = 700;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-
-        $field = new ProfileField();
-        $field->internal_name = "state";
-        $field->title = 'State';
-        $field->sort_order = 800;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "birthday";
-        $field->title = 'Birthday';
-        $field->sort_order = 900;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeBirthday';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "about";
-        $field->title = 'About';
-        $field->sort_order = 900;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeTextArea';
-        $field->is_system = 1;
-        if ($field->save()) {
-            #$field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-
-        $field = new ProfileField();
-        $field->internal_name = "phone_private";
-        $field->title = 'Phone Private';
-        $field->sort_order = 100;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "phone_work";
-        $field->title = 'Phone Work';
-        $field->sort_order = 200;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "mobile";
-        $field->title = 'Mobile';
-        $field->sort_order = 300;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "fax";
-        $field->title = 'Fax';
-        $field->sort_order = 400;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "im_skype";
-        $field->title = 'Skype Nickname';
-        $field->sort_order = 500;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "im_msn";
-        $field->title = 'MSN';
-        $field->sort_order = 600;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-
-        $field = new ProfileField();
-        $field->internal_name = "im_icq";
-        $field->title = 'ICQ Number';
-        $field->sort_order = 700;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeNumber';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "im_xmpp";
-        $field->title = 'XMPP Jabber Address';
-        $field->sort_order = 800;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'email';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url";
-        $field->title = 'Url';
-        $field->sort_order = 100;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_facebook";
-        $field->title = 'Facebook URL';
-        $field->sort_order = 200;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_linkedin";
-        $field->title = 'LinkedIn URL';
-        $field->sort_order = 300;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_xing";
-        $field->title = 'Xing URL';
-        $field->sort_order = 400;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_youtube";
-        $field->title = 'Youtube URL';
-        $field->sort_order = 500;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_vimeo";
-        $field->title = 'Vimeo URL';
-        $field->sort_order = 600;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_flickr";
-        $field->title = 'Flickr URL';
-        $field->sort_order = 700;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_myspace";
-        $field->title = 'MySpace URL';
-        $field->sort_order = 800;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_googleplus";
-        $field->title = 'Google+ URL';
-        $field->sort_order = 900;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_twitter";
-        $field->title = 'Twitter URL';
-        $field->sort_order = 1000;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = 'ProfileFieldTypeText';
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $group = new Group();
-        $group->name = "Users";
-        $group->description = "Example Group by Installer";
-        $group->save();
+        
     }
 
 }

@@ -3,6 +3,8 @@
 namespace humhub\core\space\models;
 
 use Yii;
+use humhub\core\content\models\Wall;
+use humhub\core\activity\models\Activity;
 
 /**
  * This is the model class for table "space".
@@ -129,35 +131,37 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
 
         $userId = $this->created_by;
 
-        if ($this->isNewRecord) {
+        if ($insert) {
             // Create new wall record for this space
             $wall = new Wall();
             $wall->object_model = 'Space';
             $wall->object_id = $this->id;
             $wall->save();
             $this->wall_id = $wall->id;
-            $this->wall = $wall;
-            Space::model()->updateByPk($this->id, array('wall_id' => $wall->id));
+            $this->update(false, ['wall_id']);
 
             // Auto add creator as admin
-            $membership = new SpaceMembership;
+            $membership = new Membership();
             $membership->space_id = $this->id;
             $membership->user_id = $userId;
-            $membership->status = SpaceMembership::STATUS_MEMBER;
+            $membership->status = Membership::STATUS_MEMBER;
             $membership->invite_role = 1;
             $membership->admin_role = 1;
             $membership->share_role = 1;
             $membership->save();
 
+            /*
             $activity = new Activity;
             $activity->content->created_by = $userId;
             $activity->content->space_id = $this->id;
             $activity->content->user_id = $userId;
-            $activity->content->visibility = Content::VISIBILITY_PUBLIC;
+            $activity->content->visibility = \humhub\core\content\models\Content::VISIBILITY_PUBLIC;
             $activity->created_by = $userId;
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
+             * 
+             */
         }
 
         Yii::$app->cache->delete('userSpaces_' . $userId);
@@ -334,7 +338,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
 
         $membership = $this->getMembership($userId);
 
-        if ($membership != null && $membership->share_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
+        if ($membership != null && $membership->share_role == 1 && $membership->status == Membership::STATUS_MEMBER)
             return true;
 
         return false;

@@ -404,9 +404,8 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
         $wall->save();
 
         $this->wall_id = $wall->id;
-        $this->wall = $wall;
         
-        $this->update(false, 'wall_id');
+        $this->update(false, ['wall_id']);
     }
 
     /**

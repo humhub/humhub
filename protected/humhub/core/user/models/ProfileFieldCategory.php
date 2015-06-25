@@ -37,7 +37,7 @@ class ProfileFieldCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'sort_order'], 'required'],
+            [['title', 'sort_order'], 'required'],
             [['description'], 'string'],
             [['sort_order', 'module_id', 'visibility', 'created_by', 'updated_by', 'is_system'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],

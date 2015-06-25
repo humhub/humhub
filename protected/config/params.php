@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'installed' => true,
+    'installed' => false,
+    'dynamicConfigFile' => '@app/config/dynamic.php',
     'availableLanguages' => [
         'en' => 'English (US)',
         'en_gb' => 'English (UK)',

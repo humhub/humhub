@@ -18,31 +18,24 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\installer;
+
+use Yii;
+
 /**
  * InstallerModule provides an web installation interface for the applcation
  *
  * @package humhub.modules_core.installer
  * @since 0.5
  */
-class InstallerModule extends HWebModule
+class Module extends \yii\base\Module
 {
 
-    public $isCoreModule = true;
-    private $_assetsUrl;
-
-    public function getAssetsUrl()
-    {
-        if ($this->_assetsUrl === null)
-            $this->_assetsUrl = Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('installer.resources')
-            );
-        return $this->_assetsUrl;
-    }
+    public $controllerNamespace = 'humhub\core\installer\controllers';
 
     public function init()
     {
-        $this->setLayoutPath(Yii::getPathOfAlias('installer.views'));
-        Yii::app()->clientScript->registerCoreScript('jquery');
+        $this->layout = '@humhub/core/installer/views/layouts/main.php';
     }
 
     /**
@@ -54,9 +47,9 @@ class InstallerModule extends HWebModule
     {
         try {
             // call setActive with true to open connection.
-            Yii::app()->db->setActive(true);
+            Yii::$app->db->open();
             // return the current connection state.
-            return Yii::app()->db->getActive();
+            return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
             
         }
@@ -69,7 +62,7 @@ class InstallerModule extends HWebModule
      */
     public function isConfigured()
     {
-        if (HSetting::Get('secret') != "") {
+        if (\humhub\models\Setting::Get('secret') != "") {
             return true;
         }
         return false;
@@ -80,9 +73,9 @@ class InstallerModule extends HWebModule
      */
     public function setInstalled()
     {
-        $config = HSetting::getConfiguration();
+        $config = \humhub\libs\DynamicConfig::load();
         $config['params']['installed'] = true;
-        HSetting::setConfiguration($config);
+        \humhub\libs\DynamicConfig::save($config);
     }
 
 }

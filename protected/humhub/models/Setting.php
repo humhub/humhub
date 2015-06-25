@@ -3,6 +3,7 @@
 namespace humhub\models;
 
 use Yii;
+use humhub\libs\DynamicConfig;
 
 /**
  * This is the model class for table "setting".
@@ -59,6 +60,18 @@ class Setting extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        DynamicConfig::onSettingChange($this);
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        DynamicConfig::onSettingChange($this);
     }
 
     /**

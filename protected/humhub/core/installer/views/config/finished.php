@@ -1,3 +1,8 @@
+<?php
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+?>
 <div class="panel panel-default animated fadeIn">
 
     <div class="panel-body text-center">
@@ -8,7 +13,7 @@
 
         <div class="text-center">
             <br>
-            <?php echo HHtml::link(Yii::t('InstallerModule.views_config_finished', 'Sign in'), Yii::app()->createUrl('/site/index'), array('class' => 'btn btn-primary')); ?>
+            <?php echo Html::a(Yii::t('InstallerModule.views_config_finished', 'Sign in'), Url::home(), array('class' => 'btn btn-primary')); ?>
             <br><br>
         </div>
     </div>

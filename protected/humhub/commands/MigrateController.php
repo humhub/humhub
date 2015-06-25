@@ -125,4 +125,22 @@ class MigrateController extends \yii\console\controllers\MigrateController
         return $migrationPaths;
     }
 
+    /**
+     * Allow to execute all migrations via web
+     */
+    public static function webMigrateAll()
+    {
+        defined('STDOUT') or define('STDOUT', fopen('php://output', 'w'));
+        defined('STDERR') or define('STDERR', fopen('php://output', 'w'));
+
+        ob_start();
+        $controller = new self('migrate', Yii::$app);
+        $controller->db = Yii::$app->db;
+        $controller->interactive = false;
+        $controller->includeModuleMigrations = true;
+        $controller->color = false;
+        $controller->runAction('up');
+        return ob_get_clean();
+    }
+
 }
