@@ -21,19 +21,21 @@
 /**
  * DashboardStreamAction
  * Note: This stream action is also used for activity e-mail content.
- * 
+ *
  * @package humhub.modules_core.dashboard
  * @since 0.11
  * @author luke
  */
-class DashboardStreamAction extends BaseStreamAction
+class DashboardStream extends \humhub\core\content\components\actions\Stream
 {
 
     public function init()
     {
         parent::init();
+        return;
 
         if ($this->user == null) {
+
             /**
              * For guests collect all wall_ids of "guest" public spaces / user profiles.
              * Generally show only public content

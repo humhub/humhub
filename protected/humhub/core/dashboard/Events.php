@@ -1,25 +1,22 @@
 <?php
 
 /**
- * Dashboard Base Module
- *
- * @package humhub.modules_core.dashboard
- * @since 0.5
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
-class DashboardModule extends HWebModule
+namespace humhub\core\dashboard;
+
+use Yii;
+use yii\helpers\Url;
+
+/**
+ * Description of Events
+ *
+ * @author luke
+ */
+class Events
 {
-
-    public $isCoreModule = true;
-
-    /**
-     * Inits the Module
-     */
-    public function init()
-    {
-
-        $this->setImport(array(
-        ));
-    }
 
     /**
      * On build of the TopMenu, check if module is enabled
@@ -35,9 +32,9 @@ class DashboardModule extends HWebModule
             'label' => Yii::t('DashboardModule.base', 'Dashboard'),
             'id' => 'dashboard',
             'icon' => '<i class="fa fa-tachometer"></i>',
-            'url' => Yii::app()->createUrl('//dashboard/dashboard'),
+            'url' => Url::toRoute('/dashboard/dashboard'),
             'sortOrder' => 100,
-            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'dashboard'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
         ));
     }
 

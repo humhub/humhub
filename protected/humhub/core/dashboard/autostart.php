@@ -1,15 +1,11 @@
 <?php
 
-Yii::app()->moduleManager->register(array(
+\Yii::$app->moduleManager->register(array(
     'id' => 'dashboard',
-    'class' => 'application.modules_core.dashboard.DashboardModule',
+    'class' => \humhub\core\dashboard\Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.dashboard.*',
-    ),
-    // Events to Catch 
     'events' => array(
-        array('class' => 'TopMenuWidget', 'event' => 'onInit', 'callback' => array('DashboardModule', 'onTopMenuInit')),
+        array('class' => \humhub\widgets\TopMenu::className(), 'event' => \humhub\widgets\TopMenu::EVENT_INIT, 'callback' => array('\humhub\core\dashboard\Events', 'onTopMenuInit')),
     ),
 ));
 ?>
