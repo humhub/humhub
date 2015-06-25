@@ -6,8 +6,6 @@ $user = $object->content->user;
 $container = $object->content->container;
 ?>
 
-
-
 <div class="panel panel-default wall_<?php echo $object->getUniqueId(); ?>">
     <div class="panel-body">
 
@@ -48,7 +46,7 @@ $container = $object->content->container;
                     <small>
                         <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $object->content->created_at]); ?>
 
-                        <?php if ($object->content->created_at != $object->content->updated_at): ?>
+                        <?php if ($object->content->created_at !== $object->content->updated_at && $object->content->updated_at != ''): ?>
                             (<?php echo Yii::t('app', 'Updated :timeago', array(':timeago' => \humhub\widgets\TimeAgo::widget(['timestamp' => $object->content->updated_at]))); ?>)
                         <?php endif; ?>
 

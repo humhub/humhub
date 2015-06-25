@@ -258,7 +258,7 @@ class Stream extends \yii\base\Action
             }
             $user = $underlyingObject->content->user;
 
-            $output .= $this->controller->renderPartial('@humhub/core/content/views/layouts/wallEntry', [
+            $output .= $this->controller->renderAjax('@humhub/core/content/views/layouts/wallEntry', [
                 'entry' => $entry,
                 'user' => $user,
                 'mode' => $this->mode,
