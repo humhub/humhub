@@ -4,6 +4,7 @@ namespace humhub\core\admin\controllers;
 
 use Yii;
 use humhub\components\Controller;
+use humhub\core\admin\libs\OnlineModuleManager;
 
 /**
  * @package humhub.modules_core.admin.controllers
@@ -26,25 +27,24 @@ class AboutController extends Controller
 
     public function actionIndex()
     {
-
         $isNewVersionAvailable = false;
         $isUpToDate = false;
         $latestVersion = "";
 
-        if ($this->getModule()->marketplaceEnabled) {
+        if ($this->module->marketplaceEnabled) {
             $onlineModuleManager = new OnlineModuleManager();
             $latestVersion = $onlineModuleManager->getLatestHumHubVersion();
             if ($latestVersion) {
-                $isNewVersionAvailable = version_compare($latestVersion, HVersion::VERSION, ">");
+                $isNewVersionAvailable = version_compare($latestVersion, Yii::$app->version, ">");
                 $isUpToDate = !$isNewVersionAvailable;
             }
         }
 
-        $this->render('index', array(
-            'currentVersion' => HVersion::VERSION,
-            'latestVersion' => $latestVersion,
-            'isNewVersionAvailable' => $isNewVersionAvailable,
-            'isUpToDate' => $isUpToDate
+        return $this->render('index', array(
+                    'currentVersion' => Yii::$app->version,
+                    'latestVersion' => $latestVersion,
+                    'isNewVersionAvailable' => $isNewVersionAvailable,
+                    'isUpToDate' => $isUpToDate
         ));
     }
 

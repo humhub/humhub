@@ -1,10 +1,5 @@
 <?php
 
-namespace humhub\core\admin\controllers;
-
-use Yii;
-use humhub\components\Controller;
-
 /**
  * HumHub
  * Copyright © 2014 The HumHub Project
@@ -22,6 +17,13 @@ use humhub\components\Controller;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
+
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use yii\helpers\Url;
+use humhub\components\Controller;
+use humhub\core\admin\libs\OnlineModuleManager;
 
 /**
  * Module Controller controls all third party modules in a humhub installation.
@@ -47,20 +49,13 @@ class ModuleController extends Controller
 
     public function actionIndex()
     {
-        ModuleManager::flushCache();
-
-        // Require this initial redirect to ensure Module Cache is flushed
-        // before list it.
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));
+        return $this->redirect(Url::to(['/admin/module/list']));
     }
 
     public function actionList()
     {
-
-        $installedModules = Yii::app()->moduleManager->getInstalledModules();
-        ModuleManager::flushCache();
-
-        $this->render('list', array('installedModules' => $installedModules));
+        $installedModules = Yii::$app->moduleManager->getInstalledModules();
+        return $this->render('list', array('installedModules' => $installedModules));
     }
 
     /**
@@ -73,8 +68,8 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
-        $module = Yii::app()->moduleManager->getModule($moduleId);
+        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
@@ -82,7 +77,7 @@ class ModuleController extends Controller
 
         $module->enable();
 
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));
+        $this->redirect(Yii::$app->createUrl('admin/module/list'));
     }
 
     /**
@@ -95,8 +90,8 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
-        $module = Yii::app()->moduleManager->getModule($moduleId);
+        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
@@ -104,7 +99,7 @@ class ModuleController extends Controller
 
         $module->disable();
 
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));
+        $this->redirect(Yii::$app->createUrl('admin/module/list'));
     }
 
     /**
@@ -115,15 +110,15 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->getQuery('moduleId');
 
-        if (!Yii::app()->moduleManager->isInstalled($moduleId)) {
+        if (!Yii::$app->moduleManager->isInstalled($moduleId)) {
             $onlineModules = new OnlineModuleManager();
             $onlineModules->install($moduleId);
         }
 
         // Redirect to Module Install?
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));
+        $this->redirect(Yii::$app->createUrl('admin/module/list'));
     }
 
     /**
@@ -136,11 +131,11 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->getQuery('moduleId');
 
-        if (Yii::app()->moduleManager->isInstalled($moduleId)) {
+        if (Yii::$app->moduleManager->isInstalled($moduleId)) {
 
-            $module = Yii::app()->moduleManager->getModule($moduleId);
+            $module = Yii::$app->moduleManager->getModule($moduleId);
 
             if ($module == null) {
                 throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
@@ -152,7 +147,7 @@ class ModuleController extends Controller
 
             $module->uninstall();
         }
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));
+        $this->redirect(Yii::$app->createUrl('admin/module/list'));
     }
 
     /**
@@ -165,21 +160,21 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
-        $module = Yii::app()->moduleManager->getModule($moduleId);
+        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
-        if (!Yii::app()->moduleManager->canUninstall($moduleId)) {
+        if (!Yii::$app->moduleManager->canUninstall($moduleId)) {
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not uninstall module first! Module is protected.'));
         }
 
         $onlineModules = $this->getOnlineModuleManager();
         $onlineModules->update($moduleId);
 
-        $this->redirect(Yii::app()->createUrl('admin/module/list'));
+        $this->redirect(Yii::$app->createUrl('admin/module/list'));
     }
 
     /**
@@ -187,7 +182,7 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
-        $keyword = Yii::app()->request->getParam('keyword', "");
+        $keyword = Yii::$app->request->get('keyword', "");
 
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules();
@@ -202,7 +197,7 @@ class ModuleController extends Controller
             $modules = $results;
         }
 
-        $this->render('listOnline', array('modules' => $modules, 'keyword' => $keyword));
+        return $this->render('listOnline', array('modules' => $modules, 'keyword' => $keyword));
     }
 
     /**
@@ -213,7 +208,7 @@ class ModuleController extends Controller
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModuleUpdates();
 
-        $this->render('listUpdates', array('modules' => $modules));
+        return $this->render('listUpdates', array('modules' => $modules));
     }
 
     /**
@@ -224,8 +219,8 @@ class ModuleController extends Controller
     public function actionInfo()
     {
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
-        $module = Yii::app()->moduleManager->getModule($moduleId);
+        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
@@ -248,8 +243,8 @@ class ModuleController extends Controller
     public function actionSetAsDefault()
     {
 
-        $moduleId = Yii::app()->request->getQuery('moduleId');
-        $module = Yii::app()->moduleManager->getModule($moduleId);
+        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
             throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
@@ -285,7 +280,7 @@ class ModuleController extends Controller
         if (isset($_POST['ModuleSetAsDefaultForm'])) {
 
 
-            $_POST['ModuleSetAsDefaultForm'] = Yii::app()->input->stripClean($_POST['ModuleSetAsDefaultForm']);
+            $_POST['ModuleSetAsDefaultForm'] = Yii::$app->input->stripClean($_POST['ModuleSetAsDefaultForm']);
             $model->attributes = $_POST['ModuleSetAsDefaultForm'];
 
             if ($model->validate()) {

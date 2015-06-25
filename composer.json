@@ -19,7 +19,11 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "raoul2000/yii2-jcrop-widget": "*",
-        "yiisoft/yii2-jui": "^2.0"
+        "yiisoft/yii2-jui": "^2.0",
+        "zendframework/zend-http": "*"
+    },
+    "suggest": {
+        "zendframework/zend-ldap": "LDAP authentication"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

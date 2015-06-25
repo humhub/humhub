@@ -3,7 +3,7 @@
         class="panel-heading"><?php echo Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
     <div class="panel-body">
 
-        <?php echo $this->renderPartial('_header'); ?>
+        <?php echo $this->render('_header'); ?>
 
         <?php if (count($installedModules) == 0): ?>
             <br>
@@ -48,7 +48,7 @@
                             &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Enable'), array('//admin/module/enable', 'moduleId' => $moduleId), array('style' => 'font-weight:bold', 'class' => 'process')); ?>
                         <?php endif; ?>
 
-                        <?php if (Yii::app()->moduleManager->canUninstall($moduleId)): ?>
+                        <?php if (Yii::$app->moduleManager->canUninstall($moduleId)): ?>
                             &middot; <?php echo HHtml::postLink(Yii::t('AdminModule.views_module_list', 'Uninstall'), array('//admin/module/uninstall', 'moduleId' => $moduleId), array('confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module related data and files will be lost!'))); ?>
                         <?php endif; ?>
 
