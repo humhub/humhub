@@ -37,7 +37,7 @@
                 <?php echo $content; ?><br>
 
                 <!-- show time -->
-                <?php echo HHtml::timeago($activity->content->created_at); ?>
+                <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $activity->content->created_at]); ?>
             </div>
         </div>
         <?php if ($this->wallEntryId != 0) : ?></a><?php endif; ?>

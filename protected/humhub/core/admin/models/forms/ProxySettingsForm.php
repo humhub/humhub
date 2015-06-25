@@ -1,9 +1,14 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  */
-class ProxySettingsForm extends CFormModel {
+class ProxySettingsForm extends \yii\base\Model
+{
 
     public $enabled;
     public $server;
@@ -15,11 +20,12 @@ class ProxySettingsForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
 
         return array(
-            array('enabled, server, user, password, noproxy', 'length', 'max'=>255),
-            array('port', 'numerical', 'integerOnly' => true, 'max'=>65535, 'min'=>1),
+            array(['enabled', 'server', 'user', 'password', 'noproxy'], 'string', 'max' => 255),
+            array(['port'], 'integer', 'max' => 65535, 'min' => 1),
         );
     }
 
@@ -28,7 +34,8 @@ class ProxySettingsForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'enabled' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Enabled'),
             'server' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Server'),

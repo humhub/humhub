@@ -1,10 +1,16 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+use yii\base\Model;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class CacheSettingsForm extends CFormModel {
+class CacheSettingsForm extends \yii\base\Model
+{
 
     public $type;
     public $expireTime;
@@ -12,12 +18,13 @@ class CacheSettingsForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
-            array('type, expireTime', 'required'),
+            array(['type', 'expireTime'], 'required'),
             array('type', 'checkCacheType'),
-            array('expireTime', 'numerical', 'integerOnly' => true),
-            array('type', 'in', 'range'=>array('CDummyCache','CFileCache', 'CDbCache', 'CApcCache')),
+            array('expireTime', 'integer'),
+            array('type', 'in', 'range' => array_keys($this->getTypes())),
         );
     }
 
@@ -26,22 +33,33 @@ class CacheSettingsForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
-            'type' => Yii::t('AdminModule.forms_CacheSettingsForm', 'Cache Backend'),
-            'expireTime' => Yii::t('AdminModule.forms_CacheSettingsForm', 'Default Expire Time (in seconds)'),
+            'type' => \Yii::t('app', 'Cache Backend'),
+            'expireTime' => \Yii::t('app', 'Default Expire Time (in seconds)'),
         );
     }
 
-    public function checkCacheType($attribute, $params) {
+    public function getTypes()
+    {
+        return array(
+            'CDummyCache' => \Yii::t('app', 'No caching (Testing only!)'),
+            'CFileCache' => \Yii::t('app', 'File'),
+            'CDbCache' => \Yii::t('app', 'Database'),
+            'CApcCache' => \Yii::t('app', 'APC'),
+        );
+    }
+
+    public function checkCacheType($attribute, $params)
+    {
         if ($this->type == 'CApcCache' && !function_exists('apc_add')) {
-            $this->addError($attribute, Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC Extension missing - Type not available!"));
+            $this->addError($attribute, \Yii::t('app', "PHP APC Extension missing - Type not available!"));
         }
 
         if ($this->type == 'CDbCache' && !class_exists('SQLite3')) {
-            $this->addError($attribute, Yii::t('AdminModule.forms_CacheSettingsForm', "PHP SQLite3 Extension missing - Type not available!"));
+            $this->addError($attribute, \Yii::t('app', "PHP SQLite3 Extension missing - Type not available!"));
         }
-
     }
 
 }

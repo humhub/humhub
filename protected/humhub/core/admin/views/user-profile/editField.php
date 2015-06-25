@@ -8,10 +8,9 @@
 
     <div class="panel-body">
 
-
-        <?php
-        echo $form;
-        ?>
+        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+        <?php echo $hForm->render($form); ?>
+        <?php \yii\widgets\ActiveForm::end(); ?>
 
     </div>
 </div>
@@ -23,18 +22,25 @@
      * Switcher for Sub Forms (FormField Type)
      */
 
-        // Hide all Subforms for types
+    // Hide all Subforms for types
     $(".fieldTypeSettings").hide();
 
-    // Display only the current selected type form
-    $("." + $("#ProfileField_field_type_class").val()).show();
+    showTypeSettings = $("#profilefield-field_type_class").val();
+    showTypeSettings = showTypeSettings.replace(/[\\]/g, '_');
 
-    $("#ProfileField_field_type_class").on('change', function () {
+
+    // Display only the current selected type form
+    $("." + showTypeSettings).show();
+
+    $("#profilefield-field_type_class").on('change', function () {
         // Hide all Subforms for types
         $(".fieldTypeSettings").hide();
 
         // Show Current Selected
-        $("." + $("#ProfileField_field_type_class").val()).show();
+        showTypeSettings = $("#profilefield-field_type_class").val();
+        showTypeSettings = showTypeSettings.replace(/[\\]/g, '_');
+        console.log(showTypeSettings);
+        $("." + showTypeSettings).show();
     });
 
 

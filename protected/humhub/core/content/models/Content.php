@@ -6,6 +6,13 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\content\models;
+
+use Yii;
+use yii\base\Exception;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Space;
+
 /**
  * This is the model class for table "content".
  *
@@ -27,7 +34,7 @@
  * @package humhub.models
  * @since 0.5
  */
-class Content extends CActiveRecord
+class Content extends \humhub\components\ActiveRecord
 {
 
     /**
@@ -57,83 +64,42 @@ class Content extends CActiveRecord
      */
     protected $_container = null;
 
-    /**
-     * Inits the content record
-     */
-    public function init()
-    {
-
-        parent::init();
-
-        // Intercept this controller
-        Yii::app()->interceptor->intercept($this);
-    }
-
-    /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return Content the static model class
-     */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
     public function behaviors()
     {
-        return array(
-            'HUnderlyingObjectBehavior' => array(
-                'class' => 'application.behaviors.HUnderlyingObjectBehavior',
+        return [
+            [
+                'class' => \humhub\components\behaviors\UnderlyingObject::className(),
                 'mustBeInstanceOf' => array('HActiveRecordContent'),
-            ),
-            'HGuidBehavior' => array(
-                'class' => 'application.behaviors.HGuidBehavior',
-            ),
-        );
+            ],
+            [
+                'class' => \humhub\components\behaviors\GUID::className(),
+            ],
+        ];
     }
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
-    public function tableName()
+    public static function tableName()
     {
         return 'content';
     }
 
     /**
-     * Rules to validate content model
-     *
-     * Note: object_id, object_model, user_id are required but validated manually before save.
-     *
-     * @return array validation rules for model attributes.
+     * @inheritdoc
      */
     public function rules()
     {
-        return array(
-            array('guid', 'required'),
-            array('guid', 'length', 'max' => 45),
-            array('object_id, visibility, sticked, space_id, user_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('object_model', 'length', 'max' => 100),
-            array('visibility', 'validateVisibility'),
-            array('archived, created_at, updated_at', 'safe'),
-        );
-    }
-
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        return array(
-            'wallEntries' => array(self::HAS_MANY, 'WallEntry', 'content_id'),
-            'space' => array(self::BELONGS_TO, 'Space', 'space_id'),
-            'user' => array(self::BELONGS_TO, 'User', 'user_id', 'alias' => 'user'),
-        );
+        return [
+            [['object_id', 'visibility', 'sticked', 'space_id', 'user_id', 'created_by', 'updated_by'], 'integer'],
+            [['archived'], 'string'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['guid'], 'string', 'max' => 45],
+            [['object_model'], 'string', 'max' => 100],
+            [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
+            [['visibility'], 'validateVisibility'],
+            [['guid'], 'unique']
+        ];
     }
 
     /**
@@ -158,6 +124,16 @@ class Content extends CActiveRecord
         );
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'user_id']);
+    }
+
+    public function getSpace()
+    {
+        return $this->hasOne(\humhub\core\space\models\Space::className(), ['id' => 'space_id']);
+    }
+
     /**
      * Returns a Content Object by given Class and ID
      *
@@ -166,23 +142,20 @@ class Content extends CActiveRecord
      */
     static function Get($className, $id)
     {
-
-        $content = Content::model()->findByAttributes(array('object_model' => $className, 'object_id' => $id));
-
+        $content = self::findOne(['object_model' => $className, 'object_id' => $id]);
         if ($content != null)
-            return $className::model()->findByPk($id);
+            return $className::findOne(['id' => $id]);
 
         return null;
     }
 
-    protected function beforeSave()
+    public function beforeSave($insert)
     {
-
         if ($this->object_model == "" || $this->object_id == "")
-            throw new CException("Could not save content with object_model or object_id!");
+            throw new Exception("Could not save content with object_model or object_id!");
 
         if ($this->user_id == "")
-            throw new CException("Could not save content without user_id!");
+            throw new Exception("Could not save content without user_id!");
 
 
         // Set some default values
@@ -197,10 +170,10 @@ class Content extends CActiveRecord
         }
 
 
-        return parent::beforeSave();
+        return parent::beforeSave($insert);
     }
 
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
 
         // Loop over each eall entry and make sure its update_at / update_by
@@ -215,10 +188,10 @@ class Content extends CActiveRecord
                 $this->getUnderlyingObject()->follow($user->id);
 
                 // Fire Notification to user
-                $notification = new Notification();
+                $notification = new \humhub\corenotification\models\Notification();
                 $notification->class = "ContentCreatedNotification";
                 $notification->user_id = $user->id;
-                if (get_class($this->container) == 'Space') {
+                if ($this->container->className() == Space::className()) {
                     $notification->space_id = $this->container->id;
                 }
                 $notification->source_object_model = $this->object_model;
@@ -229,9 +202,9 @@ class Content extends CActiveRecord
             }
         }
 
-        File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
+        //File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
 
-        return parent::afterSave();
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -269,12 +242,12 @@ class Content extends CActiveRecord
     {
 
         if ($userId == "")
-            $userId = Yii::app()->user->id;
+            $userId = Yii::$app->user->id;
 
         if ($this->created_by == $userId)
             return true;
 
-        if (Yii::app()->user->isAdmin()) {
+        if (Yii::$app->user->isAdmin()) {
             return true;
         }
 
@@ -295,11 +268,11 @@ class Content extends CActiveRecord
     {
 
         if ($userId == "")
-            $userId = Yii::app()->user->id;
+            $userId = Yii::$app->user->id;
 
 
         // For guests users
-        if (Yii::app()->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             if ($this->visibility == 1) {
                 if ($this->container instanceof Space) {
                     if ($this->container->visibility == Space::VISIBILITY_ALL) {
@@ -319,10 +292,10 @@ class Content extends CActiveRecord
             if ($this->space_id != "") {
 
                 $space = null;
-                if (isset(Yii::app()->params['currentSpace']) && Yii::app()->params['currentSpace']->id == $this->space_id) {
-                    $space = Yii::app()->params['currentSpace'];
+                if (isset(Yii::$app->params['currentSpace']) && Yii::$app->params['currentSpace']->id == $this->space_id) {
+                    $space = Yii::$app->params['currentSpace'];
                 } else {
-                    $space = Space::model()->findByPk($this->space_id);
+                    $space = Space::findOne(['id' => $this->space_id]);
                 }
 
                 // Space Found
@@ -351,7 +324,7 @@ class Content extends CActiveRecord
     public function canWrite($userId = "")
     {
         if ($userId == "")
-            $userId = Yii::app()->user->id;
+            $userId = Yii::$app->user->id;
 
         if ($this->created_by == $userId)
             return true;
@@ -421,7 +394,6 @@ class Content extends CActiveRecord
      */
     public function canStick()
     {
-
         if ($this->isArchived()) {
             return false;
         }
@@ -429,7 +401,7 @@ class Content extends CActiveRecord
         if ($this->container instanceof Space) {
             return ($this->container->isAdmin());
         } elseif ($this->container instanceof User) {
-            return (Yii::app()->user->id == $this->container->id);
+            return (Yii::$app->user->id == $this->container->id);
         }
 
         return false;
@@ -467,7 +439,6 @@ class Content extends CActiveRecord
      */
     public function canArchive()
     {
-
         if ($this->container instanceof Space) {
             if ($this->canWrite())
                 return true;
@@ -518,7 +489,6 @@ class Content extends CActiveRecord
      */
     public function addToWall($wallId = 0)
     {
-
         if ($wallId == 0) {
             $contentContainer = $this->getContainer();
             $wallId = $contentContainer->wall_id;
@@ -539,7 +509,7 @@ class Content extends CActiveRecord
      */
     public function getWallEntries()
     {
-        $entries = WallEntry::model()->findAllByAttributes(array('content_id' => $this->id));
+        $entries = WallEntry::findAll(['content_id' => $this->id]);
         return $entries;
     }
 
@@ -572,13 +542,13 @@ class Content extends CActiveRecord
 
     /**
      * Returns the url of this content.
-     * 
+     *
      * By default is returns the url of the wall entry.
-     * 
+     *
      * Optionally it's possible to create an own getUrl method in the underlying
-     * HActiveRecordContent (e.g. Post) to overwrite this behavior. 
+     * HActiveRecordContent (e.g. Post) to overwrite this behavior.
      * e.g. in case there is no wall entry available for this content.
-     * 
+     *
      * @since 0.11.1
      */
     public function getUrl()
@@ -590,17 +560,17 @@ class Content extends CActiveRecord
         $firstWallEntryId = $this->getFirstWallEntryId();
 
         if ($firstWallEntryId == "") {
-            throw new CException("Could not create url for content!");
+            throw new Exception("Could not create url for content!");
         }
 
-        return Yii::app()->createUrl('//wall/perma/wallEntry', array('id' => $firstWallEntryId));
+        return \yii\helpers\Url::toRoute(['/wall/perma/wallEntry', 'id' => $firstWallEntryId]);
     }
 
     /**
      * Sets container of this content.
      *
      * @param IContentContainer $container
-     * @throws CException
+     * @throws Exception
      */
     public function setContainer($container)
     {
@@ -609,7 +579,7 @@ class Content extends CActiveRecord
         } elseif ($container instanceof User) {
             $this->user_id = $container->id;
         } else {
-            throw new CException("Invalid container type!");
+            throw new Exception("Invalid container type!");
         }
 
         $this->_container = $container;
@@ -620,21 +590,20 @@ class Content extends CActiveRecord
      * This is usally a space or user.
      *
      * @return IContentContainer
-     * @throws CException
+     * @throws Exception
      */
     public function getContainer()
     {
-
         if ($this->_container != null) {
             return $this->_container;
         }
 
         if ($this->space_id != null) {
-            $container = Space::model()->findByPk($this->space_id);
+            $container = Space::findOne(['id' => $this->space_id]);
         } elseif ($this->user_id != null) {
-            $container = User::model()->findByPk($this->user_id);
+            $container = User::findOne(['id' => $this->user_id]);
         } else {
-            throw new CException("Could not determine container type!");
+            throw new Exception("Could not determine container type!");
         }
 
         $this->_container = $container;
@@ -651,25 +620,28 @@ class Content extends CActiveRecord
 
         // Set Content Container
         $contentContainer = null;
-        if (Yii::app()->request->getParam('containerClass') == 'User')
-            $contentContainer = User::model()->findByAttributes(array('guid' => Yii::app()->request->getParam('containerGuid', "")));
-        elseif (Yii::app()->request->getParam('containerClass') == 'Space')
-            $contentContainer = Space::model()->findByAttributes(array('guid' => Yii::app()->request->getParam('containerGuid', "")));
+        $containerClass = Yii::$app->request->post('containerClass');
+        $containerGuid = Yii::$app->request->post('containerGuid', "");
+
+        if ($containerClass === User::className())
+            $contentContainer = User::findOne(['guid' => $containerGuid]);
+        elseif ($containerClass === Space::className())
+            $contentContainer = Space::findOne(['guid' => $containerGuid]);
 
         $this->container = $contentContainer;
 
-        if (get_class($this->container) == 'Space') {
-            $this->visibility = Yii::app()->request->getParam('visibility');
-        } elseif (get_class($this->container) == 'User') {
+        if ($this->className() === Space::className()) {
+            $this->visibility = Yii::$app->request->post('visibility');
+        } elseif ($this->className() === User::className()) {
             $this->visibility = 1;
         }
 
         // Handle Notify User Features of ContentFormWidget
         // ToDo: Check permissions of user guids
-        $userGuids = Yii::app()->request->getParam('notifyUserInput');
+        $userGuids = Yii::$app->request->post('notifyUserInput');
         if ($userGuids != "") {
             foreach (explode(",", $userGuids) as $guid) {
-                $user = User::model()->findByAttributes(array('guid' => trim($guid)));
+                $user = User::findOne(['guid' => trim($guid)]);
                 if ($user) {
                     $this->notifyUsersOfNewContent[] = $user;
                 }
@@ -677,7 +649,7 @@ class Content extends CActiveRecord
         }
 
         // Store List of attached Files to add them after Save
-        $this->attachFileGuidsAfterSave = Yii::app()->request->getParam('fileList');
+        //$this->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
     }
 
     public function beforeValidate()
@@ -692,8 +664,7 @@ class Content extends CActiveRecord
 
     public function validateVisibility()
     {
-
-        if (get_class($this->container) == 'Space') {
+        if ($this->container->className() == \humhub\core\space\models\Space::className()) {
             if (!$this->container->canShare() && $this->visibility) {
                 $this->addError('visibility', Yii::t('base', 'You cannot create public visible content!'));
             }

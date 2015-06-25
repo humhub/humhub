@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * The Admin Navigation for spaces
  *
@@ -7,11 +12,11 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceAdminMenuWidget extends MenuWidget
+class SpaceAdminMenuWidget extends \humhub\widgets\BaseMenu
 {
 
     public $space;
-    public $template = "application.widgets.views.leftNavigation";
+    public $template = "@humhub/widgets/views/leftNavigation";
 
     public function init()
     {
@@ -21,7 +26,7 @@ class SpaceAdminMenuWidget extends MenuWidget
          * controller.
          */
         if ($this->space === null) {
-            $this->space = Yii::app()->getController()->getSpace();
+            $this->space = Yii::$app->getController()->getSpace();
         }
 
 
@@ -36,10 +41,10 @@ class SpaceAdminMenuWidget extends MenuWidget
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'General'),
                 'group' => 'admin',
-                'url' => $this->space->createUrl('//space/admin/edit'),
+                'url' => $this->space->createUrl('/space/admin/edit'),
                 'icon' => '<i class="fa fa-cogs"></i>',
                 'sortOrder' => 100,
-                'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "edit"),
+                'isActive' => (Yii::$app->controller->id == "admin" && Yii::$app->controller->action->id == "edit"),
             ));
         }
 
@@ -48,10 +53,10 @@ class SpaceAdminMenuWidget extends MenuWidget
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
                 'group' => 'admin',
-                'url' => $this->space->createUrl('//space/admin/members'),
+                'url' => $this->space->createUrl('/space/admin/members'),
                 'icon' => '<i class="fa fa-group"></i>',
                 'sortOrder' => 200,
-                'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "members"),
+                'isActive' => (Yii::$app->controller->id == "admin" && Yii::$app->controller->action->id == "members"),
             ));
         }
 
@@ -63,7 +68,7 @@ class SpaceAdminMenuWidget extends MenuWidget
                 'url' => $this->space->createUrl('//space/admin/modules'),
                 'icon' => '<i class="fa fa-rocket"></i>',
                 'sortOrder' => 300,
-                'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "modules"),
+                'isActive' => (Yii::$app->controller->id == "admin" && Yii::$app->controller->action->id == "modules"),
             ));
         }
 

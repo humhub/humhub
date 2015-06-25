@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * This widget will added to the sidebar, when on admin area
  *
@@ -7,12 +12,13 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceChangeImageWidget extends HWidget {
+class SpaceChangeImageWidget extends HWidget
+{
 
-    public function run() {
+    public function run()
+    {
 
         $this->render('changeImage', array(
-
         ));
     }
 

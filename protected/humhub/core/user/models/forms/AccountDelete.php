@@ -18,39 +18,41 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\user\models\forms;
+
+use Yii;
+
 /**
- * UploadProfileImageForm allows uploads of profile images.
+ * Form Model for account deletion
  *
- * Profile images will used by spaces or users.
- *
- * @package humhub.forms
+ * @package humhub.modules_core.user.forms
  * @since 0.5
  */
-class UploadProfileImageForm extends CFormModel {
+class AccountDelete extends \yii\base\Model
+{
 
-    /**
-     * @var String uploaded image
-     */
-    public $image;
+    public $currentPassword;
 
     /**
      * Declares the validation rules.
-     *
-     * @return Array Validation Rules
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
-            array('image', 'required'),
-            array('image', 'file', 'types' => 'jpg, png, jpeg, tiff', 'maxSize' => 3 * 1024 * 1024),
+            array('currentPassword', 'required'),
+            array('currentPassword', \humhub\core\user\components\CheckPasswordValidator::className()),
         );
     }
 
     /**
-     * Declares attribute labels.
+     * Declares customized attribute labels.
+     * If not declared here, an attribute would have a label that is
+     * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
-            'image' => Yii::t('base', 'New profile image'),
+            'currentPassword' => Yii::t('UserModule.forms_AccountDeleteForm', 'Your password'),
         );
     }
 

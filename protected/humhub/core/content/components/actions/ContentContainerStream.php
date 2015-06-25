@@ -18,15 +18,20 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\components\actions;
+
+use Yii;
+use humhub\core\content\models\Content;
+
 /**
  * ContentContainerStreamAction
  * Used to stream contents of a specific a content container.
- * 
+ *
  * @since 0.11
  * @package humhub.modules_core.wall
  * @author luke
  */
-class ContentContainerStreamAction extends BaseStreamAction
+class ContentContainerStream extends Stream
 {
 
     public $contentContainer;
@@ -37,17 +42,18 @@ class ContentContainerStreamAction extends BaseStreamAction
 
         // Get Content Container by Param
         if ($this->contentContainer->wall_id != "") {
-            $this->criteria->condition .= " AND wall_entry.wall_id = ".$this->contentContainer->wall_id;
+            $this->activeQuery->andWhere("wall_entry.wall_id = " . $this->contentContainer->wall_id);
         } else {
-            Yii::log("No wall id for content container ".get_class($this->contentContainer)." - ".$this->contentContainer->getPrimaryKey()." set - stopped stream action!", CLogger::LEVEL_ERROR);
-            $this->criteria->condition .= " AND 1=2";
+            Yii::warning("No wall id for content container " . get_class($this->contentContainer) . " - " . $this->contentContainer->getPrimaryKey() . " set - stopped stream action!");
+            // Block further execution
+            $this->activeQuery->andWhere("1=2");
         }
-        
+
         /**
          * Limit to public posts when no member
          */
         if (!$this->contentContainer->canAccessPrivateContent($this->user)) {
-            $this->criteria->condition .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
+            $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC);
         }
 
         /**
@@ -55,9 +61,13 @@ class ContentContainerStreamAction extends BaseStreamAction
          */
         if ($this->limit != 1) {
             if ($this->from == '') {
-                $this->criteria->order = "content.sticked DESC, " . $this->criteria->order;
+                $oldOrder = $this->activeQuery->orderBy;
+                $this->activeQuery->orderBy("");
+
+                $this->activeQuery->addOrderBy('content.sticked DESC');
+                $this->activeQuery->addOrderBy($oldOrder);
             } else {
-                $this->criteria->condition .= " AND (content.sticked != 1 OR content.sticked is NULL)";
+                $this->activeQuery->andWhere("(content.sticked != 1 OR content.sticked is NULL)");
             }
         }
     }

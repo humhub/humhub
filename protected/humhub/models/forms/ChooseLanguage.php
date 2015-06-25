@@ -1,6 +1,11 @@
 <?php
 
-class ChooseLanguageForm extends CFormModel
+namespace humhub\models\forms;
+
+use Yii;
+use yii\base\Model;
+
+class ChooseLanguage extends Model
 {
 
     public $language;
@@ -13,7 +18,7 @@ class ChooseLanguageForm extends CFormModel
     public function rules()
     {
         return array(
-            array('language', 'in', 'range' => array_keys(Yii::app()->params['availableLanguages'])),
+            array('language', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])),
         );
     }
 

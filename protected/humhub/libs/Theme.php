@@ -18,35 +18,39 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\libs;
+
 /**
- * Form Model for account deletion
- * 
- * @package humhub.modules_core.user.forms
+ * HTheme is an overwrite of CTheme
+ *
+ * This is caused by our view path for modules is also separated into modules/ folders.
+ *
+ * @author Lucas Bartholemy <lucas@bartholemy.com>
+ * @package humhub.components
  * @since 0.5
  */
-class AccountDeleteForm extends CFormModel {
-
-    public $currentPassword;
-
-    /**
-     * Declares the validation rules.
-     */
-    public function rules() {
-        return array(
-            array('currentPassword', 'required'),
-            array('currentPassword', 'CheckPasswordValidator'),
-        );
-    }
+class Theme extends \yii\base\Object
+{
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * Returns an array of all installed themes.
+     *
+     * @return Array
      */
-    public function attributeLabels() {
-        return array(
-            'currentPassword' => Yii::t('UserModule.forms_AccountDeleteForm', 'Your password'),
-        );
+    public static function getThemes()
+    {
+        $themes = array();
+        $themePath = \Yii::getAlias('@webroot/themes');
+
+        foreach (scandir($themePath) as $file) {
+            if ($file == "." || $file == ".." || !is_dir($themePath . DIRECTORY_SEPARATOR . $file)) {
+                continue;
+            }
+            $themes[$file] = $file;
+        }
+        return $themes;
     }
 
 }
+
+?>

@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class AuthenticationSettingsForm extends CFormModel
+class AuthenticationSettingsForm extends \yii\base\Model
 {
 
     public $internalAllowAnonymousRegistration;
@@ -21,11 +25,11 @@ class AuthenticationSettingsForm extends CFormModel
     public function rules()
     {
         return array(
-            array('internalUsersCanInvite, internalAllowAnonymousRegistration, internalRequireApprovalAfterRegistration, allowGuestAccess', 'safe'),
-            array('defaultUserGroup', 'exist', 'attributeName' => 'id', 'className' => 'Group', 'allowEmpty' => true),
-            array('defaultUserProfileVisibility', 'numerical'),
-            array('defaultUserIdleTimeoutSec', 'numerical', 'integerOnly' => true, 'min' => 20),
-            array('defaultUserIdleTimeoutSec', 'length', 'max' => 10)
+            array(['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess'], 'boolean'),
+            array('defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\core\user\models\Group::className()),
+            array('defaultUserProfileVisibility', 'boolean'),
+            array('defaultUserIdleTimeoutSec', 'integer', 'min' => 20),
+            array('defaultUserIdleTimeoutSec', 'string', 'max' => 10)
         );
     }
 

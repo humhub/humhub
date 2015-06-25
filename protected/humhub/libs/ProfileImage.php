@@ -18,6 +18,12 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\libs;
+
+use Yii;
+use yii\helpers\Url;
+use humhub\libs\ImageConverter;
+
 /**
  * ProfileImage is responsible for all profile images.
  *
@@ -81,32 +87,16 @@ class ProfileImage
      */
     public function getUrl($prefix = "")
     {
-
-        $cacheId = 0;
-        $path = "";
-
-        // Workaround for absolute urls in console applications (Cron)
-        if (Yii::app() instanceof CConsoleApplication) {
-            $path = Yii::app()->request->getBaseUrl();
-        } else {
-            $path = Yii::app()->getBaseUrl(true);
-        }
-
-
+        $path = "@web/";
         if (file_exists($this->getPath($prefix))) {
-            $path .= '/uploads/' . $this->folder_images . '/';
+            $path .= 'uploads/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
-	        $path .= '.jpg';
-        } elseif (is_object(Yii::app()->theme)) {
-	        // get default image from theme (if exists)
-	        $path = Yii::app()->theme->getFileUrl('/img/' . $this->defaultImage . '.jpg', true);
+            $path .= '.jpg?m=' . filemtime($this->getPath($prefix));
         } else {
-	        $path .= '/img/' . $this->defaultImage;
-	        $path .= '.jpg';
+            $path .= 'img/' . $this->defaultImage;
+            $path .= '.jpg';
         }
-
-        $path .= '?cacheId=' . $cacheId;
-        return $path;
+        return Url::to($path, Yii::$app->request->isConsoleRequest);
     }
 
     /**
@@ -127,7 +117,7 @@ class ProfileImage
      */
     public function getPath($prefix = "")
     {
-        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
+        $path = Yii::getAlias('@webroot/uploads/' . $this->folder_images . '/');
 
         if (!is_dir($path))
             mkdir($path);
@@ -156,6 +146,7 @@ class ProfileImage
         // Create new destination Image
         $destImage = imagecreatetruecolor($this->width, $this->height);
 
+
         if (!imagecopyresampled($destImage, $image, 0, 0, $x, $y, $this->width, $this->height, $w, $h)) {
             return false;
         }
@@ -171,9 +162,8 @@ class ProfileImage
      */
     public function setNew($file)
     {
-
-        if ($file instanceof CUploadedFile) {
-            $file = $file->getTempName();
+        if ($file instanceof \yii\web\UploadedFile) {
+            $file = $file->tempName;
         }
 
         $this->delete();

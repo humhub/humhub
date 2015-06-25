@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class BasicSettingsForm extends CFormModel
+class BasicSettingsForm extends \yii\base\Model
 {
 
     public $name;
@@ -20,11 +24,11 @@ class BasicSettingsForm extends CFormModel
     public function rules()
     {
         return array(
-            array('name, baseUrl', 'required'),
-            array('name', 'length', 'max' => 150),
-            array('defaultLanguage', 'in', 'range' => array_keys(Yii::app()->params['availableLanguages'])),
+            array(['name', 'baseUrl'], 'required'),
+            array('name', 'string', 'max' => 150),
+            array('defaultLanguage', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
-            array('tour, dashboardShowProfilePostForm', 'in', 'range' => array(0, 1))
+            array(['tour', 'dashboardShowProfilePostForm'], 'in', 'range' => array(0, 1))
         );
     }
 
@@ -58,7 +62,7 @@ class BasicSettingsForm extends CFormModel
 
             foreach (explode(',', $this->defaultSpaceGuid) as $spaceGuid) {
                 if ($spaceGuid != "") {
-                    $space = Space::model()->findByAttributes(array('guid' => $spaceGuid));
+                    $space = \humhub\core\space\models\Space::findOne(array('guid' => $spaceGuid));
                     if ($space == null) {
                         $this->addError($attribute, Yii::t('AdminModule.forms_BasicSettingsForm', "Invalid space"));
                     }

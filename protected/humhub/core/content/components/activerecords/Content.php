@@ -18,6 +18,11 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\components\activerecords;
+
+use Yii;
+use humhub\components\ActiveRecord;
+
 /**
  * HActiveRecordContent is the base AR for all content records.
  *
@@ -40,17 +45,8 @@
  * @package humhub.components
  * @since 0.5
  */
-class HActiveRecordContent extends HActiveRecord
+class Content extends ActiveRecord
 {
-
-    /**
-     * Scopes for User Related selector
-     */
-    const SCOPE_USER_RELEATED_MINE = 1;
-    const SCOPE_USER_RELEATED_SPACES = 2;
-    const SCOPE_USER_RELEATED_FOLLOWED_SPACES = 3;
-    const SCOPE_USER_RELEATED_FOLLOWED_USERS = 4;
-    const SCOPE_USER_RELEATED_OWN_PROFILE = 5;
 
     /**
      * Should this content automatically added to the wall.
@@ -62,7 +58,7 @@ class HActiveRecordContent extends HActiveRecord
     /**
      * Corresponding Content ActiveRecord
      *
-     * @var Content
+     * @var \humhub\core\content\models\Content
      */
     public $content = null;
 
@@ -76,20 +72,13 @@ class HActiveRecordContent extends HActiveRecord
      */
     public $wallEditRoute = "";
 
-    /**
-     * Constructor
-     *
-     * @param type $scenario
-     */
-    public function __construct($scenario = 'insert')
+    public function init()
     {
-        $this->content = new Content();
+        parent::init();
+        $this->content = new \humhub\core\content\models\Content();
         $this->content->setUnderlyingObject($this);
-        parent::__construct($scenario);
 
-        $this->attachBehavior('HFollowableBehavior', array(
-            'class' => 'application.modules_core.user.behaviors.HFollowableBehavior',
-        ));
+        $this->attachBehavior('FollowableBehavior', \humhub\core\user\behaviors\Followable::className());
     }
 
     /**
@@ -125,12 +114,12 @@ class HActiveRecordContent extends HActiveRecord
 
     public function afterFind()
     {
-        $this->content = Content::model()->findByAttributes(array('object_model' => get_class($this), 'object_id' => $this->getPrimaryKey()));
-        
+        $this->content = \humhub\core\content\models\Content::findOne(['object_model' => $this->className(), 'object_id' => $this->getPrimaryKey()]);
+
         if ($this->content !== null) {
             $this->content->setUnderlyingObject($this);
-       }
- 
+        }
+
         parent::afterFind();
     }
 
@@ -153,16 +142,16 @@ class HActiveRecordContent extends HActiveRecord
      * this (parent) implementation is invoked BEFORE your implementation. Otherwise
      * the Content Object is not available.
      */
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         // Auto follow this content
-        if (get_class($this) != 'Activity') {
+        if ($this->className() != \humhub\core\activity\models\Activity::className()) {
             $this->follow($this->created_by);
         }
 
-        if ($this->isNewRecord) {
+        if ($insert) {
             $this->content->user_id = $this->created_by;
-            $this->content->object_model = get_class($this);
+            $this->content->object_model = $this->className();
             $this->content->object_id = $this->getPrimaryKey();
             $this->content->created_at = $this->created_at;
             $this->content->created_by = $this->created_by;
@@ -172,25 +161,19 @@ class HActiveRecordContent extends HActiveRecord
         $this->content->updated_by = $this->updated_by;
 
         $this->content->save();
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
 
-        if ($this->isNewRecord && $this->autoAddToWall) {
+        if ($insert && $this->autoAddToWall) {
             $this->content->addToWall();
         }
 
         // When Space Content, update also last visit
         if ($this->content->space_id) {
-            $membership = $this->content->space->getMembership(Yii::app()->user->id);
+            $membership = $this->content->space->getMembership();
             if ($membership) {
                 $membership->updateLastVisit();
             }
         }
-
-    }
-
-    public function beforeValidate()
-    {
-        return parent::beforeValidate();
     }
 
     public function afterValidate()
@@ -211,7 +194,7 @@ class HActiveRecordContent extends HActiveRecord
             return parent::getErrors($attribute);
         }
 
-        return CMap::mergeArray(parent::getErrors(), $this->content->getErrors());
+        return \yii\helpers\ArrayHelper::merge(parent::getErrors(), $this->content->getErrors());
     }
 
     public function validate($attributes = null, $clearErrors = true)
@@ -229,82 +212,6 @@ class HActiveRecordContent extends HActiveRecord
 
         return parent::hasErrors() || $this->content->hasErrors();
     }
-
-    /**
-     * Scope to limit returned content to given content container.
-     * It also respects visibility of content against current user.
-     *
-     * @param HActiveRecordContentContainer $container
-     */
-    public function contentContainer($container)
-    {
-        if ($container == null) {
-            throw new CException("No container given!");
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
-
-        if ($container instanceof Space) {
-            $criteria->join .= " LEFT JOIN space_membership ON content.space_id=space_membership.space_id AND space_membership.user_id=:userId";
-            $criteria->condition = "content.space_id=" . $container->id;
-            $criteria->condition .= " AND ((space_membership.status=3 AND content.visibility=0) OR content.visibility=1)";
-        } elseif ($container instanceof User) {
-            $criteria->condition = 'content.user_id=' . $container->id . ' AND (content.space_id="" OR content.space_id IS NULL)';
-            $criteria->condition .= ' AND (content.user_id=:userId OR content.visibility=1)';
-        } else {
-            throw new CException("Could not determine container type!");
-        }
-
-        $criteria->params[':userId'] = Yii::app()->user->id;
-        $this->getDbCriteria()->mergeWith($criteria);
-
-        return $this;
-    }
-
-    /**
-     * Scope to find user related content accross content containers.
-     *
-     * @since 0.9
-     * @param array $includes Array of self::SCOPE_USER_RELATED_*.
-     */
-    public function userRelated($includes = array(HActiveRecordContent::SCOPE_USER_RELEATED_FOLLOWED_SPACES))
-    {
-        $criteria = new CDbCriteria();
-        $criteria->join = "LEFT JOIN content ON content.object_model='" . get_class($this) . "' AND content.object_id=t." . $this->tableSchema->primaryKey;
-
-        // Attach selectors
-        $selectorSql = array();
-
-        if (in_array(HActiveRecordContent::SCOPE_USER_RELEATED_MINE, $includes)) {
-            $selectorSql[] = 'content.user_id=' . Yii::app()->user->id;
-        }
-
-        if (in_array(HActiveRecordContent::SCOPE_USER_RELEATED_OWN_PROFILE, $includes)) {
-            $selectorSql[] = 'content.user_id=' . Yii::app()->user->id . ' and content.space_id IS NULL';
-        }
-        if (in_array(self::SCOPE_USER_RELEATED_SPACES, $includes)) {
-            $selectorSql[] = 'content.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
-        }
-        if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_SPACES, $includes)) {
-            $selectorSql[] = 'content.visibility=1 AND content.space_id IN (SELECT object_id FROM user_follow sf WHERE sf.object_model="Space" AND sf.user_id=' . Yii::app()->user->id . ')';
-        }
-        if (in_array(self::SCOPE_USER_RELEATED_FOLLOWED_USERS, $includes)) {
-            $selectorSql[] = 'content.visibility=1 AND content.space_id IS NULL AND content.user_id IN (SELECT object_id FROM user_follow uf WHERE uf.object_model="User" AND uf.user_id=' . Yii::app()->user->id . ')';
-        }
-
-        if (count($selectorSql) != 0) {
-            $criteria->condition .= "(" . join(') OR (', $selectorSql) . ")";
-        } else {
-            // If none valid include is given, ensure returned data is empty
-            $criteria->condition .= " 1=2 ";
-            Yii::log("userRelated Scope called without valid includes!", CLogger::LEVEL_WARNING);
-        }
-
-        $this->getDbCriteria()->mergeWith($criteria);
-        return $this;
-    }
-
 
 }
 

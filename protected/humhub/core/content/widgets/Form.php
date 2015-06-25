@@ -18,12 +18,19 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\widgets;
+
+use Yii;
+use yii\helpers\Url;
+use yii\web\HttpException;
+
 /**
  * Description of ContentFormWidget
  *
  * @author luke
  */
-class ContentFormWidget extends HWidget {
+class Form extends \yii\base\Widget
+{
 
     /**
      * URL to Submit ContentForm to
@@ -33,7 +40,7 @@ class ContentFormWidget extends HWidget {
 
     /**
      *
-     * @var type 
+     * @var type
      */
     public $contentContainer;
 
@@ -42,13 +49,14 @@ class ContentFormWidget extends HWidget {
      */
     protected $form = "";
 
-    public function init() {
+    public function init()
+    {
 
         if ($this->submitButtonText == "")
-            $this->submitButtonText  = Yii::t('WallModule.widgets_ContentFormWidget', 'Submit');
-        
-        if ($this->contentContainer == null || !$this->contentContainer instanceof HActiveRecordContentContainer) {
-            throw new CHttpException(500, "No Content Container given!");
+            $this->submitButtonText = Yii::t('ContentModule.widgets_ContentFormWidget', 'Submit');
+
+        if ($this->contentContainer == null || !$this->contentContainer instanceof \humhub\core\content\components\activerecords\ContentContainer) {
+            throw new HttpException(500, "No Content Container given!");
         }
 
         return parent::init();
@@ -58,31 +66,32 @@ class ContentFormWidget extends HWidget {
      * Renders form and stores output in $form
      * Overwrite me!
      */
-    public function renderForm() {
+    public function renderForm()
+    {
         return "";
     }
 
-    
     /**
      * Checks write permissions
      */
-    protected function hasWritePermission() {
+    protected function hasWritePermission()
+    {
         return $this->contentContainer->canWrite();
     }
-    
-    
-    public function run() {
-        
+
+    public function run()
+    {
+
         if (!$this->hasWritePermission())
             return;
-        
+
         $this->renderForm();
-        
-        $this->render('application.modules_core.wall.widgets.views.contentForm', array(
-            'form' => $this->form,
-            'contentContainer' => $this->contentContainer,
-            'submitUrl' => $this->submitUrl,
-            'submitButtonText' => $this->submitButtonText
+
+        return $this->render('@humhub/core/content/widgets/views/form', array(
+                    'form' => $this->form,
+                    'contentContainer' => $this->contentContainer,
+                    'submitUrl' => $this->submitUrl,
+                    'submitButtonText' => $this->submitButtonText
         ));
     }
 

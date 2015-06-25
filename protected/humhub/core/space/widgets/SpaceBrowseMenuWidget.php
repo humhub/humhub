@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * The Main Navigation for a space. It includes the Modules the Stream
  *
@@ -7,11 +12,13 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceBrowseMenuWidget extends MenuWidget {
+class SpaceBrowseMenuWidget extends MenuWidget
+{
 
     public $template = "application.widgets.views.leftNavigation";
 
-    public function init() {
+    public function init()
+    {
 
         $this->addItemGroup(array(
             'id' => 'browse',

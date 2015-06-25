@@ -18,6 +18,11 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\models\forms;
+
+use Yii;
+use yii\base\Model;
+
 /**
  * CropProfileImageForm is a form for image cropping.
  *
@@ -26,7 +31,8 @@
  * @package humhub.forms
  * @since 0.5
  */
-class CropProfileImageForm extends CFormModel {
+class CropProfileImage extends Model
+{
 
     /**
      * @var Int X Coordinates of the area
@@ -53,10 +59,11 @@ class CropProfileImageForm extends CFormModel {
      *
      * @return Array Validation Rules
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
-            array('cropX, cropY, cropW, cropH', 'numerical', 'integerOnly' => true),
-            array('cropX, cropY, cropW, cropH', 'safe'),
+            array(['cropX', 'cropY', 'cropW', 'cropH'], 'required'),
+            array(['cropX', 'cropY', 'cropW', 'cropH'], 'number'),
         );
     }
 

@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * SpacePickerWidget displays a space picker instead of an input field.
  *
@@ -26,7 +31,7 @@
  * @since 0.5
  * @author Luke
  */
-class SpacePickerWidget extends HWidget
+class SpacePickerWidget extends Widget
 {
 
     /**
@@ -77,11 +82,9 @@ class SpacePickerWidget extends HWidget
      */
     public function init()
     {
-        if ($this->spaceSearchUrl == "")
-            $this->spaceSearchUrl = Yii::app()->getController()->createUrl('//space/browse/searchJson', array('keyword' => '-keywordPlaceholder-'));
 
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/spacepicker.js');
+        //$assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+        //Yii::app()->clientScript->registerScriptFile($assetPrefix . '/spacepicker.js');
     }
 
     /**
@@ -94,8 +97,12 @@ class SpacePickerWidget extends HWidget
             $attribute = $this->attribute;
             $this->value = $this->model->$attribute;
         }
+        
+        if ($this->spaceSearchUrl == "")
+            $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/searchJson', ['keyword'=>'-keywordPlaceholder-']]);
 
-        $this->render('spacePicker', array(
+        
+        return $this->render('spacePicker', array(
             'spaceSearchUrl' => $this->spaceSearchUrl,
             'maxSpaces' => $this->maxSpaces,
             'currentValue' => $this->value,

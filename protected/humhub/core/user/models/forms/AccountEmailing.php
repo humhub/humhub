@@ -18,13 +18,18 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\user\models\forms;
+
+use Yii;
+use humhub\core\user\models\User;
+
 /**
  * Form Model for changing e-mail notification settings
- * 
+ *
  * @package humhub.modules_core.user.forms
  * @since 0.6
  */
-class AccountEmailingForm extends CFormModel
+class AccountEmailing extends \yii\base\Model
 {
 
     public $receive_email_activities;
@@ -37,13 +42,12 @@ class AccountEmailingForm extends CFormModel
     public function rules()
     {
         return array(
-            array('receive_email_activities, receive_email_notifications', 'in',
+            array(['receive_email_activities', 'receive_email_notifications'], 'in',
                 'range' => array(
                     User::RECEIVE_EMAIL_NEVER,
                     User::RECEIVE_EMAIL_DAILY_SUMMARY,
                     User::RECEIVE_EMAIL_WHEN_OFFLINE,
-                    User::RECEIVE_EMAIL_ALWAYS),
-                'allowEmpty' => true
+                    User::RECEIVE_EMAIL_ALWAYS)
             ),
             array('enable_html5_desktop_notifications', 'in', 'range' => array('0', '1')),
         );

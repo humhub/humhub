@@ -1,5 +1,9 @@
 <?php
 
+namespace humhub\core\user\models\forms;
+
+use Yii;
+
 /**
  * HumHub
  * Copyright © 2014 The HumHub Project
@@ -20,11 +24,11 @@
 
 /**
  * Form Model for changing basic account settings
- * 
+ *
  * @package humhub.modules_core.user.forms
  * @since 0.9
  */
-class AccountSettingsForm extends CFormModel
+class AccountSettings extends \yii\base\Model
 {
 
     public $tags;
@@ -38,10 +42,9 @@ class AccountSettingsForm extends CFormModel
     public function rules()
     {
         return array(
-            array('language', 'length', 'max' => 5),
-            array('tags', 'length', 'max' => 100),
-            array('show_introduction_tour, visibility', 'numerical', 'integerOnly' => true),            
-            array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.forms_AccountSettingsForm', 'Invalid language!')),
+            array('tags', 'string', 'max' => 100),
+            array(['show_introduction_tour', 'visibility'], 'boolean'),
+            array('language', 'in', 'range'=>array_keys(Yii::$app->params['availableLanguages'])),
         );
     }
 

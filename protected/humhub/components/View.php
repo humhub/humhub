@@ -8,14 +8,12 @@
 
 namespace humhub\components;
 
-use yii\web\View;
-
 /**
  * Description of WebView
  *
  * @author luke
  */
-class WebView extends View
+class View extends \yii\web\View
 {
 
     public function registerJsVar($name, $value)

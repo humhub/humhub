@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.10
  */
-class OEmbedProviderForm extends CFormModel
+class OEmbedProviderForm extends \yii\base\Model
 {
 
     public $prefix;
@@ -17,7 +21,7 @@ class OEmbedProviderForm extends CFormModel
     {
         return array(
             array('prefix', 'safe'),
-            array('prefix, endpoint', 'required'),
+            array(['prefix', 'endpoint'], 'required'),
             array('endpoint', 'url'),
         );
     }

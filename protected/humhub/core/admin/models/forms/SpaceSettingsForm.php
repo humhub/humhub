@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.10
  */
-class SpaceSettingsForm extends CFormModel
+class SpaceSettingsForm extends \yii\base\Model
 {
 
     public $defaultVisibility;
@@ -16,7 +20,7 @@ class SpaceSettingsForm extends CFormModel
     public function rules()
     {
         return array(
-            array('defaultVisibility, defaultJoinPolicy', 'safe'),
+            array(['defaultVisibility', 'defaultJoinPolicy'], 'integer'),
         );
     }
 

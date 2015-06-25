@@ -63,7 +63,7 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
         'view' => [
-            'class' => '\humhub\components\WebView',
+            'class' => '\humhub\components\View',
             'theme' => [
                 'basePath' => '@webroot/themes/HumHub',
                 'baseUrl' => '@web/themes/HumHub',

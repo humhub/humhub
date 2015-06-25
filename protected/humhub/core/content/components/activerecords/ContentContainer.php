@@ -18,18 +18,22 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\components\activerecords;
+
+use \humhub\components\ActiveRecord;
+
 /**
- * 
+ *
  * Required Attributes:
  *      - wall_id
  *      - guid
- *  
+ *
  * Required Methods:
  *      - getProfileImage()
  *      - getUrl()
- * 
+ *
  */
-class HActiveRecordContentContainer extends HActiveRecord implements IContentContainer
+class ContentContainer extends ActiveRecord
 {
 
     /**
@@ -41,9 +45,9 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
     {
 
         if (get_class($this) == 'Space') {
-            return new ProfileImage($this->guid, 'default_space');
+            return new \humhub\libs\ProfileImage($this->guid, 'default_space');
         }
-        return new ProfileImage($this->guid);
+        return new \humhub\libs\ProfileImage($this->guid);
     }
 
     /**
@@ -54,7 +58,7 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
     public function getProfileBannerImage()
     {
 
-        return new ProfileBannerImage($this->guid);
+        return new \humhub\libs\ProfileBannerImage($this->guid);
     }
 
     /**
@@ -68,7 +72,7 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
     /**
      * Check write permissions on content container.
      * Overwrite this with your own implementation.
-     * 
+     *
      * @param type $userId
      * @return boolean
      */
@@ -80,7 +84,7 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
     /**
      * Creates url in content container scope.
      * E.g. add uguid or sguid parameter to parameters.
-     * 
+     *
      * @param type $route
      * @param type $params
      * @param type $ampersand
@@ -92,7 +96,7 @@ class HActiveRecordContentContainer extends HActiveRecord implements IContentCon
 
     /**
      * Returns the display name of content container
-     * 
+     *
      * @since 0.11.0
      * @return string
      */

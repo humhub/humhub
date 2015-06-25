@@ -1,10 +1,15 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class DesignSettingsForm extends CFormModel {
+class DesignSettingsForm extends \yii\base\Model
+{
 
     public $theme;
     public $paginationSize;
@@ -15,16 +20,17 @@ class DesignSettingsForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
 
-        $themes = HTheme::getThemes();
+        $themes = \humhub\libs\Theme::getThemes();
 
         return array(
-            array('paginationSize', 'numerical', 'integerOnly' => true, 'max'=>200, 'min'=>1),
-            array('theme', 'in', 'range'=>$themes),
-            array('displayName, spaceOrder', 'safe'),
-            array('logo', 'file', 'types' => 'jpg, png, jpeg', 'maxSize' => 3 * 1024 * 1024, 'allowEmpty' => true),
-            array('logo', 'dimensionValidation', 'skipOnError'=> true),
+            array('paginationSize', 'integer', 'max' => 200, 'min' => 1),
+            array('theme', 'in', 'range' => $themes),
+            array(['displayName', 'spaceOrder'], 'safe'),
+            array('logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => 3 * 1024 * 1024),
+            array('logo', 'dimensionValidation', 'skipOnError' => true),
         );
     }
 
@@ -33,7 +39,8 @@ class DesignSettingsForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'theme' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Theme'),
             'paginationSize' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Default pagination size (Entries per page)'),
@@ -52,7 +59,6 @@ class DesignSettingsForm extends CFormModel {
             if ($height < 40)
                 $this->addError('logo', 'Logo size should have at least 40px of height');
         }
-
     }
 
 }

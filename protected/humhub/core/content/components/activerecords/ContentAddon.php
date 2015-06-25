@@ -18,10 +18,14 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\components\activerecords;
+
+use humhub\components\ActiveRecord;
+
 /**
  * HActiveRecordContentAddon is the base active record for content addons.
  *
- * Content addons are content types like Comments, Files or Likes. 
+ * Content addons are content types like Comments, Files or Likes.
  * These are always belongs to a Content object.
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
@@ -33,7 +37,7 @@ class HActiveRecordContentAddon extends HActiveRecord
 
     /**
      * Content object which this addon belongs to
-     * 
+     *
      * @var Content
      */
     private $_content;
@@ -41,14 +45,14 @@ class HActiveRecordContentAddon extends HActiveRecord
     /**
      * Source object which this ContentAddon belongs to.
      * HActiveRecordContentAddon or HActiveRecordContent Object.
-     * 
-     * @var Mixed 
+     *
+     * @var Mixed
      */
     private $_source;
 
     /**
      * Returns the content object to which this addon belongs to.
-     * 
+     *
      * @return Content Content AR which this Addon belongs to
      */
     public function getContent()
@@ -73,9 +77,9 @@ class HActiveRecordContentAddon extends HActiveRecord
 
     /**
      * Returns the source of this content addon.
-     * 
+     *
      * This can be a HActiveRecordContent or HActiveRecordContentAddon object.
-     * 
+     *
      * @return Mixed HActiveRecordContent or HActiveRecordContentAddon
      */
     public function getSource()
@@ -93,10 +97,10 @@ class HActiveRecordContentAddon extends HActiveRecord
         }
 
         if (!class_exists($className)) {
-            Yii::log("Source class of content addon not found (".$className.") not found!", CLogger::LEVEL_ERROR);
-            return null;            
+            Yii::log("Source class of content addon not found (" . $className . ") not found!", CLogger::LEVEL_ERROR);
+            return null;
         }
-        
+
         $this->_source = $className::model()->findByPk($pk);
         return $this->_source;
     }
@@ -128,7 +132,7 @@ class HActiveRecordContentAddon extends HActiveRecord
 
     /**
      * Checks if this content addon can be changed
-     * 
+     *
      * @return boolean
      */
     public function canWrite()
@@ -152,8 +156,8 @@ class HActiveRecordContentAddon extends HActiveRecord
     }
 
     /**
-     * Validates 
-     * 
+     * Validates
+     *
      * @param type $attributes
      * @param type $clearErrors
      * @return type
@@ -172,7 +176,7 @@ class HActiveRecordContentAddon extends HActiveRecord
 
     /**
      * After saving content addon, mark underlying content as updated.
-     * 
+     *
      * @return boolean
      */
     protected function afterSave()

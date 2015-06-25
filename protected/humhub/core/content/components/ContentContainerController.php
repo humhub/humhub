@@ -18,20 +18,27 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\components;
+
+use humhub\components\Controller;
+use Yii;
+use humhub\core\space\models\Space;
+use humhub\core\user\models\User;
+
 /**
  * ContainerController is the base controller for all space or user profile
  * controllers.
- * 
+ *
  * It automatically detects with the help of sguid (Space) or uguid (User) request
  * parameter the underlying HActiveRecordContentContainer (User/Space) and set
  * its model to the contentContainer Attribute.
- * 
+ *
  * In case of space also the SpaceControllerBehavior is automatically attached.
  * In case of user the ProfileControllerBehavior is also automatically attached.
  *
  * By using createContainerUrl method instead of createUrl the sguid/uguid parameter
  * is automatically added to url.
- * 
+ *
  * @package humhub.components
  * @since 0.6
  */
@@ -40,8 +47,8 @@ class ContentContainerController extends Controller
 
     /**
      * ContentContainer
-     * 
-     * @var HActiveRecordContentContainer 
+     *
+     * @var HActiveRecordContentContainer
      */
     public $contentContainer = null;
 
@@ -53,7 +60,7 @@ class ContentContainerController extends Controller
 
     /**
      * Hides containers sidebar in containers layout
-     * 
+     *
      * @since 0.11
      */
     public $hideSidebar = false;
@@ -88,49 +95,44 @@ class ContentContainerController extends Controller
     /**
      * Automatically loads the underlying contentContainer (User/Space) by using
      * the uguid/sguid request parameter
-     * 
+     *
      * @return boolean
      */
     public function init()
     {
 
-        $spaceGuid = Yii::app()->request->getParam('sguid', '');
-        $userGuid = Yii::app()->request->getParam('uguid', '');
+        $spaceGuid = Yii::$app->request->get('sguid', '');
+        $userGuid = Yii::$app->request->get('uguid', '');
 
         if ($spaceGuid != "") {
 
-            $this->contentContainer = Space::model()->findByAttributes(array('guid' => $spaceGuid));
+            $this->contentContainer = Space::findOne(['guid'=>$spaceGuid]);
 
             if ($this->contentContainer == null) {
-                throw new CHttpException(404, Yii::t('base', 'Space not found!'));
+                throw new \yii\web\HttpException(404, Yii::t('base', 'Space not found!'));
             }
 
             $this->attachBehavior('SpaceControllerBehavior', array(
-                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
+                'class' => \humhub\core\space\behaviors\SpaceController::className(),
                 'space' => $this->contentContainer
             ));
-
-            Yii::app()->params['currentSpace'] = $this->contentContainer;
-
-            $this->subLayout = "application.modules_core.space.views.space._layout";
+            $this->subLayout = "@humhub/core/space/views/space/_layout";
         } elseif ($userGuid != "") {
 
-            $this->contentContainer = User::model()->findByAttributes(array('guid' => $userGuid));
+            $this->contentContainer = User::findOne(['guid' => $userGuid]);
 
             if ($this->contentContainer == null) {
-                throw new CHttpException(404, Yii::t('base', 'User not found!'));
+                throw new \yii\web\HttpException(404, Yii::t('base', 'User not found!'));
             }
 
-            $this->attachBehavior('ProfileControllerBehavior', array(
-                'class' => 'application.modules_core.user.behaviors.ProfileControllerBehavior',
+            $this->attachBehavior('ProfileControllerBehavior', [
+                'class' => \humhub\core\user\behaviors\ProfileController::className(),
                 'user' => $this->contentContainer
-            ));
+            ]);
 
-            Yii::app()->params['currentUser'] = $this->contentContainer;
-
-            $this->subLayout = "application.modules_core.user.views.profile._layout";
+            $this->subLayout = "@humhub/core/user/views/profile/_layout";
         } else {
-            throw new CHttpException(500, Yii::t('base', 'Could not determine content container!'));
+            throw new \yii\web\HttpException(500, Yii::t('base', 'Could not determine content container!'));
         }
 
         /**
@@ -152,9 +154,9 @@ class ContentContainerController extends Controller
 
     /**
      * Creates a relative URL for the specified action defined in this controller.
-     * The container guid (sguid/uguid) attribute is automatically added to the 
+     * The container guid (sguid/uguid) attribute is automatically added to the
      * constructed url.
-     * 
+     *
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * If the ControllerID is not present, the current controller ID will be prefixed to the route.
      * If the route is empty, it is assumed to be the current action.
@@ -172,31 +174,30 @@ class ContentContainerController extends Controller
     }
 
     /**
-     * Checks if current user can access current ContentContainer by using 
+     * Checks if current user can access current ContentContainer by using
      * underlying behavior ProfileControllerBehavior/SpaceControllerBehavior.
-     * 
+     *
      * If access check failed, an CHttpException is thrown.
      */
     public function checkContainerAccess()
     {
-        if ($this->contentContainer instanceof User) {
-            $this->getOwner()->checkAccess();
-        } elseif ($this->contentContainer instanceof Space) {
-            $this->getOwner()->checkAccess();
-        }
+        // Implemented by behavior
+        $this->checkAccess();
     }
 
     /**
      * Checks if current module is enabled on this content container.
-     * 
+     *
      * @return boolean
      */
     public function checkModuleIsEnabled()
     {
-        $module = $this->getModule();
-        if ($module != null && $module instanceof HWebModule && !$module->isCoreModule) {
-            return $this->contentContainer->isModuleEnabled($module->getId());
-        }
+        /*
+          $module = $this->getModule();
+          if ($module != null && $module instanceof HWebModule && !$module->isCoreModule) {
+          return $this->contentContainer->isModuleEnabled($module->getId());
+          }
+         */
         return true;
     }
 

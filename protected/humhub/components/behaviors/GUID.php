@@ -18,6 +18,11 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\components\behaviors;
+
+use yii\db\ActiveRecord;
+use yii\base\Behavior;
+
 /**
  * GUID Behavior
  *
@@ -25,17 +30,24 @@
  * @package humhub.behaviors
  * @since 0.5
  */
-class HGuidBehavior extends HActiveRecordBehavior {
+class GUID extends Behavior
+{
 
-    public function beforeValidate($event) {
+    public function events()
+    {
+        return [
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
+        ];
+    }
 
-        if ($this->getOwner()->isNewRecord) {
-            if ($this->getOwner()->guid == "") {
-                $this->getOwner()->guid = UUID::v4();
+    public function beforeValidate($event)
+    {
+
+        if ($this->owner->isNewRecord) {
+            if ($this->owner->guid == "") {
+                $this->owner->guid = \humhub\libs\UUID::v4();
             }
         }
-
-        return parent::beforeValidate($event);
     }
 
 }

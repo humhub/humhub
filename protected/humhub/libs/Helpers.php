@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\libs;
+
 /**
  * This class contains a lot of html helpers for the views
  *
@@ -65,7 +67,7 @@ class Helpers
      * @param array $b - Second array
      *
      * convert Objects: Helpers::arrayCompVal((array)$obj1, (array)$obj2)
-     * 
+     *
      * */
 
     public static function arrayCompVal($a, $b)
@@ -126,10 +128,10 @@ class Helpers
     /**
      * Returns bytes of a PHP Ini Setting Value
      * E.g. 10M will converted into 10485760
-     * 
+     *
      * Source: http://php.net/manual/en/function.ini-get.php
-     * 
-     * @param String $val 
+     *
+     * @param String $val
      * @return int bytes
      */
     public static function GetBytesOfPHPIniValue($val)
@@ -150,7 +152,7 @@ class Helpers
 
     /**
      * Returns a unique string
-     * 
+     *
      * @return string unique
      */
     public static function GetUniqeId()
@@ -159,15 +161,15 @@ class Helpers
     }
 
     /**
-     * Checks if the class has this class as one of its parents 
-     * 
+     * Checks if the class has this class as one of its parents
+     *
      * @param string $className
      * @param string $type
      * @return boolean
      */
     public static function CheckClassType($className, $type = "")
     {
-        $className = preg_replace("/[^a-z0-9]/i", "", $className);
+        $className = preg_replace("/[^a-z0-9\\\]/i", "", $className);
 
         if (is_array($type)) {
             foreach ($type as $t) {
@@ -181,7 +183,7 @@ class Helpers
             }
         }
 
-        throw new CException("Invalid class type! |" . $className . "|");
+        throw new \yii\base\Exception("Invalid class type! |" . $className . "|");
     }
 
 }

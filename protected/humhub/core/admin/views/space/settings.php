@@ -1,12 +1,22 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use humhub\models\Setting;
+use humhub\core\space\models\Space;
+use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\grid\GridView;
+?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_settings', '<strong>Space</strong> Settings'); ?></div>
     <div class="panel-body">
         <ul class="nav nav-pills">
             <li><a
-                    href="<?php echo $this->createUrl('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
+                    href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
             </li>
             <li class="active">
-                <a href="<?php echo $this->createUrl('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
+                <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
             </li>
         </ul>
         <p />
@@ -14,15 +24,11 @@
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'Define here default settings for new spaces.'); ?>
         </p>
-        
+
         <br />
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'space-settings-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+
+        <?php $form = CActiveForm::begin(['id' => 'space-settings-form']); ?>
 
         <?php echo $form->errorSummary($model); ?>
 
@@ -47,10 +53,9 @@
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_space_settings', 'Save'), array('class' => 'btn btn-primary')); ?>
-        <!-- show flash message after saving -->
-        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
-        
-        <?php $this->endWidget(); ?>
+
+        <?php \humhub\widgets\DataSaved::widget(); ?>
+        <?php CActiveForm::end(); ?>
 
     </div>
 </div>

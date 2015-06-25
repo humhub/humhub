@@ -1,3 +1,9 @@
+<?php
+
+use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_delete', 'Delete user: <strong>{username}</strong>', array('{username}' => $model->username)); ?></div>
     <div class="panel-body">
@@ -8,22 +14,22 @@
         </p>
 
         <?php
-        $this->widget('zii.widgets.CDetailView', array(
-            'data' => $model,
-            'attributes' => array(
+        echo \yii\widgets\DetailView::widget([
+            'model' => $model,
+            'attributes' => [
                 'username',
-                'firstname',
-                'lastname',
+                'profile.firstname',
+                'profile.lastname',
                 'email:email',
-                'created_at',
-            ),
-        ));
+                'created_at:datetime',
+            ],
+        ]);
         ?>
 
         <br/>
-        <?php echo HHtml::postLink(Yii::t('AdminModule.views_user_delete', 'Delete user'), $this->createUrl('//admin/user/delete', array('id' => $model->id, 'doit' => 2)), array('class' => 'btn btn-danger')); ?>
+        <?php echo Html::a(Yii::t('AdminModule.views_user_delete', 'Delete user'), Url::toRoute(['/admin/user/delete', 'id' => $model->id, 'doit' => 2]), array('class' => 'btn btn-danger', 'data-method' => 'POST')); ?>
         &nbsp;
-        <?php echo CHtml::link(Yii::t('AdminModule.views_user_delete', 'Back'), $this->createUrl('//admin/user/edit', array('id' => $model->id)), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::a(Yii::t('AdminModule.views_user_delete', 'Back'), Url::toRoute(['/admin/user/edit', 'id' => $model->id]), array('class' => 'btn btn-primary')); ?>
 
 
     </div>

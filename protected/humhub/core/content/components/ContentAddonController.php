@@ -18,12 +18,14 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\content\components\ContentAddonController;
+
 /**
  * ContentAddonController is a base controller for ContentAddons.
- * 
+ *
  * It automatically loads the target content or content addon record based
  * on given parameters contentModel or contentId.
- * 
+ *
  * Also an access check is performed.
  *
  * @author luke
@@ -34,7 +36,7 @@ class ContentAddonController extends Controller
 
     /**
      * Content this addon belongs to
-     * 
+     *
      * @var HActiveRecordContent
      */
     public $parentContent;
@@ -42,7 +44,7 @@ class ContentAddonController extends Controller
     /**
      * ContentAddon this addon may belongs to
      * ContentAddons may also belongs to ContentAddons e.g. Like -> Comment
-     * 
+     *
      * @var HActiveRecordContent
      */
     public $parentContentAddon;
@@ -54,14 +56,14 @@ class ContentAddonController extends Controller
 
     /**
      * Class name of content model class
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $contentModel;
 
     /**
      * Primary key of content model record
-     * 
+     *
      * @var int
      */
     public $contentId;
@@ -69,7 +71,7 @@ class ContentAddonController extends Controller
     /**
      * Automatically loads the by content or content addon given by parameter.
      * className & id
-     * 
+     *
      * @return type
      */
     public function beforeAction($action)
@@ -111,7 +113,7 @@ class ContentAddonController extends Controller
     /**
      * Loads Content Addon
      * We also validates that the content addon corresponds to the loaded content.
-     * 
+     *
      * @param string $className
      * @param int $pk
      */

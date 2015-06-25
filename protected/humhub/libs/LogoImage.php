@@ -1,8 +1,10 @@
 <?php
 
+namespace humhub\libs;
+
 class LogoImage
 {
-    
+
     /**
      * @var Integer height of the image
      */
@@ -15,6 +17,7 @@ class LogoImage
 
     public function __construct()
     {
+
     }
 
     /**
@@ -59,7 +62,7 @@ class LogoImage
      */
     public function getPath()
     {
-        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
+        $path = \Yii::getAlias("@webroot") . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
 
         if (!is_dir($path))
             mkdir($path);
@@ -69,16 +72,15 @@ class LogoImage
         return $path;
     }
 
-
     /**
      * Sets a new logo image by given temp file
      *
      * @param CUploadedFile $file
      */
-    public function setNew(CUploadedFile $file)
-    {      
+    public function setNew(UploadedFile $file)
+    {
         $this->delete();
-        move_uploaded_file($file->getTempName(),  $this->getPath());
+        move_uploaded_file($file->getTempName(), $this->getPath());
 
         ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max', 'transparent' => ($file->getExtensionName() == 'png' && ImageConverter::checkTransparent($this->getPath()))));
     }

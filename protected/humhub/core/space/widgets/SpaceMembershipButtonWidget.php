@@ -18,6 +18,11 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * SpaceMembershipButtonWidget
  *
@@ -25,7 +30,7 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.11
  */
-class SpaceMembershipButtonWidget extends HWidget
+class SpaceMembershipButtonWidget extends Widget
 {
 
     public $space;
@@ -34,7 +39,7 @@ class SpaceMembershipButtonWidget extends HWidget
     {
         $membership = $this->space->getMembership();
 
-        $this->render('membershipButton', array(
+        return $this->render('membershipButton', array(
             'space' => $this->space,
             'membership' => $membership
         ));

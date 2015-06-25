@@ -18,23 +18,29 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\components\behaviors;
+
+use Yii;
+use yii\db\ActiveRecord;
+use yii\base\Behavior;
+
 /**
- * HUnderlyingObjectBahavior adds the ability to link between arbitrary 
+ * HUnderlyingObjectBahavior adds the ability to link between arbitrary
  * records.
- * 
+ *
  * This is archived by the database fields object_model & object_id.
  *
  * Required database fields:
  *  - object_model
  *  - object_id
- * 
+ *
  * E.g. usage
  *      Like Record -> Post Record or Comment Record or Poll Record
- *  
+ *
  * @package humhub.behaviors
  * @since 0.5
  */
-class HUnderlyingObjectBehavior extends HActiveRecordBehavior
+class UnderlyingObject extends Behavior
 {
 
     /**
@@ -65,18 +71,18 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
             return $this->_cached;
         }
 
-        $className = $this->getOwner()->object_model;
-        
+        $className = $this->owner->object_model;
+
         if ($className == "") {
             return null;
         }
-        
+
         if (!class_exists($className)) {
-            Yii::log("Underlying object class ".$className." not found!", CLogger::LEVEL_ERROR);
+            Yii::error("Underlying object class " . $className . " not found!");
             return null;
         }
-        
-        $object = $className::model()->findByPk($this->getOwner()->object_id);
+
+        $object = $className::find()->where(['id' => $this->owner->object_id])->one();
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
@@ -88,7 +94,7 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
 
     /**
      * Sets the underlying object
-     * 
+     *
      * @param mixed $object
      */
     public function setUnderlyingObject($object)
@@ -109,12 +115,14 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
 
     /**
      * Validates if given object is of allowed type
-     * 
+     *
      * @param mixed $object
      * @return boolean
      */
     private function validateUnderlyingObjectType($object)
     {
+        return true;
+
         if (count($this->mustBeInstanceOf) == 0) {
             return true;
         }
@@ -125,7 +133,7 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
             }
         }
 
-        Yii::log('Got invalid underlying object type! (' . $className . ')', CLogger::LEVEL_ERROR);
+        Yii::error('Got invalid underlying object type! (' . $className . ')');
         return false;
     }
 

@@ -1,10 +1,15 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class AuthenticationLdapSettingsForm extends CFormModel {
+class AuthenticationLdapSettingsForm extends \yii\base\Model
+{
 
     public $enabled;
     public $refreshUsers;
@@ -13,14 +18,11 @@ class AuthenticationLdapSettingsForm extends CFormModel {
     public $hostname;
     public $port;
     public $encryption;
-    
-
     public $baseDn;
     public $loginFilter;
     public $userFilter;
     public $usernameAttribute;
-    
-   public $encryptionTypes = array(
+    public $encryptionTypes = array(
         '' => 'None',
         'tls' => 'TLS (aka SSLV2)',
         'ssl' => 'SSL',
@@ -29,11 +31,11 @@ class AuthenticationLdapSettingsForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
-
+    public function rules()
+    {
         return array(
-            array('enabled, refreshUsers, usernameAttribute, username, password, hostname, port, baseDn, loginFilter, userFilter',  'length', 'max' => 255),
-            array('encryption', 'in', 'range'=>array('', 'ssl', 'tls')),
+            array(['enabled', 'refreshUsers', 'usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255),
+            array('encryption', 'in', 'range' => array('', 'ssl', 'tls')),
         );
     }
 
@@ -42,7 +44,8 @@ class AuthenticationLdapSettingsForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'enabled' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Enable LDAP Support'),
             'refreshUsers' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Fetch/Update Users Automatically'),

@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class FileSettingsForm extends CFormModel
+class FileSettingsForm extends \yii\base\Model
 {
 
     public $imageMagickPath;
@@ -23,8 +27,8 @@ class FileSettingsForm extends CFormModel
     {
         return array(
             array('imageMagickPath', 'checkImageMagick'),
-            array('allowedExtensions, showFilesWidgetBlacklist', 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'),
-            array('maxFileSize, useXSendfile, maxPreviewImageWidth, maxPreviewImageHeight, hideImageFileInfo', 'numerical', 'integerOnly' => true),
+            array(['allowedExtensions', 'showFilesWidgetBlacklist'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'),
+            array(['maxFileSize', 'useXSendfile', 'maxPreviewImageWidth', 'maxPreviewImageHeight', 'hideImageFileInfo'], 'integer'),
         );
     }
 

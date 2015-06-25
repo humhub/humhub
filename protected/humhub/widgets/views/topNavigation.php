@@ -1,17 +1,15 @@
 <?php
-/**
- * TopNavigation by TopMenuWidget.
- *
- * @package humhub.widgets
- * @since 0.5 */
+
+use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
-<?php foreach ($this->getItems() as $item) : ?>
+<?php foreach ($this->context->getItems() as $item) : ?>
     <li class="visible-md visible-lg <?php if ($item['isActive']): ?>active<?php endif; ?> <?php
     if (isset($item['id'])) {
         echo $item['id'];
     }
     ?>">
-            <?php echo HHtml::link($item['icon'] . "<br />" . $item['label'], $item['url'], $item['htmlOptions']); ?>
+            <?php echo Html::a($item['icon'] . "<br />" . $item['label'], $item['url'], $item['htmlOptions']); ?>
     </li>
 <?php endforeach; ?>
 
@@ -22,9 +20,9 @@
         <b class="caret"></b></a>
     <ul class="dropdown-menu pull-right">
 
-        <?php foreach ($this->getItems() as $item) : ?>
+        <?php foreach ($this->context->getItems() as $item) : ?>
             <li class="<?php if ($item['isActive']): ?>active<?php endif; ?>">
-                <?php echo HHtml::link($item['label'], $item['url'], $item['htmlOptions']); ?>
+                <?php echo Html::a($item['label'], $item['url'], $item['htmlOptions']); ?>
             </li>
         <?php endforeach; ?>
 

@@ -168,7 +168,7 @@ class ProfileField extends \yii\db\ActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "" && \humhub\helpers\Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::className())) {
+        if ($this->field_type_class != "" && \humhub\libs\Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::className())) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);

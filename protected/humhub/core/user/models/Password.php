@@ -140,7 +140,7 @@ class Password extends \yii\db\ActiveRecord
      */
     public function setPassword($newPassword)
     {
-        $this->salt = \humhub\helpers\UUID::v4();
+        $this->salt = \humhub\libs\UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
     }

@@ -1,6 +1,15 @@
 <?php
-/** @var $space Space */
+/* @var $this \humhub\components\WebView */
+/* @var $currentSpace \humhub\core\space\models\Space */
+
+use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
+
+$this->registerJsFile("@web/js/space/spacechooser.js");
+$this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
 ?>
+
 <div class="panel panel-default panel-profile">
 
     <div class="panel-profile-header">
@@ -43,9 +52,9 @@
 
             <!-- show user name and title -->
             <div class="img-profile-data">
-                <h1 class="space"><?php echo CHtml::encode($space->name); ?></h1>
+                <h1 class="space"><?php echo Html::encode($space->name); ?></h1>
 
-                <h2 class="space"><?php echo CHtml::encode($space->description); ?></h2>
+                <h2 class="space"><?php echo Html::encode($space->description); ?></h2>
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
@@ -60,11 +69,11 @@
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Yii::app()->createUrl('//space/admin/cropBannerImage', array('guid' => $space->guid)); ?>"
+                       href="<?php echo $space->createUrl('/space/admin/cropBannerImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
-                        $this->widget('application.widgets.ModalConfirmWidget', array(
+                        echo humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'modal_bannerimagedelete',
                             'linkOutput' => 'a',
                             'title' => Yii::t('SpaceModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
@@ -74,7 +83,7 @@
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'class' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $this->createUrl("//space/admin/deleteProfileImage", array('guid' => $space->guid, 'type' => 'banner')),
+                            'linkHref' => $space->createUrl("/space/admin/deleteProfileImage", ['type' => 'banner']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -140,11 +149,11 @@
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Yii::app()->createUrl('//space/admin/cropImage', array('guid' => $space->guid)); ?>"
+                       href="<?php echo $space->createUrl('/space/admin/cropImage'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
-                        $this->widget('application.widgets.ModalConfirmWidget', array(
+                        echo humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'modal_profileimagedelete',
                             'linkOutput' => 'a',
                             'title' => Yii::t('SpaceModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
@@ -154,7 +163,7 @@
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'class' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $this->createUrl("//space/admin/deleteProfileImage", array('guid' => $space->guid, 'type' => 'profile')),
+                            'linkHref' => $space->createUrl("/space/admin/deleteProfileImage", array('type' => 'profile')),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -195,6 +204,7 @@
 
                 <div class="controls controls-header text-right col-sm-12 col-md-6">
                     <?php
+                    /*
                     $this->widget('application.modules_core.space.widgets.SpaceHeaderControlsWidget', array(
                         'space' => $space,
                         'widgets' => array(
@@ -203,6 +213,7 @@
                             array('application.modules_core.space.widgets.SpaceFollowButtonWidget', array('space' => $space), array()),
                         )
                     ));
+                    */
                     ?>
                 </div>
             </div>

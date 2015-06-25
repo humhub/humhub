@@ -20,7 +20,7 @@
 
 namespace humhub\widgets;
 
-use humhub\helpers\Html;
+use yii\helpers\Html;
 
 /**
  * HEditorWidget add users to posts and comments

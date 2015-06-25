@@ -1,16 +1,27 @@
+<?php
+/* @var $this \humhub\components\WebView */
+/* @var $currentSpace \humhub\core\space\models\Space */
+
+use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
+
+$this->registerJsFile("@web/js/space/spacechooser.js");
+$this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
+?>
+
 <li class="dropdown">
     <a href="#" id="space-menu" class="dropdown-toggle" data-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
-        <?php if (Yii::app()->params['currentSpace']) { ?>
+        <?php if ($currentSpace) { ?>
             <img
-                src="<?php echo Yii::app()->params['currentSpace']->getProfileImage()->getUrl(); ?>"
+                src="<?php echo $currentSpace->getProfileImage()->getUrl(); ?>"
                 width="32" height="32" alt="32x32" data-src="holder.js/24x24"
                 style="width: 32px; height: 32px; margin-right: 3px; margin-top: 3px;" class="img-rounded"/>
             <?php } ?>
 
         <?php
-        if (Yii::app()->params['currentSpace']) {
-        } else {
+        if (!$currentSpace) {
             echo '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces');
         }
         ?>
@@ -22,7 +33,7 @@
             <form action="" class="dropdown-controls"><input type="text" id="space-menu-search"
                                                              class="form-control"
                                                              autocomplete="off"
-                                                             placeholder="<?php echo Yii::t('SpaceModule.widgets_views_spaceChooser','Search'); ?>">
+                                                             placeholder="<?php echo Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search'); ?>">
 
                 <div class="search-reset" id="space-search-reset"><i
                         class="fa fa-times-circle"></i></div>
@@ -43,11 +54,11 @@
                 </li>
             </ul>
         </li>
-        <?php if (Yii::app()->user->canCreateSpace()): ?>
+        <?php if (Yii::$app->user->getIdentity()->canCreateSpace()): ?>
             <li>
                 <div class="dropdown-footer">
                     <?php
-                    echo CHtml::link(Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space'), $this->createUrl('//space/create/create'), array('class' => 'btn btn-info col-md-12', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
+                    echo Html::a(Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space'), Url::to(['/space/create/create']), array('class' => 'btn btn-info col-md-12', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
                     ?>
                 </div>
             </li>

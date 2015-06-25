@@ -87,7 +87,7 @@ class BaseType extends \yii\base\Model
 
         $types = array();
         foreach ($this->getFieldTypes() as $className => $title) {
-            if (\humhub\helpers\Helpers::CheckClassType($className, self::className())) {
+            if (\humhub\libs\Helpers::CheckClassType($className, self::className())) {
                 $instance = new $className;
                 if ($profileField != null) {
                     $instance->profileField = $profileField;

@@ -18,6 +18,11 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * SpaceFollowButtonWidget 
  *

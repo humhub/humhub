@@ -1,12 +1,16 @@
 <?php
 
+namespace humhub\core\admin\models\forms;
+
+use Yii;
+
 /**
  * GroupForm is used to modify group settings
  *
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class ModuleSetAsDefaultForm extends CFormModel
+class ModuleSetAsDefaultForm extends \yii\base\Model
 {
 
     public $spaceDefaultState;

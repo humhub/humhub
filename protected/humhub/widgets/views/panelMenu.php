@@ -1,3 +1,9 @@
+<?php
+
+use Yii;
+
+$this->registerJsFile("@web/js/panelMenu.js");
+?>
 <ul class="nav nav-pills preferences">
     <li class="dropdown ">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-angle-down"></i></a>
@@ -8,7 +14,7 @@
                         class="fa fa-plus-square"></i> <?php echo Yii::t('base', 'Expand'); ?></a></li>
 
             <?php
-            echo $this->extraMenus;
+            echo $this->context->extraMenus;
             ?>
         </ul>
     </li>
@@ -16,10 +22,10 @@
 
 <script type = "text/javascript">
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         // check and set panel state from cookie
-        checkPanelMenuCookie('<?php echo $this->id; ?>');
+        checkPanelMenuCookie('<?php echo $this->context->id; ?>');
     });
 
 

@@ -6,7 +6,7 @@
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\helpers\Helpers;
+use humhub\libs\Helpers;
 ?>
 <?php foreach ($memberships as $membership): ?>
     <?php $newItems = $membership->countNewItems(); ?>

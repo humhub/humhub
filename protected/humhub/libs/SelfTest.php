@@ -18,6 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\libs;
+
+use Yii;
+
 /**
  * SelfTest is a helper class which checks all dependencies of the application.
  *
@@ -83,7 +87,7 @@ class SelfTest
                 'hint' => 'Install GD Extension'
             );
         }
-        
+
         // Checks GD Extension
         $title = 'PHP - EXIF Extension';
         if (function_exists('exif_read_data')) {
@@ -189,8 +193,9 @@ class SelfTest
         }
 
         // Checks Writeable Config
+        /*
         $title = 'Permissions - Config';
-        $configFile = dirname(Yii::app()->params['dynamicConfigFile']);
+        $configFile = dirname(Yii::$app->params['dynamicConfigFile']);
         if (is_writeable($configFile)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -203,11 +208,11 @@ class SelfTest
                 'hint' => 'Make ' . $configFile . " writable for the webserver/php!"
             );
         }
-
+        */
 
         // Check Runtime Directory
         $title = 'Permissions - Runtime';
-        $path = Yii::app()->runtimePath;
+        $path = Yii::getAlias('@runtime');
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -223,7 +228,7 @@ class SelfTest
 
         // Check Assets Directory
         $title = 'Permissions - Assets';
-        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "assets";
+        $path = Yii::getAlias('@webroot/assets');
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -240,7 +245,7 @@ class SelfTest
 
         // Check Uploads Directory
         $title = 'Permissions - Uploads';
-        $path = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . "uploads";
+        $path = Yii::getAlias('@webroot/uploads');
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -256,7 +261,7 @@ class SelfTest
 
         // Check Custom Modules Directory
         $title = 'Permissions - Module Directory';
-        $path = Yii::getPathOfAlias('application.modules');
+        $path = Yii::getAlias('@app/modules');
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),

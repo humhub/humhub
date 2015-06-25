@@ -1,20 +1,11 @@
 <?php
 
-/**
- * WallEntryControlsWidget is a instance of StackWidget and allows modules
- * to add custom controls to a wall entry
- *
- * @package humhub.modules_core.wall.widgets
- * @since 0.5
- */
-class WallEntryControlsWidget extends StackWidget {
+namespace humhub\core\content\widgets;
 
-    /**
-     * Object derived from HActiveRecordContent
-     *
-     * @var type
-     */
-    public $object = null;
+class WallEntryControls extends \yii\base\Widget
+{
+
+    public $object;
 
 }
 

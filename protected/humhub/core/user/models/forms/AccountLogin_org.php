@@ -1,5 +1,9 @@
 <?php
 
+namespace humhub\core\user\models\forms;
+
+use Yii;
+
 /**
  * LoginForm class.
  * LoginForm is the data structure for keeping
@@ -9,7 +13,7 @@
  * @since 0.5
  * @author Luke
  */
-class AccountLoginForm extends CFormModel
+class AccountLogin extends \yii\base\Model
 {
 
     public $username;

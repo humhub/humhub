@@ -409,9 +409,9 @@ class SettingController extends Controller
         }
 
         // Determine PHP Upload Max FileSize
-        $maxUploadSize = \humhub\helpers\Helpers::GetBytesOfPHPIniValue(ini_get('upload_max_filesize'));
-        if ($maxUploadSize > \humhub\helpers\Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'))) {
-            $maxUploadSize = \humhub\helpers\Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'));
+        $maxUploadSize = \humhub\libs\Helpers::GetBytesOfPHPIniValue(ini_get('upload_max_filesize'));
+        if ($maxUploadSize > \humhub\libs\Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'))) {
+            $maxUploadSize = \humhub\libs\Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'));
         }
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
 

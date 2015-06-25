@@ -1,65 +1,47 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
+namespace humhub\models;
+
+use Yii;
 
 /**
- * This is the model class for table "url".
+ * This is the model class for table "url_oembed".
  *
- * This table holds all preview / oembed code for urls.
- *
- * The followings are the available columns in table 'url':
  * @property string $url
  * @property string $preview
- *
- * @package humhub.models
- * @since 0.5
  */
-class UrlOembed extends HActiveRecord
+class UrlOembed extends \yii\db\ActiveRecord
 {
 
     /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return Url the static model class
+     * @inheritdoc
      */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public static function tableName()
     {
         return 'url_oembed';
     }
 
     /**
-     * @return array validation rules for model attributes.
+     * @inheritdoc
      */
     public function rules()
     {
-        return array(
-            array('url, preview', 'required'),
-            array('url', 'length', 'max' => 255),
-        );
+        return [
+            [['url', 'preview'], 'required'],
+            [['preview'], 'string'],
+            [['url'], 'string', 'max' => 255]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'url' => 'Url',
+            'preview' => 'Preview',
+        ];
     }
 
     /**
@@ -179,10 +161,10 @@ class UrlOembed extends HActiveRecord
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
-        
+
         // Not available when open_basedir is set.
         @curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        
+
         if (HSetting::Get('enabled', 'proxy')) {
             curl_setopt($curl, CURLOPT_PROXY, HSetting::Get('server', 'proxy'));
             curl_setopt($curl, CURLOPT_PROXYPORT, HSetting::Get('port', 'proxy'));
@@ -210,9 +192,9 @@ class UrlOembed extends HActiveRecord
      */
     public static function getProviders()
     {
-        $providers = HSetting::GetText('oembedProviders');
+        $providers = Setting::GetText('oembedProviders');
         if ($providers != "") {
-            return CJSON::decode($providers);
+            return \yii\helpers\Json::decode($providers);
         }
         return array();
     }
@@ -224,7 +206,7 @@ class UrlOembed extends HActiveRecord
      */
     public static function setProviders($providers)
     {
-        HSetting::SetText('oembedProviders', CJSON::encode($providers));
+        Setting::SetText('oembedProviders', \yii\helpers\Json::encode($providers));
     }
 
 }

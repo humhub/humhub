@@ -1,13 +1,17 @@
 <?php
 
-class SpaceWallWidget extends HWidget
+namespace humhub\core\space\widgets;
+
+use \yii\base\Widget;
+
+class SpaceWallWidget extends Widget
 {
 
     public $space;
 
     public function run()
     {
-        $this->render('spaceWall', array('space' => $this->space));
+        return $this->render('spaceWall', array('space' => $this->space));
     }
 
 }

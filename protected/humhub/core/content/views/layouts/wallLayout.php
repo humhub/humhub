@@ -1,6 +1,6 @@
 <?php
 
-use humhub\helpers\Html;
+use yii\helpers\Html;
 
 $user = $object->content->user;
 $container = $object->content->container;
@@ -45,10 +45,11 @@ $container = $object->content->container;
             <div class="media-body">
                 <!-- show username with link and creation time-->
                 <h4 class="media-heading"><a href="<?php echo $user->getUrl(); ?>"><?php echo Html::encode($user->displayName); ?></a>
-                    <small><?php echo Html::timeago($object->content->created_at); ?>
+                    <small>
+                        <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $object->content->created_at]); ?>
 
                         <?php if ($object->content->created_at != $object->content->updated_at): ?>
-                            (<?php echo Yii::t('app', 'Updated :timeago', array(':timeago' => Html::timeago($object->content->updated_at))); ?>)
+                            (<?php echo Yii::t('app', 'Updated :timeago', array(':timeago' => \humhub\widgets\TimeAgo::widget(['timestamp' => $object->content->updated_at]))); ?>)
                         <?php endif; ?>
 
                         <!-- show space name -->
