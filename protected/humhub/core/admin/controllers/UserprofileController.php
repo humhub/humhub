@@ -133,11 +133,10 @@ class UserProfileController extends Controller
             // Use ProfileField Instance from Form with new Values
             $field = $form->models['ProfileField'];
             $fieldType = $form->models[$field->field_type_class];
-
-            $field->save();
-            $fieldType->save();
-
-            return $this->redirect(Url::to(['/admin/user-profile']));
+            
+            if ($field->save() && $fieldType->save()) {
+                return $this->redirect(Url::to(['/admin/user-profile']));
+            }
         }
         if ($form->submitted('delete')) {
             $field->delete();

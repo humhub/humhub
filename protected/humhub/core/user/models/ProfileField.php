@@ -39,34 +39,6 @@ class ProfileField extends \yii\db\ActiveRecord
     private $_fieldType = null;
 
     /**
-     * Default Value for Sort Order
-     *
-     * @var Integer
-     */
-    public $sort_order = 100;
-
-    /**
-     * Default Value for Visibile
-     *
-     * @var Integer
-     */
-    public $visible = 1;
-
-    /**
-     * Default Value for Editable
-     *
-     * @var Integer
-     */
-    public $editable = 1;
-
-    /**
-     * Default Value for Show At Registration
-     *
-     * @var Integer
-     */
-    public $show_at_registration = 0;
-
-    /**
      * @inheritdoc
      */
     public static function tableName()

@@ -25,6 +25,7 @@ class DynamicConfig extends \yii\base\Object
         if ($setting->module_id != 'mailing' &&
                 $setting->module_id != 'cache' &&
                 $setting->name != 'name' &&
+                $setting->name != 'defaultLanguage' &&
                 $setting->name != 'theme' &&
                 $setting->name != 'authentication_internal'
         ) {

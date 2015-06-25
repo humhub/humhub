@@ -46,7 +46,7 @@ $this->title = Yii::t('UserModule.views_auth_login', '<strong>Please</strong> si
 
             <div class="checkbox">
                 <label>
-                    <?php echo $form->checkBox($model, 'rememberMe'); ?>
+                    <?php echo $form->checkBox($model, 'rememberMe'); ?> <?php echo $model->getAttributeLabel('rememberMe'); ?>
                 </label>
             </div>
 

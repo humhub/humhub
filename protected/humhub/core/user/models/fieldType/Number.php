@@ -90,14 +90,14 @@ class Number extends BaseType
     public function getFieldRules($rules = array())
     {
 
-        $rules[] = array($this->profileField->internal_name, 'numerical');
+        $rules[] = array($this->profileField->internal_name, 'integer');
 
         if ($this->maxValue) {
-            $rules[] = array($this->profileField->internal_name, 'numerical', 'max' => $this->maxValue);
+            $rules[] = array($this->profileField->internal_name, 'integer', 'max' => $this->maxValue);
         }
 
         if ($this->minValue) {
-            $rules[] = array($this->profileField->internal_name, 'numerical', 'min' => $this->minValue);
+            $rules[] = array($this->profileField->internal_name, 'integer', 'min' => $this->minValue);
         }
 
         return parent::getFieldRules($rules);

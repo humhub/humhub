@@ -27,6 +27,7 @@ use humhub\core\user\models\Invite;
 use humhub\compat\HForm;
 use humhub\core\user\models\User;
 use humhub\core\user\models\Password;
+use yii\helpers\Url;
 
 /**
  * AuthController handles all authentication tasks.
@@ -237,6 +238,9 @@ class AuthController extends Controller
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
+        if ($groupFieldType == 'hidden') {
+            $userModel->group_id = $defaultUserGroup;
+        }
 
         // Add User Form
         $definition['elements']['User'] = array(
@@ -302,12 +306,12 @@ class AuthController extends Controller
             if ($form->models['User']->save()) {
 
                 // Save User Profile
-                $form->models['Profile']->user_id = $form['User']->model->id;
+                $form->models['Profile']->user_id = $form->models['User']->id;
                 $form->models['Profile']->save();
 
                 // Save User Password
-                $form->models['UserPassword']->user_id = $form['User']->model->id;
-                $form->models['UserPassword']->setPassword($form['UserPassword']->model->newPassword);
+                $form->models['UserPassword']->user_id = $form->models['User']->id;
+                $form->models['UserPassword']->setPassword($form->models['UserPassword']->newPassword);
                 $form->models['UserPassword']->save();
 
                 // Autologin user

@@ -161,13 +161,13 @@ class Text extends BaseType
         }
 
         if ($this->maxLength == "" || $this->maxLength > 255) {
-            $rules[] = array($this->profileField->internal_name, 'length', 'max' => 255);
+            $rules[] = array($this->profileField->internal_name, 'string', 'max' => 255);
         } else {
-            $rules[] = array($this->profileField->internal_name, 'length', 'max' => $this->maxLength);
+            $rules[] = array($this->profileField->internal_name, 'string', 'max' => $this->maxLength);
         }
 
         if ($this->minLength != "") {
-            $rules[] = array($this->profileField->internal_name, 'length', 'min' => $this->minLength);
+            $rules[] = array($this->profileField->internal_name, 'string', 'min' => $this->minLength);
         }
 
         if ($this->regexp != "") {

@@ -175,6 +175,8 @@ class HForm extends \yii\base\Component
                 $output .= $this->form->field($model, $name)->checkbox($options);
             } elseif ($definition['type'] == 'textarea') {
                 $output .= $this->form->field($model, $name)->textarea($options);
+            } elseif ($definition['type'] == 'hidden') {
+                $output .= $this->form->field($model, $name)->hiddenInput($options)->label(false);
             } elseif ($definition['type'] == 'password') {
                 $output .= $this->form->field($model, $name)->passwordInput($options);
             } elseif ($definition['type'] == 'datetime') {

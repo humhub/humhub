@@ -14,6 +14,7 @@ class AppAsset extends AssetBundle
         'css/bootstrap.min.css',
         'css/datepicker.css',
         'css/style.css',
+        'css/temp.css',
         'resources/font-awesome/css/font-awesome.min.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',

@@ -145,4 +145,33 @@ class CHtml extends \yii\helpers\Html
         return trim(str_replace('\\', '_', $className), '_');
     }
 
+    /**
+     * Active Checkbox without Label
+     * 
+     * @param type $model
+     * @param type $attribute
+     * @param type $options
+     * @return type
+     */
+    public static function activeCheckboxNoLabel($model, $attribute, $options = [])
+    {
+        $name = isset($options['name']) ? $options['name'] : static::getInputName($model, $attribute);
+        $value = static::getAttributeValue($model, $attribute);
+
+        if (!array_key_exists('value', $options)) {
+            $options['value'] = '1';
+        }
+        if (!array_key_exists('uncheck', $options)) {
+            $options['uncheck'] = '0';
+        }
+
+        $checked = "$value" === "{$options['value']}";
+
+        if (!array_key_exists('id', $options)) {
+            $options['id'] = static::getInputId($model, $attribute);
+        }
+
+        return static::checkbox($name, $checked, $options);
+    }
+
 }

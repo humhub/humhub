@@ -84,7 +84,7 @@ class Birthday extends DateTime
     public function getFieldRules($rules = array())
     {
 
-        $rules[] = array($this->profileField->internal_name . "_hide_year", 'in', 'range' => array(0, 1), 'allowEmpty' => true);
+        $rules[] = array($this->profileField->internal_name . "_hide_year", 'in', 'range' => array(0, 1));
         return parent::getFieldRules($rules);
     }
 

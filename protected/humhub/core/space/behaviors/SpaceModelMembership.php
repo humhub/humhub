@@ -358,6 +358,7 @@ class SpaceModelMembership extends Behavior
         }
         $membership->save();
 
+        /*
         // Create Wall Activity for that
         $activity = new Activity;
         $activity->content->space_id = $this->owner->id;
@@ -367,7 +368,8 @@ class SpaceModelMembership extends Behavior
         $activity->type = "ActivitySpaceMemberAdded";
         $activity->save();
         $activity->fire();
-
+         * 
+         */
         // Members can't also follow the space
         $this->owner->unfollow($userId);
 

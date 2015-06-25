@@ -55,39 +55,27 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
+        $rules = [
             [['user_id'], 'required'],
-            [['user_id', 'birthday_hide_year', 'im_icq'], 'integer'],
-            [['birthday'], 'safe'],
-            [['about'], 'string'],
-            [['firstname', 'lastname', 'title', 'gender', 'street', 'zip', 'city', 'country', 'state', 'phone_private', 'phone_work', 'mobile', 'fax', 'im_skype', 'im_msn', 'im_xmpp', 'url', 'url_facebook', 'url_linkedin', 'url_xing', 'url_youtube', 'url_vimeo', 'url_flickr', 'url_myspace', 'url_googleplus', 'url_twitter'], 'string', 'max' => 255]
+            [['user_id'], 'integer'],
         ];
 
-        /*
-          $rules = array();
+        foreach (ProfileField::find()->all() as $profileField) {
 
-          // On registration there is no user_id on validation
-          if ($this->scenario != 'register') {
-          $rules[] = array('user_id', 'required');
-          }
+            // Not visible fields: Admin Only 
+            if (!$profileField->visible && $this->scenario != 'editAdmin')
+                continue;
 
-          $rules[] = array('user_id', 'numerical', 'integerOnly' => true);
+            // Not Editable: only visibible on Admin Edit or Registration (if enabled)
+            if (!$profileField->editable && $this->scenario != 'editAdmin' && $this->scenario != 'registration')
+                continue;
 
-          foreach (ProfileField::model()->findAll() as $profileField) {
-          if (!$profileField->visible && $this->scenario != 'adminEdit')
-          continue;
+            if ($this->scenario == 'registration' && !$profileField->show_at_registration)
+                continue;
 
-          if (!$profileField->editable && $this->scenario != 'adminEdit' && $this->scenario != 'register')
-          continue;
-
-          if ($this->scenario == 'register' && !$profileField->show_at_registration)
-          continue;
-
-          $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
-          }
-
-          return $rules;
-         */
+            $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
+        }
+        return $rules;
     }
 
     public function scenarios()

@@ -40,7 +40,7 @@ class CActiveForm extends \yii\widgets\ActiveForm
 
     public function checkBox($model, $attribute, $htmlOptions = array())
     {
-        return CHtml::activeCheckBox($model, $attribute, $htmlOptions);
+        return CHtml::activeCheckboxNoLabel($model, $attribute, $htmlOptions);
     }
 
     public function dropDownList($model, $attribute, $data, $htmlOptions = array())

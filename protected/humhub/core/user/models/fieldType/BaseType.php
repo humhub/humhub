@@ -29,6 +29,8 @@ class BaseType extends \yii\base\Model
      * @var type
      */
     public $profileField = null;
+    
+    
 
     public function init()
     {
@@ -177,10 +179,16 @@ class BaseType extends \yii\base\Model
             $data[$attributeName] = $this->$attributeName;
         }
         $this->profileField->field_type_config = \yii\helpers\Json::encode($data);
-        $this->profileField->save();
-
+        
+        if (!$this->profileField->save()) {
+            throw new \yii\base\Exception("Could not save profile field!");
+        }
         // Clear Database Schema
         Yii::$app->getDb()->getSchema()->getTableSchema(\humhub\core\user\models\Profile::tableName(), true);
+
+        return true;
+
+        
     }
 
     /**

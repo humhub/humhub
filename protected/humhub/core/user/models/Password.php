@@ -61,6 +61,7 @@ class Password extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['newPassword', 'newPasswordConfirm'], 'required', 'on'=>'registration'],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],

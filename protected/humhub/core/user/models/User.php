@@ -72,8 +72,8 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
     public function rules()
     {
         return [
+            [['username', 'auth_mode', 'last_activity_email', 'group_id', 'email'], 'required'],
             [['wall_id', 'group_id', 'status', 'super_admin', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['auth_mode', 'last_activity_email'], 'required'],
             [['tags'], 'string'],
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
