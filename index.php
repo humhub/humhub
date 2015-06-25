@@ -17,4 +17,4 @@ Yii::setAlias('@webroot', __DIR__);
 Yii::setAlias('@app', __DIR__ . DIRECTORY_SEPARATOR . 'protected');
 Yii::setAlias('@humhub', '@app/humhub');
 
-(new yii\web\Application($config))->run();
+(new humhub\components\Application($config))->run();

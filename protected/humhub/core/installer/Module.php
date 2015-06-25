@@ -38,6 +38,15 @@ class Module extends \yii\base\Module
         $this->layout = '@humhub/core/installer/views/layouts/main.php';
     }
 
+    public function beforeAction($action)
+    {
+        if (Yii::$app->params['installed']) {
+            throw new \yii\web\HttpException(500, 'HumHub is already installed!');
+        }
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * Checks if database connections works
      *
