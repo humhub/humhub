@@ -520,11 +520,7 @@ class SettingController extends Controller
      */
     public function actionSelfTest()
     {
-        #Yii::import('application.commands.shell.HUpdateCommand');
-        #$migrate = HUpdateCommand::AutoUpdate();
-        $migrate = "Auto Migrate Disabled";
-
-        return $this->render('selftest', array('checks' => \humhub\libs\SelfTest::getResults(), 'migrate' => $migrate));
+        return $this->render('selftest', array('checks' => \humhub\libs\SelfTest::getResults(), 'migrate' => \humhub\commands\MigrateController::webMigrateAll()));
     }
 
 }
