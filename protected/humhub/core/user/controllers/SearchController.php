@@ -1,22 +1,11 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
+namespace humhub\core\user\controllers;
+
+use Yii;
+use yii\web\Controller;
+use yii\helpers\Html;
+use humhub\core\user\models\User;
 
 /**
  * Search Controller provides action for searching users.
@@ -28,31 +17,13 @@
 class SearchController extends Controller
 {
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+            ]
+        ];
     }
 
     /**
@@ -66,44 +37,34 @@ class SearchController extends Controller
      */
     public function actionJson()
     {
+        Yii::$app->response->format = 'json';
 
         $maxResults = 10;
-        $results = array();
-        $keyword = Yii::app()->request->getParam('keyword');
-        $keyword = Yii::app()->input->stripClean($keyword);
+        $keyword = Yii::$app->request->get('keyword');
 
-        // Build Search Condition
-        $criteria = new CDbCriteria();
-        $criteria->limit = $maxResults;
-        $criteria->condition = 1;
-        $criteria->params = array();
-        $i = 0;
+        $query = User::find()->limit($maxResults)->joinWith('profile');
+
         foreach (explode(" ", $keyword) as $part) {
-            $i++;
-            $criteria->condition .= " AND (t.email LIKE :match{$i} OR "
-                    . "t.username LIKE :match{$i} OR "
-                    . "userProfile.firstname LIKE :match{$i} OR "
-                    . "userProfile.lastname LIKE :match{$i} OR "
-                    . "userProfile.title LIKE :match{$i})";
-
-            $criteria->params[':match' . $i] = "%" . $part . "%";
+            $query->orFilterWhere(['like', 'user.email', $part]);
+            $query->orFilterWhere(['like', 'user.username', $part]);
+            $query->orFilterWhere(['like', 'profile.firstname', $part]);
+            $query->orFilterWhere(['like', 'profile.lastname', $part]);
+            $query->orFilterWhere(['like', 'profile.title', $part]);
         }
 
-        $users = User::model()->with('userProfile')->findAll($criteria);
-
-        foreach ($users as $user) {
+        $results = [];
+        foreach ($query->all() as $user) {
             if ($user != null) {
                 $userInfo = array();
                 $userInfo['guid'] = $user->guid;
-                $userInfo['displayName'] = CHtml::encode($user->displayName);
+                $userInfo['displayName'] = Html::encode($user->displayName);
                 $userInfo['image'] = $user->getProfileImage()->getUrl();
                 $userInfo['link'] = $user->getUrl();
                 $results[] = $userInfo;
             }
         }
 
-        print CJSON::encode($results);
-        Yii::app()->end();
+        return $results;
     }
 
 }

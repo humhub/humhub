@@ -1,146 +1,82 @@
 <?php
 
+namespace humhub\core\user\models;
+
+use Yii;
+use humhub\core\space\models\Space;
+use humhub\core\user\models\User;
+
 /**
  * This is the model class for table "group".
  *
- * The followings are the available columns in table 'group':
  * @property integer $id
  * @property integer $space_id
  * @property string $name
  * @property string $description
+ * @property string $created_at
+ * @property integer $created_by
+ * @property string $updated_at
+ * @property integer $updated_by
  * @property string $ldap_dn
  * @property integer $can_create_public_spaces
  * @property integer $can_create_private_spaces
- *
- * The followings are the available model relations:
- * @property User[] $users
- *
- * @package humhub.modules_core.user.models
- * @since 0.5
  */
-class Group extends HActiveRecord
+class Group extends \yii\db\ActiveRecord
 {
 
     public $adminGuids;
     public $defaultSpaceGuid;
 
     /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return Group the static model class
+     * @inheritdoc
      */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public static function tableName()
     {
         return 'group';
     }
 
     /**
-     * @return array validation rules for model attributes.
+     * @inheritdoc
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
-        return array(
-            array('can_create_public_spaces, can_create_private_spaces', 'numerical', 'integerOnly' => true),
-            array('name', 'length', 'max' => 45),
-            array('ldap_dn', 'length', 'max' => 255),
-            array('description, adminGuids, defaultSpaceGuid', 'safe'),
-            array('id, name, description', 'safe', 'on' => 'search'),
-        );
+        return [
+            [['space_id', 'created_by', 'updated_by', 'can_create_public_spaces', 'can_create_private_spaces'], 'integer'],
+            [['description', 'adminGuids', 'defaultSpaceGuid'], 'string'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['name'], 'string', 'max' => 45],
+            [['ldap_dn'], 'string', 'max' => 255]
+        ];
     }
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
+    public function scenarios()
     {
-        return array(
-            'users' => array(self::HAS_MANY, 'User', 'group_id'),
-            'admins' => array(self::HAS_MANY, 'GroupAdmin', 'group_id'),
-            'space' => array(self::BELONGS_TO, 'Space', 'space_id'),
-        );
+        $scenarios = parent::scenarios();
+        $scenarios['edit'] = ['name', 'description', 'ldap_dn', 'can_create_public_spaces', 'can_create_private_spaces', 'adminGuids', 'defaultSpaceGuid'];
+        return $scenarios;
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
+     * @inheritdoc
      */
     public function attributeLabels()
     {
-        return array(
-            'id' => Yii::t('UserModule.models_Group', 'ID'),
-            'name' => Yii::t('UserModule.models_Group', 'Name'),
-            'space_id' => Yii::t('UserModule.models_Group', 'Default Space'),
-            'description' => Yii::t('UserModule.models_Group', 'Description'),
-            'ldap_dn' => Yii::t('UserModule.models_Group', 'LDAP DN'),
-            'adminGuids' => Yii::t('UserModule.models_Group', 'Group Administrators'),
-            'defaultSpaceGuid' => Yii::t('UserModule.models_Group', 'Default Space'),
-            'can_create_public_spaces' => Yii::t('UserModule.models_Group', 'Members can create public spaces'),
-            'can_create_private_spaces' => Yii::t('UserModule.models_Group', 'Members can create private spaces'),
-        );
+        return [
+            'id' => 'ID',
+            'space_id' => 'Space ID',
+            'name' => 'Name',
+            'description' => 'Description',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
+            'ldap_dn' => 'Ldap Dn',
+            'can_create_public_spaces' => 'Can Create Public Spaces',
+            'can_create_private_spaces' => 'Can Create Private Spaces',
+        ];
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function search()
-    {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
-        $criteria = new CDbCriteria;
-
-        $criteria->compare('id', $this->id);
-        $criteria->compare('name', $this->name, true);
-        $criteria->compare('description', $this->description, true);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
-    }
-
-    /**
-     * Deletes a user including all dependencies
-     *
-     * @return boolean
-     */
-    public function delete()
-    {
-        GroupAdmin::model()->deleteAllByAttributes(array('group_id' => $this->id));
-
-        // Clear Default User Group for Registration if needed
-        if (HSetting::Get('defaultUserGroup', 'authentication_internal') == $this->id) {
-            HSetting::Set('defaultUserGroup', '', 'authentication_internal');
-        }
-
-        return parent::delete();
-    }
-
-    /**
-     * Helper Function return the name of a group by Id
-     *
-     * @param type $id
-     * @return string
-     */
-    public static function getGroupNameById($id)
-    {
-        $group = Group::model()->findByPk($id);
-        if ($group != null) {
-            return $group->name;
-        }
-        return "undefined";
-    }
-
-    public function beforeSave()
+    public function beforeSave($insert)
     {
 
         // When on edit form scenario, save also defaultSpaceGuid/adminGuids
@@ -148,31 +84,28 @@ class Group extends HActiveRecord
             if ($this->defaultSpaceGuid == "") {
                 $this->space_id = "";
             } else {
-                $space = Space::model()->findByAttributes(array('guid' => rtrim($this->defaultSpaceGuid, ',')));
+                $space = \humhub\core\space\models\Space::findOne(['guid' => rtrim($this->defaultSpaceGuid, ',')]);
                 if ($space !== null) {
                     $this->space_id = $space->id;
                 }
             }
         }
 
-
-        return parent::beforeSave();
+        return parent::beforeSave($insert);
     }
 
     public function afterSave()
     {
         if ($this->scenario == 'edit') {
-            GroupAdmin::model()->deleteAllByAttributes(array('group_id' => $this->id));
-
+            \humhub\core\user\models\GroupAdmin::deleteAll(['group_id' => $this->id]);
             $adminUsers = array();
-
             foreach (explode(",", $this->adminGuids) as $adminGuid) {
 
                 // Ensure guids valid characters
                 $adminGuid = preg_replace("/[^A-Za-z0-9\-]/", '', $adminGuid);
 
                 // Try load user
-                $user = User::model()->findByAttributes(array('guid' => $adminGuid));
+                $user = \humhub\core\user\models\User::findOne(['guid' => $adminGuid]);
                 if ($user != null) {
                     $groupAdmin = new GroupAdmin;
                     $groupAdmin->user_id = $user->id;
@@ -185,7 +118,7 @@ class Group extends HActiveRecord
 
     public function populateDefaultSpaceGuid()
     {
-        $defaultSpace = Space::model()->findByPk($this->space_id);
+        $defaultSpace = Space::findOne(['id' => $this->space_id]);
         if ($defaultSpace !== null) {
             $this->defaultSpaceGuid = $defaultSpace->guid;
         }
@@ -197,6 +130,21 @@ class Group extends HActiveRecord
         foreach ($this->admins as $admin) {
             $this->adminGuids .= $admin->user->guid . ",";
         }
+    }
+
+    public function getAdmins()
+    {
+        return $this->hasMany(GroupAdmin::className(), ['group_id' => 'id']);
+    }
+
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['user_id' => 'id']);
+    }
+
+    public function getSpace()
+    {
+        return $this->hasOne(Space::className(), ['id' => 'space_id']);
     }
 
 }

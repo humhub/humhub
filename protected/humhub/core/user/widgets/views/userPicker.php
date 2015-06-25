@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This View replaces a input with an user picker
  *
@@ -10,23 +11,26 @@
  * @package humhub.modules_core.user
  * @since 0.5
  */
+use \humhub\core\user\models\User;
+use \yii\helpers\Html;
+
+$this->registerJsFile("@web/js/jquery.highlight.min.js");
+$this->registerJsFile("@web/js/user/userpicker.js");
 ?>
 
 <?php
-
 // Resolve guids to user tags
 $newValue = "";
 
 foreach (explode(",", $currentValue) as $guid) {
-    $user = User::model()->findByAttributes(array('guid' => trim($guid)));
+    $user = User::findOne(['guid' => trim($guid)]);
     if ($user != null) {
         $imageUrl = $user->getProfileImage()->getUrl();
-        $name = CHtml::encode($user->displayName);
+        $name = Html::encode($user->displayName);
         $newValue .= '<li class="userInput" id="' . $user->guid . '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' . $imageUrl . '" alt="' . $name . 'r" width="24" height="24">' . $name . '<i class="fa fa-times-circle"></i></li>';
     }
 }
 ?>
-
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -38,9 +42,9 @@ foreach (explode(",", $currentValue) as $guid) {
                 maxUsers: '<?php echo $maxUsers; ?>',
                 searchUrl: '<?php echo $userSearchUrl; ?>',
                 currentValue: '<?php echo $newValue; ?>',
-                focus:'<?php echo $focus; ?>',
-                userGuid:'<?php echo $userGuid; ?>',
-                placeholderText:'<?php echo $placeholderText; ?>'
+                focus: '<?php echo $focus; ?>',
+                userGuid: '<?php echo $userGuid; ?>',
+                placeholderText: '<?php echo $placeholderText; ?>'
             });
         });
     });

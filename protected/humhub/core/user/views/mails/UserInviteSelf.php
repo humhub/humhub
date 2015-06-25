@@ -1,4 +1,12 @@
-<?php $this->beginContent('application.views.mail.template'); ?>
+<?php
+
+use Yii; 
+use yii\helpers\Url;
+use yii\helpers\Html;
+
+?>
+
+<?php //$this->beginContent('application.views.mail.template'); ?>
 
 
 <tr>
@@ -29,9 +37,9 @@
                                                     <td width="auto" align="center" valign="middle" height="28"
                                                         style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
-                                                                    <span style="color: #555555; font-weight: 300;">
-                                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', array('%appName%' => '<strong>' . CHtml::encode(Yii::app()->name) . '</strong>')); ?>
-                                                                    </span>
+                                                        <span style="color: #555555; font-weight: 300;">
+                                                            <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', array('%appName%' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>')); ?>
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -93,7 +101,7 @@
                                                 <tr>
                                                     <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:center; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%. Please click on the button below to proceed with your registration.', array('%appName%' => CHtml::encode(Yii::app()->name))); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%. Please click on the button below to proceed with your registration.', array('%appName%' => Html::encode(Yii::$app->name))); ?>
 
                                                     </td>
                                                 </tr>
@@ -118,12 +126,12 @@
                                                     <td width="auto" align="center" valign="middle" height="32"
                                                         style=" background-color:#7191a8;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
-                                                                    <span style="color: #ffffff; font-weight: 300;">
-                                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl("//user/auth/createAccount", array('token' => $token)); ?>"
-                                                                           style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                                                            <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Sign up'); ?></strong>
-                                                                        </a>
-                                                                    </span>
+                                                        <span style="color: #ffffff; font-weight: 300;">
+                                                            <a href="<?php echo Url::toRoute(["/user/auth/create-account", 'token' => $token], true); ?>"
+                                                               style="text-decoration: none; color: #ffffff; font-weight: 300;">
+                                                                <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Sign up'); ?></strong>
+                                                            </a>
+                                                        </span>
                                                     </td>
 
                                                 </tr>
@@ -154,4 +162,4 @@
     </td>
 </tr>
 
-<?php $this->endContent(); ?>
+<?php //$this->endContent(); ?>

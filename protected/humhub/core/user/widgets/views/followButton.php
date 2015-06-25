@@ -1,7 +1,9 @@
 <?php
 
+use yii\helpers\Html;
+
 if ($user->isFollowedByUser()) {
-    print HHtml::postLink(Yii::t("UserModule.widgets_views_followButton", "Unfollow"), $user->createUrl('//user/profile/unfollow'), array('class' => 'btn btn-primary'));
+    print Html::a(Yii::t("UserModule.widgets_views_followButton", "Unfollow"), $user->createUrl('/user/profile/unfollow'), array('class' => 'btn btn-primary', 'data-method'=>'POST'));
 } else {
-    print HHtml::postLink(Yii::t("UserModule.widgets_views_followButton", "Follow"), $user->createUrl('//user/profile/follow'), array('class' => 'btn btn-success'));
+    print Html::a(Yii::t("UserModule.widgets_views_followButton", "Follow"), $user->createUrl('/user/profile/follow'), array('class' => 'btn btn-success', 'data-method'=>'POST'));
 }

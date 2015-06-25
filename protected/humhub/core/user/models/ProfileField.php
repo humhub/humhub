@@ -1,34 +1,34 @@
 <?php
 
+namespace humhub\core\user\models;
+
+use Yii;
+
 /**
  * This is the model class for table "profile_field".
  *
- * The followings are the available columns in table 'profile_field':
  * @property integer $id
  * @property integer $profile_field_category_id
  * @property string $module_id
  * @property string $field_type_class
  * @property string $field_type_config
  * @property string $internal_name
- * @property string $ldap_attribute
  * @property string $title
  * @property string $description
  * @property integer $sort_order
  * @property integer $required
- * @property integer $visible
- * @property integer $editable
  * @property integer $show_at_registration
- * @property string $translation_category
- * @property integer $is_system
+ * @property integer $editable
+ * @property integer $visible
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- *
- * @package humhub.modules_core.user.models
- * @since 0.5
+ * @property string $ldap_attribute
+ * @property string $translation_category
+ * @property integer $is_system
  */
-class ProfileField extends HActiveRecord
+class ProfileField extends \yii\db\ActiveRecord
 {
 
     /**
@@ -67,19 +67,9 @@ class ProfileField extends HActiveRecord
     public $show_at_registration = 0;
 
     /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return ProfileField the static model class
+     * @inheritdoc
      */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public static function tableName()
     {
         return 'profile_field';
     }
@@ -90,15 +80,15 @@ class ProfileField extends HActiveRecord
     public function rules()
     {
         return array(
-            array('profile_field_category_id, field_type_class, internal_name, title, sort_order', 'required'),
-            array('profile_field_category_id, required, editable,show_at_registration,  visible, sort_order, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('module_id, field_type_class, title', 'length', 'max' => 255),
-            array('internal_name', 'length', 'max' => 100),
-            array('ldap_attribute, translation_category', 'length', 'max' => 255),
+            array(['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'),
+            array(['profile_field_category_id', 'required', 'editable', 'show_at_registration', 'visible', 'sort_order', 'created_by', 'updated_by'], 'integer'),
+            array(['module_id', 'field_type_class', 'title'], 'string', 'max' => 255),
+            array('internal_name', 'string', 'max' => 100),
+            array(['ldap_attribute', 'translation_category'], 'string', 'max' => 255),
             array('internal_name', 'checkInternalName'),
             array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Only alphanumeric characters allowed!')),
             array('field_type_class', 'checkType'),
-            array('description, created_at, updated_at', 'safe'),
+            array(['description', 'created_at', 'updated_at'], 'safe'),
         );
 
         return $rules;
@@ -159,12 +149,12 @@ class ProfileField extends HActiveRecord
     /**
      * After Save, also saving the underlying Field Type
      */
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
 
         # Cause Endless
         #$this->fieldType->save();
-        return parent::afterSave();
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -178,7 +168,7 @@ class ProfileField extends HActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, 'ProfileFieldType')) {
+        if ($this->field_type_class != "" && \humhub\helpers\Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::className())) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);
@@ -194,9 +184,8 @@ class ProfileField extends HActiveRecord
      */
     public function getFormDefinition()
     {
-
-        $categories = ProfileFieldCategory::model()->findAll(array('order' => 'sort_order'));
-        $profileFieldTypes = new ProfileFieldType();
+        $categories = ProfileFieldCategory::find()->orderBy('sort_order')->all();
+        $profileFieldTypes = new fieldtype\BaseType();
         $definition = array(
             'ProfileField' => array(
                 'type' => 'form',
@@ -247,7 +236,7 @@ class ProfileField extends HActiveRecord
                     ),
                     'profile_field_category_id' => array(
                         'type' => 'dropdownlist',
-                        'items' => CHtml::listData($categories, 'id', 'title'),
+                        'items' => \yii\helpers\ArrayHelper::map($categories, 'id', 'title'),
                         'class' => 'form-control',
                     ),
                     'field_type_class' => array(
@@ -282,16 +271,13 @@ class ProfileField extends HActiveRecord
         if (!$this->isNewRecord) {
 
             // Dont allow changes of internal_name - Maybe not the best way to check it.
-            $currentProfileField = ProfileField::model()->findByPk($this->id);
+            $currentProfileField = ProfileField::findOne(['id' => $this->id]);
             if ($this->internal_name != $currentProfileField->internal_name) {
                 $this->addError('internal_name', Yii::t('UserModule.models_ProfileField', 'Internal name could not be changed!'));
             }
         } else {
-
             // Check if Internal Name is not in use yet
-            $table = Yii::app()->getDb()->getSchema()->getTable(Profile::model()->tableName());
-            $columnNames = $table->getColumnNames();
-            if (in_array($this->internal_name, $columnNames)) {
+            if (Profile::columnExists($this->internal_name)) {
                 $this->addError('internal_name', Yii::t('UserModule.models_ProfileField', 'Internal name already in use!'));
             }
         }
@@ -308,12 +294,12 @@ class ProfileField extends HActiveRecord
         if (!$this->isNewRecord) {
 
             // Dont allow changes of internal_name - Maybe not the best way to check it.
-            $currentProfileField = ProfileField::model()->findByPk($this->id);
+            $currentProfileField = ProfileField::findOne(['id' => $this->id]);
             if ($this->field_type_class != $currentProfileField->field_type_class) {
                 $this->addError('field_type_class', Yii::t('UserModule.models_ProfileField', 'Field Type could not be changed!'));
             }
         } else {
-            $profileFieldTypes = new ProfileFieldType();
+            $profileFieldTypes = new fieldtype\BaseType();
             if (!key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
                 $this->addError('field_type_class', Yii::t('UserModule.models_ProfileField', 'Invalid field type!'));
             }
@@ -334,9 +320,9 @@ class ProfileField extends HActiveRecord
     }
 
     /**
-     * Returns the translation category 
+     * Returns the translation category
      * Defaults to: models_Profile
-     * 
+     *
      * @return string
      */
     public function getTranslationCategory()
@@ -349,7 +335,4 @@ class ProfileField extends HActiveRecord
         return "UserModule.models_Profile";
     }
 
-    
-
-    
 }

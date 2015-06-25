@@ -1,15 +1,18 @@
+<?php
+
+use Yii;
+use \humhub\compat\CActiveForm;
+use \humhub\compat\CHtml;
+use \humhub\models\Setting;
+?>
+
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_editSettings', '<strong>User</strong> settings'); ?>
 </div>
 <div class="panel-body">
-    <?php
-    $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'user-form',
-        'enableAjaxValidation' => false,
-    ));
-    ?>
+    <?php $form = CActiveForm::begin(['id' => 'basic-settings-form']); ?>
 
-    <?php //echo $form->errorSummary($model); ?>
+    <?php //echo $form->errorSummary($model);  ?>
 
     <div class="form-group">
         <?php echo $form->labelEx($model, 'tags'); ?>
@@ -19,11 +22,11 @@
 
     <div class="form-group">
         <?php echo $form->labelEx($model, 'language'); ?>
-        <?php echo $form->dropDownList($model, 'language', Yii::app()->params['availableLanguages'], array('class' => 'form-control')); ?>
+        <?php echo $form->dropDownList($model, 'language', $languages, array('class' => 'form-control')); ?>
         <?php echo $form->error($model, 'language'); ?>
     </div>
 
-    <?php if (HSetting::Get('allowGuestAccess', 'authentication_internal')): ?>
+    <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')): ?>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
             <?php
@@ -50,9 +53,9 @@
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>
 
     <!-- show flash message after saving -->
-    <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+    <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
-    <?php $this->endWidget(); ?>
+    <?php CActiveForm::end(); ?>
 </div>
 
 

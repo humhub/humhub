@@ -1,39 +1,33 @@
 <?php
 
+namespace humhub\core\user\models;
+
+use Yii;
+use humhub\models\Setting;
+
 /**
  * This is the model class for table "user".
  *
- * The followings are the available columns in table 'user':
  * @property integer $id
  * @property string $guid
  * @property integer $wall_id
  * @property integer $group_id
+ * @property integer $status
+ * @property integer $super_admin
  * @property string $username
  * @property string $email
- * @property integer $super_admin
- * @property integer $visiblity
- * @property integer $status
  * @property string $auth_mode
  * @property string $tags
  * @property string $language
  * @property string $last_activity_email
- * @property string $last_login
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- *
- * The followings are the available model relations:
- * @property Group $group
- * @property UserInvite[] $userInvites
- * @property Message[] $messages
- * @property Space[] $workspaces
- *
- * @package humhub.modules_core.user.models
- * @since 0.5
- * @author Luke
+ * @property string $last_login
+ * @property integer $visibility
  */
-class User extends HActiveRecordContentContainer implements ISearchable
+class User extends \humhub\core\content\components\activerecords\ContentContainer implements \yii\web\IdentityInterface
 {
 
     /**
@@ -64,84 +58,59 @@ class User extends HActiveRecordContentContainer implements ISearchable
     const VISIBILITY_ALL = 2; // Visible for all (also guests)
 
     /**
-     * Loaded User Profile
-     *
-     * @var type
+     * @inheritdoc
      */
 
-    protected $_profile;
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
-    {
-        return array(
-            'HGuidBehavior' => array(
-                'class' => 'application.behaviors.HGuidBehavior',
-            ),
-            'UserSettingBehavior' => array(
-                'class' => 'application.modules_core.user.behaviors.UserSettingBehavior',
-            ),
-            'HFollowableBehavior' => array(
-                'class' => 'application.modules_core.user.behaviors.HFollowableBehavior',
-            ),
-            'UserModelModulesBehavior' => array(
-                'class' => 'application.modules_core.user.behaviors.UserModelModulesBehavior',
-            )
-        );
-    }
-
-    public function defaultScope()
-    {
-        $alias = $this->getTableAlias(false, false);
-        return array(
-            // Per default show only content of users which are enabled or disabled
-            'condition' => $alias . ".status='" . self::STATUS_ENABLED . "' OR " . $alias . ".status='" . self::STATUS_DISABLED . "'",
-        );
-    }
-
-    public function scopes()
-    {
-        $alias = $this->getTableAlias();
-        return array(
-            'unapproved' => array(
-                'condition' => $alias . ".status = '" . self::STATUS_NEED_APPROVAL . "'",
-            ),
-            'active' => array(
-                'condition' => $alias . '.status = ' . self::STATUS_ENABLED,
-            ),
-            'recently' => array(
-                'order' => 'created_at DESC',
-                'limit' => 10,
-            ),
-        );
-    }
-
-    /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return User the static model class
-     */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public static function tableName()
     {
         return 'user';
     }
 
     /**
-     * @return array validation rules for model attributes.
+     * @inheritdoc
      */
     public function rules()
+    {
+        return [
+            [['wall_id', 'group_id', 'status', 'super_admin', 'created_by', 'updated_by', 'visibility'], 'integer'],
+            [['auth_mode', 'last_activity_email'], 'required'],
+            [['tags'], 'string'],
+            [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
+            [['guid'], 'string', 'max' => 45],
+            [['username'], 'string', 'max' => 25],
+            [['email'], 'string', 'max' => 100],
+            [['auth_mode'], 'string', 'max' => 10],
+            [['language'], 'string', 'max' => 5],
+            [['email'], 'unique'],
+            [['username'], 'unique'],
+            [['guid'], 'unique'],
+            [['wall_id'], 'unique']
+        ];
+    }
+
+    public function __get($name)
+    {
+        /**
+         * Ensure there is always a related Profile Model also when it's
+         * not really exists yet.
+         */
+        if ($name == 'profile') {
+            if (!$this->isRelationPopulated('profile')) {
+                $profile = $this->getProfile()->findFor('profile', $this);
+                if ($profile === null) {
+                    $profile = new Profile();
+                    $profile->user_id = $this->id;
+                }
+                $this->populateRelation('profile', $profile);
+            }
+        }
+        return parent::__get($name);
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rulesOld()
     {
 
         if ($this->scenario == 'register') {
@@ -149,266 +118,119 @@ class User extends HActiveRecordContentContainer implements ISearchable
             // All other fields should be unsafe.
             return array(
                 array('username, group_id, email', 'required'),
-                array('username', 'unique', 'caseSensitive' => false, 'className' => 'User'),
+                array('username', 'unique', 'caseSensitive' => false, 'targetClass' => self::className()),
                 array('email', 'email'),
-                array('group_id', 'numerical'),
-                array('email', 'unique', 'caseSensitive' => false, 'className' => 'User'),
+                array('group_id', 'integer'),
+                array('email', 'unique', 'caseSensitive' => false, 'targetClass' => self::className()),
                 array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß\+\-\._ ]/', 'message' => Yii::t('UserModule.models_User', 'Username can contain only letters, numbers, spaces and special characters (+-._)')),
-                array('username', 'length', 'max' => 25, 'min' => 4),
+                array('username', 'string', 'max' => 25, 'min' => 4),
             );
         }
 
         $rules = array();
-        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by, visibility', 'numerical', 'integerOnly' => true);
+        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by, visibility', 'integer', 'integerOnly' => true);
         $rules[] = array('email', 'email');
-        $rules[] = array('guid', 'length', 'max' => 45);
-        $rules[] = array('username', 'unique', 'caseSensitive' => false, 'className' => 'User');
-        $rules[] = array('email', 'unique', 'caseSensitive' => false, 'className' => 'User');
-        $rules[] = array('email,tags', 'length', 'max' => 100);
-        $rules[] = array('username', 'length', 'max' => 25, 'min' => 4);
-        $rules[] = array('language', 'length', 'max' => 5);
+        $rules[] = array('guid', 'string', 'max' => 45);
+        $rules[] = array('username', 'unique', 'targetClass' => self::className());
+        $rules[] = array('email', 'unique', 'targetClass' => self::className());
+        $rules[] = array('email,tags', 'string', 'max' => 100);
+        $rules[] = array('username', 'string', 'max' => 25, 'min' => 4);
+        $rules[] = array('language', 'string', 'max' => 5);
         $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
         $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email, last_login', 'safe');
-        $rules[] = array('auth_mode', 'length', 'max' => 10);
-        $rules[] = array('id, guid, status, wall_id, group_id, username, email, tags, created_at, created_by, updated_at, updated_by', 'safe', 'on' => 'search');
-
+        $rules[] = array('auth_mode', 'string', 'max' => 10);
         return $rules;
     }
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
+    public function scenarios()
     {
-        return array(
-            'wall' => array(self::BELONGS_TO, 'Wall', 'wall_id'),
-            'group' => array(self::BELONGS_TO, 'Group', 'group_id'),
-            'spaces' => array(self::HAS_MANY, 'SpaceMembership', 'user_id'),
-            'spaceMemberships' => array(self::HAS_MANY, 'SpaceMembership', 'user_id', 'condition' => 'status=' . SpaceMembership::STATUS_MEMBER),
-            'userInvites' => array(self::HAS_MANY, 'UserInvite', 'user_originator_id'),
-            'httpSessions' => array(self::HAS_MANY, 'UserHttpSession', 'user_id'),
-            'currentPassword' => array(self::HAS_ONE, 'UserPassword', 'user_id', 'order' => 'id DESC'),
-            'userProfile' => array(self::HAS_ONE, 'Profile', 'user_id')
-        );
+        $scenarios = parent::scenarios();
+        $scenarios['login'] = ['username', 'password'];
+        $scenarios['editAdmin'] = ['username', 'email', 'group_id', 'super_admin', 'auth_mode', 'status'];
+        $scenarios['registration'] = ['username', 'email', 'group_id'];
+        return $scenarios;
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
+     * @inheritdoc
      */
     public function attributeLabels()
     {
+        return [
+            'id' => 'ID',
+            'guid' => 'Guid',
+            'wall_id' => 'Wall ID',
+            'group_id' => 'Group ID',
+            'status' => 'Status',
+            'super_admin' => 'Super Admin',
+            'username' => 'Username',
+            'email' => 'Email',
+            'auth_mode' => 'Auth Mode',
+            'tags' => 'Tags',
+            'language' => 'Language',
+            'last_activity_email' => 'Last Activity Email',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
+            'last_login' => 'Last Login',
+            'visibility' => 'Visibility',
+        ];
+    }
+
+    public function behaviors()
+    {
         return array(
-            'id' => Yii::t('UserModule.models_User', 'ID'),
-            'guid' => Yii::t('UserModule.models_User', 'Guid'),
-            'wall_id' => Yii::t('UserModule.models_User', 'Wall'),
-            'group_id' => Yii::t('UserModule.models_User', 'Group'),
-            'username' => Yii::t('UserModule.models_User', 'Username'),
-            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
-            'email' => Yii::t('UserModule.models_User', 'Email'),
-            'tags' => Yii::t('UserModule.models_User', 'Tags'),
-            'auth_mode' => Yii::t('UserModule.models_User', 'Authentication mode'),
-            'language' => Yii::t('UserModule.models_User', 'Language'),
-            'created_at' => Yii::t('UserModule.models_User', 'Created At'),
-            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
-            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
-            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
+            \humhub\components\behaviors\GUID::className(),
+            \humhub\core\user\behaviors\UserSetting::className(),
+            \humhub\core\user\behaviors\Followable::className(),
+            \humhub\core\user\behaviors\UserModelModules::className()
         );
     }
 
-    /**
-     * Parameterized Scope for Recently
-     *
-     * @param type $limit
-     * @return User
-     */
-    public function recently($limit = 10)
+    public static function findIdentity($id)
     {
-        $this->getDbCriteria()->mergeWith(array(
-            'order' => 'created_at DESC',
-            'limit' => $limit,
-        ));
-        return $this;
+        return static::findOne($id);
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function search()
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-
-        $criteria = new CDbCriteria;
-        $criteria->compare('id', $this->id);
-        $criteria->compare('guid', $this->guid, true);
-        $criteria->compare('group_id', $this->group_id);
-        $criteria->compare('username', $this->username, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('super_admin', $this->super_admin);
-        $criteria->compare('created_at', $this->created_at, true);
-        $criteria->compare('created_by', $this->created_by);
-        $criteria->compare('updated_at', $this->updated_at, true);
-        $criteria->compare('updated_by', $this->updated_by);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            // For Admin User Search
-            'pagination' => array(
-                'pageSize' => 25,
-            ),
-        ));
+        return static::findOne(['guid' => $token]);
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function searchNeedApproval()
+    public function getId()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
-        $criteria = new CDbCriteria;
-
-        $criteria->compare('id', $this->id);
-        $criteria->compare('guid', $this->guid, true);
-        $criteria->compare('wall_id', $this->wall_id);
-
-        if (Yii::app()->user->isAdmin()) {
-            $criteria->compare('group_id', $this->group_id);
-        } else {
-            $groups = array();
-            $adminGroups = GroupAdmin::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
-            foreach ($adminGroups as $g) {
-                $groups[] = $g->group_id;
-            }
-
-            if ($this->group_id != "" && in_array($this->group_id, $groups)) {
-                $criteria->compare('group_id', $this->group_id);
-            } else {
-                $criteria->compare('group_id', $groups);
-            }
-        }
-
-        $criteria->compare('username', $this->username, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('status', 2);
-        $criteria->compare('super_admin', $this->super_admin);
-        $criteria->compare('tags', $this->tags, true);
-        $criteria->compare('created_at', $this->created_at, true);
-        $criteria->compare('created_by', $this->created_by);
-        $criteria->compare('updated_at', $this->updated_at, true);
-        $criteria->compare('updated_by', $this->updated_by);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
+        return $this->id;
     }
 
-    /**
-     * Before Save Addons
-     *
-     * @return type
-     */
-    protected function beforeSave()
+    public function getAuthKey()
     {
-
-        if ($this->isNewRecord) {
-
-            if ($this->auth_mode == "") {
-                $this->auth_mode = self::AUTH_MODE_LOCAL;
-            }
-
-            if (HSetting::Get('allowGuestAccess', 'authentication_internal')) {
-                // Set users profile default visibility to all
-                if (HSetting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
-                    $this->visibility = User::VISIBILITY_ALL;
-                }
-            }
-
-            $this->last_activity_email = new CDbExpression('NOW()');
-
-            // Set Status
-            if ($this->status == "") {
-                if (HSetting::Get('needApproval', 'authentication_internal')) {
-                    $this->status = User::STATUS_NEED_APPROVAL;
-                } else {
-                    $this->status = User::STATUS_ENABLED;
-                }
-            }
-
-            if ((HSetting::Get('defaultUserGroup', 'authentication_internal'))) {
-                $this->group_id = HSetting::Get('defaultUserGroup', 'authentication_internal');
-            }
-        }
-
-        return parent::beforeSave();
+        return $this->guid;
     }
 
-    /**
-     * After Save Addons
-     *
-     * @return type
-     */
-    protected function afterSave()
+    public function validateAuthKey($authKey)
     {
-        if ($this->status == User::STATUS_ENABLED) {
-            Yii::app()->search->update($this);
-        } else {
-            Yii::app()->search->delete($this);
-        }
-
-        if ($this->isNewRecord) {
-            if ($this->status == User::STATUS_ENABLED)
-                $this->setUpApproved();
-            else
-                $this->notifyGroupAdminsForApproval();
-        }
-
-
-        return parent::afterSave();
+        return $this->getAuthKey() === $authKey;
     }
 
-    public function setUpApproved()
+    public function getCurrentPassword()
     {
+        return $this->hasOne(Password::className(), ['user_id' => 'id'])->orderBy('created_at DESC');
+    }
 
-        $userInvite = UserInvite::model()->findByAttributes(array('email' => $this->email));
-        if ($userInvite !== null) {
-            // User was invited to a space
-            if ($userInvite->source == UserInvite::SOURCE_INVITE) {
-                $space = Space::model()->findByPk($userInvite->space_invite_id);
-                if ($space != null) {
-                    $space->addMember($this->id);
-                }
-            }
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
 
-            // Delete/Cleanup Invite Entry
-            $userInvite->delete();
-        }
+    public function getGroup()
+    {
+        return $this->hasOne(Group::className(), ['id' => 'group_id']);
+    }
 
-        // Auto Assign User to the Group Space
-        $group = Group::model()->findByPk($this->group_id);
-        if ($group != null && $group->space_id != "") {
-            $space = Space::model()->findByPk($group->space_id);
-            if ($space !== null) {
-                $space->addMember($this->id);
-            }
-        }
-
-        //
-        // Auto Add User to the default spaces
-        foreach (Space::model()->findAllByAttributes(array('auto_add_new_members' => 1)) as $space) {
-            $space->addMember($this->id);
-        }
-
-        // Create new wall record for this user
-        $wall = new Wall();
-        $wall->object_model = 'User';
-        $wall->object_id = $this->id;
-        $wall->save();
-
-        $this->wall_id = $wall->id;
-        $this->wall = $wall;
-        User::model()->updateByPk($this->id, array('wall_id' => $wall->id));
+    public function getUrl()
+    {
+        return $this->createUrl('/user/profile');
     }
 
     /**
@@ -419,22 +241,23 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
 
         // We don't allow deletion of users who owns a space - validate that
-        foreach (SpaceMembership::GetUserSpaces($this->id) as $workspace) {
-            if ($workspace->isSpaceOwner($this->id)) {
+        foreach (\humhub\core\space\models\Membership::GetUserSpaces($this->id) as $space) {
+            if ($space->isSpaceOwner($this->id)) {
                 throw new Exception("Tried to delete a user which is owner of a space!");
             }
         }
 
-        UserSetting::model()->deleteAllByAttributes(array('user_id' => $this->id));
+        \humhub\core\user\models\Setting::deleteAll(['user_id'=>$this->id]);
 
         // Disable all enabled modules
+        /*
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
                 $this->disableModule($moduleId);
             }
         }
-
         Yii::app()->search->delete($this);
+        
 
         // Delete user session
         UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
@@ -469,53 +292,205 @@ class User extends HActiveRecordContentContainer implements ISearchable
         foreach (UserPassword::model()->findAllByAttributes(array('user_id' => $this->id)) as $password) {
             $password->delete();
         }
+        */
 
         return parent::beforeDelete();
     }
 
     /**
-     * Returns URL to the User Profile
+     * Before Save Addons
      *
-     * @param array $parameters
+     * @return type
+     */
+    public function beforeSave($insert)
+    {
+
+        if ($insert) {
+
+            if ($this->auth_mode == "") {
+                $this->auth_mode = self::AUTH_MODE_LOCAL;
+            }
+
+            if (Setting::Get('allowGuestAccess', 'authentication_internal')) {
+                // Set users profile default visibility to all
+                if (Setting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
+                    $this->visibility = User::VISIBILITY_ALL;
+                }
+            }
+
+            $this->last_activity_email = new \yii\db\Expression('NOW()');
+
+            // Set Status
+            if ($this->status == "") {
+                if (Setting::Get('needApproval', 'authentication_internal')) {
+                    $this->status = User::STATUS_NEED_APPROVAL;
+                } else {
+                    $this->status = User::STATUS_ENABLED;
+                }
+            }
+
+            if ((Setting::Get('defaultUserGroup', 'authentication_internal'))) {
+                $this->group_id = Setting::Get('defaultUserGroup', 'authentication_internal');
+            }
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * After Save Addons
+     *
+     * @return type
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->status == User::STATUS_ENABLED) {
+            //Yii::app()->search->update($this);
+        } else {
+            //Yii::app()->search->delete($this);
+        }
+
+        if ($insert) {
+            if ($this->status == User::STATUS_ENABLED)
+                $this->setUpApproved();
+            else
+                $this->notifyGroupAdminsForApproval();
+
+            $this->profile->user_id = $this->id;
+        }
+
+        if (Yii::$app->user->id == $this->id) {
+            Yii::$app->user->setIdentity($this);
+        }
+
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function setUpApproved()
+    {
+        $userInvite = Invite::findOne(['email' => $this->email]);
+
+        if ($userInvite !== null) {
+            // User was invited to a space
+            if ($userInvite->source == Invite::SOURCE_INVITE) {
+                $space = \humhub\core\space\models\Space::findOne(['id' => $userInvite->space_invite_id]);
+                if ($space != null) {
+                    $space->addMember($this->id);
+                }
+            }
+
+            // Delete/Cleanup Invite Entry
+            $userInvite->delete();
+        }
+
+        // Auto Assign User to the Group Space
+        $group = Group::findOne(['id' => $this->group_id]);
+        if ($group != null && $group->space_id != "") {
+            $space = \humhub\core\space\models\Space::findOne(['id' => $group->space_id]);
+            if ($space !== null) {
+                $space->addMember($this->id);
+            }
+        }
+
+        // Auto Add User to the default spaces
+        foreach (\humhub\core\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
+            $space->addMember($this->id);
+        }
+
+        // Create new wall record for this user
+        $wall = new \humhub\core\content\models\Wall;
+        $wall->object_model = $this->className();
+        $wall->object_id = $this->id;
+        $wall->save();
+
+        $this->wall_id = $wall->id;
+        $this->wall = $wall;
+        
+        $this->update(false, 'wall_id');
+    }
+
+    /**
+     * Returns users display name
+     *
      * @return string
      */
-    public function getUrl($parameters = array())
+    public function getDisplayName()
     {
-        return $this->createUrl('//user/profile', $parameters);
+
+        $name = '';
+
+        $format = Setting::Get('displayNameFormat');
+
+        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
+            $name = $this->profile->firstname . " " . $this->profile->lastname;
+
+        // Return always username as fallback
+        if ($name == '' || $name == ' ')
+            return $this->username;
+
+        return $name;
     }
 
     /**
-     * Returns the Profile Link for this User
+     * Notifies groups admins for approval of new user via e-mail.
+     * This should be done after a new user is created and approval is required.
      *
-     * @deprecated since version 0.8
-     * @return Link
+     * @todo Create message template, move message into translation
      */
-    public function getProfileUrl()
+    private function notifyGroupAdminsForApproval()
     {
-        return $this->getUrl();
+        // No admin approval required
+        if ($this->status != User::STATUS_NEED_APPROVAL || !Setting::Get('needApproval', 'authentication_internal')) {
+            return;
+        }
+
+        foreach (GroupAdmin::model()->findAllByAttributes(array('group_id' => $this->group_id)) as $admin) {
+            $adminUser = User::model()->findByPk($admin->user_id);
+            if ($adminUser !== null) {
+                $approvalUrl = Yii::app()->createAbsoluteUrl("//admin/approval");
+
+                $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
+                        "a new user {$this->displayName} needs approval.<br><br>\n\n" .
+                        "Click here to validate:<br>\n\n" .
+                        HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+
+                $message = new HMailMessage();
+                $message->addFrom(Setting::Get('systemEmailAddress', 'mailing'), Setting::Get('systemEmailName', 'mailing'));
+                $message->addTo($adminUser->email);
+                $message->view = "application.views.mail.TextOnly";
+                $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
+                $message->setBody(array('message' => $html), 'text/html');
+                Yii::app()->mail->send($message);
+            } else {
+                Yii::log("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id, CLogger::LEVEL_ERROR);
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Creates an url in user scope.
-     * (Adding uguid parameter to identify current user.)
-     * See CController createUrl() for more details.
+     * Checks if this records belongs to the current user
      *
-     * @since 0.9
-     * @param type $route the URL route.
-     * @param type $params additional GET parameters.
-     * @param type $ampersand the token separating name-value pairs in the URL.
+     * @return boolean is current User
      */
-    public function createUrl($route, $params = array(), $ampersand = '&')
+    public function isCurrentUser()
     {
-        if (!isset($params['uguid'])) {
-            $params['uguid'] = $this->guid;
+        if (Yii::$app->user->id == $this->id) {
+            return true;
         }
 
-        if (Yii::app()->getController() !== null) {
-            return Yii::app()->getController()->createUrl($route, $params, $ampersand);
-        } else {
-            return Yii::app()->createUrl($route, $params, $ampersand);
-        }
+        return false;
+    }
+
+    public function canAccessPrivateContent(User $user = null)
+    {
+        return ($this->isCurrentUser());
+    }
+
+    public function getWallOut()
+    {
+        return Yii::app()->getController()->widget('application.modules_core.user.widgets.UserWallWidget', array('user' => $this), true);
     }
 
     /**
@@ -538,7 +513,7 @@ class User extends HActiveRecordContentContainer implements ISearchable
     {
 
         if ($userId == "")
-            $userId = Yii::app()->user->id;
+            $userId = Yii::$app->user->id;
 
         if ($userId == $this->id)
             return true;
@@ -574,110 +549,78 @@ class User extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
-     * Returns Profile Record for this user
+     * Creates an url in user scope.
+     * (Adding uguid parameter to identify current user.)
+     * See CController createUrl() for more details.
      *
-     * @return Profile
+     * @since 0.9
+     * @param type $route the URL route.
+     * @param type $params additional GET parameters.
+     * @param type $ampersand the token separating name-value pairs in the URL.
      */
-    public function getProfile()
+    public function createUrl($route, $params = array(), $ampersand = '&')
     {
-
-        if ($this->_profile != null)
-            return $this->_profile;
-
-        $this->_profile = Profile::model()->findByPk($this->id);
-
-        if ($this->_profile == null) {
-            // Maybe new user?
-            $this->_profile = new Profile();
-            $this->_profile->user_id = $this->id;
+        array_unshift($params, $route);
+        if (!isset($params['uguid'])) {
+            $params['uguid'] = $this->guid;
         }
-        $this->_profile->user = $this;
 
-        return $this->_profile;
+        return \yii\helpers\Url::toRoute($params);
     }
 
     /**
-     * Returns users display name
      *
-     * @return string
+     * @return type
      */
-    public function getDisplayName()
+    public function getSpaces()
     {
 
-        $name = '';
-
-        $format = HSetting::Get('displayNameFormat');
-
-        if ($format == '{profile.firstname} {profile.lastname}')
-            $name = $this->profile->firstname . " " . $this->profile->lastname;
-
-        // Return always username as fallback
-        if ($name == '' || $name == ' ')
-            return $this->username;
-
-        return $name;
+        // TODO: SHOW ONLY REAL MEMBERSHIPS
+        return $this->hasMany(\humhub\core\space\models\Space::className(), ['id' => 'space_id'])
+                        ->viaTable('space_membership', ['user_id' => 'id']);
     }
 
     /**
-     * Notifies groups admins for approval of new user via e-mail.
-     * This should be done after a new user is created and approval is required.
-     *
-     * @todo Create message template, move message into translation
+     * Checks if the user can create a space
+     * 
+     * @return boolean
      */
-    private function notifyGroupAdminsForApproval()
+    public function canCreateSpace()
     {
-        // No admin approval required
-        if ($this->status != User::STATUS_NEED_APPROVAL || !HSetting::Get('needApproval', 'authentication_internal')) {
-            return;
-        }
-
-        foreach (GroupAdmin::model()->findAllByAttributes(array('group_id' => $this->group_id)) as $admin) {
-            $adminUser = User::model()->findByPk($admin->user_id);
-            if ($adminUser !== null) {
-                $approvalUrl = Yii::app()->createAbsoluteUrl("//admin/approval");
-
-                $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
-                        "a new user {$this->displayName} needs approval.<br><br>\n\n" .
-                        "Click here to validate:<br>\n\n" .
-                        HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
-
-                $message = new HMailMessage();
-                $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
-                $message->addTo($adminUser->email);
-                $message->view = "application.views.mail.TextOnly";
-                $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
-                $message->setBody(array('message' => $html), 'text/html');
-                Yii::app()->mail->send($message);
-            } else {
-                Yii::log("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id, CLogger::LEVEL_ERROR);
-            }
-        }
-
-        return true;
+        return ($this->canCreatePrivateSpace() || $this->canCreatePublicSpace());
     }
 
     /**
-     * Checks if this records belongs to the current user
-     *
-     * @return boolean is current User
+     * Checks if the user can create public spaces
+     * 
+     * @return boolean
      */
-    public function isCurrentUser()
+    public function canCreatePublicSpace()
     {
-        if (Yii::app()->user->id == $this->id) {
+        if ($this->super_admin) {
+            return true;
+        } elseif ($this->group !== null && $this->group->can_create_public_spaces == 1) {
             return true;
         }
 
         return false;
     }
 
-    public function canAccessPrivateContent(User $user = null)
+    /**
+     * Checks if user can create private spaces
+     * 
+     * @return boolean
+     */
+    public function canCreatePrivateSpace()
     {
-        return ($this->isCurrentUser());
-    }
 
-    public function getWallOut()
-    {
-        return Yii::app()->getController()->widget('application.modules_core.user.widgets.UserWallWidget', array('user' => $this), true);
+        if ($this->super_admin) {
+            return true;
+        } elseif ($this->group !== null && $this->group->can_create_private_spaces == 1) {
+            return true;
+        }
+
+        return false;
     }
 
 }

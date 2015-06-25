@@ -1,17 +1,20 @@
+<?php
+
+use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
 <?php if ($user->tags) : ?>
     <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
 
-        <!-- Display panel menu widget -->
-        <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-tags-panel')); ?>
+        <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-tags-panel']); ?>
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userTags', '<strong>User</strong> tags'); ?></div>
         <div class="panel-body">
-
-
             <!-- start: tags for user skills -->
             <div class="tags">
                 <?php foreach ($user->getTags() as $tag) { ?>
-                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/members', array('keyword' => 'tags:' . $tag, 'areas' => array('User'))), array('class' => 'btn btn-default btn-xs tag')); ?>
+                    <?php echo Html::a($tag, Url::toRoute('/directory/directory/members', array('keyword' => 'tags:' . $tag, 'areas' => array('User'))), array('class' => 'btn btn-default btn-xs tag')); ?>
                 <?php } ?>
             </div>
             <!-- end: tags for user skills -->

@@ -1,13 +1,14 @@
+<?php
+
+use Yii;
+use \humhub\compat\CActiveForm;
+use \humhub\compat\CHtml;
+?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_changePassword', '<strong>Change</strong> password'); ?>
 </div>
 <div class="panel-body">
-    <?php
-    $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'user-form',
-        'enableAjaxValidation' => false,
-    ));
-    ?>
+    <?php $form = CActiveForm::begin(); ?>
 
     <div class="form-group">
         <?php echo $form->labelEx($model, 'currentPassword'); ?>
@@ -31,6 +32,9 @@
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_changePassword', 'Save'), array('class' => 'btn btn-primary')); ?>
 
 
-    <?php $this->endWidget(); ?>
+    <!-- show flash message after saving -->
+    <?php echo \humhub\widgets\DataSaved::widget(); ?>
+
+    <?php CActiveForm::end(); ?>
 
 </div>

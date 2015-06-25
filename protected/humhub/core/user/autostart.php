@@ -1,21 +1,13 @@
 <?php
 
-Yii::app()->moduleManager->register(array(
+use \humhub\core\user\models\User;
+
+\Yii::$app->moduleManager->register(array(
     'id' => 'user',
-    'class' => 'application.modules_core.user.UserModule',
+    'class' => \humhub\core\user\Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.user.components.*',
-        'application.modules_core.user.models.*',
-        'application.modules_core.user.widgets.*',
-        'application.modules_core.user.notifications.*',
-        'application.modules_core.user.forms.*',
-        'application.modules_core.user.*',
-    ),
-    // Events to Catch
     'events' => array(
-        array('class' => 'HSearchComponent', 'event' => 'onRebuild', 'callback' => array('UserModuleEvents', 'onSearchRebuild')),
-        array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('UserModuleEvents', 'onIntegrityCheck')),
-    ),
+    //array('class' => User::className(), 'event' => User::EVENT_INIT, 'callback' => array('app\modules\user\Events', 'onLoad')),
+    )
 ));
 ?>

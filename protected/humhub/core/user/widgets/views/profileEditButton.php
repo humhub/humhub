@@ -1,3 +1,7 @@
 <?php
 
-print HHtml::Link(Yii::t("UserModule.widgets_views_profileEditButton", "Edit account"), $this->createUrl('//user/account/edit'), array('class' => 'btn btn-primary'));
+use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+print Html::a(Yii::t("UserModule.widgets_views_profileEditButton", "Edit account"), Url::toRoute('/user/account/edit'), array('class' => 'btn btn-primary'));

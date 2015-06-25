@@ -18,6 +18,16 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\user\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use yii\web\HttpException;
+use humhub\core\user\models\Invite;
+use humhub\compat\HForm;
+use humhub\core\user\models\User;
+use humhub\core\user\models\Password;
+
 /**
  * AuthController handles all authentication tasks.
  *
@@ -28,7 +38,7 @@ class AuthController extends Controller
 {
 
     //public $layout = '//layouts/main1';
-    public $layout = "application.modules_core.user.views.layouts.main_auth";
+    public $layout = "@humhub/core/user/views/layouts/main";
     public $subLayout = "_layout";
 
     public function actions()
@@ -49,86 +59,45 @@ class AuthController extends Controller
     {
 
         // If user is already logged in, redirect him to the dashboard
-        if (!Yii::app()->user->isGuest) {
-            $this->redirect(Yii::app()->user->returnUrl);
+        if (!Yii::$app->user->isGuest) {
+            $this->redirect(Yii::$app->user->returnUrl);
         }
 
         // Show/Allow Anonymous Registration
-        $canRegister = HSetting::Get('anonymousRegistration', 'authentication_internal');
-        $model = new AccountLoginForm;
-
-        //TODO: Solve this via events!
-        if (Yii::app()->getModule('zsso') != null) {
-            ZSsoModule::beforeActionLogin();
-        }
-
-        // if it is ajax validation request
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'account-login-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
-        }
-
-        // collect user input data
-        if (isset($_POST['AccountLoginForm'])) {
-            $model->attributes = $_POST['AccountLoginForm'];
-
-            // validate user input and redirect to the previous page if valid
-            if ($model->validate() && $model->login()) {
-                $user = User::model()->findByPk(Yii::app()->user->id);
-
-                if (Yii::app()->request->isAjaxRequest) {
-                    $this->htmlRedirect(Yii::app()->user->returnUrl);
-                } else {
-                    $this->redirect(Yii::app()->user->returnUrl);
-                }
+        $loginModel = new \humhub\core\user\models\forms\AccountLogin;
+        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
+            if (Yii::$app->request->getIsAjax()) {
+                return $this->htmlRedirect(Yii::$app->user->returnUrl);
+            } else {
+                return $this->redirect(Yii::$app->user->returnUrl);
             }
         }
+        $loginModel->password = "";
 
-        // Always clear password
-        $model->password = "";
+        $canRegister = \humhub\models\Setting::Get('anonymousRegistration', 'authentication_internal');
+        $registerModel = new \humhub\core\user\models\forms\AccountRegister;
 
-        $registerModel = new AccountRegisterForm;
-
-        // Registration enabled?
         if ($canRegister) {
+            if ($registerModel->load(Yii::$app->request->post()) && $registerModel->validate()) {
 
-            // if it is ajax validation request
-            if (isset($_POST['ajax']) && $_POST['ajax'] === 'account-register-form') {
-                echo CActiveForm::validate($registerModel);
-                Yii::app()->end();
-            }
-
-            if (isset($_POST['AccountRegisterForm'])) {
-                $registerModel->attributes = $_POST['AccountRegisterForm'];
-
-                if ($registerModel->validate()) {
-
-                    // Try Load an invite
-                    $userInvite = UserInvite::model()->findByAttributes(array('email' => $registerModel->email));
-
-                    if ($userInvite === null) {
-                        $userInvite = new UserInvite();
-                    }
-
-                    $userInvite->email = $registerModel->email;
-                    $userInvite->source = UserInvite::SOURCE_SELF;
-                    $userInvite->language = Yii::app()->language;
-                    $userInvite->save();
-
-                    $userInvite->sendInviteMail();
-
-                    $this->render('register_success', array(
-                        'model' => $registerModel,
-                    ));
-                    return;
+                $invite = \humhub\core\user\models\Invite::findOne(['email' => $registerModel->email]);
+                if ($invite === null) {
+                    $invite = new \humhub\core\user\models\Invite();
                 }
+                $invite->email = $registerModel->email;
+                $invite->source = \humhub\core\user\models\Invite::SOURCE_SELF;
+                $invite->language = Yii::$app->language;
+                $invite->save();
+                $invite->sendInviteMail();
+
+                return $this->render('register_success', ['model' => $registerModel]);
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
-            $this->renderPartial('login_modal', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister), false, true);
+        if (Yii::$app->request->getIsAjax()) {
+            return $this->renderAjax('login_modal', array('model' => $loginModel, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
         } else {
-            $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
+            return $this->render('login', array('model' => $loginModel, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
         }
     }
 
@@ -146,11 +115,11 @@ class AuthController extends Controller
             if ($model->validate()) {
 
                 // Force new Captcha Code
-                Yii::app()->getController()->createAction('captcha')->getVerifyCode(true);
+                Yii::$app->getController()->createAction('captcha')->getVerifyCode(true);
 
                 $model->recoverPassword();
 
-                if (Yii::app()->request->isAjaxRequest) {
+                if (Yii::$app->request->isAjaxRequest) {
                     $this->renderPartial('recoverPassword_modal_success', array('model' => $model), false, true);
                 } else {
                     $this->render('recoverPassword_success', array(
@@ -161,7 +130,7 @@ class AuthController extends Controller
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::$app->request->isAjaxRequest) {
             $this->renderPartial('recoverPassword_modal', array('model' => $model), false, true);
         } else {
             $this->render('recoverPassword', array(
@@ -176,10 +145,10 @@ class AuthController extends Controller
     public function actionResetPassword()
     {
 
-        $user = User::model()->findByAttributes(array('guid' => Yii::app()->request->getQuery('guid')));
+        $user = User::model()->findByAttributes(array('guid' => Yii::$app->request->getQuery('guid')));
 
-        if ($user === null || !$this->checkPasswordResetToken($user, Yii::app()->request->getQuery('token'))) {
-            throw new CHttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
+        if ($user === null || !$this->checkPasswordResetToken($user, Yii::$app->request->getQuery('token'))) {
+            throw new HttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
         }
 
         $model = new UserPassword('newPassword');
@@ -231,34 +200,36 @@ class AuthController extends Controller
     public function actionCreateAccount()
     {
 
-        $_POST = Yii::app()->input->stripClean($_POST);
+        $needApproval = \humhub\models\Setting::Get('needApproval', 'authentication_internal');
 
-        $needApproval = HSetting::Get('needApproval', 'authentication_internal');
+        if (!Yii::$app->user->isGuest)
+            throw new HttpException(401, 'Your are already logged in! - Logout first!');
 
-        if (!Yii::app()->user->isGuest)
-            throw new CHttpException(401, 'Your are already logged in! - Logout first!');
 
-        // Check for valid user invite
-        $userInvite = UserInvite::model()->findByAttributes(array('token' => Yii::app()->request->getQuery('token')));
+        $userInvite = Invite::findOne(['token' => Yii::$app->request->get('token')]);
         if (!$userInvite)
-            throw new CHttpException(404, 'Token not found!');
+            throw new HttpException(404, 'Token not found!');
 
         if ($userInvite->language)
-            Yii::app()->setLanguage($userInvite->language);
+            Yii::$app->language = $userInvite->language;
 
-        $userModel = new User('register');
+        $userModel = new User();
+        $userModel->scenario = 'registration';
         $userModel->email = $userInvite->email;
-        $userPasswordModel = new UserPassword('newPassword');
+
+        $userPasswordModel = new Password();
+        $userPasswordModel->scenario = 'registration';
+
         $profileModel = $userModel->profile;
-        $profileModel->scenario = 'register';
+        $profileModel->scenario = 'registration';
 
         // Build Form Definition
         $definition = array();
         $definition['elements'] = array();
 
-        $groupModels = Group::model()->findAll(array('order' => 'name'));
 
-        $defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
+        $groupModels = \humhub\core\user\models\Group::find()->orderBy('name ASC')->all();
+        $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
         $groupFieldType = "dropdownlist";
         if ($defaultUserGroup != "") {
             $groupFieldType = "hidden";
@@ -280,7 +251,7 @@ class AuthController extends Controller
                 'group_id' => array(
                     'type' => $groupFieldType,
                     'class' => 'form-control',
-                    'items' => CHtml::listData($groupModels, 'id', 'name'),
+                    'items' => \yii\helpers\ArrayHelper::map($groupModels, 'id', 'name'),
                     'value' => $defaultUserGroup,
                 ),
             ),
@@ -317,50 +288,44 @@ class AuthController extends Controller
         );
 
         $form = new HForm($definition);
-        $form['User']->model = $userModel;
-        $form['UserPassword']->model = $userPasswordModel;
-        $form['Profile']->model = $profileModel;
+        $form->models['User'] = $userModel;
+        $form->models['UserPassword'] = $userPasswordModel;
+        $form->models['Profile'] = $profileModel;
 
         if ($form->submitted('save') && $form->validate()) {
 
             $this->forcePostRequest();
 
             // Registe User
-            $form['User']->model->email = $userInvite->email;
-            $form['User']->model->language = Yii::app()->getLanguage();
-            if ($form['User']->model->save()) {
+            $form->models['User']->email = $userInvite->email;
+            $form->models['User']->language = Yii::$app->language;
+            if ($form->models['User']->save()) {
 
                 // Save User Profile
-                $form['Profile']->model->user_id = $form['User']->model->id;
-                $form['Profile']->model->save();
+                $form->models['Profile']->user_id = $form['User']->model->id;
+                $form->models['Profile']->save();
 
                 // Save User Password
-                $form['UserPassword']->model->user_id = $form['User']->model->id;
-                $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
-                $form['UserPassword']->model->save();
+                $form->models['UserPassword']->user_id = $form['User']->model->id;
+                $form->models['UserPassword']->setPassword($form['UserPassword']->model->newPassword);
+                $form->models['UserPassword']->save();
 
                 // Autologin user
                 if (!$needApproval) {
-                    $user = $form['User']->model;
-                    $newIdentity = new UserIdentity($user->username, '');
-                    $newIdentity->fakeAuthenticate();
-                    Yii::app()->user->login($newIdentity);
-                    $this->redirect(array('//dashboard/dashboard'));
-                    return;
+                    Yii::$app->user->switchIdentity($form->models['User']);
+                    return $this->redirect(Url::to(['/dashboard/dashboard']));
                 }
 
-                $this->render('createAccount_success', array(
-                    'form' => $form,
-                    'needApproval' => $needApproval,
+                return $this->render('createAccount_success', array(
+                            'form' => $form,
+                            'needApproval' => $needApproval,
                 ));
-
-                return;
             }
         }
 
-        $this->render('createAccount', array(
-            'form' => $form,
-            'needAproval' => $needApproval)
+        return $this->render('createAccount', array(
+                    'hForm' => $form,
+                    'needAproval' => $needApproval)
         );
     }
 
@@ -370,16 +335,21 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-        $language = Yii::app()->user->language;
-        
-        Yii::app()->user->logout();
+        $language = Yii::$app->user->language;
+
+        Yii::$app->user->logout();
 
         // Store users language in session
         if ($language != "") {
-            Yii::app()->request->cookies['language'] = new CHttpCookie('language', $language);
+            $cookie = new \yii\web\Cookie([
+                'name' => 'language',
+                'value' => $language,
+                'expire' => time() + 86400 * 365,
+            ]);
+            Yii::$app->getResponse()->getCookies()->add($cookie);            
         }
- 
-        $this->redirect(Yii::app()->homeUrl);
+
+        $this->redirect(Yii::$app->homeUrl);
     }
 
     /**
@@ -395,12 +365,12 @@ class AuthController extends Controller
         $out = array();
         $out['loggedIn'] = false;
 
-        if (!Yii::app()->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $out['loggedIn'] = true;
         }
 
         print CJSON::encode($out);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     /**
@@ -410,7 +380,7 @@ class AuthController extends Controller
     public function actionGetSessionUserJson()
     {
 
-        $sessionId = Yii::app()->request->getQuery('sessionId');
+        $sessionId = Yii::$app->request->getQuery('sessionId');
 
         $output = array();
         $output['valid'] = false;
@@ -424,7 +394,7 @@ class AuthController extends Controller
         }
 
         print CJSON::encode($output);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 }

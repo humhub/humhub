@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\user\controllers;
+
+use Yii;
+use humhub\core\content\components\ContentContainerController;
+
 /**
  * ProfileController is responsible for all user profiles.
  * Also the following functions are implemented here.
@@ -11,39 +16,22 @@
 class ProfileController extends ContentContainerController
 {
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index', 'stream', 'about']
+            ]
+        ];
     }
 
     public function actions()
     {
         return array(
             'stream' => array(
-                'class' => 'application.modules_core.wall.ContentContainerStreamAction',
-                'mode' => BaseStreamAction::MODE_NORMAL,
+                'class' => \humhub\core\content\components\actions\ContentContainerStream::className(),
+                'mode' => \humhub\core\content\components\actions\ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->getUser()
             ),
         );
@@ -54,7 +42,7 @@ class ProfileController extends ContentContainerController
      */
     public function actionIndex()
     {
-        $this->render('index');
+        return $this->render('index', ['user' => $this->contentContainer]);
     }
 
     /**
@@ -62,7 +50,7 @@ class ProfileController extends ContentContainerController
      */
     public function actionAbout()
     {
-        $this->render('about', array('user' => $this->getUser()));
+        return $this->render('about', ['user' => $this->contentContainer]);
     }
 
     /**
@@ -73,7 +61,7 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->follow();
-        $this->redirect($this->getUser()->getUrl());
+        return $this->redirect($this->getUser()->getUrl());
     }
 
     /**
@@ -83,7 +71,7 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->unfollow();
-        $this->redirect($this->getUser()->getUrl());
+        return $this->redirect($this->getUser()->getUrl());
     }
 
 }

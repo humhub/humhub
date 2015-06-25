@@ -1,13 +1,19 @@
+<?php
+
+use Yii;
+?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_edit', '<strong>User</strong> details'); ?>
 
     <!-- show flash message after saving -->
-    <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+    <?php echo \humhub\widgets\DataSaved::widget(); ?>
 </div>
 <div class="panel-body">
 
     <div id="profile-form-container" style="display: none;">
-        <?php echo $form; ?>
+        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+        <?php echo $hForm->render($form); ?>
+        <?php \yii\widgets\ActiveForm::end(); ?>
     </div>
     <div id="profile-loader" class="loader">
         <div class="sk-spinner sk-spinner-three-bounce">

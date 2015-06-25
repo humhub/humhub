@@ -1,3 +1,18 @@
+<?php
+
+use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Space;
+
+if ($isProfileOwner) {
+    $this->registerJsFile('js/user/profileHeaderImageUpload.js');
+    $this->registerJs("var userGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/profile-image-upload') . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileHeaderUploaderUrl='" . Url::toRoute('/user/account/banner-image-upload') . "';", \yii\web\View::POS_BEGIN);
+}
+?>
 <div class="panel panel-default panel-profile">
 
     <div class="panel-profile-header">
@@ -40,8 +55,8 @@
 
             <!-- show user name and title -->
             <div class="img-profile-data">
-                <h1><?php echo CHtml::encode($user->displayName); ?></h1>
-                <h2><?php echo CHtml::encode($user->profile->title); ?></h2>
+                <h1><?php echo Html::encode($user->displayName); ?></h1>
+                <h2><?php echo Html::encode($user->profile->title); ?></h2>
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
@@ -55,11 +70,11 @@
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Yii::app()->createUrl('//user/account/cropBannerImage'); ?>"
+                       href="<?php echo Url::toRoute('/user/account/crop-banner-image'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
-                        $this->widget('application.widgets.ModalConfirmWidget', array(
+                        echo \humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'modal_bannerimagedelete',
                             'linkOutput' => 'a',
                             'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
@@ -69,7 +84,7 @@
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'class' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $this->createUrl("//user/account/deleteProfileImage", array('type' => 'banner')),
+                            'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'banner']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -134,11 +149,11 @@
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Yii::app()->createUrl('//user/account/cropProfileImage'); ?>"
+                       href="<?php echo Url::toRoute('/user/account/crop-profile-image'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
-                        $this->widget('application.widgets.ModalConfirmWidget', array(
+                        echo \humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'modal_profileimagedelete',
                             'linkOutput' => 'a',
                             'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
@@ -148,7 +163,7 @@
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'class' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $this->createUrl("//user/account/deleteProfileImage", array('type' => 'profile')),
+                            'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'profile']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -174,7 +189,7 @@
                     </div>
 
                     <div class="pull-left entry">
-                        <span class="count"><?php echo $user->getFollowingCount('User') + $user->getFollowingCount('Space'); ?></span>
+                        <span class="count"><?php echo $user->getFollowingCount(User::className()) + $user->getFollowingCount(Space::className()); ?></span>
                         <br>
                         <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
                     </div>
@@ -189,12 +204,13 @@
 
                 <div class="controls controls-header text-right col-sm-12 col-md-6">
                     <?php
-                    $this->widget('application.modules_core.user.widgets.ProfileHeaderControlsWidget', array(
-                        'user' => $user,
-                        'widgets' => array(
-                            array('application.modules_core.user.widgets.ProfileEditButtonWidget', array('user' => $user), array()),
-                            array('application.modules_core.user.widgets.UserFollowButtonWidget', array('user' => $user), array()),
-                        )
+                    echo \humhub\core\user\widgets\ProfileHeaderControls::widget(
+                            array(
+                                'user' => $user,
+                                'widgets' => array(
+                                    array(\humhub\core\user\widgets\ProfileEditButton::className(), array('user' => $user), array()),
+                                    array(\humhub\core\user\widgets\UserFollowButton::className(), array('user' => $user), array()),
+                                )
                     ));
                     ?>
                 </div>

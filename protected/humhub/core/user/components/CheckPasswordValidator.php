@@ -18,20 +18,25 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\user\components;
+
+use Yii;
+use yii\validators\Validator;
+
 /**
  * CheckPasswordValidator checks password of currently logged in user.
  *
  * @author luke
  */
-class CheckPasswordValidator extends CValidator {
+class CheckPasswordValidator extends Validator
+{
 
-    protected function validateAttribute($object, $attribute) {
+    public function validateAttribute($object, $attribute)
+    {
         $value = $object->$attribute;
 
-        $identity = new UserIdentity(Yii::app()->user->getModel()->username, $value);
-        $identity->authenticate();
-
-        if (!$identity->isAuthenticated) {
+        $user = Yii::$app->user->getIdentity();
+        if (!$user->currentPassword->validatePassword($value)) {
             $object->addError($attribute, Yii::t('UserModule.components_CheckPasswordValidator', "Your password is incorrect!"));
         }
     }

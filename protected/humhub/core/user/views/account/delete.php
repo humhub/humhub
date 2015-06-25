@@ -1,3 +1,9 @@
+<?php
+
+use Yii;
+use \humhub\compat\CActiveForm;
+use \humhub\compat\CHtml;
+?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_delete', '<strong>Delete</strong> account'); ?>
 </div>
@@ -11,12 +17,7 @@
 
         <?php echo Yii::t('UserModule.views_account_delete', 'Are you sure, that you want to delete your account?<br />All your published content will be removed! '); ?>
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'user-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
 
         <p class="help-block">Fields with <span class="required">*</span> are required.</p><br>
 
@@ -27,8 +28,10 @@
         <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_delete', 'Delete account'), array('class' => 'btn btn-danger')); ?>
 
 
-        <?php $this->endWidget(); ?>
+        <!-- show flash message after saving -->
+        <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
+        <?php CActiveForm::end(); ?>
     <?php } ?>
 </div>
 

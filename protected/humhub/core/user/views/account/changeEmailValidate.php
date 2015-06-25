@@ -1,3 +1,8 @@
+<?php
+
+use Yii;
+use \humhub\compat\CHtml;
+?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_changeEmailValidate', '<strong>Change</strong> E-mail'); ?>
 </div>
