@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * PanelMenuWidget add an dropdown menu to the panel header
  *
@@ -25,7 +27,7 @@
  * @since 0.5
  * @author Andreas Strobel
  */
-class PanelMenuWidget extends HWidget
+class PanelMenu extends \yii\base\Widget
 {
 
     /**
@@ -35,18 +37,15 @@ class PanelMenuWidget extends HWidget
 
     /**
      * Workaround to inject menu items to PanelMenu
-     * 
+     *
      * @deprecated since version 0.9
      * @internal description
-     * @var String 
+     * @var String
      */
     public $extraMenus = "";
 
     public function init()
     {
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/resources', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/panelMenu.js', CClientScript::POS_BEGIN);
-
         return parent::init();
     }
 
@@ -55,11 +54,9 @@ class PanelMenuWidget extends HWidget
      */
     public function run()
     {
-
-
-        $this->render('panelMenu', array(
-            'id' => $this->id,
-            'extraMenus' => $this->extraMenus,
+        return $this->render('panelMenu', array(
+                    'id' => $this->id,
+                    'extraMenus' => $this->extraMenus,
         ));
     }
 

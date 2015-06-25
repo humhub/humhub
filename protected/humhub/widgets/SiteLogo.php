@@ -1,12 +1,18 @@
 <?php
-class LogoWidget extends HWidget {
+
+namespace humhub\widgets;
+
+use humhub\libs\LogoImage;
+
+class SiteLogo extends \yii\base\Widget
+{
 
     public $place = 'topMenu';
 
-    public function run() {
+    public function run()
+    {
 
-        $this->render('logo', array('logo' => new LogoImage(), 'place' => $this->place));
-    
+        return $this->render('logo', array('logo' => new LogoImage(), 'place' => $this->place));
     }
 
 }

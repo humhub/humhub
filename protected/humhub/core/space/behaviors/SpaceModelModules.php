@@ -18,6 +18,13 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\behaviors;
+
+use Yii;
+use yii\base\Behavior;
+use yii\db\ActiveRecord;
+use humhub\core\user\models\Follow;
+
 /**
  * SpaceModelModuleBehavior handles all space model relating moduling methods.
  * (Install, Uninstall modules)
@@ -26,7 +33,7 @@
  * @package humhub.modules_core.space.behaviors
  * @author luke
  */
-class SpaceModelModulesBehavior extends CActiveRecordBehavior
+class SpaceModelModules extends Behavior
 {
 
     public $_enabledModules = null;
@@ -129,7 +136,7 @@ class SpaceModelModulesBehavior extends CActiveRecordBehavior
             $spaceModule = new SpaceApplicationModule();
             $spaceModule->space_id = $this->getOwner()->id;
             $spaceModule->module_id = $moduleId;
-        }        
+        }
         $spaceModule->state = SpaceApplicationModule::STATE_ENABLED;
         $spaceModule->save();
 

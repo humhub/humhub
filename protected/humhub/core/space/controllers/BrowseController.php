@@ -1,5 +1,13 @@
 <?php
 
+namespace humhub\core\space\controllers;
+
+use Yii;
+use \humhub\components\Controller;
+use \yii\helpers\Url;
+use \yii\web\HttpException;
+use \humhub\core\user\models\User;
+
 /**
  * BrowseController
  *

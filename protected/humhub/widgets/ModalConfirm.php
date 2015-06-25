@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * ModalConfirmWidget shows a confirm modal before calling an action
  *
@@ -28,7 +30,8 @@
  * @since 0.5
  * @author Andreas Strobel
  */
-class ModalConfirmWidget extends HWidget {
+class ModalConfirm extends \yii\base\Widget
+{
 
     /**
      * @var String Message to show
@@ -99,22 +102,22 @@ class ModalConfirmWidget extends HWidget {
     /**
      * Displays / Run the Widgets
      */
-    public function run() {
-
-        $this->render('modalConfirm', array(
-            'uniqueID' => $this->uniqueID,
-            'linkOutput' => $this->linkOutput,
-            'title' => $this->title,
-            'message' => $this->message,
-            'buttonTrue' => $this->buttonTrue,
-            'buttonFalse' => $this->buttonFalse,
-            'class' => $this->class,
-            'style' => $this->style,
-            'linkContent' => $this->linkContent,
-            'linkHref' => $this->linkHref,
-            'linkTooltipText' => $this->linkTooltipText,
-            'confirmJS' => $this->confirmJS,
-            'modalShownJS' => $this->modalShownJS
+    public function run()
+    {
+        return $this->render('modalConfirm', array(
+                    'uniqueID' => $this->uniqueID,
+                    'linkOutput' => $this->linkOutput,
+                    'title' => $this->title,
+                    'message' => $this->message,
+                    'buttonTrue' => $this->buttonTrue,
+                    'buttonFalse' => $this->buttonFalse,
+                    'class' => $this->class,
+                    'style' => $this->style,
+                    'linkContent' => $this->linkContent,
+                    'linkHref' => $this->linkHref,
+                    'linkTooltipText' => $this->linkTooltipText,
+                    'confirmJS' => $this->confirmJS,
+                    'modalShownJS' => $this->modalShownJS
         ));
     }
 

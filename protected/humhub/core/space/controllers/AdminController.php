@@ -1,5 +1,14 @@
 <?php
 
+namespace humhub\core\space\controllers;
+
+use Yii;
+use \humhub\components\Controller;
+use \yii\helpers\Url;
+use \yii\web\HttpException;
+use \humhub\core\user\models\User;
+use humhub\core\space\models\Membership;
+
 /**
  * AdminController provides all space administration actions.
  *
@@ -7,7 +16,7 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class AdminController extends Controller
+class AdminController extends \humhub\core\content\components\ContentContainerController
 {
 
     /**
@@ -15,51 +24,10 @@ class AdminController extends Controller
      */
     public $subLayout = "application.modules_core.space.views.space._layout";
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
-
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
-    {
-        return array(
-            'ProfileControllerBehavior' => array(
-                'class' => 'application.modules_core.space.behaviors.SpaceControllerBehavior',
-            ),
-        );
-    }
-
     public function beforeAction($action)
     {
-
         $this->adminOnly();
+
         return parent::beforeAction($action);
     }
 
@@ -68,7 +36,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $this->redirect($this->createUrl('edit', array('sguid' => $this->getSpace()->guid)));
+        $this->redirect($this->contentContainer->createUrl('/space/admin/edit'));
     }
 
     /**
@@ -78,27 +46,16 @@ class AdminController extends Controller
      */
     public function actionEdit()
     {
-
         $model = $this->getSpace();
         $model->scenario = 'edit';
 
-        // Ajax Validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'space-edit-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            return $this->redirect($model->createUrl('/space/admin/edit'));
         }
 
-        if (isset($_POST['Space'])) {
-            $_POST['Space'] = Yii::app()->input->stripClean($_POST['Space']);
-            $model->attributes = $_POST['Space'];
-            if ($model->validate()) {
-                $model->save();
-                Yii::app()->user->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
-                $this->redirect($model->createUrl('admin/edit'));
-            }
-        }
-
-        $this->render('edit', array('model' => $model));
+        return $this->render('edit', array('model' => $model));
     }
 
     /**
@@ -106,29 +63,27 @@ class AdminController extends Controller
      */
     public function actionMembers()
     {
-
-        $membersPerPage = 10;
+        $membersPerPage = 20;
         $space = $this->getSpace();
 
         // User Role Management
         if (isset($_POST['users'])) {
-
-            $users = Yii::app()->request->getParam('users');
+            $users = Yii::$app->request->post('users');
 
             // Loop over all users in Form
             foreach ($users as $userGuid) {
                 // Get informations
                 if (isset($_POST['user_' . $userGuid])) {
-                    $userSettings = Yii::app()->request->getParam('user_' . $userGuid);
+                    $userSettings = Yii::$app->request->post('user_' . $userGuid);
 
-                    $user = User::model()->findByAttributes(array('guid' => $userGuid));
+                    $user = User::findOne(['guid' => $userGuid]);
                     if ($user != null) {
 
                         // No changes on the Owner
                         if ($space->isSpaceOwner($user->id))
                             continue;
 
-                        $membership = SpaceMembership::model()->findByAttributes(array('user_id' => $user->id, 'space_id' => $space->id));
+                        $membership = \humhub\core\space\models\Membership::findOne(['user_id' => $user->id, 'space_id' => $space->id]);
                         if ($membership != null) {
                             $membership->invite_role = (isset($userSettings['inviteRole']) && $userSettings['inviteRole'] == 1) ? 1 : 0;
                             $membership->admin_role = (isset($userSettings['adminRole']) && $userSettings['adminRole'] == 1) ? 1 : 0;
@@ -142,56 +97,44 @@ class AdminController extends Controller
             // Change owner if changed
             if ($space->isSpaceOwner()) {
                 $owner = $space->getSpaceOwner();
-
-                $newOwnerId = Yii::app()->request->getParam('ownerId');
+                $newOwnerId = Yii::$app->request->post('ownerId');
 
                 if ($newOwnerId != $owner->id) {
                     if ($space->isMember($newOwnerId)) {
                         $space->setSpaceOwner($newOwnerId);
 
                         // Redirect to current space
-                        $this->redirect($this->createUrl('admin/members', array('sguid' => $this->getSpace()->guid)));
+                        return $this->redirect($space->createUrl('admin/members'));
                     }
                 }
             }
 
-            Yii::app()->user->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
         } // Updated Users
 
-
-        $criteria = new CDbCriteria;
-        $criteria->condition = "1";
-
+        $query = $space->getMemberships();
+        #$query = Membership::find();
         // Allow User Searches
-        $search = Yii::app()->request->getQuery('search');
+        $search = Yii::$app->request->post('search');
         if ($search != "") {
-            $criteria->join = "LEFT JOIN user ON memberships.user_id = user.id ";
-            $criteria->condition .= " AND (";
-            $criteria->condition .= ' user.username LIKE :search';
-            $criteria->condition .= ' OR user.email like :search';
-            $criteria->condition .= " ) ";
-            $criteria->params = array(':search' => '%' . $search . '%');
+            $query->joinWith('user');
+            $query->andWhere('user.username LIKE :search OR user.email LIKE :search', [':search' => '%' . $search . '%']);
         }
 
-        //ToDo: Better Counting
-        $allMemberCount = count($space->memberships($criteria));
+        $countQuery = clone $query;
+        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $membersPerPage]);
+        $query->offset($pagination->offset)->limit($pagination->limit);
 
-        $pages = new CPagination($allMemberCount);
-        $pages->setPageSize($membersPerPage);
-        $pages->applyLimit($criteria);
+        $invitedMembers = Membership::findAll(['space_id' => $space->id, 'status' => Membership::STATUS_INVITED]);
 
-        $members = $space->memberships($criteria);
+        $members = $query->all();
 
-        $invited_members = SpaceMembership::model()->findAllByAttributes(array('space_id' => $space->id, 'status' => SpaceMembership::STATUS_INVITED));
-
-        $this->render('members', array(
-            'space' => $space,
-            'members' => $members, // must be the same as $item_count
-            'invited_members' => $invited_members,
-            'item_count' => $allMemberCount,
-            'page_size' => $membersPerPage,
-            'search' => $search,
-            'pages' => $pages,
+        return $this->render('members', array(
+                    'space' => $space,
+                    'pagination' => $pagination,
+                    'members' => $members,
+                    'invited_members' => $invitedMembers,
+                    'search' => $search,
         ));
     }
 
@@ -318,7 +261,6 @@ class AdminController extends Controller
         echo $output;
         Yii::app()->end();
     }
-
 
     /**
      * Handle the banner image upload

@@ -18,18 +18,25 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\behaviors;
+
+use Yii;
+use yii\base\Behavior;
+use yii\db\ActiveRecord;
+use humhub\core\user\models\Follow;
+
 /**
  * This behavior should attached to a HWebModule when it provides a space module.
  *
  * @author luke
  * @package humhub.modules_core.space.behaviors
  */
-class SpaceModuleBehavior extends CBehavior
+class SpaceModule extends Behavior
 {
 
     /**
      * Returns current space by context
-     * 
+     *
      * @return Space
      */
     public function getSpace()
@@ -39,7 +46,7 @@ class SpaceModuleBehavior extends CBehavior
 
     /**
      * Checks if this module is enabled on given space.
-     * 
+     *
      * @param Space $space
      * @return boolean
      */
@@ -55,7 +62,7 @@ class SpaceModuleBehavior extends CBehavior
     /**
      * Returns module name for spaces of your module.
      * You may want to overwrite it in your module.
-     * 
+     *
      * @return String
      */
     public function getSpaceModuleName()
@@ -66,7 +73,7 @@ class SpaceModuleBehavior extends CBehavior
     /**
      * Returns module description for spaces of your module.
      * You may want to overwrite it in your module.
-     * 
+     *
      * @return String
      */
     public function getSpaceModuleDescription()
@@ -77,7 +84,7 @@ class SpaceModuleBehavior extends CBehavior
     /**
      * Returns module config url for spaces of your module.
      * You may want to overwrite it in your module.
-     * 
+     *
      * @return String
      */
     public function getSpaceModuleConfigUrl(Space $space)
@@ -88,7 +95,7 @@ class SpaceModuleBehavior extends CBehavior
     /**
      * Returns the module image for space admins.
      * You may want to overwrite with an special space image.
-     * 
+     *
      * @return String
      */
     public function getSpaceModuleImage()
@@ -98,31 +105,31 @@ class SpaceModuleBehavior extends CBehavior
 
     /**
      * Enables this module on given space
-     * 
+     *
      * @param Space $space
      */
     public function enableSpaceModule(Space $space)
     {
-        
+
     }
 
     /**
      * Disables this module on given space
-     * 
+     *
      * You may want to overwrite this function and delete e.g. created
      * content objects.
-     * 
+     *
      * @param Space $space
      */
     public function disableSpaceModule(Space $space)
     {
-        
+
     }
 
     /**
      * Returns a list of all spaces where this SpaceModule is
      * enabled.
-     * 
+     *
      * @return Array Space
      */
     public function getSpaceModuleSpaces()

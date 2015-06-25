@@ -1,5 +1,15 @@
 <?php
 
+namespace humhub\core\space\controllers;
+
+use Yii;
+use \humhub\components\Controller;
+use \yii\helpers\Url;
+use \yii\web\HttpException;
+use \humhub\core\user\models\User;
+use \humhub\models\Setting;
+use \humhub\core\space\models\Membership;
+
 /**
  * ListController
  *
@@ -10,49 +20,20 @@
 class ListController extends Controller
 {
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
-
     public function actionIndex()
     {
+        $query = Membership::find();
 
-        $criteria = new CDbCriteria();
-        if (HSetting::Get('spaceOrder', 'space') == 0) {
-            $criteria->order = 'name ASC';
+        if (Setting::Get('spaceOrder', 'space') == 0) {
+            $query->orderBy('name ASC');
         } else {
-            $criteria->order = 'last_visit DESC';
+            $query->orderBy('last_visit DESC');
         }
 
-        $memberships = SpaceMembership::model()->with('space')->findAllByAttributes(array(
-            'user_id' => Yii::app()->user->id,
-            'status' => SpaceMembership::STATUS_MEMBER,
-                ), $criteria);
+        $query->joinWith('space');
+        $query->where(['space_membership.user_id'=>Yii::$app->user->id, 'space_membership.status'=>  Membership::STATUS_MEMBER]); 
 
-        $this->renderPartial('index', array('memberships' => $memberships), false, true);
+        return $this->renderAjax('index', ['memberships' => $query->all()]);
     }
 
 }

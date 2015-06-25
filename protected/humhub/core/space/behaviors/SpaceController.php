@@ -18,6 +18,15 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\behaviors;
+
+use Yii;
+use yii\base\Behavior;
+use yii\db\ActiveRecord;
+use humhub\core\user\models\Follow;
+use humhub\core\space\models\Space;
+use yii\web\HttpException;
+
 /**
  * SpaceControllerBehavior is a controller behavior used for space modules/controllers.
  *
@@ -25,7 +34,7 @@
  * @package humhub.modules_core.space.behaviors
  * @since 0.6
  */
-class SpaceControllerBehavior extends CBehavior
+class SpaceController extends Behavior
 {
 
     public $space = null;
@@ -37,7 +46,7 @@ class SpaceControllerBehavior extends CBehavior
      * will thrown.
      *
      * @return Space
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function getSpace()
     {
@@ -47,72 +56,52 @@ class SpaceControllerBehavior extends CBehavior
         }
 
         // Get Space GUID by parameter
-        $guid = Yii::app()->request->getQuery('sguid');
-        if ($guid == "") {
-            // Workaround for older version
-            $guid = Yii::app()->request->getQuery('guid');
-        }
+        $guid = Yii::$app->request->get('sguid');
 
         // Try Load the space
-        $this->space = Space::model()->findByAttributes(array('guid' => $guid));
+        $this->space = Space::findOne(['guid' => $guid]);
         if ($this->space == null)
-            throw new CHttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
+            throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
 
         $this->checkAccess();
-
-        // Store current space to stash
-        Yii::app()->params['currentSpace'] = $this->space;
-
         return $this->space;
     }
 
     public function checkAccess()
     {
-
-        if ($this->space->visibility != Space::VISIBILITY_ALL && Yii::app()->user->isGuest) {
-            throw new CHttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
+        if ($this->space->visibility != Space::VISIBILITY_ALL && Yii::$app->user->isGuest) {
+            throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 
         // Save users last action on this space
-        $membership = $this->space->getMembership(Yii::app()->user->id);
+        $membership = $this->space->getMembership(Yii::$app->user->id);
         if ($membership != null) {
             $membership->updateLastVisit();
         } else {
 
             // Super Admin can always enter
-            if (!Yii::app()->user->isAdmin()) {
+            if (!Yii::$app->user->isAdmin()) {
                 // Space invisible?
                 if ($this->space->visibility == Space::VISIBILITY_NONE) {
                     // Not Space Member
-                    throw new CHttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space is invisible!'));
+                    throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space is invisible!'));
                 }
             }
         }
 
         // Delete all pending notifications for this space
-        $notifications = Notification::model()->findAllByAttributes(array('space_id' => $this->space->id, 'user_id' => Yii::app()->user->id), 'seen != 1');
-        foreach ($notifications as $n) {
-            // Ignore Approval Notifications
-            if ($n->class == "SpaceApprovalRequestNotification" || $n->class == "SpaceInviteNotification") {
-                continue;
-            }
-            $n->seen = 1;
-            $n->save();
-        }
-    }
-
-    /**
-     * Create a space url
-     * 
-     * @deprecated since version 0.9
-     * @param type $route
-     * @param type $params
-     * @param type $ampersand
-     * @return type
-     */
-    public function createSpaceUrl($route, $params = array(), $ampersand = '&')
-    {
-        return $this->space->createUrl($route, $params, $ampersand);
+        /*
+          $notifications = Notification::model()->findAllByAttributes(array('space_id' => $this->space->id, 'user_id' => Yii::$app->user->id), 'seen != 1');
+          foreach ($notifications as $n) {
+          // Ignore Approval Notifications
+          if ($n->class == "SpaceApprovalRequestNotification" || $n->class == "SpaceInviteNotification") {
+          continue;
+          }
+          $n->seen = 1;
+          $n->save();
+          }
+         *
+         */
     }
 
 }

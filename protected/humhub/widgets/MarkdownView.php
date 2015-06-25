@@ -18,32 +18,34 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * MarkdownViewWidget shows Markdown flavored content
  *
  * @author luke
  * @since 0.11
  */
-class MarkdownViewWidget extends HWidget
+class MarkdownView extends \yii\base\Widget
 {
 
     /**
      * Markdown to parse
-     * 
+     *
      * @var string
      */
     public $markdown = "";
 
     /**
      * Markdown parser class
-     * 
+     *
      * @var string
      */
     public $parserClass = "HMarkdown";
 
     /**
      * Purify output after parsing
-     * 
+     *
      * @var boolean
      */
     public $purifyOutput = true;
@@ -58,15 +60,11 @@ class MarkdownViewWidget extends HWidget
         if (!Helpers::CheckClassType($this->parserClass, "cebe\markdown\Parser")) {
             throw new CException("Invalid markdown parser class given!");
         }
-
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/resources/highlight.js/highlight.pack.js');
-        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/resources/highlight.js/styles/' . $this->highlightJsCss . '.css');
-        Yii::app()->clientScript->registerScript("highlightJs", '$("pre code").each(function(i, e) { hljs.highlightBlock(e); });');
     }
 
     public function run()
     {
-        $this->markdown = CHtml::encode($this->markdown);
+        $this->markdown = \yii\helpers\Html::encode($this->markdown);
 
         $parserClass = $this->parserClass;
 
@@ -74,11 +72,10 @@ class MarkdownViewWidget extends HWidget
         $html = $parser->parse($this->markdown);
 
         if ($this->purifyOutput) {
-            $purifier = new CHtmlPurifier();
-            $html = $purifier->purify($html);
+            $html = \yii\helpers\HtmlPurifier::progress($html);
         }
 
-        $this->render('markdownView', array('content' => $html));
+        return $this->render('markdownView', array('content' => $html));
     }
 
 }

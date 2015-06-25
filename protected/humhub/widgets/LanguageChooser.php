@@ -18,13 +18,17 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
+use Yii;
+
 /**
  * LanguageChooser
  *
  * @author luke
  * @since 0.11
  */
-class LanguageChooser extends HWidget
+class LanguageChooser extends \yii\base\Widget
 {
 
     /**
@@ -32,9 +36,9 @@ class LanguageChooser extends HWidget
      */
     public function run()
     {
-        $model = new ChooseLanguageForm();
-        $model->language = Yii::app()->getLanguage();
-        $this->render('languageChooser', array('model' => $model, 'languages' => Yii::app()->params['availableLanguages']));
+        $model = new \humhub\models\forms\ChooseLanguage();
+        $model->language = Yii::$app->language;
+        return $this->render('languageChooser', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
     }
 
 }

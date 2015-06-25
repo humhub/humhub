@@ -18,6 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
+use Yii;
+
 /**
  * StackWidget is a widget which can hold a set of subwidgets.
  *
@@ -28,7 +32,11 @@
  * @since 0.5
  * @author Luke
  */
-class StackWidget extends CWidget {
+class BaseStack extends \yii\base\Widget
+{
+
+    const EVENT_INIT = 'init';
+    const EVENT_RUN = 'run';
 
     /**
      * Holds all added widgets
@@ -60,30 +68,18 @@ class StackWidget extends CWidget {
     /**
      * Initializes the sidebar widget.
      */
-    public function init() {
-
-        // Intercept this controller
-        Yii::app()->interceptor->intercept($this);
-
-        // Fire Event
-        if ($this->hasEventHandler('onInit'))
-            $this->onInit(new CEvent($this));
-
+    public function init()
+    {
+        $this->trigger(self::EVENT_INIT);
         return parent::init();
-    }
-
-    /**
-     * This event is raised after init is performed.
-     * @param CEvent $event the event parameter
-     */
-    public function onInit($event) {
-        $this->raiseEvent('onInit', $event);
     }
 
     /**
      * Runs the Navigation
      */
-    public function run() {
+    public function run()
+    {
+        $this->trigger(self::EVENT_RUN);
 
         $content = "";
 
@@ -91,7 +87,9 @@ class StackWidget extends CWidget {
         foreach ($this->getWidgets() as $widget) {
             $i++;
 
-            $out = $this->getController()->widget($widget[0], $widget[1], true);
+            $widgetClass = $widget[0];
+
+            $out = $widgetClass::widget($widget[1]);
 
             if ($out != "") {
                 $content .= $out;
@@ -109,8 +107,9 @@ class StackWidget extends CWidget {
      * @todo Code me!
      * @param type $className
      */
-    public function removeWidget($className) {
-        
+    public function removeWidget($className)
+    {
+
     }
 
     /**
@@ -118,7 +117,8 @@ class StackWidget extends CWidget {
      *
      * @return Array
      */
-    protected function getWidgets() {
+    protected function getWidgets()
+    {
 
         usort($this->widgets, function($a, $b) {
             $sortA = (isset($a[2]['sortOrder'])) ? $a[2]['sortOrder'] : 100;
@@ -143,8 +143,8 @@ class StackWidget extends CWidget {
      * @param Array $params widget definition
      * @param Array $options extra option array with e.g. "sortOrder"
      */
-    public function addWidget($className, $params = array(), $options = array()) {
-
+    public function addWidget($className, $params = array(), $options = array())
+    {
         if (!isset($options['sortOrder']))
             $options['sortOrder'] = 100;
 

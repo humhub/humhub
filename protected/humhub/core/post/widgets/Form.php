@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\post\widgets;
+
 /**
  * This widget is used include the post form.
  * It normally should be placed above a steam.
@@ -7,18 +9,18 @@
  * @package humhub.modules_core.post.widgets
  * @since 0.5
  */
-class PostFormWidget extends ContentFormWidget
+class Form extends \humhub\core\content\widgets\Form
 {
 
-    public $submitUrl = 'post/post/post';
+    public $submitUrl = '/post/post/post';
 
     public function renderForm()
     {
 
-        if (Yii::app()->user->isGuest)
+        if (\Yii::$app->user->isGuest)
             return;
 
-        $this->form = $this->render('postForm', array(), true);
+        $this->form = $this->render('form', array(), true);
     }
 
 }

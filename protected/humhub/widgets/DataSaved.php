@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * DataSavedWidget shows an flash message after saving
  *
@@ -25,14 +27,15 @@
  * @since 0.5
  * @author Andreas Strobel
  */
-
-class DataSavedWidget extends HWidget {
+class DataSaved extends \yii\base\Widget
+{
 
     /**
      * Displays / Run the Widget
      */
-    public function run() {
-        $this->render('dataSaved', array());
+    public function run()
+    {
+        return $this->render('dataSaved', array());
     }
 
 }

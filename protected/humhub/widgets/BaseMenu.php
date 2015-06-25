@@ -1,34 +1,12 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
+namespace humhub\widgets;
 
-/**
- * MenuWidget is the base class for navigations/menus.
- *
- * It allows modules to inject new items by events.
- *
- * @package humhub.widgets
- * @since 0.5
- * @author Luke
- */
-class MenuWidget extends HWidget
+class BaseMenu extends \yii\base\Widget
 {
+
+    const EVENT_INIT = 'init';
+    const EVENT_RUN = 'run';
 
     /**
      * @var Array of items
@@ -63,27 +41,9 @@ class MenuWidget extends HWidget
      */
     public function init()
     {
-
-        // Intercept this controller
-        Yii::app()->interceptor->intercept($this);
-
         $this->addItemGroup(array('id' => '', 'label' => ''));
-
-        // Fire Event
-        if ($this->hasEventHandler('onInit'))
-            $this->onInit(new CEvent($this));
-
+        $this->trigger(self::EVENT_INIT);
         return parent::init();
-    }
-
-    /**
-     * This event is raised after init is performed.
-     *
-     * @param CEvent $event the event parameter
-     */
-    public function onInit($event)
-    {
-        $this->raiseEvent('onInit', $event);
     }
 
     /**
@@ -108,14 +68,14 @@ class MenuWidget extends HWidget
 
         if (!isset($item['htmlOptions']))
             $item['htmlOptions'] = array();
-        
+
         /**
          * @deprecated since version 0.11 use directly htmlOptions instead
          */
         if (isset($item['target'])) {
             $item['htmlOptions']['target'] = $item['target'];
         }
- 
+
         if (!isset($item['sortOrder']))
             $item['sortOrder'] = 1000;
 
@@ -128,20 +88,18 @@ class MenuWidget extends HWidget
         if (isset($item['isVisible']) && !$item['isVisible'])
             return;
 
-        
         // Build Item CSS Class
         if (!isset($item['htmlOptions']['class']))
             $item['htmlOptions']['class'] = "";
-        
+
         if ($item['isActive']) {
             $item['htmlOptions']['class'] .= " active";
         }
-        
+
         if (isset($item['id'])) {
-            $item['htmlOptions']['class'] .= " ".$item['id'];
+            $item['htmlOptions']['class'] .= " " . $item['id'];
         }
-        
-        
+
         $this->items[] = $item;
     }
 
@@ -243,21 +201,8 @@ class MenuWidget extends HWidget
      */
     public function run()
     {
-
-        // Fire Event
-        if ($this->hasEventHandler('onRun'))
-            $this->onRun(new CEvent($this));
-
-        $this->render($this->template, array());
-    }
-
-    /**
-     * This event is raised before run is performed.
-     * @param CEvent $event the event parameter
-     */
-    public function onRun($event)
-    {
-        $this->raiseEvent('onRun', $event);
+        $this->trigger(self::EVENT_RUN);
+        return $this->render($this->template, array());
     }
 
 }

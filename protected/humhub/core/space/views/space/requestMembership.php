@@ -18,8 +18,6 @@
             <br/>
             <br/>
 
-
-
             <?php //echo $form->labelEx($model, 'message'); ?>
             <?php echo $form->textArea($model, 'message', array('rows' => '8', 'class' => 'form-control', 'id' => 'request-message')); ?>
             <?php echo $form->error($model, 'message'); ?>
@@ -33,7 +31,7 @@
                 'type' => 'POST',
                 'beforeSend' => 'function(){ setModalLoader(); }',
                 'success' => 'function(html){ $("#globalModal").html(html); }',
-            ), array('class' => 'btn btn-primary'));
+                    ), array('class' => 'btn btn-primary'));
             ?>
 
 
@@ -62,9 +60,9 @@
     $('#request-message').focus()
 
     // Shake modal after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
-    $('.modal-dialog').removeClass('fadeIn');
-    $('.modal-dialog').addClass('shake');
-    <?php } ?>
+<?php if ($form->errorSummary($model) != null) { ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
+<?php } ?>
 
 </script>

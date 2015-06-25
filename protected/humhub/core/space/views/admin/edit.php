@@ -1,18 +1,19 @@
 <?php
-/** @var $this AdminController */
-/** @var $model Space */
+
+use Yii;
+use \humhub\compat\CActiveForm;
+use \humhub\compat\CHtml;
+use yii\helpers\Html;
+use \humhub\models\Setting;
+use humhub\core\space\models\Space;
 ?>
+
 
 <div class="panel panel-default">
     <div
         class="panel-heading"><?php echo Yii::t('SpaceModule.views_admin_edit', '<strong>General</strong> space settings'); ?></div>
     <div class="panel-body">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'space-edit-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
 
         <?php //echo $form->errorSummary($model); ?>
 
@@ -55,7 +56,7 @@
                 0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
                 1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
             );
-            if (HSetting::Get('allowGuestAccess', 'authentication_internal') == 1) {
+            if (Setting::Get('allowGuestAccess', 'authentication_internal') == 1) {
                 $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
             }
             ?>
@@ -64,7 +65,7 @@
         </div>
         <hr>
 
-        <?php if (Yii::app()->user->isAdmin() && HSetting::Get('enabled', 'authentication_ldap')): ?>
+        <?php if (Yii::$app->user->isAdmin() && Setting::Get('enabled', 'authentication_ldap')): ?>
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'ldap_dn'); ?>
                 <?php echo $form->textField($model, 'ldap_dn', array('class' => 'form-control', 'maxlength' => 255)); ?>
@@ -75,22 +76,21 @@
 
         <?php echo CHtml::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
-        <!-- show flash message after saving -->
-        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+        <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
         <div class="pull-right">
             <?php if ($model->status == Space::STATUS_ENABLED) { ?>
-                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $model->createUrl('//space/admin/archive'), array('class' => 'btn btn-warning')); ?>
+                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $model->createUrl('//space/admin/archive'), array('class' => 'btn btn-warning', 'data-method' => 'POST')); ?>
             <?php } elseif ($model->status == Space::STATUS_ARCHIVED) { ?>
-                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $model->createUrl('//space/admin/unarchive'), array('class' => 'btn btn-warning')); ?>
+                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $model->createUrl('//space/admin/unarchive'), array('class' => 'btn btn-warning', 'data-method' => 'POST')); ?>
             <?php } ?>
-            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('//space/admin/delete'), array('class' => 'btn btn-danger')); ?>
+            <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('//space/admin/delete'), array('class' => 'btn btn-danger', 'data-method' => 'POST')); ?>
 
         </div>
 
-
+        <?php CActiveForm::end(); ?>
     </div>
 
 </div>
-<?php $this->endWidget(); ?>
+
 

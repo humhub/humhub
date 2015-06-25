@@ -1,5 +1,8 @@
 <?php
 
+# Disable until migrated
+return;
+
 // Only activate installer mode, when not installed yet or we are in console (translation files)
 if (!Yii::app()->params['installed'] || Yii::app() instanceof CConsoleApplication) {
     Yii::app()->moduleManager->register(array(

@@ -18,6 +18,14 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\controllers;
+
+use Yii;
+use \humhub\components\Controller;
+use \yii\helpers\Url;
+use \yii\web\HttpException;
+use \humhub\core\user\models\User;
+
 /**
  * SpaceController is the main controller for spaces.
  *
@@ -28,7 +36,7 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class SpaceController extends ContentContainerController
+class SpaceController extends \humhub\core\content\components\ContentContainerController
 {
 
     /**
@@ -62,10 +70,10 @@ class SpaceController extends ContentContainerController
     {
         return array(
             'stream' => array(
-                'class' => 'application.modules_core.wall.ContentContainerStreamAction',
-                'mode' => BaseStreamAction::MODE_NORMAL,
+                'class' => \humhub\core\content\components\actions\ContentContainerStream::className(),
+                'mode' => \humhub\core\content\components\actions\ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->getSpace()
-             ),
+            ),
         );
     }
 
@@ -74,8 +82,7 @@ class SpaceController extends ContentContainerController
      */
     public function actionIndex()
     {
-        $this->pageTitle = $this->getSpace()->name;
-        $this->render('index', array());
+        return $this->render('index', ['space' => $this->contentContainer]);
     }
 
     /**
@@ -89,7 +96,7 @@ class SpaceController extends ContentContainerController
             $space->follow();
         }
 
-        $this->redirect($space->getUrl());
+        return $this->redirect($space->getUrl());
     }
 
     /**
@@ -101,7 +108,7 @@ class SpaceController extends ContentContainerController
         $space = $this->getSpace();
         $space->unfollow();
 
-        $this->redirect($space->getUrl());
+        return $this->redirect($space->getUrl());
     }
 
     /**

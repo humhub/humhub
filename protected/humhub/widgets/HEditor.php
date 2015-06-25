@@ -20,55 +20,47 @@
 
 namespace humhub\widgets;
 
+use humhub\helpers\Html;
+
 /**
- * MarkdownEditorWidget replaces a textarea element with bootstrap-markdown editor
+ * HEditorWidget add users to posts and comments
  *
- * @todo Allow multiple MarkdownEditorWidget instances on a page
- *
- * @author luke
- * @since 0.11
+ * @package humhub.widgets
+ * @since 0.5
+ * @author Andreas Strobel
  */
-class MarkdownEditor extends \yii\base\Widget
+class HEditor extends \yii\base\Widget
 {
 
     /**
-     * Html field id of textarea which should be Markdown editor
+     * Id of input element which should replaced
      *
      * @var string
      */
-    public $fieldId = "";
+    public $id = "";
 
     /**
-     * HMarkdown parser class used for preview
+     * JSON Search URL
+     */
+    public $searchUrl = "//search/search/mentioning";
+    public $inputContent = "";
+
+    /**
+     * Inits the widget
      *
-     * @var string
      */
-    public $parserClass = "HMarkdown";
-
-    /**
-     * Stylesheet for Highlight.js for preview
-     */
-    public $highlightJsCss = "github";
-
-    /**
-     * Optional markdown preview url
-     *
-     * @var string
-     */
-    public $previewUrl = "";
-
     public function init()
     {
-        if ($this->previewUrl == "") {
-            $this->previewUrl = \yii\helpers\Url::toRoute(['/markdown/preview', 'parser' => $this->parserClass]);
-        }
+        $this->inputContent = Html::translateEmojis($this->inputContent);
+        $this->inputContent = Html::translateMentioning($this->inputContent);
+        $this->inputContent = nl2br($this->inputContent);
     }
 
     public function run()
     {
-        return $this->render('markdownEditor', array(
-                    'fieldId' => $this->fieldId
-        ));
+
+        // render heditor view
+        $this->render('heditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
     }
 
 }

@@ -1,21 +1,11 @@
 <?php
 
-Yii::app()->moduleManager->register(array(
+Yii::$app->moduleManager->register(array(
     'id' => 'space',
-    'class' => 'application.modules_core.space.SpaceModule',
-    'import' => array(
-        'application.modules_core.space.behaviors.*',
-        'application.modules_core.space.widgets.*',
-        'application.modules_core.space.models.*',
-        'application.modules_core.space.notifications.*',
-        'application.modules_core.space.*',
-    ),
+    'class' => \humhub\core\space\Module::className(),
     'isCoreModule' => true,
-
-    // Events to Catch
     'events' => array(
-        array('class' => 'User', 'event' => 'onBeforeDelete', 'callback' => array('SpaceModule', 'onUserDelete')),
-        array('class' => 'HSearchComponent', 'event' => 'onRebuild', 'callback' => array('SpaceModule', 'onSearchRebuild')),
+        array('class' => humhub\core\user\models\User::className(), 'event' => 'onBeforeDelete', 'callback' => array('SpaceModule', 'onUserDelete')),
     ),
 ));
 ?>

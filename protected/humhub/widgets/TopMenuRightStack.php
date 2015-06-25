@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * TopMenuRightStackWidget holds items like search (right part)
  *
@@ -25,7 +27,7 @@
  * @since 0.6
  * @author Luke
  */
-class TopMenuRightStackWidget extends StackWidget
+class TopMenuRightStack extends BaseStack
 {
-    
+
 }

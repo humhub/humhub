@@ -6,13 +6,16 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\widgets;
+
+use Yii;
+
 /**
- * HLinkPager 
+ * Description of LinkPager
  *
- * @since 0.12.0
  * @author luke
  */
-class HLinkPager extends CLinkPager
+class LinkPager extends \yii\widgets\LinkPager
 {
 
     public $maxButtonCount = 5;
@@ -20,7 +23,5 @@ class HLinkPager extends CLinkPager
     public $prevPageLabel = '<i class="fa fa-step-backward"></i>';
     public $firstPageLabel = '<i class="fa fa-fast-backward"></i>';
     public $lastPageLabel = '<i class="fa fa-fast-forward"></i>';
-    public $header = '';
-    public $htmlOptions = array('class' => 'pagination');
 
 }

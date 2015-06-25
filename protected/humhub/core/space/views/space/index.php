@@ -1,16 +1,13 @@
+<?php echo \humhub\core\post\widgets\Form::widget(['contentContainer' => $space]); ?>
 <?php
 
-$this->widget('application.modules_core.post.widgets.PostFormWidget', array(
-    'contentContainer' => $this->getSpace(),
-));
-
-$this->widget('application.modules_core.wall.widgets.StreamWidget', array(
-    'contentContainer' => $this->getSpace(),
-    'streamAction' => '//space/space/stream',
-    'messageStreamEmpty' => ($this->getSpace()->canWrite()) ?
+echo \humhub\core\content\widgets\Stream::widget(array(
+    'contentContainer' => $space,
+    'streamAction' => '/space/space/stream',
+    'messageStreamEmpty' => ($space->canWrite()) ?
             Yii::t('SpaceModule.views_space_index', '<b>This space is still empty!</b><br>Start by posting something here...') :
             Yii::t('SpaceModule.views_space_index', '<b>This space is still empty!</b>'),
-    'messageStreamEmptyCss' => ($this->getSpace()->canWrite()) ?
+    'messageStreamEmptyCss' => ($space->canWrite()) ?
             'placeholder-empty-stream' :
             '',
 ));

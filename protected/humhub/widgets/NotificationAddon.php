@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * NotificationAddonWidget is used to add items like Notification, Mail, Timer to the main layout
  *
@@ -25,8 +27,9 @@
  * @since 0.5
  * @author Luke
  */
-class NotificationAddonWidget extends StackWidget {
-    
+class NotificationAddon extends Stack
+{
+
 }
 
 ?>

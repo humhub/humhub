@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * TopMenuWidget is the primary top navigation class extended from MenuWidget.
  *
@@ -25,17 +27,19 @@
  * @since 0.5
  * @author Luke
  */
-class TopMenuWidget extends MenuWidget {
+class TopMenu extends BaseMenu
+{
 
     /**
      * @var String template to use
      */
-    public $template = "application.widgets.views.topNavigation";
+    public $template = "topNavigation";
 
     /**
      * Inits the Top Navigation by adding some default items
      */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
     }

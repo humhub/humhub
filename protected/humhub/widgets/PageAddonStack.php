@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\widgets;
+
 /**
  * PageAddonStackWidget holds additional code for every pages
  *
@@ -25,7 +27,7 @@
  * @since 0.6
  * @author andystrobel
  */
-class PageAddonStackWidget extends StackWidget
+class PageAddonStack extends Stack
 {
 
 }
