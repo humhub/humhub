@@ -33,7 +33,7 @@ class ContentFormWidget extends HWidget {
 
     /**
      *
-     * @var type 
+     * @var type
      */
     public $contentContainer;
 
@@ -46,7 +46,7 @@ class ContentFormWidget extends HWidget {
 
         if ($this->submitButtonText == "")
             $this->submitButtonText  = Yii::t('WallModule.widgets_ContentFormWidget', 'Submit');
-        
+
         if ($this->contentContainer == null || !$this->contentContainer instanceof HActiveRecordContentContainer) {
             throw new CHttpException(500, "No Content Container given!");
         }
@@ -62,22 +62,22 @@ class ContentFormWidget extends HWidget {
         return "";
     }
 
-    
+
     /**
      * Checks write permissions
      */
     protected function hasWritePermission() {
         return $this->contentContainer->canWrite();
     }
-    
-    
+
+
     public function run() {
-        
-        if (!$this->hasWritePermission())
+
+        if (!$this->hasWritePermission() || !(Yii::app()->user->isAdmin()))
             return;
-        
+
         $this->renderForm();
-        
+
         $this->render('application.modules_core.wall.widgets.views.contentForm', array(
             'form' => $this->form,
             'contentContainer' => $this->contentContainer,
