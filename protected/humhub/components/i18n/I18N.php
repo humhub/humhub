@@ -75,7 +75,11 @@ class I18N extends \yii\i18n\I18N
                     // Fix: {param} style params
                     $fixedParam = str_replace(['{', '}'], "", $param);
                     $fixedParams[$fixedParam] = $value;
-                    
+                } elseif (substr($param, 0, 1) === ":") {
+                    // Fix: :param style params
+                    $fixedParam = str_replace(':', "", $param);
+                    $fixedParams[$fixedParam] = $value;
+                    $message = str_replace(':' . $fixedParam, '{' . $fixedParam . '}', $message);
                 } else {
                     $fixedParams[$param] = $value;
                 }

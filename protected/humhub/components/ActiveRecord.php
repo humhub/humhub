@@ -21,7 +21,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
         if ($this->isNewRecord) {
             if ($this->hasAttribute('created_at') && $this->created_at == "") {
-                $this->updated_at = new \yii\db\Expression('NOW()');
+                $this->created_at = new \yii\db\Expression('NOW()');
             }
             if ($this->hasAttribute('created_by') && $this->created_by == "") {
                 $this->created_by = \Yii::$app->user->id;
