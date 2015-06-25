@@ -49,6 +49,12 @@
         </div>
 
         <div class="form-group">
+            <?php echo $form->labelEx($model, 'post_policy'); ?>
+            <?php $postPolicies = array(0 => Yii::t('SpaceModule.base', 'Admin only'), 1 => Yii::t('SpaceModule.base', 'All members')); ?>
+            <?php echo $form->dropDownList($model, 'post_policy', $postPolicies, array('class' => 'form-control', 'id' => 'post_policy_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of posting rights you want to provide for this workspace.'))); ?>
+        </div>
+
+        <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
             <?php
             $visibilities = array(
@@ -93,4 +99,3 @@
 
 </div>
 <?php $this->endWidget(); ?>
-

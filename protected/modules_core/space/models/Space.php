@@ -47,6 +47,9 @@ class Space extends HActiveRecordContentContainer implements ISearchable
     const STATUS_DISABLED = 0; // Disabled
     const STATUS_ENABLED = 1; // Enabled
     const STATUS_ARCHIVED = 2; // Archived
+    // post policy
+    const ADMIN_ONLY = 0; // Disabled
+    const ALL_MEMBERS = 1; // Enabled
 
     public $ownerUsernameSearch;
 
@@ -109,6 +112,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
                 array('website', 'url'),
                 array('description, tags', 'safe'),
                 array('join_policy', 'in', 'range' => array(0, 1, 2)),
+                array('post_policy', 'in', 'range' => array(0, 1)),
                 array('visibility', 'checkVisibility'),
                 array('visibility', 'in', 'range' => array(0, 1, 2)),
             );
@@ -124,18 +128,19 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         // will receive user inputs.
         return array(
             array('name', 'required'),
-            array('wall_id, join_policy, visibility, auto_add_new_members, created_by, updated_by', 'numerical', 'integerOnly' => true),
+            array('wall_id, join_policy, post_policy, visibility, auto_add_new_members, created_by, updated_by', 'numerical', 'integerOnly' => true),
             array('name, website', 'length', 'max' => 45),
             array('ldap_dn', 'length', 'max' => 255),
             array('website', 'url'),
             array('name', 'unique', 'caseSensitive' => false, 'className' => 'Space', 'message' => '{attribute} "{value}" is already in use! '),
             array('join_policy', 'in', 'range' => array(0, 1, 2)),
+            array('post_policy', 'in', 'range' => array(0, 1)),
             array('visibility', 'in', 'range' => array(0, 1, 2)),
             array('status', 'in', 'range' => array(0, 1, 2)),
             array('tags, description, created_at, updated_at, guid', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, wall_id, name, description, website, join_policy, visibility, tags, created_at, created_by, updated_at, updated_by, ownerUsernameSearch', 'safe', 'on' => 'search'),
+            array('id, wall_id, name, description, website, join_policy, post_policy, visibility, tags, created_at, created_by, updated_at, updated_by, ownerUsernameSearch', 'safe', 'on' => 'search'),
         );
     }
 
@@ -181,6 +186,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
             'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
+            'post_policy' => Yii::t('SpaceModule.models_Space', 'Post Policy'),
             'ldap_dn' => Yii::t('SpaceModule.models_Space', 'Ldap DN'),
             'visibility' => Yii::t('SpaceModule.models_Space', 'Visibility'),
             'status' => Yii::t('SpaceModule.models_Space', 'Status'),
@@ -242,6 +248,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
         $criteria->compare('description', $this->description, true);
         $criteria->compare('website', $this->website, true);
         $criteria->compare('join_policy', $this->join_policy);
+        $criteria->compare('post_policy', $this->post_policy);
         $criteria->compare('t.visibility', $this->visibility);
         $criteria->compare('tags', $this->tags, true);
         $criteria->compare('created_at', $this->created_at, true);
@@ -404,6 +411,15 @@ class Space extends HActiveRecordContentContainer implements ISearchable
             return true;
 
         return false;
+    }
+
+    public function canPost(){
+      if(Yii::app()->user->isAdmin() || $this->post_policy == self::ALL_MEMBERS){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
 
     /**
@@ -658,7 +674,7 @@ class Space extends HActiveRecordContentContainer implements ISearchable
 
     /**
      * Returns display name (title) of space
-     * 
+     *
      * @since 0.11.0
      * @return string
      */

@@ -11,6 +11,7 @@ class m131023_165411_initial extends ZDbMigration {
             'description' => 'text DEFAULT NULL',
             'website' => 'varchar(45) DEFAULT NULL',
             'join_policy' => 'tinyint(4) DEFAULT NULL',
+            'post_policy' => 'tinyint(4) DEFAULT NULL',
             'visibility' => 'tinyint(4) DEFAULT NULL',
             'status' => 'tinyint(4) NOT NULL DEFAULT \'1\'',
             'tags' => 'text DEFAULT NULL',

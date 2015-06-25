@@ -54,12 +54,13 @@ class SpaceController extends Controller
     }
 
     /**
-     * General Space Settings 
+     * General Space Settings
      */
     public function actionSettings()
     {
         $form = new SpaceSettingsForm;
         $form->defaultJoinPolicy = HSetting::Get('defaultJoinPolicy', 'space');
+        $form->defaultPostPolicy = HSetting::Get('defaultPostPolicy', 'space');
         $form->defaultVisibility = HSetting::Get('defaultVisibility', 'space');
 
         // uncomment the following code to enable ajax-based validation
@@ -74,6 +75,7 @@ class SpaceController extends Controller
 
             if ($form->validate()) {
                 HSetting::Set('defaultJoinPolicy', $form->defaultJoinPolicy, 'space');
+                HSetting::Set('defaultPostPolicy', $form->defaultPostPolicy, 'space');
                 HSetting::Set('defaultVisibility', $form->defaultVisibility, 'space');
 
                 // set flash message

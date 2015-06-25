@@ -69,6 +69,18 @@
             }
                 ),
                 array(
+                    'name' => 'post_policy',
+                    'filter' => array("" => Yii::t('AdminModule.views_space_index', 'All'), 0 => Yii::t('SpaceModule.base', 'Admin only'), 1 => Yii::t('SpaceModule.base', 'All members')),
+                    'value' => function ($data, $row) {
+                if ($data->post_policy == Space::ADMIN_ONLY)
+                    return Yii::t('SpaceModule.base', 'Admin only');
+                else if ($data->post_policy == Space::ALL_MEMBERS)
+                    return Yii::t('SpaceModule.base', 'All members');
+
+                return $data->post_policy;
+            }
+                ),
+                array(
                     'name' => 'ownerUsernameSearch',
                     'header' => Yii::t('AdminModule.views_space_index', 'Space owner'),
                     'filter' => CHtml::activeTextField($model, 'ownerUsernameSearch', array('placeholder' => Yii::t('AdminModule.views_space_index', 'Search for space owner'))),

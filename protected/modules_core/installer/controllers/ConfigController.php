@@ -185,9 +185,9 @@ class ConfigController extends Controller
         if (isset($_POST['Profile'])) {
             $_POST['Profile'] = Yii::app()->input->stripClean($_POST['Profile']);
         }
-        
+
         if (isset($_GET['Profile'])) {
-            $_GET['Profile'] = Yii::app()->input->stripClean($_GET['Profile']);        
+            $_GET['Profile'] = Yii::app()->input->stripClean($_GET['Profile']);
         }
 
         if ($form->submitted('save') && $form->validate()) {
@@ -225,6 +225,7 @@ class ConfigController extends Controller
             $space->name = 'Welcome Space';
             $space->description = 'Your first sample space to discover the platform.';
             $space->join_policy = Space::JOIN_POLICY_FREE;
+            $space->post_policy = Space::ALL_MEMBERS;
             $space->visibility = Space::VISIBILITY_ALL;
             $space->created_by = $userId;
             $space->auto_add_new_members = 1;
@@ -285,8 +286,8 @@ class ConfigController extends Controller
             return;
 
         // Rebuild Search
-        
-        HSearch::getInstance()->rebuild();   
+
+        HSearch::getInstance()->rebuild();
         HSetting::Set('baseUrl', Yii::app()->getBaseUrl(true));
         HSetting::Set('paginationSize', 10);
         HSetting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
