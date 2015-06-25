@@ -1,14 +1,17 @@
 <?php
 
-class m140703_104527_profile_birthdayfield extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140703_104527_profile_birthdayfield extends Migration
 {
 
     public function up()
     {
         // Check if the installer already ran when not create new profile field
         // (Typically the installer creates initial data.)
-        if (HSetting::isInstalled()) {
-
+        if (\humhub\models\Setting::isInstalled()) {
+            /*
             $db = $this->getDbConnection();
 
             // Get "General" Category Group Id
@@ -38,7 +41,7 @@ class m140703_104527_profile_birthdayfield extends EDbMigration
                 'required' => '0',
             ));
             $insertCommand->execute();
-
+            */
             // Create columns for profile field
             $this->addColumn('profile', 'birthday', 'DATETIME DEFAULT NULL');
             $this->addColumn('profile', 'birthday_hide_year', 'INT(1) DEFAULT NULL');

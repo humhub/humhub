@@ -1,25 +1,13 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
-class m131023_165755_initial extends ZDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
 
-    public function up() {
+class m131023_165755_initial extends Migration
+{
+
+    public function up()
+    {
 
         $this->createTable('setting', array(
             'id' => 'pk',
@@ -41,7 +29,8 @@ class m131023_165755_initial extends ZDbMigration {
         $this->addPrimaryKey('pk_module_enabled', 'module_enabled', 'module_id');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_165755_initial does not support migration down.\n";
         return false;
     }

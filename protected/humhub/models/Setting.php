@@ -186,4 +186,19 @@ class Setting extends \yii\db\ActiveRecord
         return false;
     }
 
+    /**
+     * Checks if initial data like settings, groups are installed.
+     * 
+     * @return Boolean Is Installed
+     */
+    public static function isInstalled()
+    {
+
+        if (isset(Yii::$app->params['installed']) && Yii::$app->params['installed']) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

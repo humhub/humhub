@@ -1,6 +1,9 @@
 <?php
 
-class m140701_074404_protect_default_profilefields extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140701_074404_protect_default_profilefields extends Migration
 {
 
     public function up()

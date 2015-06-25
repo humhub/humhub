@@ -1,6 +1,9 @@
 <?php
 
-class m150204_103433_html5_notified extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m150204_103433_html5_notified extends Migration
 {
 	public function up()
 	{

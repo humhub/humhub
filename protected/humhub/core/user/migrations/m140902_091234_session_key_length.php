@@ -1,6 +1,9 @@
 <?php
 
-class m140902_091234_session_key_length extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140902_091234_session_key_length extends Migration
 {
 
     public function up()

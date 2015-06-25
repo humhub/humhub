@@ -1,6 +1,9 @@
 <?php
 
-class m150210_190006_user_invite_lang extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m150210_190006_user_invite_lang extends Migration
 {
 	public function up()
 	{

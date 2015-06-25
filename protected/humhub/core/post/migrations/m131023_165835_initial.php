@@ -1,8 +1,13 @@
 <?php
 
-class m131023_165835_initial extends ZDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
 
-    public function up() {
+class m131023_165835_initial extends Migration
+{
+
+    public function up()
+    {
 
         $this->createTable('post', array(
             'id' => 'pk',
@@ -16,7 +21,8 @@ class m131023_165835_initial extends ZDbMigration {
                 ), '');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_165835_initial does not support migration down.\n";
         return false;
     }

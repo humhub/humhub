@@ -1,14 +1,15 @@
 <?php
 
-/**
- * Deletes orphaned profile table entries
- */
-class m141031_140056_cleanup_profiles extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m141031_140056_cleanup_profiles extends Migration
 {
 
     public function up()
     {
 
+        /*
         $connection = $this->getDbConnection();
 
         $criteria = new CDbCriteria();
@@ -17,6 +18,8 @@ class m141031_140056_cleanup_profiles extends EDbMigration
 
         $command = $connection->commandBuilder->createDeleteCommand('profile', $criteria);
         $command->execute();
+         * 
+         */
     }
 
     public function down()

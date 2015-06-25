@@ -15,7 +15,7 @@ use \humhub\core\user\models\User;
 use \yii\helpers\Html;
 
 $this->registerJsFile("@web/js/jquery.highlight.min.js");
-$this->registerJsFile("@web/js/user/userpicker.js");
+$this->registerJsFile("@web/resources/user/userpicker.js");
 ?>
 
 <?php

@@ -1,6 +1,9 @@
 <?php
 
-class m140507_171527_create_settings_table extends EDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140507_171527_create_settings_table extends Migration {
 
     public function up() {
 

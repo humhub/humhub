@@ -1,6 +1,9 @@
 <?php
 
-class m141015_173305_follow_notifications extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m141015_173305_follow_notifications extends Migration
 {
 
     public function up()
@@ -9,6 +12,7 @@ class m141015_173305_follow_notifications extends EDbMigration
         
         $this->addColumn('user_follow', 'send_notifications', 'boolean default "1"');
 
+        /*
         $connection = $this->getDbConnection();
         
         // Migrate user_content table to follow table
@@ -26,6 +30,7 @@ class m141015_173305_follow_notifications extends EDbMigration
             ));
             $insertCommand->execute();
         }
+        */
         
         $this->dropTable('user_content');
         

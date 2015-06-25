@@ -6,6 +6,11 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\content\controllers;
+
+use Yii;
+use humhub\components\Controller;
+
 /**
  * PermaController is used to create permanent links to content.
  *

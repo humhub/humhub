@@ -1,6 +1,9 @@
 <?php
 
-class m141021_162639_oembed_setting extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m141021_162639_oembed_setting extends Migration
 {
 
     public function up()

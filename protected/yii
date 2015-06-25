@@ -7,7 +7,6 @@
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 // fcgi doesn't have STDIN and STDOUT defined by default
@@ -22,7 +21,6 @@ $config = require(__DIR__ . '/config/console.php');
 Yii::setAlias('@app', __DIR__);
 Yii::setAlias('@webroot', __DIR__ . DIRECTORY_SEPARATOR . '..');
 Yii::setAlias('@humhub', '@app/humhub');
-
 
 $application = new humhub\components\console\Application($config);
 $exitCode = $application->run();

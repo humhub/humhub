@@ -1,10 +1,12 @@
 <?php
 
-class m140303_125031_password extends EDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140303_125031_password extends Migration {
 
     public function up() {
 
-        $connection = $this->getDbConnection();
 
         // Create New User Password Table
         $this->createTable('user_password', array(
@@ -17,7 +19,9 @@ class m140303_125031_password extends EDbMigration {
                 ), '');
 
         $this->createIndex('idx_user_id', 'user_password', 'user_id', false);
-
+        
+        /*
+        $connection = $this->getDbConnection();
         // Migrate Passwords from User Table to UserPasswords
         $command = $connection->commandBuilder->createFindCommand('user', new CDbCriteria);
         $reader = $command->query();
@@ -35,7 +39,7 @@ class m140303_125031_password extends EDbMigration {
             ));
             $insertCommand->execute();
         }
-
+        */
         $this->dropColumn('user', 'password');
     }
 

@@ -1,18 +1,14 @@
 <?php
 
-/**
- * Migrate: 
- *  receive_email_notifications 
- *  receive_email_messaging 
- *  receive_email_activities 
- * From user Table in user_setting Table.
- */
-class m140705_065525_emailing_settings extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140705_065525_emailing_settings extends Migration
 {
 
     public function up()
     {
-
+        /*
         $connection = $this->getDbConnection();
 
         $command = $connection->commandBuilder->createFindCommand('user', new CDbCriteria);
@@ -53,12 +49,13 @@ class m140705_065525_emailing_settings extends EDbMigration
             ));
             $insertCommand->execute();
         }
-
+        */
+        
         $this->dropColumn('user', 'receive_email_notifications');
         $this->dropColumn('user', 'receive_email_messaging');
         $this->dropColumn('user', 'receive_email_activities');
 
-        if (HSetting::isInstalled()) {
+        if (\humhub\models\Setting::isInstalled()) {
 
             $this->insert('setting', array(
                 'name' => 'receive_email_activities',

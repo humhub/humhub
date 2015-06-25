@@ -1,6 +1,9 @@
 <?php
 
-class m140513_180317_createlogging extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140513_180317_createlogging extends Migration
 {
 
     public function up()

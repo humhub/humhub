@@ -1,6 +1,9 @@
 <?php
 
-class m140701_000611_profile_genderfield extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140701_000611_profile_genderfield extends Migration
 {
 
     public function up()
@@ -8,8 +11,8 @@ class m140701_000611_profile_genderfield extends EDbMigration
 
         // Check if the installer already ran when not create new profile field
         // (Typically the installer creates initial data.)
-        if (HSetting::isInstalled()) {
-
+        if (\humhub\models\Setting::isInstalled()) {
+            /*
             $db = $this->getDbConnection();
 
             // Get "General" Category Group Id
@@ -38,7 +41,7 @@ class m140701_000611_profile_genderfield extends EDbMigration
                 'required' => '0',
             ));
             $insertCommand->execute();
-
+            */
             // Create column for profile field
             $this->addColumn('profile', 'gender', 'varchar(255) DEFAULT NULL');
         }

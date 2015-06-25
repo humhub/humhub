@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\content\controllers;
+
+use Yii;
+use humhub\components\Controller;
+
 /**
  * ContentController is responsible for basic content objects.
  *

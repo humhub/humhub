@@ -7,7 +7,7 @@ use humhub\core\user\models\User;
 use humhub\core\space\models\Space;
 
 if ($isProfileOwner) {
-    $this->registerJsFile('js/user/profileHeaderImageUpload.js');
+    $this->registerJsFile('@web/resources/user/profileHeaderImageUpload.js');
     $this->registerJs("var userGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
     $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/profile-image-upload') . "';", \yii\web\View::POS_BEGIN);
     $this->registerJs("var profileHeaderUploaderUrl='" . Url::toRoute('/user/account/banner-image-upload') . "';", \yii\web\View::POS_BEGIN);

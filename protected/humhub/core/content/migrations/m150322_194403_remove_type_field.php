@@ -1,6 +1,9 @@
 <?php
 
-class m150322_194403_remove_type_field extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m150322_194403_remove_type_field extends Migration
 {
 
     public function up()

@@ -358,36 +358,6 @@ class HWebModule extends CWebModule
         }
     }
 
-    /**
-     * Get assets url
-     *
-     * @return String url to assets
-     */
-    public function getAssetsUrl()
-    {
-        if ($this->_assetsUrl === null) {
-            if ($this->getPath() != "") {
-                $this->_assetsUrl = Yii::app()->getAssetManager()->publish($this->getAssetsPath(), false, -1, YII_DEBUG);
-            }
-        }
-        return $this->_assetsUrl;
-    }
-
-    /**
-     * Get assets path
-     *
-     * @return String path to assets
-     */
-    public function getAssetsPath()
-    {
-        $path = $this->getPath() . DIRECTORY_SEPARATOR . 'assets';
-
-        if (is_dir($path)) {
-            return $path;
-        }
-
-        return "";
-    }
 
     /**
      * Indicates that module acts as Space Module.

@@ -1,6 +1,9 @@
 <?php
 
-class m131023_164513_initial extends ZDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m131023_164513_initial extends Migration
 {
 
     public function up()
@@ -125,6 +128,7 @@ class m131023_164513_initial extends ZDbMigration
                     ), '');
             $this->addPrimaryKey('pk_user_http_session', 'user_http_session', 'id');
         } catch (Exception $ex) {
+            
         }
 
 

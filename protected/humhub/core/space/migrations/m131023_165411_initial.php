@@ -1,6 +1,9 @@
 <?php
 
-class m131023_165411_initial extends ZDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m131023_165411_initial extends Migration {
 
     public function up() {
         $this->createTable('space', array(

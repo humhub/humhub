@@ -1,8 +1,13 @@
 <?php
 
-class m140507_150421_create_settings_table extends EDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
 
-    public function up() {
+class m140507_150421_create_settings_table extends Migration
+{
+
+    public function up()
+    {
 
         // Create New User Settings Table
         $this->createTable('user_setting', array(
@@ -20,7 +25,8 @@ class m140507_150421_create_settings_table extends EDbMigration {
         $this->createIndex('idx_user_setting', 'user_setting', 'user_id, module_id, name', true);
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m140507_150421_create_settings_table does not support migration down.\n";
         return false;
     }

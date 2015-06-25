@@ -1,8 +1,13 @@
 <?php
 
-class m131023_170339_initial extends EDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
 
-    public function up() {
+class m131023_170339_initial extends Migration
+{
+
+    public function up()
+    {
         $this->createTable('activity', array(
             'id' => 'pk',
             'type' => 'varchar(45) DEFAULT NULL',
@@ -16,7 +21,8 @@ class m131023_170339_initial extends EDbMigration {
                 ), '');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_170339_initial does not support migration down.\n";
         return false;
     }

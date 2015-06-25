@@ -1,12 +1,14 @@
 <?php
 
-class m140830_145504_following extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140830_145504_following extends Migration
 {
 
     public function up()
     {
 
-        $connection = $this->getDbConnection();
 
         $this->createTable('follow', array(
             'id' => 'pk',
@@ -18,6 +20,8 @@ class m140830_145504_following extends EDbMigration
         $this->createIndex('index_user', 'follow', 'user_id', false);
         $this->createIndex('index_object', 'follow', 'object_model, object_id', false);
 
+        /*
+        $connection = $this->getDbConnection();
         // Migrate space_follow table to follow table
         $command = $connection->commandBuilder->createFindCommand('space_follow', new CDbCriteria);
         $reader = $command->query();
@@ -41,6 +45,8 @@ class m140830_145504_following extends EDbMigration
             ));
             $insertCommand->execute();
         }
+         * 
+         */
 
         $this->dropTable('space_follow');
         $this->dropTable('user_follow');

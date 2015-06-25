@@ -6,7 +6,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->registerJsFile("@web/js/space/spacechooser.js");
+$this->registerJsFile("@web/resources/space/spacechooser.js");
 $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
 ?>
 

@@ -1,6 +1,9 @@
 <?php
 
-class m140706_135210_lastlogin extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140706_135210_lastlogin extends Migration
 {
 
     public function up()

@@ -1,6 +1,9 @@
 <?php
 
-class m131023_170033_initial extends EDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m131023_170033_initial extends Migration {
 
     public function up() {
         $this->createTable('notification', array(

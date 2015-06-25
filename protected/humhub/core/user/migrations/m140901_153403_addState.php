@@ -1,6 +1,9 @@
 <?php
 
-class m140901_153403_addState extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140901_153403_addState extends Migration
 {
 
     public function up()

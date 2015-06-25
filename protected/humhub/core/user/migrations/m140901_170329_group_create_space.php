@@ -1,6 +1,9 @@
 <?php
 
-class m140901_170329_group_create_space extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140901_170329_group_create_space extends Migration
 {
 
     public function up()

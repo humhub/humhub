@@ -2,12 +2,11 @@
 /* @var $this \humhub\components\WebView */
 /* @var $currentSpace \humhub\core\space\models\Space */
 
-use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->registerJsFile("@web/js/space/spacechooser.js");
-$this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
+//$this->registerJsFile("@web/js/space/spacechooser.js");
+//$this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
 ?>
 
 <div class="panel panel-default panel-profile">

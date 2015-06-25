@@ -1,19 +1,21 @@
 <?php
 
-class m140704_080659_installationid extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140704_080659_installationid extends Migration
 {
 
     public function up()
     {
-                if (HSetting::isInstalled()) {
-                    
-                    $this->insert('setting', array(
-                       'name' => 'installationId',
-                       'value' => md5(uniqid("",true)),
-                       'module_id' => 'admin'  
-                    ));
-                    
-                }
+        if (\humhub\models\Setting::isInstalled()) {
+
+            $this->insert('setting', array(
+                'name' => 'installationId',
+                'value' => md5(uniqid("", true)),
+                'module_id' => 'admin'
+            ));
+        }
     }
 
     public function down()

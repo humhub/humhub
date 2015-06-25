@@ -1,8 +1,12 @@
 <?php
 
-class m131023_170253_initial extends ZDbMigration {
+use yii\db\Schema;
+use yii\db\Migration;
 
-    public function up() 
+class m131023_170253_initial extends Migration
+{
+
+    public function up()
     {
         $this->createTable('comment', array(
             'id' => 'pk',
