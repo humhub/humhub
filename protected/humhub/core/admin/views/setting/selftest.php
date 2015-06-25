@@ -1,3 +1,9 @@
+<?php
+
+use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_selftest', '<strong>Self</strong> test'); ?></div>
     <div class="panel-body">
@@ -16,7 +22,7 @@
                             <span style="color:green">Ok!</span>
                         <?php elseif ($check['state'] == 'WARNING') : ?>
                             <span style="color:orange">Warning!</span>
-                            <?php else :
+                        <?php else :
                             ?>
                             <span style="color:red">Error!</span>
                         <?php endif; ?>
@@ -43,7 +49,7 @@
         </div>
         <hr>
 
-        <?php echo HHtml::link(Yii::t('AdminModule.views_setting_selftest', 'Re-Run tests'), array('//admin/setting/selftest'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::a(Yii::t('AdminModule.views_setting_selftest', 'Re-Run tests'), Url::to(['self-test']), array('class' => 'btn btn-primary')); ?>
 
     </div>
 </div>

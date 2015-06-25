@@ -1,42 +1,34 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use yii\helpers\Url;
+use humhub\components\Controller;
+
 /**
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
-class IndexController extends Controller {
+class IndexController extends Controller
+{
 
-    /**
-     * @return array action filters
-     */
-    public function filters() {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules() {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     /**
      * List all available user groups
      */
-    public function actionIndex() {
-        $this->redirect(Yii::app()->createUrl('//admin/setting'));
-
+    public function actionIndex()
+    {
+        return Yii::$app->response->redirect(Url::toRoute('/admin/setting'));
     }
 
 }

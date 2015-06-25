@@ -1,3 +1,11 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use yii\helpers\Html;
+use humhub\models\Setting;
+use yii\helpers\Url;
+?>
 <div class="panel panel-default">
     <div
         class="panel-heading"><?php
@@ -7,14 +15,11 @@
                 echo Yii::t('AdminModule.views_setting_oembed_edit', '<strong>Edit</strong> OEmbed Provider');
             }
             ?></div>
+
     <div class="panel-body">
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'oembed-edit-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(['id' => 'authentication-settings-form']); ?>
+
 
         <?php echo $form->errorSummary($model); ?>
 
@@ -32,11 +37,11 @@
 
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_oembed_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php CActiveForm::end(); ?>        
 
         <?php if ($prefix != ""): ?>
-            <?php echo HHtml::postLink(Yii::t('AdminModule.views_setting_oembed_edit', 'Delete'), $this->createUrl('oembedDelete'), array('class' => 'btn btn-danger pull-right'), array('prefix' => $prefix)); ?>
+            <?php echo Html::a(Yii::t('AdminModule.views_setting_oembed_edit', 'Delete'), Url::to(['oembed-delete', 'prefix' => $prefix]), array('class' => 'btn btn-danger pull-right', 'data-method' => 'POST')); ?>
         <?php endif; ?>
-        <?php $this->endWidget(); ?>
 
     </div>
 </div>

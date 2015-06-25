@@ -1,5 +1,8 @@
 <?php
 
+# Disable until migrated
+return;
+
 Yii::app()->moduleManager->register(array(
     'id' => 'directory',
     'class' => 'application.modules_core.directory.DirectoryModule',

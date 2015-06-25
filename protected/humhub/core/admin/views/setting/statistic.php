@@ -1,11 +1,15 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use humhub\models\Setting;
+use yii\helpers\Url;
+?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_statistic', '<strong>Statistic</strong> settings'); ?></div>
     <div class="panel-body">
 
-        <?php $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'statistic-settings-form',
-            'enableAjaxValidation' => false,
-        )); ?>
+        <?php $form = CActiveForm::begin(); ?>
 
         <?php echo $form->errorSummary($model); ?>
 
@@ -17,10 +21,8 @@
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_statistic', 'Save'), array('class' => 'btn btn-primary')); ?>
 
-        <!-- show flash message after saving -->
-        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
-
-        <?php $this->endWidget(); ?>
+        <?php echo \humhub\widgets\DataSaved::widget(); ?>
+        <?php CActiveForm::end(); ?>
 
     </div>
 </div>

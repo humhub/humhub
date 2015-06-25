@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use humhub\components\Controller;
+
 /**
  * HumHub
  * Copyright © 2014 The HumHub Project
@@ -30,31 +35,14 @@ class ModuleController extends Controller
     public $subLayout = "/_layout";
     private $_onlineModuleManager = null;
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     public function actionIndex()
@@ -215,7 +203,6 @@ class ModuleController extends Controller
         }
 
         $this->render('listOnline', array('modules' => $modules, 'keyword' => $keyword));
-
     }
 
     /**

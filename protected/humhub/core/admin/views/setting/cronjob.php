@@ -1,3 +1,9 @@
+<?php
+
+use yii\helpers\Html;
+use humhub\models\Setting;
+?>
+
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_cronjob', '<strong>CronJob</strong> settings'); ?></div>
     <div class="panel-body">
@@ -12,19 +18,18 @@
         <p>
             <strong>Status:</strong><br/>
             <?php
-            $lastRunHourly = HSetting::get('cronLastHourlyRun');
-            $lastRunDaily = HSetting::get('cronLastDailyRun');
+            $lastRunHourly = Setting::get('cronLastHourlyRun');
+            $lastRunDaily = Setting::get('cronLastDailyRun');
 
             if ($lastRunHourly == "") {
                 $lastRunHourly = "<span style='color:red'>" . Yii::t('AdminModule.views_setting_cronjob', 'Never') . "</span>";
             } else {
-                $lastRunHourly = HHtml::timeago($lastRunHourly);
+                $lastRunHourly = \humhub\widgets\TimeAgo::widget(['timestamp' => $lastRunHourly]);
             }
             if ($lastRunDaily == "") {
                 $lastRunDaily = "<span style='color:red'>" . Yii::t('AdminModule.views_setting_cronjob', 'Never') . "</span>";
             } else {
-                $lastRunDaily = HHtml::timeago($lastRunDaily);
-            }
+                $lastRunDaily = \humhub\widgets\TimeAgo::widget(['timestamp' => $lastRunDaily]);            }
             ?>
 
             <?php echo Yii::t('AdminModule.views_setting_cronjob', 'Last run (hourly):'); ?> <?php echo $lastRunHourly; ?> <br/>
@@ -35,16 +40,16 @@
         <pre>
 
 <strong><?php echo Yii::t('AdminModule.views_setting_cronjob', 'Crontab of user: {user}', array('{user}' => $currentUser)); ?></strong>
-30 * * * * <?php echo Yii::app()->getBasePath(); ?>/yiic cron hourly >/dev/null 2>&1
-00 18 * * * <?php echo Yii::app()->getBasePath(); ?>/yiic cron daily >/dev/null 2>&1
+30 * * * * <?php echo Yii::getAlias('@app/yii'); ?> cron hourly >/dev/null 2>&1
+00 18 * * * <?php echo Yii::getAlias('@app/yii'); ?> cron daily >/dev/null 2>&1
 
             <?php if ($currentUser != ""): ?>
 
 <strong><?php echo Yii::t('AdminModule.views_setting_cronjob', 'Or Crontab of root user'); ?></strong>
-*/5 * * * * su -c "<?php echo Yii::app()->getBasePath(); ?>/yiic cron hourly" <?php echo $currentUser; ?>
+*/5 * * * * su -c "<?php echo Yii::getAlias('@app/yii'); ?>  cron hourly" <?php echo $currentUser; ?>
     >/dev/null 2>&1
-0 18 * * * su -c "<?php echo Yii::app()->getBasePath(); ?>/yiic cron daily" <?php echo $currentUser; ?> >/dev/null 2>&1
-            <?php endif; ?>
+0 18 * * * su -c "<?php echo Yii::getAlias('@app/yii'); ?>  cron daily" <?php echo $currentUser; ?> >/dev/null 2>&1
+<?php endif; ?>
         </pre>
 
     </div>

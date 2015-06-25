@@ -1,5 +1,8 @@
 <?php
 
+# Disable until migrated
+return;
+
 Yii::app()->moduleManager->register(array(
     'isCoreModule' => true,
     'id' => 'search',

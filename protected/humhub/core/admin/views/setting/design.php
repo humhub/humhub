@@ -1,15 +1,16 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use humhub\models\Setting;
+use yii\helpers\Url;
+?>
 <div class="panel panel-default">
     <div
         class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_design', '<strong>Design</strong> settings'); ?></div>
     <div class="panel-body">
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'design-settings-form',
-            'enableAjaxValidation' => false,
-            'htmlOptions' => array('enctype' => 'multipart/form-data'),
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(['id' => 'authentication-settings-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
         <?php echo $form->errorSummary($model); ?><br>
 
@@ -56,7 +57,7 @@
                             class="fa fa-cloud-upload"></i></a>
 
                     <?php
-                    $this->widget('application.widgets.ModalConfirmWidget', array(
+                    echo \humhub\widgets\ModalConfirm::widget(array(
                         'uniqueID' => 'modal_logoimagedelete',
                         'linkOutput' => 'a',
                         'title' => Yii::t('AdminModule.views_setting_index', '<strong>Confirm</strong> image deleting'),
@@ -66,7 +67,7 @@
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'class' => 'btn btn-danger btn-sm',
                         'style' => $logo->hasImage() ? '' : 'display: none;',
-                        'linkHref' => $this->createUrl("//admin/setting/deleteLogoImage"),
+                        'linkHref' => Url::toRoute("/admin/setting/deleteLogoImage"),
                         'confirmJS' => 'function(jsonResp) { resetLogoImage(jsonResp); }'
                     ));
                     ?>
@@ -77,10 +78,8 @@
         <hr>
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_design', 'Save'), array('class' => 'btn btn-primary')); ?>
 
-        <!-- show flash message after saving -->
-        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
-
-<?php $this->endWidget(); ?>
+        <?php echo \humhub\widgets\DataSaved::widget(); ?>
+        <?php CActiveForm::end(); ?>
 
     </div>
 </div>

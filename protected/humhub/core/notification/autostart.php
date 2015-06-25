@@ -1,5 +1,8 @@
 <?php
 
+# Disable until migrated
+return;
+
 Yii::app()->moduleManager->register(array(
     'id' => 'notification',
     'class' => 'application.modules_core.notification.NotificationModule',

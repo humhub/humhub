@@ -1,5 +1,11 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use yii\helpers\Url;
+
 /**
  * HumHub
  * Copyright © 2014 The HumHub Project
@@ -20,7 +26,7 @@
 
 /**
  * Description of LoggingController
- * 
+ *
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
@@ -29,64 +35,38 @@ class LoggingController extends Controller
 
     public $subLayout = "/_layout";
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     public function actionIndex()
     {
-
         $pageSize = 10;
 
-        $criteria = new CDbCriteria();
-        //$criteria->condition = 'collumnName1 = :id';
-        $criteria->order = 'id DESC';
-        //$criteria->params = array(':id' => $id);
+        $query = \humhub\core\admin\models\Log::find();
+        $query->orderBy('id DESC');
 
-        $itemCount = Logging::model()->count($criteria);
-
-        $pagination = new CPagination($itemCount);
-        $pagination->setPageSize($pageSize);
-        $pagination->applyLimit($criteria);  // the trick is here!
-
-        $logEntries = Logging::model()->findAll($criteria);
-
-        $this->render('index', array(
-            'entries' => $logEntries, // must be the same as $item_count
-            'itemCount' => $itemCount,
-            'pageSize' => $pageSize,
-            'pagination' => $pagination,
+        $countQuery = clone $query;
+        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+        $query->offset($pagination->offset)->limit($pagination->limit);       
+        
+        return $this->render('index', array(
+                    'logEntries' => $query->all(),
+                    'pagination' => $pagination,
         ));
     }
 
     public function actionFlush()
     {
         $this->forcePostRequest();
-        Logging::model()->deleteAll();
-        $this->redirect($this->createUrl('index'));
+        \humhub\core\admin\models\Log::deleteAll();
+        $this->redirect(Url::toRoute('index'));
     }
 
 }

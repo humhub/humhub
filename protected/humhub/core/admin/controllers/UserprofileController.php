@@ -1,5 +1,15 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use humhub\core\user\models\ProfileFieldCategory;
+use humhub\core\user\models\ProfileField;
+use humhub\core\user\models\fieldtype\BaseType;
+use humhub\compat\HForm;
+use yii\helpers\Url;
+
 /**
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
@@ -11,38 +21,12 @@ class UserProfileController extends Controller
 
     public function behaviors()
     {
-        return array(
-            'HReorderContentBehavior' => array(
-                'class' => 'application.behaviors.HReorderContentBehavior',
-            )
-        );
-    }
-
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ],
+        ];
     }
 
     /**
@@ -51,7 +35,7 @@ class UserProfileController extends Controller
      */
     public function actionIndex()
     {
-        $this->render('index', array());
+        return $this->render('index', array());
     }
 
     /**
@@ -59,32 +43,20 @@ class UserProfileController extends Controller
      */
     public function actionEditCategory()
     {
+        $id = (int) Yii::$app->request->get('id');
 
-        $id = (int) Yii::app()->request->getQuery('id');
-
-        $category = ProfileFieldCategory::model()->findByPk($id);
-        if ($category == null)
+        $category = ProfileFieldCategory::findOne(['id' => $id]);
+        if ($category == null) {
             $category = new ProfileFieldCategory;
+        }
 
         $category->translation_category = $category->getTranslationCategory();
 
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-userprofile-editcategory') {
-            echo CActiveForm::validate($category);
-            Yii::app()->end();
+        if ($category->load(Yii::$app->request->post()) && $category->validate() && $category->save()) {
+            return $this->redirect(Url::to(['/admin/user-profile']));
         }
 
-        if (isset($_POST['ProfileFieldCategory'])) {
-            $_POST = Yii::app()->input->stripClean($_POST);
-            $category->attributes = $_POST['ProfileFieldCategory'];
-
-            if ($category->validate()) {
-                $category->save();
-                $this->redirect(Yii::app()->createUrl('//admin/userprofile'));
-            }
-        }
-
-        $this->render('editCategory', array('category' => $category));
+        return $this->render('editCategory', array('category' => $category));
     }
 
     /**
@@ -92,49 +64,35 @@ class UserProfileController extends Controller
      */
     public function actionDeleteCategory()
     {
+        $id = (int) Yii::$app->request->get('id');
 
-        $this->forcePostRequest();
-
-        $id = (int) Yii::app()->request->getQuery('id');
-
-        $category = ProfileFieldCategory::model()->findByPk($id);
+        $category = ProfileFieldCategory::findOne(['id' => $id]);
         if ($category == null)
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'Could not load category.'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'Could not load category.'));
 
         if (count($category->fields) != 0)
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'You can only delete empty categories!'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'You can only delete empty categories!'));
 
         $category->delete();
 
-        $this->redirect(Yii::app()->createUrl('//admin/userprofile'));
+        return $this->redirect(Url::to(['/admin/user-profile']));
     }
 
     public function actionEditField()
     {
-
-        // XSS Protection
-        $_POST = Yii::app()->input->stripClean($_POST);
-
-        $id = (int) Yii::app()->request->getQuery('id');
+        $id = (int) Yii::$app->request->get('id');
 
         // Get Base Field
-        $field = ProfileField::model()->findByPk($id);
+        $field = ProfileField::findOne(['id' => $id]);
         if ($field == null)
             $field = new ProfileField;
 
         // Get all Available Field Class Instances, also bind current profilefield to the type
-        $profileFieldTypes = new ProfileFieldType();
+        $profileFieldTypes = new BaseType();
         $fieldTypes = $profileFieldTypes->getTypeInstances($field);
 
         // Build Form Definition
         $definition = array();
-
-        #$definition['activeForm'] = array(
-        #    'class' => 'CActiveForm',
-        #    'enableAjaxValidation' => true,
-        #    'id' => 'login-form',
-        #);
-
         $definition['elements'] = array();
 
         // Add all sub forms
@@ -164,33 +122,30 @@ class UserProfileController extends Controller
         $form = new HForm($definition);
 
         // Add used models to the CForm, so we can validate it
-        $form['ProfileField']->model = $field;
+        $form->models['ProfileField'] = $field;
         foreach ($fieldTypes as $fieldType) {
-            $form[get_class($fieldType)]->model = $fieldType;
+            $form->models[get_class($fieldType)] = $fieldType;
         }
 
         // Form Submitted?
         if ($form->submitted('save') && $form->validate()) {
-            $this->forcePostRequest();
 
             // Use ProfileField Instance from Form with new Values
-            $field = $form['ProfileField']->model;
-            $fieldType = $form[$field->field_type_class]->model;
+            $field = $form->models['ProfileField'];
+            $fieldType = $form->models[$field->field_type_class];
 
             $field->save();
             $fieldType->save();
 
-            $this->redirect(Yii::app()->createUrl('//admin/userprofile'));
+            return $this->redirect(Url::to(['/admin/user-profile']));
         }
-
         if ($form->submitted('delete')) {
-            $this->forcePostRequest();
             $field->delete();
-            $this->redirect(Yii::app()->createUrl('//admin/userprofile'));
+            return $this->redirect(Url::to(['/admin/user-profile']));
         }
 
 
-        $this->render('editField', array('form' => $form, 'field' => $field));
+        return $this->render('editField', array('hForm' => $form, 'field' => $field));
     }
 
     /**

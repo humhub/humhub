@@ -1,13 +1,21 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use humhub\models\Setting;
+use yii\helpers\Url;
+use humhub\core\user\models\User;
+?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_mailing', '<strong>Mailing</strong> defaults'); ?></div>
     <div class="panel-body">
 
         <ul class="nav nav-pills">
             <li class="active"><a
-                    href="<?php echo $this->createUrl('mailing'); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Defaults'); ?></a>
+                    href="<?php echo Url::to(['mailing']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Defaults'); ?></a>
             </li>
             <li>
-                <a href="<?php echo $this->createUrl('mailingServer'); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Server Settings'); ?></a>
+                <a href="<?php echo Url::to(['mailing-server']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Server Settings'); ?></a>
             </li>
         </ul>
 
@@ -17,12 +25,8 @@
 
         <br />
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'mailing-defaults-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+
+        <?php $form = CActiveForm::begin(); ?>
 
         <?php echo $form->errorSummary($model); ?>
 
@@ -51,10 +55,9 @@
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_mailing', 'Save'), array('class' => 'btn btn-primary')); ?>
 
-        <!-- show flash message after saving -->
-        <?php $this->widget('application.widgets.DataSavedWidget'); ?>
+        <?php echo \humhub\widgets\DataSaved::widget(); ?>
+        <?php CActiveForm::end(); ?>
 
-        <?php $this->endWidget(); ?>
     </div>
 
 

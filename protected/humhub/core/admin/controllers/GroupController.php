@@ -1,5 +1,13 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use humhub\core\user\models\Group;
+use humhub\core\user\models\User;
+use yii\helpers\Url;
+
 /**
  * Group Administration Controller
  *
@@ -16,31 +24,14 @@ class GroupController extends Controller
      */
     public $subLayout = "/_layout";
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     /**
@@ -48,13 +39,12 @@ class GroupController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new \humhub\core\admin\models\GroupSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model = new Group('search');
-        if (isset($_GET['Group']))
-            $model->attributes = $_GET['Group'];
-
-        $this->render('index', array(
-            'model' => $model
+        return $this->render('index', array(
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel
         ));
     }
 
@@ -65,33 +55,22 @@ class GroupController extends Controller
     {
 
         // Create Group Edit Form
-        $group = Group::model()->findByPk(Yii::app()->request->getQuery('id'));
+        $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         if ($group === null) {
             $group = new Group();
         }
+
         $group->scenario = 'edit';
         $group->populateDefaultSpaceGuid();
         $group->populateAdminGuids();
 
-
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-group-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
+        if ($group->load(Yii::$app->request->post()) && $group->validate()) {
+            $group->save();
+            $this->redirect(Url::toRoute('/admin/group'));
         }
 
-        if (isset($_POST['Group'])) {
-            $_POST = Yii::app()->input->stripClean($_POST);
-            $group->attributes = $_POST['Group'];
-
-            if ($group->validate()) {
-                $group->save();
-
-                // Redirect to admin groups overview
-                $this->redirect(Yii::app()->createUrl('//admin/group'));
-            }
-        }
-        $this->render('edit', array('group' => $group));
+        $showDeleteButton = (!$group->isNewRecord && Group::find()->count() > 1);
+        return $this->render('edit', ['group' => $group, 'showDeleteButton' => $showDeleteButton]);
     }
 
     /**
@@ -101,35 +80,22 @@ class GroupController extends Controller
      */
     public function actionDelete()
     {
-        Yii::import('admin.forms.*');
-
-        $id = (int) Yii::app()->request->getQuery('id');
-
-        $group = Group::model()->findByPk($id);
-
+        $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         if ($group == null)
-            throw new CHttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+            throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
 
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'admin-deleteGroup-form') {
-            echo CActiveForm::validate($group);
-            Yii::app()->end();
-        }
-
-        $model = new AdminDeleteGroupForm;
-        if (isset($_POST['AdminDeleteGroupForm'])) {
-            $model->attributes = $_POST['AdminDeleteGroupForm'];
-            if ($model->validate()) {
-                foreach (User::model()->findAllByAttributes(array('group_id' => $group->id)) as $user) {
-                    $user->group_id = $model->group_id;
-                    $user->save();
-                }
-                $group->delete();
-                $this->redirect(Yii::app()->createUrl('//admin/group'));
+        $model = new \humhub\core\admin\models\forms\AdminDeleteGroupForm;
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            foreach (User::findAll(['group_id' => $group->id]) as $user) {
+                $user->group_id = $model->group_id;
+                $user->save();
             }
+            $group->delete();
+            $this->redirect(Url::toRoute("/admin/group"));
         }
 
-        $this->render('delete', array('group' => $group, 'model' => $model));
+        $alternativeGroups = \yii\helpers\ArrayHelper::map(Group::find()->where('id != :id', array(':id' => $group->id))->all(), 'id', 'name');
+        return $this->render('delete', array('group' => $group, 'model' => $model, 'alternativeGroups' => $alternativeGroups));
     }
 
 }

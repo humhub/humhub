@@ -1,38 +1,41 @@
+<?php
+
+use humhub\compat\CHtml;
+use yii\helpers\Html;
+use humhub\models\Setting;
+?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_logging_index', '<strong>Error</strong> logging'); ?></div>
     <div class="panel-body">
-
-        
         <div>
-            <?php echo Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', array("{count}" => $itemCount)); ?>
-            
-            <span class="pull-right"><?php echo Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', array("{count}" => $pageSize)); ?></span>
+            <?php echo Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', array("{count}" => $pagination->totalCount)); ?>
+            <span class="pull-right"><?php echo Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', array("{count}" => $pagination->pageSize)); ?></span>
         </div>
 
         <hr>
-        
-        
-
         <ul class="media-list">
-            <?php foreach ($entries as $entry) : ?>
+            <?php foreach ($logEntries as $entry) : ?>
 
                 <li class="media">
                     <div class="media-body">
 
                         <?php
                         $labelClass = "label-primary";
-                        if ($entry->level == 'error') {
+                        if ($entry->level == \yii\log\Logger::LEVEL_WARNING) {
                             $labelClass = "label-danger";
-                        } elseif ($entry->level == 'error') {
+                            $levelName = "Warning";
+                        } elseif ($entry->level == \yii\log\Logger::LEVEL_ERROR) {
                             $labelClass = "label-warning";
-                        } elseif ($entry->level == 'info') {
+                            $levelName = "Error";
+                        } elseif ($entry->level == \yii\log\Logger::LEVEL_INFO) {
                             $labelClass = "label-info";
+                            $levelName = "Info";
                         }
                         ?>
 
                         <h4 class="media-heading">
-                            <span class="label <?php echo $labelClass; ?>"><?php echo CHtml::encode($entry->level); ?></span>&nbsp;
-                            <?php echo date('r', $entry->logtime); ?>&nbsp;
+                            <span class="label <?php echo $labelClass; ?>"><?php echo CHtml::encode($levelName); ?></span>&nbsp;
+                            <?php echo date('r', $entry->log_time); ?>&nbsp;
                             <span class="pull-right"><?php echo CHtml::encode($entry->category); ?></span>
                         </h4>
                         <?php echo CHtml::encode($entry->message); ?>
@@ -42,26 +45,12 @@
             <?php endforeach; ?>
         </ul>
 
-        <?php if ($itemCount != 0): ?>
-            <div class="pull-right"><?php echo HHtml::postLink(Yii::t('AdminModule.views_logging_index', 'Flush entries'), array('flush'), array('class'=>'btn btn-danger')); ?></div>
+        <?php if ($pagination->totalCount != 0): ?>
+            <div class="pull-right"><?php echo Html::a(Yii::t('AdminModule.views_logging_index', 'Flush entries'), array('flush'), array('class' => 'btn btn-danger', 'data-method' => 'post')); ?></div>
         <?php endif; ?>
-    
 
         <center>
-            <?php
-            $this->widget('CLinkPager', array(
-                'currentPage' => $pagination->getCurrentPage(),
-                'itemCount' => $itemCount,
-                'pageSize' => $pageSize,
-                'maxButtonCount' => 5,
-                'header' => '',
-                'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
-                'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
-                'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
-                'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
-                'htmlOptions' => array('class' => 'pagination'),
-            ));
-            ?>
+            <?= \humhub\widgets\LinkPager::widget(['pagination' => $pagination]); ?>
         </center>
     </div>
 </div>

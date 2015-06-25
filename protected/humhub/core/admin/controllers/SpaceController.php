@@ -1,5 +1,12 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use yii\helpers\Url;
+use humhub\components\Controller;
+use humhub\models\Setting;
+
 /**
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
@@ -9,31 +16,14 @@ class SpaceController extends Controller
 
     public $subLayout = "/_layout";
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     /**
@@ -41,48 +31,34 @@ class SpaceController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new \humhub\core\admin\models\SpaceSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model = new Space('search');
-
-        if (isset($_GET['Space']))
-            $model->attributes = $_GET['Space'];
-
-
-        $this->render('index', array(
-            'model' => $model
+        return $this->render('index', array(
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel
         ));
     }
 
     /**
-     * General Space Settings 
+     * General Space Settings
      */
     public function actionSettings()
     {
-        $form = new SpaceSettingsForm;
-        $form->defaultJoinPolicy = HSetting::Get('defaultJoinPolicy', 'space');
-        $form->defaultVisibility = HSetting::Get('defaultVisibility', 'space');
+        $form = new \humhub\core\admin\models\forms\SpaceSettingsForm;
+        $form->defaultJoinPolicy = Setting::Get('defaultJoinPolicy', 'space');
+        $form->defaultVisibility = Setting::Get('defaultVisibility', 'space');
 
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'space-settings-form') {
-            echo CActiveForm::validate($form);
-            Yii::app()->end();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            Setting::Set('defaultJoinPolicy', $form->defaultJoinPolicy, 'space');
+            Setting::Set('defaultVisibility', $form->defaultVisibility, 'space');
+
+            // set flash message
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SpaceController', 'Saved'));
+            $this->redirect(Url::toRoute('settings'));
         }
 
-        if (isset($_POST['SpaceSettingsForm'])) {
-            $_POST['SpaceSettingsForm'] = Yii::app()->input->stripClean($_POST['SpaceSettingsForm']);
-            $form->attributes = $_POST['SpaceSettingsForm'];
-
-            if ($form->validate()) {
-                HSetting::Set('defaultJoinPolicy', $form->defaultJoinPolicy, 'space');
-                HSetting::Set('defaultVisibility', $form->defaultVisibility, 'space');
-
-                // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SpaceController', 'Saved'));
-                $this->redirect($this->createUrl('settings'));
-            }
-        }
-
-        $this->render('settings', array('model' => $form));
+        return $this->render('settings', array('model' => $form));
     }
 
 }

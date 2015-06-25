@@ -1,51 +1,40 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use humhub\components\Controller;
+
 /**
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
-class ApprovalController extends Controller {
+class ApprovalController extends Controller
+{
 
     public $subLayout = "/_layout";
 
-    /**
-     * @return array action filters
-     */
-    public function filters() {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules() {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->canApproveUsers()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     /**
      * Shows a list of all users waiting for an approval
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
+        $searchModel = new \humhub\core\admin\models\UserApprovalSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model = new User('search');
-        if (isset($_GET['User']))
-            $model->attributes = $_GET['User'];
-
-        $model->status = User::STATUS_NEED_APPROVAL;
-
-        $this->render('index', array(
-            'model' => $model
+        return $this->render('index', array(
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel
         ));
     }
 
@@ -54,7 +43,8 @@ class ApprovalController extends Controller {
      *
      * @throws CHttpException
      */
-    public function actionApproveUserAccept() {
+    public function actionApproveUserAccept()
+    {
 
         $id = (int) Yii::app()->request->getQuery('id');
 
@@ -85,18 +75,18 @@ class ApprovalController extends Controller {
         } else {
             $approveFormModel->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", array('{displayName}' => CHtml::encode($model->displayName)));
             $approveFormModel->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
-  
-   your account has been activated.<br><br> 
-   
+
+   your account has been activated.<br><br>
+
    Click here to login:<br>
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>
-   
+
    Kind Regards<br>
    {AdminName}<br><br>', array(
                         '{displayName}' => CHtml::encode($model->displayName),
                         '{loginURL}' => Yii::app()->createAbsoluteUrl("//user/auth/login"),
                         '{AdminName}' => Yii::app()->user->model->displayName,
-                    ));
+            ));
         }
 
 
@@ -108,7 +98,8 @@ class ApprovalController extends Controller {
      *
      * @throws CHttpException
      */
-    public function actionApproveUserDecline() {
+    public function actionApproveUserDecline()
+    {
 
         $id = (int) Yii::app()->request->getQuery('id');
         $user = User::model()->resetScope()->unapproved()->findByPk($id);
@@ -136,14 +127,14 @@ class ApprovalController extends Controller {
         } else {
             $approveFormModel->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', array('{displayName}' => CHtml::encode($user->displayName)));
             $approveFormModel->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
-  
-   your account request has been declined.<br><br> 
-      
+
+   your account request has been declined.<br><br>
+
    Kind Regards<br>
    {AdminName}<br><br>', array(
                         '{displayName}' => CHtml::encode($user->displayName),
                         '{AdminName}' => Yii::app()->user->model->displayName,
-                    ));
+            ));
         }
 
         $this->render('approveUserDecline', array('model' => $user, 'approveFormModel' => $approveFormModel));

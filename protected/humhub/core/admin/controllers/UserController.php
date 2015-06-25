@@ -1,5 +1,15 @@
 <?php
 
+namespace humhub\core\admin\controllers;
+
+use Yii;
+use humhub\compat\HForm;
+use humhub\components\Controller;
+use humhub\core\user\models\User;
+use humhub\core\user\models\Group;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
+
 /**
  * @package humhub.modules_core.admin.controllers
  * @since 0.5
@@ -9,31 +19,14 @@ class UserController extends Controller
 
     public $subLayout = "/_layout";
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()'
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
 
     /**
@@ -41,16 +34,12 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new \humhub\core\admin\models\UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model = new User('search');
-        $model->super_admin = '';
-
-        if (isset($_GET['User']))
-            $model->attributes = $_GET['User'];
-
-
-        $this->render('index', array(
-            'model' => $model
+        return $this->render('index', array(
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel
         ));
     }
 
@@ -61,25 +50,18 @@ class UserController extends Controller
      */
     public function actionEdit()
     {
-
-        $_POST = Yii::app()->input->stripClean($_POST);
-
-        $id = (int) Yii::app()->request->getQuery('id');
-        $user = User::model()->resetScope()->findByPk($id);
+        $user = User::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($user == null)
-            throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
+            throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
 
-        $user->scenario = 'adminEdit';
-        $user->profile->scenario = 'adminEdit';
+        $user->scenario = 'editAdmin';
+        $user->profile->scenario = 'editAdmin';
         $profile = $user->profile;
 
         // Build Form Definition
         $definition = array();
         $definition['elements'] = array();
-
-        $groupModels = Group::model()->findAll(array('order' => 'name'));
-
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
@@ -98,7 +80,7 @@ class UserController extends Controller
                 'group_id' => array(
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
-                    'items' => CHtml::listData($groupModels, 'id', 'name'),
+                    'items' => \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name'),
                 ),
                 'super_admin' => array(
                     'type' => 'checkbox',
@@ -147,37 +129,27 @@ class UserController extends Controller
         );
 
         $form = new HForm($definition);
-        $form['User']->model = $user;
-        $form['Profile']->model = $profile;
+        $form->models['User'] = $user;
+        $form->models['Profile'] = $profile;
 
         if ($form->submitted('save') && $form->validate()) {
-            $this->forcePostRequest();
-
-            if ($form['User']->model->save()) {
-                $form['Profile']->model->save();
-
-                $this->redirect(Yii::app()->createUrl('admin/user'));
-                return;
+            if ($form->save()) {
+                return $this->redirect(Url::toRoute('/admin/user'));
             }
         }
 
         // This feature is used primary for testing, maybe remove this in future
         if ($form->submitted('become')) {
 
-            // Switch Identity
-            Yii::import('application.modules_core.user.components.*');
-            $newIdentity = new UserIdentity($user->username, '');
-            $newIdentity->fakeAuthenticate();
-            Yii::app()->user->login($newIdentity);
-
-            $this->redirect(Yii::app()->createUrl('//'));
+            Yii::$app->user->switchIdentity($form->models['User']);
+            return $this->redirect(Url::toRoute("/"));
         }
 
         if ($form->submitted('delete')) {
-            $this->redirect(Yii::app()->createUrl('admin/user/delete', array('id' => $user->id)));
+            return $this->redirect(Url::toRoute(['/admin/user/delete', 'id' => $user->id]));
         }
 
-        $this->render('edit', array('form' => $form));
+        return $this->render('edit', array('hForm' => $form));
     }
 
     public function actionAdd()
@@ -291,32 +263,33 @@ class UserController extends Controller
     public function actionDelete()
     {
 
-        $id = (int) Yii::app()->request->getQuery('id');
-        $doit = (int) Yii::app()->request->getQuery('doit');
+        $id = (int) Yii::$app->request->get('id');
+        $doit = (int) Yii::$app->request->get('doit');
 
-        $user = User::model()->resetScope()->findByPk($id);
+
+        $user = User::findOne(['id' => $id]);
 
         if ($user == null) {
-            throw new CHttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
-        } elseif (Yii::app()->user->id == $id) {
-            throw new CHttpException(400, Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
+            throw new HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
+        } elseif (Yii::$app->user->id == $id) {
+            throw new HttpException(400, Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
         }
 
         if ($doit == 2) {
 
             $this->forcePostRequest();
 
-            foreach (SpaceMembership::GetUserSpaces() as $workspace) {
+            foreach (\humhub\core\space\models\Membership::GetUserSpaces() as $workspace) {
                 if ($workspace->isSpaceOwner($user->id)) {
-                    $workspace->addMember(Yii::app()->user->id);
-                    $workspace->setSpaceOwner(Yii::app()->user->id);
+                    $workspace->addMember(Yii::$app->user->id);
+                    $workspace->setSpaceOwner(Yii::$app->user->id);
                 }
             }
             $user->delete();
-            $this->redirect(Yii::app()->createUrl('admin/user'));
+            return $this->redirect(Url::to(['/admin/user']));
         }
 
-        $this->render('delete', array('model' => $user));
+        return $this->render('delete', array('model' => $user));
     }
 
 }
