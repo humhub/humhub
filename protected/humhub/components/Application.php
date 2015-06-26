@@ -29,6 +29,12 @@ class Application extends \yii\web\Application
             return false;
         }
 
+        /**
+         * More random widget autoId prefix
+         * Ensures to be unique also on ajax partials
+         */
+        \yii\base\Widget::$autoIdPrefix = 'h' . mt_rand(1, 999999) . 'w';
+
         return parent::beforeAction($action);
     }
 

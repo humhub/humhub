@@ -17,7 +17,7 @@ $(function () {
                 url: profileImageUploaderUrl,
                 dataType: 'json',
                 singleFileUploads: true,
-                formData: {'CSRF_TOKEN': csrfValue},
+                //formData: {'CSRF_TOKEN': csrfValue},
                 limitMultiFileUploads: 1,
                 progressall: function (e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -56,7 +56,7 @@ $(function () {
                 url: profileHeaderUploaderUrl,
                 dataType: 'json',
                 singleFileUploads: true,
-                formData: {'CSRF_TOKEN': csrfValue},
+                //formData: {'CSRF_TOKEN': csrfValue},
                 limitMultiFileUploads: 1,
                 progressall: function (e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -104,14 +104,13 @@ function handleUploadError(json) {
 
 }
 
-function resetProfileImage(jsonResp) {
-    json = jQuery.parseJSON(jsonResp);
+function resetProfileImage(json) {
 
     if (json.type == 'profile') {
-        $('#space-menu img').attr('src', json.defaultUrl + '&c=' + Math.random());
-        $('#space-profile-image').attr('src', json.defaultUrl + '&c=' + Math.random());
+        $('#space-menu img').attr('src', json.defaultUrl);
+        $('#space-profile-image').attr('src', json.defaultUrl);
     } else if (json.type == "banner") {
-        $('#space-banner-image').attr('src', json.defaultUrl + '&c=' + Math.random());
+        $('#space-banner-image').attr('src', json.defaultUrl);
     }
 
     $('.image-upload-buttons').hide();

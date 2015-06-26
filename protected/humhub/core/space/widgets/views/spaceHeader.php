@@ -1,12 +1,15 @@
 <?php
-/* @var $this \humhub\components\WebView */
+/* @var $this \humhub\components\View */
 /* @var $currentSpace \humhub\core\space\models\Space */
 
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-//$this->registerJsFile("@web/js/space/spacechooser.js");
-//$this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
+if ($space->isAdmin()) {
+    $this->registerJsFile('@web/resources/space/spaceHeaderImageUpload.js');
+    $this->registerJsVar('profileImageUploaderUrl', $space->createUrl('/space/admin/image-upload'));
+    $this->registerJsVar('profileHeaderUploaderUrl', $space->createUrl('/space/admin/banner-image-upload'));
+}
 ?>
 
 <div class="panel panel-default panel-profile">
@@ -68,7 +71,7 @@ use yii\helpers\Html;
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo $space->createUrl('/space/admin/cropBannerImage'); ?>"
+                       href="<?php echo $space->createUrl('/space/admin/crop-banner-image'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
@@ -82,7 +85,7 @@ use yii\helpers\Html;
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'class' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $space->createUrl("/space/admin/deleteProfileImage", ['type' => 'banner']),
+                            'linkHref' => $space->createUrl("/space/admin/delete-profile-image", ['type' => 'banner']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -148,7 +151,7 @@ use yii\helpers\Html;
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo $space->createUrl('/space/admin/cropImage'); ?>"
+                       href="<?php echo $space->createUrl('/space/admin/crop-image'); ?>"
                        class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
@@ -162,7 +165,7 @@ use yii\helpers\Html;
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'class' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $space->createUrl("/space/admin/deleteProfileImage", array('type' => 'profile')),
+                            'linkHref' => $space->createUrl("/space/admin/delete-profile-image", array('type' => 'profile')),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
