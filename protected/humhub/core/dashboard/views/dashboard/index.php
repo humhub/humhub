@@ -18,7 +18,7 @@
         <div class="col-md-4">
             <?php
             echo \humhub\core\dashboard\widgets\Sidebar::widget(['widgets' => [
-                //      [\humhub\core\activity\widgets\Stream::className(), ['streamAction' => '/dashboard/dashboard/stream'], ['sortOrder' => 10]]
+                    [\humhub\core\activity\widgets\Stream::className(), ['streamAction' => '/dashboard/dashboard/stream'], ['sortOrder' => 10]]
             ]]);
             ?>
         </div>

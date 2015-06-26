@@ -62,23 +62,14 @@ use Yii;
 
     <div class="panel-heading"><?php echo Yii::t('SpaceModule.widgets_views_spaceMembers', '<strong>Space</strong> members'); ?></div>
     <div class="panel-body">
-        <?php if (count($space->membershipsLimited) != 0) : ?>
-            <?php $ix = 0; ?>
-            <?php foreach ($space->membershipsLimited as $membership) : ?>
-                <?php $user = User::model()->findByPk($membership->user_id); ?>
-                <?php if ($user == null || $user->status != User::STATUS_ENABLED) continue; ?>
-                <?php if ($ix > 23) break; ?>
-                <?php $ix++; ?>
-                <a href="<?php echo $user->getProfileUrl(); ?>">
-                    <img src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
-                         height="24" width="24" alt="24x24" data-src="holder.js/24x24"
-                         style="width: 24px; height: 24px;" data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo CHtml::encode($user->displayName); ?></strong><br><?php echo CHtml::encode($user->profile->title); ?>">
-                </a>
-                <?php if ($space->isAdmin($user->id)) { ?>
-                    <!-- output, if user is admin of this space -->
-                <?php } ?>
-            <?php endforeach; ?>
-        <?php endif; ?>
+        <?php foreach ($members as $membership) : ?>
+            <?php $user = $membership->user; ?>
+            <a href="<?php echo $user->getUrl(); ?>">
+                <img src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
+                     height="24" width="24" alt="24x24" data-src="holder.js/24x24"
+                     style="width: 24px; height: 24px;" data-toggle="tooltip" data-placement="top" title=""
+                     data-original-title="<strong><?php echo Html::encode($user->displayName); ?></strong><br><?php echo Html::encode($user->profile->title); ?>">
+            </a>
+        <?php endforeach; ?>
     </div>
 </div>

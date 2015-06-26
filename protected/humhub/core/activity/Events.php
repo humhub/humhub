@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\activity;
+
 /**
  * ActivityModuleEvents
  * Handles registered events of ActivityModule
@@ -26,7 +28,7 @@
  * @author luke
  * @since 0.11
  */
-class ActivityModuleEvents
+class Events extends \yii\base\Object
 {
 
     /**

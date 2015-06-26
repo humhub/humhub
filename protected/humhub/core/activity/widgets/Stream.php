@@ -1,5 +1,9 @@
 <?php
 
+namespace humhub\core\activity\widgets;
+
+use yii\web\HttpException;
+
 /**
  * ActivityStreamWidget shows an stream/wall of activities inside a sidebar.
  *
@@ -7,7 +11,7 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityStreamWidget extends HWidget
+class Stream extends \yii\base\Widget
 {
 
     /**
@@ -30,14 +34,8 @@ class ActivityStreamWidget extends HWidget
     public function init()
     {
         if ($this->streamAction == "") {
-            throw new CHttpException(500, 'You need to set the streamAction attribute to use this widget!');
+            throw new HttpException(500, 'You need to set the streamAction attribute to use this widget!');
         }
-
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../assets', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/activies.js');
-
-        Yii::app()->clientScript->setJavascriptVariable('activityStreamUrl', $this->getStreamUrl());
-        Yii::app()->clientScript->setJavascriptVariable('activityPermaLinkUrl', Yii::app()->createUrl('//wall/perma/wallEntry'));
     }
 
     /**
@@ -45,7 +43,12 @@ class ActivityStreamWidget extends HWidget
      */
     public function run()
     {
-        $this->render('activityStream', array());
+        $streamUrl = $this->getStreamUrl();
+        $permaUrl = \yii\helpers\Url::to(['/content/perma/wallEntry']);
+        return $this->render('activityStream', array(
+                    'streamUrl' => $streamUrl,
+                    'permaUrl' => $permaUrl
+        ));
     }
 
     protected function getStreamUrl()
@@ -53,14 +56,14 @@ class ActivityStreamWidget extends HWidget
         $params = array(
             'limit' => '10',
             'from' => '-from-',
-            'mode' => BaseStreamAction::MODE_ACTIVITY
+            'mode' => \humhub\core\content\components\actions\Stream::MODE_ACTIVITY
         );
 
         if ($this->contentContainer) {
             return $this->contentContainer->createUrl($this->streamAction, $params);
         }
 
-        return Yii::app()->createUrl($this->streamAction, $params);
+        return \yii\helpers\Url::to(array_merge([$this->streamAction], $params));
     }
 
 }

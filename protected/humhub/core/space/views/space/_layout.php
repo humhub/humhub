@@ -24,15 +24,10 @@ $space = $this->context->contentContainer;
             </div>
             <div class="col-md-3 layout-sidebar-container">
                 <?php
-                /*
-                  $this->widget('application.modules_core.space.widgets.SpaceSidebarWidget', array(
-                  'widgets' => array(
-                  array('application.modules_core.activity.widgets.ActivityStreamWidget', array('contentContainer' => $this->getSpace(), 'streamAction' => '//space/space/stream'), array('sortOrder' => 100)),
-                  array('application.modules_core.space.widgets.SpaceMemberWidget', array('space' => $this->getSpace()), array('sortOrder' => 200)),
-                  )
-                  ));
-                 * 
-                 */
+                echo \humhub\core\space\widgets\Sidebar::widget(['widgets' => [
+                        [\humhub\core\activity\widgets\Stream::className(), ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
+                        [\humhub\core\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 20]]
+                ]]);
                 ?>
             </div>
         <?php endif; ?>

@@ -1,5 +1,9 @@
 <?php
 
+namespace humhub\core\activity\widgets;
+
+use Yii;
+
 /**
  * ActivityWidget shows an activity.
  *
@@ -7,7 +11,7 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityWidget extends HWidget
+class Activity extends \yii\base\Widget
 {
 
     protected $themePath = 'modules/activity';
@@ -36,7 +40,7 @@ class ActivityWidget extends HWidget
         // Try to figure out wallEntryId of this activity
         $wallEntryId = 0;
         if ($underlyingObject != null) {
-            if ($underlyingObject instanceof HActiveRecordContent || $underlyingObject instanceof HActiveRecordContentAddon) {
+            if ($underlyingObject instanceof \humhub\core\content\components\activerecords\Content || $underlyingObject instanceof \humhub\core\content\components\activerecords\ContentAddon) {
                 $wallEntryId = $underlyingObject->content->getFirstWallEntryId();
             }
         }
@@ -51,7 +55,7 @@ class ActivityWidget extends HWidget
         $user = $this->activity->content->user;
 
         if ($user == null) {
-            Yii::log("Skipping activity without valid user", "warning");
+            Yii::warning("Skipping activity without valid user", "warning");
             return;
         }
 
@@ -59,22 +63,26 @@ class ActivityWidget extends HWidget
         // Dertermine View
         $view = "";
         if ($this->activity->module == "") {
-            $view = 'application.modules_core.activity.views.activities.' . $this->activity->type;
+            $view = '@humhub/core/activity/views/activity/' . $this->activity->type;
         } else {
-            $view = $this->activity->module . '.views.activities.' . $this->activity->type;
+            $module = Yii::$app->getModule($this->activity->module, true);
+
+            // Autogenerate Module Path
+            $path = str_replace(Yii::getAlias('@app'), '', $module->getBasePath());
+            $view = '@app/' . $path . '/views/activities/' . $this->activity->type;
         }
 
         // Activity Layout can access it
         $this->wallEntryId = $wallEntryId;
 
-        $this->render($view, array(
-            'activity' => $this->activity,
-            'wallEntryId' => $wallEntryId,
-            'user' => $user,
-            'target' => $underlyingObject,
-            'space' => $space,
-            // Deprecated
-            'workspace' => $space
+        return $this->render($view, array(
+                    'activity' => $this->activity,
+                    'wallEntryId' => $wallEntryId,
+                    'user' => $user,
+                    'target' => $underlyingObject,
+                    'space' => $space,
+                    // Deprecated
+                    'workspace' => $space
         ));
     }
 

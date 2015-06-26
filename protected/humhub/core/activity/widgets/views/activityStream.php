@@ -8,6 +8,13 @@
  * @package humhub.modules.activity
  * @since 0.5
  */
+
+/* @var $this humhub\components\View */
+
+
+$this->registerJsFile('@web/resources/activity/activies.js');
+$this->registerJsVar('activityStreamUrl', $streamUrl);
+$this->registerJsVar('activityPermaLinkUrl', $permaUrl);
 ?>
 
 <div class="panel panel-default panel-activities">

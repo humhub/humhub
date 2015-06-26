@@ -1,23 +1,20 @@
 <?php
 
-# Disable until migrated
-return;
+use humhub\core\activity\Events;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Space;
+use humhub\components\ActiveRecord;
+use humhub\commands\IntegrityController;
 
-Yii::app()->moduleManager->register(array(
+Yii::$app->moduleManager->register([
     'id' => 'activity',
-    'class' => 'application.modules_core.activity.ActivityModule',
+    'class' => humhub\core\activity\Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.activity.*',
-        'application.modules_core.activity.models.*',
-        'application.modules_core.activity.widgets.*',
-    ),
-    // Events to Catch
-    'events' => array(
-        array('class' => 'User', 'event' => 'onAfterDelete', 'callback' => array('ActivityModuleEvents', 'onUserDelete')),
-        array('class' => 'Space', 'event' => 'onBeforeDelete', 'callback' => array('ActivityModuleEvents', 'onSpaceDelete')),
-        array('class' => 'HActiveRecord', 'event' => 'onBeforeDelete', 'callback' => array('ActivityModuleEvents', 'onActiveRecordDelete')),
-        array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('ActivityModuleEvents', 'onIntegrityCheck')),
-    ),
-));
+    'events' => [
+        ['class' => User::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onUserDelete']],
+        ['class' => Space::className(), 'event' => Space::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onSpaceDelete']],
+        ['class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete']],
+        ['class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::className(), 'onIntegrityCheck']],
+    ],
+]);
 ?>

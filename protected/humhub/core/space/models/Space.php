@@ -150,7 +150,6 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
             $membership->share_role = 1;
             $membership->save();
 
-            /*
             $activity = new Activity;
             $activity->content->created_by = $userId;
             $activity->content->space_id = $this->id;
@@ -160,8 +159,6 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
             $activity->type = "ActivitySpaceCreated";
             $activity->save();
             $activity->fire();
-             * 
-             */
         }
 
         Yii::$app->cache->delete('userSpaces_' . $userId);
@@ -371,9 +368,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
      * Counts all Content Items related to this workspace except of Activities.
      * Additonally Comments (normally ContentAddon) will be included.
      */
-    public function
-
-    countItems()
+    public function countItems()
     {
         $count = 0;
         $count += Content::model()->countByAttributes(array('space_id' => $this->id), 'object_model != :activityModel', array(':activityModel' => 'Activity'));

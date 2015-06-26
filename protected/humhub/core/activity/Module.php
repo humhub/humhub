@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\activity;
+
 /**
  * ActivityModule is responsible for all activities functions.
  *
@@ -7,7 +9,7 @@
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class ActivityModule extends HWebModule
+class Module extends \yii\base\Module
 {
 
     public $isCoreModule = true;

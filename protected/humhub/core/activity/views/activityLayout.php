@@ -13,7 +13,7 @@
 
 
 <li class="activity-entry">
-    <?php if ($this->wallEntryId != 0) : ?><a href="#" onClick="activityShowItem(<?php echo $this->wallEntryId; ?>);
+    <?php if ($this->context->wallEntryId != 0) : ?><a href="#" onClick="activityShowItem(<?php echo $this->context->wallEntryId; ?>);
                 return false;"><?php endif; ?>
         <div class="media">
 
@@ -25,7 +25,7 @@
                  <?php endif; ?>
 
             <!-- Show space image, if you are outside from a space -->
-            <?php if (!Yii::app()->controller instanceof ContentContainerController && $activity->content->space !== null): ?>
+            <?php if (!Yii::$app->controller instanceof \humhub\core\content\components\ContentContainerController && $activity->content->space !== null): ?>
                 <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
                      style="width: 20px; height: 20px;"
                      src="<?php echo $activity->content->space->getProfileImage()->getUrl(); ?>">
@@ -40,6 +40,6 @@
                 <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $activity->content->created_at]); ?>
             </div>
         </div>
-        <?php if ($this->wallEntryId != 0) : ?></a><?php endif; ?>
+        <?php if ($this->context->wallEntryId != 0) : ?></a><?php endif; ?>
 </li>
 

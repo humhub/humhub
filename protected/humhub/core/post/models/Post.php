@@ -41,6 +41,33 @@ class Post extends \humhub\core\content\components\activerecords\Content
         ];
     }
 
+    
+    /**
+     * Before Save Addons
+     *
+     * @return type
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            $activity = \humhub\core\activity\models\Activity::CreateForContent($this);
+            $activity->type = "PostCreated";
+            $activity->module = "post";
+            $activity->save();
+
+            $activity->fire();
+        }
+
+        // Handle mentioned users
+        //UserMentioning::parse($this, $this->message);
+
+        return true;
+    }
+    
+    
     /**
      * @inheritdoc
      */

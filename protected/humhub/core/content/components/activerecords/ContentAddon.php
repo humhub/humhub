@@ -32,7 +32,7 @@ use humhub\components\ActiveRecord;
  * @package humhub.components
  * @since 0.5
  */
-class HActiveRecordContentAddon extends HActiveRecord
+class ContentAddon extends ActiveRecord
 {
 
     /**
@@ -179,11 +179,11 @@ class HActiveRecordContentAddon extends HActiveRecord
      *
      * @return boolean
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         // Auto follow the content which this addon belongs to
         $this->getContent()->getUnderlyingObject()->follow($this->created_by);
-        return parent::afterSave();
+        return parent::afterSave($insert, $changedAttributes);
     }
 
 }
