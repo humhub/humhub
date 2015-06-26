@@ -3,6 +3,8 @@
 namespace humhub\models;
 
 use Yii;
+use humhub\models\Setting;
+
 
 /**
  * This is the model class for table "url_oembed".
@@ -58,7 +60,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         if (UrlOembed::HasOEmbedSupport($url)) {
 
             // Lookup Cached OEmebed Item from Datbase
-            $urlOembed = UrlOembed::model()->findByPk($url);
+            $urlOembed = UrlOembed::findOne(['url'=>$url]);
             if ($urlOembed !== null) {
                 return $urlOembed->preview;
             } else {
@@ -82,7 +84,7 @@ class UrlOembed extends \yii\db\ActiveRecord
             $url = $match[0];
 
             // Already looked up?
-            if (UrlOembed::model()->findByPk($url) !== null) {
+            if (UrlOembed::findOne(['url'=>$url]) !== null) {
                 return;
             }
             UrlOembed::loadUrl($url);
@@ -106,7 +108,7 @@ class UrlOembed extends \yii\db\ActiveRecord
             // Build OEmbed Preview
             $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
             if ($jsonOut != "") {
-                $data = CJSON::decode($jsonOut);
+                $data = \yii\helpers\Json::decode($jsonOut);
                 if (isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
                     $html = "<div class='oembed_snippet'>" . $data['html'] . "</div>";
                 }
@@ -165,19 +167,19 @@ class UrlOembed extends \yii\db\ActiveRecord
         // Not available when open_basedir is set.
         @curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
-        if (HSetting::Get('enabled', 'proxy')) {
-            curl_setopt($curl, CURLOPT_PROXY, HSetting::Get('server', 'proxy'));
-            curl_setopt($curl, CURLOPT_PROXYPORT, HSetting::Get('port', 'proxy'));
+        if (Setting::Get('enabled', 'proxy')) {
+            curl_setopt($curl, CURLOPT_PROXY, Setting::Get('server', 'proxy'));
+            curl_setopt($curl, CURLOPT_PROXYPORT, Setting::Get('port', 'proxy'));
             curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
             curl_setopt($curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
             if (defined('CURLOPT_PROXYUSERNAME')) {
-                curl_setopt($curl, CURLOPT_PROXYUSERNAME, HSetting::Get('user', 'proxy'));
+                curl_setopt($curl, CURLOPT_PROXYUSERNAME, Setting::Get('user', 'proxy'));
             }
             if (defined('CURLOPT_PROXYPASSWORD')) {
-                curl_setopt($curl, CURLOPT_PROXYPASSWORD, HSetting::Get('pass', 'proxy'));
+                curl_setopt($curl, CURLOPT_PROXYPASSWORD, Setting::Get('pass', 'proxy'));
             }
             if (defined('CURLOPT_NOPROXY')) {
-                curl_setopt($curl, CURLOPT_NOPROXY, HSetting::Get('noproxy', 'proxy'));
+                curl_setopt($curl, CURLOPT_NOPROXY, Setting::Get('noproxy', 'proxy'));
             }
         }
         $return = curl_exec($curl);

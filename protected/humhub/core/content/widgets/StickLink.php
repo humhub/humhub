@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\content\widgets;
+
 /**
  * StickLinkWidget for Wall Entries shows a stick link.
  *
@@ -9,7 +11,7 @@
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class StickLinkWidget extends HWidget
+class StickLink extends \yii\base\Widget
 {
 
     /**

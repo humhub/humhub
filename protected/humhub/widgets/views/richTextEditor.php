@@ -1,6 +1,10 @@
 <?php
-$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.caret.min.js'));
-$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.atwho.min.js'));
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.caret.min.js'), ['position'=>\yii\web\View::POS_BEGIN]);
+$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.atwho.min.js'), ['position'=>\yii\web\View::POS_BEGIN]);
 $this->registerCssFile(Yii::getAlias('@web/resources/at/jquery.atwho.css'));
 ?>
 
@@ -32,7 +36,7 @@ $this->registerCssFile(Yii::getAlias('@web/resources/at/jquery.atwho.css'));
         $('#<?php echo $id; ?>_contenteditable').atwho({
             at: "@",
             data: ["Please type at least 3 characters"],
-            insert_tpl: "<a href='<?php echo Yii::app()->createAbsoluteUrl('user/profile'); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
+            insert_tpl: "<a href='<?php echo Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
             //tpl: "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
             tpl: "<li class='hint' data-value=''>${name}</li>",
             search_key: "name",
@@ -69,7 +73,7 @@ $this->registerCssFile(Yii::getAlias('@web/resources/at/jquery.atwho.css'));
                         this.setting.highlight_first = true;
                         this.setting.tpl = "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
                                 // load data
-                                $.getJSON("<?php echo Yii::app()->createAbsoluteUrl($userSearchUrl); ?>", {keyword: query}, function (data) {
+                                $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
                                     callback(data)
                                 });
 
@@ -78,8 +82,8 @@ $this->registerCssFile(Yii::getAlias('@web/resources/at/jquery.atwho.css'));
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img class='atwho-emoji' data-emoji-name=';${name};' src='<?php echo Yii::app()->baseUrl; ?>/img/emoji/${name}.png' />",
-            tpl: "<li data-value=';${name};'><img src='<?php echo Yii::app()->baseUrl; ?>/img/emoji/${name}.png' /> ${name}</li>",
+            insert_tpl: "<img class='atwho-emoji' data-emoji-name=';${name};' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.png'); ?>' />",
+            tpl: "<li data-value=';${name};'><img src='<?php echo Yii::getAlias('@web/img/emoji/${name}.png'); ?>' /> ${name}</li>",
             data: emojis_list,
             limit: 10
         });

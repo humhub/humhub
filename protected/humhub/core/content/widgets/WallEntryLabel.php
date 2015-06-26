@@ -1,4 +1,6 @@
 <?php
+namespace humhub\core\content\widgets;
+
 
 /**
  * Labels for Wall Entries

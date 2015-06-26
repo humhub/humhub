@@ -2,7 +2,9 @@
 
 namespace humhub\core\post\controllers;
 
+use Yii;
 use \humhub\core\post\models\Post;
+use yii\web\HttpException;
 
 /**
  * @package humhub.modules_core.post.controllers
@@ -48,34 +50,24 @@ class PostController extends \humhub\components\Controller
 
     public function actionEdit()
     {
-        $id = Yii::app()->request->getParam('id');
+        $id = Yii::$app->request->get('id');
 
         $edited = false;
-        $model = Post::model()->findByPk($id);
+        $model = Post::findOne(['id' => $id]);
 
-        if ($model->content->canWrite()) {
-
-            if (isset($_POST['Post'])) {
-                $_POST['Post'] = Yii::app()->input->stripClean($_POST['Post']);
-                $model->attributes = $_POST['Post'];
-                if ($model->validate()) {
-                    $model->save();
-
-                    // Reload record to get populated updated_at field
-                    $model = Post::model()->findByPk($id);
-
-                    // Return the new post
-                    $output = $this->widget('application.modules_core.post.widgets.PostWidget', array('post' => $model, 'justEdited' => true), true);
-                    Yii::app()->clientScript->render($output);
-                    echo $output;
-                    return;
-                }
-            }
-
-            $this->renderPartial('edit', array('post' => $model, 'edited' => $edited), false, true);
-        } else {
-            throw new CHttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
+        if (!$model->content->canWrite()) {
+            throw new HttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
         }
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
+            // Reload record to get populated updated_at field
+            $model = Post::findOne(['id' => $id]);
+
+            return $this->renderAjaxContent(\humhub\core\post\widgets\Wall::widget(['post' => $model, 'justEdited' => true]));
+        }
+
+        return $this->renderAjax('edit', array('post' => $model, 'edited' => $edited));
     }
 
 }

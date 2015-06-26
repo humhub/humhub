@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\content\widgets;
+
 /**
  * Wall Stream Widget creates a wall widget.
  * 
@@ -95,7 +97,7 @@ class WallStreamWidget extends HWidget
         if (get_class($this) != 'WallStreamWidget') {
             $view = 'stream';
         }
-        
+
         // Render It
         $this->render($view, array(
             'type' => $this->type,

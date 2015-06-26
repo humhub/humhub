@@ -57,7 +57,6 @@ $container = $object->content->container;
 
                         <?php echo \humhub\core\content\widgets\WallEntryLabels::widget(['object' => $object]); ?>
 
-
                     </small>
                 </h4>
                 <h5><?php echo Html::encode($user->profile->title); ?></h5>

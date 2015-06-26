@@ -25,6 +25,11 @@ class Controller extends \yii\web\Controller
         parent::init();
     }
 
+    public function renderAjaxContent($content)
+    {
+        return $this->getView()->renderAjaxContent($content, $this);
+    }
+
     public function forcePostRequest()
     {
         if (\Yii::$app->request->method != 'POST') {

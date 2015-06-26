@@ -1,22 +1,15 @@
 <?php
-/**
- * This view shows the archive link for wall entries.
- * Its used by ArchiveLinkWidget.
- *
- * @property Object $object the content object (e.g. Post)
- * @property String $model the model name (e.g. Post)
- * @property String $id the primary key of the model (e.g. 1)
- *
- * @package humhub.modules_core.wall
- * @since 0.5
- */
+/* @var $this humhub\components\View */
+
+$this->registerJsVar('wallArchiveLinkUrl', Url::to(['/content/content/archive', 'className' => '-className-', 'id' => '-id-']));
+$this->registerJsVar('wallUnarchiveLinkUrl', Url::to(['/content/content/unarchive', 'className' => '-className-', 'id' => '-id-']));
 ?>
 <li>
-    <?php if ($object->content->isArchived()): ?>
+<?php if ($object->content->isArchived()): ?>
         <a href="#" onClick="wallUnarchive('<?php echo $model; ?>', '<?php echo $id; ?>');
-                    return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Unarchive'); ?></a>
+                    return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('ContentModule.widgets_views_archiveLink', 'Unarchive'); ?></a>
        <?php else: ?>
         <a href="#" onClick="wallArchive('<?php echo $model; ?>', '<?php echo $id; ?>');
-                    return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('WallModule.widgets_views_archiveLink', 'Move to archive'); ?></a>
-    <?php endif; ?>
+                    return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('ContentModule.widgets_views_archiveLink', 'Move to archive'); ?></a>
+       <?php endif; ?>
 </li>

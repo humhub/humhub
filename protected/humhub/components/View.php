@@ -22,4 +22,20 @@ class View extends \yii\web\View
         $this->registerJs($jsCode, View::POS_HEAD, $name);
     }
 
+    public function renderAjaxContent($content, $context = null)
+    {
+
+        ob_start();
+        ob_implicit_flush(false);
+
+        $this->beginPage();
+        $this->head();
+        $this->beginBody();
+        echo $content;
+        $this->endBody();
+        $this->endPage(true);
+
+        return ob_get_clean();
+    }
+
 }

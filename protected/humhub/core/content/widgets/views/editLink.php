@@ -1,20 +1,22 @@
 <?php
-/**
- * This view shows the edit link for wall entries.
- * Its used by EditLinkWidget.
- *
- * @property string $id the primary key of the model (e.g. 1)
- * @property string $editRoute the route to the edit action
- * @property HActiveRecordContent $object the record which belongs the edit link to
- *
- * @package humhub.modules_core.wall.widgets
- * @since 0.10
- */
+
+use Yii;
+use yii\helpers\Url;
+use yii\web\JsExpression;
+
+/* @var $this humhub\components\View */
 ?>
 <li>
     <?php
-    echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> ' . Yii::t('WallModule.widgets_views_editLink', 'Edit'), Yii::app()->createUrl($editRoute, array('id' => $id)), array(
-        'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#wall_content_" . $object->getUniqueId() . "').replaceWith(html); }"
-    ));
+    echo \humhub\compat\widgets\AjaxButton::widget([
+        'label' => '<i class="fa fa-pencil"></i> ' . Yii::t('ContentModule.widgets_views_editLink', 'Edit'),
+        'tag' => 'a',
+        'ajaxOptions' => [
+            'type' => 'POST',
+            'success' => new JsExpression('function(html){ $(".preferences .dropdown").removeClass("open"); $("#wall_content_' . $content->getUniqueId() . '").replaceWith(html); }'),
+            'url' => Url::to([$editRoute, 'id' => $id]),
+        ],
+        'htmlOptions' => []
+    ]);
     ?>
 </li>

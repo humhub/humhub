@@ -1,48 +1,59 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use yii\helpers\Url;
+?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
-    <?php
-    $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'post-edit-form',
-        'enableAjaxValidation' => false,
-    ));
-    ?>
+    <?php $form = CActiveForm::begin(['id' => 'post-edit-form']); ?>
+
     <?php echo $form->textArea($post, 'message', array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
 
     <!-- create contenteditable div for HEditorWidget to place the data -->
-    <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input" contenteditable="true"><?php echo HHtml::enrichText($post->message); ?></div>
+    <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input" contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message]); ?></div>
 
-    <?php
-    /* Modify textarea for mention input */
-    $this->widget('application.widgets.HEditorWidget', array(
-        'id' => 'post_input_' . $post->id,
-        'inputContent' => $post->message,
-    ));
-    ?>
+    <?= \humhub\widgets\RichTextEditor::widget(['id'=>'post_input_' . $post->id, 'inputContent'=>$post->message]); ?>
 
     <?php
     // Creates Uploading Button
-    $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-        'uploaderId' => 'post_upload_' . $post->id,
-        'object' => $post
-    ));
+    /*
+      $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
+      'uploaderId' => 'post_upload_' . $post->id,
+      'object' => $post
+      ));
+     * 
+     */
     ?>    
 
 
     <?php
-    echo HHtml::ajaxButton('Save', array('//post/post/edit', 'id' => $post->id), array(
-        'type' => 'POST',
-        'success' => 'function(html){ $("#post-' . $post->id . '").replaceWith(html); }',
-            ), array('class' => 'btn btn-primary', 'id' => 'post_edit_post_' . $post->id, 'style' => 'position: absolute; left: -90000000px; opacity: 0;'));
+    echo \humhub\compat\widgets\AjaxButton::widget([
+        'label' => 'Save',
+        'ajaxOptions' => [
+            'type' => 'POST',
+            'success' => new yii\web\JsExpression('function(html){ $(".wall_' . $post->getUniqueId() . '").replaceWith(html); }'),
+            'url' => Url::to(['/post/post/edit', 'id' => $post->id]),
+        ],
+        'htmlOptions' => [
+            'class' => 'btn btn-primary',
+            'id' => 'post_edit_post_' . $post->id,
+            'style' => 'position: absolute; left: -90000000px; opacity: 0;'
+        ]
+    ]);
     ?>
 
     <?php
-    // Creates a list of already uploaded Files
-    $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
-        'uploaderId' => 'post_upload_' . $post->id,
-        'object' => $post
-    ));
+    /*
+      // Creates a list of already uploaded Files
+      $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
+      'uploaderId' => 'post_upload_' . $post->id,
+      'object' => $post
+      ));
+     * 
+     */
     ?>       
 
-    <?php $this->endWidget(); ?>
+    <?php CActiveForm::end(); ?>
 </div>
 
 <script type="text/javascript">
@@ -57,7 +68,7 @@
     $('#post_input_<?php echo $post->id; ?>_contenteditable').attr('data-submit', 'true');
 
     // Fire click event for post button by typing enter
-    $("#post_input_<?php echo $post->id; ?>_contenteditable").keydown(function(event) {
+    $("#post_input_<?php echo $post->id; ?>_contenteditable").keydown(function (event) {
 
 
         // by pressing enter without shift
@@ -85,12 +96,12 @@
 
     });
 
-    $('#post_input_<?php echo $post->id; ?>_contenteditable').on("shown.atwho", function(event, flag, query) {
+    $('#post_input_<?php echo $post->id; ?>_contenteditable').on("shown.atwho", function (event, flag, query) {
         // prevent the submit event, by changing the attribute
         $('#post_input_<?php echo $post->id; ?>_contenteditable').attr('data-submit', 'false');
     });
 
-    $('#post_input_<?php echo $post->id; ?>_contenteditable').on("hidden.atwho", function(event, flag, query) {
+    $('#post_input_<?php echo $post->id; ?>_contenteditable').on("hidden.atwho", function (event, flag, query) {
 
         var interval = setInterval(changeSubmitState, 10);
 

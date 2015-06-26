@@ -29,7 +29,7 @@ use yii\helpers\Html;
  * @since 0.5
  * @author Andreas Strobel
  */
-class HEditor extends \yii\base\Widget
+class RichTextEditor extends \yii\base\Widget
 {
 
     /**
@@ -42,7 +42,7 @@ class HEditor extends \yii\base\Widget
     /**
      * JSON Search URL
      */
-    public $searchUrl = "//search/search/mentioning";
+    public $searchUrl = "/search/search/mentioning";
     public $inputContent = "";
 
     /**
@@ -51,16 +51,14 @@ class HEditor extends \yii\base\Widget
      */
     public function init()
     {
-        $this->inputContent = Html::translateEmojis($this->inputContent);
-        $this->inputContent = Html::translateMentioning($this->inputContent);
+        //$this->inputContent = RichText::translateEmojis($this->inputContent);
+        //$this->inputContent = RichText::translateMentioning($this->inputContent);
         $this->inputContent = nl2br($this->inputContent);
     }
 
     public function run()
     {
-
-        // render heditor view
-        $this->render('heditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
+        return $this->render('richTextEditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
     }
 
 }

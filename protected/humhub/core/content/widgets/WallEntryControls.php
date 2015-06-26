@@ -2,7 +2,7 @@
 
 namespace humhub\core\content\widgets;
 
-class WallEntryControls extends \yii\base\Widget
+class WallEntryControls extends \humhub\widgets\BaseStack
 {
 
     public $object;

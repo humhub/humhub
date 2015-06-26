@@ -19,6 +19,8 @@ use Yii;
 class Post extends \humhub\core\content\components\activerecords\Content
 {
 
+    public $wallEditRoute = '//post/post/edit';
+
     /**
      * @inheritdoc
      */
@@ -41,7 +43,6 @@ class Post extends \humhub\core\content\components\activerecords\Content
         ];
     }
 
-    
     /**
      * Before Save Addons
      *
@@ -66,8 +67,7 @@ class Post extends \humhub\core\content\components\activerecords\Content
 
         return true;
     }
-    
-    
+
     /**
      * @inheritdoc
      */

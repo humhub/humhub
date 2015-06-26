@@ -1,4 +1,6 @@
 <?php
+namespace humhub\core\content\widgets;
+
 
 /**
  * WallEntryLinksWidget is an instance of StackWidget.

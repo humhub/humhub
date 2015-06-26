@@ -69,7 +69,7 @@ class PermaController extends Controller
             }
         }
 
-        throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Could not find requested permalink!'));
+        throw new CHttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested permalink!'));
     }
 
     /**
@@ -82,14 +82,14 @@ class PermaController extends Controller
 
         // Check given model
         if (!Helpers::CheckClassType($model, array('HActiveRecordContent', 'HActiveRecordContentAddon'))) {
-            throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Invalid model given!'));
+            throw new CHttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Invalid model given!'));
         }
 
         $model = call_user_func(array($model, 'model'));
         $object = $model->findByPk($id);
 
         if ($object == null) {
-            throw new CHttpException(404, Yii::t('WallModule.controllers_PermaController', 'Could not find requested content!'));
+            throw new CHttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
         }
 
         $this->redirect($object->content->getUrl());

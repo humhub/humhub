@@ -26,6 +26,7 @@ class AjaxButton extends Widget
     public $ajaxOptions = array();
     public $htmlOptions = array();
     public $label = "Unnamed";
+    public $tag = 'button';
 
     public function init()
     {
@@ -56,7 +57,7 @@ class AjaxButton extends Widget
 
     public function run()
     {
-        echo Html::tag('button', $this->label, $this->htmlOptions);
+        echo Html::tag($this->tag, $this->label, $this->htmlOptions);
 
         $this->view->registerJs("$('#{$this->htmlOptions['id']}').click(function() {
                 $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ");
