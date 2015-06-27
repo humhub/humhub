@@ -27,7 +27,7 @@ use humhub\models\Setting;
  * @property string $last_login
  * @property integer $visibility
  */
-class User extends \humhub\core\content\components\activerecords\ContentContainer implements \yii\web\IdentityInterface
+class User extends \humhub\core\content\components\activerecords\ContentContainer implements \yii\web\IdentityInterface, \humhub\core\search\interfaces\Searchable
 {
 
     /**
@@ -247,52 +247,52 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
             }
         }
 
-        \humhub\core\user\models\Setting::deleteAll(['user_id'=>$this->id]);
+        \humhub\core\user\models\Setting::deleteAll(['user_id' => $this->id]);
 
         // Disable all enabled modules
         /*
-        foreach ($this->getAvailableModules() as $moduleId => $module) {
-            if ($this->isModuleEnabled($moduleId)) {
-                $this->disableModule($moduleId);
-            }
-        }
-        Yii::app()->search->delete($this);
-        
+          foreach ($this->getAvailableModules() as $moduleId => $module) {
+          if ($this->isModuleEnabled($moduleId)) {
+          $this->disableModule($moduleId);
+          }
+          }
+          Yii::app()->search->delete($this);
 
-        // Delete user session
-        UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
-        // Delete Profile Image
-        $this->getProfileImage()->delete();
+          // Delete user session
+          UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
-        // Delete all pending invites
-        UserInvite::model()->deleteAllByAttributes(array('user_originator_id' => $this->id));
+          // Delete Profile Image
+          $this->getProfileImage()->delete();
 
-        UserFollow::model()->deleteAllByAttributes(array('user_id' => $this->id));
-        UserFollow::model()->deleteAllByAttributes(array('object_model' => 'User', 'object_id' => $this->id));
+          // Delete all pending invites
+          UserInvite::model()->deleteAllByAttributes(array('user_originator_id' => $this->id));
 
-        // Delete all group admin assignments
-        GroupAdmin::model()->deleteAllByAttributes(array('user_id' => $this->id));
+          UserFollow::model()->deleteAllByAttributes(array('user_id' => $this->id));
+          UserFollow::model()->deleteAllByAttributes(array('object_model' => 'User', 'object_id' => $this->id));
 
-        // Delete wall entries
-        WallEntry::model()->deleteAllByAttributes(array('wall_id' => $this->wall_id));
+          // Delete all group admin assignments
+          GroupAdmin::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
-        // Delete user profile
-        Profile::model()->deleteAllByAttributes(array('user_id' => $this->id));
+          // Delete wall entries
+          WallEntry::model()->deleteAllByAttributes(array('wall_id' => $this->wall_id));
 
-        // Deletes all content created by this user
-        foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
-            $content->delete();
-        }
-        foreach (Content::model()->findAllByAttributes(array('created_by' => $this->id)) as $content) {
-            $content->delete();
-        }
+          // Delete user profile
+          Profile::model()->deleteAllByAttributes(array('user_id' => $this->id));
 
-        // Delete all passwords
-        foreach (UserPassword::model()->findAllByAttributes(array('user_id' => $this->id)) as $password) {
-            $password->delete();
-        }
-        */
+          // Deletes all content created by this user
+          foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
+          $content->delete();
+          }
+          foreach (Content::model()->findAllByAttributes(array('created_by' => $this->id)) as $content) {
+          $content->delete();
+          }
+
+          // Delete all passwords
+          foreach (UserPassword::model()->findAllByAttributes(array('user_id' => $this->id)) as $password) {
+          $password->delete();
+          }
+         */
 
         return parent::beforeDelete();
     }
@@ -404,7 +404,7 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
         $wall->save();
 
         $this->wall_id = $wall->id;
-        
+
         $this->update(false, ['wall_id']);
     }
 
@@ -489,7 +489,7 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
 
     public function getWallOut()
     {
-        return Yii::app()->getController()->widget('application.modules_core.user.widgets.UserWallWidget', array('user' => $this), true);
+        return \humhub\core\user\widgets\UserWall::widget(['user' => $this]);
     }
 
     /**
@@ -536,10 +536,8 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
             'title' => $this->profile->title,
         );
 
-        $profile = $this->getProfile();
-
-        if (!$profile->isNewRecord) {
-            foreach ($profile->getProfileFields() as $profileField) {
+        if (!$this->profile->isNewRecord) {
+            foreach ($this->profile->getProfileFields() as $profileField) {
                 $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
             }
         }

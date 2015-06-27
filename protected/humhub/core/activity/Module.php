@@ -12,19 +12,6 @@ namespace humhub\core\activity;
 class Module extends \yii\base\Module
 {
 
-    public $isCoreModule = true;
-
-    /**
-     * Inits the activity module
-     */
-    public function init()
-    {
-        $this->setImport(array(
-            'activity.models.*',
-            'activity.behaviors.*',
-        ));
-    }
-
     /**
      * Formatted the activity content before delivery
      *

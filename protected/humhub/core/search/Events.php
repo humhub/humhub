@@ -6,17 +6,19 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\search;
+
 /**
  * Description of SearchModuleEvents
  *
  * @author luke
  */
-class SearchModuleEvents
+class Events extends \yii\base\Object
 {
 
     public static function onTopMenuRightInit($event)
     {
-        $event->sender->addWidget('application.modules_core.search.widgets.SearchMenuWidget');
+        $event->sender->addWidget(widgets\SearchMenu::className());
     }
 
     public static function onAfterSaveComment($event)
@@ -26,6 +28,13 @@ class SearchModuleEvents
         if ($comment->content->getUnderlyingObject() instanceof ISearchable) {
             Yii::app()->search->update($comment->content->getUnderlyingObject());
         }
+    }
+
+    public static function onConsoleApplicationInit($event)
+    {
+
+        $application = $event->sender;
+        $application->controllerMap['search'] = commands\SearchController::className();
     }
 
 }

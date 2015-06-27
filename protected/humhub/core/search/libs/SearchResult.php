@@ -6,6 +6,8 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\search\libs;
+
 /**
  * Description of SearchResult
  *

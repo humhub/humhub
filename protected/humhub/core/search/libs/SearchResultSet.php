@@ -6,6 +6,8 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\search\libs;
+
 /**
  * Description of SearchResult
  *
@@ -25,13 +27,11 @@ class SearchResultSet
 
         foreach ($this->results as $result) {
             $modelClass = $result->model;
-            $model = call_user_func(array($modelClass, 'model'));
-
-            $instance = $model->findByPk($result->pk);
+            $instance = $modelClass::findOne(['id' => $result->pk]);
             if ($instance !== null) {
                 $instances[] = $instance;
             } else {
-                Yii::log('Could not load search result ' . $result->model . " - " . $result->pk, CLogger::LEVEL_ERROR);
+                \Yii::error('Could not load search result ' . $result->model . " - " . $result->pk);
             }
         }
 

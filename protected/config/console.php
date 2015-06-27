@@ -29,9 +29,12 @@ return [
                 ],
             ],
         ],
+        'search' => array(
+            'class' => 'humhub\core\search\engine\ZendLuceneSearch',
+        ),
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
-        ],        
+        ],
         'db' => $db,
     ],
     'params' => $params,

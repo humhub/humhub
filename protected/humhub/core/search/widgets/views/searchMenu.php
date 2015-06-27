@@ -1,5 +1,11 @@
+<?php
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+?>
+
 <li class="dropdown">
-    <a href="<?php echo $this->createUrl('//search/search/index', array('limitSpaceGuids' => Yii::app()->request->getParam('sguid'))); ?>" id="search-menu" class="dropdown-toggle" >
+    <a href="<?php echo Url::to(['/search/search/index', 'limitSpaceGuids' => Yii::$app->request->get('sguid')]); ?>" id="search-menu" class="dropdown-toggle" >
         <i class="fa fa-search"></i></a>
 </li>
 <!--<li class="dropdown">

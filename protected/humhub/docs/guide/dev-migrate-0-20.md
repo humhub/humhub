@@ -11,15 +11,23 @@
 - CronJobs
 - Tests
 - HSetting -> Add Caching & Co -> E-Mailing (New Test Setting)
-- Space Header
 - Directory
 - Comments / Like
 - Files
-- Edit Posts
 - Enricher Text
 - Markdown Editor
 - Handling Old Module Loading Fails
-- Check CSRF Proteceted
+- Check CSRF Protection
+- Update Docs
+- Change licence class header 
+- Add Var Types to View Files
+- 
+
+
+## Bugs
+
+- Log Table not created on Installation
+
 
 ## Core Changes
 

@@ -6,24 +6,28 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\search\engine;
+
+use humhub\core\search\interfaces\Searchable;
+use humhub\core\content\models\Content;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Space;
+use humhub\models\Setting;
+
 /**
  * Description of HSearchComponent
  *
  * @since 0.12
  * @author luke
  */
-abstract class HSearchComponent extends CApplicationComponent
+abstract class Search extends \yii\base\Component
 {
 
+    const EVENT_ON_REBUILD = 'onRebuild';
     const DOCUMENT_TYPE_USER = 'user';
     const DOCUMENT_TYPE_SPACE = 'space';
     const DOCUMENT_TYPE_CONTENT = 'content';
     const DOCUMENT_TYPE_OTHER = 'other';
-
-    public function __construct()
-    {
-        Yii::app()->interceptor->intercept($this);
-    }
 
     /**
      * Retrieves results from search
@@ -50,9 +54,9 @@ abstract class HSearchComponent extends CApplicationComponent
     /**
      * Stores an object in search.
      * 
-     * @param ISearchable $object
+     * @param Searchable $object
      */
-    public function add(ISearchable $object)
+    public function add(Searchable $object)
     {
         
     }
@@ -60,9 +64,9 @@ abstract class HSearchComponent extends CApplicationComponent
     /**
      * Updates an object in search index.
      * 
-     * @param ISearchable $object
+     * @param Searchable $object
      */
-    public function update(ISearchable $object)
+    public function update(Searchable $object)
     {
         
     }
@@ -70,9 +74,9 @@ abstract class HSearchComponent extends CApplicationComponent
     /**
      * Deletes an object in search.
      * 
-     * @param ISearchable $object
+     * @param Searchable $object
      */
-    public function delete(ISearchable $object)
+    public function delete(Searchable $object)
     {
         
     }
@@ -80,7 +84,7 @@ abstract class HSearchComponent extends CApplicationComponent
     /**
      * Deletes all objects from search index.
      * 
-     * @param ISearchable $object
+     * @param Searchable $object
      */
     public function flush()
     {
@@ -93,9 +97,7 @@ abstract class HSearchComponent extends CApplicationComponent
     public function rebuild()
     {
         $this->flush();
-        if ($this->hasEventHandler('onRebuild'))
-            $this->onRebuild(new CEvent($this));
-
+        $this->trigger(self::EVENT_ON_REBUILD);
         $this->optimize();
     }
 
@@ -107,16 +109,7 @@ abstract class HSearchComponent extends CApplicationComponent
         
     }
 
-    /**
-     * This event is raised after the rebuild is performed.
-     * @param CEvent $event the event parameter
-     */
-    public function onRebuild($event)
-    {
-        $this->raiseEvent('onRebuild', $event);
-    }
-
-    protected function getMetaInfoArray(ISearchable $obj)
+    protected function getMetaInfoArray(Searchable $obj)
     {
         $meta = array();
         $meta['type'] = $this->getDocumentType($obj);
@@ -125,7 +118,7 @@ abstract class HSearchComponent extends CApplicationComponent
 
         // Add content related meta data
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {
-            $meta['containerModel'] = get_class($obj->content->container);
+            $meta['containerModel'] = $obj->content->container->className();
             $meta['containerPk'] = $obj->content->container->id;
             $meta['visibility'] = $obj->content->visibility;
         } else {
@@ -135,13 +128,13 @@ abstract class HSearchComponent extends CApplicationComponent
         return $meta;
     }
 
-    protected function getDocumentType(ISearchable $obj)
+    protected function getDocumentType(Searchable $obj)
     {
         if ($obj instanceof Space) {
             return self::DOCUMENT_TYPE_SPACE;
         } elseif ($obj instanceof User) {
             return self::DOCUMENT_TYPE_USER;
-        } elseif ($obj instanceof HActiveRecordContent) {
+        } elseif ($obj instanceof \humhub\core\content\components\activerecords\Content) {
             return self::DOCUMENT_TYPE_CONTENT;
         } else {
             return self::DOCUMENT_TYPE_OTHER;
@@ -154,7 +147,7 @@ abstract class HSearchComponent extends CApplicationComponent
             $options['page'] = 1;
 
         if (!isset($options['pageSize']) || $options['pageSize'] == "")
-            $options['pageSize'] = HSetting::Get('paginationSize');
+            $options['pageSize'] = Setting::Get('paginationSize');
 
         if (!isset($options['checkPermissions'])) {
             $options['checkPermissions'] = true;

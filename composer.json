@@ -19,8 +19,10 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "raoul2000/yii2-jcrop-widget": "*",
+        "cebe/markdown": "1.0.2",
         "yiisoft/yii2-jui": "^2.0",
-        "zendframework/zend-http": "*"
+        "zendframework/zend-http": "*",
+        "nqxcode/zendsearch": "^2.0"
     },
     "suggest": {
         "zendframework/zend-ldap": "LDAP authentication"
@@ -29,7 +31,8 @@
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-faker": "*",
+        "yiisoft/yii2-apidoc": "^2.0"
     },
     "config": {
         "process-timeout": 1800,

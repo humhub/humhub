@@ -6,6 +6,8 @@
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\core\search\interfaces;
+
 /**
  * Interface for Searchable Models
  *
@@ -13,7 +15,7 @@
  * @since 0.5
  * @author Luke
  */
-interface ISearchable
+interface Searchable
 {
 
     public function getSearchAttributes();

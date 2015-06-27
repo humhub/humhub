@@ -17,6 +17,20 @@ class Application extends \yii\console\Application
 {
 
     /**
+     * @event ActionEvent an event raised on init of application.
+     */
+    const EVENT_ON_INIT = 'onInit';
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->trigger(self::EVENT_ON_INIT);
+    }
+    
+    /**
      * Returns the configuration of the built-in commands.
      * @return array the configuration of the built-in commands.
      */

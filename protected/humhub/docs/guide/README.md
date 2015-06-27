@@ -43,6 +43,7 @@ Development - Modules
 * [Notifications](dev-module-notifications.md)
 * [Search](dev-module-search.md)
 * [CronJobs](dev-module-cron.md)
+* [Console](dev-module-console.md)
 * [Special Topics](dev-module-special-topics.md)
 
 Theming

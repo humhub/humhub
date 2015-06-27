@@ -8,6 +8,9 @@
 
 namespace humhub\core\space;
 
+use Yii;
+use humhub\core\space\models\Space;
+
 /**
  * Description of Events
  *
@@ -23,9 +26,9 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (Space::model()->findAll() as $obj) {
+        foreach (Space::find()->all() as $obj) {
             if ($obj->visibility != Space::VISIBILITY_NONE) {
-                Yii::app()->search->add($obj);
+                Yii::$app->search->add($obj);
             }
         }
     }

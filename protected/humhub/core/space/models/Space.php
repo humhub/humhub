@@ -26,7 +26,7 @@ use humhub\core\activity\models\Activity;
  * @property string $ldap_dn
  * @property integer $auto_add_new_members
  */
-class Space extends \humhub\core\content\components\activerecords\ContentContainer
+class Space extends \humhub\core\content\components\activerecords\ContentContainer implements \humhub\core\search\interfaces\Searchable
 {
 
     // Join Policies
