@@ -13,6 +13,8 @@
  */
 use yii\helpers\Html;
 use humhub\core\space\models\Space;
+
+$this->registerJsFile('@web/resources/space/spacepicker.js', ['position'=>\yii\web\View::POS_END]);
 ?>
 
 <?php
@@ -31,12 +33,14 @@ foreach (explode(",", $currentValue) as $guid) {
 
 
 <script type="text/javascript">
-
-    $('#<?php echo $inputId; ?>').spacepicker({
-        inputId: '#<?php echo $inputId; ?>',
-        maxSpaces: '<?php echo $maxSpaces; ?>',
-        searchUrl: '<?php echo $spaceSearchUrl; ?>',
-        currentValue: '<?php echo $newValue; ?>'
+    
+    $(function() {
+        $('#<?php echo $inputId; ?>').spacepicker({
+            inputId: '#<?php echo $inputId; ?>',
+            maxSpaces: '<?php echo $maxSpaces; ?>',
+            searchUrl: '<?php echo $spaceSearchUrl; ?>',
+            currentValue: '<?php echo $newValue; ?>'
+        });
     });
 
 </script>

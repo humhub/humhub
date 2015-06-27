@@ -9,6 +9,7 @@
 namespace humhub\compat;
 
 use \humhub\compat\CHtml;
+use yii\helpers\Html;
 
 /**
  * CActiveForm is a Yii1 compatible active form
@@ -46,6 +47,24 @@ class CActiveForm extends \yii\widgets\ActiveForm
     public function dropDownList($model, $attribute, $data, $htmlOptions = array())
     {
         return CHtml::activeDropDownList($model, $attribute, $data, $htmlOptions);
+    }
+
+    public function radioButton($model, $attribute, $options = array())
+    {
+        $name = isset($options['name']) ? $options['name'] : CHtml::getInputName($model, $attribute);
+        $value = CHtml::getAttributeValue($model, $attribute);
+
+        if (!array_key_exists('value', $options)) {
+            $options['value'] = '1';
+        }
+
+        $checked = "$value" === "{$options['value']}";
+
+        if (!array_key_exists('id', $options)) {
+            $options['id'] = CHtml::getInputId($model, $attribute);
+        }
+
+        return CHtml::radio($name, $checked, $options);
     }
 
     public function textField($model, $attribute, $htmlOptions = array())

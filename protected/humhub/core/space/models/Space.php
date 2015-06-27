@@ -79,6 +79,9 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
         if (Yii::$app->user->isAdmin()) {
             $scenarios['edit'][] = 'ldap_dn';
         }
+
+        $scenarios['create'] = ['name', 'description', 'join_policy', 'visibility'];
+
         return $scenarios;
     }
 
@@ -124,9 +127,9 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
     {
 
         if ($this->status != self::VISIBILITY_NONE) {
-            #Yii::$app->search->update($this);
+            Yii::$app->search->update($this);
         } else {
-            #Yii::$app->search->delete($this);
+            Yii::$app->search->delete($this);
         }
 
         $userId = $this->created_by;

@@ -31,7 +31,7 @@ use \yii\base\Widget;
  * @since 0.5
  * @author Luke
  */
-class SpacePickerWidget extends Widget
+class SpacePicker extends Widget
 {
 
     /**
@@ -77,17 +77,6 @@ class SpacePickerWidget extends Widget
     public $value = "";
 
     /**
-     * Inits the User Picker
-     *
-     */
-    public function init()
-    {
-
-        //$assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        //Yii::app()->clientScript->registerScriptFile($assetPrefix . '/spacepicker.js');
-    }
-
-    /**
      * Displays / Run the Widgets
      */
     public function run()
@@ -97,16 +86,16 @@ class SpacePickerWidget extends Widget
             $attribute = $this->attribute;
             $this->value = $this->model->$attribute;
         }
-        
-        if ($this->spaceSearchUrl == "")
-            $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/searchJson', ['keyword'=>'-keywordPlaceholder-']]);
 
-        
+        if ($this->spaceSearchUrl == "")
+            $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/search-json', ['keyword' => '-keywordPlaceholder-']]);
+
+
         return $this->render('spacePicker', array(
-            'spaceSearchUrl' => $this->spaceSearchUrl,
-            'maxSpaces' => $this->maxSpaces,
-            'currentValue' => $this->value,
-            'inputId' => $this->inputId,
+                    'spaceSearchUrl' => $this->spaceSearchUrl,
+                    'maxSpaces' => $this->maxSpaces,
+                    'currentValue' => $this->value,
+                    'inputId' => $this->inputId,
         ));
     }
 

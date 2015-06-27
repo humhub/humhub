@@ -1,11 +1,13 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
+use yii\helpers\Url;
+use humhub\models\Setting;
+?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'space-create-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
@@ -46,22 +48,22 @@
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can be only added<br>by invitation'); ?>">
-                                <?php echo $form->radioButton($model, 'join_policy', array('value' => 0, 'uncheckValue' => null, 'id' => 'invite_radio', 'checked' => (HSetting::Get('defaultJoinPolicy', 'space') == 0) ? 'checked' : '')); ?>
-                                <?php echo Yii::t('SpaceModule.base', 'Only by invite'); ?>
+                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 0, 'id' => 'invite_radio')); ?>
+                                       <?php echo Yii::t('SpaceModule.base', 'Only by invite'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can also apply for a<br>membership to this space'); ?>">
-                                <?php echo $form->radioButton($model, 'join_policy', array('value' => 1, 'uncheckValue' => null, 'id' => 'request_radio', 'checked' => (HSetting::Get('defaultJoinPolicy', 'space') == 1) ? 'checked' : '')); ?>
-                                <?php echo Yii::t('SpaceModule.base', ' Invite and request'); ?>
+                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 1, 'id' => 'request_radio')); ?>
+                                       <?php echo Yii::t('SpaceModule.base', ' Invite and request'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="tt" data-toggle="tooltip" data-placement="top"
                                    title="<?php echo Yii::t('SpaceModule.views_create_create', 'Every user can enter your space<br>without your approval'); ?>">
-                                <?php echo $form->radioButton($model, 'join_policy', array('value' => 2, 'uncheckValue' => null, 'id' => 'everyone_radio', 'checked' => (HSetting::Get('defaultJoinPolicy', 'space') == 2) ? 'checked' : '')); ?>
-                                <?php echo Yii::t('SpaceModule.base', 'Everyone can enter'); ?>
+                                       <?php echo $form->radioButton($model, 'join_policy', array('value' => 2, 'id' => 'everyone_radio')); ?>
+                                       <?php echo Yii::t('SpaceModule.base', 'Everyone can enter'); ?>
                             </label>
                         </div>
                         <br/>
@@ -69,12 +71,11 @@
                     <div class="col-md-6">
                         <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></label>
 
-                        <?php if (Yii::app()->user->canCreatePublicSpace() && Yii::app()->user->canCreatePrivateSpace()): ?>
-
-                            <?php if (HSetting::Get('allowGuestAccess', 'authentication_internal')) : ?>
+                        <?php if (Yii::$app->user->getIdentity()->canCreatePublicSpace() && Yii::$app->user->getIdentity()->canCreatePrivateSpace()): ?>
+                            <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')) : ?>
                                 <div class="radio">
                                     <label class="tt" data-toggle="tooltip" data-placement="top">
-                                        <?php echo $form->radioButton($model, 'visibility', array('value' => 2, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 2) ? 'checked' : '')); ?>
+                                        <?php echo $form->radioButton($model, 'visibility', array('value' => 2, 'id' => 'public_radio')); ?>
                                         <?php echo Yii::t('SpaceModule.base', 'Public (Members & Guests)'); ?>
                                     </label>
                                 </div>
@@ -83,23 +84,23 @@
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'Also non-members can see this<br>space, but have no access'); ?>">
-                                    <?php echo $form->radioButton($model, 'visibility', array('value' => 1, 'uncheckValue' => null, 'id' => 'public_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 1) ? 'checked' : '')); ?>
-                                    <?php echo Yii::t('SpaceModule.base', 'Public (Members only)'); ?>
+                                           <?php echo $form->radioButton($model, 'visibility', array('value' => 1, 'id' => 'public_radio')); ?>
+                                           <?php echo Yii::t('SpaceModule.base', 'Public (Members only)'); ?>
                                 </label>
                             </div>
                             <div class="radio">
                                 <label class="tt" data-toggle="tooltip" data-placement="top"
                                        title="<?php echo Yii::t('SpaceModule.views_create_create', 'This space will be hidden<br>for all non-members'); ?>">
-                                    <?php echo $form->radioButton($model, 'visibility', array('value' => 0, 'uncheckValue' => null, 'id' => 'private_radio', 'checked' => (HSetting::Get('defaultVisibility', 'space') == 0) ? 'checked' : '')); ?>
-                                    <?php echo Yii::t('SpaceModule.base', 'Private (Invisible)'); ?>
+                                           <?php echo $form->radioButton($model, 'visibility', array('value' => 0, 'uncheckValue' => null, 'id' => 'private_radio')); ?>
+                                           <?php echo Yii::t('SpaceModule.base', 'Private (Invisible)'); ?>
                                 </label>
                             </div>
-                        <?php elseif (Yii::app()->user->canCreatePublicSpace()): ?>
+                        <?php elseif (Yii::$app->user->getIdentity()->canCreatePublicSpace()): ?>
                             <div>
                                 <?php echo Yii::t('SpaceModule.views_create_create', 'Public (Visible)'); ?>
                             </div>
-                        <?php
-                        elseif (Yii::app()->user->canCreatePrivateSpace()): ?>
+                        <?php elseif (Yii::$app->user->getIdentity()->canCreatePrivateSpace()):
+                            ?>
                             <div>
                                 <?php echo Yii::t('SpaceModule.views_create_create', 'Private (Invisible)'); ?>
                             </div>
@@ -113,11 +114,19 @@
             <hr/>
             <br/>
             <?php
-            echo HHtml::ajaxButton(Yii::t('SpaceModule.views_create_create', 'Create'), array('//space/create/create'), array(
-                'type' => 'POST',
-                'beforeSend' => 'function(){ setModalLoader(); }',
-                'success' => 'function(html){ $("#globalModal").html(html); }',
-            ), array('class' => 'btn btn-primary', 'id' => 'space-create-submit-button'));
+            echo \humhub\compat\widgets\AjaxButton::widget([
+                'label' => Yii::t('SpaceModule.views_create_create', 'Create'),
+                'ajaxOptions' => [
+                    'type' => 'POST',
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'url' => Url::to(['/space/create/create']),
+                ],
+                'htmlOptions' => [
+                    'class' => 'btn btn-primary',
+                    'id' => 'space-create-submit-button',
+                ]
+            ]);
             ?>
 
             <div id="create-loader" class="loader loader-modal hidden">
@@ -129,7 +138,7 @@
             </div>
         </div>
 
-        <?php $this->endWidget(); ?>
+        <?php CActiveForm::end(); ?>
     </div>
 
 </div>
@@ -147,10 +156,10 @@
     $('#Space_name').focus();
 
     // Shake modal after wrong validation
-    <?php if ($form->errorSummary($model) != null) { ?>
-    $('.modal-dialog').removeClass('fadeIn');
-    $('.modal-dialog').addClass('shake');
-    <?php } ?>
+<?php if ($model->hasErrors()) { ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
+<?php } ?>
 
     $('#collapse-access-settings').on('show.bs.collapse', function () {
         // change link arrow

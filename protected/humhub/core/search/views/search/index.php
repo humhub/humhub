@@ -24,13 +24,10 @@ use humhub\core\search\controllers\SearchController;
                     Search only in certain spaces:
                     <?php echo Html::textInput('limitSpaceGuids', $limitSpaceGuids, array('placeholder' => 'Specify space', 'style' => 'width:200px', 'id' => 'space_filter')); ?>
                     <?php
-                    /*
-                      $this->widget('application.modules_core.space.widgets.SpacePickerWidget', array(
-                      'inputId' => 'space_filter',
-                      'value' => $limitSpaceGuids,
-                      ));
-                     * 
-                     */
+                    echo humhub\core\space\widgets\SpacePicker::widget([
+                        'inputId' => 'space_filter',
+                        'value' => $limitSpaceGuids
+                    ]);
                     ?>
                     <?php echo Html::endForm(); ?>
                 </div>                
@@ -79,9 +76,7 @@ use humhub\core\search\controllers\SearchController;
                     </div>
                 </ul>
 
-
-                <div class="pagination-container"><?php //$this->widget('HLinkPager', array('pages' => $pagination));    ?></div>
-
+                <div class="pagination-container"><?php echo humhub\widgets\LinkPager::widget(['pagination' => $pagination]); ?></div>
             </div>
 
         </div>

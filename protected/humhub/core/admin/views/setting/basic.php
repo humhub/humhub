@@ -33,16 +33,14 @@ use humhub\models\Setting;
         <?php echo $form->labelEx($model, 'defaultSpaceGuid'); ?>
         <?php echo $form->textField($model, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>
 
-        <?php /*
-          \humhub\core\space\widgets\SpacePickerWidget::widget([
-          'inputId' => 'space_select',
-          'model' => $model,
-          'maxSpaces' => 50,
-          'attribute' => 'defaultSpaceGuid'
-          ]);
-         */
+        <?php
+        echo \humhub\core\space\widgets\SpacePicker::widget([
+            'inputId' => 'space_select',
+            'model' => $model,
+            'maxSpaces' => 50,
+            'attribute' => 'defaultSpaceGuid'
+        ]);
         ?>
-
 
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'New users will automatically added to these space(s).'); ?></p>
 
