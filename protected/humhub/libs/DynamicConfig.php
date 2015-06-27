@@ -61,6 +61,7 @@ class DynamicConfig extends \yii\base\Object
         file_put_contents($configFile, $content);
 
         if (function_exists('opcache_invalidate')) {
+            opcache_reset();
             opcache_invalidate($configFile);
         }
 
@@ -149,6 +150,7 @@ class DynamicConfig extends \yii\base\Object
             unset($config['theme']);
         }
         */
+        $config['params']['config_created_at'] = time();
         
         self::save($config);
     }
