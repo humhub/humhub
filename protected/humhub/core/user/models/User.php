@@ -345,9 +345,9 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->status == User::STATUS_ENABLED) {
-            //Yii::app()->search->update($this);
+            Yii::$app->search->update($this);
         } else {
-            //Yii::app()->search->delete($this);
+            Yii::$app->search->delete($this);
         }
 
         if ($insert) {

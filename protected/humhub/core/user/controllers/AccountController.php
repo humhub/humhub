@@ -51,6 +51,10 @@ class AccountController extends Controller
         $form = new \humhub\compat\HForm($definition, $user->profile);
         $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate() && $form->save()) {
+
+            // Trigger search refresh
+            $user->save();
+            
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
 
