@@ -1,7 +1,9 @@
 <?php
 
 use Yii;
-use \humhub\compat\CHtml;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_editModules', '<strong>User</strong> modules'); ?>
@@ -21,15 +23,15 @@ use \humhub\compat\CHtml;
                 <h4 class="media-heading"><?php echo $module->getUserModuleName(); ?></h4>
                 <p><?php echo $module->getUserModuleDescription(); ?></p>
 
-                <?php if ($user->isModuleEnabled($module->getId())) : ?>
+                <?php if ($user->isModuleEnabled($module->id)) : ?>
                     <?php if ($user->canDisableModule($moduleId)): ?>
-                        <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Disable'), array('//user/account/disableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-sm btn-danger', 'confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
+                        <?php echo Html::a(Yii::t('UserModule.views_account_editModules', 'Disable'), Url::to(['/user/account/disable-module', 'moduleId' => $module->id]), array('class' => 'btn btn-sm btn-danger', 'data-method' => 'POST', 'confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
                     <?php endif; ?>
                     <?php if ($module->getUserModuleConfigUrl($user)) : ?>
-                        <?php echo CHtml::link(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getUserModuleConfigUrl($user), array('class' => 'btn btn-sm')); ?>
+                        <?php echo Html::a(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getUserModuleConfigUrl($user), array('class' => 'btn btn-sm')); ?>
                     <?php endif; ?>
                 <?php else: ?>
-                    <?php echo HHtml::postLink(Yii::t('UserModule.views_account_editModules', 'Enable'), array('//user/account/enableModule', 'moduleId' => $module->getId()), array('class' => 'btn btn-sm btn-primary')); ?>
+                    <?php echo Html::a(Yii::t('UserModule.views_account_editModules', 'Enable'), Url::to(['/user/account/enable-module', 'moduleId' => $module->id]), array('data-method'=>'POST', 'class' => 'btn btn-sm btn-primary')); ?>
                 <?php endif; ?>
             </div>
         </div>

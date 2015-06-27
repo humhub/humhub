@@ -21,6 +21,7 @@
 namespace humhub\core\user\behaviors;
 
 use yii\base\Behavior;
+use humhub\core\user\models\User;
 
 /**
  * This behavior should attached to a HWebModule when it provides a user profile module.
@@ -53,7 +54,7 @@ class UserModule extends Behavior
             $user = $this->getUser();
         }
 
-        return $user->isModuleEnabled($this->getOwner()->getId());
+        return $user->isModuleEnabled($this->owner->id);
     }
 
     /**
@@ -64,7 +65,7 @@ class UserModule extends Behavior
      */
     public function getUserModuleName()
     {
-        return $this->getOwner()->getName();
+        return $this->owner->getName();
     }
 
     /**
@@ -75,7 +76,7 @@ class UserModule extends Behavior
      */
     public function getUserModuleDescription()
     {
-        return $this->getOwner()->getDescription();
+        return $this->owner->getDescription();
     }
 
     /**
@@ -97,7 +98,7 @@ class UserModule extends Behavior
      */
     public function getUserModuleImage()
     {
-        return $this->getOwner()->getImage();
+        return $this->owner->getImage();
     }
 
     /**
@@ -107,7 +108,7 @@ class UserModule extends Behavior
      */
     public function enableUserModule(User $user)
     {
-
+        
     }
 
     /**
@@ -120,7 +121,7 @@ class UserModule extends Behavior
      */
     public function disableUserModule(User $user)
     {
-
+        
     }
 
     /**
@@ -132,7 +133,7 @@ class UserModule extends Behavior
     {
         $users = array();
 
-        foreach (User::model()->findAll() as $u) {
+        foreach (User::find()->find() as $u) {
             if ($u->isModuleEnabled($this->owner->getId())) {
                 $users[] = $u;
             }

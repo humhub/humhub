@@ -13,12 +13,20 @@ use yii\base\Exception;
 use yii\base\Event;
 
 /**
- * Description of ModuleManager
+ * ModuleManager handles all installed modules.
  *
  * @author luke
  */
 class ModuleManager extends \yii\base\Component
 {
+
+    /**
+     * List of all modules
+     * This also contains installed but not enabled modules.
+     * 
+     * @param array $config moduleId-class pairs
+     */
+    protected $modules;
 
     /**
      * List of all enabled module ids
@@ -28,12 +36,10 @@ class ModuleManager extends \yii\base\Component
     private $enabledModules = [];
 
     /**
-     * Array of installed modules populated on autostart.php register
-     *
-     * @var Array moduleId => moduleClass
+     * Module Manager init
+     * 
+     * Loads all enabled moduleId's from database
      */
-    private $installedModules;
-
     public function init()
     {
         parent::init();
@@ -46,57 +52,13 @@ class ModuleManager extends \yii\base\Component
         }
     }
 
-    public function getEnabledModules()
-    {
-        return array();
-
-        $modules = array();
-        foreach ($this->enabledModules as $moduleId) {
-            $module = Yii::$app->getModule($moduleId, false);
-            if ($module != null) {
-                $modules[] = $module;
-            }
-        }
-
-        return $modules;
-    }
-
-    public function getInstalledModules($includeCoreModules = false, $returnClassName = false)
-    {
-        $installed = array();
-        foreach ($this->installedModules as $moduleId => $className) {
-
-            if (!$includeCoreModules && strpos($className, '\core\\') !== false) {
-                continue;
-            }
-
-            if ($returnClassName) {
-                $installed[$moduleId] = $className;
-            } else {
-                try {
-                    $module = Yii::$app->getModule($moduleId, false);
-                    if ($module !== null) {
-                        $installed[$moduleId] = $module;
-                    }
-                } catch (Exception $ex) {
-                    Yii::error('Could not instanciate module: ' . $moduleId . "." . $ex->getMessage(), 'error');
-                }
-            }
-        }
-
-        return $installed;
-    }
-
-    public function disableModule($moduleId)
-    {
-        
-    }
-
-    public function enableModule($moduleId)
-    {
-        
-    }
-
+    /**
+     * Registers a module to the manager
+     * This is usally done by autostart.php in modules root folder.
+     * 
+     * @param array $definition
+     * @throws Exception
+     */
     public function register(Array $definition)
     {
         if (!isset($definition['class']) || !isset($definition['id'])) {
@@ -105,7 +67,7 @@ class ModuleManager extends \yii\base\Component
 
         $isCoreModule = (isset($definition['isCoreModule']) && $definition['isCoreModule']);
 
-        $this->installedModules[$definition['id']] = $definition['class'];
+        $this->modules[$definition['id']] = $definition['class'];
 
         // Not enabled and no core module
         if (!$isCoreModule && !in_array($definition['id'], $this->enabledModules)) {
@@ -121,7 +83,6 @@ class ModuleManager extends \yii\base\Component
         if (isset($definition['urlManagerRules'])) {
             Yii::$app->urlManager->addRules($definition['urlManagerRules'], false);
         }
-
 
         // Register Yii Module
         Yii::$app->setModules(array(
@@ -140,25 +101,73 @@ class ModuleManager extends \yii\base\Component
     }
 
     /**
-     * Checks if a module is enabled.
-     *
-     * @param String $moduleId
-     * @return boolean
+     * Returns all modules (also disabled modules).
+     * 
+     * Note: Only modules which extends \humhub\components\Module will be returned.
+     * 
+     * @param array $options options (name => config)
+     * The following options are available:
+     * 
+     * - includeCoreModules: boolean, return also core modules (default: false)
+     * - returnClass: boolean, return classname instead of module object (default: false)
+     * 
+     * @return array
      */
-    public function isEnabled($moduleId)
+    public function getModules($options = [])
     {
-        return (in_array($moduleId, $this->enabledModules));
+        $modules = [];
+        foreach ($this->modules as $id => $class) {
+
+            // Skip core modules
+            if (!isset($options['includeCoreModules']) || $options['includeCoreModules'] === false) {
+                if (strpos($class, '\core\\') !== false) {
+                    continue;
+                }
+            }
+
+            if (isset($options['returnClass']) && $options['returnClass']) {
+                $modules[$id] = $class;
+            } else {
+                $module = $this->getModule($id);
+                if ($module instanceof Module) {
+                    $modules[$id] = $module;
+                }
+            }
+        }
+        return $modules;
     }
 
     /**
-     * Checks if a module id is installed.
+     * Checks if a moduleId exists
      *
-     * @param String $moduleId
+     * @param string $id
      * @return boolean
      */
-    public function isInstalled($moduleId)
+    public function hasModule($id)
     {
-        return (array_key_exists($moduleId, $this->installedModules));
+        return (array_key_exists($id, $this->modules));
+    }
+
+    /**
+     * Returns a module instance by id
+     *
+     * @param string $id Module Id
+     * @return \yii\base\Module
+     */
+    public function getModule($id)
+    {
+        // Enabled Module
+        if (Yii::$app->hasModule($id)) {
+            return Yii::$app->getModule($id, true);
+        }
+
+        // Disabled Module
+        if (isset($this->modules[$id])) {
+            $class = $this->modules[$id];
+            return Yii::createObject($class, [$id, Yii::$app]);
+        }
+
+        throw new Exception("Could not find requested module: " . $id);
     }
 
 }

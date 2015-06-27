@@ -51,9 +51,9 @@ class UserModelModules extends Behavior
 
         $this->_availableModules = array();
 
-        foreach (Yii::$app->moduleManager->getEnabledModules() as $moduleId => $module) {
+        foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
             if ($module->isUserModule()) {
-                $this->_availableModules[$module->getId()] = $module;
+                $this->_availableModules[$module->id] = $module;
             }
         }
 
@@ -75,8 +75,8 @@ class UserModelModules extends Behavior
         $this->_enabledModules = array();
 
         $availableModules = $this->getAvailableModules();
-        $defaultStates = UserApplicationModule::getStates();
-        $states = UserApplicationModule::getStates($this->getOwner()->id);
+        $defaultStates = \humhub\core\user\models\Module::getStates();
+        $states = \humhub\core\user\models\Module::getStates($this->owner->id);
 
         // Get a list of all enabled module ids
         foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
@@ -86,13 +86,13 @@ class UserModelModules extends Behavior
                 continue;
             }
 
-            if (isset($defaultStates[$id]) && $defaultStates[$id] == UserApplicationModule::STATE_FORCE_ENABLED) {
+            if (isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\core\user\models\Module::STATE_FORCE_ENABLED) {
                 // Forced enabled globally
                 $this->_enabledModules[] = $id;
-            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == UserApplicationModule::STATE_ENABLED) {
+            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\core\user\models\Module::STATE_ENABLED) {
                 // No local state -> global default on
                 $this->_enabledModules[] = $id;
-            } elseif (isset($states[$id]) && $states[$id] == UserApplicationModule::STATE_ENABLED) {
+            } elseif (isset($states[$id]) && $states[$id] == \humhub\core\user\models\Module::STATE_ENABLED) {
                 // Locally enabled
                 $this->_enabledModules[] = $id;
             }
@@ -129,25 +129,25 @@ class UserModelModules extends Behavior
         }
 
         // Add Binding
-        $userModule = UserApplicationModule::model()->findByAttributes(array('user_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        $userModule = \humhub\core\user\models\Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($userModule == null) {
-            $userModule = new UserApplicationModule();
-            $userModule->user_id = $this->getOwner()->id;
+            $userModule = new \humhub\core\user\models\Module();
+            $userModule->user_id = $this->owner->id;
             $userModule->module_id = $moduleId;
         }
-        $userModule->state = UserApplicationModule::STATE_ENABLED;
+        $userModule->state = \humhub\core\user\models\Module::STATE_ENABLED;
         $userModule->save();
 
-        $module = Yii::app()->moduleManager->getModule($moduleId);
-        $module->enableUserModule($this->getOwner());
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->enableUserModule($this->owner);
 
         return true;
     }
 
     public function canDisableModule($id)
     {
-        $defaultStates = UserApplicationModule::getStates();
-        if (isset($defaultStates[$id]) && $defaultStates[$id] == UserApplicationModule::STATE_FORCE_ENABLED) {
+        $defaultStates = \humhub\core\user\models\Module::getStates();
+        if (isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\core\user\models\Module::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -172,16 +172,16 @@ class UserModelModules extends Behavior
         }
 
         // New Way: Handle it directly in module class
-        $module = Yii::app()->moduleManager->getModule($moduleId);
-        $module->disableUserModule($this->getOwner());
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->disableUserModule($this->owner);
 
-        $userModule = UserApplicationModule::model()->findByAttributes(array('user_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        $userModule = \humhub\core\user\models\Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($userModule == null) {
-            $userModule = new UserApplicationModule();
-            $userModule->user_id = $this->getOwner()->id;
+            $userModule = new \humhub\core\user\models\Module;
+            $userModule->user_id = $this->owner->id;
             $userModule->module_id = $moduleId;
         }
-        $userModule->state = UserApplicationModule::STATE_DISABLED;
+        $userModule->state = \humhub\core\user\models\Module::STATE_DISABLED;
         $userModule->save();
 
         return true;

@@ -1,4 +1,8 @@
-<div class="panel panel-default">
+<?php
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+?><div class="panel panel-default">
     <div class="panel-heading">
         <?php echo Yii::t('SpaceModule.views_admin_modules', '<strong>Space</strong> Modules'); ?>
     </div>
@@ -20,37 +24,30 @@
 
                 <div class="media-body">
                     <h4 class="media-heading"><?php echo $module->getSpaceModuleName(); ?>
-                        <?php if ($this->getSpace()->isModuleEnabled($moduleId)) : ?>
+                        <?php if ($space->isModuleEnabled($moduleId)) : ?>
                             <small><span class="label label-success"><?php echo Yii::t('SpaceModule.views_admin_modules', 'Activated'); ?></span></small>
                             <?php endif; ?>
                     </h4>
 
                     <p><?php echo $module->getSpaceModuleDescription(); ?></p>
-                    <?php if ($this->getSpace()->isModuleEnabled($moduleId)) : ?>
+                    <?php if ($space->isModuleEnabled($moduleId)) : ?>
 
-                        <?php if ($this->getSpace()->canDisableModule($moduleId)): ?>
-                            <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_modules', 'Disable'), array('//space/admin/disableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary', 'confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
+                        <?php if ($space->canDisableModule($moduleId)): ?>
+                            <?php echo Html::a(Yii::t('SpaceModule.views_admin_modules', 'Disable'), $space->createUrl('/space/admin/disable-module', array('moduleId' => $moduleId)), array('data-method' => 'POST', 'class' => 'btn btn-sm btn-primary', 'confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
                         <?php endif; ?>
 
-                        <?php if ($module->getSpaceModuleConfigUrl($this->getSpace()) != "") : ?>
+                        <?php if ($module->getSpaceModuleConfigUrl($space) != "") : ?>
                             <?php
-                            echo CHtml::link(
-                                    Yii::t('SpaceModule.views_admin_modules', 'Configure'), $module->getSpaceModuleConfigUrl($this->getSpace()), array('class' => 'btn btn-default')
+                            echo Html::a(
+                                    Yii::t('SpaceModule.views_admin_modules', 'Configure'), $module->getSpaceModuleConfigUrl($space), array('class' => 'btn btn-default')
                             );
                             ?>
                         <?php endif; ?>
                     <?php else: ?>
-                        <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_modules', 'Enable'), array('//space/admin/enableModule', 'moduleId' => $moduleId, 'sguid' => $this->getSpace()->guid), array('class' => 'btn btn-sm btn-primary')); ?>
+                        <?php echo Html::a(Yii::t('SpaceModule.views_admin_modules', 'Enable'), $space->createUrl('/space/admin/enable-module', array('moduleId' => $moduleId)), array('data-method' => 'POST', 'class' => 'btn btn-sm btn-primary')); ?>
                     <?php endif; ?>
                 </div>
             </div>
-            <!-- Start: Module update message for the future -->
-            <!--            <br>
-                        <div class="alert alert-warning">
-                            New Update for this module is available! <a href="#">See details</a>
-                        </div>-->
-            <!-- End: Module update message for the future -->
-
         <?php endforeach; ?>
 
     </div>

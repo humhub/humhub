@@ -7,10 +7,7 @@
                 id="myModalLabel"><?php echo Yii::t('AdminModule.views_module_setAsDefault', '%moduleName% - Set as default module', array('%moduleName%' => "<strong>" . $module->getName() . "</strong>")); ?></h4>
         </div>
         <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'module-setdefault-form',
-            'enableAjaxValidation' => false,
-        ));
+        $form = humhub\compat\CActiveForm::begin();
         ?>
         <div class="modal-body">
 
@@ -78,11 +75,18 @@
         <div class="modal-footer">
 
             <?php
-            echo HHtml::ajaxSubmitButton(Yii::t('AdminModule.views_module_setAsDefault', 'Save'), array('//admin/module/setAsDefault', 'moduleId' => $module->getId()), array(
-                'type' => 'POST',
-                'beforeSend' => 'function(){ setModalLoader(); }',
-                'success' => 'function(html){ $("#globalModal").html(html); }',
-            ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
+            echo \humhub\compat\widgets\AjaxButton::widget([
+                'label' => Yii::t('AdminModule.views_module_setAsDefault', 'Save'),
+                'ajaxOptions' => [
+                    'type' => 'POST',
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'url' => \yii\helpers\Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
+                ],
+                'htmlOptions' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ]);
             ?>
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Close'); ?></button>
@@ -98,7 +102,7 @@
 
         </div>
 
-        <?php $this->endWidget(); ?>
+        <?php humhub\compat\CActiveForm::end(); ?>
 
 
     </div>

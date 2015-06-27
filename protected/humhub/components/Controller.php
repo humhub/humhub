@@ -47,4 +47,11 @@ class Controller extends \yii\web\Controller
         return $this->renderPartial('@humhub/views/htmlRedirect.php', array('url' => $url));
     }
 
+    /**
+     * Closes a modal
+     */
+    public function renderModalClose()
+    {
+        return $this->renderPartial('@humhub/views/modalClose.php', array());
+    }
 }

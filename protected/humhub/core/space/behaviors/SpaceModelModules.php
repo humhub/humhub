@@ -22,8 +22,6 @@ namespace humhub\core\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
-use humhub\core\user\models\Follow;
 
 /**
  * SpaceModelModuleBehavior handles all space model relating moduling methods.
@@ -53,9 +51,9 @@ class SpaceModelModules extends Behavior
 
         $this->_availableModules = array();
 
-        foreach (Yii::app()->moduleManager->getEnabledModules() as $moduleId => $module) {
+        foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
             if ($module->isSpaceModule()) {
-                $this->_availableModules[$module->getId()] = $module;
+                $this->_availableModules[$module->id] = $module;
             }
         }
 
@@ -77,8 +75,8 @@ class SpaceModelModules extends Behavior
         $this->_enabledModules = array();
 
         $availableModules = $this->getAvailableModules();
-        $defaultStates = SpaceApplicationModule::getStates();
-        $states = SpaceApplicationModule::getStates($this->getOwner()->id);
+        $defaultStates = \humhub\core\space\models\Module::getStates();
+        $states = \humhub\core\space\models\Module::getStates($this->owner->id);
 
         // Get a list of all enabled module ids
         foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
@@ -88,13 +86,13 @@ class SpaceModelModules extends Behavior
                 continue;
             }
 
-            if (isset($defaultStates[$id]) && $defaultStates[$id] == SpaceApplicationModule::STATE_FORCE_ENABLED) {
+            if (isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\core\space\models\Module::STATE_FORCE_ENABLED) {
                 // Forced enabled globally
                 $this->_enabledModules[] = $id;
-            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == SpaceApplicationModule::STATE_ENABLED) {
+            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\core\space\models\Module::STATE_ENABLED) {
                 // No local state -> global default on
                 $this->_enabledModules[] = $id;
-            } elseif (isset($states[$id]) && $states[$id] == SpaceApplicationModule::STATE_ENABLED) {
+            } elseif (isset($states[$id]) && $states[$id] == \humhub\core\space\models\Module::STATE_ENABLED) {
                 // Locally enabled
                 $this->_enabledModules[] = $id;
             }
@@ -131,25 +129,25 @@ class SpaceModelModules extends Behavior
         }
 
         // Add Binding
-        $spaceModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        $spaceModule = \humhub\core\space\models\Module::findOne(['space_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($spaceModule == null) {
-            $spaceModule = new SpaceApplicationModule();
-            $spaceModule->space_id = $this->getOwner()->id;
+            $spaceModule = new \humhub\core\space\models\Module();
+            $spaceModule->space_id = $this->owner->id;
             $spaceModule->module_id = $moduleId;
         }
-        $spaceModule->state = SpaceApplicationModule::STATE_ENABLED;
+        $spaceModule->state = \humhub\core\space\models\Module::STATE_ENABLED;
         $spaceModule->save();
 
-        $module = Yii::app()->moduleManager->getModule($moduleId);
-        $module->enableSpaceModule($this->getOwner());
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->enableSpaceModule($this->owner);
 
         return true;
     }
 
     public function canDisableModule($id)
     {
-        $defaultStates = SpaceApplicationModule::getStates(0);
-        if (isset($defaultStates[$id]) && $defaultStates[$id] == SpaceApplicationModule::STATE_FORCE_ENABLED) {
+        $defaultStates = \humhub\core\space\models\Module::getStates(0);
+        if (isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\core\space\models\Module::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -174,16 +172,16 @@ class SpaceModelModules extends Behavior
         }
 
         // New Way: Handle it directly in module class
-        $module = Yii::app()->moduleManager->getModule($moduleId);
-        $module->disableSpaceModule($this->getOwner());
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->disableSpaceModule($this->owner);
 
-        $spaceModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => $this->getOwner()->id, 'module_id' => $moduleId));
+        $spaceModule = \humhub\core\space\models\Module::findOne(['space_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($spaceModule == null) {
-            $spaceModule = new SpaceApplicationModule();
-            $spaceModule->space_id = $this->getOwner()->id;
+            $spaceModule = new \humhub\core\space\models\Module();
+            $spaceModule->space_id = $this->owner->id;
             $spaceModule->module_id = $moduleId;
         }
-        $spaceModule->state = SpaceApplicationModule::STATE_DISABLED;
+        $spaceModule->state = \humhub\core\space\models\Module::STATE_DISABLED;
         $spaceModule->save();
 
         return true;

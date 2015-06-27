@@ -147,13 +147,13 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        $userGuid = Yii::app()->request->getParam('userGuid');
+        $userGuid = Yii::$app->request->get('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
 
         if ($user != null) {
             $space->removeMember($user->id);
 
-            SpaceApprovalRequestDeclinedNotification::fire(Yii::app()->user->id, $user, $space);
+            SpaceApprovalRequestDeclinedNotification::fire(Yii::$app->user->id, $user, $space);
         }
 
         $this->redirect($space->getUrl());
@@ -168,7 +168,7 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        $userGuid = Yii::app()->request->getParam('userGuid');
+        $userGuid = Yii::$app->request->get('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
 
         if ($user != null) {
@@ -190,7 +190,7 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
         $this->forcePostRequest();
 
         $workspace = $this->getSpace();
-        $userGuid = Yii::app()->request->getParam('userGuid');
+        $userGuid = Yii::$app->request->get('userGuid');
         $user = User::model()->findByAttributes(array('guid' => $userGuid));
 
         if ($workspace->isSpaceOwner($user->id)) {
@@ -339,22 +339,21 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
     public function actionModules()
     {
         $space = $this->getSpace();
-        $this->render('modules', array('availableModules' => $this->getSpace()->getAvailableModules()));
+        return $this->render('modules', ['availableModules' => $space->getAvailableModules(), 'space' => $space]);
     }
 
     public function actionEnableModule()
     {
-
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        $moduleId = Yii::app()->request->getParam('moduleId', "");
+        $moduleId = Yii::$app->request->get('moduleId', "");
 
-        if (!$this->getSpace()->isModuleEnabled($moduleId)) {
-            $this->getSpace()->enableModule($moduleId);
+        if (!$space->isModuleEnabled($moduleId)) {
+            $space->enableModule($moduleId);
         }
 
-        $this->redirect($this->createUrl('admin/modules', array('sguid' => $this->getSpace()->guid)));
+        return $this->redirect($space->createUrl('/space/admin/modules'));
     }
 
     public function actionDisableModule()
@@ -363,13 +362,13 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        $moduleId = Yii::app()->request->getParam('moduleId', "");
+        $moduleId = Yii::$app->request->get('moduleId', "");
 
         if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
-            $this->getSpace()->disableModule($moduleId);
+            $space->disableModule($moduleId);
         }
 
-        $this->redirect($this->createUrl('admin/modules', array('sguid' => $this->getSpace()->guid)));
+        return $this->redirect($space->createUrl('/space/admin/modules'));
     }
 
     /**
@@ -431,7 +430,7 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
     {
         $workspace = $this->getSpace();
 
-        if (!$workspace->isSpaceOwner() && !Yii::app()->user->isAdmin())
+        if (!$workspace->isSpaceOwner() && !Yii::$app->user->isAdmin())
             throw new CHttpException(403, 'Access denied - Space Owner only!');
     }
 

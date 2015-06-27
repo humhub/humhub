@@ -82,7 +82,7 @@ class ModuleTool extends HConsoleCommand
         print "Online available modules: \n\n";
 
         foreach ($modules as $module) {
-            print "- [" . $module['id'] . "]\n  " . $module['name'] . " (" . $module['latestVersion'] . ") " . ((Yii::app()->moduleManager->isInstalled($module['id'])) ? "***INSTALLED***" : "") . "\n";
+            print "- [" . $module['id'] . "]\n  " . $module['name'] . " (" . $module['latestVersion'] . ") " . ((Yii::app()->moduleManager->hasModule($module['id'])) ? "***INSTALLED***" : "") . "\n";
             if (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) {
                 if ($module['latestCompatibleVersion'] != $module['latestVersion']) {
                     print "  Latest compatible version:" . $module['latestCompatibleVersion'] . "\n";
@@ -164,7 +164,7 @@ class ModuleTool extends HConsoleCommand
         $moduleId = $args[0];
 
         
-        if (!Yii::app()->moduleManager->isInstalled($moduleId)) {
+        if (!Yii::app()->moduleManager->hasModule($moduleId)) {
             print "\nModule " . $moduleId . " is not installed!\n";
             return;
         }

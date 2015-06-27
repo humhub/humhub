@@ -178,7 +178,7 @@ class OnlineModuleManager
 
         foreach ($this->getModules() as $moduleId => $moduleInfo) {
 
-            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::$app->moduleManager->isInstalled($moduleId)) {
+            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($moduleId)) {
 
                 $module = Yii::$app->moduleManager->getModule($moduleId);
 

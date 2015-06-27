@@ -37,7 +37,7 @@ use yii\helpers\Url;
 
                     <div class="module-controls">
 
-                        <?php if (isset($module['latestCompatibleVersion']) && Yii::$app->moduleManager->isInstalled($module['id'])) : ?>
+                        <?php if (isset($module['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($module['id'])) : ?>
                             <?php echo Yii::t('AdminModule.views_module_listUpdates', 'Installed version:'); ?> <?php echo Yii::app()->moduleManager->getModule($module['id'])->getVersion(); ?>
                             &middot; <?php echo Yii::t('AdminModule.views_module_listUpdates', 'Latest compatible Version:'); ?> <?php echo $module['latestCompatibleVersion']; ?>
                             &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_listUpdates', 'Update'), Url::to(['update', 'moduleId' => $module['id']]), array('style' => 'font-weight:bold', 'class' => 'process', 'data-method' => 'POST')); ?>

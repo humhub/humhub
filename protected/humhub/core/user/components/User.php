@@ -24,16 +24,6 @@ class User extends \yii\web\User
         return ($this->getIdentity()->super_admin == 1);
     }
 
-    /**
-     *
-     * @deprecated since version 1
-     * @return \humhub\core\user\models\User
-     */
-    public function getModel()
-    {
-        return $this->getIdentity();
-    }
-
     public function getLanguage()
     {
         if ($this->isGuest)

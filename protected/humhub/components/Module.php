@@ -18,12 +18,17 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\components;
+
+use Yii;
+use humhub\models\ModuleEnabled;
+
 /**
  * Base Class for Modules / Extensions
  *
  * @author luke
  */
-class HWebModule extends CWebModule
+class Module extends \yii\base\Module
 {
 
     /**
@@ -34,54 +39,17 @@ class HWebModule extends CWebModule
     private $_moduleInfo = null;
 
     /**
-     * Indicates that module is required by core
-     *
-     * @var Boolean
+     * Config Route
      */
-    public $isCoreModule = false;
+    public $configRoute = null;
 
     /**
-     * URL to assets
-     *
-     * @var String
+     * The path for module resources (images, javascripts)
+     * Also module related assets like README.md and module_image.png should be placed here.
+     * 
+     * @var type 
      */
-    private $_assetsUrl;
-
-    /**
-     * Preinits the module, attaches behaviors.
-     * e.g. UserModuleBehavior or SpaceModuleBehavior
-     */
-    public function preinit()
-    {
-        $this->attachBehaviors($this->behaviors());
-
-        parent::preinit();
-    }
-
-    /**
-     * Add behaviors to this module
-     *
-     * You may want to enable one of these behavior to alos make this module
-     * available on space and/or user context.
-     *
-     * See related behaviors classes for more details.
-     *
-     * @return Array
-     */
-    public function behaviors()
-    {
-        return array(
-                /*
-                  'SpaceModuleBehavior' => array(
-                  'class' => 'application.modules_core.space.behaviors.SpaceModuleBehavior',
-                  ),
-
-                  'UserModuleBehavior' => array(
-                  'class' => 'application.modules_core.user.behaviors.UserModuleBehavior',
-                  ),
-                 */
-        );
-    }
+    public $resourcesPath = 'resources';
 
     /**
      * Returns modules name provided by module.json file
@@ -139,61 +107,38 @@ class HWebModule extends CWebModule
      */
     public function getImage()
     {
-        if (is_file($this->getAssetsPath() . DIRECTORY_SEPARATOR . 'module_image.png')) {
-            return $this->getAssetsUrl() . '/module_image.png';
-        }
-        if (Yii::app()->theme && Yii::app()->theme != "") {
-            // get default image from theme (if exists)
-            $image = Yii::app()->theme->getFileUrl('/img/default_module.jpg');
-        } else {
-            $image = Yii::app()->getBaseUrl() . '/img/default_module.jpg';
+        $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
+
+        if (is_file($moduleImageFile)) {
+            $published = $assetManager = Yii::$app->assetManager->publish($moduleImageFile);
+            return $published[1];
         }
 
-        return $image;
-    }
-
-    /**
-     * Returns URL of configuration controller for this module.
-     *
-     * You may overwrite this method to provide advanced module configuration
-     * possibilities.
-     *
-     * @return string
-     */
-    public function getConfigUrl()
-    {
-        return "";
-    }
-
-    /**
-     * Checks whether this module is enabled or not
-     *
-     * @return boolean
-     */
-    public function isEnabled()
-    {
-        return Yii::app()->moduleManager->isEnabled($this->getId());
+        return Yii::getAlias("@web/img/default_module.jpg");
     }
 
     /**
      * Enables this module
+     * It will be available on the next request.
+     * 
+     * @return boolean
      */
     public function enable()
     {
-        if (!$this->isEnabled()) {
+        if (!Yii::$app->hasModule($this->id)) {
 
-            $moduleEnabled = ModuleEnabled::model()->findByPk($this->getId());
+            $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
             if ($moduleEnabled == null) {
-
                 $moduleEnabled = new ModuleEnabled();
-                $moduleEnabled->module_id = $this->getId();
+                $moduleEnabled->module_id = $this->id;
                 $moduleEnabled->save();
-
-                // Auto Migrate (add module database changes)
-                Yii::import('application.commands.shell.ZMigrateCommand');
-                $migrate = ZMigrateCommand::AutoMigrate();
             }
+
+            $this->migrate();
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -204,45 +149,58 @@ class HWebModule extends CWebModule
      */
     public function disable()
     {
-        if (!$this->isEnabled() || $this->isCoreModule)
+
+        // Seems not enabled
+        if (!Yii::$app->hasModule($this->id)) {
             return false;
-
-        // Check this module is a SpaceModule
-        if ($this->isSpaceModule()) {
-            foreach ($this->getSpaceModuleSpaces() as $space) {
-                $space->disableModule($this->getId());
-            }
         }
 
-        // Check this module is a UserModule
-        if ($this->isUserModule()) {
-            foreach ($this->getUserModuleUsers() as $user) {
-                $user->disableModule($this->getId());
-            }
-        }
+        /*
+          // Check this module is a SpaceModule
+          if ($this->isSpaceModule()) {
+          foreach ($this->getSpaceModuleSpaces() as $space) {
+          $space->disableModule($this->getId());
+          }
+          }
+
+          // Check this module is a UserModule
+          if ($this->isUserModule()) {
+          foreach ($this->getUserModuleUsers() as $user) {
+          $user->disableModule($this->getId());
+          }
+          }
+         */
 
         // Disable module in database
-        $moduleEnabled = ModuleEnabled::model()->findByPk($this->getId());
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
         if ($moduleEnabled != null) {
             $moduleEnabled->delete();
         }
+        /*
+          HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+          SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+          UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
 
-        HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-        SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-        UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+          // Delete also records with disabled state from SpaceApplicationModule Table
+          foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
+          $sam->delete();
+          }
 
-        // Delete also records with disabled state from SpaceApplicationModule Table
-        foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
-            $sam->delete();
-        }
+          // Delete also records with disabled state from UserApplicationModule Table
+          foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
+          $uam->delete();
+          }
 
-        // Delete also records with disabled state from UserApplicationModule Table
-        foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
-            $uam->delete();
-        }
+          ModuleManager::flushCache();
+         */
+        return true;
+    }
 
-        ModuleManager::flushCache();
-
+    protected function migrate()
+    {
+        // Auto Migrate (add module database changes)
+        //Yii::import('application.commands.shell.ZMigrateCommand');
+        //$migrate = ZMigrateCommand::AutoMigrate();
         return true;
     }
 
@@ -258,17 +216,8 @@ class HWebModule extends CWebModule
             return $this->_moduleInfo;
         }
 
-        $moduleJson = file_get_contents($this->getPath() . DIRECTORY_SEPARATOR . 'module.json');
-        return CJSON::decode($moduleJson);
-    }
-
-    /**
-     * Returns Base Path of Module
-     */
-    public function getPath()
-    {
-        $reflection = new ReflectionClass($this);
-        return dirname($reflection->getFileName());
+        $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
+        return \yii\helpers\Json::decode($moduleJson);
     }
 
     /**
@@ -288,18 +237,18 @@ class HWebModule extends CWebModule
             return;
         }
 
-        if ($this->isEnabled()) {
+        if (Yii::$app->hasModule($this->id)) {
             $this->disable();
         }
 
         // Use uninstall migration, when found
-        $uninstallMigration = $this->getPath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'uninstall.php';
+        $uninstallMigration = $this->getBasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'uninstall.php';
         if (file_exists($uninstallMigration)) {
             Yii::import("application.commands.shell.*");
             ob_start();
             require_once($uninstallMigration);
             $migration = new uninstall;
-            $migration->setDbConnection(Yii::app()->db);
+            $migration->setDbConnection(Yii::$app->db);
             try {
                 $migration->up();
             } catch (Exception $ex) {
@@ -309,10 +258,10 @@ class HWebModule extends CWebModule
         }
 
         // Delete all executed migration by module
-        $command = Yii::app()->db->createCommand('DELETE FROM migration WHERE module = :moduleId');
+        $command = Yii::$app->db->createCommand('DELETE FROM migration WHERE module = :moduleId');
         $command->execute(array(':moduleId' => $this->getId()));
 
-        Yii::app()->moduleManager->removeModuleFolder($this->getId());
+        Yii::$app->moduleManager->removeModuleFolder($this->getId());
 
         ModuleManager::flushCache();
     }
@@ -322,9 +271,8 @@ class HWebModule extends CWebModule
      */
     public function install()
     {
-        // Execute all available migrations
-        Yii::import('application.commands.shell.ZMigrateCommand');
-        $migrate = ZMigrateCommand::AutoMigrate();
+        $this->migrate();
+        return true;
     }
 
     /**
@@ -334,9 +282,8 @@ class HWebModule extends CWebModule
      */
     public function update()
     {
-        // Auto Migrate (add module database changes)
-        Yii::import('application.commands.shell.ZMigrateCommand');
-        $migrate = ZMigrateCommand::AutoMigrate();
+        $this->migrate();
+        return true;
     }
 
     /**
@@ -345,7 +292,7 @@ class HWebModule extends CWebModule
     public function removeModuleFolder()
     {
 
-        $moduleBackupFolder = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_backups';
+        $moduleBackupFolder = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_backups';
         if (!is_dir($moduleBackupFolder)) {
             if (!@mkdir($moduleBackupFolder)) {
                 throw new CException("Could not create module backup folder!");
@@ -353,11 +300,10 @@ class HWebModule extends CWebModule
         }
 
         $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $this->getId() . "_" . time();
-        if (!@rename($this->getPath(), $backupFolderName)) {
+        if (!@rename($this->getBasePath(), $backupFolderName)) {
             throw new CException("Could not remove module folder!");
         }
     }
-
 
     /**
      * Indicates that module acts as Space Module.
@@ -366,9 +312,12 @@ class HWebModule extends CWebModule
      */
     public function isSpaceModule()
     {
-        if (array_key_exists('SpaceModuleBehavior', $this->behaviors())) {
-            return true;
+        foreach ($this->getBehaviors() as $name => $behavior) {
+            if ($behavior instanceof \humhub\core\space\behaviors\SpaceModule) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -379,10 +328,23 @@ class HWebModule extends CWebModule
      */
     public function isUserModule()
     {
-        if (array_key_exists('UserModuleBehavior', $this->behaviors())) {
-            return true;
+        foreach ($this->getBehaviors() as $name => $behavior) {
+            if ($behavior instanceof \humhub\core\user\behaviors\UserModule) {
+                return true;
+            }
         }
+
         return false;
+    }
+
+    public function canDisable()
+    {
+        return true;
+    }
+
+    public function canUninstall()
+    {
+        return true;
     }
 
 }

@@ -24,7 +24,8 @@ class ModuleSetAsDefaultForm extends \yii\base\Model
     public function rules()
     {
         return array(
-            array('userDefaultState, spaceDefaultState', 'numerical', 'integerOnly' => true),
+            array(['userDefaultState', 'spaceDefaultState'], 'required'),
+            array(['userDefaultState', 'spaceDefaultState'], 'integer'),
         );
     }
 

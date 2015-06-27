@@ -116,7 +116,7 @@ class AccountController extends Controller
             $user->enableModule($moduleId);
         }
 
-        return $this->redirect(Url::toRoute('/user/account/editModules'));
+        return $this->redirect(Url::toRoute('/user/account/edit-modules'));
     }
 
     public function actionDisableModule()
@@ -130,7 +130,7 @@ class AccountController extends Controller
             $user->disableModule($moduleId);
         }
 
-        return $this->redirect(Url::toRoute('/user/account/editModules'));
+        return $this->redirect(Url::toRoute('/user/account/edit-modules'));
     }
 
     /**

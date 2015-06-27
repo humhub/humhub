@@ -54,7 +54,7 @@ class ModuleController extends Controller
 
     public function actionList()
     {
-        $installedModules = Yii::$app->moduleManager->getInstalledModules();
+        $installedModules = Yii::$app->moduleManager->getModules();
         return $this->render('list', array('installedModules' => $installedModules));
     }
 
@@ -68,16 +68,16 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $module->enable();
 
-        $this->redirect(Yii::$app->createUrl('admin/module/list'));
+        return $this->redirect(Url::toRoute('/admin/module/list'));
     }
 
     /**
@@ -90,16 +90,16 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $module->disable();
 
-        $this->redirect(Yii::$app->createUrl('admin/module/list'));
+        return $this->redirect(Url::to(['/admin/module/list']));
     }
 
     /**
@@ -112,7 +112,7 @@ class ModuleController extends Controller
 
         $moduleId = Yii::$app->request->getQuery('moduleId');
 
-        if (!Yii::$app->moduleManager->isInstalled($moduleId)) {
+        if (!Yii::$app->moduleManager->hasModule($moduleId)) {
             $onlineModules = new OnlineModuleManager();
             $onlineModules->install($moduleId);
         }
@@ -133,7 +133,7 @@ class ModuleController extends Controller
 
         $moduleId = Yii::$app->request->getQuery('moduleId');
 
-        if (Yii::$app->moduleManager->isInstalled($moduleId)) {
+        if (Yii::$app->moduleManager->hasModule($moduleId)) {
 
             $module = Yii::$app->moduleManager->getModule($moduleId);
 
@@ -242,65 +242,55 @@ class ModuleController extends Controller
      */
     public function actionSetAsDefault()
     {
-
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
-        $model = new ModuleSetAsDefaultForm();
+        $model = new \humhub\core\admin\models\forms\ModuleSetAsDefaultForm();
 
         $spaceDefaultModule = null;
         if ($module->isSpaceModule()) {
-            $spaceDefaultModule = SpaceApplicationModule::model()->findByAttributes(array('space_id' => 0, 'module_id' => $moduleId));
+            $spaceDefaultModule = \humhub\core\space\models\Module::findOne(['space_id' => 0, 'module_id' => $moduleId]);
             if ($spaceDefaultModule === null) {
-                $spaceDefaultModule = new SpaceApplicationModule();
+                $spaceDefaultModule = new \humhub\core\space\models\Module();
                 $spaceDefaultModule->module_id = $moduleId;
                 $spaceDefaultModule->space_id = 0;
-                $spaceDefaultModule->state = SpaceApplicationModule::STATE_DISABLED;
+                $spaceDefaultModule->state = \humhub\core\space\models\Module::STATE_DISABLED;
             }
             $model->spaceDefaultState = $spaceDefaultModule->state;
         }
 
         $userDefaultModule = null;
         if ($module->isUserModule()) {
-            $userDefaultModule = UserApplicationModule::model()->findByAttributes(array('user_id' => 0, 'module_id' => $moduleId));
+            $userDefaultModule = \humhub\core\user\models\Module::findOne(['user_id' => 0, 'module_id' => $moduleId]);
             if ($userDefaultModule === null) {
-                $userDefaultModule = new UserApplicationModule();
+                $userDefaultModule = new \humhub\core\user\models\Module();
                 $userDefaultModule->module_id = $moduleId;
                 $userDefaultModule->user_id = 0;
-                $userDefaultModule->state = UserApplicationModule::STATE_DISABLED;
+                $userDefaultModule->state = \humhub\core\user\models\Module::STATE_DISABLED;
             }
             $model->userDefaultState = $userDefaultModule->state;
         }
 
 
-        if (isset($_POST['ModuleSetAsDefaultForm'])) {
-
-
-            $_POST['ModuleSetAsDefaultForm'] = Yii::$app->input->stripClean($_POST['ModuleSetAsDefaultForm']);
-            $model->attributes = $_POST['ModuleSetAsDefaultForm'];
-
-            if ($model->validate()) {
-
-                if ($module->isSpaceModule()) {
-                    $spaceDefaultModule->state = $model->spaceDefaultState;
-                    $spaceDefaultModule->save();
-                }
-
-                if ($module->isUserModule()) {
-                    $userDefaultModule->state = $model->userDefaultState;
-                    $userDefaultModule->save();
-                }
-
-                // close modal
-                $this->renderModalClose();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($module->isSpaceModule()) {
+                $spaceDefaultModule->state = $model->spaceDefaultState;
+                $spaceDefaultModule->save();
             }
+
+            if ($module->isUserModule()) {
+                $userDefaultModule->state = $model->userDefaultState;
+                $userDefaultModule->save();
+            }
+
+            return $this->renderModalClose();
         }
 
-        $this->renderPartial('setAsDefault', array('module' => $module, 'model' => $model), false, true);
+        return $this->renderAjax('setAsDefault', array('module' => $module, 'model' => $model));
     }
 
     public function getOnlineModuleManager()

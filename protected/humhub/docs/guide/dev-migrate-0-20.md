@@ -1,12 +1,14 @@
 # Migration Guide to HumHub 0.20
 
 ## ToDo
+- Modules
+	- Namespaces
+	- Change autostart.php -> avoid old loading probs?
 - Theming
+	- Also check themed files like module_images
 - Check Activity Situations
-- Some Core Modules
 - Check Update Progress
 - Activity/Notification - create own classes/views
-- Check Timezone
 - Emailing
 - CronJobs
 - Tests
@@ -14,18 +16,19 @@
 - Directory
 - Comments / Like
 - Files
-- Enricher Text
+- Enricher Text (Emoici / Mentioning)
 - Markdown Editor
-- Handling Old Module Loading Fails
 - Check CSRF Protection
 - Update Docs
 - Change licence class header 
 - Add Var Types to View Files
-- 
+- Caching
+- Url Rewriting
 
 
 ## Bugs
 
+- Check Timezone
 - Log Table not created on Installation
 
 
@@ -63,6 +66,8 @@ Quick Notes:
        Yii::$app->response->format = 'json'; return $json; 
 - createUrl removed -> Url::to()
 - CHtml methods reduced (e.g. no AjaxButton - use: \humhub\compat\widgets\AjaxButton instead
+- Behaviors
+	- $this->getOwner() replaced by $this->owner
 	
 
 ## Modules
@@ -153,10 +158,10 @@ TBD
 ### Models
 
 - New base classname for content records
-> \humhub\core\content\components\activerecords\Content
+> [[\humhub\core\content\components\activerecords\Content]]
 
 - New base classname for content addon records
-> \humhub\core\content\components\activerecords\ContentAddon
+> [[\humhub\core\content\components\activerecords\ContentAddon]]
 
 
 ### User
@@ -164,22 +169,23 @@ TBD
 We cleaned up the the humhub\core\user\components (\yii\web\User) class.
 Use: Yii::$app->user->getIdentity() Instead: Yii::$app->user->getModel()
 
-See humhub\core\user\components for more details.
+See [[\humhub\core\user\components\User]] for more details.
 
 ### Widgets
 
 - We recommend to remove the word Widget or/and the Module name from your classname when it's located in an own widget namespace.
-E.g. ActivityStreamWidget -> Stream
+E.g. ActivityStreamWidget -> [[\humhub\core\activity\widgets\Stream]]
 
 ### Urls
 
-ContainerContainer like Space/User still provides the method createUrl to build URLs in container context (sguid/uguid).
+[[\humhub\core\content\components\activerecords\ContentContainer::createUrl]] (Space/User) still provides the method createUrl to build URLs in container context (sguid/uguid).
 
 All other createUrl method are also not longer available.
 
 ### Activities
 
 Old Activity Example:
+
 ```php
 <?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>                    
 <?php
@@ -211,27 +217,88 @@ echo Yii::t('PostModule.views_activities_PostCreated', '%displayName% created a 
 Is now replaced by humhub\widgets\RichText
 
 Old:
-```
+
+```php
 echo HHtml::enrichTest($text);
 ```
 
 New:
-```
+
+```php
 echo humhub\widgets\RichText::widget(['text' => $text]);
 ```
 
-### TimeAgo
+#### TimeAgo
 
 Old:
 
-```
+```php
 echo HHtml::timeAgo($time);
 ```
 
 New:
 
-```
+```php
 echo \humhub\widgets\TimeAgo::widget(['timestamp' => $time]);
+```
+
+#### postLink
+
+New:
+
+```php
+echo Html::a($label, $url, ['data-method'=>'POST']);
+```
+
+
+
+### Modules
+
+#### General
+
+- Base Class: \humhub\components\Module
+
+
+#### Assets
+
+##### Publishing
+
+The asset/resources folder will not longer automatically published.
+
+Find more details about assets here:
+http://www.yiiframework.com/doc-2.0/guide-structure-assets.html
+
+##### Path
+The default path for module resources (javascripts, images, css, ...) was changed from asset to resources. ('/modules/example/resources').
+Also all HumHub module related files like Module Image or Screenshots should be located there.
+
+You can change this path back to 'assets' by overwriting the 'resourcesPath' Attribute in your Module class.
+
+e.g.
+
+```php
+class Module extends \humhub\components\Module
+{
+
+    public $resourcesPath = 'assets';
+           
+```
+
+#### Configuration 
+
+The URL handling to configure your module in **Administration -> Module** has changed.
+
+The method "getConfigUrl" in Module class is not longer used.
+Set configRoute attribute instead.
+
+e.g.
+
+
+```php
+class Module extends \humhub\components\Module
+{
+    public $configRoute = '/example/admin/config';
+           
 ```
 
 

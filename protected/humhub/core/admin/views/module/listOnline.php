@@ -40,7 +40,7 @@ use yii\helpers\Html;
 
             <?php foreach ($modules as $module): ?>
                 <hr/>
-                <div class="media <?php if (Yii::$app->moduleManager->isInstalled($module['id'])): ?>module-installed<?php endif; ?>">
+                <div class="media <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>module-installed<?php endif; ?>">
 
                     <?php
                     $moduleImageUrl = Yii::getAlias('@web/img/default_module.jpg');
@@ -55,7 +55,7 @@ use yii\helpers\Html;
 
                     <div class="media-body">
                         <h4 class="media-heading"><?php echo $module['name']; ?>
-                            <?php if (Yii::$app->moduleManager->isInstalled($module['id'])): ?>
+                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                 <small><span
                                         class="label label-success"><?php echo Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
                                 </small></span>
@@ -72,7 +72,7 @@ use yii\helpers\Html;
                                     &middot; <?php echo Yii::t('AdminModule.views_module_listOnline', 'Latest compatible version:'); ?>  <?php echo $module['latestCompatibleVersion']; ?>
                                 <?php endif; ?>
 
-                                <?php if (!Yii::$app->moduleManager->isInstalled($module['id'])): ?>
+                                <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                     &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'Install'), Url::to(['install', 'moduleId' => $module['id']]), array('style' => 'font-weight:bold', 'class' => 'process', 'data-method' => 'POST')); ?>
                                 <?php endif; ?>
 

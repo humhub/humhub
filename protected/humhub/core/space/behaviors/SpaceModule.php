@@ -22,8 +22,7 @@ namespace humhub\core\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
-use humhub\core\user\models\Follow;
+use humhub\core\space\models\Space;
 
 /**
  * This behavior should attached to a HWebModule when it provides a space module.
@@ -56,7 +55,7 @@ class SpaceModule extends Behavior
             $space = $this->getSpace();
         }
 
-        return $space->isModuleEnabled($this->getOwner()->getId());
+        return $space->isModuleEnabled($this->owner->getId());
     }
 
     /**
@@ -67,7 +66,7 @@ class SpaceModule extends Behavior
      */
     public function getSpaceModuleName()
     {
-        return $this->getOwner()->getName();
+        return $this->owner->getName();
     }
 
     /**
@@ -78,7 +77,7 @@ class SpaceModule extends Behavior
      */
     public function getSpaceModuleDescription()
     {
-        return $this->getOwner()->getDescription();
+        return $this->owner->getDescription();
     }
 
     /**
@@ -100,7 +99,7 @@ class SpaceModule extends Behavior
      */
     public function getSpaceModuleImage()
     {
-        return $this->getOwner()->getImage();
+        return $this->owner->getImage();
     }
 
     /**
