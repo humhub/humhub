@@ -1,5 +1,10 @@
 <?php
 
+namespace humhub\core\tour\widgets;
+
+use Yii;
+use humhub\models\Setting;
+
 /**
  * Will show the introduction tour
  *
@@ -7,7 +12,7 @@
  * @since 0.5
  * @author andystrobel
  */
-class TourWidget extends HWidget
+class Tour extends \humhub\components\Widget
 {
 
     /**
@@ -15,7 +20,8 @@ class TourWidget extends HWidget
      */
     public function run()
     {
-        if (Yii::app()->user->isGuest)
+
+        if (Yii::$app->user->isGuest)
             return;
 
         // Active tour flag not set
@@ -23,41 +29,39 @@ class TourWidget extends HWidget
             return;
         }
 
+        
         // Tour only possible when we are in a module
-        if (Yii::app()->controller->module === null) {
+        if (Yii::$app->controller->module === null) {
             return;
         }
 
         // Check if tour is activated by admin and users
-        if (HSetting::Get('enable', 'tour') == 0 || Yii::app()->user->getModel()->getSetting("hideTourPanel", "tour") == 1) {
+        if (Setting::Get('enable', 'tour') == 0 || Yii::$app->user->getIdentity()->getSetting("hideTourPanel", "tour") == 1) {
             return;
         }
 
-        $this->loadResources();
-
         // save current module and controller id's
-        $currentModuleId = Yii::app()->controller->module->id;
-        $currentControllerId = Yii::app()->controller->id;
+        $currentModuleId = Yii::$app->controller->module->id;
+        $currentControllerId = Yii::$app->controller->id;
 
         if ($currentModuleId == "dashboard" && $currentControllerId == "dashboard") {
-            $this->render('guide_interface');
+            return $this->render('guide_interface');
         } elseif ($currentModuleId == "space" && $currentControllerId == "space") {
-            $this->render('guide_spaces', array());
+            return $this->render('guide_spaces', array());
         } elseif ($currentModuleId == "user" && $currentControllerId == "profile") {
-            $this->render('guide_profile', array());
+            return $this->render('guide_profile', array());
         } elseif ($currentModuleId == "admin" && $currentControllerId == "module") {
-            $this->render('guide_administration', array());
+            return $this->render('guide_administration', array());
         }
     }
 
     /**
      * load needed resources files
      */
-    public function loadResources()
+    public function loadResources(\yii\web\View $view)
     {
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        Yii::app()->clientScript->registerScriptFile($assetPrefix . '/bootstrap-tour.min.js');
-        Yii::app()->clientScript->registerCssFile($assetPrefix . '/bootstrap-tour.min.css');
+        $view->registerJsFile('@web/resources/tour/bootstrap-tour.min.js');
+        $view->registerCssFile('@web/resources/tour/bootstrap-tour.min.css');
     }
 
 }

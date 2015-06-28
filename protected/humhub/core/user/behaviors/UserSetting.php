@@ -43,7 +43,7 @@ class UserSetting extends Behavior
      */
     public function getSetting($name, $moduleId = "core", $default = "")
     {
-        return \humhub\core\user\models\Setting::Get($this->owner->id, $name, $moduleId, $default);
+        return Setting::Get($this->owner->id, $name, $moduleId, $default);
     }
 
     /**
@@ -55,7 +55,7 @@ class UserSetting extends Behavior
      */
     public function setSetting($name, $value, $moduleId = "")
     {
-        \humhub\core\user\models\Setting::Set($this->owner->id, $name, $value, $moduleId);
+        Setting::Set($this->owner->id, $name, $value, $moduleId);
     }
 
 }

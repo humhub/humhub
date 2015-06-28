@@ -1,5 +1,11 @@
 <?php
 
+namespace humhub\core\tour\controllers;
+
+use Yii;
+use yii\web\HttpException;
+use humhub\core\space\models\Space;
+
 /**
  * TourController
  *
@@ -7,7 +13,7 @@
  * @package humhub.modules_core.tour.controllers
  * @since 0.5
  */
-class TourController extends Controller
+class TourController extends \humhub\components\Controller
 {
 
     /**
@@ -17,13 +23,13 @@ class TourController extends Controller
     {
 
         // get section parameter from completed tour
-        $section = Yii::app()->request->getParam('section');
+        $section = Yii::$app->request->get('section');
 
         if (!in_array($section, array('interface', 'administration', 'profile', 'spaces')))
             return;
 
         // set tour status to seen for current user
-        Yii::app()->user->getModel()->setSetting($section, 1, "tour");
+        Yii::$app->user->getIdentity()->setSetting($section, 1, "tour");
     }
 
     /*
@@ -33,7 +39,7 @@ class TourController extends Controller
     public function actionHidePanel()
     {
         // set tour status to seen for current user
-        Yii::app()->user->getModel()->setSetting('hideTourPanel', 1, "tour");
+        Yii::$app->user->getIdentity()->setSetting('hideTourPanel', 1, "tour");
     }
 
     /**
@@ -45,7 +51,7 @@ class TourController extends Controller
         $space = null;
 
         // Loop over all spaces where the user is member
-        foreach (SpaceMembership::GetUserSpaces() as $space) {
+        foreach (\humhub\core\space\models\Membership::GetUserSpaces() as $space) {
             if ($space->isAdmin()) {
                 // If user is admin on this space, it´s the perfect match
                 break;
@@ -55,14 +61,14 @@ class TourController extends Controller
         if ($space === null) {
             // If user is not member of any space, try to find a public space
             // to run tour in
-            $space = Space::model()->find('visibility!=' . Space::VISIBILITY_NONE);
+            $space = Space::findOne(['!=', 'visibility' => Space::VISIBILITY_NONE]);
         }
 
         if ($space === null) {
-            throw new CHttpException(404, 'Could not find any public space to run tour!');
+            throw new HttpException(404, 'Could not find any public space to run tour!');
         }
 
-        $this->redirect($space->getUrl(array('tour' => true)));
+        return $this->redirect($space->createUrl('/space/space', array('tour' => true)));
     }
 
 }

@@ -76,7 +76,7 @@ class Setting extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function beforeDelete2()
+    public function beforeDelete()
     {
         Yii::$app->cache->delete($this->getCacheId());
         return parent::beforeDelete();
@@ -100,7 +100,7 @@ class Setting extends \yii\db\ActiveRecord
         }
 
         $record = self::GetRecord($userId, $name, $moduleId);
-        $record->value = $value;
+        $record->value = (string) $value;
         $record->name = $name;
         $record->module_id = $moduleId;
 

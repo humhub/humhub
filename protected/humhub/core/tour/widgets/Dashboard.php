@@ -18,15 +18,17 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\tour\widgets;
+
 /**
  * @author andystrobel
  */
-class TourDashboardWidget extends HWidget
+class Dashboard extends \yii\base\Widget
 {
 
     public function run()
     {
-        $this->render('tourPanel');
+        return $this->render('tourPanel');
     }
 
 }

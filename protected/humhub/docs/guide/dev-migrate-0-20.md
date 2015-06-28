@@ -66,6 +66,7 @@ Quick Notes:
 - Model: Validator  
  - Use array for multiple attributes
  - Validator changes Numeric->Integer ... 
+ - String validator doesn't allow Integer Types (cast!)
  - Scenarios now in separate methods secenarios()
  - User::model()->findByPk($idy); -> User::findOne(['id'=>$id); 
  - Check beforeSave/afterSave when overwriting they may have parameters

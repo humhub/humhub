@@ -1,18 +1,14 @@
 <?php
 
-# Disable until migrated
-return;
+use humhub\core\dashboard\widgets\Sidebar;
+use humhub\core\tour\Module;
 
-Yii::app()->moduleManager->register(array(
+Yii::$app->moduleManager->register(array(
     'id' => 'tour',
-    'class' => 'application.modules_core.tour.TourModule',
+    'class' => Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.tour.*',
-    ),
-    // Events to Catch
     'events' => array(
-        array('class' => 'DashboardSidebarWidget', 'event' => 'onInit', 'callback' => array('TourModule', 'onDashboardSidebarInit')),
+        array('class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => array(Module::className(), 'onDashboardSidebarInit')),
     ),
 ));
 ?>
