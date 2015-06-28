@@ -588,6 +588,16 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
     }
 
     /**
+     * User can approve other users
+     * 
+     * @return type
+     */
+    public function canApproveUsers()
+    {
+        return ($this->super_admin);
+    }
+
+    /**
      * Checks if the user can create public spaces
      * 
      * @return boolean

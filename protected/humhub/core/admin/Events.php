@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\core\admin;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin
  * @since 0.5
  */
-class AdminModuleEvents
+class Events extends \yii\base\Object
 {
 
     /**
@@ -14,8 +18,8 @@ class AdminModuleEvents
      */
     public static function onDashboardSidebarInit($event)
     {
-        if (Yii::app()->user->canApproveUsers()) {
-            $event->sender->addWidget('application.modules_core.admin.widgets.ApprovalDashboardWidget', array(), array('sortOrder' => 99));
+        if (Yii::$app->user->getIdentity()->canApproveUsers()) {
+            $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
         }
     }
 

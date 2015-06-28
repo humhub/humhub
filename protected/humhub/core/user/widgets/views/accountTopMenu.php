@@ -46,7 +46,7 @@ $user = Yii::$app->user->getIdentity();
 
 
                 <!-- if the current user has admin rights -->
-                <?php if (Setting::Get('needApproval', 'authentication_internal') && (Yii::$app->user->isAdmin() || Yii::$app->user->canApproveUsers())) : ?>
+                <?php if (Setting::Get('needApproval', 'authentication_internal') && (Yii::$app->user->isAdmin() || Yii::$app->user->getIdentity()->canApproveUsers())) : ?>
                     <li>
                         <a href="<?php echo Url::toRoute('/admin/approval'); ?>"><i
                                 class="fa fa-check-circle"></i> <?php echo Yii::t('base', 'User Approvals'); ?>

@@ -10,6 +10,7 @@ namespace humhub\core\admin\widgets;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\models\Setting;
 
 /**
  * Description of AdminMenu
@@ -47,9 +48,9 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'url' => Url::toRoute('/admin/approval'),
             'icon' => '<i class="fa fa-check-circle"></i>',
             'group' => 'manage',
-            'sortOrder' => 200,
+            'sortOrder' => 201,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'approval'),
-                //'isVisible' => Yii::$app->user->canApproveUsers(),
+            'isVisible' => (Setting::Get('needApproval', 'authentication_internal') && Yii::$app->user->getIdentity()->canApproveUsers()),
         ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Groups'),

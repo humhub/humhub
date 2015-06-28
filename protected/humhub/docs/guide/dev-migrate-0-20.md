@@ -32,6 +32,7 @@ Quick Guide about
 - Add Var Types to View Files
 - Caching
 	- HSetting
+	- UserModel: CanApproveUsers
 - Url Rewriting
 
 ### Bugs

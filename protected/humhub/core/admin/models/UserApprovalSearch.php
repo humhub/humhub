@@ -51,7 +51,7 @@ class UserApprovalSearch extends User
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params=[])
     {
         $query = User::find()->joinWith(['profile', 'group']);
 

@@ -1,12 +1,16 @@
 <?php
 
+use humhub\core\dashboard\widgets\Sidebar;
+use humhub\core\admin\Events;
+use humhub\commands\CronController;
+
 \Yii::$app->moduleManager->register(array(
     'id' => 'admin',
     'class' => \humhub\core\admin\Module::className(),
     'isCoreModule' => true,
     'events' => array(
-        //array('class' => 'DashboardSidebarWidget', 'event' => 'onInit', 'callback' => array('AdminModuleEvents', 'onDashboardSidebarInit')),
-        //array('class' => 'ZCronRunner', 'event' => 'onDailyRun', 'callback' => array('AdminModuleEvents', 'onCronDailyRun')),
+        ['class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => array(Events::className(), 'onDashboardSidebarInit')],
+        ['class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => array(Events::className(), 'onCronDailyRun')],
     ),
 ));
 ?>
