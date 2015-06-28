@@ -150,10 +150,7 @@ class Stream extends \yii\base\Action
             $this->activeQuery->andWhere(['content.object_model' => \humhub\core\activity\models\Activity::className()]);
             # Dont show own activities
             if ($this->user != null) {
-                $this->activeQuery->leftJoin('activity', [
-                    'content.object_id' => 'activity.id',
-                    'content.object_model' => 'Activity'
-                ]);
+                $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\core\activity\models\Activity::className()]);
                 $this->activeQuery->andWhere('content.user_id != :userId', array(':userId' => $this->user->id));
             }
         } else {

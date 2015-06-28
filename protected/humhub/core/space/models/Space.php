@@ -137,7 +137,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
         if ($insert) {
             // Create new wall record for this space
             $wall = new Wall();
-            $wall->object_model = 'Space';
+            $wall->object_model = $this->className();
             $wall->object_id = $this->id;
             $wall->save();
             $this->wall_id = $wall->id;

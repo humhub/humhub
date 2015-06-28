@@ -23,7 +23,7 @@ class DashboardController extends Controller
     {
         return [
             'stream' => [
-                'class' => 'humhub\core\content\components\actions\Stream',
+                'class' => \humhub\core\dashboard\components\actions\DashboardStream::className(),
             ],
         ];
     }

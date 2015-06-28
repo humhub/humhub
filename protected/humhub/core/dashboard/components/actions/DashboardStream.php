@@ -18,6 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\dashboard\components\actions;
+
+use Yii;
+
 /**
  * DashboardStreamAction
  * Note: This stream action is also used for activity e-mail content.
@@ -32,7 +36,6 @@ class DashboardStream extends \humhub\core\content\components\actions\Stream
     public function init()
     {
         parent::init();
-        return;
 
         if ($this->user == null) {
 
@@ -55,57 +58,57 @@ class DashboardStream extends \humhub\core\content\components\actions\Stream
             $this->criteria->condition .= ' AND (wall_entry.wall_id IN (' . $publicSpacesSql . ') OR wall_entry.wall_id IN (' . $publicProfilesSql . '))';
             $this->criteria->condition .= ' AND content.visibility=' . Content::VISIBILITY_PUBLIC;
         } else {
+
             /**
              * Collect all wall_ids we need to include into dashboard stream
              */
             // User to user follows
-            $userFollow = Yii::app()->db->createCommand()
-                    ->select("uf.wall_id")
+            $userFollow = (new \yii\db\Query())
+                    ->select(["uf.wall_id"])
                     ->from('user_follow')
-                    ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model="User"')
-                    ->where('user_follow.user_id=' . $this->user->id . ' AND uf.wall_id IS NOT NULL')
-                    ->getText();
+                    ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=\'User\'')
+                    ->where('user_follow.user_id=' . $this->user->id . ' AND uf.wall_id IS NOT NULL');
+            $union = Yii::$app->db->getQueryBuilder()->build($userFollow)[0];
 
             // User to space follows
-            $spaceFollow = Yii::app()->db->createCommand()
+            $spaceFollow = (new \yii\db\Query())
                     ->select("sf.wall_id")
                     ->from('user_follow')
                     ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model="Space"')
-                    ->where('user_follow.user_id=' . $this->user->id . ' AND sf.wall_id IS NOT NULL')
-                    ->getText();
+                    ->where('user_follow.user_id=' . $this->user->id . ' AND sf.wall_id IS NOT NULL');
+            $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceFollow)[0];
 
             // User to space memberships
-            $spaceMemberships = Yii::app()->db->createCommand()
+            $spaceMemberships = (new \yii\db\Query())
                     ->select("sm.wall_id")
                     ->from('space_membership')
                     ->leftJoin('space sm', 'sm.id=space_membership.space_id')
-                    ->where('space_membership.user_id=' . $this->user->id . ' AND sm.wall_id IS NOT NULL')
-                    ->getText();
+                    ->where('space_membership.user_id=' . $this->user->id . ' AND sm.wall_id IS NOT NULL');
+            $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0];
 
             // Glue together also with current users wall
-            $wallIdsSql = Yii::app()->db->createCommand()
+            $wallIdsSql = (new \yii\db\Query())
                     ->select('wall_id')
                     ->from('user uw')
-                    ->where('uw.id=' . $this->user->id)
-                    ->union($spaceMemberships)
-                    ->union($spaceFollow)
-                    ->union($userFollow)
-                    ->getText();
+                    ->where('uw.id=' . $this->user->id);
+            $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
-            $this->criteria->condition .= ' AND wall_entry.wall_id IN (' . $wallIdsSql . ')';
+            // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
+            $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $union . ')');
 
             /**
              * Begin visibility checks regarding the content container
              */
-            // In case of an space entry, we need to join the space membership to verify the user can see private space content
-            $this->criteria->join .= ' LEFT JOIN wall ON wall.id = wall_entry.wall_id';
-            $this->criteria->join .= ' LEFT JOIN space_membership ON wall.object_id = space_membership.space_id AND space_membership.user_id=:userId AND space_membership.status=' . SpaceMembership::STATUS_MEMBER;
+            $this->activeQuery->leftJoin('wall', 'wall_entry.wall_id=wall.id');
+            $this->activeQuery->leftJoin(
+                    'space_membership', 'wall.object_id=space_membership.space_id AND space_membership.user_id=:userId AND space_membership.status=:status', ['userId' => $this->user->id, ':status' => \humhub\core\space\models\Membership::STATUS_MEMBER]
+            );
 
-            $this->criteria->condition .= ' AND ( ';
-            $this->criteria->condition .= ' (wall.object_model="user" AND content.visibility=0 AND content.user_id = :userId) OR ';
-            $this->criteria->condition .= ' (wall.object_model="space" AND content.visibility = 0 AND space_membership.status = ' . SpaceMembership::STATUS_MEMBER . ') OR ';
-            $this->criteria->condition .= ' (content.visibility = 1 OR content.visibility IS NULL) ';
-            $this->criteria->condition .= ' )';
+            // In case of an space entry, we need to join the space membership to verify the user can see private space content
+            $condition = ' (wall.object_model=:userModel AND content.visibility=0 AND content.user_id = :userId) OR ';
+            $condition .= ' (wall.object_model=:spaceModel AND content.visibility = 0 AND space_membership.status = ' . \humhub\core\space\models\Membership::STATUS_MEMBER . ') OR ';
+            $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) ';
+            $this->activeQuery->andWhere($condition, [':userId' => $this->user->id, ':spaceModel' => \humhub\core\space\models\Space::className(), ':userModel' => \humhub\core\user\models\User::className()]);
         }
     }
 
