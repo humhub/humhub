@@ -1,6 +1,15 @@
 # Migration Guide to HumHub 0.20
 
+Quick Guide about 
+- Open Points ( ToDos, To Check, Bugs)
+- Short Yii2 Change Summary
+- HumHub Changes
+
+
 ## ToDo
+
+### Migrate
+
 - Modules
 	- Namespaces
 	- Change autostart.php -> avoid old loading probs?
@@ -9,10 +18,9 @@
 - Check Activity Situations
 - Check Update Progress
 - Activity/Notification - create own classes/views
-- Emailing
+- Emailing (New Config Option)
 - CronJobs
-- Tests
-- HSetting -> Add Caching & Co -> E-Mailing (New Test Setting)
+- Add Tests
 - Directory
 - Comments / Like
 - Files
@@ -23,13 +31,18 @@
 - Change licence class header 
 - Add Var Types to View Files
 - Caching
+	- HSetting
 - Url Rewriting
 
+### Bugs
 
-## Bugs
-
-- Check Timezone
 - Log Table not created on Installation
+- Modal Confirm doesn't disappear
+
+### To Check
+
+- Comment in new Window Mode
+- Check Timezone
 
 
 ## Core Changes

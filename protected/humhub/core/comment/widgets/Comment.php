@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\comment\widgets;
+
 /**
  * This widget is used to show a single comment.
  *
@@ -8,7 +10,7 @@
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class ShowCommentWidget extends HWidget
+class Comment extends \yii\base\Widget
 {
 
     /**
@@ -31,11 +33,11 @@ class ShowCommentWidget extends HWidget
 
         $user = $this->comment->user;
 
-        $this->render('showComment', array(
-            'comment' => $this->comment,
-            'user' => $user,
-            'justEdited' => $this->justEdited,
-                )
+        return $this->render('showComment', array(
+                    'comment' => $this->comment,
+                    'user' => $user,
+                    'justEdited' => $this->justEdited,
+                        )
         );
     }
 

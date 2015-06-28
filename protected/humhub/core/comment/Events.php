@@ -1,25 +1,20 @@
 <?php
 
 /**
- * CommentModule adds the comment content addon functionalities.
- *
- * @package humhub.modules_core.comment
- * @since 0.5
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
-class CommentModule extends HWebModule
+
+namespace humhub\core\comment;
+
+/**
+ * Description of Events
+ *
+ * @author luke
+ */
+class Events extends \yii\base\Object
 {
-
-    /**
-     * Maximum comments to load at once
-     * 
-     * @var int
-     */
-    public $commentsBlockLoadSize = 25;
-
-    /**
-     * @var boolean
-     */
-    public $isCoreModule = true;
 
     /**
      * On content deletion make sure to delete all its comments
@@ -29,7 +24,7 @@ class CommentModule extends HWebModule
     public static function onContentDelete($event)
     {
 
-        foreach (Comment::model()->findAllByAttributes(array('object_model' => get_class($event->sender), 'object_id' => $event->sender->id)) as $comment) {
+        foreach (models\Comment::find()->where(['object_model' => $event->sender->className(), 'object_id' => $event->sender->id])->all() as $comment) {
             $comment->delete();
         }
     }
@@ -77,7 +72,7 @@ class CommentModule extends HWebModule
      */
     public static function onWallEntryLinksInit($event)
     {
-        $event->sender->addWidget('application.modules_core.comment.widgets.CommentLinkWidget', array('object' => $event->sender->object), array('sortOrder' => 10));
+        $event->sender->addWidget(widgets\Link::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
     }
 
     /**
@@ -87,7 +82,7 @@ class CommentModule extends HWebModule
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget('application.modules_core.comment.widgets.CommentsWidget', array('object' => $event->sender->object), array('sortOrder' => 20));
+        $event->sender->addWidget(widgets\Comments::className(), array('object' => $event->sender->object), array('sortOrder' => 20));
     }
 
 }

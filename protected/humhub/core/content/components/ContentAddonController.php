@@ -18,7 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 
-namespace humhub\core\content\components\ContentAddonController;
+namespace humhub\core\content\components;
+
+use Yii;
+use yii\web\HttpException;
 
 /**
  * ContentAddonController is a base controller for ContentAddons.
@@ -31,7 +34,7 @@ namespace humhub\core\content\components\ContentAddonController;
  * @author luke
  * @version 0.11
  */
-class ContentAddonController extends Controller
+class ContentAddonController extends \humhub\components\Controller
 {
 
     /**
@@ -77,23 +80,28 @@ class ContentAddonController extends Controller
     public function beforeAction($action)
     {
 
-        $modelClass = Yii::app()->request->getParam('contentModel');
-        $pk = (int) Yii::app()->request->getParam('contentId');
+        $modelClass = Yii::$app->request->get('contentModel');
+        $pk = (int) Yii::$app->request->get('contentId');
+
+        // Fixme
+        if ($modelClass == '') {
+            $modelClass = Yii::$app->request->post('contentModel');
+            $pk = (int) Yii::$app->request->post('contentId');
+        }
+
 
         if ($modelClass == "" || $pk == "") {
-            throw new CHttpException(500, 'Model & ID parameter required!');
+            throw new HttpException(500, 'Model & ID parameter required!');
         }
 
-        Helpers::CheckClassType($modelClass, array('HActiveRecordContentAddon', 'HActiveRecordContent'));
-
-        $model = call_user_func(array($modelClass, 'model'));
-        $target = $model->findByPk($pk);
+        \humhub\libs\Helpers::CheckClassType($modelClass, array(activerecords\ContentAddon::className(), activerecords\Content::className()));
+        $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
-            throw new CHttpException(500, 'Could not find underlying content or content addon record!');
+            throw new HttpException(500, 'Could not find underlying content or content addon record!');
         }
 
-        if ($target instanceof HActiveRecordContentAddon) {
+        if ($target instanceof activerecords\ContentAddon) {
             $this->parentContentAddon = $target;
             $this->parentContent = $target->getSource();
         } else {
@@ -101,7 +109,7 @@ class ContentAddonController extends Controller
         }
 
         if (!$this->parentContent->content->canRead()) {
-            throw new CHttpException(403, 'Access denied!');
+            throw new HttpException(403, 'Access denied!');
         }
 
         $this->contentModel = get_class($target);
@@ -119,19 +127,18 @@ class ContentAddonController extends Controller
      */
     public function loadContentAddon($className, $pk)
     {
-        if (!Helpers::CheckClassType($className, 'HActiveRecordContentAddon')) {
-            throw new CException("Given className is not a content addon model!");
+        if (!\humhub\libs\Helpers::CheckClassType($className, activerecords\ContentAddon::className())) {
+            throw new \yii\base\Exception("Given className is not a content addon model!");
         }
 
-        $model = call_user_func(array($className, 'model'));
-        $target = $model->findByPk($pk);
+        $target = $className::findOne(['id' => $pk]);
 
         if ($target === null) {
-            throw new CHttpException(500, 'Could not find content addon record!');
+            throw new HttpException(500, 'Could not find content addon record!');
         }
 
         if ($target->object_model != get_class($this->parentContent) && $target->object_id != $this->parentContent->getPrimaryKey()) {
-            throw new CHttpException(500, 'Content addon not belongs to given content record!');
+            throw new HttpException(500, 'Content addon not belongs to given content record!');
         }
 
         $this->contentAddon = $target;

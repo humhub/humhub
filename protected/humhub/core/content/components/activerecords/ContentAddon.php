@@ -20,6 +20,8 @@
 
 namespace humhub\core\content\components\activerecords;
 
+use Yii;
+use yii\base\Exception;
 use humhub\components\ActiveRecord;
 
 /**
@@ -62,14 +64,14 @@ class ContentAddon extends ActiveRecord
             return $this->_content;
         }
 
-        if ($this->source instanceof HActiveRecordContent) {
+        if ($this->source instanceof Content) {
             $this->_content = $this->source->content;
-        } elseif ($this->source instanceof HActiveRecordContentAddon && $this->source->source instanceof HActiveRecordContent) {
+        } elseif ($this->source instanceof ContentAddon && $this->source->source instanceof Content) {
             $this->_content = $this->source->source->content;
         }
 
         if ($this->_content == null) {
-            throw new CHttpException(500, Yii::t('base', 'Could not find content of addon!'));
+            throw new Exception(Yii::t('base', 'Could not find content of addon!'));
         }
 
         return $this->_content;
@@ -97,11 +99,11 @@ class ContentAddon extends ActiveRecord
         }
 
         if (!class_exists($className)) {
-            Yii::log("Source class of content addon not found (" . $className . ") not found!", CLogger::LEVEL_ERROR);
+            Yii::er("Source class of content addon not found (" . $className . ") not found!");
             return null;
         }
 
-        $this->_source = $className::model()->findByPk($pk);
+        $this->_source = $className::findOne(['id' => $pk]);
         return $this->_source;
     }
 
@@ -113,7 +115,7 @@ class ContentAddon extends ActiveRecord
      */
     public function canDelete()
     {
-        if ($this->created_by == Yii::app()->user->id) {
+        if ($this->created_by == Yii::$app->user->id) {
             return true;
         }
 
@@ -127,7 +129,7 @@ class ContentAddon extends ActiveRecord
      */
     public function canRead()
     {
-        return $this->content->canRead(Yii::app()->user->id);
+        return $this->content->canRead(Yii::$app->user->id);
     }
 
     /**
@@ -137,7 +139,7 @@ class ContentAddon extends ActiveRecord
      */
     public function canWrite()
     {
-        if ($this->created_by == Yii::app()->user->id) {
+        if ($this->created_by == Yii::$app->user->id) {
             return true;
         }
 
@@ -166,7 +168,7 @@ class ContentAddon extends ActiveRecord
     {
 
         if ($this->source != null) {
-            if (!$this->source instanceof HActiveRecordContentAddon && !$this->source instanceof HActiveRecordContent) {
+            if (!$this->source instanceof ContentAddon && !$this->source instanceof Content) {
                 $this->addError('object_model', Yii::t('base', 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'));
             }
         }

@@ -63,12 +63,12 @@ class Events extends \yii\base\Object
     public static function onActiveRecordDelete($event)
     {
 
-        $model = get_class($event->sender);
+        $model = $event->sender->className();
         $pk = $event->sender->getPrimaryKey();
 
         // Check if primary key exists and is not array (multiple pk) 
         if ($pk !== null && !is_array($pk)) {
-            foreach (Activity::model()->findAllByAttributes(array('object_id' => $pk, 'object_model' => $model)) as $activity) {
+            foreach (models\Activity::find()->where(['object_id' => $pk, 'object_model' => $model])->all() as $activity) {
                 $activity->delete();
             }
         }

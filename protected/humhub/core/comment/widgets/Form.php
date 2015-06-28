@@ -18,6 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\comment\widgets;
+
+use Yii;
+
 /**
  * This widget is used include the comments functionality to a wall entry.
  *
@@ -27,7 +31,7 @@
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class CommentFormWidget extends HWidget
+class Form extends \yii\base\Widget
 {
 
     /**
@@ -41,17 +45,17 @@ class CommentFormWidget extends HWidget
     public function run()
     {
 
-        if (Yii::app()->user->isGuest)
+        if (Yii::$app->user->isGuest)
             return "";
-        
+
         $modelName = $this->object->content->object_model;
         $modelId = $this->object->content->object_id;
         $id = $modelName . "_" . $modelId;
 
-        $this->render('form', array(
-            'modelName' => $modelName,
-            'modelId' => $modelId,
-            'id' => $modelName . "_" . $modelId,
+        return $this->render('form', array(
+                    'modelName' => $modelName,
+                    'modelId' => $modelId,
+                    'id' => $this->object->getUniqueId(),
         ));
     }
 

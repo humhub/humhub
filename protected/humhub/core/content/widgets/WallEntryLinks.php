@@ -1,6 +1,6 @@
 <?php
-namespace humhub\core\content\widgets;
 
+namespace humhub\core\content\widgets;
 
 /**
  * WallEntryLinksWidget is an instance of StackWidget.
@@ -11,7 +11,8 @@ namespace humhub\core\content\widgets;
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class WallEntryLinksWidget extends StackWidget {
+class WallEntryLinks extends \humhub\widgets\BaseStack
+{
 
     /**
      * Object derived from HActiveRecordContent

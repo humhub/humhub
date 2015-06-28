@@ -1,12 +1,14 @@
 <?php
 
+namespace humhub\core\comment\widgets;
+
 /**
  * This widget is used to show a comment link inside the wall entry controls.
  *
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class CommentLinkWidget extends HWidget
+class Link extends \yii\base\Widget
 {
 
     const MODE_INLINE = 'inline';
@@ -36,11 +38,11 @@ class CommentLinkWidget extends HWidget
         if ($this->mode == "")
             $this->mode = self::MODE_INLINE;
 
-        $this->render('link', array(
-            'id' => $this->object->content->object_model . "_" . $this->object->content->object_id,
-            'mode' => $this->mode,
-            'objectModel' => $this->object->content->object_model,
-            'objectId' => $this->object->content->object_id,
+        return $this->render('link', array(
+                    'id' => $this->object->getUniqueId(),
+                    'mode' => $this->mode,
+                    'objectModel' => $this->object->content->object_model,
+                    'objectId' => $this->object->content->object_id,
         ));
     }
 
@@ -51,7 +53,7 @@ class CommentLinkWidget extends HWidget
      */
     public function getCommentsCount()
     {
-        return Comment::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
+        return \humhub\core\comment\models\Comment::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
     }
 
 }

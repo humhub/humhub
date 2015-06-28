@@ -1,5 +1,9 @@
 <?php
 
+namespace humhub\core\comment\models;
+
+use Yii;
+
 /**
  * This is the model class for table "comment".
  *
@@ -21,23 +25,13 @@
  * @package humhub.modules_core.comment.models
  * @since 0.5
  */
-class Comment extends HActiveRecordContentAddon
+class Comment extends \humhub\core\content\components\activerecords\ContentAddon
 {
 
     /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return Comment the static model class
+     * @inheritdoc
      */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public static function tableName()
     {
         return 'comment';
     }
@@ -47,18 +41,9 @@ class Comment extends HActiveRecordContentAddon
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array('created_by, updated_by, space_id', 'numerical', 'integerOnly' => true),
-            array('message, created_at, space_id, updated_at', 'safe'),
-        );
-    }
-
-    public function relations()
-    {
-        return array(
-            'user' => array(static::BELONGS_TO, 'User', 'created_by')
+            array(['created_by', 'updated_by', 'space_id'], 'integer'),
+            array(['message', 'created_at', 'space_id', 'updated_at'], 'safe'),
         );
     }
 
@@ -66,10 +51,10 @@ class Comment extends HActiveRecordContentAddon
      * Before Delete, remove LikeCount (Cache) of target object.
      * Remove activity
      */
-    protected function beforeDelete()
+    public function beforeDelete()
     {
         $this->flushCache();
-        Notification::remove('Comment', $this->id);
+        //Notification::remove('Comment', $this->id);
         return parent::beforeDelete();
     }
 
@@ -78,12 +63,12 @@ class Comment extends HActiveRecordContentAddon
      */
     public function flushCache()
     {
-        Yii::app()->cache->delete('commentCount_' . $this->object_model . '_' . $this->object_id);
-        Yii::app()->cache->delete('commentsLimited_' . $this->object_model . '_' . $this->object_id);
+        Yii::$app->cache->delete('commentCount_' . $this->object_model . '_' . $this->object_id);
+        Yii::$app->cache->delete('commentsLimited_' . $this->object_model . '_' . $this->object_id);
 
         // delete workspace comment stats cache
         if (!empty($this->space_id)) {
-            Yii::app()->cache->delete('workspaceCommentCount_' . $this->space_id);
+            Yii::$app->cache->delete('workspaceCommentCount_' . $this->space_id);
         }
     }
 
@@ -92,28 +77,29 @@ class Comment extends HActiveRecordContentAddon
      *
      * @return type
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         // flush the cache
         $this->flushCache();
 
-        $activity = Activity::CreateForContent($this);
+        $activity = \humhub\core\activity\models\Activity::CreateForContent($this);
         $activity->type = "CommentCreated";
         $activity->module = "comment";
         $activity->save();
         $activity->fire();
 
-        // Handle mentioned users
-        // Execute before NewCommentNotification to avoid double notification when mentioned.
-        UserMentioning::parse($this, $this->message);
+        /*
+          // Handle mentioned users
+          // Execute before NewCommentNotification to avoid double notification when mentioned.
+          UserMentioning::parse($this, $this->message);
 
-        if ($this->isNewRecord) {
-            // Send Notifications
-            NewCommentNotification::fire($this);
-        }
-        
+          if ($this->isNewRecord) {
+          // Send Notifications
+          NewCommentNotification::fire($this);
+          }
+         */
 
-        return parent::afterSave();
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -127,18 +113,19 @@ class Comment extends HActiveRecordContentAddon
     public static function GetCommentsLimited($model, $id, $limit = 2)
     {
         $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
-        $comments = Yii::app()->cache->get($cacheID);
+        $comments = Yii::$app->cache->get($cacheID);
 
         if ($comments === false) {
             $commentCount = self::GetCommentCount($model, $id);
 
-            $criteria = new CDbCriteria;
-            $criteria->order = "created_at ASC";
-            $criteria->offset = ($commentCount - $limit);
-            $criteria->limit = $limit;
+            $query = Comment::find();
+            $query->offset($commentCount - $limit);
+            $query->orderBy('created_at ASC');
+            $query->limit($limit);
+            $query->where(['object_model' => $model, 'object_id' => $id]);
 
-            $comments = Comment::model()->findAllByAttributes(array('object_model' => $model, 'object_id' => $id), $criteria);
-            Yii::app()->cache->set($cacheID, $comments, HSetting::Get('expireTime', 'cache'));
+            $comments = $query->all();
+            Yii::$app->cache->set($cacheID, $comments, \humhub\models\Setting::Get('expireTime', 'cache'));
         }
 
         return $comments;
@@ -154,11 +141,11 @@ class Comment extends HActiveRecordContentAddon
     public static function GetCommentCount($model, $id)
     {
         $cacheID = sprintf("commentCount_%s_%s", $model, $id);
-        $commentCount = Yii::app()->cache->get($cacheID);
+        $commentCount = Yii::$app->cache->get($cacheID);
 
         if ($commentCount === false) {
-            $commentCount = Comment::model()->countByAttributes(array('object_model' => $model, 'object_id' => $id));
-            Yii::app()->cache->set($cacheID, $commentCount, HSetting::Get('expireTime', 'cache'));
+            $commentCount = Comment::find()->where(['object_model' => $model, 'object_id' => $id])->count();
+            Yii::$app->cache->set($cacheID, $commentCount, \humhub\models\Setting::Get('expireTime', 'cache'));
         }
 
         return $commentCount;
@@ -172,27 +159,32 @@ class Comment extends HActiveRecordContentAddon
      */
     public function getContentTitle()
     {
-        return Yii::t('CommentModule.models_comment', 'Comment') . " \"" . Helpers::truncateText($this->message, 40) . "\"";
+        return Yii::t('CommentModule.models_comment', 'Comment') . " \"" . \humhub\libs\Helpers::truncateText($this->message, 40) . "\"";
     }
 
     public function canDelete($userId = "")
     {
 
         if ($userId == "")
-            $userId = Yii::app()->user->id;
+            $userId = Yii::$app->user->id;
 
         if ($this->created_by == $userId)
             return true;
 
-        if (Yii::app()->user->isAdmin()) {
+        if (Yii::$app->user->isAdmin()) {
             return true;
         }
 
-        if ($this->content->container instanceof Space && $this->content->container->isAdmin($userId)) {
+        if ($this->content->container instanceof \humhub\core\space\models\Space && $this->content->container->isAdmin($userId)) {
             return true;
         }
 
         return false;
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'created_by']);
     }
 
 }

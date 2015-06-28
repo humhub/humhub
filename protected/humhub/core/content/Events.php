@@ -78,8 +78,7 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryAddonInit($event)
     {
-
-        $event->sender->addWidget('application.modules_core.wall.widgets.WallEntryLinksWidget', array(
+        $event->sender->addWidget(widgets\WallEntryLinks::className(), array(
             'object' => $event->sender->object,
             'seperator' => "&nbsp;&middot;&nbsp;",
             'template' => '<div class="wall-entry-controls">{content}</div>',

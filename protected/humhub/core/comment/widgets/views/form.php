@@ -1,63 +1,69 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
 
+use yii\helpers\Html;
+use yii\helpers\Url;
+use humhub\compat\widgets\AjaxButton;
+?>
 
 <?php /* BEGIN: Comment Create Form */ ?>
 <div id="comment_create_form_<?php echo $id; ?>" class="comment_create">
 
-    <?php echo CHtml::form("#"); ?>
-    <?php echo CHtml::hiddenField('contentModel', $modelName); ?>
-    <?php echo CHtml::hiddenField('contentId', $modelId); ?>
+    <?php echo Html::beginForm("#"); ?>
+    <?php echo Html::hiddenInput('contentModel', $modelName); ?>
+    <?php echo Html::hiddenInput('contentId', $modelId); ?>
 
-    <?php echo CHtml::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
+    <?php echo Html::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
+
+    <?php echo humhub\widgets\RichTextEditor::widget(['id' => 'newCommentForm_' . $id]); ?>
+
 
     <?php
-    $this->widget('application.widgets.HEditorWidget', array(
-        'id' => 'newCommentForm_' . $id,
-    ));
+    /*
+      // Creates Uploading Button
+      $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
+      'uploaderId' => 'comment_upload_' . $id,
+      'fileListFieldName' => 'fileList',
+      ));
+     * 
+     */
     ?>
 
     <?php
-    // Creates Uploading Button
-    $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-        'uploaderId' => 'comment_upload_' . $id,
-        'fileListFieldName' => 'fileList',
-    ));
-    ?>
-
-    <?php
-    echo HHtml::ajaxSubmitButton(Yii::t('CommentModule.widgets_views_form', 'Post'), CHtml::normalizeUrl(array('/comment/comment/post')), array(
-            'type' => 'POST',
-            'success' => "function(html) {
-            
+    $jsSuccess = "function(html) {
             $('#comments_area_" . $id . "').append(html);
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
-            $('#newCommentForm_" . $id . "_contenteditable').html('" . CHtml::encode(Yii::t('CommentModule.widgets_views_form', 'Write a new comment...')) . "');
+            $('#newCommentForm_" . $id . "_contenteditable').html('" . Html::encode(Yii::t('CommentModule.widgets_views_form', 'Write a new comment...')) . "');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
             resetUploader('comment_upload_" . $id . "');
+    }";
 
-        }",
-        ), array(
+    // TODO: Submit?
+    echo AjaxButton::widget([
+        'label' => Yii::t('CommentModule.widgets_views_form', 'Post'),
+        'ajaxOptions' => [
+            'type' => 'POST',
+            'success' => new yii\web\JsExpression($jsSuccess),
+            'url' => Url::to(['/comment/comment/post']),
+        ],
+        'htmlOptions' => [
             'id' => "comment_create_post_" . $id,
             'class' => 'btn btn-small btn-primary',
             'style' => 'position: absolute; left: -90000000px; opacity: 0;',
-        )
-    );
-    ?>
+        ],
+    ]);
+    ?>    
 
-    <?php echo Chtml::endForm(); ?>
+    <?php echo Html::endForm(); ?>
 
 
     <?php
-    // Creates a list of already uploaded Files
-    $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
-        'uploaderId' => 'comment_upload_' . $id,
-    ));
+    /*
+      // Creates a list of already uploaded Files
+      $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
+      'uploaderId' => 'comment_upload_' . $id,
+      ));
+     * 
+     */
     ?>
 </div>
 
