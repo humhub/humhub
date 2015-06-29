@@ -1,5 +1,11 @@
 <?php
 
+namespace humhub\core\like\models;
+
+use humhub\core\activity\models\Activity;
+use humhub\models\Setting;
+use Yii;
+
 /**
  * This is the model class for table "like".
  *
@@ -16,55 +22,40 @@
  * @package humhub.modules_core.like.models
  * @since 0.5
  */
-class Like extends HActiveRecordContentAddon {
-
-    /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return Like the static model class
-     */
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
-    }
+class Like extends \humhub\core\content\components\activerecords\ContentAddon
+{
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public static function tableName()
+    {
         return 'like';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
+    public function rules()
+    {
         return array(
-            array('object_model, object_id', 'required'),
-            array('id, object_id, target_user_id created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('created_at', 'length', 'max' => 45),
-            array('updated_at', 'safe')
+            array(['object_model', 'object_id'], 'required'),
+            array(['id', 'object_id', 'target_user_id', 'created_by', 'updated_by'], 'integer'),
+            array(['updated_at', 'created_at'], 'safe')
         );
-    }
-
-    /**
-     * Gets user for this like
-     */
-    public function getUser() {
-        return User::model()->findByPk($this->created_by);
     }
 
     /**
      * Like Count for specifc model
      */
-    public static function GetLikes($objectModel, $objectId) {
+    public static function GetLikes($objectModel, $objectId)
+    {
         $cacheId = "likes_" . $objectModel . "_" . $objectId;
-        $cacheValue = Yii::app()->cache->get($cacheId);
+        $cacheValue = Yii::$app->cache->get($cacheId);
 
         if ($cacheValue === false) {
-            $newCacheValue = Like::model()->findAllByAttributes(array('object_model' => $objectModel, 'object_id' => $objectId));
-            Yii::app()->cache->set($cacheId, $newCacheValue, HSetting::Get('expireTime', 'cache'));
+            $newCacheValue = Like::findAll(array('object_model' => $objectModel, 'object_id' => $objectId));
+            Yii::$app->cache->set($cacheId, $newCacheValue, Setting::Get('expireTime', 'cache'));
             return $newCacheValue;
         } else {
             return $cacheValue;
@@ -74,9 +65,10 @@ class Like extends HActiveRecordContentAddon {
     /**
      * After Save, delete LikeCount (Cache) for target object
      */
-    protected function afterSave() {
+    public function afterSave($insert, $changedAttributes)
+    {
 
-        Yii::app()->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
+        Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
         $activity = Activity::CreateForContent($this);
         $activity->type = "Like";
@@ -90,23 +82,24 @@ class Like extends HActiveRecordContentAddon {
         $activity->fire();
 
         // Send Notifications
-        NewLikeNotification::fire($this);
+        //NewLikeNotification::fire($this);
 
-        return parent::afterSave();
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
      * Before Delete, remove LikeCount (Cache) of target object.
      * Remove activity
      */
-    protected function beforeDelete() {
+    public function beforeDelete()
+    {
 
-        Yii::app()->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
+        Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
         // Delete Activity
         // Currently we need to delete this manually, because the activity object is NOT bound to the Like
         // Instead is it bound to the Like Target (This should changed)
-        $activity = Activity::model()->findByAttributes(array(
+        $activity = Activity::findOne(array(
             'type' => 'Like',
             'module' => 'like',
             'object_model' => $this->object_model,
@@ -117,9 +110,14 @@ class Like extends HActiveRecordContentAddon {
         if ($activity)
             $activity->delete();
 
-        Notification::remove('Like', $this->id);
+        //Notification::remove('Like', $this->id);
 
         return parent::beforeDelete();
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'created_by']);
     }
 
 }

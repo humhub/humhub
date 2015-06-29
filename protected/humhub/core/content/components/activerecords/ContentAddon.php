@@ -99,7 +99,7 @@ class ContentAddon extends ActiveRecord
         }
 
         if (!class_exists($className)) {
-            Yii::er("Source class of content addon not found (" . $className . ") not found!");
+            Yii::error("Source class of content addon not found (" . $className . ") not found!");
             return null;
         }
 

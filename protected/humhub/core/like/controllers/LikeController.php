@@ -1,5 +1,11 @@
 <?php
 
+namespace humhub\core\like\controllers;
+
+use Yii;
+use humhub\core\like\models\Like;
+use humhub\models\Setting;
+
 /**
  * Like Controller
  *
@@ -8,47 +14,18 @@
  * @package humhub.modules_core.like.controllers
  * @since 0.5
  */
-class LikeController extends ContentAddonController
+class LikeController extends \humhub\core\content\components\ContentAddonController
 {
-
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
 
     /**
      * Creates a new like
      */
     public function actionLike()
     {
-
         $this->forcePostRequest();
 
-        $attributes = array('object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::app()->user->id);
-        $like = Like::model()->findByAttributes($attributes);
-        if ($like == null && !Yii::app()->user->isGuest) {
+        $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
+        if ($like === null) {
 
             // Create Like Object
             $like = new Like();
@@ -57,26 +34,24 @@ class LikeController extends ContentAddonController
             $like->save();
         }
 
-        $this->actionShowLikes();
+        return $this->actionShowLikes();
     }
 
     /**
      * Unlikes an item
      */
-    public function actionUnLike()
+    public function actionUnlike()
     {
-
         $this->forcePostRequest();
 
-        if (!Yii::app()->user->isGuest) {
-            $attributes = array('object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::app()->user->id);
-            $like = Like::model()->findByAttributes($attributes);
-            if ($like != null) {
+        if (!Yii::$app->user->isGuest) {
+            $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
+            if ($like !== null) {
                 $like->delete();
             }
         }
 
-        $this->actionShowLikes();
+        return $this->actionShowLikes();
     }
 
     /**
@@ -84,22 +59,23 @@ class LikeController extends ContentAddonController
      */
     public function actionShowLikes()
     {
+        Yii::$app->response->format = 'json';
 
         // Some Meta Infos
         $currentUserLiked = false;
+
         $likes = Like::GetLikes($this->contentModel, $this->contentId);
+
         foreach ($likes as $like) {
-            if ($like->getUser()->id == Yii::app()->user->id) {
+            if ($like->user->id == Yii::$app->user->id) {
                 $currentUserLiked = true;
             }
         }
 
-        $json = array();
-        $json['currentUserLiked'] = $currentUserLiked;
-        $json['likeCounter'] = count($likes);
-
-        echo CJSON::encode($json);
-        Yii::app()->end();
+        return [
+            'currentUserLiked' => $currentUserLiked,
+            'likeCounter' => count($likes)
+        ];
     }
 
     /**
@@ -107,32 +83,55 @@ class LikeController extends ContentAddonController
      */
     public function actionUserList()
     {
-        $page = (int) Yii::app()->request->getParam('page', 1);
-        $total = Like::model()->count('object_model=:omodel AND object_id=:oid', array(':omodel' => $this->contentModel, 'oid' => $this->contentId));
+        
+        $query = \humhub\core\user\models\User::find();
+        $query->leftJoin('like', 'like.created_by=user.id');
+        $query->where([
+            'like.object_id' => $this->contentId,
+            'like.object_model' => $this->contentModel,
+        ]);
+        $query->orderBy('like.created_at DESC');
+        
+        $countQuery = clone $query;
+        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => Setting::Get('paginationSize')]);
+        $query->offset($pagination->offset)->limit($pagination->limit);       
+        
+        return $this->renderAjax("@humhub/core/user/views/_listUsers", [
+                    'title' => Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this"),
+                    'users' => $query->all(),
+                    'pagination' => $pagination
+        ]);
 
-        $usersPerPage = HSetting::Get('paginationSize');
+        /*
+          $page = (int) Yii::$app->request->getParam('page', 1);
 
-        $sql = "SELECT u.* FROM `like` l " .
-                "LEFT JOIN user u ON l.created_by = u.id " .
-                "WHERE l.object_model=:omodel AND l.object_id=:oid AND u.status=" . User::STATUS_ENABLED . " " .
-                "ORDER BY l.created_at DESC " .
-                "LIMIT " . intval(($page - 1) * $usersPerPage) . "," . intval($usersPerPage);
-        $params = array(':omodel' => $this->contentModel, ':oid' => $this->contentId);
+          $total = Like::model()->count('object_model=:omodel AND object_id=:oid', array(':omodel' => $this->contentModel, 'oid' => $this->contentId));
 
-        $pagination = new CPagination($total);
-        $pagination->setPageSize($usersPerPage);
+          $usersPerPage = Setting::Get('paginationSize');
 
-        $users = User::model()->findAllBySql($sql, $params);
+          $sql = "SELECT u.* FROM `like` l " .
+          "LEFT JOIN user u ON l.created_by = u.id " .
+          "WHERE l.object_model=:omodel AND l.object_id=:oid AND u.status=" . User::STATUS_ENABLED . " " .
+          "ORDER BY l.created_at DESC " .
+          "LIMIT " . intval(($page - 1) * $usersPerPage) . "," . intval($usersPerPage);
+          $params = array(':omodel' => $this->contentModel, ':oid' => $this->contentId);
 
-        $output = $this->renderPartial('application.modules_core.user.views._listUsers', array(
-            'title' => Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this"),
-            'users' => $users,
-            'pagination' => $pagination
-                ), true);
+          $pagination = new CPagination($total);
+          $pagination->setPageSize($usersPerPage);
 
-        Yii::app()->clientScript->render($output);
-        echo $output;
-        Yii::app()->end();
+          $users = User::model()->findAllBySql($sql, $params);
+
+          $output = $this->renderPartial('application.modules_core.user.views._listUsers', array(
+          'title' => Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this"),
+          'users' => $users,
+          'pagination' => $pagination
+          ), true);
+
+          Yii::$app->clientScript->render($output);
+          echo $output;
+          Yii::$app->end();
+         * 
+         */
     }
 
 }

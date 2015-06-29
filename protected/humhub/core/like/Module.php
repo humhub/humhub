@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\like;
+
 /**
  * This module provides like support for Content and Content Addons
  * Each wall entry will get a Like Button and a overview of likes.
@@ -7,19 +9,10 @@
  * @package humhub.modules_core.like
  * @since 0.5
  */
-class LikeModule extends HWebModule
+class Module extends \yii\base\Module
 {
 
     public $isCoreModule = true;
-
-    public function init()
-    {
-        // import the module-level models and components
-        $this->setImport(array(
-            'like.models.*',
-            'like.behaviors.*',
-        ));
-    }
 
     /**
      * On User delete, also delete all comments
@@ -86,18 +79,7 @@ class LikeModule extends HWebModule
      */
     public static function onWallEntryLinksInit($event)
     {
-
-        $event->sender->addWidget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $event->sender->object), array('sortOrder' => 10));
-    }
-
-    /**
-     * On init of the wall entry addons, add a overview of existing likes
-     *
-     * @param type $event
-     */
-    public static function onWallEntryAddonInit($event)
-    {
-        
+        $event->sender->addWidget(widgets\LikeLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
     }
 
 }

@@ -1,25 +1,21 @@
 <?php
 
-# Disable until migrated
-return;
+use yii\db\ActiveRecord;
+use humhub\core\like\Module;
+use humhub\core\user\models\User;
+use humhub\core\content\widgets\WallEntryLinks;
+use humhub\core\content\widgets\WallEntryAddons;
+use humhub\commands\IntegrityController;
 
-Yii::app()->moduleManager->register(array(
+Yii::$app->moduleManager->register(array(
     'id' => 'like',
-    'class' => 'application.modules_core.like.LikeModule',
+    'class' => humhub\core\like\Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.like.*',
-        'application.modules_core.like.models.*',
-        'application.modules_core.like.notifications.*',
-    ),
-    // Events to Catch
     'events' => array(
-        array('class' => 'User', 'event' => 'onBeforeDelete', 'callback' => array('LikeModule', 'onUserDelete')),
-        array('class' => 'HActiveRecordContent', 'event' => 'onBeforeDelete', 'callback' => array('LikeModule', 'onContentDelete')),
-        array('class' => 'HActiveRecordContentAddon', 'event' => 'onBeforeDelete', 'callback' => array('LikeModule', 'onContentAddonDelete')),
-        array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('LikeModule', 'onIntegrityCheck')),
-        array('class' => 'WallEntryLinksWidget', 'event' => 'onInit', 'callback' => array('LikeModule', 'onWallEntryLinksInit')),
-        array('class' => 'WallEntryAddonWidget', 'event' => 'onInit', 'callback' => array('LikeModule', 'onWallEntryAddonInit')),
+        #array('class' => User::className(), 'event' => User::EVENT_BEFORE_DELETE, 'callback' => array(Module::className(), 'onUserDelete')),
+        #array('class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Module::className(), 'onContentDelete')),
+        #array('class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Module::className(), 'onIntegrityCheck')),
+        array('class' => WallEntryLinks::className(), 'event' => WallEntryLinks::EVENT_INIT, 'callback' => array(Module::className(), 'onWallEntryLinksInit')),
     ),
 ));
 ?>

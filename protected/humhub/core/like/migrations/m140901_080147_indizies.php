@@ -1,6 +1,9 @@
 <?php
 
-class m140901_080147_indizies extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m140901_080147_indizies extends Migration
 {
 
     public function up()

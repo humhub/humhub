@@ -1,11 +1,14 @@
 <?php
 
-class m141020_193931_rm_alsoliked extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m141020_193931_rm_alsoliked extends Migration
 {
 
     public function up()
     {
-        $this->delete('notification', 'class=:alsoLike', array(':alsoLike' => 'AlsoLikesNotification'));
+        #$this->delete('notification', 'class=:alsoLike', array(':alsoLike' => 'AlsoLikesNotification'));
     }
 
     public function down()

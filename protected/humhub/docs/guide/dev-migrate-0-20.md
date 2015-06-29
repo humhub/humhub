@@ -21,9 +21,7 @@ Quick Guide about
 - Emailing (New Config Option)
 - CronJobs
 - Add Tests
-- Directory
 - Comments / Like
-- Files
 - Enricher Text (Emoici / Mentioning)
 - Markdown Editor
 - Check CSRF Protection
@@ -36,7 +34,6 @@ Quick Guide about
 - Url Rewriting
 - Use AssetBundels
 - Split again Content/Wall ?
-- 
 - LF
 	- Reimplement Access Controls
 	- Headers
@@ -50,9 +47,12 @@ Quick Guide about
 
 ### To Check
 
-- Comment in new Window Mode
+- Comment in new Window Mode / Like Link in Modules
 - Check Timezone
+- Check Delete
 - Check how to handle unapproved/disabled users (Directory, Spaces)
+- Test Paginations
+	- Check/Fix Ajax Link Pager at like show users
 
 ## Core Changes
 
