@@ -4,7 +4,7 @@ namespace humhub\core\space\widgets;
 
 use \yii\base\Widget;
 
-class SpaceWallWidget extends Widget
+class Wall extends Widget
 {
 
     public $space;

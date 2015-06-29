@@ -206,16 +206,11 @@ if ($space->isAdmin()) {
 
                 <div class="controls controls-header text-right col-sm-12 col-md-6">
                     <?php
-                    /*
-                      $this->widget('application.modules_core.space.widgets.SpaceHeaderControlsWidget', array(
-                      'space' => $space,
-                      'widgets' => array(
-                      array('application.modules_core.space.widgets.SpaceInviteButtonWidget', array('space' => $space), array()),
-                      array('application.modules_core.space.widgets.SpaceMembershipButtonWidget', array('space' => $space), array()),
-                      array('application.modules_core.space.widgets.SpaceFollowButtonWidget', array('space' => $space), array()),
-                      )
-                      ));
-                     */
+                    echo humhub\core\space\widgets\HeaderControls::widget(['widgets' => [
+                            [\humhub\core\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
+                            [\humhub\core\space\widgets\MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
+                            [\humhub\core\space\widgets\FollowButton::className(), ['space' => $space], ['sortOrder' => 30]]
+                    ]]);
                     ?>
                 </div>
             </div>

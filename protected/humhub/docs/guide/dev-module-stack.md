@@ -1,16 +1,28 @@
-StackWidget / Sidebars
-======================
+Widget Stack
+============
 
-All sidebar widget classes inherits the base class ``StackWidget`` which allows modules
-to inject additional own widgets to it.
 
-## Example of Sidebars
 
-* DashboardSidebarWidget (Module: dashboard) 
-* SpaceSidebarWidget (Module: space) 
-* ProfileSidebarWidget (Module: user)
+ [[humhub\core\widgets\BaseStack]] 
 
-## Example
+
+
+## Usage 
+
+Example of stack used as sidebar.
+
+```php
+<?php
+echo \humhub\core\space\widgets\Sidebar::widget(['widgets' => [
+        [\humhub\core\activity\widgets\Stream::className(), ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
+        [\humhub\core\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 20]]
+]]);
+?>
+```
+
+## Events
+
+### Example
 
 __autostart.php__
 ```php
@@ -22,9 +34,10 @@ __autostart.php__
     //...
 ```
 
-__ExampleModule.php__
+__Events.php__
+
 ```php
     public static function onDashboardSidebarInit($event) {
         $event->sender->addWidget('application.modules.example.widgets.MyCoolWidget', array(), array('sortOrder' => 1));
     }
-'
+```

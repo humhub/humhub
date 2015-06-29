@@ -4,13 +4,13 @@ $space = $this->context->contentContainer;
 <div class="container space-layout-container">
     <div class="row">
         <div class="col-md-12">
-            <?php echo humhub\core\space\widgets\SpaceHeaderWidget::widget(['space' => $space]); ?>
+            <?php echo humhub\core\space\widgets\Header::widget(['space' => $space]); ?>
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 layout-nav-container">
-            <?php echo \humhub\core\space\widgets\SpaceMenuWidget::widget(['space' => $space]); ?>
-            <?php echo \humhub\core\space\widgets\SpaceAdminMenuWidget::widget(['space' => $space]); ?>
+            <?php echo \humhub\core\space\widgets\Menu::widget(['space' => $space]); ?>
+            <?php echo \humhub\core\space\widgets\AdminMenu::widget(['space' => $space]); ?>
             <br/>
         </div>
 

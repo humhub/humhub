@@ -1,10 +1,5 @@
 <?php
 
-namespace humhub\core\space\widgets;
-
-use Yii;
-use \yii\base\Widget;
-
 /**
  * HumHub
  * Copyright © 2014 The HumHub Project
@@ -23,6 +18,11 @@ use \yii\base\Widget;
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\widgets;
+
+use Yii;
+use \yii\base\Widget;
+
 /**
  * SpaceInviteButtonWidget
  *
@@ -30,7 +30,7 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.11
  */
-class SpaceInviteButtonWidget extends Widget
+class InviteButton extends Widget
 {
 
     public $space;
@@ -42,7 +42,7 @@ class SpaceInviteButtonWidget extends Widget
         }
 
         return $this->render('inviteButton', array(
-            'space' => $this->space,
+                    'space' => $this->space,
         ));
     }
 

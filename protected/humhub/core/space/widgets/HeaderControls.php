@@ -12,7 +12,7 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.11
  */
-class SpaceHeaderControlsWidget extends StackWidget
+class HeaderControls extends \humhub\widgets\BaseStack
 {
 
     public $seperator = "&nbsp;";

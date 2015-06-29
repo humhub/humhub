@@ -30,7 +30,7 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.11
  */
-class SpaceMembershipButtonWidget extends Widget
+class MembershipButton extends Widget
 {
 
     public $space;
@@ -40,8 +40,8 @@ class SpaceMembershipButtonWidget extends Widget
         $membership = $this->space->getMembership();
 
         return $this->render('membershipButton', array(
-            'space' => $this->space,
-            'membership' => $membership
+                    'space' => $this->space,
+                    'membership' => $membership
         ));
     }
 

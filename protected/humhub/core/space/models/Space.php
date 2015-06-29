@@ -5,6 +5,7 @@ namespace humhub\core\space\models;
 use Yii;
 use humhub\core\content\models\Wall;
 use humhub\core\activity\models\Activity;
+use humhub\core\space\models\Membership;
 
 /**
  * This is the model class for table "space".
@@ -314,7 +315,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
 
         $membership = $this->getMembership($userId);
 
-        if ($membership != null && $membership->invite_role == 1 && $membership->status == SpaceMembership::STATUS_MEMBER)
+        if ($membership != null && $membership->invite_role == 1 && $membership->status == Membership::STATUS_MEMBER)
             return true;
 
         if ($this->isAdmin($userId)) {
@@ -495,7 +496,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
 
     public function getWallOut()
     {
-        return \humhub\core\space\widgets\SpaceWallWidget::widget(['space' => $this]);
+        return \humhub\core\space\widgets\Wall::widget(['space' => $this]);
     }
 
     public function getMemberships()

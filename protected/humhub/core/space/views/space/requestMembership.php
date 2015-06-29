@@ -22,7 +22,6 @@
             <?php echo $form->textArea($model, 'message', array('rows' => '8', 'class' => 'form-control', 'id' => 'request-message')); ?>
             <?php echo $form->error($model, 'message'); ?>
 
-
         </div>
         <div class="modal-footer">
             <hr/>

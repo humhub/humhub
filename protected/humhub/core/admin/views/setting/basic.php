@@ -34,7 +34,7 @@ use humhub\models\Setting;
         <?php echo $form->textField($model, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>
 
         <?php
-        echo \humhub\core\space\widgets\SpacePicker::widget([
+        echo \humhub\core\space\widgets\Picker::widget([
             'inputId' => 'space_select',
             'model' => $model,
             'maxSpaces' => 50,

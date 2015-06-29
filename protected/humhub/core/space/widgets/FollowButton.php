@@ -30,18 +30,18 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.11
  */
-class SpaceFollowButtonWidget extends HWidget
+class FollowButton extends Widget
 {
 
     public $space;
 
     public function run()
     {
-        if (Yii::app()->user->isGuest || $this->space->isMember()) {
+        if (Yii::$app->user->isGuest || $this->space->isMember()) {
             return;
         }
 
-        $this->render('followButton', array(
+        return $this->render('followButton', array(
             'space' => $this->space,
         ));
     }

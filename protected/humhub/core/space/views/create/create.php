@@ -18,7 +18,6 @@ use humhub\models\Setting;
             <hr/>
             <br/>
 
-
             <div class="form-group">
 
                 <label><?php echo Yii::t('SpaceModule.views_create_create', 'How you want to name your space?'); ?></label>

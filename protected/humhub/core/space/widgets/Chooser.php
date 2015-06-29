@@ -11,7 +11,7 @@ use \yii\base\Widget;
  * Date: 17.12.13
  * Time: 12:49
  */
-class SpaceChooserWidget extends Widget
+class Chooser extends Widget
 {
 
     /**

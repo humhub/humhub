@@ -12,7 +12,7 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceBrowseMenuWidget extends MenuWidget
+class BrowseMenu extends MenuWidget
 {
 
     public $template = "application.widgets.views.leftNavigation";

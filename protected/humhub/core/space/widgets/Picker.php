@@ -31,7 +31,7 @@ use \yii\base\Widget;
  * @since 0.5
  * @author Luke
  */
-class SpacePicker extends Widget
+class Picker extends Widget
 {
 
     /**

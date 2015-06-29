@@ -97,7 +97,7 @@ AppAsset::register($this);
             <div class="container">
                 <ul class="nav ">
                     <!-- load space chooser widget -->
-                    <?php echo \humhub\core\space\widgets\SpaceChooserWidget::widget(); ?>
+                    <?php echo \humhub\core\space\widgets\Chooser::widget(); ?>
 
                     <!-- load navigation from widget -->
                     <?php echo \humhub\widgets\TopMenu::widget(); ?>

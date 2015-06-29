@@ -24,7 +24,7 @@ use humhub\core\search\controllers\SearchController;
                     Search only in certain spaces:
                     <?php echo Html::textInput('limitSpaceGuids', $limitSpaceGuids, array('placeholder' => 'Specify space', 'style' => 'width:200px', 'id' => 'space_filter')); ?>
                     <?php
-                    echo humhub\core\space\widgets\SpacePicker::widget([
+                    echo humhub\core\space\widgets\Picker::widget([
                         'inputId' => 'space_filter',
                         'value' => $limitSpaceGuids
                     ]);

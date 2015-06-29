@@ -12,7 +12,7 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceMenuWidget extends \humhub\widgets\BaseMenu
+class Menu extends \humhub\widgets\BaseMenu
 {
 
     public $space;
