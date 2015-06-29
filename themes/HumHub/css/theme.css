@@ -163,6 +163,9 @@ input[type=select] {
 .media-list li a {
   color: #555555;
 }
+.media-list li:last-child {
+  border-bottom: none;
+}
 .media-list li.new {
   border-left: 3px solid #dffcff;
   background-color: #dffcff;
@@ -418,7 +421,16 @@ input[type=select] {
 }
 .nav-pills .dropdown-menu li a:hover,
 .nav-tabs .dropdown-menu li a:hover,
-.account .dropdown-menu li a:hover {
+.account .dropdown-menu li a:hover,
+.nav-pills .dropdown-menu li a:visited,
+.nav-tabs .dropdown-menu li a:visited,
+.account .dropdown-menu li a:visited,
+.nav-pills .dropdown-menu li a:hover,
+.nav-tabs .dropdown-menu li a:hover,
+.account .dropdown-menu li a:hover,
+.nav-pills .dropdown-menu li a:focus,
+.nav-tabs .dropdown-menu li a:focus,
+.account .dropdown-menu li a:focus {
   background: none;
 }
 .nav-pills .dropdown-menu li:hover,

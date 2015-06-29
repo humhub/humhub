@@ -246,6 +246,10 @@ input[type=text], input[type=password], input[type=select] {
     }
   }
 
+  li:last-child {
+    border-bottom: none;
+  }
+
   li.new {
     border-left: 3px solid @colorInfoLight;
     background-color: @colorInfoLight;
@@ -567,7 +571,7 @@ input[type=text], input[type=password], input[type=select] {
         }
       }
 
-      a:hover {
+      a:hover, a:visited, a:hover, a:focus {
         background: none;
       }
     }
@@ -577,6 +581,7 @@ input[type=text], input[type=password], input[type=select] {
       color: #ffffff !important;
       background-color: darken(@colorPrimary, 5%) !important;
     }
+
   }
 }
 
