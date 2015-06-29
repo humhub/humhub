@@ -16,12 +16,9 @@ use yii\helpers\Url;
 
         <?php
         /* Modify textarea for mention input */
-        /*
-          $this->widget('application.widgets.HEditorWidget', array(
-          'id' => 'contentForm_message',
-          ));
-         *
-         */
+        echo \humhub\widgets\RichTextEditor::widget(array(
+            'id' => 'contentForm_message',
+        ));
         ?>
 
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
@@ -84,13 +81,10 @@ use yii\helpers\Url;
                 ?>
                 <?php
                 // Creates Uploading Button
-                /*
-                  $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-                  'uploaderId' => 'contentFormFiles',
-                  'fileListFieldName' => 'fileList',
-                  ));
-                 *
-                 */
+                echo humhub\core\file\widgets\FileUploadButton::widget(array(
+                    'uploaderId' => 'contentFormFiles',
+                    'fileListFieldName' => 'fileList',
+                ));
                 ?>
                 <script>
                     $('#fileUploaderButton_contentFormFiles').bind('fileuploaddone', function (e, data) {
@@ -143,12 +137,9 @@ use yii\helpers\Url;
 
             <?php
             // Creates a list of already uploaded Files
-            /*
-              $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
-              'uploaderId' => 'contentFormFiles'
-              ));
-             *
-             */
+            echo \humhub\core\file\widgets\FileUploadList::widget(array(
+                'uploaderId' => 'contentFormFiles'
+            ));
             ?>
 
         </div>
@@ -211,7 +202,7 @@ use yii\helpers\Url;
         $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
 
         // Notify FileUploadButtonWidget to clear (by providing uploaderId)
-        //resetUploader('contentFormFiles');
+        resetUploader('contentFormFiles');
 
         if (response.errors) {
             $('#contentFormError').show();

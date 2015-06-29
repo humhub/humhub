@@ -81,7 +81,7 @@ $canDelete = $comment->canDelete();
 
         <div class="content" id="comment_editarea_<?php echo $comment->id; ?>">
             <span id="comment-message-<?php echo $comment->id; ?>"><?php echo humhub\widgets\RichText::widget(['text' => $comment->message]); ?></span>
-            <?php //$this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
+            <?php echo humhub\core\file\widgets\ShowFiles::widget(array('object' => $comment)); ?>
         </div>
 
 

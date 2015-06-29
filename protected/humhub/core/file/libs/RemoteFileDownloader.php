@@ -18,6 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\file\libs;
+
 /**
  * Experimental downloader of files (images)
  *

@@ -1,20 +1,24 @@
 <?php
 
-class m150322_195619_allowedExt2Text extends EDbMigration
+use yii\db\Schema;
+use yii\db\Migration;
+use humhub\models\Setting;
+
+class m150322_195619_allowedExt2Text extends Migration
 {
 
     public function up()
     {
-        $allowedExtensions = HSetting::Get('allowedExtensions', 'file');
+        $allowedExtensions = Setting::Get('allowedExtensions', 'file');
         if ($allowedExtensions != "") {
-            HSetting::Set('allowedExtensions', '', 'file');
-            HSetting::SetText('allowedExtensions', $allowedExtensions, 'file');
+            Setting::Set('allowedExtensions', '', 'file');
+            Setting::SetText('allowedExtensions', $allowedExtensions, 'file');
         }
 
-        $showFilesWidgetBlacklist = HSetting::Get('showFilesWidgetBlacklist', 'file');
+        $showFilesWidgetBlacklist = Setting::Get('showFilesWidgetBlacklist', 'file');
         if ($showFilesWidgetBlacklist != "") {
-            HSetting::Set('showFilesWidgetBlacklist', '', 'file');
-            HSetting::SetText('showFilesWidgetBlacklist', $showFilesWidgetBlacklist, 'file');
+            Setting::Set('showFilesWidgetBlacklist', '', 'file');
+            Setting::SetText('showFilesWidgetBlacklist', $showFilesWidgetBlacklist, 'file');
         }
     }
 

@@ -22,7 +22,8 @@
         "cebe/markdown": "1.0.2",
         "yiisoft/yii2-jui": "^2.0",
         "zendframework/zend-http": "*",
-        "nqxcode/zendsearch": "^2.0"
+        "nqxcode/zendsearch": "^2.0",
+        "xj/yii2-jplayer-widget": "*"
     },
     "suggest": {
         "zendframework/zend-ldap": "LDAP authentication"

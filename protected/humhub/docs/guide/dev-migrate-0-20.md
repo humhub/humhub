@@ -34,6 +34,7 @@ Quick Guide about
 	- HSetting
 	- UserModel: CanApproveUsers
 - Url Rewriting
+- Use AssetBundels
 
 ### Bugs
 

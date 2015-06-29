@@ -1,23 +1,15 @@
 <?php
-/**
- * Shows the upload file button which handles file uploads.
- * This view is used by FileUploadButtonWidget.
- *
- * If an FileUploadListWidget Instance is exists, this view should update some
- * informations like process or already uploaded files per javascript.
- *
- * Its also necessary to update the bindToFormFieldId on successful uploads.
- * This hidden field contains a list all uploaded file guids.
- *
- * @property String $uploaderId is the unique id of the uploader.
- * @property String $bindToFormFieldId is the id of the hidden id which stores a comma seprated list of file guids.
- *
- * @package humhub.modules_core.file.widgets
- * @since 0.5
- */
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+$this->registerJsFile("@web/resources/file/fileuploader.js");
+$this->registerJsVar('fileuploader_error_modal_title', Yii::t('FileModule.widgets_FileUploadButtonWidget', '<strong>Upload</strong> error'));
+$this->registerJsVar('fileuploader_error_modal_btn_close', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Close'));
+$this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Could not upload File:'));
 ?>
 
-<?php echo CHtml::hiddenField($this->fileListFieldName, '', array('id' => "fileUploaderHiddenField_" . $uploaderId)); ?>
+<?php echo Html::hiddenInput($this->context->fileListFieldName, '', array('id' => "fileUploaderHiddenField_" . $uploaderId)); ?>
 
 <style>
     .fileinput-button {
@@ -43,16 +35,16 @@
     <i class="fa fa-cloud-upload"></i>
 
     <input id="fileUploaderButton_<?php echo $uploaderId; ?>" type="file" name="files[]"
-           data-url="<?php echo Yii::app()->createUrl('//file/file/upload', array('objectModel' => $objectModel, 'objectId' => $objectId)); ?>" multiple>
+           data-url="<?php echo Url::to(['/file/file/upload', 'objectModel' => $objectModel, 'objectId' => $objectId]); ?>" multiple>
 </span>
 
 <script>
-    $(function() {
+    $(function () {
         'use strict';
         installUploader("<?php echo $uploaderId; ?>");
 
         // fixing staying tooltip while opening file browser window
-        $('.fileinput-button').click(function() {
+        $('.fileinput-button').click(function () {
             $('.tt').tooltip('hide');
         })
     })

@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\file\widgets;
+
 /**
  * FileUploadListWidget works in combination of FileUploadButtonWidget and is
  * primary responsible to display some status informations like upload progress
@@ -11,7 +13,7 @@
  * @package humhub.modules_core.file.widgets
  * @since 0.5
  */
-class FileUploadListWidget extends HWidget
+class FileUploadList extends \yii\base\Widget
 {
 
     /**
@@ -34,14 +36,12 @@ class FileUploadListWidget extends HWidget
 
         $files = array();
         if ($this->object !== null) {
-            $files = File::getFilesOfObject($this->object);
+            $files = \humhub\core\file\models\File::getFilesOfObject($this->object);
         }
 
-        Yii::app()->clientScript->setJavaScriptVariable('file_delete_url', $this->createUrl('//file/file/delete'));
-        
-        $this->render('fileUploadList', array(
-            'uploaderId' => $this->uploaderId,
-            'files' => $files
+        return $this->render('fileUploadList', array(
+                    'uploaderId' => $this->uploaderId,
+                    'files' => $files
         ));
     }
 

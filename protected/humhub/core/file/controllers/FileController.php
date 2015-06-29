@@ -1,45 +1,21 @@
 <?php
 
+namespace humhub\core\file\controllers;
+
+use Yii;
+use yii\web\HttpException;
+use humhub\models\Setting;
+use yii\web\UploadedFile;
+use humhub\core\file\models\File;
+
 /**
  * UploadController provides uploading functions for files
  *
  * @package humhub.modules_core.file.controllers
  * @since 0.5
  */
-class FileController extends Controller
+class FileController extends \humhub\components\Controller
 {
-
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'users' => array((HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),    
-                'actions' => array('download'),
-                
-            ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
 
     /**
      * Action which handles file uploads
@@ -48,24 +24,26 @@ class FileController extends Controller
      */
     public function actionUpload()
     {
+        Yii::$app->response->format = 'json';
+
         // Object which the uploaded file(s) belongs to (optional)
         $object = null;
-        $objectModel = Yii::app()->request->getParam('objectModel');
-        $objectId = Yii::app()->request->getParam('objectId');
-        if ($objectModel != "" && $objectId != "") {
-            $givenObject = $objectModel::model()->findByPk($objectId);
+        $objectModel = Yii::$app->request->get('objectModel');
+        $objectId = Yii::$app->request->get('objectId');
+        if ($objectModel != "" && $objectId != "" && \humhub\libs\Helpers::CheckClassType($objectModel, \yii\db\ActiveRecord::className())) {
+            $givenObject = $objectModel::findOne(['id' => $objectId]);
             // Check if given object is HActiveRecordContent or HActiveRecordContentAddon and can be written by the current user
-            if ($givenObject !== null && ($givenObject instanceof HActiveRecordContent || $givenObject instanceof HActiveRecordContentAddon) && $givenObject->content->canWrite()) {
+            if ($givenObject !== null && ($givenObject instanceof \humhub\core\content\components\activerecords\Content || $givenObject instanceof \humhub\core\content\components\activerecords\ContentAddon) && $givenObject->content->canWrite()) {
                 $object = $givenObject;
             }
         }
 
         $files = array();
-        foreach (CUploadedFile::getInstancesByName('files') as $cFile) {
+        foreach (UploadedFile::getInstancesByName('files') as $cFile) {
             $files[] = $this->handleFileUpload($cFile, $object);
         }
 
-        return $this->renderJson(array('files' => $files));
+        return ['files' => $files];
     }
 
     /**
@@ -100,7 +78,7 @@ class FileController extends Controller
 
         if ($object != null) {
             $file->object_id = $object->getPrimaryKey();
-            $file->object_model = get_class($object);
+            $file->object_model = $object->className();
         }
 
         if ($file->validate() && $file->save()) {
@@ -109,7 +87,7 @@ class FileController extends Controller
             $output['name'] = $file->file_name;
             $output['title'] = $file->title;
             $output['size'] = $file->size;
-            $output['mimeIcon'] = HHtml::getMimeIconClassByExtension($file->getExtension());
+            $output['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($file->getExtension());
             $output['mimeBaseType'] = $file->getMimeBaseType();
             $output['mimeSubType'] = $file->getMimeSubType();
             $output['url'] = $file->getUrl("", false);
@@ -133,28 +111,28 @@ class FileController extends Controller
      */
     public function actionDownload()
     {
-        $guid = Yii::app()->request->getParam('guid');
-        $suffix = Yii::app()->request->getParam('suffix');
+        $guid = Yii::$app->request->get('guid');
+        $suffix = Yii::$app->request->get('suffix');
 
-        $file = File::model()->findByAttributes(array('guid' => $guid));
+        $file = File::findOne(['guid' => $guid]);
 
         if ($file == null) {
-            throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
+            throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
         if (!$file->canRead()) {
-            throw new CHttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
+            throw new HttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
         }
 
-        $filePath = $file->getPath($suffix);
+        $filePath = $file->getPath();
         $fileName = $file->getFilename($suffix);
 
         if (!file_exists($filePath . DIRECTORY_SEPARATOR . $fileName)) {
-            throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
+            throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
-        if (!HSetting::Get('useXSendfile', 'file')) {
-            Yii::app()->getRequest()->sendFile($fileName, file_get_contents($filePath . DIRECTORY_SEPARATOR . $fileName), $file->mime_type);
+        if (!Setting::Get('useXSendfile', 'file')) {
+            Yii::$app->response->sendFile($filePath . DIRECTORY_SEPARATOR . $fileName);
         } else {
             $options = array(
                 'saveName' => $fileName,
@@ -168,7 +146,7 @@ class FileController extends Controller
                     $filePath = substr($filePath, strlen($docroot));
                 }
             }
-            Yii::app()->getRequest()->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $options);
+            Yii::$app->response->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $options);
         }
     }
 
@@ -176,15 +154,15 @@ class FileController extends Controller
     {
         $this->forcePostRequest();
 
-        $guid = Yii::app()->request->getParam('guid');
-        $file = File::model()->findByAttributes(array('guid' => $guid));
+        $guid = Yii::$app->request->post('guid');
+        $file = File::findOne(['guid' => $guid]);
 
         if ($file == null) {
-            throw new CHttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
+            throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
         if (!$file->canDelete()) {
-            throw new CHttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
+            throw new HttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
         }
 
         $file->delete();

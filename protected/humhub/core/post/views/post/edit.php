@@ -12,17 +12,14 @@ use yii\helpers\Url;
     <!-- create contenteditable div for HEditorWidget to place the data -->
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input" contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message]); ?></div>
 
-    <?= \humhub\widgets\RichTextEditor::widget(['id'=>'post_input_' . $post->id, 'inputContent'=>$post->message]); ?>
+    <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message]); ?>
 
     <?php
     // Creates Uploading Button
-    /*
-      $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-      'uploaderId' => 'post_upload_' . $post->id,
-      'object' => $post
-      ));
-     * 
-     */
+    echo humhub\core\file\widgets\FileUploadButton::widget(array(
+        'uploaderId' => 'post_upload_' . $post->id,
+        'object' => $post
+    ));
     ?>    
 
 
@@ -43,14 +40,11 @@ use yii\helpers\Url;
     ?>
 
     <?php
-    /*
-      // Creates a list of already uploaded Files
-      $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
-      'uploaderId' => 'post_upload_' . $post->id,
-      'object' => $post
-      ));
-     * 
-     */
+    // Creates a list of already uploaded Files
+    echo \humhub\core\file\widgets\FileUploadList::widget(array(
+        'uploaderId' => 'post_upload_' . $post->id,
+        'object' => $post
+    ));
     ?>       
 
     <?php CActiveForm::end(); ?>

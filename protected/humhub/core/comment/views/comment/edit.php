@@ -24,15 +24,12 @@ use yii\helpers\Url;
     ?>
 
     <?php
-    /*
-      // Creates Uploading Button
-      $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-      'uploaderId' => 'comment_upload_' . $comment->id,
-      'fileListFieldName' => 'fileList',
-      'object' => $comment
-      ));
-     * 
-     */
+    // Creates Uploading Button
+    echo humhub\core\file\widgets\FileUploadButton::widget(array(
+        'uploaderId' => 'comment_upload_' . $comment->id,
+        'fileListFieldName' => 'fileList',
+        'object' => $comment
+    ));
     ?>    
 
 
@@ -53,14 +50,11 @@ use yii\helpers\Url;
     ?>  
 
     <?php
-    /*
-      // Creates a list of already uploaded Files
-      $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
-      'uploaderId' => 'comment_upload_' . $comment->id,
-      'object' => $comment
-      ));
-     * 
-     */
+    // Creates a list of already uploaded Files
+    echo \humhub\core\file\widgets\FileUploadList::widget(array(
+        'uploaderId' => 'comment_upload_' . $comment->id,
+        'object' => $comment
+    ));
     ?>    
 
     <?php CActiveForm::end(); ?>

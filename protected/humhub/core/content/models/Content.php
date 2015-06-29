@@ -69,7 +69,7 @@ class Content extends \humhub\components\ActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\UnderlyingObject::className(),
-                'mustBeInstanceOf' => array('HActiveRecordContent'),
+                'mustBeInstanceOf' => array(\humhub\core\content\components\activerecords\Content::className()),
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),
@@ -202,7 +202,7 @@ class Content extends \humhub\components\ActiveRecord
             }
         }
 
-        //File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
+        \humhub\core\file\models\File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -649,7 +649,7 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         // Store List of attached Files to add them after Save
-        //$this->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
+        $this->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
     }
 
     public function beforeValidate()

@@ -18,13 +18,15 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\file;
+
 /**
  * FileModuleEvents handles all events described in autostart.php
  * 
  * @package humhub.modules_core.file
  * @author luke
  */
-class FileModuleEvents
+class Events extends \yii\base\Object
 {
 
     /**
@@ -34,7 +36,7 @@ class FileModuleEvents
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget('application.modules_core.file.widgets.ShowFilesWidget', array('object'=>$event->sender->object), array('sortOrder' => 5));
+        $event->sender->addWidget(widgets\ShowFiles::className(), array('object' => $event->sender->object), array('sortOrder' => 5));
     }
 
     /**
@@ -46,16 +48,15 @@ class FileModuleEvents
      */
     public static function onCronDailyRun($event)
     {
+        /*
+          $cron = $event->sender;
 
-        $cron = $event->sender;
-
-        /**
-         * Delete unused files
+          // Delete unused files
+          $deleteTime = time() - (60 * 60 * 24 * 1); // Older than 1 day
+          foreach (File::model()->findAllByAttributes(array(), 'created_at < :date AND (object_model IS NULL or object_model = "")', array(':date' => date('Y-m-d', $deleteTime))) as $file) {
+          $file->delete();
+          }
          */
-        $deleteTime = time() - (60 * 60 * 24 * 1); // Older than 1 day
-        foreach (File::model()->findAllByAttributes(array(), 'created_at < :date AND (object_model IS NULL or object_model = "")', array(':date' => date('Y-m-d', $deleteTime))) as $file) {
-            $file->delete();
-        }
     }
 
     /**
@@ -65,18 +66,20 @@ class FileModuleEvents
      */
     public static function onIntegrityCheck($event)
     {
+        /*
+          $integrityChecker = $event->sender;
+          $integrityChecker->showTestHeadline("Validating File Module (" . File::model()->count() . " entries)");
 
-        $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Validating File Module (" . File::model()->count() . " entries)");
+          foreach (File::model()->findAll() as $a) {
 
-        foreach (File::model()->findAll() as $a) {
-
-            if ($a->object_model != "" && $a->object_id != "" && $a->getUnderlyingObject() === null) {
-                $integrityChecker->showFix("Deleting file id " . $a->id . " without existing target!");
-                if (!$integrityChecker->simulate)
-                    $a->delete();
-            }
-        }
+          if ($a->object_model != "" && $a->object_id != "" && $a->getUnderlyingObject() === null) {
+          $integrityChecker->showFix("Deleting file id " . $a->id . " without existing target!");
+          if (!$integrityChecker->simulate)
+          $a->delete();
+          }
+          }
+         * 
+         */
     }
 
     /**
@@ -84,9 +87,9 @@ class FileModuleEvents
      *
      * @param CEvent $event
      */
-    public static function onBeforeHActiveRecordDelete($event)
+    public static function onBeforeActiveRecordDelete($event)
     {
-        foreach (File::model()->findAllByAttributes(array('object_id' => $event->sender->getPrimaryKey(), 'object_model' => get_class($event->sender))) as $file) {
+        foreach (models\File::find()->where(['object_id' => $event->sender->getPrimaryKey(), 'object_model' => $event->sender->className()])->all() as $file) {
             $file->delete();
         }
     }

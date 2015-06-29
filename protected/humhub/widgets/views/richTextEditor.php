@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.caret.min.js'), ['position'=>\yii\web\View::POS_BEGIN]);
-$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.atwho.min.js'), ['position'=>\yii\web\View::POS_BEGIN]);
+$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.caret.min.js'), ['position'=>\yii\web\View::POS_END]);
+$this->registerJsFile(Yii::getAlias('@web/resources/at/jquery.atwho.min.js'), ['position'=>\yii\web\View::POS_END]);
 $this->registerCssFile(Yii::getAlias('@web/resources/at/jquery.atwho.css'));
 ?>
 

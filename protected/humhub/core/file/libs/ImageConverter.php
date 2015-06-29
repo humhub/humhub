@@ -18,6 +18,10 @@
  * GNU Affero General Public License for more details. 
  */
 
+namespace humhub\core\file\libs;
+
+use humhub\models\Setting;
+
 /**
  * ImageConverter provides a simple interface for converting or resizing images.
  * 
@@ -37,8 +41,8 @@ class ImageConverter
     public static function TransformToJpeg($sourceFile, $targetFile)
     {
 
-        if (HSetting::Get('imageMagickPath', 'file')) {
-            $convertCommand = HSetting::Get('imageMagickPath', 'file');
+        if (Setting::Get('imageMagickPath', 'file')) {
+            $convertCommand = Setting::Get('imageMagickPath', 'file');
             $command = $convertCommand . " \"{$sourceFile}\" \"{$targetFile}\"";
             $ret = passthru($command);
         } else {
@@ -77,7 +81,7 @@ class ImageConverter
         if (!isset($options['mode']))
             $options['mode'] = 'force';
 
-        if (HSetting::Get('imageMagickPath', 'file')) {
+        if (Setting::Get('imageMagickPath', 'file')) {
             self::ResizeImageMagick($sourceFile, $targetFile, $options);
         } else {
             self::ResizeGD($sourceFile, $targetFile, $options);
@@ -248,7 +252,7 @@ class ImageConverter
      */
     private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
     {
-        $convertCommand = HSetting::Get('imageMagickPath', 'file');
+        $convertCommand = Setting::Get('imageMagickPath', 'file');
         $width = (int) $options['width'];
         $height = (int) $options['height'];
 

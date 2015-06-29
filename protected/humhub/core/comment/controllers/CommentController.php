@@ -64,7 +64,8 @@ class CommentController extends \humhub\core\content\components\ContentAddonCont
             $comment->object_id = $this->parentContent->getPrimaryKey();
             $comment->save();
 
-            //File::attachPrecreated($comment, Yii::$app->request->getParam('fileList'));
+            \humhub\core\file\models\File::attachPrecreated($comment, Yii::$app->request->post('fileList'));
+
             // Reload comment to get populated created_at field
             $comment = Comment::findOne(['id' => $comment->id]);
 
@@ -97,9 +98,9 @@ class CommentController extends \humhub\core\content\components\ContentAddonCont
         }
 
         return $this->renderAjax('edit', array(
-            'comment' => $this->contentAddon,
-            'contentModel' => $this->contentAddon->object_model,
-            'contentId' => $this->contentAddon->object_id
+                    'comment' => $this->contentAddon,
+                    'contentModel' => $this->contentAddon->object_model,
+                    'contentId' => $this->contentAddon->object_id
         ));
     }
 

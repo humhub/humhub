@@ -18,14 +18,11 @@ use humhub\compat\widgets\AjaxButton;
 
 
     <?php
-    /*
-      // Creates Uploading Button
-      $this->widget('application.modules_core.file.widgets.FileUploadButtonWidget', array(
-      'uploaderId' => 'comment_upload_' . $id,
-      'fileListFieldName' => 'fileList',
-      ));
-     * 
-     */
+    // Creates Uploading Button
+    echo humhub\core\file\widgets\FileUploadButton::widget(array(
+        'uploaderId' => 'comment_upload_' . $id,
+        'fileListFieldName' => 'fileList',
+    ));
     ?>
 
     <?php
@@ -57,13 +54,10 @@ use humhub\compat\widgets\AjaxButton;
 
 
     <?php
-    /*
-      // Creates a list of already uploaded Files
-      $this->widget('application.modules_core.file.widgets.FileUploadListWidget', array(
-      'uploaderId' => 'comment_upload_' . $id,
-      ));
-     * 
-     */
+    // Creates a list of already uploaded Files
+    echo \humhub\core\file\widgets\FileUploadList::widget(array(
+        'uploaderId' => 'comment_upload_' . $id,
+    ));
     ?>
 </div>
 

@@ -8,7 +8,7 @@ class m141020_193920_rm_alsocreated extends Migration
 
     public function up()
     {
-        $this->delete('notification', 'class=:alsoComment', array(':alsoComment' => 'AlsoCommentedNotification'));
+#####        $this->delete('notification', 'class=:alsoComment', array(':alsoComment' => 'AlsoCommentedNotification'));
     }
 
     public function down()
