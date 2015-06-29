@@ -18,6 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\directory\components;
+
+use Yii;
+
 /**
  * UserPostsStreamAction
  *
@@ -25,24 +29,23 @@
  * @author luke
  * @since 0.11
  */
-class UserPostsStreamAction extends BaseStreamAction
+class UserPostsStreamAction extends \humhub\core\content\components\actions\Stream
 {
 
     public function init()
     {
         parent::init();
 
-        // Build subselect to create a list of user wall_ids
-        $wallIdSelectCriteria = new CDbCriteria();
-        $wallIdSelectCriteria->select = 'wall_id';
+        $this->activeQuery->andWhere(['content.visibility' => \humhub\core\content\models\Content::VISIBILITY_PUBLIC]);
 
-        if (Yii::app()->user->isGuest) {
-            $wallIdSelectCriteria->condition = 'visibility=' . User::VISIBILITY_ALL;
+        $wallIdsQuery = (new \yii\db\Query())
+                ->select('wall_id')
+                ->from('user uw');
+        if (Yii::$app->user->isGuest) {
+            $wallIdsQuery->andWhere(['visibility' => User::VISIBILITY_ALL]);
         }
-        $wallIdSelectSql = User::model()->getCommandBuilder()->createFindCommand(User::model()->getTableSchema(), $wallIdSelectCriteria)->getText();
-
-        $this->criteria->condition .= ' AND wall_entry.wall_id IN (' . $wallIdSelectSql . ')';
-        $this->criteria->condition .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
+        $wallIdsSql = Yii::$app->db->getQueryBuilder()->build($wallIdsQuery)[0];
+        $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $wallIdsSql . ')');
     }
 
 }

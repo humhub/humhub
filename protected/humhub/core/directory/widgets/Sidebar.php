@@ -1,5 +1,7 @@
 <?php
 
+namespace humhub\core\directory\widgets;
+
 /**
  * DirectorySidebarWidget is a extended class of StackWidgets.
  *
@@ -10,8 +12,9 @@
  * @since 0.5
  * @author Luke
  */
-class DirectorySidebarWidget extends StackWidget {
-
+class Sidebar extends \humhub\widgets\BaseStack
+{
+    
 }
 
 ?>

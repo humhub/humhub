@@ -1,10 +1,6 @@
 <?php
-/**
- * Layout for directory module
- *
- * @package humhub.modules_core.directory.views
- * @since 0.5
- */
+
+use yii\helpers\Url;
 ?>
 
 <div class="container">
@@ -17,10 +13,10 @@
                     class="panel-heading"><?php echo Yii::t('DirectoryModule.views_directory_layout', '<strong>Directory</strong> menu'); ?></div>
 
                 <div class="list-group">
-                    <?php if (Group::model()->count() > 1) : ?>
-                        <a href="<?php echo Yii::app()->createUrl('//directory/directory/groups'); ?>"
+                    <?php if (humhub\core\user\models\Group::find()->count() > 1) : ?>
+                        <a href="<?php echo Url::to(['/directory/directory/groups']); ?>"
                            class="list-group-item <?php
-                           if ($this->action->id == "groups") {
+                           if ($this->context->action->id == "groups") {
                                echo "active";
                            }
                            ?>">
@@ -30,9 +26,9 @@
                         </a>
                     <?php endif; ?>
 
-                    <a href="<?php echo Yii::app()->createUrl('//directory/directory/members'); ?>"
+                    <a href="<?php echo Url::to(['/directory/directory/members']); ?>"
                        class="list-group-item <?php
-                       if ($this->action->id == "members") {
+                       if ($this->context->action->id == "members") {
                            echo "active";
                        }
                        ?>">
@@ -41,9 +37,9 @@
                         </div>
                     </a>
 
-                    <a href="<?php echo Yii::app()->createUrl('//directory/directory/spaces'); ?>"
+                    <a href="<?php echo Url::to(['/directory/directory/spaces']); ?>"
                        class="list-group-item <?php
-                       if ($this->action->id == "spaces") {
+                       if ($this->context->action->id == "spaces") {
                            echo "active";
                        }
                        ?>">
@@ -53,9 +49,9 @@
                     </a>
 
 
-                    <a href="<?php echo Yii::app()->createUrl('//directory/directory/userPosts'); ?>"
+                    <a href="<?php echo Url::to(['/directory/directory/user-posts']); ?>"
                        class="list-group-item <?php
-                       if ($this->action->id == "userPosts") {
+                       if ($this->context->action->id == "user-posts") {
                            echo "active";
                        }
                        ?>">
@@ -73,11 +69,7 @@
         </div>
         <div class="col-md-3">
             <!-- show directory sidebar stream -->
-            <?php
-            $this->widget('application.modules_core.directory.widgets.DirectorySidebarWidget', array(
-                'widgets' => array()
-            ));
-            ?>
+            <?php echo \humhub\core\directory\widgets\Sidebar::widget(); ?>
         </div>
     </div>
 

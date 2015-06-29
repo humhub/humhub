@@ -1,5 +1,13 @@
 <?php
 
+namespace humhub\core\directory\controllers;
+
+use Yii;
+use yii\data\Pagination;
+use yii\helpers\Url;
+use humhub\models\Setting;
+use humhub\core\directory\widgets\Sidebar;
+
 /**
  * Community/Directory Controller
  *
@@ -8,46 +16,19 @@
  * @package humhub.modules_core.directory.controllers
  * @since 0.5
  */
-class DirectoryController extends Controller
+class DirectoryController extends \humhub\components\Controller
 {
 
-    public $subLayout = "_layout";
-
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
-            ),
-            array('deny',
-                'users' => array('*'),
-            ),
-        );
-    }
+    public $subLayout = "@humhub/core/directory/views/directory/_layout";
 
     public function actions()
     {
-        return array(
-            'stream' => array(
-                'class' => 'application.modules_core.directory.UserPostsStreamAction',
-                'mode' => BaseStreamAction::MODE_NORMAL,
-            ),
-        );
+        return [
+            'stream' => [
+                'class' => \humhub\core\directory\components\UserPostsStreamAction::className(),
+                'mode' => \humhub\core\directory\components\UserPostsStreamAction::MODE_NORMAL,
+            ],
+        ];
     }
 
     /**
@@ -56,10 +37,10 @@ class DirectoryController extends Controller
     public function actionIndex()
     {
 
-        if (Group::model()->count() > 1)
-            $this->redirect($this->createUrl('groups'));
+        if (\humhub\core\user\models\Group::find()->count() > 1)
+            $this->redirect(Url::to(['groups']));
         else
-            $this->redirect($this->createUrl('members'));
+            $this->redirect(Url::to(['members']));
     }
 
     /**
@@ -69,30 +50,27 @@ class DirectoryController extends Controller
      */
     public function actionMembers()
     {
-        $keyword = Yii::app()->request->getParam('keyword', "");
-        $page = (int) Yii::app()->request->getParam('page', 1);
-        $_GET['keyword'] = $keyword; // Fix for post var
+        $keyword = Yii::$app->request->get('keyword', "");
+        $page = (int) Yii::$app->request->get('page', 1);
+        //$_GET['keyword'] = $keyword; // Fix for post var
 
-        $searchResultSet = Yii::app()->search->find($keyword, [
-            'model' => 'User',
+        $searchResultSet = Yii::$app->search->find($keyword, [
+            'model' => \humhub\core\user\models\User::className(),
             'page' => $page,
-            'pageSize' => HSetting::Get('paginationSize')
+            'pageSize' => Setting::Get('paginationSize')
         ]);
 
-        // Create Pagination Class
-        $pagination = new CPagination($searchResultSet->total);
-        $pagination->setPageSize($searchResultSet->pageSize);
+        $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
 
-        // Add Member Statistic Sidebar
-        Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
-            $event->sender->addWidget('application.modules_core.directory.widgets.NewMembersWidget', array(), array('sortOrder' => 10));
-            $event->sender->addWidget('application.modules_core.directory.widgets.MemberStatisticsWidget', array(), array('sortOrder' => 20));
+        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+            $event->sender->addWidget(\humhub\core\directory\widgets\NewMembers::className(), [], ['sortOrder' => 10]);
+            $event->sender->addWidget(\humhub\core\directory\widgets\MemberStatistics::className(), [], ['sortOrder' => 20]);
         });
 
-        $this->render('members', array(
-            'keyword' => $keyword,
-            'users' => $searchResultSet->getResultInstances(),
-            'pagination' => $pagination
+        return $this->render('members', array(
+                    'keyword' => $keyword,
+                    'users' => $searchResultSet->getResultInstances(),
+                    'pagination' => $pagination
         ));
     }
 
@@ -105,32 +83,27 @@ class DirectoryController extends Controller
      */
     public function actionSpaces()
     {
+        $keyword = Yii::$app->request->get('keyword', "");
+        $page = (int) Yii::$app->request->get('page', 1);
 
-        $keyword = Yii::app()->request->getParam('keyword', "");
-        $page = (int) Yii::app()->request->getParam('page', 1);
-        $_GET['keyword'] = $keyword; // Fix for post var
-
-        $searchResultSet = Yii::app()->search->find($keyword, [
-            'model' => 'Space',
+        $searchResultSet = Yii::$app->search->find($keyword, [
+            'model' => \humhub\core\space\models\Space::className(),
             'page' => $page,
             'sortField' => ($keyword == '') ? 'title' : null,
-            'pageSize' => HSetting::Get('paginationSize')
+            'pageSize' => Setting::Get('paginationSize')
         ]);
 
-        // Create Pagination Class
-        $pagination = new CPagination($searchResultSet->total);
-        $pagination->setPageSize($searchResultSet->pageSize);
+        $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
 
-        // Add Space Statistic Sidebar
-        Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
-            $event->sender->addWidget('application.modules_core.directory.widgets.NewSpacesWidget', array(), array('sortOrder' => 10));
-            $event->sender->addWidget('application.modules_core.directory.widgets.SpaceStatisticsWidget', array(), array('sortOrder' => 20));
+        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+            $event->sender->addWidget(\humhub\core\directory\widgets\NewSpaces::className(), [], ['sortOrder' => 10]);
+            $event->sender->addWidget(\humhub\core\directory\widgets\SpaceStatistics::className(), [], ['sortOrder' => 20]);
         });
 
-        $this->render('spaces', array(
-            'keyword' => $keyword,
-            'spaces' => $searchResultSet->getResultInstances(),
-            'pagination' => $pagination
+        return $this->render('spaces', array(
+                    'keyword' => $keyword,
+                    'spaces' => $searchResultSet->getResultInstances(),
+                    'pagination' => $pagination
         ));
     }
 
@@ -141,15 +114,14 @@ class DirectoryController extends Controller
      */
     public function actionGroups()
     {
-        $groups = Group::model()->findAll();
+        $groups = \humhub\core\user\models\Group::find()->all();
 
-        // Add Meber Statistic Sidebar
-        Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
-            $event->sender->addWidget('application.modules_core.directory.widgets.GroupStatisticsWidget', array(), array('sortOrder' => 10));
+        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+            $event->sender->addWidget(\humhub\core\directory\widgets\GroupStatistics::className(), [], ['sortOrder' => 10]);
         });
 
-        $this->render('groups', array(
-            'groups' => $groups,
+        return $this->render('groups', array(
+                    'groups' => $groups,
         ));
     }
 
@@ -162,7 +134,7 @@ class DirectoryController extends Controller
      */
     public function actionUserPosts()
     {
-        $this->render('userPosts', array());
+        return $this->render('userPosts', array());
     }
 
 }

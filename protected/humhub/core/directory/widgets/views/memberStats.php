@@ -1,15 +1,11 @@
 <?php
-/**
- * Used by MemberStatisticsWidget to display statistics in the sidebar.
- *
- * @package humhub.modules_core.directory.views
- * @since 0.5
- */
+
+use Yii;
 ?>
 <div class="panel panel-default" id="user-statistics-panel">
 
     <!-- Display panel menu widget -->
-    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'user-statistics-panel')); ?>
+    <?php echo \humhub\widgets\PanelMenu::widget(array('id' => 'user-statistics-panel')); ?>
 
     <div class="panel-heading">
         <?php echo Yii::t('DirectoryModule.widgets_views_memberStats', '<strong>Member</strong> stats'); ?>
@@ -51,7 +47,7 @@
 <script>
     $(function () {
         $(".knob").knob();
-        $(".knob-container").css( "opacity", 1 );
+        $(".knob-container").css("opacity", 1);
     });
 
 </script>

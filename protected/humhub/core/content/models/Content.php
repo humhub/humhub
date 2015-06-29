@@ -630,9 +630,9 @@ class Content extends \humhub\components\ActiveRecord
 
         $this->container = $contentContainer;
 
-        if ($this->className() === Space::className()) {
+        if ($this->container->className() === Space::className()) {
             $this->visibility = Yii::$app->request->post('visibility');
-        } elseif ($this->className() === User::className()) {
+        } elseif ($this->container->className() === User::className()) {
             $this->visibility = 1;
         }
 

@@ -1,20 +1,16 @@
 <?php
-/**
- * Used by GroupStatisticsWidget to display statistics in the sidebar.
- *
- * @package humhub.modules_core.directory.widgets.views
- * @since 0.5
- */
+
+use yii\helpers\Html;
 ?>
 
 
 <div class="panel panel-default" id="groups-statistics-panel">
 
     <!-- Display panel menu widget -->
-    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'groups-statistics-panel')); ?>
+<?php echo humhub\widgets\PanelMenu::widget(array('id' => 'groups-statistics-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
+<?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div class="knob-container" style="text-align: center; opacity: 0;">
@@ -42,7 +38,7 @@
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>:</strong> <?php echo CHtml::encode($statsTopGroup->name); ?>
+            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>:</strong> <?php echo Html::encode($statsTopGroup->name); ?>
         </div>
     </div>
 </div>
@@ -50,6 +46,6 @@
 <script>
     $(function () {
         $(".knob").knob();
-        $(".knob-container").css( "opacity", 1 );
+        $(".knob-container").css("opacity", 1);
     });
 </script>

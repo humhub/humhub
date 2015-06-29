@@ -1,5 +1,9 @@
 <?php
 
+namespace humhub\core\directory;
+
+use Yii;
+
 /**
  * Directory Base Module
  *
@@ -9,20 +13,10 @@
  * @package humhub.modules_core.directory
  * @since 0.5
  */
-class DirectoryModule extends HWebModule
+class Module extends \yii\base\Module
 {
 
     public $isCoreModule = true;
-
-    /**
-     * Inits the Module
-     */
-    public function init()
-    {
-
-        $this->setImport(array(
-        ));
-    }
 
     /**
      * On build of the TopMenu, check if module is enabled
@@ -36,9 +30,9 @@ class DirectoryModule extends HWebModule
             'label' => Yii::t('DirectoryModule.base', 'Directory'),
             'id' => 'directory',
             'icon' => '<i class="fa fa-book"></i>',
-            'url' => Yii::app()->createUrl('//directory/directory'),
+            'url' => \yii\helpers\Url::to(['/directory/directory']),
             'sortOrder' => 400,
-            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'directory'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'directory'),
         ));
     }
 

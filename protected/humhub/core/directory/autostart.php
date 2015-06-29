@@ -1,18 +1,13 @@
 <?php
 
-# Disable until migrated
-return;
+use humhub\widgets\TopMenu;
 
-Yii::app()->moduleManager->register(array(
+Yii::$app->moduleManager->register(array(
     'id' => 'directory',
-    'class' => 'application.modules_core.directory.DirectoryModule',
+    'class' => \humhub\core\directory\Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.directory.*',
-    ),
-    // Events to Catch 
     'events' => array(
-        array('class' => 'TopMenuWidget', 'event' => 'onInit', 'callback' => array('DirectoryModule', 'onTopMenuInit')),
+        array('class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => array(humhub\core\directory\Module::className(), 'onTopMenuInit')),
     ),
 ));
 ?>

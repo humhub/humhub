@@ -1,16 +1,7 @@
 <?php
-/**
- * Members page of directory
- *
- * @property String $keyword the search keyword.
- * @property Array $hits is a list of lucene search hits.
- * @property Integer $pages is the number of total pages available.
- * @property Integer $hitCount is the number of total results.
- * @property Integer $pageSize is the number of results per page.
- *
- * @package humhub.modules_core.directory.views
- * @since 0.5
- */
+
+use yii\helpers\Url;
+use yii\helpers\Html;
 ?>
 <div class="panel panel-default">
 
@@ -22,18 +13,18 @@
 
         <!-- search form -->
 
-        <?php echo CHtml::form(Yii::app()->createUrl('//directory/directory/members', array()), 'post', array('class' => 'form-search')); ?>
+        <?php echo Html::beginForm(Url::to(['/directory/directory/members']), 'get', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?php echo CHtml::textField("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_members', 'search for members'))); ?>
-                    <?php echo CHtml::submitButton(Yii::t('DirectoryModule.views_directory_members', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_members', 'search for members'))); ?>
+                    <?php echo Html::submitButton(Yii::t('DirectoryModule.views_directory_members', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>
         </div>
-        <?php echo CHtml::endForm(); ?>
+        <?php echo Html::endForm(); ?>
 
         <?php if (count($users) == 0): ?>
             <p><?php echo Yii::t('DirectoryModule.views_directory_members', 'No members found!'); ?></p>
@@ -51,10 +42,10 @@
                     <!-- Follow Handling -->
                     <div class="pull-right">
                         <?php
-                        if (!Yii::app()->user->isGuest && !$user->isCurrentUser()) {
+                        if (!Yii::$app->user->isGuest && !Yii::$app->user->id === $user->id) {
                             $followed = $user->isFollowedByUser();
-                            echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . $user->createUrl('//user/profile/follow') . '", "' . $user->id . '")', array('class' => 'btn btn-success btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $user->id));
-                            echo HHtml::postLink(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . $user->createUrl('//user/profile/unfollow') . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $user->id));
+                            echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . Url::to(['/user/profile/follow']) . '", "' . $user->id . '")', array('class' => 'btn btn-success btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $user->id));
+                            echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . Url::to(['/user/profile/unfollow']) . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $user->id));
                         }
                         ?>
                     </div>
@@ -69,17 +60,17 @@
 
                     <div class="media-body">
                         <h4 class="media-heading"><a
-                                href="<?php echo $user->getUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
+                                href="<?php echo $user->getUrl(); ?>"><?php echo Html::encode($user->displayName); ?></a>
                                 <?php if ($user->group != null) { ?>
-                                <small>(<?php echo CHtml::encode($user->group->name); ?>)</small><?php } ?>
+                                <small>(<?php echo Html::encode($user->group->name); ?>)</small><?php } ?>
                         </h4>
-                        <h5><?php echo CHtml::encode($user->profile->title); ?></h5>
+                        <h5><?php echo Html::encode($user->profile->title); ?></h5>
 
                         <?php $tag_count = 0; ?>
                         <?php if ($user->tags) : ?>
                             <?php foreach ($user->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo HHtml::link($tag, $this->createUrl('//directory/directory/members', array('keyword' => 'tags:' . $tag)), array('class' => 'label label-default')); ?>
+                                    <?php echo Html::a($tag, Url::to(['/directory/directory/members', 'keyword' => 'tags:' . $tag]), array('class' => 'label label-default')); ?>
                                     <?php
                                     $tag_count++;
                                 }
@@ -101,7 +92,7 @@
 </div>
 
 <div class="pagination-container">
-    <?php $this->widget('HLinkPager', array('pages' => $pagination)); ?>
+    <?php echo \humhub\widgets\LinkPager::widget(['pagination' => $pagination]); ?>
 </div>
 
 <script type="text/javascript">

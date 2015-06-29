@@ -1,15 +1,11 @@
 <?php
-/**
- * Used by SpaceStatisticsWidget to display statistics in the sidebar.
- *
- * @package humhub.modules_core.directory.views
- * @since 0.5
- */
+
+use yii\helpers\Html;
 ?>
 <div class="panel panel-default" id="spaces-statistics-panel">
 
     <!-- Display panel menu widget -->
-    <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'spaces-statistics-panel')); ?>
+    <?php \humhub\widgets\PanelMenu::widget(array('id' => 'spaces-statistics-panel')); ?>
 
     <div class="panel-heading">
         <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>Space</strong> stats'); ?>
@@ -43,15 +39,15 @@
         <?php if (isset($statsSpaceMostMembers->name)) { ?>
             <div style="text-align: center;">
                 <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Most members'); ?>:
-                </strong> <?php echo CHtml::encode($statsSpaceMostMembers->name); ?>
+                </strong> <?php echo Html::encode($statsSpaceMostMembers->name); ?>
             </div>
         <?php } ?>
     </div>
 </div>
 
 <script>
-    $(function() {
+    $(function () {
         $(".knob").knob();
-        $(".knob-container").css( "opacity", 1 );
+        $(".knob-container").css("opacity", 1);
     });
 </script>

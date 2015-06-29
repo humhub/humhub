@@ -35,6 +35,13 @@ Quick Guide about
 	- UserModel: CanApproveUsers
 - Url Rewriting
 - Use AssetBundels
+- Split again Content/Wall ?
+- 
+- LF
+	- Reimplement Access Controls
+	- Headers
+	- Check Imports
+	- Add View Params
 
 ### Bugs
 
@@ -45,7 +52,7 @@ Quick Guide about
 
 - Comment in new Window Mode
 - Check Timezone
-
+- Check how to handle unapproved/disabled users (Directory, Spaces)
 
 ## Core Changes
 

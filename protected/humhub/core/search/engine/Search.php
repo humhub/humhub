@@ -114,7 +114,7 @@ abstract class Search extends \yii\base\Component
         $meta = array();
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
-        $meta['model'] = get_class($obj);
+        $meta['model'] = $obj->className();
 
         // Add content related meta data
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {

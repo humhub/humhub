@@ -36,7 +36,7 @@ class ZendLuceneSearch extends Search
 
         // Add Meta Data fields
         foreach ($this->getMetaInfoArray($obj) as $fieldName => $fieldValue) {
-            $doc->addField(\ZendSearch\Lucene\Document\Field::Text($fieldName, $fieldValue));
+            $doc->addField(\ZendSearch\Lucene\Document\Field::keyword($fieldName, $fieldValue));
         }
 
         // Add provided search infos
@@ -46,7 +46,7 @@ class ZendLuceneSearch extends Search
 
         if ($obj instanceof \humhub\core\content\components\activerecords\Content) {
             $comments = "";
-            foreach (Comment::model()->findAllByAttributes(array('object_id' => $obj->getPrimaryKey(), 'object_model' => get_class($obj))) as $comment) {
+            foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {
                 $comments .= " " . $comment->message;
             }
             $doc->addField(\ZendSearch\Lucene\Document\Field::Text('comments', $comments, 'UTF-8'));
@@ -71,7 +71,7 @@ class ZendLuceneSearch extends Search
     {
         $index = $this->getIndex();
 
-        $hits = $index->find('pk:' . $obj->getPrimaryKey() . " model:" . get_class($obj));
+        $hits = $index->find('pk:' . $obj->getPrimaryKey() . " model:" . $obj->className());
         foreach ($hits as $hit) {
             $index->delete($hit->id);
         }
@@ -139,11 +139,11 @@ class ZendLuceneSearch extends Search
             if (is_array($options['model'])) {
                 $boolQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
                 foreach ($options['model'] as $model) {
-                    $boolQuery->addTerm(new \ZendSearch\Lucene\Index\Term(strtolower($model), 'model'));
+                    $boolQuery->addTerm(new \ZendSearch\Lucene\Index\Term($model, 'model'));
                 }
                 $query->addSubquery($boolQuery, true);
             } else {
-                $term = new \ZendSearch\Lucene\Index\Term(strtolower($options['model']), 'model');
+                $term = new \ZendSearch\Lucene\Index\Term($options['model'], 'model');
                 $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term($term), true);
             }
         }
@@ -153,11 +153,11 @@ class ZendLuceneSearch extends Search
             if (is_array($options['type'])) {
                 $boolQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
                 foreach ($options['type'] as $model) {
-                    $boolQuery->addTerm(new \ZendSearch\Lucene\Index\Term(strtolower($type), 'type'));
+                    $boolQuery->addTerm(new \ZendSearch\Lucene\Index\Term($type), 'type');
                 }
                 $query->addSubquery($boolQuery, true);
             } else {
-                $term = new \ZendSearch\Lucene\Index\Term(strtolower($options['type']), 'type');
+                $term = new \ZendSearch\Lucene\Index\Term($options['type'], 'type');
                 $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term($term), true);
             }
         }
@@ -196,7 +196,6 @@ class ZendLuceneSearch extends Search
             $spaceBaseQuery->addSubquery($spaceIdQuery, true);
             $query->addSubquery($spaceBaseQuery, true);
         }
-
 
         return $query;
     }

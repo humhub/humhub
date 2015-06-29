@@ -92,7 +92,7 @@ class SearchController extends Controller
         $keyword = Yii::$app->request->get('keyword', "");
 
         $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => array('User', 'Space'),
+            'model' => array(User::className(), Space::className()),
             'pageSize' => 10
         ]);
 
@@ -119,9 +119,9 @@ class SearchController extends Controller
         unset($options['page']);
         unset($options['pageSize']);
 
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => 'User']));
+        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => User::className()]));
         $totals[self::SCOPE_USER] = $searchResultSetCount->total;
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => 'Space']));
+        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => Space::className()]));
         $totals[self::SCOPE_SPACE] = $searchResultSetCount->total;
 
         $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['type' => 'Content']));
