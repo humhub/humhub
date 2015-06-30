@@ -508,7 +508,7 @@ td[class="image-124px"] img {
 
 </head>
 
-<body style="font-size:12px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; background-color:#ededed; ">
+<body style="font-size:12px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; background-color:#ededed; color: #ededed;">
 
 <!--start 100% wrapper (white background) -->
 <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:#ededed;">
@@ -641,6 +641,8 @@ td[class="image-124px"] img {
 <!-- START EMAIL CONTENT -->
 
 <?php echo $content; ?>
+<br>
+Sending time: <?php echo date('c'); ?>
 
 <!-- END EMAIL CONTENT -->
 
