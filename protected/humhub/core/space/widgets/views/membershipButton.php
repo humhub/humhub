@@ -1,5 +1,6 @@
 <?php
 
+use humhub\core\space\models\Space;
 use humhub\core\space\models\Membership;
 use yii\helpers\Html;
 

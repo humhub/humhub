@@ -439,6 +439,11 @@ class SpaceModelMembership extends Behavior
             $notification->source = $this->owner;
             $notification->originator = $user;
             $notification->send($membership->originator);
+        } elseif ($membership->status == Membership::STATUS_APPLICANT) {
+            $notification = new \humhub\core\space\notifications\ApprovalRequestDeclined();
+            $notification->source = $this->owner;
+            $notification->originator = Yii::$app->user->getIdentity();
+            $notification->send($user);
         }
 
         foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {

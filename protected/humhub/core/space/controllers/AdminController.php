@@ -143,20 +143,17 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
      */
     public function actionMembersRejectApplicant()
     {
-
         $this->forcePostRequest();
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::model()->findByAttributes(array('guid' => $userGuid));
+        $user = User::findOne(['guid' => $userGuid]);
 
         if ($user != null) {
             $space->removeMember($user->id);
-
-            SpaceApprovalRequestDeclinedNotification::fire(Yii::$app->user->id, $user, $space);
         }
 
-        $this->redirect($space->getUrl());
+        return $this->redirect($space->getUrl());
     }
 
     /**
@@ -164,22 +161,20 @@ class AdminController extends \humhub\core\content\components\ContentContainerCo
      */
     public function actionMembersApproveApplicant()
     {
-
         $this->forcePostRequest();
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::model()->findByAttributes(array('guid' => $userGuid));
+        $user = User::findOne(['guid' => $userGuid]);
 
         if ($user != null) {
             $membership = $space->getMembership($user->id);
-            if ($membership != null && $membership->status == SpaceMembership::STATUS_APPLICANT) {
+            if ($membership != null && $membership->status == Membership::STATUS_APPLICANT) {
                 $space->addMember($user->id);
             }
         }
 
-
-        $this->redirect($space->getUrl());
+        return $this->redirect($space->getUrl());
     }
 
     /**

@@ -25,7 +25,15 @@ class Members extends Widget
         $memberQuery->limit($this->maxMembers);
         $memberQuery->where(['user.status' => \humhub\core\user\models\User::STATUS_ENABLED]);
 
-        return $this->render('spaceMembers', ['space' => $this->space, 'members' => $memberQuery->all()]);
+        $showApplicants = false;
+        $applicants = [];
+
+        if ($this->space->isAdmin() && $this->space->getApplicants()->count() != 0) {
+            $showApplicants = true;
+            $applicants = $this->space->getApplicants()->limit('15')->all();
+        }
+
+        return $this->render('spaceMembers', ['space' => $this->space, 'members' => $memberQuery->all(), 'showApplicants' => $showApplicants, 'applicants' => $applicants]);
     }
 
 }

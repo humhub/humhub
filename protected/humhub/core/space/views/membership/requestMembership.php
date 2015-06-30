@@ -1,11 +1,10 @@
+<?php
+
+use humhub\compat\CActiveForm;
+?>
 <div class="modal-dialog animated fadeIn">
     <div class="modal-content">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'space-apply-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
@@ -18,7 +17,7 @@
             <br/>
             <br/>
 
-            <?php //echo $form->labelEx($model, 'message'); ?>
+            <?php //echo $form->labelEx($model, 'message');  ?>
             <?php echo $form->textArea($model, 'message', array('rows' => '8', 'class' => 'form-control', 'id' => 'request-message')); ?>
             <?php echo $form->error($model, 'message'); ?>
 
@@ -26,14 +25,19 @@
         <div class="modal-footer">
             <hr/>
             <?php
-            echo CHtml::ajaxButton(Yii::t('SpaceModule.views_space_requestMembership', 'Send'), array('//space/space/requestMembershipForm', 'sguid' => $space->guid), array(
-                'type' => 'POST',
-                'beforeSend' => 'function(){ setModalLoader(); }',
-                'success' => 'function(html){ $("#globalModal").html(html); }',
-                    ), array('class' => 'btn btn-primary'));
+            echo \humhub\compat\widgets\AjaxButton::widget([
+                'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
+                'ajaxOptions' => [
+                    'type' => 'POST',
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'url' => $space->createUrl('/space/membership/request-membership-form'),
+                ],
+                'htmlOptions' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ]);
             ?>
-
-
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Close'); ?></button>
 
@@ -47,7 +51,7 @@
 
         </div>
 
-        <?php $this->endWidget(); ?>
+        <?php CActiveForm::end(); ?>
     </div>
 
 </div>
@@ -59,7 +63,7 @@
     $('#request-message').focus()
 
     // Shake modal after wrong validation
-<?php if ($form->errorSummary($model) != null) { ?>
+<?php if ($model->hasErrors()) { ?>
         $('.modal-dialog').removeClass('fadeIn');
         $('.modal-dialog').addClass('shake');
 <?php } ?>

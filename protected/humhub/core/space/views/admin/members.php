@@ -227,7 +227,7 @@ use humhub\core\space\models\Space;
                         <?php $user = $membership->user; ?>
                         <tr>
                             <td width="40px">
-                                <a href="<?php echo $user->getProfileUrl(); ?>">
+                                <a href="<?php echo $user->getUrl(); ?>">
 
                                     <img class="media-object img-rounded"
                                          src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="34"
@@ -244,8 +244,8 @@ use humhub\core\space\models\Space;
                                 <?php echo CHtml::encode($membership->request_message); ?>
                             </td>
                             <td width="150px">
-                                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Accept'), $this->createUrl('//space/admin/membersApproveApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'approve' => true)), array('class' => "btn btn-sm btn-success")); ?>
-                                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Decline'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-danger")); ?>
+                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Accept'), $space->createUrl('//space/admin/members-approve-applicant', array('userGuid' => $user->guid)), array('data-method' => 'post', 'class' => "btn btn-sm btn-success")); ?>
+                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Decline'), $space->createUrl('//space/admin/members-reject-applicant', array('userGuid' => $user->guid)), array('data-method' => 'post', 'class' => "btn btn-sm btn-danger")); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -286,7 +286,7 @@ use humhub\core\space\models\Space;
 
                         <tr>
                             <td width="40px">
-                                <a href="<?php echo $user->getProfileUrl(); ?>">
+                                <a href="<?php echo $user->getUrl(); ?>">
 
                                     <img class="media-object img-rounded"
                                          src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="34"

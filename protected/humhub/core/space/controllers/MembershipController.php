@@ -27,6 +27,7 @@ use \yii\web\HttpException;
 use \humhub\core\user\models\User;
 use humhub\models\Setting;
 use humhub\core\space\models\Membership;
+use humhub\core\space\models\forms\RequestMembershipForm;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -124,7 +125,6 @@ class MembershipController extends \humhub\core\content\components\ContentContai
      */
     public function actionRequestMembershipForm()
     {
-
         $space = $this->getSpace();
 
         // Check if we have already some sort of membership
@@ -132,35 +132,14 @@ class MembershipController extends \humhub\core\content\components\ContentContai
             throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'Could not request membership!'));
         }
 
-        $model = new SpaceRequestMembershipForm;
+        $model = new RequestMembershipForm();
 
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'workspace-apply-form') {
-            echo CActiveForm::validate($model);
-            Yii::$app->end();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $space->requestMembership(Yii::$app->user->id, $model->message);
+            return $this->renderAjax('requestMembershipSave');
         }
 
-        if (isset($_POST['SpaceRequestMembershipForm'])) {
-
-            $_POST['SpaceRequestMembershipForm'] = Yii::$app->input->stripClean($_POST['SpaceRequestMembershipForm']);
-
-            $model->attributes = $_POST['SpaceRequestMembershipForm'];
-
-            if ($model->validate()) {
-
-                $space->requestMembership(Yii::$app->user->id, $model->message);
-
-                $output = $this->renderPartial('requestMembershipSave', array('model' => $model, 'workspace' => $space));
-                Yii::$app->clientScript->render($output);
-                echo $output;
-                Yii::$app->end();
-                return;
-            }
-        }
-
-        $output = $this->renderPartial('requestMembership', array('model' => $model, 'space' => $space));
-        Yii::$app->clientScript->render($output);
-        echo $output;
-        Yii::$app->end();
+        return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
     }
 
     /**
