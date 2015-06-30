@@ -217,9 +217,9 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
      * @param Content $content
      * @return string
      */
-    public function getContentInfo(Content $content)
+    public function getContentInfo(\humhub\core\content\interfaces\ContentTitlePreview $content)
     {
-        return $content->getContentTitle() .
+        return \yii\helpers\Html::encode($content->getContentTitle()) .
                 ' ' .
                 \humhub\widgets\RichText::widget(['text' => $content->getContentPreview(), 'minimal' => true, 'maxLength' => 60]);
     }

@@ -115,9 +115,5 @@ class Like extends \humhub\core\content\components\activerecords\ContentAddon
         return parent::beforeDelete();
     }
 
-    public function getUser()
-    {
-        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'created_by']);
-    }
 
 }

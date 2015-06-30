@@ -34,7 +34,7 @@ use humhub\components\ActiveRecord;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddon extends ActiveRecord
+class ContentAddon extends ActiveRecord implements \humhub\core\content\interfaces\ContentTitlePreview
 {
 
     /**
@@ -147,14 +147,25 @@ class ContentAddon extends ActiveRecord
     }
 
     /**
-     * Returns textual title for this content addon
+     * Returns a title for this type of content.
+     * This method should be overwritten in the content implementation.
      *
-     * @return type
+     * @return string
      */
     public function getContentTitle()
     {
-        $objectModel = get_class($this); // e.g. Like
-        return $objectModel . " (" . $this->getPrimaryKey() . ")";
+        return $this->className();
+    }
+
+    /**
+     * Returns a text preview of this content.
+     * This method should be overwritten in the content implementation.
+     *
+     * @return string
+     */
+    public function getContentPreview($maxLength = 0)
+    {
+        return "";
     }
 
     /**
@@ -186,6 +197,11 @@ class ContentAddon extends ActiveRecord
         // Auto follow the content which this addon belongs to
         $this->getContent()->getUnderlyingObject()->follow($this->created_by);
         return parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'created_by']);
     }
 
 }

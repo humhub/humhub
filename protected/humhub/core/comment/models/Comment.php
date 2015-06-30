@@ -87,12 +87,9 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
         $activity->save();
         $activity->fire();
 
-        /*
-          // Handle mentioned users
-          // Execute before NewCommentNotification to avoid double notification when mentioned.
-          UserMentioning::parse($this, $this->message);
-
-         */
+        // Handle mentioned users
+        // Execute before NewCommentNotification to avoid double notification when mentioned.
+        \humhub\core\user\models\Mentioning::parse($this, $this->message);
 
         if ($insert) {
             $notification = new \humhub\core\comment\notifications\NewComment();
@@ -154,14 +151,23 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
     }
 
     /**
-     * Returns a title/text which identifies this IContent.
-     * e.g. Post: foo bar 123...
-     *
-     * @return String
+     * @inheritdoc
      */
     public function getContentTitle()
     {
-        return Yii::t('CommentModule.models_comment', 'Comment') . " \"" . \humhub\libs\Helpers::truncateText($this->message, 40) . "\"";
+        return Yii::t('CommentModule.models_comment', 'Comment');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentPreview($maxLength = 0)
+    {
+        if ($maxLength == 0) {
+            return $this->message;
+        }
+
+        return \humhub\libs\Helpers::truncateText($this->message, $maxLength);
     }
 
     public function canDelete($userId = "")
@@ -182,11 +188,6 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
         }
 
         return false;
-    }
-
-    public function getUser()
-    {
-        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'created_by']);
     }
 
 }

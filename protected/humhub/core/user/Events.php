@@ -17,4 +17,14 @@ class Events extends \yii\base\Object
         }
     }
 
+    /**
+     * On delete of a Content or ContentAddon
+     * 
+     * @param type $event
+     */
+    public static function onContentDelete($event)
+    {
+        models\Mentioning::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
+    }
+
 }

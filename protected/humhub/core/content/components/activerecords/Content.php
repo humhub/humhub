@@ -45,7 +45,7 @@ use humhub\components\ActiveRecord;
  * @package humhub.components
  * @since 0.5
  */
-class Content extends ActiveRecord
+class Content extends ActiveRecord implements \humhub\core\content\interfaces\ContentTitlePreview
 {
 
     /**
@@ -98,7 +98,7 @@ class Content extends ActiveRecord
      *
      * @return string
      */
-    public function getContentPreview()
+    public function getContentPreview($maxLength = 0)
     {
         return "";
     }

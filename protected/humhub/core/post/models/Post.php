@@ -63,7 +63,7 @@ class Post extends \humhub\core\content\components\activerecords\Content
         }
 
         // Handle mentioned users
-        //UserMentioning::parse($this, $this->message);
+        \humhub\core\user\models\Mentioning::parse($this, $this->message);
 
         return true;
     }
@@ -106,7 +106,7 @@ class Post extends \humhub\core\content\components\activerecords\Content
             return $this->message;
         }
 
-        return \humhub\libs\Helpers::truncateText($this->message, $length);
+        return \humhub\libs\Helpers::truncateText($this->message, $maxLength);
     }
 
 }

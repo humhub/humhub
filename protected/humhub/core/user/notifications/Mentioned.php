@@ -26,10 +26,21 @@ use humhub\core\notification\components\BaseNotification;
  * MentionedNotification is fired to all users which are mentionied 
  * in a HActiveRecordContent or HActiveRecordContentAddon
  */
-class MentionedNotification extends BaseNotification
+class Mentioned extends BaseNotification
 {
 
     public $viewName = "mentioned";
+
+    public function send(\humhub\core\user\models\User $user)
+    {
+        // Do additional access check here, because the mentioned user may have
+        // no access to the content
+        if (!$this->source->content->canRead($user->id)) {
+            return;
+        }
+
+        return parent::send($user);
+    }
 
 }
 

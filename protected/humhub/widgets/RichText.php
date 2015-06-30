@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use Yii;
 use yii\helpers\Html;
 use humhub\models\UrlOembed;
 
@@ -61,9 +62,10 @@ class RichText extends \yii\base\Widget
 
 
         // get user and space details from guids
-        //$text = self::translateMentioning($text, true);
+        $this->text = self::translateMentioning($this->text, true);
+
         // create image tag for emojis
-        //$text = self::translateEmojis($text);
+        $this->text = self::translateEmojis($this->text);
 
         return nl2br($this->text);
     }
@@ -81,7 +83,7 @@ class RichText extends \yii\base\Widget
         return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::app()->baseUrl . '/img/emoji/' . $hit[1] . '.png', $hit[1], array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji'));
+                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".png"), array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji', 'alt' => $hit[1]));
                 }
                 return '';
             }
@@ -99,20 +101,21 @@ class RichText extends \yii\base\Widget
     {
         return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s|\.|")@', function($hit) use(&$buildAnchors) {
             if ($hit[1] == 'u') {
-                $user = User::model()->findByAttributes(array('guid' => $hit[2]));
+                $user = \humhub\core\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $user->getProfileUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . CHtml::encode($user->getDisplayName()) . '</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '</a></span>' . $hit[3];
                     }
-                    return " @" . CHtml::encode($user->getDisplayName()) . $hit[3];
+                    return " @" . Html::encode($user->getDisplayName()) . $hit[3];
                 }
             } elseif ($hit[1] == 's') {
-                $space = Space::model()->findByAttributes(array('guid' => $hit[2]));
+                $space = \humhub\core\space\models\Space::findOne(['guid' => $hit[2]]);
+
                 if ($space !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . CHtml::encode($space->name) . '</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '</a></span>' . $hit[3];
                     }
-                    return " @" . CHtml::encode($space->name) . $hit[3];
+                    return " @" . Html::encode($space->name) . $hit[3];
                 }
             }
             return $hit[0];

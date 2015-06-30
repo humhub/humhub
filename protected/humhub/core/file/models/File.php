@@ -91,7 +91,7 @@ class File extends \humhub\components\ActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\UnderlyingObject::className(),
-                'mustBeInstanceOf' => array(\yii\db\ActiveRecord::className()),
+                'mustBeInstanceOf' => array(\humhub\components\ActiveRecord::className()),
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),
