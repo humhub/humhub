@@ -4,26 +4,51 @@ Notifications
 Notifications are used to inform one or a set of users about something.
 
 
-
-
 ## Steps to create own notifications
 
 ### Create 
 
-Create a new class 'SomethingHappend' there
+Create a folder ** notifications ** in your module and a new class ** SomethingHappend ** 
 
 ```php
-TBD example class
+<?php
+
+namespace app\modules\example\notifications;
+
+use humhub\core\notification\components\BaseNotification;
+
+/**
+ * Notifies a user about something happend
+ */
+class SomethingHappend extends BaseNotification
+{
+
+    public $viewName = "somethingHappend";
+
+}
+
+?>
+
 ```
 
-By default notifications should be located inside a sub folder named ** view ** where your notification class is located.  e.g. /modules/examples/notifications/views/
+By default notification views should be located inside a subfolder named ** views ** where your notification class is located. (e.g. /modules/examples/notifications/views/)
+
+Example view file ** somethingHappend.php **:
 
 ```php
-TBD
+<?php
+
+use yii\helpers\Html;
+
+echo Yii::t('LikeModule.views_notifications_newLike', "%someUser% did something cool.", array(
+    '%someUser%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
+));
+?>
+
+
 ```
 
-If you require diffrent views web & mail. You can create a subfolder inside the view folder called ** mail **.
-Locate a mail version of the view there. 
+If you require a diffrent view in mails. You can create a subfolder inside the subfolder called ** mail ** in your views directory.  
 
 
 ### Send it 

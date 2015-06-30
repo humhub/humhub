@@ -1,5 +1,8 @@
-<?php $this->beginContent('application.views.mail.template'); ?>
+<?php
 
+use yii\helpers\Url;
+use yii\helpers\Html;
+?>
 <tr>
     <td align="center" valign="top"   class="fix-box">
 
@@ -25,9 +28,9 @@
                                                 <tr>
                                                     <td width="auto"  align="center" valign="middle" height="28" style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
-                             <span style="color: #555555; font-weight: 300;">
-                               <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'You got a <strong>space</strong> invite'); ?>
-                             </span>
+                                                        <span style="color: #555555; font-weight: 300;">
+                                                            <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'You got a <strong>space</strong> invite'); ?>
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -88,7 +91,7 @@
 
                                                     <td valign="top" align="center" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $originator->guid)); ?>">
+                                                        <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>">
                                                             <img
                                                                 src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
                                                                 width="69"
@@ -107,48 +110,48 @@
                                     </tr>
                                     <!--end space height -->
 
-                                            <table width="100%" border="0" cellspacing="0" cellpadding="0"
-                                                   align="center">
-                                                <tr>
-                                                    <td style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:center;">
-                                 <span style="color: #555555; font-weight: 300;">
-                                   <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $originator->guid)); ?>"
-                                      style="text-decoration: none; color: #555555; font-weight: 300;">
-                                       <!-- START: USER NAME -->
-                                       <?php echo CHtml::encode($originator->displayName); ?>
-                                       <!-- END: USER NAME -->
-                                   </a>
-                                 </span>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <!-- end  content top-->
-
-
-                                    <!--start space height -->
-                                    <tr>
-                                        <td height="5" class="col-underline"></td>
-                                    </tr>
-                                    <!--end space height -->
-
-
-                                </table>
-                                <!-- end content left -->
-
-
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                           align="center">
+                                        <tr>
+                                            <td style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:center;">
+                                                <span style="color: #555555; font-weight: 300;">
+                                                    <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>"
+                                                       style="text-decoration: none; color: #555555; font-weight: 300;">
+                                                        <!-- START: USER NAME -->
+                                                        <?php echo Html::encode($originator->displayName); ?>
+                                                        <!-- END: USER NAME -->
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
                             </td>
                         </tr>
-                        <!-- end image and content -->
+                        <!-- end  content top-->
+
+
+                        <!--start space height -->
+                        <tr>
+                            <td height="5" class="col-underline"></td>
+                        </tr>
+                        <!--end space height -->
+
 
                     </table>
-                    <!-- end  container width 560px -->
+                    <!-- end content left -->
+
+
                 </td>
             </tr>
+            <!-- end image and content -->
+
         </table>
-        <!-- end  container width 600px -->
+        <!-- end  container width 560px -->
     </td>
+</tr>
+</table>
+<!-- end  container width 600px -->
+</td>
 </tr>
 
 <tr>
@@ -188,8 +191,8 @@
 
                                                         <!-- START: CONTENT -->
                                                         <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'invited you to the space:'); ?>
-                                                        <strong><?php echo CHtml::encode($workspaceName); ?></strong>
-                                                        at <?php echo CHtml::encode(Yii::app()->name); ?>.<?php echo Yii::t('UserModule.views_mails_UserInviteSpace', '<br>A social network to increase your communication and teamwork.<br>Register now
+                                                        <strong><?php echo Html::encode($space->name); ?></strong>
+                                                        at <?php echo Html::encode(Yii::$app->name); ?>.<?php echo Yii::t('UserModule.views_mails_UserInviteSpace', '<br>A social network to increase your communication and teamwork.<br>Register now
                                                         to join this space.'); ?><br/>
                                                         &nbsp;
                                                         <!-- END: CONTENT -->
@@ -216,11 +219,11 @@
                                                 <tr>
                                                     <td width="auto"  align="center" valign="middle" height="32" style=" background-color:#7191a8;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
-                             <span style="color: #ffffff; font-weight: 300;">
-                               <a href="<?php echo Yii::app()->createAbsoluteUrl("user/auth/createAccount", array('token' => $token)); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                   <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'Sign up now'); ?></strong>
-                               </a>
-                             </span>
+                                                        <span style="color: #ffffff; font-weight: 300;">
+                                                            <a href="<?php echo Url::to(['/user/auth/createAccount', 'token' => $token], true); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
+                                                                <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'Sign up now'); ?></strong>
+                                                            </a>
+                                                        </span>
                                                     </td>
 
                                                 </tr>
@@ -250,6 +253,3 @@
         <!-- end  container width 600px -->
     </td>
 </tr>
-
-
-<?php $this->endContent(); ?>

@@ -43,10 +43,9 @@ class Membership extends \yii\db\ActiveRecord
     {
         return [
             [['space_id', 'user_id'], 'required'],
-            [['space_id', 'user_id', 'status', 'invite_role', 'admin_role', 'share_role', 'created_by', 'updated_by'], 'integer'],
+            [['space_id', 'user_id', 'originator_user_id', 'status', 'invite_role', 'admin_role', 'share_role', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
             [['last_visit', 'created_at', 'updated_at'], 'safe'],
-            [['originator_user_id'], 'string', 'max' => 45]
         ];
     }
 
@@ -75,6 +74,11 @@ class Membership extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'user_id']);
+    }
+
+    public function getOriginator()
+    {
+        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'originator_user_id']);
     }
 
     public function getSpace()

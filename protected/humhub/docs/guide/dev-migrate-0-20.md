@@ -15,9 +15,8 @@ Quick Guide about
 	- Uninstall
 - Theming
 	- Also check themed files like module_images
-- Check Activity Situations
+- Activity
 - Check Update Progress
-- Activity/Notification - create own classes/views
 - Emailing (New Config Option)
 - CronJobs
 - Tests
@@ -158,6 +157,7 @@ Yii::$app->moduleManager->register([
 ```
 
 
+
 ### DB Migrations
 
 For migration scripts itself, there are no specific changes. 
@@ -165,6 +165,12 @@ For migration scripts itself, there are no specific changes.
 If some of the modules classnames are stored in DB (e.g. content, activity or notification) table, create a db migration to change to namespaced classnames.
 
 TODO: Add example migration script
+
+#### Tablenames
+
+- user_mentioned
+- ...
+
 
 
 ### Translations
@@ -189,12 +195,14 @@ TBD
 > [[\humhub\core\content\components\activerecords\ContentAddon]]
 
 
-### Content
+### Content & ContentAddon
 
 getContentTitle is now divided into
 
 - getContentTitle
 - getContentPreview
+
+
 
 
 

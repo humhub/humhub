@@ -205,7 +205,13 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
      */
     public function getUrl()
     {
-        return "foourl";
+        if ($this->source instanceof Content || $this->source instanceof ContentAddon) {
+            return $this->source->content->getUrl();
+        } elseif ($this->source instanceof ContentContainer) {
+            return $this->source->getUrl();
+        }
+
+        return "#";
     }
 
     /**

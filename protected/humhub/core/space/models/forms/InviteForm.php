@@ -1,11 +1,19 @@
 <?php
 
+namespace humhub\core\space\models\forms;
+
+use Yii;
+use yii\base\Model;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Membership;
+
 /**
  * @author Luke
  * @package humhub.modules_core.space.forms
  * @since 0.5
  */
-class SpaceInviteForm extends CFormModel {
+class InviteForm extends Model
+{
 
     /**
      * Field for Invite GUIDs
@@ -45,7 +53,8 @@ class SpaceInviteForm extends CFormModel {
      * The rules state that username and password are required,
      * and password needs to be authenticated.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('invite', 'checkInvite'),
             array('inviteExternal', 'checkInviteExternal'),
@@ -55,7 +64,8 @@ class SpaceInviteForm extends CFormModel {
     /**
      * Declares attribute labels.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'invite' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'Invites'),
             'inviteExternal' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'New user by e-mail (comma separated)'),
@@ -68,7 +78,8 @@ class SpaceInviteForm extends CFormModel {
      * @param type $attribute
      * @param type $params
      */
-    public function checkInvite($attribute, $params) {
+    public function checkInvite($attribute, $params)
+    {
 
         // Check if email field is not empty
         if ($this->$attribute != "") {
@@ -82,20 +93,18 @@ class SpaceInviteForm extends CFormModel {
                     continue;
 
                 // Try load user
-                $user = User::model()->findByAttributes(array('guid' => $userGuid));
+                $user = User::findOne(['guid' => $userGuid]);
                 if ($user != null) {
-                    $membership = SpaceMembership::model()->findByAttributes(array('space_id' => $this->space->id, 'user_id' => $user->id));
-                    if ($membership != null && $membership->status == SpaceMembership::STATUS_MEMBER) {
+                    $membership = Membership::findOne(['space_id' => $this->space->id, 'user_id' => $user->id]);
+                    if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
                         $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User is already member!"));
                         continue;
                     }
+                    $this->invites[] = $user;
                 } else {
                     $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User not found!"));
                     continue;
                 }
-
-
-                $this->invites[] = $user;
             }
         }
     }
@@ -107,7 +116,8 @@ class SpaceInviteForm extends CFormModel {
      * @param type $attribute
      * @param type $params
      */
-    public function checkInviteExternal($attribute, $params) {
+    public function checkInviteExternal($attribute, $params)
+    {
 
         // Check if email field is not empty
         if ($this->$attribute != "") {
@@ -116,13 +126,14 @@ class SpaceInviteForm extends CFormModel {
             // Loop over each given e-mail
             foreach ($emails as $email) {
                 $email = trim($email);
-                $validator = new CEmailValidator;
-                if (!$validator->validateValue($email)) {
+
+                $validator = new \yii\validators\EmailValidator();
+                if (!$validator->validate($email)) {
                     $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "{email} is not valid!", array("{email}" => $email)));
                     continue;
                 }
 
-                $user = User::model()->findByAttributes(array('email' => $email));
+                $user = User::findOne(['email' => $email]);
                 if ($user != null) {
                     $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "{email} is already registered!", array("{email}" => $email)));
                     continue;
@@ -136,14 +147,16 @@ class SpaceInviteForm extends CFormModel {
     /**
      * Returns an Array with selected recipients
      */
-    public function getInvites() {
+    public function getInvites()
+    {
         return $this->invites;
     }
 
     /**
      * Returns an Array with selected recipients
      */
-    public function getInvitesExternal() {
+    public function getInvitesExternal()
+    {
         return $this->invitesExternal;
     }
 

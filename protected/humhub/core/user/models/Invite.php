@@ -4,6 +4,7 @@ namespace humhub\core\user\models;
 
 use Yii;
 use humhub\models\Setting;
+use humhub\core\space\models\Space;
 
 /**
  * This is the model class for table "user_invite".
@@ -89,35 +90,43 @@ class Invite extends \yii\db\ActiveRecord
         // User requested registration link by its self
         if ($this->source == self::SOURCE_SELF) {
 
-            $mail = Yii::$app->mailer->compose(['html'=>'@humhub/core/user/views/mails/UserInviteSelf'], ['token'=>$this->token]);
+            $mail = Yii::$app->mailer->compose(['html' => '@humhub/core/user/views/mails/UserInviteSelf'], ['token' => $this->token]);
             $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
             $mail->send();
-
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             // Switch to systems default language
-            Yii::app()->language = HSetting::Get('defaultLanguage');
+            Yii::$app->language = Setting::Get('defaultLanguage');
 
-            $message = new HMailMessage();
-            $message->view = "application.modules_core.user.views.mails.UserInviteSpace";
-            $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
-            $message->addTo($this->email);
-            $message->subject = Yii::t('UserModule.views_mails_UserInviteSpace', 'Space Invite');
-            $message->setBody(array(
-                'originator' => $this->userOriginator,
-                'originatorName' => $this->userOriginator->displayName,
+            $mail = Yii::$app->mailer->compose(['html' => '@humhub/core/user/views/mails/UserInviteSpace'], [
                 'token' => $this->token,
-                'workspaceName' => $this->workspaceInvite->name,
-                    ), 'text/html');
-            Yii::app()->mail->send($message);
+                'originator' => $this->originator,
+                'originatorName' => $this->originator->displayName,
+                'token' => $this->token,
+                'space' => $this->space
+            ]);
+            $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
+            $mail->setTo($this->email);
+            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Space Invite'));
+            $mail->send();
 
             // Switch back to users language
-            if (Yii::app()->user->language !== "") {
-                Yii::app()->language = Yii::app()->user->language;
+            if (Yii::$app->user->language !== "") {
+                Yii::$app->language = Yii::$app->user->language;
             }
         }
+    }
+
+    public function getOriginator()
+    {
+        return $this->hasOne(\humhub\core\user\models\User::className(), ['id' => 'user_originator_id']);
+    }
+
+    public function getSpace()
+    {
+        return $this->hasOne(\humhub\core\space\models\Space::className(), ['id' => 'space_invite_id']);
     }
 
 }

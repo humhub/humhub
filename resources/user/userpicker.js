@@ -372,11 +372,3 @@ $.fn.userpicker.parseUserInput = function (id) {
 
 }
 
-
-$(document).ready(function () {
-
-    // fire "loaded" event
-    $(document).trigger("userpicker_loaded");
-
-});
-

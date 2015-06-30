@@ -1,11 +1,17 @@
 <?php
 
+namespace humhub\core\space\models\forms;
+
+use Yii;
+use yii\base\Model;
+
 /**
  * @author Luke
  * @package humhub.modules_core.space.forms
  * @since 0.5
  */
-class SpaceRequestMembershipForm extends CFormModel {
+class RequestMembershipForm extends Model
+{
 
     public $space_id;
     public $message;
@@ -13,7 +19,8 @@ class SpaceRequestMembershipForm extends CFormModel {
     /**
      * Declares the validation rules.
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('message', 'required'),
         );
@@ -24,7 +31,8 @@ class SpaceRequestMembershipForm extends CFormModel {
      * If not declared here, an attribute would have a label that is
      * the same as its name with the first letter in upper case.
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'message' => Yii::t('SpaceModule.forms_SpaceMembershipForm', 'Application message'),
         );

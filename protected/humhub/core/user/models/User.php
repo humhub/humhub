@@ -228,11 +228,6 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
         return $this->hasOne(Group::className(), ['id' => 'group_id']);
     }
 
-    public function getUrl()
-    {
-        return $this->createUrl('/user/profile');
-    }
-
     /**
      * Before Delete of a User
      *
@@ -545,24 +540,19 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
         return $attributes;
     }
 
-    /**
-     * Creates an url in user scope.
-     * (Adding uguid parameter to identify current user.)
-     * See CController createUrl() for more details.
-     *
-     * @since 0.9
-     * @param type $route the URL route.
-     * @param type $params additional GET parameters.
-     * @param type $ampersand the token separating name-value pairs in the URL.
-     */
-    public function createUrl($route, $params = array(), $ampersand = '&')
+    public function getUrl()
+    {
+        return $this->createUrl('/user/profile');
+    }
+
+    public function createUrl($route = '/user/profile', $params = array(), $scheme = false)
     {
         array_unshift($params, $route);
         if (!isset($params['uguid'])) {
             $params['uguid'] = $this->guid;
         }
 
-        return \yii\helpers\Url::toRoute($params);
+        return \yii\helpers\Url::toRoute($params, $scheme);
     }
 
     /**

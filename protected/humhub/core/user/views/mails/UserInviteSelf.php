@@ -2,12 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-
 ?>
-
-<?php //$this->beginContent('application.views.mail.template'); ?>
-
-
 <tr>
     <td align="center" valign="top" class="fix-box">
 
@@ -160,5 +155,3 @@ use yii\helpers\Html;
         <!-- end  container width 600px -->
     </td>
 </tr>
-
-<?php //$this->endContent(); ?>

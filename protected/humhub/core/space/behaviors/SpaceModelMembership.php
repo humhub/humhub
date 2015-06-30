@@ -309,7 +309,9 @@ class SpaceModelMembership extends Behavior
         $membership->admin_role = 0;
         $membership->share_role = 0;
 
-        $membership->save();
+        if (!$membership->save()) {
+            throw new \yii\base\Exception("Could not save membership!" . print_r($membership->getErrors(), 1));
+        }
 
         $notification = new \humhub\core\space\notifications\Invite;
         $notification->source = $this->owner;
@@ -411,6 +413,7 @@ class SpaceModelMembership extends Behavior
             $userId = Yii::$app->user->id;
 
         $user = User::findOne(['id' => $userId]);
+
         $membership = $this->getMembership($userId);
 
         if ($this->isSpaceOwner($userId)) {
@@ -430,20 +433,17 @@ class SpaceModelMembership extends Behavior
             $activity->created_by = $userId;
             $activity->save();
             $activity->fire();
-        }
-
-        // Was invited, but declined the request
-        if ($membership->status == Membership::STATUS_INVITED) {
+        } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
+            // Was invited, but declined the request - inform originator
             $notification = new \humhub\core\space\notifications\InviteDeclined();
             $notification->source = $this->owner;
-            $notification->originator = Yii::$app->user->getIdentity();
-            $notification->send($user);
+            $notification->originator = $user;
+            $notification->send($membership->originator);
         }
 
         foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {
             $membership->delete();
         }
-
 
         $notificationApproval = new \humhub\core\space\notifications\ApprovalRequest();
         $notificationApproval->source = $this->owner;

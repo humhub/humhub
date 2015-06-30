@@ -1,11 +1,11 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use humhub\models\Setting;
+?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'space-invite-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
@@ -15,7 +15,7 @@
 
             <br/>
 
-            <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+            <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="active tab-internal"><a href="#internal"
@@ -41,7 +41,7 @@
                     <?php echo $form->textField($model, 'invite', array('class' => 'form-control', 'id' => 'invite')); ?>
                     <?php
                     // attach mention widget to it
-                    $this->widget('application.modules_core.user.widgets.UserPickerWidget', array(
+                    echo humhub\core\user\widgets\UserPicker::widget(array(
                         'inputId' => 'invite',
                         'model' => $model, // CForm Instanz
                         'attribute' => 'invite',
@@ -51,7 +51,7 @@
                     ?>
 
                 </div>
-                <?php if (HSetting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+                <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
                     <div class="tab-pane" id="external">
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>
@@ -69,11 +69,19 @@
         </div>
         <div class="modal-footer">
 
-            <?php echo HHtml::ajaxButton(Yii::t('SpaceModule.views_space_invite', 'Send'), array('//space/space/invite', 'sguid' => $space->guid), array(
-                'type' => 'POST',
-                'beforeSend' => 'function(){ setModalLoader(); }',
-                'success' => 'function(html){ $("#globalModal").html(html); }',
-            ), array('class' => 'btn btn-primary', 'id' => 'inviteBtn'));
+            <?php
+            echo \humhub\compat\widgets\AjaxButton::widget([
+                'label' => Yii::t('SpaceModule.views_space_invite', 'Send'),
+                'ajaxOptions' => [
+                    'type' => 'POST',
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'url' => $space->createUrl('/space/membership/invite'),
+                ],
+                'htmlOptions' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ]);
             ?>
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_invite', 'Close'); ?></button>
@@ -87,7 +95,7 @@
             </div>
         </div>
 
-        <?php $this->endWidget(); ?>
+        <?php CActiveForm::end(); ?>
     </div>
 
 </div>
@@ -95,20 +103,20 @@
 
 <script type="text/javascript">
 
-    // Shake modal after wrong validation
-    <?php if ($form->errorSummary($model) != null) : ?>
-    $('.modal-dialog').removeClass('fadeIn');
-    $('.modal-dialog').addClass('shake');
+// Shake modal after wrong validation
+<?php if ($model->hasErrors()) : ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
 
-    // check if there is an error at the second tab
+        // check if there is an error at the second tab
     <?php if ($form->error($model, 'inviteExternal') != null) : ?>
 
-    // show tab
-    $('#tabs a:last').tab('show');
+            // show tab
+            $('#tabs a:last').tab('show');
 
     <?php endif; ?>
 
-    <?php endif; ?>
+<?php endif; ?>
 
     $('.tab-internal a').on('shown.bs.tab', function (e) {
         $('#invite_tag_input_field').focus();

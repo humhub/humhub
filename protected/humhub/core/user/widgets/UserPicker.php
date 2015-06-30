@@ -97,7 +97,8 @@ class UserPicker extends \yii\base\Widget
         if ($this->userSearchUrl == "") {
             // provide the space id if the widget is calling from a space
             if (Yii::$app->controller->id == 'space') {
-                $this->userSearchUrl = Url::toRoute(['/user/search/json', 'keyword' => '-keywordPlaceholder-', 'space_id' => Yii::$app->contoller->getSpace()->id]);
+                $spaceId = Yii::$app->controller->getSpace()->id;
+                $this->userSearchUrl = Url::toRoute(['/user/search/json', 'keyword' => '-keywordPlaceholder-', 'space_id' => $spaceId]);
             } else {
                 $this->userSearchUrl = Url::toRoute(['/user/search/json', 'keyword' => '-keywordPlaceholder-']);
             }

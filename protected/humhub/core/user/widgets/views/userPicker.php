@@ -34,18 +34,14 @@ foreach (explode(",", $currentValue) as $guid) {
 
 <script type="text/javascript">
     $(document).ready(function () {
-        //console.log("wait for event");
-        $(document).on("userpicker_loaded", function () {
-            //console.log("got event");
-            $('#<?php echo $inputId; ?>').userpicker({
-                inputId: '#<?php echo $inputId; ?>',
-                maxUsers: '<?php echo $maxUsers; ?>',
-                searchUrl: '<?php echo $userSearchUrl; ?>',
-                currentValue: '<?php echo $newValue; ?>',
-                focus: '<?php echo $focus; ?>',
-                userGuid: '<?php echo $userGuid; ?>',
-                placeholderText: '<?php echo $placeholderText; ?>'
-            });
+        $('#<?php echo $inputId; ?>').userpicker({
+            inputId: '#<?php echo $inputId; ?>',
+            maxUsers: '<?php echo $maxUsers; ?>',
+            searchUrl: '<?php echo $userSearchUrl; ?>',
+            currentValue: '<?php echo $newValue; ?>',
+            focus: '<?php echo $focus; ?>',
+            userGuid: '<?php echo $userGuid; ?>',
+            placeholderText: '<?php echo $placeholderText; ?>'
         });
     });
 </script>

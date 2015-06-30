@@ -432,7 +432,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
      * @param array $parameters
      * @return string url
      */
-    public function getUrl($parameters = array())
+    public function getUrl()
     {
         return $this->createUrl('/space/space');
     }
@@ -447,14 +447,14 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
      * @param type $params additional GET parameters.
      * @param type $ampersand the token separating name-value pairs in the URL.
      */
-    public function createUrl($route = '/space/space', $params = array())
+    public function createUrl($route = '/space/space', $params = array(), $scheme = false)
     {
         array_unshift($params, $route);
         if (!isset($params['sguid'])) {
             $params['sguid'] = $this->guid;
         }
 
-        return \yii\helpers\Url::toRoute($params);
+        return \yii\helpers\Url::toRoute($params, $scheme);
     }
 
     /**
