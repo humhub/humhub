@@ -20,6 +20,8 @@
 
 namespace humhub\core\activity;
 
+use humhub\core\activity\models\Activity;
+
 /**
  * ActivityModuleEvents
  * Handles registered events of ActivityModule
@@ -96,22 +98,22 @@ class Events extends \yii\base\Object
     {
 
         $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Validating Activity Module (" . Activity::model()->count() . " entries)");
+        $integrityChecker->showTestHeadline("Activity Module (" . Activity::find()->count() . " entries)");
 
         // Loop over all comments
-        foreach (Activity::model()->findAll() as $a) {
+        foreach (Activity::find()->all() as $a) {
 
             if ($a->object_model != "" && $a->object_id != "" && $a->getUnderlyingObject() === null) {
-                $integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target!");
-                if (!$integrityChecker->simulate)
+                if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target!")) {
                     $a->delete();
+                }
             }
 
-            $content = Content::model()->findByAttributes(array('object_model' => 'Activity', 'object_id' => $a->id));
+            $content = \humhub\core\content\models\Content::findOne(['object_model' => 'Activity', 'object_id']);
             if ($content === null) {
-                $integrityChecker->showFix("Deleting activity id " . $a->id . " without corresponding content record!");
-                if (!$integrityChecker->simulate)
+                if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without corresponding content record!")) {
                     $a->delete();
+                }
             }
         }
     }

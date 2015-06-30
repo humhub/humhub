@@ -3,9 +3,11 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m131023_170033_initial extends Migration {
+class m131023_170033_initial extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->createTable('notification', array(
             'id' => 'pk',
             'class' => 'varchar(100) NOT NULL',
@@ -24,7 +26,8 @@ class m131023_170033_initial extends Migration {
                 ), '');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_170033_initial does not support migration down.\n";
         return false;
     }

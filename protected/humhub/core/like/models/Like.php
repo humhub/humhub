@@ -81,8 +81,10 @@ class Like extends \humhub\core\content\components\activerecords\ContentAddon
         $activity->save();
         $activity->fire();
 
-        // Send Notifications
-        //NewLikeNotification::fire($this);
+        $notification = new \humhub\core\like\notifications\NewLike();
+        $notification->source = $this;
+        $notification->originator = $this->user;
+        $notification->sendBulk($this->content->getUnderlyingObject()->getFollowers(null, true, true));
 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -100,17 +102,15 @@ class Like extends \humhub\core\content\components\activerecords\ContentAddon
         // Currently we need to delete this manually, because the activity object is NOT bound to the Like
         // Instead is it bound to the Like Target (This should changed)
         $activity = Activity::findOne(array(
-            'type' => 'Like',
-            'module' => 'like',
-            'object_model' => $this->object_model,
-            'object_id' => $this->object_id,
-            'created_by' => $this->created_by
+                    'type' => 'Like',
+                    'module' => 'like',
+                    'object_model' => $this->object_model,
+                    'object_id' => $this->object_id,
+                    'created_by' => $this->created_by
         ));
 
         if ($activity)
             $activity->delete();
-
-        //Notification::remove('Like', $this->id);
 
         return parent::beforeDelete();
     }

@@ -8,6 +8,8 @@
 
 namespace humhub\components;
 
+use Yii;
+
 /**
  * Description of ActiveRecord
  *
@@ -15,7 +17,6 @@ namespace humhub\components;
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
-
 
     /**
      * @inheritdoc
@@ -27,16 +28,17 @@ class ActiveRecord extends \yii\db\ActiveRecord
             if ($this->hasAttribute('created_at') && $this->created_at == "") {
                 $this->created_at = new \yii\db\Expression('NOW()');
             }
-            if ($this->hasAttribute('created_by') && $this->created_by == "") {
-                $this->created_by = \Yii::$app->user->id;
+
+            if (isset(Yii::$app->user) && $this->hasAttribute('created_by') && $this->created_by == "") {
+                $this->created_by = Yii::$app->user->id;
             }
         }
 
         if ($this->hasAttribute('updated_at') && $this->updated_at != "") {
             $this->updated_at = new \yii\db\Expression('NOW()');
         }
-        if ($this->hasAttribute('updated_by') && $this->updated_by != "") {
-            $this->updated_at = new \yii\db\Expression('NOW()');
+        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by') && $this->updated_by != "") {
+            $this->updated_by = Yii::$app->user->id;
         }
 
         return parent::beforeValidate();

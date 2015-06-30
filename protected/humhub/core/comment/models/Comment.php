@@ -54,7 +54,6 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
     public function beforeDelete()
     {
         $this->flushCache();
-        //Notification::remove('Comment', $this->id);
         return parent::beforeDelete();
     }
 
@@ -93,11 +92,14 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
           // Execute before NewCommentNotification to avoid double notification when mentioned.
           UserMentioning::parse($this, $this->message);
 
-          if ($this->isNewRecord) {
-          // Send Notifications
-          NewCommentNotification::fire($this);
-          }
          */
+
+        if ($insert) {
+            $notification = new \humhub\core\comment\notifications\NewComment();
+            $notification->source = $this;
+            $notification->originator = $this->user;
+            $notification->sendBulk($this->content->getUnderlyingObject()->getFollowers(null, true, true));
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }

@@ -8,6 +8,8 @@
 
 namespace humhub\core\comment;
 
+use humhub\core\comment\models\Comment;
+
 /**
  * Description of Events
  *
@@ -52,15 +54,15 @@ class Events extends \yii\base\Object
     {
 
         $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Validating Comment Module (" . Comment::model()->count() . " entries)");
+        $integrityChecker->showTestHeadline("Comment Module (" . Comment::find()->count() . " entries)");
 
         // Loop over all comments
-        foreach (Comment::model()->findAll() as $c) {
+        foreach (Comment::find()->all() as $c) {
 
             if ($c->source === null) {
-                $integrityChecker->showFix("Deleting comment id " . $c->id . " without existing target!");
-                if (!$integrityChecker->simulate)
+                if ($integrityChecker->showFix("Deleting comment id " . $c->id . " without existing target!")) {
                     $c->delete();
+                }
             }
         }
     }

@@ -78,11 +78,11 @@ AppAsset::register($this);
 
                 <div class="notifications pull-right">
 
-                    <!-- global notifications dropdown -->
-                    <?php // echo \humhub\corenotification\widgets\NotificationList::widget(); ?>
-
-                    <!-- Notification addon widget for modules -->
-                    <?php // echo \humhub\widgets\NotificationAddon::widget(); ?>
+                    <?php
+                    echo \humhub\widgets\NotificationArea::widget(['widgets' => [
+                            [\humhub\core\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
+                    ]]);
+                    ?>
 
                 </div>
 

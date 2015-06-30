@@ -1,42 +1,23 @@
 <?php
 
+namespace humhub\core\notification\controllers;
+
+use humhub\components\Controller;
+
 /**
  * EntryController
  *
  * @package humhub.modules_core.notification.controllers
  * @since 0.5
  */
-class EntryController extends Controller {
-
-    /**
-     * @return array action filters
-     */
-    public function filters() {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules() {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
+class EntryController extends Controller
+{
 
     /**
      * Returns a List of all Comments belong to this Model
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         $notificationId = (int) Yii::app()->request->getParam('id');
 
@@ -45,7 +26,7 @@ class EntryController extends Controller {
         if ($notification == null)
             throw new CHttpException(500, 'Invalid notification id!');
 
-        
+
         if ($notification->class != "SpaceApprovalRequestNotification" && $notification->class != "SpaceInviteNotification") {
             $notification->seen = 1;
             $notification->save();
@@ -56,7 +37,7 @@ class EntryController extends Controller {
                 $n->markAsSeen();
             }
         }
-        
+
         $notification->redirectToTarget();
     }
 

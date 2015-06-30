@@ -4,6 +4,7 @@ namespace humhub\core\content\controllers;
 
 use Yii;
 use humhub\components\Controller;
+use humhub\core\content\models\Content;
 
 /**
  * ContentController is responsible for basic content objects.
@@ -16,46 +17,21 @@ class ContentController extends Controller
 {
 
     /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
-
-    /**
      * Deletes a content object
      *
      * Returns a JSON list of affected wallEntryIds.
      */
     public function actionDelete()
     {
+        Yii::$app->response->format = 'json';
+
         $this->forcePostRequest();
         $json = [
             'success' => 'false'
         ];
 
-        $model = Yii::app()->request->getParam('model');
-        $id = (int) Yii::app()->request->getParam('id');
+        $model = Yii::$app->request->get('model');
+        $id = (int) Yii::$app->request->get('id');
 
         $contentObj = Content::get($model, $id);
 
@@ -68,8 +44,7 @@ class ContentController extends Controller
             ];
         }
 
-        echo CJSON::encode($json);
-        Yii::app()->end();
+        return $json;
     }
 
     /**
@@ -85,8 +60,8 @@ class ContentController extends Controller
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::app()->request->getParam('id', "");
-        $className = Yii::app()->request->getParam('className', "");
+        $id = (int) Yii::$app->request->getParam('id', "");
+        $className = Yii::$app->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
         if ($object != null && $object->content->canArchive()) {
@@ -98,7 +73,7 @@ class ContentController extends Controller
 
         // returns JSON
         echo CJSON::encode($json);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     /**
@@ -114,8 +89,8 @@ class ContentController extends Controller
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::app()->request->getParam('id', "");
-        $className = Yii::app()->request->getParam('className', "");
+        $id = (int) Yii::$app->request->getParam('id', "");
+        $className = Yii::$app->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
         if ($object != null && $object->content->canArchive()) {
@@ -127,7 +102,7 @@ class ContentController extends Controller
 
         // returns JSON
         echo CJSON::encode($json);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     /**
@@ -143,8 +118,8 @@ class ContentController extends Controller
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::app()->request->getParam('id', "");
-        $className = Yii::app()->request->getParam('className', "");
+        $id = (int) Yii::$app->request->getParam('id', "");
+        $className = Yii::$app->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
         if ($object != null && $object->content->canStick()) {
@@ -162,7 +137,7 @@ class ContentController extends Controller
         }
         // returns JSON
         echo CJSON::encode($json);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     /**
@@ -178,8 +153,8 @@ class ContentController extends Controller
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::app()->request->getParam('id', "");
-        $className = Yii::app()->request->getParam('className', "");
+        $id = (int) Yii::$app->request->getParam('id', "");
+        $className = Yii::$app->request->getParam('className', "");
 
         $object = Content::Get($className, $id);
 
@@ -192,7 +167,7 @@ class ContentController extends Controller
 
         // returns JSON
         echo CJSON::encode($json);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     public function actionNotificationSwitch()
@@ -202,20 +177,20 @@ class ContentController extends Controller
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::app()->request->getParam('id', "");
-        $className = Yii::app()->request->getParam('className', "");
-        $switch = Yii::app()->request->getParam('switch', true);
+        $id = (int) Yii::$app->request->getParam('id', "");
+        $className = Yii::$app->request->getParam('className', "");
+        $switch = Yii::$app->request->getParam('switch', true);
 
         $object = Content::Get($className, $id);
 
         if ($object != null) {
-            $object->follow(Yii::app()->user->id, ($switch == 1) ? true : false );
+            $object->follow(Yii::$app->user->id, ($switch == 1) ? true : false );
             $json['success'] = true;
         }
 
         // returns JSON
         echo CJSON::encode($json);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 }

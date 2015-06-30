@@ -41,15 +41,8 @@ class Events extends \yii\base\Object
         $latestVersion = $onlineModuleManager->getLatestHumHubVersion();
 
         if ($latestVersion != "" && version_compare($latestVersion, HVersion::VERSION, ">")) {
-            foreach (User::model()->findAllByAttributes(array('super_admin' => 1)) as $user) {
-                $notification = Notification::model()->findByAttributes(array('class' => 'HumHubUpdateNotification', 'user_id' => $user->id));
-                if ($notification === null) {
-                    $notification = new Notification();
-                    $notification->class = "HumHubUpdateNotification";
-                    $notification->user_id = $user->id;
-                    $notification->save();
-                }
-            }
+            $notification = new notifications\NewVersionAvailable;
+            $notification->add(User::find()->where(['super_admin' => 1]));
         }
     }
 

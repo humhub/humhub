@@ -1,22 +1,23 @@
 <?php
 
-# Disable until migrated
-return;
+use humhub\core\notification\Module;
+use humhub\core\notification\Events;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Space;
+use humhub\commands\IntegrityController;
+use humhub\commands\CronController;
+use humhub\components\ActiveRecord;
 
-Yii::app()->moduleManager->register(array(
+Yii::$app->moduleManager->register(array(
     'id' => 'notification',
-    'class' => 'application.modules_core.notification.NotificationModule',
+    'class' => Module::className(),
     'isCoreModule' => true,
-    'import' => array(
-        'application.modules_core.notification.*',
-        'application.modules_core.notification.models.*',
-    ),
-    // Events to Catch 
     'events' => array(
-        array('class' => 'User', 'event' => 'onBeforeDelete', 'callback' => array('NotificationModule', 'onUserDelete')),
-        array('class' => 'Space', 'event' => 'onBeforeDelete', 'callback' => array('NotificationModule', 'onSpaceDelete')),
-        array('class' => 'IntegrityChecker', 'event' => 'onRun', 'callback' => array('NotificationModule', 'onIntegrityCheck')),
-        array('class' => 'ZCronRunner', 'event' => 'onDailyRun', 'callback' => array('NotificationModule', 'onCronDailyRun')),
+        array('class' => User::className(), 'event' => User::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onUserDelete')),
+        array('class' => Space::className(), 'event' => Space::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onSpaceDelete')),
+        array('class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Events::className(), 'onIntegrityCheck')),
+        array('class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => array(Events::className(), 'onCronDailyRun')),
+        array('class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete'])
     ),
 ));
 ?>

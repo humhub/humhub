@@ -82,17 +82,25 @@ class Content extends ActiveRecord
     }
 
     /**
-     * Returns a short textual title for this content.
-     * Default goes to "Classname (Id)"
+     * Returns a title for this type of content.
+     * This method should be overwritten in the content implementation.
      *
-     * It should be overwritten for a more representative text.
-     *
-     * @return type
+     * @return string
      */
     public function getContentTitle()
     {
-        $objectModel = get_class($this); // e.g. Post
-        return $objectModel . " (" . $this->id . ")";
+        return $this->className();
+    }
+
+    /**
+     * Returns a text preview of this content.
+     * This method should be overwritten in the content implementation.
+     *
+     * @return string
+     */
+    public function getContentPreview()
+    {
+        return "";
     }
 
     /**

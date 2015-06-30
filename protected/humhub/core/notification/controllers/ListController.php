@@ -1,5 +1,12 @@
 <?php
 
+namespace humhub\core\notification\controllers;
+
+use Yii;
+use humhub\components\Controller;
+use humhub\core\notification\models\Notification;
+use humhub\models\Setting;
+
 /**
  * ListController
  *
@@ -10,94 +17,50 @@ class ListController extends Controller
 {
 
     /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
-
-    /**
      * Returns a List of all notifications for an user
      */
     public function actionIndex()
     {
+        Yii::$app->response->format = 'json';
 
-        // the id from the last entry loaded
-        $lastEntryId = (int) Yii::app()->request->getParam('from');
+        $maxId = (int) Yii::$app->request->get('from', 0);
 
-        // create database query
-        $criteria = new CDbCriteria();
-        if ($lastEntryId > 0) {
-            // start from last entry id loaded
-            $criteria->condition = 'id<:lastEntryId';
-            $criteria->params = array(':lastEntryId' => $lastEntryId);
+        $query = Notification::find();
+        if ($maxId != 0) {
+            $query->andWhere(['<', 'id', $maxId]);
         }
-        $criteria->order = 'seen ASC, created_at DESC';
-        $criteria->limit = 6;
+        $query->andWhere(['user_id' => Yii::$app->user->id]);
+        $query->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC]);
+        $query->limit(6);
 
-        // safe query
-        $notifications = Notification::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id), $criteria);
-
-        // variable for notification list
         $output = "";
 
+        $notifications = $query->all();
+        $lastEntryId = 0;
         foreach ($notifications as $notification) {
-            // format and save all entries
-            $output .= $notification->getOut();
-
-            // get the id from the last entry
+            $output .= $notification->getClass()->render();
             $lastEntryId = $notification->id;
         }
 
-        // build json array
-        $json = array();
-        $json['output'] = $output;
-        $json['lastEntryId'] = $lastEntryId;
-        $json['counter'] = count($notifications);
-
-        // return json
-        echo CJSON::encode($json);
-
-        // compete action
-        Yii::app()->end();
+        return [
+            'output' => $output,
+            'lastEntryId' => $lastEntryId,
+            'counter' => count($notifications)
+        ];
     }
 
+    /**
+     * Marks all notifications as seen
+     */
     public function actionMarkAsSeen()
     {
-        // build query
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'seen=0';
+        Yii::$app->response->format = 'json';
+        $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
 
-        // load all unseen notification for this user
-        $notifications = Notification::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id), $criteria);
-
-        foreach ($notifications as $notification) {
-            // mark all unseen notification as seen
-            $notification->markAsSeen();
-        }
-
-        // compete action
-        Yii::app()->end();
+        return [
+            'success' => true,
+            'count' => $count
+        ];
     }
 
     /**
@@ -105,8 +68,9 @@ class ListController extends Controller
      */
     public function actionGetUpdateJson()
     {
-        print self::getUpdateJson();
-        Yii::app()->end();
+        Yii::$app->response->format = 'json';
+
+        return $this->getUpdates();
     }
 
     /**
@@ -116,29 +80,26 @@ class ListController extends Controller
      * 
      * @return string JSON String
      */
-    public static function getUpdateJson()
+    public static function getUpdates()
     {
-        $user = Yii::app()->user->getModel();
+        $user = Yii::$app->user->getIdentity();
+        $query = Notification::find()->where(['user_id' => $user->id])->andWhere(["!=", 'seen', 1]);
 
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'user_id = :user_id';
-        $criteria->addCondition('seen != 1');
-        $criteria->params = array('user_id' => $user->id);
+        $update['newNotifications'] = $query->count();
 
-        $json['newNotifications'] = Notification::model()->count($criteria);
+        $query->andWhere(['desktop_notified' => 0]);
 
-        $json['notifications'] = array();
-        $criteria->addCondition('desktop_notified = 0');
-        $notifications = Notification::model()->findAll($criteria);
-        foreach ($notifications as $notification) {
-            if ($user->getSetting("enable_html5_desktop_notifications", 'core', HSetting::Get('enable_html5_desktop_notifications', 'notification'))) {
-                $json['notifications'][] = $notification->getTextOut();
+        $update['notifications'] = array();
+        foreach ($query->all() as $notification) {
+
+            if ($user->getSetting("enable_html5_desktop_notifications", 'core', Setting::Get('enable_html5_desktop_notifications', 'notification'))) {
+                $update['notifications'][] = $notification->getTextOut();
             }
             $notification->desktop_notified = 1;
             $notification->update();
         }
 
-        return CJSON::encode($json);
+        return $update;
     }
 
 }

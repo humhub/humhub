@@ -26,6 +26,16 @@ class RichText extends \yii\base\Widget
      */
     public $encode = true;
 
+    /**
+     * @var boolean
+     */
+    public $minimal = false;
+
+    /**
+     * @var int
+     */
+    public $maxLength = 0;
+
     public function run()
     {
         if ($this->encode) {

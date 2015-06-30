@@ -7,7 +7,6 @@ use humhub\commands\IntegrityController;
 use humhub\core\content\widgets\WallEntryAddons;
 use humhub\core\content\widgets\WallEntryLinks;
 
-
 Yii::$app->moduleManager->register(array(
     'id' => 'comment',
     'class' => \humhub\core\comment\Module::className(),

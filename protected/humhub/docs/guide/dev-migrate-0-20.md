@@ -11,8 +11,8 @@ Quick Guide about
 ### Migrate
 
 - Modules
-	- Namespaces
 	- Change autostart.php -> avoid old loading probs?
+	- Uninstall
 - Theming
 	- Also check themed files like module_images
 - Check Activity Situations
@@ -20,25 +20,24 @@ Quick Guide about
 - Activity/Notification - create own classes/views
 - Emailing (New Config Option)
 - CronJobs
-- Add Tests
-- Comments / Like
-- Enricher Text (Emoici / Mentioning)
+- Tests
+- RichText
+	- Emoici 
+	- Mentioning
 - Markdown Editor
-- Check CSRF Protection
-- Update Docs
-- Change licence class header 
-- Add Var Types to View Files
 - Caching
 	- HSetting
 	- UserModel: CanApproveUsers
 - Url Rewriting
 - Use AssetBundels
-- Split again Content/Wall ?
+- Notification
+	- IconClass for Declied/etc.
+- Split modules again Content/Wall ?
 - LF
 	- Reimplement Access Controls
 	- Headers
 	- Check Imports
-	- Add View Params
+	- Add View Params/VarTypes
 
 ### Bugs
 
@@ -53,6 +52,7 @@ Quick Guide about
 - Check how to handle unapproved/disabled users (Directory, Spaces)
 - Test Paginations
 	- Check/Fix Ajax Link Pager at like show users
+- CSRF
 
 ## Core Changes
 
@@ -79,6 +79,8 @@ Quick Notes:
  - User::model()->findByPk($idy); -> User::findOne(['id'=>$id); 
  - Check beforeSave/afterSave when overwriting they may have parameters
  	- Better use $insert when available instead of $this->isNewRecord	
+ - Make tableName method static 
+ 
 - Views:
 	- ClientScript removed e.g. Yii::app()->clientScript->registerScriptFile
 	- New Widget calls  WidgetClass::widget([options]) & echo it!
@@ -185,6 +187,15 @@ TBD
 
 - New base classname for content addon records
 > [[\humhub\core\content\components\activerecords\ContentAddon]]
+
+
+### Content
+
+getContentTitle is now divided into
+
+- getContentTitle
+- getContentPreview
+
 
 
 ### User
@@ -357,7 +368,7 @@ TBD
 
 TBD
 
-	
+
 
 
 

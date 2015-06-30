@@ -8,6 +8,8 @@
 
 namespace humhub\core\content;
 
+use humhub\core\content\models\Content;
+
 /**
  * Description of Events
  *
@@ -26,30 +28,27 @@ class Events extends \yii\base\Object
 
         $integrityChecker = $event->sender;
 
-        $integrityChecker->showTestHeadline("Validating Wall Module (" . WallEntry::model()->count() . " entries)");
-        foreach (WallEntry::model()->with('content')->findAll() as $w) {
+        $integrityChecker->showTestHeadline("Wall Module (" . models\WallEntry::find()->count() . " entries)");
+        foreach (models\WallEntry::find()->joinWith('content')->all() as $w) {
             if ($w->content === null) {
-                $integrityChecker->showFix("Deleting wall entry id " . $w->id . " without assigned wall entry!");
-                if (!$integrityChecker->simulate)
+                if ($integrityChecker->showFix("Deleting wall entry id " . $w->id . " without assigned wall entry!")) {
                     $w->delete();
-                continue;
+                }
             }
         }
 
         //TODO: Maybe not the best place for that
-        $integrityChecker->showTestHeadline("Validating Content Objects (" . Content::model()->count() . " entries)");
-        foreach (Content::model()->findAll() as $content) {
+        $integrityChecker->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
+        foreach (Content::find()->all() as $content) {
             if ($content->user == null) {
-                $integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!");
-                if (!$integrityChecker->simulate)
+                if ($integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!")) {
                     $content->delete();
-                continue;
+                }
             }
             if ($content->getUnderlyingObject() == null) {
-                $integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!");
-                if (!$integrityChecker->simulate)
+                if ($integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
                     $content->delete();
-                continue;
+                }
             }
         }
     }

@@ -155,7 +155,7 @@ class Followable extends Behavior
      * @param boolean $withNotifications only return followers with enabled notifications
      * @return Array of Users
      */
-    public function getFollowers($query = null, $withNotification = false)
+    public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
     {
 
         if ($query === null) {
@@ -171,6 +171,10 @@ class Followable extends Behavior
 
         if ($withNotification) {
             $query->andWhere('user_follow.send_notifications=1');
+        }
+
+        if ($returnQuery) {
+            return $query;
         }
 
         return $query->all();

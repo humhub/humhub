@@ -16,7 +16,7 @@ use yii\helpers\Url;
         'buttonTrue' => Yii::t('ContentModule.widgets_views_deleteLink', 'Delete'),
         'buttonFalse' => Yii::t('ContentModule.widgets_views_deleteLink', 'Cancel'),
         'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('ContentModule.widgets_views_deleteLink', 'Delete'),
-        'linkHref' => Url::to(['/wall/content/delete', 'model' => $model, 'id' => $id]),
+        'linkHref' => Url::to(['/content/content/delete', 'model' => $model, 'id' => $id]),
         'confirmJS' => 'function(jsonResp) { json = jQuery.parseJSON(jsonResp); $(".wall_"+json.uniqueId).remove(); }'
     ));
     ?>

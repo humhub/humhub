@@ -1,65 +1,58 @@
 Notifications
 =============
 
-Notifications are used to inform one or a small set of users about something.
+Notifications are used to inform one or a set of users about something.
 
 
-Basic steps to create a notifications
--------------------------------------
-
-* Create a base folder /mymodule/notifications/
-* Create a class ``MyEventNotification`` (Needs to be unique!)
-
-        class MyEventNotification extends Notification {
-
-            // Path to Web View of this Notification
-            public $webView = "mymodule.views.notifications.myEvent";
-
-            // Path to Mail Template for this notification
-            public $mailView = "application.modules_core.mymodule.views.notifications.myEvent_mail";
-
-            // Implement this method to handle clicks on the notification
-            // Note: This is not used when your target_object is of type SIActiveRecordContent
-            //public function redirectToTarget() {;}
-
-        }
-
-* Create views ``myEvent_mail.php`` and ``myEvent.php`` in /mymodule/notifications/ (See examples in /modules_core/notifications/views/notifications/spaceInvite[_mail].php)
-* Add notification class path to your autostart.php
-
-        'import' => array(
-           [...]
-           'application.modules.mymodule.notifications.*',
-        ),
 
 
-Fire a notification
--------------------
+## Steps to create own notifications
 
-Example of creating a notification
+### Create 
 
-        $notification = new Notification();
-        $notification->class = "MyEventNotification";
+Create a new class 'SomethingHappend' there
 
-        // Which user receives this notification
-        $notification->user_id = $userId;
+```php
+TBD example class
+```
 
-        // Inside a space? (Optional)
-        $notification->space_id = $spaceId;
+By default notifications should be located inside a sub folder named ** view ** where your notification class is located.  e.g. /modules/examples/notifications/views/
 
-        // Which object throws this notification?
-        $notification->source_object_model = 'MyContent';
-        $notification->source_object_id = $myContent->id;
+```php
+TBD
+```
 
-        // Which object is the target of the notification (after click on it)
-        $notification->target_object_model = $like->object_model;
-        $notification->target_object_id = $like->object_id;
-
-        $notification->save();
+If you require diffrent views web & mail. You can create a subfolder inside the view folder called ** mail **.
+Locate a mail version of the view there. 
 
 
-ToDos / Notes
--------------
-* Make Notifications more module friendly (no more need to import notification class path)
-* Better Source Object / Target Object Handling
-* Cleaner Templates
+### Send it 
+
+```php
+$notification = new \app\modules\example\notifications\SomethingHappend();
+
+// Link to the object which fired the notification (optional)
+$notification->source = $this;
+
+// The user which triggered the notification (optional)
+$notification->originator = $this->user;
+
+// Send it to a set of users
+$notification->sendBulk(User::find()->where([...]));
+
+// or: a single user
+$notification->send($user);
+
+```
+
+### Delete
+
+By default notifications will automatically deleted after a given period of time or if the source / user object not longer exists.
+
+Example for manual notification deletion:
+
+```php
+$notification = new \app\modules\example\notifications\SomethingHappend();
+$notification->source = $this;
+$notification->delete(User::findOne(['id' => $userId]));
+```

@@ -143,9 +143,9 @@ class Content extends \humhub\components\ActiveRecord
     static function Get($className, $id)
     {
         $content = self::findOne(['object_model' => $className, 'object_id' => $id]);
-        if ($content != null)
+        if ($content != null) {
             return $className::findOne(['id' => $id]);
-
+        }
         return null;
     }
 
@@ -175,31 +175,22 @@ class Content extends \humhub\components\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-
         // Loop over each eall entry and make sure its update_at / update_by
         // will also updated. (Sorting wall against update)
         foreach ($this->getWallEntries() as $wallEntry) {
             $wallEntry->save();
         }
 
-        if ($this->isNewRecord) {
-            // If there are notifyUsers specified by populateByForm() make them follow this content
+        if ($insert) {
+
             foreach ($this->notifyUsersOfNewContent as $user) {
                 $this->getUnderlyingObject()->follow($user->id);
-
-                // Fire Notification to user
-                $notification = new \humhub\corenotification\models\Notification();
-                $notification->class = "ContentCreatedNotification";
-                $notification->user_id = $user->id;
-                if ($this->container->className() == Space::className()) {
-                    $notification->space_id = $this->container->id;
-                }
-                $notification->source_object_model = $this->object_model;
-                $notification->source_object_id = $this->object_id;
-                $notification->target_object_model = $this->object_model;
-                $notification->target_object_id = $this->object_id;
-                $notification->save();
             }
+
+            $notification = new \humhub\core\content\notifications\ContentCreated;
+            $notification->source = $this->getUnderlyingObject();
+            $notification->originator = $this->user;
+            $notification->sendBulk($this->notifyUsersOfNewContent);
         }
 
         \humhub\core\file\models\File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
@@ -228,6 +219,8 @@ class Content extends \humhub\components\ActiveRecord
         if ($this->getUnderlyingObject() !== null) {
             $this->getUnderlyingObject()->delete();
         }
+        
+        parent::afterDelete();
     }
 
     /**

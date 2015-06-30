@@ -89,4 +89,24 @@ class Post extends \humhub\core\content\components\activerecords\Content
         return \humhub\core\post\widgets\Wall::widget(['post' => $this]);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getContentTitle()
+    {
+        return Yii::t('PostModule.models_Post', 'Post');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentPreview($maxLength = 0)
+    {
+        if ($maxLength == 0) {
+            return $this->message;
+        }
+
+        return \humhub\libs\Helpers::truncateText($this->message, $length);
+    }
+
 }
