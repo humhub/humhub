@@ -35,7 +35,7 @@ AppAsset::register($this);
         <![endif]-->
 
         <!-- start: render additional head (css and js files) -->
-        <?php echo $this->render('//layouts/head'); ?>
+        <?php echo $this->render('head'); ?>
         <!-- end: render additional head -->
 
 

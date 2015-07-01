@@ -48,10 +48,11 @@ $config = [
         'view' => [
             'class' => '\humhub\components\View',
             'theme' => [
+                'class' => '\humhub\components\Theme',
                 'basePath' => '@webroot/themes/HumHub',
                 'baseUrl' => '@web/themes/HumHub',
                 'pathMap' => [
-                    '@app/views' => '@webroot/themes/HumHub/views',
+                    '@humhub/views' => '@webroot/themes/HumHub/views',
                 ],
             ],
         ],
