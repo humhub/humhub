@@ -1,14 +1,20 @@
 /**
  * Click on an Activity wall Entry
  */
-function activityShowItem(wallEntryId) {
+function activityShowItem(activityId) {
 
-    if (mainStream) {
-        mainStream.showItem(wallEntryId);
-    } else {
-        // Redirect to Permalink
-        window.location.replace(activityPermaLinkUrl + "?id=" + wallEntryId);
-    }
+    $.getJSON(activityInfoUrl.replace('-id-', activityId), function (data) {
+        if (data.success) {
+            if (mainStream) {
+                mainStream.showItem(data['wallEntryId']);
+            } else {
+                window.location.replace(data['url']);
+            }
+        } else {
+            alert("Error: Could not find activity location!");
+        }
+    });
+    return false;
 }
 
 

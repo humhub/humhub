@@ -1,20 +1,10 @@
 <?php
-/**
- * View File for the ActivityStreamWidget
- *
- * @uses CActiveDataProvider $dataProvider The data provider for this model
- * @uses User $model The user model
- *
- * @package humhub.modules.activity
- * @since 0.5
- */
-
 /* @var $this humhub\components\View */
 
 
 $this->registerJsFile('@web/resources/activity/activies.js');
 $this->registerJsVar('activityStreamUrl', $streamUrl);
-$this->registerJsVar('activityPermaLinkUrl', $permaUrl);
+$this->registerJsVar('activityInfoUrl', $infoUrl);
 ?>
 
 <div class="panel panel-default panel-activities">

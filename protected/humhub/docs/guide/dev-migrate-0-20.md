@@ -21,16 +21,14 @@ Quick Guide about
 - CronJobs
 - Tests
 - RichText
-	- Emoici 
-	- Mentioning
+	- Max Length & minimal Option
 - Markdown Editor
 - Caching
 	- HSetting
 	- UserModel: CanApproveUsers
 - Url Rewriting
 - Use AssetBundels
-- Notification
-	- IconClass for Declied/etc.
+- Stream Filters
 - Split modules again Content/Wall ?
 - LF
 	- Reimplement Access Controls
@@ -52,6 +50,9 @@ Quick Guide about
 - Test Paginations
 	- Check/Fix Ajax Link Pager at like show users
 - CSRF
+- Registration Process
+	- When Invited to a space (Notification & Co.)
+- Check unapproved users (Space, etc.)
 
 ## Core Changes
 

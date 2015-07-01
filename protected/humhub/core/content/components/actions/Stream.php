@@ -148,6 +148,7 @@ class Stream extends \yii\base\Action
          */
         if ($this->mode == self::MODE_ACTIVITY) {
             $this->activeQuery->andWhere(['content.object_model' => \humhub\core\activity\models\Activity::className()]);
+
             # Dont show own activities
             if ($this->user != null) {
                 $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\core\activity\models\Activity::className()]);

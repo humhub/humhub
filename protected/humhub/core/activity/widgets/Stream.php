@@ -44,10 +44,11 @@ class Stream extends \yii\base\Widget
     public function run()
     {
         $streamUrl = $this->getStreamUrl();
-        $permaUrl = \yii\helpers\Url::to(['/content/perma/wallEntry']);
+        $infoUrl = \yii\helpers\Url::to(['/activity/link/info', 'id' => '-id-']);
+
         return $this->render('activityStream', array(
                     'streamUrl' => $streamUrl,
-                    'permaUrl' => $permaUrl
+                    'infoUrl' => $infoUrl
         ));
     }
 

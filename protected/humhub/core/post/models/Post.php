@@ -53,15 +53,6 @@ class Post extends \humhub\core\content\components\activerecords\Content
 
         parent::afterSave($insert, $changedAttributes);
 
-        if ($insert) {
-            $activity = \humhub\core\activity\models\Activity::CreateForContent($this);
-            $activity->type = "PostCreated";
-            $activity->module = "post";
-            $activity->save();
-
-            $activity->fire();
-        }
-
         // Handle mentioned users
         \humhub\core\user\models\Mentioning::parse($this, $this->message);
 

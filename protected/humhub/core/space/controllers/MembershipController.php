@@ -25,6 +25,7 @@ use \humhub\components\Controller;
 use \yii\helpers\Url;
 use \yii\web\HttpException;
 use \humhub\core\user\models\User;
+use humhub\core\space\models\Space;
 use humhub\models\Setting;
 use humhub\core\space\models\Membership;
 use humhub\core\space\models\forms\RequestMembershipForm;

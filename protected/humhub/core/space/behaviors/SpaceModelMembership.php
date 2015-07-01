@@ -377,15 +377,10 @@ class SpaceModelMembership extends Behavior
         }
         $membership->save();
 
-        // Create Wall Activity for that
-        $activity = new \humhub\core\activity\models\Activity;
-        $activity->content->space_id = $this->owner->id;
-        $activity->content->visibility = \humhub\core\content\models\Content::VISIBILITY_PRIVATE;
-        $activity->content->created_by = $this->owner->id;
-        $activity->created_by = $userId;
-        $activity->type = "ActivitySpaceMemberAdded";
-        $activity->save();
-        $activity->fire();
+        $activity = new \humhub\core\space\activities\MemberAdded;
+        $activity->source = $this->owner;
+        $activity->originator = $user;
+        $activity->create();
 
         // Members can't also follow the space
         $this->owner->unfollow($userId);
@@ -426,13 +421,10 @@ class SpaceModelMembership extends Behavior
 
         // If was member, create a activity for that
         if ($membership->status == Membership::STATUS_MEMBER) {
-            $activity = new \humhub\core\activity\models\Activity;
-            $activity->content->space_id = $this->owner->id;
-            $activity->content->visibility = \humhub\core\content\models\Content::VISIBILITY_PRIVATE;
-            $activity->type = "ActivitySpaceMemberRemoved";
-            $activity->created_by = $userId;
-            $activity->save();
-            $activity->fire();
+            $activity = new \humhub\core\space\activities\MemberRemoved();
+            $activity->source = $this->owner;
+            $activity->originator = $user;
+            $activity->create();
         } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
             // Was invited, but declined the request - inform originator
             $notification = new \humhub\core\space\notifications\InviteDeclined();

@@ -109,7 +109,7 @@ class Events extends \yii\base\Object
                 }
             }
 
-            $content = \humhub\core\content\models\Content::findOne(['object_model' => 'Activity', 'object_id']);
+            $content = \humhub\core\content\models\Content::findOne(['object_model' => Activity::className(), 'object_id' => $a->id]);
             if ($content === null) {
                 if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without corresponding content record!")) {
                     $a->delete();

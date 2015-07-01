@@ -84,10 +84,8 @@ $canDelete = $comment->canDelete();
             <?php echo humhub\core\file\widgets\ShowFiles::widget(array('object' => $comment)); ?>
         </div>
 
-
-
         <div class="wall-entry-controls">
-            <?php //Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
+            <?php echo humhub\core\like\widgets\LikeLink::widget(array('object' => $comment)); ?>
         </div>
     </div>
     <hr>

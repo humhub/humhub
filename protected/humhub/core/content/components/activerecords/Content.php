@@ -182,6 +182,7 @@ class Content extends ActiveRecord implements \humhub\core\content\interfaces\Co
                 $membership->updateLastVisit();
             }
         }
+
     }
 
     public function afterValidate()

@@ -1,22 +1,77 @@
 Activities
 ==========
 
-Activities are a "sub" stream which shows information about recent actions.
+Contrary to Notifications - Activities are bound to a ContentContainer, so they are not especially linked against a user or  a given set of them.
 
-## Example activity
+Besides the link to the ContentContainer - an Activity can be also assigned to a Content or ContentAddon. So it will automatically inherits some Content Attributes such as Visiblity.
 
-    $activity = Activity::CreateForContent($this);
-    $activity->type = "PostCreated";
-    $activity->module = "post";
-    $activity->save();
-    $activity->fire();
+Note: Internally Activities will be handled as Content.
 
-The ActivityWidget class automatically searches under ``protected/modules/post/views/activities/`` for a view of given type.
+## Steps to create an Activity
 
-So in this case:
+### Create Class & View
 
-* protected/modules/post/views/activities/PostCreated.php - will used for standard activity output
-* protected/modules/post/views/activities/PostCreated_mail.php - will used for mail activity output
+Create a folder ** activities ** in your module and a new class ** SomethingHappend ** 
+
+```php
+<?php
+
+namespace app\modules\example\activities;
+
+use humhub\core\activity\components\BaseActivity;
+
+/**
+ * Notifies a user about something happend
+ */
+class SomethingHappend extends BaseNotification
+{
+	// View Name for activity
+    public $viewName = "somethingHappend";
+
+	// Used for automatic deletion on module uninstall
+	public $moduleId = "example";
+
+}
+
+?>
+
+```
+
+By default activity views should be located inside a subfolder named ** views ** where your activity class is located. (e.g. /modules/examples/activities/views/)
+
+Example view file ** somethingHappend.php **:
+
+```php
+<?php
+
+use yii\helpers\Html;
+
+echo Yii::t('ExampleModule.views_notifications_newLike', "%someUser% did something cool.", array(
+    '%someUser%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
+));
+?>
 
 
-See ActivityWidget API or Example Module for more details.
+```
+
+If you require a diffrent view in mails. You can create a subfolder inside the subfolder called ** mail ** in your views directory.  
+
+
+### Create it
+
+```php
+$activity = new \app\modules\example\activities\NewLike();
+
+// Link to a ContentContainer, Content or ContentAddon 
+$activity->source = $this;
+
+// User which trigged this Activity - in case of Content/ContentAddon the Creator will be automatically set.
+$activity->originator = $user;
+
+$activity->create();
+```
+
+
+### Delete
+
+TBD

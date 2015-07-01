@@ -1,10 +1,10 @@
 Notifications
 =============
 
-Notifications are used to inform one or a set of users about something.
+Notifications are used to inform one or a given set of users about something.
 
 
-## Steps to create own notifications
+## Steps to create Notifications
 
 ### Create 
 

@@ -48,8 +48,7 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
     }
 
     /**
-     * Before Delete, remove LikeCount (Cache) of target object.
-     * Remove activity
+     * @inheritdoc
      */
     public function beforeDelete()
     {
@@ -81,12 +80,10 @@ class Comment extends \humhub\core\content\components\activerecords\ContentAddon
         // flush the cache
         $this->flushCache();
 
-        $activity = \humhub\core\activity\models\Activity::CreateForContent($this);
-        $activity->type = "CommentCreated";
-        $activity->module = "comment";
-        $activity->save();
-        $activity->fire();
-
+        $activity = new \humhub\core\comment\activities\NewComment();
+        $activity->source = $this;
+        $activity->create();
+        
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         \humhub\core\user\models\Mentioning::parse($this, $this->message);

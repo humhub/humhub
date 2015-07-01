@@ -154,15 +154,9 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
             $membership->share_role = 1;
             $membership->save();
 
-            $activity = new Activity;
-            $activity->content->created_by = $userId;
-            $activity->content->space_id = $this->id;
-            $activity->content->user_id = $userId;
-            $activity->content->visibility = \humhub\core\content\models\Content::VISIBILITY_PUBLIC;
-            $activity->created_by = $userId;
-            $activity->type = "ActivitySpaceCreated";
-            $activity->save();
-            $activity->fire();
+            $activity = new \humhub\core\space\activities\Created;
+            $activity->source = $this;
+            $activity->create();
         }
 
         Yii::$app->cache->delete('userSpaces_' . $userId);

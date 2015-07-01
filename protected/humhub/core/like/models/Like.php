@@ -2,7 +2,6 @@
 
 namespace humhub\core\like\models;
 
-use humhub\core\activity\models\Activity;
 use humhub\models\Setting;
 use Yii;
 
@@ -67,19 +66,11 @@ class Like extends \humhub\core\content\components\activerecords\ContentAddon
      */
     public function afterSave($insert, $changedAttributes)
     {
-
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
-        $activity = Activity::CreateForContent($this);
-        $activity->type = "Like";
-        $activity->module = "like";
-
-        // Object Id for likes are not the Like Object itself
-        $activity->object_model = $this->object_model;
-        $activity->object_id = $this->object_id;
-
-        $activity->save();
-        $activity->fire();
+        $activity = new \humhub\core\like\activities\Liked();
+        $activity->source = $this;
+        $activity->create();
 
         $notification = new \humhub\core\like\notifications\NewLike();
         $notification->source = $this;
@@ -95,25 +86,8 @@ class Like extends \humhub\core\content\components\activerecords\ContentAddon
      */
     public function beforeDelete()
     {
-
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
-
-        // Delete Activity
-        // Currently we need to delete this manually, because the activity object is NOT bound to the Like
-        // Instead is it bound to the Like Target (This should changed)
-        $activity = Activity::findOne(array(
-                    'type' => 'Like',
-                    'module' => 'like',
-                    'object_model' => $this->object_model,
-                    'object_id' => $this->object_id,
-                    'created_by' => $this->created_by
-        ));
-
-        if ($activity)
-            $activity->delete();
-
         return parent::beforeDelete();
     }
-
 
 }
