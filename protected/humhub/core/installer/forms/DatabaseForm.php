@@ -20,6 +20,8 @@
 
 namespace humhub\core\installer\forms;
 
+use Yii;
+
 /**
  * DatabaseForm holds all required database settings.
  *

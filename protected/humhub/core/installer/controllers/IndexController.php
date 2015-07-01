@@ -50,7 +50,7 @@ class IndexController extends Controller
         if ($this->module->checkDBConnection()) {
             return $this->redirect(Url::to(['setup/init']));
         } else {
-            return $this->redirect(Url::to(['setup/rerequisites']));
+            return $this->redirect(Url::to(['setup/prerequisites']));
         }
     }
 

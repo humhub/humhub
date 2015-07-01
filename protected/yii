@@ -7,6 +7,7 @@
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
+
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 // fcgi doesn't have STDIN and STDOUT defined by default
@@ -16,7 +17,13 @@ defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
 require(__DIR__ . '/vendor/autoload.php');
 require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
-$config = require(__DIR__ . '/config/console.php');
+$config = yii\helpers\ArrayHelper::merge(
+        require(__DIR__ . '/humhub/config/common.php'),
+        require(__DIR__ . '/humhub/config/console.php'),
+       (is_readable(__DIR__ . '/config/dynamic.php')) ? require(__DIR__ . '/config/dynamic.php') : [],
+      require(__DIR__ . '/config/web.php')
+
+);
 
 Yii::setAlias('@app', __DIR__);
 Yii::setAlias('@webroot', __DIR__ . DIRECTORY_SEPARATOR . '..');

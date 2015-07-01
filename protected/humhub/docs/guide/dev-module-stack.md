@@ -3,7 +3,7 @@ Widget Stack
 
 
 
- [[humhub\core\widgets\BaseStack]] 
+ 
 
 
 

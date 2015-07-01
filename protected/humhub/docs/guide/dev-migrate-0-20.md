@@ -15,7 +15,6 @@ Quick Guide about
 	- Uninstall
 - Theming
 	- Also check themed files like module_images
-- Activity
 - Check Update Progress
 - Emailing (New Config Option)
 - CronJobs
@@ -29,7 +28,6 @@ Quick Guide about
 - Url Rewriting
 - Use AssetBundels
 - Stream Filters
-- Split modules again Content/Wall ?
 - LF
 	- Reimplement Access Controls
 	- Headers
@@ -38,7 +36,6 @@ Quick Guide about
 
 ### Bugs
 
-- Log Table not created on Installation
 - Modal Confirm doesn't disappear
 
 ### To Check
@@ -60,40 +57,6 @@ Quick Guide about
 - Core Module folder was changed to core  (protected/humhub/core)
 - Wall Core Module was renamed to Content
 
-
-
-## Yii 2.0 
-
-See Yii Migration Guide
-
-Quick Notes:
-
-- Use Namespaces!
-- Yii::app() -> Yii::$app
-- Use [] instead of array() - Optional
-- Model: Validator  
- - Use array for multiple attributes
- - Validator changes Numeric->Integer ... 
- - String validator doesn't allow Integer Types (cast!)
- - Scenarios now in separate methods secenarios()
- - User::model()->findByPk($idy); -> User::findOne(['id'=>$id); 
- - Check beforeSave/afterSave when overwriting they may have parameters
- 	- Better use $insert when available instead of $this->isNewRecord	
- - Make tableName method static 
- 
-- Views:
-	- ClientScript removed e.g. Yii::app()->clientScript->registerScriptFile
-	- New Widget calls  WidgetClass::widget([options]) & echo it!
-- Controllers
-	-  Always return render action (also Widgets)
-	-  camel case actions e.g. actionEditItem new Url: edit-item
-	-  Easier: JSON Output
-       Yii::$app->response->format = 'json'; return $json; 
-- createUrl removed -> Url::to()
-- CHtml methods reduced (e.g. no AjaxButton - use: \humhub\compat\widgets\AjaxButton instead
-- Behaviors
-	- $this->getOwner() replaced by $this->owner
-	
 
 ## Modules
 
@@ -381,6 +344,39 @@ TBD
 
 
 
+
+## Yii 2.0 
+
+See Yii Migration Guide
+
+Quick Notes:
+
+- Use Namespaces!
+- Yii::app() -> Yii::$app
+- Use [] instead of array() - Optional
+- Model: Validator  
+ - Use array for multiple attributes
+ - Validator changes Numeric->Integer ... 
+ - String validator doesn't allow Integer Types (cast!)
+ - Scenarios now in separate methods secenarios()
+ - User::model()->findByPk($idy); -> User::findOne(['id'=>$id); 
+ - Check beforeSave/afterSave when overwriting they may have parameters
+ 	- Better use $insert when available instead of $this->isNewRecord	
+ - Make tableName method static 
+ 
+- Views:
+	- ClientScript removed e.g. Yii::app()->clientScript->registerScriptFile
+	- New Widget calls  WidgetClass::widget([options]) & echo it!
+- Controllers
+	-  Always return render action (also Widgets)
+	-  camel case actions e.g. actionEditItem new Url: edit-item
+	-  Easier: JSON Output
+       Yii::$app->response->format = 'json'; return $json; 
+- createUrl removed -> Url::to()
+- CHtml methods reduced (e.g. no AjaxButton - use: \humhub\compat\widgets\AjaxButton instead
+- Behaviors
+	- $this->getOwner() replaced by $this->owner
+	
 
 
 

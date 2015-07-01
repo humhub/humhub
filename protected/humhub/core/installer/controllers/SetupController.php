@@ -21,10 +21,11 @@
 namespace humhub\core\installer\controllers;
 
 use Yii;
-use humhub\components\Controller;
-use humhub\core\user\models\Group;
-use humhub\core\user\models\User;
 use yii\helpers\Url;
+use humhub\models\Setting;
+use humhub\components\Controller;
+use humhub\core\installer\forms\DatabaseForm;
+use humhub\libs\DynamicConfig;
 
 /**
  * SetupController checks prerequisites and is responsible for database
@@ -71,81 +72,63 @@ class SetupController extends Controller
      */
     public function actionDatabase()
     {
-
-        Yii::import('installer.forms.*');
-
-        $success = false;
         $errorMessage = "";
 
-        $config = HSetting::getConfiguration();
+        $config = DynamicConfig::load();
 
-        $form = new DatabaseForm;
+        $model = new DatabaseForm();
+        if (isset($config['params']['installer']['db']['installer_hostname']))
+            $model->hostname = $config['params']['installer']['db']['installer_hostname'];
 
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'database-form') {
-            echo CActiveForm::validate($form);
-            Yii::$app->end();
-        }
+        if (isset($config['params']['installer']['db']['installer_database']))
+            $model->database = $config['params']['installer']['db']['installer_database'];
 
-        if (isset($_POST['DatabaseForm'])) {
-            $form->attributes = $_POST['DatabaseForm'];
+        if (isset($config['components']['db']['username']))
+            $model->username = $config['components']['db']['username'];
 
-            if ($form->validate()) {
+        if (isset($config['components']['db']['password']))
+            $model->password = self::PASSWORD_PLACEHOLDER;
 
-                $connectionString = "mysql:host=" . $form->hostname . ";dbname=" . $form->database;
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $connectionString = "mysql:host=" . $model->hostname . ";dbname=" . $model->database;
 
-                $password = $form->password;
-                if ($password == self::PASSWORD_PLACEHOLDER)
-                    $password = $config['components']['db']['password'];
+            $password = $model->password;
+            if ($password == self::PASSWORD_PLACEHOLDER)
+                $password = $config['components']['db']['password'];
 
-                // Create Test DB Connection
-                Yii::$app->setComponent('db', array(
-                    'connectionString' => $connectionString,
-                    'username' => $form->username,
-                    'password' => $password,
-                    'class' => 'CDbConnection',
-                    'charset' => 'utf8'
-                ));
+            // Create Test DB Connection           
+            $dbConfig = [
+                'class' => 'yii\db\Connection',
+                'dsn' => $connectionString,
+                'username' => $model->username,
+                'password' => $password,
+                'charset' => 'utf8',
+            ];
 
-                try {
-                    // Check DB Connection
-                    Yii::$app->db->getServerVersion();
+            
+            Yii::$app->set('db', $dbConfig);
+            
+            try {
+                // Check DB Connection
+                Yii::$app->db->open();
+                
+                // Write Config
+                $config['components']['db'] = $dbConfig;
+                $config['params']['installer']['db']['installer_hostname'] = $model->hostname;
+                $config['params']['installer']['db']['installer_database'] = $model->database;
 
-                    // Write Config
-                    $config['components']['db']['connectionString'] = $connectionString;
-                    $config['params']['installer']['db']['installer_hostname'] = $form->hostname;
-                    $config['params']['installer']['db']['installer_database'] = $form->database;
+                DynamicConfig::save($config);
 
-                    $config['components']['db']['username'] = $form->username;
-
-                    if ($form->password != self::PASSWORD_PLACEHOLDER)
-                        $config['components']['db']['password'] = $form->password;
-
-                    HSetting::setConfiguration($config);
-
-                    $success = true;
-
-                    $this->redirect(array('init'));
-                } catch (Exception $e) {
-                    $errorMessage = $e->getMessage();
-                }
+                return $this->redirect(array('init'));
+            } catch (Exception $e) {
+                $errorMessage = $e->getMessage();
+            } catch (\yii\base\Exception $e) {
+                $errorMessage = $e->getMessage();
             }
-        } else {
-
-            if (isset($config['params']['installer']['db']['installer_hostname']))
-                $form->hostname = $config['params']['installer']['db']['installer_hostname'];
-
-            if (isset($config['params']['installer']['db']['installer_database']))
-                $form->database = $config['params']['installer']['db']['installer_database'];
-
-            if (isset($config['components']['db']['username']))
-                $form->username = $config['components']['db']['username'];
-
-            if (isset($config['components']['db']['password']))
-                $form->password = self::PASSWORD_PLACEHOLDER;
         }
 
         // Render Template
-        $this->render('database', array('model' => $form, 'success' => $success, 'submitted' => isset($_POST['DatabaseForm']), 'errorMessage' => $errorMessage));
+        return $this->render('database', array('model' => $model, 'errorMessage' => $errorMessage));
     }
 
     /**
@@ -154,8 +137,9 @@ class SetupController extends Controller
     public function actionInit()
     {
 
-        if (!$this->module->checkDBConnection())
-            $this->redirect(Url::to(['/installer/setup/database']));
+        if (!$this->module->checkDBConnection()) {
+            return $this->redirect(Url::to(['/installer/setup/database']));
+        }
 
         // Flush Caches
         Yii::$app->cache->flush();

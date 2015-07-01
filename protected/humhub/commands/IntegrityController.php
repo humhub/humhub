@@ -13,8 +13,7 @@ use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
- * Enhanced MigrateController which also allows the includeMOduleMigration option
- * to migrate up all enabled modules simultaneously.
+ * IntegrityController performs application integrity checks.
  * 
  * @author Luke
  */
@@ -39,10 +38,10 @@ class IntegrityController extends \yii\console\controller
     public function showFix($message)
     {
         if (!$this->interactive) {
-            $this->stdout($message."\n");
+            $this->stdout($message . "\n");
             return true;
         }
-        
+
         return $this->confirm($message);
     }
 

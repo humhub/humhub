@@ -114,7 +114,7 @@ class BaseActivity extends \yii\base\Component
                 $model->content->user_id = $this->source->created_by;
             }
         } elseif ($this->source instanceof ContentContainer) {
-            $model->content->container = $this->visibility;
+            $model->content->visibility = $this->visibility;
             $model->content->container = $this->source;
         } else {
             throw new \yii\base\Exception("Invalid source object type!");

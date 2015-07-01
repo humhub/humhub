@@ -18,14 +18,17 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\admin\commands;
+
 /**
  * Tool for managing modules by command line
  *
  * @package humhub.modules_core.admin.console
  * @since 0.5
  */
-class ModuleTool extends HConsoleCommand
+class ModuleController extends \yii\console\Controller
 {
+
     /**
      * @throws CException
      */
@@ -152,7 +155,7 @@ class ModuleTool extends HConsoleCommand
      * @param bool $force
      * @throws CHttpException
      */
-    public function actionUpdate($args, $force=false)
+    public function actionUpdate($args, $force = false)
     {
 
         if (!isset($args[0])) {
@@ -163,12 +166,12 @@ class ModuleTool extends HConsoleCommand
 
         $moduleId = $args[0];
 
-        
+
         if (!Yii::app()->moduleManager->hasModule($moduleId)) {
             print "\nModule " . $moduleId . " is not installed!\n";
             return;
         }
-        
+
         // Look online for module
         $onlineModules = new OnlineModuleManager();
         $moduleInfo = $onlineModules->getModuleInfo($moduleId);
@@ -177,10 +180,10 @@ class ModuleTool extends HConsoleCommand
             print "No compatible version for " . $moduleId . " found online!\n";
             return;
         }
-        
+
         if (!$force) {
             $module = Yii::app()->moduleManager->getModule($moduleId);
-            
+
             if ($moduleInfo['latestCompatibleVersion']['version'] == $module->getVersion()) {
                 print "Module " . $moduleId . " already up to date!\n";
                 return;

@@ -13,8 +13,7 @@ use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
- * Enhanced MigrateController which also allows the includeMOduleMigration option
- * to migrate up all enabled modules simultaneously.
+ * CronCrontroller
  * 
  * @author Luke
  */

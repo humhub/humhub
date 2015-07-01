@@ -71,7 +71,11 @@ class ZendLuceneSearch extends Search
     {
         $index = $this->getIndex();
 
-        $hits = $index->find('pk:' . $obj->getPrimaryKey() . " model:" . $obj->className());
+        $query = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($obj->className(), 'model'), true);
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($obj->getPrimaryKey(), 'pk'), true);
+
+        $hits = $index->find($query);
         foreach ($hits as $hit) {
             $index->delete($hit->id);
         }

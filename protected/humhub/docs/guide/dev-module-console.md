@@ -1,9 +1,10 @@
 Console
 =======
 
-You can also add own console controller by events.
+To add a custom controller to the console application, you need to catch the [[humhub\components\console\Application::EVENT_ON_INIT]].
 
-## Autostart Example
+
+### Example: Event 
 
 ```php
 <?php
@@ -24,7 +25,7 @@ Yii::$app->moduleManager->register(array(
 ?>
 ```
 
-## Callback Example
+### Example: Callback
 
 ```php
 public static function onConsoleApplicationInit($event) {

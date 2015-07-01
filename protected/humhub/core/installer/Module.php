@@ -44,6 +44,8 @@ class Module extends \yii\base\Module
             throw new \yii\web\HttpException(500, 'HumHub is already installed!');
         }
 
+        Yii::$app->controller->enableCsrfValidation = false;
+
         return parent::beforeAction($action);
     }
 
@@ -54,6 +56,8 @@ class Module extends \yii\base\Module
      */
     public function checkDBConnection()
     {
+
+
         try {
             // call setActive with true to open connection.
             Yii::$app->db->open();
@@ -61,8 +65,11 @@ class Module extends \yii\base\Module
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
             
+        } catch (\yii\base\Exception $e) {
+            print $e->getMessage();
+        } catch (\PDOException $e) {
+            
         }
-
         return false;
     }
 

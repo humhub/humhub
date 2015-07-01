@@ -18,37 +18,25 @@
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\core\space\commands;
+
+use Yii;
+use humhub\core\user\models\User;
+use humhub\core\space\models\Space;
+use yii\helpers\Console;
+
 /**
  * Console tools for manage spaces
  *
  * @package humhub.modules_core.space.console
  * @since 0.5
  */
-class SpaceCliTool extends HConsoleCommand
+class SpaceController extends \yii\console\Controller
 {
 
-    public function init()
+    public function actionAssignAllMembers($spaceId)
     {
-        $this->printHeader('Space Tools');
-        return parent::init();
-    }
-
-    public function beforeAction($action, $params)
-    {
-
-        return parent::beforeAction($action, $params);
-    }
-
-    public function actionAssignAllMembers($args)
-    {
-
-        if (!isset($args[0])) {
-            print "Error: Space guid parameter required!\n\n";
-            print $this->getHelp();
-            return;
-        }
-
-        $space = Space::model()->findByAttributes(array('guid' => $args[0]));
+        $space = Space::findOne(['id' => $spaceId]);
         if ($space == null) {
             print "Error: Space not found! Check guid!\n\n";
             return;
@@ -57,37 +45,23 @@ class SpaceCliTool extends HConsoleCommand
         $countMembers = 0;
         $countAssigns = 0;
 
-        foreach (User::model()->findAllByAttributes(array('status' => User::STATUS_ENABLED)) as $user) {
+        $this->stdout("\nAdding Members:\n\n");
 
-
+        foreach (User::find()->where(['status' => User::STATUS_ENABLED])->all() as $user) {
             if ($space->isMember($user->id)) {
-                #print "Already Member!";
                 $countMembers++;
             } else {
-                print "Add member " . $user->displayName . "\n";
-                Yii::app()->user->setId($user->id);
+                $this->stdout("\t" . $user->displayName . " added. \n", Console::FG_YELLOW);
+
+                #Yii::app()->user->setId($user->id);
+
+                Yii::$app->user->switchIdentity($user);
                 $space->addMember($user->id);
                 $countAssigns++;
             }
         }
 
-        print "\nAdded " . $countAssigns . " new members to space " . $space->name . "\n";
-    }
-
-    public function getHelp()
-    {
-        return <<<EOD
-USAGE
-  yiic space [action] [parameter]
-
-DESCRIPTION
-  This command provides console support for manipulating spaces. 
-
-EXAMPLES
- * yiic space assignAllMembers spaceGuid
-   Assign all members to given spaceGuid
-
-EOD;
+        $this->stdout("\nAdded " . $countAssigns . " new members to space " . $space->name . "\n", Console::FG_GREEN);
     }
 
 }

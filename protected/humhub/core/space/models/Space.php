@@ -126,8 +126,7 @@ class Space extends \humhub\core\content\components\activerecords\ContentContain
      */
     public function afterSave($insert, $changedAttributes)
     {
-
-        if ($this->status != self::VISIBILITY_NONE) {
+        if ($this->status != self::VISIBILITY_NONE || $this->status == "") {
             Yii::$app->search->update($this);
         } else {
             Yii::$app->search->delete($this);
