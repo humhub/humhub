@@ -23,7 +23,7 @@ class DesignSettingsForm extends \yii\base\Model
     public function rules()
     {
 
-        $themes = \humhub\libs\Theme::getThemes();
+        $themes = \humhub\components\Theme::getThemes();
 
         return array(
             array('paginationSize', 'integer', 'max' => 200, 'min' => 1),

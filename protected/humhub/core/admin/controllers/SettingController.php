@@ -227,10 +227,9 @@ class SettingController extends Controller
         }
 
         $cacheTypes = array(
-            'CDummyCache' => Yii::t('AdminModule.controllers_SettingController', 'No caching (Testing only!)'),
-            'CFileCache' => Yii::t('AdminModule.controllers_SettingController', 'File'),
-            'CDbCache' => Yii::t('AdminModule.controllers_SettingController', 'Database'),
-            'CApcCache' => Yii::t('AdminModule.controllers_SettingController', 'APC'),
+            'yii\caching\DummyCache' => Yii::t('AdminModule.controllers_SettingController', 'No caching (Testing only!)'),
+            'yii\caching\FileCache' => Yii::t('AdminModule.controllers_SettingController', 'File'),
+            'yii\caching\ApcCache' => Yii::t('AdminModule.controllers_SettingController', 'APC'),
         );
 
         return $this->render('caching', array('model' => $form, 'cacheTypes' => $cacheTypes));
@@ -356,7 +355,7 @@ class SettingController extends Controller
             $form->spaceOrder = Setting::Get('spaceOrder', 'space');
         }
 
-        $themes = \humhub\libs\Theme::getThemes();
+        $themes = \humhub\components\Theme::getThemes();
         return $this->render('design', array('model' => $form, 'themes' => $themes, 'logo' => new \humhub\libs\LogoImage()));
     }
 

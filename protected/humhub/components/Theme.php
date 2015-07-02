@@ -8,11 +8,47 @@
 
 namespace humhub\components;
 
+use Yii;
+
 /**
  * @inheritdoc
  */
 class Theme extends \yii\base\Theme
 {
+
+    /**
+     * Name of the Theme
+     * 
+     * @var string
+     */
+    public $name;
+
+    public function init()
+    {
+
+        $this->setBasePath('@webroot/themes/' . $this->name);
+        $this->pathMap = [
+            '@humhub/views' => '@webroot/themes/' . $this->name . '/views',
+        ];
+        parent::init();
+    }
+
+    private $_baseUrl = null;
+
+    /**
+     * @return string the base URL (without ending slash) for this theme. All resources of this theme are considered
+     * to be under this base URL.
+     */
+    public function getBaseUrl()
+    {
+
+        if ($this->_baseUrl !== null) {
+            return $this->_baseUrl;
+        }
+
+        $this->_baseUrl = rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
+        return $this->_baseUrl;
+    }
 
     /**
      * @inheritdoc
@@ -55,6 +91,25 @@ class Theme extends \yii\base\Theme
         }
 
         return null;
+    }
+
+    /**
+     * Returns an array of all installed themes.
+     *
+     * @return Array
+     */
+    public static function getThemes()
+    {
+        $themes = array();
+        $themePath = \Yii::getAlias('@webroot/themes');
+
+        foreach (scandir($themePath) as $file) {
+            if ($file == "." || $file == ".." || !is_dir($themePath . DIRECTORY_SEPARATOR . $file)) {
+                continue;
+            }
+            $themes[$file] = $file;
+        }
+        return $themes;
     }
 
 }

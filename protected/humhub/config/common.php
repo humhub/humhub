@@ -50,11 +50,7 @@ $config = [
             'class' => '\humhub\components\View',
             'theme' => [
                 'class' => '\humhub\components\Theme',
-                'basePath' => '@webroot/themes/HumHub',
-                'baseUrl' => '@web/themes/HumHub',
-                'pathMap' => [
-                    '@humhub/views' => '@webroot/themes/HumHub/views',
-                ],
+                'name' => 'HumHub',
             ],
         ],
         'db' => [

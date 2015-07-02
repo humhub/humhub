@@ -44,10 +44,9 @@ class CacheSettingsForm extends \yii\base\Model
     public function getTypes()
     {
         return array(
-            'CDummyCache' => \Yii::t('app', 'No caching (Testing only!)'),
-            'CFileCache' => \Yii::t('app', 'File'),
-            'CDbCache' => \Yii::t('app', 'Database'),
-            'CApcCache' => \Yii::t('app', 'APC'),
+            'yii\caching\DummyCache' => \Yii::t('app', 'No caching (Testing only!)'),
+            'yii\caching\FileCache' => \Yii::t('app', 'File'),
+            'yii\caching\ApcCache' => \Yii::t('app', 'APC'),
         );
     }
 

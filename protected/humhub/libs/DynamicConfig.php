@@ -101,30 +101,24 @@ class DynamicConfig extends \yii\base\Object
         }
 
         // Add Caching
-        /*
-          $cacheClass = Setting::Get('type', 'cache');
-          if (!$cacheClass) {
-          $cacheClass = "CDummyCache";
-          }
-          $config['components']['cache'] = array(
-          'class' => $cacheClass,
-          );
-         */
-
-        /*
-          // Add User settings
-          $config['components']['user'] = array();
-          if (Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal')) {
-          $config['components']['user']['authTimeout'] = Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
-          }
-         */
+        $cacheClass = Setting::Get('type', 'cache');
+        if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
+            $config['components']['cache'] = [
+                'class' => $cacheClass,
+            ];
+        }
+        // Add User settings
+        $config['components']['user'] = array();
+        if (Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal')) {
+            $config['components']['user']['authTimeout'] = Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
+        }
 
         // Install Mail Component
         $mail = [];
         $mail['transport'] = array();
         if (Setting::Get('transportType', 'mailing') == 'smtp') {
             $mail['transport']['class'] = 'Swift_SmtpTransport';
-            
+
             if (Setting::Get('hostname', 'mailing'))
                 $mail['transport']['host'] = Setting::Get('hostname', 'mailing');
 
@@ -141,11 +135,11 @@ class DynamicConfig extends \yii\base\Object
                 $mail['transport']['port'] = Setting::Get('port', 'mailing');
 
             /*
-            if (Setting::Get('allowSelfSignedCerts', 'mailing')) {
-                $mail['transport']['ssl']['allow_self_signed'] = true;
-                $mail['transport']['ssl']['verify_peer'] = false;
-            }
-            */
+              if (Setting::Get('allowSelfSignedCerts', 'mailing')) {
+              $mail['transport']['ssl']['allow_self_signed'] = true;
+              $mail['transport']['ssl']['verify_peer'] = false;
+              }
+             */
         } elseif (Setting::Get('transportType', 'mailing') == 'php') {
             $mail['transport']['class'] = 'Swift_MailTransport';
         } else {
@@ -154,14 +148,12 @@ class DynamicConfig extends \yii\base\Object
         $config['components']['mailer'] = $mail;
 
         // Add Theme
-        /*
-          $theme = Setting::Get('theme');
-          if ($theme && $theme != "") {
-          $config['theme'] = $theme;
-          } else {
-          unset($config['theme']);
-          }
-         */
+        $theme = Setting::Get('theme');
+        if ($theme && $theme != "") {
+            $config['components']['view']['theme']['name'] = $theme;
+        } else {
+            unset($config['components']['view']['theme']['name']);
+        }
         $config['params']['config_created_at'] = time();
 
         self::save($config);
