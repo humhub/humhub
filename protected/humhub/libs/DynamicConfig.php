@@ -118,41 +118,40 @@ class DynamicConfig extends \yii\base\Object
           $config['components']['user']['authTimeout'] = Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
           }
          */
-        /*
-          // Install Mail Component
-          $mail = array(
-          'class' => 'ext.yii-mail.YiiMail',
-          'transportType' => Setting::Get('transportType', 'mailing'),
-          'viewPath' => 'application.views.mail',
-          'logging' => true,
-          'dryRun' => false,
-          );
-          if (Setting::Get('transportType', 'mailing') == 'smtp') {
 
-          $mail['transportOptions'] = array();
+        // Install Mail Component
+        $mail = [];
+        $mail['transport'] = array();
+        if (Setting::Get('transportType', 'mailing') == 'smtp') {
+            $mail['transport']['class'] = 'Swift_SmtpTransport';
+            
+            if (Setting::Get('hostname', 'mailing'))
+                $mail['transport']['host'] = Setting::Get('hostname', 'mailing');
 
-          if (Setting::Get('hostname', 'mailing'))
-          $mail['transportOptions']['host'] = Setting::Get('hostname', 'mailing');
+            if (Setting::Get('username', 'mailing'))
+                $mail['transport']['username'] = Setting::Get('username', 'mailing');
 
-          if (Setting::Get('username', 'mailing'))
-          $mail['transportOptions']['username'] = Setting::Get('username', 'mailing');
+            if (Setting::Get('password', 'mailing'))
+                $mail['transport']['password'] = Setting::Get('password', 'mailing');
 
-          if (Setting::Get('password', 'mailing'))
-          $mail['transportOptions']['password'] = Setting::Get('password', 'mailing');
+            if (Setting::Get('encryption', 'mailing'))
+                $mail['transport']['encryption'] = Setting::Get('encryption', 'mailing');
 
-          if (Setting::Get('encryption', 'mailing'))
-          $mail['transportOptions']['encryption'] = Setting::Get('encryption', 'mailing');
+            if (Setting::Get('port', 'mailing'))
+                $mail['transport']['port'] = Setting::Get('port', 'mailing');
 
-          if (Setting::Get('port', 'mailing'))
-          $mail['transportOptions']['port'] = Setting::Get('port', 'mailing');
-
-          if (Setting::Get('allowSelfSignedCerts', 'mailing')) {
-          $mail['transportOptions']['options']['ssl']['allow_self_signed'] = true;
-          $mail['transportOptions']['options']['ssl']['verify_peer'] = false;
-          }
-          }
-          $config['components']['mail'] = $mail;
-         */
+            /*
+            if (Setting::Get('allowSelfSignedCerts', 'mailing')) {
+                $mail['transport']['ssl']['allow_self_signed'] = true;
+                $mail['transport']['ssl']['verify_peer'] = false;
+            }
+            */
+        } elseif (Setting::Get('transportType', 'mailing') == 'php') {
+            $mail['transport']['class'] = 'Swift_MailTransport';
+        } else {
+            $mail['useFileTransport'] = true;
+        }
+        $config['components']['mailer'] = $mail;
 
         // Add Theme
         /*

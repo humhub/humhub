@@ -18,7 +18,7 @@ use yii\helpers\Url;
             </li>
         </ul>
         <br />
-        
+
 
         <?php $form = CActiveForm::begin(); ?>
 
@@ -69,17 +69,17 @@ use yii\helpers\Url;
                 <?php echo $form->labelEx($model, 'encryption'); ?>
                 <?php echo $form->dropDownList($model, 'encryption', $encryptionTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('encryption', 'mailing'))); ?>
             </div>
-            
+
             <div id="encryptionOptions">
-            	<div class="form-group">
-            		<strong>Encryption Options</strong>
-            		<div class="checkbox">
-                		<label>
-                			<?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('allowSelfSignedCerts', 'mailing'))); ?>
-							<?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
-            			</label>
-            		</div>
-            	</div>
+                <div class="form-group">
+                    <strong>Encryption Options</strong>
+                    <div class="checkbox">
+                        <label>
+                            <?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('allowSelfSignedCerts', 'mailing'))); ?>
+                            <?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <hr>
@@ -97,7 +97,7 @@ use yii\helpers\Url;
         $("#smtpOptions").hide();
     }
 
-    $('#mailingsettingsform-transporttype').on('change', function() {
+    $('#mailingsettingsform-transporttype').on('change', function () {
         if ($("#mailingsettingsform-transporttype option:selected").val() != 'smtp') {
             $("#smtpOptions").hide();
         } else {
@@ -109,7 +109,7 @@ use yii\helpers\Url;
         $("#encryptionOptions").hide();
     }
 
-    $('#mailingsettingsform-encryption').on('change', function() {
+    $('#mailingsettingsform-encryption').on('change', function () {
         if ($("#mailingsettingsform-encryption option:selected").val() == '') {
             $("#encryptionOptions").hide();
         } else {

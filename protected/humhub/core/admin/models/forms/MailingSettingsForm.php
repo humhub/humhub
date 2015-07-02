@@ -28,7 +28,7 @@ class MailingSettingsForm extends \yii\base\Model
     {
         return array(
             array(['transportType', 'systemEmailAddress', 'systemEmailName'], 'required'),
-            array('transportType', 'in', 'range' => array('php', 'smtp')),
+            array('transportType', 'in', 'range' => array('php', 'smtp', 'file')),
             array('encryption', 'in', 'range' => array('', 'ssl', 'tls')),
             array('allowSelfSignedCerts', 'boolean'),
             array('systemEmailAddress', 'email'),
