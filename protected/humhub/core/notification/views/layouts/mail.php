@@ -1,4 +1,8 @@
-<!-- START NOTIFICATION/ACTIVITY -->
+<?php
+
+use yii\helpers\Html;
+?>
+<!-- START NOTIFICATION -->
 <tr>
     <td align="center" valign="top" class="fix-box">
 
@@ -34,13 +38,12 @@
                                                 <tr>
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
-                                                        
-                                                        <!-- check if variable exists and is true -->
-                                                        <?php if ($notification->getCreator() !== null && empty($hideUserImage)): ?>
+
+                                                        <?php if ($originator !== null): ?>
                                                             <!-- START: USER IMAGE -->
-                                                            <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $notification->getCreator()->guid)); ?>">
+                                                            <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>">
                                                                 <img
-                                                                    src="<?php echo $notification->getCreator()->getProfileImage()->getUrl(); ?>"
+                                                                    src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
                                                                     width="50"
                                                                     alt=""
                                                                     style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -48,7 +51,7 @@
                                                             </a>
                                                             <!-- END: USER IMAGE -->
                                                         <?php endif; ?>
-                                                        
+
                                                     </td>
 
 
@@ -62,29 +65,19 @@
 
                                                                     <?php echo $content; ?>
 
-                                                                    <!-- check if variable exists and is true -->
-                                                                    <?php if (!empty($showSpace)) : ?>
-
-                                                                        <!-- check if variable is true -->
-                                                                        <?php if ($showSpace == true) : ?>
-
-                                                                            <!-- check if activity object has a space -->
-                                                                            <?php if ($notification->space != null): ?>
-                                                                                (<?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'via'); ?>
-                                                                                <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $notification->space->guid)); ?>"
-                                                                                   style="text-decoration: none; color: #555555;">
-                                                                                    <?php echo CHtml::encode($notification->space->name); ?>
-                                                                                </a>)
-                                                                            <?php endif; ?>
-
-                                                                        <?php endif; ?>
-
+                                                                    <!-- check if activity object has a space -->
+                                                                    <?php if ($space !== null): ?>
+                                                                        (<?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'via'); ?>
+                                                                        <a href="<?php echo $space->createUrl('/space/space', [], true); ?>"
+                                                                           style="text-decoration: none; color: #555555;">
+                                                                               <?php echo Html::encode($space->name); ?>
+                                                                        </a>)
                                                                     <?php endif; ?>
 
                                                                     <!-- START: CONTENT LINK -->
                                                                     <span
                                                                         style="text-decoration: none; color: #7191a8;"> - <a
-                                                                            href="<?php echo $notification->getUrl(); ?>"
+                                                                            href="<?php echo $url; ?>"
                                                                             style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'see online'); ?></a></span>
                                                                     <!-- END: CONTENT LINK -->
 

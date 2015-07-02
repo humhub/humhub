@@ -109,25 +109,28 @@ class Stream extends \yii\base\Action
             $this->user = Yii::$app->user->getIdentity();
         }
 
+
         // Read parameters
-        $from = Yii::$app->getRequest()->get('from', 0);
-        if ($from != 0) {
-            $this->from = $from;
-        }
-        $sort = Yii::$app->getRequest()->get('sort', '');
-        if ($sort != "") {
-            $this->sort = $sort;
-        }
-        $limit = Yii::$app->getRequest()->get('limit', '');
-        if ($limit != "" && $limit <= self::MAX_LIMIT) {
-            $this->limit = $limit;
-        }
-        $mode = Yii::$app->getRequest()->get('mode', '');
-        if ($mode != "" && ($mode == self::MODE_ACTIVITY || $mode == self::MODE_NORMAL)) {
-            $this->mode = $mode;
-        }
-        foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
-            $this->filters[] = trim($filter);
+        if (!Yii::$app->request->isConsoleRequest) {
+            $from = Yii::$app->getRequest()->get('from', 0);
+            if ($from != 0) {
+                $this->from = $from;
+            }
+            $sort = Yii::$app->getRequest()->get('sort', '');
+            if ($sort != "") {
+                $this->sort = $sort;
+            }
+            $limit = Yii::$app->getRequest()->get('limit', '');
+            if ($limit != "" && $limit <= self::MAX_LIMIT) {
+                $this->limit = $limit;
+            }
+            $mode = Yii::$app->getRequest()->get('mode', '');
+            if ($mode != "" && ($mode == self::MODE_ACTIVITY || $mode == self::MODE_NORMAL)) {
+                $this->mode = $mode;
+            }
+            foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
+                $this->filters[] = trim($filter);
+            }
         }
 
         $this->setupCriteria();

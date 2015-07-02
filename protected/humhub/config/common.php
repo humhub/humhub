@@ -1,5 +1,10 @@
 <?php
 
+Yii::setAlias('@webroot', __DIR__ . '/../../../');
+
+Yii::setAlias('@app', '@webroot/protected');
+Yii::setAlias('@humhub', '@app/humhub');
+
 $config = [
     'version' => '0.20',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,

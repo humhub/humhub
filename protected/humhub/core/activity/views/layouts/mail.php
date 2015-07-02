@@ -1,3 +1,7 @@
+<?php
+
+use yii\helpers\Html;
+?>
 <!-- START NOTIFICATION/ACTIVITY -->
 <tr>
     <td align="center" valign="top" class="fix-box">
@@ -35,9 +39,9 @@
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo Yii::app()->createAbsoluteUrl('user/profile', array('guid' => $activity->content->user->guid)); ?>">
+                                                        <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>">
                                                             <img
-                                                                src="<?php echo $activity->content->user->getProfileImage()->getUrl(); ?>"
+                                                                src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
                                                                 width="50"
                                                                 alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -58,35 +62,25 @@
                                                                     <!-- content output-->
                                                                     <?php echo $content; ?>
 
-                                                                    <!-- check if variable exists and is true -->
-                                                                    <?php if (!empty($showSpace)) : ?>
-
-                                                                        <!-- check if variable is true -->
-                                                                        <?php if ($showSpace == true) : ?>
-
-                                                                            <!-- check if activity object has a space -->
-                                                                            <?php if ($activity->content->space != null): ?>
-                                                                                (<?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
-                                                                                <a href="<?php echo Yii::app()->createUrl('space/space', array('sguid' => $activity->content->space->guid)); ?>"
-                                                                                   style="text-decoration: none; color: #555555;">
-                                                                                       <?php echo CHtml::encode($activity->content->space->name); ?>
-                                                                                </a>)
-                                                                            <?php endif; ?>
-
-                                                                            <?php if ($activity->getUnderlyingObject() != null) : ?>
-                                                                                <!-- START: CONTENT LINK -->
-                                                                                <span
-                                                                                    style="text-decoration: none; color: #7191a8;"> - <a
-                                                                                        href="<?php echo Yii::app()->createUrl('wall/perma/content', array('model' => get_class($activity->getUnderlyingObject()), 'id' => $activity->getUnderlyingObject()->getPrimaryKey())); ?>"
-                                                                                        style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
-                                                                                <!-- END: CONTENT LINK -->
-                                                                            <?php endif; ?>
-
-                                                                        <?php else : ?>
-
-                                                                        <?php endif; ?>
-
+                                                                    <!-- check if activity object has a space -->
+                                                                    <?php if ($record->content->space !== null): ?>
+                                                                        (<?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
+                                                                        <a href="<?php echo $record->content->space->createUrl('/space/space', [], true); ?>"
+                                                                           style="text-decoration: none; color: #555555;">
+                                                                               <?php echo Html::encode($record->content->space->name); ?>
+                                                                        </a>)
                                                                     <?php endif; ?>
+
+                                                                    <?php if ($url != "") : ?>
+                                                                        <!-- START: CONTENT LINK -->
+                                                                        <span
+                                                                            style="text-decoration: none; color: #7191a8;"> - <a
+                                                                                href="<?php echo $url; ?>"
+                                                                                style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
+                                                                        <!-- END: CONTENT LINK -->
+                                                                    <?php endif; ?>
+
+
 
 
                                                                 </td>

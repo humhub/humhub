@@ -8,6 +8,8 @@
 
 namespace humhub\core\search;
 
+use Yii;
+
 /**
  * Description of SearchModuleEvents
  *
@@ -28,6 +30,14 @@ class Events extends \yii\base\Object
         if ($comment->content->getUnderlyingObject() instanceof ISearchable) {
             Yii::app()->search->update($comment->content->getUnderlyingObject());
         }
+    }
+
+    public static function onHourlyCron($event)
+    {
+        $controller = $event->sender;
+        $controller->stdout("Optimizing search index... ");
+        Yii::$app->search->optimize();
+        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
     }
 
     public static function onConsoleApplicationInit($event)

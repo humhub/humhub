@@ -8,4 +8,4 @@ echo Yii::t('PostModule.views_activities_PostCreated', '{displayName} created a 
 ));
 ?>
 <br />
-<em>"<?php echo \humhub\widgets\RichText::widget(['text' => $target->message, 'minimal' => true]); ?>"</em>
+<em>"<?php echo \humhub\widgets\RichText::widget(['text' => $source->getContentPreview(), 'minimal' => true]); ?>"</em>

@@ -95,14 +95,13 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
          * not really exists yet.
          */
         if ($name == 'profile') {
-            if (!$this->isRelationPopulated('profile')) {
-                $profile = $this->getProfile()->findFor('profile', $this);
-                if ($profile === null) {
-                    $profile = new Profile();
-                    $profile->user_id = $this->id;
-                }
+            $profile = parent::__get('profile');
+            if (!$this->isRelationPopulated('profile') || $profile === null) {
+                $profile = new Profile();
+                $profile->user_id = $this->id;
                 $this->populateRelation('profile', $profile);
             }
+            return $profile;
         }
         return parent::__get($name);
     }
@@ -565,6 +564,14 @@ class User extends \humhub\core\content\components\activerecords\ContentContaine
         // TODO: SHOW ONLY REAL MEMBERSHIPS
         return $this->hasMany(\humhub\core\space\models\Space::className(), ['id' => 'space_id'])
                         ->viaTable('space_membership', ['user_id' => 'id']);
+    }
+
+    /**
+     * @return type
+     */
+    public function getHttpSessions()
+    {
+        return $this->hasMany(\humhub\core\user\models\Session::className(), ['user_id' => 'id']);
     }
 
     /**

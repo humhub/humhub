@@ -104,7 +104,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
 
         $params['content'] = Yii::$app->getView()->renderFile($viewFile, $params, $this);
 
-        return Yii::$app->getView()->renderFile($this->layoutWeb, $params, $this);
+        return Yii::$app->getView()->renderFile(($mode == self::OUTPUT_WEB) ? $this->layoutWeb : $this->layoutMail, $params, $this);
     }
 
     /**

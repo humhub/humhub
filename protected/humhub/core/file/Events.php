@@ -20,6 +20,8 @@
 
 namespace humhub\core\file;
 
+use humhub\core\file\models\File;
+
 /**
  * FileModuleEvents handles all events described in autostart.php
  * 
@@ -48,15 +50,17 @@ class Events extends \yii\base\Object
      */
     public static function onCronDailyRun($event)
     {
-        /*
-          $cron = $event->sender;
 
-          // Delete unused files
-          $deleteTime = time() - (60 * 60 * 24 * 1); // Older than 1 day
-          foreach (File::model()->findAllByAttributes(array(), 'created_at < :date AND (object_model IS NULL or object_model = "")', array(':date' => date('Y-m-d', $deleteTime))) as $file) {
-          $file->delete();
-          }
-         */
+        $controller = $event->sender;
+        $controller->stdout("Deleting old unassigned files... ");
+
+        // Delete unused files
+        $deleteTime = time() - (60 * 60 * 24 * 1); // Older than 1 day
+        foreach (File::find()->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->andWhere('(object_model IS NULL or object_model = "")')->all() as $file) {
+            $file->delete();
+        }
+
+        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
     }
 
     /**

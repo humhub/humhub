@@ -3,6 +3,7 @@
 namespace humhub\core\admin;
 
 use Yii;
+use humhub\core\admin\libs\OnlineModuleManager;
 
 /**
  * @package humhub.modules_core.admin
@@ -24,26 +25,30 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * Check if there is a new Humhub Version available
+     * Check if there is a new Humhub Version available and sends a notification
+     * to super admins
      *
-     * @param type $event
+     * @param \yii\base\Event $event
      */
     public static function onCronDailyRun($event)
     {
-        Yii::import('application.modules_core.admin.libs.*');
-        $cron = $event->sender;
+        $controller = $event->sender;
 
-        if (!Yii::app()->getModule('admin')->marketplaceEnabled) {
+        if (!Yii::$app->getModule('admin')->marketplaceEnabled) {
             return;
         }
+
+        $controller->stdout("Checking for new HumHub version... ");
 
         $onlineModuleManager = new OnlineModuleManager();
         $latestVersion = $onlineModuleManager->getLatestHumHubVersion();
 
-        if ($latestVersion != "" && version_compare($latestVersion, HVersion::VERSION, ">")) {
-            $notification = new notifications\NewVersionAvailable;
+        if ($latestVersion != "" && version_compare($latestVersion, Yii::$app->version, ">")) {
+            $notification = new notifications\NewVersionAvailable();
             $notification->add(User::find()->where(['super_admin' => 1]));
         }
+
+        $controller->stdout('done. ' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
     }
 
 }

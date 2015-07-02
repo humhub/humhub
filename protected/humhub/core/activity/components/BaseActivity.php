@@ -116,6 +116,11 @@ class BaseActivity extends \yii\base\Component
         } elseif ($this->source instanceof ContentContainer) {
             $model->content->visibility = $this->visibility;
             $model->content->container = $this->source;
+
+            if (Yii::$app->user->isGuest) {
+                $model->content->created_by = $this->originator->id;
+                $model->created_by = $this->originator->id;
+            }
         } else {
             throw new \yii\base\Exception("Invalid source object type!");
         }
@@ -137,6 +142,7 @@ class BaseActivity extends \yii\base\Component
         $params['originator'] = $this->originator;
         $params['source'] = $this->source;
         $params['record'] = $this->record;
+        $params['url'] = $this->getUrl();
         $params['clickable'] = $this->clickable;
 
         $viewFile = $this->getViewPath() . '/' . $this->viewName . '.php';
@@ -151,7 +157,7 @@ class BaseActivity extends \yii\base\Component
 
         $params['content'] = Yii::$app->getView()->renderFile($viewFile, $params, $this);
 
-        return Yii::$app->getView()->renderFile($this->layoutWeb, $params, $this);
+        return Yii::$app->getView()->renderFile(($mode == self::OUTPUT_WEB) ? $this->layoutWeb : $this->layoutMail, $params, $this);
     }
 
     /**
@@ -167,7 +173,7 @@ class BaseActivity extends \yii\base\Component
     {
         return \yii\helpers\Html::encode($content->getContentTitle()) .
                 ' "' .
-                \humhub\widgets\RichText::widget(['text' => $content->getContentPreview(), 'minimal' => true, 'maxLength' => 60]).'"';
+                \humhub\widgets\RichText::widget(['text' => $content->getContentPreview(), 'minimal' => true, 'maxLength' => 60]) . '"';
     }
 
     /**

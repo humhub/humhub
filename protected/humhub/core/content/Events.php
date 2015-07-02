@@ -8,7 +8,12 @@
 
 namespace humhub\core\content;
 
+use Yii;
 use humhub\core\content\models\Content;
+use humhub\core\user\models\User;
+use humhub\commands\CronController;
+use humhub\models\Setting;
+use yii\helpers\Console;
 
 /**
  * Description of Events
@@ -83,6 +88,63 @@ class Events extends \yii\base\Object
             'template' => '<div class="wall-entry-controls">{content}</div>',
                 ), array('sortOrder' => 10)
         );
+    }
+
+    public static function onCronRun($event)
+    {
+        $controller = $event->sender;
+
+        $interval = "";
+        if (Yii::$app->controller->action->id == 'hourly') {
+            $interval = CronController::EVENT_ON_HOURLY_RUN;
+        } elseif (Yii::$app->controller->action->id == 'daily') {
+            $interval = CronController::EVENT_ON_DAILY_RUN;
+        } else {
+            return;
+        }
+
+        $users = User::find()->joinWith(['httpSessions', 'profile'])->where(['status' => User::STATUS_ENABLED]);
+        $totalUsers = $users->count();
+        $done = 0;
+        $mailsSent = 0;
+        $defaultLanguage = Yii::$app->language;
+
+        Console::startProgress($done, $totalUsers, 'Sending update e-mails to users... ', false);
+        foreach ($users->each() as $user) {
+
+            // Check user should receive an email
+            Yii::$app->user->switchIdentity($user);
+            if ($user->language != "") {
+                Yii::$app->language = $user->language;
+            } else {
+                Yii::$app->language = $defaultLanguage;
+            }
+
+            $notifications = Yii::$app->getModule('notification')->getMailUpdate($user, $interval);
+            $activities = Yii::$app->getModule('activity')->getMailUpdate($user, $interval);
+
+            if ($notifications != "" || $activities != "") {
+                $mail = Yii::$app->mailer->compose(['html' => '@humhub/core/content/views/mails/Update'], [
+                    'activities' => $activities,
+                    'notifications' => $notifications
+                ]);
+                $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
+                $mail->setTo($user->email);
+                if ($interval == CronController::EVENT_ON_HOURLY_RUN) {
+                    $mail->setSubject(Yii::t('base', "Latest news"));
+                } else {
+                    $mail->setSubject(Yii::t('base', "Your daily summary"));
+                }
+                $mail->send();
+
+                $mailsSent++;
+            }
+
+            Console::updateProgress(++$done, $totalUsers);
+        }
+
+        Console::endProgress(true);
+        $controller->stdout('done - ' . $mailsSent . ' email(s) sent.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
     }
 
 }

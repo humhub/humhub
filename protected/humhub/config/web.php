@@ -19,6 +19,10 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'session' => [
+            'class' => 'humhub\core\user\components\Session',
+            'sessionTable' => 'user_http_session',
+        ],
     ],
     'modules' => [],
 ];

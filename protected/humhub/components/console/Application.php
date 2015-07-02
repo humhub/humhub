@@ -8,6 +8,9 @@
 
 namespace humhub\components\console;
 
+use Yii;
+use humhub\models\Setting;
+
 /**
  * Description of Application
  *
@@ -28,8 +31,13 @@ class Application extends \yii\console\Application
     {
         parent::init();
         $this->trigger(self::EVENT_ON_INIT);
+
+        $baseUrl = Setting::get('baseUrl');
+
+        Yii::setAlias(("@web"), $baseUrl);
+        $this->urlManager->scriptUrl = $baseUrl;
     }
-    
+
     /**
      * Returns the configuration of the built-in commands.
      * @return array the configuration of the built-in commands.

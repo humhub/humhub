@@ -96,16 +96,17 @@ class Events extends \yii\base\Object
      */
     public static function onCronDailyRun($event)
     {
+        $controller = $event->sender;
 
-        $cron = $event->sender;
-
+        $controller->stdout("Deleting old notifications... ");
         /**
          * Delete seen notifications which are older than 2 months
          */
         $deleteTime = time() - (60 * 60 * 24 * 31 * 2); // Notifcations which are older as ~ 2 Months
-        foreach (Notification::model()->findAllByAttributes(array('seen' => 1), 'created_at < :date', array(':date' => date('Y-m-d', $deleteTime))) as $notification) {
+        foreach (Notification::find()->where(['seen' => 1])->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->all() as $notification) {
             $notification->delete();
         }
+        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
     }
 
     public static function onActiveRecordDelete($event)

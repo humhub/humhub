@@ -3,9 +3,6 @@ Notifications
 
 Notifications are used to inform one or a given set of users about something.
 
-
-## Steps to create Notifications
-
 ### Create 
 
 Create a folder ** notifications ** in your module and a new class ** SomethingHappend ** 
@@ -22,11 +19,8 @@ use humhub\core\notification\components\BaseNotification;
  */
 class SomethingHappend extends BaseNotification
 {
-
     public $viewName = "somethingHappend";
-
 }
-
 ?>
 
 ```

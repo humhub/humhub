@@ -21,8 +21,4 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/protected/config/web.php')
 );
 
-Yii::setAlias('@webroot', __DIR__);
-Yii::setAlias('@app', __DIR__ . DIRECTORY_SEPARATOR . 'protected');
-Yii::setAlias('@humhub', '@app/humhub');
-
 (new humhub\components\Application($config))->run();

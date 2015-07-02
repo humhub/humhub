@@ -13,11 +13,12 @@ Quick Guide about
 - Modules
 	- Change autostart.php -> avoid old loading probs?
 	- Uninstall
+	- Namespaces
 - Theming
-	- Also check themed files like module_images
-- Check Update Progress
+	- Themed Image files User/Space Default Profile Image
+	- Notification/Activity Mail Views
 - Emailing (New Config Option)
-- CronJobs
+- Integritychecker
 - Tests
 - RichText
 	- Max Length & minimal Option

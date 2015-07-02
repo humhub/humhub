@@ -34,7 +34,7 @@ class InitialData
 
         //Yii::$app->search->rebuild();
 
-        Setting::Set('baseUrl', Url::home(true));
+        Setting::Set('baseUrl', \yii\helpers\BaseUrl::base(true));
         Setting::Set('paginationSize', 10);
         Setting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 

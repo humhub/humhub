@@ -96,7 +96,7 @@ class ProfileImage
             $path .= 'img/' . $this->defaultImage;
             $path .= '.jpg';
         }
-        return Url::to($path, Yii::$app->request->isConsoleRequest);
+        return Yii::getAlias($path);
     }
 
     /**
