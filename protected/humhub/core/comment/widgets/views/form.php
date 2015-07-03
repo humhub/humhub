@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\compat\widgets\AjaxButton;
+use humhub\widgets\AjaxButton;
 ?>
 
 <?php /* BEGIN: Comment Create Form */ ?>
@@ -48,7 +48,7 @@ use humhub\compat\widgets\AjaxButton;
             'style' => 'position: absolute; left: -90000000px; opacity: 0;',
         ],
     ]);
-    ?>    
+    ?>
 
     <?php echo Html::endForm(); ?>
 

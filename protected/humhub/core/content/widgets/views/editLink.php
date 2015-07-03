@@ -8,7 +8,7 @@ use yii\web\JsExpression;
 ?>
 <li>
     <?php
-    echo \humhub\compat\widgets\AjaxButton::widget([
+    echo \humhub\widgets\AjaxButton::widget([
         'label' => '<i class="fa fa-pencil"></i> ' . Yii::t('ContentModule.widgets_views_editLink', 'Edit'),
         'tag' => 'a',
         'ajaxOptions' => [

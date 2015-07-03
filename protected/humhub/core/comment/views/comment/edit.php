@@ -30,11 +30,11 @@ use yii\helpers\Url;
         'fileListFieldName' => 'fileList',
         'object' => $comment
     ));
-    ?>    
+    ?>
 
 
     <?php
-    echo \humhub\compat\widgets\AjaxButton::widget([
+    echo \humhub\widgets\AjaxButton::widget([
         'label' => "Save",
         'ajaxOptions' => [
             'type' => 'POST',
@@ -47,7 +47,7 @@ use yii\helpers\Url;
             'style' => 'position: absolute; left: -90000000px; opacity: 0;'
         ],
     ]);
-    ?>  
+    ?>
 
     <?php
     // Creates a list of already uploaded Files
@@ -55,7 +55,7 @@ use yii\helpers\Url;
         'uploaderId' => 'comment_upload_' . $comment->id,
         'object' => $comment
     ));
-    ?>    
+    ?>
 
     <?php CActiveForm::end(); ?>
 </div>

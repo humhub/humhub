@@ -70,7 +70,7 @@ use humhub\models\Setting;
         <div class="modal-footer">
 
             <?php
-            echo \humhub\compat\widgets\AjaxButton::widget([
+            echo \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('SpaceModule.views_space_invite', 'Send'),
                 'ajaxOptions' => [
                     'type' => 'POST',

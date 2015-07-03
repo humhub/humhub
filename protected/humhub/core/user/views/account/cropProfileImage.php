@@ -54,7 +54,7 @@ use yii\helpers\Url;
         <div class="modal-footer">
 
             <?php
-            echo \humhub\compat\widgets\AjaxButton::widget([
+            echo \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',

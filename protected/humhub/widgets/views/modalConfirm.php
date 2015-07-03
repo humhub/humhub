@@ -61,7 +61,7 @@ if ($confirmJS != "") {
                 <?php if ($buttonTrue != "") { ?>
 
                     <?php
-                    echo \humhub\compat\widgets\AjaxButton::widget([
+                    echo \humhub\widgets\AjaxButton::widget([
                         'label' => $buttonTrue,
                         'ajaxOptions' => [
                             'type' => 'POST',

@@ -75,7 +75,7 @@
         <div class="modal-footer">
 
             <?php
-            echo \humhub\compat\widgets\AjaxButton::widget([
+            echo \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('AdminModule.views_module_setAsDefault', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',

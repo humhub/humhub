@@ -31,7 +31,7 @@ use yii\helpers\Url;
 
             </style>
 
-            <div id="cropimage">               
+            <div id="cropimage">
                 <?php
                 echo \yii\helpers\Html::img($profileImage->getUrl('_org'), ['id' => 'foobar']);
 
@@ -46,7 +46,7 @@ use yii\helpers\Url;
                         'onChange' => new yii\web\JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
                     ]
                 ]);
-                ?>                
+                ?>
             </div>
 
 
@@ -54,7 +54,7 @@ use yii\helpers\Url;
         <div class="modal-footer">
 
             <?php
-            echo \humhub\compat\widgets\AjaxButton::widget([
+            echo \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',

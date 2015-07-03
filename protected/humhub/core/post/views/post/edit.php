@@ -20,11 +20,11 @@ use yii\helpers\Url;
         'uploaderId' => 'post_upload_' . $post->id,
         'object' => $post
     ));
-    ?>    
+    ?>
 
 
     <?php
-    echo \humhub\compat\widgets\AjaxButton::widget([
+    echo \humhub\widgets\AjaxButton::widget([
         'label' => 'Save',
         'ajaxOptions' => [
             'type' => 'POST',
@@ -45,7 +45,7 @@ use yii\helpers\Url;
         'uploaderId' => 'post_upload_' . $post->id,
         'object' => $post
     ));
-    ?>       
+    ?>
 
     <?php CActiveForm::end(); ?>
 </div>

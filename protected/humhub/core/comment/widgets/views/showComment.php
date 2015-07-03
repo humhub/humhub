@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\compat\widgets\AjaxButton;
+use humhub\widgets\AjaxButton;
 ?>
 
 
@@ -33,7 +33,7 @@ $canDelete = $comment->canDelete();
                                 ],
                                 'tag' => 'a'
                             ]);
-                            ?>                            
+                            ?>
 
                         </li>
                     <?php endif; ?>
@@ -96,7 +96,7 @@ $canDelete = $comment->canDelete();
         $('#comment-message-<?php echo $comment->id; ?>').addClass('highlight');
         $('#comment-message-<?php echo $comment->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
     </script>
-<?php endif; ?>    
+<?php endif; ?>
 
 <?php if ($comment->canDelete()) : ?>
     <script type="text/javascript">

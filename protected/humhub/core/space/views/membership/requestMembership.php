@@ -25,7 +25,7 @@ use humhub\compat\CActiveForm;
         <div class="modal-footer">
             <hr/>
             <?php
-            echo \humhub\compat\widgets\AjaxButton::widget([
+            echo \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',

@@ -17,7 +17,7 @@ $config = [
             'loginUrl' => ['/user/auth/login']
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            //'errorAction' => 'error/index',
         ],
         'session' => [
             'class' => 'humhub\core\user\components\Session',

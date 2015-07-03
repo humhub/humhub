@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\compat\widgets;
+namespace humhub\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;

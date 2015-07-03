@@ -63,7 +63,7 @@ use humhub\core\space\models\Space;
                 </div>
 
                 <?php
-                echo \humhub\compat\widgets\AjaxButton::widget([
+                echo \humhub\widgets\AjaxButton::widget([
                     'label' => $submitButtonText,
                     'ajaxOptions' => [
                         'url' => Url::toRoute($submitUrl),

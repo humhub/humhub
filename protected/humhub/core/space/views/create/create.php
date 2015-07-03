@@ -113,7 +113,7 @@ use humhub\models\Setting;
             <hr/>
             <br/>
             <?php
-            echo \humhub\compat\widgets\AjaxButton::widget([
+            echo \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('SpaceModule.views_create_create', 'Create'),
                 'ajaxOptions' => [
                     'type' => 'POST',

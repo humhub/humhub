@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\compat\widgets\AjaxButton;
+use humhub\widgets\AjaxButton;
 ?>
 <div class="well well-small comment-container" style="display:none;" id="comment_<?php echo $id; ?>">
     <div class="comment <?php if (Yii::$app->user->isGuest): ?>guest-mode<?php endif; ?>" id="comments_area_<?php echo $id; ?>">

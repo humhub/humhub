@@ -1,6 +1,6 @@
 <div class="showMore">
     <?php
-    echo humhub\compat\widgets\AjaxButton::widget([
+    echo humhub\widgets\AjaxButton::widget([
         'label' => Yii::t('CommentModule.widgets_views_pagination', "Show %count% more comments", array('%count%' => $moreCount)),
         'ajaxOptions' => [
             'type' => 'POST',
@@ -12,6 +12,6 @@
         ],
         'tag' => 'a'
     ]);
-    ?>  
+    ?>
     <hr />
 </div>
