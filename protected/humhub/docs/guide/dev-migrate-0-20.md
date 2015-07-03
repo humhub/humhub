@@ -17,8 +17,8 @@ Quick Guide about
 - Theming
 	- Themed Image files User/Space Default Profile Image
 	- Notification/Activity Mail Views
-- Emailing (New Config Option)
 - Integritychecker
+- Rename core Folder into Modules
 - Tests
 - RichText
 	- Max Length & minimal Option
@@ -28,7 +28,6 @@ Quick Guide about
 	- UserModel: CanApproveUsers
 - Url Rewriting
 - Use AssetBundels
-- Stream Filters
 - LF
 	- Reimplement Access Controls
 	- Headers

@@ -21,10 +21,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function beforeValidate()
+    public function beforeSave($insert)
     {
-
-        if ($this->isNewRecord) {
+        if ($insert) {
             if ($this->hasAttribute('created_at') && $this->created_at == "") {
                 $this->created_at = new \yii\db\Expression('NOW()');
             }
@@ -34,14 +33,13 @@ class ActiveRecord extends \yii\db\ActiveRecord
             }
         }
 
-        if ($this->hasAttribute('updated_at') && $this->updated_at != "") {
+        if ($this->hasAttribute('updated_at')) {
             $this->updated_at = new \yii\db\Expression('NOW()');
         }
         if (isset(Yii::$app->user) && $this->hasAttribute('updated_by') && $this->updated_by != "") {
             $this->updated_by = Yii::$app->user->id;
         }
-
-        return parent::beforeValidate();
+        return parent::beforeSave($insert);
     }
 
     /**

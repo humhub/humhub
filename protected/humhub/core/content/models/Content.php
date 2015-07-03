@@ -92,7 +92,7 @@ class Content extends \humhub\components\ActiveRecord
     {
         return [
             [['object_id', 'visibility', 'sticked', 'space_id', 'user_id', 'created_by', 'updated_by'], 'integer'],
-            [['archived'], 'string'],
+            [['archived'], 'safe'],
             [['created_at', 'updated_at'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['object_model'], 'string', 'max' => 100],
@@ -462,7 +462,9 @@ class Content extends \humhub\components\ActiveRecord
             }
 
             $this->archived = 1;
-            $this->save();
+            if (!$this->save()) {
+                throw new Exception("Could not archive content!".print_r($this->getErrors(),1));
+            }
         }
     }
 

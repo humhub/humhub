@@ -47,8 +47,9 @@ class MembershipController extends \humhub\core\content\components\ContentContai
      * Provides a searchable user list of all workspace members in json.
      *
      */
-    public function actionSearchMemberJson()
+    public function actionSearch()
     {
+        Yii::$app->response->format = 'json';
 
         $space = $this->getSpace();
 
@@ -56,47 +57,40 @@ class MembershipController extends \humhub\core\content\components\ContentContai
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
-        $maxResults = 10;
         $results = array();
-        $keyword = Yii::$app->request->getParam('keyword');
-        $keyword = Yii::$app->input->stripClean($keyword);
+        $keyword = Yii::$app->request->get('keyword');
 
+
+        $query = User::find();
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', ['space_id' => $space->id, 'member' => Membership::STATUS_MEMBER]);
+        $query->andWhere('space_membership.space_id IS NOT NULL');
+
+
+        $query->joinWith('profile');
+        $query->limit(10);
 
         // Build Search Condition
-        $params = array();
-        $condition = "space_membership.status=" . Membership::STATUS_MEMBER;
-        $condition .= " AND space_id=" . $space->id;
         $parts = explode(" ", $keyword);
         $i = 0;
         foreach ($parts as $part) {
             $i++;
-            $condition .= " AND (u.email LIKE :match{$i} OR "
-                    . "u.username LIKE :match{$i} OR "
-                    . "p.firstname LIKE :match{$i} OR "
-                    . "p.lastname LIKE :match{$i} OR "
-                    . "p.title LIKE :match{$i})";
-
-            $params[':match' . $i] = "%" . $part . "%";
+            $query->andWhere("(user.email LIKE :match OR "
+                    . "user.username LIKE :match OR "
+                    . "profile.firstname LIKE :match OR "
+                    . "profile.lastname LIKE :match OR "
+                    . "profile.title LIKE :match)", ['match' => '%' . $part . '%']);
         }
 
-        $sql = "SELECT DISTINCT u.* FROM space_membership
-                LEFT JOIN user u ON u.id=space_membership.user_id
-                LEFT JOIN profile p ON p.user_id=u.id
-                WHERE " . $condition . " LIMIT 0," . $maxResults;
-
-        $users = User::model()->findAllBySql($sql, $params);
-
-        foreach ($users as $user) {
+        foreach ($query->all() as $user) {
             $userInfo['guid'] = $user->guid;
-            $userInfo['displayName'] = CHtml::encode($user->displayName);
+            $userInfo['displayName'] = \yii\helpers\Html::encode($user->displayName);
             $userInfo['email'] = $user->email;
             $userInfo['image'] = $user->getProfileImage()->getUrl();
-            $userInfo['link'] = $user->getProfileUrl();
+            $userInfo['link'] = $user->getUrl();
             $results[] = $userInfo;
         }
 
-        print CJSON::encode($results);
-        Yii::$app->end();
+        return $results;
     }
 
     /**

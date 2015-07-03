@@ -104,13 +104,13 @@ class Stream extends \yii\base\Action
 
         $this->activeQuery = WallEntry::find();
 
-        // If no user is set, take current if logged in
+// If no user is set, take current if logged in
         if (!Yii::$app->user->isGuest && $this->user == null) {
             $this->user = Yii::$app->user->getIdentity();
         }
 
 
-        // Read parameters
+// Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
             $from = Yii::$app->getRequest()->get('from', 0);
             if ($from != 0) {
@@ -134,7 +134,7 @@ class Stream extends \yii\base\Action
         }
 
         $this->setupCriteria();
-        //$this->setupFilters();
+        $this->setupFilters();
     }
 
     public function setupCriteria()
@@ -152,7 +152,7 @@ class Stream extends \yii\base\Action
         if ($this->mode == self::MODE_ACTIVITY) {
             $this->activeQuery->andWhere(['content.object_model' => \humhub\core\activity\models\Activity::className()]);
 
-            # Dont show own activities
+# Dont show own activities
             if ($this->user != null) {
                 $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\core\activity\models\Activity::className()]);
                 $this->activeQuery->andWhere('content.user_id != :userId', array(':userId' => $this->user->id));
@@ -180,61 +180,49 @@ class Stream extends \yii\base\Action
      */
     public function setupFilters()
     {
-        /*
-          if (in_array('entry_files', $this->filters)) {
-          $fileSubSelect = Yii::app()->db->createCommand()
-          ->select('id')
-          ->from('file')
-          ->where("file.object_model=content.object_model AND file.object_id=content.object_id")
-          ->limit(1)
-          ->getText();
-          $this->activeQuery->condition .= " AND (" . $fileSubSelect . ") IS NOT NULL";
-          }
+        if (in_array('entry_files', $this->filters)) {
+            $fileSelector = (new \yii\db\Query())
+                    ->select(["id"])
+                    ->from('file')
+                    ->where('file.object_model=content.object_model AND file.object_id=content.object_id')
+                    ->limit(1);
+            $fileSelectorSql = Yii::$app->db->getQueryBuilder()->build($fileSelector)[0];
 
-          // Setup Post specific filters
-          if (in_array('posts_links', $this->filters)) {
-          $this->activeQuery->join .= " LEFT JOIN post ON content.object_id=post.id AND content.object_model = 'Post'";
-          if (in_array('posts_links', $this->filters)) {
-          $this->activeQuery->condition .= " AND post.url is not null";
-          }
-          }
+            $this->activeQuery->andWhere('(' . $fileSelectorSql . ') IS NOT NULL');
+        }
 
-          // Only apply archived filter when we should load more than one entry
-          if ($this->limit != 1) {
-          if (!in_array('entry_archived', $this->filters)) {
-          $this->activeQuery->condition .= " AND (content.archived != 1 OR content.archived IS NULL)";
-          }
-          }
+        // Setup Post specific filters
+        if (in_array('posts_links', $this->filters)) {
+            $this->activeQuery->leftJoin('post', 'content.object_id=post.id AND content.object_model=:postModel', ['postModel' => \humhub\core\post\models\Post::className()]);
+            $this->activeQuery->andWhere("post.url is not null");
+        }
 
-          // Show only mine items
-          if (in_array('entry_mine', $this->filters)) {
-          $this->activeQuery->condition .= " AND content.created_by=:userId";
-          }
+        // Only apply archived filter when we should load more than one entry
+        if ($this->limit != 1) {
+            if (!in_array('entry_archived', $this->filters)) {
+                $this->activeQuery->andWhere("(content.archived != 1 OR content.archived IS NULL)");
+            }
+        }
+        // Show only mine items
+        if (in_array('entry_mine', $this->filters) && $this->user !== null) {
+            $this->activeQuery->andWhere(['content.created_by' => $this->user->id]);
+        }
+        // Show only items where the current user is involed
+        if (in_array('entry_userinvoled', $this->filters) && $this->user !== null) {
 
-          // Show only items where the current user is involed
-          if (in_array('entry_userinvoled', $this->filters) && $this->user != null) {
-          $this->activeQuery->join .= " LEFT JOIN user_follow ON content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId";
-          $this->activeQuery->condition .= " AND user_follow.id IS NOT NULL";
-          }
-
-          // Show only items where the current user is involed
-          if (in_array('model_posts', $this->filters)) {
-          $this->activeQuery->condition .= " AND content.object_model='Post'";
-          }
-          // Show only items where the current user is involed
-          if (in_array('model_posts', $this->filters)) {
-          $this->activeQuery->condition .= " AND content.object_model='Post'";
-          }
-
-          // Visibility filters
-          if (in_array('visibility_private', $this->filters)) {
-          $this->activeQuery->condition .= " AND content.visibility=" . Content::VISIBILITY_PRIVATE;
-          }
-          if (in_array('visibility_public', $this->filters)) {
-          $this->activeQuery->condition .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
-          }
-         *
-         */
+            $this->activeQuery->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->user->id]);
+            $this->activeQuery->andWhere("user_follow.id IS NOT NULL");
+        }
+        if (in_array('model_posts', $this->filters)) {
+            $this->activeQuery->andWhere(["content.object_model" => \humhub\core\post\models\Post::className()]);
+        }
+        // Visibility filters
+        if (in_array('visibility_private', $this->filters)) {
+            $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PRIVATE]);
+        }
+        if (in_array('visibility_public', $this->filters)) {
+            $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
+        }
     }
 
     public function getWallEntries()

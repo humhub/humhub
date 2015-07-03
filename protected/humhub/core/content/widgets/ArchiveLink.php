@@ -9,6 +9,7 @@
 namespace humhub\core\content\widgets;
 
 use Yii;
+use humhub\core\content\components\ContentContainerController;
 
 /**
  * StickLink for Wall Entries
@@ -37,8 +38,7 @@ class ArchiveLink extends \yii\base\Widget
 
         return $this->render('archiveLink', array(
                     'object' => $this->content,
-                    'model' => $this->content->content->object_model,
-                    'id' => $this->content->content->object_id,
+                    'id' => $this->content->content->id,
         ));
     }
 

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use humhub\core\space\models\Space;
 ?>
 
 <div class="panel panel-default">
@@ -26,11 +27,9 @@ use yii\helpers\Url;
 
             <?php
             $userSearchUrl = Url::toRoute(['/user/search/json', 'keyword' => '-keywordPlaceholder-']);
-            ;
-            //if (get_class($contentContainer) == 'Space') {
-            //    $userSearchUrl = $this->createUrl('//space/space/searchMemberJson', array('sguid' => $this->contentContainer->guid, 'keyword' => '-keywordPlaceholder-'));
-            //    ;
-            //}
+            if ($contentContainer instanceof Space) {
+                $userSearchUrl = $contentContainer->createUrl('/space/membership/search', array('keyword' => '-keywordPlaceholder-'));
+            }
 
             /* add UserPickerWidget to notify members */
             echo \humhub\core\user\widgets\UserPicker::widget(array(
@@ -119,7 +118,7 @@ use yii\helpers\Url;
                                             class="fa fa-bell"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
                                     </a>
                                 </li>
-                                <?php if (get_class($contentContainer) == 'Space' && $contentContainer->canShare()): /* can create public content */ ?>
+                                <?php if ($contentContainer instanceof Space && $contentContainer->canShare()): /* can create public content */ ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
                                                 class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>

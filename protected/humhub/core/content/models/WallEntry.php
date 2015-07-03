@@ -3,6 +3,7 @@
 namespace humhub\core\content\models;
 
 use Yii;
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "wall_entry".
@@ -15,7 +16,7 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class WallEntry extends \yii\db\ActiveRecord
+class WallEntry extends ActiveRecord
 {
 
     /**

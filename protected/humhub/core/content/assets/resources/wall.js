@@ -2,23 +2,20 @@ function wallStick(className, id) {
 
     url = wallStickLinkUrl.replace('-className-', className);
     url = url.replace('-id-', id);
-    
-    postData = {}
-    postData[csrfName] = csrfValue;
-    
+
+
     $.ajax({
         dataType: "json",
         type: 'post',
-        data: postData,        
         url: url
-    }).done(function(data) {
+    }).done(function (data) {
         if (data.success) {
             if (currentStream) {
-                $.each(data.wallEntryIds, function(k, wallEntryId) {
+                $.each(data.wallEntryIds, function (k, wallEntryId) {
                     currentStream.deleteEntry(wallEntryId);
                     currentStream.prependEntry(wallEntryId);
-                }); 
-                $('html, body').animate({scrollTop:0}, 'slow');
+                });
+                $('html, body').animate({scrollTop: 0}, 'slow');
 
             }
         } else {
@@ -31,19 +28,17 @@ function wallUnstick(className, id) {
 
     url = wallUnstickLinkUrl.replace('-className-', className);
     url = url.replace('-id-', id);
-    
-    postData = {}
-    postData[csrfName] = csrfValue;
-    
+
+
+
     $.ajax({
         dataType: "json",
         type: 'post',
-        data: postData,        
         url: url
-    }).done(function(data) {
+    }).done(function (data) {
         if (data.success) {
             if (currentStream) {
-                $.each(data.wallEntryIds, function(k, wallEntryId) {
+                $.each(data.wallEntryIds, function (k, wallEntryId) {
                     currentStream.reloadWallEntry(wallEntryId);
                 });
             }
@@ -58,23 +53,18 @@ function wallUnstick(className, id) {
  * @param {type} className
  * @param {type} id
  */
-function wallArchive(className, id) {
+function wallArchive(id) {
 
-    url = wallArchiveLinkUrl.replace('-className-', className);
-    url = url.replace('-id-', id);
-
-    postData = {}
-    postData[csrfName] = csrfValue;
+    url = wallArchiveLinkUrl.replace('-id-', id);
 
     $.ajax({
         dataType: "json",
         type: 'post',
-        data: postData,
         url: url
-    }).done(function(data) {
+    }).done(function (data) {
         if (data.success) {
             if (currentStream) {
-                $.each(data.wallEntryIds, function(k, wallEntryId) {
+                $.each(data.wallEntryIds, function (k, wallEntryId) {
                     //currentStream.reloadWallEntry(wallEntryId);
                     // fade out post
                     setInterval(fadeOut(), 1000);
@@ -98,22 +88,17 @@ function wallArchive(className, id) {
  * @param {type} className
  * @param {type} id
  */
-function wallUnarchive(className, id) {
-    url = wallUnarchiveLinkUrl.replace('-className-', className);
-    url = url.replace('-id-', id);
-
-    postData = {}
-    postData[csrfName] = csrfValue;
+function wallUnarchive(id) {
+    url = wallUnarchiveLinkUrl.replace('-id-', id);
 
     $.ajax({
         dataType: "json",
         type: 'post',
-        data: postData,
         url: url
-    }).done(function(data) {
+    }).done(function (data) {
         if (data.success) {
             if (currentStream) {
-                $.each(data.wallEntryIds, function(k, wallEntryId) {
+                $.each(data.wallEntryIds, function (k, wallEntryId) {
                     currentStream.reloadWallEntry(wallEntryId);
                 });
 

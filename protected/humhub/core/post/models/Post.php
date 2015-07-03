@@ -43,6 +43,20 @@ class Post extends \humhub\core\content\components\activerecords\Content
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        // Prebuild Previews for URLs in Message
+        \humhub\models\UrlOembed::preload($this->message);
+
+        // Check if Post Contains an Url
+        if (preg_match('/http(.*?)(\s|$)/i', $this->message)) {
+            // Set Filter Flag
+            $this->url = 1;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
     /**
      * Before Save Addons
      *

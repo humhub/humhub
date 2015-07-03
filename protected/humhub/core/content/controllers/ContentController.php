@@ -54,26 +54,23 @@ class ContentController extends Controller
      */
     public function actionArchive()
     {
-
+        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
         $json = array();
-        $json['success'] = false;   // default
+        $json['success'] = false;
 
-        $id = (int) Yii::$app->request->getParam('id', "");
-        $className = Yii::$app->request->getParam('className', "");
+        $id = (int) Yii::$app->request->get('id', "");
 
-        $object = Content::Get($className, $id);
-        if ($object != null && $object->content->canArchive()) {
-            $object->content->archive();
+        $content = Content::findOne(['id' => $id]);
+        if ($content !== null && $content->canArchive()) {
+            $content->archive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $object->content->getWallEntryIds();
+            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
-        // returns JSON
-        echo CJSON::encode($json);
-        Yii::$app->end();
+        return $json;
     }
 
     /**
@@ -83,26 +80,23 @@ class ContentController extends Controller
      */
     public function actionUnarchive()
     {
-
+        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
         $json = array();
         $json['success'] = false;   // default
 
         $id = (int) Yii::$app->request->getParam('id', "");
-        $className = Yii::$app->request->getParam('className', "");
 
-        $object = Content::Get($className, $id);
-        if ($object != null && $object->content->canArchive()) {
-            $object->content->unarchive();
+        $content = Content::findOne(['id' => $id]);
+        if ($content !== null && $content->canArchive()) {
+            $content->unarchive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $object->content->getWallEntryIds();
+            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
-        // returns JSON
-        echo CJSON::encode($json);
-        Yii::$app->end();
+        return $json;
     }
 
     /**
