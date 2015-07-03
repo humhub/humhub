@@ -101,7 +101,7 @@ class RichText extends \yii\base\Widget
     {
         return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s|\.|")@', function($hit) use(&$buildAnchors) {
             if ($hit[1] == 'u') {
-                $user = \humhub\core\user\models\User::findOne(['guid' => $hit[2]]);
+                $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
                     if ($buildAnchors) {
                         return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '</a></span>' . $hit[3];
@@ -109,7 +109,7 @@ class RichText extends \yii\base\Widget
                     return " @" . Html::encode($user->getDisplayName()) . $hit[3];
                 }
             } elseif ($hit[1] == 's') {
-                $space = \humhub\core\space\models\Space::findOne(['guid' => $hit[2]]);
+                $space = \humhub\modules\space\models\Space::findOne(['guid' => $hit[2]]);
 
                 if ($space !== null) {
                     if ($buildAnchors) {

@@ -27,7 +27,7 @@ $config = [
             ],
         ],
         'search' => array(
-            'class' => 'humhub\core\search\engine\ZendLuceneSearch',
+            'class' => 'humhub\modules\search\engine\ZendLuceneSearch',
         ),
         'i18n' => [
             'class' => 'humhub\components\i18n\I18N',

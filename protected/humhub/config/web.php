@@ -11,8 +11,8 @@ $config = [
             'cookieValidationKey' => 'asdf',
         ],
         'user' => [
-            'class' => 'humhub\core\user\components\User',
-            'identityClass' => 'humhub\core\user\models\User',
+            'class' => 'humhub\modules\user\components\User',
+            'identityClass' => 'humhub\modules\user\models\User',
             'enableAutoLogin' => true,
             'loginUrl' => ['/user/auth/login']
         ],
@@ -20,7 +20,7 @@ $config = [
             //'errorAction' => 'error/index',
         ],
         'session' => [
-            'class' => 'humhub\core\user\components\Session',
+            'class' => 'humhub\modules\user\components\Session',
             'sessionTable' => 'user_http_session',
         ],
     ],

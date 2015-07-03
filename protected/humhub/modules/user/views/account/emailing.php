@@ -1,0 +1,71 @@
+<?php
+
+use Yii;
+use \humhub\compat\CActiveForm;
+use \humhub\compat\CHtml;
+use humhub\modules\user\models\User;
+?>
+<div class="panel-heading">
+    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Desktop</strong> Notifications'); ?>
+</div>
+<div class="panel-body">
+    <?php $form = CActiveForm::begin(); ?>
+
+    <?php echo $form->errorSummary($model); ?>
+
+    <strong><?php echo Yii::t('UserModule.views_account_emailing', 'Notifications'); ?></strong><br />
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <?php echo $form->checkBox($model, 'enable_html5_desktop_notifications'); ?> <?php echo $model->getAttributeLabel('enable_html5_desktop_notifications'); ?>
+            </label>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<div class="panel-heading">
+    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Email</strong> Notifications'); ?>
+</div>
+<div class="panel-body">
+
+
+    <strong><?php echo Yii::t('UserModule.views_account_emailing', 'Notifications'); ?></strong><br />
+
+    <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, when other users comment or like your posts.'); ?>
+    <?php
+    echo $form->dropDownList($model, 'receive_email_notifications', array(
+        User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
+        User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),
+        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always'),
+            ), array('id' => 'reg_group', 'class' => 'form-control'));
+    ?>
+
+    <hr>
+
+
+    <strong><?php echo Yii::t('UserModule.views_account_emailing', 'Activities'); ?></strong><br />
+    <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, by every activity from other users you follow or work<br>together in workspaces.'); ?>
+    <?php
+    echo $form->dropDownList($model, 'receive_email_activities', array(
+        User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
+        User::RECEIVE_EMAIL_DAILY_SUMMARY => Yii::t('UserModule.views_account_emailing', 'Daily summary'),
+        User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),
+        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always'),
+            ), array('id' => 'reg_group', 'class' => 'form-control'));
+    ?>
+
+    <hr>
+
+    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_emailing', 'Save'), array('class' => 'btn btn-primary')); ?>
+
+    <!-- show flash message after saving -->
+    <?php echo \humhub\widgets\DataSaved::widget(); ?>
+
+    <?php CActiveForm::end(); ?>
+</div>
+
+

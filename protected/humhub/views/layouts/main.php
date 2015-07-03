@@ -73,14 +73,14 @@ AppAsset::register($this);
                 </div>
 
                 <div class="topbar-actions pull-right">
-                    <?php echo \humhub\core\user\widgets\AccountTopMenu::widget(); ?>
+                    <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
                 </div>
 
                 <div class="notifications pull-right">
 
                     <?php
                     echo \humhub\widgets\NotificationArea::widget(['widgets' => [
-                            [\humhub\core\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
+                            [\humhub\modules\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
                     ]]);
                     ?>
 
@@ -97,7 +97,7 @@ AppAsset::register($this);
             <div class="container">
                 <ul class="nav ">
                     <!-- load space chooser widget -->
-                    <?php echo \humhub\core\space\widgets\Chooser::widget(); ?>
+                    <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
 
                     <!-- load navigation from widget -->
                     <?php echo \humhub\widgets\TopMenu::widget(); ?>
@@ -111,7 +111,7 @@ AppAsset::register($this);
 
         <!-- end: second top navigation bar -->
 
-        <?php echo \humhub\core\tour\widgets\Tour::widget(); ?>
+        <?php echo \humhub\modules\tour\widgets\Tour::widget(); ?>
 
         <!-- start: show content (and check, if exists a sublayout -->
         <?php if (isset($this->context->subLayout) && $this->context->subLayout != "") : ?>

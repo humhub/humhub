@@ -10,8 +10,8 @@ return [
     ],
     'components' => [
         'user' => [
-            'class' => 'humhub\core\user\components\User',
-            'identityClass' => 'humhub\core\user\models\User',
+            'class' => 'humhub\modules\user\components\User',
+            'identityClass' => 'humhub\modules\user\models\User',
             'enableAutoLogin' => false,
             'enableSession' => false,
             'loginUrl' => ['/user/auth/login']

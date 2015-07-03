@@ -46,8 +46,8 @@ class Module extends \yii\base\Module
     /**
      * The path for module resources (images, javascripts)
      * Also module related assets like README.md and module_image.png should be placed here.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $resourcesPath = 'resources';
 
@@ -120,7 +120,7 @@ class Module extends \yii\base\Module
     /**
      * Enables this module
      * It will be available on the next request.
-     * 
+     *
      * @return boolean
      */
     public function enable()
@@ -313,7 +313,7 @@ class Module extends \yii\base\Module
     public function isSpaceModule()
     {
         foreach ($this->getBehaviors() as $name => $behavior) {
-            if ($behavior instanceof \humhub\core\space\behaviors\SpaceModule) {
+            if ($behavior instanceof \humhub\modules\space\behaviors\SpaceModule) {
                 return true;
             }
         }
@@ -329,7 +329,7 @@ class Module extends \yii\base\Module
     public function isUserModule()
     {
         foreach ($this->getBehaviors() as $name => $behavior) {
-            if ($behavior instanceof \humhub\core\user\behaviors\UserModule) {
+            if ($behavior instanceof \humhub\modules\user\behaviors\UserModule) {
                 return true;
             }
         }
