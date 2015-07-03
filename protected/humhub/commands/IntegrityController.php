@@ -13,13 +13,16 @@ use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
- * IntegrityController performs application integrity checks.
+ * Performs application integrity checks.
  * 
  * @author Luke
  */
 class IntegrityController extends \yii\console\controller
 {
 
+    /**
+     * @event Event an event that is triggered when the integritychecker is started.
+     */
     const EVENT_ON_RUN = "run";
 
     public function actionIndex()

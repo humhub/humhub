@@ -1,78 +1,55 @@
 Modules - General
 =================
 
-See http://www.yiiframework.com/doc/guide/1.1/en/basics.module for general information
-about modules in Yii. 
+Basically modules in HumHub are identical to Yii2 modules [http://www.yiiframework.com/doc-2.0/guide-structure-modules.html](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
 
-As different modules could be dynamically loaded and enabled there is no need
-to add them into a global configuration file like main.php.
+You can use either the Yii's module base class [[yii\base\Module]] or the enhanced HumHub module base class [[humhub\components\Module]].
 
-Module Folder Structure
-------------------------
-
-```
-/protected/
-    /modules/                           
-        /mymodule/                      - Module Folder
-            module.json                 - Meta Information about this module (name, version & co.)
-            autostart.php               - Information about Id, BaseClass, Events and Imports 
-            MyModule.php                - Base Module Class inherit from HWebModule
-            /views/                     - Views Folder
-            /controllers/               - Controllers Folder
-            /models/                    - Models Folder
-            ...
-```
+The enhanced HumHub module class provides additional features like:
+- Dynamic module management (enable / disable / install / uninstall) via administration interface
+- Usable as Space or User Profile module
 
 
-
-autostart.php
+config.php
 -------------
 
-Each module requires a ``autostart.php`` File which registers the module to the main application.
-``Note:`` Contents of autostart.php are cached in file /protected/runtime/cache_autostart.php - delete this file or flush caches after modifing this file!
+If the module is placed inside the */protected/modules* folder, you can create a *config.php* in the module directory which provides automatic loading without manually modifing the application config.
 
-__Example of a autostart.php File__
+The config.php should return an array including following fields:
+
+- **id** - Unqiue ID of the module (required)
+- **class** - Namespaced classname of the module (required)
+- **events** - Array of Events (optional)
+- **namespace** - Namespace of your module (optional)
+- **urlManagerRules** - Array of URL Manager Rules  [http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#addRules()-detail](http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#addRules()-detail)
+- **modules** - Submodules (optional)
+
+Example of a config.php file:
 
 ```php
-    <?php
-    Yii::app()->moduleManager->register(array(
+<?php
 
-        // Unique ID of the module, same as the module folder
-        'id' => 'example',
+use app\modules\example\Module;
 
-        // Module Base Class (http://www.yiiframework.com/doc/guide/1.1/en/basics.module)
-        'class' => 'application.modules.example.ExampleModule',
-
-        // Optional Section: Global Imports 
-        'import' => array(
-            'application.modules.example.*',
-            [...]
-        ),
-
-        // Optional Section: Events to catch when module is enabled
-        // Use this to modify e.g. menus 
-        // http://www.yiiframework.com/doc/guide/1.1/en/basics.component#event
-        'events' => array(
-            // Listen for onInit Event of AdminMenuWidget and sent to 
-            // Module Class File to handle it
-            array('class' => 'AdminMenuWidget', 'event' => 'onInit', 
-                  'callback' => array('ExampleModule', 'onAdminMenuInit')),
-            
-            [...]
-        ),
-
-    ));
-    ?>
+return [
+    'id' => 'example',
+    'class' => Module::className(),
+    'events' => [
+        array('class' => \humhub\widgets\TopMenu::className(), 'event' => \humhub\widgets\TopMenu::EVENT_INIT, 'callback' => array(Module::className(), 'onTopMenuInit')),
+    ]
+];
+?>
 ```
+
+**Note: ** Do not execute any code in the config.php - the result will be cached!
 
 
 module.json
 -----------
 
-This file holds basic information about the module like name, description or
-current version.
+This file holds basic information about the module like name, description or current version. Locate this file in the root directory of the module.
 
-__Example of a ´´module.json´´ File__
+Example of a ´´module.json file:
 ```
     {
         "id": "mymoduleid",

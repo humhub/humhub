@@ -27,7 +27,6 @@ class AppAsset extends AssetBundle
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $js = [
-        'js/bootstrap.min.js',
         'js/ekko-lightbox-modified.js',
         'js/modernizr.js',
         'js/jquery.cookie.js',
@@ -52,6 +51,7 @@ class AppAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 
 }

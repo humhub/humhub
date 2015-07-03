@@ -12,7 +12,7 @@ use \humhub\compat\CHtml;
 use yii\helpers\Html;
 
 /**
- * CActiveForm is a Yii1 compatible active form
+ * CActiveForm is a Yii 1 compatible active form
  *
  * @author luke
  */

@@ -1,1 +1,0 @@
-Please see file "protected/docs/license.md" for licensing details. 

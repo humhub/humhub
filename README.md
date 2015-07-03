@@ -8,7 +8,7 @@ HumHub is a flexible open source social network application written in PHP.
 
 - <a href="http://humhub.org" target="_blank">**Homepage & Demo**</a>
 
-- <a href="protected/docs/README.md">Guide</a>
+- <a href="http://humhub.org/guide/guide-README.html">Documentation</a>
 
 - <a href="https://www.humhub.com/licences">License</a>
 
