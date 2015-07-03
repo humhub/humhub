@@ -34,7 +34,7 @@ class Events extends \yii\base\Object
         $integrityChecker = $event->sender;
 
         $integrityChecker->showTestHeadline("Wall Module (" . models\WallEntry::find()->count() . " entries)");
-        foreach (models\WallEntry::find()->joinWith('content')->all() as $w) {
+        foreach (models\WallEntry::find()->joinWith('content')->each() as $w) {
             if ($w->content === null) {
                 if ($integrityChecker->showFix("Deleting wall entry id " . $w->id . " without assigned wall entry!")) {
                     $w->delete();
@@ -42,7 +42,6 @@ class Events extends \yii\base\Object
             }
         }
 
-        //TODO: Maybe not the best place for that
         $integrityChecker->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
         foreach (Content::find()->all() as $content) {
             if ($content->user == null) {

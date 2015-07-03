@@ -42,15 +42,13 @@ class Activity extends \humhub\modules\content\components\activerecords\Content
 
     public function getWallOut()
     {
+
         $activity = $this->getClass();
+        if ($activity !== null) {
+            return $activity->render();
+        }
 
-
-        return $activity->render();
-    }
-
-    public function getMailOut()
-    {
-        
+        return "";
     }
 
     /**
@@ -86,6 +84,8 @@ class Activity extends \humhub\modules\content\components\activerecords\Content
                         'originator' => $this->content->user,
                         'source' => $this->getUnderlyingObject(),
             ]);
+        } else {
+            throw new Exception("Could not find BaseActivity " . $this->class . " for Activity Record.");
         }
         return null;
     }

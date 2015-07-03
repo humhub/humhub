@@ -66,7 +66,7 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
             $userFollow = (new \yii\db\Query())
                     ->select(["uf.wall_id"])
                     ->from('user_follow')
-                    ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=\'User\'')
+                    ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=:userClass')
                     ->where('user_follow.user_id=' . $this->user->id . ' AND uf.wall_id IS NOT NULL');
             $union = Yii::$app->db->getQueryBuilder()->build($userFollow)[0];
 
@@ -74,7 +74,7 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
             $spaceFollow = (new \yii\db\Query())
                     ->select("sf.wall_id")
                     ->from('user_follow')
-                    ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model="Space"')
+                    ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model=:spaceClass')
                     ->where('user_follow.user_id=' . $this->user->id . ' AND sf.wall_id IS NOT NULL');
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceFollow)[0];
 
@@ -94,7 +94,7 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
             // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-            $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $union . ')');
+            $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $union . ')', [':spaceClass' => \humhub\modules\space\models\Space::className(), ':userClass' => \humhub\modules\user\models\User::className()]);
 
             /**
              * Begin visibility checks regarding the content container

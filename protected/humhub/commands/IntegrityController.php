@@ -35,7 +35,8 @@ class IntegrityController extends \yii\console\controller
 
     public function showTestHeadline($headline)
     {
-        $this->stdout("Checking: " . $headline . "\n", Console::FG_GREEN);
+        $this->stdout("Validating: ", Console::FG_GREEN);
+        $this->stdout($headline . "\n", Console::FG_GREY);
     }
 
     public function showFix($message)

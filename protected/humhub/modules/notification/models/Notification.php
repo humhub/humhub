@@ -81,7 +81,7 @@ class Notification extends \humhub\components\ActiveRecord
     public function getSourceObject()
     {
         $sourceClass = $this->source_class;
-        if ($sourceClass != "") {
+        if (class_exists($sourceClass) && $sourceClass != "") {
             return $sourceClass::findOne(['id' => $this->source_pk]);
         }
         return null;

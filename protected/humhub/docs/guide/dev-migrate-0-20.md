@@ -190,30 +190,16 @@ All other createUrl method are also not longer available.
 
 ### Activities
 
-Old Activity Example:
+See [[dev-module-activities.md]] about the Activity module.
+
+To migrate you also need to change the class of your Activity:
+
+Example Migration
 
 ```php
-<?php $this->beginContent('application.modules_core.activity.views.activityLayout', array('activity' => $activity)); ?>                    
-<?php
-echo Yii::t('PostModule.views_activities_PostCreated', '%displayName% created a new post.', array(
-    '%displayName%' => '<strong>' . CHtml::encode($user->displayName) . '</strong>'
-));
-?>
-<?php $this->endContent(); ?>
+$this->update('activity', ['class' => 'exampleModule\activities\MyActivity'], ['class' => 'OldActivityName']);
 ```
 
-New Activity:
-
-```php
-<?php $this->beginContent('@humhub/core/activity/views/activityLayout.php', array('activity' => $activity)); ?>                 
-<?php
-echo Yii::t('PostModule.views_activities_PostCreated', '%displayName% created a new post.', array(
-    '%displayName%' => '<strong>' . \yii\helpers\Html::encode($user->displayName) . '</strong>'
-));
-?>
-<?php $this->endContent(); ?>
-
-```
 
 
 ### HHtml Methods

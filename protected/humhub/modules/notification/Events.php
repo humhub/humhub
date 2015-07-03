@@ -65,7 +65,7 @@ class Events extends \yii\base\Object
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Notification Module (" . Notification::find()->count() . " entries)");
 
-        foreach (Notification::find()->all() as $notification) {
+        foreach (Notification::find()->joinWith(['space', 'user'])->each() as $notification) {
 
             // Check if Space still exists
             if ($notification->space_id != "" && $notification->space == null) {
