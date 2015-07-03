@@ -5,7 +5,7 @@ use humhub\core\search\Events;
 use humhub\components\console\Application;
 use humhub\commands\CronController;
 
-Yii::$app->moduleManager->register(array(
+return [
     'isCoreModule' => true,
     'id' => 'search',
     'class' => \humhub\core\search\Module::className(),
@@ -15,5 +15,5 @@ Yii::$app->moduleManager->register(array(
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onHourlyCron']],
     //array('class' => 'Comment', 'event' => 'onAfterSave', 'callback' => array('SearchModuleEvents', 'onAfterSaveComment')),
     ),
-));
+];
 ?>

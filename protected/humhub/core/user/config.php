@@ -6,7 +6,7 @@ use humhub\core\user\Events;
 use humhub\core\content\components\activerecords\Content;
 use humhub\core\content\components\activerecords\ContentAddon;
 
-\Yii::$app->moduleManager->register(array(
+return [
     'id' => 'user',
     'class' => \humhub\core\user\Module::className(),
     'isCoreModule' => true,
@@ -15,5 +15,5 @@ use humhub\core\content\components\activerecords\ContentAddon;
         array('class' => Content::className(), 'event' => Content::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),
         array('class' => ContentAddon::className(), 'event' => ContentAddon::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),
     )
-));
+];
 ?>

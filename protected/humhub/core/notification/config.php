@@ -8,7 +8,7 @@ use humhub\commands\IntegrityController;
 use humhub\commands\CronController;
 use humhub\components\ActiveRecord;
 
-Yii::$app->moduleManager->register(array(
+return [
     'id' => 'notification',
     'class' => Module::className(),
     'isCoreModule' => true,
@@ -19,5 +19,5 @@ Yii::$app->moduleManager->register(array(
         array('class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => array(Events::className(), 'onCronDailyRun')),
         array('class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete'])
     ),
-));
+];
 ?>

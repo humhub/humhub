@@ -66,7 +66,7 @@ There are no changes on the Module itself.
 We recommend to rename your Module Base Class e.g. ExampleModule.php to Module.php in Module Root folder.
 
 
-### autostart.php
+### config.php (autostart.php)
 
 - 'import' section not longer used
 - 'class' use full namespaced class name

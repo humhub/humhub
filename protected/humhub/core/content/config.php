@@ -6,7 +6,7 @@ use humhub\core\content\widgets\WallEntryControls;
 use humhub\core\content\widgets\WallEntryAddons;
 use humhub\commands\CronController;
 
-\Yii::$app->moduleManager->register(array(
+return [
     'id' => 'content',
     'class' => \humhub\core\content\Module::className(),
     'isCoreModule' => true,
@@ -17,5 +17,5 @@ use humhub\commands\CronController;
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onCronRun']],
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::className(), 'onCronRun']],
     ),
-));
+];
 ?>

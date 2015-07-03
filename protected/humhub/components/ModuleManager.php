@@ -11,6 +11,7 @@ namespace humhub\components;
 use Yii;
 use yii\base\Exception;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
 
 /**
  * ModuleManager handles all installed modules.
@@ -47,54 +48,63 @@ class ModuleManager extends \yii\base\Component
         if (!Yii::$app->params['installed'])
             return;
 
-        foreach (\humhub\models\ModuleEnabled::find()->all() as $em) {
-            $this->enabledModules[] = $em->module_id;
-        }
+        $this->enabledModules = \humhub\models\ModuleEnabled::getEnabledIds();
     }
 
     /**
      * Registers a module to the manager
      * This is usally done by autostart.php in modules root folder.
      * 
-     * @param array $definition
+     * @param array $
+
      * @throws Exception
      */
-    public function register(Array $definition)
+    public function registerBulk(Array $configs)
     {
-        if (!isset($definition['class']) || !isset($definition['id'])) {
-            throw new Exception("Register Module needs module Id and Class!");
+        foreach ($configs as $basePath => $config) {
+            $this->register($basePath, $config);
+        }
+    }
+
+    public function register($basePath, $config)
+    {
+        // Check mandatory config options
+        if (!isset($config['class']) || !isset($config['id'])) {
+            throw new InvalidConfigException("Module configuration requires an id and class attribute!");
         }
 
-        $isCoreModule = (isset($definition['isCoreModule']) && $definition['isCoreModule']);
+        $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
 
-        $this->modules[$definition['id']] = $definition['class'];
+        $this->modules[$config['id']] = $config['class'];
+
+        if (isset($config['namespace'])) {
+            Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
+        }
 
         // Not enabled and no core module
-        if (!$isCoreModule && !in_array($definition['id'], $this->enabledModules)) {
+        if (!$isCoreModule && !in_array($config['id'], $this->enabledModules)) {
             return;
         }
 
         // Handle Submodules
-        if (!isset($definition['modules'])) {
-            $definition['modules'] = array();
+        if (!isset($config['modules'])) {
+            $config['modules'] = array();
         }
 
         // Append URL Rules
-        if (isset($definition['urlManagerRules'])) {
-            Yii::$app->urlManager->addRules($definition['urlManagerRules'], false);
+        if (isset($config['urlManagerRules'])) {
+            Yii::$app->urlManager->addRules($config['urlManagerRules'], false);
         }
 
         // Register Yii Module
-        Yii::$app->setModules(array(
-            $definition['id'] => array(
-                'class' => $definition['class'],
-                'modules' => $definition['modules']
-            ),
-        ));
+        Yii::$app->setModule($config['id'], [
+            'class' => $config['class'],
+            'modules' => $config['modules']
+        ]);
 
         // Register Event Handlers
-        if (isset($definition['events'])) {
-            foreach ($definition['events'] as $event) {
+        if (isset($config['events'])) {
+            foreach ($config['events'] as $event) {
                 Event::on($event['class'], $event['event'], $event['callback']);
             }
         }

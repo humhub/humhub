@@ -7,7 +7,7 @@ use humhub\core\content\widgets\WallEntryLinks;
 use humhub\core\content\widgets\WallEntryAddons;
 use humhub\commands\IntegrityController;
 
-Yii::$app->moduleManager->register(array(
+return [
     'id' => 'like',
     'class' => humhub\core\like\Module::className(),
     'isCoreModule' => true,
@@ -17,5 +17,5 @@ Yii::$app->moduleManager->register(array(
         #array('class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Module::className(), 'onIntegrityCheck')),
         array('class' => WallEntryLinks::className(), 'event' => WallEntryLinks::EVENT_INIT, 'callback' => array(Module::className(), 'onWallEntryLinksInit')),
     ),
-));
+];
 ?>

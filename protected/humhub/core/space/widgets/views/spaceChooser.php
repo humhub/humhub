@@ -2,7 +2,6 @@
 /* @var $this \humhub\components\WebView */
 /* @var $currentSpace \humhub\core\space\models\Space */
 
-use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 

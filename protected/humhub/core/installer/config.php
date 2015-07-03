@@ -1,8 +1,8 @@
 <?php
 
-Yii::$app->moduleManager->register([
+return [
     'id' => 'installer',
     'class' => humhub\core\installer\Module::className(),
     'isCoreModule' => true,
-]);
+];
 ?>

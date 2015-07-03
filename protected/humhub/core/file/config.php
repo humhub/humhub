@@ -6,7 +6,7 @@ use humhub\commands\IntegrityController;
 use yii\db\ActiveRecord;
 use humhub\core\file\Events;
 
-Yii::$app->moduleManager->register(array(
+return [
     'id' => 'file',
     'class' => \humhub\core\file\Module::className(),
     'isCoreModule' => true,
@@ -16,5 +16,5 @@ Yii::$app->moduleManager->register(array(
         array('class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Events::className(), 'onIntegrityCheck')),
         array('class' => ActiveRecord::className(), 'event' => \humhub\components\ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onBeforeActiveRecordDelete')),
     ),
-));
+];
 ?>

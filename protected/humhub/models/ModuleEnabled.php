@@ -11,6 +11,9 @@ use Yii;
  */
 class ModuleEnabled extends \yii\db\ActiveRecord
 {
+
+    const CACHE_ID_ALL_IDS = 'enabledModuleIds';
+
     /**
      * @inheritdoc
      */
@@ -39,4 +42,30 @@ class ModuleEnabled extends \yii\db\ActiveRecord
             'module_id' => 'Module ID',
         ];
     }
+
+    public function afterDelete()
+    {
+        Yii::$app->cache->delete(self::CACHE_ID_ALL_IDS);
+        return parent::afterDelete();
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        Yii::$app->cache->delete(self::CACHE_ID_ALL_IDS);
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    public static function getEnabledIds()
+    {
+        $enabledModules = Yii::$app->cache->get(self::CACHE_ID_ALL_IDS);
+        if ($enabledModules === false) {
+            $enabledModules = [];
+            foreach (\humhub\models\ModuleEnabled::find()->all() as $em) {
+                $enabledModules[] = $em->module_id;
+            }
+            Yii::$app->cache->set(self::CACHE_ID_ALL_IDS, $enabledModules);
+        }
+        return $enabledModules;
+    }
+
 }

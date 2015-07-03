@@ -49,6 +49,7 @@ class ModuleController extends Controller
 
     public function actionIndex()
     {
+        Yii::$app->cache->delete(\humhub\components\bootstrap\ModuleAutoLoader::CACHE_ID);
         return $this->redirect(Url::to(['/admin/module/list']));
     }
 

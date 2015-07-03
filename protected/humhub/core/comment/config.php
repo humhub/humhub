@@ -7,7 +7,7 @@ use humhub\commands\IntegrityController;
 use humhub\core\content\widgets\WallEntryAddons;
 use humhub\core\content\widgets\WallEntryLinks;
 
-Yii::$app->moduleManager->register(array(
+return [
     'id' => 'comment',
     'class' => \humhub\core\comment\Module::className(),
     'isCoreModule' => true,
@@ -19,5 +19,5 @@ Yii::$app->moduleManager->register(array(
         array('class' => WallEntryLinks::className(), 'event' => WallEntryLinks::EVENT_INIT, 'callback' => array(Events::className(), 'onWallEntryLinksInit')),
         array('class' => WallEntryAddons::className(), 'event' => WallEntryAddons::EVENT_INIT, 'callback' => array(Events::className(), 'onWallEntryAddonInit')),
     ),
-));
+];
 ?>

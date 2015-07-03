@@ -6,7 +6,7 @@ use humhub\core\space\models\Space;
 use humhub\components\ActiveRecord;
 use humhub\commands\IntegrityController;
 
-Yii::$app->moduleManager->register([
+return [
     'id' => 'activity',
     'class' => humhub\core\activity\Module::className(),
     'isCoreModule' => true,
@@ -16,5 +16,5 @@ Yii::$app->moduleManager->register([
         ['class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete']],
         ['class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::className(), 'onIntegrityCheck']],
     ],
-]);
+];
 ?>
