@@ -28,7 +28,8 @@ class PostController extends \humhub\components\Controller
         $this->forcePostRequest();
 
         $post = new Post();
-        $post->content->populateByForm();
+        \humhub\modules\post\widgets\Form::populateRecord($post);
+        
         $post->message = \Yii::$app->request->post('message');
 
         if ($post->validate()) {

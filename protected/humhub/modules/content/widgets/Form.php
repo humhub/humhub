@@ -23,6 +23,8 @@ namespace humhub\modules\content\widgets;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
@@ -93,6 +95,39 @@ class Form extends \yii\base\Widget
                     'submitUrl' => $this->submitUrl,
                     'submitButtonText' => $this->submitButtonText
         ));
+    }
+
+    public static function populateRecord(\humhub\modules\content\components\ContentActiveRecord $record)
+    {
+        // Set Content Container
+        $contentContainer = null;
+        $containerClass = Yii::$app->request->post('containerClass');
+        $containerGuid = Yii::$app->request->post('containerGuid', "");
+
+        if ($containerClass === User::className()) {
+            $contentContainer = User::findOne(['guid' => $containerGuid]);
+            $record->content->visibility = 1;
+        } elseif ($containerClass === Space::className()) {
+            $contentContainer = Space::findOne(['guid' => $containerGuid]);
+            $record->content->visibility = Yii::$app->request->post('visibility');
+        }
+        
+        $record->content->container = $contentContainer;
+
+        // Handle Notify User Features of ContentFormWidget
+        // ToDo: Check permissions of user guids
+        $userGuids = Yii::$app->request->post('notifyUserInput');
+        if ($userGuids != "") {
+            foreach (explode(",", $userGuids) as $guid) {
+                $user = User::findOne(['guid' => trim($guid)]);
+                if ($user) {
+                    $record->content->notifyUsersOfNewContent[] = $user;
+                }
+            }
+        }
+
+        // Store List of attached Files to add them after Save
+        $record->content->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
     }
 
 }

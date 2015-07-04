@@ -45,16 +45,16 @@ class Content extends \humhub\components\ActiveRecord
      *
      * @var String
      */
-    protected $attachFileGuidsAfterSave;
+    public $attachFileGuidsAfterSave;
 
     /**
      * A array of user objects which should informed about this new content.
      *
      * @var Array User
      */
-    protected $notifyUsersOfNewContent = array();
+    public $notifyUsersOfNewContent = array();
 
-// Visibility Modes
+    // Visibility Modes
     const VISIBILITY_PRIVATE = 0;
     const VISIBILITY_PUBLIC = 1;
 
@@ -160,7 +160,7 @@ class Content extends \humhub\components\ActiveRecord
             throw new Exception("Could not save content without user_id!");
 
 
-// Set some default values
+        // Set some default values
         if (!$this->archived) {
             $this->archived = 0;
         }
@@ -199,7 +199,6 @@ class Content extends \humhub\components\ActiveRecord
                 $activity->source = $this->getUnderlyingObject();
                 $activity->create();
             }
-
         }
 
         \humhub\modules\file\models\File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
@@ -213,7 +212,7 @@ class Content extends \humhub\components\ActiveRecord
     public function beforeDelete()
     {
 
-// delete also all wall entries
+        // delete also all wall entries
         foreach ($this->getWallEntries() as $entry) {
             $entry->delete();
         }
@@ -223,7 +222,7 @@ class Content extends \humhub\components\ActiveRecord
 
     public function afterDelete()
     {
-// Try delete the underlying object (Post, Question, Task, ...)
+        // Try delete the underlying object (Post, Question, Task, ...)
         $this->resetUnderlyingObject();
         if ($this->getUnderlyingObject() !== null) {
             $this->getUnderlyingObject()->delete();
@@ -273,7 +272,7 @@ class Content extends \humhub\components\ActiveRecord
             $userId = Yii::$app->user->id;
 
 
-// For guests users
+        // For guests users
         if (Yii::$app->user->isGuest) {
             if ($this->visibility == 1) {
                 if ($this->container instanceof Space) {
@@ -290,7 +289,7 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         if ($this->visibility == 0) {
-// Space/User Content Access Check
+            // Space/User Content Access Check
             if ($this->space_id != "") {
 
                 $space = null;
@@ -300,14 +299,14 @@ class Content extends \humhub\components\ActiveRecord
                     $space = Space::findOne(['id' => $this->space_id]);
                 }
 
-// Space Found
+                // Space Found
                 if ($space != null) {
                     if (!$space->isMember($userId)) {
                         return false;
                     }
                 }
             } else {
-// Check for user content
+                // Check for user content
                 if ($userId != $this->user_id) {
                     return false;
                 }
@@ -465,7 +464,7 @@ class Content extends \humhub\components\ActiveRecord
 
             $this->archived = 1;
             if (!$this->save()) {
-                throw new Exception("Could not archive content!".print_r($this->getErrors(),1));
+                throw new Exception("Could not archive content!" . print_r($this->getErrors(), 1));
             }
         }
     }
@@ -615,50 +614,8 @@ class Content extends \humhub\components\ActiveRecord
         return $this->_container;
     }
 
-    /**
-     * Sets standard content informations like container, visibility, files
-     * by ContentFormWidget Submit Data.
-     */
-    public function populateByForm()
-    {
-
-// Set Content Container
-        $contentContainer = null;
-        $containerClass = Yii::$app->request->post('containerClass');
-        $containerGuid = Yii::$app->request->post('containerGuid', "");
-
-        if ($containerClass === User::className())
-            $contentContainer = User::findOne(['guid' => $containerGuid]);
-        elseif ($containerClass === Space::className())
-            $contentContainer = Space::findOne(['guid' => $containerGuid]);
-
-        $this->container = $contentContainer;
-
-        if ($this->container->className() === Space::className()) {
-            $this->visibility = Yii::$app->request->post('visibility');
-        } elseif ($this->container->className() === User::className()) {
-            $this->visibility = 1;
-        }
-
-// Handle Notify User Features of ContentFormWidget
-// ToDo: Check permissions of user guids
-        $userGuids = Yii::$app->request->post('notifyUserInput');
-        if ($userGuids != "") {
-            foreach (explode(",", $userGuids) as $guid) {
-                $user = User::findOne(['guid' => trim($guid)]);
-                if ($user) {
-                    $this->notifyUsersOfNewContent[] = $user;
-                }
-            }
-        }
-
-// Store List of attached Files to add them after Save
-        $this->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
-    }
-
     public function beforeValidate()
     {
-
         if (!$this->container->canWrite($this->created_by)) {
             $this->addError('visibility', Yii::t('base', 'Insufficent permissions to create content!'));
         }
@@ -668,7 +625,7 @@ class Content extends \humhub\components\ActiveRecord
 
     public function validateVisibility()
     {
-        if ($this->container->className() == \humhub\modules\space\models\Space::className()) {
+        if ($this->container->className() == Space::className()) {
             if (!$this->container->canShare() && $this->visibility) {
                 $this->addError('visibility', Yii::t('base', 'You cannot create public visible content!'));
             }
