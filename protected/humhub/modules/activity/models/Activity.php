@@ -47,13 +47,18 @@ class Activity extends ContentActiveRecord
 
     public function getWallOut()
     {
-
-        $activity = $this->getClass();
-        if ($activity !== null) {
-            return $activity->render();
+        $output = Yii::$app->cache->get('activity_wall_out_'.$this->id);
+        
+        if ($output === false) {
+            $activity = $this->getClass();
+            if ($activity !== null) {
+                $output = $activity->render();
+                Yii::$app->cache->set('activity_wall_out_'.$this->id, $output);
+                return $output;
+            }
         }
 
-        return "";
+        return $output;
     }
 
     /**
