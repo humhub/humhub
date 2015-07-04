@@ -565,7 +565,7 @@ class Content extends \humhub\components\ActiveRecord
             throw new Exception("Could not create url for content!");
         }
 
-        return \yii\helpers\Url::toRoute(['/wall/perma/wallEntry', 'id' => $firstWallEntryId]);
+        return \yii\helpers\Url::toRoute(['/content/perma/wall-entry', 'id' => $firstWallEntryId]);
     }
 
     /**

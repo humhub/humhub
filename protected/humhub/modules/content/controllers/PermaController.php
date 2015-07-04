@@ -10,6 +10,9 @@ namespace humhub\modules\content\controllers;
 
 use Yii;
 use humhub\components\Controller;
+use humhub\modules\content\models\WallEntry;
+use humhub\modules\content\models\Content;
+use yii\web\HttpException;
 
 /**
  * PermaController is used to create permanent links to content.
@@ -22,30 +25,18 @@ class PermaController extends Controller
 {
 
     /**
-     * @return array action filters
+     * Redirects to given HActiveRecordContent or HActiveRecordContentAddon
      */
-    public function filters()
+    public function actionIndex()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
+        $id = (int) Yii::$app->request->get('id', "");
 
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        $content = Content::findOne(['id' => $id]);
+        if ($content !== null) {
+            return $this->redirect($content->getUrl());
+        }
+
+        throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
     }
 
     /**
@@ -57,42 +48,18 @@ class PermaController extends Controller
     {
 
         // Id of wall entry
-        $id = Yii::app()->request->getParam('id', "");
+        $id = Yii::$app->request->get('id', "");
 
-        $wallEntry = WallEntry::model()->with('content')->findByPk($id);
+        $wallEntry = WallEntry::find()->joinWith('content')->where(['wall_entry.id' => $id])->one();
 
         if ($wallEntry != null) {
             $obj = $wallEntry->content; // Type of IContent
             if ($obj) {
-                $this->redirect($obj->container->getUrl(array('wallEntryId' => $id)));
-                return;
+                return $this->redirect($obj->container->createUrl(null, array('wallEntryId' => $id)));
             }
         }
 
-        throw new CHttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested permalink!'));
-    }
-
-    /**
-     * Redirects to given HActiveRecordContent or HActiveRecordContentAddon
-     */
-    public function actionContent()
-    {
-        $id = (int) Yii::app()->request->getParam('id', "");
-        $model = Yii::app()->request->getParam('model');
-
-        // Check given model
-        if (!Helpers::CheckClassType($model, array('HActiveRecordContent', 'HActiveRecordContentAddon'))) {
-            throw new CHttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Invalid model given!'));
-        }
-
-        $model = call_user_func(array($model, 'model'));
-        $object = $model->findByPk($id);
-
-        if ($object == null) {
-            throw new CHttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
-        }
-
-        $this->redirect($object->content->getUrl());
+        throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested permalink!'));
     }
 
 }

@@ -66,7 +66,7 @@ class ContentContainer extends ActiveRecord
      */
     public function getUrl()
     {
-        return "";
+        return $this->createUrl();
     }
 
     /**

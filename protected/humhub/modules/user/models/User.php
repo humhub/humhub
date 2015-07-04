@@ -539,13 +539,12 @@ class User extends \humhub\modules\content\components\activerecords\ContentConta
         return $attributes;
     }
 
-    public function getUrl()
+    public function createUrl($route = null, $params = array(), $scheme = false)
     {
-        return $this->createUrl('/user/profile');
-    }
+        if ($route === null) {
+            $route = '/user/profile';
+        }
 
-    public function createUrl($route = '/user/profile', $params = array(), $scheme = false)
-    {
         array_unshift($params, $route);
         if (!isset($params['uguid'])) {
             $params['uguid'] = $this->guid;

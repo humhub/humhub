@@ -420,17 +420,6 @@ class Space extends \humhub\modules\content\components\activerecords\ContentCont
     }
 
     /**
-     * Returns the url to the space.
-     *
-     * @param array $parameters
-     * @return string url
-     */
-    public function getUrl()
-    {
-        return $this->createUrl('/space/space');
-    }
-
-    /**
      * Creates an url in space scope.
      * (Adding sguid parameter to identify current space.)
      * See CController createUrl() for more details.
@@ -440,8 +429,12 @@ class Space extends \humhub\modules\content\components\activerecords\ContentCont
      * @param type $params additional GET parameters.
      * @param type $ampersand the token separating name-value pairs in the URL.
      */
-    public function createUrl($route = '/space/space', $params = array(), $scheme = false)
+    public function createUrl($route = null, $params = array(), $scheme = false)
     {
+        if ($route == null) {
+            $route = '/space/space';
+        }
+
         array_unshift($params, $route);
         if (!isset($params['sguid'])) {
             $params['sguid'] = $this->guid;

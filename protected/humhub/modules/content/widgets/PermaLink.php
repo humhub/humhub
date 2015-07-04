@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use yii\helpers\Url;
+
 /**
  * PermaLink for Wall Entries
  *
@@ -30,11 +32,10 @@ class PermaLink extends \yii\base\Widget
      */
     public function run()
     {
-
+        $permaLink = Url::to(['/content/perma', 'id' => $this->content->content->id], true);
         return $this->render('permaLink', array(
-                    'object' => $this->content,
-                    'model' => $this->content->content->object_model,
-                    'id' => $this->content->content->object_id,
+                    'permaLink' => $permaLink,
+                    'id' => $this->content->content->id
         ));
     }
 
