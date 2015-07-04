@@ -14,7 +14,7 @@ AppAsset::register($this);
     <head>
         <!-- start: Meta -->
         <meta charset="utf-8">
-        <title><?php echo Html::encode($this->title); ?></title>
+        <title><?php echo Html::encode(Yii::$app->name); ?></title>
         <!-- end: Meta -->
 
         <!-- start: Mobile Specific -->
@@ -144,7 +144,7 @@ AppAsset::register($this);
             $('body').find(':checkbox, :radio').flatelements();
         </script>
 
-        <?php // echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
+        <?php echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
         <?php $this->endBody() ?>
     </body>
 </html>
