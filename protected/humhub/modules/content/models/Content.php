@@ -12,6 +12,8 @@ use Yii;
 use yii\base\Exception;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * This is the model class for table "content".
@@ -69,7 +71,7 @@ class Content extends \humhub\components\ActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\UnderlyingObject::className(),
-                'mustBeInstanceOf' => array(\humhub\modules\content\components\activerecords\Content::className()),
+                'mustBeInstanceOf' => array(ContentActiveRecord::className()),
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),

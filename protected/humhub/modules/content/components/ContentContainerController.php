@@ -1,96 +1,50 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\components;
 
-use humhub\components\Controller;
 use Yii;
+use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 
 /**
- * ContainerController is the base controller for all space or user profile
- * controllers.
+ * ContainerController is the base controller for all space or user profile controllers.
  *
- * It automatically detects with the help of sguid (Space) or uguid (User) request
- * parameter the underlying HActiveRecordContentContainer (User/Space) and set
- * its model to the contentContainer Attribute.
+ * It automatically detects the Container by request parameters.
+ * Use [[ContentContainerActiveCreated::createUrl]] method to generate URLs. 
+ * 
+ * e.g. $this->contentContainer->createUrl();
+ * 
+ * Depends on the loaded the Container Type a Behavior with additional methods will be attached.
+ * - Space  \humhub\modules\space\behaviors\SpaceController
+ * - User attached Behavior: \humhub\modules\user\behaviors\ProfileController
  *
- * In case of space also the SpaceControllerBehavior is automatically attached.
- * In case of user the ProfileControllerBehavior is also automatically attached.
- *
- * By using createContainerUrl method instead of createUrl the sguid/uguid parameter
- * is automatically added to url.
- *
- * @package humhub.components
  * @since 0.6
  */
 class ContentContainerController extends Controller
 {
 
     /**
-     * ContentContainer
-     *
-     * @var HActiveRecordContentContainer
+     * @var ContentContainerActiveRecord
      */
     public $contentContainer = null;
 
     /**
-     * Automatically checks permission to access the container
-     * before a controller action is called.
+     * @var boolean automatic check user access permissions to this container
      */
     public $autoCheckContainerAccess = true;
 
     /**
-     * Hides containers sidebar in containers layout
-     *
+     * @var boolean hides containers sidebar in layout
      * @since 0.11
      */
     public $hideSidebar = false;
-
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
 
     /**
      * Automatically loads the underlying contentContainer (User/Space) by using
@@ -106,7 +60,7 @@ class ContentContainerController extends Controller
 
         if ($spaceGuid != "") {
 
-            $this->contentContainer = Space::findOne(['guid'=>$spaceGuid]);
+            $this->contentContainer = Space::findOne(['guid' => $spaceGuid]);
 
             if ($this->contentContainer == null) {
                 throw new \yii\web\HttpException(404, Yii::t('base', 'Space not found!'));
@@ -150,27 +104,6 @@ class ContentContainerController extends Controller
 
 
         return parent::init();
-    }
-
-    /**
-     * Creates a relative URL for the specified action defined in this controller.
-     * The container guid (sguid/uguid) attribute is automatically added to the
-     * constructed url.
-     *
-     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
-     * If the ControllerID is not present, the current controller ID will be prefixed to the route.
-     * If the route is empty, it is assumed to be the current action.
-     * If the controller belongs to a module, the {@link CWebModule::getId module ID}
-     * will be prefixed to the route. (If you do not want the module ID prefix, the route should start with a slash '/'.)
-     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
-     * If the name is '#', the corresponding value will be treated as an anchor
-     * and will be appended at the end of the URL.
-     * @param string $ampersand the token separating name-value pairs in the URL.
-     * @return string the constructed URL
-     */
-    public function createContainerUrl($route, $params = array(), $ampersand = '&')
-    {
-        return $this->contentContainer->createUrl($route, $params, $ampersand);
     }
 
     /**

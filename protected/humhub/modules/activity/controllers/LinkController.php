@@ -11,8 +11,8 @@ namespace humhub\modules\activity\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\activerecords\Content;
-use humhub\modules\content\components\activerecords\ContentAddon;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * LinkController provides link informations about an Activity via JSON.
@@ -55,7 +55,7 @@ class LinkController extends Controller
             $json['wallEntryId'] = '';
 
             $underlying = $activity->getUnderlyingObject();
-            if ($underlying instanceof Content || $underlying instanceof ContentAddon) {
+            if ($underlying instanceof ContentActiveRecord || $underlying instanceof ContentAddonActiveRecord) {
                 $json['wallEntryId'] = $underlying->content->getFirstWallEntryId();
             }
 

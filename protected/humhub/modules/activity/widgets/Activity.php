@@ -3,6 +3,8 @@
 namespace humhub\modules\activity\widgets;
 
 use Yii;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * ActivityWidget shows an activity.
@@ -40,7 +42,7 @@ class Activity extends \yii\base\Widget
         // Try to figure out wallEntryId of this activity
         $wallEntryId = 0;
         if ($underlyingObject != null) {
-            if ($underlyingObject instanceof \humhub\modules\content\components\activerecords\Content || $underlyingObject instanceof \humhub\modules\content\components\activerecords\ContentAddon) {
+            if ($underlyingObject instanceof ContentActiveRecord || $underlyingObject instanceof ContentAddonActiveRecord) {
                 $wallEntryId = $underlyingObject->content->getFirstWallEntryId();
             }
         }

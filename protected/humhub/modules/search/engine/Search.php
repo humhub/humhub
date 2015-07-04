@@ -10,6 +10,7 @@ namespace humhub\modules\search\engine;
 
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
@@ -134,7 +135,7 @@ abstract class Search extends \yii\base\Component
             return self::DOCUMENT_TYPE_SPACE;
         } elseif ($obj instanceof User) {
             return self::DOCUMENT_TYPE_USER;
-        } elseif ($obj instanceof \humhub\modules\content\components\activerecords\Content) {
+        } elseif ($obj instanceof ContentActiveRecord) {
             return self::DOCUMENT_TYPE_CONTENT;
         } else {
             return self::DOCUMENT_TYPE_OTHER;

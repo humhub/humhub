@@ -1,17 +1,24 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\file\controllers;
 
 use Yii;
 use yii\web\HttpException;
-use humhub\models\Setting;
 use yii\web\UploadedFile;
+use humhub\models\Setting;
 use humhub\modules\file\models\File;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * UploadController provides uploading functions for files
  *
- * @package humhub.modules_core.file.controllers
  * @since 0.5
  */
 class FileController extends \humhub\components\Controller
@@ -33,7 +40,7 @@ class FileController extends \humhub\components\Controller
         if ($objectModel != "" && $objectId != "" && \humhub\libs\Helpers::CheckClassType($objectModel, \yii\db\ActiveRecord::className())) {
             $givenObject = $objectModel::findOne(['id' => $objectId]);
             // Check if given object is HActiveRecordContent or HActiveRecordContentAddon and can be written by the current user
-            if ($givenObject !== null && ($givenObject instanceof \humhub\modules\content\components\activerecords\Content || $givenObject instanceof \humhub\modules\content\components\activerecords\ContentAddon) && $givenObject->content->canWrite()) {
+            if ($givenObject !== null && ($givenObject instanceof ContentActiveRecord || $givenObject instanceof ContentAddonActiveRecord) && $givenObject->content->canWrite()) {
                 $object = $givenObject;
             }
         }

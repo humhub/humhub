@@ -5,6 +5,11 @@ namespace humhub\modules\activity\models;
 use Yii;
 use yii\web\HttpException;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+
+
 /**
  * This is the model class for table "activity".
  *
@@ -18,7 +23,7 @@ use yii\web\HttpException;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Activity extends \humhub\modules\content\components\activerecords\Content
+class Activity extends ContentActiveRecord
 {
 
     /**
@@ -32,9 +37,9 @@ class Activity extends \humhub\modules\content\components\activerecords\Content
             [
                 'class' => \humhub\components\behaviors\UnderlyingObject::className(),
                 'mustBeInstanceOf' => [
-                    \humhub\modules\content\components\activerecords\Content::className(),
-                    \humhub\modules\content\components\activerecords\ContentContainer::className(),
-                    \humhub\modules\content\components\activerecords\ContentAddon::className(),
+                    ContentActiveRecord::className(),
+                    ContentContainerActiveRecord::className(),
+                    ContentAddonActiveRecord::className(),
                 ]
             ]
         ];

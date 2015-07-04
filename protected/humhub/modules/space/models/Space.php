@@ -4,8 +4,8 @@ namespace humhub\modules\space\models;
 
 use Yii;
 use humhub\modules\content\models\Wall;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Membership;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * This is the model class for table "space".
@@ -27,7 +27,7 @@ use humhub\modules\space\models\Membership;
  * @property string $ldap_dn
  * @property integer $auto_add_new_members
  */
-class Space extends \humhub\modules\content\components\activerecords\ContentContainer implements \humhub\modules\search\interfaces\Searchable
+class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
 
     // Join Policies

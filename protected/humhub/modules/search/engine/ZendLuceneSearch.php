@@ -11,6 +11,7 @@ namespace humhub\modules\search\engine;
 use Yii;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
 
@@ -44,7 +45,7 @@ class ZendLuceneSearch extends Search
             $doc->addField(\ZendSearch\Lucene\Document\Field::Text($key, $val, 'UTF-8'));
         }
 
-        if ($obj instanceof \humhub\modules\content\components\activerecords\Content) {
+        if ($obj instanceof ContentActiveRecord) {
             $comments = "";
             foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {
                 $comments .= " " . $comment->message;

@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\like\models;
 
-use humhub\models\Setting;
 use Yii;
+use humhub\models\Setting;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * This is the model class for table "like".
@@ -21,7 +28,7 @@ use Yii;
  * @package humhub.modules_core.like.models
  * @since 0.5
  */
-class Like extends \humhub\modules\content\components\activerecords\ContentAddon
+class Like extends ContentAddonActiveRecord
 {
 
     /**

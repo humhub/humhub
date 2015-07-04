@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use Yii;
@@ -61,7 +67,7 @@ class Password extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['newPassword', 'newPasswordConfirm'], 'required', 'on'=>'registration'],
+            [['newPassword', 'newPasswordConfirm'], 'required', 'on' => 'registration'],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],

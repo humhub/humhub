@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\post\models;
 
 use Yii;
+use humhub\modules\content\components\ContentActiveRecord;
 
 /**
  * This is the model class for table "post".
@@ -16,7 +23,7 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Post extends \humhub\modules\content\components\activerecords\Content
+class Post extends ContentActiveRecord
 {
 
     public $wallEditRoute = '//post/post/edit';

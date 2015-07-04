@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use Yii;
 use humhub\models\Setting;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * This is the model class for table "user".
@@ -27,7 +34,7 @@ use humhub\models\Setting;
  * @property string $last_login
  * @property integer $visibility
  */
-class User extends \humhub\modules\content\components\activerecords\ContentContainer implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
+class User extends ContentContainerActiveRecord implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
 {
 
     /**

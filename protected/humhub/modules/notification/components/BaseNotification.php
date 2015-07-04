@@ -13,9 +13,9 @@ use yii\base\ViewContextInterface;
 use ReflectionClass;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\activerecords\Content;
-use humhub\modules\content\components\activerecords\ContentAddon;
-use humhub\modules\content\components\activerecords\ContentContainer;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Description of BaseNotification
@@ -145,7 +145,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
             $notification->source_class = $this->source->className();
 
             // Automatically set spaceId if source is Content/Addon/Container
-            if ($this->source instanceof Content || $this->source instanceof ContentAddon) {
+            if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
                 if ($this->source->content->container instanceof \humhub\modules\space\models\Space) {
                     $notification->space_id = $this->source->content->container->id;
                 }
@@ -205,9 +205,9 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
      */
     public function getUrl()
     {
-        if ($this->source instanceof Content || $this->source instanceof ContentAddon) {
+        if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
             return $this->source->content->getUrl();
-        } elseif ($this->source instanceof ContentContainer) {
+        } elseif ($this->source instanceof ContentContainerActiveRecord) {
             return $this->source->getUrl();
         }
 

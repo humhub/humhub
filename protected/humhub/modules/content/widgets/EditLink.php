@@ -21,7 +21,7 @@ class EditLink extends \yii\base\Widget
 {
 
     /**
-     * @var \humhub\modules\content\components\activerecords\Content
+     * @var \humhub\modules\content\components\ContentActiveRecord
      */
     public $content = null;
 

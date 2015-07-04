@@ -1,28 +1,18 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\content\components\activerecords;
+namespace humhub\modules\content\components;
 
 use Yii;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * HActiveRecordContentAddon is the base active record for content addons.
@@ -34,7 +24,7 @@ use humhub\components\ActiveRecord;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddon extends ActiveRecord implements \humhub\modules\content\interfaces\ContentTitlePreview
+class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\content\interfaces\ContentTitlePreview
 {
 
     /**
@@ -64,9 +54,9 @@ class ContentAddon extends ActiveRecord implements \humhub\modules\content\inter
             return $this->_content;
         }
 
-        if ($this->source instanceof Content) {
+        if ($this->source instanceof ContentActiveRecord) {
             $this->_content = $this->source->content;
-        } elseif ($this->source instanceof ContentAddon && $this->source->source instanceof Content) {
+        } elseif ($this->source instanceof ContentAddonActiveRecord && $this->source->source instanceof ContentActiveRecord) {
             $this->_content = $this->source->source->content;
         }
 
@@ -179,7 +169,7 @@ class ContentAddon extends ActiveRecord implements \humhub\modules\content\inter
     {
 
         if ($this->source != null) {
-            if (!$this->source instanceof ContentAddon && !$this->source instanceof Content) {
+            if (!$this->source instanceof ContentAddonActiveRecord && !$this->source instanceof ContentActiveRecord) {
                 $this->addError('object_model', Yii::t('base', 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'));
             }
         }

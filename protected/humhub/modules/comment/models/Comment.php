@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\comment\models;
 
 use Yii;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * This is the model class for table "comment".
@@ -25,7 +32,7 @@ use Yii;
  * @package humhub.modules_core.comment.models
  * @since 0.5
  */
-class Comment extends \humhub\modules\content\components\activerecords\ContentAddon
+class Comment extends ContentAddonActiveRecord
 {
 
     /**

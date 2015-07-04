@@ -2,8 +2,8 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\modules\content\components\activerecords\Content;
-use humhub\modules\content\components\activerecords\ContentAddon;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * This is the model class for table "user_mentioning".
@@ -45,7 +45,7 @@ class Mentioning extends \humhub\components\ActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\UnderlyingObject::className(),
-                'mustBeInstanceOf' => [Content::className(), ContentAddon::className()],
+                'mustBeInstanceOf' => [ContentActiveRecord::className(), ContentAddonActiveRecord::className()],
             ],
         ];
     }
@@ -57,9 +57,9 @@ class Mentioning extends \humhub\components\ActiveRecord
         // Send mentioned notification
         $notification = new \humhub\modules\user\notifications\Mentioned;
         $notification->source = $object;
-        if ($object instanceof Content) {
+        if ($object instanceof ContentActiveRecord) {
             $notification->originator = $object->content->user;
-        } elseif ($object instanceof ContentAddon) {
+        } elseif ($object instanceof ContentAddonActiveRecord) {
             $notification->originator = $object->user;
         } else {
             throw new \yii\base\Exception("Underlying object invalid!");
@@ -78,7 +78,7 @@ class Mentioning extends \humhub\components\ActiveRecord
     public static function parse($record, $text)
     {
 
-        if ($record instanceof Content || $record instanceof ContentAddon) {
+        if ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord) {
 
             preg_replace_callback('@\@\-u([\w\-]*?)($|\s|\.)@', function($hit) use(&$record) {
                 $user = User::findOne(['guid' => $hit[1]]);

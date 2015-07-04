@@ -23,6 +23,7 @@ namespace humhub\modules\content\widgets;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Description of ContentFormWidget
@@ -39,8 +40,7 @@ class Form extends \yii\base\Widget
     public $submitButtonText;
 
     /**
-     *
-     * @var type
+     * @var ContentContainerActiveRecord
      */
     public $contentContainer;
 
@@ -55,7 +55,7 @@ class Form extends \yii\base\Widget
         if ($this->submitButtonText == "")
             $this->submitButtonText = Yii::t('ContentModule.widgets_ContentFormWidget', 'Submit');
 
-        if ($this->contentContainer == null || !$this->contentContainer instanceof \humhub\modules\content\components\activerecords\ContentContainer) {
+        if ($this->contentContainer == null || !$this->contentContainer instanceof ContentContainerActiveRecord) {
             throw new HttpException(500, "No Content Container given!");
         }
 

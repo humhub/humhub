@@ -3,8 +3,8 @@
 use humhub\modules\user\models\User;
 use humhub\modules\search\engine\Search;
 use humhub\modules\user\Events;
-use humhub\modules\content\components\activerecords\Content;
-use humhub\modules\content\components\activerecords\ContentAddon;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 
 return [
     'id' => 'user',
@@ -12,8 +12,8 @@ return [
     'isCoreModule' => true,
     'events' => array(
         array('class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => array(Events::className(), 'onSearchRebuild')),
-        array('class' => Content::className(), 'event' => Content::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),
-        array('class' => ContentAddon::className(), 'event' => ContentAddon::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),
+        array('class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),
+        array('class' => ContentAddonActiveRecord::className(), 'event' => ContentAddonActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),
     )
 ];
 ?>

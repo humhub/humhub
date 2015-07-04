@@ -1,13 +1,21 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\file\models;
 
 use Yii;
 use yii\web\UploadedFile;
-use humhub\models\Setting;
 use yii\helpers\Url;
-use humhub\modules\file\libs\ImageConverter;
 use yii\base\Exception;
+use humhub\models\Setting;
+use humhub\modules\file\libs\ImageConverter;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * This is the model class for table "file".
@@ -303,7 +311,7 @@ class File extends \humhub\components\ActiveRecord
     public function canRead($userId = "")
     {
         $object = $this->getUnderlyingObject();
-        if ($object !== null && ($object instanceof \humhub\modules\content\components\activerecords\Content || $object instanceof \humhub\modules\content\components\activerecords\ContentAddon)) {
+        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
             return $object->content->canRead($userId);
         }
 
@@ -319,7 +327,7 @@ class File extends \humhub\components\ActiveRecord
     public function canDelete($userId = "")
     {
         $object = $this->getUnderlyingObject();
-        if ($object !== null && ($object instanceof \humhub\modules\content\components\activerecords\Content || $object instanceof \humhub\modules\content\components\activerecords\ContentAddon)) {
+        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
             return $object->content->canWrite($userId);
         }
 

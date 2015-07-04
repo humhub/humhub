@@ -12,9 +12,9 @@ use Yii;
 use ReflectionClass;
 use humhub\modules\user\models\User;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\activerecords\Content;
-use humhub\modules\content\components\activerecords\ContentAddon;
-use humhub\modules\content\components\activerecords\ContentContainer;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Description of BaseActivity
@@ -105,16 +105,16 @@ class BaseActivity extends \yii\base\Component
         $model->object_id = $this->source->getPrimaryKey();
         $model->module = $this->moduleId;
 
-        if ($this->source instanceof Content || $this->source instanceof ContentAddon) {
+        if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
             $model->content->container = $this->source->content->container;
             $model->content->visibility = $this->source->content->visibility;
 
-            if ($this->source instanceof Content) {
+            if ($this->source instanceof ContentActiveRecord) {
                 $model->content->user_id = $this->source->content->user_id;
             } else {
                 $model->content->user_id = $this->source->created_by;
             }
-        } elseif ($this->source instanceof ContentContainer) {
+        } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $model->content->visibility = $this->visibility;
             $model->content->container = $this->source;
 
@@ -185,9 +185,9 @@ class BaseActivity extends \yii\base\Component
      */
     public function getUrl()
     {
-        if ($this->source instanceof Content || $this->source instanceof ContentAddon) {
+        if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
             return $this->source->content->getUrl();
-        } elseif ($this->source instanceof ContentContainer) {
+        } elseif ($this->source instanceof ContentContainerActiveRecord) {
             return $this->source->getUrl();
         }
 

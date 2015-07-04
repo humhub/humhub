@@ -3,6 +3,8 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\search\controllers\SearchController;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 ?>
 <div class="container">
     <div class="row">
@@ -64,7 +66,7 @@ use humhub\modules\search\controllers\SearchController;
                         <?php if (count($results) > 0): ?>
                             <?php foreach ($results as $result): ?>
 
-                                <?php if ($result instanceof humhub\modules\content\components\activerecords\Content || $result instanceof humhub\modules\content\components\activerecords\ContentContainer) : ?>
+                                <?php if ($result instanceof ContentActiveRecord || $result instanceof ContentContainerActiveRecord) : ?>
                                     <?php echo $result->getWallOut(); ?>
                                 <?php else: ?>
                                     No Output for Class <?php echo get_class($result); ?>

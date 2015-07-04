@@ -25,6 +25,7 @@ Quick Guide about
 	- UserModel: CanApproveUsers
 - Url Rewriting
 - Use AssetBundels
+- Delete
 - LF
 	- Reimplement Access Controls
 	- Headers
