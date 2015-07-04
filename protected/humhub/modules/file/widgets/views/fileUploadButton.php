@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->registerJsFile("@web/resources/file/fileuploader.js");
 $this->registerJsVar('fileuploader_error_modal_title', Yii::t('FileModule.widgets_FileUploadButtonWidget', '<strong>Upload</strong> error'));
 $this->registerJsVar('fileuploader_error_modal_btn_close', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Close'));
 $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Could not upload File:'));

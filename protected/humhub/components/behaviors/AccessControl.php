@@ -39,6 +39,9 @@ class AccessControl extends \yii\base\ActionFilter
      */
     public $loggedInOnly = true;
 
+    /**
+     * @inheritdoc
+     */
     public function beforeAction($action)
     {
 
@@ -62,6 +65,9 @@ class AccessControl extends \yii\base\ActionFilter
         return false;
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     */
     protected function forbidden()
     {
         throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));

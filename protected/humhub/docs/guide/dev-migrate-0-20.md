@@ -11,14 +11,11 @@ Quick Guide about
 ### Migrate
 
 - Modules
-	- Change autostart.php -> avoid old loading probs?
 	- Uninstall
-	- Namespaces
 - Theming
 	- Themed Image files User/Space Default Profile Image
 	- Notification/Activity Mail Views
 - Integritychecker
-- Rename core Folder into Modules
 - Tests
 - RichText
 	- Max Length & minimal Option

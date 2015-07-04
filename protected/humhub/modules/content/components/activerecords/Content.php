@@ -72,6 +72,9 @@ class Content extends ActiveRecord implements \humhub\modules\content\interfaces
      */
     public $wallEditRoute = "";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -182,7 +185,6 @@ class Content extends ActiveRecord implements \humhub\modules\content\interfaces
                 $membership->updateLastVisit();
             }
         }
-
     }
 
     public function afterValidate()

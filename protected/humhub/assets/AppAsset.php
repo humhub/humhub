@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'resources/font-awesome/css/font-awesome.min.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
+        'resources/at/jquery.atwho.css',
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $js = [
@@ -46,6 +47,9 @@ class AppAsset extends AssetBundle
         'js/jquery.flatelements.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
+        'resources/at/jquery.caret.min.js',
+        'resources/at/jquery.atwho.min.js',
+        'resources/file/fileuploader.js',
         'js/app.js',
     ];
     public $depends = [

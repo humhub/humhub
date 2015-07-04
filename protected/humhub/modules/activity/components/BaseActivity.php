@@ -40,7 +40,7 @@ class BaseActivity extends \yii\base\Component
     public $viewName = "";
 
     /**
-     * @var string
+     * @var string the module id which this activity belongs to
      */
     public $moduleId = "";
 
@@ -103,6 +103,7 @@ class BaseActivity extends \yii\base\Component
         $model->class = $this->className();
         $model->object_model = $this->source->className();
         $model->object_id = $this->source->getPrimaryKey();
+        $model->module = $this->moduleId;
 
         if ($this->source instanceof Content || $this->source instanceof ContentAddon) {
             $model->content->container = $this->source->content->container;

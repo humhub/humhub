@@ -15,13 +15,31 @@ use humhub\modules\content\components\activerecords\Content;
 use humhub\modules\content\components\activerecords\ContentAddon;
 
 /**
- * Description of LinkController
+ * LinkController provides link informations about an Activity via JSON.
  *
  * @author luke
  */
 class LinkController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index', 'stream']
+            ]
+        ];
+    }
+
+    /**
+     * Returns a JSON Response with links of an Activity
+     * 
+     * @return string json
+     */
     public function actionInfo()
     {
         Yii::$app->response->format = 'json';
