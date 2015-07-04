@@ -113,41 +113,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return parent::__get($name);
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rulesOld()
-    {
-
-        if ($this->scenario == 'register') {
-            // Only return all fields required for registration.
-            // All other fields should be unsafe.
-            return array(
-                array('username, group_id, email', 'required'),
-                array('username', 'unique', 'caseSensitive' => false, 'targetClass' => self::className()),
-                array('email', 'email'),
-                array('group_id', 'integer'),
-                array('email', 'unique', 'caseSensitive' => false, 'targetClass' => self::className()),
-                array('username', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9äöüÄÜÖß\+\-\._ ]/', 'message' => Yii::t('UserModule.models_User', 'Username can contain only letters, numbers, spaces and special characters (+-._)')),
-                array('username', 'string', 'max' => 25, 'min' => 4),
-            );
-        }
-
-        $rules = array();
-        $rules[] = array('wall_id, status, group_id, super_admin, created_by, updated_by, visibility', 'integer', 'integerOnly' => true);
-        $rules[] = array('email', 'email');
-        $rules[] = array('guid', 'string', 'max' => 45);
-        $rules[] = array('username', 'unique', 'targetClass' => self::className());
-        $rules[] = array('email', 'unique', 'targetClass' => self::className());
-        $rules[] = array('email,tags', 'string', 'max' => 100);
-        $rules[] = array('username', 'string', 'max' => 25, 'min' => 4);
-        $rules[] = array('language', 'string', 'max' => 5);
-        $rules[] = array('language', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z_]/', 'message' => Yii::t('UserModule.models_User', 'Invalid language!'));
-        $rules[] = array('auth_mode, tags, created_at, updated_at, last_activity_email, last_login', 'safe');
-        $rules[] = array('auth_mode', 'string', 'max' => 10);
-        return $rules;
-    }
-
     public function scenarios()
     {
         $scenarios = parent::scenarios();
