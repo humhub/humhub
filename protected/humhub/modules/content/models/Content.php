@@ -70,7 +70,7 @@ class Content extends \humhub\components\ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\UnderlyingObject::className(),
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
                 'mustBeInstanceOf' => array(ContentActiveRecord::className()),
             ],
             [
@@ -126,11 +126,22 @@ class Content extends \humhub\components\ActiveRecord
         );
     }
 
+    /**
+     * User which created this Content - May also be the ContentContainer of this Content
+     * when no Space Relation exists
+     * 
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * Related space (if ContentContainer is a Space)
+     * 
+     * @return \yii\db\ActiveQuery
+     */
     public function getSpace()
     {
         return $this->hasOne(\humhub\modules\space\models\Space::className(), ['id' => 'space_id']);
@@ -151,6 +162,9 @@ class Content extends \humhub\components\ActiveRecord
         return null;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         if ($this->object_model == "" || $this->object_id == "")
@@ -186,22 +200,22 @@ class Content extends \humhub\components\ActiveRecord
         if ($insert) {
 
             foreach ($this->notifyUsersOfNewContent as $user) {
-                $this->getUnderlyingObject()->follow($user->id);
+                $this->getPolymorphicRelation()->follow($user->id);
             }
 
             $notification = new \humhub\modules\content\notifications\ContentCreated;
-            $notification->source = $this->getUnderlyingObject();
+            $notification->source = $this->getPolymorphicRelation();
             $notification->originator = $this->user;
             $notification->sendBulk($this->notifyUsersOfNewContent);
 
-            if (!$this->getUnderlyingObject() instanceof \humhub\modules\activity\models\Activity) {
+            if (!$this->getPolymorphicRelation() instanceof \humhub\modules\activity\models\Activity) {
                 $activity = new \humhub\modules\content\activities\ContentCreated;
-                $activity->source = $this->getUnderlyingObject();
+                $activity->source = $this->getPolymorphicRelation();
                 $activity->create();
             }
         }
 
-        \humhub\modules\file\models\File::attachPrecreated($this->getUnderlyingObject(), $this->attachFileGuidsAfterSave);
+        \humhub\modules\file\models\File::attachPrecreated($this->getPolymorphicRelation(), $this->attachFileGuidsAfterSave);
 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -223,9 +237,9 @@ class Content extends \humhub\components\ActiveRecord
     public function afterDelete()
     {
         // Try delete the underlying object (Post, Question, Task, ...)
-        $this->resetUnderlyingObject();
-        if ($this->getUnderlyingObject() !== null) {
-            $this->getUnderlyingObject()->delete();
+        $this->resetPolymorphicRelation();
+        if ($this->getPolymorphicRelation() !== null) {
+            $this->getPolymorphicRelation()->delete();
         }
 
         parent::afterDelete();
@@ -556,8 +570,8 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function getUrl()
     {
-        if (method_exists($this->getUnderlyingObject(), 'getUrl')) {
-            return $this->getUnderlyingObject()->getUrl();
+        if (method_exists($this->getPolymorphicRelation(), 'getUrl')) {
+            return $this->getPolymorphicRelation()->getUrl();
         }
 
         $firstWallEntryId = $this->getFirstWallEntryId();

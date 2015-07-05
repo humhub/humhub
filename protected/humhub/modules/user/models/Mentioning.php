@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
@@ -44,25 +50,28 @@ class Mentioning extends \humhub\components\ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\UnderlyingObject::className(),
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
                 'mustBeInstanceOf' => [ContentActiveRecord::className(), ContentAddonActiveRecord::className()],
             ],
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
-        $object = $this->getUnderlyingObject();
+        $mentionedSource = $this->getPolymorphicRelation();
 
         // Send mentioned notification
         $notification = new \humhub\modules\user\notifications\Mentioned;
-        $notification->source = $object;
-        if ($object instanceof ContentActiveRecord) {
-            $notification->originator = $object->content->user;
-        } elseif ($object instanceof ContentAddonActiveRecord) {
-            $notification->originator = $object->user;
+        $notification->source = $mentionedSource;
+        if ($mentionedSource instanceof ContentActiveRecord) {
+            $notification->originator = $mentionedSource->content->user;
+        } elseif ($mentionedSource instanceof ContentAddonActiveRecord) {
+            $notification->originator = $mentionedSource->user;
         } else {
-            throw new \yii\base\Exception("Underlying object invalid!");
+            throw new \yii\base\Exception("Invalid polymorphic relation!");
         }
         $notification->send($this->user);
 
@@ -92,10 +101,10 @@ class Mentioning extends \humhub\components\ActiveRecord
                         $mention->object_id = $record->getPrimaryKey();
                         $mention->user_id = $user->id;
                         $mention->save();
-                        $mention->setUnderlyingObject($record);
+                        $mention->setPolymorphicRelation($record);
 
                         // Mentioned users automatically follows the content
-                        $record->content->getUnderlyingObject()->follow($user->id);
+                        $record->content->getPolymorphicRelation()->follow($user->id);
                     }
                 }
             }, $text);
@@ -104,6 +113,11 @@ class Mentioning extends \humhub\components\ActiveRecord
         }
     }
 
+    /**
+     * Related user
+     * 
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);

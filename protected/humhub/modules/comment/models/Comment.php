@@ -99,7 +99,7 @@ class Comment extends ContentAddonActiveRecord
             $notification = new \humhub\modules\comment\notifications\NewComment();
             $notification->source = $this;
             $notification->originator = $this->user;
-            $notification->sendBulk($this->content->getUnderlyingObject()->getFollowers(null, true, true));
+            $notification->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
         }
 
         return parent::afterSave($insert, $changedAttributes);

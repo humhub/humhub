@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$commentedObject = $source->content->getUnderlyingObject();
+$commentedObject = $source->content->getPolymorphicRelation();
 ?>
 <?php
 echo Yii::t('CommentModule.views_notifications_newCommented', "%displayName% commented %contentTitle%.", array(

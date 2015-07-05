@@ -13,53 +13,47 @@ use yii\db\ActiveRecord;
 use yii\base\Behavior;
 
 /**
- * HUnderlyingObjectBahavior adds the ability to link between arbitrary
- * records.
+ * PolymorphicRelations behavior provides simple support for polymorphic relations in ActiveRecords.
  *
- * This is archived by the database fields object_model & object_id.
- *
- * Required database fields:
- *  - object_model
- *  - object_id
- *
- * E.g. usage
- *      Like Record -> Post Record or Comment Record or Poll Record
- *
- * @package humhub.behaviors
  * @since 0.5
  */
-class UnderlyingObject extends Behavior
+class PolymorphicRelation extends Behavior
 {
 
     /**
-     * The underlying object needs to be a "instanceof" at least one
-     * of this values.
-     *
-     * (Its also possible to specify a CBehavior name)
-     *
-     * @var type
+     * @var string the class name attribute
+     */
+    public $classAttribute = 'object_model';
+
+    /**
+     * @var string the primary key attribute
+     */
+    public $pkAttribute = 'object_id';
+
+    /**
+     * @var array the related object needs to be a "instanceof" at least one of these given classnames
      */
     public $mustBeInstanceOf = array();
 
     /**
-     * Cache Object
+     * @var mixed the cached object
      */
     private $_cached = null;
 
-    /*
+    /**
      * Returns the Underlying Object
      *
      * @return mixed
      */
-
-    public function getUnderlyingObject()
+    public function getPolymorphicRelation()
     {
 
         if ($this->_cached !== null) {
             return $this->_cached;
         }
 
-        $className = $this->owner->object_model;
+
+        $className = $this->owner->getAttribute($this->classAttribute);
 
         if ($className == "") {
             return null;
@@ -70,7 +64,7 @@ class UnderlyingObject extends Behavior
             return null;
         }
 
-        $object = $className::find()->where(['id' => $this->owner->object_id])->one();
+        $object = $className::find()->where(['id' => $this->owner->getAttribute($this->pkAttribute)])->one();
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
@@ -81,11 +75,11 @@ class UnderlyingObject extends Behavior
     }
 
     /**
-     * Sets the underlying object
+     * Sets the related object
      *
      * @param mixed $object
      */
-    public function setUnderlyingObject($object)
+    public function setPolymorphicRelation($object)
     {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
@@ -93,10 +87,9 @@ class UnderlyingObject extends Behavior
     }
 
     /**
-     * Resets the already loaded $_cached instance of
-     * underlying object
+     * Resets the already loaded $_cached instance of related object
      */
-    public function resetUnderlyingObject()
+    public function resetPolymorphicRelation()
     {
         $this->_cached = null;
     }
@@ -109,21 +102,22 @@ class UnderlyingObject extends Behavior
      */
     private function validateUnderlyingObjectType($object)
     {
-        return true;
 
         if (count($this->mustBeInstanceOf) == 0) {
             return true;
         }
 
         foreach ($this->mustBeInstanceOf as $instance) {
-            if ($object instanceof $instance || $object->asa($instance) !== null) {
+            if ($object instanceof $instance) { //|| $object->asa($instance) !== null
                 return true;
             }
         }
 
-        Yii::error('Got invalid underlying object type! (' . $className . ')');
+        Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
         return false;
     }
+
+
 
 }
 

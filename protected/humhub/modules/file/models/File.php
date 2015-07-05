@@ -98,7 +98,7 @@ class File extends \humhub\components\ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\UnderlyingObject::className(),
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
                 'mustBeInstanceOf' => array(\humhub\components\ActiveRecord::className()),
             ],
             [
@@ -310,7 +310,7 @@ class File extends \humhub\components\ActiveRecord
      */
     public function canRead($userId = "")
     {
-        $object = $this->getUnderlyingObject();
+        $object = $this->getPolymorphicRelation();
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
             return $object->content->canRead($userId);
         }
@@ -326,7 +326,7 @@ class File extends \humhub\components\ActiveRecord
      */
     public function canDelete($userId = "")
     {
-        $object = $this->getUnderlyingObject();
+        $object = $this->getPolymorphicRelation();
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
             return $object->content->canWrite($userId);
         }

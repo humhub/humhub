@@ -242,7 +242,7 @@ class Stream extends \yii\base\Action
         $lastEntryId = "";
         foreach ($wallEntries as $wallEntry) {
 
-            $underlyingObject = $wallEntry->content->getUnderlyingObject();
+            $underlyingObject = $wallEntry->content->getPolymorphicRelation();
 
             if ($underlyingObject === null) {
                 throw new Exception('Could not get contents underlying object!');

@@ -60,7 +60,8 @@ class Module extends \yii\base\Module
         $stream->activeQuery->andWhere(['>', 'content.created_at', $lastMailDate]);
 
         foreach ($stream->getWallEntries() as $wallEntry) {
-            $output .= $wallEntry->content->getUnderlyingObject()->getClass()->render(BaseActivity::OUTPUT_MAIL);
+            $activity = $wallEntry->content->getPolymorphicRelation();
+            $output .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL);
         }
 
         $user->last_activity_email = new \yii\db\Expression('NOW()');

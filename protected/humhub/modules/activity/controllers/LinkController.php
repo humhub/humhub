@@ -54,9 +54,9 @@ class LinkController extends Controller
             $json['success'] = 'true';
             $json['wallEntryId'] = '';
 
-            $underlying = $activity->getUnderlyingObject();
-            if ($underlying instanceof ContentActiveRecord || $underlying instanceof ContentAddonActiveRecord) {
-                $json['wallEntryId'] = $underlying->content->getFirstWallEntryId();
+            $source = $activity->getSource();
+            if ($source instanceof ContentActiveRecord || $source instanceof ContentAddonActiveRecord) {
+                $json['wallEntryId'] = $source->content->getFirstWallEntryId();
             }
 
             $json['permaLink'] = $activity->content->getUrl();

@@ -103,7 +103,7 @@ class Events extends \yii\base\Object
         // Loop over all comments
         foreach (Activity::find()->all() as $a) {
 
-            if ($a->object_model != "" && $a->object_id != "" && $a->getUnderlyingObject() === null) {
+            if ($a->object_model != "" && $a->object_id != "" && $a->getSource() === null) {
                 if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target! (".$a->object_model.")")) {
                     $a->delete();
                 }

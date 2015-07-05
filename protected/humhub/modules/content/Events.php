@@ -49,7 +49,7 @@ class Events extends \yii\base\Object
                     $content->delete();
                 }
             }
-            if ($content->getUnderlyingObject() == null) {
+            if ($content->getPolymorphicRelation() == null) {
                 if ($integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
                     $content->delete();
                 }

@@ -26,11 +26,9 @@ Quick Guide about
 - Url Rewriting
 - Use AssetBundels
 - Delete
-- LF
-	- Reimplement Access Controls
-	- Headers
-	- Check Imports
-	- Add View Params/VarTypes
+- cookieValidationKey Installer?
+- Reimplement Access Controls
+- 
 
 ### Bugs
 

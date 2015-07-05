@@ -27,8 +27,8 @@ class Events extends \yii\base\Object
     {
         $comment = $event->sender;
 
-        if ($comment->content->getUnderlyingObject() instanceof ISearchable) {
-            Yii::app()->search->update($comment->content->getUnderlyingObject());
+        if ($comment->content->getPolymorphicRelation() instanceof ISearchable) {
+            Yii::app()->search->update($comment->content->getPolymorphicRelation());
         }
     }
 

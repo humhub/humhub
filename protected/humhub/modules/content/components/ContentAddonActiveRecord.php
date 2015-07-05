@@ -185,7 +185,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
     public function afterSave($insert, $changedAttributes)
     {
         // Auto follow the content which this addon belongs to
-        $this->content->getUnderlyingObject()->follow($this->created_by);
+        $this->content->getPolymorphicRelation()->follow($this->created_by);
 
         return parent::afterSave($insert, $changedAttributes);
     }

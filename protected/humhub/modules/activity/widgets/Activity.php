@@ -37,13 +37,13 @@ class Activity extends \yii\base\Widget
         // Possible Security Flaw: Check type!
         $type = $this->activity->type;
 
-        $underlyingObject = $this->activity->getUnderlyingObject();
+        $source = $this->activity->getSource();
 
         // Try to figure out wallEntryId of this activity
         $wallEntryId = 0;
-        if ($underlyingObject != null) {
-            if ($underlyingObject instanceof ContentActiveRecord || $underlyingObject instanceof ContentAddonActiveRecord) {
-                $wallEntryId = $underlyingObject->content->getFirstWallEntryId();
+        if ($source != null) {
+            if ($source instanceof ContentActiveRecord || $source instanceof ContentAddonActiveRecord) {
+                $wallEntryId = $source->content->getFirstWallEntryId();
             }
         }
 
@@ -81,7 +81,7 @@ class Activity extends \yii\base\Widget
                     'activity' => $this->activity,
                     'wallEntryId' => $wallEntryId,
                     'user' => $user,
-                    'target' => $underlyingObject,
+                    'target' => $source,
                     'space' => $space,
                     // Deprecated
                     'workspace' => $space
