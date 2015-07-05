@@ -104,13 +104,13 @@ class Stream extends \yii\base\Action
 
         $this->activeQuery = WallEntry::find();
 
-// If no user is set, take current if logged in
+        // If no user is set, take current if logged in
         if (!Yii::$app->user->isGuest && $this->user == null) {
             $this->user = Yii::$app->user->getIdentity();
         }
 
 
-// Read parameters
+        // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
             $from = Yii::$app->getRequest()->get('from', 0);
             if ($from != 0) {
@@ -152,7 +152,7 @@ class Stream extends \yii\base\Action
         if ($this->mode == self::MODE_ACTIVITY) {
             $this->activeQuery->andWhere(['content.object_model' => \humhub\modules\activity\models\Activity::className()]);
 
-# Dont show own activities
+            // Dont show own activities
             if ($this->user != null) {
                 $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
                 $this->activeQuery->andWhere('content.user_id != :userId', array(':userId' => $this->user->id));
@@ -235,34 +235,37 @@ class Stream extends \yii\base\Action
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $this->init();
-        $entries = $this->activeQuery->all();
+        $wallEntries = $this->activeQuery->all();
 
         $output = "";
         $generatedWallEntryIds = array();
         $lastEntryId = "";
-        foreach ($entries as $entry) {
-            $underlyingObject = $entry->content->getUnderlyingObject();
+        foreach ($wallEntries as $wallEntry) {
+
+            $underlyingObject = $wallEntry->content->getUnderlyingObject();
+
             if ($underlyingObject === null) {
                 throw new Exception('Could not get contents underlying object!');
             }
-            $user = $underlyingObject->content->user;
+
+            $underlyingObject->populateRelation('content', $wallEntry->content);
 
             $output .= $this->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
-                'entry' => $entry,
-                'user' => $user,
+                'entry' => $wallEntry,
+                'user' => $underlyingObject->content->user,
                 'mode' => $this->mode,
                 'object' => $underlyingObject,
                 'content' => $underlyingObject->getWallOut()
                     ], true);
 
-            $generatedWallEntryIds[] = $entry->id;
-            $lastEntryId = $entry->id;
+            $generatedWallEntryIds[] = $wallEntry->id;
+            $lastEntryId = $wallEntry->id;
         }
 
         return [
             'output' => $output,
             'lastEntryId' => $lastEntryId,
-            'counter' => count($entries),
+            'counter' => count($wallEntries),
             'entryIds' => $generatedWallEntryIds
         ];
     }

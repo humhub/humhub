@@ -10,6 +10,7 @@ namespace humhub\modules\content\components;
 
 use Yii;
 use humhub\components\ActiveRecord;
+use humhub\modules\content\models\Content;
 
 /**
  * HActiveRecordContent is the base AR for all content records.
@@ -44,13 +45,6 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     public $autoAddToWall = true;
 
     /**
-     * Corresponding Content ActiveRecord
-     *
-     * @var \humhub\modules\content\models\Content
-     */
-    public $content = null;
-
-    /**
      * If this content is display inside the wall and should be editable
      * there, specify a edit route here.
      *
@@ -66,10 +60,23 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     public function init()
     {
         parent::init();
-        $this->content = new \humhub\modules\content\models\Content();
-        $this->content->setUnderlyingObject($this);
-
         $this->attachBehavior('FollowableBehavior', \humhub\modules\user\behaviors\Followable::className());
+    }
+
+    public function __get($name)
+    {
+        /**
+         * Ensure there is always a corresponding Content 
+         */
+        if ($name == 'content') {
+            $content = parent::__get('content');
+            if (!$this->isRelationPopulated('content') || $content === null) {
+                $content = new Content();
+                $this->populateRelation('content', $content);
+            }
+            return $content;
+        }
+        return parent::__get($name);
     }
 
     /**
@@ -111,23 +118,22 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         return "Default Wall Output for Class " . get_class($this);
     }
 
-    public function afterFind()
-    {
-        $this->content = \humhub\modules\content\models\Content::findOne(['object_model' => $this->className(), 'object_id' => $this->getPrimaryKey()]);
-
-        if ($this->content !== null) {
-            $this->content->setUnderlyingObject($this);
-        }
-
-        parent::afterFind();
-    }
-
     public function afterDelete()
     {
         if ($this->content !== null) {
             $this->content->delete();
         }
         parent::afterDelete();
+    }
+
+    public function beforeSave($insert)
+    {
+
+        if (!$this->content->validate()) {
+            throw new Exception("Could not validate associated Content Record! (" . print_r($this->content->getErrors(), 1) . ")");
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -158,8 +164,8 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
 
         $this->content->updated_at = $this->updated_at;
         $this->content->updated_by = $this->updated_by;
-
         $this->content->save();
+
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert && $this->autoAddToWall) {
@@ -175,41 +181,9 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         }
     }
 
-    public function afterValidate()
+    public function getContent()
     {
-        if (!$this->content->validate())
-            return false;
-
-        if (!parent::afterValidate()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function getErrors($attribute = null)
-    {
-        if ($attribute != null) {
-            return parent::getErrors($attribute);
-        }
-
-        return \yii\helpers\ArrayHelper::merge(parent::getErrors(), $this->content->getErrors());
-    }
-
-    public function validate($attributes = null, $clearErrors = true)
-    {
-        if (parent::validate($attributes, $clearErrors) && $this->content->validate($attributes, $clearErrors))
-            return true;
-
-        return false;
-    }
-
-    public function hasErrors($attribute = null)
-    {
-        if ($attribute != null)
-            return parent::hasErrors($attribute);
-
-        return parent::hasErrors() || $this->content->hasErrors();
+        return $this->hasOne(Content::className(), ['object_id' => 'id'])->andWhere(['object_model' => self::className()]);
     }
 
 }
