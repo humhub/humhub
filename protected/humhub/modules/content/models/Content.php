@@ -616,9 +616,9 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         if ($this->space_id != null) {
-            $container = Space::findOne(['id' => $this->space_id]);
+            $container = $this->space;
         } elseif ($this->user_id != null) {
-            $container = User::findOne(['id' => $this->user_id]);
+            $container = $this->user;
         } else {
             throw new Exception("Could not determine container type!");
         }

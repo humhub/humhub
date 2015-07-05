@@ -141,6 +141,7 @@ class Stream extends \yii\base\Action
     {
         $this->activeQuery->joinWith('content');
         $this->activeQuery->joinWith('content.user');
+        $this->activeQuery->joinWith('content.space');
 
         $this->activeQuery->limit($this->limit);
         $this->activeQuery->andWhere(['user.status' => User::STATUS_ENABLED]);
