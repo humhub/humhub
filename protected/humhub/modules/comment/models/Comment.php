@@ -126,6 +126,7 @@ class Comment extends ContentAddonActiveRecord
             $query->orderBy('created_at ASC');
             $query->limit($limit);
             $query->where(['object_model' => $model, 'object_id' => $id]);
+            $query->joinWith('user');
 
             $comments = $query->all();
             Yii::$app->cache->set($cacheID, $comments, \humhub\models\Setting::Get('expireTime', 'cache'));

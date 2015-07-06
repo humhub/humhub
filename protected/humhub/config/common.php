@@ -1,9 +1,10 @@
 <?php
 
-Yii::setAlias('@webroot', __DIR__ . '/../../../');
+Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
+Yii::setAlias('@module', '@app/modules');
 
 $config = [
     'version' => '0.20',
@@ -33,6 +34,21 @@ $config = [
             'class' => 'humhub\components\i18n\I18N',
             'translations' => [
                 'base' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@humhub/messages'
+                ],
+                'security' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@humhub/messages'
+                ],
+                'error' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@humhub/messages'
+                ],
+                'widgets_views_markdownEditor' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'sourceLanguage' => 'en-US',
                     'basePath' => '@humhub/messages'

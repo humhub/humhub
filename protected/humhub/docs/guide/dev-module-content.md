@@ -1,50 +1,109 @@
-Content Objects
-===============
+# Content Handling
 
-There are three basic base classes which are used to store content.
+The Content handling in HumHub is seperated into three tiers.
 
+## ContentContainer
 
-Container (HActiveRecordContentContainer)
------------------------------------------
+ContentContainers are the top level in the content hierarchy. Each piece of content must be assigned to a container.
 
-Base Class: HActiveRecordContentContainer
+Container Classes:
+- User
+- Space
 
-### Examples
-* User
-* Space
-
-Content (HActiveRecordContent)
-------------------------------
-
-Each content is linked to a content container.
-
-All subclasses of HActiveRecordContent will automatically bound to a Content 
-Model. This Model is reponsible for all generic content features like (ACL,
-Wall, ...). You can access this underlying Content model via the ``content`` attribute.
-
-Base Class: HActiveRecordContent
-
-### Examples
-* Post
-* Poll
-* Task
-
-### Stream / Wall
-
-TDB
+*Note:* It's not possible to create own ContentContainer classes, yet.
 
 
 
+### Controller
 
-Addon (HActiveRecordContentAddon)
----------------------------------
+If the module working with Content you should use the [[humhub\modules\content\components\ContentContainerController]] as base.
 
-Each content addon is linked to a content object which can be accessed via
-``content`` attribute.
+It provides common tasks like:
+- Automatic container loading 
+- Access checks
+- Layout selection based container type (User or Space)
 
-Base Class: HActiveRecordContentAddon
+Example:
 
-### Examples
-* Like
-* Comment
-* File
+```php
+class ExampleController extends \humhub\modules\content\components\ContentContainerController
+{
+
+
+}
+
+```
+
+### ActiveRecord
+
+Each ContentContainer class is derived from [[\humhub\modules\content\components\ContentContainerActiveRecord]] 
+
+TBD (URL, AccessChecking, ProfileImage)
+
+
+## Content
+
+TBD
+
+
+### ActiveRecord
+
+Each Content ActiveRecord (derived from [[\humhub\modules\content\components\ContentActiveRecord]]) is automatically linked to a [[humhub\modules\content\models\Content]] record via the *content* Attribute. 
+
+This Content record holds all neccessary informations and provides common methods:
+
+- ContentContainer which the Content belongs to
+- Meta Informations (created_at, created_by, updated_at, updated_by)
+- Wall Assignments / Methods
+- Archiving / Sticking
+- And more...
+
+If you're implementing an ActiveRecord based on [[humhub\modules\content\components\ContentContainerActiveRecord]] you need to implement following abstract methods:
+
+- getContentTitle() - Returns the displayed name of the Content (e.g. Post or Poll)
+- getContentPreview($maxLength) - Returns a preview of the Content - which is used in Notifications for example.
+- getWallOut() - Returns a Widget Containing the Output in Walls or Search Results
+
+Example:
+
+```php
+
+
+```
+
+
+#### Querying Content
+
+If you're calling find() on a [[\humhub\modules\content\components\ContentActiveRecord]] instance you'll get an special [[\humhub\modules\content\components\ActiveQueryContent]] which provides additional method to select content.
+
+- contentContainer($container) - Find content only inside a given container
+- readable($user) - Return only user readable content
+- ...
+
+#### Permissions
+
+TBD (Read Permissions not enhanceable)
+
+
+
+### Controller
+
+TBD
+
+## ContentAddon
+
+TBD
+
+- Always linked to particual Content, inherits access rules from it
+- Examples: Like, File, Comment
+- Can be nested (e.g. Container -> Content -> Addon (Comment) -> Addon (Like)
+
+### ActiveRecord
+
+TBD
+
+Provides access to the related content via *content *Attribute
+
+### Controller
+
+TBD

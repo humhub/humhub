@@ -64,7 +64,8 @@ class PolymorphicRelation extends Behavior
             return null;
         }
 
-        $object = $className::find()->where(['id' => $this->owner->getAttribute($this->pkAttribute)])->one();
+        $tableName = $className::tableName();
+        $object = $className::find()->where([$tableName . '.id' => $this->owner->getAttribute($this->pkAttribute)])->one();
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
@@ -116,8 +117,6 @@ class PolymorphicRelation extends Behavior
         Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
         return false;
     }
-
-
 
 }
 

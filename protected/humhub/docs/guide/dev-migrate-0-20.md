@@ -1,14 +1,9 @@
 # Migration Guide to HumHub 0.20
 
-Quick Guide about 
-- Open Points ( ToDos, To Check, Bugs)
-- Short Yii2 Change Summary
-- HumHub Changes
-
 
 ## ToDo
 
-### Migrate
+### Open 
 
 - Modules
 	- Uninstall
@@ -17,26 +12,20 @@ Quick Guide about
 	- Notification/Activity Mail Views
 - Integritychecker
 - Tests
-- RichText
-	- Max Length & minimal Option
-- Markdown Editor
 - Caching
 	- HSetting
 	- UserModel: CanApproveUsers
-- Url Rewriting
-- Use AssetBundels
-- Delete
-- cookieValidationKey Installer?
+- Url Rewriting (User)
+- LDAP 
+
+### Bugs / ToDos / To Improve
+
 - Reimplement Access Controls
-- 
-
-### Bugs
-
+- cookieValidationKey Installer?
+- Check Delete Related Record
 - Modal Confirm doesn't disappear
-
-### To Check
-
 - Comment in new Window Mode / Like Link in Modules
+- Use AssetBundels
 - Check Timezone
 - Check Delete
 - Check how to handle unapproved/disabled users (Directory, Spaces)
@@ -55,6 +44,15 @@ Quick Guide about
 
 
 ## Modules
+
+
+### Steps
+
+- Namespace classes e.g. module\example or create own Namespace
+- Raname e.g. ExampleModule.php && ExampleEvents.php   to Module.php / Events.php
+- php yii migrate/create namespace --migrationPath="@module/wiki/migrations"
+
+
 
 ### Structure
 
@@ -133,27 +131,6 @@ TODO: Add example migration script
 
 
 
-### Translations
-
-No HumHub specific changes, Check Yii2.
-
-
-### Menus (Navigations)
-
-TBD
-
-### Stacks (Sidebars)
-
-TBD
-
-### Models
-
-- New base classname for content records
-> [[\humhub\core\content\components\activerecords\Content]]
-
-- New base classname for content addon records
-> [[\humhub\core\content\components\activerecords\ContentAddon]]
-
 
 ### Content & ContentAddon
 
@@ -161,8 +138,6 @@ getContentTitle is now divided into
 
 - getContentTitle
 - getContentPreview
-
-
 
 
 
@@ -313,53 +288,6 @@ echo \humhub\compat\widgets\AjaxButton::widget([
 ]);
 
 ```
-
-#### CActiveForm
-
-TBD
-
-#### HForm / CForm
-
-TBD
-
-
-
-
-
-
-## Yii 2.0 
-
-See Yii Migration Guide
-
-Quick Notes:
-
-- Use Namespaces!
-- Yii::app() -> Yii::$app
-- Use [] instead of array() - Optional
-- Model: Validator  
- - Use array for multiple attributes
- - Validator changes Numeric->Integer ... 
- - String validator doesn't allow Integer Types (cast!)
- - Scenarios now in separate methods secenarios()
- - User::model()->findByPk($idy); -> User::findOne(['id'=>$id); 
- - Check beforeSave/afterSave when overwriting they may have parameters
- 	- Better use $insert when available instead of $this->isNewRecord	
- - Make tableName method static 
- 
-- Views:
-	- ClientScript removed e.g. Yii::app()->clientScript->registerScriptFile
-	- New Widget calls  WidgetClass::widget([options]) & echo it!
-- Controllers
-	-  Always return render action (also Widgets)
-	-  camel case actions e.g. actionEditItem new Url: edit-item
-	-  Easier: JSON Output
-       Yii::$app->response->format = 'json'; return $json; 
-- createUrl removed -> Url::to()
-- CHtml methods reduced (e.g. no AjaxButton - use: \humhub\compat\widgets\AjaxButton instead
-- Behaviors
-	- $this->getOwner() replaced by $this->owner
-	
-
 
 
 

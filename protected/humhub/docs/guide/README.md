@@ -34,7 +34,7 @@ Development - Modules
 
 * [Getting Started](dev-module-index.md)
 * [Events](dev-module-events.md)
-* [Database / Migrations](dev-module-migrations.md)
+* [Database](dev-module-db.md)
 * [Content](dev-module-content.md)
 * [Space/User](dev-module-spaceuser.md)
 * [Navigations](dev-module-menus.md)

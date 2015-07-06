@@ -10,6 +10,7 @@ TBD
 ### Catching an Event
 
 Example event section of the config.php file:
+
 ```php
 // ...
 'events' => [
@@ -21,10 +22,11 @@ Example event section of the config.php file:
 	// ...
  ]
 // ...
-
 ```
 
 ### Processing 
+
+Example of event callback:
 
 ```php
 public static function onTopMenuInit($event)
