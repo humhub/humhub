@@ -23,6 +23,7 @@ $user = $this->context->getUser();
             <div class="col-md-3 layout-sidebar-container">
                 <?php
                 echo \humhub\modules\user\widgets\ProfileSidebar::widget([
+                    'user' => $this->context->user,
                     'widgets' => [
                         [\humhub\modules\user\widgets\UserTags::className(), ['user' => $this->context->user], ['sortOrder' => 10]],
                         [\humhub\modules\user\widgets\UserSpaces::className(), ['user' => $this->context->user], ['sortOrder' => 20]],

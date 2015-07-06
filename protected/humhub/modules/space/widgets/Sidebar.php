@@ -13,6 +13,8 @@ namespace humhub\modules\space\widgets;
 class Sidebar extends \humhub\widgets\BaseStack
 {
 
+    public $space;
+
 }
 
 ?>

@@ -10,6 +10,8 @@ namespace humhub\modules\user\widgets;
 class ProfileSidebar extends \humhub\widgets\BaseStack
 {
 
+    public $user;
+
 }
 
 ?>
