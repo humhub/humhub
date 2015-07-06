@@ -28,6 +28,7 @@
 - Comment in new Window Mode / Like Link in Modules
 - Use AssetBundels
 - Check Timezone
+- Check UserList Ajax Pagination
 - Check Delete
 - Check how to handle unapproved/disabled users (Directory, Spaces)
 - Test Paginations

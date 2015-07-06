@@ -6,6 +6,7 @@ use Yii;
 use humhub\compat\HForm;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Group;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
@@ -154,19 +155,21 @@ class UserController extends Controller
 
     public function actionAdd()
     {
-        $_POST = Yii::app()->input->stripClean($_POST);
+        $userModel = new User();
+        $userModel->scenario = 'registration';
 
-        $userModel = new User('register');
-        $userPasswordModel = new UserPassword('newPassword');
+        $userPasswordModel = new Password();
+        $userPasswordModel->scenario = 'registration';
+
         $profileModel = $userModel->profile;
-        $profileModel->scenario = 'register';
+        $profileModel->scenario = 'registration';
 
         // Build Form Definition
         $definition = array();
         $definition['elements'] = array();
 
-        $groupModels = Group::model()->findAll(array('order' => 'name'));
-        $defaultUserGroup = HSetting::Get('defaultUserGroup', 'authentication_internal');
+        $groupModels = \humhub\modules\user\models\Group::find()->orderBy('name ASC')->all();
+        $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
         $groupFieldType = "dropdownlist";
         if ($defaultUserGroup != "") {
             $groupFieldType = "hidden";
@@ -174,7 +177,9 @@ class UserController extends Controller
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
-
+        if ($groupFieldType == 'hidden') {
+            $userModel->group_id = $defaultUserGroup;
+        }
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
@@ -193,7 +198,7 @@ class UserController extends Controller
                 'group_id' => array(
                     'type' => $groupFieldType,
                     'class' => 'form-control',
-                    'items' => CHtml::listData($groupModels, 'id', 'name'),
+                    'items' => \yii\helpers\ArrayHelper::map($groupModels, 'id', 'name'),
                     'value' => $defaultUserGroup,
                 ),
             ),
@@ -230,31 +235,30 @@ class UserController extends Controller
         );
 
         $form = new HForm($definition);
-        $form['User']->model = $userModel;
-        $form['UserPassword']->model = $userPasswordModel;
-        $form['Profile']->model = $profileModel;
+        $form->models['User'] = $userModel;
+        $form->models['UserPassword'] = $userPasswordModel;
+        $form->models['Profile'] = $profileModel;
 
         if ($form->submitted('save') && $form->validate()) {
 
             $this->forcePostRequest();
 
-            $form['User']->model->status = User::STATUS_ENABLED;
-            if ($form['User']->model->save()) {
+            $form->models['User']->status = User::STATUS_ENABLED;
+            if ($form->models['User']->save()) {
                 // Save User Profile
-                $form['Profile']->model->user_id = $form['User']->model->id;
-                $form['Profile']->model->save();
+                $form->models['Profile']->user_id = $form->models['User']->id;
+                $form->models['Profile']->save();
 
                 // Save User Password
-                $form['UserPassword']->model->user_id = $form['User']->model->id;
-                $form['UserPassword']->model->setPassword($form['UserPassword']->model->newPassword);
-                $form['UserPassword']->model->save();
+                $form->models['UserPassword']->user_id = $form->models['User']->id;
+                $form->models['UserPassword']->setPassword($form->models['UserPassword']->newPassword);
+                $form->models['UserPassword']->save();
 
-                $this->redirect($this->createUrl('index'));
-                return;
+                return $this->redirect(Url::to(['index']));
             }
         }
 
-        $this->render('add', array('form' => $form));
+        return $this->render('add', array('hForm' => $form));
     }
 
     /**
