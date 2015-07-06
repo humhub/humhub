@@ -175,7 +175,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             ;
         }
 
-// Disable all enabled modules
+        // Disable all enabled modules
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
                 $this->disableModule($moduleId);

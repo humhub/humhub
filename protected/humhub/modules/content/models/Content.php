@@ -170,9 +170,6 @@ class Content extends \humhub\components\ActiveRecord
         if ($this->object_model == "" || $this->object_id == "")
             throw new Exception("Could not save content with object_model or object_id!");
 
-        if ($this->user_id == "")
-            throw new Exception("Could not save content without user_id!");
-
 
         // Set some default values
         if (!$this->archived) {
@@ -185,6 +182,14 @@ class Content extends \humhub\components\ActiveRecord
             $this->sticked = 0;
         }
 
+        if ($insert) {
+            if ($this->user_id == "") {
+                $this->user_id = Yii::$app->user->id;
+            }
+        }
+
+        if ($this->user_id == "")
+            throw new Exception("Could not save content without user_id!");
 
         return parent::beforeSave($insert);
     }

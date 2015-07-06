@@ -13,26 +13,32 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 
 /**
- * HActiveRecordContent is the base AR for all content records.
- *
- * Each model which represents a piece of content should derived from it.
- * (e.g. Post, Question, Task, Note, ...)
- *
- * It automatically binds a Content model to each instance.
- *
- * The Content Model is responsible for:
- *  - Content to Container (User/Space) Binding
- *  - Access Controls
- *  - Wall Integration
- *  - ...
- * (See Content Model for more details.)
- *
- * Note: Comments, Likes or Files are NOT Content Objects.
- * These objects are ContentAddons which always belongs to one Content Object.
- *
- * @author Lucas Bartholemy <lucas@bartholemy.com>
- * @package humhub.components
- * @since 0.5
+ * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
+ * 
+ * Each instance automatically belongs to a [[\humhub\modules\content\models\Content]] record which is accessible via the content attribute.
+ * This relations will be automatically added/updated and is also available before this record is inserted.
+ * 
+ * The Content record/model holds all neccessary informations/methods like:
+ * - Related ContentContainer (must be set before save!)
+ * - Visibility
+ * - Meta informations (created_at, created_by, ...)
+ * - Wall handling, archiving, sticking, ...
+ * 
+ * Before adding a new ContentActiveRecord instance, you need at least assign an ContentContainer.
+ * 
+ * Example:
+ * 
+ * ```php
+ * $post = new Post();
+ * $post->content->container = $space;
+ * $post->content->visibility = Content::VISIBILITY_PRIVATE; // optional
+ * $post->message = "Hello world!";
+ * $post->save();
+ * ```
+ * 
+ * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
+ * 
+ * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements \humhub\modules\content\interfaces\ContentTitlePreview
 {
@@ -63,6 +69,9 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         $this->attachBehavior('FollowableBehavior', \humhub\modules\user\behaviors\Followable::className());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __get($name)
     {
         /**
@@ -118,6 +127,9 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         return "Default Wall Output for Class " . get_class($this);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterDelete()
     {
         if ($this->content !== null) {
@@ -126,6 +138,9 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         parent::afterDelete();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
 
@@ -137,33 +152,22 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     }
 
     /**
-     * After Saving of records of type content, automatically add/bind the
-     * corresponding content to it.
-     *
-     * If the automatic wall adding (autoAddToWall) is enabled, also create
-     * wall entry for this content.
-     *
-     * NOTE: If you overwrite this method, e.g. for creating activities ensure
-     * this (parent) implementation is invoked BEFORE your implementation. Otherwise
-     * the Content Object is not available.
+     * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
     {
         // Auto follow this content
         if ($this->className() != \humhub\modules\activity\models\Activity::className()) {
-            $this->follow($this->created_by);
+            $this->follow($this->content->user_id);
         }
 
+        // Set polymorphic relation
         if ($insert) {
-            $this->content->user_id = $this->created_by;
             $this->content->object_model = $this->className();
             $this->content->object_id = $this->getPrimaryKey();
-            $this->content->created_at = $this->created_at;
-            $this->content->created_by = $this->created_by;
         }
 
-        $this->content->updated_at = $this->updated_at;
-        $this->content->updated_by = $this->updated_by;
+        // Always save content
         $this->content->save();
 
         parent::afterSave($insert, $changedAttributes);
@@ -181,9 +185,26 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         }
     }
 
+    /**
+     * Related Content model
+     * 
+     * @return \yii\db\ActiveQuery
+     */
     public function getContent()
     {
         return $this->hasOne(Content::className(), ['object_id' => 'id'])->andWhere(['object_model' => self::className()]);
+    }
+
+    /**
+     * Returns an ActiveQueryContent to find content.
+     * 
+     * @inheritdoc
+     * 
+     * @return ActiveQueryContent
+     */
+    public static function find()
+    {
+        return Yii::createObject(ActiveQueryContent::className(), [get_called_class()]);
     }
 
 }
