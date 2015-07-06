@@ -1,8 +1,15 @@
 <?php
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/resources/highlight.js/highlight.pack.js');
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/resources/highlight.js/styles/' . $this->highlightJsCss . '.css');
-Yii::app()->clientScript->registerScript("highlightJs", '$("pre code").each(function(i, e) { hljs.highlightBlock(e); });');
+$this->registerJsFile('@web/resources/highlight.js/highlight.pack.js');
+$this->registerCssFile('@web/resources/highlight.js/styles/' . $highlightJsCss . '.css');
 ?>
 <div class="markdown-render">
-<?php echo $content; ?>
+    <?php echo $content; ?>
 </div>
+
+<script>
+    $(function () {
+        $("pre code").each(function (i, e) {
+            hljs.highlightBlock(e);
+        });
+    });
+</script>

@@ -1,24 +1,14 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\widgets;
+
+use Exception;
 
 /**
  * MarkdownViewWidget shows Markdown flavored content
@@ -41,7 +31,7 @@ class MarkdownView extends \yii\base\Widget
      *
      * @var string
      */
-    public $parserClass = "HMarkdown";
+    public $parserClass = "humhub\libs\Markdown";
 
     /**
      * Purify output after parsing
@@ -57,8 +47,8 @@ class MarkdownView extends \yii\base\Widget
 
     public function init()
     {
-        if (!Helpers::CheckClassType($this->parserClass, "cebe\markdown\Parser")) {
-            throw new CException("Invalid markdown parser class given!");
+        if (!\humhub\libs\Helpers::CheckClassType($this->parserClass, "cebe\markdown\Parser")) {
+            throw new Exception("Invalid markdown parser class given!");
         }
     }
 
@@ -72,10 +62,10 @@ class MarkdownView extends \yii\base\Widget
         $html = $parser->parse($this->markdown);
 
         if ($this->purifyOutput) {
-            $html = \yii\helpers\HtmlPurifier::progress($html);
+            $html = \yii\helpers\HtmlPurifier::process($html);
         }
 
-        return $this->render('markdownView', array('content' => $html));
+        return $this->render('markdownView', array('content' => $html, 'highlightJsCss' => $this->highlightJsCss));
     }
 
 }

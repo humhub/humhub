@@ -1,26 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/inline/CodeTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/inline/EmphStrongTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/inline/LinkTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/inline/StrikeoutTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/inline/UrlLinkTrait.php');
+namespace humhub\libs;
 
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/CodeTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/FencedCodeTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/HeadlineTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/HtmlTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/ListTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/QuoteTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/RuleTrait.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/block/TableTrait.php');
+use humhub\modules\file\models\File;
 
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/Parser.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/Markdown.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/MarkdownExtra.php');
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/GithubMarkdown.php');
-
-class HMarkdown extends cebe\markdown\GithubMarkdown
+class Markdown extends \cebe\markdown\GithubMarkdown
 {
 
     protected function handleInternalUrls($url)
@@ -29,7 +13,7 @@ class HMarkdown extends cebe\markdown\GithubMarkdown
         // Handle urls to file 
         if (substr($url, 0, 10) === "file-guid-") {
             $guid = str_replace('file-guid-', '', $url);
-            $file = File::model()->findByAttributes(array('guid' => $guid));
+            $file = File::findOne(['guid' => $guid]);
             if ($file !== null) {
                 return $file->getUrl();
             }

@@ -1,17 +1,20 @@
 <?php
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+
 /**
  * Create a hidden field to store uploaded files guids
  */
-echo CHtml::hiddenField('fileUploaderHiddenGuidField', "", array('id' => 'fileUploaderHiddenGuidField_' . $fieldId));
+echo Html::hiddenInput('fileUploaderHiddenGuidField', "", array('id' => 'fileUploaderHiddenGuidField_' . $fieldId));
 
 
+$this->registerCssFile('@web/resources/bootstrap-markdown/css/bootstrap-markdown.min.css');
+$this->registerCssFile('@web/css/bootstrap-markdown-override.css');
 
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/resources/bootstrap-markdown/css/bootstrap-markdown.min.css');
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/bootstrap-markdown-override.css');
-
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/resources/bootstrap-markdown/js/bootstrap-markdown.js');
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/markdownEditor.js');
-Yii::app()->clientScript->setJavascriptVariable('markdownPreviewUrl', $this->previewUrl);
+$this->registerJsFile('@web/resources/bootstrap-markdown/js/bootstrap-markdown.js');
+$this->registerJsFile('@web/js/markdownEditor.js');
+$this->registerJsVar('markdownPreviewUrl', $previewUrl);
 
 $translations = array(
     'Bold' => Yii::t('widgets_views_markdownEditor', 'Bold'),
@@ -39,11 +42,11 @@ $translations = array(
 
 $translationsJS = "$.fn.markdown.messages['en'] = {\n";
 foreach ($translations as $key => $value) {
-    $translationsJS .= "\t'" . $key . "': '" . CHtml::encode($value) . "',\n";
+    $translationsJS .= "\t'" . $key . "': '" . Html::encode($value) . "',\n";
 }
 $translationsJS .= "};\n";
-Yii::app()->clientScript->registerScript('markdownEditorMessages', $translationsJS, CClientScript::POS_READY);
-Yii::app()->clientScript->registerScript("initMarkDownEditor_" . $this->fieldId, "initMarkdownEditor('" . $this->fieldId . "')", CClientScript::POS_READY);
+$this->registerJs($translationsJS);
+$this->registerJs("initMarkdownEditor('" . $fieldId . "')");
 ?>
 
 <?php
@@ -63,12 +66,12 @@ Yii::app()->clientScript->registerScript("initMarkDownEditor_" . $this->fieldId,
     <div class="modal-body">
 
     <div class="uploadForm">
-    <?php echo CHtml::beginForm('', 'post'); ?>
+    <?php echo Html::beginForm('', 'post'); ?>
     <input class="fileUploadButton" type="file"
     name="files[]"
-    data-url="<?php echo Yii::app()->createUrl('//file/file/upload', array()); ?>"
+    data-url="<?php echo Url::to(['/file/file/upload']); ?>"
     multiple>
-    <?php echo CHtml::endForm(); ?>
+    <?php echo Html::endForm(); ?>
     </div>
 
     <div class="uploadProgress">
