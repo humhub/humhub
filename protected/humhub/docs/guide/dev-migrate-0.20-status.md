@@ -20,7 +20,9 @@
 ## Bugs / ToDos / To Improve
 
 - Reimplement Access Controls
-- cookieValidationKey Installer?
+- Installer
+	- cookieValidationKey Installer?
+	- Birthday Field not populated
 - Check Delete Related Record
 - Modal Confirm doesn't disappear
 - Comment in new Window Mode / Like Link in Modules
@@ -43,5 +45,20 @@
 
 ### Open
 
+- Calendar
 - Custom Pages
+- Polls
 - Mail
+- Tasks
+
+- Meeting
+- NewMembers
+- Translation
+- SMS
+- ReportContent
+- Notes
+- MostActiveUsers
+- LinkList
+- Birthday
+- BreakingNews
+- Updater

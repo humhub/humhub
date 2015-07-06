@@ -62,6 +62,7 @@ class AccountController extends Controller
             $user->save();
 
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
+            return $this->redirect(Url::to(['edit']));
         }
 
         return $this->render('edit', array('hForm' => $form));

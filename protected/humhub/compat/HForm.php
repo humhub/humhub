@@ -180,8 +180,7 @@ class HForm extends \yii\base\Component
             } elseif ($definition['type'] == 'password') {
                 $output .= $this->form->field($model, $name)->passwordInput($options);
             } elseif ($definition['type'] == 'datetime') {
-                #$output .= $this->form->field($model, $name)->textarea();
-                $output .= $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd', 'clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true,], 'options' => ['class' => 'form-control']]);
+                $output .= $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true,], 'options' => ['class' => 'form-control']]);
             } else {
                 $output .= "Field Type " . $definition['type'] . " not supported by Compat HForm";
             }

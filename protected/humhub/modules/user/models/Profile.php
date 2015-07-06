@@ -205,9 +205,10 @@ class Profile extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        foreach ($this->attributes as $key => $value)
-            if ($value == "")
-                $this->$key = NULL;
+        foreach (ProfileField::find()->all() as $profileField) {
+            $key = $profileField->internal_name;
+            $this->$key = $profileField->getFieldType()->beforeProfileSave($this->$key);
+        }
 
         return parent::beforeSave($insert);
     }

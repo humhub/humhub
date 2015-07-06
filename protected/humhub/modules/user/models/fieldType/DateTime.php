@@ -85,7 +85,6 @@ class DateTime extends BaseType
         }
 
         return parent::save();
-
     }
 
     /**
@@ -96,7 +95,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, 'date', 'format' => 'yyyy-MM-dd hh:mm:ss');
+        $rules[] = array($this->profileField->internal_name, 'date');
         return parent::getFieldRules($rules);
     }
 
@@ -114,6 +113,9 @@ class DateTime extends BaseType
         ));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getUserValue($user, $raw = true)
     {
 
@@ -124,6 +126,19 @@ class DateTime extends BaseType
             return "";
 
         return $date;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeProfileSave($value)
+    {
+        if ($value == "") {
+            return null;
+        }
+
+        // Convert Value to DB Timestamp
+        return Yii::$app->formatter->asDateTime($value, 'php:Y-m-d H:i:s');
     }
 
 }

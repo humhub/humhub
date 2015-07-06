@@ -30,8 +30,6 @@ class BaseType extends \yii\base\Model
      */
     public $profileField = null;
 
-
-
     public function init()
     {
         // Fire Event
@@ -187,8 +185,6 @@ class BaseType extends \yii\base\Model
         Yii::$app->getDb()->getSchema()->getTableSchema(\humhub\modules\user\models\Profile::tableName(), true);
 
         return true;
-
-
     }
 
     /**
@@ -271,6 +267,21 @@ class BaseType extends \yii\base\Model
     public function addFieldType($fieldClass, $title)
     {
         $this->fieldTypes[$fieldClass] = $title;
+    }
+
+    /**
+     * This method is called before the field value is stored in Profile table.
+     * 
+     * @param string $value
+     * @return string modified value
+     */
+    public function beforeProfileSave($value)
+    {
+        if ($value == "") {
+            return null;
+        }
+
+        return $value;
     }
 
 }
