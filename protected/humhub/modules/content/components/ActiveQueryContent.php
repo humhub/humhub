@@ -89,4 +89,9 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
         return parent::andWhere($condition, $params);
     }
 
+    public function userRelated($scopes, $user = null)
+    {
+        return $this;
+    }
+
 }
