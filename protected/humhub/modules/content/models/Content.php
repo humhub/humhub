@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\activity\models\Activity;
 
 /**
  * This is the model class for table "content".
@@ -644,6 +645,10 @@ class Content extends \humhub\components\ActiveRecord
 
     public function validateVisibility()
     {
+        if ($this->object_model == Activity::className() || $this->getPolymorphicRelation()->className() == Activity::className()) {
+            return;
+        }
+
         if ($this->container->className() == Space::className()) {
             if (!$this->container->canShare() && $this->visibility) {
                 $this->addError('visibility', Yii::t('base', 'You cannot create public visible content!'));

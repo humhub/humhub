@@ -83,6 +83,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
             if (!$this->isRelationPopulated('content') || $content === null) {
                 $content = new Content();
                 $this->populateRelation('content', $content);
+                $content->setPolymorphicRelation($this);
             }
             return $content;
         }
