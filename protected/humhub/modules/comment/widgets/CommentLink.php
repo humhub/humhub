@@ -8,7 +8,7 @@ namespace humhub\modules\comment\widgets;
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class Link extends \yii\base\Widget
+class CommentLink extends \yii\base\Widget
 {
 
     const MODE_INLINE = 'inline';

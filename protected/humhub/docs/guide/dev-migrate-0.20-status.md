@@ -20,6 +20,8 @@
 ## Bugs / ToDos / To Improve
 
 - Reimplement Access Controls
+- Check Confirm Link
+- If Admin creates User (Invalid Space joined Activity)
 - Installer
 	- cookieValidationKey Installer?
 	- Birthday Field not populated

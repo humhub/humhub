@@ -28,7 +28,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @package humhub.modules_core.like.models
  * @since 0.5
  */
-class Like extends ContentAddonActiveRecord
+class Like extends ContentAddonActiveRecord 
 {
 
     /**

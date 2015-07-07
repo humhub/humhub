@@ -226,7 +226,7 @@ class InitialData
         $field->title = 'Birthday';
         $field->sort_order = 900;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = 'ProfileFieldTypeBirthday';
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Birthday::className();
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->save();

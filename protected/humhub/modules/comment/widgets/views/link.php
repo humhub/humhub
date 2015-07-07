@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
 
 
-<?php if ($mode == \humhub\modules\comment\widgets\Link::MODE_POPUP): ?>
+<?php if ($mode == \humhub\modules\comment\widgets\CommentLink::MODE_POPUP): ?>
     <a href="<?php echo Url::to(['/comment/comment/show', 'contentModel' => $objectModel, 'contentId' => $objectId, 'mode' => 'popup']); ?>"
        class="" data-toggle="modal"
        title="" data-target="#globalModal"

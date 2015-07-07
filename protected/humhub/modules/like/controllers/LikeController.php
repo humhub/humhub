@@ -4,7 +4,7 @@ namespace humhub\modules\like\controllers;
 
 use Yii;
 use humhub\modules\like\models\Like;
-use humhub\models\Setting;
+use humhub\modules\user\widgets\UserListBox;
 
 /**
  * Like Controller
@@ -92,46 +92,9 @@ class LikeController extends \humhub\modules\content\components\ContentAddonCont
         ]);
         $query->orderBy('like.created_at DESC');
 
-        $countQuery = clone $query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => Setting::Get('paginationSize')]);
-        $query->offset($pagination->offset)->limit($pagination->limit);
+        $title = Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this");
 
-        return $this->renderAjax("@humhub/modules/user/views/_listUsers", [
-                    'title' => Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this"),
-                    'users' => $query->all(),
-                    'pagination' => $pagination
-        ]);
-
-        /*
-          $page = (int) Yii::$app->request->getParam('page', 1);
-
-          $total = Like::model()->count('object_model=:omodel AND object_id=:oid', array(':omodel' => $this->contentModel, 'oid' => $this->contentId));
-
-          $usersPerPage = Setting::Get('paginationSize');
-
-          $sql = "SELECT u.* FROM `like` l " .
-          "LEFT JOIN user u ON l.created_by = u.id " .
-          "WHERE l.object_model=:omodel AND l.object_id=:oid AND u.status=" . User::STATUS_ENABLED . " " .
-          "ORDER BY l.created_at DESC " .
-          "LIMIT " . intval(($page - 1) * $usersPerPage) . "," . intval($usersPerPage);
-          $params = array(':omodel' => $this->contentModel, ':oid' => $this->contentId);
-
-          $pagination = new CPagination($total);
-          $pagination->setPageSize($usersPerPage);
-
-          $users = User::model()->findAllBySql($sql, $params);
-
-          $output = $this->renderPartial('application.modules_core.user.views._listUsers', array(
-          'title' => Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this"),
-          'users' => $users,
-          'pagination' => $pagination
-          ), true);
-
-          Yii::$app->clientScript->render($output);
-          echo $output;
-          Yii::$app->end();
-         *
-         */
+        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }
