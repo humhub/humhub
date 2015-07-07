@@ -109,10 +109,14 @@ class BaseActivity extends \yii\base\Component
             $model->content->container = $this->source->content->container;
             $model->content->visibility = $this->source->content->visibility;
 
-            if ($this->source instanceof ContentActiveRecord) {
-                $model->content->user_id = $this->source->content->user_id;
+            if ($this->originator === null) {
+                if ($this->source instanceof ContentActiveRecord) {
+                    $model->content->user_id = $this->source->content->user_id;
+                } else {
+                    $model->content->user_id = $this->source->created_by;
+                }
             } else {
-                $model->content->user_id = $this->source->created_by;
+                $model->content->user_id = $this->originator->id;
             }
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $model->content->visibility = $this->visibility;
