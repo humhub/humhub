@@ -9,7 +9,7 @@ class m150704_005418_namespace extends Migration
 
     public function up()
     {
-        $this->namespaceClass('Comment', Comment::className());
+        $this->renameClass('Comment', Comment::className());
     }
 
     public function down()

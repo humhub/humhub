@@ -9,7 +9,7 @@ class m150704_005434_namespace extends Migration
 
     public function up()
     {
-        $this->namespaceClass('Like', Like::className());
+        $this->renameClass('Like', Like::className());
     }
 
     public function down()

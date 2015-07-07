@@ -19,29 +19,29 @@ class Migration extends \yii\db\Migration
 {
 
     /**
-     * Namespaces a class in database.
+     * Renames a class
      * 
-     * Some content class names are stored in database (e.g. Content) - this
-     * method will automatically updates related tables.
+     * This is often required because some classes are also stored in database 
+     * e.g. for polymorphic relations. 
      * 
-     * Use this method to upgrade to 0.20.
+     * This method is also required for 0.20 namespace migration!
      * 
      * @param string $oldClass
-     * @param string $namespacedClass
+     * @param string $newClass
      */
-    protected function namespaceClass($oldClass, $namespacedClass)
+    protected function renameClass($oldClass, $newClass)
     {
-        $this->updateSilent('activity', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('activity', ['class' => $namespacedClass], ['class' => $oldClass]);
-        $this->updateSilent('comment', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('content', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('file', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('like', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('notification', ['source_class' => $namespacedClass], ['source_class' => $oldClass]);
-        $this->updateSilent('notification', ['obsolete_target_object_model' => $namespacedClass], ['obsolete_target_object_model' => $oldClass]);
-        $this->updateSilent('user_mentioning', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('user_follow', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
-        $this->updateSilent('wall', ['object_model' => $namespacedClass], ['object_model' => $oldClass]);
+        $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
+        $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('content', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('file', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('like', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
+        $this->updateSilent('notification', ['obsolete_target_object_model' => $newClass], ['obsolete_target_object_model' => $oldClass]);
+        $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('user_follow', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
 
         /**
          * Looking up "NewLike" activities with this className 

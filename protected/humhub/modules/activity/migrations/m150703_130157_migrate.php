@@ -11,7 +11,7 @@ class m150703_130157_migrate extends Migration
 
     public function up()
     {
-        $this->namespaceClass('Activity', Activity::className());
+        $this->renameClass('Activity', Activity::className());
 
         // Space Created Activity - object_model/object_id (source fix)
         $activities = (new \yii\db\Query())->select("activity.*, content.space_id")->from('activity')

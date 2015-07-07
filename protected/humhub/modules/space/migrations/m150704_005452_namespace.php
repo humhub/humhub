@@ -9,7 +9,7 @@ class m150704_005452_namespace extends Migration
 
     public function up()
     {
-        $this->namespaceClass('Space', Space::className());
+        $this->renameClass('Space', Space::className());
     }
 
     public function down()

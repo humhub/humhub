@@ -8,7 +8,7 @@ class m150704_005338_namespace extends Migration
 {
     public function up()
     {
-        $this->namespaceClass('Post', Post::className());
+        $this->renameClass('Post', Post::className());
     }
 
     public function down()
