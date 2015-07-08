@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Account' => '',
-  'Create account' => '',
+  'Account' => 'Paskyra',
+  'Create account' => 'Sukurti paskyrą',
 );

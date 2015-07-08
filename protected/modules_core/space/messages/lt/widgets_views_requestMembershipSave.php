@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Close' => '',
-  'Request workspace membership' => '',
-  'Your request was successfully submitted to the workspace administrators.' => '',
+  'Close' => 'Uždaryti',
+  'Request workspace membership' => 'Prašyti narystės į darbo erdvę',
+  'Your request was successfully submitted to the workspace administrators.' => 'Jūsų prašymas sėkmingai perduotas darbo erdvės administratoriams.',
 );

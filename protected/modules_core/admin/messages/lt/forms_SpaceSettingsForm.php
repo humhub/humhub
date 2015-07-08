@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Default Join Policy' => '',
-  'Default Visibility' => '',
+  'Default Join Policy' => 'Numatytoji prisijungimo politika',
+  'Default Visibility' => 'Numatytasis matomumas',
 );

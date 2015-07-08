@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Create new space' => '',
-  'My spaces' => '',
-  'Search' => '',
+  'Create new space' => 'Sukurti naują erdvę',
+  'My spaces' => 'Mano erdvės',
+  'Search' => 'Ieškoti',
 );

@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Hostname' => '',
-  'Name of Database' => '',
-  'Password' => '',
-  'Username' => '',
+  'Hostname' => 'Pagrindinis kompiuteris',
+  'Name of Database' => 'Duomenų bazės pavadinimas',
+  'Password' => 'Slaptažodis',
+  'Username' => 'Vartotojo vardas',
 );
