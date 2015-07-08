@@ -5,6 +5,7 @@ return array (
   'E-Mail' => 'E-Mail',
   'Modules' => 'Module',
   'Notifications' => 'Mitteilungen',
+  'Username' => 'Benutzername',
   'Password' => 'Passwort',
   'Profile' => 'Profil',
   'Settings' => 'Einstellungen',

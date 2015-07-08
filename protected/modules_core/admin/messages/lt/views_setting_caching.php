@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Cache</strong> Settings' => '',
-  'Save & Flush Caches' => '',
+  '<strong>Cache</strong> Settings' => '<strong>Slėptuvės</strong> nustatymai',
+  'Save & Flush Caches' => 'Išsaugoti ir perkelti į slėptuvę',
 );

@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Saved' => '',
+  'Saved' => 'Išsaugota',
 );

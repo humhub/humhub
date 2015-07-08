@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Base URL' => '',
-  'Default language' => '',
-  'Default space' => '',
-  'Invalid space' => '',
-  'Logo upload' => '',
-  'Name of the application' => '',
-  'Show introduction tour for new users' => '',
-  'Show user profile post form on dashboard' => '',
+  'Base URL' => 'Pagrindinis URL',
+  'Default language' => 'Numatytoji kalba',
+  'Default space' => 'Numatytoji erdvė',
+  'Invalid space' => 'Negalima erdvė',
+  'Logo upload' => 'Įkelti logo',
+  'Name of the application' => 'Paraiškos pavadinimas',
+  'Show introduction tour for new users' => 'Rodyti instrukciją naujiems vartotojams',
+  'Show user profile post form on dashboard' => 'Rodyti vartotojo profilio skelbimų formą prietaisų skyde',
 );

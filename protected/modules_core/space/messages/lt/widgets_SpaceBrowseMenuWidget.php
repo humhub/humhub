@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin' => '',
-  'Members' => '',
-  'My Space List' => '',
-  'My space summary' => '',
-  'Space directory' => '',
-  'Spaces' => '',
+  'Admin' => 'Administratorius',
+  'Members' => 'Nariai',
+  'My Space List' => 'Mano erdvės sąrašas',
+  'My space summary' => 'Mano erdvės apžvalga',
+  'Space directory' => 'Erdvės adresatų knyga',
+  'Spaces' => 'Erdvės',
 );

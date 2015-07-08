@@ -178,7 +178,7 @@ class ProfileFieldTypeText extends ProfileFieldType {
         $value = $user->profile->$internalName;
 
         if (!$raw && $this->validator == self::VALIDATOR_EMAIL) {
-            return HHtml::link($value, $value);
+            return HHtml::link($value, 'mailto:'.$value);
         } elseif (!$raw && $this->validator == self::VALIDATOR_URL) {
             return HHtml::link($value, $value, array('target'=> '_blank'));
         }
