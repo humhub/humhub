@@ -1,34 +1,28 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\controllers;
 
 use Yii;
+use yii\helpers\Url;
 use humhub\compat\HForm;
-use humhub\components\Controller;
+use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Group;
-use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
 
 /**
- * @package humhub.modules_core.admin.controllers
+ * User management
+ * 
  * @since 0.5
  */
 class UserController extends Controller
 {
-
-    public $subLayout = "/_layout";
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ]
-        ];
-    }
 
     /**
      * Returns a List of Users

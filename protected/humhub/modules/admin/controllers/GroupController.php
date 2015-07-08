@@ -1,38 +1,26 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use humhub\components\Controller;
+use yii\helpers\Url;
+use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
-use yii\helpers\Url;
 
 /**
  * Group Administration Controller
  *
- * @package humhub.modules_core.admin.controllers
  * @since 0.5
  */
 class GroupController extends Controller
 {
-
-    /**
-     * Layout View to use
-     *
-     * @var type
-     */
-    public $subLayout = "/_layout";
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ]
-        ];
-    }
 
     /**
      * List all available user groups

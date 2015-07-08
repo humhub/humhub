@@ -19,6 +19,7 @@
 
 ## Bugs / ToDos / To Improve
 
+- Delete config.php Cache on Error
 - Reimplement Access Controls
 - Check Confirm Link
 - If Admin creates User (Invalid Space joined Activity)

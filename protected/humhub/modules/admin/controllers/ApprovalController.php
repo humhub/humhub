@@ -1,28 +1,21 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use humhub\components\Controller;
+use humhub\modules\admin\components\Controller;
 
 /**
- * @package humhub.modules_core.admin.controllers
- * @since 0.5
+ * ApprovalController handels new user approvals
  */
 class ApprovalController extends Controller
 {
-
-    public $subLayout = "/_layout";
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ]
-        ];
-    }
 
     /**
      * Shows a list of all users waiting for an approval

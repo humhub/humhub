@@ -1,27 +1,24 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\components\Controller;
+use humhub\modules\admin\components\Controller;
 
 /**
- * @package humhub.modules_core.admin.controllers
+ * IndexController is the Admin section start point.
+ * 
  * @since 0.5
  */
 class IndexController extends Controller
 {
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ]
-        ];
-    }
 
     /**
      * List all available user groups

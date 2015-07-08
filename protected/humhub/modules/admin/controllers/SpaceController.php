@@ -1,30 +1,25 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\components\Controller;
+use humhub\modules\admin\components\Controller;
 use humhub\models\Setting;
 
 /**
- * @package humhub.modules_core.admin.controllers
+ * SpaceController provides global space administration.
+ * 
  * @since 0.5
  */
 class SpaceController extends Controller
 {
-
-    public $subLayout = "/_layout";
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ]
-        ];
-    }
 
     /**
      * Shows all available spaces

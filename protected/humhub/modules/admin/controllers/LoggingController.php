@@ -9,28 +9,16 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use humhub\components\Controller;
 use yii\helpers\Url;
+use humhub\modules\admin\components\Controller;
 
 /**
- * LoggingController
+ * LoggingController provides access to the database logging.
  *
  * @since 0.5
  */
 class LoggingController extends Controller
 {
-
-    public $subLayout = "/_layout";
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ]
-        ];
-    }
 
     public function actionIndex()
     {

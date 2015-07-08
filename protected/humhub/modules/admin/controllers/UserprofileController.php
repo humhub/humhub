@@ -1,33 +1,28 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use humhub\components\Controller;
+use yii\helpers\Url;
+use humhub\compat\HForm;
+use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\fieldtype\BaseType;
-use humhub\compat\HForm;
-use yii\helpers\Url;
 
 /**
- * @package humhub.modules_core.admin.controllers
+ * UserprofileController provides manipulation of the user's profile fields & categories.
+ * 
  * @since 0.5
  */
 class UserProfileController extends Controller
 {
-
-    public $subLayout = "/_layout";
-
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'adminOnly' => true
-            ],
-        ];
-    }
 
     /**
      * Shows overview of all
