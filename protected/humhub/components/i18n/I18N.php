@@ -11,13 +11,14 @@ namespace humhub\components\i18n;
 use Yii;
 
 /**
- * Description of I18N
- *
- * @author luke
+ * @inheritdoc
  */
 class I18N extends \yii\i18n\I18N
 {
 
+    /**
+     * @inheritdoc
+     */
     public function getMessageSource($category)
     {
         // Requested MessageSource already loaded
@@ -28,7 +29,8 @@ class I18N extends \yii\i18n\I18N
         // Try to automatically assign Module->MessageSource
         foreach (Yii::$app->getModules() as $moduleId => $config) {
 
-            $moduleCategory = ucfirst($moduleId) . "Module.";
+            $moduleCategory = $this->getTranslationCategory($moduleId);
+
             if (substr($category, 0, strlen($moduleCategory)) === $moduleCategory) {
 
                 $className = "";
@@ -50,10 +52,12 @@ class I18N extends \yii\i18n\I18N
                 }
             }
         }
-
         return parent::getMessageSource($category);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function format($message, $params, $language)
     {
         if (count($params) !== 0) {
@@ -83,12 +87,34 @@ class I18N extends \yii\i18n\I18N
                 } else {
                     $fixedParams[$param] = $value;
                 }
-
             }
             return parent::format($message, $fixedParams, $language);
         }
 
         return parent::format($message, $params, $language);
+    }
+
+    /**
+     * Returns the default translation category for a given moduleId.
+     * 
+     * Examples:
+     *      example -> ExampleModule.
+     *      long_module_name -> LongModuleNameModule.
+     * 
+     * @param string $moduleId
+     * @return strign Category Id
+     */
+    protected function getTranslationCategory($moduleId)
+    {
+        $moduleCategory = "";
+        if (strpos($moduleId, '_') !== false) {
+            foreach (explode("_", $moduleId) as $part) {
+                $moduleCategory .= ucfirst($part);
+            }
+        } else {
+            $moduleCategory = ucfirst($moduleId);
+        }
+        return $moduleCategory . "Module.";
     }
 
 }

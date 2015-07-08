@@ -11,9 +11,7 @@ namespace humhub\components\i18n;
 use Yii;
 
 /**
- * Description of MessageSource
- *
- * @author luke
+ * @inheritdoc
  */
 class MessageSource extends \yii\i18n\PhpMessageSource
 {
