@@ -141,6 +141,7 @@ return array(
             'ko' => '한국어',
             'id' => 'Bahasa Indonesia',
             'lt' => 'lietuvių kalba',
+            'hr' => 'hrvatski'
         ),
         'dynamicConfigFile' => dirname(__FILE__) . '/local/_settings.php',
     ),
