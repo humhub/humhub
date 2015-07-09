@@ -11,6 +11,7 @@ namespace humhub\widgets;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 
 /**
@@ -40,6 +41,8 @@ class AjaxButton extends Widget
 
         if (!isset($this->ajaxOptions['url'])) {
             $this->ajaxOptions['url'] = new JsExpression('$(this).parents("form").attr("action")');
+        } else {
+            $this->ajaxOptions['url'] = Url::to($this->ajaxOptions['url']);
         }
 
         if (!isset($this->ajaxOptions['data']) && isset($this->ajaxOptions['type'])) {

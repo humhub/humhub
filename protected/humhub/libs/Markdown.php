@@ -2,6 +2,7 @@
 
 namespace humhub\libs;
 
+use yii\helpers\Html;
 use humhub\modules\file\models\File;
 
 class Markdown extends \cebe\markdown\GithubMarkdown
@@ -57,7 +58,7 @@ class Markdown extends \cebe\markdown\GithubMarkdown
 
     protected function renderAutoUrl($block)
     {
-        return CHtml::link($block[1], $block[1]);
+        return Html::a($block[1], $block[1]);
     }
 
     /**

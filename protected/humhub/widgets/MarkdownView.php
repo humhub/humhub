@@ -45,6 +45,11 @@ class MarkdownView extends \yii\base\Widget
      */
     public $highlightJsCss = "github";
 
+    /**
+     * @var boolean return plain output (do not use widget template)
+     */
+    public $returnPlain = false;
+
     public function init()
     {
         if (!\humhub\libs\Helpers::CheckClassType($this->parserClass, "cebe\markdown\Parser")) {
@@ -63,6 +68,10 @@ class MarkdownView extends \yii\base\Widget
 
         if ($this->purifyOutput) {
             $html = \yii\helpers\HtmlPurifier::process($html);
+        }
+
+        if ($this->returnPlain) {
+            return $html;
         }
 
         return $this->render('markdownView', array('content' => $html, 'highlightJsCss' => $this->highlightJsCss));

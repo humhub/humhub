@@ -1,33 +1,16 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../vendors/cebe/markdown/Parser.php');
+namespace humhub\libs;
 
 /**
- * HMarkdownPreview generates a plain text (no HTML) of given markdown
- * Some elements like images or links will be displayed more clearly
+ * MarkdownPreview generates a plain text (no HTML) of markdown. 
+ * Some elements like images or links will be displayed more clearly.
  * 
  * @since 0.11.1
  */
-class HMarkdownPreview extends cebe\markdown\Parser
+class MarkdownPreview extends \cebe\markdown\Parser
 {
 
-    /**
-     * Returns a preview of given Text
-     * 
-     * @param type $foo
-     * @return type
-     */
-    public static function Render($markdown) {
-        
-        $markdown = CHtml::encode($markdown);
-        
-        $parser = new self;
-        $text = $parser->parse($markdown);
-        
-        return $text;
-    }
-    
-    
     protected function renderParagraph($block)
     {
         return $this->renderAbsy($block['content']) . "\n";

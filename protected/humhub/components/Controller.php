@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * Description of Controller
@@ -44,7 +45,7 @@ class Controller extends \yii\web\Controller
      */
     public function htmlRedirect($url = "")
     {
-        return $this->renderPartial('@humhub/views/htmlRedirect.php', array('url' => $url));
+        return $this->renderPartial('@humhub/views/htmlRedirect.php', array('url' => Url::to($url)));
     }
 
     /**
@@ -54,4 +55,5 @@ class Controller extends \yii\web\Controller
     {
         return $this->renderPartial('@humhub/views/modalClose.php', array());
     }
+
 }
