@@ -50,6 +50,7 @@ class AppAsset extends AssetBundle
         'resources/at/jquery.caret.min.js',
         'resources/at/jquery.atwho.min.js',
         'resources/file/fileuploader.js',
+        'resources/user/userpicker.js',
         'js/app.js',
     ];
     public $depends = [
