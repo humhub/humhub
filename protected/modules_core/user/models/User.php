@@ -674,6 +674,36 @@ class User extends HActiveRecordContentContainer implements ISearchable
     }
 
     /**
+      * Sends the Welcome email to the user with password recovery token.
+      * This is only used when LDAP is enabled, but authentication mode is 'local'.
+      *
+      */
+    public function sendWelcomeEmailWithPaswordRecoveryToken()
+    {
+        if ($this->auth_mode != User::AUTH_MODE_LOCAL || !HSetting::Get('enabled', 'authentication_ldap'))
+            return;
+
+        // Switch to users language
+        Yii::app()->language = Yii::app()->user->language;
+
+        $token = UUID::v4();
+        $this->setSetting('passwordRecoveryToken', $token.'.'.time(), 'user');
+
+        $message = new HMailMessage();
+        $message->view = "application.modules_core.user.views.mails.Welcome";
+        $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
+        $message->addTo($this->email);
+        $message->subject = Yii::t('UserModule.models_User', 'Welcome to {appName}', array('{appName}' => Yii::app()->name));
+        $message->setBody(array(
+            'username' => $this->username,
+            'displayName' => $this->displayName,
+            'linkPasswordReset' => Yii::app()->createAbsoluteUrl("//user/auth/resetPassword", array('token'=>$token, 'guid'=>$this->guid))
+        ), 'text/html');
+        Yii::app()->mail->send($message);
+    }
+
+
+    /**
      * Checks if this records belongs to the current user
      *
      * @return boolean is current User

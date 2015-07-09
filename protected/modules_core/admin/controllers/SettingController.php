@@ -195,6 +195,7 @@ class SettingController extends Controller
         $form->loginFilter = HSetting::Get('loginFilter', 'authentication_ldap');
         $form->userFilter = HSetting::Get('userFilter', 'authentication_ldap');
         $form->usernameAttribute = HSetting::Get('usernameAttribute', 'authentication_ldap');
+        $form->authMode = HSetting::Get('authMode', 'authentication_ldap');
 
         if ($form->password != '')
             $form->password = '---hidden---';
@@ -222,6 +223,7 @@ class SettingController extends Controller
                 HSetting::Set('loginFilter', $form->loginFilter, 'authentication_ldap');
                 HSetting::Set('userFilter', $form->userFilter, 'authentication_ldap');
                 HSetting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
+                HSetting::Set('authMode', $form->authMode, 'authentication_ldap');
 
                 // set flash message
                 Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));

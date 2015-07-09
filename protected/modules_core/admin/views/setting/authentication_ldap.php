@@ -89,6 +89,12 @@
         </div>
 
         <div class="form-group">
+            <?php echo $form->labelEx($model, 'authMode'); ?>
+            <?php echo $form->dropDownList($model, 'authMode', $model->authModeTypes, array('class' => 'form-control', 'readonly' => HSetting::IsFixed('authMode', 'authentication_ldap'))); ?>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Authentication Mode. It is possible to get the users from LDAP but authenticate them with the local database.'); ?></p>
+        </div>
+
+        <div class="form-group">
             <div class="checkbox">
                 <label>
                     <?php echo $form->checkBox($model, 'refreshUsers', array('readonly' => HSetting::IsFixed('refreshUsers', 'authentication_ldap'))); ?> <?php echo $model->getAttributeLabel('refreshUsers'); ?>
