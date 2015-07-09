@@ -25,7 +25,7 @@ use yii\helpers\Url;
 
                 <?php if ($user->isModuleEnabled($module->id)) : ?>
                     <?php if ($user->canDisableModule($moduleId)): ?>
-                        <?php echo Html::a(Yii::t('UserModule.views_account_editModules', 'Disable'), Url::to(['/user/account/disable-module', 'moduleId' => $module->id]), array('class' => 'btn btn-sm btn-danger', 'data-method' => 'POST', 'confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
+                        <?php echo Html::a(Yii::t('UserModule.views_account_editModules', 'Disable'), Url::to(['/user/account/disable-module', 'moduleId' => $module->id]), array('class' => 'btn btn-sm btn-danger', 'data-method' => 'POST', 'data-confirm' => Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!'))); ?>
                     <?php endif; ?>
                     <?php if ($module->getUserModuleConfigUrl($user)) : ?>
                         <?php echo Html::a(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getUserModuleConfigUrl($user), array('class' => 'btn btn-sm')); ?>

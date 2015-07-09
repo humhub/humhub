@@ -19,7 +19,8 @@
 
 ## Bugs / ToDos / To Improve
 
-- Delete config.php Cache on Error
+- Use own Namespaces for Modules not module/
+- Delete config.php Cache on Error / Don't config Cache on DEV!
 - Reimplement Access Controls
 - Check Confirm Link
 - If Admin creates User (Invalid Space joined Activity)
@@ -46,23 +47,24 @@
 ### Migrated
 
 - Wiki
+- Calendar
+- Custom Pages
+- Mail
 
 ### Open
 
-- Calendar
-- Custom Pages
 - Polls
-- Mail
 - Tasks
 
-- Meeting
+- Birthday
+- MostActiveUsers
+- BreakingNews
 - NewMembers
+- Meeting
 - Translation
 - SMS
-- ReportContent
 - Notes
-- MostActiveUsers
+- ReportContent
 - LinkList
-- Birthday
-- BreakingNews
 - Updater
+- CV

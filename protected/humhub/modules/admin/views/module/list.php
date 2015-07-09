@@ -47,14 +47,14 @@ use yii\helpers\Url;
                                 &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
                             <?php endif; ?>
 
-                            &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Disable'), Url::to(['/admin/module/disable', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
+                            &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Disable'), Url::to(['/admin/module/disable', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
 
                         <?php else: ?>
                             &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Enable'), Url::to(['/admin/module/enable', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'style' => 'font-weight:bold', 'class' => 'process')); ?>
                         <?php endif; ?>
 
                         <?php if ($module->canUninstall($moduleId)): ?>
-                            &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Uninstall'), Url::to(['/admin/module/uninstall', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module related data and files will be lost!'))); ?>
+                            &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Uninstall'), Url::to(['/admin/module/uninstall', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module related data and files will be lost!'))); ?>
                         <?php endif; ?>
 
                         &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'More info'), Url::to(['/admin/module/info', 'moduleId' => $moduleId]), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>

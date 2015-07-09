@@ -33,7 +33,7 @@ use yii\helpers\Url;
                     <?php if ($space->isModuleEnabled($moduleId)) : ?>
 
                         <?php if ($space->canDisableModule($moduleId)): ?>
-                            <?php echo Html::a(Yii::t('SpaceModule.views_admin_modules', 'Disable'), $space->createUrl('/space/admin/disable-module', array('moduleId' => $moduleId)), array('data-method' => 'POST', 'class' => 'btn btn-sm btn-primary', 'confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
+                            <?php echo Html::a(Yii::t('SpaceModule.views_admin_modules', 'Disable'), $space->createUrl('/space/admin/disable-module', array('moduleId' => $moduleId)), array('data-method' => 'POST', 'class' => 'btn btn-sm btn-primary', 'data-confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'))); ?>
                         <?php endif; ?>
 
                         <?php if ($module->getSpaceModuleConfigUrl($space) != "") : ?>
