@@ -19,10 +19,12 @@
 
 ## Bugs / ToDos / To Improve
 
+- Add ModuleId to Notifications
+- Check Logging
+- User Profile Field - Reduce Default Fields
 - Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
-- Reimplement Access Controls
-- Check Confirm Link
+- Reimplement/Check Access Controls
 - If Admin creates User (Invalid Space joined Activity)
 - Installer
 	- cookieValidationKey Installer?
@@ -41,6 +43,10 @@
 - Registration Process
 	- When Invited to a space (Notification & Co.)
 - Check unapproved users (Space, etc.)
+- Check complexer Migrations
+- Translation
+	- try regenerate files
+	- fix translation categories for changed FileNames
 
 ## Modules
 
@@ -50,20 +56,20 @@
 - Calendar
 - Custom Pages
 - Mail
-
-### Open
-
 - Polls
 - Tasks
 
-- Birthday
-- MostActiveUsers
+### Open
+
 - BreakingNews
 - NewMembers
+- Birthday
+- MostActiveUsers
+- Notes
+- SMS
+
 - Meeting
 - Translation
-- SMS
-- Notes
 - ReportContent
 - LinkList
 - Updater

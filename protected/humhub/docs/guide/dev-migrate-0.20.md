@@ -75,7 +75,7 @@ TBD
 
 ### Urls
 
-[[\humhub\core\content\components\activerecords\ContentContainer::createUrl]] (Space/User) still provides the method createUrl to build URLs in container context (sguid/uguid).
+[[\humhub\modules\content\components\activerecords\ContentContainer::createUrl]] (Space/User) still provides the method createUrl to build URLs in container context (sguid/uguid).
 
 Use [http://www.yiiframework.com/doc-2.0/yii-helpers-url.html](http://www.yiiframework.com/doc-2.0/yii-helpers-url.html) for other URLs.
 
@@ -95,6 +95,7 @@ Example Migration:
 $this->update('activity', ['class' => 'exampleModule\activities\MyActivity'], ['class' => 'OldActivityName']);
 
 // Rename own "Created" Activities to core 
+$this->update('activity', ['class' => 'humhub\modules\content\activities\ContentCreated', 'module' => 'content'], ['class' => 'PollCreated']);
 
 
 ```

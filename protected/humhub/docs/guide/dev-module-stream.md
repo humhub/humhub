@@ -127,7 +127,7 @@ Create a view file for widget which contains module specific fields. All standar
 
 Create an action in your modules controller to receive form inputs.
 
-All default tasks (e.g. access validation, ContentContainer assignment) are handled by [[humhub\modules\content\widgets\WallCreateContentForm::save()]]
+All default tasks (e.g. access validation, ContentContainer assignment) are handled by [[humhub\modules\content\widgets\WallCreateContentForm::create]]
 
 
 Example:
