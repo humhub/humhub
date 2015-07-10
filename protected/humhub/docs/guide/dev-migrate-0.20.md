@@ -24,7 +24,7 @@ Current Status: [HumHub 0.20 - Status](dev-migrate-0.20-status.md)
 Also the existing migration script needs to use Namespaces now.
 
 Because also class names of your module may stored in database (e.g. for Activities, Likes, Notification, ...)
-It's neccessary to create a new migration derived on [[humhub\components\Migration]] which uses **namespaceClass** method class to fix these records.
+It's neccessary to create a new migration derived from [[humhub\components\Migration]] which uses **renameClass** method class to fix these records.
 
 Example Migration:
 
@@ -40,8 +40,8 @@ class m150705_081309_namespace extends Migration
 
     public function up()
     {
-        $this->namespaceClass('WikiPage', WikiPage::className());
-        $this->namespaceClass('WikiPageRevision', WikiPageRevision::className());
+        $this->renameClass('WikiPage', WikiPage::className());
+        $this->renameClass('WikiPageRevision', WikiPageRevision::className());
     }
 
     public function down()
@@ -62,22 +62,41 @@ getContentTitle is now divided into
 - getContentTitle
 - getContentPreview
 
+
+### autostart.php
+
+TBD
+
+- Renamed to config.php
+- Removed imports
+- Return array
+- Namespaces
+
+
 ### Urls
 
 [[\humhub\core\content\components\activerecords\ContentContainer::createUrl]] (Space/User) still provides the method createUrl to build URLs in container context (sguid/uguid).
 
-All other createUrl method are also not longer available.
+Use [http://www.yiiframework.com/doc-2.0/yii-helpers-url.html](http://www.yiiframework.com/doc-2.0/yii-helpers-url.html) for other URLs.
 
 ### Activities
 
-See [[dev-module-activities.md]] about the Activity module.
+Please recreate Activities as described here: [[dev-module-activities.md]]
 
-To migrate you also need to change the class of your Activity:
+Since 0.20 there is an automatic "created" Activity for Content. 
 
-Example Migration
+
+To migrate existing Activities to the new Scheme you need to create an migration.
+
+Example Migration:
 
 ```php
+// Rename Custom Activities
 $this->update('activity', ['class' => 'exampleModule\activities\MyActivity'], ['class' => 'OldActivityName']);
+
+// Rename own "Created" Activities to core 
+
+
 ```
 
 
@@ -153,7 +172,7 @@ echo HHtml::postLink(...);
 #### AjaxButton/Submit/...
 ```php
 echo \humhub\widgets\AjaxButton::widget([
-    'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
+    'label' => "Save",
     'ajaxOptions' => [
         'type' => 'POST',
         'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
@@ -166,4 +185,7 @@ echo \humhub\widgets\AjaxButton::widget([
 ]);
 ```
 
+#### Yii::app()->input->stripClean
+
+Stripclean is not longer available. use Html::encode() user input on output _and_ create validators.
 

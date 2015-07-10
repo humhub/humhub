@@ -28,9 +28,12 @@ Notes:
 	-  Easier: JSON Output
        Yii::$app->response->format = 'json'; return $json; 
 - createUrl removed -> Url::to()
-- CHtml methods reduced (e.g. no AjaxButton - use: \humhub\compat\widgets\AjaxButton instead
 - Behaviors
 	- $this->getOwner() replaced by $this->owner
+- Html (CHtml)
+	- reduced (e.g. no AjaxButton - use: \humhub\widgets\AjaxButton instead
+	- Html::link -> confirm  changed to data-confirm
+	-
 	
 
 

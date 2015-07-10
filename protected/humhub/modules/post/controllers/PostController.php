@@ -24,29 +24,18 @@ class PostController extends \humhub\components\Controller
 
     public function actionPost()
     {
-        \Yii::$app->response->format = 'json';
-        $this->forcePostRequest();
-
         $post = new Post();
-        \humhub\modules\post\widgets\Form::populateRecord($post);
-        
         $post->message = \Yii::$app->request->post('message');
 
-        if ($post->validate()) {
-            $post->save();
+        /*
+          // Experimental: Auto attach found images urls in message as files
+          if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
+          Yii::import('application.modules_core.file.libs.*');
+          RemoteFileDownloader::attachFiles($post, $post->message);
+          }
+         */
 
-            /*
-              // Experimental: Auto attach found images urls in message as files
-              if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
-              Yii::import('application.modules_core.file.libs.*');
-              RemoteFileDownloader::attachFiles($post, $post->message);
-              }
-             */
-
-            return ['wallEntryId' => $post->content->getFirstWallEntryId()];
-        } else {
-            return ['errors' => $post->getErrors()];
-        }
+        return \humhub\modules\content\widgets\WallCreateContentForm::create($post);
     }
 
     public function actionEdit()

@@ -35,7 +35,7 @@ class UserListBox extends \yii\base\Widget
     public $query;
 
     /**
-     * @var string title of the box
+     * @var string title of the box (not html encoded!)
      */
     public $title = 'Users';
 

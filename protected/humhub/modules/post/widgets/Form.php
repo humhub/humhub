@@ -9,18 +9,14 @@ namespace humhub\modules\post\widgets;
  * @package humhub.modules_core.post.widgets
  * @since 0.5
  */
-class Form extends \humhub\modules\content\widgets\Form
+class Form extends \humhub\modules\content\widgets\WallCreateContentForm
 {
 
     public $submitUrl = '/post/post/post';
 
     public function renderForm()
     {
-
-        if (\Yii::$app->user->isGuest)
-            return;
-
-        $this->form = $this->render('form', array(), true);
+        return $this->render('form', array());
     }
 
 }

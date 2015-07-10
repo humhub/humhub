@@ -41,6 +41,7 @@ Development - Modules
 * [Widget Stacks](dev-module-stack.md)
 * [Notifications](dev-module-notifications.md)
 * [Activities](dev-module-activities.md)
+* [Streams / Walls](dev-module-stream.md)
 * [Search](dev-module-search.md)
 * [Translations](dev-module-i18n.md)
 * [CronJobs](dev-module-cron.md)

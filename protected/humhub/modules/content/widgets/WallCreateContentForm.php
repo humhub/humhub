@@ -1,59 +1,53 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\widgets;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 
 /**
- * Description of ContentFormWidget
+ * WallCreateContentForm is the base widget to create  "quick" create content forms above Stream/Wall.
  *
  * @author luke
  */
-class Form extends \yii\base\Widget
+class WallCreateContentForm extends \yii\base\Widget
 {
 
     /**
-     * URL to Submit ContentForm to
+     * @var string form submit route/url (required)
      */
     public $submitUrl;
+
+    /**
+     * @var string submit button text
+     */
     public $submitButtonText;
 
     /**
-     * @var ContentContainerActiveRecord
+     * @var ContentContainerActiveRecord this content will belong to
      */
     public $contentContainer;
 
     /**
-     * Form HTML
+     * @var string form implementation
      */
     protected $form = "";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-
         if ($this->submitButtonText == "")
             $this->submitButtonText = Yii::t('ContentModule.widgets_ContentFormWidget', 'Submit');
 
@@ -65,8 +59,9 @@ class Form extends \yii\base\Widget
     }
 
     /**
-     * Renders form and stores output in $form
-     * Overwrite me!
+     * Returns the custom form implementation.
+     * 
+     * @return string
      */
     public function renderForm()
     {
@@ -74,31 +69,38 @@ class Form extends \yii\base\Widget
     }
 
     /**
-     * Checks write permissions
+     * @inheritdoc
      */
-    protected function hasWritePermission()
-    {
-        return $this->contentContainer->canWrite();
-    }
-
     public function run()
     {
-
-        if (!$this->hasWritePermission())
+        if (!$this->contentContainer->canWrite())
             return;
 
-        $this->renderForm();
-
-        return $this->render('@humhub/modules/content/widgets/views/form', array(
-                    'form' => $this->form,
+        return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', array(
+                    'form' => $this->renderForm(),
                     'contentContainer' => $this->contentContainer,
-                    'submitUrl' => $this->submitUrl,
+                    'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
                     'submitButtonText' => $this->submitButtonText
         ));
     }
 
-    public static function populateRecord(\humhub\modules\content\components\ContentActiveRecord $record)
+    /**
+     * Creates the given ContentActiveRecord based on given submitted form information.
+     * 
+     * - Automatically assigns ContentContainer
+     * - Access Check
+     * - User Notification / File Uploads
+     * - Reloads Wall after successfull creation or returns error json
+     * 
+     * [See guide section](guide:dev-module-stream.md#CreateContentForm)
+     * 
+     * @param ContentActiveRecord $record
+     * @return string json 
+     */
+    public static function create(ContentActiveRecord $record)
     {
+        Yii::$app->response->format = 'json';
+
         // Set Content Container
         $contentContainer = null;
         $containerClass = Yii::$app->request->post('containerClass');
@@ -111,7 +113,7 @@ class Form extends \yii\base\Widget
             $contentContainer = Space::findOne(['guid' => $containerGuid]);
             $record->content->visibility = Yii::$app->request->post('visibility');
         }
-        
+
         $record->content->container = $contentContainer;
 
         // Handle Notify User Features of ContentFormWidget
@@ -128,6 +130,11 @@ class Form extends \yii\base\Widget
 
         // Store List of attached Files to add them after Save
         $record->content->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
+        if ($record->validate() && $record->save()) {
+            return array('wallEntryId' => $record->content->getFirstWallEntryId());
+        }
+
+        return array('errors' => $record->getErrors());
     }
 
 }

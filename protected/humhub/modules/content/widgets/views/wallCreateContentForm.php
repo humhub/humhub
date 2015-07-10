@@ -66,7 +66,7 @@ use humhub\modules\space\models\Space;
                 echo \humhub\widgets\AjaxButton::widget([
                     'label' => $submitButtonText,
                     'ajaxOptions' => [
-                        'url' => Url::toRoute($submitUrl),
+                        'url' => $submitUrl,
                         'type' => 'POST',
                         'dataType' => 'json',
                         'beforeSend' => "function() { $('.contentForm').removeClass('error'); $('#contentFormError').hide(); $('#contentFormError').empty(); }",
@@ -179,31 +179,26 @@ use humhub\modules\space\models\Space;
     }
 
     function handleResponse(response) {
-        // set the size for one row (Firefox)
-        $('textarea').css({height: '36px'});
-        // add autosize function to input
-        $('.autosize').autosize();
+        if (!response.errors) {
+            // application.modules_core.wall function
+            currentStream.prependEntry(response.wallEntryId);
 
-        // application.modules_core.wall function
-        currentStream.prependEntry(response.wallEntryId);
-        // Reset Form (Empty State)
-        jQuery('.contentForm_options').hide();
-        $('.contentForm').filter(':text').val('');
-        $('.contentForm').filter('textarea').val('').trigger('autosize.resize');
-        $('.contentForm').attr('checked', false);
-        $('.userInput').remove(); // used by UserPickerWidget
-        $('#notifyUserContainer').addClass('hidden');
-        $('#notifyUserInput').val('');
-        $('.label-public').addClass('hidden');
-        $('#contentFrom_files').val('');
-        $('#public').attr('checked', false);
-        $('#contentForm_message_contenteditable').html('<?php echo Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What's on your mind?")); ?>');
-        $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
-
-        // Notify FileUploadButtonWidget to clear (by providing uploaderId)
-        resetUploader('contentFormFiles');
-
-        if (response.errors) {
+            // Reset Form (Empty State)
+            jQuery('.contentForm_options').hide();
+            $('.contentForm').filter(':text').val('');
+            $('.contentForm').filter('textarea').val('').trigger('autosize.resize');
+            $('.contentForm').attr('checked', false);
+            $('.userInput').remove(); // used by UserPickerWidget
+            $('#notifyUserContainer').addClass('hidden');
+            $('#notifyUserInput').val('');
+            $('.label-public').addClass('hidden');
+            $('#contentFrom_files').val('');
+            $('#public').attr('checked', false);
+            $('#contentForm_message_contenteditable').html('<?php echo Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What's on your mind?")); ?>');
+            $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
+            // Notify FileUploadButtonWidget to clear (by providing uploaderId)
+            resetUploader('contentFormFiles');
+        } else {
             $('#contentFormError').show();
             $.each(response.errors, function (fieldName, errorMessage) {
                 // Mark Fields as Error
@@ -213,11 +208,7 @@ use humhub\modules\space\models\Space;
                     $('#contentFormError').append('<li><i class=\"icon-warning-sign\"></i> ' + msg + '</li>');
                 });
             });
-        } else {
-            $('.contentForm').filter(':text').removeClass('error');
-            $('.contentForm').filter('textarea').removeClass('error');
         }
-
         $('.contentForm_options .btn').show();
         $('#postform-loader').addClass('hidden');
     }
