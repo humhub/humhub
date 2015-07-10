@@ -36,6 +36,11 @@ class Stream extends \yii\base\Widget
     public $showFilters = true;
 
     /**
+     * @var array filters to show
+     */
+    public $filters = [];
+
+    /**
      * Message when stream is empty and filters are active
      *
      * @var string
@@ -68,9 +73,20 @@ class Stream extends \yii\base\Widget
      */
     public function init()
     {
-
         if ($this->streamAction == "") {
             throw new \yii\web\HttpException(500, 'You need to set the streamAction attribute to use this widget!');
+        }
+
+        // Add default Filters
+        if (count($this->filters) === 0) {
+            $this->filters['filter_entry_userinvoled'] = Yii::t('app', 'Where I´m involved');
+            $this->filters['filter_entry_mine'] = Yii::t('app', 'Created by me');
+            $this->filters['filter_entry_files'] = Yii::t('app', 'Content with attached files');
+            $this->filters['filter_posts_links'] = Yii::t('app', 'Posts with links');
+            $this->filters['filter_model_posts'] = Yii::t('app', 'Posts only');
+            $this->filters['filter_entry_archived'] = Yii::t('app', 'Include archived posts');
+            $this->filters['filter_visibility_public'] = Yii::t('app', 'Only public posts');
+            $this->filters['filter_visibility_private'] = Yii::t('app', 'Only private posts');
         }
 
 
@@ -104,8 +120,6 @@ class Stream extends \yii\base\Widget
             'mode' => \humhub\modules\content\components\actions\Stream::MODE_NORMAL
         ];
 
-
-
         if ($this->contentContainer) {
             return $this->contentContainer->createUrl($this->streamAction, $params);
         }
@@ -118,9 +132,8 @@ class Stream extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('stream', array('streamUrl' => $this->getStreamUrl()));
+        return $this->render('stream', array('streamUrl' => $this->getStreamUrl(), 'showFilters' => $this->showFilters, 'filters' => $this->filters));
     }
 
 }
-
 ?>

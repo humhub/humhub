@@ -25,34 +25,12 @@ $this->registerJs($jsLoadWall, View::POS_READY);
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('app', 'Filter'); ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Where I´m involved'); ?></a>
-                </li>
-                <li><a href="#" class="wallFilter" id="filter_entry_mine"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Created by me'); ?></a></li>
+                <?php foreach ($filters as $filterId => $filterTitle): ?>
+                    <li><a href="#" class="wallFilter" id="<?php echo $filterId; ?>"><i
+                                class="fa fa-square-o"></i> <?php echo $filterTitle; ?></a>
+                    </li>
+                <?php endforeach; ?>
 
-                <!-- post module related -->
-                <li><a href="#" class="wallFilter" id="filter_entry_files"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Content with attached files'); ?>
-                    </a></li>
-                <li><a href="#" class="wallFilter" id="filter_posts_links"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Posts with links'); ?></a>
-                </li>
-                <li><a href="#" class="wallFilter" id="filter_model_posts"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Posts only'); ?></a></li>
-                <!-- /post module related -->
-
-                <li class="divider"></li>
-
-                <li><a href="#" class="wallFilter" id="filter_entry_archived"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Include archived posts'); ?>
-                    </a></li>
-                <li><a href="#" class="wallFilter" id="filter_visibility_public"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Only public posts'); ?></a>
-                </li>
-                <li><a href="#" class="wallFilter" id="filter_visibility_private"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Only private posts'); ?></a>
-                </li>
             </ul>
         </li>
         <li class="dropdown">
