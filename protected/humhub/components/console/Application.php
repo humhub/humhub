@@ -32,10 +32,11 @@ class Application extends \yii\console\Application
         parent::init();
         $this->trigger(self::EVENT_ON_INIT);
 
-        $baseUrl = Setting::get('baseUrl');
-
-        Yii::setAlias(("@web"), $baseUrl);
-        $this->urlManager->scriptUrl = $baseUrl;
+        if ($this->isDatabaseInstalled()) {
+            $baseUrl = Setting::get('baseUrl');
+            Yii::setAlias(("@web"), $baseUrl);
+            $this->urlManager->scriptUrl = $baseUrl;
+        }
     }
 
     /**
@@ -51,6 +52,20 @@ class Application extends \yii\console\Application
             'asset' => 'yii\console\controllers\AssetController',
             'fixture' => 'yii\console\controllers\FixtureController',
         ];
+    }
+
+    /**
+     * Checks if database is installed
+     * 
+     * @return boolean is database installed/migrated
+     */
+    public function isDatabaseInstalled()
+    {
+        if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
+            return true;
+        }
+            
+        return false;
     }
 
 }

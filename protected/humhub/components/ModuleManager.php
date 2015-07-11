@@ -48,7 +48,11 @@ class ModuleManager extends \yii\base\Component
         if (!Yii::$app->params['installed'])
             return;
 
-        $this->enabledModules = \humhub\models\ModuleEnabled::getEnabledIds();
+        if (Yii::$app instanceof console\Application && !Yii::$app->isDatabaseInstalled()) {
+            $this->enabledModules = [];
+        } else {
+            $this->enabledModules = \humhub\models\ModuleEnabled::getEnabledIds();
+        }
     }
 
     /**

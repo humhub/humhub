@@ -3,10 +3,12 @@
 /**
  * Application configuration shared by all test types
  */
-defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
-
-$testConfig = [
+return [
+    'name' => 'HumHub Test',
     'language' => 'en-US',
+    'params' => [
+        'installed' => true,
+    ],
     'controllerMap' => [
         'fixture' => [
             'class' => 'yii\faker\FixtureController',
@@ -15,10 +17,12 @@ $testConfig = [
             'namespace' => 'tests\codeception\fixtures',
         ],
     ],
-    'basePath' => '/projects2/humhub/humhub2/',
     'components' => [
         'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=humhub2',
+            'dsn' => 'mysql:host=localhost;dbname=humhub_test',
+            'username' => 'travis',
+            'password' => '',
+            'charset' => 'utf8',
         ],
         'mailer' => [
             'useFileTransport' => true,
@@ -28,15 +32,3 @@ $testConfig = [
         ],
     ],
 ];
-
-return yii\helpers\ArrayHelper::merge(
-                // Common
-                require(YII_APP_BASE_PATH . '/humhub/config/common.php'),
-                // HumHub Web Config
-                require(YII_APP_BASE_PATH . '/humhub/config/web.php'),
-                // Custom Web Config
-                require(YII_APP_BASE_PATH . '/config/web.php'),
-                // Test Config
-                $testConfig
-);
-

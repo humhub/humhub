@@ -51,6 +51,7 @@ class m141106_185632_log_init extends Migration
 
     public function up()
     {
+
         $targets = $this->getDbTargets();
         foreach ($targets as $target) {
             $this->db = $target->db;
@@ -73,6 +74,8 @@ class m141106_185632_log_init extends Migration
             $this->createIndex('idx_log_level', $target->logTable, 'level');
             $this->createIndex('idx_log_category', $target->logTable, 'category');
         }
+        $this->dropTable("logging");
+        
     }
 
     public function down()
