@@ -159,7 +159,7 @@ class DynamicConfig extends \yii\base\Object
         self::save($config);
     }
 
-    public function getConfigFilePath()
+    public static function getConfigFilePath()
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
     }
