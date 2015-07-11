@@ -8,7 +8,8 @@
 
 namespace humhub\modules\content\components;
 
-use \humhub\components\ActiveRecord;
+use humhub\modules\user\models\User;
+use humhub\components\ActiveRecord;
 
 /**
  *

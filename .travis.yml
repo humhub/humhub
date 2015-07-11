@@ -30,14 +30,12 @@ install:
   - travis_retry composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
 
   - |
-    # Install HumHub
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
     cd protected/humhub/tests/codeception/bin
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii installer/auto
     cd ../../../../..
 
-    # Build Codecept Tests
     cd protected/humhub/tests
     codecept build
     cd ../../../
