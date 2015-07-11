@@ -26,6 +26,38 @@ function installUploader(uploaderId) {
                     $('#fileUploaderProgressbar_' + uploaderId).children().css('width', progress + "%");
                 }
             }
+        }).bind("fileuploadadd",function (e, data) {
+                        
+            var $max_file_size = 4 * 1024 * 1024; 
+            
+            var fileSize = data.files[0].size;
+            if (fileSize > $max_file_size ) {
+                    
+                    //alertMessage= 'File size too big aborted';
+                    $('#fileModal').remove();
+                    var alertMessage = '<div class="modal" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"' +
+                        'aria-hidden="true">' +
+                        '<div class="modal-dialog modal-dialog-extra-small animated pulse">' +
+                        '<div class="modal-content">' +
+                        '<div class="modal-header">' +
+                        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                        '<h4 class="modal-title" id="myModalLabel">' + fileuploader_error_modal_title + '</h4> ' +
+                        '</div>' +
+                        '<div class="modal-body text-center">' + fileuploader_error_modal_errormsg + '<br/> ' + data.files[0].name + ' ' + fileuploader_error_modal_max_file_size_errormsg + '</div>' + 
+                        '<div class="modal-footer">' +
+                        '<button type="button" class="btn btn-primary" data-dismiss="modal">' + fileuploader_error_modal_btn_close + '</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    $('body').append(alertMessage);
+                    $('#fileModal').modal('show');
+                                        
+                    
+                    return false;
+                }
+            
         }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 
     });
