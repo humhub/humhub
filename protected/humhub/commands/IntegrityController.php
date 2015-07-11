@@ -17,7 +17,7 @@ use yii\helpers\Console;
  * 
  * @author Luke
  */
-class IntegrityController extends \yii\console\controller
+class IntegrityController extends \yii\console\Controller
 {
 
     /**
