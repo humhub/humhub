@@ -100,7 +100,10 @@ class Group extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function afterSave()
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
     {
         if ($this->scenario == 'edit') {
             \humhub\modules\user\models\GroupAdmin::deleteAll(['group_id' => $this->id]);
@@ -120,6 +123,8 @@ class Group extends \yii\db\ActiveRecord
                 }
             }
         }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function populateDefaultSpaceGuid()
