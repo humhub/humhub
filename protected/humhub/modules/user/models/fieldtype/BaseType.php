@@ -62,7 +62,7 @@ class BaseType extends \yii\base\Model
     public function setProfileField($profileField)
     {
         $this->profileField = $profileField;
-        $this->load();
+        $this->loadFieldConfig();
     }
 
     /**
@@ -101,7 +101,7 @@ class BaseType extends \yii\base\Model
 
                     // Seems current type, so try load data
                     if ($profileField->field_type_class == $className) {
-                        $instance->load();
+                        $instance->loadFieldConfig();
                     }
                 }
                 $types[] = $instance;
@@ -198,7 +198,7 @@ class BaseType extends \yii\base\Model
      *
      * These settings are loaded from the underlying ProfileField.
      */
-    public function load()
+    public function loadFieldConfig()
     {
         $config = \yii\helpers\Json::decode($this->profileField->field_type_config);
         if (is_array($config)) {
