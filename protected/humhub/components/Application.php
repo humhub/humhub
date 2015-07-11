@@ -11,13 +11,14 @@ namespace humhub\components;
 use Yii;
 
 /**
- * Base WebApplication
- *
- * @author luke
+ * @inheritdoc
  */
 class Application extends \yii\web\Application
 {
 
+    /**
+     * @inheritdoc
+     */
     public function beforeAction($action)
     {
 

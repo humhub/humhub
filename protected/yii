@@ -21,7 +21,7 @@ $config = yii\helpers\ArrayHelper::merge(
         require(__DIR__ . '/humhub/config/common.php'),
         require(__DIR__ . '/humhub/config/console.php'),
        (is_readable(__DIR__ . '/config/dynamic.php')) ? require(__DIR__ . '/config/dynamic.php') : [],
-      require(__DIR__ . '/config/web.php')
+      require(__DIR__ . '/config/console.php')
 
 );
 

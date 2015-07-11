@@ -1,7 +1,4 @@
 <?php
-
-use Yii;
-
 $this->registerJsFile("@web/js/panelMenu.js");
 ?>
 <ul class="nav nav-pills preferences">

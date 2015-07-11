@@ -1,6 +1,5 @@
 <?php
 
-use Yii;
 use yii\helpers\Html;
 ?>
 <?php if ($place == "topMenu") : ?>
