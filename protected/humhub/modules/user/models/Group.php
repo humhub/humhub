@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\models\Setting;
 
 /**
  * This is the model class for table "group".
@@ -156,6 +157,46 @@ class Group extends \yii\db\ActiveRecord
     public function getSpace()
     {
         return $this->hasOne(Space::className(), ['id' => 'space_id']);
+    }
+
+    /**
+     * Notifies groups admins for approval of new user via e-mail.
+     * This should be done after a new user is created and approval is required.
+     *
+     * @todo Create message template, move message into translation
+     */
+    public function notifyAdminsForUserApproval($user)
+    {
+        // No admin approval required
+        if ($user->status != User::STATUS_NEED_APPROVAL || !Setting::Get('needApproval', 'authentication_internal')) {
+            return;
+        }
+
+        foreach ($this->admins as $admin) {
+            if ($admin->user !== null) {
+                /*
+                  $approvalUrl = Url::to(["/admin/approval"], true);
+
+                  $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
+                  "a new user {$this->displayName} needs approval.<br><br>\n\n" .
+                  "Click here to validate:<br>\n\n" .
+                  HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+
+                  $message = new HMailMessage();
+                  $message->addFrom(Setting::Get('systemEmailAddress', 'mailing'), Setting::Get('systemEmailName', 'mailing'));
+                  $message->addTo($adminUser->email);
+                  $message->view = "application.views.mail.TextOnly";
+                  $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
+                  $message->setBody(array('message' => $html), 'text/html');
+                  Yii::app()->mail->send($message);
+                 * 
+                 */
+            } else {
+                Yii::warning("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id);
+            }
+        }
+
+        return true;
     }
 
 }

@@ -381,7 +381,7 @@ class SpaceModelMembership extends Behavior
         $activity->source = $this->owner;
         $activity->originator = $user;
         $activity->create();
-
+        
         // Members can't also follow the space
         $this->owner->unfollow($userId);
 

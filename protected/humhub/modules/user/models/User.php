@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use Yii;
 use humhub\models\Setting;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\user\models\GroupAdmin;
 
 /**
  * This is the model class for table "user".
@@ -79,7 +80,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function rules()
     {
         return [
-            [['username', 'auth_mode', 'last_activity_email', 'group_id', 'email'], 'required'],
+            [['username', 'email'], 'required'],
             [['wall_id', 'group_id', 'status', 'super_admin', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
@@ -300,6 +301,10 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             }
         }
 
+        if ($this->group_id == "") {
+            throw new \yii\base\Exception("Could not save user without group!");
+        }
+
         return parent::beforeSave($insert);
     }
 
@@ -320,7 +325,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             if ($this->status == User::STATUS_ENABLED)
                 $this->setUpApproved();
             else
-                $this->notifyGroupAdminsForApproval();
+                $this->group->notifyAdminsForUserApproval($this);
 
             $this->profile->user_id = $this->id;
         }
@@ -396,43 +401,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $name;
     }
 
-    /**
-     * Notifies groups admins for approval of new user via e-mail.
-     * This should be done after a new user is created and approval is required.
-     *
-     * @todo Create message template, move message into translation
-     */
-    private function notifyGroupAdminsForApproval()
-    {
-        // No admin approval required
-        if ($this->status != User::STATUS_NEED_APPROVAL || !Setting::Get('needApproval', 'authentication_internal')) {
-            return;
-        }
-
-        foreach (GroupAdmin::model()->findAllByAttributes(array('group_id' => $this->group_id)) as $admin) {
-            $adminUser = User::model()->findByPk($admin->user_id);
-            if ($adminUser !== null) {
-                $approvalUrl = Yii::app()->createAbsoluteUrl("//admin/approval");
-
-                $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
-                        "a new user {$this->displayName} needs approval.<br><br>\n\n" .
-                        "Click here to validate:<br>\n\n" .
-                        HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
-
-                $message = new HMailMessage();
-                $message->addFrom(Setting::Get('systemEmailAddress', 'mailing'), Setting::Get('systemEmailName', 'mailing'));
-                $message->addTo($adminUser->email);
-                $message->view = "application.views.mail.TextOnly";
-                $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
-                $message->setBody(array('message' => $html), 'text/html');
-                Yii::app()->mail->send($message);
-            } else {
-                Yii::log("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id, CLogger::LEVEL_ERROR);
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Checks if this records belongs to the current user
