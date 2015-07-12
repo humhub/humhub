@@ -15,7 +15,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
 use humhub\modules\content\models\Wall;
 use humhub\modules\user\models\Group;
-use humhub\models\Setting;
 
 class UserTest extends DbTestCase
 {
@@ -63,7 +62,7 @@ class UserTest extends DbTestCase
 
     public function testCreateApproval()
     {
-        Setting::Set('needApproval', 0, 'authentication_internal');
+        \humhub\models\Setting::Set('needApproval', 0, 'authentication_internal');
         $user = new User();
         $user->username = "TestWithoutApproval";
         $user->email = "approveduser@example.com";
@@ -71,7 +70,7 @@ class UserTest extends DbTestCase
         $this->assertTrue($user->save());
         $this->assertEquals($user->status, User::STATUS_ENABLED);
 
-        Setting::Set('needApproval', 1, 'authentication_internal');
+        \humhub\models\Setting::Set('needApproval', 1, 'authentication_internal');
         $user = new User();
         $user->username = "TestWithApproval";
         $user->email = "unapproveduser@example.com";
@@ -85,7 +84,7 @@ class UserTest extends DbTestCase
      */
     public function testCreateGroupSpaceAdd()
     {
-        Setting::Set('needApproval', 0, 'authentication_internal');
+        \humhub\models\Setting::Set('needApproval', 0, 'authentication_internal');
 
         $space = Space::findOne(['id' => 1]);
 
@@ -99,7 +98,7 @@ class UserTest extends DbTestCase
 
     public function testInviteToSpace()
     {
-        Setting::Set('needApproval', 0, 'authentication_internal');
+        \humhub\models\Setting::Set('needApproval', 0, 'authentication_internal');
 
         $invite = new Invite();
         $invite->user_originator_id = 1;
@@ -145,7 +144,7 @@ class UserTest extends DbTestCase
         $group2->description = "test";
         $this->assertTrue($group2->save());
 
-        Setting::Set('defaultUserGroup', $group2->id, 'authentication_internal');
+        \humhub\models\Setting::Set('defaultUserGroup', $group2->id, 'authentication_internal');
 
         $user = new User();
         $user->username = "TestSpaceAutoAdd";
