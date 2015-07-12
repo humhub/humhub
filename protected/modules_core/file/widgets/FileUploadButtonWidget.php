@@ -45,6 +45,7 @@ class FileUploadButtonWidget extends HWidget
         Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_title', Yii::t('FileModule.widgets_FileUploadButtonWidget', '<strong>Upload</strong> error'));
         Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_btn_close', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Close'));
         Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Could not upload File:'));
+        Yii::app()->clientScript->setJavascriptVariable('fileuploader_error_modal_max_file_size_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'is too large'));
     }
 
     /**
