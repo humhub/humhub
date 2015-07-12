@@ -11,7 +11,6 @@ namespace humhub\modules\user\models;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\models\Setting;
 
 /**
  * This is the model class for table "group".
@@ -168,7 +167,7 @@ class Group extends \yii\db\ActiveRecord
     public function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL || !Setting::Get('needApproval', 'authentication_internal')) {
+        if ($user->status != User::STATUS_NEED_APPROVAL || \humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
             return;
         }
 
