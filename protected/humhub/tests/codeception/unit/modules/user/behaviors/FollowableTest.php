@@ -6,20 +6,10 @@ use Yii;
 use yii\codeception\DbTestCase;
 use Codeception\Specify;
 use tests\codeception\fixtures\UserFixture;
-use tests\codeception\fixtures\GroupFixture;
 use tests\codeception\fixtures\SpaceFixture;
-use tests\codeception\fixtures\SpaceMembershipFixture;
-use tests\codeception\fixtures\WallFixture;
-use tests\codeception\fixtures\WallEntryFixture;
-use tests\codeception\fixtures\ContentFixture;
-use tests\codeception\fixtures\PostFixture;
 use tests\codeception\fixtures\UserFollowFixture;
-use humhub\modules\post\models\Post;
-use humhub\modules\dashboard\components\actions\DashboardStream;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\modules\activity\models\Activity;
-use humhub\modules\content\models\Content;
 
 class FollowableTest extends DbTestCase
 {

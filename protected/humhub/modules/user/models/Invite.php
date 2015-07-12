@@ -9,8 +9,6 @@
 namespace humhub\modules\user\models;
 
 use Yii;
-use humhub\models\Setting;
-use humhub\modules\space\models\Space;
 
 /**
  * This is the model class for table "user_invite".
@@ -97,14 +95,14 @@ class Invite extends \yii\db\ActiveRecord
         if ($this->source == self::SOURCE_SELF) {
 
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/UserInviteSelf'], ['token' => $this->token]);
-            $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
+            $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             // Switch to systems default language
-            Yii::$app->language = Setting::Get('defaultLanguage');
+            Yii::$app->language = \humhub\models\Setting::Get('defaultLanguage');
 
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/UserInviteSpace'], [
                 'token' => $this->token,
@@ -113,7 +111,7 @@ class Invite extends \yii\db\ActiveRecord
                 'token' => $this->token,
                 'space' => $this->space
             ]);
-            $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
+            $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Space Invite'));
             $mail->send();
