@@ -1,35 +1,53 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
+namespace tests\codeception\unit\modules\content\components;
 
-/**
- * Description of ContentContainerStreamActionTest
- *
- * @author luke
- */
-class ContentContainerStreamActionTest extends HDbTestCase
+use Yii;
+use yii\codeception\DbTestCase;
+use Codeception\Specify;
+use tests\codeception\fixtures\UserFixture;
+use tests\codeception\fixtures\GroupFixture;
+use tests\codeception\fixtures\SpaceFixture;
+use tests\codeception\fixtures\SpaceMembershipFixture;
+use tests\codeception\fixtures\WallFixture;
+use tests\codeception\fixtures\WallEntryFixture;
+use humhub\modules\post\models\Post;
+use humhub\modules\content\components\actions\ContentContainerStream;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\models\Content;
+
+class ContentContainerStreamTest extends DbTestCase
 {
+
+    use Specify;
+
+    /**
+     * @inheritdoc
+     */
+    public function fixtures()
+    {
+        return [
+            'user' => [
+                'class' => UserFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/user.php'
+            ],
+            'space' => [
+                'class' => SpaceFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/space.php'
+            ],
+            'space_membership' => [
+                'class' => SpaceMembershipFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/space_membership.php'
+            ],
+        ];
+    }
 
     public function testPrivateContent()
     {
         $this->becomeUser('User2');
-        $space = Space::model()->findByPk(2);
+        $space = Space::findOne(['id' => 2]);
 
         $post1 = new Post;
         $post1->message = "Private Post";
@@ -54,7 +72,7 @@ class ContentContainerStreamActionTest extends HDbTestCase
     public function testPublicContent()
     {
         $this->becomeUser('User2');
-        $space = Space::model()->findByPk(2);
+        $space = Space::findOne(['id' => 2]);
 
         $post1 = new Post;
         $post1->message = "Private Post";
@@ -71,7 +89,7 @@ class ContentContainerStreamActionTest extends HDbTestCase
         $w2 = $post2->content->getFirstWallEntryId();
 
 
-        $this->becomeUser('User1');
+        $this->becomeUser('Admin');
         $ids = $this->getStreamActionIds($space, 2);
 
         $this->assertFalse(in_array($w1, $ids));
@@ -80,15 +98,25 @@ class ContentContainerStreamActionTest extends HDbTestCase
 
     private function getStreamActionIds($container, $limit = 4)
     {
-        $action = new ContentContainerStreamAction(Yii::app()->getController(), 'testAc');
+
+        $action = new ContentContainerStream('stream', Yii::$app->controller, [
+            'contentContainer' => $container,
+            'limit' => $limit
+        ]);
+
         $action->contentContainer = $container;
         $action->limit = $limit;
-        $action->init();
 
         $wallEntries = $action->getWallEntries();
         $wallEntryIds = array_map(create_function('$entry', 'return $entry->id;'), $wallEntries);
 
         return $wallEntryIds;
+    }
+
+    private function becomeUser($userName)
+    {
+        $user = User::findOne(['username' => $userName]);
+        Yii::$app->user->switchIdentity($user);
     }
 
 }

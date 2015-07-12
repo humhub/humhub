@@ -18,8 +18,8 @@
  * GNU Affero General Public License for more details.
  */
 return array(
-    // 123qwe
-    array('id' => '1', 'user_id' => '1', 'algorithm' => 'sha512whirlpool', 'password' => '2e41471aa711967e4af95d3a219f89bf7457750f0d4232edfc2b924f97e535c747979534b8fceea9448225efb8ab5576a5cef8f7279f75e05559dec534b93c4c', 'salt' => '138398722053d81f8ce69f65.67135235', 'created_at' => '2014-07-30 00:26:20'),
+    // test
+    array('id' => '1', 'user_id' => '1', 'algorithm' => 'sha512whirlpool', 'password' => '7e3e4f1c548a3037fa36e895c91453f6e59279f7ea100d37bc9cca07a2c6b2d6b8e1426da66ae6c8ce7d749516b91d323b85d3cb7c367fc64bb672cfdaf535a8', 'salt' => '04b49c17-e1b4-4c23-8cd0-01fc7fbe0c61', 'created_at' => '2014-07-30 00:26:20'),
     // 123qwe
     array('id' => '2', 'user_id' => '2', 'algorithm' => 'sha512whirlpool', 'password' => 'dd7727256d1de6621ee10ea0b1e1a968be9ffc24e86a722ff881045afbe24ce36149a0f6be73629e302f497d1d255bec1f61d58c69022a5b5fb2520bffe0d1b3', 'salt' => '181247582653dc24880c98f7.09392397', 'created_at' => '2014-08-02 01:36:40'),
     // 123qwe

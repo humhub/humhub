@@ -1,44 +1,75 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
+namespace tests\codeception\unit\modules\dashboard;
 
-/**
- * Description of ContentContainerStreamActionTest
- *
- * @author luke
- */
-class DashboardStreamActionTest extends HDbTestCase
+use Yii;
+use yii\codeception\DbTestCase;
+use Codeception\Specify;
+use tests\codeception\fixtures\UserFixture;
+use tests\codeception\fixtures\GroupFixture;
+use tests\codeception\fixtures\SpaceFixture;
+use tests\codeception\fixtures\SpaceMembershipFixture;
+use tests\codeception\fixtures\WallFixture;
+use tests\codeception\fixtures\WallEntryFixture;
+use tests\codeception\fixtures\ContentFixture;
+use tests\codeception\fixtures\PostFixture;
+use tests\codeception\fixtures\UserFollowFixture;
+use humhub\modules\post\models\Post;
+use humhub\modules\dashboard\components\actions\DashboardStream;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\models\Content;
+
+class DashboardStreamTest extends DbTestCase
 {
 
-    public $fixtures = array(':user', ':space', ':space_membership', ':wall', ':wall_entry');
+    use Specify;
 
     /**
-     * stream only includes PUBLIC content of users and spaces which 
-     * are in Guest Mode 
+     * @inheritdoc
      */
-    public function testGuest()
+    public function fixtures()
     {
-        /**
-         * @todo implement me!
-         */
+        return [
+            'user' => [
+                'class' => UserFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/user.php'
+            ],
+            'user_follow' => [
+                'class' => UserFollowFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/user_follow.php'
+            ],
+            'group' => [
+                'class' => GroupFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/group.php'
+            ],
+            'space' => [
+                'class' => SpaceFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/space.php'
+            ],
+            'space_membership' => [
+                'class' => SpaceMembershipFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/space_membership.php'
+            ],
+            'wall' => [
+                'class' => WallFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/wall.php'
+            ],
+            'wall_entry' => [
+                'class' => WallEntryFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/wall_entry.php'
+            ],
+            'content' => [
+                'class' => ContentFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/content.php'
+            ],
+            'post' => [
+                'class' => PostFixture::className(),
+                'dataFile' => '@tests/codeception/unit/fixtures/data/post.php'
+            ],
+        ];
     }
-
     /**
      * if a user follows another user, the public posts are included
      * the private not
@@ -49,21 +80,21 @@ class DashboardStreamActionTest extends HDbTestCase
 
         $post1 = new Post;
         $post1->message = "Private Post";
-        $post1->content->setContainer(Yii::app()->user->getModel());
+        $post1->content->container = Yii::$app->user->getIdentity();
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->getFirstWallEntryId();
 
         $post2 = new Post;
         $post2->message = "Public Post";
-        $post2->content->setContainer(Yii::app()->user->getModel());
+        $post2->content->container = Yii::$app->user->getIdentity();
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
         $w2 = $post2->content->getFirstWallEntryId();
 
-        $this->becomeUser('User1');
+        $this->becomeUser('Admin');
         $ids = $this->getStreamActionIds(2);
-
+        
         $this->assertFalse(in_array($w1, $ids));
         $this->assertTrue(in_array($w2, $ids));
     }
@@ -75,7 +106,7 @@ class DashboardStreamActionTest extends HDbTestCase
     public function testSpaceFollow()
     {
         $this->becomeUser('User2');
-        $space = Space::model()->findByPk(2);
+        $space = Space::findOne(['id' => 2]);
 
         $post1 = new Post;
         $post1->message = "Private Post";
@@ -92,7 +123,7 @@ class DashboardStreamActionTest extends HDbTestCase
         $w2 = $post2->content->getFirstWallEntryId();
 
 
-        $this->becomeUser('User1');
+        $this->becomeUser('Admin');
         $ids = $this->getStreamActionIds(2);
 
         $this->assertFalse(in_array($w1, $ids));
@@ -105,7 +136,8 @@ class DashboardStreamActionTest extends HDbTestCase
      */
     public function testSpaceMembership()
     {
-        $space = Space::model()->findByPk(1);
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 1]);
 
         $post1 = new Post;
         $post1->message = "Private Post";
@@ -120,7 +152,7 @@ class DashboardStreamActionTest extends HDbTestCase
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
         $w2 = $post2->content->getFirstWallEntryId();
-
+        
         $this->assertEquals($this->getStreamActionIds(2), array($w2, $w1));
 
         $this->becomeUser('User2');
@@ -134,21 +166,21 @@ class DashboardStreamActionTest extends HDbTestCase
      */
     public function testOwnContent()
     {
+        $this->becomeUser('Admin');
+
         $post1 = new Post;
         $post1->message = "Own Private Post";
-        $post1->content->setContainer(Yii::app()->user->getModel());
+        $post1->content->container = Yii::$app->user->getIdentity();
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->getFirstWallEntryId();
-        ;
 
         $post2 = new Post;
         $post2->message = "Own Public Post";
-        $post2->content->setContainer(Yii::app()->user->getModel());
+        $post2->content->container = Yii::$app->user->getIdentity();
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
         $w2 = $post2->content->getFirstWallEntryId();
-        ;
 
         $ids = $this->getStreamActionIds(2);
         $this->assertEquals($ids, array($w2, $w1));
@@ -156,14 +188,20 @@ class DashboardStreamActionTest extends HDbTestCase
 
     private function getStreamActionIds($limit = 4)
     {
-        $action = new DashboardStreamAction(Yii::app()->getController(), 'testAc');
-        $action->limit = $limit;
-        $action->init();
+        $action = new DashboardStream('stream', Yii::$app->controller, [
+            'limit' => $limit,
+        ]);
 
         $wallEntries = $action->getWallEntries();
         $wallEntryIds = array_map(create_function('$entry', 'return $entry->id;'), $wallEntries);
 
         return $wallEntryIds;
+    }
+
+    private function becomeUser($userName)
+    {
+        $user = User::findOne(['username' => $userName]);
+        Yii::$app->user->switchIdentity($user);
     }
 
 }

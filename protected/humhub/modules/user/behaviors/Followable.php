@@ -206,13 +206,15 @@ class Followable extends Behavior
      * @param string $objectModel HActiveRecord Classname to restrict Object Classes to (e.g. User)
      * @return Array
      */
+    /*
     public function getFollowingObjects($query)
     {
-
+        
+        
         $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => $this->owner->className()]);
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
 
         return $query->all();
     }
-
+    */
 }
