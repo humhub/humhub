@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\notification\controllers;
 
 use Yii;
@@ -15,6 +21,18 @@ use humhub\models\Setting;
  */
 class ListController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+            ]
+        ];
+    }
 
     /**
      * Returns a List of all notifications for an user

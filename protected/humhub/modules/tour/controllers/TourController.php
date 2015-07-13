@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\tour\controllers;
 
 use Yii;
@@ -15,6 +21,18 @@ use humhub\modules\space\models\Space;
  */
 class TourController extends \humhub\components\Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+            ]
+        ];
+    }
 
     /**
      * Update user settings for completed tours

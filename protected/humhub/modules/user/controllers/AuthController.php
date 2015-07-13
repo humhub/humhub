@@ -30,6 +30,9 @@ class AuthController extends Controller
     public $layout = "@humhub/modules/user/views/layouts/main";
     public $subLayout = "_layout";
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return array(

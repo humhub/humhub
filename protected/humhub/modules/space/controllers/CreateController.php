@@ -1,12 +1,17 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use \humhub\components\Controller;
-use \yii\helpers\Url;
-use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
+use humhub\components\Controller;
+use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 
@@ -19,6 +24,18 @@ use humhub\models\Setting;
  */
 class CreateController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+            ]
+        ];
+    }
 
     public function actionIndex()
     {

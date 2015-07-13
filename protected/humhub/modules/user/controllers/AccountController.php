@@ -27,6 +27,9 @@ class AccountController extends Controller
 
     public $subLayout = "@humhub/modules/user/views/account/_layout";
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [

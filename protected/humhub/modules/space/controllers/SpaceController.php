@@ -1,32 +1,12 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
-
-use Yii;
-use \humhub\components\Controller;
-use \yii\helpers\Url;
-use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
-use humhub\models\Setting;
-use humhub\modules\space\models\Membership;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -41,6 +21,22 @@ use humhub\modules\space\models\Membership;
 class SpaceController extends \humhub\modules\content\components\ContentContainerController
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index', 'stream']
+            ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return array(

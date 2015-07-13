@@ -17,6 +17,9 @@ use humhub\modules\user\models\User;
 class SearchController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [

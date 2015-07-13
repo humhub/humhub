@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\comment\controllers;
 
 use Yii;
@@ -14,6 +20,19 @@ use yii\web\HttpException;
  */
 class CommentController extends \humhub\modules\content\components\ContentAddonController
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['show']
+            ]
+        ];
+    }
 
     /**
      * Returns a List of all Comments belong to this Model

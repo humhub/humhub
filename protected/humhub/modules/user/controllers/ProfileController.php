@@ -1,8 +1,13 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\controllers;
 
-use Yii;
 use humhub\modules\content\components\ContentContainerController;
 
 /**
@@ -16,6 +21,9 @@ use humhub\modules\content\components\ContentContainerController;
 class ProfileController extends ContentContainerController
 {
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -26,6 +34,9 @@ class ProfileController extends ContentContainerController
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return array(

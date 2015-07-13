@@ -19,8 +19,6 @@
 - Add ModuleId to Notifications
 - Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
-- Reimplement/Check Access Controls
-
 - Installer
 	- cookieValidationKey Installer?
 	- Birthday Field not populated
@@ -42,6 +40,8 @@
 - Translation
 	- try regenerate files
 	- fix translation categories for changed FileNames
+- Guest Mode
+- User Approval
 
 ## Modules
 

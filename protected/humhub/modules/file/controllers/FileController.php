@@ -25,6 +25,19 @@ class FileController extends \humhub\components\Controller
 {
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['download']
+            ]
+        ];
+    }
+
+    /**
      * Action which handles file uploads
      *
      * The result is an json array of all uploaded files.

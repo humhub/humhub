@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\like\controllers;
 
 use Yii;
@@ -16,6 +22,19 @@ use humhub\modules\user\widgets\UserListBox;
  */
 class LikeController extends \humhub\modules\content\components\ContentAddonController
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['show-likes']
+            ]
+        ];
+    }
 
     /**
      * Creates a new like

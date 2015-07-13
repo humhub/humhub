@@ -25,6 +25,19 @@ class PermaController extends Controller
 {
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index', 'wall-entry']
+            ]
+        ];
+    }
+
+    /**
      * Redirects to given HActiveRecordContent or HActiveRecordContentAddon
      */
     public function actionIndex()

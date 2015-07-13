@@ -1,12 +1,15 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use \humhub\components\Controller;
-use \yii\helpers\Url;
-use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
+use humhub\components\Controller;
 use yii\helpers\Html;
 
 /**
@@ -18,6 +21,19 @@ use yii\helpers\Html;
  */
 class BrowseController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['search-json']
+            ]
+        ];
+    }
 
     /**
      * Returns a workspace list by json

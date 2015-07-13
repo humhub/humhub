@@ -29,6 +29,19 @@ class SearchController extends Controller
     const SCOPE_SPACE = "space";
     const SCOPE_CONTENT = "content";
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index']
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
         $keyword = Yii::$app->request->get('keyword', "");

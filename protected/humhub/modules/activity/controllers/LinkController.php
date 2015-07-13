@@ -30,7 +30,7 @@ class LinkController extends Controller
         return [
             'acl' => [
                 'class' => \humhub\components\behaviors\AccessControl::className(),
-                'guestAllowedActions' => ['index', 'stream']
+                'guestAllowedActions' => ['info']
             ]
         ];
     }

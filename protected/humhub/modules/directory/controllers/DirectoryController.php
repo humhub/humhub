@@ -3,7 +3,6 @@
 namespace humhub\modules\directory\controllers;
 
 use Yii;
-use yii\data\Pagination;
 use yii\helpers\Url;
 use humhub\models\Setting;
 use humhub\modules\directory\widgets\Sidebar;
@@ -19,8 +18,27 @@ use humhub\modules\directory\widgets\Sidebar;
 class DirectoryController extends \humhub\components\Controller
 {
 
+    /**
+     * @inheritdoc
+     */
     public $subLayout = "@humhub/modules/directory/views/directory/_layout";
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['groups', 'index', 'members', 'spaces', 'user-posts', 'stream']
+            ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [

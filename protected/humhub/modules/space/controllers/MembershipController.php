@@ -9,10 +9,9 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use \humhub\components\Controller;
-use \yii\helpers\Url;
-use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
+use yii\helpers\Url;
+use yii\web\HttpException;
+use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
@@ -30,6 +29,18 @@ use humhub\modules\space\models\forms\RequestMembershipForm;
  */
 class MembershipController extends \humhub\modules\content\components\ContentContainerController
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+            ]
+        ];
+    }
 
     /**
      * Provides a searchable user list of all workspace members in json.
