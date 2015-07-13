@@ -8,12 +8,27 @@
 
 namespace humhub\components;
 
+use Yii;
+
 /**
- * Description of Request
- *
+ * @inheritdoc
+ * 
+ * 
  * @author luke
  */
 class Request extends \yii\web\Request
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if (\humhub\models\Setting::isInstalled()) {
+            $this->cookieValidationKey = \humhub\models\Setting::Get('secret');
+        } else {
+            $this->cookieValidationKey = 'installer';
+        }
+    }
 
 }

@@ -8,7 +8,6 @@ $config = [
     'components' => [
         'request' => [
             'class' => 'humhub\components\Request',
-            'cookieValidationKey' => 'asdf',
         ],
         'user' => [
             'class' => 'humhub\modules\user\components\User',

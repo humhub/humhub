@@ -22,9 +22,6 @@
 - Add ModuleId to Notifications
 - Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
-- Installer
-	- cookieValidationKey Installer?
-	- Birthday Field not populated
 - Modal Confirm doesn't disappear
 - Comment in new Window Mode / Like Link in Modules
 
