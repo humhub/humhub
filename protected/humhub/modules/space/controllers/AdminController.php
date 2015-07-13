@@ -20,9 +20,10 @@ class AdminController extends \humhub\modules\content\components\ContentContaine
 {
 
     /**
-     * @var String Admin Sublayout
+     * @var boolean hides containers sidebar in layout
+     * @since 0.11
      */
-    public $subLayout = "application.modules_core.space.views.space._layout";
+    public $hideSidebar = true;
 
     public function beforeAction($action)
     {
