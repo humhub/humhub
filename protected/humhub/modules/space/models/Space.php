@@ -132,7 +132,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             Yii::$app->search->delete($this);
         }
 
-        $userId = $this->created_by;
+        $user = \humhub\modules\user\models\User::findOne(['id'=>$this->created_by]); 
 
         if ($insert) {
             // Create new wall record for this space
@@ -146,7 +146,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             // Auto add creator as admin
             $membership = new Membership();
             $membership->space_id = $this->id;
-            $membership->user_id = $userId;
+            $membership->user_id = $user->id;
             $membership->status = Membership::STATUS_MEMBER;
             $membership->invite_role = 1;
             $membership->admin_role = 1;
@@ -155,10 +155,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
             $activity = new \humhub\modules\space\activities\Created;
             $activity->source = $this;
+            $activity->originator = $user;
             $activity->create();
         }
 
-        Yii::$app->cache->delete('userSpaces_' . $userId);
+        Yii::$app->cache->delete('userSpaces_' . $user->id);
 
         return parent::afterSave($insert, $changedAttributes);
     }
