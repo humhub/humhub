@@ -2,6 +2,8 @@
 
 namespace humhub\modules\comment\notifications;
 
+use humhub\modules\user\models\User;
+
 /**
  * Notification for new comments
  *
@@ -19,7 +21,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     /**
      * @inheritdoc
      */
-    public function send($user)
+    public function send(User $user)
     {
         // Check there is also an mentioned notifications, so ignore this notification
         /*
