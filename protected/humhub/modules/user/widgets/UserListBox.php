@@ -42,7 +42,7 @@ class UserListBox extends \yii\base\Widget
     /**
      * @var int displayed users per page
      */
-    public $pageSize = 20;
+    public $pageSize = 25;
 
     /**
      * @inheritdoc
@@ -53,7 +53,7 @@ class UserListBox extends \yii\base\Widget
         $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render("@humhub/modules/user/views/_listUsers", [
+        return $this->render("userListBox", [
                     'title' => $this->title,
                     'users' => $this->query->all(),
                     'pagination' => $pagination

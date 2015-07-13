@@ -46,24 +46,7 @@ use yii\helpers\Html;
             </ul>
 
             <div class="pagination-container">
-                <?php
-                /*
-                  $this->widget('HAjaxLinkPager', array(
-                  'currentPage' => $pagination->getCurrentPage(),
-                  'itemCount' => $pagination->getItemCount(),
-                  'pageSize' => HSetting::Get('paginationSize'),
-                  'maxButtonCount' => 5,
-                  'ajaxContentTarget' => '.modal-dialog',
-                  'nextPageLabel' => '<i class="fa fa-step-forward"></i>',
-                  'prevPageLabel' => '<i class="fa fa-step-backward"></i>',
-                  'firstPageLabel' => '<i class="fa fa-fast-backward"></i>',
-                  'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
-                  'header' => '',
-                  'htmlOptions' => array('class' => 'pagination'),
-                  ));
-                 * 
-                 */
-                ?>
+                <?= \humhub\widgets\AjaxLinkPager::widget(['pagination' => $pagination]); ?>
             </div>
 
 

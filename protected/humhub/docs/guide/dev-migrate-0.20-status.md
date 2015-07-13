@@ -17,19 +17,14 @@
 ## Bugs / ToDos / To Improve
 
 - Check Delete Related Record
-- Check UserList Ajax Pagination
 
 - Add ModuleId to Notifications
 - Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
 - Modal Confirm doesn't disappear
 - Comment in new Window Mode / Like Link in Modules
-
 - Check how to handle unapproved/disabled users (Directory, Spaces)
 	ActiveQuery User
-
-- Test Paginations
-	- Check/Fix Ajax Link Pager at like show users
 - CSRF
 - Registration Process
 	- When Invited to a space (Notification & Co.)
