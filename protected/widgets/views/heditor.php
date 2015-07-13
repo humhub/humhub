@@ -26,7 +26,7 @@ $(document).ready(function () {
     $('#<?php echo $id; ?>_contenteditable').atwho({
         at: "@",
         data: ["Please type at least 3 characters"],
-        insert_tpl: "<a href='<?php echo Yii::app()->createAbsoluteUrl('user/profile'); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
+        insert_tpl: "<a href='<?php echo Yii::app()->createAbsoluteUrl('user/profile') . '/' . (Yii::app()->urlManager->getUrlFormat() == 'path' ? '?' : '&'); ?>uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
         //tpl: "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
         tpl: "<li class='hint' data-value=''>${name}</li>",
         search_key: "name",
