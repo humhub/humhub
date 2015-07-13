@@ -30,4 +30,34 @@ class MessageSource extends \yii\i18n\PhpMessageSource
         return parent::loadMessagesFromFile($messageFile);
     }
 
+    /**
+     * @inheritdoc
+     * 
+     * Change: Don't show warning if message file don't exists
+     */
+    protected function loadMessages($category, $language)
+    {
+        $messageFile = $this->getMessageFilePath($category, $language);
+        $messages = $this->loadMessagesFromFile($messageFile);
+
+        $fallbackLanguage = substr($language, 0, 2);
+        if ($fallbackLanguage != $language) {
+            $fallbackMessageFile = $this->getMessageFilePath($category, $fallbackLanguage);
+            $fallbackMessages = $this->loadMessagesFromFile($fallbackMessageFile);
+
+            if ($messages === null && $fallbackMessages === null && $fallbackLanguage != $this->sourceLanguage) {
+                
+            } elseif (empty($messages)) {
+                return $fallbackMessages;
+            } elseif (!empty($fallbackMessages)) {
+                foreach ($fallbackMessages as $key => $value) {
+                    if (!empty($value) && empty($messages[$key])) {
+                        $messages[$key] = $fallbackMessages[$key];
+                    }
+                }
+            }
+        }
+        return (array) $messages;
+    }
+
 }
