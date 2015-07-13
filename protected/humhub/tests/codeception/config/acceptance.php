@@ -4,6 +4,11 @@
  * Application configuration for acceptance tests
  */
 $testConfig = [
+    'components' => [
+        'request' => [
+            'cookieValidationKey' => 'test'
+        ],
+    ],
 ];
 
 

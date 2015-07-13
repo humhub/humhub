@@ -25,7 +25,10 @@ class Request extends \yii\web\Request
     public function init()
     {
         if (\humhub\models\Setting::isInstalled()) {
-            $this->cookieValidationKey = \humhub\models\Setting::Get('secret');
+            $secret = \humhub\models\Setting::Get('secret');
+            if ($secret != "") {
+               $this->cookieValidationKey = \humhub\models\Setting::Get('secret');
+            } 
         } else {
             $this->cookieValidationKey = 'installer';
         }
