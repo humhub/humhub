@@ -229,7 +229,7 @@ class OnlineModuleManager
                 return $json['latestVersion'];
             }
         } catch (Exception $ex) {
-            Yii::log('Could not get latest HumHub Version!' . $ex->getMessage(), CLogger::LEVEL_ERROR);
+            Yii::error('Could not get latest HumHub Version!' . $ex->getMessage());
         }
 
         return "";

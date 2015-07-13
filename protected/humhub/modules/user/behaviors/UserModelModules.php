@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\behaviors;
@@ -124,7 +112,7 @@ class UserModelModules extends Behavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::log("User->enableModule(" . $moduleId . ") module is already enabled");
+            Yii::error("User->enableModule(" . $moduleId . ") module is already enabled");
             return false;
         }
 
@@ -167,7 +155,7 @@ class UserModelModules extends Behavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::log("User->disableModule(" . $moduleId . ") module is not enabled");
+            Yii::error("User->disableModule(" . $moduleId . ") module is not enabled");
             return false;
         }
 

@@ -17,7 +17,7 @@ $config = [
             'loginUrl' => ['/user/auth/login']
         ],
         'errorHandler' => [
-            //'errorAction' => 'error/index',
+        //'errorAction' => 'error/index',
         ],
         'session' => [
             'class' => 'humhub\modules\user\components\Session',
@@ -26,14 +26,5 @@ $config = [
     ],
     'modules' => [],
 ];
-
-if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = 'yii\debug\Module';
-
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = 'yii\gii\Module';
-}
 
 return $config;

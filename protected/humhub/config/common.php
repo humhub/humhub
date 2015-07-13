@@ -14,6 +14,7 @@ $config = [
     'version' => '0.20',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
+    'sourceLanguage' => 'en',
     'components' => [
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
@@ -39,22 +40,18 @@ $config = [
             'translations' => [
                 'base' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en-US',
                     'basePath' => '@humhub/messages'
                 ],
                 'security' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en-US',
                     'basePath' => '@humhub/messages'
                 ],
                 'error' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en-US',
                     'basePath' => '@humhub/messages'
                 ],
                 'widgets_views_markdownEditor' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en-US',
                     'basePath' => '@humhub/messages'
                 ],
             ],
@@ -126,12 +123,16 @@ $config = [
 
 
 if (YII_ENV_DEV) {
-// configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = 'yii\debug\Module';
-
+    $config['modules']['debug'] = [
+        'class' => 'yii\debug\Module',
+        'allowedIPs' => ['127.0.0.1', '::1'],
+    ];
     $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = 'yii\gii\Module';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+        'allowedIPs' => ['127.0.0.1', '::1'],
+    ];
 }
 
 return $config;
