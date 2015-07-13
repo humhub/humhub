@@ -16,6 +16,7 @@ class BasicSettingsForm extends \yii\base\Model
     public $defaultLanguage;
     public $defaultSpaceGuid;
     public $tour;
+    public $timeZone;
     public $dashboardShowProfilePostForm;
 
     /**
@@ -27,6 +28,7 @@ class BasicSettingsForm extends \yii\base\Model
             array(['name', 'baseUrl'], 'required'),
             array('name', 'string', 'max' => 150),
             array('defaultLanguage', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])),
+            array('timeZone', 'in', 'range' => \DateTimeZone::listIdentifiers()),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
             array(['tour', 'dashboardShowProfilePostForm'], 'in', 'range' => array(0, 1))
         );
@@ -43,6 +45,7 @@ class BasicSettingsForm extends \yii\base\Model
             'name' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Name of the application'),
             'baseUrl' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default language'),
+            'timeZone' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Server Timezone'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
             'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard')

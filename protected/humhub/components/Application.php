@@ -39,4 +39,16 @@ class Application extends \yii\web\Application
         return parent::beforeAction($action);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function preInit(&$config)
+    {
+        if (!isset($config['timeZone']) && date_default_timezone_get()) {
+            $config['timeZone'] = date_default_timezone_get();
+        }
+
+        parent::preInit($config);
+    }
+
 }

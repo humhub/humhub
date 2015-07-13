@@ -27,6 +27,7 @@ class DynamicConfig extends \yii\base\Object
                 $setting->name != 'name' &&
                 $setting->name != 'defaultLanguage' &&
                 $setting->name != 'theme' &&
+                $setting->name != 'timeZone' &&
                 $setting->name != 'authentication_internal'
         ) {
             return;
@@ -98,6 +99,14 @@ class DynamicConfig extends \yii\base\Object
             $config['language'] = Setting::Get('defaultLanguage');
         } else {
             $config['language'] = Yii::$app->language;
+        }
+
+        $timeZone = Setting::Get('timeZone');
+        if ($timeZone != "") {
+            $config['timeZone'] = $timeZone;
+            $config['components']['formatter']['defaultTimeZone'] = $timeZone;
+            $config['components']['formatterApp']['defaultTimeZone'] = $timeZone;
+            $config['components']['formatterApp']['timeZone'] = $timeZone;
         }
 
         // Add Caching

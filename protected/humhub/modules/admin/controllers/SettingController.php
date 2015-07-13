@@ -36,6 +36,7 @@ class SettingController extends Controller
         $form->name = Setting::Get('name');
         $form->baseUrl = Setting::Get('baseUrl');
         $form->defaultLanguage = Setting::Get('defaultLanguage');
+        $form->timeZone = Setting::Get('timeZone');
         $form->dashboardShowProfilePostForm = Setting::Get('showProfilePostForm', 'dashboard');
         $form->tour = Setting::Get('enable', 'tour');
 
@@ -48,6 +49,7 @@ class SettingController extends Controller
             Setting::Set('name', $form->name);
             Setting::Set('baseUrl', $form->baseUrl);
             Setting::Set('defaultLanguage', $form->defaultLanguage);
+            Setting::Set('timeZone', $form->timeZone);
             Setting::Set('enable', $form->tour, 'tour');
             Setting::Set('showProfilePostForm', $form->dashboardShowProfilePostForm, 'dashboard');
 

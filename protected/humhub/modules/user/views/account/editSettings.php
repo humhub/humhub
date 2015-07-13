@@ -26,6 +26,12 @@ use \humhub\models\Setting;
         <?php echo $form->error($model, 'language'); ?>
     </div>
 
+    <div class="form-group">
+        <?php echo $form->labelEx($model, 'timeZone'); ?>
+        <?php echo $form->dropDownList($model, 'timeZone', \humhub\libs\TimezoneHelper::generateList(), array('class' => 'form-control')); ?>
+        <?php echo $form->error($model, 'timeZone'); ?>
+    </div>    
+
     <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')): ?>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
@@ -47,7 +53,6 @@ use \humhub\models\Setting;
             </label>
         </div>
     </div>
-
     <hr>
 
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>
@@ -57,6 +62,3 @@ use \humhub\models\Setting;
 
     <?php CActiveForm::end(); ?>
 </div>
-
-
-

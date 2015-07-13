@@ -56,6 +56,10 @@ $config = [
                 ],
             ],
         ],
+        'formatterApp' => [
+            // Used to format date/times in applications timezone
+            'class' => 'yii\i18n\Formatter',
+        ],
         'cache' => [
             'class' => 'yii\caching\DummyCache',
         ],

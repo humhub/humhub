@@ -27,6 +27,7 @@ use humhub\modules\user\models\GroupAdmin;
  * @property string $auth_mode
  * @property string $tags
  * @property string $language
+ * @property string $time_zone
  * @property string $last_activity_email
  * @property string $created_at
  * @property integer $created_by
@@ -86,6 +87,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['username'], 'string', 'max' => 25],
+            [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['email'], 'string', 'max' => 100],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -301,6 +303,10 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             }
         }
 
+        if ($this->time_zone == "") {
+            $this->time_zone = Setting::Get('timeZone');
+        }
+
         if ($this->group_id == "") {
             throw new \yii\base\Exception("Could not save user without group!");
         }
@@ -400,7 +406,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         return $name;
     }
-
 
     /**
      * Checks if this records belongs to the current user

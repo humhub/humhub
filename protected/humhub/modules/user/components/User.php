@@ -32,6 +32,14 @@ class User extends \yii\web\User
         return $this->getIdentity()->language;
     }
 
+    public function getTimeZone()
+    {
+        if ($this->isGuest)
+            return "";
+
+        return $this->getIdentity()->time_zone;
+    }
+
     public function getGuid()
     {
         if ($this->isGuest)

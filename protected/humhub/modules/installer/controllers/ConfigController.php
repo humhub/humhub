@@ -101,6 +101,7 @@ class ConfigController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Setting::Set('name', $form->name);
             Setting::Set('systemEmailName', $form->name, 'mailing');
+            Setting::Set('timeZone', Yii::$app->timeZone);
             return $this->redirect(Url::to(['/installer/config/admin']));
         }
 

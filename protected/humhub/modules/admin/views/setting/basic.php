@@ -29,6 +29,11 @@ use humhub\models\Setting;
             <?php echo $form->dropDownList($model, 'defaultLanguage', Yii::$app->params['availableLanguages'], array('class' => 'form-control', 'readonly' => Setting::IsFixed('defaultLanguage'))); ?>
         </div>
 
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'timeZone'); ?>
+            <?php echo $form->dropDownList($model, 'timeZone', \humhub\libs\TimezoneHelper::generateList(), array('class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'timeZone'); ?>
+        </div>    
 
         <?php echo $form->labelEx($model, 'defaultSpaceGuid'); ?>
         <?php echo $form->textField($model, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>

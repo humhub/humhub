@@ -82,10 +82,14 @@ class AccountController extends Controller
 
         $model = new \humhub\modules\user\models\forms\AccountSettings();
         $model->language = $user->language;
-        $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
         if ($model->language == "") {
             $model->language = \humhub\models\Setting::Get('defaultLanguage');
         }
+        $model->timeZone = $user->time_zone;
+        if ($model->timeZone == "") {
+            $model->timeZone = \humhub\models\Setting::Get('timeZone');
+        }
+        $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
 
         $model->tags = $user->tags;
         $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
@@ -95,6 +99,7 @@ class AccountController extends Controller
             $user->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
             $user->language = $model->language;
             $user->tags = $model->tags;
+            $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
             $user->save();
 

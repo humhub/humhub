@@ -16,26 +16,26 @@
 
 ## Bugs / ToDos / To Improve
 
+- Check Delete Related Record
+- Check UserList Ajax Pagination
+
 - Add ModuleId to Notifications
 - Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
 - Installer
 	- cookieValidationKey Installer?
 	- Birthday Field not populated
-
-- Check Delete Related Record
 - Modal Confirm doesn't disappear
 - Comment in new Window Mode / Like Link in Modules
-- Use AssetBundels
-- Check Timezone
-- Check UserList Ajax Pagination
+
 - Check how to handle unapproved/disabled users (Directory, Spaces)
+	ActiveQuery User
+
 - Test Paginations
 	- Check/Fix Ajax Link Pager at like show users
 - CSRF
 - Registration Process
 	- When Invited to a space (Notification & Co.)
-- Check unapproved users (Space, etc.)
 - Check complexer Migrations
 - Translation
 	- try regenerate files

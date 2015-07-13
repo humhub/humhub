@@ -1,9 +1,5 @@
 <?php
 
-namespace humhub\modules\user\models\forms;
-
-use Yii;
-
 /**
  * HumHub
  * Copyright © 2014 The HumHub Project
@@ -22,6 +18,10 @@ use Yii;
  * GNU Affero General Public License for more details.
  */
 
+namespace humhub\modules\user\models\forms;
+
+use Yii;
+
 /**
  * Form Model for changing basic account settings
  *
@@ -35,6 +35,7 @@ class AccountSettings extends \yii\base\Model
     public $language;
     public $show_introduction_tour;
     public $visibility;
+    public $timeZone;
 
     /**
      * Declares the validation rules.
@@ -42,9 +43,10 @@ class AccountSettings extends \yii\base\Model
     public function rules()
     {
         return array(
-            array('tags', 'string', 'max' => 100),
-            array(['show_introduction_tour', 'visibility'], 'boolean'),
-            array('language', 'in', 'range'=>array_keys(Yii::$app->params['availableLanguages'])),
+            ['tags', 'string', 'max' => 100],
+            [['show_introduction_tour', 'visibility'], 'boolean'],
+            [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
+            ['language', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])],
         );
     }
 
@@ -59,6 +61,7 @@ class AccountSettings extends \yii\base\Model
             'tags' => Yii::t('UserModule.forms_AccountSettingsForm', 'Tags'),
             'language' => Yii::t('UserModule.forms_AccountSettingsForm', 'Language'),
             'show_introduction_tour' => Yii::t('UserModule.forms_AccountSettingsForm', 'Hide panel on dashboard'),
+            'timeZone' => Yii::t('UserModule.forms_AccountSettingsForm', 'TimeZone'),
             'visibility' => Yii::t('UserModule.forms_AccountSettingsForm', 'Profile visibility'),
         );
     }
