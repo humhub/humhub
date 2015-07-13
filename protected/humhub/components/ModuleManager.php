@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
+use humhub\components\bootstrap\ModuleAutoLoader;
 
 /**
  * ModuleManager handles all installed modules.
@@ -70,8 +71,13 @@ class ModuleManager extends \yii\base\Component
         }
     }
 
-    public function register($basePath, $config)
+    public function register($basePath, $config = null)
     {
+
+        if ($config === null && is_file($basePath . '/config.php')) {
+            $config = require($basePath . '/config.php');
+        }
+
         // Check mandatory config options
         if (!isset($config['class']) || !isset($config['id'])) {
             throw new InvalidConfigException("Module configuration requires an id and class attribute!");
@@ -152,7 +158,7 @@ class ModuleManager extends \yii\base\Component
     }
 
     /**
-     * Checks if a moduleId exists
+     * Checks if a moduleId exists, regardless it's activated or not
      *
      * @param string $id
      * @return boolean
@@ -182,6 +188,11 @@ class ModuleManager extends \yii\base\Component
         }
 
         throw new Exception("Could not find requested module: " . $id);
+    }
+
+    public function flushCache()
+    {
+        Yii::$app->cache->delete(ModuleAutoLoader::CACHE_ID);
     }
 
 }

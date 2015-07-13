@@ -174,4 +174,19 @@ class MigrateController extends \yii\console\controllers\MigrateController
         return ob_get_clean();
     }
 
+    public static function webMigrateUp($migrationPath)
+    {
+        defined('STDOUT') or define('STDOUT', fopen('php://output', 'w'));
+        defined('STDERR') or define('STDERR', fopen('php://output', 'w'));
+
+        ob_start();
+        $controller = new self('migrate', Yii::$app);
+        $controller->db = Yii::$app->db;
+        $controller->interactive = false;
+        $controller->migrationPath = $migrationPath;
+        $controller->color = false;
+        $controller->runAction('up');
+        return ob_get_clean();
+    }
+
 }

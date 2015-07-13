@@ -4,13 +4,10 @@
 
 ## Open 
 
-- Modules
-	- Uninstall
 - Theming
 	- Themed Image files User/Space Default Profile Image
 	- Notification/Activity Mail Views
 - Integritychecker
-- Tests
 - Caching
 	- HSetting
 	- UserModel: CanApproveUsers

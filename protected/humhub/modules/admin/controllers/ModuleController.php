@@ -25,8 +25,8 @@ class ModuleController extends Controller
 
     public function actionIndex()
     {
-        Yii::$app->cache->delete(\humhub\components\bootstrap\ModuleAutoLoader::CACHE_ID);
-        return $this->redirect(Url::to(['/admin/module/list']));
+        Yii::$app->moduleManager->flushCache();
+        return $this->redirect(['/admin/module/list']);
     }
 
     public function actionList()
@@ -54,7 +54,7 @@ class ModuleController extends Controller
 
         $module->enable();
 
-        return $this->redirect(Url::toRoute('/admin/module/list'));
+        return $this->redirect(['/admin/module/list']);
     }
 
     /**
@@ -76,7 +76,7 @@ class ModuleController extends Controller
 
         $module->disable();
 
-        return $this->redirect(Url::to(['/admin/module/list']));
+        return $this->redirect(['/admin/module/list']);
     }
 
     /**
@@ -87,7 +87,7 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
 
         if (!Yii::$app->moduleManager->hasModule($moduleId)) {
             $onlineModules = new OnlineModuleManager();
@@ -95,7 +95,7 @@ class ModuleController extends Controller
         }
 
         // Redirect to Module Install?
-        $this->redirect(Yii::$app->createUrl('admin/module/list'));
+        $this->redirect(['/admin/module/list']);
     }
 
     /**
@@ -108,23 +108,23 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
 
         if (Yii::$app->moduleManager->hasModule($moduleId)) {
 
             $module = Yii::$app->moduleManager->getModule($moduleId);
 
             if ($module == null) {
-                throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
             }
 
-            if (!is_writable($module->getPath())) {
-                throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', array('%path%' => $module->getPath())));
+            if (!is_writable($module->getBasePath())) {
+                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', array('%path%' => $module->getPath())));
             }
 
             $module->uninstall();
         }
-        $this->redirect(Yii::$app->createUrl('admin/module/list'));
+        return $this->redirect(['/admin/module/list']);
     }
 
     /**
@@ -137,21 +137,17 @@ class ModuleController extends Controller
 
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
-        }
-
-        if (!Yii::$app->moduleManager->canUninstall($moduleId)) {
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not uninstall module first! Module is protected.'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $onlineModules = $this->getOnlineModuleManager();
         $onlineModules->update($moduleId);
 
-        $this->redirect(Yii::$app->createUrl('admin/module/list'));
+        return $this->redirect(['/admin/module/list']);
     }
 
     /**

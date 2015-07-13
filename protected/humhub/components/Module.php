@@ -1,27 +1,16 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\components;
 
 use Yii;
 use humhub\models\ModuleEnabled;
+use yii\base\Exception;
 
 /**
  * Base Class for Modules / Extensions
@@ -198,10 +187,7 @@ class Module extends \yii\base\Module
 
     protected function migrate()
     {
-        // Auto Migrate (add module database changes)
-        //Yii::import('application.commands.shell.ZMigrateCommand');
-        //$migrate = ZMigrateCommand::AutoMigrate();
-        return true;
+        \humhub\commands\MigrateController::webMigrateUp($this->basePath . '/migrations');
     }
 
     /**
@@ -231,39 +217,44 @@ class Module extends \yii\base\Module
      */
     public function uninstall()
     {
-
-        if ($this->isCoreModule) {
-            throw new CException("Could not uninstall core modules!");
-            return;
-        }
-
+        // Module enabled?
         if (Yii::$app->hasModule($this->id)) {
             $this->disable();
         }
 
         // Use uninstall migration, when found
-        $uninstallMigration = $this->getBasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'uninstall.php';
+        $migrationPath = $this->getBasePath() . '/migrations';
+        $uninstallMigration = $migrationPath . '/uninstall.php';
         if (file_exists($uninstallMigration)) {
-            Yii::import("application.commands.shell.*");
+
+            /**
+             * Execute Uninstall Migration
+             */
             ob_start();
             require_once($uninstallMigration);
-            $migration = new uninstall;
-            $migration->setDbConnection(Yii::$app->db);
+            $migration = new \uninstall;
             try {
                 $migration->up();
-            } catch (Exception $ex) {
+            } catch (\yii\db\Exception $ex) {
                 ;
             }
             ob_get_clean();
+
+            /**
+             * Delete all Migration Table Entries
+             */
+            $migrations = opendir($migrationPath);
+            while (false !== ($migration = readdir($migrations))) {
+                if ($migration == '.' || $migration == '..' || $migration == 'uninstall.php') {
+                    continue;
+                }
+                Yii::$app->db->createCommand()->delete('migration', ['version' => str_replace('.php', '', $migration)])->execute();
+            }
+
+            $this->removeModuleFolder();
         }
 
-        // Delete all executed migration by module
-        $command = Yii::$app->db->createCommand('DELETE FROM migration WHERE module = :moduleId');
-        $command->execute(array(':moduleId' => $this->getId()));
-
-        Yii::$app->moduleManager->removeModuleFolder($this->getId());
-
-        ModuleManager::flushCache();
+        Yii::$app->moduleManager->flushCache();
     }
 
     /**
@@ -272,7 +263,6 @@ class Module extends \yii\base\Module
     public function install()
     {
         $this->migrate();
-        return true;
     }
 
     /**
@@ -283,25 +273,25 @@ class Module extends \yii\base\Module
     public function update()
     {
         $this->migrate();
-        return true;
     }
 
     /**
-     * Removes module folder in case of uninstall or update
+     * Removes the module folder
+     * This is required for uninstall or while update.
      */
     public function removeModuleFolder()
     {
 
-        $moduleBackupFolder = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_backups';
+        $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
         if (!is_dir($moduleBackupFolder)) {
             if (!@mkdir($moduleBackupFolder)) {
-                throw new CException("Could not create module backup folder!");
+                throw new Exception("Could not create module backup folder!");
             }
         }
 
-        $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $this->getId() . "_" . time();
+        $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $this->id . "_" . time();
         if (!@rename($this->getBasePath(), $backupFolderName)) {
-            throw new CException("Could not remove module folder!");
+            throw new Exception("Could not remove module folder!");
         }
     }
 

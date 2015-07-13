@@ -1,25 +1,14 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\libs;
 
+use ZipArchive;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
@@ -42,7 +31,8 @@ class OnlineModuleManager
      */
     public function install($moduleId)
     {
-        $modulePath = Yii::$app->getModulePath();
+        $modulePath = Yii::getAlias("@modules");
+        print $modulePath;
 
         if (!is_writable($modulePath)) {
             throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
@@ -59,7 +49,7 @@ class OnlineModuleManager
         }
 
         // Check Module Folder exists
-        $moduleDownloadFolder = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'module_downloads';
+        $moduleDownloadFolder = Yii::getAlias("@runtime/module_downloads");
         if (!is_dir($moduleDownloadFolder)) {
             if (!@mkdir($moduleDownloadFolder)) {
                 throw new Exception("Could not create module download folder!");
@@ -87,7 +77,6 @@ class OnlineModuleManager
 
         // Extract Package
         if (file_exists($downloadTargetFileName)) {
-            // Unzip
             $zip = new ZipArchive;
             $res = $zip->open($downloadTargetFileName);
             if ($res === TRUE) {
@@ -100,15 +89,12 @@ class OnlineModuleManager
             throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Download of module failed!'));
         }
 
-        ModuleManager::flushCache();
+        Yii::$app->moduleManager->flushCache();
 
-        // Call Modules autostart
-        $autostartFilename = $modulePath . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . 'autostart.php';
-        if (file_exists($autostartFilename)) {
-            require_once($autostartFilename);
-            $module = Yii::$app->moduleManager->getModule($moduleId);
-            $module->install();
-        }
+        Yii::$app->moduleManager->register($basePath = Yii::getAlias('@modules/' . $moduleId));
+
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->install();
     }
 
     /**
@@ -118,15 +104,17 @@ class OnlineModuleManager
      */
     public function update($moduleId)
     {
-        // Hack: for some broken modules using wall aliases
-        Yii::setPathOfAlias('wall', Yii::$app->getModulePath());
-
-        // Remove old module files
-        Yii::$app->moduleManager->removeModuleFolder($moduleId);
-        $this->install($moduleId);
+        // Temporary disable module if enabled
+        if (Yii::$app->hasModule($moduleId)) {
+            Yii::$app->setModule($moduleId, null);
+        }
 
         $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->update();
+        $module->removeModuleFolder();
+        $this->install($moduleId);
+
+        $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
+        $updatedModule->update();
     }
 
     /**

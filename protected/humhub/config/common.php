@@ -6,6 +6,10 @@ Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
 Yii::setAlias('@module', '@app/modules');
 
+# Default Path for thirdparty modules
+# Also used by Marketplace to install modules on-the-fly
+Yii::setAlias('@modules', '@app/modules');
+
 $config = [
     'version' => '0.20',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
