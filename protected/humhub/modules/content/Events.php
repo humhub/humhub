@@ -23,6 +23,22 @@ use yii\helpers\Console;
 class Events extends \yii\base\Object
 {
 
+    public static function onUserDelete($event)
+    {
+        $user = $event->sender;
+
+        models\WallEntry::deleteAll(['wall_id' => $user->wall_id]);
+
+        foreach (Content::findAll(['user_id' => $this->id]) as $content) {
+            $content->delete();
+        }
+        foreach (Content::findAll(['created_by' => $this->id]) as $content) {
+            $content->delete();
+        }
+
+        return true;
+    }
+
     /**
      * On run of integrity check command, validate all wall data
      *

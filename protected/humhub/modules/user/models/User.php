@@ -216,52 +216,28 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             }
         }
 
-        \humhub\modules\user\models\Setting::deleteAll(['user_id' => $this->id]);
-
         // Disable all enabled modules
-        /*
-          foreach ($this->getAvailableModules() as $moduleId => $module) {
-          if ($this->isModuleEnabled($moduleId)) {
-          $this->disableModule($moduleId);
-          }
-          }
-          Yii::app()->search->delete($this);
+        foreach ($this->getAvailableModules() as $moduleId => $module) {
+            if ($this->isModuleEnabled($moduleId)) {
+                $this->disableModule($moduleId);
+            }
+        }
 
+        // Delete profile image
+        $this->getProfileImage()->delete();
 
-          // Delete user session
-          UserHttpSession::model()->deleteAllByAttributes(array('user_id' => $this->id));
+        // Remove from search index
+        Yii::$app->search->delete($this);
 
-          // Delete Profile Image
-          $this->getProfileImage()->delete();
-
-          // Delete all pending invites
-          UserInvite::model()->deleteAllByAttributes(array('user_originator_id' => $this->id));
-
-          UserFollow::model()->deleteAllByAttributes(array('user_id' => $this->id));
-          UserFollow::model()->deleteAllByAttributes(array('object_model' => 'User', 'object_id' => $this->id));
-
-          // Delete all group admin assignments
-          GroupAdmin::model()->deleteAllByAttributes(array('user_id' => $this->id));
-
-          // Delete wall entries
-          WallEntry::model()->deleteAllByAttributes(array('wall_id' => $this->wall_id));
-
-          // Delete user profile
-          Profile::model()->deleteAllByAttributes(array('user_id' => $this->id));
-
-          // Deletes all content created by this user
-          foreach (Content::model()->findAllByAttributes(array('user_id' => $this->id)) as $content) {
-          $content->delete();
-          }
-          foreach (Content::model()->findAllByAttributes(array('created_by' => $this->id)) as $content) {
-          $content->delete();
-          }
-
-          // Delete all passwords
-          foreach (UserPassword::model()->findAllByAttributes(array('user_id' => $this->id)) as $password) {
-          $password->delete();
-          }
-         */
+        // Cleanup related tables
+        Invite::deleteAll(['user_originator_id' => $this->id]);
+        Follow::deleteAll(['user_id' => $this->id]);
+        Follow::deleteAll(['object_model' => $this->className(), 'object_id' => $this->id]);
+        Password::deleteAll(['user_id' => $this->id]);
+        Profile::deleteAll(['user_id' => $this->id]);
+        GroupAdmin::deleteAll(['user_id' => $this->id]);
+        Session::deleteAll(['user_id' => $this->id]);
+        Setting::deleteAll(['user_id' => $this->id]);
 
         return parent::beforeDelete();
     }

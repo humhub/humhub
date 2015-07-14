@@ -39,7 +39,7 @@ class Events extends \yii\base\Object
     public static function onUserDelete($event)
     {
 
-        foreach (Comment::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $comment) {
+        foreach (Comment::findAll(array('created_by' => $event->sender->id)) as $comment) {
             $comment->delete();
         }
         return true;

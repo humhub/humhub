@@ -93,9 +93,17 @@ class Events extends \yii\base\Object
      */
     public static function onBeforeActiveRecordDelete($event)
     {
-        foreach (models\File::find()->where(['object_id' => $event->sender->getPrimaryKey(), 'object_model' => $event->sender->className()])->all() as $file) {
+        foreach (File::find()->where(['object_id' => $event->sender->getPrimaryKey(), 'object_model' => $event->sender->className()])->all() as $file) {
             $file->delete();
         }
+    }
+
+    public static function onUserDelete($event)
+    {
+        foreach (File::findAll(array('created_by' => $event->sender->id)) as $file) {
+            $file->delete();
+        }
+        return true;
     }
 
 }

@@ -25,7 +25,6 @@
 - Comment in new Window Mode / Like Link in Modules
 - Check how to handle unapproved/disabled users (Directory, Spaces)
 	ActiveQuery User
-- CSRF
 - Registration Process
 	- When Invited to a space (Notification & Co.)
 - Check complexer Migrations

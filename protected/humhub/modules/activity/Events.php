@@ -1,25 +1,14 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\activity;
 
+use humhub\modules\user\models\User;
 use humhub\modules\activity\models\Activity;
 
 /**
@@ -43,16 +32,7 @@ class Events extends \yii\base\Object
 
         $user = $event->sender;
 
-        // Deleted all activities by the user
-        foreach (Content::model()->findAllByAttributes(array('created_by' => $user->id, 'object_model' => 'Activity')) as $content) {
-            $content->delete();
-        }
-        foreach (Content::model()->findAllByAttributes(array('user_id' => $user->id, 'object_model' => 'Activity')) as $content) {
-            $content->delete();
-        }
-
-        // Try to find activities about this user
-        foreach (Activity::model()->findAllByAttributes(array('object_model' => 'User', 'object_id' => $user->id)) as $userActivity) {
+        foreach (Activity::findAll(array('object_model' => User::className(), 'object_id' => $user->id)) as $userActivity) {
             $userActivity->delete();
         }
 
@@ -104,7 +84,7 @@ class Events extends \yii\base\Object
         foreach (Activity::find()->all() as $a) {
 
             if ($a->object_model != "" && $a->object_id != "" && $a->getSource() === null) {
-                if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target! (".$a->object_model.")")) {
+                if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target! (" . $a->object_model . ")")) {
                     $a->delete();
                 }
             }

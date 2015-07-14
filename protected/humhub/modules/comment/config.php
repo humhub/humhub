@@ -11,7 +11,6 @@ return [
     'id' => 'comment',
     'class' => \humhub\modules\comment\Module::className(),
     'isCoreModule' => true,
-    // Events to Catch
     'events' => array(
         array('class' => User::className(), 'event' => User::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onUserDelete')),
         array('class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),

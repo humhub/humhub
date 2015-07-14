@@ -23,8 +23,7 @@ class Module extends \yii\base\Module
      */
     public static function onUserDelete($event)
     {
-
-        foreach (Like::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $like) {
+        foreach (Like::findAll(array('created_by' => $event->sender->id)) as $like) {
             $like->delete();
         }
 
@@ -37,7 +36,7 @@ class Module extends \yii\base\Module
     public static function onContentDelete($event)
     {
 
-        foreach (Like::model()->findAllByAttributes(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $like) {
+        foreach (Like::findAll(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $like) {
             $like->delete();
         }
     }
@@ -63,7 +62,7 @@ class Module extends \yii\base\Module
     {
         $controller = $event->sender;
         $controller->showTestHeadline("Like (" . Like::find()->count() . " entries)");
-        
+
         $i = 0;
         /*
           foreach (Like::model()->findAll() as $l) {
