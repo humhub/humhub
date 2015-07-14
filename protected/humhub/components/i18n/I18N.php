@@ -27,29 +27,17 @@ class I18N extends \yii\i18n\I18N
         }
 
         // Try to automatically assign Module->MessageSource
-        foreach (Yii::$app->getModules() as $moduleId => $config) {
-
+        foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true, 'returnClass' => true]) as $moduleId => $className) {
             $moduleCategory = $this->getTranslationCategory($moduleId);
-
             if (substr($category, 0, strlen($moduleCategory)) === $moduleCategory) {
+                $reflector = new \ReflectionClass($className);
 
-                $className = "";
-                if (is_array($config) && isset($config['class'])) {
-                    $className = $config['class'];
-                } elseif ($config instanceof \yii\base\Module) {
-                    $className = $config->className();
-                }
-
-                if ($className !== "") {
-                    $reflector = new \ReflectionClass($className);
-
-                    $this->translations[$moduleCategory . '*'] = [
-                        'class' => 'humhub\components\i18n\MessageSource',
-                        'sourceLanguage' => Yii::$app->sourceLanguage,
-                        'sourceCategory' => $moduleCategory,
-                        'basePath' => dirname($reflector->getFileName()) . '/messages',
-                    ];
-                }
+                $this->translations[$moduleCategory . '*'] = [
+                    'class' => 'humhub\components\i18n\MessageSource',
+                    'sourceLanguage' => Yii::$app->sourceLanguage,
+                    'sourceCategory' => $moduleCategory,
+                    'basePath' => dirname($reflector->getFileName()) . '/messages',
+                ];
             }
         }
         return parent::getMessageSource($category);
