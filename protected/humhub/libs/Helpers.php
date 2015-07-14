@@ -186,4 +186,39 @@ class Helpers
         throw new \yii\base\Exception("Invalid class type! |" . $className . "|");
     }
 
+    /**
+     * Check for sameness of two strings using an algorithm with timing
+     * independent of the string values if the subject strings are of equal length.
+     *
+     * The function can be useful to prevent timing attacks. For example, if $a and $b
+     * are both hash values from the same algorithm, then the timing of this function
+     * does not reveal whether or not there is a match.
+     *
+     * NOTE: timing is affected if $a and $b are different lengths or either is not a
+     * string. For the purpose of checking password hash this does not reveal information
+     * useful to an attacker.
+     *
+     * @see http://blog.astrumfutura.com/2010/10/nanosecond-scale-remote-timing-attacks-on-php-applications-time-to-take-them-seriously/
+     * @see http://codereview.stackexchange.com/questions/13512
+     * @see https://github.com/ircmaxell/password_compat/blob/master/lib/password.php
+     *
+     * @param string $a First subject string to compare.
+     * @param string $b Second subject string to compare.
+     * @return bool true if the strings are the same, false if they are different or if
+     * either is not a string.
+     */
+    public static function same($a, $b)
+    {
+        if (!is_string($a) || !is_string($b))
+            return false;
+        $mb = function_exists('mb_strlen');
+        $length = $mb ? mb_strlen($a, '8bit') : strlen($a);
+        if ($length !== ($mb ? mb_strlen($b, '8bit') : strlen($b)))
+            return false;
+        $check = 0;
+        for ($i = 0; $i < $length; $i+=1)
+            $check|=(ord($a[$i]) ^ ord($b[$i]));
+        return $check === 0;
+    }
+
 }

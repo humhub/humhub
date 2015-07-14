@@ -1,8 +1,13 @@
 <?php
-$this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', '<strong>Password</strong> reset');
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+use humhub\compat\CActiveForm;
+
+$this->title = Yii::t('UserModule.views_auth_resetPassword', '<strong>Password</strong> reset');
 ?>
 <div class="container" style="text-align: center;">
-    <?php $this->widget('application.widgets.LogoWidget', array('place' => 'login')); ?>
+    <?php echo humhub\widgets\SiteLogo::widget(array('place' => 'login')); ?>
     <br>
 
     <div class="row">
@@ -12,29 +17,25 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', '<strong>Passwo
 
 
                 <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'reset-password-form',
-                    "enableClientValidation" => false,
-                    'enableAjaxValidation' => false,
-                ));
+                $form = CActiveForm::begin();
                 ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'newPassword'); ?>
-                    <?php echo $form->passwordField($model, 'newPassword', array('class' => 'form-control', 'maxlength' => 255, 'value'=>'')); ?>
+                    <?php echo $form->passwordField($model, 'newPassword', array('class' => 'form-control', 'maxlength' => 255, 'value' => '')); ?>
                     <?php echo $form->error($model, 'newPassword'); ?>
                 </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'newPasswordConfirm'); ?>
-                    <?php echo $form->passwordField($model, 'newPasswordConfirm', array('class' => 'form-control', 'maxlength' => 255, 'value'=>'')); ?>
+                    <?php echo $form->passwordField($model, 'newPasswordConfirm', array('class' => 'form-control', 'maxlength' => 255, 'value' => '')); ?>
                     <?php echo $form->error($model, 'newPasswordConfirm'); ?>
                 </div>
 
 
                 <hr>
-                <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_resetPassword', 'Change password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo $this->createUrl('//') ?>"><?php echo Yii::t('UserModule.views_auth_resetPassword', 'Back') ?></a>
+                <?php echo Html::submitButton(Yii::t('UserModule.views_auth_resetPassword', 'Change password'), array('class' => 'btn btn-primary')); ?> <a class="btn btn-primary" href="<?php echo Url::home() ?>"><?php echo Yii::t('UserModule.views_auth_resetPassword', 'Back') ?></a>
 
-                <?php $this->endWidget(); ?>
+                <?php CActiveForm::end(); ?>
 
 
             </div>
@@ -44,13 +45,13 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', '<strong>Passwo
 
 <script type="text/javascript">
 
-    $(function() {
+    $(function () {
         // set cursor to email field
         $('#email_txt').focus();
     })
 
     // Shake panel after wrong validation
-<?php if ($form->errorSummary($model) != null) { ?>
+<?php if ($model->hasErrors()) { ?>
         $('#password-recovery-form').removeClass('bounceIn');
         $('#password-recovery-form').addClass('shake');
         $('#app-title').removeClass('fadeIn');

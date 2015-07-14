@@ -9,13 +9,14 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use humhub\components\Controller;
 use yii\web\HttpException;
+use yii\helpers\Url;
+use humhub\components\Controller;
 use humhub\modules\user\models\Invite;
 use humhub\compat\HForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
-use yii\helpers\Url;
+use humhub\modules\user\models\forms\AccountRecoverPassword;
 
 /**
  * AuthController handles all authentication tasks.
@@ -35,13 +36,11 @@ class AuthController extends Controller
      */
     public function actions()
     {
-        return array(
-            // captcha action renders the CAPTCHA image displayed on the password recovery page
-            'captcha' => array(
-                'class' => 'CCaptchaAction',
-                'backColor' => 0xFFFFFF,
-            ),
-        );
+        return [
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+            ],
+        ];
     }
 
     /**
@@ -99,36 +98,19 @@ class AuthController extends Controller
      */
     public function actionRecoverPassword()
     {
-        $model = new AccountRecoverPasswordForm;
+        $model = new AccountRecoverPassword();
 
-        if (isset($_POST['AccountRecoverPasswordForm'])) {
-            $model->attributes = $_POST['AccountRecoverPasswordForm'];
-
-            if ($model->validate()) {
-
-                // Force new Captcha Code
-                Yii::$app->getController()->createAction('captcha')->getVerifyCode(true);
-
-                $model->recoverPassword();
-
-                if (Yii::$app->request->isAjaxRequest) {
-                    $this->renderPartial('recoverPassword_modal_success', array('model' => $model), false, true);
-                } else {
-                    $this->render('recoverPassword_success', array(
-                        'model' => $model,
-                    ));
-                }
-                return;
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->recover()) {
+            if (Yii::$app->request->isAjax) {
+                return $this->renderAjax('recoverPassword_modal_success', array('model' => $model));
             }
+            return $this->render('recoverPassword_success', array('model' => $model));
         }
 
-        if (Yii::$app->request->isAjaxRequest) {
-            $this->renderPartial('recoverPassword_modal', array('model' => $model), false, true);
-        } else {
-            $this->render('recoverPassword', array(
-                'model' => $model,
-            ));
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('recoverPassword_modal', array('model' => $model));
         }
+        return $this->render('recoverPassword', array('model' => $model));
     }
 
     /**
@@ -137,33 +119,24 @@ class AuthController extends Controller
     public function actionResetPassword()
     {
 
-        $user = User::model()->findByAttributes(array('guid' => Yii::$app->request->getQuery('guid')));
+        $user = User::findOne(array('guid' => Yii::$app->request->get('guid')));
 
-        if ($user === null || !$this->checkPasswordResetToken($user, Yii::$app->request->getQuery('token'))) {
+        if ($user === null || !$this->checkPasswordResetToken($user, Yii::$app->request->get('token'))) {
             throw new HttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
         }
 
-        $model = new UserPassword('newPassword');
+        $model = new Password();
+        $model->scenario = 'registration';
 
-        if (isset($_POST['UserPassword'])) {
-            $model->attributes = $_POST['UserPassword'];
-
-            if ($model->validate()) {
-
-                // Clear password reset token
-                $user->setSetting('passwordRecoveryToken', '', 'user');
-
-                $model->user_id = $user->id;
-                $model->setPassword($model->newPassword);
-                $model->save();
-
-                return $this->render('resetPassword_success');
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user->setSetting('passwordRecoveryToken', '', 'user');
+            $model->user_id = $user->id;
+            $model->setPassword($model->newPassword);
+            $model->save();
+            return $this->render('resetPassword_success');
         }
 
-        $this->render('resetPassword', array(
-            'model' => $model,
-        ));
+        return $this->render('resetPassword', array('model' => $model));
     }
 
     private function checkPasswordResetToken($user, $token)
@@ -173,7 +146,7 @@ class AuthController extends Controller
 
         if ($savedTokenInfo !== "") {
             list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
-            if (CPasswordHelper::same($generatedToken, $token)) {
+            if (\humhub\libs\Helpers::same($generatedToken, $token)) {
                 // Check token generation time
                 if ($generationTime + (24 * 60 * 60) >= time()) {
                     return true;

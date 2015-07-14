@@ -76,6 +76,7 @@ class Password extends \yii\db\ActiveRecord
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
             [['newPassword'], 'compare', 'compareAttribute' => 'newPasswordConfirm', 'on' => 'changePassword'],
+            [['newPassword'], 'compare', 'compareAttribute' => 'newPasswordConfirm', 'on' => 'registration'],
         ];
     }
 

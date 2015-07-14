@@ -13,7 +13,6 @@
 	- UserModel: CanApproveUsers
 - Url Rewriting (User)
 - LDAP 
-- Forgot Password
 
 ## Bugs / ToDos / To Improve
 
@@ -29,6 +28,7 @@
 - Translation
 	- try regenerate files
 	- fix translation categories for changed FileNames
+- Error Pages (e.g. can Login)
 - Guest Mode
 - User Approval
 

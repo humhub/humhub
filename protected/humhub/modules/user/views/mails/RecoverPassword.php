@@ -1,5 +1,7 @@
-<?php $this->beginContent('application.views.mail.template'); ?>
+<?php
 
+use yii\helpers\Html;
+?>
 <tr>
     <td align="center" valign="top"   class="fix-box">
 
@@ -25,9 +27,9 @@
                                                 <tr>
                                                     <td width="auto"  align="center" valign="middle" height="28" style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
-                             <span style="color: #555555; font-weight: 300;">
-                               <?php echo Yii::t('UserModule.views_mails_RecoverPassword', '<strong>Password</strong> recovery'); ?>
-                             </span>
+                                                        <span style="color: #555555; font-weight: 300;">
+                                                            <?php echo Yii::t('UserModule.views_mails_RecoverPassword', '<strong>Password</strong> recovery'); ?>
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -88,7 +90,7 @@
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Hello {displayName}', array('{displayName}' => CHtml::encode($user->displayName))); ?>
+                                                        <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Hello {displayName}', array('{displayName}' => Html::encode($user->displayName))); ?>
                                                         <br><br>
                                                         <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Please use the following link within the next day to reset your password.'); ?>
                                                         <br>
@@ -118,11 +120,11 @@
                                                 <tr>
                                                     <td width="auto"  align="center" valign="middle" height="32" style=" background-color:#7191a8;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
-                             <span style="color: #ffffff; font-weight: 300;">
-                               <a href="<?php echo $linkPasswordReset; ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                   <strong><?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Reset Password'); ?></strong>
-                               </a>
-                             </span>
+                                                        <span style="color: #ffffff; font-weight: 300;">
+                                                            <a href="<?php echo $linkPasswordReset; ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
+                                                                <strong><?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Reset Password'); ?></strong>
+                                                            </a>
+                                                        </span>
                                                     </td>
 
                                                 </tr>
@@ -152,5 +154,3 @@
         <!-- end  container width 600px -->
     </td>
 </tr>
-
-<?php $this->endContent(); ?>
