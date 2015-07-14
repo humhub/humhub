@@ -15,4 +15,6 @@ class InviteFixture extends ActiveFixture
 
     public $modelClass = 'humhub\modules\user\models\Invite';
 
+    public $dataFile = '@tests/codeception/fixtures/data/user_invite.php';
+
 }

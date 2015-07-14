@@ -17,7 +17,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
- * Description of BaseActivity
+ * BaseActivity is the base class for all activities.
  *
  * @author luke
  */
@@ -40,7 +40,7 @@ class BaseActivity extends \yii\base\Component
     public $viewName = "";
 
     /**
-     * @var string the module id which this activity belongs to
+     * @var string the module id which this activity belongs to (required)
      */
     public $moduleId = "";
 
@@ -90,52 +90,6 @@ class BaseActivity extends \yii\base\Component
         }
 
         parent::init();
-    }
-
-    /**
-     * Creates an activity
-     *
-     * @throws \yii\base\Exception
-     */
-    public function create()
-    {
-        $model = new Activity;
-        $model->class = $this->className();
-        $model->object_model = $this->source->className();
-        $model->object_id = $this->source->getPrimaryKey();
-        $model->module = $this->moduleId;
-
-        if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
-            $model->content->container = $this->source->content->container;
-            $model->content->visibility = $this->source->content->visibility;
-
-            if ($this->originator === null) {
-                if ($this->source instanceof ContentActiveRecord) {
-                    $model->content->user_id = $this->source->content->user_id;
-                } else {
-                    $model->content->user_id = $this->source->created_by;
-                }
-            } else {
-                $model->content->user_id = $this->originator->id;
-            }
-            
-            
-        } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            $model->content->visibility = $this->visibility;
-            $model->content->container = $this->source;
-            $model->content->user_id = $this->originator->id;
-            
-            if (Yii::$app->user->isGuest) {
-                $model->content->created_by = $this->originator->id;
-                $model->created_by = $this->originator->id;
-            }
-        } else {
-            throw new \yii\base\Exception("Invalid source object type!");
-        }
-
-        if (!$model->validate() || !$model->save()) {
-            throw new \yii\base\Exception("Could not save activity!" . print_r($model->getErrors(), 1));
-        }
     }
 
     /**
@@ -210,6 +164,51 @@ class BaseActivity extends \yii\base\Component
     {
         $class = new ReflectionClass($this);
         return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
+    }
+
+    /**
+     * Creates an activity
+     *
+     * @throws \yii\base\Exception
+     */
+    public function create()
+    {
+        $model = new Activity;
+        $model->class = $this->className();
+
+        if ($this->moduleId == "") {
+            throw new \yii\base\InvalidConfigException("No moduleId given!");
+        }
+
+        $model->module = $this->moduleId;
+
+
+        // Set content container and visibility
+        if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
+            $model->content->container = $this->source->content->container;
+            $model->content->visibility = $this->source->content->visibility;
+        } elseif ($this->source instanceof ContentContainerActiveRecord) {
+            $model->content->visibility = $this->visibility;
+            $model->content->container = $this->source;
+        } else {
+            throw new \yii\base\InvalidConfigException("Invalid source object type!");
+        }
+
+        $model->object_model = $this->source->className();
+        $model->object_id = $this->source->getPrimaryKey();
+
+        // Set user
+        if ($this->originator !== null) {
+            $model->content->user_id = $this->originator->id;
+        } elseif ($this->source instanceof ContentActiveRecord) {
+            $model->content->user_id = $this->source->content->user_id;
+        } elseif ($this->source instanceof ContentAddonActiveRecord) {
+            $model->content->user_id = $this->source->created_by;
+        }
+
+        if (!$model->validate() || !$model->save()) {
+            throw new \yii\base\Exception("Could not save activity!" . $model->getErrors());
+        }
     }
 
 }

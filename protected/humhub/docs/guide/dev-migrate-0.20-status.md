@@ -13,15 +13,13 @@
 	- UserModel: CanApproveUsers
 - Url Rewriting (User)
 - LDAP 
+- Forgot Password
 
 ## Bugs / ToDos / To Improve
 
-- Check Delete Related Record
-
-- Add ModuleId to Notifications
+- Installer mac
 - Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
-- Modal Confirm doesn't disappear
 - Comment in new Window Mode / Like Link in Modules
 - Check how to handle unapproved/disabled users (Directory, Spaces)
 	ActiveQuery User

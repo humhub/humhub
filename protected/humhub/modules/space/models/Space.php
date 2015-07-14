@@ -132,7 +132,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             Yii::$app->search->delete($this);
         }
 
-        $user = \humhub\modules\user\models\User::findOne(['id'=>$this->created_by]); 
+        $user = \humhub\modules\user\models\User::findOne(['id' => $this->created_by]);
 
         if ($insert) {
             // Create new wall record for this space
@@ -165,18 +165,14 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     }
 
     /**
-     * Before deletion of a Space
+     * @inheritdoc
      */
     public function beforeDelete()
     {
-
-        foreach (SpaceSetting::model()->findAllByAttributes(array('space_id' => $this->id)) as $spaceSetting) {
-            $spaceSetting->delete()
-
-            ;
+        foreach (Setting::findAll(['space_id' => $this->id]) as $spaceSetting) {
+            $spaceSetting->delete();
         }
 
-        // Disable all enabled modules
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
                 $this->disableModule($moduleId);
@@ -187,30 +183,19 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         $this->getProfileImage()->delete();
 
-        // Remove all Follwers
-        UserFollow::model()->deleteAllByAttributes(array('object_id' => $this->id, 'object_model' => 'Space'));
+        \humhub\modules\user\models\Follow::deleteAll(['object_id' => $this->id, 'object_model' => 'Space']);
 
-        //Delete all memberships:
-        //First select, then delete - done to make sure that SpaceMembership::beforeDelete() is triggered
-        $spaceMemberships = SpaceMembership::model()->findAllByAttributes(array('space_id' => $this->id));
-        foreach ($spaceMemberships as $spaceMembership) {
+        foreach (Membership::findAll(['space_id' => $this->id]) as $spaceMembership) {
             $spaceMembership->delete();
         }
 
-        UserInvite::model()->deleteAllByAttributes(array('space_invite_id' => $this->id));
-
-        // Delete all content objects of this space
-        foreach (Content::model()->findAllByAttributes(array('space_id' => $this->id)) as $content) {
-            $content->delete();
-        }
+        \humhub\modules\user\models\Invite::deleteAll(['space_invite_id' => $this->id]);
 
         // When this workspace is used in a group as default workspace, delete the link
-        foreach (Group::model()->findAllByAttributes(array('space_id' => $this->id)) as $group) {
+        foreach (\humhub\modules\user\models\Group::findAll(['space_id' => $this->id]) as $group) {
             $group->space_id = "";
             $group->save();
         }
-
-        Wall::model()->deleteAllByAttributes(array('id' => $this->wall_id));
 
         return parent::beforeDelete();
     }

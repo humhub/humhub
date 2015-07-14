@@ -14,5 +14,6 @@ class UserFollowFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\user\models\Follow';
+    public $dataFile = '@tests/codeception/fixtures/data/user_follow.php';
 
 }

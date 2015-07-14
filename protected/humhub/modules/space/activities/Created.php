@@ -21,6 +21,11 @@ class Created extends BaseActivity
     /**
      * @inheritdoc
      */
+    public $moduleId = "space";
+
+    /**
+     * @inheritdoc
+     */
     public $clickable = false;
 
     /**

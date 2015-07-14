@@ -16,9 +16,6 @@ use Yii;
  * @property integer $space_id
  * @property integer $emailed
  * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
  * @property integer $desktop_notified
  * @property integer $originator_user_id
  */
@@ -40,8 +37,7 @@ class Notification extends \humhub\components\ActiveRecord
     {
         return [
             [['class', 'user_id'], 'required'],
-            [['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'created_by', 'updated_by', 'desktop_notified', 'originator_user_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'desktop_notified', 'originator_user_id'], 'integer'],
             [['class', 'source_class'], 'string', 'max' => 100]
         ];
     }

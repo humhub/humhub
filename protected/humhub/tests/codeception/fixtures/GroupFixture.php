@@ -14,5 +14,6 @@ class GroupFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\user\models\Group';
+    public $dataFile = '@tests/codeception/fixtures/data/group.php';
 
 }

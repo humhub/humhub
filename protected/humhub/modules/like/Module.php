@@ -30,26 +30,13 @@ class Module extends \yii\base\Module
         return true;
     }
 
-    /**
-     * On delete of a content object, also delete all corresponding likes
-     */
-    public static function onContentDelete($event)
+    public static function onActiveRecordDelete($event)
     {
-
-        foreach (Like::findAll(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $like) {
-            $like->delete();
-        }
-    }
-
-    /**
-     * On delete of a content addon object, e.g. a comment
-     * also delete all likes
-     */
-    public static function onContentAddonDelete($event)
-    {
-
-        foreach (Like::model()->findAllByAttributes(array('object_id' => $event->sender->id, 'object_model' => get_class($event->sender))) as $like) {
-            $like->delete();
+        $record = $event->sender;
+        if ($record->hasAttribute('id')) {
+            foreach (Like::findAll(array('object_id' => $record->id, 'object_model' => $record->className())) as $like) {
+                $like->delete();
+            }
         }
     }
 

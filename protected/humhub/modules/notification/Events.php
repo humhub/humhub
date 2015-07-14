@@ -25,16 +25,11 @@ class Events extends \yii\base\Object
      */
     public static function onUserDelete($event)
     {
-
-        foreach (Notification::model()->findAllByAttributes(array('user_id' => $event->sender->id)) as $notification) {
+        foreach (Notification::findAll(['user_id' => $event->sender->id]) as $notification) {
             $notification->delete();
         }
 
-        foreach (Notification::model()->findAllByAttributes(array('source_object_model' => 'User', 'source_object_id' => $event->sender->id)) as $notification) {
-            $notification->delete();
-        }
-
-        foreach (Notification::model()->findAllByAttributes(array('created_by' => $event->sender->id)) as $notification) {
+        foreach (Notification::findAll(['originator_user_id' => $event->sender->id]) as $notification) {
             $notification->delete();
         }
 
@@ -49,7 +44,7 @@ class Events extends \yii\base\Object
     public static function onSpaceDelete($event)
     {
 
-        foreach (Notification::model()->findAllByAttributes(array('space_id' => $event->sender->id)) as $notification) {
+        foreach (Notification::findAll(array('space_id' => $event->sender->id)) as $notification) {
             $notification->delete();
         }
     }

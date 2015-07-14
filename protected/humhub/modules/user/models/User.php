@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models;
 
 use Yii;
-use humhub\models\Setting;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\GroupAdmin;
 
@@ -256,9 +255,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 $this->auth_mode = self::AUTH_MODE_LOCAL;
             }
 
-            if (Setting::Get('allowGuestAccess', 'authentication_internal')) {
+            if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal')) {
                 // Set users profile default visibility to all
-                if (Setting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
+                if (\humhub\models\Setting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;
                 }
             }
@@ -267,20 +266,20 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
             // Set Status
             if ($this->status == "") {
-                if (Setting::Get('needApproval', 'authentication_internal')) {
+                if (\humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
                     $this->status = User::STATUS_NEED_APPROVAL;
                 } else {
                     $this->status = User::STATUS_ENABLED;
                 }
             }
 
-            if ((Setting::Get('defaultUserGroup', 'authentication_internal'))) {
-                $this->group_id = Setting::Get('defaultUserGroup', 'authentication_internal');
+            if ((\humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal'))) {
+                $this->group_id = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
             }
         }
 
         if ($this->time_zone == "") {
-            $this->time_zone = Setting::Get('timeZone');
+            $this->time_zone = \humhub\models\Setting::Get('timeZone');
         }
 
         if ($this->group_id == "") {
@@ -371,7 +370,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         $name = '';
 
-        $format = Setting::Get('displayNameFormat');
+        $format = \humhub\models\Setting::Get('displayNameFormat');
 
         if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
             $name = $this->profile->firstname . " " . $this->profile->lastname;

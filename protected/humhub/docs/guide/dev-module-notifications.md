@@ -19,6 +19,9 @@ use humhub\core\notification\components\BaseNotification;
  */
 class SomethingHappend extends BaseNotification
 {
+	// Module Id (required)
+	public $moduleId = "example";
+
     public $viewName = "somethingHappend";
 }
 ?>

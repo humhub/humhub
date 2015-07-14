@@ -28,7 +28,7 @@ class SomethingHappend extends BaseNotification
 	// View Name for activity
     public $viewName = "somethingHappend";
 
-	// Used for automatic deletion on module uninstall
+	// Module Id (required)
 	public $moduleId = "example";
 
 }

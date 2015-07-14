@@ -20,6 +20,12 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * Content addons are content types like Comments, Files or Likes.
  * These are always belongs to a Content object.
  *
+ * Mandatory fields:
+ * - created_by
+ * - created_at
+ * - updated_by
+ * - updated_at
+ * 
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5

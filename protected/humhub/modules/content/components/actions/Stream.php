@@ -206,7 +206,7 @@ class Stream extends \yii\base\Action
         }
         // Show only mine items
         if (in_array('entry_mine', $this->filters) && $this->user !== null) {
-            $this->activeQuery->andWhere(['content.created_by' => $this->user->id]);
+            $this->activeQuery->andWhere(['content.user_id' => $this->user->id]);
         }
         // Show only items where the current user is involed
         if (in_array('entry_userinvoled', $this->filters) && $this->user !== null) {

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\activity;
 
-use humhub\modules\user\models\User;
 use humhub\modules\activity\models\Activity;
 
 /**
@@ -23,28 +22,10 @@ class Events extends \yii\base\Object
 {
 
     /**
-     * On User delete, also delete all activities
-     *
-     * @param type $event
-     */
-    public static function onUserDelete($event)
-    {
-
-        $user = $event->sender;
-
-        foreach (Activity::findAll(array('object_model' => User::className(), 'object_id' => $user->id)) as $userActivity) {
-            $userActivity->delete();
-        }
-
-        return true;
-    }
-
-    /**
      * On delete of some active record, check if there are related activities and delete them.
      */
     public static function onActiveRecordDelete($event)
     {
-
         $model = $event->sender->className();
         $pk = $event->sender->getPrimaryKey();
 
@@ -57,26 +38,18 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On workspace deletion make sure to delete all activities
-     *
-     * @param type $event
-     */
-    public static function onSpaceDelete($event)
-    {
-
-        foreach (Content::model()->findAllByAttributes(array('space_id' => $event->sender->id, 'object_model' => 'Activity')) as $content) {
-            $content->delete();
-        }
-    }
-
-    /**
      * On run of integrity check command, validate all module data
      *
      * @param CEvent $event
      */
     public static function onIntegrityCheck($event)
     {
-
+        
+        // Check for object_model / object_id
+        // Check for module id is not null
+        // Check for class exists and is a BaseActivity
+        
+        /*
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Activity Module (" . Activity::find()->count() . " entries)");
 
@@ -96,6 +69,8 @@ class Events extends \yii\base\Object
                 }
             }
         }
+         * 
+         */
     }
 
 }

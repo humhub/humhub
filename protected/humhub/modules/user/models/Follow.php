@@ -58,25 +58,6 @@ class Follow extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        if ($insert) {
-
-            /*
-              // ToDo: Handle this via event of User Module
-              if ($this->object_model == 'User') {
-              // Create Wall Activity for that
-              $activity = new Activity;
-              $activity->content->user_id = $this->user->id;
-              $activity->content->visibility = Content::VISIBILITY_PUBLIC;
-              $activity->type = "ActivityUserFollowsUser";
-              $activity->object_model = "User";
-              $activity->object_id = $this->object_id;
-              $activity->save();
-              $activity->content->addToWall($this->user->wall_id);
-              }
-             *
-             */
-        }
-
         return parent::beforeSave($insert);
     }
 

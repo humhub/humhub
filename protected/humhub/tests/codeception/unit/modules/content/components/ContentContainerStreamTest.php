@@ -29,18 +29,9 @@ class ContentContainerStreamTest extends DbTestCase
     public function fixtures()
     {
         return [
-            'user' => [
-                'class' => UserFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/user.php'
-            ],
-            'space' => [
-                'class' => SpaceFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space.php'
-            ],
-            'space_membership' => [
-                'class' => SpaceMembershipFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space_membership.php'
-            ],
+            'user' => [ 'class' => UserFixture::className()],
+            'space' => [ 'class' => SpaceFixture::className()],
+            'space_membership' => [ 'class' => SpaceMembershipFixture::className()],
         ];
     }
 

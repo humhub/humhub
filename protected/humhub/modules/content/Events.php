@@ -28,11 +28,21 @@ class Events extends \yii\base\Object
         $user = $event->sender;
 
         models\WallEntry::deleteAll(['wall_id' => $user->wall_id]);
-
-        foreach (Content::findAll(['user_id' => $this->id]) as $content) {
+        models\Wall::deleteAll(['id' => $user->wall_id]);
+        foreach (Content::findAll(['user_id' => $user->id]) as $content) {
             $content->delete();
         }
-        foreach (Content::findAll(['created_by' => $this->id]) as $content) {
+
+        return true;
+    }
+
+    public static function onSpaceDelete($event)
+    {
+        $space = $event->sender;
+
+        models\WallEntry::deleteAll(['wall_id' => $space->wall_id]);
+        models\Wall::deleteAll(['id' => $space->wall_id]);
+        foreach (Content::findAll(['space_id' => $space->id]) as $content) {
             $content->delete();
         }
 
@@ -155,7 +165,7 @@ class Events extends \yii\base\Object
                 $mailsSent++;
             }
 
-            Console::updateProgress(++$done, $totalUsers);
+            Console::updateProgress( ++$done, $totalUsers);
         }
 
         Console::endProgress(true);

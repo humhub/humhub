@@ -19,6 +19,10 @@ use humhub\modules\activity\models\Activity;
 /**
  * This is the model class for table "content".
  *
+ * Content Container Assignment:
+ * If the "space_id" attribute is set, the record belongs to a Space.
+ * If not the "user_id" will be used as Content Container.
+ * 
  * The followings are the available columns in table 'content':
  * @property integer $id
  * @property string $guid
@@ -265,7 +269,7 @@ class Content extends \humhub\components\ActiveRecord
         if ($userId == "")
             $userId = Yii::$app->user->id;
 
-        if ($this->created_by == $userId)
+        if ($this->user_id == $userId)
             return true;
 
         if (Yii::$app->user->isAdmin()) {
@@ -347,7 +351,7 @@ class Content extends \humhub\components\ActiveRecord
         if ($userId == "")
             $userId = Yii::$app->user->id;
 
-        if ($this->created_by == $userId)
+        if ($this->user_id == $userId)
             return true;
 
         return false;
@@ -636,7 +640,7 @@ class Content extends \humhub\components\ActiveRecord
 
     public function beforeValidate()
     {
-        if (!$this->container->canWrite($this->created_by)) {
+        if (!$this->container->canWrite($this->user_id)) {
             $this->addError('visibility', Yii::t('base', 'Insufficent permissions to create content!'));
         }
 

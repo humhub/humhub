@@ -17,7 +17,7 @@ use humhub\modules\activity\components\BaseActivity;
  */
 class ContentCreated extends BaseActivity
 {
-
+    public $moduleId = 'content';
     public $viewName = 'created';
 
 }

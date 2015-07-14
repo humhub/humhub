@@ -29,27 +29,18 @@ class UserTest extends DbTestCase
         return [
             'user' => [
                 'class' => UserFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/user.php'
             ],
             'invite' => [
                 'class' => InviteFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/user_invite.php'
             ],
             'group' => [
                 'class' => GroupFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/group.php'
-            ],
-            'group' => [
-                'class' => GroupFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/group.php'
             ],
             'space' => [
                 'class' => SpaceFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space.php'
             ],
             'space_membership' => [
                 'class' => SpaceMembershipFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space_membership.php'
             ],
         ];
     }

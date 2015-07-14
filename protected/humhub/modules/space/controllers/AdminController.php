@@ -9,6 +9,7 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
+use yii\helpers\Url;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
 
@@ -387,7 +388,6 @@ class AdminController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionArchive()
     {
-        $this->forcePostRequest();
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
@@ -399,7 +399,6 @@ class AdminController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionUnArchive()
     {
-        $this->forcePostRequest();
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
@@ -412,17 +411,15 @@ class AdminController extends \humhub\modules\content\components\ContentContaine
     public function actionDelete()
     {
         $this->ownerOnly();
-        $space = $this->getSpace();
-        $model = new SpaceDeleteForm;
-        if (isset($_POST['SpaceDeleteForm'])) {
-            $model->attributes = $_POST['SpaceDeleteForm'];
 
-            if ($model->validate()) {
-                $space->delete();
-                $this->htmlRedirect($this->createUrl('//'));
-            }
+        $model = new \humhub\modules\space\models\forms\DeleteForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $this->getSpace()->delete();
+            return $this->redirect(Url::home());
         }
-        $this->render('delete', array('model' => $model, 'space' => $space));
+
+        return $this->render('delete', array('model' => $model));
     }
 
     /**

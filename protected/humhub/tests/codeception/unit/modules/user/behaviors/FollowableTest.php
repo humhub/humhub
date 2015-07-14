@@ -24,15 +24,12 @@ class FollowableTest extends DbTestCase
         return [
             'user' => [
                 'class' => UserFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/user.php'
             ],
             'user_follow' => [
                 'class' => UserFollowFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/user_follow.php'
             ],
             'space' => [
                 'class' => SpaceFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space.php'
             ],
         ];
     }

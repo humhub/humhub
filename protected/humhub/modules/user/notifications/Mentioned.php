@@ -17,8 +17,19 @@ use humhub\modules\notification\components\BaseNotification;
 class Mentioned extends BaseNotification
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'user';
+
+    /**
+     * @inheritdoc
+     */
     public $viewName = "mentioned";
 
+    /**
+     * inheritdoc
+     */
     public function send(\humhub\modules\user\models\User $user)
     {
         // Do additional access check here, because the mentioned user may have

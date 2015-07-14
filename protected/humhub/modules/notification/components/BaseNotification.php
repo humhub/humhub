@@ -18,7 +18,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
- * Description of BaseNotification
+ * BaseNotification
  *
  * @author luke
  */
@@ -79,6 +79,11 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
     public $record;
 
     /**
+     * @var string the module id which this notification belongs to (required)
+     */
+    public $moduleId = "";
+
+    /**
      * Renders the notification
      *
      * @return string
@@ -130,11 +135,15 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
      */
     public function send(User $user)
     {
+
+        if ($this->moduleId == "") {
+            throw new \yii\base\InvalidConfigException("No moduleId given!");
+        }
+
         // Skip - do not set notification to the originator
         if ($this->originator !== null && $user->id == $this->originator->id) {
             return;
         }
-
 
         $notification = new Notification;
         $notification->user_id = $user->id;
@@ -227,7 +236,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
     {
         return \yii\helpers\Html::encode($content->getContentTitle()) .
                 ' "' .
-                \humhub\widgets\RichText::widget(['text' => $content->getContentPreview(), 'minimal' => true, 'maxLength' => 60]).'"';
+                \humhub\widgets\RichText::widget(['text' => $content->getContentPreview(), 'minimal' => true, 'maxLength' => 60]) . '"';
     }
 
 }

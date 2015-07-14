@@ -14,5 +14,6 @@ class WallFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\content\models\Wall';
+    public $dataFile = '@tests/codeception/fixtures/data/wall.php';
 
 }

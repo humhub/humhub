@@ -5,7 +5,6 @@ namespace tests\codeception\unit\models;
 use Yii;
 use yii\codeception\DbTestCase;
 use Codeception\Specify;
-use tests\codeception\fixtures\SettingFixture;
 use humhub\models\Setting;
 
 /**
@@ -28,10 +27,7 @@ class SettingTest extends DbTestCase
     public function fixtures()
     {
         return [
-            'setting' => [
-                'class' => SettingFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/setting.php'
-            ],
+            'setting' => [ 'class' => \tests\codeception\fixtures\SettingFixture::className()],
         ];
     }
 
@@ -75,7 +71,6 @@ class SettingTest extends DbTestCase
         $this->assertEquals(Setting::Get('longText'), "");
     }
 
-    
     public function testInstalled()
     {
         $this->assertTrue(Setting::IsInstalled());

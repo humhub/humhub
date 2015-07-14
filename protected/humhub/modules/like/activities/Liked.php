@@ -18,8 +18,19 @@ use humhub\modules\activity\components\BaseActivity;
 class Liked extends BaseActivity
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'like';
+
+    /**
+     * @inheritdoc
+     */
     public $viewName = 'liked';
 
+    /**
+     * @inheritdoc
+     */
     public function render($mode = self::OUTPUT_WEB, $params = array())
     {
         $like = $this->source;

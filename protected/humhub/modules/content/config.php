@@ -6,6 +6,7 @@ use humhub\commands\IntegrityController;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 
 return [
     'id' => 'content',
@@ -18,6 +19,7 @@ return [
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onCronRun']],
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::className(), 'onCronRun']],
         ['class' => User::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onUserDelete']],
+        ['class' => Space::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onSpaceDelete']],
     ),
 ];
 ?>

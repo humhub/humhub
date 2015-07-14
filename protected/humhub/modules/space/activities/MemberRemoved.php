@@ -31,6 +31,11 @@ class MemberRemoved extends BaseActivity
     /**
      * @inheritdoc
      */
+    public $moduleId = "space";
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;

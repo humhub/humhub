@@ -31,35 +31,28 @@ class StreamActionTest extends DbTestCase
         return [
             'user' => [
                 'class' => UserFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/user.php'
             ],
             'group' => [
                 'class' => GroupFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/group.php'
             ],
             'space' => [
                 'class' => SpaceFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space.php'
             ],
             'space_membership' => [
                 'class' => SpaceMembershipFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/space_membership.php'
             ],
             'wall' => [
                 'class' => WallFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/wall.php'
             ],
             'wall_entry' => [
                 'class' => WallEntryFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/wall_entry.php'
             ],
             'content' => [
                 'class' => ContentFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/content.php'
             ],
             'post' => [
                 'class' => PostFixture::className(),
-                'dataFile' => '@tests/codeception/unit/fixtures/data/post.php'
+
             ],
         ];
     }

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\comment\notifications;
 
 use humhub\modules\user\models\User;
@@ -7,11 +13,15 @@ use humhub\modules\user\models\User;
 /**
  * Notification for new comments
  *
- * @package humhub.modules_core.comment.notifications
  * @since 0.5
  */
 class NewComment extends \humhub\modules\notification\components\BaseNotification
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'comment';
 
     /**
      * @inheritdoc

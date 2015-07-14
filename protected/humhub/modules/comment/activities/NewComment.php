@@ -18,6 +18,7 @@ use humhub\modules\activity\components\BaseActivity;
 class NewComment extends BaseActivity
 {
 
+    public $moduleId = 'comment';
     public $viewName = "newComment";
 
 }

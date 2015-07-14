@@ -9,13 +9,21 @@
 namespace humhub\modules\user\activities;
 
 /**
- * Description of Follow
+ * Activity when somebody follows an object
  *
  * @author luke
  */
 class UserFollow extends humhub\modules\activity\components\BaseActivity
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'user';
+
+    /**
+     * @inheritdoc
+     */
     public $viewName = "userFollow";
 
 }

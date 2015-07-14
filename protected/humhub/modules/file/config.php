@@ -5,7 +5,7 @@ use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\modules\file\Events;
 use humhub\modules\user\models\User;
-use yii\db\ActiveRecord;
+use humhub\components\ActiveRecord;
 
 return [
     'id' => 'file',

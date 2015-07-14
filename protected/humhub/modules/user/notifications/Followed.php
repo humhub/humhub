@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
@@ -11,6 +17,14 @@ use humhub\modules\notification\components\BaseNotification;
 class Followed extends BaseNotification
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'user';
+
+    /**
+     * @inheritdoc
+     */
     public $viewName = "follow";
 
 }

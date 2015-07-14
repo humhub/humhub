@@ -10,6 +10,8 @@ namespace humhub\modules\space;
 
 use Yii;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\models\Membership;
+use yii\web\HttpException;
 
 /**
  * Description of Events
@@ -44,19 +46,19 @@ class Events extends \yii\base\Object
         $user = $event->sender;
 
         // Check if the user owns some spaces
-        foreach (SpaceMembership::GetUserSpaces($user->id) as $space) {
+        foreach (Membership::GetUserSpaces($user->id) as $space) {
             if ($space->isSpaceOwner($user->id)) {
-                throw new CHttpException(500, Yii::t('SpaceModule.base', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
+                throw new HttpException(500, Yii::t('SpaceModule.base', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
             }
         }
 
         // Cancel all space memberships
-        foreach (SpaceMembership::model()->findAllByAttributes(array('user_id' => $user->id)) as $membership) {
+        foreach (Membership::findAll(array('user_id' => $user->id)) as $membership) {
             $membership->space->removeMember($user->id);
         }
 
         // Cancel all space invites by the user
-        foreach (SpaceMembership::model()->findAllByAttributes(array('originator_user_id' => $user->id, 'status' => SpaceMembership::STATUS_INVITED)) as $membership) {
+        foreach (Membership::findAll(array('originator_user_id' => $user->id, 'status' => Membership::STATUS_INVITED)) as $membership) {
             $membership->space->removeMember($membership->user_id);
         }
 

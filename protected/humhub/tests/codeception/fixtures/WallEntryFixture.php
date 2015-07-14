@@ -12,7 +12,7 @@ use yii\test\ActiveFixture;
 
 class WallEntryFixture extends ActiveFixture
 {
-
     public $modelClass = 'humhub\modules\content\models\WallEntry';
+    public $dataFile = '@tests/codeception/fixtures/data/wall_entry.php';
 
 }

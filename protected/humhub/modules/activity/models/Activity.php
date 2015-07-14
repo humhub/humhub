@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\activity\models;
 
 use Yii;
@@ -14,11 +20,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property string $class
  * @property string $module
  * @property string $object_model
- * @property string $object_id
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
  */
 class Activity extends ContentActiveRecord
 {
@@ -54,8 +55,7 @@ class Activity extends ContentActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by', 'object_id'], 'integer'],
+            [['object_id'], 'integer'],
             [['class'], 'string', 'max' => 100],
             [['module', 'object_model'], 'string', 'max' => 100]
         ];

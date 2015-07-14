@@ -79,11 +79,11 @@ use humhub\modules\space\models\Space;
 
         <div class="pull-right">
             <?php if ($model->status == Space::STATUS_ENABLED) { ?>
-                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $model->createUrl('//space/admin/archive'), array('class' => 'btn btn-warning', 'data-method' => 'POST')); ?>
+                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $model->createUrl('/space/admin/archive'), array('class' => 'btn btn-warning')); ?>
             <?php } elseif ($model->status == Space::STATUS_ARCHIVED) { ?>
-                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $model->createUrl('//space/admin/unarchive'), array('class' => 'btn btn-warning', 'data-method' => 'POST')); ?>
+                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $model->createUrl('/space/admin/unarchive'), array('class' => 'btn btn-warning')); ?>
             <?php } ?>
-            <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('//space/admin/delete'), array('class' => 'btn btn-danger', 'data-method' => 'POST')); ?>
+            <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('/space/admin/delete'), array('class' => 'btn btn-danger')); ?>
 
         </div>
 

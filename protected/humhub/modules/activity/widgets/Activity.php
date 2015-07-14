@@ -83,8 +83,6 @@ class Activity extends \yii\base\Widget
                     'user' => $user,
                     'target' => $source,
                     'space' => $space,
-                    // Deprecated
-                    'workspace' => $space
         ));
     }
 
