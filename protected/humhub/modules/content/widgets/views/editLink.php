@@ -1,6 +1,5 @@
 <?php
 
-use Yii;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 

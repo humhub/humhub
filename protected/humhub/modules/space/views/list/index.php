@@ -3,7 +3,6 @@
 /* @var $memberships array */
 /* @var $membership \humhub\modules\space\models\Membership */
 
-use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\libs\Helpers;

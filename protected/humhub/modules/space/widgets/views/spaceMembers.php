@@ -3,7 +3,6 @@
 use humhub\modules\space\models\Space;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use Yii;
 ?>
 
 <?php if ($showApplicants) : ?>

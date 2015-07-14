@@ -1,6 +1,5 @@
 <?php
 
-use Yii;
 use \humhub\compat\CHtml;
 ?>
 <div class="panel-heading">

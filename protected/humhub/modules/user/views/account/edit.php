@@ -1,7 +1,3 @@
-<?php
-
-use Yii;
-?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_edit', '<strong>User</strong> details'); ?>
 

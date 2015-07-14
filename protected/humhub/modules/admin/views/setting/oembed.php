@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use Yii;
 use yii\helpers\Url;
 ?>
 <div class="panel panel-default">

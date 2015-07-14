@@ -1,8 +1,7 @@
 <?php
 
-use Yii;
-use \humhub\compat\CActiveForm;
-use \humhub\compat\CHtml;
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
 use humhub\modules\user\models\User;
 ?>
 <div class="panel-heading">

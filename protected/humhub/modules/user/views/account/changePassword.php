@@ -1,8 +1,7 @@
 <?php
 
-use Yii;
-use \humhub\compat\CActiveForm;
-use \humhub\compat\CHtml;
+use humhub\compat\CActiveForm;
+use humhub\compat\CHtml;
 ?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_changePassword', '<strong>Change</strong> password'); ?>

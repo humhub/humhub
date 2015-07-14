@@ -1,6 +1,5 @@
 <?php
 
-use Yii;
 use \humhub\compat\CActiveForm;
 use \humhub\compat\CHtml;
 use \humhub\models\Setting;
@@ -30,7 +29,7 @@ use \humhub\models\Setting;
         <?php echo $form->labelEx($model, 'timeZone'); ?>
         <?php echo $form->dropDownList($model, 'timeZone', \humhub\libs\TimezoneHelper::generateList(), array('class' => 'form-control')); ?>
         <?php echo $form->error($model, 'timeZone'); ?>
-    </div>    
+    </div>
 
     <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')): ?>
         <div class="form-group">

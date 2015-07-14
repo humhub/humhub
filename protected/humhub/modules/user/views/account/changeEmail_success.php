@@ -1,7 +1,3 @@
-<?php
-
-use Yii;
-?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_changeEmail_success', '<strong>Change</strong> E-mail'); ?>
 </div>

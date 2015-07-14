@@ -1,8 +1,7 @@
 <?php
 
-use Yii;
 use yii\helpers\Html;
-use \humhub\modules\user\models\User;
+use humhub\modules\user\models\User;
 
 $followers = $user->getFollowers(User::find()->limit(16));
 ?>

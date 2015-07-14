@@ -1,7 +1,3 @@
-<?php
-
-use Yii;
-?>
 <div class="panel panel-default" id="user-statistics-panel">
 
     <!-- Display panel menu widget -->

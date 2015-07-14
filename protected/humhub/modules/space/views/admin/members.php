@@ -1,6 +1,5 @@
 <?php
 
-use Yii;
 use \humhub\compat\CActiveForm;
 use \humhub\compat\CHtml;
 use yii\helpers\Html;

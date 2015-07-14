@@ -10,8 +10,6 @@
  *
  * @var $this AuthController
  */
-use Yii;
-
 ?>
 <div class="container" style="text-align: center;">
     <?= humhub\widgets\SiteLogo::widget(['place' => 'login']); ?>
