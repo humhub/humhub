@@ -4,6 +4,7 @@
 <head>
     <!-- start: Meta -->
     <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <!-- end: Meta -->
 
@@ -30,6 +31,7 @@
     <!--[if lt IE 9]>
     <script src="<?php echo Yii::app()->baseUrl; ?>/js/html5shiv.js"></script>
     <link id="ie-style" href="<?php echo Yii::app()->baseUrl; ?>/css/ie.css" rel="stylesheet">
+    <script src="<?php echo Yii::app()->baseUrl; ?>/js/respond.min.js"></script>
     <![endif]-->
 
     <!--[if IE 9]>
