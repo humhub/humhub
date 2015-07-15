@@ -38,7 +38,6 @@ class Migration extends \yii\db\Migration
         $this->updateSilent('file', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('like', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
-        $this->updateSilent('notification', ['obsolete_target_object_model' => $newClass], ['obsolete_target_object_model' => $oldClass]);
         $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('user_follow', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
