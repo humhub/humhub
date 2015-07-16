@@ -185,9 +185,15 @@ class Module extends \yii\base\Module
         return true;
     }
 
+    /**
+     * Execute all not applied module migrations
+     */
     protected function migrate()
     {
-        \humhub\commands\MigrateController::webMigrateUp($this->basePath . '/migrations');
+        $migrationPath = $this->basePath . '/migrations';
+        if (is_dir($migrationPath)) {
+            \humhub\commands\MigrateController::webMigrateUp();
+        }
     }
 
     /**
