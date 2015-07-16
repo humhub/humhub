@@ -38,7 +38,7 @@ class Module extends \yii\base\Module
      *
      * @var type
      */
-    public $resourcesPath = 'resources';
+    public $resourcesPath = 'assets';
 
     /**
      * Returns modules name provided by module.json file
