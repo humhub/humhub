@@ -20,7 +20,7 @@ The config.php should return an array including following fields:
 - **id** - Unqiue ID of the module (required)
 - **class** - Namespaced classname of the module (required)
 - **events** - Array of Events (optional)
-- **namespace** - Namespace of your module (optional)
+- **namespace** - Namespace of your module 
 - **urlManagerRules** - Array of URL Manager Rules  [http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#addRules()-detail](http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#addRules()-detail)
 - **modules** - Submodules (optional)
 
@@ -29,13 +29,14 @@ Example of a config.php file:
 ```php
 <?php
 
-use app\modules\example\Module;
+use johndoe\example\Module;
+use humhub\widgets\TopMenu;
 
 return [
     'id' => 'example',
-    'class' => Module::className(),
+    'class' => 'johndoe\example\Module',
     'events' => [
-        array('class' => \humhub\widgets\TopMenu::className(), 'event' => \humhub\widgets\TopMenu::EVENT_INIT, 'callback' => array(Module::className(), 'onTopMenuInit')),
+        array('class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => array('johndoe\example\Module', 'onTopMenuInit')),
     ]
 ];
 ?>
@@ -52,14 +53,13 @@ This file holds basic information about the module like name, description or cur
 Example of a ´´module.json file:
 ```
     {
-        "id": "mymoduleid",
-        "name": "My Module",
+        "id": "example",
+        "name": "My Example Module",
         "description": "My testing module.",
         "keywords": ["my", "cool", "module"],
         "version": "1.0",
         "humhub": {
-            "minVersion": "0.6"
-            "maxVersion": "1.0"
+            "minVersion": "0.20"
         }
     }
 ```

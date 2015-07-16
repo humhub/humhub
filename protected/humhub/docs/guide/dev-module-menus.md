@@ -21,6 +21,7 @@ to inject own items into navigation menu.
 ## Example
 
 __autostart.php__
+
 ```php
     //...
     'events' => array(
@@ -31,6 +32,7 @@ __autostart.php__
 ```
 
 __ExampleModule.php__
+
 ```php
     public static function onTopMenuInit($event) {
         $event->sender->addItem(array(

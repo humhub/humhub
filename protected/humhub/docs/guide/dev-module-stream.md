@@ -25,10 +25,10 @@ Example:
 ```php
 <?php
 
-namespace module\polls\components;
+namespace humhub\modules\polls\components;
 
 use humhub\modules\content\components\actions\ContentContainerStream;
-use module\polls\models\Poll;
+use humhub\modules\polls\models\Poll;
 
 class StreamAction extends ContentContainerStream
 {
@@ -55,8 +55,8 @@ class PollController extends ContentContainerController
     {
         return array(
             'stream' => array(
-                'class' => \module\polls\components\StreamAction::className(),
-                'mode' => \module\polls\components\StreamAction::MODE_NORMAL,
+                'class' => \humhub\modules\polls\components\StreamAction::className(),
+                'mode' => \humhub\modules\polls\components\StreamAction::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
             ),
         );
@@ -90,7 +90,7 @@ Create a Form Widget derived from [[humhub\modules\content\widgets\WallCreateCon
 
 ```php
 
-namespace module\polls\widgets;
+namespace humhub\modules\polls\widgets;
 
 class WallCreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
 {
@@ -141,7 +141,7 @@ public function actionCreate()
     $poll->answersText = Yii::$app->request->post('answersText');
     $poll->allow_multiple = Yii::$app->request->post('allowMultiple', 0);
 
-    return \module\polls\widgets\WallCreateForm::create($poll);
+    return \humhub\modules\polls\widgets\WallCreateForm::create($poll);
 }
 
 
@@ -155,7 +155,7 @@ e.g.
 
 ```php
 
-<?php echo \module\polls\widgets\WallCreateForm::widget(array('contentContainer' => $contentContainer)); ?>
+<?php echo \humhub\modules\polls\widgets\WallCreateForm::widget(array('contentContainer' => $contentContainer)); ?>
 
 ```
 

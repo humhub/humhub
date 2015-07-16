@@ -25,6 +25,7 @@ echo \humhub\core\space\widgets\Sidebar::widget(['widgets' => [
 ### Example
 
 __autostart.php__
+
 ```php
     //...
     'events' => array(
@@ -33,6 +34,7 @@ __autostart.php__
     ),
     //...
 ```
+
 
 __Events.php__
 

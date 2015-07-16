@@ -10,7 +10,7 @@ Create a folder ** notifications ** in your module and a new class ** SomethingH
 ```php
 <?php
 
-namespace app\modules\example\notifications;
+namespace johndoe\example\notifications;
 
 use humhub\core\notification\components\BaseNotification;
 
@@ -51,7 +51,7 @@ If you require a diffrent view in mails. You can create a subfolder inside the s
 ### Send it 
 
 ```php
-$notification = new \app\modules\example\notifications\SomethingHappend();
+$notification = new \johndoe\example\notifications\SomethingHappend();
 
 // Link to the object which fired the notification (optional)
 $notification->source = $this;
@@ -74,7 +74,7 @@ By default notifications will automatically deleted after a given period of time
 Example for manual notification deletion:
 
 ```php
-$notification = new \app\modules\example\notifications\SomethingHappend();
+$notification = new johndoe\example\notifications\SomethingHappend();
 $notification->source = $this;
 $notification->delete(User::findOne(['id' => $userId]));
 ```

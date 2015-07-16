@@ -16,7 +16,7 @@ Create a folder ** activities ** in your module and a new class ** SomethingHapp
 ```php
 <?php
 
-namespace app\modules\example\activities;
+namespace johndoe\example\activities;
 
 use humhub\core\activity\components\BaseActivity;
 
@@ -60,7 +60,7 @@ If you require a diffrent view in mails. You can create a subfolder inside the s
 ### Create it
 
 ```php
-$activity = new \app\modules\example\activities\NewLike();
+$activity = new \johndoe\example\activities\NewLike();
 
 // Link to a ContentContainer, Content or ContentAddon 
 $activity->source = $this;
