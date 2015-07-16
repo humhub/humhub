@@ -4,9 +4,6 @@
 
 ## Open 
 
-- Theming
-	- Themed Image files User/Space Default Profile Image
-	- Notification/Activity Mail Views
 - Integritychecker
 - Caching
 	- HSetting
@@ -17,7 +14,6 @@
 ## Bugs / ToDos / To Improve
 
 - Installer mac
-- Use own Namespaces for Modules not module/
 - Delete config.php Cache on Error / Don't config Cache on DEV!
 - Comment in new Window Mode / Like Link in Modules
 - Check how to handle unapproved/disabled users (Directory, Spaces)

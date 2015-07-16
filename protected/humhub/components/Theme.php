@@ -55,9 +55,18 @@ class Theme extends \yii\base\Theme
      */
     public function applyTo($path)
     {
+
         $autoPath = $this->autoFindModuleView($path);
         if ($autoPath !== null && file_exists($autoPath)) {
             return $autoPath;
+        }
+
+        // Web Resource e.g. image
+        if (substr($path, 0, 5) === '@web/') {
+            $themedFile = str_replace('@web', $this->getBasePath(), $path);
+            if (file_exists($themedFile)) {
+                return str_replace('@web', $this->getBaseUrl(), $path);
+            }
         }
 
         return parent::applyTo($path);

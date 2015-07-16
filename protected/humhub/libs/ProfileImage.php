@@ -95,6 +95,7 @@ class ProfileImage
         } else {
             $path .= 'img/' . $this->defaultImage;
             $path .= '.jpg';
+            $path = Yii::$app->view->theme->applyTo($path);
         }
         return Yii::getAlias($path);
     }
