@@ -85,6 +85,7 @@ $config = [
     'params' => [
         'installed' => false,
         'dynamicConfigFile' => '@app/config/dynamic.php',
+        'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'availableLanguages' => [
             'en' => 'English (US)',
             'en_gb' => 'English (UK)',

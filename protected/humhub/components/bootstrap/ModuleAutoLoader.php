@@ -28,7 +28,8 @@ class ModuleAutoLoader implements BootstrapInterface
 
         if ($modules === false) {
             $modules = [];
-            foreach (array(Yii::getAlias('@app/modules'), Yii::getAlias('@humhub/modules')) as $modulePath) {
+            foreach (Yii::$app->params['moduleAutoloadPaths'] as $modulePath) {
+                $modulePath = Yii::getAlias($modulePath);
                 foreach (scandir($modulePath) as $moduleId) {
                     if ($moduleId == '.' || $moduleId == '..')
                         continue;

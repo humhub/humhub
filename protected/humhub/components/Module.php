@@ -192,7 +192,7 @@ class Module extends \yii\base\Module
     {
         $migrationPath = $this->basePath . '/migrations';
         if (is_dir($migrationPath)) {
-            \humhub\commands\MigrateController::webMigrateUp();
+            \humhub\commands\MigrateController::webMigrateUp($migrationPath);
         }
     }
 

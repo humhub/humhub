@@ -16,6 +16,7 @@ Administration
 
 Administration - Topics
 -------------------------
+* [Advanced Configuration](admin-adv-config.md)
 * [Console](admin-adv-console.md)
 * [Search](admin-adv-search.md)
 * [XSendFile](admin-adv-xsendfile.md)
