@@ -348,35 +348,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     }
 
     /**
-     * Counts all Content Items related to this workspace except of Activities.
-     * Additonally Comments (normally ContentAddon) will be included.
-     */
-    public function countItems()
-    {
-        $count = 0;
-        $count += Content::model()->countByAttributes(array('space_id' => $this->id), 'object_model != :activityModel', array(':activityModel' => 'Activity'));
-        $count += $this->getCommentCount();
-
-        return $count;
-    }
-
-    /**
-     * Counts all posts of current space
-     *
-     * @return Integer
-     */
-    public function countPosts()
-    {
-        /*
-          $criteria = new CDbCriteria();
-          $criteria->condition = "content.space_id=:space_id";
-          $criteria->params = array(':space_id' => $this->id);
-          return Post::model()->with('content')->count($criteria);
-         */
-        return \humhub\modules\content\models\Content::find()->where(['object_model' => \humhub\modules\post\models\Post::className(), 'space_id' => $this->id])->count();
-    }
-
-    /**
      * Returns an array with assigned Tags
      */
     public function getTags()
@@ -398,8 +369,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     /**
      * Unarchive this Space
      */
-    public
-            function unarchive()
+    public function unarchive()
     {
         $this->status = self::STATUS_ENABLED;
         $this->save();

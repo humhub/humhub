@@ -3,6 +3,9 @@
 namespace humhub\modules\space\models;
 
 use Yii;
+use humhub\modules\content\models\WallEntry;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\comment\models\Comment;
 
 /**
  * This is the model class for table "space_membership".
@@ -112,32 +115,13 @@ class Membership extends \yii\db\ActiveRecord
      */
     public function countNewItems($since = "")
     {
-        return 66;
-        $count = 0;
+        $query = WallEntry::find()->joinWith('content');
+        $query->where(['!=', 'content.object_model', Activity::className()]);
+        $query->andWhere(['wall_entry.wall_id' => $this->space->wall_id]);
+        $query->andWhere(['>', 'wall_entry.created_at', $this->last_visit]);
+        $count = $query->count();
 
-        $connection = Yii::$app->db;
-
-        // Count new Wall Entries
-        $sql = "SELECT COUNT(*) FROM wall_entry " .
-                "LEFT JOIN content ON wall_entry.content_id = content.id " .
-                "WHERE content.object_model!='Activity' AND wall_entry.wall_id=:wall_id AND wall_entry.created_at>:last_visit";
-
-        $wallId = $this->workspace->wall_id;
-        $lastVisit = $this->last_visit;
-        $command = $connection->createCommand($sql);
-        $command->bindParam(":wall_id", $wallId);
-        $command->bindParam(":last_visit", $lastVisit);
-        $count += $command->queryScalar();
-
-        // Count new comments
-        $sql = "SELECT COUNT(*) FROM comment WHERE space_id=:space_id AND created_at>:last_visit";
-        $workspaceId = $this->workspace->id;
-        $lastVisit = $this->last_visit;
-        $command = $connection->createCommand($sql);
-        $command->bindParam(":space_id", $workspaceId);
-        $command->bindParam(":last_visit", $lastVisit);
-        $count += $command->queryScalar();
-
+        $count += Comment::find()->where(['space_id' => $this->space_id])->andWhere(['>', 'created_at', $this->last_visit])->count();
         return $count;
     }
 

@@ -3,7 +3,9 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use \yii\base\Widget;
+use yii\base\Widget;
+use humhub\modules\content\models\Content;
+use humhub\modules\post\models\Post;
 
 /**
  * This widget will added to the sidebar and show infos about the current selected space
@@ -19,8 +21,11 @@ class Header extends Widget
 
     public function run()
     {
+        $postCount = Content::find()->where(['object_model' => Post::className(), 'space_id' => $this->space->id])->count();
+
         return $this->render('header', array(
                     'space' => $this->space,
+                    'postCount' => $postCount
         ));
     }
 
