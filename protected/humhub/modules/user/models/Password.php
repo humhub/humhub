@@ -153,4 +153,9 @@ class Password extends \yii\db\ActiveRecord
         $this->password = $this->hashPassword($newPassword);
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
 }

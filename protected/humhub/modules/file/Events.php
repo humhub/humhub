@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\file;
@@ -23,9 +11,8 @@ namespace humhub\modules\file;
 use humhub\modules\file\models\File;
 
 /**
- * FileModuleEvents handles all events described in autostart.php
- *
- * @package humhub.modules_core.file
+ * Events provides callbacks to handle events.
+ * 
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -64,26 +51,22 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On run of integrity check command, validate all module data
+     * Callback to validate module database records.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {
-        /*
-          $integrityChecker = $event->sender;
-          $integrityChecker->showTestHeadline("Validating File Module (" . File::model()->count() . " entries)");
+        $integrityController = $event->sender;
+        $integrityController->showTestHeadline("File Module (" . File::find()->count() . " entries)");
 
-          foreach (File::model()->findAll() as $a) {
-
-          if ($a->object_model != "" && $a->object_id != "" && $a->getUnderlyingObject() === null) {
-          $integrityChecker->showFix("Deleting file id " . $a->id . " without existing target!");
-          if (!$integrityChecker->simulate)
-          $a->delete();
-          }
-          }
-         *
-         */
+        foreach (File::find()->all() as $file) {
+            if ($file->object_model != "" && $file->object_id != "" && $file->getPolymorphicRelation() === null) {
+                if ($integrityController->showFix("Deleting file id " . $file->id . " without existing target!")) {
+                    $file->delete();
+                }
+            }
+        }
     }
 
     /**

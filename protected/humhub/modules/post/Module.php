@@ -4,6 +4,7 @@ namespace humhub\modules\post;
 
 class Module extends \yii\base\Module
 {
+
     public $controllerNamespace = 'humhub\modules\post\controllers';
 
     public function init()
@@ -12,4 +13,5 @@ class Module extends \yii\base\Module
 
         // custom initialization code goes here
     }
+
 }

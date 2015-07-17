@@ -11,8 +11,8 @@ namespace humhub\modules\notification;
 use humhub\modules\notification\models\Notification;
 
 /**
- * Description of Events
- *
+ * Events provides callbacks for all defined module events.
+ * 
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -50,9 +50,9 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On run of integrity check command, validate all module data
+     * Callback to validate module database records.
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {
@@ -69,14 +69,30 @@ class Events extends \yii\base\Object
                 }
             }
 
+            // Check if source object exists when defined
             if ($notification->source_class != "" && $notification->getSourceObject() == null) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                     $notification->delete();
                 }
             }
 
+            // Check if target user exists
             if ($notification->user == null) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
+                    $notification->delete();
+                }
+            }
+
+            // Check if target user exists
+            if (!class_exists($notification->class)) {
+                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
+                    $notification->delete();
+                }
+            }
+
+            // Check if module id is set
+            if ($notification->module == "") {
+                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
                     $notification->delete();
                 }
             }

@@ -3,6 +3,7 @@
 namespace humhub\modules\space\models;
 
 use Yii;
+use humhub\modules\space\models\Space;
 
 /**
  * This is the model class for table "space_module".
@@ -99,6 +100,11 @@ class Module extends \yii\db\ActiveRecord
         self::$_states[$spaceId] = $states;
 
         return self::$_states[$spaceId];
+    }
+
+    public function getSpace()
+    {
+        return $this->hasOne(Space::className(), ['id' => 'space_id']);
     }
 
 }

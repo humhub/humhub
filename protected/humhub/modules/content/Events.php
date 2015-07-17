@@ -16,8 +16,8 @@ use humhub\models\Setting;
 use yii\helpers\Console;
 
 /**
- * Description of Events
- *
+ * Events provides callbacks to handle events.
+ * 
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -50,33 +50,37 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On run of integrity check command, validate all wall data
+     * Callback to validate module database records.
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {
+        $integrityController = $event->sender;
 
-        $integrityChecker = $event->sender;
-
-        $integrityChecker->showTestHeadline("Wall Module (" . models\WallEntry::find()->count() . " entries)");
+        $integrityController->showTestHeadline("Content Module - Wall Entries " . models\WallEntry::find()->count() . " entries)");
         foreach (models\WallEntry::find()->joinWith('content')->each() as $w) {
             if ($w->content === null) {
-                if ($integrityChecker->showFix("Deleting wall entry id " . $w->id . " without assigned wall entry!")) {
+                if ($integrityController->showFix("Deleting wall entry id " . $w->id . " without assigned wall entry!")) {
                     $w->delete();
                 }
             }
         }
 
-        $integrityChecker->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
+        $integrityController->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
         foreach (Content::find()->all() as $content) {
             if ($content->user == null) {
-                if ($integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!")) {
+                if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!")) {
                     $content->delete();
                 }
             }
             if ($content->getPolymorphicRelation() == null) {
-                if ($integrityChecker->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
+                if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
+                    $content->delete();
+                }
+            }
+            if ($content->space_id != "" && $content->space == null) {
+                if ($integrityController->showFix("Deleting content id " . $content->id . " without valid space!")) {
                     $content->delete();
                 }
             }

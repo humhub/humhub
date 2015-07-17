@@ -11,8 +11,8 @@ namespace humhub\modules\comment;
 use humhub\modules\comment\models\Comment;
 
 /**
- * Description of Events
- *
+ * Events provides callbacks to handle events.
+ * 
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -46,21 +46,28 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On run of integrity check command, validate all module data
+     * Callback to validate module database records.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {
-
-        $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Comment Module (" . Comment::find()->count() . " entries)");
+        $integrityController = $event->sender;
+        $integrityController->showTestHeadline("Comment Module (" . Comment::find()->count() . " entries)");
 
         // Loop over all comments
         foreach (Comment::find()->all() as $c) {
 
+            // Check underlying record exists
             if ($c->source === null) {
-                if ($integrityChecker->showFix("Deleting comment id " . $c->id . " without existing target!")) {
+                if ($integrityController->showFix("Deleting comment id " . $c->id . " without existing target!")) {
+                    $c->delete();
+                }
+            }
+
+            // User exists
+            if ($c->user === null) {
+                if ($integrityController->showFix("Deleting comment id " . $c->id . " without existing user!")) {
                     $c->delete();
                 }
             }

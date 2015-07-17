@@ -100,4 +100,14 @@ class Module extends \yii\db\ActiveRecord
         return self::$_states[$userId];
     }
 
+    /**
+     * Related user
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
 }

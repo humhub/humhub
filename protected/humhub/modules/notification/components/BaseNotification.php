@@ -148,6 +148,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
         $notification = new Notification;
         $notification->user_id = $user->id;
         $notification->class = $this->className();
+        $notification->module = $this->moduleId;
 
         if ($this->source !== null) {
             $notification->source_pk = $this->source->getPrimaryKey();

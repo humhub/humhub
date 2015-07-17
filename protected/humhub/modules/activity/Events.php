@@ -11,12 +11,9 @@ namespace humhub\modules\activity;
 use humhub\modules\activity\models\Activity;
 
 /**
- * ActivityModuleEvents
- * Handles registered events of ActivityModule
- *
- * @package humhub.modules_core.activity
+ * Events provides callbacks to handle events.
+ * 
  * @author luke
- * @since 0.11
  */
 class Events extends \yii\base\Object
 {
@@ -38,39 +35,39 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On run of integrity check command, validate all module data
+     * Callback to validate module database records.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {
-        
-        // Check for object_model / object_id
-        // Check for module id is not null
-        // Check for class exists and is a BaseActivity
-        
-        /*
-        $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Activity Module (" . Activity::find()->count() . " entries)");
+        $integrityController = $event->sender;
+        $integrityController->showTestHeadline("Activity Module (" . Activity::find()->count() . " entries)");
 
         // Loop over all comments
         foreach (Activity::find()->all() as $a) {
 
+            // Check for object_model / object_id
             if ($a->object_model != "" && $a->object_id != "" && $a->getSource() === null) {
-                if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without existing target! (" . $a->object_model . ")")) {
+                if ($integrityController->showFix("Deleting activity id " . $a->id . " without existing target! (" . $a->object_model . ")")) {
                     $a->delete();
                 }
             }
 
-            $content = \humhub\modules\content\models\Content::findOne(['object_model' => Activity::className(), 'object_id' => $a->id]);
-            if ($content === null) {
-                if ($integrityChecker->showFix("Deleting activity id " . $a->id . " without corresponding content record!")) {
+            // Check for moduleId is set
+            if ($a->module == "") {
+                if ($integrityController->showFix("Deleting activity id " . $a->id . " without module_id!")) {
+                    $a->delete();
+                }
+            }
+
+            // Check Activity class exists
+            if (!class_exists($a->class)) {
+                if ($integrityController->showFix("Deleting activity id " . $a->id . " class not exists! (" . $a->class . ")")) {
                     $a->delete();
                 }
             }
         }
-         * 
-         */
     }
 
 }

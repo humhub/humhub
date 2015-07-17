@@ -14,8 +14,8 @@ use humhub\modules\space\models\Membership;
 use yii\web\HttpException;
 
 /**
- * Description of Events
- *
+ * Events provides callbacks for all defined module events.
+ * 
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -70,6 +70,50 @@ class Events extends \yii\base\Object
 
         $application = $event->sender;
         $application->controllerMap['space'] = commands\SpaceController::className();
+    }
+
+    /**
+     * Callback to validate module database records.
+     *
+     * @param Event $event
+     */
+    public static function onIntegrityCheck($event)
+    {
+        $integrityController = $event->sender;
+
+        $integrityController->showTestHeadline("Space Module - Spaces (" . Space::find()->count() . " entries)");
+        foreach (Space::find()->all() as $space) {
+            foreach ($space->applicants as $applicant) {
+                if ($applicant->user == null) {
+                    if ($integrityController->showFix("Deleting applicant record id " . $applicant->id . " without existing user!")) {
+                        $applicant->delete();
+                    }
+                }
+            }
+        }
+
+        $integrityController->showTestHeadline("Space Module - Module (" . models\Module::find()->count() . " entries)");
+        foreach (models\Module::find()->joinWith('space')->all() as $module) {
+            if ($module->space == null) {
+                if ($integrityController->showFix("Deleting space module" . $module->id . " without existing space!")) {
+                    $module->delete();
+                }
+            }
+        }
+
+        $integrityController->showTestHeadline("Space Module - Memberships (" . models\Membership::find()->count() . " entries)");
+        foreach (models\Membership::find()->joinWith('space')->all() as $membership) {
+            if ($membership->space == null) {
+                if ($integrityController->showFix("Deleting space membership" . $membership->space_id . " without existing space!")) {
+                    $membership->delete();
+                }
+            }
+            if ($membership->user == null) {
+                if ($integrityController->showFix("Deleting space membership" . $membership->user_id . " without existing user!")) {
+                    $membership->delete();
+                }
+            }
+        }
     }
 
 }
