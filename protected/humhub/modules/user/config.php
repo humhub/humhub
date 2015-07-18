@@ -10,6 +10,9 @@ return [
     'id' => 'user',
     'class' => \humhub\modules\user\Module::className(),
     'isCoreModule' => true,
+    'urlManagerRules' => [
+        ['class' => 'humhub\modules\user\components\UrlRule']
+    ],
     'events' => array(
         array('class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => array(Events::className(), 'onSearchRebuild')),
         array('class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')),

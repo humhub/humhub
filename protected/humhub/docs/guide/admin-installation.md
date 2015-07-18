@@ -35,7 +35,20 @@ By default PHP Mail Transport is used. <http://php.net/manual/en/mail.setup.php>
 
 ### Enable Url Rewriting (Optional)
 
-TBD        
+1. Rename **.htaccess.dist ** to **.htaccess**
+
+2. Add to local configuration /protected/config/common.php
+
+```php
+
+'components' => [
+    'urlManager' => [
+        'showScriptName' => false,
+        'enablePrettyUrl' => true,
+    ],
+]
+
+```  
 
 ### Enable Cron Jobs
 

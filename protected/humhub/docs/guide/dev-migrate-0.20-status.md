@@ -7,7 +7,6 @@
 - Caching
 	- HSetting
 	- UserModel: CanApproveUsers
-- Url Rewriting (User)
 - LDAP 
 
 ## Bugs / ToDos / To Improve

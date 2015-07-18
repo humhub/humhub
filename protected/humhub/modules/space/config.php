@@ -10,6 +10,9 @@ return [
     'id' => 'space',
     'class' => \humhub\modules\space\Module::className(),
     'isCoreModule' => true,
+    'urlManagerRules' => [
+        ['class' => 'humhub\modules\space\components\UrlRule']
+    ],
     'events' => array(
         array('class' => User::className(), 'event' => User::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onUserDelete')),
         array('class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => array(Events::className(), 'onSearchRebuild')),
