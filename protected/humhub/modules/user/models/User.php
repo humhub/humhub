@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\GroupAdmin;
+use humhub\modules\user\components\ActiveQueryUser;
 
 /**
  * This is the model class for table "user".
@@ -169,6 +170,16 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['guid' => $token]);
+    }
+
+    /**
+     * @inheritdoc
+     * 
+     * @return ActiveQueryContent
+     */
+    public static function find()
+    {
+        return Yii::createObject(ActiveQueryUser::className(), [get_called_class()]);
     }
 
     public function getId()
@@ -506,11 +517,19 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * User can approve other users
      *
-     * @return type
+     * @return boolean
      */
     public function canApproveUsers()
     {
-        return ($this->super_admin);
+        if ($this->super_admin == 1) {
+            return true;
+        }
+
+        if (GroupAdmin::find()->where(['user_id' => $this->id])->count() != 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

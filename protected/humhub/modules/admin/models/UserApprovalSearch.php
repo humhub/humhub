@@ -51,7 +51,7 @@ class UserApprovalSearch extends User
      *
      * @return ActiveDataProvider
      */
-    public function search($params=[])
+    public function search($params = [])
     {
         $query = User::find()->joinWith(['profile', 'group']);
 
@@ -78,6 +78,17 @@ class UserApprovalSearch extends User
             $query->where('0=1');
             return $dataProvider;
         }
+
+
+        /**
+         * Limit Groups
+         */
+        $groups = $this->getGroups();
+        $groupIds = [];
+        foreach ($groups as $group) {
+            $groupIds[] = $group->id;
+        }
+        $query->andWhere(['IN', 'group_id', $groupIds]);
 
         $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);

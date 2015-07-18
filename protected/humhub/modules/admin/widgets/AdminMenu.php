@@ -81,6 +81,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'group' => 'manage',
             'newItemCount' => 0,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'),
+            'isVisible' => Yii::$app->user->isAdmin()
         ));
 
         $this->addItem(array(

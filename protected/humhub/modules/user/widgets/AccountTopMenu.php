@@ -1,27 +1,18 @@
 <?php
 
-namespace humhub\modules\user\widgets;
-
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
+namespace humhub\modules\user\widgets;
+
+use Yii;
+use humhub\models\Setting;
+
 /**
- * Description of AccountWidget
+ * AccountTopMenu Widget
  *
  * @author luke
  */
@@ -30,8 +21,17 @@ class AccountTopMenu extends \yii\base\Widget
 
     public function run()
     {
+        $user = Yii::$app->user->getIdentity();
 
-        return $this->render('accountTopMenu');
+        $showUserApprovals = false;
+        if (Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
+            $showUserApprovals = true;
+        }
+
+        return $this->render('accountTopMenu', [
+                    'showUserApprovals' => $showUserApprovals,
+                    'user' => $user
+        ]);
     }
 
 }

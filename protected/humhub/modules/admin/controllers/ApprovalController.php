@@ -9,7 +9,14 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
+use humhub\modules\user\models\User;
 use humhub\modules\admin\components\Controller;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\admin\models\forms\ApproveUserForm;
 
 /**
  * ApprovalController handels new user approvals
@@ -18,8 +25,33 @@ class ApprovalController extends Controller
 {
 
     /**
-     * Shows a list of all users waiting for an approval
+     * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => AccessControl::className(),
+            ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        if (!Yii::$app->user->isAdmin()) {
+            $this->subLayout = "@humhub/modules/admin/views/approval/_layoutNoAdmin";
+        }
+
+        return parent::beforeAction($action);
+    }
+
     public function actionIndex()
     {
         $searchModel = new \humhub\modules\admin\models\UserApprovalSearch();
@@ -31,43 +63,16 @@ class ApprovalController extends Controller
         ));
     }
 
-    /**
-     * Approves a user registration request
-     *
-     * @throws CHttpException
-     */
-    public function actionApproveUserAccept()
+    public function actionApprove()
     {
+        $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
-        $id = (int) Yii::app()->request->getQuery('id');
+        if ($user == null)
+            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
 
-        $model = User::model()->resetScope()->unapproved()->findByPk($id);
-
-        if ($model == null)
-            throw new CHttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
-
-        $approveFormModel = new ApproveUserForm;
-
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'approve-acceptuser-form') {
-            echo CActiveForm::validate($approveFormModel);
-            Yii::app()->end();
-        }
-
-        if (isset($_POST['ApproveUserForm'])) {
-
-            $approveFormModel->attributes = $_POST['ApproveUserForm'];
-
-            if ($approveFormModel->validate()) {
-                $approveFormModel->send($model->email);
-                $model->status = User::STATUS_ENABLED;
-                $model->save();
-                $model->setUpApproved();
-                $this->redirect(Yii::app()->createUrl('admin/approval'));
-            }
-        } else {
-            $approveFormModel->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", array('{displayName}' => CHtml::encode($model->displayName)));
-            $approveFormModel->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
+        $model = new ApproveUserForm;
+        $model->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", array('{displayName}' => Html::encode($user->displayName)));
+        $model->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
 
    your account has been activated.<br><br>
 
@@ -76,61 +81,49 @@ class ApprovalController extends Controller
 
    Kind Regards<br>
    {AdminName}<br><br>', array(
-                        '{displayName}' => CHtml::encode($model->displayName),
-                        '{loginURL}' => Yii::app()->createAbsoluteUrl("//user/auth/login"),
-                        '{AdminName}' => Yii::app()->user->model->displayName,
-            ));
+                    '{displayName}' => Html::encode($user->displayName),
+                    '{loginURL}' => Url::to(["/user/auth/login"], true),
+                    '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
+        ));
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->send($user->email);
+            $user->status = User::STATUS_ENABLED;
+            $user->save();
+            $user->setUpApproved();
+            return $this->redirect(['index']);
         }
 
-
-        $this->render('approveUserAccept', array('model' => $model, 'approveFormModel' => $approveFormModel));
+        return $this->render('approve', ['model' => $user, 'approveFormModel' => $model]);
     }
 
-    /**
-     * Declines a user registration request
-     *
-     * @throws CHttpException
-     */
-    public function actionApproveUserDecline()
+    public function actionDecline()
     {
 
-        $id = (int) Yii::app()->request->getQuery('id');
-        $user = User::model()->resetScope()->unapproved()->findByPk($id);
+        $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
         if ($user == null)
-            throw new CHttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
 
-        $approveFormModel = new ApproveUserForm;
-
-        // uncomment the following code to enable ajax-based validation
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'approve-declineuser-form') {
-            echo CActiveForm::validate($approveFormModel);
-            Yii::app()->end();
-        }
-
-        if (isset($_POST['ApproveUserForm'])) {
-
-            $approveFormModel->attributes = $_POST['ApproveUserForm'];
-
-            if ($approveFormModel->validate()) {
-                $approveFormModel->send($user->email);
-                $user->delete();
-                $this->redirect(Yii::app()->createUrl('admin/approval'));
-            }
-        } else {
-            $approveFormModel->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', array('{displayName}' => CHtml::encode($user->displayName)));
-            $approveFormModel->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
+        $model = new ApproveUserForm;
+        $model->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', array('{displayName}' => Html::encode($user->displayName)));
+        $model->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
 
    your account request has been declined.<br><br>
 
    Kind Regards<br>
    {AdminName}<br><br>', array(
-                        '{displayName}' => CHtml::encode($user->displayName),
-                        '{AdminName}' => Yii::app()->user->model->displayName,
-            ));
+                    '{displayName}' => Html::encode($user->displayName),
+                    '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
+        ));
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->send($user->email);
+            $user->delete();
+            return $this->redirect(['index']);
         }
 
-        $this->render('approveUserDecline', array('model' => $user, 'approveFormModel' => $approveFormModel));
+        return $this->render('decline', ['model' => $user, 'approveFormModel' => $model]);
     }
 
 }

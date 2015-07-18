@@ -22,7 +22,7 @@ class ApproveUserForm extends \yii\base\Model
     public function rules()
     {
         return array(
-            array('subject,message', 'required'),
+            array(['subject', 'message'], 'required'),
         );
     }
 
@@ -39,15 +39,11 @@ class ApproveUserForm extends \yii\base\Model
 
     public function send($email)
     {
-
-
-        $message = new HMailMessage();
-        $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
-        $message->addTo($email);
-        $message->view = "application.views.mail.TextOnly";
-        $message->subject = $this->subject;
-        $message->setBody(array('message' => $this->message), 'text/html');
-        Yii::app()->mail->send($message);
+        $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $this->message]);
+        $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+        $mail->setTo($email);
+        $mail->setSubject($this->subject);
+        $mail->send();
     }
 
 }

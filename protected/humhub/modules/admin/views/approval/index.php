@@ -37,17 +37,17 @@ use yii\grid\GridView;
                 [
                     'header' => 'Actions',
                     'class' => 'yii\grid\ActionColumn',
-                    'options' => ['width' => '80px'],
+                    'options' => ['width' => '150px'],
                     'buttons' => [
-                        'view' => function($url, $model) {
-                            return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
+                        'view' => function() {
+                            return;
+                        },
+                        'delete' => function($url, $model) {
+                            return Html::a('Decline', Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm']);
                         },
                                 'update' => function($url, $model) {
-                            return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(['edit', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
+                            return Html::a('Approve', Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm']);
                         },
-                                'delete' => function($url, $model) {
-                            return Html::a('<i class="fa fa-times"></i>', Url::toRoute(['delete', 'id' => $model->id]), ['class' => 'btn btn-danger btn-xs tt']);
-                        }
                             ],
                         ],
                     ],

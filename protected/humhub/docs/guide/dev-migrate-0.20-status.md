@@ -5,7 +5,6 @@
 ## Open 
 
 - Caching
-	- HSetting
 	- UserModel: CanApproveUsers
 - LDAP 
 
@@ -24,7 +23,7 @@
 	- fix translation categories for changed FileNames
 - Error Pages (e.g. can Login)
 - Guest Mode
-- User Approval
+- Desktop Notifications
 
 ## Modules
 

@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin;
 
 use Yii;
 use humhub\modules\admin\libs\OnlineModuleManager;
+use humhub\models\Setting;
 
 /**
  * @package humhub.modules_core.admin
@@ -19,8 +26,10 @@ class Events extends \yii\base\Object
      */
     public static function onDashboardSidebarInit($event)
     {
-        if (Yii::$app->user->getIdentity()->canApproveUsers()) {
-            $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
+        if (Setting::Get('needApproval', 'authentication_internal')) {
+            if (Yii::$app->user->getIdentity()->canApproveUsers()) {
+                $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
+            }
         }
     }
 

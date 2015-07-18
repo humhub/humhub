@@ -2,12 +2,9 @@
 
 use \yii\helpers\Html;
 use \yii\helpers\Url;
-use humhub\models\Setting;
-
-$user = Yii::$app->user->getIdentity();
 ?>
 <?php if (Yii::$app->user->isGuest): ?>
-<a href="<?php echo Url::toRoute('/user/auth/login'); ?>" class="btn btn-enter" data-toggle="modal" data-target="#globalModal">Sign in / up</a>
+    <a href="<?php echo Url::toRoute('/user/auth/login'); ?>" class="btn btn-enter" data-toggle="modal" data-target="#globalModal">Sign in / up</a>
 <?php else: ?>
     <ul class="nav">
         <li class="dropdown account">
@@ -46,7 +43,7 @@ $user = Yii::$app->user->getIdentity();
 
 
                 <!-- if the current user has admin rights -->
-                <?php if (Setting::Get('needApproval', 'authentication_internal') && (Yii::$app->user->isAdmin() || Yii::$app->user->getIdentity()->canApproveUsers())) : ?>
+                <?php if ($showUserApprovals) : ?>
                     <li>
                         <a href="<?php echo Url::toRoute('/admin/approval'); ?>"><i
                                 class="fa fa-check-circle"></i> <?php echo Yii::t('base', 'User Approvals'); ?>
@@ -55,14 +52,12 @@ $user = Yii::$app->user->getIdentity();
                 <?php endif; ?>
 
 
-                <?php if (!isset(Yii::$app->session['ntlm']) || Yii::$app->session['ntlm'] == false) : ?>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="<?php echo Url::toRoute('/user/auth/logout'); ?>"><i
-                                class="fa fa-sign-out"></i> <?php echo Yii::t('base', 'Logout'); ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
+                <li class="divider"></li>
+                <li>
+                    <a href="<?php echo Url::toRoute('/user/auth/logout'); ?>"><i
+                            class="fa fa-sign-out"></i> <?php echo Yii::t('base', 'Logout'); ?>
+                    </a>
+                </li>
             </ul>
         </li>
     </ul>

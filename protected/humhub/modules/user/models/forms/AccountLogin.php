@@ -23,12 +23,10 @@ class AccountLogin extends Model
     public function rules()
     {
         return [
-            // username and password are both required
             [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            ['username', 'validateUser'],
         ];
     }
 
@@ -45,6 +43,21 @@ class AccountLogin extends Model
             $user = $this->getUser();
             if (!$user || !$user->currentPassword->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
+            }
+        }
+    }
+
+    public function validateUser($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+            if ($user !== null) {
+                if ($user->status == User::STATUS_DISABLED) {
+                    $this->addError($attribute, 'Your account is disabled!');
+                }
+                if ($user->status == User::STATUS_NEED_APPROVAL) {
+                    $this->addError($attribute, 'Your account is not approved yet!');
+                }
             }
         }
     }

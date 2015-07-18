@@ -1,13 +1,14 @@
+<?php
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+use humhub\compat\CActiveForm;
+?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_approveUserAccept', 'Accept user: <strong>{displayName}</strong> ', array('{displayName}' => CHtml::encode($model->displayName))); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => Html::encode($model->displayName))); ?></div>
     <div class="panel-body">
 
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'approve-acceptuser-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
 
         <?php //echo $form->errorSummary($approveFormModel);  ?>
 
@@ -22,7 +23,6 @@
             <?php echo $form->textArea($approveFormModel, 'message', array('rows' => 6, 'cols' => 50, 'class' => 'form-control wysihtml5')); ?>
             <?php echo $form->error($approveFormModel, 'message'); ?>
         </div>
-
         <script>
             $('.wysihtml5').wysihtml5({
                 "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
@@ -35,16 +35,10 @@
                 "size": 'sm' //Button size like sm, xs etc.
             });
         </script>
+        <hr/>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), array('class' => 'btn btn-danger')); ?>
+        <a href="<?php echo Url::to(['index']); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
 
-        <hr>
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_approval_approveUserAccept', 'Send & save'), array('class' => 'btn btn-primary')); ?>
-        <a href="<?php echo $this->createUrl('//admin/approval/'); ?>"
-           class="btn btn-primary"><?php echo Yii::t('AdminModule.views_approval_approveUserAccept', 'Cancel'); ?></a>
-
-        <?php $this->endWidget(); ?>
-
+        <?php CActiveForm::end(); ?>
     </div>
 </div>
-
-
-
