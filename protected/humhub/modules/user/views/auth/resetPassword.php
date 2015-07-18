@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\compat\CActiveForm;
 
-$this->title = Yii::t('UserModule.views_auth_resetPassword', '<strong>Password</strong> reset');
+$this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset');
 ?>
 <div class="container" style="text-align: center;">
     <?php echo humhub\widgets\SiteLogo::widget(array('place' => 'login')); ?>

@@ -1,17 +1,8 @@
 <?php
-/**
- * Create account page, after the user clicked the email validation link.
- *
- * @property CFormModel $model is the create account form.
- * @property Boolean $needApproval indicates that new users requires admin approval.
- *
- * @package humhub.modules_core.user.views
- * @since 0.5
- */
 
 use yii\helpers\Html;
 
-$this->title = Yii::t('UserModule.views_auth_createAccount', '<strong>Account</strong> registration');
+$this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account');
 ?>
 
 <div class="container" style="text-align: center;">

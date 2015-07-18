@@ -14,7 +14,7 @@ AppAsset::register($this);
     <head>
         <!-- start: Meta -->
         <meta charset="utf-8">
-        <title><?php echo Html::encode(Yii::$app->name); ?></title>
+        <title><?php echo $this->pageTitle; ?></title>
         <!-- end: Meta -->
 
         <!-- start: Mobile Specific -->

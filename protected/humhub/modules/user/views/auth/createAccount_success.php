@@ -1,13 +1,5 @@
 <?php
-/**
- * Create Account Success page
- *
- * @property CFormModel $model is the create account form.
- * @property Boolean $needApproval indicates that new users requires admin approval.
- *
- * @package humhub.modules_core.user.views
- * @since 0.5
- */
+$this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account');
 ?>
 
 <div class="container" style="text-align: center;">

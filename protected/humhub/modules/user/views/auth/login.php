@@ -1,22 +1,11 @@
 <?php
 
-/**
- * Login and registration page by AuthController
- *
- * @property CFormModel $model is the login form.
- * @property CFormModel $registerModel is the registration form.
- * @property Boolean $canRegister indicates that anonymous registrations are enabled.
- *
- * @package humhub.modules_core.user.views
- * @since 0.5
- */
 use \yii\helpers\Url;
 use \humhub\compat\CActiveForm;
 use \humhub\compat\CHtml;
 
-$this->title = Yii::t('UserModule.views_auth_login', '<strong>Please</strong> sign in');
+$this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 ?>
-
 
 <div class="container" style="text-align: center;">
     <?= humhub\widgets\SiteLogo::widget(['place' => 'login']); ?>

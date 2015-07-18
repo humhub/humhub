@@ -8,23 +8,56 @@
 
 namespace humhub\components;
 
+use Yii;
+
 /**
- * Description of WebView
- *
- * @author luke
+ * @inheritdoc
  */
 class View extends \yii\web\View
 {
 
+    private $_pageTitle;
+
+    /**
+     * Sets current page title
+     * 
+     * @param string $title
+     */
+    public function setPageTitle($title)
+    {
+        $this->_pageTitle = $title;
+    }
+
+    /**
+     * Returns current page title
+     * 
+     * @return string the page title
+     */
+    public function getPageTitle()
+    {
+        return (($this->_pageTitle) ? $this->_pageTitle . " - " : '') . Yii::$app->name;
+    }
+
+    /**
+     * Registers a Javascript variable
+     * 
+     * @param string $name
+     * @param string $value
+     */
     public function registerJsVar($name, $value)
     {
         $jsCode = "var " . $name . " = '" . addslashes($value) . "';\n";
         $this->registerJs($jsCode, View::POS_HEAD, $name);
     }
 
-    public function renderAjaxContent($content, $context = null)
+    /**
+     * Renders a string as Ajax including assets.
+     * 
+     * @param string $content
+     * @return string Rendered content
+     */
+    public function renderAjaxContent($content)
     {
-
         ob_start();
         ob_implicit_flush(false);
 

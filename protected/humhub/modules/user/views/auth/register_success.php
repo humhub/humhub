@@ -1,15 +1,5 @@
 <?php
-/**
- * After E-Mail was provided for registration, this view is shown.
- * This indicates an approval e-mail was sent to the given address.
- *
- * @property CFormModel $registerModel is the registration form.
- *
- * @package humhub.modules_core.user.views
- * @since 0.5
- *
- * @var $this AuthController
- */
+$this->pageTitle = Yii::t('UserModule.views_auth_register_success', 'Registration successful');
 ?>
 <div class="container" style="text-align: center;">
     <?= humhub\widgets\SiteLogo::widget(['place' => 'login']); ?>

@@ -14,7 +14,7 @@ AppAsset::register($this);
     <head>
         <!-- start: Meta -->
         <meta charset="utf-8">
-        <title><?php echo Html::encode($this->title); ?></title>
+        <title><?php echo Html::encode($this->pageTitle); ?></title>
         <!-- end: Meta -->
 
         <!-- start: Mobile Specific -->

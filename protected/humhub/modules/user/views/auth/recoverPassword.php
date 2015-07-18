@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\compat\CActiveForm;
 
-$this->title = Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery');
+$this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password recovery');
 ?>
 <div class="container" style="text-align: center;">
     <?php echo humhub\widgets\SiteLogo::widget(array('place' => 'login')); ?>
