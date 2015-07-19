@@ -44,7 +44,9 @@ class ModuleAutoLoader implements BootstrapInterface
                     }
                 }
             }
-            Yii::$app->cache->set(self::CACHE_ID, $modules);
+            if (!YII_DEBUG) {
+                Yii::$app->cache->set(self::CACHE_ID, $modules);
+            }
         }
 
         Yii::$app->moduleManager->registerBulk($modules);
