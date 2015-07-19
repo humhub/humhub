@@ -36,28 +36,28 @@ class CacheSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return array(
-            'type' => \Yii::t('app', 'Cache Backend'),
-            'expireTime' => \Yii::t('app', 'Default Expire Time (in seconds)'),
+            'type' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Cache Backend'),
+            'expireTime' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Default Expire Time (in seconds)'),
         );
     }
 
     public function getTypes()
     {
         return array(
-            'yii\caching\DummyCache' => \Yii::t('app', 'No caching (Testing only!)'),
-            'yii\caching\FileCache' => \Yii::t('app', 'File'),
-            'yii\caching\ApcCache' => \Yii::t('app', 'APC'),
+            'yii\caching\DummyCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'No caching (Testing only!)'),
+            'yii\caching\FileCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'File'),
+            'yii\caching\ApcCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'APC'),
         );
     }
 
     public function checkCacheType($attribute, $params)
     {
         if ($this->type == 'CApcCache' && !function_exists('apc_add')) {
-            $this->addError($attribute, \Yii::t('app', "PHP APC Extension missing - Type not available!"));
+            $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC Extension missing - Type not available!"));
         }
 
         if ($this->type == 'CDbCache' && !class_exists('SQLite3')) {
-            $this->addError($attribute, \Yii::t('app', "PHP SQLite3 Extension missing - Type not available!"));
+            $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP SQLite3 Extension missing - Type not available!"));
         }
     }
 
