@@ -42,7 +42,6 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         return array(
             'stream' => array(
                 'class' => \humhub\modules\content\components\actions\ContentContainerStream::className(),
-                'mode' => \humhub\modules\content\components\actions\ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->getSpace()
             ),
         );

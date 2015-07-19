@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\components;
 
+use yii\helpers\Url;
 use yii\web\UrlRuleInterface;
 use yii\base\Object;
 use humhub\modules\space\models\Space;
@@ -36,6 +37,10 @@ class UrlRule extends Object implements UrlRuleInterface
             }
             $url = "s/" . urlencode($params['sguid']) . "/" . $route;
             unset($params['sguid']);
+
+            if (!empty($params) && ($query = http_build_query($params)) !== '') {
+                $url .= '?' . $query;
+            }
             return $url;
         }
         return false;
