@@ -4,8 +4,6 @@
 
 ## Open 
 
-- Caching
-	- UserModel: CanApproveUsers
 - LDAP 
 
 ## Bugs / ToDos / To Improve
@@ -13,8 +11,6 @@
 - Installer mac
 - Delete config.php Cache on Error / Don't config Cache on DEV!
 - Comment in new Window Mode / Like Link in Modules
-- Check how to handle unapproved/disabled users (Directory, Spaces)
-	ActiveQuery User
 - Registration Process
 	- When Invited to a space (Notification & Co.)
 - Check complexer Migrations

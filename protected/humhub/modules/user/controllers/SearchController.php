@@ -55,6 +55,8 @@ class SearchController extends Controller
             $query->orFilterWhere(['like', 'profile.title', $part]);
         }
 
+        $query->active();
+        
         $results = [];
         foreach ($query->all() as $user) {
             if ($user != null) {
@@ -67,6 +69,7 @@ class SearchController extends Controller
             }
         }
 
+        
         return $results;
     }
 

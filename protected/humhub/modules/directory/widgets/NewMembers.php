@@ -22,7 +22,7 @@ class NewMembers extends \yii\base\Widget
     public function run()
     {
 
-        $newUsers = User::find()->orderBy('created_at DESC')->limit(10)->all();
+        $newUsers = User::find()->orderBy('created_at DESC')->active()->limit(10)->all();
 
         // Render widgets view
         return $this->render('newMembers', array(

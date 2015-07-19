@@ -23,4 +23,10 @@ class ActiveQueryUser extends ActiveQuery
         parent::init();
     }
 
+    public function active()
+    {
+        $this->andWhere(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);
+        return $this;
+    }
+
 }

@@ -12,11 +12,11 @@ use humhub\modules\user\models\User;
 
     <div class="panel-body">
         <?php foreach ($groups as $group) : ?>
-            <?php $userCount = User::find()->where(['group_id' => $group->id])->count(); ?>
+            <?php $userCount = User::find()->andWhere(['group_id' => $group->id])->active()->count(); ?>
 
             <?php if ($userCount != 0) : ?>
                 <h1><?php echo Html::encode($group->name); ?></h1>
-                <?php foreach (User::find()->where(['group_id' => $group->id])->limit(30)->all() as $user) : ?>
+                <?php foreach (User::find()->where(['group_id' => $group->id])->active()->limit(30)->all() as $user) : ?>
                     <a id="<?php echo $user->guid; ?>" href="<?php echo $user->getUrl(); ?>">
                         <img data-toggle="tooltip" data-placement="top" title=""
                              data-original-title="<strong><?php echo Html::encode($user->displayName); ?></strong><br><?php echo Html::encode($user->profile->title); ?>"
