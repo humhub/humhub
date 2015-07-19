@@ -46,7 +46,6 @@ class Application extends \yii\console\Application
     public function coreCommands()
     {
         return [
-            'message' => 'yii\console\controllers\MessageController',
             'help' => 'yii\console\controllers\HelpController',
             'cache' => 'yii\console\controllers\CacheController',
             'asset' => 'yii\console\controllers\AssetController',

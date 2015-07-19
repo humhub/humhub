@@ -1,13 +1,28 @@
 Internationalization (I18N)
 ===========================
 
-See the yii i18n guide (http://www.yiiframework.com/doc/guide/1.1/en/topics.i18n) for
-all relevant information.
+**Optionally** you can use following translation method instead of Yii's standard approach ([http://www.yiiframework.com/doc-2.0/guide-tutorial-i18n.html#translating-module-messages](http://www.yiiframework.com/doc-2.0/guide-tutorial-i18n.html#translating-module-messages)).  
 
-Use ``Yii::t('ExampleModule.category', 'Message to Translate');`` in code.
 
-Steps to create message files:
+### Message Category
 
-* Create Message Directory /protected/modules/example/messages/
-* Execute ``yiic message config/i18n.php``
+Following message category syntax is automatically mapped to your modules message folder.
+
+```php
+Yii::t('ExampleModule.some_own_category', 'Translate me');
+```
+
+Base Category Naming Examples:
+
+- polls -> PollsModule
+- custom_pages -> CustomPagesModule
+
+
+### (Re-) Generate message files
+
+Example message creation command for module with id *example*:
+
+```
+php yii message/extract-module example
+```
 

@@ -10,9 +10,6 @@
 
 - Installer mac
 - Check complexer Migrations
-- Translation
-	- try regenerate files
-	- fix translation categories for changed FileNames
 - Error Pages (e.g. can Login)
 - Guest Mode
 - Desktop Notifications

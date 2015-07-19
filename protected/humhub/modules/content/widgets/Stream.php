@@ -79,14 +79,14 @@ class Stream extends \yii\base\Widget
 
         // Add default Filters
         if (count($this->filters) === 0) {
-            $this->filters['filter_entry_userinvoled'] = Yii::t('app', 'Where I´m involved');
-            $this->filters['filter_entry_mine'] = Yii::t('app', 'Created by me');
-            $this->filters['filter_entry_files'] = Yii::t('app', 'Content with attached files');
-            $this->filters['filter_posts_links'] = Yii::t('app', 'Posts with links');
-            $this->filters['filter_model_posts'] = Yii::t('app', 'Posts only');
-            $this->filters['filter_entry_archived'] = Yii::t('app', 'Include archived posts');
-            $this->filters['filter_visibility_public'] = Yii::t('app', 'Only public posts');
-            $this->filters['filter_visibility_private'] = Yii::t('app', 'Only private posts');
+            $this->filters['filter_entry_userinvoled'] = Yii::t('ContentModule.widgets_views_stream', 'Where I´m involved');
+            $this->filters['filter_entry_mine'] = Yii::t('ContentModule.widgets_views_stream', 'Created by me');
+            $this->filters['filter_entry_files'] = Yii::t('ContentModule.widgets_views_stream', 'Content with attached files');
+            $this->filters['filter_posts_links'] = Yii::t('ContentModule.widgets_views_stream', 'Posts with links');
+            $this->filters['filter_model_posts'] = Yii::t('ContentModule.widgets_views_stream', 'Posts only');
+            $this->filters['filter_entry_archived'] = Yii::t('ContentModule.widgets_views_stream', 'Include archived posts');
+            $this->filters['filter_visibility_public'] = Yii::t('ContentModule.widgets_views_stream', 'Only public posts');
+            $this->filters['filter_visibility_private'] = Yii::t('ContentModule.widgets_views_stream', 'Only private posts');
         }
 
 
@@ -94,10 +94,10 @@ class Stream extends \yii\base\Widget
          * Setup default messages
          */
         if ($this->messageStreamEmpty == "") {
-            $this->messageStreamEmpty = Yii::t('app', 'Nothing here yet!');
+            $this->messageStreamEmpty = Yii::t('ContentModule.widgets_views_stream', 'Nothing here yet!');
         }
         if ($this->messageStreamEmptyWithFilters == "") {
-            $this->messageStreamEmptyWithFilters = Yii::t('app', 'No matches with your selected filters!');
+            $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
         }
     }
 

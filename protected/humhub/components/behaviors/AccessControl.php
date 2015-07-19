@@ -70,7 +70,7 @@ class AccessControl extends \yii\base\ActionFilter
      */
     protected function forbidden()
     {
-        throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
     }
 
 }

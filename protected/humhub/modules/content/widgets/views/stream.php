@@ -22,7 +22,7 @@ $this->registerJs($jsLoadWall, View::POS_READY);
 <?php if ($this->context->showFilters) { ?>
     <ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
         <li class=" dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('app', 'Filter'); ?> <b
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
                 <?php foreach ($filters as $filterId => $filterTitle): ?>
@@ -34,13 +34,13 @@ $this->registerJs($jsLoadWall, View::POS_READY);
             </ul>
         </li>
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('app', 'Sorting'); ?>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Sorting'); ?>
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="#" class="wallSorting" id="sorting_c"><i
-                            class="fa fa-check-square-o"></i> <?php echo Yii::t('app', 'Creation time'); ?></a></li>
+                            class="fa fa-check-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?></a></li>
                 <li><a href="#" class="wallSorting" id="sorting_u"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('app', 'Last update'); ?></a></li>
+                            class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?></a></li>
             </ul>
         </li>
     </ul>
@@ -88,7 +88,7 @@ $this->registerJs($jsLoadWall, View::POS_READY);
     <div class="s2_single" style="display: none;">
         <div class="back_button_holder">
             <a href="#"
-               class="singleBackLink btn btn-primary"><?php echo Yii::t('app', 'Back to stream'); ?></a><br><br>
+               class="singleBackLink btn btn-primary"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
         </div>
         <div class="p_border"></div>
 
