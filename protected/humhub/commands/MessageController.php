@@ -17,14 +17,21 @@ use yii\helpers\VarDumper;
 use yii\i18n\GettextPoFile;
 
 /**
+ * Extracts messages to be translated from source files.
+ * 
  * @inheritdoc
  */
 class MessageController extends \yii\console\controllers\MessageController
 {
 
-    public function actionExtractModule($id)
+    /**
+     * Extracts messages for a given module from source code.
+     * 
+     * @param string $moduleId
+     */
+    public function actionExtractModule($moduleId)
     {
-        $module = Yii::$app->getModule($id);
+        $module = Yii::$app->getModule($moduleId);
 
         $configFile = Yii::getAlias('@humhub/config/i18n.php');
 
@@ -59,13 +66,7 @@ class MessageController extends \yii\console\controllers\MessageController
     }
 
     /**
-     * Writes messages into PHP files
-     *
-     * @param array $messages
-     * @param string $dirName name of the directory to write to
-     * @param boolean $overwrite if existing file should be overwritten without backup
-     * @param boolean $removeUnused if obsolete translations should be removed
-     * @param boolean $sort if translations should be sorted
+     * @inheritdoc
      */
     protected function saveMessagesToPHP($messages, $dirName, $overwrite, $removeUnused, $sort)
     {
@@ -87,7 +88,6 @@ class MessageController extends \yii\console\controllers\MessageController
                 $dirName = $dirNameBase;
             }
 
-
             $file = str_replace("\\", '/', "$dirName/$category.php");
             $path = dirname($file);
             FileHelper::createDirectory($path);
@@ -102,6 +102,12 @@ class MessageController extends \yii\console\controllers\MessageController
         }
     }
 
+    /**
+     * Returns module instance by given message category.
+     * 
+     * @param string $category
+     * @return \yii\base\Module
+     */
     protected function getModuleByCategory($category)
     {
         if (preg_match('/(.*?)Module\./', $category, $result)) {
