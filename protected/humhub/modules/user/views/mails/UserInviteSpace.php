@@ -220,7 +220,7 @@ use yii\helpers\Html;
                                                     <td width="auto"  align="center" valign="middle" height="32" style=" background-color:#7191a8;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
                                                         <span style="color: #ffffff; font-weight: 300;">
-                                                            <a href="<?php echo Url::to(['/user/auth/createAccount', 'token' => $token], true); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
+                                                            <a href="<?php echo Url::to(['/user/auth/create-account', 'token' => $token], true); ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
                                                                 <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'Sign up now'); ?></strong>
                                                             </a>
                                                         </span>

@@ -9,8 +9,6 @@
 ## Bugs / ToDos / To Improve
 
 - Installer mac
-- Registration Process
-	- When Invited to a space (Notification & Co.)
 - Check complexer Migrations
 - Translation
 	- try regenerate files
