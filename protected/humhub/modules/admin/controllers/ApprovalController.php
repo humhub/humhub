@@ -42,7 +42,7 @@ class ApprovalController extends Controller
     public function beforeAction($action)
     {
         if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
-            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+            throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
         }
 
         if (!Yii::$app->user->isAdmin()) {
