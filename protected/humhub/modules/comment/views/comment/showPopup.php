@@ -14,7 +14,7 @@
                     <div class="comment" id="comments_area_<?php echo $id; ?>">
                         <?php echo $output; ?>
                     </div>
-                    <?php $this->widget('application.modules_core.comment.widgets.CommentFormWidget', array('object' => $object)); ?>
+                    <?php echo humhub\modules\comment\widgets\Form::widget(array('object' => $object)); ?>
                 </div>
 
             </div>

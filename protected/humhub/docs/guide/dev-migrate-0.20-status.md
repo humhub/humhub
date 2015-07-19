@@ -9,7 +9,6 @@
 ## Bugs / ToDos / To Improve
 
 - Installer mac
-- Comment in new Window Mode / Like Link in Modules
 - Registration Process
 	- When Invited to a space (Notification & Co.)
 - Check complexer Migrations
