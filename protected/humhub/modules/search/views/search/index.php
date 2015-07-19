@@ -40,20 +40,20 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
         <div class="row">
             <div class="col-md-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo Yii::t('SearchModule.views_directory_layout', '<strong>Search </strong> results'); ?></div>
+                    <div class="panel-heading"><?php echo Yii::t('SearchModule.views_search_index', '<strong>Search </strong> results'); ?></div>
                     <div class="list-group">
                         <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $keyword, 'limitSpaceGuids' => $limitSpaceGuids, 'scope' => SearchController::SCOPE_ALL]); ?>' class="list-group-item <?php if ($scope == SearchController::SCOPE_ALL): ?>active<?php endif; ?>">
-                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_directory_layout', 'All'); ?> (<?php echo $totals[SearchController::SCOPE_ALL]; ?>)</div></div>
+                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'All'); ?> (<?php echo $totals[SearchController::SCOPE_ALL]; ?>)</div></div>
                         </a>
                         <br />
                         <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $keyword, 'limitSpaceGuids' => $limitSpaceGuids, 'scope' => SearchController::SCOPE_CONTENT]); ?>' class="list-group-item <?php if ($scope == SearchController::SCOPE_CONTENT): ?>active<?php endif; ?>">
-                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_directory_layout', 'Content'); ?> (<?php echo $totals[SearchController::SCOPE_CONTENT]; ?>)</div></div>
+                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Content'); ?> (<?php echo $totals[SearchController::SCOPE_CONTENT]; ?>)</div></div>
                         </a>
                         <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $keyword, 'limitSpaceGuids' => $limitSpaceGuids, 'scope' => SearchController::SCOPE_USER]); ?>' class="list-group-item <?php if ($scope == SearchController::SCOPE_USER): ?>active<?php endif; ?>">
-                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_directory_layout', 'Users'); ?> (<?php echo $totals[SearchController::SCOPE_USER]; ?>)</div></div>
+                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Users'); ?> (<?php echo $totals[SearchController::SCOPE_USER]; ?>)</div></div>
                         </a>
                         <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $keyword, 'limitSpaceGuids' => $limitSpaceGuids, 'scope' => SearchController::SCOPE_SPACE]); ?>' class="list-group-item <?php if ($scope == SearchController::SCOPE_SPACE): ?>active<?php endif; ?>">
-                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_directory_layout', 'Spaces'); ?> (<?php echo $totals[SearchController::SCOPE_SPACE]; ?>)</div></div>
+                            <div><div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Spaces'); ?> (<?php echo $totals[SearchController::SCOPE_SPACE]; ?>)</div></div>
                         </a>
                     </div>
                 </div>
