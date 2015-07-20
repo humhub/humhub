@@ -169,11 +169,26 @@ class Events extends \yii\base\Object
                 $mailsSent++;
             }
 
-            Console::updateProgress( ++$done, $totalUsers);
+            Console::updateProgress(++$done, $totalUsers);
         }
 
         Console::endProgress(true);
         $controller->stdout('done - ' . $mailsSent . ' email(s) sent.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+    }
+
+    /**
+     * On rebuild of the search index, rebuild all user records
+     *
+     * @param type $event
+     */
+    public static function onSearchRebuild($event)
+    {
+        foreach (Content::find()->all() as $content) {
+            $contentObject = $content->getPolymorphicRelation();
+            if ($contentObject instanceof \humhub\modules\search\interfaces\Searchable) {
+                Yii::$app->search->add($contentObject);
+            }
+        }
     }
 
 }

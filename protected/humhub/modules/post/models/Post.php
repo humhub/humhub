@@ -23,7 +23,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Post extends ContentActiveRecord
+class Post extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
 
     public $wallEditRoute = '//post/post/edit';
@@ -119,6 +119,20 @@ class Post extends ContentActiveRecord
         }
 
         return \humhub\libs\Helpers::truncateText($this->message, $maxLength);
+    }
+
+    /**
+     * Returns an array of informations used by search subsystem.
+     * Function is defined in interface ISearchable
+     *
+     * @return Array
+     */
+    public function getSearchAttributes()
+    {
+        return array(
+            'message' => $this->message,
+            'url' => $this->url,
+        );
     }
 
 }

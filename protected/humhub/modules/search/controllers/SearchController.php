@@ -37,7 +37,6 @@ class SearchController extends Controller
         return [
             'acl' => [
                 'class' => \humhub\components\behaviors\AccessControl::className(),
-                'guestAllowedActions' => ['index']
             ]
         ];
     }
@@ -69,7 +68,7 @@ class SearchController extends Controller
             'limitSpaces' => $limitSpaces
         ];
         if ($scope == self::SCOPE_CONTENT) {
-            $options['type'] = 'Content';
+            $options['type'] = \humhub\modules\search\engine\Search::DOCUMENT_TYPE_CONTENT;
         } elseif ($scope == self::SCOPE_SPACE) {
             $options['model'] = Space::className();
         } elseif ($scope == self::SCOPE_USER) {
@@ -137,7 +136,7 @@ class SearchController extends Controller
         $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => Space::className()]));
         $totals[self::SCOPE_SPACE] = $searchResultSetCount->total;
 
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['type' => 'Content']));
+        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['type' => \humhub\modules\search\engine\Search::DOCUMENT_TYPE_CONTENT]));
         $totals[self::SCOPE_CONTENT] = $searchResultSetCount->total;
         $totals[self::SCOPE_ALL] = $totals[self::SCOPE_CONTENT] + $totals[self::SCOPE_SPACE] + $totals[self::SCOPE_USER];
 

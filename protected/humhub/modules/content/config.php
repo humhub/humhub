@@ -7,6 +7,7 @@ use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\search\engine\Search;
 
 return [
     'id' => 'content',
@@ -20,6 +21,7 @@ return [
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::className(), 'onCronRun']],
         ['class' => User::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onUserDelete']],
         ['class' => Space::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onSpaceDelete']],
+        ['class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => [Events::className(), 'onSearchRebuild']],
     ),
 ];
 ?>

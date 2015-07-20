@@ -14,6 +14,8 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\space\models\Space;
 
 /**
  * ZendLucenceSearch Engine
@@ -100,6 +102,7 @@ class ZendLuceneSearch extends Search
     {
 
         $options = $this->setDefaultFindOptions($options);
+
         $index = $this->getIndex();
         $keyword = str_replace(array('*', '?', '_', '$'), ' ', strtolower($keyword));
 
@@ -167,17 +170,16 @@ class ZendLuceneSearch extends Search
             }
         }
 
-
         if ($options['checkPermissions'] && !Yii::$app->request->isConsoleRequest) {
             $permissionQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
 
             //--- Public Content
-            $permissionQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Content::VISIBILITY_PUBLIC, 'visibility')));
+            $permissionQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')));
 
             //--- Private Space Content
             $privateSpaceContentQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
-            $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
-            $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term('space', 'containerModel')), true);
+            $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PRIVATE, 'visibility')), true);
+            $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Space::className(), 'containerModel')), true);
             $privateSpacesListQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
 
             foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
@@ -185,7 +187,6 @@ class ZendLuceneSearch extends Search
             }
 
             $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
-
             $permissionQuery->addSubquery($privateSpaceContentQuery);
             $query->addSubquery($permissionQuery, true);
         }
@@ -193,7 +194,7 @@ class ZendLuceneSearch extends Search
         if (count($options['limitSpaces']) > 0) {
 
             $spaceBaseQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
-            $spaceBaseQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term('space', 'containerModel')), true);
+            $spaceBaseQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Space::className(), 'containerModel')), true);
             $spaceIdQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
             foreach ($options['limitSpaces'] as $space) {
                 $spaceIdQuery->addTerm(new \ZendSearch\Lucene\Index\Term($space->id, 'containerPk'));

@@ -29,6 +29,8 @@ abstract class Search extends \yii\base\Component
     const DOCUMENT_TYPE_SPACE = 'space';
     const DOCUMENT_TYPE_CONTENT = 'content';
     const DOCUMENT_TYPE_OTHER = 'other';
+    const DOCUMENT_VISIBILITY_PUBLIC = 'public';
+    const DOCUMENT_VISIBILITY_PRIVATE = 'private';
 
     /**
      * Retrieves results from search
@@ -49,7 +51,7 @@ abstract class Search extends \yii\base\Component
      */
     public function find($query, Array $options)
     {
-
+        
     }
 
     /**
@@ -59,7 +61,7 @@ abstract class Search extends \yii\base\Component
      */
     public function add(Searchable $object)
     {
-
+        
     }
 
     /**
@@ -69,7 +71,7 @@ abstract class Search extends \yii\base\Component
      */
     public function update(Searchable $object)
     {
-
+        
     }
 
     /**
@@ -79,7 +81,7 @@ abstract class Search extends \yii\base\Component
      */
     public function delete(Searchable $object)
     {
-
+        
     }
 
     /**
@@ -89,7 +91,7 @@ abstract class Search extends \yii\base\Component
      */
     public function flush()
     {
-
+        
     }
 
     /**
@@ -107,7 +109,7 @@ abstract class Search extends \yii\base\Component
      */
     public function optimize()
     {
-
+        
     }
 
     protected function getMetaInfoArray(Searchable $obj)
@@ -121,9 +123,13 @@ abstract class Search extends \yii\base\Component
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {
             $meta['containerModel'] = $obj->content->container->className();
             $meta['containerPk'] = $obj->content->container->id;
-            $meta['visibility'] = $obj->content->visibility;
+            if ($obj->content->visibility == Content::VISIBILITY_PRIVATE) {
+                $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
+            } else {
+                $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
+            }
         } else {
-            $meta['visibility'] = Content::VISIBILITY_PUBLIC;
+            $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
         }
 
         return $meta;
