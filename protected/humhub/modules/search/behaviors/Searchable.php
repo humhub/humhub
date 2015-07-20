@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\behaviors;
 
+use Yii;
 use yii\db\ActiveRecord;
 use yii\base\Behavior;
 use yii\console\Exception;

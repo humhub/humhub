@@ -10,6 +10,7 @@ namespace humhub\modules\post\models;
 
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\search\interfaces\Searchable;
 
 /**
  * This is the model class for table "post".
@@ -23,7 +24,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Post extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
+class Post extends ContentActiveRecord implements Searchable
 {
 
     public $wallEditRoute = '//post/post/edit';
@@ -48,6 +49,16 @@ class Post extends ContentActiveRecord implements \humhub\modules\search\interfa
             [['created_by', 'updated_by'], 'integer'],
             [['url'], 'string', 'max' => 255]
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return array(
+            \humhub\modules\search\behaviors\Searchable::className()
+        );
     }
 
     public function beforeSave($insert)

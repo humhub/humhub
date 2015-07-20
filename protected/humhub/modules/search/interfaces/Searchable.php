@@ -18,6 +18,8 @@ namespace humhub\modules\search\interfaces;
 interface Searchable
 {
 
+    public function getWallOut();
+
     public function getSearchAttributes();
 }
 
