@@ -11,6 +11,7 @@ namespace humhub\modules\notification\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\components\BaseNotification;
 use humhub\models\Setting;
 
 /**
@@ -101,7 +102,7 @@ class ListController extends Controller
     public static function getUpdates()
     {
         $user = Yii::$app->user->getIdentity();
-        $query = Notification::find()->where(['user_id' => $user->id])->andWhere(["!=", 'seen', 1]);
+        $query = Notification::find()->where(['seen' => 0])->orWhere(['IS', 'seen', new \yii\db\Expression('NULL')])->andWhere(['user_id' => $user->id]);
 
         $update['newNotifications'] = $query->count();
 
@@ -109,9 +110,8 @@ class ListController extends Controller
 
         $update['notifications'] = array();
         foreach ($query->all() as $notification) {
-
             if ($user->getSetting("enable_html5_desktop_notifications", 'core', Setting::Get('enable_html5_desktop_notifications', 'notification'))) {
-                $update['notifications'][] = $notification->getTextOut();
+                $update['notifications'][] = $notification->getClass()->render(BaseNotification::OUTPUT_TEXT);
             }
             $notification->desktop_notified = 1;
             $notification->update();

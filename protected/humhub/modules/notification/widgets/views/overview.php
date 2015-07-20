@@ -46,7 +46,7 @@ use yii\helpers\Url;
         // call ajax request to mark all notifications as seen
         jQuery.ajax({
             'type': 'GET',
-            'url': '<?php echo Url::to(['/notification/list/markAsSeen', 'ajax' => 1]); ?>',
+            'url': '<?php echo Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
             'cache': false,
             'data': jQuery(this).parents("form").serialize(),
             'success': function (html) {
@@ -161,7 +161,7 @@ use yii\helpers\Url;
         /**
          * Regulary fetch new notifications
          */
-        reloadNotificationInterval = 60000;
+        reloadNotificationInterval = 15000;
         setInterval(function () {
             jQuery.getJSON("<?php echo Url::to(['/notification/list/get-update-json']); ?>", function (json) {
                 handleJsonUpdate(json);
@@ -179,8 +179,6 @@ use yii\helpers\Url;
      * @param String json
      */
     function handleJsonUpdate(json) {
-
-        // save numbers to variables
         $newNotifications = parseInt(json.newNotifications);
 
         // show or hide the badge for new notifications
@@ -190,7 +188,6 @@ use yii\helpers\Url;
             $('#mark-seen-link').css('display', 'none');
             $('#icon-notifications .fa').removeClass("animated swing");
         } else {
-
             document.title = '(' + $newNotifications + ') ' + originalTitle;
             $('#badge-notifications').empty();
             $('#badge-notifications').append($newNotifications);

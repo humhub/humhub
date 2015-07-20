@@ -27,6 +27,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
 
     const OUTPUT_WEB = 'web';
     const OUTPUT_MAIL = 'mail';
+    const OUTPUT_TEXT = 'text';
 
     /**
      * User which created this notification.
@@ -94,7 +95,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
         $params['source'] = $this->source;
         $params['space'] = $this->space;
         $params['record'] = $this->record;
-        $params['isNew'] = $this->record->seen;
+        $params['isNew'] = ($this->record->seen != 1);
         $params['url'] = $this->getUrl();
 
         $viewFile = $this->getViewPath() . '/' . $this->viewName . '.php';
@@ -105,6 +106,9 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
             if (file_exists($viewMailFile)) {
                 $viewFile = $viewMailFile;
             }
+        } elseif ($mode == self::OUTPUT_TEXT) {
+            $html = Yii::$app->getView()->renderFile($viewFile, $params, $this);
+            return strip_tags($html);
         }
 
         $params['content'] = Yii::$app->getView()->renderFile($viewFile, $params, $this);
