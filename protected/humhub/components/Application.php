@@ -19,6 +19,11 @@ class Application extends \yii\web\Application
     /**
      * @inheritdoc
      */
+    public $controllerNamespace = 'humhub\\controllers';
+
+    /**
+     * @inheritdoc
+     */
     public function beforeAction($action)
     {
 

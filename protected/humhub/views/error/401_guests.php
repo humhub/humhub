@@ -1,3 +1,8 @@
+<?php
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
 <div class="container">
     <div class="panel panel-danger">
         <div class="panel-heading">
@@ -5,12 +10,12 @@
         </div>
         <div class="panel-body">
 
-            <strong><?php echo CHtml::encode($message); ?></strong>
+            <strong><?php echo Html::encode($message); ?></strong>
 
             <br />
             <hr>
 
-            <?php echo HHtml::link(Yii::t('base', 'Login'), Yii::app()->user->loginUrl, array('class' => 'btn btn-success')); ?>
+            <?php echo Html::a(Yii::t('base', 'Login'), Yii::$app->user->loginUrl, array('class' => 'btn btn-success', 'data-toggle'=>'modal', 'data-target'=>'#globalModal')); ?>
             <a href="javascript:history.back();" class="btn btn-primary  pull-right"><?php echo Yii::t('base', 'Back'); ?></a>
         </div>
     </div>

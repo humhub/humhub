@@ -3,6 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use humhub\modules\user\models\User;
 
 /**
  * ProfileMenuWidget shows the (usually left) navigation on user profiles.

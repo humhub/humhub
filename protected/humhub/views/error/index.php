@@ -1,5 +1,9 @@
 <?php
-$this->pageTitle = Yii::app()->name . ' - ' . Yii::t('base', 'Error');
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+$this->pageTitle = Yii::t('base', 'Error');
 ?>
 <div class="container">
     <div class="panel panel-default">
@@ -9,11 +13,11 @@ $this->pageTitle = Yii::app()->name . ' - ' . Yii::t('base', 'Error');
         <div class="panel-body">
 
             <div class="error">
-                <h2><?php echo CHtml::encode($message); ?></h2>
+                <h2><?php echo Html::encode($message); ?></h2>
             </div>
 
             <hr>
-            <a href="<?php echo Yii::app()->createUrl('//')?>" class="btn btn-primary"><?php echo Yii::t('base', 'Back to dashboard'); ?></a>
+            <a href="<?php echo Url::home() ?>" class="btn btn-primary"><?php echo Yii::t('base', 'Back to dashboard'); ?></a>
         </div>
     </div>
 </div>

@@ -8,7 +8,11 @@
 
 namespace humhub\controllers;
 
+use Yii;
 use humhub\components\Controller;
+use humhub\models\Setting;
+use yii\web\HttpException;
+use yii\base\UserException;
 
 /**
  * ErrorController
@@ -24,32 +28,34 @@ class ErrorController extends Controller
      */
     public function actionIndex()
     {
-        if ($error = Yii::app()->errorHandler->error) {
-
-            if (Yii::app()->request->isAjaxRequest) {
-                echo CHtml::encode($error['message']);
-                return;
-            }
-
-            /**
-             * Switch to plain base layout, in case the user is not logged in
-             * and public access is disabled.
-             */
-            if (Yii::app()->user->isGuest && !HSetting::Get('allowGuestAccess', 'authentication_internal')) {
-                $this->layout = "application.views.error._layout";
-            }
-
-            if ($error['type'] == 'CHttpException') {
-                switch ($error['code']) {
-                    case 401:
-                        Yii::app()->user->returnUrl = Yii::app()->request->requestUri;
-                        return $this->render('401', $error);
-                        break;
-                }
-            }
-
-            $this->render('index', $error);
+        if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
+            return '';
         }
+
+        if ($exception instanceof UserException || $exception instanceof HttpException) {
+            $message = $exception->getMessage();
+        } else {
+            $message = Yii::t('error', 'An internal server error occurred.');
+        }
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = 'json';
+            return [
+                'error' => true,
+                'message' => $message
+            ];
+        }
+
+        /**
+         * Show special login required view for guests
+         */
+        if (Yii::$app->user->isGuest && $exception instanceof HttpException && $exception->statusCode == "401" && Setting::Get('allowGuestAccess', 'authentication_internal')) {
+            return $this->render('@humhub/views/error/401_guests', ['message' => $message]);
+        }
+
+        return $this->render('@humhub/views/error/index', [
+                    'message' => $message
+        ]);
     }
 
 }

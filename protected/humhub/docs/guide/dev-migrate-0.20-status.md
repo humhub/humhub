@@ -10,8 +10,6 @@
 
 - Installer mac
 - Check complexer Migrations
-- Error Pages (e.g. can Login)
-- Guest Mode
 
 ## Modules
 
