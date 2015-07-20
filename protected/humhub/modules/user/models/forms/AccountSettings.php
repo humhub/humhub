@@ -44,9 +44,10 @@ class AccountSettings extends \yii\base\Model
     {
         return array(
             ['tags', 'string', 'max' => 100],
-            [['show_introduction_tour', 'visibility'], 'boolean'],
+            [['show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])],
+            ['visibility', 'in', 'range' => [1, 2]],
         );
     }
 

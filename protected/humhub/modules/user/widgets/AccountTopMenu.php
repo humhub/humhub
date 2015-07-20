@@ -24,7 +24,7 @@ class AccountTopMenu extends \yii\base\Widget
         $user = Yii::$app->user->getIdentity();
 
         $showUserApprovals = false;
-        if (Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
+        if (!Yii::$app->user->isGuest && Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
             $showUserApprovals = true;
         }
 

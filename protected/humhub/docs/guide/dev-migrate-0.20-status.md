@@ -12,7 +12,6 @@
 - Check complexer Migrations
 - Error Pages (e.g. can Login)
 - Guest Mode
-- Desktop Notifications
 
 ## Modules
 

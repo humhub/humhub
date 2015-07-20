@@ -26,6 +26,10 @@ class Events extends \yii\base\Object
      */
     public static function onDashboardSidebarInit($event)
     {
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+        
         if (Setting::Get('needApproval', 'authentication_internal')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
                 $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));

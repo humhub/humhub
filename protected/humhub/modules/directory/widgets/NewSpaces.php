@@ -23,12 +23,18 @@ class NewSpaces extends \yii\base\Widget
     public function run()
     {
 
+
         $query = Space::find();
+
+
+        /**
+         * Show private spaces only if user is member
+         */
         $query->leftJoin('space_membership', 'space.id=space_membership.space_id AND space_membership.user_id=:userId', [':userId' => \Yii::$app->user->id]);
         $query->andWhere([
             '!=', 'space.visibility', Space::VISIBILITY_NONE,
         ]);
-        $query->andWhere([
+        $query->orWhere([
             'space_membership.status' => Membership::STATUS_MEMBER,
         ]);
         $query->limit(10);

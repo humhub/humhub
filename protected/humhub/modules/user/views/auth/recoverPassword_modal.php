@@ -1,3 +1,9 @@
+<?php
+
+use humhub\compat\CActiveForm;
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
@@ -5,13 +11,7 @@
             <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery'); ?></h4>
         </div>
         <div class="modal-body">
-            <?php
-            $form = $this->beginWidget('CActiveForm', array(
-                'id' => 'recover-password-form',
-                "enableClientValidation" => false,
-                'enableAjaxValidation' => false,
-            ));
-            ?>
+            <?php $form = CActiveForm::begin(); ?>
 
             <p><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you recovery instructions!'); ?></p>
 
@@ -22,25 +22,45 @@
             </div>
 
             <div class="form-group">
-                <?php $this->widget('CCaptcha'); ?>                            
-                <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'enter security code above'))); ?>
+                <?php
+                echo \yii\captcha\Captcha::widget([
+                    'model' => $model,
+                    'attribute' => 'verifyCode',
+                    'captchaAction' => '/user/auth/captcha',
+                    'options' => array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'enter security code above'))
+                ]);
+                ?>
                 <?php echo $form->error($model, 'verifyCode'); ?>
             </div>
 
             <hr>
             <?php
-            echo HHtml::ajaxSubmitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'), array('//user/auth/recoverPassword'), array(
-                'type' => 'POST',
-                'success' => 'function(html){ $("#globalModal").html(html); }',
-                    ), array('class' => 'btn btn-primary', 'id' => 'recoverPasswordBtn'));
+            echo \humhub\widgets\AjaxButton::widget([
+                'label' => Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'),
+                'ajaxOptions' => [
+                    'type' => 'POST',
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'success' => 'function(html){ $("#globalModal").html(html); }',
+                    'url' => Url::to(['/user/auth/recover-password']),
+                ],
+                'htmlOptions' => [
+                    'class' => 'btn btn-primary', 'id' => 'recoverPasswordBtn'
+                ]
+            ]);
+            echo \humhub\widgets\AjaxButton::widget([
+                'label' => Yii::t('UserModule.views_auth_recoverPassword', 'Back'),
+                'ajaxOptions' => [
+                    'type' => 'POST',
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'success' => 'function(html){ $("#globalModal").html(html); }',
+                    'url' => Url::to(['/user/auth/login']),
+                ],
+                'htmlOptions' => [
+                    'class' => 'btn btn-primary', 'id' => 'backBtn'
+                ]
+            ]);
             ?>            
-            <?php
-            echo HHtml::ajaxLink(Yii::t('UserModule.views_auth_recoverPassword', 'Back'), array('//user/auth/login'), array(
-                'type' => 'POST',
-                'success' => 'function(html){ $("#globalModal").html(html); }',
-                    ), array('class' => 'btn btn-primary', 'id' => 'backBtn'));
-            ?>
-            <?php $this->endWidget(); ?>
+            <?php CActiveForm::end() ?>
         </div>
 
     </div>
@@ -48,7 +68,7 @@
 
 
 <script type="text/javascript">
-<?php if ($form->errorSummary($model) != null) { ?>
+<?php if ($model->hasErrors()) { ?>
         $('#password-recovery-form').removeClass('bounceIn');
         $('#password-recovery-form').addClass('shake');
         $('#app-title').removeClass('fadeIn');

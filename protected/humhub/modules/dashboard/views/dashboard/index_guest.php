@@ -13,8 +13,8 @@
         <div class="col-md-4">
             <?php
             echo \humhub\modules\dashboard\widgets\Sidebar::widget(['widgets' => [
-                //array('application.modules_core.directory.widgets.NewMembersWidget', array('showMoreButton' => true), array('sortOrder' => 10)),
-                //array('application.modules_core.directory.widgets.NewSpacesWidget', array('showMoreButton' => true), array('sortOrder' => 10)),
+                    [\humhub\modules\directory\widgets\NewMembers::className(), ['showMoreButton' => true], ['sortOrder' => 10]],
+                    [\humhub\modules\directory\widgets\NewSpaces::className(), ['showMoreButton' => true], ['sortOrder' => 10]],
             ]]);
             ?>
         </div>

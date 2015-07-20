@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 ?>
 <div class="panel panel-default members" id="new-people-panel">

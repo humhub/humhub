@@ -33,20 +33,21 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
              * For guests collect all wall_ids of "guest" public spaces / user profiles.
              * Generally show only public content
              */
-            $publicSpacesSql = Yii::app()->db->createCommand()
-                    ->select('si.wall_id')
+            $publicSpacesSql = (new \yii\db\Query())
+                    ->select(["si.wall_id"])
                     ->from('space si')
-                    ->where("si.visibility=" . Space::VISIBILITY_ALL)
-                    ->getText();
+                    ->where('si.visibility=' . \humhub\modules\space\models\Space::VISIBILITY_ALL);
+            $union = Yii::$app->db->getQueryBuilder()->build($publicSpacesSql)[0];
 
-            $publicProfilesSql = Yii::app()->db->createCommand()
-                    ->select('pi.wall_id')
+
+            $publicProfilesSql = (new \yii\db\Query())
+                    ->select("pi.wall_id")
                     ->from('user pi')
-                    ->where("pi.status=1 AND pi.visibility=" . User::VISIBILITY_ALL)
-                    ->getText();
+                    ->where('pi.status=1 AND  pi.visibility = ' . \humhub\modules\user\models\User::VISIBILITY_ALL);
+            $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
 
-            $this->criteria->condition .= ' AND (wall_entry.wall_id IN (' . $publicSpacesSql . ') OR wall_entry.wall_id IN (' . $publicProfilesSql . '))';
-            $this->criteria->condition .= ' AND content.visibility=' . Content::VISIBILITY_PUBLIC;
+            $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $union . ')');
+            $this->activeQuery->andWhere(['content.visibility' => \humhub\modules\content\models\Content::VISIBILITY_PUBLIC]);
         } else {
 
             /**

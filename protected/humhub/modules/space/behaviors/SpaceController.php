@@ -69,7 +69,8 @@ class SpaceController extends Behavior
 
     public function checkAccess()
     {
-        if ($this->space->visibility != Space::VISIBILITY_ALL && Yii::$app->user->isGuest) {
+
+        if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
             throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 
@@ -88,20 +89,6 @@ class SpaceController extends Behavior
                 }
             }
         }
-
-        // Delete all pending notifications for this space
-        /*
-          $notifications = Notification::model()->findAllByAttributes(array('space_id' => $this->space->id, 'user_id' => Yii::$app->user->id), 'seen != 1');
-          foreach ($notifications as $n) {
-          // Ignore Approval Notifications
-          if ($n->class == "SpaceApprovalRequestNotification" || $n->class == "SpaceInviteNotification") {
-          continue;
-          }
-          $n->seen = 1;
-          $n->save();
-          }
-         *
-         */
     }
 
 }
