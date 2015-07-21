@@ -194,7 +194,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
      */
     public function getContent()
     {
-        return $this->hasOne(Content::className(), ['object_id' => 'id'])->andWhere(['object_model' => self::className()]);
+        return $this->hasOne(Content::className(), ['object_id' => 'id'])->andWhere(['content.object_model' => self::className()]);
     }
 
     /**

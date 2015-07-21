@@ -44,8 +44,8 @@ class Searchable extends Behavior
 
     public function afterDelete($event)
     {
-        if ($this->getOwner() instanceof \humhub\modules\search\interfaces\Searchable) {
-            Yii::$app->search->delete($this->getOwner());
+        if ($this->owner instanceof \humhub\modules\search\interfaces\Searchable) {
+            Yii::$app->search->delete($this->owner);
         } else {
             throw new Exception("Owner of HSearchableBehavior must be implement interface ISearchable");
         }

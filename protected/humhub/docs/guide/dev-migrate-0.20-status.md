@@ -10,6 +10,7 @@
 
 - Installer mac
 - Check complexer Migrations
+- ComandLine Space Tool
 
 ## Modules
 

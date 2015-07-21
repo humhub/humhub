@@ -417,4 +417,22 @@ class File extends \humhub\components\ActiveRecord
         }
     }
 
+    public function getInfoArray()
+    {
+        $info = [];
+
+        $info['error'] = false;
+        $info['guid'] = $this->guid;
+        $info['name'] = $this->file_name;
+        $info['title'] = $this->title;
+        $info['size'] = $this->size;
+        $info['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($this->getExtension());
+        $info['mimeBaseType'] = $this->getMimeBaseType();
+        $info['mimeSubType'] = $this->getMimeSubType();
+        $info['url'] = $this->getUrl("", false);
+        $info['thumbnailUrl'] = $this->getPreviewImageUrl(200, 200);
+
+        return $info;
+    }
+
 }
