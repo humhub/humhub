@@ -62,9 +62,14 @@ class AjaxButton extends Widget
     {
         echo Html::tag($this->tag, $this->label, $this->htmlOptions);
 
+        if (isset($this->htmlOptions['return']) && $this->htmlOptions['return'])
+            $return = 'return true';
+        else
+            $return = 'return false';
+
         $this->view->registerJs("$('#{$this->htmlOptions['id']}').click(function() {
                 $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ");
-                return false;
+                    {$return};
             });");
     }
 

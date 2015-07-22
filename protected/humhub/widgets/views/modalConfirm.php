@@ -69,6 +69,7 @@ if ($confirmJS != "") {
                             'url' => $linkHref,
                         ],
                         'htmlOptions' => [
+                            'return' => 'true',
                             'class' => 'btn btn-primary',
                             'data-dismiss' => 'modal'
                         ]
