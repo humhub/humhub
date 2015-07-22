@@ -53,7 +53,8 @@ class AccessControl extends \yii\base\ActionFilter
                 return true;
             }
 
-            return Yii::$app->user->loginRequired();
+            Yii::$app->user->loginRequired();
+            return false;
         }
         if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
             $this->forbidden();
