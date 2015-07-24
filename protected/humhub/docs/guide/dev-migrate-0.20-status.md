@@ -11,6 +11,7 @@
 - Installer mac
 - Check complexer Migrations
 - ComandLine Space Tool
+- Check also writable config file
 
 ## Modules
 
@@ -22,19 +23,19 @@
 - Mail
 - Polls
 - Tasks
+- BreakingNews
+- MostActiveUsers
+- SMS
+- ReportContent
+- Birthday
 
 ### Open
 
-- BreakingNews
 - NewMembers
-- Birthday
-- MostActiveUsers
 - Notes
-- SMS
-
-- Meeting
 - Translation
-- ReportContent
 - LinkList
 - Updater
+- DropBox
+- Meeting
 - CV

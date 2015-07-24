@@ -40,15 +40,15 @@ use humhub\models\Setting;
         <pre>
 
 <strong><?php echo Yii::t('AdminModule.views_setting_cronjob', 'Crontab of user: {user}', array('{user}' => $currentUser)); ?></strong>
-30 * * * * <?php echo Yii::getAlias('@app/yii'); ?> cron hourly >/dev/null 2>&1
-00 18 * * * <?php echo Yii::getAlias('@app/yii'); ?> cron daily >/dev/null 2>&1
+30 * * * * <?php echo Yii::getAlias('@app/yii'); ?> cron/hourly >/dev/null 2>&1
+00 18 * * * <?php echo Yii::getAlias('@app/yii'); ?> cron/daily >/dev/null 2>&1
 
             <?php if ($currentUser != ""): ?>
 
 <strong><?php echo Yii::t('AdminModule.views_setting_cronjob', 'Or Crontab of root user'); ?></strong>
-*/5 * * * * su -c "<?php echo Yii::getAlias('@app/yii'); ?>  cron hourly" <?php echo $currentUser; ?>
+*/5 * * * * su -c "<?php echo Yii::getAlias('@app/yii'); ?>  cron/hourly" <?php echo $currentUser; ?>
     >/dev/null 2>&1
-0 18 * * * su -c "<?php echo Yii::getAlias('@app/yii'); ?>  cron daily" <?php echo $currentUser; ?> >/dev/null 2>&1
+0 18 * * * su -c "<?php echo Yii::getAlias('@app/yii'); ?>  cron/daily" <?php echo $currentUser; ?> >/dev/null 2>&1
 <?php endif; ?>
         </pre>
 

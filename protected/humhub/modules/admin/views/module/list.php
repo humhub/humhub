@@ -39,8 +39,8 @@ use yii\helpers\Url;
                         <?php echo Yii::t('AdminModule.module_list', 'Version:'); ?> <?php echo $module->getVersion(); ?>
 
                         <?php if (Yii::$app->hasModule($module->id)) : ?>
-                            <?php if ($module->configRoute !== null) : ?>
-                                &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Configure'), Url::toRoute($module->configRoute), array('style' => 'font-weight:bold')); ?>
+                            <?php if ($module->getConfigUrl() != "") : ?>
+                                &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl(), array('style' => 'font-weight:bold')); ?>
                             <?php endif; ?>
 
                             <?php if ($module->isSpaceModule() || $module->isUserModule()): ?>

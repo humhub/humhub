@@ -49,6 +49,11 @@ class CActiveForm extends \yii\widgets\ActiveForm
         return CHtml::activeDropDownList($model, $attribute, $data, $htmlOptions);
     }
 
+    public function radioButtonList($model, $attribute, $data, $htmlOptions = array())
+    {
+        return CHtml::activeRadioList($model, $attribute, $data, $htmlOptions);
+    }
+
     public function radioButton($model, $attribute, $options = array())
     {
         $name = isset($options['name']) ? $options['name'] : CHtml::getInputName($model, $attribute);

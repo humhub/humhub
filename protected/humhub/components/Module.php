@@ -343,4 +343,9 @@ class Module extends \yii\base\Module
         return true;
     }
 
+    public function getConfigUrl()
+    {
+        return "";
+    }
+
 }
