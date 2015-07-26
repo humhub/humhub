@@ -76,9 +76,9 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=humhub',
-            'username' => '',
-            'password' => '',
+            'dsn' => 'mysql:host=localhost;dbname=develop2',
+            'username' => 'root',
+            'password' => 'root',
             'charset' => 'utf8',
         ],
     ],

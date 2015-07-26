@@ -1,35 +1,31 @@
 <?php
 $space = $this->context->contentContainer;
 ?>
-<div class="container space-layout-container">
+<div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-3 visible-lg">
+            <!-- load space chooser widget -->
+            <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
+        </div>
+        <div class="col-lg-9">
             <?php echo humhub\modules\space\widgets\Header::widget(['space' => $space]); ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2 layout-nav-container">
-            <?php echo \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
-            <?php echo \humhub\modules\space\widgets\AdminMenu::widget(['space' => $space]); ?>
-            <br/>
-        </div>
 
-        <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
-            <div class="col-md-10 layout-content-container">
-                <?php echo $content; ?>
-            </div>
-        <?php else: ?>
-            <div class="col-md-7 layout-content-container">
-                <?php echo $content; ?>
-            </div>
-            <div class="col-md-3 layout-sidebar-container">
-                <?php
-                echo \humhub\modules\space\widgets\Sidebar::widget(['space' => $space, 'widgets' => [
+            <div class="row">
+                <div class="col-lg-8">
+                    <?php echo $content; ?>
+                </div>
+
+                <div class="col-lg-4">
+                    <?php
+                    echo \humhub\modules\space\widgets\Sidebar::widget(['space' => $space, 'widgets' => [
                         [\humhub\modules\activity\widgets\Stream::className(), ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
                         [\humhub\modules\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 20]]
-                ]]);
-                ?>
+                    ]]);
+                    ?>
+                </div>
             </div>
-        <?php endif; ?>
+
+        </div>
+
     </div>
 </div>

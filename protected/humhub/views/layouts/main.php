@@ -65,51 +65,37 @@ AppAsset::register($this);
     <body>
         <?php $this->beginBody() ?>
 
-        <!-- start: first top navigation bar -->
-        <div id="topbar-first" class="topbar">
-            <div class="container">
-                <div class="topbar-brand hidden-xs">
+        <nav class="navbar navbar-fixed-top navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <?php echo \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- load navigation from widget -->
+                        <?php echo \humhub\widgets\TopMenu::widget(); ?>
+                    </ul>
 
-                <div class="topbar-actions pull-right">
-                    <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
-                </div>
+                    <ul class="nav navbar-nav pull-right">
+                        <?php echo \humhub\widgets\TopMenuRightStack::widget(); ?>
 
-                <div class="notifications pull-right">
-
-                    <?php
-                    echo \humhub\widgets\NotificationArea::widget(['widgets' => [
+                        <?php
+                        echo \humhub\widgets\NotificationArea::widget(['widgets' => [
                             [\humhub\modules\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
-                    ]]);
-                    ?>
+                        ]]);
+                        ?>
+                        <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
+                    </ul>
+                </div><!-- /.nav-collapse -->
+            </div><!-- /.container -->
+        </nav>
 
-                </div>
-
-            </div>
-
-        </div>
-        <!-- end: first top navigation bar -->
-
-
-        <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar">
-            <div class="container">
-                <ul class="nav ">
-                    <!-- load space chooser widget -->
-                    <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
-
-                    <!-- load navigation from widget -->
-                    <?php echo \humhub\widgets\TopMenu::widget(); ?>
-                </ul>
-
-                <ul class="nav pull-right" id="search-menu-nav">
-                    <?php echo \humhub\widgets\TopMenuRightStack::widget(); ?>
-                </ul>
-            </div>
-        </div>
-
-        <!-- end: second top navigation bar -->
 
         <?php echo \humhub\modules\tour\widgets\Tour::widget(); ?>
 

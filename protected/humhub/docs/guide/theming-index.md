@@ -6,12 +6,13 @@ With **HumHub** you can easily create your own themes. Regardless of whether you
 ``Note:`` If you want to update an existing theme to a newer version of HumHub, please read the [Theming Migration Guide](migrate.md).
 
 ### What you need to know about theming in HumHub
-1. **HumHub** was build within the **yiiframework** (<http://www.yiiframework.com>). This framework implements the MVC (Model-View-Controller) design pattern. If this is new for you, please visit <http://www.yiiframework.com/doc/guide/1.1/en/basics.mvc> for more information.
+1. **HumHub** was build within the **yiiframework** (<http://www.yiiframework.com>). This framework implements the MVC (Model-View-Controller) design pattern. If this is new for you, please visit <http://www.yiiframework.com/doc-2.0/guide-README.html> for more information.
 
-2. The interface of **HumHub** is using the **Twitter Bootstrap Framework** (<http://www.getbootstrap.com>) to building the interface. Currently in version 3.0.2.
+2. The interface of **HumHub** is using the actually **Twitter Bootstrap Framework** (<http://www.getbootstrap.com>) to building the interface.
 
-3. If you created or installed a new theme inside the **themes folder**, you can switch to the new theme through your account menu **Administration > Design > Theme**.
-4. To migrate a theme created before Version 0.10
+3. If you created a new theme you have to put it to the **/themes** folder in your HumHub directory. You can switch to the new theme through your account menu **Administration > Design > Theme**.
+
+
 
 
 ---
@@ -38,6 +39,21 @@ The principle of theming in **HumHub** is overwriting. To build a new theme, you
 ``Note: ``  There is an difference between yii´s normal widget theme handling!
 
 ---
+
+## Edit CSS
+If you want to create a new theme or just want change some details, we recommend to dublicate the standard HumHub theme (duplicate and rename the folder) and make your changes there. This is still not even easier to start this is also important when you do updates later. Because all changes you did directly at the HumHub Theme will be override by an update.
+
+At the **/themes/yourtheme/css/** folder you will find the compressed **theme.css** and a **theme.less** file. The easiest way is to edit the *.less file and compile then the css file.
+
+At the first lines in the **theme.less** file you will find the color variables. If you just want to change the colors to adapt HumHub to your CI, simple change the color codes there and complie the *.less file.
+
+### Modules
+So that every module adobt the colors from the actually installed theme, you will find color classes for font, border and background colors of every bootstrap style. So if you build a module, just add the specific classes to the html elements you want to style.
+
+
+
+
+
 
 ## Custom CSS
 If your theme is activated, you have to tell **HumHub**, where to find new **CSS** or **JavaScript** files. To do that, you have to copy the **head.php** from:
