@@ -3,8 +3,8 @@
 // --------------------------------------------------
 
 @default: #ededed;
-@primary: #56687f;
-//@primary: #708fa0;
+//@primary: #56687f;
+@primary: #708fa0;
 @info: #6fdbe8;
 @success: #97d271;
 @warning: #fdd198;
@@ -112,6 +112,9 @@ body {
   color: @font4;
   font-family: 'Open Sans', sans-serif;
   //font-family: "Helvetica Neue",Helvetica,'Open Sans', sans-serif;
+  //text-rendering: geometricPrecision;
+  //-moz-osx-font-smoothing: grayscale;
+  //-webkit-font-smoothing: antialiased;
 
   a, a:hover {
     color: @info;
@@ -205,11 +208,15 @@ input[type=text], input[type=password], input[type=select] {
 .navbar-inverse {
   background-color: @primary;
   border-color: @primary;
-  //height: 60px;
+  -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #d4d4d4;
 }
 
 .navbar-inverse .navbar-brand {
   color: #fff;
+  min-width: 242px;
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -501,6 +508,27 @@ input[type=text], input[type=password], input[type=select] {
     }
 
   }
+
+  li {
+
+
+
+    a {
+/*      border-radius: 30px;
+      padding: 8px 15px;
+      margin-right: 5px;*/
+      color: @font3;
+
+      .more {
+        color:  @font2;
+      }
+    }
+
+    a.active {
+      background: @primary;
+      color: #fff;
+    }
+  }
 }
 
 .nav-pills.preferences {
@@ -584,6 +612,65 @@ a.list-group-item:hover, a.list-group-item.active, a.list-group-item.active:hove
   background-color: @background1;
   border-left: 3px solid @info !important;
 }
+
+
+
+#space-chooser {
+
+  position: fixed;
+  min-width: 198px;
+
+  .list-group-item {
+    //border-left: 3px solid #fff;
+    //border-left: none;
+    background-color: transparent;
+    border: none !important;
+    font-size: 13px;
+    //color: @font3;
+    color: #7c899b;
+    margin-bottom: 2px;
+    padding: 4px 4px;
+    //border-left: 3px solid @default !important;
+
+    img {
+      margin-right: 5px;
+    }
+
+    .badge {
+      margin-top: 1px;
+      padding: 3px 10px;
+      font-size: 11px;
+      //background: @background2;
+      background: #c4c9d0;
+    }
+  }
+
+  .list-group-item:hover, .list-group-item.active {
+    border-radius: 3px;
+    //background: darken(@default, 4%);
+    background: @primary;
+    color: #fff;
+    //border-left: 3px solid @info !important;
+
+    .badge {
+      background: darken(@primary, 15%);
+    }
+  }
+
+  .list-group-title {
+    //color: @font2;
+    color: #babfc6;
+    font-weight: 500;
+    font-size: 12px;
+    padding: 4px 4px;
+    text-transform: uppercase;
+  }
+
+  border-bottom: 1px solid lighten(@background2, 3%);
+  padding-bottom: 15px;
+}
+
+
 
 //
 // Panels

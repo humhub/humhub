@@ -189,11 +189,11 @@ if ($space->isAdmin()) {
             */?>
             <?php echo \humhub\modules\space\widgets\AdminMenu::widget(['space' => $space]); ?>
 
-        <?php
-        echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
+<!--        --><?php
+/*        echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
             [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]]
         ]]);
-        ?>
+        */?>
 
 
     </div>

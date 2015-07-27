@@ -3,11 +3,11 @@ $space = $this->context->contentContainer;
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-lg-3 visible-lg">
+        <div class="col-lg-2 visible-lg">
             <!-- load space chooser widget -->
             <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-10">
             <?php echo humhub\modules\space\widgets\Header::widget(['space' => $space]); ?>
 
             <div class="row">
