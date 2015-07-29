@@ -28,14 +28,14 @@
 - SMS
 - ReportContent
 - Birthday
+- NewMembers
+- Notes
+- LinkList
+- CV
+- DropBox
+- Meeting
 
 ### Open
 
-- NewMembers
-- Notes
 - Translation
-- LinkList
 - Updater
-- DropBox
-- Meeting
-- CV

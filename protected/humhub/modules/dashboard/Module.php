@@ -2,7 +2,7 @@
 
 namespace humhub\modules\dashboard;
 
-class Module extends \yii\base\Module
+class Module extends \humhub\components\Module
 {
     public $controllerNamespace = 'humhub\modules\dashboard\controllers';
 

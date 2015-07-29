@@ -10,7 +10,7 @@ use humhub\modules\like\models\Like;
  *
  * @since 0.5
  */
-class Module extends \yii\base\Module
+class Module extends \humhub\components\Module
 {
 
     public $isCoreModule = true;

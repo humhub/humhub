@@ -19,6 +19,11 @@ use yii\helpers\Html;
 class CActiveForm extends \yii\widgets\ActiveForm
 {
 
+    public function label($model, $attribute, $htmlOptions = array())
+    {
+        return CHtml::activeLabel($model, $attribute, $htmlOptions);
+    }
+
     public function labelEx($model, $attribute, $htmlOptions = array())
     {
         return CHtml::activeLabelEx($model, $attribute, $htmlOptions);

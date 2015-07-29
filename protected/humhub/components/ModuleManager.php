@@ -136,15 +136,18 @@ class ModuleManager extends \yii\base\Component
     public function getModules($options = [])
     {
         $modules = [];
+        
         foreach ($this->modules as $id => $class) {
 
             // Skip core modules
+            /** FixME
             if (!isset($options['includeCoreModules']) || $options['includeCoreModules'] === false) {
                 if (strpos($class, '\core\\') !== false) {
                     continue;
                 }
             }
-
+            */
+            
             if (isset($options['returnClass']) && $options['returnClass']) {
                 $modules[$id] = $class;
             } else {
@@ -154,6 +157,7 @@ class ModuleManager extends \yii\base\Component
                 }
             }
         }
+        
         return $modules;
     }
 

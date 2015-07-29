@@ -14,7 +14,7 @@ use humhub\commands\CronController;
  * @package humhub.modules_core.notification
  * @since 0.5
  */
-class Module extends \yii\base\Module
+class Module extends \humhub\components\Module
 {
 
     public function getMailUpdate(User $user, $interval)

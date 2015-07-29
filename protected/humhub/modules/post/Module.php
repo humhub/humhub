@@ -2,7 +2,7 @@
 
 namespace humhub\modules\post;
 
-class Module extends \yii\base\Module
+class Module extends \humhub\components\Module
 {
 
     public $controllerNamespace = 'humhub\modules\post\controllers';

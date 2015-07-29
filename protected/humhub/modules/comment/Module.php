@@ -8,7 +8,7 @@ namespace humhub\modules\comment;
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class Module extends \yii\base\Module
+class Module extends \humhub\components\Module
 {
 
     /**

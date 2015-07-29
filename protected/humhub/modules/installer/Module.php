@@ -28,7 +28,7 @@ use Yii;
  * @package humhub.modules_core.installer
  * @since 0.5
  */
-class Module extends \yii\base\Module
+class Module extends \humhub\components\Module
 {
 
     public $controllerNamespace = 'humhub\modules\installer\controllers';
