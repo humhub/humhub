@@ -12,6 +12,9 @@ use Yii;
 use yii\helpers\Url;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\OnlineModuleManager;
+use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 
 /**
  * Module Controller controls all third party modules in a humhub installation.
@@ -221,11 +224,16 @@ class ModuleController extends Controller
         if ($module == null) {
             throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
+        if (!$module instanceof ContentContainerModule) {
+            throw new HttpException(500, 'Invalid module type!');
+        }
+
+
 
         $model = new \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm();
 
         $spaceDefaultModule = null;
-        if ($module->isSpaceModule()) {
+        if ($module->hasContentContainerType(Space::className())) {
             $spaceDefaultModule = \humhub\modules\space\models\Module::findOne(['space_id' => 0, 'module_id' => $moduleId]);
             if ($spaceDefaultModule === null) {
                 $spaceDefaultModule = new \humhub\modules\space\models\Module();
@@ -237,7 +245,7 @@ class ModuleController extends Controller
         }
 
         $userDefaultModule = null;
-        if ($module->isUserModule()) {
+        if ($module->hasContentContainerType(User::className())) {
             $userDefaultModule = \humhub\modules\user\models\Module::findOne(['user_id' => 0, 'module_id' => $moduleId]);
             if ($userDefaultModule === null) {
                 $userDefaultModule = new \humhub\modules\user\models\Module();
@@ -250,12 +258,12 @@ class ModuleController extends Controller
 
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($module->isSpaceModule()) {
+            if ($module->hasContentContainerType(Space::className())) {
                 $spaceDefaultModule->state = $model->spaceDefaultState;
                 $spaceDefaultModule->save();
             }
 
-            if ($module->isUserModule()) {
+            if ($module->hasContentContainerType(User::className())) {
                 $userDefaultModule->state = $model->userDefaultState;
                 $userDefaultModule->save();
             }

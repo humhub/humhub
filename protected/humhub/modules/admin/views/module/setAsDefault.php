@@ -1,3 +1,9 @@
+<?php
+
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+?>
+
 <div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
 
@@ -19,7 +25,7 @@
 
             <div class="row">
 
-                <?php if ($module->isSpaceModule()): ?>
+                <?php if ($module->hasContentContainerType(Space::className())) : ?>
                     <div class="col-md-6">
                         <label for=""><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Spaces'); ?></label>
 
@@ -44,7 +50,7 @@
                         <br/>
                     </div>
                 <?php endif; ?>
-                <?php if ($module->isUserModule()): ?>
+                <?php if ($module->hasContentContainerType(User::className())) : ?>
                     <div class="col-md-6">
                         <label
                             for=""><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'User Profiles'); ?></label>

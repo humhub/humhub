@@ -43,7 +43,7 @@ use yii\helpers\Url;
                                 &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl(), array('style' => 'font-weight:bold')); ?>
                             <?php endif; ?>
 
-                            <?php if ($module->isSpaceModule() || $module->isUserModule()): ?>
+                            <?php if ($module instanceof \humhub\modules\content\components\ContentContainerModule): ?>
                                 &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
                             <?php endif; ?>
 

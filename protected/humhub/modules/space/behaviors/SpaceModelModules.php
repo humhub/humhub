@@ -10,7 +10,8 @@ namespace humhub\modules\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-
+use humhub\modules\space\models\Space;
+use humhub\modules\content\components\ContentContainerModule;
 /**
  * SpaceModelModuleBehavior handles all space model relating moduling methods.
  * (Install, Uninstall modules)
@@ -40,7 +41,7 @@ class SpaceModelModules extends Behavior
         $this->_availableModules = array();
 
         foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
-            if ($module->isSpaceModule()) {
+            if ($module instanceof ContentContainerModule && $module->hasContentContainerType(Space::className())) {
                 $this->_availableModules[$module->id] = $module;
             }
         }
@@ -127,7 +128,7 @@ class SpaceModelModules extends Behavior
         $spaceModule->save();
 
         $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->enableSpaceModule($this->owner);
+        $module->enableContentContainer($this->owner);
 
         return true;
     }
@@ -161,7 +162,7 @@ class SpaceModelModules extends Behavior
 
         // New Way: Handle it directly in module class
         $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->disableSpaceModule($this->owner);
+        $module->disableContentContainer($this->owner);
 
         $spaceModule = \humhub\modules\space\models\Module::findOne(['space_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($spaceModule == null) {

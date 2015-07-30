@@ -10,6 +10,8 @@ namespace humhub\modules\user\behaviors;
 
 use Yii;
 use yii\base\Behavior;
+use humhub\modules\user\models\User;
+use humhub\modules\content\components\ContentContainerModule;
 
 /**
  * Extends User model with moduling functionalities.
@@ -40,7 +42,7 @@ class UserModelModules extends Behavior
         $this->_availableModules = array();
 
         foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
-            if ($module->isUserModule()) {
+            if ($module instanceof ContentContainerModule && $module->hasContentContainerType(User::className())) {
                 $this->_availableModules[$module->id] = $module;
             }
         }
@@ -127,7 +129,7 @@ class UserModelModules extends Behavior
         $userModule->save();
 
         $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->enableUserModule($this->owner);
+        $module->enableContentContainer($this->owner);
 
         return true;
     }
@@ -161,7 +163,7 @@ class UserModelModules extends Behavior
 
         // New Way: Handle it directly in module class
         $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->disableUserModule($this->owner);
+        $module->disableContentContainer($this->owner);
 
         $userModule = \humhub\modules\user\models\Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($userModule == null) {

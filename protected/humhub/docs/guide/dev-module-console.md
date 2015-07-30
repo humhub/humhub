@@ -9,19 +9,18 @@ To add a custom controller to the console application, you need to catch the [[h
 ```php
 <?php
 
-use humhub\core\search\Events;
 use humhub\components\console\Application;
 
-Yii::$app->moduleManager->register(array(
-    'isCoreModule' => true,
-    'id' => 'search',
-    'class' => \humhub\core\search\Module::className(),
+return [
+    'id' => 'translation',
+    'class' => 'humhub\modules\translation\Module',
+    'namespace' => 'humhub\modules\translation',
     'events' => array(
-
-        array('class' => Application::className(), 'event' => Application::EVENT_ON_INIT, 'callback' => array(Events::className(), 'onConsoleApplicationInit')),
-
+	    //...
+        array('class' => Application::className(), 'event' => Application::EVENT_ON_INIT, 'callback' => array('humhub\modules\translation\Module', 'onConsoleApplicationInit')),
+        //...
     ),
-));
+];
 ?>
 ```
 
@@ -30,7 +29,7 @@ Yii::$app->moduleManager->register(array(
 ```php
 public static function onConsoleApplicationInit($event) {
     $application = $event->sender;
-    $application->controllerMap['search'] = commands\SearchController::className();
+    $application->controllerMap['translation'] = commands\TranslationController::className();
 }
 
 ```
