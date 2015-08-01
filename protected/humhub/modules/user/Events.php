@@ -37,6 +37,8 @@ class Events extends \yii\base\Object
     public static function onContentDelete($event)
     {
         models\Mentioning::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
+        models\Follow::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
+        
     }
 
     /**

@@ -19,7 +19,7 @@ Container Classes:
 If the module working with Content you should use the [[humhub\modules\content\components\ContentContainerController]] as base.
 
 It provides common tasks like:
-- Automatic container loading 
+- Automatic container loading based on URL
 - Access checks
 - Layout selection based container type (User or Space)
 
@@ -40,6 +40,33 @@ Each ContentContainer class is derived from [[\humhub\modules\content\components
 
 TBD (URL, AccessChecking, ProfileImage)
 
+
+### Module
+
+If the module should be shown in the content containers module section, the module class must derived from [[humhub\modules\content\components\ContentContainerModule]].
+ 
+You need at least to overwrite the method [[humhub\modules\content\components\ContentContainerModule::getContentContainerTypes]] which returns the valid content container classes.
+
+```php
+class Module extends humhub\modules\content\components\ContentContainerModule
+{
+
+    public function getContentContainerTypes()
+    {
+        return [Space::className()];
+    }
+}
+```
+
+If you're working with content or other persistent data, make also sure to delete it when the module is disabled on a content container. Do this by overwriting the method [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]].
+
+e.g.
+
+```php
+ TBD
+```
+
+See [[humhub\modules\content\components\ContentContainerModule]] class for a full list of  options.
 
 ## Content
 

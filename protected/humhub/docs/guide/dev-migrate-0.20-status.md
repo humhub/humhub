@@ -34,8 +34,8 @@
 - CV
 - DropBox
 - Meeting
+- Translation
 
 ### Open
 
-- Translation
 - Updater

@@ -132,9 +132,9 @@ class Module extends \yii\base\Module
 
     /**
      * Disables a module
-     *
-     * Which means delete all (user-) data created by the module.
-     *
+     * 
+     * This should delete all data created by this module.
+     * When override this method make sure to invoke the parent implementation AFTER your implementation.
      */
     public function disable()
     {
@@ -144,76 +144,15 @@ class Module extends \yii\base\Module
             return false;
         }
 
-
         // Disable module in database
         $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
         if ($moduleEnabled != null) {
             $moduleEnabled->delete();
         }
-        /*
-          HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
 
-          // Delete also records with disabled state from SpaceApplicationModule Table
-          foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
-          $sam->delete();
-          }
-
-          // Delete also records with disabled state from UserApplicationModule Table
-          foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
-          $uam->delete();
-          }
-
-          ModuleManager::flushCache();
+        /**
+         * Remove database tables
          */
-        return true;
-    }
-
-    /**
-     * Execute all not applied module migrations
-     */
-    protected function migrate()
-    {
-        $migrationPath = $this->basePath . '/migrations';
-        if (is_dir($migrationPath)) {
-            \humhub\commands\MigrateController::webMigrateUp($migrationPath);
-        }
-    }
-
-    /**
-     * Reads module.json which contains basic module informations and
-     * returns it as array
-     *
-     * @return Array module.json content
-     */
-    protected function getModuleInfo()
-    {
-        if ($this->_moduleInfo != null) {
-            return $this->_moduleInfo;
-        }
-
-        $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
-        return \yii\helpers\Json::decode($moduleJson);
-    }
-
-    /**
-     * Uninstalls a module
-     *
-     * You may overwrite this method to add more cleanup stuff.
-     *
-     * This method shall:
-     *      - Delete all module files
-     *      - Delete all modules tables, database changes
-     */
-    public function uninstall()
-    {
-        // Module enabled?
-        if (Yii::$app->hasModule($this->id)) {
-            $this->disable();
-        }
-
-        // Use uninstall migration, when found
         $migrationPath = $this->getBasePath() . '/migrations';
         $uninstallMigration = $migrationPath . '/uninstall.php';
         if (file_exists($uninstallMigration)) {
@@ -241,25 +180,58 @@ class Module extends \yii\base\Module
                 }
                 Yii::$app->db->createCommand()->delete('migration', ['version' => str_replace('.php', '', $migration)])->execute();
             }
-
-            $this->removeModuleFolder();
         }
 
-        Yii::$app->moduleManager->flushCache();
+        /*
+          HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+          SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+          UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+
+          // Delete also records with disabled state from SpaceApplicationModule Table
+          foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
+          $sam->delete();
+          }
+
+          // Delete also records with disabled state from UserApplicationModule Table
+          foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
+          $uam->delete();
+          }
+
+          ModuleManager::flushCache();
+         */
+        return true;
     }
 
     /**
-     * Installs a module
+     * Execute all not applied module migrations
      */
-    public function install()
+    public function migrate()
     {
-        $this->migrate();
+        $migrationPath = $this->basePath . '/migrations';
+        if (is_dir($migrationPath)) {
+            \humhub\commands\MigrateController::webMigrateUp($migrationPath);
+        }
+    }
+
+    /**
+     * Reads module.json which contains basic module informations and
+     * returns it as array
+     *
+     * @return Array module.json content
+     */
+    protected function getModuleInfo()
+    {
+        if ($this->_moduleInfo != null) {
+            return $this->_moduleInfo;
+        }
+
+        $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
+        return \yii\helpers\Json::decode($moduleJson);
     }
 
     /**
      * This method is called after an update is performed.
      * You may extend it with your own update process.
-     *
      */
     public function update()
     {
@@ -267,35 +239,10 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Removes the module folder
-     * This is required for uninstall or while update.
+     * URL to the module's configuration action
+     * 
+     * @return string the configuration url
      */
-    public function removeModuleFolder()
-    {
-
-        $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
-        if (!is_dir($moduleBackupFolder)) {
-            if (!@mkdir($moduleBackupFolder)) {
-                throw new Exception("Could not create module backup folder!");
-            }
-        }
-
-        $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $this->id . "_" . time();
-        if (!@rename($this->getBasePath(), $backupFolderName)) {
-            throw new Exception("Could not remove module folder!");
-        }
-    }
-
-    public function canDisable()
-    {
-        return true;
-    }
-
-    public function canUninstall()
-    {
-        return true;
-    }
-
     public function getConfigUrl()
     {
         return "";

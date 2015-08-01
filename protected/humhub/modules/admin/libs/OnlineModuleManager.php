@@ -31,8 +31,7 @@ class OnlineModuleManager
      */
     public function install($moduleId)
     {
-        $modulePath = Yii::getAlias("@modules");
-        print $modulePath;
+        $modulePath = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
 
         if (!is_writable($modulePath)) {
             throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
@@ -90,11 +89,7 @@ class OnlineModuleManager
         }
 
         Yii::$app->moduleManager->flushCache();
-
-        Yii::$app->moduleManager->register($basePath = Yii::getAlias('@modules/' . $moduleId));
-
-        $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->install();
+        Yii::$app->moduleManager->register($modulePath . DIRECTORY_SEPARATOR . $moduleId);
     }
 
     /**
@@ -109,12 +104,12 @@ class OnlineModuleManager
             Yii::$app->setModule($moduleId, null);
         }
 
-        $module = Yii::$app->moduleManager->getModule($moduleId);
-        $module->removeModuleFolder();
+        Yii::$app->moduleManager->removeModule($moduleId, false);
+
         $this->install($moduleId);
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
-        $updatedModule->update();
+        $updatedModule->migrate();
     }
 
     /**

@@ -102,18 +102,18 @@ class ModuleController extends Controller
     }
 
     /**
-     * Uninstalls a custom module
+     * Removes a module
      *
-     * @throws CHttpException
+     * @throws HttpException
      */
-    public function actionUninstall()
+    public function actionRemove()
     {
 
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
 
-        if (Yii::$app->moduleManager->hasModule($moduleId)) {
+        if (Yii::$app->moduleManager->hasModule($moduleId) && Yii::$app->moduleManager->canRemoveModule($moduleId)) {
 
             $module = Yii::$app->moduleManager->getModule($moduleId);
 
@@ -125,7 +125,7 @@ class ModuleController extends Controller
                 throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', array('%path%' => $module->getPath())));
             }
 
-            $module->uninstall();
+            Yii::$app->moduleManager->removeModule($module->id);
         }
         return $this->redirect(['/admin/module/list']);
     }

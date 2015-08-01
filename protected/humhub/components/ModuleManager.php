@@ -35,7 +35,14 @@ class ModuleManager extends \yii\base\Component
      *
      * @var Array
      */
-    private $enabledModules = [];
+    protected $enabledModules = [];
+
+    /**
+     * List of core module classes.
+     * 
+     * @var array the core module class names
+     */
+    protected $coreModules = [];
 
     /**
      * Module Manager init
@@ -71,6 +78,13 @@ class ModuleManager extends \yii\base\Component
         }
     }
 
+    /**
+     * Registers a module 
+     * 
+     * @param string $basePath the modules base path
+     * @param array $config the module configuration (config.php)
+     * @throws InvalidConfigException
+     */
     public function register($basePath, $config = null)
     {
 
@@ -99,6 +113,10 @@ class ModuleManager extends \yii\base\Component
         // Handle Submodules
         if (!isset($config['modules'])) {
             $config['modules'] = array();
+        }
+
+        if (isset($config['isCoreModule']) && $config['isCoreModule']) {
+            $this->coreModules[] = $config['class'];
         }
 
         // Append URL Rules
@@ -136,18 +154,16 @@ class ModuleManager extends \yii\base\Component
     public function getModules($options = [])
     {
         $modules = [];
-        
+
         foreach ($this->modules as $id => $class) {
 
             // Skip core modules
-            /** FixME
             if (!isset($options['includeCoreModules']) || $options['includeCoreModules'] === false) {
-                if (strpos($class, '\core\\') !== false) {
+                if (in_array($class, $this->coreModules)) {
                     continue;
                 }
             }
-            */
-            
+
             if (isset($options['returnClass']) && $options['returnClass']) {
                 $modules[$id] = $class;
             } else {
@@ -157,7 +173,7 @@ class ModuleManager extends \yii\base\Component
                 }
             }
         }
-        
+
         return $modules;
     }
 
@@ -194,9 +210,69 @@ class ModuleManager extends \yii\base\Component
         throw new Exception("Could not find requested module: " . $id);
     }
 
+    /**
+     * Flushes module manager cache
+     */
     public function flushCache()
     {
         Yii::$app->cache->delete(ModuleAutoLoader::CACHE_ID);
+    }
+
+    /**
+     * Checks the module can removed
+     * 
+     * @param type $moduleId
+     */
+    public function canRemoveModule($moduleId)
+    {
+        $module = $this->getModule($moduleId);
+
+        if ($module === null) {
+            return false;
+        }
+
+        // Check is in dynamic/marketplace module folder
+        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->params['moduleMarketplacePath'])) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes a module
+     * 
+     * @param strng $id the module id
+     */
+    public function removeModule($moduleId, $disableBeforeRemove = true)
+    {
+        $module = $this->getModule($moduleId);
+
+        if ($module == null) {
+            throw new Exception("Could not load module to remove!");
+        }
+
+        /**
+         * Disable Module
+         */
+        if ($disableBeforeRemove && Yii::$app->hasModule($moduleId)) {
+            $module->disable();
+        }
+
+        /**
+         * Remove Folder
+         */
+        $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
+        if (!is_dir($moduleBackupFolder)) {
+            if (!@mkdir($moduleBackupFolder)) {
+                throw new Exception("Could not create module backup folder!");
+            }
+        }
+
+        $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
+        if (!@rename($module->getBasePath(), $backupFolderName)) {
+            throw new Exception("Could not remove module folder!");
+        }
     }
 
 }
