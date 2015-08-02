@@ -262,11 +262,11 @@ class Ldap extends Object
         if (!class_exists('Zend\Ldap\Ldap')) {
             return false;
         }
-        
+
         if (!function_exists('ldap_bind')) {
             return false;
         }
-        
+
         return true;
     }
 
