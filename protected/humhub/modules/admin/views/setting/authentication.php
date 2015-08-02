@@ -13,9 +13,11 @@ use yii\helpers\Url;
             <li class="active"><a
                     href="<?php echo Url::toRoute('authentication'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Basic'); ?></a>
             </li>
-            <li>
-                <a href="<?php echo Url::toRoute('authentication-ldap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'LDAP'); ?></a>
-            </li>
+            <?php if (humhub\modules\user\libs\Ldap::isAvailable()): ?>
+                <li>
+                    <a href="<?php echo Url::toRoute('authentication-ldap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'LDAP'); ?></a>
+                </li>
+            <?php endif; ?>
         </ul>
 
 

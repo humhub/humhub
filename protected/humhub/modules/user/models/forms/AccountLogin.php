@@ -5,6 +5,8 @@ namespace humhub\modules\user\models\forms;
 use Yii;
 use yii\base\Model;
 use humhub\modules\user\models\User;
+use humhub\modules\user\libs\Ldap;
+use humhub\models\Setting;
 
 /**
  * LoginForm is the model behind the login form.
@@ -12,6 +14,9 @@ use humhub\modules\user\models\User;
 class AccountLogin extends Model
 {
 
+    /**
+     * @var string user's username or email address
+     */
     public $username;
     public $password;
     public $rememberMe = true;
@@ -41,9 +46,14 @@ class AccountLogin extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->currentPassword->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            if ($user !== null) {
+                if ($user->auth_mode === User::AUTH_MODE_LOCAL && $user->currentPassword->validatePassword($this->password)) {
+                    return;
+                } elseif ($user->auth_mode === User::AUTH_MODE_LDAP && Ldap::isAvailable() && Ldap::getInstance()->authenticate($user->username, $this->password)) {
+                    return;
+                }
             }
+            $this->addError($attribute, 'Incorrect username or password.');
         }
     }
 
@@ -83,7 +93,18 @@ class AccountLogin extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findOne(['username' => $this->username]);
+            $this->_user = User::find()->where(['username' => $this->username])->orWhere(['email' => $this->username])->one();
+
+            // Could not found user -> lookup in LDAP
+            if ($this->_user === null && Ldap::isAvailable() && Setting::Get('enabled', 'authentication_ldap')) {
+
+                // Try load/create LDAP user
+                $usernameDn = Ldap::getInstance()->ldap->getCanonicalAccountName($this->username, \Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
+                Ldap::getInstance()->handleLdapUser(Ldap::getInstance()->ldap->getNode($usernameDn));
+
+                // Check if user is availble now
+                $this->_user = User::find()->where(['username' => $this->username])->orWhere(['email' => $this->username])->one();
+            }
         }
 
         return $this->_user;

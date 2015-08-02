@@ -2,16 +2,11 @@
 
 # HumHub 0.20 - Status
 
-## Open 
-
-- LDAP 
-
 ## Bugs / ToDos / To Improve
 
 - Installer mac
 - Check complexer Migrations
 - ComandLine Space Tool
-- Check also writable config file
 
 ## Modules
 

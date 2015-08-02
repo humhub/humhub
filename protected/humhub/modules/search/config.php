@@ -13,7 +13,6 @@ return [
         ['class' => TopMenuRightStack::className(), 'event' => TopMenuRightStack::EVENT_INIT, 'callback' => array(Events::className(), 'onTopMenuRightInit')],
         ['class' => Application::className(), 'event' => Application::EVENT_ON_INIT, 'callback' => array(Events::className(), 'onConsoleApplicationInit')],
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onHourlyCron']],
-    //array('class' => 'Comment', 'event' => 'onAfterSave', 'callback' => array('SearchModuleEvents', 'onAfterSaveComment')),
     ),
 ];
 ?>

@@ -23,10 +23,8 @@
         "yiisoft/yii2-jui": "^2.0",
         "zendframework/zend-http": "*",
         "nqxcode/zendsearch": "^2.0",
-        "xj/yii2-jplayer-widget": "*"
-    },
-    "suggest": {
-        "zendframework/zend-ldap": "LDAP authentication"
+        "xj/yii2-jplayer-widget": "*",
+        "zendframework/zend-ldap": "^2.5"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

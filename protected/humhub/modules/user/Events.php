@@ -8,6 +8,8 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\Follow;
+use humhub\modules\user\libs\Ldap;
+use humhub\models\Setting;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -38,7 +40,6 @@ class Events extends \yii\base\Object
     {
         models\Mentioning::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
         models\Follow::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
-        
     }
 
     /**
@@ -122,6 +123,17 @@ class Events extends \yii\base\Object
                     $module->delete();
                 }
             }
+        }
+    }
+
+    public static function onHourlyCron($event)
+    {
+        $controller = $event->sender;
+
+        if (Setting::Get('enabled', 'authentication_ldap') && Setting::Get('refreshUsers', 'authentication_ldap') && Ldap::isAvailable()) {
+            $controller->stdout("Refresh ldap users... ");
+            Ldap::getInstance()->refreshUsers();
+            $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
         }
     }
 

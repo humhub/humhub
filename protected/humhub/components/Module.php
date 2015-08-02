@@ -21,16 +21,9 @@ class Module extends \yii\base\Module
 {
 
     /**
-     * Loaded Module JSON File
-     *
-     * @var Array
+     * @var Array the loaded module.json info file
      */
     private $_moduleInfo = null;
-
-    /**
-     * Config Route
-     */
-    public $configRoute = null;
 
     /**
      * The path for module resources (images, javascripts)
@@ -138,10 +131,9 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-
-        // Seems not enabled
+        // Is not enabled
         if (!Yii::$app->hasModule($this->id)) {
-            return false;
+            return;
         }
 
         // Disable module in database
@@ -182,6 +174,7 @@ class Module extends \yii\base\Module
             }
         }
 
+
         /*
           HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
           SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
@@ -199,7 +192,6 @@ class Module extends \yii\base\Module
 
           ModuleManager::flushCache();
          */
-        return true;
     }
 
     /**

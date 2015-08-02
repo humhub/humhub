@@ -13,6 +13,7 @@ use yii\helpers\Url;
 use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\user\libs\Ldap;
 
 /**
  * SettingController 
@@ -184,20 +185,20 @@ class SettingController extends Controller
         $userCount = 0;
         $errorMessage = "";
 
-        /*
-          if (Setting::Get('enabled', 'authentication_ldap')) {
-          $enabled = true;
-          try {
-          if (HLdap::getInstance()->ldap !== null) {
-          $userCount = HLdap::getInstance()->ldap->count(Setting::Get('userFilter', 'authentication_ldap'), Setting::Get('baseDn', 'authentication_ldap'), Zend_Ldap::SEARCH_SCOPE_SUB);
-          } else {
-          $errorMessage = Yii::t('AdminModule.controllers_SettingController', 'Could not load LDAP! - Check PHP Extension');
-          }
-          } catch (Exception $ex) {
-          $errorMessage = $ex->getMessage();
-          }
-          }
-         */
+        if (Setting::Get('enabled', 'authentication_ldap')) {
+            $enabled = true;
+            try {
+                if (Ldap::getInstance()->ldap !== null) {
+                    $userCount = Ldap::getInstance()->ldap->count(Setting::Get('userFilter', 'authentication_ldap'), Setting::Get('baseDn', 'authentication_ldap'), \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
+                } else {
+                    $errorMessage = Yii::t('AdminModule.controllers_SettingController', 'Could not load LDAP! - Check PHP Extension');
+                }
+            } catch (\Zend\Ldap\Exception\LdapException $ex) {
+                $errorMessage = $ex->getMessage();
+            } catch (Exception $ex) {
+                $errorMessage = $ex->getMessage();
+            }
+        }
 
         return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
     }

@@ -148,8 +148,8 @@ class SelfTest
         }
 
         // Checks LDAP Extension
-        $title = 'PHP - LDAP Support';
-        if (function_exists('ldap_bind')) {
+        $title = 'LDAP Support';
+        if (\humhub\modules\user\libs\Ldap::isAvailable()) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
@@ -158,7 +158,7 @@ class SelfTest
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'WARNING',
-                'hint' => 'Optional - Install LDAP Extension for LDAP Support'
+                'hint' => 'Optional - Install PHP LDAP Extension and Zend LDAP Composer Package'
             );
         }
 
@@ -194,21 +194,21 @@ class SelfTest
 
         // Checks Writeable Config
         /*
-        $title = 'Permissions - Config';
-        $configFile = dirname(Yii::$app->params['dynamicConfigFile']);
-        if (is_writeable($configFile)) {
-            $checks[] = array(
-                'title' => Yii::t('base', $title),
-                'state' => 'OK'
-            );
-        } else {
-            $checks[] = array(
-                'title' => Yii::t('base', $title),
-                'state' => 'ERROR',
-                'hint' => 'Make ' . $configFile . " writable for the webserver/php!"
-            );
-        }
-        */
+          $title = 'Permissions - Config';
+          $configFile = dirname(Yii::$app->params['dynamicConfigFile']);
+          if (is_writeable($configFile)) {
+          $checks[] = array(
+          'title' => Yii::t('base', $title),
+          'state' => 'OK'
+          );
+          } else {
+          $checks[] = array(
+          'title' => Yii::t('base', $title),
+          'state' => 'ERROR',
+          'hint' => 'Make ' . $configFile . " writable for the webserver/php!"
+          );
+          }
+         */
 
         // Check Runtime Directory
         $title = 'Permissions - Runtime';
@@ -274,7 +274,21 @@ class SelfTest
                 'hint' => 'Make ' . $path . " writable for the webserver/php!"
             );
         }
-
+        // Check Custom Modules Directory
+        $title = 'Permissions - Dynamic Config';
+        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
+        if (is_writeable($path)) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Make ' . $path . " writable for the webserver/php!"
+            );
+        }
         return $checks;
     }
 
