@@ -20,14 +20,4 @@ class m141021_162639_oembed_setting extends Migration
         return false;
     }
 
-    /*
-      // Use safeUp/safeDown to do migration with transaction
-      public function safeUp()
-      {
-      }
-
-      public function safeDown()
-      {
-      }
-     */
 }

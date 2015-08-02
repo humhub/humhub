@@ -3,9 +3,11 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m140303_125031_password extends Migration {
+class m140303_125031_password extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
 
 
         // Create New User Password Table
@@ -19,31 +21,23 @@ class m140303_125031_password extends Migration {
                 ), '');
 
         $this->createIndex('idx_user_id', 'user_password', 'user_id', false);
-        
-        /*
-        $connection = $this->getDbConnection();
-        // Migrate Passwords from User Table to UserPasswords
-        $command = $connection->commandBuilder->createFindCommand('user', new CDbCriteria);
-        $reader = $command->query();
+
+
+        // Fix: Migrate Passwords from User Table to UserPasswords
         $algorithm = 'sha1md5';
-        foreach ($reader as $row) {
-            $userId = $row['id'];
-            $password = $row['password'];
-            $password = str_replace('___enc___', '', $password);
-            $insertCommand = $connection->commandBuilder->createInsertCommand('user_password', array(
-                'user_id' => $userId,
-                'password' => $password,
-                'algorithm' => $algorithm,
-                'salt' => HSetting::Get('secret'),
-                'created_at' => new CDbExpression("NOW()")
-            ));
-            $insertCommand->execute();
+        $rows = (new \yii\db\Query())
+                ->select("*")
+                ->from('user')
+                ->all();
+        foreach ($rows as $row) {
+            $password = str_replace('___enc___', '', $row['password']);
+            $this->update('user_password', ['user_id' => $row['id'], 'password' => $password, 'algorithm' => $algorithm, 'salt' => \humhub\models\Setting::Get('secret'), 'created_at' => new \yii\db\Expression('NOW()')]);
         }
-        */
         $this->dropColumn('user', 'password');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m140303_125031_password does not support migration down.\n";
         return false;
     }

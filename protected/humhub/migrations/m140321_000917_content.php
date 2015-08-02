@@ -8,24 +8,16 @@ class m140321_000917_content extends Migration
 
     public function up()
     {
-
-        /*
-        $connection = $this->getDbConnection();
-
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'user_id IS NULL';
-
-        $command = $connection->commandBuilder->createFindCommand('content', $criteria);
-        $reader = $command->query();
-
-        foreach ($reader as $row) {
-            $updateCriteria = new CDbCriteria();
-            $updateCriteria->condition = 'id=' . $row['id'];
-            $updateCommand = $connection->commandBuilder->createUpdateCommand('content', array('user_id' => $row['created_by']), $updateCriteria);
-            $updateCommand->execute();
+        // Fix: empty user_id in content table
+        $rows = (new \yii\db\Query())
+                ->select("*")
+                ->from('content')
+                ->where(['IS', 'user_id', new \yii\db\Expression('NULL')])
+                ->all();
+        foreach ($rows as $row) {
+            $this->update('content', ['user_id' => $row['created_by']], ['id' => $row['id']]);
         }
-        */
-        
+
         $this->createIndex('index_object_model', 'content', 'object_model, object_id', true);
         $this->createIndex('index_guid', 'content', 'guid', true);
         $this->createIndex('index_space_id', 'content', 'space_id', false);

@@ -8,12 +8,12 @@ class m140705_065525_emailing_settings extends Migration
 
     public function up()
     {
-        /*
-        $connection = $this->getDbConnection();
 
-        $command = $connection->commandBuilder->createFindCommand('user', new CDbCriteria);
-        $reader = $command->query();
-        foreach ($reader as $row) {
+        $rows = (new \yii\db\Query())
+                ->select("*")
+                ->from('user')
+                ->all();
+        foreach ($rows as $row) {
 
             // Ignore deleted users
             if ($row['status'] == 3) {
@@ -25,32 +25,28 @@ class m140705_065525_emailing_settings extends Migration
             $receive_email_messaging = $row['receive_email_messaging'];
             $receive_email_activities = $row['receive_email_activities'];
 
-            $insertCommand = $connection->commandBuilder->createInsertCommand('user_setting', array(
+            $this->insert('user_setting', array(
                 'user_id' => $userId,
                 'module_id' => 'core',
                 'name' => 'receive_email_notifications',
                 'value' => $receive_email_notifications,
             ));
-            $insertCommand->execute();
 
-            $insertCommand = $connection->commandBuilder->createInsertCommand('user_setting', array(
+            $this->insert('user_setting', array(
                 'user_id' => $userId,
                 'module_id' => 'core',
                 'name' => 'receive_email_messaging',
                 'value' => $receive_email_messaging,
             ));
-            $insertCommand->execute();
 
-            $insertCommand = $connection->commandBuilder->createInsertCommand('user_setting', array(
+            $this->insert('user_setting', array(
                 'user_id' => $userId,
                 'module_id' => 'core',
                 'name' => 'receive_email_activities',
                 'value' => $receive_email_activities,
             ));
-            $insertCommand->execute();
         }
-        */
-        
+
         $this->dropColumn('user', 'receive_email_notifications');
         $this->dropColumn('user', 'receive_email_messaging');
         $this->dropColumn('user', 'receive_email_activities');

@@ -11,23 +11,20 @@ class m140703_104527_profile_birthdayfield extends Migration
         // Check if the installer already ran when not create new profile field
         // (Typically the installer creates initial data.)
         if (\humhub\models\Setting::isInstalled()) {
-            /*
-            $db = $this->getDbConnection();
 
-            // Get "General" Category Group Id
-            $categoryId = $db->createCommand()
-                    ->select('id')
+
+            $row = (new \yii\db\Query())
+                    ->select("*")
                     ->from('profile_field_category')
-                    ->where('title=:title', array(':title' => 'General'))
-                    ->queryScalar();
+                    ->where(['title' => 'General'])
+                    ->one();
 
-            // Check if we got a category Id
+            $categoryId = $row['id'];
             if ($categoryId == "") {
-                throw new CException("Could not find 'General' profile field category!");
+                throw new yii\base\Exception("Could not find 'General' profile field category!");
             }
 
-            // Create manually profile field
-            $insertCommand = $db->commandBuilder->createInsertCommand('profile_field', array(
+            $this->insert('profile_field', [
                 'profile_field_category_id' => $categoryId,
                 'field_type_class' => 'ProfileFieldTypeBirthday',
                 'field_type_config' => '',
@@ -39,9 +36,8 @@ class m140703_104527_profile_birthdayfield extends Migration
                 'visible' => '1',
                 'show_at_registration' => '0',
                 'required' => '0',
-            ));
-            $insertCommand->execute();
-            */
+            ]);
+
             // Create columns for profile field
             $this->addColumn('profile', 'birthday', 'DATETIME DEFAULT NULL');
             $this->addColumn('profile', 'birthday_hide_year', 'INT(1) DEFAULT NULL');

@@ -8,16 +8,8 @@ class m140829_122906_delete extends Migration
 
     public function up()
     {
-        /*
-        // Really delete deleted users
-        $connection = $this->getDbConnection();
+        $this->delete('user', ['status' => 3]);
 
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'status=3';
-        $command = $connection->commandBuilder->createDeleteCommand('user', $criteria);
-        $command->execute();
-        */
-        
         $this->dropColumn('user', 'user_invite_id');
 
         # Remove status default value

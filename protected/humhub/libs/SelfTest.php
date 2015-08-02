@@ -276,7 +276,12 @@ class SelfTest
         }
         // Check Custom Modules Directory
         $title = 'Permissions - Dynamic Config';
+        
         $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
+        if (!is_file($path)) {
+            $path = dirname($path);
+        }
+        
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
