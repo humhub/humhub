@@ -19,6 +19,19 @@ class I18N extends \yii\i18n\I18N
     /**
      * @inheritdoc
      */
+    public function translate($category, $message, $params, $language)
+    {
+        // Fix Yii source language is en-US
+        if ($language == 'en' && $category == 'yii') {
+            $language = 'en-US';
+        }
+
+        return parent::translate($category, $message, $params, $language);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getMessageSource($category)
     {
         // Requested MessageSource already loaded
