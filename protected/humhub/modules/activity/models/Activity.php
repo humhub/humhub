@@ -84,7 +84,7 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public function getWallOut()
+    public function getWallOut($params = [])
     {
         $output = Yii::$app->cache->get('activity_wall_out_' . $this->id);
 

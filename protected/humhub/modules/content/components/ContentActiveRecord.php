@@ -45,21 +45,17 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
 {
 
     /**
+     * @see \humhub\modules\content\widgets\WallEntry
+     * @var string WallEntry widget class
+     */
+    public $wallEntryClass = "";
+
+    /**
      * Should this content automatically added to the wall.
      *
      * @var boolean
      */
     public $autoAddToWall = true;
-
-    /**
-     * If this content is display inside the wall and should be editable
-     * there, specify a edit route here.
-     *
-     * The primary key (id) will automatically added to the url.
-     *
-     * @var string the route to edit this content
-     */
-    public $wallEditRoute = "";
 
     /**
      * @inheritdoc
@@ -113,20 +109,20 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     }
 
     /**
-     * If the content should also displayed on a wall, overwrite this
-     * method and produce a wall output.
-     *
-     * e.g.
-     * return Yii::app()->getController()->widget('application.modules.myModule.MyContentWidget',
-     *      array('myContent' => $this),
-     *      true
-     * );
-     *
-     * @return type
+     * Returns the wall output widget of this content.
+     * 
+     * @param array $params optional parameters to WallEntryWidget
+     * @return string
      */
-    public function getWallOut()
+    public function getWallOut($params = [])
     {
-        return "Default Wall Output for Class " . get_class($this);
+        if ($this->wallEntryClass !== "") {
+            $class = $this->wallEntryClass;
+            $params['contentObject'] = $this;
+            return $class::widget($params);
+        }
+
+        return "";
     }
 
     /**

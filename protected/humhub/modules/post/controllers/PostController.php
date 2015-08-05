@@ -62,8 +62,7 @@ class PostController extends \humhub\components\Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
             // Reload record to get populated updated_at field
             $model = Post::findOne(['id' => $id]);
-
-            return $this->renderAjaxContent(\humhub\modules\post\widgets\Wall::widget(['post' => $model, 'justEdited' => true]));
+            return $this->renderAjaxContent($model->getWallOut(['justEdited' => true]));
         }
 
         return $this->renderAjax('edit', array('post' => $model, 'edited' => $edited));

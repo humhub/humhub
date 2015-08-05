@@ -26,15 +26,22 @@ class EditLink extends \yii\base\Widget
     public $content = null;
 
     /**
+     * @var \humhub\modules\content\models\WallEntry
+     */
+    public $wallEntryWidget;
+
+    /**
      * Executes the widget.
      */
     public function run()
     {
-        if ($this->content->wallEditRoute != "" && $this->content->content->canWrite()) {
+        $editUrl = $this->wallEntryWidget->getEditUrl();
+
+        if ($editUrl !== "" && $this->content->content->canWrite()) {
             return $this->render('editLink', array(
                         'id' => $this->content->content->object_id,
                         'content' => $this->content,
-                        'editRoute' => $this->content->wallEditRoute
+                        'editUrl' => $editUrl
             ));
         }
     }

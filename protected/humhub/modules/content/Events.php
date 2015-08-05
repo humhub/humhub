@@ -98,7 +98,7 @@ class Events extends \yii\base\Object
         $content = $event->sender->object;
 
         $stackWidget->addWidget(widgets\DeleteLink::className(), ['content' => $content]);
-        $stackWidget->addWidget(widgets\EditLink::className(), ['content' => $content]);
+        $stackWidget->addWidget(widgets\EditLink::className(), ['content' => $content, 'wallEntryWidget' => $stackWidget->wallEntryWidget]);
         //$stackWidget->addWidget(widgets\NotificationSwitchLink::className(), ['content' => $content]);
         $stackWidget->addWidget(widgets\PermaLink::className(), ['content' => $content]);
         $stackWidget->addWidget(widgets\ArchiveLink::className(), ['content' => $content]);
@@ -169,7 +169,7 @@ class Events extends \yii\base\Object
                 $mailsSent++;
             }
 
-            Console::updateProgress(++$done, $totalUsers);
+            Console::updateProgress( ++$done, $totalUsers);
         }
 
         Console::endProgress(true);

@@ -5,8 +5,6 @@ use yii\helpers\Html;
 $richOutput = humhub\widgets\RichText::widget(['text' => $post->message]);
 ?>
 
-<?php $this->beginContent('@humhub/modules/content/views/layouts/wallLayout.php', array('object' => $post)); ?>
-
 <span id="post-content-<?php echo $post->id; ?>" style="overflow: hidden; margin-bottom: 5px;">
     <?php print $richOutput; ?>
 </span>
@@ -14,9 +12,6 @@ $richOutput = humhub\widgets\RichText::widget(['text' => $post->message]);
    style="margin: 20px 0 20px 0;" href="javascript:showMore(<?php echo $post->id; ?>);"><i
         class="fa fa-arrow-down"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Read full post...'); ?>
 </a>
-
-<?php $this->endContent(); ?>
-
 <script type="text/javascript">
 <?php if ($justEdited): ?>
         $('#post-content-<?php echo $post->id; ?>').addClass('highlight');

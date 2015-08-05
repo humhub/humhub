@@ -27,7 +27,10 @@ use humhub\modules\search\interfaces\Searchable;
 class Post extends ContentActiveRecord implements Searchable
 {
 
-    public $wallEditRoute = '//post/post/edit';
+    /**
+     * @inheritdoc
+     */
+    public $wallEntryClass = "humhub\modules\post\widgets\WallEntry";
 
     /**
      * @inheritdoc
@@ -105,11 +108,6 @@ class Post extends ContentActiveRecord implements Searchable
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
         ];
-    }
-
-    public function getWallOut()
-    {
-        return \humhub\modules\post\widgets\Wall::widget(['post' => $this]);
     }
 
     /**
