@@ -16,7 +16,7 @@ class Menu extends \humhub\widgets\BaseMenu
 {
 
     public $space;
-    public $template = "@humhub/widgets/views/headerNavigation";
+    public $template = "@humhub/widgets/views/leftNavigation";
 
     public function init()
     {

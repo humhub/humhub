@@ -16,7 +16,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
 {
 
     public $space;
-    public $template = "@humhub/widgets/views/dropdownNavigation";
+    public $template = "@humhub/widgets/views/leftNavigation";
 
     public function init()
     {

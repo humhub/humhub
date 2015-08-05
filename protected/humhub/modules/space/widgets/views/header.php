@@ -179,21 +179,43 @@ if ($space->isAdmin()) {
 
     <div class="panel-body">
 
-            <?php echo \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
-<!--            --><?php
-/*            echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
-                [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
-                [\humhub\modules\space\widgets\MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
-                [\humhub\modules\space\widgets\FollowButton::className(), ['space' => $space], ['sortOrder' => 30]]
-            ]]);
-            */?>
-            <?php echo \humhub\modules\space\widgets\AdminMenu::widget(['space' => $space]); ?>
+        <div class="panel-profile-controls">
+            <!-- start: User statistics -->
+            <div class="row">
+                <div class="statistics col-sm-12 col-md-6">
 
-<!--        --><?php
-/*        echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
-            [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]]
-        ]]);
-        */?>
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo $postCount; ?></span></a>
+                        <br>
+                        <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
+                    </div>
+
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo count($space->memberships); ?></span>
+                        <br>
+                        <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
+                    </div>
+
+                    <div class="pull-left entry">
+                        <span class="count"><?php echo $space->getFollowerCount(); ?></span><br>
+                        <span class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                    </div>
+
+                </div>
+                <!-- end: User statistics -->
+
+                <div class="controls controls-header text-right col-sm-12 col-md-6">
+                    <?php
+                    echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
+                            [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
+                            [\humhub\modules\space\widgets\MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
+                            [\humhub\modules\space\widgets\FollowButton::className(), ['space' => $space], ['sortOrder' => 30]]
+                    ]]);
+                    ?>
+                </div>
+            </div>
+
+        </div>
 
 
     </div>
