@@ -87,9 +87,8 @@ This Content record holds all neccessary informations and provides common method
 
 If you're implementing an ActiveRecord based on [[humhub\modules\content\components\ContentContainerActiveRecord]] you need to implement following abstract methods:
 
-- getContentTitle() - Returns the displayed name of the Content (e.g. Post or Poll)
-- getContentPreview($maxLength) - Returns a preview of the Content - which is used in Notifications for example.
-- getWallOut() - Returns a Widget Containing the Output in Walls or Search Results
+- getContentName() - Returns the displayed name of the Content (e.g. Post or Poll)
+- getContentDescription() - Returns a preview of the Content - which is used in Notifications for example.
 
 Example:
 
@@ -97,6 +96,8 @@ Example:
 
 
 ```
+
+#### Wall/Stream Output
 
 
 #### Querying Content
@@ -110,7 +111,6 @@ If you're calling find() on a [[\humhub\modules\content\components\ContentActive
 #### Permissions
 
 TBD (Read Permissions not enhanceable)
-
 
 
 ### Controller

@@ -14,41 +14,35 @@ Example:
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
 
-class Post extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
+class Post extends ContentActiveRecord implements Searchable
 {
 	// ...
 
-	// Adds/Deletes automatically record from/to search
-    public function behaviors()
-    {
-        return array(
-            \humhub\modules\search\behaviors\Searchable::className()
-        );
-    }
+	// This is required to display the search result
+    public $wallEntryClass = "humhub\modules\post\widgets\WallEntry";
 
-	// Searchable Attributes
+	// Searchable Attributes / Informations
     public function getSearchAttributes()
     {
         return array(
             'message' => $this->message,
             'url' => $this->url,
+			'someTextField' => 'Some text'
         );
     }
 
-	// Also used as Search Result
-	public function getWallOut()
-    {
-        return \humhub\modules\post\widgets\Wall::widget(['post' => $this]);
-    }
+	// ...
 
 }
 
 ```
 
 
-## Non Content objects
+## Non Content 
 
-If you want to add also non Content objects to the search index, you need to catch and handle the event [[\humhub\modules\search\engine\Search::EVENT_ON_REBUILD]]
+> TBD
+
+It's also required to handle/implement the [[\humhub\modules\search\engine\Search::EVENT_ON_REBUILD]] event to rebuild the search index if nessessary.
 
 Example:
 
@@ -56,7 +50,7 @@ Example:
 
 public static function onSearchRebuild($event)
 {
-    foreach (models\User::find()->all() as $obj) {
+    foreach (models\NonContent::find()->all() as $obj) {
         \Yii::$app->search->add($obj);
     }
 }

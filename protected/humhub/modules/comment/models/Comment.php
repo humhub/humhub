@@ -64,17 +64,21 @@ class Comment extends ContentAddonActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        $this->updateContentSearch();
+        parent::afterDelete();
+    }
+
+    /**
      * Flush comments cache
      */
     public function flushCache()
     {
         Yii::$app->cache->delete('commentCount_' . $this->object_model . '_' . $this->object_id);
         Yii::$app->cache->delete('commentsLimited_' . $this->object_model . '_' . $this->object_id);
-
-        // delete workspace comment stats cache
-        if (!empty($this->space_id)) {
-            Yii::$app->cache->delete('workspaceCommentCount_' . $this->space_id);
-        }
     }
 
     /**
@@ -102,7 +106,20 @@ class Comment extends ContentAddonActiveRecord
             $notification->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
         }
 
+        $this->updateContentSearch();
+
         return parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Force search update of underlying content object.
+     * (This has also indexed the comments.)
+     */
+    protected function updateContentSearch()
+    {
+        if ($this->content->getPolymorphicRelation() instanceof \humhub\modules\search\interfaces\Searchable) {
+            Yii::$app->search->update($this->content->getPolymorphicRelation());
+        }
     }
 
     /**
@@ -168,7 +185,7 @@ class Comment extends ContentAddonActiveRecord
      */
     public function getContentDescription()
     {
-		return $this->message;
+        return $this->message;
     }
 
     public function canDelete($userId = "")

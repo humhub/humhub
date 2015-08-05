@@ -8,6 +8,7 @@ use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\search\engine\Search;
+use humhub\modules\content\components\ContentActiveRecord;
 
 return [
     'id' => 'content',
@@ -22,6 +23,9 @@ return [
         ['class' => User::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onUserDelete']],
         ['class' => Space::className(), 'event' => User::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onSpaceDelete']],
         ['class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => [Events::className(), 'onSearchRebuild']],
+        ['class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_AFTER_INSERT, 'callback' => [Events::className(), 'onContentActiveRecordSave']],
+        ['class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_AFTER_UPDATE, 'callback' => [Events::className(), 'onContentActiveRecordSave']],
+        ['class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::className(), 'onContentActiveRecordDelete']],
     ),
 ];
 ?>

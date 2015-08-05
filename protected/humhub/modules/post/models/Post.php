@@ -54,16 +54,6 @@ class Post extends ContentActiveRecord implements Searchable
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return array(
-            \humhub\modules\search\behaviors\Searchable::className()
-        );
-    }
-
     public function beforeSave($insert)
     {
         // Prebuild Previews for URLs in Message
@@ -123,14 +113,11 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getContentDeescription()
     {
-            return $this->message;
+        return $this->message;
     }
 
     /**
-     * Returns an array of informations used by search subsystem.
-     * Function is defined in interface ISearchable
-     *
-     * @return Array
+     * @inheritdoc
      */
     public function getSearchAttributes()
     {

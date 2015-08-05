@@ -191,4 +191,28 @@ class Events extends \yii\base\Object
         }
     }
 
+    /**
+     * After a components\ContentActiveRecord was saved
+     * 
+     * @param \yii\base\Event $event
+     */
+    public static function onContentActiveRecordSave($event)
+    {
+        if ($event->sender instanceof \humhub\modules\search\interfaces\Searchable) {
+            Yii::$app->search->update($event->sender);
+        }
+    }
+
+    /**
+     * After a components\ContentActiveRecord was deleted
+     * 
+     * @param \yii\base\Event $event
+     */
+    public static function onContentActiveRecordDelete($event)
+    {
+        if ($event->sender instanceof \humhub\modules\search\interfaces\Searchable) {
+            Yii::$app->search->delete($event->sender);
+        }
+    }
+
 }
