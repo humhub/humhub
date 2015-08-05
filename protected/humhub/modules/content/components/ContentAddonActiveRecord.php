@@ -25,7 +25,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * - created_at
  * - updated_by
  * - updated_at
- * 
+ *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5
@@ -148,7 +148,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
      *
      * @return string
      */
-    public function getContentTitle()
+    public function getContentName()
     {
         return $this->className();
     }
@@ -159,7 +159,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
      *
      * @return string
      */
-    public function getContentPreview($maxLength = 0)
+    public function getContentDescription()
     {
         return "";
     }

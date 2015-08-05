@@ -133,9 +133,9 @@ class BaseActivity extends \yii\base\Component
      */
     public function getContentInfo(\humhub\modules\content\interfaces\ContentTitlePreview $content)
     {
-        return \yii\helpers\Html::encode($content->getContentTitle()) .
+        return \yii\helpers\Html::encode($content->getContentName()) .
                 ' "' .
-                \humhub\widgets\RichText::widget(['text' => $content->getContentPreview(), 'minimal' => true, 'maxLength' => 60]) . '"';
+                \humhub\widgets\RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) . '"';
     }
 
     /**

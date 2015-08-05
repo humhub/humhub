@@ -87,23 +87,24 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     }
 
     /**
-     * Returns a title for this type of content.
-     * This method should be overwritten in the content implementation.
+     * Returns the name of this type of content.
+     * You need to override this method in your content implementation.
      *
-     * @return string
+     * @return string the name of the content
      */
-    public function getContentTitle()
+    public function getContentName()
     {
         return $this->className();
     }
 
     /**
-     * Returns a text preview of this content.
-     * This method should be overwritten in the content implementation.
+     * Returns a description of this particular content.
+     * This will be used to create a text preview of the content record. (e.g. in Activities or Notifications)
+     * You need to override this method in your content implementation.
      *
-     * @return string
+     * @return string description of this content
      */
-    public function getContentPreview($maxLength = 0)
+    public function getContentDescription()
     {
         return "";
     }

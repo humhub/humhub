@@ -158,7 +158,7 @@ class Comment extends ContentAddonActiveRecord
     /**
      * @inheritdoc
      */
-    public function getContentTitle()
+    public function getContentName()
     {
         return Yii::t('CommentModule.models_comment', 'Comment');
     }
@@ -166,13 +166,9 @@ class Comment extends ContentAddonActiveRecord
     /**
      * @inheritdoc
      */
-    public function getContentPreview($maxLength = 0)
+    public function getContentDescription()
     {
-        if ($maxLength == 0) {
-            return $this->message;
-        }
-
-        return \humhub\libs\Helpers::truncateText($this->message, $maxLength);
+		return $this->message;
     }
 
     public function canDelete($userId = "")

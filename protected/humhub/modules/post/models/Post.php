@@ -113,7 +113,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getContentTitle()
+    public function getContentName()
     {
         return Yii::t('PostModule.models_Post', 'Post');
     }
@@ -121,13 +121,9 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getContentPreview($maxLength = 0)
+    public function getContentDeescription()
     {
-        if ($maxLength == 0) {
             return $this->message;
-        }
-
-        return \humhub\libs\Helpers::truncateText($this->message, $maxLength);
     }
 
     /**

@@ -15,7 +15,7 @@ namespace humhub\modules\content\interfaces;
 interface ContentTitlePreview
 {
 
-    public function getContentTitle();
+    public function getContentName();
 
-    public function getContentPreview($maxLength = 0);
+    public function getContentDescription();
 }

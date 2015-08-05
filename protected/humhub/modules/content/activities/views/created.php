@@ -7,5 +7,3 @@ echo Yii::t('PostModule.views_activities_PostCreated', '{displayName} created a 
     '{contentTitle}' => $this->context->getContentInfo($source)
 ));
 ?>
-
-<?php //echo $source->getContentPreview(); ?>
