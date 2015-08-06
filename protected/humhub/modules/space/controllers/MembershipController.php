@@ -168,6 +168,9 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         $model->space = $space;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            $statusInvite = false;
+
             // Invite existing members
             foreach ($model->getInvites() as $user) {
                 $space->inviteMember($user->id, Yii::$app->user->id);
