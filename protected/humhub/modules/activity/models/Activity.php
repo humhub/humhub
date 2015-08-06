@@ -27,6 +27,11 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
+    public $wallEntryClass = "humhub\modules\activity\widgets\Activity";
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
