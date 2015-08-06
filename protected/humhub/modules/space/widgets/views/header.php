@@ -72,7 +72,7 @@ if ($space->isAdmin()) {
                        }
                        ?>"
                        href="<?php echo $space->createUrl('/space/admin/crop-banner-image'); ?>"
-                       class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
                         echo humhub\widgets\ModalConfirm::widget(array(
@@ -152,7 +152,7 @@ if ($space->isAdmin()) {
                        }
                        ?>"
                        href="<?php echo $space->createUrl('/space/admin/crop-image'); ?>"
-                       class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
                         echo humhub\widgets\ModalConfirm::widget(array(

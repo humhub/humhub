@@ -30,16 +30,16 @@ if ($confirmJS != "") {
 <?php if ($linkOutput == 'button') { ?>
 
     <!-- create button element -->
-    <button class="<?php echo $class; ?>" style="<?php echo $style; ?>" data-toggle="modal"
-            data-target="#confirmModal_<?php echo $uniqueID; ?>" <?php echo $tooltip; ?>>
+    <button class="<?php echo $class; ?>" style="<?php echo $style; ?>"
+            data-toggle="modal" data-target="#confirmModal_<?php echo $uniqueID; ?>" <?php echo $tooltip; ?>>
                 <?php echo $linkContent; ?>
     </button>
 
 <?php } else if ($linkOutput == 'a') { ?>
 
     <!-- create normal link element -->
-    <a id="deleteLinkPost_<?php echo $uniqueID; ?>" class="<?php echo $class; ?>" style="<?php echo $style; ?>" href="#" data-toggle="modal"
-       data-target="#confirmModal_<?php echo $uniqueID; ?>" <?php echo $tooltip; ?>>
+    <a id="deleteLinkPost_<?php echo $uniqueID; ?>" class="<?php echo $class; ?>" style="<?php echo $style; ?>" href="#"
+       data-toggle="modal" data-target="#confirmModal_<?php echo $uniqueID; ?>" <?php echo $tooltip; ?>>
            <?php echo $linkContent; ?>
     </a>
 

@@ -70,7 +70,7 @@ if ($isProfileOwner) {
                        }
                        ?>"
                        href="<?php echo Url::toRoute('/user/account/crop-banner-image'); ?>"
-                       class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
                         echo \humhub\widgets\ModalConfirm::widget(array(
@@ -149,7 +149,7 @@ if ($isProfileOwner) {
                        }
                        ?>"
                        href="<?php echo Url::toRoute('/user/account/crop-profile-image'); ?>"
-                       class="btn btn-info btn-sm" data-toggle="modal" data-target="#globalModal"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
                         echo \humhub\widgets\ModalConfirm::widget(array(

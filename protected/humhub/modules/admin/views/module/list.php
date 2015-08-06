@@ -44,7 +44,7 @@ use yii\helpers\Url;
                             <?php endif; ?>
 
                             <?php if ($module instanceof \humhub\modules\content\components\ContentContainerModule): ?>
-                                &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+                                &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), array('data-target' => '#globalModal')); ?>
                             <?php endif; ?>
 
                             &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Disable'), Url::to(['/admin/module/disable', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!'))); ?>
@@ -57,7 +57,7 @@ use yii\helpers\Url;
                             &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'Uninstall'), Url::to(['/admin/module/remove', 'moduleId' => $moduleId]), array('data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module related data and files will be lost!'))); ?>
                         <?php endif; ?>
 
-                        &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'More info'), Url::to(['/admin/module/info', 'moduleId' => $moduleId]), array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+                        &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_list', 'More info'), Url::to(['/admin/module/info', 'moduleId' => $moduleId]), array('data-target' => '#globalModal')); ?>
 
                     </div>
 

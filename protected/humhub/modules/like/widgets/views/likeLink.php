@@ -17,7 +17,7 @@ $this->registerJsFile('@web/resources/like/like.js', ['position' => humhub\compo
 <?php if (count($likes) > 0) { ?>
         <!-- Create link to show all users, who liked this -->
         <a href="<?php echo $userListUrl; ?>"
-           class="tt" data-toggle="modal"
+           class="tt"
            data-placement="top" title="" data-target="#globalModal"
            data-original-title="<?= $title ?>"><span class="likeCount"></span></a>
     <?php } else { ?>
