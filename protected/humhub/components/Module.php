@@ -92,8 +92,8 @@ class Module extends \yii\base\Module
         $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
 
         if (is_file($moduleImageFile)) {
-            $published = $assetManager = Yii::$app->assetManager->publish($moduleImageFile);
-            return $published[1];
+            $published = $assetManager = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath);
+            return $published[1] . '/module_image.png';
         }
 
         return Yii::getAlias("@web/img/default_module.jpg");

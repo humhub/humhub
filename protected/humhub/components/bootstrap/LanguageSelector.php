@@ -64,6 +64,10 @@ class LanguageSelector implements BootstrapInterface
             $app->language = $app->user->language;
             $app->formatter->timeZone = $app->user->timeZone;
         }
+        
+        if ($app->language == 'en') {
+            $app->language = 'en-US';
+        }
     }
 
 }

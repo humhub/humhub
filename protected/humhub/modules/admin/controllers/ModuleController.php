@@ -195,20 +195,20 @@ class ModuleController extends Controller
     public function actionInfo()
     {
 
-        $moduleId = Yii::$app->request->getQuery('moduleId');
+        $moduleId = Yii::$app->request->get('moduleId');
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new CHttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $readmeMd = "";
-        $readmeMdFile = $module->getPath() . DIRECTORY_SEPARATOR . 'README.md';
+        $readmeMdFile = $module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md';
         if (file_exists($readmeMdFile)) {
             $readmeMd = file_get_contents($readmeMdFile);
         }
 
-        $this->renderPartial('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd), false, true);
+        return $this->renderAjax('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd));
     }
 
     /**

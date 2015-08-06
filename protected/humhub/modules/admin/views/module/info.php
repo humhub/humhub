@@ -1,10 +1,14 @@
+<?php
+
+use yii\helpers\Html;
+?>
 <div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('AdminModule.views_module_info', '<strong>Module</strong> details', array('%moduleName%' => CHtml::encode($name))); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('AdminModule.views_module_info', '<strong>Module</strong> details', array('%moduleName%' => Html::encode($name))); ?></h4>
         </div>
         <div class="modal-body">
 
@@ -12,8 +16,7 @@
                 <?php if ($content != ""): ?>
 
                     <?php
-                    $md = new CMarkdown;
-                    echo $md->transform($content);
+                    echo \yii\helpers\Markdown::process($content);
                     ?>
 
                 <?php else: ?>
