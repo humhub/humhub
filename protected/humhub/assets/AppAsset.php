@@ -18,7 +18,6 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/animate.min.css',
         'css/bootstrap.min.css',
-        'css/datepicker.css',
         'css/temp.css',
         'resources/font-awesome/css/font-awesome.min.css',
         'css/bootstrap-wysihtml5.css',

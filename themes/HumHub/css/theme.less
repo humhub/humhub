@@ -9,7 +9,6 @@
 @warning: #fdd198;
 @danger: #ff8989;
 
-
 @font1: #bac2c7;
 @font2: #7a7a7a;
 @font3: #555555;
@@ -106,8 +105,6 @@
   border-color: @danger;
 }
 
-
-
 //
 // General
 // --------------------------------------------------
@@ -153,7 +150,6 @@ hr {
 textarea {
   height: 1.5em;
 }
-
 
 h4 {
   font-weight: 300;
@@ -281,7 +277,6 @@ input[type=text], input[type=password], input[type=select] {
   }
 
 }
-
 
 #topbar-first {
   background-color: @primary;
@@ -633,7 +628,6 @@ input[type=text], input[type=password], input[type=select] {
   padding-right: 0;
 }
 
-
 .media:after {
   content: '';
   clear: both;
@@ -852,7 +846,6 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-
 .panel.members, .panel.groups, .panel.follower, .panel.spaces {
   .panel-body a img {
     margin-bottom: 5px;
@@ -944,8 +937,6 @@ input[type=text], input[type=password], input[type=select] {
 
 }
 
-
-
 // Panels - Installer
 .installer {
 
@@ -1000,14 +991,12 @@ input[type=text], input[type=password], input[type=select] {
 
 }
 
-
 //
 // Pagination
 // --------------------------------------------------
 .pagination-container {
   text-align: center;
 }
-
 
 //
 // Well
@@ -1362,7 +1351,6 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-
 .btn-danger {
   background: @danger;
   color: white !important;
@@ -1393,7 +1381,6 @@ input[type=text], input[type=password], input[type=select] {
     background: lighten(@danger, 5%) !important;
   }
 }
-
 
 .btn-success {
   background: @success;
@@ -1426,7 +1413,6 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-
 .btn-warning {
   background: @warning;
   color: white !important;
@@ -1457,7 +1443,6 @@ input[type=text], input[type=password], input[type=select] {
     background: lighten(@warning, 5%) !important;
   }
 }
-
 
 //
 // Forms
@@ -1908,8 +1893,6 @@ table {
   padding: 6px 5px 4px 5px;
 }
 
-
-
 //
 // Comments
 // --------------------------------------------------
@@ -1944,8 +1927,6 @@ table {
     }
   }
 }
-
-
 
 //
 // HumHub Components
@@ -2111,7 +2092,6 @@ ul.tag_input {
   }
 }
 
-
 // Wall-Entries
 .wall-entry {
   position: relative;
@@ -2176,7 +2156,6 @@ ul.tag_input.focus {
   outline: 0;
   box-shadow: none;
 }
-
 
 // Member sign for directory list
 .space-member-sign {
@@ -2324,7 +2303,6 @@ ul.tag_input.focus {
   }
 }
 
-
 // Upload box
 
 .upload-box-container {
@@ -2392,8 +2370,6 @@ ul.tag_input.focus {
   display: inline-block;
 }
 
-
-
 // Flash message after saving
 .data-saved {
   padding-left: 10px;
@@ -2457,7 +2433,6 @@ ul.tour-list {
   }
 }
 
-
 .powered, .powered a {
   color: #b8c7d3 !important;
 }
@@ -2487,6 +2462,26 @@ ul.tour-list {
   box-shadow: none;
 }
 
+.has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, .has-success .radio-inline, .has-success .checkbox-inline {
+  color: @success;
+}
+
+.has-success .form-control, .has-success .form-control:focus {
+  border-color: @success;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.has-warning .help-block, .has-warning .control-label, .has-warning .radio, .has-warning .checkbox, .has-warning .radio-inline, .has-warning .checkbox-inline {
+  color: @warning;
+}
+
+.has-warning .form-control, .has-warning .form-control:focus {
+  border-color: @warning;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
 //
 // Third Party Tools
 // --------------------------------------------------
@@ -2501,7 +2496,6 @@ input.placeholder, textarea.placeholder {
   padding: 0 0 0 10px;
   color: #999999;
 }
-
 
 // Ekko lightbox
 .ekko-lightbox-container {
@@ -2654,7 +2648,6 @@ input.placeholder, textarea.placeholder {
   }
 }
 
-
 .loader-modal {
   padding: 8px 0;
 }
@@ -2688,8 +2681,6 @@ img.bounceIn {
   -moz-animation-duration: 800ms;
   animation-duration: 800ms;
 }
-
-
 
 // Markdown
 .markdown-render {
@@ -2802,8 +2793,6 @@ img.bounceIn {
   }
 }
 
-
-
 // Flatelements
 .onoffswitch-inner:before {
   background-color: @info;
@@ -2822,7 +2811,6 @@ img.bounceIn {
   color: white;
 }
 
-
 .regular-radio:checked + .regular-radio-button:after {
   background: @info;
 }
@@ -2834,5 +2822,47 @@ img.bounceIn {
   margin-right: 5px;
 }
 
+// Datepicker
 
+.ui-widget-header {
+  border: none !important;
+  background: #fff !important;
+  color: @font2 !important;
+  font-weight: 300 !important;
+}
+
+.ui-widget-content {
+  border: 1px solid #dddcda !important;
+  border-radius: 0 !important;
+  background: #ffffff;
+  color: @font3 !important;
+  -webkit-box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+  opacity: 0.2;
+}
+
+.ui-datepicker .ui-datepicker-prev:hover, .ui-datepicker .ui-datepicker-next:hover {
+  background: #fff !important;
+  border: none;
+  margin: 1px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  border: none !important;
+  background: @background1 !important;
+  color: @font2 !important;;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+  border: none !important;
+  border: 1px solid @background4 !important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+  border: 1px solid @info !important;
+  background: lighten(@info, 25%) !important;
+}
 
