@@ -60,7 +60,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
             </div>
 
             <div class="col-md-10">
-                <ul class="media-list">
+
                     <div class="searchResults">
 
                         <?php if (count($results) > 0): ?>
@@ -76,9 +76,9 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                             <p>Sorry nothing found :(</p>
                         <?php endif; ?>
                     </div>
-                </ul>
 
                 <div class="pagination-container"><?php echo humhub\widgets\LinkPager::widget(['pagination' => $pagination]); ?></div>
+                <br><br>
             </div>
 
         </div>

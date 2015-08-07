@@ -139,11 +139,6 @@ AppAsset::register($this);
         </div>
         <!-- end: Modal -->
 
-        <script type="text/javascript">
-            // Replace the standard checkbox and radio buttons
-            $('body').find(':checkbox, :radio').flatelements();
-        </script>
-
         <?php echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
         <?php $this->endBody() ?>
     </body>

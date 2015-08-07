@@ -184,6 +184,9 @@ $(document).ajaxComplete(function (event, xhr, settings) {
     // activate placeholder text for older browsers (specially IE)
     $('input, textarea').placeholder();
 
+    // Replace the standard checkbox and radio buttons
+    $('body').find(':checkbox, :radio').flatelements();
+
     // set Modal handler to all modal links
     setModalHandler();
 

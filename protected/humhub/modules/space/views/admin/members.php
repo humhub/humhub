@@ -127,7 +127,7 @@ use humhub\modules\space\models\Space;
                                         'message' => Yii::t('SpaceModule.views_admin_members', 'Are you sure, that you want to remove this member from this space?'),
                                         'buttonTrue' => Yii::t('SpaceModule.views_admin_members', 'Yes, remove'),
                                         'buttonFalse' => Yii::t('SpaceModule.views_admin_members', 'No, cancel'),
-                                        'class' => 'btn btn-sm btn-danger',
+                                        'cssClass' => 'btn btn-sm btn-danger',
                                         'linkContent' => Yii::t('SpaceModule.views_admin_members', 'Remove'),
                                         'linkHref' => $space->createUrl('//space/admin/removeMember', array('userGuid' => $user->guid, 'ajax' => 1))
                                     ));

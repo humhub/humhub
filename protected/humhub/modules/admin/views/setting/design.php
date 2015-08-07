@@ -65,7 +65,7 @@ use yii\helpers\Url;
                         'buttonTrue' => Yii::t('AdminModule.views_setting_index', 'Delete'),
                         'buttonFalse' => Yii::t('AdminModule.views_setting_index', 'Cancel'),
                         'linkContent' => '<i class="fa fa-times"></i>',
-                        'class' => 'btn btn-danger btn-sm',
+                        'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $logo->hasImage() ? '' : 'display: none;',
                         'linkHref' => Url::toRoute("/admin/setting/deleteLogoImage"),
                         'confirmJS' => 'function(jsonResp) { resetLogoImage(jsonResp); }'

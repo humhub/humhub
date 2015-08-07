@@ -83,7 +83,7 @@ if ($space->isAdmin()) {
                             'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Delete'),
                             'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Cancel'),
                             'linkContent' => '<i class="fa fa-times"></i>',
-                            'class' => 'btn btn-danger btn-sm',
+                            'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
                             'linkHref' => $space->createUrl("/space/admin/delete-profile-image", ['type' => 'banner']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
@@ -163,7 +163,7 @@ if ($space->isAdmin()) {
                             'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Delete'),
                             'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Cancel'),
                             'linkContent' => '<i class="fa fa-times"></i>',
-                            'class' => 'btn btn-danger btn-sm',
+                            'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
                             'linkHref' => $space->createUrl("/space/admin/delete-profile-image", array('type' => 'profile')),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'

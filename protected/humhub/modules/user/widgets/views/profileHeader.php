@@ -81,7 +81,7 @@ if ($isProfileOwner) {
                             'buttonTrue' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete'),
                             'buttonFalse' => Yii::t('UserModule.widgets_views_deleteBanner', 'Cancel'),
                             'linkContent' => '<i class="fa fa-times"></i>',
-                            'class' => 'btn btn-danger btn-sm',
+                            'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
                             'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'banner']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
@@ -160,7 +160,7 @@ if ($isProfileOwner) {
                             'buttonTrue' => Yii::t('UserModule.widgets_views_deleteImage', 'Delete'),
                             'buttonFalse' => Yii::t('UserModule.widgets_views_deleteImage', 'Cancel'),
                             'linkContent' => '<i class="fa fa-times"></i>',
-                            'class' => 'btn btn-danger btn-sm',
+                            'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
                             'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'profile']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'

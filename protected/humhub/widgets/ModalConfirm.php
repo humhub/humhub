@@ -66,7 +66,7 @@ class ModalConfirm extends \yii\base\Widget
     /**
      * @var String classes for the displaying link
      */
-    public $class;
+    public $cssClass;
 
     /**
      * @var String style for the displaying link
@@ -111,7 +111,7 @@ class ModalConfirm extends \yii\base\Widget
                     'message' => $this->message,
                     'buttonTrue' => $this->buttonTrue,
                     'buttonFalse' => $this->buttonFalse,
-                    'class' => $this->class,
+                    'class' => $this->cssClass,
                     'style' => $this->style,
                     'linkContent' => $this->linkContent,
                     'linkHref' => $this->linkHref,

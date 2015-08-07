@@ -111,7 +111,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getContentDeescription()
+    public function getContentDescription()
     {
         return $this->message;
     }
