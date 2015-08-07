@@ -1,7 +1,7 @@
 <?php
 return array (
-  'E-Mail' => '',
-  'Password Recovery' => '',
-  'Password recovery is not possible on your account type!' => '',
-  '{attribute} "{value}" was not found!' => '',
+  'E-Mail' => 'Elektroninio pašto adresas',
+  'Password Recovery' => 'Atkurti slaptažodį',
+  'Password recovery is not possible on your account type!' => 'Slaptažodžio atkūrimas Jūsų paskyrai negalimas!',
+  '{attribute} "{value}" was not found!' => '{attribute} "{value}" nerastas!',
 );

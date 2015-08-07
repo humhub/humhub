@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Maximum value' => '',
-  'Minimum value' => '',
-  'Number field options' => '',
+  'Maximum value' => 'Maksimali vertė',
+  'Minimum value' => 'Minimali vertė',
+  'Number field options' => 'Skaičiaus lauko nustatymai',
 );

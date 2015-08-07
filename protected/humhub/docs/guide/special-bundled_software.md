@@ -1,6 +1,8 @@
 Bundled Software / Libaries
 ===========================
 
+> This list may incomplete!
+
 * Yii Framework (Core Framework) http://www.yiiframework.com/ (protected/vendors/yii/LICENSE)
 * Zend Framework http://framework.zend.com/ (protected/vendors/Zend/LICENSE.txt, protected/vendors/Zend2/LICENSE.txt)
 * Code Igniter (Security Functions) http://ellislab.com/codeigniter

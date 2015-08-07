@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Space</strong> Settings' => '',
-  'Save' => '',
+  '<strong>Space</strong> Settings' => '<strong>Erdvės</strong> nustatymai',
+  'Save' => 'Išsaugoti',
 );

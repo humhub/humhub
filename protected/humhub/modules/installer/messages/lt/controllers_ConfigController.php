@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Create Admin Account' => '',
+  'Create Admin Account' => 'Sukurti Administratoriaus paskyrą',
 );

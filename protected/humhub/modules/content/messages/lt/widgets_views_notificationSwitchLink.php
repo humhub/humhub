@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Turn off notifications' => '',
-  'Turn on notifications' => '',
+  'Turn off notifications' => 'Išjunkti pranešimus',
+  'Turn on notifications' => 'Įjungti pranešimus',
 );

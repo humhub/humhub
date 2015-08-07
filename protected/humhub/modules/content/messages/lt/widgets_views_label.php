@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Archived' => '',
-  'Public' => '',
-  'Sticked' => '',
+  'Archived' => 'Archyvuotas',
+  'Public' => 'Višas',
+  'Sticked' => 'Prisegtas',
 );

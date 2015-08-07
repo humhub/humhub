@@ -1,10 +1,10 @@
 <?php
 return array (
-  '<strong>Create</strong> new group' => '',
-  '<strong>Edit</strong> group' => '',
-  'Delete' => '',
-  'Description' => '',
-  'Group name' => '',
-  'Ldap DN' => '',
-  'Save' => '',
+  '<strong>Create</strong> new group' => '<strong>Sukurti</strong> naują grupę',
+  '<strong>Edit</strong> group' => '<strong>Redaguoti</strong> grupę',
+  'Delete' => 'Ištrinti',
+  'Description' => 'Apibūdinimas',
+  'Group name' => 'Grupės pavadinimas',
+  'Ldap DN' => 'Ldap DN',
+  'Save' => 'Išsaugoti',
 );

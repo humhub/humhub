@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Could not find requested content!' => '',
-  'Could not find requested permalink!' => '',
-  'Invalid model given!' => '',
+  'Could not find requested content!' => 'Ieškomas turinys nerastas!',
+  'Could not find requested permalink!' => 'Nerandama norima nuoroda!',
+  'Invalid model given!' => 'Pateiktas negalimas modelis!',
 );

@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Your password' => '',
+  'Your password' => 'Jūsų slaptažodis',
 );

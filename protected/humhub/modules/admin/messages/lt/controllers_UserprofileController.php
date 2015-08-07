@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Could not load category.' => '',
-  'Delete' => '',
-  'Save' => '',
-  'You can only delete empty categories!' => '',
+  'Could not load category.' => 'Nepavyko įkelti kategorijos.',
+  'Delete' => 'Ištrinti',
+  'Save' => 'Išsaugoti',
+  'You can only delete empty categories!' => 'Galite tik ištrinti tuščias kategorijas!',
 );

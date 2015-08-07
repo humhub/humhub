@@ -1,30 +1,55 @@
 Updating
-=========
+========
 
-## Before updating
+- **This guide only affects updates from version 0.20**
+	- **[Upgrade to 0.20](admin-updating-020.md "Guide: Upgrade to 0.20 and above")**
+- Check custom module/theme compatiblity:
+	- [Theme Migration](theming-migrate.md)
+	- [Module Migration](dev-migrate.md)
+- Backup your data
+	- all files
+	- database
 
-### Check Custom Module/Theme Compatiblity
-* [Theme Migration](theming-migrate.md)
-* [Module Migration](dev-migrate.md)
+## Via Git/Composer
 
-### Create a Backup!
-* Files
-* Database
+- Pull latest Git version
 
-## Ways to Update
+```
+git pull
+```
+- Update composer dependencies
 
-### Git
+```
+composer update
+```
 
-TDB
+- Run database migration tool
 
-### Composer
+```
+cd protected
+php yii migrate/up
+```
 
-TBD
 
-### Updater Module
+## Via Download Package
 
-TBD
+- First, backup ALL your files & database
+- Download package (http://www.humhub.org/downloads)
+- Delete current installation files (Backup? :-))
+- Extract download package
+- Restore from backup:
+	- /uploads/*
+	- /protected/runtime
+	- /protected/config/*
+	- /protected/modules/* (if any)
+	- /themes (if any) 
+- Run database migration tool
 
-### Manually by Source
+```
+cd protected
+php yii migrate/up
+```
+
+## Via Updater Module 
 
 TBD

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Scope' => '',
-  'Strength' => '',
+  'Scope' => 'Apimtis',
+  'Strength' => 'Koncentracija',
 );

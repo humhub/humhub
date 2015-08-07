@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Mark all as seen' => '',
-  'Notifications' => '',
-  'There are no notifications yet.' => '',
+  'Mark all as seen' => 'Pažymėti visus, kaip matytus',
+  'Notifications' => 'Pranešimai',
+  'There are no notifications yet.' => 'Kol kas nėra pranešimų.',
 );
