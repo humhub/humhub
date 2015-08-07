@@ -1,29 +1,59 @@
 Installation
 ============
 
-1. Grab the source and put them somewhere into htdocs
-   TBD
+## 1. Preparation
 
-2. Create an empty mysql database (utf8) e.g.
-  ```sql
-  CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
-  GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_changeme';
-  FLUSH PRIVILEGES;  
-  ```
-3. Make the following directories/files writable by the webserver
-    - /assets
-    - /protected/config/
-    - /protected/modules
-    - /protected/runtime
-    - /uploads/*
+Create an MySQL Database, e.g.:
 
-4. Make the following files executable
-    - /protected/yii
-    - /protected/yii.bat
+```sql
+CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_changeme';
+FLUSH PRIVILEGES;
+```
 
-4. Open installation folder in browser (e.g. http://localhost/humhub)
+## 2. Get HumHub
 
-## Fine Tuning
+### Via: Git/Composer
+
+- Clone Git Repository
+
+```
+git clone https://github.com/humhub/humhub.git
+```
+
+- Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
+- Fetch dependencies
+
+```
+composer global require "fxp/composer-asset-plugin:~1.0.0"
+composer update
+```
+
+### Via: Download Package
+
+Download package at [http://www.humhub.org/downloads](http://www.humhub.org/downloads)  and extract it somewhere into your htdocs folder.
+
+## 3. Setting up
+
+### File Modes / Permissions
+
+Make the following directories/files writable by the webserver
+- /assets
+- /protected/config/
+- /protected/modules
+- /protected/runtime
+- /uploads/*
+
+Make the following files executable:
+ - /protected/yii
+ - /protected/yii.bat
+
+### Start Installer
+
+Open installation in browser (e.g. [http://localhost/humhub](http://localhost/humhub))
+
+
+## 4. Fine Tuning
 
 ### E-Mail Configuration
 
@@ -36,44 +66,54 @@ By default PHP Mail Transport is used. <http://php.net/manual/en/mail.setup.php>
 ### Enable Url Rewriting (Optional)
 
 1. Rename **.htaccess.dist ** to **.htaccess**
-
-2. Add to local configuration /protected/config/common.php
+2. Modify local configuration (protected/config/common.php)
 
 ```php
+<?php
 
-'components' => [
-    'urlManager' => [
-        'showScriptName' => false,
-        'enablePrettyUrl' => true,
-    ],
-]
+return [
+    'components' => [
+        'urlManager' => [
+            'showScriptName' => false,
+            'enablePrettyUrl' => true,
+        ],
+    ]
+];
 
 ```  
 
 ### Enable Cron Jobs
 
-- Make sure the file protected/yiic is executable. (e.g. chmod +x protected/yiic)
-- Add following lines to your crontab:
+Daily cron command: 
+> yii cron/daily
 
-        30 * * * * /path/to/humhub/protected/yiic cron hourly >/dev/null 2>&1
-        00 18 * * * /path/to/humhub/protected/yiic cron daily >/dev/null 2>&1
+Hourly cron command:
+> yii cron/hourly
 
+Example Tab:
 
-### Production Mode
+```
+30 * * * * /path/to/humhub/protected/yii cron/hourly >/dev/null 2>&1
+00 18 * * * /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
+```
 
-#### Check Directory Protection
+### Check Directory Protection
 
-Make sure following directories are not accessible throu webserver.
+**Make sure following directories are not accessible throu webserver!**
+
 (These folders are protected by default with ".htaccess")
+
 - protected
 - uploads/file
 
-#### Disable Errors / Debugging
+### Disable Errors / Debugging
 
-index.php in root 
+- Modify *index.php* in humhub root directory
      
-```
+```php
 // comment out the following two lines when deployed to production
-defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'dev');
+// defined('YII_DEBUG') or define('YII_DEBUG', true);
+// defined('YII_ENV') or define('YII_ENV', 'dev');
 ```
+
+- Delete *index-test.php* in humhub root directory if exists
