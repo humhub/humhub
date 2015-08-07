@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Current password' => '',
-  'E-Mail change' => '',
-  'New E-Mail address' => '',
+  'Current password' => 'Dabartinis slaptažodis',
+  'E-Mail change' => 'Elektroninio pašto keitimas',
+  'New E-Mail address' => 'Naujas elektronio pašto adresas',
 );

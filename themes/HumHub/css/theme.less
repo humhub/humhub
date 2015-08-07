@@ -612,6 +612,10 @@ input[type=text], input[type=password], input[type=select] {
     }
   }
 
+  li:last-child {
+    border-bottom: none;
+  }
+
   li.new {
     border-left: 3px solid lighten(@info, 30%);
     background-color: lighten(@info, 30%);
@@ -1064,7 +1068,7 @@ input[type=text], input[type=password], input[type=select] {
         }
       }
 
-      a:hover {
+      a:hover, a:visited, a:hover, a:focus {
         background: none;
       }
     }
@@ -1074,6 +1078,7 @@ input[type=text], input[type=password], input[type=select] {
       color: #ffffff !important;
       background-color: darken(@primary, 5%) !important;
     }
+
   }
 }
 

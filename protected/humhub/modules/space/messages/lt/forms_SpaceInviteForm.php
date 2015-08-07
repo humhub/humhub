@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Invites' => '',
-  'New user by e-mail (comma separated)' => '',
-  'User is already member!' => '',
-  'User not found!' => '',
-  '{email} is already registered!' => '',
-  '{email} is not valid!' => '',
+  'Invites' => 'Pakvietimas',
+  'New user by e-mail (comma separated)' => 'Nauji vartotojai elektroniniu paštu (atskirti kableliu)',
+  'User is already member!' => 'Vartotojas jau yra narys!',
+  'User not found!' => 'Vartotojas nerastas!',
+  '{email} is already registered!' => '{email} jau yra užregistruotas!',
+  '{email} is not valid!' => '{email} negalioja!',
 );

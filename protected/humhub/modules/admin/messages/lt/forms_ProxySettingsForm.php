@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Enabled' => '',
-  'No Proxy Hosts' => '',
-  'Password' => '',
-  'Port' => '',
-  'Server' => '',
-  'User' => '',
+  'Enabled' => 'Negalimas',
+  'No Proxy Hosts' => 'Nėra įgaliojo serverio šeimininko',
+  'Password' => 'Slaptažodis',
+  'Port' => 'Langas',
+  'Server' => 'Serveris',
+  'User' => 'Vartotojas',
 );

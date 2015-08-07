@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Access denied!' => '',
-  'Insufficent permissions!' => '',
+  'Access denied!' => 'Prieiga negalima!',
+  'Insufficent permissions!' => 'Neturite reikalingų leidimų!',
 );

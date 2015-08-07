@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Send & decline' => '',
+  'Send & decline' => 'Išsiųsti ir atsisakyti',
 );

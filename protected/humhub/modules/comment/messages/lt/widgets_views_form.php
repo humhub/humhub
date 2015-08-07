@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Post' => '',
-  'Write a new comment...' => '',
+  'Post' => 'Įrašas',
+  'Write a new comment...' => 'Parašykite naują komentarą...',
 );

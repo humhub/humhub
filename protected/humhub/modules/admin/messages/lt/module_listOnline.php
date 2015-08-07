@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Installed' => '',
-  'No modules found!' => '',
-  'Search' => '',
+  'Installed' => 'Instaliuota',
+  'No modules found!' => 'Modulių nerasta!',
+  'Search' => 'Ieškoti',
 );

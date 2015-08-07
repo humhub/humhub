@@ -1,6 +1,6 @@
 <?php
 return array (
-  'End guide' => '',
-  'Next »' => '',
-  '« Prev' => '',
+  'End guide' => 'Baigti instrukciją',
+  'Next »' => 'Kitas »',
+  '« Prev' => '« Ankstesnis',
 );
