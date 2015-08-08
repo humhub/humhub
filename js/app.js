@@ -149,6 +149,8 @@ $(document).ready(function () {
     // set Modal handler to all modal links
     setModalHandler();
 
+    initPlugins();
+
 });
 
 function setModalHandler() {
@@ -169,8 +171,7 @@ function setModalHandler() {
     });
 }
 
-// call this after every ajax loading
-$(document).ajaxComplete(function (event, xhr, settings) {
+function initPlugins() {
 
     // show Tooltips on elements inside the views, which have the class 'tt'
     $('.tt').tooltip({
@@ -186,6 +187,13 @@ $(document).ajaxComplete(function (event, xhr, settings) {
 
     // Replace the standard checkbox and radio buttons
     $('body').find(':checkbox, :radio').flatelements();
+
+}
+
+// call this after every ajax loading
+$(document).ajaxComplete(function (event, xhr, settings) {
+
+    initPlugins();
 
     // set Modal handler to all modal links
     setModalHandler();
@@ -209,6 +217,7 @@ $(document).on('hidden.bs.modal', '.modal', function (event) {
 });
 
 
+
 function setModalsAndBackdropsOrder() {
     var modalZIndex = 1040;
     $('.modal.in').each(function (index) {
@@ -218,4 +227,97 @@ function setModalsAndBackdropsOrder() {
         $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
     });
     $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+}
+
+//////////////////////////////////////////////////////////////////////////
+////////////////////////// TIME-FORMATTING ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+// Get favourites
+$.fn.format = function (options) {
+
+    // get the id from the invoking element
+    var _id = $(this).attr("id");
+
+
+    //*************** Private Functions ****************//
+
+    var setTimeFormat = function () {
+
+        // save value from textinput into a variable
+        var _value = $("#" + _id).val();
+
+        if (_value != "") {
+
+            // by this type, set the value to hours until the value is 23
+            if (options.type == "daytime") {
+
+                // set only hours
+                if (_value <= 23) {
+
+                    // find the right value
+                    for (var j = 1; j < 24; j++) {
+                        if (_value == j) {
+
+                            // set the right time format
+                            _value = j + ":00";
+
+                        }
+                    }
+                }
+
+                // set only minutes
+                if (_value > 23 && _value <= 59) {
+                    _value = "0:" + _value;
+                }
+
+            }
+
+
+            // divide in hours and minutes by a string length of 3
+            if (_value >= 60 && _value < 1000) {
+                _value = _value.substr(0, 1) + ":" + _value.substr(1, 2);
+            }
+
+            // divide in hours and minutes by a string length of 4
+            if (_value >= 1000 && _value < 10000) {
+                _value = _value.substr(0, 2) + ":" + _value.substr(2, 3);
+            }
+
+            // if the value is "0" and that isn't allowed, empty the string
+            if (options.zero == false && _value == "0:00") {
+                _value = "";
+            }
+
+            var str = _value;
+            var res = str.split(":");
+
+            if (_value.length < 5) {
+                if (res[0] < 10) {
+                    _value = "0" + res[0] + ":" + res[1];
+                }
+            }
+
+
+            // provide the well formated value
+            return _value;
+
+        }
+    }
+
+
+    //*************** Event Handler ****************//
+
+    $("#" + _id).focusout(function () {
+
+        // set time format
+        if (options.type == "euro") {
+            $("#" + _id).val(setEuroFormat());
+        } else {
+            $("#" + _id).val(setTimeFormat());
+        }
+
+    })
+
 }
