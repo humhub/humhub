@@ -5,7 +5,7 @@ return array (
   'E-Mail' => 'E-mail',
   'Modules' => 'Модули',
   'Notifications' => 'Уведомления',
-  'Username' => 'Имя пользователя',
+  'Username' => 'Логин',
   'Password' => 'Пароль',
   'Profile' => 'Профиль',
   'Settings' => 'Настройки',

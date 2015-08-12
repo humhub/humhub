@@ -1,6 +1,6 @@
 <?php
 return array (
   'Current password' => 'Текущий пароль',
-  'Username change' => 'Изменение имени пользователя',
-  'New username' => 'Новое имя пользователя',
+  'Username change' => 'Изменение логина',
+  'New username' => 'Новый логин',
 );
