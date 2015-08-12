@@ -1284,19 +1284,21 @@ input[type=text], input[type=password], input[type=select] {
     outline: 0;
     background: darken(@background2, 5%);
   }
+
+
 }
 
-.btn-default[disabled] {
-  background: lighten(@background2, 5%);
+.btn-default[disabled], .btn-default.disabled {
+  background: lighten(@background2, 2%);
 
   &:hover,
   &:focus {
-    background: lighten(@background2, 5%);
+    background: lighten(@background2, 2%);
   }
 
   &:active,
   &.active {
-    background: lighten(@background2, 5%);
+    background: lighten(@background2, 2%);
   }
 }
 
@@ -1317,7 +1319,7 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-.btn-primary[disabled] {
+.btn-primary[disabled], .btn-primary.disabled {
   background: lighten(@primary, 5%);
 
   &:hover,
@@ -1348,7 +1350,7 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-.btn-info[disabled] {
+.btn-info[disabled], .btn-info.disabled {
   background: lighten(@info, 5%);
 
   &:hover,
@@ -1379,7 +1381,7 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-.btn-danger[disabled] {
+.btn-danger[disabled], .btn-danger.disabled {
   background: lighten(@danger, 5%);
 
   &:hover,
@@ -1410,7 +1412,7 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-.btn-success[disabled] {
+.btn-success[disabled], .btn-success.disabled {
   background: lighten(@success, 5%);
 
   &:hover,
@@ -1441,7 +1443,7 @@ input[type=text], input[type=password], input[type=select] {
   }
 }
 
-.btn-warning[disabled] {
+.btn-warning[disabled], .btn-warning.disabled {
   background: lighten(@warning, 5%);
 
   &:hover,
