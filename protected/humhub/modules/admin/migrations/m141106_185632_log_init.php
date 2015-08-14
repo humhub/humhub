@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
 use yii\base\InvalidConfigException;
 use yii\db\Schema;
 use yii\db\Migration;
@@ -22,6 +22,7 @@ use yii\log\DbTarget;
  */
 class m141106_185632_log_init extends Migration
 {
+
     /**
      * @var DbTarget[]
      */
@@ -62,20 +63,23 @@ class m141106_185632_log_init extends Migration
                 $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
             }
 
-            $this->createTable($target->logTable, [
-                'id' => Schema::TYPE_BIGPK,
-                'level' => Schema::TYPE_INTEGER,
-                'category' => Schema::TYPE_STRING,
-                'log_time' => Schema::TYPE_DOUBLE,
-                'prefix' => Schema::TYPE_TEXT,
-                'message' => Schema::TYPE_TEXT,
-            ], $tableOptions);
+            try {
+                $this->createTable($target->logTable, [
+                    'id' => Schema::TYPE_BIGPK,
+                    'level' => Schema::TYPE_INTEGER,
+                    'category' => Schema::TYPE_STRING,
+                    'log_time' => Schema::TYPE_DOUBLE,
+                    'prefix' => Schema::TYPE_TEXT,
+                    'message' => Schema::TYPE_TEXT,
+                        ], $tableOptions);
 
-            $this->createIndex('idx_log_level', $target->logTable, 'level');
-            $this->createIndex('idx_log_category', $target->logTable, 'category');
+                $this->createIndex('idx_log_level', $target->logTable, 'level');
+                $this->createIndex('idx_log_category', $target->logTable, 'category');
+            } catch (\yii\db\Exception $ex) {
+                
+            }
         }
         $this->dropTable("logging");
-        
     }
 
     public function down()
@@ -87,4 +91,5 @@ class m141106_185632_log_init extends Migration
             $this->dropTable($target->logTable);
         }
     }
+
 }

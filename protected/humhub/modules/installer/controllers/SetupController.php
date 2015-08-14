@@ -150,6 +150,8 @@ class SetupController extends Controller
         // Migrate Up Database
         $result = \humhub\commands\MigrateController::webMigrateAll();
 
+        DynamicConfig::rewrite();
+        
         return $this->redirect(Url::to(['/installer/config/index']));
     }
 
