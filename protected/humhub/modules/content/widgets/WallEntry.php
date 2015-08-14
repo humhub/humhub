@@ -76,6 +76,10 @@ class WallEntry extends Widget
      */
     public function getEditUrl()
     {
+        if ($this->editRoute === "") {
+            return "";
+        }
+
         return \yii\helpers\Url::to([$this->editRoute, 'id' => $this->contentObject->id]);
     }
 
