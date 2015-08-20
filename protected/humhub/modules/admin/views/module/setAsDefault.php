@@ -2,6 +2,7 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+
 ?>
 
 <div class="modal-dialog modal-dialog-normal animated fadeIn">
@@ -31,22 +32,23 @@ use humhub\modules\user\models\User;
 
                         <div class="radio">
                             <label>
-                                <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 0, 'uncheckValue' => null, 'checked' => ($model->spaceDefaultState == 0))); ?>
+                                <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 0, 'uncheckValue' => null, 'id' => 'radioSpaceDeactivated', 'checked' => ($model->spaceDefaultState == 0))); ?>
                                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Deactivated'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 1, 'uncheckValue' => null, 'checked' => ($model->spaceDefaultState == 1))); ?>
+                                <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 1, 'uncheckValue' => null, 'id' => 'radioSpaceActivated', 'checked' => ($model->spaceDefaultState == 1))); ?>
                                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Activated'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 2, 'uncheckValue' => null, 'checked' => ($model->spaceDefaultState == 2))); ?>
+                                <?php echo $form->radioButton($model, 'spaceDefaultState', array('value' => 2, 'uncheckValue' => null, 'id' => 'radioSpaceAlwaysActivated', 'checked' => ($model->spaceDefaultState == 2))); ?>
                                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Always activated'); ?>
                             </label>
                         </div>
+
                         <br/>
                     </div>
                 <?php endif; ?>
@@ -57,19 +59,19 @@ use humhub\modules\user\models\User;
 
                         <div class="radio">
                             <label>
-                                <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 0, 'uncheckValue' => null, 'checked' => ($model->userDefaultState == 0))); ?>
+                                <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 0, 'uncheckValue' => null, 'id' => 'radioUserDeactivated', 'checked' => ($model->userDefaultState == 0))); ?>
                                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Deactivated'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 1, 'uncheckValue' => null, 'checked' => ($model->userDefaultState == 1))); ?>
+                                <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 1, 'uncheckValue' => null, 'id' => 'radioUserActivated', 'checked' => ($model->userDefaultState == 1))); ?>
                                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Activated'); ?>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 2, 'uncheckValue' => null, 'checked' => ($model->userDefaultState == 2))); ?>
+                                <?php echo $form->radioButton($model, 'userDefaultState', array('value' => 2, 'uncheckValue' => null, 'id' => 'radioUserAlwaysActivated', 'checked' => ($model->userDefaultState == 2))); ?>
                                 <?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Always activated'); ?>
                             </label>
                         </div>
