@@ -22,7 +22,7 @@ class I18N extends \yii\i18n\I18N
     public function translate($category, $message, $params, $language)
     {
         // Fix Yii source language is en-US
-        if ($language == 'en' && $category == 'yii') {
+        if (($language == 'en' || $language == 'en_gb') && $category == 'yii') {
             $language = 'en-US';
         }
 

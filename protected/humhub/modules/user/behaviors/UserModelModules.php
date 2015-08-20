@@ -42,7 +42,7 @@ class UserModelModules extends Behavior
         $this->_availableModules = array();
 
         foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
-            if ($module instanceof ContentContainerModule && $module->hasContentContainerType(User::className())) {
+            if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) && $module->hasContentContainerType(User::className())) {
                 $this->_availableModules[$module->id] = $module;
             }
         }

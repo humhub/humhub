@@ -1,8 +1,8 @@
 Updating
 ========
 
-- **This guide only affects updates from version 0.20**
-	- **[Upgrade to 0.20](admin-updating-020.md "Guide: Upgrade to 0.20 and above")**
+- **This guide only affects updates from version 0.20 and above**
+	- **[Guide: Upgrade to 0.20 and above](admin-updating-020.md "Guide: Upgrade to 0.20 and above")**
 - Check custom module/theme compatiblity:
 	- [Theme Migration](theming-migrate.md)
 	- [Module Migration](dev-migrate.md)

@@ -101,7 +101,6 @@ class ConfigController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Setting::Set('name', $form->name);
             Setting::Set('systemEmailName', $form->name, 'mailing');
-            Setting::Set('timeZone', Yii::$app->timeZone);
             return $this->redirect(Url::to(['/installer/config/admin']));
         }
 
@@ -237,19 +236,16 @@ class ConfigController extends Controller
      */
     public function actionFinished()
     {
-
         // Should not happen
         if (Setting::Get('secret') == "") {
             throw new CException("Finished without secret setting!");
         }
 
-        // Rewrite whole configuration file, also sets application
-        // in installed state.
-        \humhub\libs\DynamicConfig::rewrite();
+        Setting::Set('timeZone', Yii::$app->timeZone);
 
         // Set to installed
-        $this->module->setInstalled();
-
+        $this->module->setInstalled();  
+        
         try {
             Yii::$app->user->logout();
         } catch (Exception $e) {
@@ -265,7 +261,7 @@ class ConfigController extends Controller
      */
     private function setupInitialData()
     {
-
+        
     }
 
 }

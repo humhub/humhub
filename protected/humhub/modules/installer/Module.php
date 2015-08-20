@@ -40,23 +40,23 @@ class Module extends \humhub\components\Module
 
     public function beforeAction($action)
     {
+
+        // Block installer, when it's marked as installed
         if (Yii::$app->params['installed']) {
             throw new \yii\web\HttpException(500, 'HumHub is already installed!');
         }
 
         Yii::$app->controller->enableCsrfValidation = false;
-
         return parent::beforeAction($action);
     }
 
     /**
      * Checks if database connections works
      *
-     * @return boolean
+     * @return boolean state of database connection
      */
     public function checkDBConnection()
     {
-
 
         try {
             // call setActive with true to open connection.
@@ -64,11 +64,11 @@ class Module extends \humhub\components\Module
             // return the current connection state.
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
-
+            
         } catch (\yii\base\Exception $e) {
             print $e->getMessage();
         } catch (\PDOException $e) {
-
+            
         }
         return false;
     }

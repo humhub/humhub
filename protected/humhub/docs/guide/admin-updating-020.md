@@ -18,5 +18,9 @@ Updating to 0.20
 	   Restore the /uploads/ directory from backup
 - Reinstall all previously installed modules/themes
   (Make sure to use a 0.20 compatible version!)
+- Rebuild Search Index
 
+```
+php yii search/rebuild
+```
 
