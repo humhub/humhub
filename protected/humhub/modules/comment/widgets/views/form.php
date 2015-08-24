@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\widgets\AjaxButton;
+
 ?>
 
 <?php /* BEGIN: Comment Create Form */ ?>
@@ -31,6 +32,8 @@ use humhub\widgets\AjaxButton;
             $('#newCommentForm_" . $id . "').val('').trigger('autosize.resize');
             $('#newCommentForm_" . $id . "_contenteditable').html('" . Html::encode(Yii::t('CommentModule.widgets_views_form', 'Write a new comment...')) . "');
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
+            $('#loader-" . $id . "').remove();
+            $('#newCommentForm_" . $id . "_contenteditable').show();
             resetUploader('comment_upload_" . $id . "');
     }";
 
@@ -39,13 +42,14 @@ use humhub\widgets\AjaxButton;
         'label' => Yii::t('CommentModule.widgets_views_form', 'Post'),
         'ajaxOptions' => [
             'type' => 'POST',
+            'beforeSend' => new yii\web\JsExpression("function(html){  $('#newCommentForm_" . $id . "_contenteditable').hide(); showLoader('" . $id . "'); }"),
             'success' => new yii\web\JsExpression($jsSuccess),
             'url' => Url::to(['/comment/comment/post']),
         ],
         'htmlOptions' => [
             'id' => "comment_create_post_" . $id,
-            'class' => 'btn btn-small btn-primary',
-            'style' => 'position: absolute; left: -90000000px; opacity: 0;',
+            'class' => 'btn btn-small btn-primary hidden',
+            'style' => '',
         ],
     ]);
     ?>
@@ -123,6 +127,12 @@ use humhub\widgets\AjaxButton;
             }
         });
 
+
     });
+
+    // show laoder during ajax call
+    function showLoader(comment_id) {
+        $('#newCommentForm_' + comment_id + '_contenteditable').after('<div class="loader" id="loader-' + comment_id + '" style="padding: 15px 0;"><div class="sk-spinner sk-spinner-three-bounce" style="margin:0;"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div>');
+    }
 
 </script>
