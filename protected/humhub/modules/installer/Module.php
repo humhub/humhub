@@ -66,7 +66,7 @@ class Module extends \humhub\components\Module
         } catch (Exception $e) {
             
         } catch (\yii\base\Exception $e) {
-            print $e->getMessage();
+
         } catch (\PDOException $e) {
             
         }
