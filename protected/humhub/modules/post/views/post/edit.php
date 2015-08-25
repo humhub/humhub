@@ -83,6 +83,9 @@ use yii\helpers\Url;
                 // hide all tooltips (specially for file upload button)
                 $('.tt').tooltip('hide');
 
+                // get plain input text from contenteditable DIV
+                $('#post_input_<?php echo $post->id; ?>').val(getPlainInput($('#post_input_<?php echo $post->id; ?>_contenteditable').clone()));
+
                 // emulate the click event
                 $('#post_edit_post_<?php echo $post->id; ?>').focus();
                 $('#post_edit_post_<?php echo $post->id; ?>').click();
