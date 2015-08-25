@@ -43,6 +43,7 @@ class AppAsset extends AssetBundle
         'js/jquery.fileupload.js',
         'js/jquery.color-2.1.0.min.js',
         'js/jquery.flatelements.js',
+        'js/jquery.loader.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
         'resources/at/jquery.caret.min.js',

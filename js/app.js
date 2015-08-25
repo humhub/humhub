@@ -188,6 +188,8 @@ function initPlugins() {
     // Replace the standard checkbox and radio buttons
     $('body').find(':checkbox, :radio').flatelements();
 
+    $('a[data-loader="modal"], button[data-loader="modal"]').loader();
+
 }
 
 // call this after every ajax loading
@@ -321,3 +323,14 @@ $.fn.format = function (options) {
     })
 
 }
+
+
+
+
+
+
+
+
+
+
+

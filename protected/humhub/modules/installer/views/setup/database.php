@@ -2,6 +2,7 @@
 
 use humhub\compat\CActiveForm;
 use yii\helpers\Html;
+
 ?>
 
 <div id="database-form" class="panel panel-default animated fadeIn">
@@ -47,14 +48,14 @@ use yii\helpers\Html;
 
         <?php if ($errorMessage) { ?>
             <div class="alert alert-danger">
-                <strong><?php echo Yii::t('InstallerModule.views_setup_database', 'Ohh, something went wrong!'); ?></strong><br />
+                <strong><?php echo Yii::t('InstallerModule.views_setup_database', 'Ohh, something went wrong!'); ?></strong><br/>
                 <?php echo Html::encode($errorMessage); ?>
             </div>
         <?php } ?>
 
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('InstallerModule.views_setup_database', 'Next'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('InstallerModule.views_setup_database', 'Next'), array('class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.views_setup_database', 'Checking database credentials...'))); ?>
 
         <?php CActiveForm::end(); ?>
     </div>
@@ -68,9 +69,9 @@ use yii\helpers\Html;
     })
 
     // Shake panel after wrong validation
-<?php if ($model->hasErrors()) { ?>
-        $('#database-form').removeClass('fadeIn');
-        $('#database-form').addClass('shake');
-<?php } ?>
+    <?php if ($model->hasErrors()) { ?>
+    $('#database-form').removeClass('fadeIn');
+    $('#database-form').addClass('shake');
+    <?php } ?>
 
 </script>
