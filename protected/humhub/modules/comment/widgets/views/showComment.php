@@ -27,7 +27,6 @@ $canDelete = $comment->canDelete();
                                 'label' => '<i class="fa fa-pencil"></i> ' . Yii::t('CommentModule.widgets_views_showComment', 'Edit'),
                                 'ajaxOptions' => [
                                     'type' => 'POST',
-                                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                                     'success' => new yii\web\JsExpression("function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_editarea_" . $comment->id . "').replaceWith(html); $('#comment_input_" . $comment->id . "_contenteditable').focus(); }"),
                                     'url' => Url::to(['/comment/comment/edit', 'contentModel' => $comment->object_model, 'contentId' => $comment->object_id, 'id' => $comment->id]),
                                 ],

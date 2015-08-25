@@ -12,7 +12,6 @@ use humhub\widgets\AjaxButton;
                 'label' => Yii::t('CommentModule.widgets_views_comments', 'Show all {total} comments.', array('{total}' => $total)),
                 'ajaxOptions' => [
                     'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                     'success' => new yii\web\JsExpression("function(html) { $('#comments_area_" . $id . "').html(html); }"),
                     'url' => Url::to(['/comment/comment/show', 'contentModel' => $modelName, 'contentId' => $modelId]),
                 ],
