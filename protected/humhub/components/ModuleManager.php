@@ -124,11 +124,18 @@ class ModuleManager extends \yii\base\Component
             Yii::$app->urlManager->addRules($config['urlManagerRules'], false);
         }
 
-        // Register Yii Module
-        Yii::$app->setModule($config['id'], [
+        $moduleConfig = [
             'class' => $config['class'],
             'modules' => $config['modules']
-        ]);
+        ];
+
+        // Add config file values to module
+        if (isset(Yii::$app->modules[$config['id']]) && is_array(Yii::$app->modules[$config['id']])) {
+            $moduleConfig = yii\helpers\ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
+        }
+
+        // Register Yii Module
+        Yii::$app->setModule($config['id'], $moduleConfig);
 
         // Register Event Handlers
         if (isset($config['events'])) {
@@ -207,7 +214,7 @@ class ModuleManager extends \yii\base\Component
             return Yii::createObject($class, [$id, Yii::$app]);
         }
 
-        throw new Exception("Could not find requested module: " . $id);
+        throw new Exception("Could not find/load requested module: " . $id);
     }
 
     /**

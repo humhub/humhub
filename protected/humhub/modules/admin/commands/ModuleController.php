@@ -1,27 +1,18 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\commands;
 
+use Yii;
+use humhub\modules\admin\libs\OnlineModuleManager;
+
 /**
- * Tool for managing modules by command line
+ * HumHub Module Managament
  *
  * @package humhub.modules_core.admin.console
  * @since 0.5
@@ -30,43 +21,21 @@ class ModuleController extends \yii\console\Controller
 {
 
     /**
-     * @throws CException
-     */
-    public function init()
-    {
-
-        Yii::import('application.modules_core.admin.libs.*');
-        ModuleManager::flushCache();
-        $this->printHeader('Module Tools');
-        return parent::init();
-    }
-
-    /**
-     * @param string $action
-     * @param array $params
-     * @return bool
-     */
-    public function beforeAction($action, $params)
-    {
-        return parent::beforeAction($action, $params);
-    }
-
-    /**
-     * Lists all installed modules.
+     * Lists all installed and enabled modules.
      *
      * @param array $args
      */
-    public function actionList($args)
+    public function actionList()
     {
-
-        $installedModules = Yii::app()->moduleManager->getInstalledModules();
-        ModuleManager::flushCache();
+        Yii::$app->moduleManager->flushCache();
+        $installedModules = Yii::$app->moduleManager->getModules();
 
         print "Installed modules: \n\n";
 
+        $mask = "| %-20s | %10s |%20s | %-30s \n";
+        printf($mask, 'ID', 'ENABLED', 'INSTALLED VERSION', 'TITLE');
         foreach ($installedModules as $module) {
-            print "- [" . $module->getId() . "]\n  " . $module->getName() . " (" . $module->getVersion() . ") " . (($module->isEnabled()) ? "***ENABLED***" : "") . "\n";
-            print "  " . $module->getDescription() . "\n\n";
+            printf($mask, $module->id, (Yii::$app->hasModule($module->id) ? 'Yes' : 'No'), $module->getVersion(), $module->getName());
         }
     }
 
@@ -76,45 +45,31 @@ class ModuleController extends \yii\console\Controller
      * @param array $args
      * @throws CHttpException
      */
-    public function actionListOnline($args)
+    public function actionListOnline()
     {
-
         $onlineModules = new OnlineModuleManager();
         $modules = $onlineModules->getModules();
 
         print "Online available modules: \n\n";
 
-        foreach ($modules as $module) {
-            print "- [" . $module['id'] . "]\n  " . $module['name'] . " (" . $module['latestVersion'] . ") " . ((Yii::app()->moduleManager->hasModule($module['id'])) ? "***INSTALLED***" : "") . "\n";
-            if (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) {
-                if ($module['latestCompatibleVersion'] != $module['latestVersion']) {
-                    print "  Latest compatible version:" . $module['latestCompatibleVersion'] . "\n";
-                }
-            } else {
-                print "  *** NO COMPATIBLE VERSION FOUND!";
-            }
+        $mask = "| %-20s | %9s | %14s | %21s | %-30s \n";
+        printf($mask, 'ID', 'INSTALLED', 'LATEST VERSION', 'LATEST COMPAT VERSION', 'TITLE');
 
-            print "  " . $module['description'] . "\n\n";
+        foreach ($modules as $module) {
+
+            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']
+            );
         }
     }
 
     /**
      * Installs a given module.
      *
-     * @param array $args
-     * @throws CException
+     * @param string $moduleId
      * @throws CHttpException
      */
-    public function actionInstall($args)
+    public function actionInstall($moduleId)
     {
-
-        if (!isset($args[0])) {
-            print "Error: Module Id required!\n\n";
-            print $this->getHelp();
-            return;
-        }
-
-        $moduleId = $args[0];
         $onlineModules = new OnlineModuleManager();
         $onlineModules->install($moduleId);
 
@@ -124,26 +79,19 @@ class ModuleController extends \yii\console\Controller
     /**
      * Uninstalls a given module.
      *
-     * @param array $args
+     * @param string $moduleId
      */
-    public function actionUninstall($args)
+    public function actionRemove($moduleId)
     {
 
-        if (!isset($args[0])) {
-            print "Error: Module Id required!\n\n";
-            print $this->getHelp();
-            return;
-        }
-
-        $moduleId = $args[0];
-        $module = Yii::app()->moduleManager->getModule($moduleId);
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
             print "\nModule " . $moduleId . " is not installed!\n";
             return;
         }
 
-        $module->uninstall($moduleId);
+        Yii::$app->moduleManager->removeModule($module->id);
 
         print "\nModule " . $moduleId . " successfully uninstalled!\n";
     }
@@ -200,8 +148,10 @@ class ModuleController extends \yii\console\Controller
      *
      * @param array $args
      */
-    public function actionUpdateAll($args)
+    public function actionUpdateAll()
     {
+        return;
+        
         $installedModules = Yii::app()->moduleManager->getInstalledModules(false, true);
         ModuleManager::flushCache();
 
@@ -209,42 +159,7 @@ class ModuleController extends \yii\console\Controller
         foreach ($installedModules as $moduleId => $moduleClass) {
             $this->actionUpdate(array($moduleId), true);
         }
-    }
-
-    /**
-     * Returns help and usage information for the module command.
-     *
-     * @return string
-     */
-    public function getHelp()
-    {
-        return <<<EOD
-USAGE
-  yiic module [action] [parameter]
-
-DESCRIPTION
-  This command provides a console interface for manipulating modules.
-
-EXAMPLES
- * yiic module list
-   Lists all installed modules.
-
- * yiic module listonline
-   Lists all online available modules.
-
- * yiic module install moduleId
-   Installs a given module.
-
- * yiic module uninstall moduleId
-   Uninstalls a given module.
-
- * yiic module update moduleId
-   Updates a given module to the last available version.
-
- * yiic module updateall
-   Updates all modules to the latest available version.
-
-EOD;
+        
     }
 
 }

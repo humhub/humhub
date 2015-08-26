@@ -183,7 +183,9 @@ class OnlineModuleManager
      */
     public function getModuleInfo($moduleId)
     {
-
+        
+        $moduleInfo = [];
+        
         // get all module informations
         $url = Yii::$app->getModule('admin')->marketplaceApiUrl . "info?id=" . urlencode($moduleId) . "&version=" . Yii::$app->version . "&installId=" . Setting::Get('installationId', 'admin');
         try {
@@ -194,6 +196,11 @@ class OnlineModuleManager
             ));
 
             $response = $http->send();
+            
+            if ($response->getStatusCode() == '404') {
+                throw new \yii\base\InvalidParamException("Could not find module online!");
+            }
+            
             $json = $response->getBody();
 
             $moduleInfo = \yii\helpers\Json::decode($json);

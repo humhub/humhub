@@ -29,7 +29,7 @@ class Events extends \yii\base\Object
         if (Yii::$app->user->isGuest) {
             return;
         }
-        
+
         if (Setting::Get('needApproval', 'authentication_internal')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
                 $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
@@ -62,6 +62,12 @@ class Events extends \yii\base\Object
         }
 
         $controller->stdout('done. ' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+    }
+
+    public static function onConsoleApplicationInit($event)
+    {
+        $application = $event->sender;
+        $application->controllerMap['module'] = commands\ModuleController::className();
     }
 
 }

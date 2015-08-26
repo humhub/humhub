@@ -67,7 +67,6 @@ class Events extends \yii\base\Object
 
     public static function onConsoleApplicationInit($event)
     {
-
         $application = $event->sender;
         $application->controllerMap['space'] = commands\SpaceController::className();
     }
