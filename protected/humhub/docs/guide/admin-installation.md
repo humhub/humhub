@@ -22,7 +22,7 @@ git clone https://github.com/humhub/humhub.git
 ```
 
 - Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
-- Fetch dependencies
+- Navigate to your HumHub webroot and fetch dependencies
 
 ```
 composer global require "fxp/composer-asset-plugin:~1.0.0"
@@ -50,7 +50,7 @@ Make the following files executable:
 
 ### Start Installer
 
-Open installation in browser (e.g. [http://localhost/humhub](http://localhost/humhub))
+Open installation in your browser (e.g. [http://localhost/humhub](http://localhost/humhub))
 
 
 ## 4. Fine Tuning
