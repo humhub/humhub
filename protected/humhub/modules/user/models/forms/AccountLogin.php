@@ -7,6 +7,7 @@ use yii\base\Model;
 use humhub\modules\user\models\User;
 use humhub\modules\user\libs\Ldap;
 use humhub\models\Setting;
+use yii\db\Expression;
 
 /**
  * LoginForm is the model behind the login form.
@@ -78,8 +79,10 @@ class AccountLogin extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        if ($this->validate() && Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)) {
+        	$this->_user->last_login = new Expression('NOW()');
+        	$this->_user->save();
+            return true;
         } else {
             return false;
         }
