@@ -43,8 +43,20 @@ class OnlineModuleManager
             throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', "No compatible module version found!"));
         }
 
-        if (is_dir($modulePath . DIRECTORY_SEPARATOR . $moduleId)) {
-            throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory for module %moduleId% already exists!', array('%moduleId%' => $moduleId)));
+        
+        $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
+        if (is_dir($moduleDir)) {
+            $files = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+            );
+
+            foreach ($files as $fileinfo) {
+                $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+                $todo($fileinfo->getRealPath());
+            }
+
+            rmdir($moduleDir);
+            #throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory for module %moduleId% already exists!', array('%moduleId%' => $moduleId)));
         }
 
         // Check Module Folder exists
@@ -183,9 +195,9 @@ class OnlineModuleManager
      */
     public function getModuleInfo($moduleId)
     {
-        
+
         $moduleInfo = [];
-        
+
         // get all module informations
         $url = Yii::$app->getModule('admin')->marketplaceApiUrl . "info?id=" . urlencode($moduleId) . "&version=" . Yii::$app->version . "&installId=" . Setting::Get('installationId', 'admin');
         try {
@@ -196,11 +208,11 @@ class OnlineModuleManager
             ));
 
             $response = $http->send();
-            
+
             if ($response->getStatusCode() == '404') {
                 throw new \yii\base\InvalidParamException("Could not find module online!");
             }
-            
+
             $json = $response->getBody();
 
             $moduleInfo = \yii\helpers\Json::decode($json);

@@ -97,45 +97,40 @@ class ModuleController extends \yii\console\Controller
     }
 
     /**
-     * Updates a given module to the last available version.
+     * Updates a module
      *
-     * @param array $args
-     * @param bool $force
-     * @throws CHttpException
+     * @todo Handle no marketplace modules
+     * 
+     * @param string $moduleId
      */
-    public function actionUpdate($args, $force = false)
+    public function actionUpdate($moduleId)
     {
 
-        if (!isset($args[0])) {
-            print "Error: Module Id required!\n\n";
-            print $this->getHelp();
-            return;
-        }
-
-        $moduleId = $args[0];
-
-
-        if (!Yii::app()->moduleManager->hasModule($moduleId)) {
+        if (!Yii::$app->moduleManager->hasModule($moduleId)) {
             print "\nModule " . $moduleId . " is not installed!\n";
-            return;
+            exit;
         }
 
         // Look online for module
         $onlineModules = new OnlineModuleManager();
-        $moduleInfo = $onlineModules->getModuleInfo($moduleId);
+
+        try {
+            $moduleInfo = $onlineModules->getModuleInfo($moduleId);
+        } catch (Exception $ex) {
+            print "Could not find module online!";
+            return;
+        }
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
             print "No compatible version for " . $moduleId . " found online!\n";
             return;
         }
 
-        if (!$force) {
-            $module = Yii::app()->moduleManager->getModule($moduleId);
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
-            if ($moduleInfo['latestCompatibleVersion']['version'] == $module->getVersion()) {
-                print "Module " . $moduleId . " already up to date!\n";
-                return;
-            }
+        if ($moduleInfo['latestCompatibleVersion']['version'] == $module->getVersion()) {
+            print "Module " . $moduleId . " already up to date!\n";
+            return;
         }
 
         $onlineModules->update($moduleId);
@@ -150,16 +145,32 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionUpdateAll()
     {
-        return;
-        
-        $installedModules = Yii::app()->moduleManager->getInstalledModules(false, true);
-        ModuleManager::flushCache();
 
-        print "Updating modules: \n\n";
-        foreach ($installedModules as $moduleId => $moduleClass) {
-            $this->actionUpdate(array($moduleId), true);
+        // Also install modules which are seems to be installed 
+        $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
+
+        foreach ($installedModules as $moduleId => $className) {
+            $this->actionUpdate($moduleId);
         }
-        
+
+
+        /**
+         * Looking up modules which are marked as installed but not loaded.
+         * Try to get recent version online.
+         */
+        foreach (\humhub\models\ModuleEnabled::getEnabledIds() as $moduleId) {
+            if (!in_array($moduleId, array_keys($installedModules))) {
+                // Module seems to be installed - but cannot be loaded
+                // Try force re-install
+                try {
+                    $onlineModules = new OnlineModuleManager();
+                    $onlineModules->install($moduleId);
+                    print "Reinstalled: " . $moduleId . "\n";
+                } catch (Exception $ex) {
+                    
+                }
+            }
+        }
     }
 
 }

@@ -23,6 +23,13 @@ class ModuleManager extends \yii\base\Component
 {
 
     /**
+     * Create a backup on module folder deletion
+     * 
+     * @var boolean
+     */
+    public $createBackup = true;
+
+    /**
      * List of all modules
      * This also contains installed but not enabled modules.
      * 
@@ -269,16 +276,23 @@ class ModuleManager extends \yii\base\Component
         /**
          * Remove Folder
          */
-        $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
-        if (!is_dir($moduleBackupFolder)) {
-            if (!@mkdir($moduleBackupFolder)) {
-                throw new Exception("Could not create module backup folder!");
+        if ($this->createBackup) {
+            $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
+            if (!is_dir($moduleBackupFolder)) {
+                if (!@mkdir($moduleBackupFolder)) {
+                    throw new Exception("Could not create module backup folder!");
+                }
             }
-        }
 
-        $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
-        if (!@rename($module->getBasePath(), $backupFolderName)) {
-            throw new Exception("Could not remove module folder!");
+            $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
+            if (!@rename($module->getBasePath(), $backupFolderName)) {
+                print $backupFolderName."<br>";
+                print $module->getBasePath();
+                die();
+                throw new Exception("Could not remove module folder!" . $backupFolderName);
+            }
+        } else {
+            //TODO: Delete directory
         }
     }
 
