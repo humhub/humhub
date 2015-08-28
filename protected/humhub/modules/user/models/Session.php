@@ -34,4 +34,9 @@ class Session extends ActiveRecord
         return 'user_http_session';
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
 }

@@ -347,12 +347,13 @@ class AuthController extends Controller
      */
     public function actionGetSessionUserJson()
     {
+        Yii::$app->response->format = 'json';
 
-        $sessionId = Yii::$app->request->getQuery('sessionId');
+        $sessionId = Yii::$app->request->get('sessionId');
 
         $output = array();
         $output['valid'] = false;
-        $httpSession = UserHttpSession::model()->with('user')->findByAttributes(array('id' => $sessionId));
+        $httpSession = \humhub\modules\user\models\Session::findOne(['id' => $sessionId]);
         if ($httpSession != null && $httpSession->user != null) {
             $output['valid'] = true;
             $output['userName'] = $httpSession->user->username;
@@ -360,9 +361,7 @@ class AuthController extends Controller
             $output['email'] = $httpSession->user->email;
             $output['superadmin'] = $httpSession->user->super_admin;
         }
-
-        print CJSON::encode($output);
-        Yii::$app->end();
+        return $output;
     }
 
 }
