@@ -67,6 +67,25 @@
                         <br/>
                     </div>
                     <div class="col-md-6">
+                        <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Post Policy'); ?></label>
+
+                        <div class="radio">
+                            <label class="tt" data-toggle="tooltip" data-placement="top"
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users cannot post'); ?>">
+                                <?php echo $form->radioButton($model, 'post_policy', array('value' => 0, 'uncheckValue' => null, 'id' => 'admin_radio', 'checked' => (HSetting::Get('defaultPostPolicy', 'space') == 0) ? 'checked' : '')); ?>
+                                <?php echo Yii::t('SpaceModule.base', 'Admin only'); ?>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="tt" data-toggle="tooltip" data-placement="top"
+                                   title="<?php echo Yii::t('SpaceModule.views_create_create', 'Users can post'); ?>">
+                                <?php echo $form->radioButton($model, 'post_policy', array('value' => 1, 'uncheckValue' => null, 'id' => 'all_radio', 'checked' => (HSetting::Get('defaultPostPolicy', 'space') == 1) ? 'checked' : '')); ?>
+                                <?php echo Yii::t('SpaceModule.base', ' All members'); ?>
+                            </label>
+                        </div>
+                        <br/>
+                    </div>
+                    <div class="col-md-6">
                         <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></label>
 
                         <?php if (Yii::app()->user->canCreatePublicSpace() && Yii::app()->user->canCreatePrivateSpace()): ?>
@@ -176,6 +195,3 @@
     });
 
 </script>
-
-
-

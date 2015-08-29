@@ -7,6 +7,7 @@ class m141022_094635_addDefaults extends EDbMigration
     {
         $this->insert('setting', array('name'=>'defaultVisibility', 'module_id'=>'space', 'value'=>'1'));
         $this->insert('setting', array('name'=>'defaultJoinPolicy', 'module_id'=>'space', 'value'=>'1'));
+        $this->insert('setting', array('name'=>'defaultPostPolicy', 'module_id'=>'space', 'value'=>'1'));
     }
 
     public function down()

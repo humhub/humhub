@@ -9,6 +9,7 @@ class SpaceSettingsForm extends CFormModel
 
     public $defaultVisibility;
     public $defaultJoinPolicy;
+    public $defaultPostPolicy;
 
     /**
      * Declares the validation rules.
@@ -16,7 +17,7 @@ class SpaceSettingsForm extends CFormModel
     public function rules()
     {
         return array(
-            array('defaultVisibility, defaultJoinPolicy', 'safe'),
+            array('defaultVisibility, defaultJoinPolicy, defaultPostPolicy', 'safe'),
         );
     }
 
@@ -30,6 +31,7 @@ class SpaceSettingsForm extends CFormModel
         return array(
             'defaultVisibility' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Visibility'),
             'defaultJoinPolicy' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Join Policy'),
+            'defaultPostPolicy' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Post Policy'),
         );
     }
 
