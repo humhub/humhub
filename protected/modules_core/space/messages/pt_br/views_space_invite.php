@@ -1,12 +1,12 @@
 <?php
 return array (
-  'Login' => '',
-  'New user?' => '',
   '<strong>Invite</strong> members' => '<strong>Convidar</strong> membros',
   'Add an user' => 'Adicionar um usuário',
   'Close' => 'Fechar',
   'Email addresses' => 'Endereço de e-mail',
   'Invite by email' => 'Convidar por e-mail',
+  'Login' => 'Login',
+  'New user?' => 'Novo usuário?',
   'Pick users' => 'Escolher usuários',
   'Send' => 'Enviar',
   'To invite users to this space, please type their names below to find and pick them.' => 'Para convidar usuários para este espaço, por favor digite os nomes abaixo para encontrá-los e adicioná-los.',
