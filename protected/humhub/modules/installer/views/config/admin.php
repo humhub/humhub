@@ -7,8 +7,8 @@
     <div class="panel-body">
         <p><?php echo Yii::t('InstallerModule.views_config_admin', "You're almost done. In the last step you have to fill out the form to create an admin account. With this account you can manage the whole network."); ?></p>
         <hr/>
-        
-        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+
+        <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false]); ?>
         <?php echo $hForm->render($form); ?>
         <?php \yii\widgets\ActiveForm::end(); ?>
     </div>
@@ -22,12 +22,12 @@
     })
 
     // Shake panel after wrong validation
-    <?php foreach($hForm->models as $model) : ?>
+<?php foreach ($hForm->models as $model) : ?>
     <?php if ($model->hasErrors()) : ?>
-    $('#create-admin-account-form').removeClass('fadeIn');
-    $('#create-admin-account-form').addClass('shake');
+            $('#create-admin-account-form').removeClass('fadeIn');
+            $('#create-admin-account-form').addClass('shake');
     <?php endif; ?>
-    <?php endforeach; ?>
+<?php endforeach; ?>
 
 </script>
 

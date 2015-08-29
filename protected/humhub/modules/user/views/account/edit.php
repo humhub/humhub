@@ -7,7 +7,7 @@
 <div class="panel-body">
 
     <div id="profile-form-container" style="display: none;">
-        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+        <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false]); ?>
         <?php echo $hForm->render($form); ?>
         <?php \yii\widgets\ActiveForm::end(); ?>
     </div>

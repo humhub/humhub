@@ -27,8 +27,6 @@ class HForm extends \yii\base\Component
     public function __construct($definition, $primaryModel = null)
     {
         $this->definition = $definition;
-        #print_r($this->definition);
-        #die();
         $this->primaryModel = $primaryModel;
     }
 

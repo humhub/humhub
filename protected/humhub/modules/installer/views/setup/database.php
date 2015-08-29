@@ -55,7 +55,7 @@ use yii\helpers\Html;
 
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('InstallerModule.views_setup_database', 'Next'), array('class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.views_setup_database', 'Checking database credentials...'))); ?>
+        <?php echo Html::submitButton(Yii::t('InstallerModule.views_setup_database', 'Next'), array('class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.views_setup_database', 'Initializing database...'))); ?>
 
         <?php CActiveForm::end(); ?>
     </div>
