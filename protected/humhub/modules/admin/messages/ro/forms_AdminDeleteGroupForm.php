@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Group' => '',
+  'Group' => '그룹',
 );

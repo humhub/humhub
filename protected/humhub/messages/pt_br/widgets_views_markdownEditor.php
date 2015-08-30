@@ -26,7 +26,7 @@ return array (
   'enter image title here' => 'Insira o título da imagem aqui',
   'enter link description here' => 'Insira descrição do link aqui',
   'heading text' => 'Texto do cabeçalho ',
-  'list text here' => '',
-  'quote here' => '',
-  'strong text' => '',
+  'list text here' => 'Listar texto aqui',
+  'quote here' => 'Citação aqui',
+  'strong text' => 'Negrito',
 );

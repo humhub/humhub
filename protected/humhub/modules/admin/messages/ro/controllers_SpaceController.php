@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Saved' => '',
+  'Saved' => '저장됨',
 );

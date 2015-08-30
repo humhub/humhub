@@ -3,7 +3,7 @@ return array (
   'Created By' => 'Criado por',
   'Created at' => 'Criado em',
   'File name' => 'Nome do arquivo',
-  'Guid' => '',
+  'Guid' => 'Guid',
   'ID' => 'ID',
   'Invalid Mime-Type' => 'Mime-Type inválido',
   'Maximum file size ({maxFileSize}) has been exceeded!' => 'Tamanho máximo do arquivo ({maxFileSize}) foi ultrapassado!',
