@@ -23,3 +23,6 @@ nbproject
 .idea/*
 .gitmodules
 /composer.lock
+
+themes/*
+!themes/HumHub
