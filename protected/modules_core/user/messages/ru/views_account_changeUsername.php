@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Change</strong> username' => '<strong>Изменить</strong> имя пользователя',
-  '<strong>Current username</strong>' => '<strong>Текущее имя пользователя</strong>',
+  '<strong>Change</strong> username' => '<strong>Изменить</strong> логин',
+  '<strong>Current username</strong>' => '<strong>Текущий логин</strong>',
   'Save' => 'Сохранить',
 );

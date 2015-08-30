@@ -1,7 +1,7 @@
 <?php
 return array (
   'Current password' => 'Текущий пароль',
-  'Incorrect username/email or password.' => 'Некорректное имя пользователя/email или пароль.',
+  'Incorrect username/email or password.' => 'Некорректный логин/email или пароль.',
   'New password' => 'Новый пароль',
   'New password confirm' => 'Подтвердить новый пароль',
   'Remember me next time' => 'Запомнить меня',

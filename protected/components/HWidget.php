@@ -112,10 +112,10 @@ class HWidget extends CWidget
         $fileName = $reflector->getFileName();
 
         // Search for .../modules_core/FINDME/... or .../modules/FINDME/...
-        preg_match('/\/modules(?:_core)?\/(.*?)\//', $fileName, $match);
+        preg_match('/(\/|\\\)modules(?:_core)?(\/|\\\)(.*?)(\/|\\\)/', $fileName, $match);
 
-        if (isset($match[1]))
-            return $match[1];
+        if (isset($match[3]))
+            return $match[3];
 
         return null;
     }
