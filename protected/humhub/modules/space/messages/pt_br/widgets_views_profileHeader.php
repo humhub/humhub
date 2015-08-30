@@ -4,5 +4,5 @@ return array (
   'Followers' => 'Seguidores',
   'Members' => 'Membros',
   'Ok' => 'Ok',
-  'Posts' => '',
+  'Posts' => 'Postagens',
 );
