@@ -2,6 +2,8 @@
 
 namespace humhub\libs;
 
+use Yii;
+
 class LogoImage
 {
 
