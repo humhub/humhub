@@ -41,50 +41,27 @@ The principle of theming in **HumHub** is overwriting. To build a new theme, you
 ---
 
 ## Edit CSS
-If you want to create a new theme or just want change some details, we recommend to dublicate the standard HumHub theme (duplicate and rename the folder) and make your changes there. This is still not even easier to start this is also important when you do updates later. Because all changes you did directly at the HumHub Theme will be override by an update.
+If you want to create a new theme or just want to change some styles, we recommend to dublicate the standard HumHub theme (duplicate and rename the folder) and make your changes there. Never edit the standard HumHub theme directly, because all changes there will be override by an update.
 
 At the **/themes/yourtheme/css/** folder you will find the compressed **theme.css** and a **theme.less** file. The easiest way is to edit the *.less file and compile then the css file.
 
-At the first lines in the **theme.less** file you will find the color variables. If you just want to change the colors to adapt HumHub to your CI, simple change the color codes there and complie the *.less file.
+At the first lines in the **theme.less** file you will find the color variables. If you just want to change the colors to adapt HumHub to your CI, simple change the color codes.
 
-### Modules
-So that every module adobt the colors from the actually installed theme, you will find color classes for font, border and background colors of every bootstrap style. So if you build a module, just add the specific classes to the html elements you want to style.
-
+If you want to build modules, you will also find there color classes for font, border and background colors of every bootstrap style like ``colorDefault``, ``backgroundDefault`` and ``borderDefault``. Use these color classes at the html elements in your module to alway adobt the colors from the currently activated theme.
 
 
 
 
+## Custom theme files
+To load additional **CSS** or **JavaScript** files to your theme, add them to the **head.php** in
 
-## Custom CSS
-If your theme is activated, you have to tell **HumHub**, where to find new **CSS** or **JavaScript** files. To do that, you have to copy the **head.php** from:
+    /themes/mytheme/views/layout/
 
-    /protected/views/layout/
-
-to your theme folder:
-
-    /themes/mytheme/views/layout/head.php
-
-Now open the copied **head.php** with an editor of your choice and you can add further **CSS** or **JavaScript** files, you needed.
-
-Here is an example how to load your own css file and override the bootstrap standard classes:
-
-    // Core bootstrap css file
-    <link href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
-
-    // Additional needed CSS classes
-    <link href="<?php echo Yii::app()->baseUrl; ?>/css/style.css" rel="stylesheet">
-
-    // Your theme css file
-    <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/mytheme.css" rel="stylesheet">
-
-``Note: ``  Your own css file has to be load **after** the bootstrap core css file to work correctly.
-
-If your own css file is loading correctly you can writing your own styles depends an the **Twitter Bootstrap Guidelines** you will find here: <http://getbootstrap.com/getting-started>
 
 ---
 
 ## Custom views
-To edit a view, you have to copy the original **view** from the **protected** folder into your **theme** folder. Please take care to observe the themes folder structure above.
+To modify a view, you have to copy the original **view** from the **protected/humhub/***  folder into your **theme** folder. Please take care to observe the themes folder structure above.
 
 If your theme is activiated, **HumHub** automatically looks at first inside the theme folder. If there was no view found, he will load the original one.
 
