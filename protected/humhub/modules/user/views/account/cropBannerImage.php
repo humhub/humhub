@@ -21,7 +21,7 @@ use yii\helpers\Url;
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
                 img {
-                    max-width: none
+                    max-width: 100% !important;
                 }
 
                 .jcrop-keymgr {
