@@ -11,7 +11,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
     <div class="row">
         <div class="col-md-12">
             <div class="panel">
-                <div class="panel-heading"><?php echo Yii::t('base', '<strong>Content</strong> search'); ?></div>
+                <div class="panel-heading"><?php echo Yii::t('base', '<strong>Search</strong>'); ?></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-3"></div>
