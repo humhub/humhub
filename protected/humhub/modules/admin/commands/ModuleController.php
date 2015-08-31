@@ -150,7 +150,13 @@ class ModuleController extends \yii\console\Controller
         $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
 
         foreach ($installedModules as $moduleId => $className) {
-            $this->actionUpdate($moduleId);
+            try {
+                $this->actionUpdate($moduleId);
+            } catch (\yii\base\InvalidParamException $ex) {
+                print "Module ". $moduleId. " - Error: ".$ex->getMessage()."\n";
+            } catch (Exception $ex) {
+                print "Module ". $moduleId. " - Error: ".$ex->getMessage()."\n";
+            }
         }
 
 
