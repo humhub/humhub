@@ -88,7 +88,7 @@ class Picker extends Widget
         }
 
         if ($this->spaceSearchUrl == "")
-            $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/search-json', ['keyword' => '-keywordPlaceholder-']]);
+            $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/search-json', 'keyword' => '-keywordPlaceholder-']);
 
 
         return $this->render('spacePicker', array(
