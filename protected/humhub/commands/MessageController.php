@@ -68,7 +68,7 @@ class MessageController extends \yii\console\controllers\MessageController
     /**
      * @inheritdoc
      */
-    protected function saveMessagesToPHP($messages, $dirName, $overwrite, $removeUnused, $sort)
+    protected function saveMessagesToPHP($messages, $dirName, $overwrite, $removeUnused, $sort, $markUnused)
     {
         $dirNameBase = $dirName;
 
@@ -96,9 +96,8 @@ class MessageController extends \yii\console\controllers\MessageController
 
             $coloredFileName = Console::ansiFormat($file, [Console::FG_CYAN]);
             $this->stdout("Saving messages to $coloredFileName...\n");
-
-
-            $this->saveMessagesCategoryToPHP($msgs, $file, $overwrite, $removeUnused, $sort, $category);
+        
+            $this->saveMessagesCategoryToPHP($msgs, $file, $overwrite, $removeUnused, $sort, $category, $markUnused);
         }
     }
 
