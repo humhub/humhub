@@ -36,6 +36,7 @@ class Application extends \yii\console\Application
             $baseUrl = Setting::get('baseUrl');
             Yii::setAlias(("@web"), $baseUrl);
             $this->urlManager->scriptUrl = $baseUrl;
+            $this->urlManager->baseUrl = $baseUrl;
         }
     }
 
