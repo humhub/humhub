@@ -15,7 +15,6 @@ use yii\helpers\Url;
         'buttonFalse' => Yii::t('ContentModule.widgets_views_permaLink', 'Close'),
         'linkContent' => '<i class="fa fa-link"></i> ' . Yii::t('ContentModule.widgets_views_permaLink', 'Permalink'),
         'linkHref' => '',
-        'confirmJS' => 'function(jsonResp) { wallDelete(jsonResp); }',
         'modalShownJS' => 'setTimeout(function(){$("#permalink-txt-' . $id . '").focus(); $("#permalink-txt-' . $id . '").select();}, 1);'
     ));
     ?>
