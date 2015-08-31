@@ -456,6 +456,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         $attributes = array(
             'email' => $this->email,
             'username' => $this->username,
+            'tags' => $this->tags,
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
