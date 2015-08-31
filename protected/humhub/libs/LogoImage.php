@@ -3,6 +3,8 @@
 namespace humhub\libs;
 
 use Yii;
+use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 class LogoImage
 {
@@ -19,7 +21,7 @@ class LogoImage
 
     public function __construct()
     {
-
+        
     }
 
     /**
@@ -33,12 +35,11 @@ class LogoImage
         $path = "";
 
         // Workaround for absolute urls in console applications (Cron)
-        if (Yii::app() instanceof CConsoleApplication) {
-            $path = Yii::app()->request->getBaseUrl();
+        if (Yii::$app->request->isConsoleRequest) {
+            $path = Url::base(true);
         } else {
-            $path = Yii::app()->getBaseUrl(true);
+            $path = Url::base();
         }
-
 
         if (file_exists($this->getPath())) {
             $path .= '/uploads/' . $this->folder_images . '/logo.png';
@@ -82,9 +83,9 @@ class LogoImage
     public function setNew(UploadedFile $file)
     {
         $this->delete();
-        move_uploaded_file($file->getTempName(), $this->getPath());
+        move_uploaded_file($file->tempName, $this->getPath());
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max', 'transparent' => ($file->getExtensionName() == 'png' && ImageConverter::checkTransparent($this->getPath()))));
+        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max', 'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath()))));
     }
 
     /**

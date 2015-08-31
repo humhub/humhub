@@ -1,6 +1,4 @@
-function resetLogoImage(jsonResp) {
-
-    json = jQuery.parseJSON(jsonResp);
+function resetLogoImage(json) {
     $('#deleteLinkPost_modal_logoimagedelete').hide();
     $('#logo-image').attr('src', '');
     $('#img-logo').hide();

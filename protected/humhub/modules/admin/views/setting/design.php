@@ -4,6 +4,8 @@ use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
 use yii\helpers\Url;
+
+$this->registerJsFile('@web/resources/admin/uploadLogo.js');
 ?>
 <div class="panel panel-default">
     <div
@@ -67,7 +69,7 @@ use yii\helpers\Url;
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $logo->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::toRoute("/admin/setting/deleteLogoImage"),
+                        'linkHref' => Url::toRoute("/admin/setting/delete-logo-image"),
                         'confirmJS' => 'function(jsonResp) { resetLogoImage(jsonResp); }'
                     ));
                     ?>
