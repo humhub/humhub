@@ -399,7 +399,7 @@ class File extends HActiveRecord
      * @param HActiveRecord $object is a HActiveRecord
      * @param string $files is a comma seperated list of newly uploaded file guids
      */
-    public static function attachPrecreated($object, $files)
+    public static function attachPrecreated($object, $files, $publicAccess = false)
     {
         if (!$object instanceof HActiveRecord) {
             throw new CException("Invalid object given - require instance of HActiveRecord!");
@@ -411,6 +411,7 @@ class File extends HActiveRecord
             if ($file != null && $file->object_model == "") {
                 $file->object_model = get_class($object);
                 $file->object_id = $object->getPrimaryKey();
+                $file->public_access = $publicAccess;
                 $file->save();
             }
         }
