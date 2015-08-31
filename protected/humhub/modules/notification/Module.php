@@ -21,6 +21,7 @@ class Module extends \humhub\components\Module
     {
         $output = "";
 
+        
         $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', Setting::Get('receive_email_notifications', 'mailing'));
 
         // Never receive notifications
@@ -28,6 +29,7 @@ class Module extends \humhub\components\Module
             return "";
         }
 
+        
         // We are in hourly mode and user wants daily
         if ($interval == CronController::EVENT_ON_HOURLY_RUN && $receive_email_notifications == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
             return "";
@@ -45,12 +47,13 @@ class Module extends \humhub\components\Module
                 return "";
             }
         }
-
-        $query = Notification::find()->where(['user_id' => $user->id])->andWhere(["!=", 'seen', 1]);
-
+        
+        
+        $query = Notification::find()->where(['user_id' => $user->id])->andWhere(['!=', 'seen', 1])->andWhere(['!=', 'emailed', 1]);
         foreach ($query->all() as $notification) {
             $output .= $notification->getClass()->render(BaseNotification::OUTPUT_MAIL);
 
+            
             $notification->emailed = 1;
             $notification->save();
         }
