@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<!-- $Id: cpp.xml,v 1.1 2007/06/03 02:35:28 ssttoo Exp $ -->
+
+<highlight lang="CPP" case="no">
+
+	<authors>
+		<author name="Aaron Kalin"/>
+        <author name="Andrey Demenev" email="demenev@gmail.com"/>
+	</authors>
+
+    <comment>
+Thanks to Aaron Kalin for initial
+implementation of this highlighter
+    </comment>
+
+	<default innerClass="code" />
+
+	<block name="escaped" match="\\" innerClass="special" contained="yes">
+		<onlyin region="strdouble"/>
+	</block>
+
+    <region name="strdouble" delimClass="quotes" innerClass="string" start="&quot;" end="&quot;"/>
+
+	<region name="block" delimClass="brackets" innerClass="code" start="\{" end="\}">
+		<contains all="yes"/>
+	</region>
+
+	<region name="brackets" delimClass="brackets" innerClass="code" start="\(" end="\)">
+		<contains all="yes"/>
+	</region>
+
+	<region name="sqbrackets" delimClass="brackets" innerClass="code" start="\[" end="\]">
+		<contains all="yes"/>
+	</region>
+
+	<block name="identifier" match="[a-z_]\w*" innerClass="identifier" case="no"/>
+
+  <block name="hexinteger" match="\b0[xX][\da-f]+" innerClass="number" contained="yes"/>
+  <block name="integer" match="\b\d\d*|\b0\b" innerClass="number" contained="yes"/>
+  <block name="octinteger" match="\b0[0-7]+" innerClass="number" contained="yes"/>
+  <block name="float" match="\b(\d*\.\d+)|(\d+\.\d*)" innerClass="number" contained="yes"/>
+
+
+  <region name="strincl" delimClass="quotes" innerClass="string" start="&lt;" end="&gt;">
+      <onlyin region="include" />
+  </region>
+
+  <!-- <block name="preprocessor" match="^#[azAZ_]\w*" innerClass="prepro"/> -->
+    <region name="include" innerClass="prepro" start="/^[ \t]*#include/m" end="/(?&lt;!\\)$/m">
+		<contains region="strdouble"/>
+		<contains region="strincl"/>
+	</region>
+
+    <region name="preprocessor" delimClass="prepro"  innerClass="code" start="/^[ \t]*#[ \t]*[a-z]+/mi" end="/(?&lt;!\\)$/m">
+        <contains region="comment"/>
+        <contains region="mlcomment"/>
+		<contains region="strdouble"/>
+        <contains region="brackets"/>
+        <contains region="block"/>
+        <contains block="identifier"/>
+        <contains block="integer"/>
+        <contains block="hexinteger"/>
+        <contains block="octinteger"/>
+        <contains block="float"/>
+
+	</region>
+
+	<block name="number" match="\d*\.?\d+" innerClass="number"/>
+
+
+	<region name="mlcomment" innerClass="mlcomment" start="\/\*" end="\*\/" >
+		<contains block="cvstag"/>
+	</region>
+
+	<block name="cvstag" match="\$\w+\s*:.+\$" innerClass="inlinedoc">
+
+		<onlyin region="mlcomment"/>
+		<onlyin region="comment"/>
+	</block>
+
+	<region name="comment" start="\/\/.+" end="/$/m" innerClass="comment" delimClass="comment">
+		<contains block="cvstag"/>
+    </region>
+
+    <keywords name="reserved" inherits="identifier" innerClass="reserved" case="yes">
+		<keyword match="and" />
+		<keyword match="and_eq" />
+		<keyword match="asm" />
+
+		<keyword match="bitand" />
+		<keyword match="bitor" />
+		<keyword match="break" />
+		<keyword match="case" />
+		<keyword match="catch" />
+		<keyword match="compl" />
+
+		<keyword match="const_cast" />
+		<keyword match="continue" />
+		<keyword match="default" />
+		<keyword match="delete" />
+		<keyword match="do" />
+		<keyword match="dynamic_cast" />
+
+		<keyword match="else" />
+		<keyword match="for" />
+		<keyword match="fortran" />
+		<keyword match="friend" />
+		<keyword match="goto" />
+		<keyword match="if" />
+
+		<keyword match="new" />
+		<keyword match="not" />
+		<keyword match="not_eq" />
+		<keyword match="operator" />
+		<keyword match="or" />
+		<keyword match="or_eq" />
+
+		<keyword match="private" />
+		<keyword match="protected" />
+		<keyword match="public" />
+		<keyword match="reinterpret_cast" />
+		<keyword match="return" />
+		<keyword match="sizeof" />
+
+		<keyword match="static_cast" />
+		<keyword match="switch" />
+		<keyword match="this" />
+		<keyword match="throw" />
+		<keyword match="try" />
+		<keyword match="typeid" />
+
+		<keyword match="using" />
+		<keyword match="while" />
+		<keyword match="xor" />
+		<keyword match="xor_eq" />
+
+        <keyword match="false" />
+		<keyword match="true" />
+	</keywords>
+
+	<keywords name="types" inherits="identifier" innerClass="types" case="yes">
+
+		<keyword match="auto" />
+		<keyword match="bool" />
+		<keyword match="char" />
+		<keyword match="class" />
+		<keyword match="const" />
+		<keyword match="double" />
+
+		<keyword match="enum" />
+		<keyword match="explicit" />
+		<keyword match="export" />
+		<keyword match="extern" />
+		<keyword match="float" />
+		<keyword match="inline" />
+
+		<keyword match="int" />
+		<keyword match="long" />
+		<keyword match="mutable" />
+		<keyword match="namespace" />
+		<keyword match="register" />
+		<keyword match="short" />
+
+		<keyword match="signed" />
+		<keyword match="static" />
+		<keyword match="struct" />
+		<keyword match="template" />
+		<keyword match="typedef" />
+		<keyword match="typename" />
+
+		<keyword match="union" />
+		<keyword match="unsigned" />
+		<keyword match="virtual" />
+		<keyword match="void" />
+		<keyword match="volatile" />
+		<keyword match="wchar_t" />
+
+	</keywords>
+
+	<keywords name="Common Macros" inherits="identifier" innerClass="prepro" case="yes">
+		<keyword match="NULL" />
+		<keyword match="TRUE" />
+		<keyword match="FALSE" />
+		<keyword match="MAX" />
+
+		<keyword match="MIN" />
+		<keyword match="__LINE__" />
+		<keyword match="__DATA__" />
+		<keyword match="__FILE__" />
+		<keyword match="__TIME__" />
+		<keyword match="__STDC__" />
+
+	</keywords>
+
+
+	<!--
+	<keywords name="reserved" inherits="identifier" innerClass="reserved" case="yes">
+	-->
+
+</highlight>
+

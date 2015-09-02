@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<!-- $Id: javascript.xml,v 1.3 2008/01/01 23:43:36 ssttoo Exp $ -->
+
+<highlight lang="javascript" case = "no">
+
+  <authors>
+    <author name="Andrey Demenev" email ="demenev@gmail.com"/>
+  </authors>
+
+  <default innerClass="code" />
+
+  <region name="block" delimClass="brackets" innerClass="code" start="\{" end="\}">
+    <contains all="yes"/>
+  </region>
+
+  <region name="brackets" delimClass="brackets" innerClass="code" start="\(" end="\)">
+    <contains all="yes"/>
+  </region>
+
+  <region name="sqbrackets" delimClass="brackets" innerClass="code" start="\[" end="\]">
+    <contains all="yes"/>
+  </region>
+
+
+  <region name="mlcomment" innerClass="comment" start="\/\*" end="\*\/" >
+    <contains block="cvstag"/>
+  </region>
+
+  <region name="strdouble" delimClass="quotes" innerClass="string" start="&quot;" end="&quot;"/>
+
+  <region name="strsingle" delimClass="quotes" innerClass="string" start="'" end="'" />
+
+  <block name="escaped" match="\\\\|\\&quot;|\\'|\\`" innerClass="special" contained="yes">
+    <onlyin region="strsingle"/>
+  </block>
+
+  <block name="descaped" match="\\\\|\\&quot;|\\'|\\`|\\t|\\n|\\r" innerClass="special" contained="yes">
+    <onlyin region="strdouble"/>
+  </block>
+
+  <region name="comment" start="\/\/" end="/$/m" innerClass="comment">
+    <contains block="cvstag"/>
+  </region>
+
+  <block name="identifier" match="[a-z_]\w*" innerClass="identifier" case="no"/>
+
+  <block name="number" match="0x\d*|\d*\.?\d+" innerClass="number"/>
+
+
+  <block name="url" match="((https?|ftp):\/\/[\w\?\.\-\&amp;=\/%+]+)|(^|[\s,!?])www\.\w+\.\w+[\w\?\.\&amp;=\/%+]*" innerClass="url" contained="yes">
+    <onlyin region="mlcomment"/>
+    <onlyin region="comment"/>
+  </block>
+
+  <block name="email" match="\w+[\.\w\-]+@(\w+[\.\w\-])+" innerClass="url" contained="yes">
+    <onlyin region="mlcomment"/>
+    <onlyin region="comment"/>
+  </block>
+
+  <block name="note" match="\b(note|fixme):" innerClass="inlinedoc" contained="yes" case="no">
+    <onlyin region="mlcomment"/>
+    <onlyin region="comment"/>
+  </block>
+
+
+  <block name="cvstag" match="\$\w+:.+\$" innerClass="inlinedoc" contained="yes">
+    <onlyin region="mlcomment"/>
+    <onlyin region="comment"/>
+  </block>
+
+  <keywords name="builtin" inherits="identifier" innerClass="builtin" case = "yes">
+    <keyword match="String"/>
+    <keyword match="Array"/>
+    <keyword match="RegExp"/>
+    <keyword match="Function"/>
+    <keyword match="Math"/>
+    <keyword match="Number"/>
+    <keyword match="Date"/>
+    <keyword match="Image"/>
+    <keyword match="window"/>
+    <keyword match="document"/>
+    <keyword match="navigator"/>
+    <keyword match="onAbort"/>
+    <keyword match="onBlur"/>
+    <keyword match="onChange"/>
+    <keyword match="onClick"/>
+    <keyword match="onDblClick"/>
+    <keyword match="onDragDrop"/>
+    <keyword match="onError"/>
+    <keyword match="onFocus"/>
+    <keyword match="onKeyDown"/>
+    <keyword match="onKeyPress"/>
+    <keyword match="onKeyUp"/>
+    <keyword match="onLoad"/>
+    <keyword match="onMouseDown"/>
+    <keyword match="onMouseOver"/>
+    <keyword match="onMouseOut"/>
+    <keyword match="onMouseMove"/>
+    <keyword match="onMouseUp"/>
+    <keyword match="onMove"/>
+    <keyword match="onReset"/>
+    <keyword match="onResize"/>
+    <keyword match="onSelect"/>
+    <keyword match="onSubmit"/>
+    <keyword match="onUnload"/>
+  </keywords>
+
+  <keywords name="reserved" inherits="identifier" innerClass="reserved" case = "yes">
+    <keyword match="break"/>
+    <keyword match="continue"/>
+    <keyword match="do"/>
+    <keyword match="while"/>
+    <keyword match="do"/>
+    <keyword match="export"/>
+    <keyword match="for"/>
+    <keyword match="in"/>
+    <keyword match="if"/>
+    <keyword match="else"/>
+    <keyword match="import"/>
+    <keyword match="return"/>
+    <keyword match="label"/>
+    <keyword match="switch"/>
+    <keyword match="case"/>
+    <keyword match="var"/>
+    <keyword match="with"/>
+    <keyword match="delete"/>
+    <keyword match="new"/>
+    <keyword match="this"/>
+    <keyword match="typeof"/>
+    <keyword match="void"/>
+    <keyword match="abstract"/>
+    <keyword match="boolean"/>
+    <keyword match="byte"/>
+    <keyword match="catch"/>
+    <keyword match="char"/>
+    <keyword match="class"/>
+    <keyword match="const"/>
+    <keyword match="continue"/>
+    <keyword match="debugger"/>
+    <keyword match="default"/>
+    <keyword match="double"/>
+    <keyword match="enum"/>
+    <keyword match="extends"/>
+    <keyword match="false"/>
+    <keyword match="final"/>
+    <keyword match="finally"/>
+    <keyword match="float"/>
+    <keyword match="function"/>
+    <keyword match="implements"/>
+    <keyword match="goto"/>
+    <keyword match="in"/>
+    <keyword match="instanceof"/>
+    <keyword match="int"/>
+    <keyword match="interface"/>
+    <keyword match="long"/>
+    <keyword match="native"/>
+    <keyword match="null"/>
+    <keyword match="package"/>
+    <keyword match="private"/>
+    <keyword match="protected"/>
+    <keyword match="public"/>
+    <keyword match="short"/>
+    <keyword match="static"/>
+    <keyword match="super"/>
+    <keyword match="synchronized"/>
+    <keyword match="throw"/>
+    <keyword match="throws"/>
+    <keyword match="transient"/>
+    <keyword match="true"/>
+    <keyword match="try"/>
+    <keyword match="volatile"/>
+  </keywords>
+
+</highlight>

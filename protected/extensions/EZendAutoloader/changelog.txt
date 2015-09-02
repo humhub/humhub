@@ -1,0 +1,12 @@
+1.1.1
+-----
+- Fixed autoloader registration order in readme (Sam Dark)
+
+1.1
+---
+- Ability to load custom code that is using Zend class naming convention but
+with different prefix (Sam Dark)
+
+1.0
+---
+- Initial public release (Sam Dark)

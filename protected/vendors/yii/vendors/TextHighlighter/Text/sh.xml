@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<!-- $Id: sh.xml,v 1.2 2007/06/14 00:15:50 ssttoo Exp $ -->
+
+<highlight lang="sh" case = "yes">
+
+  <authors>
+    <author name="Noah Spurrier" email="noah@noah.org" />
+  </authors>
+
+  <comment>This highlighter is EXPERIMENTAL. It may work incorrectly.
+      It is a crude hack of the perl syntax, which itself wasn't so good.
+      But this seems to work OK.
+  </comment>
+
+  <default innerClass="code"/>
+
+  <block name="interpreter" match="/^(#!)(.*)/m" innerClass="special">
+   <partClass index="1" innerClass="special" />
+   <partClass index="2" innerClass="string" />
+  </block>
+
+  <!--
+  brackets
+  -->
+  <region name="block" delimClass="brackets" innerClass="code" start="\{" end="\}">
+    <contains all="yes"/>
+  </region>
+
+  <region name="brackets" delimClass="brackets" innerClass="code" start="\(" end="\)">
+    <contains all="yes"/>
+  </region>
+
+  <region name="sqbrackets" delimClass="brackets" innerClass="code" start="\[" end="\]">
+    <contains all="yes"/>
+  </region>
+
+  <!--
+  use smth
+  -->
+  <block name="usestatement" match="(use)\s+([\w:]*)" innerClass="special">
+   <partClass index="1" innerClass="reserved" />
+   <partClass index="2" innerClass="special" />
+  </block>
+
+
+  <region name="q-w-q-statement"
+    start="/\b(q[wq]\s*((\{)|(\()|(\[)|(\&lt;)|([\W\S])))(?=(.*)((?(3)\})(?(4)\))(?(5)\])(?(6)\&gt;)(?(7)\7)))/Us"
+    end="%b2%"
+    innerClass="string" delimClass="quotes" remember="yes">
+
+    <contains block="containedvar"/>
+    <contains block="specialvar"/>
+    <contains block="curlyvar"/>
+
+  </region>
+
+  <region name="qstatement"
+    start="/\b(q\s*((\{)|(\()|(\[)|(\&lt;)|([\W\S])))(?=(.*)((?(3)\})(?(4)\))(?(5)\])(?(6)\&gt;)(?(7)\7)))/Us"
+    end="%b2%"
+    innerClass="string" delimClass="quotes" remember="yes">
+
+  </region>
+
+  <!--
+  comments
+  -->
+  <block name="comment" match="#.*" innerClass="comment" />
+
+
+  <!--
+  regexpr
+  FIXME: this should be rewritten
+  -->
+  <block name="dblregexprver1" match="/(s|tr) ([|#~`!@$%^&amp;*-+=\\;:'&quot;,.\/?])  ((\\.|[^\\])*?) (\2)((\\.|[^\\])*?)(\2[ecgimosx]*)/x" innerClass="string">
+   <partClass index="1" innerClass="quotes" />
+   <partClass index="2" innerClass="quotes" />
+   <partClass index="3" innerClass="string" />
+   <partClass index="5" innerClass="quotes" />
+   <partClass index="6" innerClass="string" />
+   <partClass index="8" innerClass="quotes" />
+  </block>
+
+  <block name="dblregexprver2" match="/(m) ([|#~`!@$%^&amp;*-+=\\;:'&quot;,.\/?])  ((\\.|[^\\])*?) (\2[ecgimosx]*)/x" innerClass="string">
+   <partClass index="1" innerClass="quotes" />
+   <partClass index="2" innerClass="quotes" />
+   <partClass index="3" innerClass="string" />
+   <partClass index="5" innerClass="quotes" />
+  </block>
+
+
+  <region name="regexp" start=" \/" end="\/[cgimosx]*" innerClass="string" delimClass="quotes" case="yes">
+    <contains block="reescaped"/>
+  </region>
+
+  <block name="reescaped" match="\\\/" innerClass="string" contained="yes">
+    <onlyin region="regexp"/>
+  </block>
+
+  <!--
+  variables
+  FIXME: @{...}
+  -->
+  <block name="bracketsvars" match="([a-z1-9_]+)(\s*=>)" innerClass="string" contained="yes" case="no">
+    <partClass index="1" innerClass="string" />
+    <partClass index="2" innerClass="code" />
+    <onlyin region="brackets"/>
+  </block>
+
+  <block name="specialvar" match="\$#?[1-9'`@!]" innerClass="var"/>
+
+  <block name="var" match="(\$#?|[@%*])([a-z1-9_]+::)*([a-z1-9_]+|\^(?-i)[A-Z]?(?i))" innerClass="var" case="no"/>
+  <block name="containedvar" match="\$([a-z1-9_]+|\^(?-i)[A-Z]?(?i))" innerClass="var" case="no"/>
+
+  <block name="classvar" match="(\{)([a-z1-9]+)(\})" innerClass="var" case="no">
+   <partClass index="1" innerClass="brackets" />
+   <partClass index="2" innerClass="var" />
+   <partClass index="3" innerClass="brackets" />
+  </block>
+
+  <block name="curlyvar" match="[\$@%]#?\{[a-z1-9]+\}" innerClass="var" case="no"/>
+
+  <!--
+  quotes
+  -->
+  <region name="exec" delimClass="quotes" innerClass="string" start="`" end="`">
+    <contains block="containedvar"/>
+    <contains block="specialvar"/>
+    <contains block="curlyvar"/>
+  </region>
+
+  <region name="strsingle" delimClass="quotes" innerClass="string" start="'" end="'"/>
+
+  <block name="escaped" match="\\\\|\\&quot;|\\'|\\`" innerClass="special" contained="yes">
+    <onlyin region="qstatement"/>
+    <onlyin region="strsingle"/>
+    <onlyin region="exec"/>
+  </block>
+
+  <region name="strdouble" delimClass="quotes" innerClass="string" start="&quot;" end="&quot;">
+    <contains block="containedvar"/>
+    <contains block="specialvar"/>
+    <contains block="curlyvar"/>
+  </region>
+
+  <block name="descaped" match="\\[\\&quot;'`tnr\$\{@]" innerClass="special" contained="yes">
+    <onlyin region="strdouble"/>
+    <onlyin region="q-w-q-statement"/>
+  </block>
+
+  <!-- logical op.
+  <block name="logic" match="\|\||&amp;&amp;" innerClass="reserved" contained="yes"/>-->
+
+  <!--
+  identifiers
+  -->
+  <block name="identifier" match="[a-z_]\w*" innerClass="identifier" case="no"/>
+
+  <!--
+  numbers
+  -->
+  <block name="number" match="\d*\.?\d+" innerClass="number"/>
+
+  <!--
+  GNU and posix standard shell utilities here.
+  -->
+  <keywords name="reserved" inherits="identifier" innerClass="reserved" case = "yes">
+      <keyword match="cd"/>
+      <keyword match="cp"/>
+      <keyword match="rm"/>
+      <keyword match="echo"/>
+      <keyword match="printf"/>
+      <keyword match="exit"/>
+      <keyword match="cut"/>
+      <keyword match="join"/>
+      <keyword match="comm"/>
+      <keyword match="fmt"/>
+      <keyword match="grep"/>
+      <keyword match="egrep"/>
+      <keyword match="fgrep"/>
+      <keyword match="sed"/>
+      <keyword match="awk"/>
+      <keyword match="yes"/>
+      <keyword match="false"/>
+      <keyword match="true"/>
+      <keyword match="test"/>
+      <keyword match="expr"/>
+      <keyword match="tee"/>
+      <keyword match="basename"/>
+      <keyword match="dirname"/>
+      <keyword match="pathchk"/>
+      <keyword match="pwd"/>
+      <keyword match="stty"/>
+      <keyword match="tty"/>
+      <keyword match="env"/>
+      <keyword match="printenv"/>
+      <keyword match="id"/>
+      <keyword match="logname"/>
+      <keyword match="whoami"/>
+      <keyword match="groups"/>
+      <keyword match="users"/>
+      <keyword match="who"/>
+      <keyword match="date"/>
+      <keyword match="uname"/>
+      <keyword match="hostname"/>
+      <keyword match="chroot"/>
+      <keyword match="nice"/>
+      <keyword match="nohup"/>
+      <keyword match="sleep"/>
+      <keyword match="factor"/>
+      <keyword match="seq"/>
+      <keyword match="getopt"/>
+      <keyword match="getopts"/>
+      <keyword match="options"/>
+      <keyword match="shift"/>
+  </keywords>
+
+  <keywords name="flowcontrol" inherits="identifier" innerClass="reserved" case = "yes">
+      <keyword match="if"/>
+      <keyword match="fi"/>
+      <keyword match="then"/>
+      <keyword match="else"/>
+      <keyword match="elif"/>
+      <keyword match="case"/>
+      <keyword match="esac"/>
+      <keyword match="while"/>
+      <keyword match="done"/>
+      <keyword match="for"/>
+      <keyword match="in"/>
+      <keyword match="function"/>
+      <keyword match="until"/>
+      <keyword match="do"/>
+      <keyword match="select"/>
+      <keyword match="time"/>
+      <!--
+      <keyword match="[["/>
+      <keyword match="]]"/>
+      -->
+      <keyword match="read"/>
+      <keyword match="set"/>
+  </keywords>
+
+</highlight>

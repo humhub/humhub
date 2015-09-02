@@ -1,0 +1,1 @@
+- Updated JCrop (http://deepliquid.com/content/Jcrop.html) to v0.9.12

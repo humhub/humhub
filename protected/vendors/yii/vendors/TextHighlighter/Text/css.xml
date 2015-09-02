@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+<!-- $Id: css.xml,v 1.2 2008/01/01 23:45:07 ssttoo Exp $ -->
+
+<highlight lang="css" case="no">
+
+  <authors>
+    <author name="Andrey Demenev" email="demenev@gmail.com"/>
+  </authors>
+
+
+  <default innerClass="code" />
+
+
+  <region name="mlcomment" innerClass="comment" start="\/\*" end="\*\/" >
+
+  </region>
+
+
+  <block name="atrule" match="(@[a-z\d]+)"
+         innerClass="var" never-contained="yes"/>
+
+  <region name="property" start="[a-z][a-z\d\-]*\s*:" end="(?=;|\})"
+         innerClass="code" delimClass="reserved" contained="yes"/>
+
+  <block name="selector" match="(((\.|#)?[a-z]+[a-z\d\-]*(?![a-z\d\-]))|(\*))(?!\s*:\s*[\s\{])"
+         innerClass="identifier" >
+  </block>
+
+  <block name="pseudo" match=":[a-z][a-z\d\-]*"
+         innerClass="special" />
+
+  <block name="bescaped" match="\\[\\(\\)\\]"
+         innerClass="string" contained="yes"/>
+
+
+  <region name="paramselector" start="\[" end="\]" innerClass="code"
+          delimClass="brackets" >
+    <contains block="paramname" />
+    <not-contains block="identifier" />
+    <contains region="strdouble" />
+    <contains region="strsingle" />
+  </region>
+
+  <region name="block" start="\{" end="\}" innerClass="code"
+          delimClass="brackets" >
+    <contains region="block" />
+    <contains region="property" />
+    <contains block="selector" />
+    <contains region="mlcomment" />
+  </region>
+
+  <region name="brackets" start="\(" end="\)" innerClass="string"
+          delimClass="brackets" contained="yes">
+    <contains block="bescaped"/>
+  </region>
+
+  <region name="strsingle" delimClass="quotes" innerClass="string" start="'" end="'" contained="yes"/>
+
+  <block name="escaped" match="\\\\|\\&quot;|\\'|\\`" innerClass="special" contained="yes">
+    <onlyin region="strsingle"/>
+  </block>
+
+  <block name="descaped" match="\\\\|\\&quot;|\\'|\\`|\\t|\\n|\\r" innerClass="special" contained="yes">
+    <onlyin region="strdouble"/>
+  </block>
+
+  <region name="strdouble" delimClass="quotes" innerClass="string"
+          start="&quot;" end="&quot;" contained="yes" />
+
+  <block name="measure" match="\d*\.?\d+(\%|em|ex|pc|pt|px|in|mm|cm)"
+         innerClass="number" contained="yes">
+    <onlyin region="property"/>
+    <partClass index="1" innerClass="string" />
+  </block>
+
+  <block name="number" match="\d*\.?\d+" innerClass="number" contained="yes" >
+    <onlyin region="property"/>
+  </block>
+
+  <block name="identifier" match="[a-z][a-z\d\-]*"
+         innerClass="code" contained="yes">
+    <onlyin region="property"/>
+  </block>
+
+  <block name="hexcolor" match="#([\da-f]{6}|[\da-f]{3})\b" innerClass="var" contained="yes">
+    <onlyin region="property"/>
+  </block>
+
+  <block name="paramname" match="[\w\-\:]+" innerClass="var" contained="yes">
+    <onlyin region="paramselector"/>
+  </block>
+
+  <keywords name="propertyValue" inherits="identifier" innerClass="string" case = "no">
+        <word name="left-side"/>
+        <keyword match="far-left"/>
+        <keyword match="left"/>
+        <keyword match="center-left"/>
+        <keyword match="center-right"/>
+        <keyword match="center"/>
+        <keyword match="far-right"/>
+        <keyword match="right-side"/>
+        <keyword match="right"/>
+        <keyword match="behind"/>
+        <keyword match="leftwards"/>
+        <keyword match="rightwards"/>
+        <keyword match="inherit"/>
+        <keyword match="scroll"/>
+        <keyword match="fixed"/>
+        <keyword match="transparent"/>
+        <keyword match="none"/>
+        <keyword match="repeat-x"/>
+        <keyword match="repeat-y"/>
+        <keyword match="repeat"/>
+        <keyword match="no-repeat"/>
+        <keyword match="collapse"/>
+        <keyword match="separate"/>
+        <keyword match="auto"/>
+        <keyword match="top"/>
+        <keyword match="bottom"/>
+        <keyword match="both"/>
+        <keyword match="open-quote"/>
+        <keyword match="close-quote"/>
+        <keyword match="no-open-quote"/>
+        <keyword match="no-close-quote"/>
+        <keyword match="crosshair"/>
+        <keyword match="default"/>
+        <keyword match="pointer"/>
+        <keyword match="move"/>
+        <keyword match="e-resize"/>
+        <keyword match="ne-resize"/>
+        <keyword match="nw-resize"/>
+        <keyword match="n-resize"/>
+        <keyword match="se-resize"/>
+        <keyword match="sw-resize"/>
+        <keyword match="s-resize"/>
+        <keyword match="text"/>
+        <keyword match="wait"/>
+        <keyword match="help"/>
+        <keyword match="ltr"/>
+        <keyword match="rtl"/>
+        <keyword match="inline"/>
+        <keyword match="block"/>
+        <keyword match="list-item"/>
+        <keyword match="run-in"/>
+        <keyword match="compact"/>
+        <keyword match="marker"/>
+        <keyword match="table"/>
+        <keyword match="inline-table"/>
+        <keyword match="table-row-group"/>
+        <keyword match="table-header-group"/>
+        <keyword match="table-footer-group"/>
+        <keyword match="table-row"/>
+        <keyword match="table-column-group"/>
+        <keyword match="table-column"/>
+        <keyword match="table-cell"/>
+        <keyword match="table-caption"/>
+        <keyword match="below"/>
+        <keyword match="level"/>
+        <keyword match="above"/>
+        <keyword match="higher"/>
+        <keyword match="lower"/>
+        <keyword match="show"/>
+        <keyword match="hide"/>
+        <keyword match="caption"/>
+        <keyword match="icon"/>
+        <keyword match="menu"/>
+        <keyword match="message-box"/>
+        <keyword match="small-caption"/>
+        <keyword match="status-bar"/>
+        <keyword match="normal"/>
+        <keyword match="wider"/>
+        <keyword match="narrower"/>
+        <keyword match="ultra-condensed"/>
+        <keyword match="extra-condensed"/>
+        <keyword match="condensed"/>
+        <keyword match="semi-condensed"/>
+        <keyword match="semi-expanded"/>
+        <keyword match="expanded"/>
+        <keyword match="extra-expanded"/>
+        <keyword match="ultra-expanded"/>
+        <keyword match="italic"/>
+        <keyword match="oblique"/>
+        <keyword match="small-caps"/>
+        <keyword match="bold"/>
+        <keyword match="bolder"/>
+        <keyword match="lighter"/>
+        <keyword match="inside"/>
+        <keyword match="outside"/>
+        <keyword match="disc"/>
+        <keyword match="circle"/>
+        <keyword match="square"/>
+        <keyword match="decimal"/>
+        <keyword match="decimal-leading-zero"/>
+        <keyword match="lower-roman"/>
+        <keyword match="upper-roman"/>
+        <keyword match="lower-greek"/>
+        <keyword match="lower-alpha"/>
+        <keyword match="lower-latin"/>
+        <keyword match="upper-alpha"/>
+        <keyword match="upper-latin"/>
+        <keyword match="hebrew"/>
+        <keyword match="armenian"/>
+        <keyword match="georgian"/>
+        <keyword match="cjk-ideographic"/>
+        <keyword match="hiragana"/>
+        <keyword match="katakana"/>
+        <keyword match="hiragana-iroha"/>
+        <keyword match="katakana-iroha"/>
+        <keyword match="crop"/>
+        <keyword match="cross"/>
+        <keyword match="invert"/>
+        <keyword match="visible"/>
+        <keyword match="hidden"/>
+        <keyword match="always"/>
+        <keyword match="avoid"/>
+        <keyword match="x-low"/>
+        <keyword match="low"/>
+        <keyword match="medium"/>
+        <keyword match="high"/>
+        <keyword match="x-high"/>
+        <keyword match="mix?"/>
+        <keyword match="repeat?"/>
+        <keyword match="static"/>
+        <keyword match="relative"/>
+        <keyword match="absolute"/>
+        <keyword match="portrait"/>
+        <keyword match="landscape"/>
+        <keyword match="spell-out"/>
+        <keyword match="once"/>
+        <keyword match="digits"/>
+        <keyword match="continuous"/>
+        <keyword match="code"/>
+        <keyword match="x-slow"/>
+        <keyword match="slow"/>
+        <keyword match="fast"/>
+        <keyword match="x-fast"/>
+        <keyword match="faster"/>
+        <keyword match="slower"/>
+        <keyword match="justify"/>
+        <keyword match="underline"/>
+        <keyword match="overline"/>
+        <keyword match="line-through"/>
+        <keyword match="blink"/>
+        <keyword match="capitalize"/>
+        <keyword match="uppercase"/>
+        <keyword match="lowercase"/>
+        <keyword match="embed"/>
+        <keyword match="bidi-override"/>
+        <keyword match="baseline"/>
+        <keyword match="sub"/>
+        <keyword match="super"/>
+        <keyword match="text-top"/>
+        <keyword match="middle"/>
+        <keyword match="text-bottom"/>
+        <keyword match="silent"/>
+        <keyword match="x-soft"/>
+        <keyword match="soft"/>
+        <keyword match="loud"/>
+        <keyword match="x-loud"/>
+        <keyword match="pre"/>
+        <keyword match="nowrap"/>
+        <keyword match="serif"/>
+        <keyword match="sans-serif"/>
+        <keyword match="cursive"/>
+        <keyword match="fantasy"/>
+        <keyword match="monospace"/>
+        <keyword match="empty"/>
+        <keyword match="string"/>
+        <keyword match="strict"/>
+        <keyword match="loose"/>
+        <keyword match="char"/>
+        <keyword match="true"/>
+        <keyword match="false"/>
+        <keyword match="dotted"/>
+        <keyword match="dashed"/>
+        <keyword match="solid"/>
+        <keyword match="double"/>
+        <keyword match="groove"/>
+        <keyword match="ridge"/>
+        <keyword match="inset"/>
+        <keyword match="outset"/>
+        <keyword match="larger"/>
+        <keyword match="smaller"/>
+        <keyword match="xx-small"/>
+        <keyword match="x-small"/>
+        <keyword match="small"/>
+        <keyword match="large"/>
+        <keyword match="x-large"/>
+        <keyword match="xx-large"/>
+        <keyword match="all"/>
+        <keyword match="newspaper"/>
+        <keyword match="distribute"/>
+        <keyword match="distribute-all-lines"/>
+        <keyword match="distribute-center-last"/>
+        <keyword match="inter-word"/>
+        <keyword match="inter-ideograph"/>
+        <keyword match="inter-cluster"/>
+        <keyword match="kashida"/>
+        <keyword match="ideograph-alpha"/>
+        <keyword match="ideograph-numeric"/>
+        <keyword match="ideograph-parenthesis"/>
+        <keyword match="ideograph-space"/>
+        <keyword match="keep-all"/>
+        <keyword match="break-all"/>
+        <keyword match="break-word"/>
+        <keyword match="lr-tb"/>
+        <keyword match="tb-rl"/>
+        <keyword match="thin"/>
+        <keyword match="thick"/>
+        <keyword match="inline-block"/>
+        <keyword match="w-resize"/>
+        <keyword match="hand"/>
+        <keyword match="distribute-letter"/>
+        <keyword match="distribute-space"/>
+        <keyword match="whitespace"/>
+        <keyword match="male"/>
+        <keyword match="female"/>
+        <keyword match="child"/>
+  </keywords>
+
+
+  <keywords name="namedcolor" inherits="identifier" innerClass="var" case = "no">
+    <keyword match="aqua"/>
+    <keyword match="black"/>
+    <keyword match="blue"/>
+    <keyword match="fuchsia"/>
+    <keyword match="gray"/>
+    <keyword match="green"/>
+    <keyword match="lime"/>
+    <keyword match="maroon"/>
+    <keyword match="navy"/>
+    <keyword match="olive"/>
+    <keyword match="purple"/>
+    <keyword match="red"/>
+    <keyword match="silver"/>
+    <keyword match="teal"/>
+    <keyword match="white"/>
+    <keyword match="yellow"/>
+    <keyword match="ActiveBorder"/>
+    <keyword match="ActiveCaption"/>
+    <keyword match="AppWorkspace"/>
+    <keyword match="Background"/>
+    <keyword match="ButtonFace"/>
+    <keyword match="ButtonHighlight"/>
+    <keyword match="ButtonShadow"/>
+    <keyword match="ButtonText"/>
+    <keyword match="CaptionText"/>
+    <keyword match="GrayText"/>
+    <keyword match="Highlight"/>
+    <keyword match="HighlightText"/>
+    <keyword match="InactiveBorder"/>
+    <keyword match="InactiveCaption"/>
+    <keyword match="InactiveCaptionText"/>
+    <keyword match="InfoBackground"/>
+    <keyword match="InfoText"/>
+    <keyword match="Menu"/>
+    <keyword match="MenuText"/>
+    <keyword match="Scrollbar"/>
+    <keyword match="ThreeDDarkShadow"/>
+    <keyword match="ThreeDFace"/>
+    <keyword match="ThreeDHighlight"/>
+    <keyword match="ThreeDLightShadow"/>
+    <keyword match="ThreeDShadow"/>
+    <keyword match="Window"/>
+    <keyword match="WindowFrame"/>
+    <keyword match="WindowText"/>
+  </keywords>
+</highlight>

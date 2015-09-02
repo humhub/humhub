@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!-- $Id: ruby.xml,v 1.1 2007/06/03 02:35:28 ssttoo Exp $ -->
+
+<highlight lang="ruby" case="no">
+
+  <authors>
+    <author name="Andrey Demenev" email="demenev@gmail.com"/>
+  </authors>
+
+  <comment>
+FIXME:  While this construction : s.split /z/i 
+is valid, regular expression is not recognized as such
+(/ folowing an identifier or number is not recognized as
+start of RE), making highlighting improper
+
+%q(a (nested) string) does not get highlighted correctly
+  </comment>
+
+  <default innerClass="code" />
+
+  <region name="data" start="/^__END__$/m" end="$" delimClass="reserved" innerClass="comment" never-conteined="yes" />
+  
+  <region name="strdouble" delimClass="quotes" innerClass="string" 
+          start="&quot;" end="&quot;" >
+  </region>
+
+  <region name="qstrdouble" delimClass="quotes" innerClass="string" 
+      start="%[Qx]([!&quot;#\$%&amp;'+\-*.\/:;=?@^`|~{&lt;\[(])" end="%b1%"  remember="yes" />
+  
+  <region name="strsingle" delimClass="quotes" innerClass="string" 
+          start="'" end="'" />
+
+  <region name="qstrsingle" delimClass="quotes" innerClass="string" 
+      start="%[wq]([!&quot;#\$%&amp;'+\-*.\/:;=?@^`|~{&lt;\[(])" end="%b1%"  remember="yes" />
+
+  <block name="global" match="\$(\W|\w+)" innerClass="var" />
+
+  <block name="classvar" match="/@@?[_a-z][\d_a-z]*/i" innerClass="var" />
+  
+  <region name="brackets" delimClass="brackets" innerClass="code" start="\(" end="\)" >
+    <contains all="yes"/>
+  </region>
+
+  <region name="sqbrackets" delimClass="brackets" innerClass="code" start="\[" end="\]" >
+    <contains all="yes"/>
+  </region>
+
+  <block name="escaped" match="\\." innerClass="special" contained="yes">
+    <onlyin region="qstrsingle"/>
+    <onlyin region="strsingle"/>
+    <onlyin region="qstrdouble"/>
+    <onlyin region="strdouble"/>
+    <onlyin region="regexp"/>
+  </block>
+
+  <block name="identifier" match="[a-z_]\w*" innerClass="identifier" />
+
+  <block name="exponent" 
+         match="((\d+|((\d*\.\d+)|(\d+\.\d*)))[eE][+-]?\d+)" 
+         innerClass="number" />
+
+  <block name="float" match="(\d*\.\d+)|(\d+\.\d*)" innerClass="number"/>
+
+  <block name="hexinteger" match="0[xX][\da-f]+l?" innerClass="number" />
+  
+  <block name="integer" match="\d+l?|\b0l?\b" innerClass="number" />
+
+  <block name="octinteger" match="0[0-7]+l?" innerClass="number" />
+
+
+  <region name="rubydoc" start="/^=begin$/m" end="/^=end$/m" delimClass="comment" innerClass="comment">
+      <contains block="cvstag" />
+  </region>
+  
+  <block name="cvstag" match="\$\w+\s*:.+\$" innerClass="inlinedoc" contained="yes">
+    <onlyin region="comment"/>
+    <onlyin region="rubydoc"/>
+  </block>
+
+  <region name="comment" innerClass="comment" start="#" end="/$/m" delimClass="comment" >
+      <contains block="cvstag" />
+  </region>
+
+  <region name="regexp" delimClass="quotes" innerClass="string" start="\s*\/" end="\/[iomx]*" 
+   neverAfter="(?&lt;!\band|\bor|\bwhile|\buntil|\bunless|\bif|\belsif|\bwhen|[~=!|&amp;(,\[])$">
+  </region>
+  
+  <keywords name="reserved" inherits="identifier" innerClass="reserved" case = "yes">
+      <keyword match="__FILE__" />
+      <keyword match="require" />
+      <keyword match="and" />
+      <keyword match="def" />
+      <keyword match="end" />
+      <keyword match="in" />
+      <keyword match="or" />
+      <keyword match="self" />
+      <keyword match="unless" />
+      <keyword match="__LINE__" />
+      <keyword match="begin" />
+      <keyword match="defined?" />
+      <keyword match="ensure" />
+      <keyword match="module" />
+      <keyword match="redo" />
+      <keyword match="super" />
+      <keyword match="until" />
+      <keyword match="BEGIN" />
+      <keyword match="break" />
+      <keyword match="do" />
+      <keyword match="false" />
+      <keyword match="next" />
+      <keyword match="rescue" />
+      <keyword match="then" />
+      <keyword match="when" />
+      <keyword match="END" />
+      <keyword match="case" />
+      <keyword match="else" />
+      <keyword match="for" />
+      <keyword match="nil" />
+      <keyword match="retry" />
+      <keyword match="true" />
+      <keyword match="while" />
+      <keyword match="alias" />
+      <keyword match="module_function" />
+      <keyword match="private" />
+      <keyword match="public" />
+      <keyword match="protected" />
+      <keyword match="attr_reader" />
+      <keyword match="attr_writer" />
+      <keyword match="attr_accessor" />
+      <keyword match="class" />
+      <keyword match="elsif" />
+      <keyword match="if" />
+      <keyword match="not" />
+      <keyword match="return" />
+      <keyword match="undef" />
+      <keyword match="yield" />
+  </keywords>
+
+
+</highlight>
+
