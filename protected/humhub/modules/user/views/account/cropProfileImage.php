@@ -23,7 +23,7 @@ use yii\helpers\Url;
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
                 img {
-                    max-width: 100% !important;
+                    max-width: none;
                 }
 
                 .jcrop-keymgr {
@@ -45,6 +45,7 @@ use yii\helpers\Url;
                         'setSelect' => [0, 0, 100, 100],
                         'bgColor' => 'black',
                         'bgOpacity' => '0.5',
+                        'boxWidth' => '440',
                         'onChange' => new yii\web\JsExpression('function(c){ console.log("fooo"); $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
                     ]
                 ]);

@@ -20,13 +20,12 @@ use yii\helpers\Url;
 
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
+
                 img {
-                    max-width: 100% !important;
+                    max-width: none;
                 }
 
-                .jcrop-keymgr {
-                    display: none !important;
-                }
+
 
             </style>
 
@@ -42,6 +41,7 @@ use yii\helpers\Url;
                         //'maxSize' => [200, 200],
                         'setSelect' => [0, 0, 267, 48],
                         'bgColor' => 'black',
+                        'boxWidth' => '440',
                         'bgOpacity' => '0.5',
                         'onChange' => new yii\web\JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
                     ]
