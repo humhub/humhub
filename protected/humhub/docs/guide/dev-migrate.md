@@ -4,14 +4,12 @@ Here you will learn how you can adapt existing modules to working fine with actu
 
 ## to 0.20
 
-**Important: This relases updates to Yii 2!**
+**Important: This release upgrades from Yii1 to Yii2 Framework!**
 
-This release requires a migration of all modules/themes.
+This requires an extensive migration of all custom modules/themes.
 Find more details here: [HumHub 0.20 Migration](dev-migrate-0.20.md)
 
 ## to 0.12
-
-TBD
 
 - Rewritten Search 
 

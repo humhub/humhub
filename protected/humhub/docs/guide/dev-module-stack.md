@@ -1,10 +1,10 @@
 Widget Stack
 ============
 
+- Base class: [[humhub\widgets\BaseStack]] 
+- Use Cases: Sidebars, ...
 
-
- 
-
+TBD
 
 
 ## Usage 
@@ -24,7 +24,7 @@ echo \humhub\core\space\widgets\Sidebar::widget(['widgets' => [
 
 ### Example
 
-__autostart.php__
+__config.php__
 
 ```php
     //...

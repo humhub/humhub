@@ -21,7 +21,6 @@ Administration - Topics
 * [Search](admin-adv-search.md)
 * [XSendFile](admin-adv-xsendfile.md)
 * [Logging](admin-adv-logging.md)
-* [Timezones](admin-adv-timezones.md)
 
 Development
 ---------------------

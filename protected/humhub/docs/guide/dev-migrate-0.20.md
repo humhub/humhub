@@ -1,11 +1,12 @@
 # Module Migration Guide to HumHub 0.20
 
-This document describes the module changes in HumHub 0.20.
+This document briefly describes the module api changes in HumHub 0.20.
 
-Since HumHub 0.20 is now based on Yii 2 you also need to migrate your modules to Yii 2.
-See more information about Yii 2.0 here: [Yii2 Migration](dev-migrate-0.20-yii2.md)
+Since HumHub 0.20 is now based on Yii 2 you also need to migrate your modules to it.
 
-Current Status: [HumHub 0.20 - Status](dev-migrate-0.20-status.md)
+See more information about Yii 2.0 here: 
+- [Yii: Upgrading from Version 1.1](http://www.yiiframework.com/doc-2.0/guide-intro-upgrade-from-v1.html)
+- [Yii2 Migration Notes](dev-migrate-0.20-yii2.md)
 
 ## Migration
 

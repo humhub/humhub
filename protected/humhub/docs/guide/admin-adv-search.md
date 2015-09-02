@@ -1,8 +1,17 @@
 Search 
 ======
 
-The search lucene index is located under /protected/runtime/searchdb/.
 
-If there are any problems with the search index, you can rebuild it with the command.
-``./yiic search_rebuild``
+### Search Index Rebuilding
 
+If you need to rebuild the search index (e.g. after updating) you need to run following command:
+
+```
+cd /path/to/humhub/protected
+php yii search/rebuild
+```
+
+### Zend Lucence
+
+By default HumHub is using a *Lucence* Index (Zend Lucence) to store search data.
+Folder:  */protected/runtime/searchdb/*

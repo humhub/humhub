@@ -29,9 +29,8 @@ More Informations
 
 
 
-Debian
-------
-
+Debian / Ubuntu
+---------------
 Requires package ``libapache2-mod-xsendfile``
 
  
