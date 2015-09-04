@@ -101,6 +101,7 @@ class Events extends \yii\base\Object
         $stackWidget->addWidget(widgets\EditLink::className(), ['content' => $content, 'wallEntryWidget' => $stackWidget->wallEntryWidget]);
         //$stackWidget->addWidget(widgets\NotificationSwitchLink::className(), ['content' => $content]);
         $stackWidget->addWidget(widgets\PermaLink::className(), ['content' => $content]);
+        $stackWidget->addWidget(widgets\StickLink::className(), ['content' => $content]);
         $stackWidget->addWidget(widgets\ArchiveLink::className(), ['content' => $content]);
     }
 

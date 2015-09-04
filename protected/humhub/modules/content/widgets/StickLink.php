@@ -1,6 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\content\widgets;
+
+use Yii;
+use yii\helpers\Url;
+use humhub\modules\content\components\ContentContainerController;
 
 /**
  * StickLinkWidget for Wall Entries shows a stick link.
@@ -15,39 +25,25 @@ class StickLink extends \yii\base\Widget
 {
 
     /**
-     * Content Object with SIContentBehaviour
-     * @var type
+     * @var \humhub\modules\content\components\ContentActiveRecord
      */
     public $content;
 
     /**
-     * Inits the widget and set some important javascript variables.
-     */
-    public function init()
-    {
-
-        Yii::app()->clientScript->setJavascriptVariable(
-                "wallStickLinkUrl", Yii::app()->createUrl('//wall/content/stick', array('className' => '-className-', 'id' => '-id-'))
-        );
-
-        Yii::app()->clientScript->setJavascriptVariable(
-                "wallUnstickLinkUrl", Yii::app()->createUrl('//wall/content/unstick', array('className' => '-className-', 'id' => '-id-'))
-        );
-    }
-
-    /**
-     * Executes the widget.
+     * @inheritdoc
      */
     public function run()
     {
-        if (!Yii::app()->controller instanceof ContentContainerController || !$this->content->content->canStick()) {
+
+        // Show stick links only inside content container streams
+        if (!Yii::$app->controller instanceof ContentContainerController || !$this->content->content->canStick()) {
             return;
         }
 
-        $this->render('stickLink', array(
-            'object' => $this->content,
-            'model' => $this->content->content->object_model,
-            'id' => $this->content->content->object_id,
+        return $this->render('stickLink', array(
+                    'stickUrl' => Url::to(['/content/content/stick', 'id' => $this->content->content->id]),
+                    'unstickUrl' => Url::to(['/content/content/un-stick', 'id' => $this->content->content->id]),
+                    'isSticked' => $this->content->content->isSticked()
         ));
     }
 

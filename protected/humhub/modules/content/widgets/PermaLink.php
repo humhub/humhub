@@ -28,11 +28,12 @@ class PermaLink extends \yii\base\Widget
     public $content;
 
     /**
-     * Executes the widget.
+     * @inheritdoc
      */
     public function run()
     {
         $permaLink = Url::to(['/content/perma', 'id' => $this->content->content->id], true);
+        
         return $this->render('permaLink', array(
                     'permaLink' => $permaLink,
                     'id' => $this->content->content->id

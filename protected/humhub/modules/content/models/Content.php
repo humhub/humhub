@@ -439,11 +439,8 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function countStickedItems()
     {
-
-        $sql = "SELECT count(*) FROM wall_entry LEFT JOIN content ON content.id = wall_entry.content_id WHERE wall_entry.wall_id=:wallId AND content.sticked = 1";
-        $params = array(':wallId' => $this->container->wall_id);
-
-        return WallEntry::model()->countBySql($sql, $params);
+        $wallId = $this->container->wall_id;
+        return WallEntry::find()->joinWith('content')->where(['wall_entry.wall_id'=>$wallId, 'content.sticked' => 1])->count();
     }
 
     /**

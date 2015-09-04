@@ -1,9 +1,4 @@
-function wallStick(className, id) {
-
-    url = wallStickLinkUrl.replace('-className-', className);
-    url = url.replace('-id-', id);
-
-
+function wallStick(url) {
     $.ajax({
         dataType: "json",
         type: 'post',
@@ -16,7 +11,6 @@ function wallStick(className, id) {
                     currentStream.prependEntry(wallEntryId);
                 });
                 $('html, body').animate({scrollTop: 0}, 'slow');
-
             }
         } else {
             alert(data.errorMessage);
@@ -24,13 +18,7 @@ function wallStick(className, id) {
     });
 }
 
-function wallUnstick(className, id) {
-
-    url = wallUnstickLinkUrl.replace('-className-', className);
-    url = url.replace('-id-', id);
-
-
-
+function wallUnstick(url) {
     $.ajax({
         dataType: "json",
         type: 'post',
