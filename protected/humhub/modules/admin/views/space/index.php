@@ -1,8 +1,5 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
 use humhub\modules\space\models\Space;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -81,7 +78,7 @@ use yii\grid\GridView;
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['width' => '80px'],
                     'buttons' => [
-                        
+
                         'view' => function($url, $model) {
                             return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
                         },
@@ -89,7 +86,7 @@ use yii\grid\GridView;
                             return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/admin/edit'), ['class' => 'btn btn-primary btn-xs tt']);
                         },
                                 'delete' => function($url, $model) {
-                            return Html::a('<i class="fa fa-times"></i>', Url::toRoute(['delete', 'id' => $model->id]), ['class' => 'btn btn-danger btn-xs tt']);
+                            return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/admin/delete'), ['class' => 'btn btn-danger btn-xs tt']);
                         }
                             ],
                         ],
