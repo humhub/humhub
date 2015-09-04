@@ -174,25 +174,22 @@ class ContentController extends Controller
 
     public function actionNotificationSwitch()
     {
+        Yii::$app->response->format = 'json';
+
         $this->forcePostRequest();
 
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::$app->request->getParam('id', "");
-        $className = Yii::$app->request->getParam('className', "");
-        $switch = Yii::$app->request->getParam('switch', true);
-
-        $object = Content::Get($className, $id);
-
-        if ($object != null) {
-            $object->follow(Yii::$app->user->id, ($switch == 1) ? true : false );
+        $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
+        if ($content !== null) {
+            $switch = (Yii::$app->request->get('switch', true) == 1) ? true : false;
+            $obj = $content->getPolymorphicRelation();
+            $obj->follow(Yii::$app->user->id, $switch);
             $json['success'] = true;
         }
 
-        // returns JSON
-        echo CJSON::encode($json);
-        Yii::$app->end();
+        return $json;
     }
 
 }

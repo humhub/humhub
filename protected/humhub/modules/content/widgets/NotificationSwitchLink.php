@@ -20,13 +20,12 @@ class NotificationSwitchLink extends \yii\base\Widget
 {
 
     /**
-     * Content Object with SIContentBehaviour
-     * @var type
+     * @var \humhub\modules\content\components\ContentActiveRecord
      */
     public $content;
 
     /**
-     * Executes the widget.
+     * @inheritdoc
      */
     public function run()
     {
@@ -35,8 +34,8 @@ class NotificationSwitchLink extends \yii\base\Widget
         }
 
         return $this->render('notificationSwitchLink', array(
-                    'content' => $this->content,
-                    'state' => $this->content->isFollowedByUser(\Yii::$app()->user->id, true)
+                    'content' => $this->content->content,
+                    'state' => $this->content->isFollowedByUser(\Yii::$app->user->id, true)
         ));
     }
 
