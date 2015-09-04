@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use Yii;
 use yii\base\ViewContextInterface;
+use yii\helpers\Url;
 use ReflectionClass;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
@@ -85,6 +86,11 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
     public $moduleId = "";
 
     /**
+     * @var boolean automatically mark notification as seen after click on it
+     */
+    public $markAsSeenOnClick = true;
+
+    /**
      * Renders the notification
      *
      * @return string
@@ -96,7 +102,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
         $params['space'] = $this->space;
         $params['record'] = $this->record;
         $params['isNew'] = ($this->record->seen != 1);
-        $params['url'] = $this->getUrl();
+        $params['url'] = Url::to(['/notification/entry', 'id' => $this->record->id], true);
 
         $viewFile = $this->getViewPath() . '/' . $this->viewName . '.php';
 
@@ -245,4 +251,13 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
                 \humhub\widgets\RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) . '"';
     }
 
+    /**
+     * Marks notification as seen
+     */
+    public function markAsSeen()
+    {
+        $this->record->seen = 1;
+        $this->record->save();
+    }
+    
 }

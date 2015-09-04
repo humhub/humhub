@@ -28,6 +28,11 @@ class Invite extends BaseNotification
      */
     public $viewName = "invite";
 
+    /**
+     * @inheritdoc
+     */
+    public $markAsSeenOnClick = false;
+
 }
 
 ?>

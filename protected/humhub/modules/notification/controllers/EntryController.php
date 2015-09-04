@@ -8,7 +8,9 @@
 
 namespace humhub\modules\notification\controllers;
 
+use Yii;
 use humhub\components\Controller;
+use humhub\modules\notification\models\Notification;
 
 /**
  * EntryController
@@ -32,31 +34,32 @@ class EntryController extends Controller
     }
 
     /**
-     * Returns a List of all Comments belong to this Model
+     * Redirects to the target URL of the given notification
      */
     public function actionIndex()
     {
+        $notificationModel = Notification::findOne(['id' => Yii::$app->request->get('id'), 'user_id' => Yii::$app->user->id]);
 
-        $notificationId = (int) Yii::app()->request->getParam('id');
+        if ($notificationModel === null) {
+            throw new \yii\web\HttpException(404, 'Could not find requested notification!');
+        }
 
-        $notification = Notification::model()->findByAttributes(array('user_id' => Yii::app()->user->id, 'id' => $notificationId));
+        $notification = $notificationModel->getClass();
 
-        if ($notification == null)
-            throw new CHttpException(500, 'Invalid notification id!');
+        if ($notification->markAsSeenOnClick) {
+            $notification->markAsSeen();
 
-
-        if ($notification->class != "SpaceApprovalRequestNotification" && $notification->class != "SpaceInviteNotification") {
-            $notification->seen = 1;
-            $notification->save();
-
-            // Mark similar notification as read
-            $notifications = Notification::model()->findAllByAttributes(array('target_object_model' => $notification->target_object_model, 'target_object_id' => $notification->target_object_id, 'user_id' => Yii::app()->user->id), 'seen != 1');
-            foreach ($notifications as $n) {
-                $n->markAsSeen();
+            // Automatically mark similar notification as seen
+            $similarNotifications = Notification::find()
+                    ->where(['source_class' => $notificationModel->source_class, 'source_pk' => $notificationModel->source_pk, 'user_id' => Yii::$app->user->id])
+                    ->andWhere(['!=', 'seen', '1']);
+            foreach ($similarNotifications->all() as $n) {
+                $n->getClass()->markAsSeen();
             }
         }
 
-        $notification->redirectToTarget();
+        // Redirect to notification URL
+        $this->redirect($notification->getUrl());
     }
 
 }

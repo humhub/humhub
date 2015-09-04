@@ -28,6 +28,11 @@ class ApprovalRequest extends BaseNotification
      */
     public $viewName = "approvalRequest";
 
+    /**
+     * @inheritdoc
+     */
+    public $markAsSeenOnClick = false;
+
 }
 
 ?>
