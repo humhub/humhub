@@ -8,12 +8,14 @@
 
 namespace humhub\modules\user\activities;
 
+use humhub\modules\activity\components\BaseActivity;
+
 /**
  * Activity when somebody follows an object
  *
  * @author luke
  */
-class UserFollow extends humhub\modules\activity\components\BaseActivity
+class UserFollow extends BaseActivity
 {
 
     /**
