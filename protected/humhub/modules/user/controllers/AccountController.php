@@ -215,7 +215,7 @@ class AccountController extends Controller
     {
         $user = Yii::$app->user->getIdentity();
         if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
         }
 
         $model = new \humhub\modules\user\models\forms\AccountChangeEmail;

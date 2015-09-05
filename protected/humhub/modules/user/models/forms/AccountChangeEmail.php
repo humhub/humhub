@@ -21,6 +21,7 @@
 namespace humhub\modules\user\models\forms;
 
 use Yii;
+use yii\helpers\Url;
 use humhub\models\Setting;
 
 /**
@@ -67,21 +68,21 @@ class AccountChangeEmail extends \yii\base\Model
      */
     public function sendChangeEmail()
     {
+        $user = Yii::$app->user->getIdentity();
 
-        if ($this->validate()) {
+        $token = md5(Setting::Get('secret') . $user->guid . $this->newEmail);
 
-            $user = Yii::app()->user->getIdentity();
-
-            $token = md5(Setting::Get('secret') . $user->guid . $this->newEmail);
-
-            $message = new HMailMessage();
-            $message->view = "application.modules_core.user.views.mails.ChangeEmail";
-            $message->addFrom(Setting::Get('systemEmailAddress', 'mailing'), Setting::Get('systemEmailName', 'mailing'));
-            $message->addTo($this->newEmail);
-            $message->subject = Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change');
-            $message->setBody(array('user' => $user, 'newEmail' => $this->newEmail, 'token' => $token), 'text/html');
-            Yii::app()->mail->send($message);
-        }
+        $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/ChangeEmail'], [
+            'user' => $user,
+            'newEmail' => $this->newEmail,
+            'approveUrl' => Url::to(["/user/account/change-email-validate", 'email' => $this->newEmail, 'token' => $token], true)
+        ]);
+        $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+        $mail->setTo($this->newEmail);
+        $mail->setSubject(Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change'));
+        $mail->send();
+        
+        return true;
     }
 
 }
