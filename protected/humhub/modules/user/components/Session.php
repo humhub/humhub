@@ -30,6 +30,7 @@ class Session extends DbSession
         $query = \humhub\modules\user\models\User::find();
         $query->leftJoin('user_http_session', 'user_http_session.user_id=user.id');
         $query->andWhere(['IS NOT', 'user_http_session.user_id', new Expression('NULL')]);
+        $query->andWhere(['>', 'user_http_session.expire', time()]);
         return $query;
     }
 
