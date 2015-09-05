@@ -5,10 +5,11 @@ function activityShowItem(activityId) {
 
     $.getJSON(activityInfoUrl.replace('-id-', activityId), function (data) {
         if (data.success) {
-            if (mainStream) {
+            console.log(data);
+            if (typeof mainStream !== "undefined" && data['wallEntryId'] != 0) {
                 mainStream.showItem(data['wallEntryId']);
             } else {
-                window.location.replace(data['url']);
+                window.location.replace(data['permaLink']);
             }
         } else {
             alert("Error: Could not find activity location!");

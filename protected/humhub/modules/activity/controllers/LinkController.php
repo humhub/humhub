@@ -52,14 +52,16 @@ class LinkController extends Controller
 
         if ($activity !== null && $activity->content->canRead()) {
             $json['success'] = 'true';
-            $json['wallEntryId'] = '';
+            $json['wallEntryId'] = '0';
 
             $source = $activity->getSource();
             if ($source instanceof ContentActiveRecord || $source instanceof ContentAddonActiveRecord) {
                 $json['wallEntryId'] = $source->content->getFirstWallEntryId();
+                $json['permaLink'] = $source->content->getUrl();
+            } else {
+                $json['permaLink'] = $activity->content->getUrl();
             }
 
-            $json['permaLink'] = $activity->content->getUrl();
         }
 
         return $json;
