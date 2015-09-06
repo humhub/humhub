@@ -166,7 +166,7 @@ class FileController extends \humhub\components\Controller
                     $filePath = substr($filePath, strlen($docroot));
                 }
             }
-            Yii::$app->response->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $options);
+            Yii::$app->response->xSendFile($filePath . DIRECTORY_SEPARATOR . $fileName, null, $options);
         }
     }
 
