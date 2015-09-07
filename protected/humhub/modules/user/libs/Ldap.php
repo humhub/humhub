@@ -86,8 +86,8 @@ class Ldap extends Object
      */
     public function authenticate($username, $password)
     {
-        $username = $this->ldap->getCanonicalAccountName($username, \Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
         try {
+            $username = $this->ldap->getCanonicalAccountName($username, \Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
             $this->ldap->bind($username, $password);
 
             // Update Users Data
