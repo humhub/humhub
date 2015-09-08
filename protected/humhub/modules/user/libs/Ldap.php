@@ -219,7 +219,7 @@ class Ldap extends Object
 
                 // Update Space Mapping
                 foreach (Space::find()->andWhere(['!=', 'ldap_dn', ''])->all() as $space) {
-                    if (in_array($space->ldap_dn, $node->getAttribute('memberOf'))) {
+                    if (in_array($space->ldap_dn, $node->getAttribute('memberOf')) || strpos($node->getDn(), $space->ldap_dn) !== false) {
                         $space->addMember($user->id);
                     }
                 }
