@@ -89,6 +89,11 @@ use yii\helpers\Url;
             <?php echo $form->textField($model, 'usernameAttribute', array('class' => 'form-control', 'readonly' => Setting::IsFixed('usernameAttribute', 'authentication_ldap'))); ?>
             <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;'); ?></p>
         </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'emailAttribute'); ?>
+            <?php echo $form->textField($model, 'emailAttribute', array('class' => 'form-control', 'readonly' => Setting::IsFixed('emailAttribute', 'authentication_ldap'))); ?>
+            <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;'); ?></p>
+        </div>
 
         <div class="form-group">
             <div class="checkbox">

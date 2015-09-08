@@ -22,6 +22,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     public $loginFilter;
     public $userFilter;
     public $usernameAttribute;
+    public $emailAttribute;
     public $encryptionTypes = array(
         '' => 'None',
         'tls' => 'TLS (aka SSLV2)',
@@ -34,7 +35,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     public function rules()
     {
         return array(
-            array(['enabled', 'refreshUsers', 'usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255),
+            array(['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255),
             array('encryption', 'in', 'range' => array('', 'ssl', 'tls')),
         );
     }
@@ -58,6 +59,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
             'loginFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Login Filter'),
             'userFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'User Filer'),
             'usernameAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username Attribute'),
+            'emailAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'E-Mail Address Attribute'),
         );
     }
 

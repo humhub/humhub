@@ -157,6 +157,7 @@ class SettingController extends Controller
         $form->loginFilter = Setting::Get('loginFilter', 'authentication_ldap');
         $form->userFilter = Setting::Get('userFilter', 'authentication_ldap');
         $form->usernameAttribute = Setting::Get('usernameAttribute', 'authentication_ldap');
+        $form->emailAttribute = Setting::Get('emailAttribute', 'authentication_ldap');
 
         if ($form->password != '')
             $form->password = '---hidden---';
@@ -174,6 +175,7 @@ class SettingController extends Controller
             Setting::Set('loginFilter', $form->loginFilter, 'authentication_ldap');
             Setting::Set('userFilter', $form->userFilter, 'authentication_ldap');
             Setting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
+            Setting::Set('emailAttribute', $form->emailAttribute, 'authentication_ldap');
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
