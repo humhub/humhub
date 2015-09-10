@@ -115,6 +115,14 @@ class DynamicConfig extends \yii\base\Object
             $config['components']['cache'] = [
                 'class' => $cacheClass,
             ];
+
+            // Prefix APC Cache Keys
+            if ($cacheClass == 'yii\caching\ApcCache') {
+                $config['components']['cache'] = [
+                    'keyPrefix' => Yii::$app->id
+                ];
+            }
+            
         }
         // Add User settings
         $config['components']['user'] = array();
