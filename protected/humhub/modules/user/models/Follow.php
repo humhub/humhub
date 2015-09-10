@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
+use humhub\modules\activity\models\Activity;
 
 /**
  * This is the model class for table "user_follow".
@@ -56,11 +57,6 @@ class Follow extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave($insert)
-    {
-        return parent::beforeSave($insert);
-    }
-
     public function afterSave($insert, $changedAttributes)
     {
 
@@ -68,7 +64,15 @@ class Follow extends \yii\db\ActiveRecord
             $notification = new \humhub\modules\user\notifications\Followed();
             $notification->originator = $this->user;
             $notification->send($this->getTarget());
+
+            $activity = new \humhub\modules\user\activities\UserFollow();
+            $activity->source = $this;
+            $activity->container = $this->user;
+            $activity->originator = $this->user;
+            $activity->create();
         }
+
+
 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -78,18 +82,13 @@ class Follow extends \yii\db\ActiveRecord
 
         // ToDo: Handle this via event of User Module
         if ($this->object_model == User::className()) {
-
-            /*
-              $user = User::model()->findByPk($this->user_id);
-              $activity = Activity::model()->contentContainer($user)->findByAttributes(array('type' => "ActivityUserFollowsUser", 'object_id' => $this->object_id));
-              if ($activity !== null) {
-              $activity->delete();
-              }
-             *
-             */
             $notification = new \humhub\modules\user\notifications\Followed();
             $notification->originator = $this->user;
             $notification->delete($this->getTarget());
+
+            foreach (Activity::findAll(['object_model' => $this->className(), 'object_id' => $this->id]) as $activity) {
+                $activity->delete();
+            }
         }
 
         return parent::beforeDelete();

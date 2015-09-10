@@ -637,7 +637,7 @@ class Content extends \humhub\components\ActiveRecord
 
     public function beforeValidate()
     {
-        if (!$this->container->canWrite($this->user_id)) {
+        if (!$this->container->canWrite($this->user_id) && $this->getPolymorphicRelation()->className() != Activity::className()) {
             $this->addError('visibility', Yii::t('base', 'Insufficent permissions to create content!'));
         }
 
