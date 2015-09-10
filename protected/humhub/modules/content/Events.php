@@ -154,23 +154,28 @@ class Events extends \yii\base\Object
             $activities = Yii::$app->getModule('activity')->getMailUpdate($user, $interval);
 
             if ($notifications != "" || $activities != "") {
-                $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/content/views/mails/Update'], [
-                    'activities' => $activities,
-                    'notifications' => $notifications
-                ]);
-                $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
-                $mail->setTo($user->email);
-                if ($interval == CronController::EVENT_ON_HOURLY_RUN) {
-                    $mail->setSubject(Yii::t('base', "Latest news"));
-                } else {
-                    $mail->setSubject(Yii::t('base', "Your daily summary"));
+
+                try {
+                    $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/content/views/mails/Update'], [
+                        'activities' => $activities,
+                        'notifications' => $notifications
+                    ]);
+                    $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
+                    $mail->setTo($user->email);
+                    if ($interval == CronController::EVENT_ON_HOURLY_RUN) {
+                        $mail->setSubject(Yii::t('base', "Latest news"));
+                    } else {
+                        $mail->setSubject(Yii::t('base', "Your daily summary"));
+                    }
+                    $mail->send();
+                } catch (Exception $ex) {
+                    Yii::error('Could not send mail to: ' . $user->email . ' - Error:  ' . $ex->getMessage());
                 }
-                $mail->send();
 
                 $mailsSent++;
             }
 
-            Console::updateProgress( ++$done, $totalUsers);
+            Console::updateProgress(++$done, $totalUsers);
         }
 
         Console::endProgress(true);
