@@ -67,7 +67,6 @@ class ZendLuceneSearch extends Search
     {
         $this->delete($object);
         $this->add($object);
-        $this->optimize();
     }
 
     public function delete(Searchable $obj)
