@@ -130,7 +130,7 @@ class SettingController extends Controller
         // Build Group Dropdown
         $groups = array();
         $groups[''] = Yii::t('AdminModule.controllers_SettingController', 'None - shows dropdown in user registration.');
-        foreach (\humhub\modules\user\models\Group::findAll([]) as $group) {
+        foreach (\humhub\modules\user\models\Group::find()->all() as $group) {
             $groups[$group->id] = $group->name;
         }
 
