@@ -186,6 +186,10 @@ class BaseActivity extends \yii\base\Component
         if ($this->moduleId == "") {
             throw new \yii\base\InvalidConfigException("No moduleId given!");
         }
+        
+        if (!$this->source instanceof \yii\db\ActiveRecord) {
+            throw new \yii\base\InvalidConfigException("Invalid source object given!");
+        }        
 
         $model = new Activity;
         $model->class = $this->className();
