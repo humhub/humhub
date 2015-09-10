@@ -261,7 +261,8 @@ class SelfTest
 
         // Check Custom Modules Directory
         $title = 'Permissions - Module Directory';
-        $path = Yii::getAlias('@app/modules');
+        
+        $path = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
