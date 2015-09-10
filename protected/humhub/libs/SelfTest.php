@@ -88,6 +88,20 @@ class SelfTest
             );
         }
 
+        $title = 'PHP - INTL Extension';
+        if (function_exists('collator_create')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install INTL Extension'
+            );
+        }
+        
         // Checks GD Extension
         $title = 'PHP - EXIF Extension';
         if (function_exists('exif_read_data')) {

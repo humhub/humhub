@@ -10,7 +10,8 @@ Requirements
 * PHP Multibyte String Support <http://php.net/manual/en/mbstring.setup.php> 
 * PHP PDO MySQL Extension (http://www.php.net/manual/en/ref.pdo-mysql.php)
 * PHP Zip Extension (http://php.net/manual/en/book.zip.php)
-* PHP EXIF Extension (http://php.net/manual/de/book.exif.php)
+* PHP EXIF Extension (http://php.net/manual/en/book.exif.php)
+* PHP INTL Extension (http://php.net/manual/en/intro.intl.php)
 
 ### Optional:
 * ImageMagick
@@ -19,12 +20,13 @@ Requirements
 * PHP Memcached
 * Apache XSendfile
 
-### Packages for Debian/Ubuntu users:
+### Packages for Debian/Ubuntu users
 * imagemagick
 * php5-curl
 * php5-mysql
 * php5-gd
 * php5-cli
+* php5-intl
 * php5-ldap		(optional)
 * php-apc		(optional)
 * php5-memcached	(optional)
