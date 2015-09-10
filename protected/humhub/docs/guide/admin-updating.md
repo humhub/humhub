@@ -27,7 +27,7 @@ composer update
 
 ```
 cd protected
-php yii migrate/up
+php yii migrate/up  --includeModuleMigrations=1
 ```
 
 
