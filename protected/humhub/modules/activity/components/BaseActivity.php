@@ -28,11 +28,21 @@ class BaseActivity extends \yii\base\Component
     const OUTPUT_MAIL = 'mail';
 
     /**
-     * This can be a Content/ContentAddon or ContentContainer Object
+     * The source object/record which created this activity
      *
-     * @var mixed
+     * @var \yii\db\ActiveRecord
      */
     public $source;
+
+    /**
+     * The content container this activity belongs to.
+     * 
+     * If the source object is a type of Content/ContentAddon or ContentContainer the container
+     * will be automatically set.
+     * 
+     * @var ContentContainerActiveRecord
+     */
+    public $container = null;
 
     /**
      * @var string the view file to show this activity
@@ -47,7 +57,7 @@ class BaseActivity extends \yii\base\Component
     /**
      * @var int
      */
-    public $visibility = null;
+    public $visibility = 1;
 
     /**
      * @var User
@@ -173,37 +183,39 @@ class BaseActivity extends \yii\base\Component
      */
     public function create()
     {
-        $model = new Activity;
-        $model->class = $this->className();
-
         if ($this->moduleId == "") {
             throw new \yii\base\InvalidConfigException("No moduleId given!");
         }
 
+        $model = new Activity;
+        $model->class = $this->className();
         $model->module = $this->moduleId;
-
-
-        // Set content container and visibility
-        if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
-            $model->content->container = $this->source->content->container;
-            $model->content->visibility = $this->source->content->visibility;
-        } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            $model->content->visibility = $this->visibility;
-            $model->content->container = $this->source;
-        } else {
-            throw new \yii\base\InvalidConfigException("Invalid source object type!");
-        }
-
+        $model->content->visibility = $this->visibility;
         $model->object_model = $this->source->className();
         $model->object_id = $this->source->getPrimaryKey();
 
-        // Set user
+        // Automatically determine content container
+        if ($this->container == null) {
+            if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
+                $this->container = $this->source->content->container;
+                // Take visibility from Content/Addon
+                $model->content->visibility = $this->source->content->visibility;
+            } elseif ($this->source instanceof ContentContainerActiveRecord) {
+                $this->container = $this->source;
+            } else {
+                throw new \yii\base\InvalidConfigException("Could not determine content container for activity!");
+            }
+        }
+
+        // Automatically determine originator - if not set
         if ($this->originator !== null) {
             $model->content->user_id = $this->originator->id;
         } elseif ($this->source instanceof ContentActiveRecord) {
             $model->content->user_id = $this->source->content->user_id;
         } elseif ($this->source instanceof ContentAddonActiveRecord) {
             $model->content->user_id = $this->source->created_by;
+        } else {
+            throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
         }
 
         if (!$model->validate() || !$model->save()) {

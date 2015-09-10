@@ -10,8 +10,6 @@ namespace humhub\modules\activity\models;
 
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * This is the model class for table "activity".
@@ -38,9 +36,7 @@ class Activity extends ContentActiveRecord
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
                 'mustBeInstanceOf' => [
-                    ContentActiveRecord::className(),
-                    ContentContainerActiveRecord::className(),
-                    ContentAddonActiveRecord::className(),
+                    \yii\db\ActiveRecord::className(),
                 ]
             ]
         ];
