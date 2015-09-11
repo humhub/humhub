@@ -119,6 +119,11 @@ abstract class Search extends \yii\base\Component
         $meta['pk'] = $obj->getPrimaryKey();
         $meta['model'] = $obj->className();
 
+        if ($obj instanceof \humhub\modules\content\components\ContentContainerActiveRecord) {
+            $meta['containerModel'] = $obj->className();
+            $meta['containerPk'] = $obj->id;
+        }
+        
         // Add content related meta data
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {
             $meta['containerModel'] = $obj->content->container->className();
@@ -128,6 +133,8 @@ abstract class Search extends \yii\base\Component
             } else {
                 $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
             }
+        } elseif ($meta['type'] == self::DOCUMENT_TYPE_SPACE && $obj->visibility != Space::VISIBILITY_ALL) {
+            $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
         } else {
             $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
         }

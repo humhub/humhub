@@ -47,6 +47,7 @@ class ZendLuceneSearch extends Search
             $doc->addField(\ZendSearch\Lucene\Document\Field::Text($key, $val, 'UTF-8'));
         }
 
+        // Add comments - if record is content
         if ($obj instanceof ContentActiveRecord) {
             $comments = "";
             foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {

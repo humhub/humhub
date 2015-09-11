@@ -126,11 +126,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($this->status != self::VISIBILITY_NONE || $this->status == "") {
-            Yii::$app->search->update($this);
-        } else {
-            Yii::$app->search->delete($this);
-        }
+        Yii::$app->search->update($this);
 
         $user = \humhub\modules\user\models\User::findOne(['id' => $this->created_by]);
 
