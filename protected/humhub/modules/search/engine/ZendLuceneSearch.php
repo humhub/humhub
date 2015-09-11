@@ -100,11 +100,10 @@ class ZendLuceneSearch extends Search
 
     public function find($keyword, Array $options)
     {
-
         $options = $this->setDefaultFindOptions($options);
 
         $index = $this->getIndex();
-        $keyword = str_replace(array('*', '?', '_', '$'), ' ', strtolower($keyword));
+        $keyword = str_replace(array('*', '?', '_', '$'), ' ', mb_strtolower($keyword));
 
         if (!isset($options['sortField']) || $options['sortField'] == "") {
             $hits = new \ArrayObject($index->find($this->buildQuery($keyword, $options)));
@@ -137,7 +136,7 @@ class ZendLuceneSearch extends Search
 
         // Allow *Token*
         \ZendSearch\Lucene\Search\Query\Wildcard::setMinPrefixLength(0);
-        
+
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
         foreach (explode(" ", $keyword) as $k) {
             // Require at least 3 non-wildcard characters
