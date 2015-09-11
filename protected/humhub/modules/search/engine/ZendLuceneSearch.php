@@ -134,14 +134,19 @@ class ZendLuceneSearch extends Search
 
     protected function buildQuery($keyword, $options)
     {
+
+        // Allow *Token*
+        \ZendSearch\Lucene\Search\Query\Wildcard::setMinPrefixLength(0);
+        
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
         foreach (explode(" ", $keyword) as $k) {
             // Require at least 3 non-wildcard characters
             if (strlen($k) > 2) {
-                $term = new \ZendSearch\Lucene\Index\Term($k . "*");
+                $term = new \ZendSearch\Lucene\Index\Term("*" . $k . "*");
                 $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard($term), true);
             }
         }
+
         // Add model filter
         if (isset($options['model']) && $options['model'] != "") {
             if (is_array($options['model'])) {
