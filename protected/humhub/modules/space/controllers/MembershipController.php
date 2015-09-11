@@ -97,7 +97,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
      */
     public function actionRequestMembership()
     {
-
+        $this->forcePostRequest();
         $space = $this->getSpace();
 
         if (!$space->canJoin(Yii::$app->user->id))
@@ -141,6 +141,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
      */
     public function actionRevokeMembership()
     {
+        $this->forcePostRequest();
         $space = $this->getSpace();
 
         if ($space->isSpaceOwner()) {
@@ -197,7 +198,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
     public function actionInviteAccept()
     {
 
-        // Get Current Space
+        $this->forcePostRequest();
         $space = $this->getSpace();
 
         // Load Pending Membership
