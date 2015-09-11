@@ -12,7 +12,7 @@ use yii\helpers\Url;
                 'buttonTrue' => 'Ok',
                 'buttonFalse' => 'Cancel',
                 'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.widgets_views_tourPanel', ' Remove panel'),
-                'linkHref' => Url::to(["/tour/tour/hidePanel", "ajax" => 1]),
+                'linkHref' => Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
                 'confirmJS' => '$(".panel-tour").slideToggle("slow")'
                     ), true) . "</li>";
     ?>
