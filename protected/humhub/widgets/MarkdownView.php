@@ -67,7 +67,10 @@ class MarkdownView extends \yii\base\Widget
         $html = $parser->parse($this->markdown);
 
         if ($this->purifyOutput) {
-            $html = \yii\helpers\HtmlPurifier::process($html);
+            $html = \yii\helpers\HtmlPurifier::process($html, function ($config) {
+                        $config->getHTMLDefinition(true)
+                                ->addAttribute('a', 'target', 'Text');
+                    });
         }
 
         if ($this->returnPlain) {

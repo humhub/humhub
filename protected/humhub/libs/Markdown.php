@@ -2,6 +2,7 @@
 
 namespace humhub\libs;
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\file\models\File;
 
@@ -32,10 +33,19 @@ class Markdown extends \cebe\markdown\GithubMarkdown
                 return $block['orig'];
             }
         }
+
+
         $block['url'] = $this->handleInternalUrls($block['url']);
-        return '<a href="' . $block['url'] . '"'
-                . (empty($block['title']) ? '' : ' title="' . $block['title'] . '"')
-                . '>' . $this->renderAbsy($block['text']) . '</a>';
+
+        $internalLink = false;
+        $baseUrl = Url::base(true);
+        if (substr($block['url'], 0, 1) == '/' || substr($block['url'], 0, strlen($baseUrl)) == $baseUrl) {
+            $internalLink = true;
+        }
+
+        return Html::a($this->renderAbsy($block['text']), $block['url'], [
+                    'target' => ($internalLink) ? '_self' : '_blank'
+        ]);
     }
 
     protected function renderImage($block)
