@@ -27,6 +27,14 @@ class Followed extends BaseNotification
      */
     public $viewName = "follow";
 
+    /**
+     * @inheritdoc
+     */
+    public function getUrl()
+    {
+        return $this->originator->getUrl();
+    }
+
 }
 
 ?>
