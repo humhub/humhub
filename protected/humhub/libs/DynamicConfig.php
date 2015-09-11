@@ -168,8 +168,10 @@ class DynamicConfig extends \yii\base\Object
         $theme = Setting::Get('theme');
         if ($theme && $theme != "") {
             $config['components']['view']['theme']['name'] = $theme;
+            $config['components']['mailer']['view']['theme']['name'] = $theme;
         } else {
             unset($config['components']['view']['theme']['name']);
+            unset($config['components']['mailer']['view']['theme']['name']);
         }
         $config['params']['config_created_at'] = time();
 

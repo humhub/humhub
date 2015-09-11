@@ -62,6 +62,13 @@ $config = [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@humhub/views/mail',
+            'view' => [
+                'class' => '\humhub\components\View',
+                'theme' => [
+                    'class' => '\humhub\components\Theme',
+                    'name' => 'HumHub'
+                ],
+            ],
         ],
         'view' => [
             'class' => '\humhub\components\View',
