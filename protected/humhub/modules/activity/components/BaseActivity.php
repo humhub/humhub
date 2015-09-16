@@ -186,10 +186,10 @@ class BaseActivity extends \yii\base\Component
         if ($this->moduleId == "") {
             throw new \yii\base\InvalidConfigException("No moduleId given!");
         }
-        
+
         if (!$this->source instanceof \yii\db\ActiveRecord) {
             throw new \yii\base\InvalidConfigException("Invalid source object given!");
-        }        
+        }
 
         $model = new Activity;
         $model->class = $this->className();
@@ -210,6 +210,7 @@ class BaseActivity extends \yii\base\Component
                 throw new \yii\base\InvalidConfigException("Could not determine content container for activity!");
             }
         }
+        $model->content->container = $this->container;
 
         // Automatically determine originator - if not set
         if ($this->originator !== null) {
