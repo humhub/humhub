@@ -31,7 +31,7 @@ class MessageController extends \yii\console\controllers\MessageController
      */
     public function actionExtractModule($moduleId)
     {
-        $module = Yii::$app->getModule($moduleId);
+        $module = Yii::$app->moduleManager->getModule($moduleId);
 
         $configFile = Yii::getAlias('@humhub/config/i18n.php');
 
@@ -39,10 +39,11 @@ class MessageController extends \yii\console\controllers\MessageController
             'translator' => 'Yii::t',
             'overwrite' => false,
             'removeUnused' => false,
-            'sort' => false,
+            'sort' => true,
             'format' => 'php',
             'ignoreCategories' => [],
                 ], require($configFile));
+        
         $config['sourcePath'] = $module->getBasePath();
 
         if (!is_dir($config['sourcePath'] . '/messages')) {
@@ -61,7 +62,7 @@ class MessageController extends \yii\console\controllers\MessageController
             if (!is_dir($dir)) {
                 @mkdir($dir);
             }
-            $this->saveMessagesToPHP($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort']);
+            $this->saveMessagesToPHP($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort'], false);
         }
     }
 
@@ -73,7 +74,7 @@ class MessageController extends \yii\console\controllers\MessageController
         $dirNameBase = $dirName;
 
         foreach ($messages as $category => $msgs) {
-
+            
             /**
              * Fix Directory
              */
@@ -111,7 +112,7 @@ class MessageController extends \yii\console\controllers\MessageController
     {
         if (preg_match('/(.*?)Module\./', $category, $result)) {
             $moduleId = strtolower($result[1]);
-            $module = Yii::$app->getModule($moduleId, true);
+            $module = Yii::$app->moduleManager->getModule($moduleId, true);
             return $module;
         }
 
