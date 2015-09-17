@@ -2,6 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -523,16 +524,16 @@ use yii\helpers\Html;
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: #7191a8; ">
+                <td align="center" valign="top" style="background-color: #708fa0; ">
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="#7191a8"
-                           style="background-color: #7191a8; ">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="#708fa0"
+                           style="background-color: #708fa0; ">
                         <tr>
                             <td valign="top">
 
                                 <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                                       bgcolor="#7191a8" style="background-color: #7191a8; ">
+                                       bgcolor="#708fa0" style="background-color: #708fa0; ">
                                     <!-- start space -->
                                     <tr>
                                         <td valign="top" height="10">
