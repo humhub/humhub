@@ -83,9 +83,10 @@ class ProfileImage
      * Returns the URl of the Modified Profile Image
      *
      * @param String $prefix Prefix of the returned image
+     * @param boolean $scheme URL Scheme
      * @return String Url of the profile image
      */
-    public function getUrl($prefix = "")
+    public function getUrl($prefix = "", $scheme = false)
     {
         $path = "@web/";
         if (file_exists($this->getPath($prefix))) {
@@ -97,7 +98,8 @@ class ProfileImage
             $path .= '.jpg';
             $path = Yii::$app->view->theme->applyTo($path);
         }
-        return Yii::getAlias($path);
+
+        return Url::to(Yii::getAlias($path), $scheme);
     }
 
     /**

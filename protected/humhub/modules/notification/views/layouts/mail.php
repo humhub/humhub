@@ -43,7 +43,7 @@ use yii\helpers\Html;
                                                             <!-- START: USER IMAGE -->
                                                             <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>">
                                                                 <img
-                                                                    src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
+                                                                    src="<?php echo $originator->getProfileImage()->getUrl("", true); ?>"
                                                                     width="50"
                                                                     alt=""
                                                                     style="max-width:50px; display:block !important; border-radius: 4px;"
