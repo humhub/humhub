@@ -9,6 +9,7 @@
 namespace humhub\modules\activity\models;
 
 use Yii;
+use yii\base\Exception;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**
