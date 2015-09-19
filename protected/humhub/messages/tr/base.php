@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search</strong>' => '',
     'Could not find requested module!' => '@@İstenen modül bulunamadı!@@',
     'Invalid request.' => '@@Geçersiz istek.@@',
     'Keyword:' => '@@Anahtar:@@',
@@ -27,6 +26,7 @@ return [
     'Sorry, nothing found!' => '@@Üzgünüz, sonuç bulunamadı!@@',
     'Welcome to %appName%' => '@@%appName% hoşgeldiniz@@',
     '<strong>Latest</strong> updates' => '<strong>Son</strong> güncellemeler',
+    '<strong>Search</strong>' => '<strong>Arama</strong>',
     'Account settings' => 'Hesap ayarları',
     'Administration' => 'Yönetim',
     'Back' => 'Geri',
