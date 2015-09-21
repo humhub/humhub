@@ -299,7 +299,7 @@ use humhub\modules\space\models\Space;
                                 <?php echo CHtml::encode($user->profile->title); ?>
                             </td>
                             <td width="100px">
-                                <?php echo HHtml::postLink(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $this->createUrl('//space/admin/membersRejectApplicant', array('sguid' => $space->guid, 'userGuid' => $user->guid, 'reject' => true)), array('class' => "btn btn-sm btn-primary")); ?>
+                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $space->createUrl('/space/admin/members-reject-applicant', ['userGuid' => $user->guid, 'reject' => true]), array('class' => 'btn btn-sm btn-primary', 'data-method' => 'POST')); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
