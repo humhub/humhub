@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use humhub\models\Setting;
 ?>
 <!-- START NOTIFICATION -->
 <tr>
@@ -43,7 +44,7 @@ use yii\helpers\Html;
                                                             <!-- START: USER IMAGE -->
                                                             <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>">
                                                                 <img
-                                                                    src="<?php echo $originator->getProfileImage()->getUrl(); ?>"
+                                                                    src="<?php echo $originator->getProfileImage()->getUrl("", true); ?>"
                                                                     width="50"
                                                                     alt=""
                                                                     style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -76,9 +77,9 @@ use yii\helpers\Html;
 
                                                                     <!-- START: CONTENT LINK -->
                                                                     <span
-                                                                        style="text-decoration: none; color: #7191a8;"> - <a
+                                                                        style="text-decoration: none; color: <?php echo Setting::Get('colorInfo'); ?>;"> - <a
                                                                             href="<?php echo $url; ?>"
-                                                                            style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'see online'); ?></a></span>
+                                                                            style="text-decoration: none; color: <?php echo Setting::Get('colorInfo'); ?>; "><?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'see online'); ?></a></span>
                                                                     <!-- END: CONTENT LINK -->
 
                                                                 </td>

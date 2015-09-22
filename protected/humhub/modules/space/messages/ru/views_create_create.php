@@ -2,6 +2,7 @@
 return array (
   '<strong>Create</strong> new space' => '<strong>Создать</strong> новое пространство',
   'Advanced access settings' => 'Расширенные настройки доступа',
+  'Advanced search settings' => 'Расширенный поиск настроек',
   'Also non-members can see this<br>space, but have no access' => 'Пользователи не являющиеся участниками пространства могут видеть его,<br>но не имеют доступа',
   'Create' => 'Создать',
   'Every user can enter your space<br>without your approval' => 'Каждый может вступить<br>(разрешение не требуется)',

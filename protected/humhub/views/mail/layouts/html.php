@@ -2,7 +2,9 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\models\Setting;
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -85,15 +87,15 @@ use yii\helpers\Html;
                 }
 
                 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-                    color: #6fdbe8 !important;
+                    color: <?php echo Setting::Get('colorInfo'); ?> !important;
                 }
 
                 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-                    color: #6fdbe8 !important;
+                    color: <?php echo Setting::Get('colorInfo'); ?>!important;
                 }
 
                 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-                    color: #6fdbe8 !important;
+                    color: <?php echo Setting::Get('colorInfo'); ?> !important;
                 }
 
                 table td, table tr {
@@ -523,16 +525,16 @@ use yii\helpers\Html;
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: #7191a8; ">
+                <td align="center" valign="top" style="background-color: <?php echo Setting::Get('colorPrimary'); ?>; ">
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="#7191a8"
-                           style="background-color: #7191a8; ">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="<?php echo Setting::Get('colorPrimary'); ?>"
+                           style="background-color: <?php echo Setting::Get('colorPrimary'); ?>; ">
                         <tr>
                             <td valign="top">
 
                                 <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                                       bgcolor="#7191a8" style="background-color: #7191a8; ">
+                                       bgcolor="<?php echo Setting::Get('colorPrimary'); ?>" style="background-color: <?php echo Setting::Get('colorPrimary'); ?>; ">
                                     <!-- start space -->
                                     <tr>
                                         <td valign="top" height="10">

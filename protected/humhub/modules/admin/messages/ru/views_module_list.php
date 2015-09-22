@@ -6,6 +6,7 @@ return array (
   'Configure' => 'Конфигурация',
   'Disable' => 'Отключить',
   'Enable' => 'Включить',
+  'Enable module...' => 'Включить модуль ...',
   'More info' => 'Подробнее',
   'Processing...' => 'Выполняется...',
   'Set as default' => 'Установить по-умолчанию',

@@ -1,6 +1,6 @@
 <?php
-
 use yii\helpers\Html;
+use humhub\models\Setting;
 ?>
 
 
@@ -17,7 +17,7 @@ use yii\helpers\Html;
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Total groups'); ?></strong><br><br>
 
             <input id="groups-total" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
-                   data-fgcolor="#708fa0" data-skin="tron"
+                   data-fgcolor="<?php echo Setting::Get('colorPrimary'); ?>" data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsTotalGroups; ?>"
                    data-max="<?php echo $statsTotalGroups; ?>"
                    style="font-size: 25px !important; margin-top: 44px !important;">
@@ -29,7 +29,7 @@ use yii\helpers\Html;
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Average members'); ?></strong><br><br>
 
             <input id="group-average" class="knob" data-width="120" data-displayPrevious="true" data-readOnly="true"
-                   data-fgcolor="#708fa0"
+                   data-fgcolor="<?php echo Setting::Get('colorPrimary'); ?>"
                    data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsAvgMembers; ?>"
                    data-max="<?php echo $statsTotalUsers; ?>"

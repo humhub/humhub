@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Latest</strong> updates' => '<strong>Последние</strong> обновления',
+  '<strong>Search</strong>' => '<strong>Поиск</strong>',
   'Account settings' => 'Настройки аккаунта',
   'Administration' => 'Администрирование',
   'Back' => 'Назад',

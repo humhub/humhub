@@ -37,7 +37,7 @@
 
                                 <?php if (strtolower($field->title) == 'about') { ?>
                                     <div class="col-sm-9">
-                                        <p class="form-control-static"><?php echo humhub\widgets\RichText::widget(['text' => $$field->getUserValue($user, false)]); ?></p>
+                                        <p class="form-control-static"><?php echo humhub\widgets\RichText::widget(['text' => $field->getUserValue($user, false)]); ?></p>
                                     </div>
                                 <?php } else { ?>
                                     <div class="col-sm-9">

@@ -4,4 +4,5 @@ return array (
   '<strong>Password</strong> reset' => '<strong>Сбросить</strong> пароль',
   'Back' => 'Назад',
   'Change password' => 'Изменить пароль',
+  'Password reset' => 'Восстановление пароля',
 );

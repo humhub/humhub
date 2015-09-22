@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Yii;
+use humhub\models\Setting;
 
 /**
  * @inheritdoc
@@ -121,6 +122,31 @@ class Theme extends \yii\base\Theme
             $themes[$file] = $file;
         }
         return $themes;
+    }
+
+
+    public static function setColorVariables($theme) {
+
+        $url = Yii::getAlias('@webroot/themes/'. $theme. '/css/theme.less');
+
+        $file = fopen("$url", "r") or die("Unable to open file!");
+        $less = fread($file, filesize("$url"));
+        fclose($file);
+
+        $startDefault= strpos($less, '@default') + 10;
+        $startPrimary = strpos($less, '@primary') + 10;
+        $startInfo = strpos($less, '@info') + 7;
+        $startSuccess = strpos($less, '@success') + 10;
+        $startWarning = strpos($less, '@warning') + 10;
+        $startDanger = strpos($less, '@danger') + 9;
+        $length = 7;
+
+        Setting::Set('colorDefault', substr($less, $startDefault, $length));
+        Setting::Set('colorPrimary', substr($less, $startPrimary, $length));
+        Setting::Set('colorInfo', substr($less, $startInfo, $length));
+        Setting::Set('colorSuccess', substr($less, $startSuccess, $length));
+        Setting::Set('colorWarning', substr($less, $startWarning, $length));
+        Setting::Set('colorDanger', substr($less, $startDanger, $length));
     }
 
 }

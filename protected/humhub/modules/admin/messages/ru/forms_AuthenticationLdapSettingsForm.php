@@ -1,9 +1,10 @@
 <?php
 return array (
-  'Fetch/Update Users Automatically' => 'Выбор/Обновление пользователей автоматически',
   'Base DN' => 'Base DN',
+  'E-Mail Address Attribute' => 'Адрес E-Mail Атрибут',
   'Enable LDAP Support' => 'Включить поддержку LDAP',
   'Encryption' => 'Шифрование',
+  'Fetch/Update Users Automatically' => 'Выбор/Обновление пользователей автоматически',
   'Hostname' => 'Хост',
   'Login Filter' => 'Фильтр логинов',
   'Password' => 'Пароль',

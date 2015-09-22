@@ -5,4 +5,5 @@ return array (
   'Language' => 'Язык',
   'Profile visibility' => 'Профиль отображается',
   'Tags' => 'Интересы',
+  'TimeZone' => 'Часовой пояс',
 );

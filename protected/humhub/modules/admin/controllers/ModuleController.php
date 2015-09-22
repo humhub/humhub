@@ -158,7 +158,7 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
-        $keyword = Yii::$app->request->get('keyword', "");
+        $keyword = Yii::$app->request->post('keyword', "");
 
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules();
