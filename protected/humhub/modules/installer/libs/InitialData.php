@@ -68,6 +68,9 @@ class InitialData
         Setting::Set('theme', "HumHub");
         Setting::Set('spaceOrder', 0, 'space');
 
+        // read and save colors from current theme
+        \humhub\components\Theme::setColorVariables('HumHub');
+
         // Basic
         Setting::Set('enable', 1, 'tour');
         Setting::Set('defaultLanguage', Yii::$app->language);

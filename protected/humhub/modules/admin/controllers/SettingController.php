@@ -14,7 +14,6 @@ use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\libs\Ldap;
-
 /**
  * SettingController 
  * 
@@ -344,6 +343,9 @@ class SettingController extends Controller
                     $logoImage = new \humhub\libs\LogoImage();
                     $logoImage->setNew($form->logo);
                 }
+
+                // read and save colors from current theme
+                \humhub\components\Theme::setColorVariables($form->theme);
 
                 Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
                 Yii::$app->response->redirect(Url::toRoute('/admin/setting/design'));
