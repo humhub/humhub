@@ -10,14 +10,7 @@ use yii\grid\GridView;
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
     <div class="panel-body">
-        <ul class="nav nav-pills">
-            <li class="active"><a
-                    href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_user_index', 'Overview'); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo Url::toRoute('add'); ?>"><?php echo Yii::t('AdminModule.views_user_index', 'Add new user'); ?></a>
-            </li>
-        </ul>
+        <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
         <p />
         <p>
             <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>

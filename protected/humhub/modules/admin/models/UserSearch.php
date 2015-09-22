@@ -31,7 +31,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'super_admin'], 'integer'],
-            [['username', 'email', 'created_at', 'profile.firstname', 'profile.lastname'], 'safe'],
+            [['username', 'email', 'created_at', 'profile.firstname', 'profile.lastname', 'last_login'], 'safe'],
         ];
     }
 
@@ -66,6 +66,7 @@ class UserSearch extends User
                 'username',
                 'email',
                 'super_admin',
+        		'last_login',
                 'profile.firstname',
                 'profile.lastname',
                 'created_at',
@@ -79,6 +80,11 @@ class UserSearch extends User
             return $dataProvider;
         }
 
+        if(strtolower($this->last_login) == 'yes') {
+        	$query->andWhere(['not', ['last_login' => null ]]);
+        } else if(strtolower($this->last_login) == 'no') {
+        	$query->andWhere([ 'last_login' => null ]);
+        }
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['super_admin' => $this->super_admin]);
         $query->andFilterWhere(['like', 'id', $this->id]);
