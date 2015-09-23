@@ -167,34 +167,30 @@ class Group extends \yii\db\ActiveRecord
     public function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL || \humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
+        if ($user->status != User::STATUS_NEED_APPROVAL || !\humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
             return;
         }
 
         foreach ($this->admins as $admin) {
             if ($admin->user !== null) {
-                /*
-                  $approvalUrl = Url::to(["/admin/approval"], true);
+                $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
-                  $html = "Hello {$adminUser->displayName},<br><br>\n\n" .
-                  "a new user {$this->displayName} needs approval.<br><br>\n\n" .
-                  "Click here to validate:<br>\n\n" .
-                  HHtml::link($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+                $html = "Hello {$admin->user->displayName},<br><br>\n\n" .
+                        "a new user {$user->displayName} needs approval.<br><br>\n\n" .
+                        "Click here to validate:<br>\n\n" .
+                        \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
-                  $message = new HMailMessage();
-                  $message->addFrom(Setting::Get('systemEmailAddress', 'mailing'), Setting::Get('systemEmailName', 'mailing'));
-                  $message->addTo($adminUser->email);
-                  $message->view = "application.views.mail.TextOnly";
-                  $message->subject = Yii::t('UserModule.models_User', "New user needs approval");
-                  $message->setBody(array('message' => $html), 'text/html');
-                  Yii::app()->mail->send($message);
-                 * 
-                 */
+                $mail = Yii::$app->mailer->compose(['html' => '@humhub//views/mail/TextOnly'], [
+                    'message' => $html,
+                ]);
+                $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+                $mail->setTo($admin->user->email);
+                $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
+                $mail->send();
             } else {
                 Yii::warning("Could not load Group Admin User. Inconsistent Group Admin Record! User Id: " . $admin->user_id);
             }
         }
-
         return true;
     }
 

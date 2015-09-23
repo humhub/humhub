@@ -312,20 +312,18 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         } else {
             Yii::$app->search->delete($this);
         }
-
         if ($insert) {
-            if ($this->status == User::STATUS_ENABLED)
+            if ($this->status == User::STATUS_ENABLED) {
                 $this->setUpApproved();
-            else
+            } else {
                 $this->group->notifyAdminsForUserApproval($this);
-
+            }
             $this->profile->user_id = $this->id;
         }
 
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($this);
         }
-
         return parent::afterSave($insert, $changedAttributes);
     }
 
