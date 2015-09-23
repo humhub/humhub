@@ -53,23 +53,16 @@ class SelfTest
 
         // Checks PHP Version
         $title = 'PHP - Version - ' . PHP_VERSION;
-        # && version_compare(PHP_VERSION, '5.9.0', '<')
-        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+        if (version_compare(PHP_VERSION, '5.4', '>=')) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
-            );
-        } elseif (version_compare(PHP_VERSION, '5.4.0', '<=')) {
-            $checks[] = array(
-                'title' => Yii::t('base', $title),
-                'state' => 'WARNING',
-                'hint' => 'Untested on this version!'
             );
         } else {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
-                'hint' => 'Minimum 5.3'
+                'hint' => 'Minimum 5.4'
             );
         }
 
