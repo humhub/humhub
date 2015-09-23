@@ -129,7 +129,7 @@ use humhub\modules\space\models\Space;
                                         'buttonFalse' => Yii::t('SpaceModule.views_admin_members', 'No, cancel'),
                                         'cssClass' => 'btn btn-sm btn-danger',
                                         'linkContent' => Yii::t('SpaceModule.views_admin_members', 'Remove'),
-                                        'linkHref' => $space->createUrl('//space/admin/removeMember', array('userGuid' => $user->guid, 'ajax' => 1))
+                                        'linkHref' => $space->createUrl('/space/admin/remove-member', array('userGuid' => $user->guid, 'ajax' => 1))
                                     ));
                                     ?>
 

@@ -201,18 +201,18 @@ class AdminController extends \humhub\modules\content\components\ContentContaine
     {
         $this->forcePostRequest();
 
-        $workspace = $this->getSpace();
+        $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::model()->findByAttributes(array('guid' => $userGuid));
+        $user = User::findOne(array('guid' => $userGuid));
 
-        if ($workspace->isSpaceOwner($user->id)) {
-            throw new CHttpException(500, 'Owner cannot be removed!');
+        if ($space->isSpaceOwner($user->id)) {
+            throw new HttpException(500, 'Owner cannot be removed!');
         }
 
-        $workspace->removeMember($user->id);
+        $space->removeMember($user->id);
 
         // Redirect  back to Administration page
-        $this->htmlRedirect($this->createUrl('//space/admin/members', array('sguid' => $workspace->guid)));
+        return $this->htmlRedirect($space->createUrl('/space/admin/members'));
     }
 
     /**
