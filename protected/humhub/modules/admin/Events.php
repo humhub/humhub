@@ -9,6 +9,7 @@
 namespace humhub\modules\admin;
 
 use Yii;
+use humhub\modules\user\models\User;
 use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\models\Setting;
 
@@ -58,7 +59,7 @@ class Events extends \yii\base\Object
 
         if ($latestVersion != "" && version_compare($latestVersion, Yii::$app->version, ">")) {
             $notification = new notifications\NewVersionAvailable();
-            $notification->add(User::find()->where(['super_admin' => 1]));
+            $notification->sendBulk(User::find()->where(['super_admin' => 1]));
         }
 
         $controller->stdout('done. ' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
