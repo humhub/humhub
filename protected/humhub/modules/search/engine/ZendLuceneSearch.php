@@ -174,6 +174,15 @@ class ZendLuceneSearch extends Search
             }
         }
 
+        // Add custom filters
+        if (isset($options['filters']) && is_array($options['filters'])) {
+            foreach ($options['filters'] as $field => $value) {
+                $term = new \ZendSearch\Lucene\Index\Term($value, $field);
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term($term), true);
+            }
+        }
+
+
         if ($options['checkPermissions'] && !Yii::$app->request->isConsoleRequest) {
             $permissionQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
 
