@@ -19,6 +19,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
+ * @property integer $space_type_id
  * @property string $tags
  * @property string $created_at
  * @property integer $created_by
@@ -58,7 +59,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function rules()
     {
         return [
-            [['wall_id', 'join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members'], 'integer'],
+            [['wall_id', 'join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'space_type_id'], 'integer'],
             [['name'], 'unique', 'targetClass' => self::className()],
             [['name'], 'required'],
             [['description', 'tags'], 'string'],
@@ -72,16 +73,19 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'description', 'website', 'tags', 'join_policy', 'visibility'];
+        $scenarios['edit'] = ['name', 'description', 'website', 'tags', 'join_policy', 'visibility', 'space_type_id'];
         if (Yii::$app->user->isAdmin()) {
             $scenarios['edit'][] = 'ldap_dn';
         }
 
-        $scenarios['create'] = ['name', 'description', 'join_policy', 'visibility'];
+        $scenarios['create'] = ['name', 'description', 'join_policy', 'visibility', 'space_type_id'];
 
         return $scenarios;
     }
@@ -107,9 +111,13 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
+            'space_type_id' => Yii::t('SpaceModule.models_Space', 'Type'),
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return array(
@@ -122,7 +130,21 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     }
 
     /**
-     * After Save Addons
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            if ($this->space_type_id == '') {
+                $this->space_type_id = Type::find()->orderBy(['sort_key' => SORT_ASC])->one()->id;
+            }
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -331,6 +353,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return array(
             'title' => $this->name,
             'tags' => $this->tags,
+            'type_id' => $this->space_type_id,
             'description' => $this->description,
         );
     }
@@ -450,6 +473,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_APPLICANT]);
         return $query;
+    }
+
+    public function getType()
+    {
+        return $this->hasOne(Type::className(), ['id' => 'space_type_id']);
     }
 
 }

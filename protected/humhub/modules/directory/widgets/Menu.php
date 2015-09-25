@@ -26,6 +26,8 @@ class Menu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
+        $spaceTypes = \humhub\modules\space\models\Type::find()->orderBy(['sort_key' => SORT_ASC])->where(['show_in_directory' => true])->all();
+
         $this->addItemGroup(array(
             'id' => 'directory',
             'label' => Yii::t('DirectoryModule.views_directory_layout', '<strong>Directory</strong> menu'),
@@ -50,13 +52,37 @@ class Menu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->action->id == "members"),
         ));
 
-        $this->addItem(array(
-            'label' => Yii::t('DirectoryModule.views_directory_layout', 'Spaces'),
-            'group' => 'directory',
-            'url' => Url::to(['/directory/directory/spaces']),
-            'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->action->id == "spaces"),
-        ));
+
+        $spaceMenuCategory = 'directory';
+
+        // Add own category for spaces if there are more than one space types
+        if (count($spaceTypes) > 1) {
+
+            $this->addItemGroup(array(
+                'id' => 'spaces',
+                'label' => Yii::t('DirectoryModule.views_directory_layout', 'Spaces'),
+                'sortOrder' => 200,
+            ));
+            $spaceMenuCategory = 'spaces';
+
+            $this->addItem(array(
+                'label' => Yii::t('DirectoryModule.views_directory_layout', 'Spaces'),
+                'group' => 'directory',
+                'url' => Url::to(['/directory/directory/spaces']),
+                'sortOrder' => 300,
+                'isActive' => (Yii::$app->controller->action->id == "spaces" && Yii::$app->request->get('type_id') == ''),
+            ));
+        }
+
+        foreach ($spaceTypes as $i => $type) {
+            $this->addItem(array(
+                'label' => $type->title,
+                'group' => $spaceMenuCategory,
+                'url' => Url::to(['/directory/directory/spaces', 'type_id' => $type->id]),
+                'sortOrder' => 300 + $i,
+                'isActive' => (Yii::$app->controller->action->id == "spaces" && Yii::$app->request->get('type_id') == $type->id),
+            ));
+        }
 
         $this->addItem(array(
             'label' => Yii::t('DirectoryModule.views_directory_layout', 'User profile posts'),

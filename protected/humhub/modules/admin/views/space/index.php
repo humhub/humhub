@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\space\models\Space;
+use humhub\modules\space\models\Type;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -11,6 +12,9 @@ use yii\grid\GridView;
         <ul class="nav nav-pills">
             <li class="active"><a
                     href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('list-types'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Types'); ?></a>
             </li>
             <li>
                 <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
@@ -36,6 +40,7 @@ use yii\grid\GridView;
             Space::JOIN_POLICY_FREE => 'Everyone can enter',
         );
 
+        $spaceTypes = \yii\helpers\ArrayHelper::map(Type::find()->all(), 'item_title', 'item_title');
 
 
         echo GridView::widget([
@@ -51,6 +56,11 @@ use yii\grid\GridView;
             },
                 ],
                 'name',
+                [
+                    'attribute' => 'type.item_title',
+                    'label' => Yii::t('AdminModule.views_space_index', 'Type'),
+#                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'space_type.item_title', array_merge(['' => ''], $spaceTypes)),
+                ],
                 [
                     'attribute' => 'visibility',
                     'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'visibility', array_merge(['' => ''], $visibilities)),

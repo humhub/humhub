@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\Url;
 use humhub\models\Setting;
 use humhub\modules\directory\widgets\Sidebar;
+use yii\web\HttpException;
 
 /**
  * Community/Directory Controller
@@ -107,6 +108,8 @@ class DirectoryController extends \humhub\components\Controller
      */
     public function actionSpaces()
     {
+        $spaceType = \humhub\modules\space\models\Type::findOne(['id' => Yii::$app->request->get('type_id')]);
+
         $keyword = Yii::$app->request->get('keyword', "");
         $page = (int) Yii::$app->request->get('page', 1);
 
@@ -114,7 +117,10 @@ class DirectoryController extends \humhub\components\Controller
             'model' => \humhub\modules\space\models\Space::className(),
             'page' => $page,
             'sortField' => ($keyword == '') ? 'title' : null,
-            'pageSize' => Setting::Get('paginationSize')
+            'pageSize' => Setting::Get('paginationSize'),
+            'filters' => [
+                'type_id' => ($spaceType !== null) ? $spaceType->id : ''
+            ]
         ]);
 
         $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
@@ -127,7 +133,8 @@ class DirectoryController extends \humhub\components\Controller
         return $this->render('spaces', array(
                     'keyword' => $keyword,
                     'spaces' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination
+                    'pagination' => $pagination,
+                    'spaceType' => $spaceType
         ));
     }
 

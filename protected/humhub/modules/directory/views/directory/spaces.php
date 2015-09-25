@@ -6,7 +6,11 @@ use yii\helpers\Url;
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.views_directory_spaces', '<strong>Space</strong> directory'); ?>
+        <?php if ($spaceType !== null) :?>
+        <strong><?= $spaceType->title; ?></strong>
+        <?php else: ?>
+            <?php echo Yii::t('DirectoryModule.views_directory_spaces', '<strong>Space</strong> directory'); ?>
+        <?php endif; ?>
     </div>
 
     <div class="panel-body">

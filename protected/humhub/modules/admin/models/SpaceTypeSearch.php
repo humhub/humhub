@@ -11,28 +11,24 @@ namespace humhub\modules\admin\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\space\models\Space;
-
+use humhub\modules\space\models\Type;
 
 /**
- * Description of UserSearch
+ * Search class for Space Types
  *
  * @author luke
  */
-class SpaceSearch extends Space
+class SpaceTypeSearch extends Type
 {
-
-    public function attributes()
-    {
-        // add related fields to searchable attributes
-        return array_merge(parent::attributes(), ['type.item_title']);
-    }
     
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['id', 'visibility', 'join_policy'], 'integer'],
-            [['name'], 'safe'],
+            [['id'], 'integer'],
+            [['title'], 'safe'],
         ];
     }
 
@@ -54,8 +50,8 @@ class SpaceSearch extends Space
      */
     public function search($params)
     {
-        $query = Space::find()->joinWith('type');
-        
+        $query = Type::find();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 50],
@@ -64,9 +60,10 @@ class SpaceSearch extends Space
         $dataProvider->setSort([
             'attributes' => [
                 'id',
-                'name',
-                'visibility',
-                'join_policy',
+                'title',
+                'item_title',
+                'sort_key',
+                'show_in_directory',
             ]
         ]);
 
@@ -77,11 +74,9 @@ class SpaceSearch extends Space
             return $dataProvider;
         }
 
+        $query->orderBy(['sort_key'=>SORT_ASC]);
         $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['join_policy' => $this->join_policy]);
-        $query->andFilterWhere(['visibility' => $this->visibility]);
-        $query->andFilterWhere(['like', 'name', $this->name]);
-     #   $query->andFilterWhere(['space_type.item_title' => $this->getAttribute('space_type.item_title')]);
+
         return $dataProvider;
     }
 

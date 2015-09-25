@@ -66,13 +66,13 @@ class AdminController extends \humhub\modules\content\components\ContentContaine
         $model = $this->getSpace();
         $model->scenario = 'edit';
 
-
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($model->createUrl('/space/admin/edit'));
         }
 
-        return $this->render('edit', array('model' => $model));
+        $types = \yii\helpers\ArrayHelper::map(\humhub\modules\space\models\Type::find()->all(), 'id', 'item_title');
+        return $this->render('edit', array('model' => $model, 'types' => $types));
     }
 
     /**

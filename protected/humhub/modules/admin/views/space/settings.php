@@ -15,6 +15,9 @@ use yii\grid\GridView;
             <li><a
                     href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
             </li>
+            <li>
+                <a href="<?php echo Url::toRoute('list-types'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Types'); ?></a>
+            </li>            
             <li class="active">
                 <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
             </li>
