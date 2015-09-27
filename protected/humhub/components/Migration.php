@@ -48,16 +48,15 @@ class Migration extends \yii\db\Migration
          * 
          * Use raw query for better performace.
          */
-        
         /*
-        $likes = (new \yii\db\Query())->select("activity.*, like.id as likeid")->from('activity')
-                        ->leftJoin('like', 'like.object_model=activity.object_model AND like.object_id=activity.object_id')
-                        ->where(['class' => 'humhub\modules\like\activities\Liked'])->andWhere('like.id IS NOT NULL')->andWhere(['!=', 'activity.object_model', \humhub\modules\like\models\Like::className()]);
-        
-        foreach ($likes->each() as $like) {
-            Yii::$app->db->createCommand()->update('activity', ['object_model' => \humhub\modules\like\models\Like::className(), 'object_id' => $like['likeid']], ['id' => $like['id']])->execute();
-        }
-        */
+          $likes = (new \yii\db\Query())->select("activity.*, like.id as likeid")->from('activity')
+          ->leftJoin('like', 'like.object_model=activity.object_model AND like.object_id=activity.object_id')
+          ->where(['class' => 'humhub\modules\like\activities\Liked'])->andWhere('like.id IS NOT NULL')->andWhere(['!=', 'activity.object_model', \humhub\modules\like\models\Like::className()]);
+
+          foreach ($likes->each() as $like) {
+          Yii::$app->db->createCommand()->update('activity', ['object_model' => \humhub\modules\like\models\Like::className(), 'object_id' => $like['likeid']], ['id' => $like['id']])->execute();
+          }
+         */
         $updateSql = "
             UPDATE activity 
             LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
@@ -83,6 +82,17 @@ class Migration extends \yii\db\Migration
     public function updateSilent($table, $columns, $condition = '', $params = array())
     {
         $this->db->createCommand()->update($table, $columns, $condition, $params)->execute();
+    }
+
+    /**
+     * Creates and executes an INSERT SQL statement without any output
+     * The method will properly escape the column names, and bind the values to be inserted.
+     * @param string $table the table that new rows will be inserted into.
+     * @param array $columns the column data (name => value) to be inserted into the table.
+     */
+    public function insertSilent($table, $columns)
+    {
+        $this->db->createCommand()->insert($table, $columns)->execute();
     }
 
 }
