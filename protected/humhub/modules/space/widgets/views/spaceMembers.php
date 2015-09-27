@@ -28,8 +28,8 @@ use yii\helpers\Url;
                             <?php echo Html::encode($membership->request_message); ?><br>
 
                             <hr>
-                            <?php echo Html::a('Accept', $space->createUrl('/space/admin/members-approve-applicant', array('userGuid' => $user->guid)), array('data-method' => 'POST', 'class' => 'btn btn-success btn-sm')); ?>
-                            <?php echo Html::a('Decline', $space->createUrl('/space/admin/members-reject-applicant', array('userGuid' => $user->guid)), array('data-method' => 'POST', 'class' => 'btn btn-danger btn-sm')); ?>
+                            <?php echo Html::a('Accept', $space->createUrl('/space/manage/member/approve-applicant', array('userGuid' => $user->guid)), array('data-method' => 'POST', 'class' => 'btn btn-success btn-sm')); ?>
+                            <?php echo Html::a('Decline', $space->createUrl('/space/manage/member/reject-applicant', array('userGuid' => $user->guid)), array('data-method' => 'POST', 'class' => 'btn btn-danger btn-sm')); ?>
 
                         </td>
                     </tr>

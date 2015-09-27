@@ -61,7 +61,7 @@ use yii\helpers\Url;
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                     'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => $space->createUrl('/space/admin/crop-image'),
+                    'url' => $space->createUrl('/space/manage/image/crop'),
                 ],
                 'htmlOptions' => [
                     'class' => 'btn btn-primary'

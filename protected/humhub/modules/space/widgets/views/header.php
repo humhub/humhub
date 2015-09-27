@@ -7,8 +7,8 @@ use yii\helpers\Html;
 
 if ($space->isAdmin()) {
     $this->registerJsFile('@web/resources/space/spaceHeaderImageUpload.js');
-    $this->registerJsVar('profileImageUploaderUrl', $space->createUrl('/space/admin/image-upload'));
-    $this->registerJsVar('profileHeaderUploaderUrl', $space->createUrl('/space/admin/banner-image-upload'));
+    $this->registerJsVar('profileImageUploaderUrl', $space->createUrl('/space/manage/image/upload'));
+    $this->registerJsVar('profileHeaderUploaderUrl', $space->createUrl('/space/manage/image/banner-upload'));
 }
 ?>
 
@@ -71,7 +71,7 @@ if ($space->isAdmin()) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo $space->createUrl('/space/admin/crop-banner-image'); ?>"
+                       href="<?php echo $space->createUrl('/space/manage/image/crop-banner'); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
@@ -85,7 +85,7 @@ if ($space->isAdmin()) {
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $space->createUrl("/space/admin/delete-profile-image", ['type' => 'banner']),
+                            'linkHref' => $space->createUrl("/space/manage/image/delete", ['type' => 'banner']),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -151,7 +151,7 @@ if ($space->isAdmin()) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo $space->createUrl('/space/admin/crop-image'); ?>"
+                       href="<?php echo $space->createUrl('/space/manage/image/crop'); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                         <?php
@@ -165,7 +165,7 @@ if ($space->isAdmin()) {
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $space->createUrl("/space/admin/delete-profile-image", array('type' => 'profile')),
+                            'linkHref' => $space->createUrl("/space/manage/image/delete", array('type' => 'profile')),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>

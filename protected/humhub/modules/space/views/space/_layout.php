@@ -10,7 +10,7 @@ $space = $this->context->contentContainer;
     <div class="row">
         <div class="col-md-2 layout-nav-container">
             <?php echo \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
-            <?php echo \humhub\modules\space\widgets\AdminMenu::widget(['space' => $space]); ?>
+            <?php echo humhub\modules\space\modules\manage\widgets\Menu::widget(['space' => $space]); ?>
             <br/>
         </div>
 

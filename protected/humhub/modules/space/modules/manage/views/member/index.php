@@ -17,7 +17,7 @@ use humhub\modules\space\models\Space;
 
 
         <br/><br/>
-        <?php echo CHtml::form($space->createUrl('/space/admin/members')); ?>
+        <?php echo CHtml::form($space->createUrl('/space/manage/member')); ?>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -39,7 +39,7 @@ use humhub\modules\space\models\Space;
         <?php echo Chtml::endForm(); ?>
 
 
-        <?php echo CHtml::form($space->createUrl('//space/admin/members'), 'post'); ?>
+        <?php echo CHtml::form($space->createUrl('/space/manage/member'), 'post'); ?>
 
         <?php if ($pagination->totalCount > 0): ?>
 
@@ -129,7 +129,7 @@ use humhub\modules\space\models\Space;
                                         'buttonFalse' => Yii::t('SpaceModule.views_admin_members', 'No, cancel'),
                                         'cssClass' => 'btn btn-sm btn-danger',
                                         'linkContent' => Yii::t('SpaceModule.views_admin_members', 'Remove'),
-                                        'linkHref' => $space->createUrl('/space/admin/remove-member', array('userGuid' => $user->guid, 'ajax' => 1))
+                                        'linkHref' => $space->createUrl('/space/manage/member/remove', array('userGuid' => $user->guid, 'ajax' => 1))
                                     ));
                                     ?>
 
@@ -243,8 +243,8 @@ use humhub\modules\space\models\Space;
                                 <?php echo CHtml::encode($membership->request_message); ?>
                             </td>
                             <td width="150px">
-                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Accept'), $space->createUrl('//space/admin/members-approve-applicant', array('userGuid' => $user->guid)), array('data-method' => 'post', 'class' => "btn btn-sm btn-success")); ?>
-                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Decline'), $space->createUrl('//space/admin/members-reject-applicant', array('userGuid' => $user->guid)), array('data-method' => 'post', 'class' => "btn btn-sm btn-danger")); ?>
+                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Accept'), $space->createUrl('/space/manage/member/approve-applicant', array('userGuid' => $user->guid)), array('data-method' => 'post', 'class' => "btn btn-sm btn-success")); ?>
+                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Decline'), $space->createUrl('/space/manage/member/reject-applicant', array('userGuid' => $user->guid)), array('data-method' => 'post', 'class' => "btn btn-sm btn-danger")); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -299,7 +299,7 @@ use humhub\modules\space\models\Space;
                                 <?php echo CHtml::encode($user->profile->title); ?>
                             </td>
                             <td width="100px">
-                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $space->createUrl('/space/admin/members-reject-applicant', ['userGuid' => $user->guid, 'reject' => true]), array('class' => 'btn btn-sm btn-primary', 'data-method' => 'POST')); ?>
+                                <?php echo Html::a(Yii::t('SpaceModule.views_admin_members', 'Revoke invitation'), $space->createUrl('/space/manage/member/reject-applicant', ['userGuid' => $user->guid, 'reject' => true]), array('class' => 'btn btn-sm btn-primary', 'data-method' => 'POST')); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
