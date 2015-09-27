@@ -27,6 +27,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property integer $updated_by
  * @property string $ldap_dn
  * @property integer $auto_add_new_members
+ * @property integer $contentcontainer_id
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
@@ -59,7 +60,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function rules()
     {
         return [
-            [['wall_id', 'join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'space_type_id'], 'integer'],
+            [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'space_type_id'], 'integer'],
             [['name'], 'unique', 'targetClass' => self::className()],
             [['name'], 'required'],
             [['description', 'tags'], 'string'],
@@ -97,7 +98,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         return array(
             'id' => 'ID',
-            'wall_id' => 'Wall',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
             'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
@@ -153,13 +153,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $user = \humhub\modules\user\models\User::findOne(['id' => $this->created_by]);
 
         if ($insert) {
-            // Create new wall record for this space
-            $wall = new Wall();
-            $wall->object_model = $this->className();
-            $wall->object_id = $this->id;
-            $wall->save();
-            $this->wall_id = $wall->id;
-            $this->update(false, ['wall_id']);
 
             // Auto add creator as admin
             $membership = new Membership();

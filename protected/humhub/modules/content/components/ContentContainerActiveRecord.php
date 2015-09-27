@@ -10,6 +10,8 @@ namespace humhub\modules\content\components;
 
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\Wall;
 
 /**
  *
@@ -32,7 +34,6 @@ class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getProfileImage()
     {
-
         if ($this instanceof \humhub\modules\space\models\Space) {
             return new \humhub\libs\ProfileImage($this->guid, 'default_space');
         }
@@ -102,6 +103,63 @@ class ContentContainerActiveRecord extends ActiveRecord
     public function getWallOut()
     {
         return "Default Wall Output for Class " . get_class($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+
+            $wall = new Wall();
+            $wall->object_model = $this->className();
+            $wall->object_id = $this->id;
+            $wall->save();
+            $this->wall_id = $wall->id;
+            $this->update(false, ['wall_id']);
+
+            $contentContainer = new ContentContainer;
+            $contentContainer->guid = $this->guid;
+            $contentContainer->class = $this->className();
+            $contentContainer->pk = $this->getPrimaryKey();
+            $contentContainer->wall_id = $this->wall_id;
+            if ($this instanceof User) {
+                $contentContainer->owner_user_id = $this->id;
+            } elseif ($this->hasAttribute('created_by')) {
+                $contentContainer->owner_user_id = $this->created_by;
+            }
+            $contentContainer->save();
+
+            $this->contentcontainer_id = $contentContainer->id;
+            $this->update(false, ['contentcontainer_id']);
+        }
+
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        ContentContainer::deleteAll([
+            'pk' => $this->getPrimaryKey(),
+            'class' => $this->className()
+        ]);
+
+        parent::afterDelete();
+    }
+
+    /**
+     * Returns the related ContentContainer model
+     * 
+     * @see ContentContainer
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContentContainerRecord()
+    {
+        return $this->hasOne(ContentContainer::className(), ['id' => 'content_container_id']);
     }
 
 }

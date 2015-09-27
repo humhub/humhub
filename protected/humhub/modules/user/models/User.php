@@ -35,6 +35,7 @@ use humhub\modules\user\components\ActiveQueryUser;
  * @property integer $updated_by
  * @property string $last_login
  * @property integer $visibility
+ * @property integer $contentcontainer_id
  */
 class User extends ContentContainerActiveRecord implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
 {
@@ -357,16 +358,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
             $space->addMember($this->id);
         }
-
-        // Create new wall record for this user
-        $wall = new \humhub\modules\content\models\Wall;
-        $wall->object_model = $this->className();
-        $wall->object_id = $this->id;
-        $wall->save();
-
-        $this->wall_id = $wall->id;
-
-        $this->update(false, ['wall_id']);
     }
 
     /**
