@@ -125,9 +125,9 @@ class Theme extends \yii\base\Theme
     }
 
 
-    public static function setColorVariables($theme) {
+    public static function setColorVariables($themeName) {
 
-        $url = Yii::getAlias('@webroot/themes/'. $theme. '/css/theme.less');
+        $url = Yii::getAlias('@webroot/themes/'. $themeName. '/css/theme.less');
 
         $file = fopen("$url", "r") or die("Unable to open file!");
         $less = fread($file, filesize("$url"));
