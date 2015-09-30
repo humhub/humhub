@@ -57,11 +57,20 @@ class MessageController extends \yii\console\controllers\MessageController
             $messages = array_merge_recursive($messages, $this->extractMessages($file, $config['translator'], $config['ignoreCategories']));
         }
 
+        // Remove unrelated translation categories
+        foreach ($messages as $category => $msgs) {
+            $categoryModule = $this->getModuleByCategory($category);
+            if ($categoryModule == null || $categoryModule->id != $module->id) {
+                unset($messages[$category]);
+            }
+        }
+        
         foreach ($config['languages'] as $language) {
-            $dir = $config['messagePath'] . DIRECTORY_SEPARATOR . $language;
+            $dir = $config['sourcePath'] . DIRECTORY_SEPARATOR . 'messages'. DIRECTORY_SEPARATOR . $language;
             if (!is_dir($dir)) {
                 @mkdir($dir);
             }
+
             $this->saveMessagesToPHP($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort'], false);
         }
     }
