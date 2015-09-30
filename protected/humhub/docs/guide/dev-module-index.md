@@ -35,6 +35,7 @@ use humhub\widgets\TopMenu;
 return [
     'id' => 'example',
     'class' => 'johndoe\example\Module',
+    'namespace' => 'johndoe\example',
     'events' => [
         array('class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => array('johndoe\example\Module', 'onTopMenuInit')),
     ]
