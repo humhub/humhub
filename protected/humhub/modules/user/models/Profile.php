@@ -103,50 +103,51 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
-            'user_id' => 'User ID',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
-            'title' => 'Title',
-            'gender' => 'Gender',
-            'street' => 'Street',
-            'zip' => 'Zip',
-            'city' => 'City',
-            'country' => 'Country',
-            'state' => 'State',
-            'birthday_hide_year' => 'Birthday Hide Year',
-            'birthday' => 'Birthday',
-            'about' => 'About',
-            'phone_private' => 'Phone Private',
-            'phone_work' => 'Phone Work',
-            'mobile' => 'Mobile',
-            'fax' => 'Fax',
-            'im_skype' => 'Im Skype',
-            'im_msn' => 'Im Msn',
-            'im_icq' => 'Im Icq',
-            'im_xmpp' => 'Im Xmpp',
-            'url' => 'Url',
-            'url_facebook' => 'Url Facebook',
-            'url_linkedin' => 'Url Linkedin',
-            'url_xing' => 'Url Xing',
-            'url_youtube' => 'Url Youtube',
-            'url_vimeo' => 'Url Vimeo',
-            'url_flickr' => 'Url Flickr',
-            'url_myspace' => 'Url Myspace',
-            'url_googleplus' => 'Url Googleplus',
-            'url_twitter' => 'Url Twitter',
-        ];
-
-        /*
-          $labels = array();
-          $labels['user_id'] = Yii::t('UserModule.models_Profile', 'User');
-
-          foreach (ProfileField::model()->findAll() as $profileField) {
-          $labels = array_merge($labels, $profileField->fieldType->getLabels());
-          }
-
-          return $labels;
+        /**
+         * Hack for Yii Messages Command 
+         * 
+         * Yii::t('UserModule.models_Profile', 'Firstname')
+         * Yii::t('UserModule.models_Profile', 'Lastname')
+         * Yii::t('UserModule.models_Profile', 'Title')
+         * Yii::t('UserModule.models_Profile', 'Street')
+         * Yii::t('UserModule.models_Profile', 'Zip')
+         * Yii::t('UserModule.models_Profile', 'City')
+         * Yii::t('UserModule.models_Profile', 'Country')
+         * Yii::t('UserModule.models_Profile', 'State')
+         * Yii::t('UserModule.models_Profile', 'About')
+         * Yii::t('UserModule.models_Profile', 'Birthday')
+         * Yii::t('UserModule.models_Profile', 'Hide year in profile')
+         * 
+         * Yii::t('UserModule.models_Profile', 'Gender')
+         * Yii::t('UserModule.models_Profile', 'Male')
+         * Yii::t('UserModule.models_Profile', 'Female')
+         * Yii::t('UserModule.models_Profile', 'Custom')
+         * Yii::t('UserModule.models_Profile', 'Hide year in profile')         * 
+         * 
+         * Yii::t('UserModule.models_Profile', 'Phone Private')
+         * Yii::t('UserModule.models_Profile', 'Phone Work')
+         * Yii::t('UserModule.models_Profile', 'Mobile')
+         * Yii::t('UserModule.models_Profile', 'Fax')
+         * Yii::t('UserModule.models_Profile', 'Skype Nickname')
+         * Yii::t('UserModule.models_Profile', 'MSN')
+         * Yii::t('UserModule.models_Profile', 'XMPP Jabber Address')
+         * 
+         * Yii::t('UserModule.models_Profile', 'Url')
+         * Yii::t('UserModule.models_Profile', 'Facebook URL')
+         * Yii::t('UserModule.models_Profile', 'LinkedIn URL')
+         * Yii::t('UserModule.models_Profile', 'Xing URL')
+         * Yii::t('UserModule.models_Profile', 'Youtube URL')
+         * Yii::t('UserModule.models_Profile', 'Vimeo URL')
+         * Yii::t('UserModule.models_Profile', 'Flickr URL')
+         * Yii::t('UserModule.models_Profile', 'MySpace URL')
+         * Yii::t('UserModule.models_Profile', 'Google+ URL')
+         * Yii::t('UserModule.models_Profile', 'Twitter URL')
          */
+        $labels = [];
+        foreach (ProfileField::find()->all() as $profileField) {
+            $labels = array_merge($labels, $profileField->fieldType->getLabels());
+        }
+        return $labels;
     }
 
     public function getUser()

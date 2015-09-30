@@ -83,7 +83,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, 'date');
+        $rules[] = array($this->profileField->internal_name, 'date', 'timestampAttribute' => $this->profileField->internal_name);
         return parent::getFieldRules($rules);
     }
 
@@ -125,8 +125,9 @@ class DateTime extends BaseType
             return null;
         }
 
-        // Convert Value to DB Timestamp
-        return Yii::$app->formatter->asDateTime($value, 'php:Y-m-d H:i:s');
+        $date = new \DateTime;
+        $date->setTimestamp($value);
+        return $date->format('Y-m-d H:i:s');
     }
 
 }
