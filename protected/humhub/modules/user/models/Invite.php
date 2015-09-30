@@ -24,6 +24,8 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  * @property string $language
+ * @property string $firstname
+ * @property string $lastname
  */
 class Invite extends \yii\db\ActiveRecord
 {
@@ -47,11 +49,12 @@ class Invite extends \yii\db\ActiveRecord
         return [
             [['user_originator_id', 'space_invite_id', 'created_by', 'updated_by'], 'integer'],
             [['email'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'firstname', 'lastname'], 'safe'],
             [['email', 'source', 'token'], 'string', 'max' => 45],
             [['language'], 'string', 'max' => 10],
             [['email'], 'unique'],
-            [['token'], 'unique']
+            [['token'], 'unique'],
+            [['firstname', 'lastname'], 'string', 'max' => 255],
         ];
     }
 
@@ -72,6 +75,8 @@ class Invite extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'language' => 'Language',
+            'firstname' => 'Firstname',
+            'lastname' => 'Lastname'
         ];
     }
 
