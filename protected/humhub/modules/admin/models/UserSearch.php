@@ -80,11 +80,6 @@ class UserSearch extends User
             return $dataProvider;
         }
 
-        if(strtolower($this->last_login) == 'yes') {
-        	$query->andWhere(['not', ['last_login' => null ]]);
-        } else if(strtolower($this->last_login) == 'no') {
-        	$query->andWhere([ 'last_login' => null ]);
-        }
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['super_admin' => $this->super_admin]);
         $query->andFilterWhere(['like', 'id', $this->id]);
@@ -92,6 +87,19 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
+        
+        if (! empty($this->getAttribute('last_login'))) {
+            try {
+                $last_login = Yii::$app->formatter->asDate($this->getAttribute('last_login'), 'php:Y-m-d');
+                $query->andWhere([
+                    '=',
+                    new \yii\db\Expression("DATE(last_login)"),
+                    new \yii\db\Expression("DATE(:last_login)", [':last_login'=>$last_login])
+                    ]);
+            } catch (InvalidParamException $e) {
+                // do not change the query if the date is wrong formatted
+            }
+        }
 
         return $dataProvider;
     }
