@@ -133,7 +133,7 @@ abstract class Search extends \yii\base\Component
             } else {
                 $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
             }
-        } elseif ($meta['type'] == self::DOCUMENT_TYPE_SPACE && $obj->visibility != Space::VISIBILITY_ALL) {
+        } elseif ($meta['type'] == self::DOCUMENT_TYPE_SPACE && $obj->visibility == Space::VISIBILITY_NONE) {
             $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
         } else {
             $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
