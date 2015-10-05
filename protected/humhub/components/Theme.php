@@ -92,13 +92,15 @@ class Theme extends \yii\base\Theme
      */
     protected function autoFindModuleView($path)
     {
+        $sep = preg_quote(DIRECTORY_SEPARATOR);
+        
         // .../moduleId/views/controllerId/viewName.php
-        if (preg_match('@.*/(.*?)/views/(.*?)/(.*?)\.php$@', $path, $hits)) {
+        if (preg_match('@.*'.$sep.'(.*?)'.$sep.'views'.$sep.'(.*?)'.$sep.'(.*?)\.php$@', $path, $hits)) {
             return $this->getBasePath() . '/views/' . $hits[1] . '/' . $hits[2] . '/' . $hits[3] . '.php';
         }
 
         // /moduleId/[widgets|activities|notifications]/views/viewName.php
-        if (preg_match('@.*/(.*?)/(widgets|notifications|activities)/views/(.*?)\.php$@', $path, $hits)) {
+        if (preg_match('@.*'.$sep.'(.*?)'.$sep.'(widgets|notifications|activities)'.$sep.'views'.$sep.'(.*?)\.php$@', $path, $hits)) {
             return $this->getBasePath() . '/views/' . $hits[1] . '/' . $hits[2] . '/' . $hits[3] . '.php';
         }
 
