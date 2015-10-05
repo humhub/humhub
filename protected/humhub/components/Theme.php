@@ -68,7 +68,7 @@ class Theme extends \yii\base\Theme
             if (file_exists($themedFile)) {
                 return str_replace('@web', $this->getBaseUrl(), $path);
             } else {
-                $path = Yii::getAlias($path);
+                return $path;
             }
         }
 
