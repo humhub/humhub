@@ -103,7 +103,7 @@ class ZendLuceneSearch extends Search
         $options = $this->setDefaultFindOptions($options);
 
         $index = $this->getIndex();
-        $keyword = str_replace(array('*', '?', '_', '$'), ' ', mb_strtolower($keyword));
+        $keyword = str_replace(array('*', '?', '_', '$'), ' ', mb_strtolower($keyword, 'utf-8'));
 
         if (!isset($options['sortField']) || $options['sortField'] == "") {
             $hits = new \ArrayObject($index->find($this->buildQuery($keyword, $options)));
