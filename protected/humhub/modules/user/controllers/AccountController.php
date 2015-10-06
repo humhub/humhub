@@ -377,7 +377,7 @@ class AccountController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-            return $this->htmlRedirect(Yii::$app->user->getModel()->getUrl());
+            return $this->htmlRedirect(Yii::$app->user->getIdentity()->getUrl());
         }
 
         return $this->renderAjax('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::$app->user->getIdentity()));
