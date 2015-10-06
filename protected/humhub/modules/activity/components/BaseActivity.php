@@ -75,9 +75,9 @@ class BaseActivity extends \yii\base\Component
     protected $layoutMail = "@humhub/modules/activity/views/layouts/mail.php";
 
     /**
-     * The actvity record this notification belongs to
+     * The actvity record this belongs to
      *
-     * @var Notification
+     * @var Activity
      */
     public $record;
 
