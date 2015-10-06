@@ -135,13 +135,7 @@ use humhub\models\Setting;
             ]);
             ?>
 
-            <div id="create-loader" class="loader loader-modal hidden">
-                <div class="sk-spinner sk-spinner-three-bounce">
-                    <div class="sk-bounce1"></div>
-                    <div class="sk-bounce2"></div>
-                    <div class="sk-bounce3"></div>
-                </div>
-            </div>
+            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'create-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
         <?php CActiveForm::end(); ?>

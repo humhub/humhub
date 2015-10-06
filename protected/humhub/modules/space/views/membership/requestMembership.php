@@ -41,13 +41,7 @@ use humhub\compat\CActiveForm;
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Close'); ?></button>
 
-            <div id="send-loader" class="loader loader-modal hidden">
-                <div class="sk-spinner sk-spinner-three-bounce">
-                    <div class="sk-bounce1"></div>
-                    <div class="sk-bounce2"></div>
-                    <div class="sk-bounce3"></div>
-                </div>
-            </div>
+            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'send-loader', 'cssClass' => 'loader-modal hidden']); ?>
 
         </div>
 

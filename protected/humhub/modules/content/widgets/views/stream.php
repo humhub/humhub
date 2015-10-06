@@ -52,13 +52,7 @@ $this->registerJs($jsLoadWall, View::POS_READY);
     <div class="s2_stream" style="display:none">
 
         <div class="s2_streamContent"></div>
-        <div class="loader streamLoader">
-            <div class="sk-spinner sk-spinner-three-bounce">
-                <div class="sk-bounce1"></div>
-                <div class="sk-bounce2"></div>
-                <div class="sk-bounce3"></div>
-            </div>
-        </div>
+        <?php echo \humhub\widgets\LoaderWidget::widget(['cssClass' => 'streamLoader']); ?>
 
         <div class="emptyStreamMessage">
 

@@ -43,13 +43,7 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
         <li>
             <ul class="media-list notLoaded" id="space-menu-spaces">
                 <li id="loader_spaces">
-                    <div class="loader">
-                        <div class="sk-spinner sk-spinner-three-bounce">
-                            <div class="sk-bounce1"></div>
-                            <div class="sk-bounce2"></div>
-                            <div class="sk-bounce3"></div>
-                        </div>
-                    </div>
+                    <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
                 </li>
             </ul>
         </li>

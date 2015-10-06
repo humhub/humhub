@@ -54,13 +54,7 @@ use humhub\modules\space\models\Space;
 
             <div class="btn_container">
 
-                <div id="postform-loader" class="loader loader-postform hidden">
-                    <div class="sk-spinner sk-spinner-three-bounce">
-                        <div class="sk-bounce1"></div>
-                        <div class="sk-bounce2"></div>
-                        <div class="sk-bounce3"></div>
-                    </div>
-                </div>
+                <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'postform-loader', 'cssClass' => 'loader-postform hidden']); ?>
 
                 <?php
                 echo \humhub\widgets\AjaxButton::widget([

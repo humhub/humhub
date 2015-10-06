@@ -99,14 +99,7 @@ use humhub\modules\user\models\User;
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('AdminModule.views_module_setAsDefault', 'Close'); ?></button>
 
-
-            <div id="default-loader" class="loader loader-modal hidden">
-                <div class="sk-spinner sk-spinner-three-bounce">
-                    <div class="sk-bounce1"></div>
-                    <div class="sk-bounce2"></div>
-                    <div class="sk-bounce3"></div>
-                </div>
-            </div>
+            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'default-loader', 'cssClass' => 'loader-modal hidden']); ?>
 
         </div>
 
