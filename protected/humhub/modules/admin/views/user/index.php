@@ -44,7 +44,7 @@ use yii\grid\GridView;
                 ],
                 [
                     'attribute' => 'last_login',
-                    'label' => 'Login',
+                    'label' => Yii::t('AdminModule.views_user_index', 'Last login'),
                     'filter' => \yii\jui\DatePicker::widget([
                         'model' => $searchModel,
                         'attribute' => 'last_login',
