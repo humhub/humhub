@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
 use humhub\commands\CronController;
 use humhub\models\Setting;
 use yii\helpers\Console;
+use yii\base\Exception;
 
 /**
  * Events provides callbacks to handle events.
@@ -142,6 +143,11 @@ class Events extends \yii\base\Object
         Console::startProgress($done, $totalUsers, 'Sending update e-mails to users... ', false);
         foreach ($users->each() as $user) {
 
+            if ($user->email === "") {
+                continue;
+            }
+
+
             // Check user should receive an email
             Yii::$app->user->switchIdentity($user);
             if ($user->language != "") {
@@ -168,14 +174,15 @@ class Events extends \yii\base\Object
                         $mail->setSubject(Yii::t('base', "Your daily summary"));
                     }
                     $mail->send();
+                    $mailsSent++;
+                } catch (\Swift_SwiftException $ex) {
+                    Yii::error('Could not send mail to: ' . $user->email . ' - Error:  ' . $ex->getMessage());
                 } catch (Exception $ex) {
                     Yii::error('Could not send mail to: ' . $user->email . ' - Error:  ' . $ex->getMessage());
                 }
-
-                $mailsSent++;
             }
 
-            Console::updateProgress(++$done, $totalUsers);
+            Console::updateProgress( ++$done, $totalUsers);
         }
 
         Console::endProgress(true);
