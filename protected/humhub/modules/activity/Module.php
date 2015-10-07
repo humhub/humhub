@@ -66,8 +66,12 @@ class Module extends \humhub\components\Module
         $stream->activeQuery->andWhere(['>', 'content.created_at', $lastMailDate]);
 
         foreach ($stream->getWallEntries() as $wallEntry) {
-            $activity = $wallEntry->content->getPolymorphicRelation();
-            $output .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL);
+            try {
+                $activity = $wallEntry->content->getPolymorphicRelation();
+                $output .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL);
+            } catch (\yii\base\Exception $ex) {
+                \Yii::error($ex->getMessage());
+            }
         }
 
         $user->last_activity_email = new \yii\db\Expression('NOW()');

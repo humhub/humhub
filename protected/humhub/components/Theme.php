@@ -68,7 +68,7 @@ class Theme extends \yii\base\Theme
             if (file_exists($themedFile)) {
                 return str_replace('@web', $this->getBaseUrl(), $path);
             } else {
-                $path = Yii::getAlias($path);
+                return $path;
             }
         }
 
@@ -92,13 +92,15 @@ class Theme extends \yii\base\Theme
      */
     protected function autoFindModuleView($path)
     {
+        $sep = preg_quote(DIRECTORY_SEPARATOR);
+        
         // .../moduleId/views/controllerId/viewName.php
-        if (preg_match('@.*/(.*?)/views/(.*?)/(.*?)\.php$@', $path, $hits)) {
+        if (preg_match('@.*'.$sep.'(.*?)'.$sep.'views'.$sep.'(.*?)'.$sep.'(.*?)\.php$@', $path, $hits)) {
             return $this->getBasePath() . '/views/' . $hits[1] . '/' . $hits[2] . '/' . $hits[3] . '.php';
         }
 
         // /moduleId/[widgets|activities|notifications]/views/viewName.php
-        if (preg_match('@.*/(.*?)/(widgets|notifications|activities)/views/(.*?)\.php$@', $path, $hits)) {
+        if (preg_match('@.*'.$sep.'(.*?)'.$sep.'(widgets|notifications|activities)'.$sep.'views'.$sep.'(.*?)\.php$@', $path, $hits)) {
             return $this->getBasePath() . '/views/' . $hits[1] . '/' . $hits[2] . '/' . $hits[3] . '.php';
         }
 
@@ -125,9 +127,9 @@ class Theme extends \yii\base\Theme
     }
 
 
-    public static function setColorVariables($theme) {
+    public static function setColorVariables($themeName) {
 
-        $url = Yii::getAlias('@webroot/themes/'. $theme. '/css/theme.less');
+        $url = Yii::getAlias('@webroot/themes/'. $themeName. '/css/theme.less');
 
         $file = fopen("$url", "r") or die("Unable to open file!");
         $less = fread($file, filesize("$url"));

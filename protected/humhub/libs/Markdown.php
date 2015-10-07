@@ -43,7 +43,7 @@ class Markdown extends \cebe\markdown\GithubMarkdown
             $internalLink = true;
         }
 
-        return Html::a($this->renderAbsy($block['text']), $block['url'], [
+        return Html::a($this->renderAbsy($block['text']), Html::decode($block['url']), [
                     'target' => ($internalLink) ? '_self' : '_blank'
         ]);
     }

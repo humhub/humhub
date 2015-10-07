@@ -21,4 +21,5 @@ return [
     'Add new user' => '',
     'In this overview you can find every registered user and manage him.' => '',
     'Overview' => '',
+    'never' => '',
 ];

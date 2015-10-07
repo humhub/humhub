@@ -7,6 +7,7 @@ function initMarkdownEditor(elementId) {
 
     $("#" + elementId).markdown({
         iconlibrary: 'fa',
+        resize: 'vertical',
         additionalButtons: [
             [{
                     name: "groupCustom",

@@ -23,7 +23,7 @@ use yii\grid\GridView;
             'columns' => [
                 [
                     'attribute' => 'id',
-                    'options' => ['width' => '40px'],
+                    'options' => ['style' => 'width:40px;'],
                     'format' => 'raw',
                     'value' => function($data) {
                 return $data->id;
@@ -39,13 +39,25 @@ use yii\grid\GridView;
                     'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'super_admin', array('' => 'All', '0' => 'No', '1' => 'Yes')),
                     'value' =>
                     function($data) {
-                return ($data->super_admin == 1) ? 'Yes' : 'No';
-            }
+                        return ($data->super_admin == 1) ? 'Yes' : 'No';
+                    }
+                ],
+                [
+                    'attribute' => 'last_login',
+                    'label' => 'Login',
+                    'filter' => \yii\jui\DatePicker::widget([
+                        'model' => $searchModel,
+                        'attribute' => 'last_login',
+                        'options' => ['style' => 'width:86px;'],
+                    ]),
+                    'value' => function ($data) {
+                        return ($data->last_login == NULL) ? Yii::t('AdminModule.views_user_index', 'never') : Yii::$app->formatter->asDate($data->last_login);
+                    }
                 ],
                 [
                     'header' => 'Actions',
                     'class' => 'yii\grid\ActionColumn',
-                    'options' => ['width' => '80px'],
+                    'options' => ['style' => 'width:80px; min-width:80px;'],
                     'buttons' => [
                         'view' => function($url, $model) {
                             return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);

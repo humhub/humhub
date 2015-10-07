@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use humhub\modules\space\models\Space;
+use humhub\modules\content\components\ContentContainerController;
 
 $user = $object->content->user;
 $container = $object->content->container;
@@ -30,7 +32,7 @@ $container = $object->content->container;
             </a>
 
             <!-- Show space image, if you are outside from a space -->
-            <?php if (!Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController && $object->content->container instanceof \humhub\modules\space\models\Space): ?>
+            <?php if (!Yii::$app->controller instanceof ContentContainerController && $object->content->container instanceof Space): ?>
                 <a href="<?php echo $object->content->container->getUrl(); ?>"
                    class="pull-left">
                     <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
@@ -57,8 +59,8 @@ $container = $object->content->container;
                         <!-- show space name -->
                         <?php if (!Yii::$app->controller instanceof ContentContainerController && $container instanceof Space): ?>
                             <?php echo Yii::t('ContentModule.views_wallLayout', 'in'); ?> <strong><a
-                                    href="<?php echo $container->getUrl(); ?>"><?php echo Html::encode($container->name); ?></a></strong>
-                        <?php endif; ?>
+                                    href="<?php echo $container->getUrl(); ?>"><?php echo Html::encode($container->name); ?></a></strong>&nbsp;
+                            <?php endif; ?>
 
                         <?php echo \humhub\modules\content\widgets\WallEntryLabels::widget(['object' => $object]); ?>
 

@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'never' => 'Nie',
     'Admin' => '@@Administrator@@',
     'All' => '@@Alle@@',
     'Delete user account' => '@@Lösche Benutzer@@',

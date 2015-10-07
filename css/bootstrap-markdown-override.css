@@ -10,7 +10,7 @@
 }
 
 .md-editor > textarea {
-    min-height: 500px;
+    min-height: 100px;
     padding: 10px; 
     font-family: inherit;
     color: #555555;

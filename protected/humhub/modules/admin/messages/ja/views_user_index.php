@@ -19,6 +19,7 @@
 return [
     'Add new user' => '',
     'Overview' => '',
+    'never' => '',
     'Admin' => '@@管理@@',
     'All' => '@@すべて@@',
     'Delete user account' => '@@ユーザーアカウントを削除@@',

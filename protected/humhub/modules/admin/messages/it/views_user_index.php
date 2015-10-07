@@ -19,6 +19,7 @@
 return [
     'Add new user' => '',
     'Overview' => '',
+    'never' => '',
     'Admin' => '@@Admin@@',
     'All' => '@@Tutti@@',
     'Delete user account' => '@@Cancella l\'account dellutente@@',

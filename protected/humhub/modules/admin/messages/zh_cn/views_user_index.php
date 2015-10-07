@@ -19,6 +19,7 @@
 return [
     'Add new user' => '',
     'Overview' => '',
+    'never' => '',
     'Admin' => '@@管理@@',
     'All' => '@@所有@@',
     'Delete user account' => '@@删除用户@@',
