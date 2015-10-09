@@ -98,7 +98,6 @@ class Ldap extends Object
         } catch (Exception $ex) {
             return false;
         }
-        return false;
     }
 
     /**
