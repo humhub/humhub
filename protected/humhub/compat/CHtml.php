@@ -140,9 +140,6 @@ class CHtml extends \yii\helpers\Html
     public static function modelName($model)
     {
         return $model->formName();
-
-        $className = is_object($model) ? get_class($model) : (string) $model;
-        return trim(str_replace('\\', '_', $className), '_');
     }
 
     /**

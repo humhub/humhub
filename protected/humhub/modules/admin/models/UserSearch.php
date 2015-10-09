@@ -88,7 +88,7 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
         
-        if (! empty($this->getAttribute('last_login'))) {
+        if ($this->getAttribute('last_login') != "") {
             try {
                 $last_login = Yii::$app->formatter->asDate($this->getAttribute('last_login'), 'php:Y-m-d');
                 $query->andWhere([

@@ -62,8 +62,6 @@ class ProfileField extends \yii\db\ActiveRecord
             array('field_type_class', 'checkType'),
             array(['description', 'created_at', 'updated_at'], 'safe'),
         );
-
-        return $rules;
     }
 
     /**

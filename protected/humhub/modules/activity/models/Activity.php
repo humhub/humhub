@@ -80,7 +80,6 @@ class Activity extends ContentActiveRecord
         } else {
             throw new Exception("Could not find BaseActivity " . $this->class . " for Activity Record.");
         }
-        return null;
     }
 
     /**
