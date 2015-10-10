@@ -112,7 +112,7 @@ use humhub\modules\space\models\Space;
                                             class="fa fa-bell"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
                                     </a>
                                 </li>
-                                <?php if ($contentContainer instanceof Space && $contentContainer->canShare()): /* can create public content */ ?>
+                                <?php if ($canSwitchVisibility): ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
                                                 class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
@@ -155,6 +155,12 @@ use humhub\modules\space\models\Space;
         // Hide options by default
         jQuery('.contentForm_options').fadeIn();
     });
+
+    <?php if ($defaultVisibility == humhub\modules\content\models\Content::VISIBILITY_PUBLIC) : ?>
+        // Switch from default private to public
+        changeVisibility();
+    <?php endif; ?>
+
     function changeVisibility() {
         if ($('#contentForm_visibility').attr('checked') != 'checked') {
             $('#contentForm_visibility').attr('checked', 'checked');

@@ -3,12 +3,12 @@
 namespace humhub\modules\space\models;
 
 use Yii;
-use humhub\modules\content\models\Wall;
 use humhub\modules\space\models\Membership;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\libs\BasePermission;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\content\models\Wall;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * This is the model class for table "space".
@@ -69,7 +69,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function rules()
     {
         return [
-            [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'space_type_id'], 'integer'],
+            [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'space_type_id', 'default_content_visibility'], 'integer'],
             [['name'], 'unique', 'targetClass' => self::className()],
             [['name'], 'required'],
             [['description', 'tags'], 'string'],
@@ -90,7 +90,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'description', 'website', 'tags', 'join_policy', 'visibility', 'space_type_id'];
+        $scenarios['edit'] = ['name', 'description', 'website', 'tags', 'join_policy', 'visibility', 'space_type_id', 'default_content_visibility'];
         if (Yii::$app->user->isAdmin()) {
             $scenarios['edit'][] = 'ldap_dn';
         }
@@ -413,7 +413,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         if (($visibility == self::VISIBILITY_REGISTERED_ONLY || $visibility == self::VISIBILITY_ALL) && !Yii::$app->user->permissionManager->can(new CreatePublicSpace())) {
-            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'.$visibility));
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!' . $visibility));
         }
     }
 
@@ -498,6 +498,26 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         } else {
             return self::USERGROUP_USER;
         }
+    }
+
+    /**
+     * Returns the default content visibility
+     * 
+     * @see Content
+     * @return int the default visiblity
+     */
+    public function getDefaultContentVisibility()
+    {
+        if ($this->default_content_visibility === null) {
+            $globalDefault = \humhub\models\Setting::Get('defaultContentVisibility', 'space');
+            if ($globalDefault == Content::VISIBILITY_PUBLIC) {
+                return Content::VISIBILITY_PUBLIC;
+            }
+        } elseif ($this->default_content_visibility === 1) {
+            return Content::VISIBILITY_PUBLIC;
+        }
+
+        return Content::VISIBILITY_PRIVATE;
     }
 
 }

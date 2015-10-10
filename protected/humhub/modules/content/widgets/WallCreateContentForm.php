@@ -12,6 +12,7 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 
@@ -76,11 +77,24 @@ class WallCreateContentForm extends \yii\base\Widget
         if (!$this->contentContainer->canWrite())
             return;
 
+        $defaultVisibility = Content::VISIBILITY_PUBLIC;
+        $canSwitchVisibility = false;
+        if ($this->contentContainer instanceof Space) {
+            $defaultVisibility = $this->contentContainer->getDefaultContentVisibility();
+            if ($this->contentContainer->permissionManager->can(new \humhub\modules\space\permissions\CreatePublicContent())) {
+                $canSwitchVisibility = true;
+            } else {
+                $defaultVisibility = Content::VISIBILITY_PRIVATE;
+            }
+        }
+
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', array(
                     'form' => $this->renderForm(),
                     'contentContainer' => $this->contentContainer,
                     'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
-                    'submitButtonText' => $this->submitButtonText
+                    'submitButtonText' => $this->submitButtonText,
+                    'defaultVisibility' => $defaultVisibility,
+                    'canSwitchVisibility' => $canSwitchVisibility
         ));
     }
 

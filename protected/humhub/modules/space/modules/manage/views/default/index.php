@@ -67,6 +67,14 @@ use humhub\modules\space\models\Space;
             <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
             <?php echo $form->error($model, 'visibility'); ?>
         </div>
+
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'default_content_visibility'); ?>
+            <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((\humhub\models\Setting::Get('defaultContentVisibility', 'space') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
+            <?php $contentVisibilities = array('' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')); ?>
+            <?php echo $form->dropDownList($model, 'default_content_visibility', $contentVisibilities, array('class' => 'form-control')); ?>
+        </div>
+
         <hr>
 
         <?php if (Yii::$app->user->isAdmin() && Setting::Get('enabled', 'authentication_ldap')): ?>

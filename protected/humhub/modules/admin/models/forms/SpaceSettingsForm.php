@@ -13,6 +13,7 @@ class SpaceSettingsForm extends \yii\base\Model
 
     public $defaultVisibility;
     public $defaultJoinPolicy;
+    public $defaultContentVisibility;
 
     /**
      * Declares the validation rules.
@@ -20,7 +21,7 @@ class SpaceSettingsForm extends \yii\base\Model
     public function rules()
     {
         return array(
-            array(['defaultVisibility', 'defaultJoinPolicy'], 'integer'),
+            array(['defaultVisibility', 'defaultJoinPolicy', 'defaultContentVisibility'], 'integer'),
         );
     }
 
@@ -34,6 +35,7 @@ class SpaceSettingsForm extends \yii\base\Model
         return array(
             'defaultVisibility' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Visibility'),
             'defaultJoinPolicy' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Join Policy'),
+            'defaultContentVisibility' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Content Visiblity'),
         );
     }
 

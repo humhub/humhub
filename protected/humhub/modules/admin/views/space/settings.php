@@ -1,12 +1,10 @@
 <?php
 
+use yii\helpers\Url;
+use yii\grid\GridView;
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
-use humhub\models\Setting;
-use humhub\modules\space\models\Space;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\grid\GridView;
+use humhub\modules\content\models\Content;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_settings', '<strong>Space</strong> Settings'); ?></div>
@@ -53,6 +51,12 @@ use yii\grid\GridView;
             <?php echo $form->dropDownList($model, 'defaultVisibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
             <?php echo $form->error($model, 'defaultVisibility'); ?>
         </div>
+
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'defaultContentVisibility'); ?>
+            <?php echo $form->dropDownList($model, 'defaultContentVisibility', [Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'), Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')], array('class' => 'form-control')); ?>
+        </div>
+
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_space_settings', 'Save'), array('class' => 'btn btn-primary')); ?>
