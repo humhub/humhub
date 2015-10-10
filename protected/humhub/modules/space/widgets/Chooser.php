@@ -4,6 +4,8 @@ namespace humhub\modules\space\widgets;
 
 use Yii;
 use \yii\base\Widget;
+use humhub\modules\space\permissions\CreatePrivateSpace;
+use humhub\modules\space\permissions\CreatePublicSpace;
 
 /**
  * Created by PhpStorm.
@@ -29,7 +31,9 @@ class Chooser extends Widget
             }
         }
 
-        return $this->render('spaceChooser', array('currentSpace' => $currentSpace));
+        $canCreateSpace = (Yii::$app->user->permissionmanager->can(new CreatePublicSpace) || Yii::$app->user->permissionmanager->can(new CreatePrivateSpace()));
+
+        return $this->render('spaceChooser', array('currentSpace' => $currentSpace, 'canCreateSpace' => $canCreateSpace));
     }
 
 }

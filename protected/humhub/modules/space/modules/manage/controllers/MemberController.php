@@ -10,9 +10,14 @@ namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\data\ArrayDataProvider;
+use yii\web\HttpException;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\components\Controller;
+use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
+use humhub\libs\BasePermission;
 
 /**
  * Member Controller
@@ -27,78 +32,66 @@ class MemberController extends Controller
      */
     public function actionIndex()
     {
-        $membersPerPage = 20;
         $space = $this->getSpace();
+        $searchModel = new MembershipSearch();
+        $searchModel->space_id = $space->id;
+        $searchModel->status = Membership::STATUS_MEMBER;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        // User Role Management
-        if (isset($_POST['users'])) {
-            $users = Yii::$app->request->post('users');
-
-            // Loop over all users in Form
-            foreach ($users as $userGuid) {
-                // Get informations
-                if (isset($_POST['user_' . $userGuid])) {
-                    $userSettings = Yii::$app->request->post('user_' . $userGuid);
-
-                    $user = User::findOne(['guid' => $userGuid]);
-                    if ($user != null) {
-
-                        // No changes on the Owner
-                        if ($space->isSpaceOwner($user->id))
-                            continue;
-
-                        $membership = \humhub\modules\space\models\Membership::findOne(['user_id' => $user->id, 'space_id' => $space->id]);
-                        if ($membership != null) {
-                            $membership->invite_role = (isset($userSettings['inviteRole']) && $userSettings['inviteRole'] == 1) ? 1 : 0;
-                            $membership->admin_role = (isset($userSettings['adminRole']) && $userSettings['adminRole'] == 1) ? 1 : 0;
-                            $membership->share_role = (isset($userSettings['shareRole']) && $userSettings['shareRole'] == 1) ? 1 : 0;
-                            $membership->save();
-                        }
-                    }
-                }
+        // User Group Change
+        if (Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+            $membership = Membership::findOne(['space_id' => $space->id, 'user_id' => Yii::$app->request->post('user_id')]);
+            if ($membership === null) {
+                throw new \yii\web\HttpException(404, 'Could not find membership!');
             }
 
-            // Change owner if changed
-            if ($space->isSpaceOwner()) {
-                $owner = $space->getSpaceOwner();
-                $newOwnerId = Yii::$app->request->post('ownerId');
-
-                if ($newOwnerId != $owner->id) {
-                    if ($space->isMember($newOwnerId)) {
-                        $space->setSpaceOwner($newOwnerId);
-
-                        // Redirect to current space
-                        return $this->redirect($space->createUrl('admin/manage/member'));
-                    }
-                }
+            if ($membership->load(Yii::$app->request->post()) && $membership->validate() && $membership->save()) {
+                return Yii::$app->request->post();
             }
-
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
-        } // Updated Users
-
-        $query = $space->getMemberships();
-        #$query = Membership::find();
-        // Allow User Searches
-        $search = Yii::$app->request->post('search');
-        if ($search != "") {
-            $query->joinWith('user');
-            $query->andWhere('user.username LIKE :search OR user.email LIKE :search', [':search' => '%' . $search . '%']);
+            return $membership->getErrors();
         }
 
-        $countQuery = clone $query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $membersPerPage]);
-        $query->offset($pagination->offset)->limit($pagination->limit);
-
-        $invitedMembers = Membership::findAll(['space_id' => $space->id, 'status' => Membership::STATUS_INVITED]);
-
-        $members = $query->all();
-
         return $this->render('index', array(
-                    'space' => $space,
-                    'pagination' => $pagination,
-                    'members' => $members,
-                    'invited_members' => $invitedMembers,
-                    'search' => $search,
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'space' => $space
+        ));
+    }
+
+    /**
+     * Members Administration Action
+     */
+    public function actionPendingInvitations()
+    {
+        $space = $this->getSpace();
+        $searchModel = new MembershipSearch();
+        $searchModel->space_id = $space->id;
+        $searchModel->status = Membership::STATUS_INVITED;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('pending-invitations', array(
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'space' => $space
+        ));
+    }
+
+    /**
+     * Members Administration Action
+     */
+    public function actionPendingApprovals()
+    {
+        $space = $this->getSpace();
+        $searchModel = new MembershipSearch();
+        $searchModel->space_id = $space->id;
+        $searchModel->status = Membership::STATUS_APPLICANT;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('pending-approvals', array(
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'space' => $space
         ));
     }
 
@@ -160,6 +153,59 @@ class MemberController extends Controller
 
         // Redirect  back to Administration page
         return $this->htmlRedirect($space->createUrl('/space/manage/member'));
+    }
+
+    /**
+     * Shows space permessions
+     */
+    public function actionPermissions()
+    {
+        $space = $this->getSpace();
+
+        $groups = $space->getUserGroups();
+        $groupId = Yii::$app->request->get('groupId', Space::USERGROUP_MEMBER);
+        if (!array_key_exists($groupId, $groups)) {
+            throw new HttpException(500, 'Invalid group id given!');
+        }
+
+        // Handle permission state change
+        if (Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+            $permission = $space->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
+            if ($permission === null) {
+                throw new \yii\web\HttpException(500, 'Could not find permission!');
+            }
+            $space->permissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
+            return [];
+        }
+
+        return $this->render('permissions', array(
+                    'space' => $space,
+                    'groups' => $groups,
+                    'groupId' => $groupId
+        ));
+    }
+
+    /**
+     * Change owner
+     */
+    public function actionChangeOwner()
+    {
+        $this->ownerOnly();
+        $space = $this->getSpace();
+
+        $model = new \humhub\modules\space\modules\manage\models\ChangeOwnerForm();
+        $model->ownerId = $space->getSpaceOwner()->id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $space->setSpaceOwner($model->ownerId);
+            return $this->redirect($space->getUrl());
+        }
+
+        return $this->render('change-owner', array(
+                    'space' => $space,
+                    'model' => $model
+        ));
     }
 
 }

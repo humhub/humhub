@@ -16,9 +16,7 @@ use humhub\modules\comment\models\Comment;
  * @property integer $status
  * @property string $request_message
  * @property string $last_visit
- * @property integer $invite_role
- * @property integer $admin_role
- * @property integer $share_role
+ * @property string $group_id
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -46,9 +44,9 @@ class Membership extends \yii\db\ActiveRecord
     {
         return [
             [['space_id', 'user_id'], 'required'],
-            [['space_id', 'user_id', 'originator_user_id', 'status', 'invite_role', 'admin_role', 'share_role', 'created_by', 'updated_by'], 'integer'],
+            [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
-            [['last_visit', 'created_at', 'updated_at'], 'safe'],
+            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe'],
         ];
     }
 
@@ -64,9 +62,6 @@ class Membership extends \yii\db\ActiveRecord
             'status' => 'Status',
             'request_message' => 'Request Message',
             'last_visit' => 'Last Visit',
-            'invite_role' => 'Invite Role',
-            'admin_role' => 'Admin Role',
-            'share_role' => 'Share Role',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

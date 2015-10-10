@@ -8,10 +8,12 @@
 
 namespace humhub\modules\content\components;
 
+use Yii;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\Wall;
+use humhub\models\Setting;
 
 /**
  *
@@ -26,6 +28,11 @@ use humhub\modules\content\models\Wall;
  */
 class ContentContainerActiveRecord extends ActiveRecord
 {
+
+    /**
+     * @var ContentContainerPermissionManager
+     */
+    protected $permissionManager = null;
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -153,13 +160,37 @@ class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns the related ContentContainer model
-     * 
+     *
      * @see ContentContainer
      * @return \yii\db\ActiveQuery
      */
     public function getContentContainerRecord()
     {
         return $this->hasOne(ContentContainer::className(), ['id' => 'content_container_id']);
+    }
+
+    public function getPermissionManager()
+    {
+        if ($this->permissionManager !== null) {
+            return $this->permissionManager;
+        }
+
+        $this->permissionManager = new ContentContainerPermissionManager;
+        $this->permissionManager->contentContainer = $this;
+        return $this->permissionManager;
+    }
+
+    public function getUserGroup()
+    {
+	    return "";
+    }
+
+    /**
+     * Returns user groups
+     */
+    public function getUserGroups()
+    {
+		return [];
     }
 
 }

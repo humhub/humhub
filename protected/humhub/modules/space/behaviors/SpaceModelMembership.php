@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\behaviors;
@@ -29,12 +17,9 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Invite;
 
 /**
- * SpaceModelMemberBehavior bundles all membership related methods of
- * the Space model.
+ * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
- * @package humhub.components
- * @since 0.6
  */
 class SpaceModelMembership extends Behavior
 {
@@ -84,7 +69,7 @@ class SpaceModelMembership extends Behavior
 
         $membership = $this->getMembership($userId);
 
-        if ($membership != null && $membership->admin_role == 1 && $membership->status == Membership::STATUS_MEMBER)
+        if ($membership !== null && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER)
             return true;
 
         return false;
@@ -105,10 +90,9 @@ class SpaceModelMembership extends Behavior
         $this->setAdmin($userId);
 
         $this->owner->created_by = $userId;
-        $this->owner->save();
+        $this->owner->update(false, ['created_by']);
 
         $this->_spaceOwner = null;
-
         return true;
     }
 
@@ -157,7 +141,7 @@ class SpaceModelMembership extends Behavior
 
         $membership = $this->getMembership($userId);
         if ($membership != null) {
-            $membership->admin_role = 1;
+            $membership->group_id = Space::USERGROUP_ADMIN;
             $membership->save();
             return true;
         }
@@ -235,9 +219,7 @@ class SpaceModelMembership extends Behavior
         $membership->space_id = $this->owner->id;
         $membership->user_id = $userId;
         $membership->status = Membership::STATUS_APPLICANT;
-        $membership->invite_role = 0;
-        $membership->admin_role = 0;
-        $membership->share_role = 0;
+        $membership->group_id = Space::USERGROUP_MEMBER;
         $membership->request_message = $message;
         $membership->save();
 
@@ -253,7 +235,7 @@ class SpaceModelMembership extends Behavior
     public function getAdmins()
     {
         $admins = array();
-        $adminMemberships = Membership::findAll(['space_id' => $this->owner->id, ['admin_role' => 1]]);
+        $adminMemberships = Membership::findAll(['space_id' => $this->owner->id, ['group_id' => Space::USERGROUP_ADMIN]]);
 
         foreach ($adminMemberships as $admin) {
             $admins[] = $admin->user;
@@ -305,9 +287,7 @@ class SpaceModelMembership extends Behavior
         $membership->originator_user_id = $originatorUserId;
 
         $membership->status = Membership::STATUS_INVITED;
-        $membership->invite_role = 0;
-        $membership->admin_role = 0;
-        $membership->share_role = 0;
+        $membership->group_id = Space::USERGROUP_MEMBER;
 
         if (!$membership->save()) {
             throw new \yii\base\Exception("Could not save membership!" . print_r($membership->getErrors(), 1));
@@ -338,9 +318,7 @@ class SpaceModelMembership extends Behavior
             $membership->space_id = $this->owner->id;
             $membership->user_id = $userId;
             $membership->status = Membership::STATUS_MEMBER;
-            $membership->invite_role = 0;
-            $membership->admin_role = 0;
-            $membership->share_role = 0;
+            $membership->group_id = Space::USERGROUP_MEMBER;
 
             $userInvite = Invite::findOne(['email' => $user->email]);
             if ($userInvite !== null && $userInvite->source == Invite::SOURCE_INVITE) {
@@ -381,7 +359,7 @@ class SpaceModelMembership extends Behavior
         $activity->source = $this->owner;
         $activity->originator = $user;
         $activity->create();
-        
+
         // Members can't also follow the space
         $this->owner->unfollow($userId);
 

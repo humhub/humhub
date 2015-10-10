@@ -47,7 +47,7 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
                 </li>
             </ul>
         </li>
-        <?php if (Yii::$app->user->getIdentity()->canCreateSpace()): ?>
+        <?php if ($canCreateSpace): ?>
             <li>
                 <div class="dropdown-footer">
                     <?php

@@ -1,23 +1,20 @@
 <?php
 
-use yii\grid\GridView;
+use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\modules\space\models\Space;
+use yii\grid\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
-use humhub\libs\BasePermission;
 ?>
 <?= MemberMenu::widget(['space' => $space]); ?>
 <br />
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Pending</strong> invitations'); ?>
     </div>
     <div class="panel-body">
         <?php
         $groups = $space->getUserGroups();
-        unset($groups[Space::USERGROUP_OWNER]);
-        unset($groups[Space::USERGROUP_GUEST]);
-        unset($groups[Space::USERGROUP_USER]);
+
 
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -26,24 +23,6 @@ use humhub\libs\BasePermission;
                 'user.username',
                 'user.profile.firstname',
                 'user.profile.lastname',
-                [
-                    'label' => 'Group',
-                    'class' => 'humhub\libs\DropDownGridColumn',
-                    'attribute' => 'group_id',
-                    'submitAttributes' => ['user_id'],
-                    'readonly' => function($data) use ($space) {
-                if ($space->isSpaceOwner($data->user->id)) {
-                    return true;
-                }
-                return false;
-            },
-                    'filter' => $groups,
-                    'dropDownOptions' => $groups,
-                    'value' =>
-                    function($data) use(&$groups, $space) {
-                return $groups[$data->group_id];
-            }
-                ],
                 [
                     'attribute' => 'last_visit',
                     'format' => 'raw',
@@ -60,10 +39,7 @@ use humhub\libs\BasePermission;
                                     return;
                                 },
                                 'delete' => function($url, $model) use($space) {
-                                    if ($space->isSpaceOwner($model->user->id) || Yii::$app->user->id == $model->user->id) {
-                                        return;
-                                    }
-                                    return Html::a('Remove', $space->createUrl('reject-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST', 'data-confirm' => 'Are you sure?']);
+                                    return Html::a('Cancel', $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure?', 'data-method'=>'POST']);
                                 },
                                         'update' => function() {
                                     return;

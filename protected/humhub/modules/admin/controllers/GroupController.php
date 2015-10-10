@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\data\ArrayDataProvider;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
@@ -58,7 +59,22 @@ class GroupController extends Controller
         }
 
         $showDeleteButton = (!$group->isNewRecord && Group::find()->count() > 1);
-        return $this->render('edit', ['group' => $group, 'showDeleteButton' => $showDeleteButton]);
+
+        // Save changed permission states
+        if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+            $permission = Yii::$app->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
+            if ($permission === null) {
+                throw new \yii\web\HttpException(500, 'Could not find permission!');
+            }
+            Yii::$app->user->permissionManager->setGroupState($group->id, $permission, Yii::$app->request->post('state'));
+            return [];
+        }
+
+        return $this->render('edit', [
+                    'group' => $group,
+                    'showDeleteButton' => $showDeleteButton,
+        ]);
     }
 
     /**

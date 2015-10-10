@@ -240,4 +240,17 @@ class Module extends \yii\base\Module
         return "";
     }
 
+    /**
+     * Returns a list of permission objects this module provides.
+     * If a ContentContainer is provided, the method should only return applicable permissions in content container context.
+     * 
+     * @since 0.21
+     * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer 
+     * @return array list of permissions
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        return [];
+    }
+
 }

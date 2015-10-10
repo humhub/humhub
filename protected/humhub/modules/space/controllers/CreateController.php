@@ -9,11 +9,13 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use humhub\components\Controller;
 use yii\helpers\Url;
 use yii\web\HttpException;
+use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
+use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\permissions\CreatePrivateSpace;
 
 /**
  * CreateController is responsible for creation of new spaces
@@ -47,8 +49,8 @@ class CreateController extends Controller
      */
     public function actionCreate()
     {
-
-        if (!Yii::$app->user->getIdentity()->canCreateSpace()) {
+        // Use cannot create spaces (public or private)
+        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
 

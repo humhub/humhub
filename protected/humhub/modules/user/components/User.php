@@ -16,6 +16,11 @@ namespace humhub\modules\user\components;
 class User extends \yii\web\User
 {
 
+    /**
+     * @var PermissionManager
+     */
+    protected $permissionManager = null;
+
     public function isAdmin()
     {
         if ($this->isGuest)
@@ -46,6 +51,16 @@ class User extends \yii\web\User
             return "";
 
         return $this->getIdentity()->guid;
+    }
+
+    public function getPermissionManager()
+    {
+        if ($this->permissionManager !== null) {
+            return $this->permissionManager;
+        }
+
+        $this->permissionManager = new PermissionManager;
+        return $this->permissionManager;
     }
 
 }

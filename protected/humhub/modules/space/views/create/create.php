@@ -1,9 +1,11 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
 use yii\helpers\Url;
+use humhub\modules\space\models\Space;
 use humhub\models\Setting;
+use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\permissions\CreatePrivateSpace;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -77,7 +79,7 @@ use humhub\models\Setting;
                     <div class="col-md-6">
                         <label for=""><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></label>
 
-                        <?php if (Yii::$app->user->getIdentity()->canCreatePublicSpace() && Yii::$app->user->getIdentity()->canCreatePrivateSpace()): ?>
+                        <?php if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())): ?>
                             <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')) : ?>
                                 <div class="radio">
                                     <label class="tt" data-toggle="tooltip" data-placement="top">
@@ -101,13 +103,15 @@ use humhub\models\Setting;
                                            <?php echo Yii::t('SpaceModule.base', 'Private (Invisible)'); ?>
                                 </label>
                             </div>
-                        <?php elseif (Yii::$app->user->getIdentity()->canCreatePublicSpace()): ?>
+                        <?php elseif (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)): ?>
                             <div>
+                                <?php echo $form->hiddenField($model, 'visibility', [], Space::VISIBILITY_ALL); ?>
                                 <?php echo Yii::t('SpaceModule.views_create_create', 'Public (Visible)'); ?>
                             </div>
-                        <?php elseif (Yii::$app->user->getIdentity()->canCreatePrivateSpace()):
+                        <?php elseif (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())):
                             ?>
                             <div>
+                                <?php echo $form->hiddenField($model, 'visibility', [], Space::VISIBILITY_NONE); ?>
                                 <?php echo Yii::t('SpaceModule.views_create_create', 'Private (Invisible)'); ?>
                             </div>
                         <?php endif; ?>

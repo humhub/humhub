@@ -6,6 +6,9 @@ use Yii;
 use humhub\modules\content\models\Wall;
 use humhub\modules\space\models\Membership;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\space\permissions\CreatePrivateSpace;
+use humhub\modules\space\permissions\CreatePublicSpace;
 
 /**
  * This is the model class for table "space".
@@ -41,14 +44,20 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
     const VISIBILITY_ALL = 2; // Visible for all (also guests)
     // Status
-    const STATUS_DISABLED = 0; // Disabled
-    const STATUS_ENABLED = 1; // Enabled
-    const STATUS_ARCHIVED = 2; // Archived
+    const STATUS_DISABLED = 0;
+    const STATUS_ENABLED = 1;
+    const STATUS_ARCHIVED = 2;
+    // UserGroups
+    const USERGROUP_OWNER = 'owner';
+    const USERGROUP_ADMIN = 'admin';
+    const USERGROUP_MODERATOR = 'moderator';
+    const USERGROUP_MEMBER = 'member';
+    const USERGROUP_USER = 'user';
+    const USERGROUP_GUEST = 'guest';
 
     /**
      * @inheritdoc
      */
-
     public static function tableName()
     {
         return 'space';
@@ -159,9 +168,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $membership->space_id = $this->id;
             $membership->user_id = $user->id;
             $membership->status = Membership::STATUS_MEMBER;
-            $membership->invite_role = 1;
-            $membership->admin_role = 1;
-            $membership->share_role = 1;
+            $membership->group_id = self::USERGROUP_ADMIN;
             $membership->save();
 
             $activity = new \humhub\modules\space\activities\Created;
@@ -288,51 +295,24 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     }
 
     /**
-     * Checks if given use
-      r can invite people to this workspace
+     * Checks if given user can invite people to this workspace
      *
-     * @param type $userId
-     * @return type
+     * @return boolean
      */
-    public function canInvite($userId = "")
+    public function canInvite()
     {
-        if (Yii::$app->user->isGuest) {
-            return false;
-        }
-
-        if ($userId == 0)
-            $userId = Yii::$app->user->id;
-
-        $membership = $this->getMembership($userId);
-
-        if ($membership != null && $membership->invite_role == 1 && $membership->status == Membership::STATUS_MEMBER)
-            return true;
-
-        if ($this->isAdmin($userId)) {
-            return true;
-        }
-
-        return false;
+        return $this->getPermissionManager()->can(new \humhub\modules\space\permissions\InviteUsers());
     }
 
     /**
      * Checks if given user can share content.
      * Shared Content is public and is visible also for non members of the space.
      *
-     * @param type $userId
-     * @return type
+     * @return boolean
      */
-    public function canShare($userId = "")
+    public function canShare()
     {
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        $membership = $this->getMembership($userId);
-
-        if ($membership != null && $membership->share_role == 1 && $membership->status == Membership::STATUS_MEMBER)
-            return true;
-
-        return false;
+        return $this->getPermissionManager()->can(new \humhub\modules\space\permissions\CreatePublicContent());
     }
 
     /**
@@ -422,13 +402,18 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function checkVisibility($attribute, $params)
     {
-        $user = Yii::$app->user->getIdentity();
-        if (!$user->canCreatePublicSpace() && ($this->$attribute == 1 || $this->$attribute == 2)) {
-            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'));
+        $visibility = $this->$attribute;
+
+        // Not changed
+        if (!$this->isNewRecord && $visibility == $this->getOldAttribute($attribute)) {
+            return;
+        }
+        if ($visibility == self::VISIBILITY_NONE && !Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create private visible spaces!'));
         }
 
-        if (!$user->canCreatePrivateSpace() && $this->$attribute == 0) {
-            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create private visible spaces!'));
+        if (($visibility == self::VISIBILITY_REGISTERED_ONLY || $visibility == self::VISIBILITY_ALL) && !Yii::$app->user->permissionManager->can(new CreatePublicSpace())) {
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'.$visibility));
         }
     }
 
@@ -457,7 +442,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
-        $query->addOrderBy(['admin_role' => SORT_DESC, 'share_role' => SORT_DESC]);
+        $query->addOrderBy(['group_id' => SORT_DESC]);
         return $query;
     }
 
@@ -471,6 +456,48 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function getType()
     {
         return $this->hasOne(Type::className(), ['id' => 'space_type_id']);
+    }
+
+    /**
+     * Return user groups
+     * 
+     * @return array user groups
+     */
+    public function getUserGroups()
+    {
+        $groups = [
+            self::USERGROUP_OWNER => 'Owner',
+            self::USERGROUP_ADMIN => 'Administrators',
+            self::USERGROUP_MODERATOR => 'Moderators',
+            self::USERGROUP_MEMBER => 'Members',
+            self::USERGROUP_USER => 'Users'
+        ];
+
+        // Add guest groups if enabled
+        if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal')) {
+            $groups[self::USERGROUP_GUEST] = 'Guests';
+        }
+
+        return $groups;
+    }
+
+    /**
+     * Returns current users group
+     * 
+     * @return string user group id
+     */
+    public function getUserGroup()
+    {
+        if (Yii::$app->user->isGuest) {
+            return self::USERGROUP_GUEST;
+        } elseif ($this->getMembership() !== null && $this->getMembership()->status == Membership::STATUS_MEMBER) {
+            if ($this->isSpaceOwner($this->getMembership()->user_id)) {
+                return self::USERGROUP_OWNER;
+            }
+            return $this->getMembership()->group_id;
+        } else {
+            return self::USERGROUP_USER;
+        }
     }
 
 }

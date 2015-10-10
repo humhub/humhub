@@ -494,15 +494,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $this->hasMany(\humhub\modules\user\models\Session::className(), ['user_id' => 'id']);
     }
 
-    /**
-     * Checks if the user can create a space
-     *
-     * @return boolean
-     */
-    public function canCreateSpace()
-    {
-        return ($this->canCreatePrivateSpace() || $this->canCreatePublicSpace());
-    }
 
     /**
      * User can approve other users
@@ -516,39 +507,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         if (GroupAdmin::find()->where(['user_id' => $this->id])->count() != 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks if the user can create public spaces
-     *
-     * @return boolean
-     */
-    public function canCreatePublicSpace()
-    {
-        if ($this->super_admin) {
-            return true;
-        } elseif ($this->group !== null && $this->group->can_create_public_spaces == 1) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks if user can create private spaces
-     *
-     * @return boolean
-     */
-    public function canCreatePrivateSpace()
-    {
-
-        if ($this->super_admin) {
-            return true;
-        } elseif ($this->group !== null && $this->group->can_create_private_spaces == 1) {
             return true;
         }
 

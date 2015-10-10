@@ -3,9 +3,9 @@
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
+use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
 ?>
 <div class="panel panel-default">
     <?php if (!$group->isNewRecord) : ?>
@@ -63,23 +63,10 @@ use yii\grid\GridView;
             </div>
         <?php endif; ?>
 
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($group, 'can_create_public_spaces'); ?>
-                    <?php echo $group->getAttributeLabel('can_create_public_spaces'); ?>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($group, 'can_create_private_spaces'); ?>
-                    <?php echo $group->getAttributeLabel('can_create_private_spaces'); ?>
-                </label>
-            </div>
-        </div>
+        <?php if (!$group->isNewRecord): ?>
+            <strong>Permissions:</strong><br />
+            <?= PermissionGridEditor::widget(['permissionManager' => Yii::$app->user->permissionManager, 'groupId' => $group->id]); ?>         
+        <?php endif; ?>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 

@@ -24,8 +24,6 @@ use humhub\modules\user\models\User;
  * @property string $updated_at
  * @property integer $updated_by
  * @property string $ldap_dn
- * @property integer $can_create_public_spaces
- * @property integer $can_create_private_spaces
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -47,7 +45,7 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'created_by', 'updated_by', 'can_create_public_spaces', 'can_create_private_spaces'], 'integer'],
+            [['space_id', 'created_by', 'updated_by'], 'integer'],
             [['description', 'adminGuids', 'defaultSpaceGuid'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 45],
@@ -58,7 +56,7 @@ class Group extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'ldap_dn', 'can_create_public_spaces', 'can_create_private_spaces', 'adminGuids', 'defaultSpaceGuid'];
+        $scenarios['edit'] = ['name', 'description', 'ldap_dn','adminGuids', 'defaultSpaceGuid'];
         return $scenarios;
     }
 
@@ -77,8 +75,6 @@ class Group extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'ldap_dn' => 'Ldap Dn',
-            'can_create_public_spaces' => 'Can Create Public Spaces',
-            'can_create_private_spaces' => 'Can Create Private Spaces',
         ];
     }
 
