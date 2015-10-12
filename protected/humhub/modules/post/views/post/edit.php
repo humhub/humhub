@@ -32,7 +32,7 @@ use yii\helpers\Url;
             'type' => 'POST',
             'beforeSend' => new yii\web\JsExpression('function(html){  $("#post_input_' . $post->id . '_contenteditable").hide(); showLoader("' . $post->id . '"); }'),
             'success' => new yii\web\JsExpression('function(html){ $(".wall_' . $post->getUniqueId() . '").replaceWith(html); }'),
-            'url' => Url::to(['/post/post/edit', 'id' => $post->id]),
+            'url' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
         ],
         'htmlOptions' => [
             'class' => 'btn btn-primary',

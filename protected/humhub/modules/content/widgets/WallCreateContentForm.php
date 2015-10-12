@@ -111,21 +111,28 @@ class WallCreateContentForm extends \yii\base\Widget
      * @param ContentActiveRecord $record
      * @return string json 
      */
-    public static function create(ContentActiveRecord $record)
+    public static function create(ContentActiveRecord $record, ContentContainerActiveRecord $contentContainer = null)
     {
         Yii::$app->response->format = 'json';
 
-        // Set Content Container
-        $contentContainer = null;
-        $containerClass = Yii::$app->request->post('containerClass');
-        $containerGuid = Yii::$app->request->post('containerGuid', "");
+        // Get Content Container by Parameter (deprecated!)
+        if ($contentContainer === null) {
+            $containerClass = Yii::$app->request->post('containerClass');
+            $containerGuid = Yii::$app->request->post('containerGuid', "");
+            if ($containerClass === User::className()) {
+                $contentContainer = User::findOne(['guid' => $containerGuid]);
+            } elseif ($containerClass === Space::className()) {
+                $contentContainer = Space::findOne(['guid' => $containerGuid]);
+            }
+        }
 
-        if ($containerClass === User::className()) {
-            $contentContainer = User::findOne(['guid' => $containerGuid]);
-            $record->content->visibility = 1;
-        } elseif ($containerClass === Space::className()) {
-            $contentContainer = Space::findOne(['guid' => $containerGuid]);
+        // Set Visibility
+        if ($contentContainer instanceof Space) {
             $record->content->visibility = Yii::$app->request->post('visibility');
+        } elseif ($contentContainer instanceof User) {
+            $record->content->visibility = 1;
+        } else {
+            throw new \yii\base\Exception("Invalid content container!");
         }
 
         $record->content->container = $contentContainer;

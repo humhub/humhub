@@ -80,7 +80,7 @@ class WallEntry extends Widget
             return "";
         }
 
-        return \yii\helpers\Url::to([$this->editRoute, 'id' => $this->contentObject->id]);
+        return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]); 
     }
 
 }

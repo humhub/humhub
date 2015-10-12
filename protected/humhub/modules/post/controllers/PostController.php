@@ -16,23 +16,18 @@ use yii\web\HttpException;
  * @package humhub.modules_core.post.controllers
  * @since 0.5
  */
-class PostController extends \humhub\components\Controller
+class PostController extends \humhub\modules\content\components\ContentContainerController
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-            ]
-        ];
-    }
 
     public function actionPost()
     {
+        // Check createPost Permission
+        if ($this->contentContainer instanceof \humhub\modules\space\models\Space) {
+            if (!$this->contentContainer->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) {
+                return [];
+            }
+        }
+        
         $post = new Post();
         $post->message = \Yii::$app->request->post('message');
 
@@ -44,7 +39,7 @@ class PostController extends \humhub\components\Controller
           }
          */
 
-        return \humhub\modules\content\widgets\WallCreateContentForm::create($post);
+        return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
     }
 
     public function actionEdit()
