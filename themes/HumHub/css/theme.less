@@ -1399,6 +1399,14 @@ select.form-control {
   overflow: hidden;
 }
 
+label {
+  font-weight: normal;
+}
+
+label.control-label {
+  font-weight: bold;
+}
+
 // Placeholder text
 ::-webkit-input-placeholder {
   color: @font4 !important;
@@ -2306,7 +2314,7 @@ ul.tour-list {
 .has-error .checkbox,
 .has-error .radio-inline,
 .has-error .checkbox-inline {
-  color: @danger;
+  color: @danger !important;
 }
 
 .has-error .form-control,

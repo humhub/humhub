@@ -1,6 +1,6 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
 use yii\helpers\Url;
@@ -12,34 +12,18 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
         class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_design', '<strong>Design</strong> settings'); ?></div>
     <div class="panel-body">
 
-        <?php $form = CActiveForm::begin(['id' => 'authentication-settings-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
-
-        <?php echo $form->errorSummary($model); ?><br>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'theme'); ?>
-            <?php echo $form->dropDownList($model, 'theme', $themes, array('class' => 'form-control')); ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'paginationSize'); ?>
-            <?php echo $form->textField($model, 'paginationSize', array('class' => 'form-control')); ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'displayName'); ?>
-            <?php echo $form->dropDownList($model, 'displayName', array('{username}' => Yii::t('AdminModule.views_setting_design', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.views_setting_design', 'Firstname Lastname (e.g. John Doe)')), array('class' => 'form-control')); ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'spaceOrder'); ?>
-            <?php echo $form->dropDownList($model, 'spaceOrder', array('0' => Yii::t('AdminModule.views_setting_design', 'Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design', 'Last visit')), array('class' => 'form-control')); ?>
-        </div>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
 
-        <?php echo $form->labelEx($model, 'logo'); ?>
-        <?php echo $form->fileField($model, 'logo', array('id' => 'logo', 'style' => 'display: none', 'name' => 'logo[]')); ?>
-        <?php echo $form->error($model, 'logo'); ?>
+        <?php echo $form->field($model, 'theme')->dropdownList($themes); ?>
+
+        <?php echo $form->field($model, 'paginationSize'); ?>
+
+        <?php echo $form->field($model, 'displayName')->dropdownList(['{username}' => Yii::t('AdminModule.views_setting_design', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.views_setting_design', 'Firstname Lastname (e.g. John Doe)')]); ?>
+
+        <?php echo $form->field($model, 'spaceOrder')->dropdownList(['0' => Yii::t('AdminModule.views_setting_design', 'Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design', 'Last visit')]); ?>
+
+        <?php echo $form->field($model, 'logo')->fileInput(['id' => 'logo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
 
         <div class="well">
             <div class="image-upload-container" id="logo-upload">
@@ -81,7 +65,7 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_design', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
     </div>
 </div>
