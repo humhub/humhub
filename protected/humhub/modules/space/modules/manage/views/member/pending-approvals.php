@@ -19,6 +19,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
         echo GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 'user.username',
                 'user.profile.firstname',

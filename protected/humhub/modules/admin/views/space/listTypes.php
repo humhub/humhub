@@ -26,6 +26,7 @@ use yii\grid\GridView;
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
+            'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 'id',
                 'title',

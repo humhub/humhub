@@ -56,7 +56,7 @@ $this->registerJs($jsLoadWall, View::POS_READY);
 
         <div class="emptyStreamMessage">
 
-            <div class="placeholder <?php echo $this->context->messageStreamEmptyCss; ?>">
+            <div class="<?php echo $this->context->messageStreamEmptyCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
                         <?php echo $this->context->messageStreamEmpty; ?>

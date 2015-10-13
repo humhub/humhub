@@ -3,10 +3,11 @@
 use yii\helpers\Html;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use yii\widgets\ActiveForm;
+
 ?>
 
 <?= MemberMenu::widget(['space' => $space]); ?>
-<br />
+<br/>
 <div class="panel panel-default">
     <div class="panel-heading">
         <?php echo Yii::t('SpaceModule.manage', '<strong>Change</strong> Owner'); ?>
@@ -22,13 +23,9 @@ use yii\widgets\ActiveForm;
         ?>
         <?= $form->field($model, 'ownerId')->dropDownList($model->getNewOwnerArray()) ?>
 
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Transfer ownership'), ['class' => 'btn btn-danger', 'data-confirm' => 'Are you really sure?']) ?>
-            </div>
-        </div>
+        <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Transfer ownership'), ['class' => 'btn btn-danger', 'data-confirm' => 'Are you really sure?']) ?>
 
-        <?php ActiveForm::end() ?>  
+        <?php ActiveForm::end() ?>
 
     </div>
 </div>

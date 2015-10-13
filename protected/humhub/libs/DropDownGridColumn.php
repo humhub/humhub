@@ -71,7 +71,12 @@ class DropDownGridColumn extends DataColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        $this->htmlOptions['class'] = 'editableCell';
+
+        if (isset($this->htmlOptions['class'])) {
+            $this->htmlOptions['class'] .= 'editableCell form-control';
+        } else {
+            $this->htmlOptions['class'] = 'editableCell form-control';
+        }
 
         // We need to number the submit attributes because data attribute is not case sensitive
         $this->htmlOptions['data-submit-attributes'] = implode(',', $this->submitAttributes);

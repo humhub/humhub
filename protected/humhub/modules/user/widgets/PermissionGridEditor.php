@@ -38,6 +38,7 @@ class PermissionGridEditor extends GridView
         Yii::configure($this, [
             'dataProvider' => $this->getDataProvider(),
             'layout' => "{items}\n{pager}",
+            'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 'title',
                 'description',

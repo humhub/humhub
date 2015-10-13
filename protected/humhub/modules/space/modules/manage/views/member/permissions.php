@@ -16,7 +16,7 @@ use humhub\modules\user\widgets\PermissionGridEditor;
         <strong>Current Group:</strong>
         <?php
         echo Html::beginForm($space->createUrl('permissions'), 'GET');
-        echo Html::dropDownList('groupId', $groupId, $groups, ['onchange' => 'this.form.submit()']);
+        echo Html::dropDownList('groupId', $groupId, $groups, ['class' => 'form-control', 'onchange' => 'this.form.submit()']);
         echo Html::endForm();
         ?>
         <br />

@@ -20,6 +20,7 @@ use yii\grid\GridView;
         echo GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 'name',
                 'description',
