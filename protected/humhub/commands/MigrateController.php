@@ -157,13 +157,12 @@ class MigrateController extends \yii\console\controllers\MigrateController
     }
 
     /**
-     * Allow to execute all migrations via web
+     * Executes all pending migrations 
+     * 
+     * @return string output
      */
     public static function webMigrateAll()
     {
-        defined('STDOUT') or define('STDOUT', fopen('php://output', 'w'));
-        defined('STDERR') or define('STDERR', fopen('php://output', 'w'));
-
         ob_start();
         $controller = new self('migrate', Yii::$app);
         $controller->db = Yii::$app->db;
@@ -174,11 +173,14 @@ class MigrateController extends \yii\console\controllers\MigrateController
         return ob_get_clean();
     }
 
+    /**
+     * Executes migrations in a specific folder
+     * 
+     * @param string $migrationPath
+     * @return string output
+     */
     public static function webMigrateUp($migrationPath)
     {
-        defined('STDOUT') or define('STDOUT', fopen('php://output', 'w'));
-        defined('STDERR') or define('STDERR', fopen('php://output', 'w'));
-
         ob_start();
         $controller = new self('migrate', Yii::$app);
         $controller->db = Yii::$app->db;
@@ -187,6 +189,30 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->color = false;
         $controller->runAction('up');
         return ob_get_clean();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function stdout($string)
+    {
+        if (Yii::$app instanceof \yii\web\Application) {
+            print $string;
+        } else {
+            return parent::stdout($string);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function stderr($string)
+    {
+        if (Yii::$app instanceof \yii\web\Application) {
+            print $string;
+        } else {
+            return parent::stderr($string);
+        }
     }
 
 }
