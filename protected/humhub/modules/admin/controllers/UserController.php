@@ -277,10 +277,10 @@ class UserController extends Controller
 
             $this->forcePostRequest();
 
-            foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $workspace) {
-                if ($workspace->isSpaceOwner($user->id)) {
-                    $workspace->addMember(Yii::$app->user->id);
-                    $workspace->setSpaceOwner(Yii::$app->user->id);
+            foreach (\humhub\modules\space\models\Membership::GetUserSpaces($user->id) as $space) {
+                if ($space->isSpaceOwner($user->id)) {
+                    $space->addMember(Yii::$app->user->id);
+                    $space->setSpaceOwner(Yii::$app->user->id);
                 }
             }
             $user->delete();
