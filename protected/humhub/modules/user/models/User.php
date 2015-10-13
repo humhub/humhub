@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
+use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\GroupAdmin;
 use humhub\modules\user\components\ActiveQueryUser;
