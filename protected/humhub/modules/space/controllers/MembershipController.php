@@ -215,6 +215,32 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         return $this->redirect($space->getUrl());
     }
 
+    /**
+     * Toggle space content display at dashboard
+     * 
+     * @throws HttpException
+     */
+    public function actionSwitchDashboardDisplay()
+    {
+        $this->forcePostRequest();
+        $space = $this->getSpace();
+
+        // Load Pending Membership
+        $membership = $space->getMembership();
+        if ($membership == null) {
+            throw new HttpException(404, 'Membership not found!');
+        }
+
+        if (Yii::$app->request->get('show') == 0) {
+            $membership->show_at_dashboard = 0;
+        } else {
+            $membership->show_at_dashboard = 1;
+        }
+        $membership->save();
+
+        return $this->redirect($space->getUrl());
+    }
+
 }
 
 ?>

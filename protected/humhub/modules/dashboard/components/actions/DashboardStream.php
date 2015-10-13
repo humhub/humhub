@@ -74,7 +74,7 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
                     ->select("sm.wall_id")
                     ->from('space_membership')
                     ->leftJoin('space sm', 'sm.id=space_membership.space_id')
-                    ->where('space_membership.user_id=' . $this->user->id . ' AND sm.wall_id IS NOT NULL');
+                    ->where('space_membership.user_id=' . $this->user->id . ' AND sm.wall_id IS NOT NULL AND space_membership.show_at_dashboard = 1');
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0];
 
             // Glue together also with current users wall

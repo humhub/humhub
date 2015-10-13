@@ -16,6 +16,7 @@ use humhub\modules\comment\models\Comment;
  * @property integer $status
  * @property string $request_message
  * @property string $last_visit
+ * @property integer $show_at_dashboard
  * @property string $group_id
  * @property string $created_at
  * @property integer $created_by
