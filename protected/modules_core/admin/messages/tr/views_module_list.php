@@ -7,6 +7,7 @@ return array (
   'Disable' => 'Pasif',
   'Enable' => 'Aktif',
   'More info' => 'Daha fazla bilgi',
+  'Processing...' => 'İşleniyor...',
   'Set as default' => 'Varsayılan yap',
   'Uninstall' => 'Kaldır',
 );

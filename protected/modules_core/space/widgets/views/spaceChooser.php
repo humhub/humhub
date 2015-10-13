@@ -31,9 +31,15 @@
 
         <li class="divider"></li>
         <li>
-            <ul class="media-list" id="space-menu-spaces">
+            <ul class="media-list notLoaded" id="space-menu-spaces">
                 <li id="loader_spaces">
-                    <div class="loader"></div>
+                    <div class="loader">
+                        <div class="sk-spinner sk-spinner-three-bounce">
+                            <div class="sk-bounce1"></div>
+                            <div class="sk-bounce2"></div>
+                            <div class="sk-bounce3"></div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </li>

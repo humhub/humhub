@@ -8,14 +8,16 @@
  * @package humhub.modules_core.directory.controllers
  * @since 0.5
  */
-class DirectoryController extends Controller {
+class DirectoryController extends Controller
+{
 
     public $subLayout = "_layout";
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -26,13 +28,24 @@ class DirectoryController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+            array('allow',
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
-            array('deny', // deny all users
+            array('deny',
                 'users' => array('*'),
+            ),
+        );
+    }
+
+    public function actions()
+    {
+        return array(
+            'stream' => array(
+                'class' => 'application.modules_core.directory.UserPostsStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
             ),
         );
     }
@@ -40,13 +53,13 @@ class DirectoryController extends Controller {
     /**
      * Index Action, redirects to member actions
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
-        if (Group::model()->count() > 1) 
+        if (Group::model()->count() > 1)
             $this->redirect($this->createUrl('groups'));
         else
             $this->redirect($this->createUrl('members'));
-            
     }
 
     /**
@@ -54,7 +67,8 @@ class DirectoryController extends Controller {
      *
      * @todo Dont pass lucene hits to view, build user array inside of action
      */
-    public function actionMembers() {
+    public function actionMembers()
+    {
 
         $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
         $page = (int) Yii::app()->request->getParam('page', 1); // current page (pagination)
@@ -87,8 +101,9 @@ class DirectoryController extends Controller {
         $_GET['keyword'] = $keyword; // Fix for post var
         // Add Meber Statistic Sidebar
         Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
-                    $event->sender->addWidget('application.modules_core.directory.widgets.MemberStatisticsWidget', array(), array('sortOrder' => 10));
-                });
+            $event->sender->addWidget('application.modules_core.directory.widgets.NewMembersWidget', array(), array('sortOrder' => 10));
+            $event->sender->addWidget('application.modules_core.directory.widgets.MemberStatisticsWidget', array(), array('sortOrder' => 20));
+        });
 
         $this->render('members', array(
             'keyword' => $keyword, // current search keyword
@@ -106,7 +121,8 @@ class DirectoryController extends Controller {
      *
      * @todo Dont pass lucene hits to view, build user array inside of action
      */
-    public function actionSpaces() {
+    public function actionSpaces()
+    {
 
         $keyword = Yii::app()->request->getParam('keyword', ""); // guid of user/workspace
         $page = (int) Yii::app()->request->getParam('page', 1); // current page (pagination)
@@ -143,8 +159,9 @@ class DirectoryController extends Controller {
         $_GET['keyword'] = $keyword; // Fix for post var
         // Add Meber Statistic Sidebar
         Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
-                    $event->sender->addWidget('application.modules_core.directory.widgets.SpaceStatisticsWidget', array(), array('sortOrder' => 10));
-                });
+            $event->sender->addWidget('application.modules_core.directory.widgets.NewSpacesWidget', array(), array('sortOrder' => 10));
+            $event->sender->addWidget('application.modules_core.directory.widgets.SpaceStatisticsWidget', array(), array('sortOrder' => 20));
+        });
 
         $this->render('spaces', array(
             'keyword' => $keyword, // current search keyword
@@ -160,14 +177,15 @@ class DirectoryController extends Controller {
      *
      * Shows a list of all groups in the application.
      */
-    public function actionGroups() {
+    public function actionGroups()
+    {
 
         $groups = Group::model()->findAll();
 
         // Add Meber Statistic Sidebar
         Yii::app()->interceptor->preattachEventHandler('DirectorySidebarWidget', 'onInit', function($event) {
-                    $event->sender->addWidget('application.modules_core.directory.widgets.GroupStatisticsWidget', array(), array('sortOrder' => 10));
-                });
+            $event->sender->addWidget('application.modules_core.directory.widgets.GroupStatisticsWidget', array(), array('sortOrder' => 10));
+        });
 
         $this->render('groups', array(
             'groups' => $groups,
@@ -181,7 +199,8 @@ class DirectoryController extends Controller {
      *
      * @todo Add some statistics to the view
      */
-    public function actionUserPosts() {
+    public function actionUserPosts()
+    {
 
         /*
           // Stats

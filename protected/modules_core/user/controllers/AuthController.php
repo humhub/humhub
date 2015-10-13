@@ -20,13 +20,15 @@
 
 /**
  * AuthController handles all authentication tasks.
- * 
+ *
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
 class AuthController extends Controller
 {
 
+    //public $layout = '//layouts/main1';
+    public $layout = "application.modules_core.user.views.layouts.main_auth";
     public $subLayout = "_layout";
 
     public function actions()
@@ -53,10 +55,6 @@ class AuthController extends Controller
 
         // Show/Allow Anonymous Registration
         $canRegister = HSetting::Get('anonymousRegistration', 'authentication_internal');
-
-
-        $ntlmAutoLogin = false;
-
         $model = new AccountLoginForm;
 
         //TODO: Solve this via events!
@@ -72,13 +70,18 @@ class AuthController extends Controller
 
         // collect user input data
         if (isset($_POST['AccountLoginForm'])) {
-
-            #$_POST['AccountLoginForm'] = Yii::app()->input->stripClean($_POST['AccountLoginForm']);
             $model->attributes = $_POST['AccountLoginForm'];
 
             // validate user input and redirect to the previous page if valid
-            if ($model->validate() && $model->login())
-                $this->redirect(Yii::app()->user->returnUrl);
+            if ($model->validate() && $model->login()) {
+                $user = User::model()->findByPk(Yii::app()->user->id);
+
+                if (Yii::app()->request->isAjaxRequest) {
+                    $this->htmlRedirect(Yii::app()->user->returnUrl);
+                } else {
+                    $this->redirect(Yii::app()->user->returnUrl);
+                }
+            }
         }
 
         // Always clear password
@@ -96,8 +99,6 @@ class AuthController extends Controller
             }
 
             if (isset($_POST['AccountRegisterForm'])) {
-                $_POST['AccountRegisterForm'] = Yii::app()->input->stripClean($_POST['AccountRegisterForm']);
-
                 $registerModel->attributes = $_POST['AccountRegisterForm'];
 
                 if ($registerModel->validate()) {
@@ -105,11 +106,13 @@ class AuthController extends Controller
                     // Try Load an invite
                     $userInvite = UserInvite::model()->findByAttributes(array('email' => $registerModel->email));
 
-                    if (!$userInvite)
+                    if ($userInvite === null) {
                         $userInvite = new UserInvite();
+                    }
 
                     $userInvite->email = $registerModel->email;
                     $userInvite->source = UserInvite::SOURCE_SELF;
+                    $userInvite->language = Yii::app()->language;
                     $userInvite->save();
 
                     $userInvite->sendInviteMail();
@@ -122,9 +125,11 @@ class AuthController extends Controller
             }
         }
 
-
-        // display the login form
-        $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
+        if (Yii::app()->request->isAjaxRequest) {
+            $this->renderPartial('login_modal', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister), false, true);
+        } else {
+            $this->render('login', array('model' => $model, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
+        }
     }
 
     /**
@@ -133,12 +138,9 @@ class AuthController extends Controller
      */
     public function actionRecoverPassword()
     {
-
         $model = new AccountRecoverPasswordForm;
 
         if (isset($_POST['AccountRecoverPasswordForm'])) {
-
-            $_POST['AccountRecoverPasswordForm'] = Yii::app()->input->stripClean($_POST['AccountRecoverPasswordForm']);
             $model->attributes = $_POST['AccountRecoverPasswordForm'];
 
             if ($model->validate()) {
@@ -148,16 +150,24 @@ class AuthController extends Controller
 
                 $model->recoverPassword();
 
-                $this->render('recoverPassword_success', array(
-                    'model' => $model,
-                ));
+                if (Yii::app()->request->isAjaxRequest) {
+                    $this->renderPartial('recoverPassword_modal_success', array('model' => $model), false, true);
+                } else {
+                    $this->render('recoverPassword_success', array(
+                        'model' => $model,
+                    ));
+                }
                 return;
             }
         }
 
-        $this->render('recoverPassword', array(
-            'model' => $model,
-        ));
+        if (Yii::app()->request->isAjaxRequest) {
+            $this->renderPartial('recoverPassword_modal', array('model' => $model), false, true);
+        } else {
+            $this->render('recoverPassword', array(
+                'model' => $model,
+            ));
+        }
     }
 
     /**
@@ -214,7 +224,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Create an account 
+     * Create an account
      *
      * This action is called after e-mail validation.
      */
@@ -232,6 +242,9 @@ class AuthController extends Controller
         $userInvite = UserInvite::model()->findByAttributes(array('token' => Yii::app()->request->getQuery('token')));
         if (!$userInvite)
             throw new CHttpException(404, 'Token not found!');
+
+        if ($userInvite->language)
+            Yii::app()->setLanguage($userInvite->language);
 
         $userModel = new User('register');
         $userModel->email = $userInvite->email;
@@ -314,6 +327,7 @@ class AuthController extends Controller
 
             // Registe User
             $form['User']->model->email = $userInvite->email;
+            $form['User']->model->language = Yii::app()->getLanguage();
             if ($form['User']->model->save()) {
 
                 // Save User Profile
@@ -356,9 +370,15 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-
+        $language = Yii::app()->user->language;
+        
         Yii::app()->user->logout();
 
+        // Store users language in session
+        if ($language != "") {
+            Yii::app()->request->cookies['language'] = new CHttpCookie('language', $language);
+        }
+ 
         $this->redirect(Yii::app()->homeUrl);
     }
 

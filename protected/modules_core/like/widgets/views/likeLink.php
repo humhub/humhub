@@ -12,8 +12,13 @@
  * @since 0.5
  */
 ?>
-<a href="#" id="<?php echo $id . "-LikeLink"; ?>" class="like likeAnchor"
-   style="<?php if ($currentUserLiked): ?>display:none<?php endif; ?>"><?php echo Yii::t('LikeModule.widgets_views_likeLink', 'Like'); ?></a>
+
+<?php if (Yii::app()->user->isGuest): ?>
+    <?php echo CHtml::link(Yii::t('LikeModule.widgets_views_likeLink', 'Like'), Yii::app()->user->loginUrl, array('data-target' => '#globalModal', 'data-toggle' => 'modal')); ?>
+<?php else: ?>
+    <a href="#" id="<?php echo $id . "-LikeLink"; ?>" class="like likeAnchor"
+       style="<?php if ($currentUserLiked): ?>display:none<?php endif; ?>"><?php echo Yii::t('LikeModule.widgets_views_likeLink', 'Like'); ?></a>
+   <?php endif; ?>
 <a href="#" id="<?php echo $id . "-UnlikeLink"; ?>" class="unlike likeAnchor"
    style="<?php if (!$currentUserLiked): ?>display:none<?php endif; ?>"><?php echo Yii::t('LikeModule.widgets_views_likeLink', 'Unlike'); ?></a>
 
@@ -69,12 +74,12 @@ list($className, $modelId) = explode("_", $id);
 <?php if (count($likes) > 0) { ?>
 
     <!-- Create link to show all users, who liked this -->
-    <a href="<?php echo $this->createUrl('//like/like/userlist', array('className' => $className, 'id' => $modelId)); ?>"
+    <a href="<?php echo $this->createUrl('//like/like/userlist', array('contentModel' => $className, 'contentId' => $modelId)); ?>"
        class="tt" data-toggle="modal"
        data-placement="top" title="" data-target="#globalModal"
        data-original-title="<?php echo $userlist; ?>"><span
             class="<?php echo $id . "-LikeCount"; ?>"></span></a>
-<?php } else { ?>
+    <?php } else { ?>
     <span class="<?php echo $id . "-LikeCount"; ?>"></span>
 <?php } ?>
 

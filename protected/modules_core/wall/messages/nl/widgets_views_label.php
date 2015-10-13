@@ -2,5 +2,5 @@
 return array (
   'Archived' => 'Gearchiveerd',
   'Public' => 'Publiek',
-  'Sticked' => '',
+  'Sticked' => 'Vastgekleefd',
 );

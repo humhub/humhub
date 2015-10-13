@@ -1,11 +1,12 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ninguém escreveu nada ainda.</b><br>Seja o primeiro e escreva alguma coisa...',
   '<b>This profile stream is still empty</b>' => '',
-  '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Este espaço está vazio!</b><br>Comece a escrever alguma coisa aqui...',
   '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '',
   '<b>Your profile stream is still empty</b><br>Get started and post something...' => '',
   'Back to stream' => '',
+  'Show all' => '@@Mostrar tudo@@',
+  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ninguém escreveu nada ainda.</b><br>Seja o primeiro e escreva alguma coisa...',
+  '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Este espaço está vazio!</b><br>Comece a escrever alguma coisa aqui...',
   'Content with attached files' => 'Conteúdo com arquivos anexos',
   'Created by me' => 'Criado por mim',
   'Creation time' => 'Hora de Criação',
@@ -17,7 +18,6 @@ return array (
   'Only public posts' => 'Somente posts públicos',
   'Posts only' => 'Somente posts',
   'Posts with links' => 'Posts com links',
-  'Show all' => 'Mostrar tudo',
   'Sorting' => 'Ordenar',
   'Where I´m involved' => 'Onde estou envolvido',
 );

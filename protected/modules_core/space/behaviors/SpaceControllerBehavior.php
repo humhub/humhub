@@ -37,6 +37,7 @@ class SpaceControllerBehavior extends CBehavior
      * will thrown.
      *
      * @return Space
+     * @throws CHttpException
      */
     public function getSpace()
     {
@@ -65,8 +66,13 @@ class SpaceControllerBehavior extends CBehavior
         return $this->space;
     }
 
-    public function checkAccess() {
-        
+    public function checkAccess()
+    {
+
+        if ($this->space->visibility != Space::VISIBILITY_ALL && Yii::app()->user->isGuest) {
+            throw new CHttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
+        }
+
         // Save users last action on this space
         $membership = $this->space->getMembership(Yii::app()->user->id);
         if ($membership != null) {
@@ -93,8 +99,6 @@ class SpaceControllerBehavior extends CBehavior
             $n->seen = 1;
             $n->save();
         }
-        
-        
     }
 
     /**

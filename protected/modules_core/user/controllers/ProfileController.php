@@ -8,10 +8,8 @@
  * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class ProfileController extends Controller
+class ProfileController extends ContentContainerController
 {
-
-    public $subLayout = "_layout";
 
     /**
      * @return array action filters
@@ -32,7 +30,7 @@ class ProfileController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array('@'),
+                'users' => array('@', (HSetting::Get('allowGuestAccess', 'authentication_internal')) ? "?" : "@"),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -40,16 +38,13 @@ class ProfileController extends Controller
         );
     }
 
-    /**
-     * Add mix-ins to this model
-     *
-     * @return type
-     */
-    public function behaviors()
+    public function actions()
     {
         return array(
-            'ProfileControllerBehavior' => array(
-                'class' => 'application.modules_core.user.behaviors.ProfileControllerBehavior',
+            'stream' => array(
+                'class' => 'application.modules_core.wall.ContentContainerStreamAction',
+                'mode' => BaseStreamAction::MODE_NORMAL,
+                'contentContainer' => $this->getUser()
             ),
         );
     }

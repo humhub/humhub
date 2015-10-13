@@ -10,12 +10,12 @@
 class UserFollowerWidget extends HWidget
 {
 
+    public $user;
+
     public function run()
     {
-        $user = Yii::app()->getController()->getUser();
-
         $this->render('userFollower', array(
-            'user' => $user,
+            'user' => $this->user,
         ));
     }
 

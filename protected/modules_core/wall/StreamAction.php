@@ -3,9 +3,12 @@
 /**
  * StreamAction returns a list of wall entries.
  *
+ * *** DEPRECATED since 0.11 use BaseStreamAction / ContentContainerStreamAction instead! ***
+ * 
  * @package humhub.modules_core.wall
  * @since 0.5
  * @author Luke
+ * @deprecated since version 0.11
  */
 class StreamAction extends CAction
 {
@@ -230,8 +233,6 @@ class StreamAction extends CAction
 			LIMIT {$this->wallEntryLimit}
 		";
 
-
-
         // Execute SQL
         $entries = WallEntry::model()->with('content')->findAllBySql($sql, $this->sqlParams);
 
@@ -322,7 +323,7 @@ class StreamAction extends CAction
         }
 
 
-        if ($this->type == Wall::TYPE_DASHBOARD) {
+        if ($this->type == Wall::TYPE_DASHBOARD && !Yii::app()->user->isGuest) {
 
             // In case of an space entry, we need some left join, to be able to verify that the user
             // has access to see this entry
@@ -366,10 +367,19 @@ class StreamAction extends CAction
 
             // Additionally Group Entries of Same Model && Instance (Only for Activites?)
             $sqlGroupBy = " GROUP BY content.object_model, content.object_id ";
+        } elseif ($this->type == Wall::TYPE_DASHBOARD && Yii::app()->user->isGuest) {
+
+            // Include public space posts when space allows guest access
+            $this->sqlWhere .= " AND (wall_entry.wall_id IN ( SELECT wall_id FROM space WHERE space.visibility=" . Space::VISIBILITY_ALL . ") ";
+
+            // Include user posts when users profile is not hidden for guests
+            $this->sqlWhere .= " OR wall_entry.wall_id IN ( SELECT wall_id FROM user WHERE status=1 AND visibility=" . User::VISIBILITY_ALL . ")) ";
+
+            $this->sqlWhere .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
         } elseif ($this->type == Wall::TYPE_COMMUNITY) {
 
             $this->sqlWhere .= " AND wall_entry.wall_id IN (
-						SELECT wall_id FROM user WHERE status=1
+						SELECT wall_id FROM user WHERE status=1 AND visibility=" . User::VISIBILITY_ALL . "
 				) ";
         } elseif ($this->type == Wall::TYPE_SPACE) {
 
@@ -380,6 +390,11 @@ class StreamAction extends CAction
             # && !Yii::app()->user->isAdmin()
             if (!$space->isMember()) {
                 $this->sqlWhere .= " AND content.visibility=" . Content::VISIBILITY_PUBLIC;
+            }
+
+            // Dont show content, when user is guest and content is not visible for all
+            if ($space->visibility != Space::VISIBILITY_ALL && Yii::app()->user->isGuest) {
+                $this->sqlWhere .= " AND 1=2";
             }
         } elseif ($this->type == Wall::TYPE_USER) {
 
@@ -394,6 +409,11 @@ class StreamAction extends CAction
             }
 
             $this->sqlWhere .= " AND wall_entry.wall_id = " . $wallId;
+
+            // Do not show messages, for private profiles
+            if (Yii::app()->user->isGuest && $user->visibility == User::VISIBILITY_REGISTERED_ONLY) {
+                $this->sqlWhere .= " AND 1=2";
+            }
         } else {
             throw new CHttpException(500, 'Target unknown!');
         }
@@ -446,7 +466,7 @@ class StreamAction extends CAction
         // Posts only
         if (in_array('model_posts', $this->filters)) {
             $this->sqlWhere .= " AND content.object_model='Post'";
-            ;
+            
         }
 
         // Visibility filters

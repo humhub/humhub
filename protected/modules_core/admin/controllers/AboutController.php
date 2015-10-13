@@ -35,7 +35,25 @@ class AboutController extends Controller {
 
     public function actionIndex() {
 
-        $this->render('index', array());
+        $isNewVersionAvailable = false;
+        $isUpToDate = false;
+        $latestVersion = "";
+        
+        if ($this->getModule()->marketplaceEnabled) {
+            $onlineModuleManager = new OnlineModuleManager();
+            $latestVersion = $onlineModuleManager->getLatestHumHubVersion();
+            if ($latestVersion) {
+                $isNewVersionAvailable = version_compare($latestVersion, HVersion::VERSION, ">");
+                $isUpToDate = !$isNewVersionAvailable;
+            }
+        }
+        
+        $this->render('index', array(
+            'currentVersion' => HVersion::VERSION,
+            'latestVersion' => $latestVersion,
+            'isNewVersionAvailable' => $isNewVersionAvailable,
+            'isUpToDate' => $isUpToDate
+        ));
     }
 
 

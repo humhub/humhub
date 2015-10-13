@@ -25,13 +25,13 @@ class LikeLinkWidget extends HWidget
 
         // Inject some important Javascript Variables
         Yii::app()->clientScript->setJavascriptVariable(
-                "likeUrl", Yii::app()->createUrl('//like/like/like', array('className' => '-className-', 'id' => '-id-'))
+                "likeUrl", Yii::app()->createUrl('//like/like/like', array('contentModel' => '-className-', 'contentId' => '-id-'))
         );
         Yii::app()->clientScript->setJavascriptVariable(
-                "unlikeUrl", Yii::app()->createUrl('//like/like/unlike', array('className' => '-className-', 'id' => '-id-'))
+                "unlikeUrl", Yii::app()->createUrl('//like/like/unlike', array('contentModel' => '-className-', 'contentId' => '-id-'))
         );
         Yii::app()->clientScript->setJavascriptVariable(
-                "showLikesUrl", Yii::app()->createUrl('//like/like/showLikes', array('className' => '-className-', 'id' => '-id-'))
+                "showLikesUrl", Yii::app()->createUrl('//like/like/showLikes', array('contentModel' => '-className-', 'contentId' => '-id-'))
         );
 
 

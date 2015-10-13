@@ -27,13 +27,15 @@ Yii::import('application.vendors.yii.cli.commands.shell.*');
  * @package humhub.commands
  * @since 0.5
  */
-class ZMessageCommand extends MessageCommand {
+class ZMessageCommand extends MessageCommand
+{
 
     /**
      * Execute the action.
      * @param array command line parameters specific for this command
      */
-    public function run($args) {
+    public function run($args)
+    {
 
         if (!isset($args[0]))
             $this->usageError('the configuration file is not specified.');
@@ -111,7 +113,8 @@ class ZMessageCommand extends MessageCommand {
         }
     }
 
-    protected function extractMessages($fileName, $translator) {
+    protected function extractMessages($fileName, $translator)
+    {
         echo "Extracting messages from $fileName...\n";
         $subject = file_get_contents($fileName);
         $messages = array();
@@ -137,13 +140,83 @@ class ZMessageCommand extends MessageCommand {
      * @param type $className
      * @return boolean
      */
-    public function isModuleClassDefined($className) {
+    public function isModuleClassDefined($className)
+    {
         foreach (Yii::app()->modules as $mod) {
             if (strpos($mod['class'], $className) !== false) {
                 return true;
             }
         }
         return false;
+    }
+
+    protected function generateMessageFile($messages, $fileName, $overwrite, $removeOld, $sort)
+    {
+        array_walk($messages, function(&$value, $key) {
+            $value = str_replace("\r", "", $value);
+        });
+        
+        echo "Saving messages to $fileName...";
+        if (is_file($fileName)) {
+            $translated = require($fileName);
+
+            $translatedExisting = require($fileName);
+
+            $translated = array();
+            foreach ($translatedExisting as $k => $v) {
+                $k = str_replace("\r", "", $k);
+                $translated[$k] = $v;
+            }
+
+            sort($messages);
+            ksort($translated);
+            if (array_keys($translated) == $messages) {
+                echo "nothing new...skipped.\n";
+                return;
+            }
+            $merged = array();
+            $untranslated = array();
+            foreach ($messages as $message) {
+                if (array_key_exists($message, $translated) && strlen($translated[$message]) > 0)
+                    $merged[$message] = $translated[$message];
+                else
+                    $untranslated[] = $message;
+            }
+            ksort($merged);
+            sort($untranslated);
+            $todo = array();
+            foreach ($untranslated as $message)
+                $todo[$message] = '';
+            ksort($translated);
+            foreach ($translated as $message => $translation) {
+                if (!isset($merged[$message]) && !isset($todo[$message]) && !$removeOld) {
+                    if (substr($translation, 0, 2) === '@@' && substr($translation, -2) === '@@')
+                        $todo[$message] = $translation;
+                    else
+                        $todo[$message] = '@@' . $translation . '@@';
+                }
+            }
+            $merged = array_merge($todo, $merged);
+            if ($sort)
+                ksort($merged);
+            if ($overwrite === false)
+                $fileName.='.merged';
+            echo "translation merged.\n";
+        }
+        else {
+            $merged = array();
+            foreach ($messages as $message)
+                $merged[$message] = '';
+            ksort($merged);
+            echo "saved.\n";
+        }
+        $array = str_replace("\r", '', var_export($merged, true));
+        $content = <<<EOD
+<?php
+return $array;
+
+EOD;
+        file_put_contents($fileName, $content);
     }
 
 }

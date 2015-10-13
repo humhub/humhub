@@ -72,55 +72,5 @@
                 <?php } ?>
             <?php endforeach; ?>
         <?php endif; ?>
-
-        <hr>
-
-        <?php if ($space->canInvite()) { ?>
-
-            <!-- user invite button -->
-            <?php
-            echo CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', 'Invite'), $this->createUrl('//space/space/invite', array('sguid' => $space->guid)), array('class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
-            ?>
-
-        <?php } ?>
-
-        <?php
-        // Membership Handling
-        if ($space->isMember(Yii::app()->user->id)) {
-            if (!$space->isSpaceOwner(Yii::app()->user->id)) {
-                print CHtml::link('<i class="fa fa-sign-out"></i> '. Yii::t('SpaceModule.widgets_views_spaceMembers', "Leave space"), $this->createUrl('//space/space/revokeMembership', array('sguid' => $space->guid)), array('class' => 'btn btn-danger'));
-            }
-        } else {
-            $membership = $space->getMembership();
-            if ($membership == null) {
-                if ($space->canJoin()) {
-                    if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
-                        echo CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', 'Request membership'), $this->createUrl('//space/space/requestMembershipForm', array('sguid' => $space->guid)), array('class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#globalModal'));
-                    } else {
-                        ?>
-                        <a href="<?php echo $this->createUrl('//space/space/requestMembership', array('sguid' => $space->guid)); ?>"
-                           class="btn btn-primary"><?php echo Yii::t('SpaceModule.widgets_views_spaceMembers', 'Become member'); ?></a>
-                    <?php
-                    }
-                }
-            } elseif ($membership->status == SpaceMembership::STATUS_INVITED) {
-                print '<a href="' . Yii::app()->createUrl("//space/space/inviteAccept", array('sguid' => $space->guid)) . '" class="btn btn-primary">' . Yii::t('SpaceModule.widgets_views_spaceMembers', 'Accept invite') . '</a>';
-                print '<a href="' . Yii::app()->createUrl("//space/space/revokeMembership", array('sguid' => $space->guid)) . '" class="btn btn-primary">' . Yii::t('SpaceModule.widgets_views_spaceMembers', 'Deny invite') . '</a>';
-            } elseif ($membership->status == SpaceMembership::STATUS_APPLICANT) {
-                print '<a href="' . Yii::app()->createUrl("//space/space/revokeMembership", array('sguid' => $space->guid)) . '" class="btn btn-primary" id="membership_button">' . Yii::t('SpaceModule.widgets_views_spaceMembers', 'Cancel pending membership application') . '</a>';
-            }
-        }
-        ?>
-
-        <?php
-        // Follow Handling
-        if (!$space->isMember()) {
-            if ($space->isFollowedByUser()) {
-                print CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', "Unfollow"), $this->createUrl('//space/space/unfollow', array('sguid' => $space->guid)), array('class' => 'btn btn-primary'));
-            } else {
-                print CHtml::link(Yii::t('SpaceModule.widgets_views_spaceMembers', "Follow"), $this->createUrl('//space/space/follow', array('sguid' => $space->guid)), array('class' => 'btn btn-primary'));
-            }
-        }
-        ?>
     </div>
 </div>

@@ -66,9 +66,16 @@ class HUnderlyingObjectBehavior extends HActiveRecordBehavior
         }
 
         $className = $this->getOwner()->object_model;
+        
         if ($className == "") {
             return null;
         }
+        
+        if (!class_exists($className)) {
+            Yii::log("Underlying object class ".$className." not found!", CLogger::LEVEL_ERROR);
+            return null;
+        }
+        
         $object = $className::model()->findByPk($this->getOwner()->object_id);
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {

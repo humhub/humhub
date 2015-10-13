@@ -319,16 +319,94 @@ class AdminController extends Controller
         Yii::app()->end();
     }
 
+
     /**
-     * Deletes the Profile Image
+     * Handle the banner image upload
      */
-    public function actionDeleteImage()
+    public function actionBannerImageUpload()
+    {
+
+        $space = $this->getSpace();
+        $model = new UploadProfileImageForm();
+        $json = array();
+
+        $files = CUploadedFile::getInstancesByName('bannerfiles');
+        $file = $files[0];
+        $model->image = $file;
+
+        if ($model->validate()) {
+
+            $json['error'] = false;
+
+            $profileImage = new ProfileBannerImage($space->guid);
+            $profileImage->setNew($model->image);
+
+            $json['name'] = "";
+            $json['url'] = $profileImage->getUrl();
+            $json['size'] = $model->image->getSize();
+            $json['deleteUrl'] = "";
+            $json['deleteType'] = "";
+        } else {
+            $json['error'] = true;
+            $json['errors'] = $model->getErrors();
+        }
+
+
+        return $this->renderJson(array('files' => $json));
+    }
+
+    /**
+     * Crops the banner image
+     */
+    public function actionCropBannerImage()
+    {
+        $space = $this->getSpace();
+
+        $model = new CropProfileImageForm;
+        $profileImage = new ProfileBannerImage($space->guid);
+
+        if (isset($_POST['CropProfileImageForm'])) {
+            $_POST['CropProfileImageForm'] = Yii::app()->input->stripClean($_POST['CropProfileImageForm']);
+            $model->attributes = $_POST['CropProfileImageForm'];
+            if ($model->validate()) {
+                $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
+                $this->htmlRedirect();
+            }
+        }
+
+        $output = $this->renderPartial('cropBannerImage', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
+        Yii::app()->clientScript->render($output);
+        echo $output;
+        Yii::app()->end();
+    }
+
+    /**
+     * Deletes the profile image or profile banner
+     */
+    public function actionDeleteProfileImage()
     {
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        $space->getProfileImage()->delete();
-        $this->redirect($this->createUrl('//space/admin/edit', array('sguid' => $space->guid)));
+        //$space->getProfileImage()->delete();
+
+        $type = Yii::app()->request->getParam('type', 'profile');
+
+        $json = array('type' => $type);
+
+        $image = NULL;
+        if ($type == 'profile') {
+            $image = new ProfileImage($space->guid, 'default_space');
+        } elseif ($type == 'banner') {
+            $image = new ProfileBannerImage($space->guid);
+        }
+
+        if ($image) {
+            $image->delete();
+            $json['defaultUrl'] = $image->getUrl();
+        }
+
+        $this->renderJson($json);
     }
 
     /**

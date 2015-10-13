@@ -1,9 +1,9 @@
 <?php
 return array (
+  '<strong>Member</strong> directory' => '<strong>Раздел</strong> участников',
   'Follow' => 'Подписаться',
+  'No members found!' => 'Участники не найдены!',
   'Search' => 'Поиск',
   'Unfollow' => 'Отписаться',
-  '<strong>Member</strong> directory' => '<strong>Пользователь</strong>',
-  'No members found!' => 'Пользователи не найдены!',
-  'search for members' => 'искать пользователей',
+  'search for members' => 'поиск участников',
 );

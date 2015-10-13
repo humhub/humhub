@@ -9,12 +9,18 @@
         <li class="dropdown-header">
             <div class="arrow"></div><?php echo Yii::t('NotificationModule.widgets_views_list', 'Notifications'); ?>
             <div class="dropdown-header-link"><a id="mark-seen-link"
-                    href="javascript:markNotificationsAsSeen();"><?php echo Yii::t('NotificationModule.widgets_views_list', 'Mark all as seen'); ?></a>
+                                                 href="javascript:markNotificationsAsSeen();"><?php echo Yii::t('NotificationModule.widgets_views_list', 'Mark all as seen'); ?></a>
             </div>
         </li>
         <ul class="media-list"></ul>
         <li id="loader_notifications">
-            <div class="loader"></div>
+            <div class="loader">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
+            </div>
         </li>
     </ul>
 </div>
@@ -33,9 +39,6 @@
 
 
     function markNotificationsAsSeen() {
-
-        //$('#dropdown-notifications').css({display: 'block'});
-
         // call ajax request to mark all notifications as seen
         jQuery.ajax({
             'type': 'GET',
@@ -46,12 +49,19 @@
                 // hide notification badge at the top menu
                 $('#badge-notifications').css('display', 'none');
                 $('#mark-seen-link').css('display', 'none');
+
+                // remove notification count from page title
+                var pageTitle = $('title').text().replace(/\(.+?\)/g, '');
+                $('title').text(pageTitle);
+
             }});
     }
 
+    var originalTitle;
+
     $(document).ready(function () {
 
-	    var originalTitle = document.title;
+        originalTitle = document.title;
 
         // set the ID for the last loaded activity entry to 1
         var notificationLastLoadedEntryId = 0;
@@ -64,7 +74,6 @@
 
         // Open the notification menu
         $('#icon-notifications').click(function () {
-
             // reset variables by dropdown reopening
             notificationLastLoadedEntryId = 0;
             notificationLastEntryReached = false;
@@ -74,13 +83,9 @@
 
             // checking if ajax loading is necessary or the last entries are already loaded
             if (notificationLastEntryReached == false) {
-
                 // load notifications
                 loadNotificationEntries();
-
             }
-
-
         })
 
 
@@ -129,6 +134,7 @@
 
                 if (json.counter == 0) {
                     $("#dropdown-notifications ul.media-list").append('<li class="placeholder">' + notification_placeholder + '</li>');
+                    notificationLastEntryReached = true;
                 } else {
 
                     // save id from the last entry for the next loading
@@ -148,46 +154,53 @@
             });
         }
 
+        /**
+         * Regulary fetch new notifications
+         */
+        reloadNotificationInterval = 60000;
+        setInterval(function () {
+            jQuery.getJSON("<?php echo $this->createUrl('//notification/list/getUpdateJson'); ?>", function (json) {
+                handleJsonUpdate(json);
+            });
+        }, reloadNotificationInterval);
 
-        // load number of new notifications at page loading
-        getNotifications();
+        handleJsonUpdate(<?php echo $updateJson; ?>);
 
-        // load number of new notifications in a loop
-        setInterval(getNotifications, 60000);
+    });
 
 
-        // load and show new count of notifications
-        function getNotifications() {
+    /**
+     * Handles JSON Update
+     * 
+     * @param String json
+     */
+    function handleJsonUpdate(json) {
 
-            var $newNotifications = parseInt(0);
+        // save numbers to variables
+        $newNotifications = parseInt(json.newNotifications);
 
-            // load data
-            jQuery.getJSON("<?php echo $this->createUrl('//dashboard/dashboard/GetFrontEndInfo'); ?>", function (json) {
+        // show or hide the badge for new notifications
+        if ($newNotifications == 0) {
+            document.title = originalTitle;
+            $('#badge-notifications').css('display', 'none');
+            $('#mark-seen-link').css('display', 'none');
+            $('#icon-notifications .fa').removeClass("animated swing");
+        } else {
 
-                // save numbers to variables
-                $newNotifications = parseInt(json.newNotifications);
+            document.title = '(' + $newNotifications + ') ' + originalTitle;
+            $('#badge-notifications').empty();
+            $('#badge-notifications').append($newNotifications);
+            $('#mark-seen-link').css('display', 'inline');
+            $('#badge-notifications').fadeIn('fast');
+            $('#icon-notifications .fa').addClass("animated swing");
 
-                // show or hide the badge for new notifications
-                if ($newNotifications == 0) {
-	                document.title = originalTitle;
-                    $('#badge-notifications').css('display', 'none');
-                    $('#mark-seen-link').css('display', 'none');
-                    $('#icon-notifications .fa').removeClass("animated swing");
-                } else {
-
-	                document.title = '('+$newNotifications+') '+originalTitle;
-                    $('#badge-notifications').empty();
-                    $('#badge-notifications').append($newNotifications);
-                    $('#mark-seen-link').css('display', 'inline');
-                    $('#badge-notifications').fadeIn('fast');
-                    $('#icon-notifications .fa').addClass("animated swing");
-                }
-
-            })
-
+            var $notifications = json.notifications;
+            for (var i = 0; i < $notifications.length; i++) {
+                notify.createNotification("Notification", {body: $("<span />", {html: $notifications[i]}).text(), icon: "ico/alert.ico"})
+            }
         }
 
 
-    })
+    }
 
 </script>

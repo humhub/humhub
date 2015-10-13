@@ -26,3 +26,6 @@ Bundled Software / Libaries
 * animate.css by Daniel Eden - http://daneden.me/animate
 * jplayer - http://jplayer.org/
 * At.js - http://ichord.github.io/At.js/
+* Cebe Markdown - https://github.com/cebe/markdown
+* Highlight.js - https://highlightjs.org/
+* Bootstrap Markdown - http://www.codingdrama.com/bootstrap-markdown/

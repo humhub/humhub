@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Space not found!' => 'Espaço não encontrado!',
+  'Space not found!' => 'Ruimte niet gevonden!',
 );

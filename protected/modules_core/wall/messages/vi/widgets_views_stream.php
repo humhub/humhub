@@ -1,7 +1,8 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '</b>Chưa có người cập nhật cảm nghĩ tại đây.</b><br>Hãy bắt đầu và viết một vài điều gì đó.',
   '<b>This profile stream is still empty</b>' => '',
+  'Show all' => '@@Hiển thị tất cả@@',
+  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '</b>Chưa có người cập nhật cảm nghĩ tại đây.</b><br>Hãy bắt đầu và viết một vài điều gì đó.',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Nhóm này còn trống!</b><br>Hãy bắt đầu viết điều gì đó ở đây ...',
   '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '<b>Trang chính của bạn còn trống!</b><br>Viết một vài điều ở trang cá nhân của bạn hoặc trong nhóm nào đó!',
   '<b>Your profile stream is still empty</b><br>Get started and post something...' => '<b>Trang cá nhân của bạn còn trống!</b><br>Hãy bắt đầu viết điều gì đó.',
@@ -17,7 +18,6 @@ return array (
   'Only public posts' => 'Chỉ tin công cộng',
   'Posts only' => 'Chỉ bài viết',
   'Posts with links' => 'Bài viết với liên kết',
-  'Show all' => 'Hiển thị tất cả',
   'Sorting' => 'Sắp xếp',
   'Where I´m involved' => 'Những nhóm tôi tham gia',
 );

@@ -10,5 +10,5 @@ return array (
   'Password' => 'Heslo',
   'Port' => 'Port',
   'Username' => 'Uživatelské jméno',
-  'Username Attribute' => 'Parametr obsahující uživatelské jméno',
+  'Username Attribute' => ' ',
 );

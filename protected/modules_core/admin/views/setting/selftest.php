@@ -16,8 +16,8 @@
                             <span style="color:green">Ok!</span>
                         <?php elseif ($check['state'] == 'WARNING') : ?>
                             <span style="color:orange">Warning!</span>
-                        <?php
-                        else : ?>
+                            <?php else :
+                            ?>
                             <span style="color:red">Error!</span>
                         <?php endif; ?>
 
@@ -37,7 +37,9 @@
 
 
         <div class="well">
-            <?php echo $migrate; ?>
+            <pre>
+                <?php echo $migrate; ?>
+            </pre>
         </div>
         <hr>
 

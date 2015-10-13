@@ -1,6 +1,5 @@
 <?php
 return array (
-  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Имя пользователя может содержать только буквы, цифры, пробелы и специальные символы (+ -._)',
   'Authentication mode' => 'Режим проверки',
   'Created At' => 'Создано',
   'Created by' => 'Создано пользователем',
@@ -15,5 +14,7 @@ return array (
   'Updated at' => 'Обновлено',
   'Updated by' => 'Обновлено пользователем',
   'Username' => 'Имя',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Имя пользователя может содержать только буквы, цифры, пробелы и специальные символы (+ -._)',
+  'Visibility' => 'Видимость',
   'Wall' => 'Стена',
 );

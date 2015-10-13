@@ -29,6 +29,7 @@ class AccountEmailingForm extends CFormModel
 
     public $receive_email_activities;
     public $receive_email_notifications;
+    public $enable_html5_desktop_notifications;
 
     /**
      * Declares the validation rules.
@@ -44,6 +45,7 @@ class AccountEmailingForm extends CFormModel
                     User::RECEIVE_EMAIL_ALWAYS),
                 'allowEmpty' => true
             ),
+            array('enable_html5_desktop_notifications', 'in', 'range' => array('0', '1')),
         );
     }
 
@@ -57,6 +59,7 @@ class AccountEmailingForm extends CFormModel
         return array(
             'receive_email_notifications' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send notifications?'),
             'receive_email_activities' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send activities?'),
+            'enable_html5_desktop_notifications' => Yii::t('UserModule.views_account_emailing', 'Get a desktop notification when you are online.')
         );
     }
 

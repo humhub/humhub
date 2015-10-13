@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Post' => 'Postar',
+  'Post' => 'Post',
 );

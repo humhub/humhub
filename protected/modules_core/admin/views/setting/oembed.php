@@ -9,7 +9,7 @@
             <p><strong><?php echo Yii::t('AdminModule.views_setting_oembed', 'Currently active providers:'); ?></strong></p>
             <ul>
                 <?php foreach ($providers as $providerUrl => $providerOEmbedAPI) : ?>
-                    <li><?php echo HHtml::link($providerUrl, $this->createUrl('oembedEdit', array('prefix' => $providerUrl))); ?></li>
+                    <li><?php echo HHtml::postLink($providerUrl, $this->createUrl('oembedEdit'), array(), array('prefix' => $providerUrl)); ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php else: ?>

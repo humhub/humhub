@@ -50,11 +50,15 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'visibility'); ?>
-            <?php $visibilities = array(
+            <?php
+            $visibilities = array(
                 0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
-                1 => Yii::t('SpaceModule.base', 'Public (Visible)')
-                /*2 => Yii::t('SpaceModule.base', 'Visible for all')*/
-             ); ?>
+                1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
+            );
+            if (HSetting::Get('allowGuestAccess', 'authentication_internal') == 1) {
+                $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
+            }
+            ?>
             <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
             <?php echo $form->error($model, 'visibility'); ?>
         </div>

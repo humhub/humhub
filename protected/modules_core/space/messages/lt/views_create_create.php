@@ -1,0 +1,22 @@
+<?php
+return array (
+  '<strong>Create</strong> new space' => '<strong>Sukurti</strong> naują erdvę',
+  'Advanced access settings' => 'Išplėstiniai prieigos nustatymai',
+  'Also non-members can see this<br>space, but have no access' => 'Šią <br> erdvę gali matyti ir nesantys nariais, tačiau neturi prieigos',
+  'Create' => 'Sukurti',
+  'Every user can enter your space<br>without your approval' => 'Kiekvienas narys gali prisijungti prie Jūsų erdvės<br> be Jūsų patvirtinimo',
+  'For everyone' => 'Visiems',
+  'How you want to name your space?' => 'Kaip norite pavadinti savo erdvę?',
+  'Invite and request' => 'Pakviesti',
+  'Join Policy' => 'Prisijungimo politika',
+  'Only by invite' => 'Tik su pakvietimu',
+  'Please write down a small description for other users.' => 'Prašome parašyti trumpą apibūdinimą.',
+  'Private (Invisible)' => 'Privatus (Nematomas)',
+  'Public (Visible)' => 'Viešas (Matomas)',
+  'This space will be hidden<br>for all non-members' => 'Ši erdvė bus paslėpta<br>nuo visų nesančių nariais',
+  'Users can also apply for a<br>membership to this space' => 'Vartotojai taip pat gali prašyti <br> tapti šios erdvės nariais',
+  'Users can be only added<br>by invitation' => 'Vartotojai gali būti pridėti<br>tik su kvietimu',
+  'Visibility' => 'Matomumas',
+  'space description' => 'erdvės apibūdinimas',
+  'space name' => 'erdvės pavadinimas',
+);

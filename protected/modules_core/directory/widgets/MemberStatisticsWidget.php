@@ -14,9 +14,7 @@ class MemberStatisticsWidget extends HWidget {
      */
     public function run() {
 
-        $newUsers = User::model()->active()->recently(10)->findAll();
-
-        // Some member stats
+          // Some member stats
         Yii::import('application.modules.mail.models.*');
         $statsTotalUsers = User::model()->count();
 
@@ -33,7 +31,6 @@ class MemberStatisticsWidget extends HWidget {
 
         // Render widgets view
         $this->render('memberStats', array(
-            'newUsers' => $newUsers, // new users
             'statsTotalUsers' => $statsTotalUsers,
             'statsUserOnline' => $statsUserOnline,
             'statsMessageEntries' => $statsMessageEntries,

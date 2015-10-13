@@ -50,17 +50,14 @@ class Controller extends EController
 
         Yii::app()->interceptor->intercept($this);
 
+        $this->handleLocale();
+
         // Force installer, when not installed
         if (!Yii::app()->params['installed']) {
             if ($this->getModule() != null && $this->getModule()->id == "installer") {
                 return parent::init();
             }
             $this->redirect(array('//installer/index'));
-        }
-
-        // Switch to correct user language
-        if (Yii::app()->user->language) {
-            Yii::app()->language = Yii::app()->user->language;
         }
 
         // Enable Jquery Globally
@@ -79,12 +76,8 @@ class Controller extends EController
         Yii::app()->clientScript->setJavascriptVariable('csrfName', Yii::app()->request->csrfTokenName);
         Yii::app()->clientScript->setJavascriptVariable('csrfValue', Yii::app()->request->csrfToken);
         Yii::app()->clientScript->setJavascriptVariable('baseUrl', Yii::app()->getBaseUrl(true));
-        Yii::app()->clientScript->setJavascriptVariable('localeId', Yii::app()->locale->id);
 
         $this->initAjaxCsrfToken();
-
-        // Temporary force set the system timezone to avoid php 5.5+ warnings until we create an admin/config option for that
-        date_default_timezone_set(@date_default_timezone_get());
 
         return parent::init();
     }
@@ -243,6 +236,45 @@ class Controller extends EController
         }
 
         return parent::getViewFile($viewName);
+    }
+
+    protected function handleLocale()
+    {
+
+        $isGuest = (!Yii::app()->params['installed'] || Yii::app()->user->isGuest);
+
+        if ($isGuest) {
+
+            // Choose Language Form Submitted?
+            if (isset($_POST['ChooseLanguageForm'])) {
+                $languageModel = new ChooseLanguageForm();
+                $languageModel->attributes = $_POST['ChooseLanguageForm'];
+                if ($languageModel->validate()) {
+                    Yii::app()->request->cookies['language'] = new CHttpCookie('language', $languageModel->language);
+                }
+            }
+
+            $language = Yii::app()->request->getPreferredAvailableLanguage();
+
+            if (isset(Yii::app()->request->cookies['language'])) {
+                $language = (string) Yii::app()->request->cookies['language'];
+                if (!array_key_exists($language, Yii::app()->params['availableLanguages'])) {
+                    Yii::app()->request->cookies['language'] = new CHttpCookie('language', 'en');
+                    $language = 'en';
+                }
+            }
+
+            if ($language != "") {
+                Yii::app()->setLanguage($language);
+            }
+        } elseif (Yii::app()->user->language) {
+            Yii::app()->setLanguage(Yii::app()->user->language);
+        }
+
+        Yii::app()->clientScript->setJavascriptVariable('localeId', Yii::app()->locale->id);
+
+        // Temporary force set the system timezone to avoid php 5.5+ warnings until we create an admin/config option for that
+        date_default_timezone_set(@date_default_timezone_get());
     }
 
 }

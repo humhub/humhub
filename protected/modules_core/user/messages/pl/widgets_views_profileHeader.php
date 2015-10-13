@@ -1,11 +1,11 @@
 <?php
 return array (
+  'Edit account' => '@@Edytuj konto@@',
+  'Follow' => '@@Obserwuj@@',
+  'Unfollow' => '@@Nie obserwuj @@',
   '<strong>Something</strong> went wrong' => '<strong>Coś</strong> poszło źle',
-  'Edit account' => 'Edytuj konto',
-  'Follow' => 'Obserwuj',
   'Followers' => 'Obserwujący',
   'Following' => 'Obserwowani',
   'Ok' => 'Ok',
   'Spaces' => 'Strefy',
-  'Unfollow' => 'Nie obserwuj ',
 );

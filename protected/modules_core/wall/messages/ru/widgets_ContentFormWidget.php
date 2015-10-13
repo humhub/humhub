@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Submit' => 'Принять',
+  'Submit' => 'Опубликовать',
 );

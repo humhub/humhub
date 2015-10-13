@@ -1,5 +1,5 @@
 <?php
 return array (
-  'More information: <strong>%moduleName%</strong>' => 'Daha fazla bilgi: <strong>%moduleName%</strong>',
+  '<strong>Module</strong> details' => '<strong>Modül</strong> ayrıntıları',
   'This module doesn\'t provide further informations.' => 'Bu modül daha fazla bilgi içermez.',
 );

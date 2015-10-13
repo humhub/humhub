@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Add a member to notify' => '',
+  'Add a member to notify' => 'Hou een lid op de hoogte',
   'Make private' => 'Maak privé',
   'Make public' => 'Maak publiek',
-  'Notify members' => '',
+  'Notify members' => 'Breng leden op de hoogte',
   'Public' => 'Publiek',
-  'Whats on your mind?' => '',
+  'What\'s on your mind?' => 'Plaats een bericht',
 );

@@ -27,6 +27,13 @@ class FileController extends Controller
     public function accessRules()
     {
         return array(
+            array('allow',
+                'actions' => array('download'),
+           		'expression' => array (
+       				'FileController',
+       				'canDownloadFile'
+           		)                
+            ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
             ),
@@ -36,6 +43,18 @@ class FileController extends Controller
         );
     }
 
+	public static function canDownloadFile() {
+		if (! Yii::app ()->user->isGuest)
+			return true;
+		$guid = Yii::app ()->request->getParam ( 'guid' );
+		$file = File::model ()->findByAttributes ( array (
+    		'guid' => $guid 
+		) );
+		if (! $file)
+			return false;
+		return $file->public_access;
+	}
+
     /**
      * Action which handles file uploads
      *
@@ -43,6 +62,7 @@ class FileController extends Controller
      */
     public function actionUpload()
     {
+        $publicAccess = Yii::app()->request->getParam('publicAccess');
         // Object which the uploaded file(s) belongs to (optional)
         $object = null;
         $objectModel = Yii::app()->request->getParam('objectModel');
@@ -57,7 +77,7 @@ class FileController extends Controller
 
         $files = array();
         foreach (CUploadedFile::getInstancesByName('files') as $cFile) {
-            $files[] = $this->handleFileUpload($cFile, $object);
+            $files[] = $this->handleFileUpload($cFile, $object, $publicAccess);
         }
 
         return $this->renderJson(array('files' => $files));
@@ -86,12 +106,13 @@ class FileController extends Controller
      * @param type $cFile
      * @return Array Informations about the uploaded file
      */
-    protected function handleFileUpload($cFile, $object = null)
+    protected function handleFileUpload($cFile, $object = null, $publicAccess = false)
     {
         $output = array();
 
         $file = new File();
         $file->setUploadedFile($cFile);
+        $file->public_access = $publicAccess;
 
         if ($object != null) {
             $file->object_id = $object->getPrimaryKey();
@@ -108,7 +129,7 @@ class FileController extends Controller
             $output['mimeBaseType'] = $file->getMimeBaseType();
             $output['mimeSubType'] = $file->getMimeSubType();
             $output['url'] = $file->getUrl("", false);
-            $output['thumbnailUrl'] = $file->getPreviewImageUrl(200,200);
+            $output['thumbnailUrl'] = $file->getPreviewImageUrl(200, 200);
         } else {
             $output['error'] = true;
             $output['errors'] = $file->getErrors();

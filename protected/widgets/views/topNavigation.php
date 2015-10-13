@@ -11,14 +11,9 @@
         echo $item['id'];
     }
     ?>">
-        <a href="<?php echo $item['url']; ?>"  target="<?php echo $item['target']; ?>" >
-            <?php echo $item['icon']; ?><br/>
-            <?php echo $item['label']; ?>
-        </a>
+            <?php echo HHtml::link($item['icon'] . "<br />" . $item['label'], $item['url'], $item['htmlOptions']); ?>
     </li>
 <?php endforeach; ?>
-
-
 
 <li class="dropdown visible-xs visible-sm">
     <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
@@ -29,10 +24,7 @@
 
         <?php foreach ($this->getItems() as $item) : ?>
             <li class="<?php if ($item['isActive']): ?>active<?php endif; ?>">
-                <a href="<?php echo $item['url']; ?>"  target="<?php echo $item['target']; ?>" >
-                    <?php //echo $item['icon'];   ?>
-                    <?php echo $item['label']; ?>
-                </a>
+                <?php echo HHtml::link($item['label'], $item['url'], $item['htmlOptions']); ?>
             </li>
         <?php endforeach; ?>
 

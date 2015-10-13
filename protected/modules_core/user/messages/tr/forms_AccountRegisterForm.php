@@ -17,5 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'E-Mail' => '',
+  'E-Mail' => 'E-Posta',
+  'E-Mail is already in use! - Try forgot password.' => 'E-Posta adresi kullanılıyor - Şifremi Unuttum.',
 );

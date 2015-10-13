@@ -7,6 +7,7 @@ return array (
   'Disable' => 'Vypnout',
   'Enable' => 'Zapnout',
   'More info' => 'Více informací',
+  'Processing...' => 'Provádím...',
   'Set as default' => 'Nastavit jako výchozí',
   'Uninstall' => 'Odinstalovat',
 );

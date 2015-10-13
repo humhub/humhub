@@ -1,0 +1,20 @@
+<?php
+return array (
+  'Authentication mode' => 'Atpažinimo būsena',
+  'Created At' => 'Sukurta (kada)',
+  'Created by' => 'Sukurta (kieno)',
+  'Email' => 'Siųsti elektroniniu paštu',
+  'Group' => 'Grupė',
+  'Guid' => 'Unikalus kodas',
+  'ID' => 'ID',
+  'Invalid language!' => 'Negalima kalba!',
+  'Language' => 'Kalba',
+  'New user needs approval' => 'Naujam vartotojui reikia patvirtinimo',
+  'Tags' => 'Žymės',
+  'Updated at' => 'Atnaujinta (kada)',
+  'Updated by' => 'Atnaujinta (kieno)',
+  'Username' => 'Vartotojo vardas',
+  'Username can contain only letters, numbers, spaces and special characters (+-._)' => 'Vartotojo vardas gali susidėti tik iš raidžių, skaičių, tarpų ir specialių simbolių (+-._)',
+  'Visibility' => 'Matomumas',
+  'Wall' => 'Siena',
+);

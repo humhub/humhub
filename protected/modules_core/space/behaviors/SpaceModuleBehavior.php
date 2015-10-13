@@ -22,6 +22,7 @@
  * This behavior should attached to a HWebModule when it provides a space module.
  *
  * @author luke
+ * @package humhub.modules_core.space.behaviors
  */
 class SpaceModuleBehavior extends CBehavior
 {

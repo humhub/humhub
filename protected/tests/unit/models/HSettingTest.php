@@ -27,13 +27,14 @@
  * 
  * @author luke
  */
-class HSettingTest extends CDbTestCase
+class HSettingTest extends HDbTestCase
 {
 
     public $fixtures = array(':setting');
 
     public function testSetGet()
     {
+
         // Without Module
         $this->assertTrue((HSetting::Get('theme') == 'HumHub'));
 

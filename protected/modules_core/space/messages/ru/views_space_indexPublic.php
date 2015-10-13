@@ -2,7 +2,7 @@
 return array (
   'Accept Invite' => 'Принять приглашение',
   'Become member' => 'Стать участником',
-  'Cancel membership' => 'Отмена членства',
+  'Cancel membership' => 'Отменить членство',
   'Cancel pending membership application' => 'Отозвать заявку на членство',
   'Deny Invite' => 'Запретить приглашение',
   'Follow' => 'Подписаться',

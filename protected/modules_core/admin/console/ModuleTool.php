@@ -26,7 +26,9 @@
  */
 class ModuleTool extends HConsoleCommand
 {
-
+    /**
+     * @throws CException
+     */
     public function init()
     {
 
@@ -36,11 +38,21 @@ class ModuleTool extends HConsoleCommand
         return parent::init();
     }
 
+    /**
+     * @param string $action
+     * @param array $params
+     * @return bool
+     */
     public function beforeAction($action, $params)
     {
         return parent::beforeAction($action, $params);
     }
 
+    /**
+     * Lists all installed modules.
+     *
+     * @param array $args
+     */
     public function actionList($args)
     {
 
@@ -55,6 +67,12 @@ class ModuleTool extends HConsoleCommand
         }
     }
 
+    /**
+     * Lists all online available modules.
+     *
+     * @param array $args
+     * @throws CHttpException
+     */
     public function actionListOnline($args)
     {
 
@@ -77,6 +95,13 @@ class ModuleTool extends HConsoleCommand
         }
     }
 
+    /**
+     * Installs a given module.
+     *
+     * @param array $args
+     * @throws CException
+     * @throws CHttpException
+     */
     public function actionInstall($args)
     {
 
@@ -93,6 +118,11 @@ class ModuleTool extends HConsoleCommand
         print "\nModule " . $moduleId . " successfully installed!\n";
     }
 
+    /**
+     * Uninstalls a given module.
+     *
+     * @param array $args
+     */
     public function actionUninstall($args)
     {
 
@@ -116,10 +146,11 @@ class ModuleTool extends HConsoleCommand
     }
 
     /**
-     * Updates a module
-     * 
-     * @param type $args
-     * @return type
+     * Updates a given module to the last available version.
+     *
+     * @param array $args
+     * @param bool $force
+     * @throws CHttpException
      */
     public function actionUpdate($args, $force=false)
     {
@@ -161,6 +192,11 @@ class ModuleTool extends HConsoleCommand
         print "Module " . $moduleId . " successfully updated!\n";
     }
 
+    /**
+     * Updates all modules to the latest available version.
+     *
+     * @param array $args
+     */
     public function actionUpdateAll($args)
     {
         $installedModules = Yii::app()->moduleManager->getInstalledModules(false, true);
@@ -172,7 +208,12 @@ class ModuleTool extends HConsoleCommand
         }
     }
 
-    function getHelp()
+    /**
+     * Returns help and usage information for the module command.
+     *
+     * @return string
+     */
+    public function getHelp()
     {
         return <<<EOD
 USAGE
@@ -183,22 +224,22 @@ DESCRIPTION
 
 EXAMPLES
  * yiic module list
-   Lists all installed modules
+   Lists all installed modules.
         
  * yiic module listonline
-   Lists all online available modules
+   Lists all online available modules.
 
  * yiic module install moduleId
-   Updates a given module to the last available version.
+   Installs a given module.
 
  * yiic module uninstall moduleId
-   Updates a given module to the last available version.
+   Uninstalls a given module.
         
  * yiic module update moduleId
    Updates a given module to the last available version.
         
  * yiic module updateall
-   Updates all modules to the latest available version
+   Updates all modules to the latest available version.
 
 EOD;
     }

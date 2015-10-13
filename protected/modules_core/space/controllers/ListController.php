@@ -7,12 +7,14 @@
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class ListController extends Controller {
+class ListController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -23,7 +25,8 @@ class ListController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'users' => array('@'),
@@ -34,8 +37,22 @@ class ListController extends Controller {
         );
     }
 
-    public function actionIndex() {
-        $this->renderPartial('index', null, false, true);
+    public function actionIndex()
+    {
+
+        $criteria = new CDbCriteria();
+        if (HSetting::Get('spaceOrder', 'space') == 0) {
+            $criteria->order = 'name ASC';
+        } else {
+            $criteria->order = 'last_visit DESC';
+        }
+
+        $memberships = SpaceMembership::model()->with('space')->findAllByAttributes(array(
+            'user_id' => Yii::app()->user->id,
+            'status' => SpaceMembership::STATUS_MEMBER,
+                ), $criteria);
+
+        $this->renderPartial('index', array('memberships' => $memberships), false, true);
     }
 
 }

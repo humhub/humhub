@@ -6,9 +6,11 @@ Yii::app()->moduleManager->register(array(
     'isCoreModule' => true,
     'import' => array(
         'application.modules_core.admin.*',
+        'application.modules_core.admin.notifications.*',
     ),
     'events' => array(
-        array('class' => 'DashboardSidebarWidget', 'event' => 'onInit', 'callback' => array('AdminModule', 'onDashboardSidebarInit')),
+        array('class' => 'DashboardSidebarWidget', 'event' => 'onInit', 'callback' => array('AdminModuleEvents', 'onDashboardSidebarInit')),
+        array('class' => 'ZCronRunner', 'event' => 'onDailyRun', 'callback' => array('AdminModuleEvents', 'onCronDailyRun')),
     ),
 ));
 ?>

@@ -7,11 +7,14 @@
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class SpaceMenuWidget extends MenuWidget {
+class SpaceMenuWidget extends MenuWidget
+{
 
+    public $space;
     public $template = "application.widgets.views.leftNavigation";
 
-    public function init() {
+    public function init()
+    {
 
         // Reckon the current controller is a valid space controller
         // (Needs to implement the SpaceControllerBehavior)
