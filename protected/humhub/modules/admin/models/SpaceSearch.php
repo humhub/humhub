@@ -22,12 +22,6 @@ use humhub\modules\space\models\Space;
 class SpaceSearch extends Space
 {
 
-    public function attributes()
-    {
-        // add related fields to searchable attributes
-        return array_merge(parent::attributes(), ['type.item_title']);
-    }
-    
     public function rules()
     {
         return [
@@ -54,7 +48,7 @@ class SpaceSearch extends Space
      */
     public function search($params)
     {
-        $query = Space::find()->joinWith('type');
+        $query = Space::find();
         
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -81,7 +75,6 @@ class SpaceSearch extends Space
         $query->andFilterWhere(['join_policy' => $this->join_policy]);
         $query->andFilterWhere(['visibility' => $this->visibility]);
         $query->andFilterWhere(['like', 'name', $this->name]);
-     #   $query->andFilterWhere(['space_type.item_title' => $this->getAttribute('space_type.item_title')]);
         return $dataProvider;
     }
 

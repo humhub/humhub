@@ -22,12 +22,7 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
 
             <?php echo $form->field($model, 'name')->textInput(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space name')]); ?>
 
-
             <?php echo $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
-
-            <?php if (count($types) > 1) : ?>
-                <?php echo $form->field($model, 'space_type_id')->dropdownList($types); ?>
-            <?php endif; ?>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
                style="font-size: 11px;"><i

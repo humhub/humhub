@@ -33,9 +33,7 @@ class DefaultController extends Controller
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('/space/manage'));
         }
-
-        $types = \yii\helpers\ArrayHelper::map(\humhub\modules\space\models\Type::find()->all(), 'id', 'item_title');
-        return $this->render('index', array('model' => $space, 'types' => $types));
+        return $this->render('index', array('model' => $space));
     }
 
     /**

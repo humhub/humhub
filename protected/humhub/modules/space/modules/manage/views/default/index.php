@@ -22,8 +22,6 @@ use humhub\modules\space\models\Space;
 
         <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
-        <?php echo $form->field($model, 'space_type_id')->dropdownList($types); ?>
-
         <hr>
 
         <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')); ?>

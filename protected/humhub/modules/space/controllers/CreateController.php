@@ -64,8 +64,7 @@ class CreateController extends Controller
             return $this->htmlRedirect($model->getUrl());
         }
 
-        $types = \yii\helpers\ArrayHelper::map(\humhub\modules\space\models\Type::find()->all(), 'id', 'item_title');
-        return $this->renderAjax('create', array('model' => $model, 'types' => $types));
+        return $this->renderAjax('create', array('model' => $model));
     }
 
 }
