@@ -267,7 +267,7 @@ class OnlineModuleManager
                 $options[CURLOPT_PROXYUSERNAME] = Setting::Get('user', 'proxy');
             }
             if (defined('CURLOPT_PROXYPASSWORD')) {
-                $options[CURLOPT_PROXYPASSWORD] = Setting::Get('pass', 'proxy');
+                $options[CURLOPT_PROXYPASSWORD] = Setting::Get('password', 'proxy');
             }
             if (defined('CURLOPT_NOPROXY')) {
                 $options[CURLOPT_NOPROXY] = Setting::Get('noproxy', 'proxy');
