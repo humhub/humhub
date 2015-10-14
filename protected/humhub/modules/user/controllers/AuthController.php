@@ -81,7 +81,12 @@ class AuthController extends Controller
                 $invite->save();
                 $invite->sendInviteMail();
 
-                return $this->render('register_success', ['model' => $registerModel]);
+                if (Yii::$app->request->getIsAjax()) {
+                    return $this->render('register_success_modal', ['model' => $registerModel]);
+                } else {
+                    return $this->render('register_success', ['model' => $registerModel]);
+                }
+
             }
         }
 

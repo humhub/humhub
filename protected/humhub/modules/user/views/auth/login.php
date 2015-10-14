@@ -1,7 +1,7 @@
 <?php
 
 use \yii\helpers\Url;
-use \humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
 
 $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
@@ -18,25 +18,16 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
         <div class="panel-body">
 
-            <?php $form = CActiveForm::begin(['id' => 'account-login-form']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'account-login-form']); ?>
 
             <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
 
-            <div class="form-group">
-                <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email'))); ?>
-                <?php echo $form->error($model, 'username'); ?>
-            </div>
+            <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
 
-            <div class="form-group">
-                <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password'))); ?>
-                <?php echo $form->error($model, 'password'); ?>
-            </div>
+            <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
 
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($model, 'rememberMe'); ?> <?php echo $model->getAttributeLabel('rememberMe'); ?>
-                </label>
-            </div>
+
+            <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
 
             <hr>
             <div class="row">
@@ -52,7 +43,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 </div>
             </div>
 
-            <?php CActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
 
         </div>
 
@@ -71,16 +62,13 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
                 <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
 
-                <?php $form = CActiveForm::begin(['id' => 'account-register-form']); ?>
+                <?php $form = ActiveForm::begin(['id' => 'account-register-form']); ?>
 
-                <div class="form-group">
-                    <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email'))); ?>
-                    <?php echo $form->error($registerModel, 'email'); ?>
-                </div>
+                <?php echo $form->field($registerModel, 'email')->textInput(['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                 <hr>
                 <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('class' => 'btn btn-primary')); ?>
 
-                <?php CActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
             </div>
         </div>
 

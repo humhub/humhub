@@ -1,6 +1,6 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
@@ -33,28 +33,17 @@ use yii\helpers\Url;
             <div class="tab-content">
                 <div class="tab-pane <?php echo (!isset($_POST['AccountRegister'])) ? "active" : ""; ?>" id="login">
 
-                    <?php $form = CActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin(); ?>
 
 
                     <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
 
-                    <div class="form-group">
-                        <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email'))); ?>
-                        <?php echo $form->error($model, 'username'); ?>
-                    </div>
+                    <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
 
-                    <div class="form-group">
-                        <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password'))); ?>
-                        <?php echo $form->error($model, 'password'); ?>
-                    </div>
+                    <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
 
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <?php echo $form->checkBox($model, 'rememberMe'); ?> <?php echo Yii::t('UserModule.views_auth_login', 'Remember me next time'); ?>
-                            </label>
-                        </div>
-                    </div>
+
+                    <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -97,7 +86,7 @@ use yii\helpers\Url;
                         </div>
                     </div>
 
-                    <?php CActiveForm::end(); ?>
+                    <?php ActiveForm::end(); ?>
                 </div>
 
                 <?php if ($canRegister) : ?>
@@ -105,12 +94,9 @@ use yii\helpers\Url;
                          id="register">
 
                         <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
-                        <?php $form = CActiveForm::begin(); ?>
+                        <?php $form = ActiveForm::begin(); ?>
 
-                        <div class="form-group">
-                            <?php echo $form->textField($registerModel, 'email', array('class' => 'form-control', 'id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email'))); ?>
-                            <?php echo $form->error($registerModel, 'email'); ?>
-                        </div>
+                        <?php echo $form->field($registerModel, 'email')->textInput(['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                         <hr>
 
                         <?php
@@ -128,7 +114,7 @@ use yii\helpers\Url;
                         ]);
                         ?>
 
-                        <?php CActiveForm::end(); ?>
+                        <?php ActiveForm::end(); ?>
 
                     </div>
                 <?php endif; ?>

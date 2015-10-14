@@ -1,31 +1,21 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 ?>
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_changePassword', '<strong>Change</strong> password'); ?>
 </div>
 <div class="panel-body">
-    <?php $form = CActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'currentPassword'); ?>
-        <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'maxlength' => 255, 'value' => '')); ?>
-        <?php echo $form->error($model, 'currentPassword'); ?>
-    </div>
-    <hr/>
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'newPassword'); ?>
-        <?php echo $form->passwordField($model, 'newPassword', array('class' => 'form-control', 'maxlength' => 255, 'value' => '')); ?>
-        <?php echo $form->error($model, 'newPassword'); ?>
-    </div>
+    <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
+    
+    <hr>
 
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'newPasswordConfirm'); ?>
-        <?php echo $form->passwordField($model, 'newPasswordConfirm', array('class' => 'form-control', 'maxlength' => 255, 'value' => '')); ?>
-        <?php echo $form->error($model, 'newPasswordConfirm'); ?>
-    </div>
+    <?php echo $form->field($model, 'newPassword')->textInput(['maxlength' => 45]); ?>
+
+    <?php echo $form->field($model, 'newPasswordConfirm')->textInput(['maxlength' => 45]); ?>
 
     <hr>
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_changePassword', 'Save'), array('class' => 'btn btn-primary')); ?>
@@ -34,6 +24,6 @@ use humhub\compat\CHtml;
     <!-- show flash message after saving -->
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
-    <?php CActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

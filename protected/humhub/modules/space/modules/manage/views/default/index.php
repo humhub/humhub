@@ -1,6 +1,6 @@
 <?php
 
-use \humhub\compat\CActiveForm;
+use yii\bootstrap\ActiveForm;
 use \humhub\compat\CHtml;
 use yii\helpers\Html;
 use \humhub\models\Setting;
@@ -12,77 +12,48 @@ use humhub\modules\space\models\Space;
     <div
         class="panel-heading"><?php echo Yii::t('SpaceModule.views_admin_edit', '<strong>General</strong> space settings'); ?></div>
     <div class="panel-body">
-        <?php $form = CActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-        <?php //echo $form->errorSummary($model); ?>
+        <?php echo $form->field($model, 'name')->textInput(['maxlength' => 45]); ?>
 
+        <?php echo $form->field($model, 'description')->textarea(['rows' => 6]); ?>
 
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'name'); ?>
-            <?php echo $form->textField($model, 'name', array('class' => 'form-control', 'maxlength' => 45)); ?>
-            <?php echo $form->error($model, 'name'); ?>
-        </div>
+        <?php echo $form->field($model, 'website')->textInput(['maxlength' => 45]); ?>
 
+        <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'description'); ?>
-            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '6')); ?>
-            <?php echo $form->error($model, 'description'); ?>
-        </div>
+        <?php echo $form->field($model, 'space_type_id')->dropdownList($types); ?>
 
-
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'website'); ?>
-            <?php echo $form->textField($model, 'website', array('class' => 'form-control', 'maxlength' => 45)); ?>
-            <?php echo $form->error($model, 'website'); ?>
-        </div>
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'tags'); ?>
-            <?php echo $form->textField($model, 'tags', array('class' => 'form-control', 'maxlength' => 200)); ?>
-            <?php echo $form->error($model, 'tags'); ?>
-        </div>
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'space_type_id'); ?>
-            <?php echo $form->dropDownList($model, 'space_type_id', $types, array('class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'space_type_id'); ?>
-        </div>
         <hr>
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'join_policy'); ?>
-            <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')); ?>
-            <?php echo $form->dropDownList($model, 'join_policy', $joinPolicies, array('class' => 'form-control', 'id' => 'join_policy_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'))); ?>
-        </div>
 
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'visibility'); ?>
-            <?php
-            $visibilities = array(
-                0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
-                1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
-            );
-            if (Setting::Get('allowGuestAccess', 'authentication_internal') == 1) {
-                $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
-            }
-            ?>
-            <?php echo $form->dropDownList($model, 'visibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
-            <?php echo $form->error($model, 'visibility'); ?>
-        </div>
+        <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')); ?>
+        <?php echo $form->field($model, 'join_policy')->dropdownList($joinPolicies, ['id' => 'join_policy_dropdown']); ?>
+        <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'); ?></p>
+        <br>
 
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'default_content_visibility'); ?>
-            <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((\humhub\models\Setting::Get('defaultContentVisibility', 'space') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
-            <?php $contentVisibilities = array('' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')); ?>
-            <?php echo $form->dropDownList($model, 'default_content_visibility', $contentVisibilities, array('class' => 'form-control')); ?>
-        </div>
+        <?php
+        $visibilities = array(
+            0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+            1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
+        );
+        if (Setting::Get('allowGuestAccess', 'authentication_internal') == 1) {
+            $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
+        }
+        ?>
+        <?php echo $form->field($model, 'visibility')->dropdownList($visibilities, ['id' => 'join_visibility_dropdown']); ?>
+        <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'); ?></p>
+
+<br>
+        <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((\humhub\models\Setting::Get('defaultContentVisibility', 'space') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
+        <?php $contentVisibilities = array('' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')); ?>
+        <?php echo $form->field($model, 'default_content_visibility')->dropdownList($contentVisibilities); ?>
+        <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default'); ?></p>
+
 
         <hr>
 
         <?php if (Yii::$app->user->isAdmin() && Setting::Get('enabled', 'authentication_ldap')): ?>
-            <div class="form-group">
-                <?php echo $form->labelEx($model, 'ldap_dn'); ?>
-                <?php echo $form->textField($model, 'ldap_dn', array('class' => 'form-control', 'maxlength' => 255)); ?>
-                <?php echo $form->error($model, 'ldap_dn'); ?>
-            </div>
+            <?php echo $form->field($model, 'ldap_dn')->textInput(['maxlength' => 255]); ?>
             <hr>
         <?php endif; ?>
 
@@ -100,7 +71,7 @@ use humhub\modules\space\models\Space;
 
         </div>
 
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
     </div>
 
 </div>

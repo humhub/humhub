@@ -32,7 +32,7 @@ use yii\helpers\Url;
 
         <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
 
-        
+
         <?php echo $form->field($model, 'enabled')->checkbox(['readonly' => Setting::IsFixed('enabled', 'authentication_ldap')]); ?>
         <hr>
 
