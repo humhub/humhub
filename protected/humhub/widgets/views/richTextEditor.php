@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 ?>
 
 <script type="text/javascript">
@@ -22,7 +23,20 @@ use yii\helpers\Url;
 
         }
 
-        var emojis = ["Ambivalent", "Angry", "Confused", "Cool", "Frown", "Gasp", "Grin", "Heart", "Hearteyes", "Laughing", "Slant", "Smile", "Wink", "Yuck"];
+        var emojis = [
+            "1F601", "1F602", "1F603", "1F604", "1F605", "1F606",
+            "1F607", "1F608", "1F609", "1F610", "1F611", "1F612",
+            "1F613", "1F614", "1F615", "1F616", "1F617", "1F618",
+            "1F619", "1F620", "1F621", "1F622", "1F623", "1F624",
+            "1F625", "1F626", "1F627", "1F628", "1F629", "1F631",
+            "1F632", "1F633", "1F634", "1F635", "1F636", "1F637",
+            "1F641", "1F642", "1F60A", "1F60B", "1F60C", "1F60D",
+            "1F60E", "1F60F", "1F61A", "1F61B", "1F61C", "1F61D",
+            "1F61E", "1F61F", "1F62A", "1F62B", "1F62C", "1F62D",
+            "1F62E", "1F62F", "1F44A", "1F592", "1F593", "2764",
+            "1F389", "1F525", "1F37B", "1F382", "1F354", "1F355",
+            "1F357", "1F56B", "1F575", "1F31E"
+        ];
 
         var emojis_list = $.map(emojis, function (value, i) {
             return {'id': i, 'name': value};
@@ -68,20 +82,21 @@ use yii\helpers\Url;
                         // set plugin settings for showing results
                         this.setting.highlight_first = true;
                         this.setting.tpl = "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
-                                // load data
-                                $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
-                                    callback(data)
-                                });
+                            // load data
+                            $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
+                                callback(data)
+                            });
 
                     }
                 }
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img class='atwho-emoji' data-emoji-name=';${name};' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.png'); ?>' />",
-            tpl: "<li data-value=';${name};'><img src='<?php echo Yii::getAlias('@web/img/emoji/${name}.png'); ?>' /> ${name}</li>",
+            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
+            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
             data: emojis_list,
-            limit: 10
+            highlight_first: false,
+            limit: 100
         });
 
 
@@ -148,7 +163,7 @@ use yii\helpers\Url;
         });
 
     })
-            ;
+    ;
 
 
     /**
