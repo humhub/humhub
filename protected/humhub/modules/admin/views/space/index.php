@@ -14,9 +14,6 @@ use yii\grid\GridView;
                     href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
             </li>
             <li>
-                <a href="<?php echo Url::toRoute('list-types'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Types'); ?></a>
-            </li>
-            <li>
                 <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
             </li>
         </ul>
@@ -40,8 +37,6 @@ use yii\grid\GridView;
             Space::JOIN_POLICY_FREE => 'Everyone can enter',
         );
 
-        $spaceTypes = \yii\helpers\ArrayHelper::map(Type::find()->all(), 'item_title', 'item_title');
-
 
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -57,11 +52,6 @@ use yii\grid\GridView;
             },
                 ],
                 'name',
-                [
-                    'attribute' => 'type.item_title',
-                    'label' => Yii::t('AdminModule.views_space_index', 'Type'),
-#                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'space_type.item_title', array_merge(['' => ''], $spaceTypes)),
-                ],
                 [
                     'attribute' => 'visibility',
                     'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'visibility', array_merge(['' => ''], $visibilities)),

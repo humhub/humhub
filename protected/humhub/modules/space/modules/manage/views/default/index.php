@@ -41,11 +41,6 @@ use humhub\modules\space\models\Space;
             <?php echo $form->textField($model, 'tags', array('class' => 'form-control', 'maxlength' => 200)); ?>
             <?php echo $form->error($model, 'tags'); ?>
         </div>
-        <div class="form-group">
-            <?php echo $form->labelEx($model, 'space_type_id'); ?>
-            <?php echo $form->dropDownList($model, 'space_type_id', $types, array('class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'space_type_id'); ?>
-        </div>
         <hr>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'join_policy'); ?>

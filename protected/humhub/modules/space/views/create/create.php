@@ -31,14 +31,7 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
                 <label><?php echo Yii::t('SpaceModule.views_create_create', 'Please write down a small description for other users.'); ?></label>
                 <?php print $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'))); ?>
             </div>
-
-            <?php if (count($types) > 1) : ?>
-                <div class="form-group">
-                    <label><?php echo Yii::t('SpaceModule.views_create_create', 'Select the type of this space'); ?></label>
-                    <?php print $form->dropDownList($model, 'space_type_id', $types, array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'))); ?>
-                </div>
-            <?php endif; ?>
-
+            
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
                style="font-size: 11px;"><i
                     class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?>
