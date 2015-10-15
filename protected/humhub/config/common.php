@@ -126,7 +126,10 @@ $config = [
             'ko' => '한국어',
             'id' => 'Bahasa Indonesia',
             'lt' => 'lietuvių kalba',
-        ]
+        ],
+        'user' => [
+            'minUsernameLength' => 4,
+        ],
     ]
 ];
 
