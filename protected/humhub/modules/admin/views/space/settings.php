@@ -9,22 +9,13 @@ use humhub\modules\content\models\Content;
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_settings', '<strong>Space</strong> Settings'); ?></div>
     <div class="panel-body">
-        <ul class="nav nav-pills">
-            <li><a
-                    href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
-            </li>
-            <li class="active">
-                <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
-            </li>
-        </ul>
+        <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
         <p />
-
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'Define here default settings for new spaces.'); ?>
         </p>
 
         <br />
-
 
         <?php $form = CActiveForm::begin(['id' => 'space-settings-form']); ?>
 

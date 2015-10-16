@@ -9,16 +9,8 @@ use yii\grid\GridView;
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
     <div class="panel-body">
-        <ul class="nav nav-pills">
-            <li class="active"><a
-                    href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
-            </li>
-        </ul>
+        <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
         <p />
-
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'In this overview you can find every space and manage it.'); ?>
         </p>
