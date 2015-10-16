@@ -458,6 +458,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             }
         }
 
+        $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
+        
         return $attributes;
     }
 
