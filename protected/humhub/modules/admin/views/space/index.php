@@ -4,7 +4,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Type;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use humhub\widgets\GridView;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
@@ -33,7 +33,6 @@ use yii\grid\GridView;
         echo GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 [
                     'attribute' => 'id',
@@ -89,12 +88,3 @@ use yii\grid\GridView;
 
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.grid-view-loading').show();
-        $('.grid-view-loading').css('display', 'block !important');
-        $('.grid-view-loading').css('opacity', '1 !important');
-    });
-
-</script>

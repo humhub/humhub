@@ -10,7 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\data\ArrayDataProvider;
-use yii\grid\GridView;
+use humhub\widgets\GridView;
 
 /**
  * PermissionGridView
@@ -38,7 +38,6 @@ class PermissionGridEditor extends GridView
         Yii::configure($this, [
             'dataProvider' => $this->getDataProvider(),
             'layout' => "{items}\n{pager}",
-            'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 'title',
                 'description',

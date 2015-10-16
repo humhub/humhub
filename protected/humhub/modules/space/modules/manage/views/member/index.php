@@ -1,6 +1,6 @@
 <?php
 
-use yii\grid\GridView;
+use humhub\widgets\GridView;
 use yii\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
@@ -22,7 +22,6 @@ use humhub\libs\BasePermission;
 
         echo GridView::widget([
             'dataProvider' => $dataProvider,
-            'tableOptions' => ['class' => 'table table-hover'],
             'filterModel' => $searchModel,
             'columns' => [
                 'user.username',
