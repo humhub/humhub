@@ -14,6 +14,17 @@ namespace humhub\widgets;
 class GridView extends \yii\grid\GridView
 {
 
+    const EVENT_INIT = 'init';
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->trigger(self::EVENT_INIT);
+        parent::init();
+    }
+
     /**
      * @inheritdoc
      */
@@ -29,9 +40,9 @@ class GridView extends \yii\grid\GridView
                 $(".grid-view-loading").css("display", "block !important");
                 $(".grid-view-loading").css("opacity", "1 !important");
         });';
-        
+
         $this->getView()->registerJs($loaderJs);
-        
+
         return parent::run();
     }
 
