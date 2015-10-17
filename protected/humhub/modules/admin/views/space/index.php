@@ -1,10 +1,9 @@
 <?php
 
-use humhub\modules\space\models\Space;
-use humhub\modules\space\models\Type;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\widgets\GridView;
+use humhub\modules\space\models\Space;
+use humhub\modules\admin\widgets\SpaceGridView;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
@@ -30,7 +29,7 @@ use humhub\widgets\GridView;
         );
 
 
-        echo GridView::widget([
+        echo SpaceGridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [

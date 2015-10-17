@@ -22,13 +22,8 @@ use yii\web\HttpException;
  * @package humhub.modules_core.directory.controllers
  * @since 0.5
  */
-class DirectoryController extends \humhub\components\Controller
+class DirectoryController extends \humhub\modules\directory\components\Controller
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $subLayout = "@humhub/modules/directory/views/directory/_layout";
 
     /**
      * @inheritdoc
