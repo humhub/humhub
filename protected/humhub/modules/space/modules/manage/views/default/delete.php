@@ -1,8 +1,12 @@
 <?php
 
-use humhub\compat\CActiveForm;
 use yii\helpers\Html;
+use humhub\compat\CActiveForm;
+use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 ?>
+
+<?= DefaultMenu::widget(['space' => $space]); ?>
+<br/>
 <div class="panel panel-default">
     <div class="panel-heading">
         <?php echo Yii::t('SpaceModule.views_admin_delete', '<strong>Delete</strong> space'); ?>

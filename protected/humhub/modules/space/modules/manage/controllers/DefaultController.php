@@ -31,9 +31,24 @@ class DefaultController extends Controller
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
-            return $this->redirect($space->createUrl('/space/manage'));
+            return $this->redirect($space->createUrl('index'));
         }
         return $this->render('index', array('model' => $space));
+    }
+
+    /**
+     * Security settings
+     */
+    public function actionSecurity()
+    {
+        $space = $this->contentContainer;
+        $space->scenario = 'edit';
+
+        if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            return $this->redirect($space->createUrl('security'));
+        }
+        return $this->render('security', array('model' => $space));
     }
 
     /**
@@ -70,7 +85,7 @@ class DefaultController extends Controller
             return $this->redirect(Url::home());
         }
 
-        return $this->render('delete', array('model' => $model));
+        return $this->render('delete', array('model' => $model, 'space' => $this->getSpace()));
     }
 
 }
