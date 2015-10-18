@@ -104,7 +104,7 @@ class ContentController extends Controller
         $json = array();
         $json['success'] = false;   // default
 
-        $id = (int) Yii::$app->request->getParam('id', "");
+        $id = (int) Yii::$app->request->get('id', "");
 
         $content = Content::findOne(['id' => $id]);
         if ($content !== null && $content->canArchive()) {

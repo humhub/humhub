@@ -114,7 +114,7 @@ class Stream extends \yii\base\Action
         if (!Yii::$app->request->isConsoleRequest) {
             $from = Yii::$app->getRequest()->get('from', 0);
             if ($from != 0) {
-                $this->from = $from;
+                $this->from = (int) $from;
             }
             $sort = Yii::$app->getRequest()->get('sort', '');
             if ($sort != "") {
