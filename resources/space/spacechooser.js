@@ -12,28 +12,6 @@ $(document).ready(function () {
      */
     $('#space-menu').click(function () {
 
-        if (jQuery('#space-menu-spaces').hasClass('notLoaded')) {
-            // load user spaces
-            jQuery('#space-menu-spaces').removeClass('notLoaded');
-            $.ajax({
-                'url': scSpaceListUrl,
-                'cache': false,
-                'data': jQuery(this).parents("form").serialize(),
-                'success': function (html) {
-
-                    // show loaded space entries
-                    jQuery("#loader_spaces").replaceWith(html)
-
-                    // fill array with visible space entries
-                    $("#space-menu-dropdown ul li").each(function (index) {
-                        chosen.push(index);
-                    });
-
-                    // select the first space entry
-                    $('#space-menu-dropdown li ul li:eq(' + chosen[0] + ')').addClass('selected');
-
-                }});
-        }
         // use setIntervall to setting the focus
         var spaceFocus = setInterval(setFocus, 10);
 

@@ -4,6 +4,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\libs\Helpers;
 
 $this->registerJsFile("@web/resources/space/spacechooser.js");
 $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
@@ -42,9 +43,28 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
         <li class="divider"></li>
         <li>
             <ul class="media-list notLoaded" id="space-menu-spaces">
-                <li id="loader_spaces">
-                    <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
-                </li>
+                <?php foreach ($memberships as $membership): ?>
+                    <?php $newItems = $membership->countNewItems(); ?>
+                    <li>
+                        <a href="<?php echo $membership->space->getUrl(); ?>">
+                            <div class="media">
+                                <!-- Show user image -->
+                                <img class="media-object img-rounded pull-left" alt="24x24" data-src="holder.js/24x24"
+                                     style="width: 24px; height: 24px;"
+                                     src="<?php echo $membership->space->getProfileImage()->getUrl(); ?>">
+                                <div class="media-body">
+                                    <strong><?php echo Html::encode($membership->space->name); ?></strong>
+                                    <?php if ($newItems != 0): ?>
+                                        <div class="badge badge-space pull-right" style="display:none"><?php echo $newItems; ?></div>
+                                    <?php endif; ?>
+                                    <br>
+                                    <p><?php echo Html::encode(Helpers::truncateText($membership->space->description, 60)); ?></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+
             </ul>
         </li>
         <?php if ($canCreateSpace): ?>
@@ -69,5 +89,5 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
         cursoropacitymax: "0.2",
         railpadding: {top: 0, right: 3, left: 0, bottom: 0}
     });
-
+    jQuery('.badge-space').fadeIn('slow');
 </script>

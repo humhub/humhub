@@ -3,9 +3,11 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
+use humhub\models\Setting;
 use humhub\components\Widget;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\models\Membership;
 
 /**
  * Created by PhpStorm.
@@ -24,16 +26,44 @@ class Chooser extends Widget
         if (Yii::$app->user->isGuest)
             return;
 
+        return $this->render('spaceChooser', [
+                    'currentSpace' => $this->getCurrentSpace(),
+                    'canCreateSpace' => $this->canCreateSpace(),
+                    'memberships' => $this->getMembershipQuery()->all()
+        ]);
+    }
+
+    protected function getMembershipQuery()
+    {
+        $query = Membership::find();
+
+        if (Setting::Get('spaceOrder', 'space') == 0) {
+            $query->orderBy('name ASC');
+        } else {
+            $query->orderBy('last_visit DESC');
+        }
+
+        $query->joinWith('space');
+        $query->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.status' => Membership::STATUS_MEMBER]);
+
+        return $query;
+    }
+
+    protected function canCreateSpace()
+    {
+        return (Yii::$app->user->permissionmanager->can(new CreatePublicSpace) || Yii::$app->user->permissionmanager->can(new CreatePrivateSpace()));
+    }
+
+    protected function getCurrentSpace()
+    {
         $currentSpace = null;
         if (Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController) {
             if (Yii::$app->controller->contentContainer !== null && Yii::$app->controller->contentContainer instanceof \humhub\modules\space\models\Space) {
-                $currentSpace = Yii::$app->controller->contentContainer;
+                return Yii::$app->controller->contentContainer;
             }
         }
 
-        $canCreateSpace = (Yii::$app->user->permissionmanager->can(new CreatePublicSpace) || Yii::$app->user->permissionmanager->can(new CreatePrivateSpace()));
-
-        return $this->render('spaceChooser', array('currentSpace' => $currentSpace, 'canCreateSpace' => $canCreateSpace));
+        return null;
     }
 
 }
