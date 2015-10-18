@@ -41,7 +41,7 @@ class CreateController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect(Url::to(['/space/create/create']));
+        return $this->redirect(Url::to(['create']));
     }
 
     /**
@@ -54,10 +54,7 @@ class CreateController extends Controller
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
 
-        $model = new Space();
-        $model->scenario = 'create';
-        $model->visibility = Setting::Get('defaultVisibility', 'space');
-        $model->join_policy = Setting::Get('defaultJoinPolicy', 'space');
+        $model = $this->createSpaceModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
             Yii::$app->getSession()->setFlash('ws', 'created');
@@ -65,6 +62,20 @@ class CreateController extends Controller
         }
 
         return $this->renderAjax('create', array('model' => $model));
+    }
+
+    /**
+     * Creates an empty space model
+     * 
+     * @return Space
+     */
+    protected function createSpaceModel()
+    {
+        $model = new Space();
+        $model->scenario = 'create';
+        $model->visibility = Setting::Get('defaultVisibility', 'space');
+        $model->join_policy = Setting::Get('defaultJoinPolicy', 'space');
+        return $model;
     }
 
 }
