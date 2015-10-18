@@ -80,14 +80,13 @@ class ConfigController extends Controller
      */
     public function actionIndex()
     {
-
         if (Setting::Get('name') == "") {
             Setting::Set('name', "HumHub");
         }
 
         \humhub\modules\installer\libs\InitialData::bootstrap();
 
-        return $this->redirect(Url::to(['//installer/config/basic']));
+        return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
     }
 
     /**
@@ -101,7 +100,7 @@ class ConfigController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Setting::Set('name', $form->name);
             Setting::Set('systemEmailName', $form->name, 'mailing');
-            return $this->redirect(Url::to(['/installer/config/admin']));
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
         return $this->render('basic', array('model' => $form));
@@ -115,6 +114,12 @@ class ConfigController extends Controller
      */
     public function actionAdmin()
     {
+
+        // Admin account already created
+        if (User::find()->count() > 0) {
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
 
         $userModel = new User();
         $userModel->scenario = 'registration';
@@ -225,7 +230,7 @@ class ConfigController extends Controller
             $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
             $post->save();
 
-            return $this->redirect(Url::to(['finished']));
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
         return $this->render('admin', array('hForm' => $form));
@@ -244,24 +249,14 @@ class ConfigController extends Controller
         Setting::Set('timeZone', Yii::$app->timeZone);
 
         // Set to installed
-        $this->module->setInstalled();  
-        
+        $this->module->setInstalled();
+
         try {
             Yii::$app->user->logout();
         } catch (Exception $e) {
             ;
         }
         return $this->render('finished');
-    }
-
-    /**
-     * Setup some inital database settings.
-     *
-     * This will be done at the first step.
-     */
-    private function setupInitialData()
-    {
-        
     }
 
 }
