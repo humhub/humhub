@@ -27,7 +27,7 @@ use yii\helpers\Html;
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<strong><?php echo Html::encode($space->name); ?></strong>">
+                         data-original-title="<?php echo Html::encode($space->name); ?>">
                 </a>
             <?php endforeach; ?>
 
