@@ -19,7 +19,7 @@ use \humhub\models\Setting;
 
     <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')): ?>
 
-        <?php echo $form->field($model, 'language')->dropdownList([
+        <?php echo $form->field($model, 'visibility')->dropdownList([
             1 => Yii::t('UserModule.views_account_editSettings', 'Registered users only'),
             2 => Yii::t('UserModule.views_account_editSettings', 'Visible for all (also unregistered users)'),
         ]); ?>
