@@ -11,17 +11,17 @@ namespace humhub\modules\installer\forms;
 use Yii;
 
 /**
- * ConfigBasicForm holds basic application settings.
+ * Use Case Form
  *
  * @since 0.5
  */
-class ConfigBasicForm extends \yii\base\Model
+class UseCaseForm extends \yii\base\Model
 {
 
     /**
-     * @var string name of installation
+     * @var string use case
      */
-    public $name;
+    public $useCase;
 
     /**
      * @inheritdoc
@@ -29,7 +29,7 @@ class ConfigBasicForm extends \yii\base\Model
     public function rules()
     {
         return array(
-            array('name', 'required'),
+            array(['useCase'], 'required'),
         );
     }
 
@@ -39,7 +39,7 @@ class ConfigBasicForm extends \yii\base\Model
     public function attributeLabels()
     {
         return array(
-            'name' => Yii::t('InstallerModule.forms_ConfigBasicForm', 'Name of your network'),
+            'useCase' => Yii::t('InstallerModule.base', 'Planned Use Case'),
         );
     }
 

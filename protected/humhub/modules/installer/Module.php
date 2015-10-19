@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\installer;
@@ -27,14 +15,19 @@ use yii\base\Exception;
 /**
  * InstallerModule provides an web installation interface for the applcation
  *
- * @package humhub.modules_core.installer
  * @since 0.5
  */
 class Module extends \humhub\components\Module
 {
 
-    const EVENT_INIT_CONFIG_STEPS = 'stpes';
+    /**
+     * @event on configuration steps init
+     */
+    const EVENT_INIT_CONFIG_STEPS = 'steps';
 
+    /**
+     * @inheritdoc 
+     */
     public $controllerNamespace = 'humhub\modules\installer\controllers';
 
     /**
@@ -44,6 +37,9 @@ class Module extends \humhub\components\Module
      */
     public $configSteps = [];
 
+    /**
+     * @inheritdoc 
+     */
     public function init()
     {
         parent::init();
@@ -52,6 +48,9 @@ class Module extends \humhub\components\Module
         $this->sortConfigSteps();
     }
 
+    /**
+     * @inheritdoc 
+     */
     public function beforeAction($action)
     {
 
@@ -112,7 +111,7 @@ class Module extends \humhub\components\Module
     {
 
         /**
-         * Step 1:  Basic Configuration
+         * Step:  Basic Configuration
          */
         $this->configSteps['basic'] = [
             'sort' => 100,
@@ -122,25 +121,71 @@ class Module extends \humhub\components\Module
     },
         ];
 
+
         /**
-         * Step 2:  Setup Admin User
+         * Step: Use Case
+         */
+        $this->configSteps['usecase'] = [
+            'sort' => 150,
+            'url' => Url::to(['/installer/config/use-case']),
+            'isCurrent' => function() {
+        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'use-case');
+    },
+        ];
+
+        /**
+         * Step: Security
+         */
+        $this->configSteps['security'] = [
+            'sort' => 200,
+            'url' => Url::to(['/installer/config/security']),
+            'isCurrent' => function() {
+        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'security');
+    },
+        ];
+
+        /**
+         * Step: Sample Data
+         */
+        $this->configSteps['modules'] = [
+            'sort' => 300,
+            'url' => Url::to(['/installer/config/modules']),
+            'isCurrent' => function() {
+        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'modules');
+    },
+        ];
+
+        /**
+         * Step:  Setup Admin User
          */
         $this->configSteps['admin'] = [
-            'sort' => 200,
+            'sort' => 400,
             'url' => Url::to(['/installer/config/admin']),
             'isCurrent' => function() {
         return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'admin');
     },
         ];
 
+
         /**
-         * Step 2:  Setup Admin User
+         * Step: Sample Data
          */
-        $this->configSteps['finished'] = [
-            'sort' => 500,
-            'url' => Url::to(['/installer/config/finished']),
+        $this->configSteps['sample-data'] = [
+            'sort' => 450,
+            'url' => Url::to(['/installer/config/sample-data']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'finished');
+        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'sample-data');
+    },
+        ];
+
+        /**
+         * Step:  Setup Admin User
+         */
+        $this->configSteps['finish'] = [
+            'sort' => 1000,
+            'url' => Url::to(['/installer/config/finish']),
+            'isCurrent' => function() {
+        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'finish');
     },
         ];
 
@@ -166,6 +211,9 @@ class Module extends \humhub\components\Module
         return $this->configSteps[0]['url'];
     }
 
+    /**
+     * Sorts all configSteps on sort attribute
+     */
     protected function sortConfigSteps()
     {
         usort($this->configSteps, function($a, $b) {

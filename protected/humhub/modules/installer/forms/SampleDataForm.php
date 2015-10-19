@@ -11,17 +11,17 @@ namespace humhub\modules\installer\forms;
 use Yii;
 
 /**
- * ConfigBasicForm holds basic application settings.
+ * Sample Data Form
  *
  * @since 0.5
  */
-class ConfigBasicForm extends \yii\base\Model
+class SampleDataForm extends \yii\base\Model
 {
 
     /**
-     * @var string name of installation
+     * @var boolean create sample data
      */
-    public $name;
+    public $sampleData;
 
     /**
      * @inheritdoc
@@ -29,7 +29,7 @@ class ConfigBasicForm extends \yii\base\Model
     public function rules()
     {
         return array(
-            array('name', 'required'),
+            array(['sampleData'], 'boolean'),
         );
     }
 
@@ -39,7 +39,7 @@ class ConfigBasicForm extends \yii\base\Model
     public function attributeLabels()
     {
         return array(
-            'name' => Yii::t('InstallerModule.forms_ConfigBasicForm', 'Name of your network'),
+            'sampleData' => Yii::t('InstallerModule.base', 'Create Sample Data'),
         );
     }
 

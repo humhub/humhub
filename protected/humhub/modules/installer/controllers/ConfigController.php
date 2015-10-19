@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\installer\controllers;
@@ -39,6 +27,12 @@ use humhub\models\Setting;
  */
 class ConfigController extends Controller
 {
+
+    const USECASE_SOCIAL_INTRANET = 'social_intranet';
+    const USECASE_SOCIAL_COLLABORATION = 'social_collab';
+    const USECASE_EDUCATION = 'club';
+    const USECASE_COMMUNITY = 'community';
+    const USECASE_OTHER = 'other';
 
     /**
      * Before each config controller action check if
@@ -104,6 +98,82 @@ class ConfigController extends Controller
         }
 
         return $this->render('basic', array('model' => $form));
+    }
+
+    /**
+     * UseCase
+     */
+    public function actionUseCase()
+    {
+        $form = new \humhub\modules\installer\forms\UseCaseForm();
+        $form->useCase = Setting::Get('useCase');
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            Setting::Set('useCase', $form->useCase);
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        return $this->render('useCase', array('model' => $form));
+    }
+
+    /**
+     * Security
+     */
+    public function actionSecurity()
+    {
+        $form = new \humhub\modules\installer\forms\SecurityForm();
+
+        $form->allowGuestAccess = Setting::Get('allowGuestAccess', 'authentication_internal');
+        $form->internalRequireApprovalAfterRegistration = Setting::Get('needApproval', 'authentication_internal');
+        $form->internalAllowAnonymousRegistration = Setting::Get('anonymousRegistration', 'authentication_internal');
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $form->internalRequireApprovalAfterRegistration = Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
+            $form->internalAllowAnonymousRegistration = Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
+            $form->allowGuestAccess = Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        return $this->render('security', array('model' => $form));
+    }
+
+    /**
+     * Modules
+     */
+    public function actionModules()
+    {
+
+        if (Yii::$app->request->get('ok') == 1) {
+
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        return $this->render('modules', array());
+    }
+
+    /**
+     * Sample Data
+     */
+    public function actionSampleData()
+    {
+        if (Setting::Get('sampleData', 'installer') == 1) {
+            // Sample Data already created
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        $form = new \humhub\modules\installer\forms\SampleDataForm();
+
+        $form->sampleData = Setting::Get('sampleData', 'installer');
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $form->sampleData = Setting::Set('sampleData', $form->sampleData, 'installer');
+
+            if (Setting::Get('sampleData', 'installer') == 1) {
+                // ToDo Create Sample Data
+            }
+
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        return $this->render('sample-data', array('model' => $form));
     }
 
     /**
@@ -186,10 +256,6 @@ class ConfigController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
 
-            if (Setting::Get('secret') == "") {
-                Setting::Set('secret', \humhub\libs\UUID::v4());
-            }
-
             $form->models['User']->status = User::STATUS_ENABLED;
             $form->models['User']->super_admin = true;
             $form->models['User']->language = '';
@@ -234,6 +300,15 @@ class ConfigController extends Controller
         }
 
         return $this->render('admin', array('hForm' => $form));
+    }
+
+    public function actionFinish()
+    {
+        if (Setting::Get('secret') == "") {
+            Setting::Set('secret', \humhub\libs\UUID::v4());
+        }
+
+        $this->redirect(['finished']);
     }
 
     /**
