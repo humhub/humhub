@@ -18,7 +18,6 @@ use humhub\models\Setting;
  * Search Controller provides search functions inside the application.
  *
  * @author Luke
- * @package humhub.modules_core.search.controllers
  * @since 0.12
  */
 class SearchController extends Controller
@@ -37,6 +36,7 @@ class SearchController extends Controller
         return [
             'acl' => [
                 'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index']
             ]
         ];
     }
