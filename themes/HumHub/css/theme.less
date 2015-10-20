@@ -467,6 +467,10 @@ input[type=select] {
   .dropdown-menu {
     padding-top: 0;
     padding-bottom: 0;
+
+    .divider {
+      margin: 0;
+    }
   }
 
   // Space dropdown menu
@@ -495,6 +499,8 @@ input[type=select] {
       cursor: pointer;
     }
   }
+
+
   .nav > li > a {
     padding: 6px 13px 0;
     text-decoration: none;
@@ -561,6 +567,16 @@ input[type=select] {
       color: @font3;
     }
   }
+
+  .badge-space-type {
+    background-color: @background1;
+    border: 1px solid @background3;
+    color: @background4;
+    padding:3px 3px 2px 3px;
+  }
+
+
+
   li:last-child {
     border-bottom: none;
   }
@@ -2624,7 +2640,7 @@ img.bounceIn {
 }
 
 .md-editor.active {
-    border: 2px solid @info !important;
+  border: 2px solid @info !important;
 }
 
 //
