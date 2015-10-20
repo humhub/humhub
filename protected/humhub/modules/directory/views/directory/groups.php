@@ -19,7 +19,7 @@ use humhub\modules\user\models\User;
                 <?php foreach (User::find()->where(['group_id' => $group->id])->active()->limit(30)->all() as $user) : ?>
                     <a id="<?php echo $user->guid; ?>" href="<?php echo $user->getUrl(); ?>">
                         <img data-toggle="tooltip" data-placement="top" title=""
-                             data-original-title="<strong><?php echo Html::encode($user->displayName); ?></strong><br><?php echo Html::encode($user->profile->title); ?>"
+                             data-original-title="<?php echo Html::encode($user->displayName); ?>"
                              src="<?php echo $user->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                              height="40"
                              width="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/></a>

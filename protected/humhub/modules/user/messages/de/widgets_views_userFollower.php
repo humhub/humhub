@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => 'Dem Nutzer <strong>folgen</strong>',
-  '<strong>User</strong> followers' => 'Der <strong>Nutzer</strong> folgt',
+  '<strong>Following</strong> user' => 'Der <strong>Nutzer</strong> folgt',
+  '<strong>User</strong> followers' => 'Dem Nutzer <strong>folgen</strong>',
 );
