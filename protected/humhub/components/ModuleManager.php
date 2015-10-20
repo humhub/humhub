@@ -276,7 +276,7 @@ class ModuleManager extends \yii\base\Component
         /**
          * Remove Folder
          */
-        if ($this->createBackup) {
+        //if ($this->createBackup) {
             $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
             if (!is_dir($moduleBackupFolder)) {
                 if (!@mkdir($moduleBackupFolder)) {
@@ -286,14 +286,11 @@ class ModuleManager extends \yii\base\Component
 
             $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
             if (!@rename($module->getBasePath(), $backupFolderName)) {
-                print $backupFolderName."<br>";
-                print $module->getBasePath();
-                die();
-                throw new Exception("Could not remove module folder!" . $backupFolderName);
+                throw new Exception("Could not remove module folder!");
             }
-        } else {
+        //} else {
             //TODO: Delete directory
-        }
+        //}
     }
 
 }
