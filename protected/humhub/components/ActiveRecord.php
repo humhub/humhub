@@ -36,7 +36,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         if ($this->hasAttribute('updated_at')) {
             $this->updated_at = new \yii\db\Expression('NOW()');
         }
-        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by') && $this->updated_by != "") {
+        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
         return parent::beforeSave($insert);
