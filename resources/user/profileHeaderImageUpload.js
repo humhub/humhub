@@ -106,6 +106,18 @@ function handleUploadError(json) {
 
 }
 
+function resetProfileImage(json) {
+
+    if (json.type == 'profile') {
+        $('#user-profile-image img').attr('src', json.defaultUrl);
+        $('#user-profile-image').attr('src', json.defaultUrl);
+    } else if (json.type == "banner") {
+        $('#user-banner-image').attr('src', json.defaultUrl);
+    }
+
+    $('.image-upload-buttons').hide();
+}
+
 
 
 $(document).ready(function() {

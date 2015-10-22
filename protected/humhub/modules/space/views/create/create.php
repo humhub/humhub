@@ -20,7 +20,7 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
             <hr>
             <br>
 
-            <?php echo $form->field($model, 'name')->textInput(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space name')]); ?>
+            <?php echo $form->field($model, 'name')->textInput(['id' => 'space-name', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name')]); ?>
 
             <?php echo $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
 
@@ -68,12 +68,12 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
             </div>
         </div>
 
-        <div class=" modal-footer">
-            <hr/>
-            <br/>
+        <div class="modal-footer">
+            <hr>
+            <br>
             <?php
             echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('SpaceModule.views_create_create', 'Create'),
+                'label' => Yii::t('SpaceModule.views_create_create', 'Next'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
@@ -102,10 +102,7 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
     $('.modal-dialog').find(':checkbox, :radio').flatelements();
 
     // show Tooltips on elements inside the views, which have the class 'tt'
-    //$('.tt').tooltip({html: true});
-
-    // set focus to input for space name
-    $('#Space_name').focus();
+    $('.tt').tooltip({html: false});
 
     // Shake modal after wrong validation
     <?php if ($model->hasErrors()) { ?>
@@ -134,6 +131,8 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
                 //return false;
             }
         });
+
+        $('#space-name').focus();
     });
 
 </script>

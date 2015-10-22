@@ -30,7 +30,7 @@ class ModuleController extends Controller
 
     /**
      * Enables a space module
-     * 
+     *
      * @return string the output
      */
     public function actionEnable()
@@ -38,18 +38,25 @@ class ModuleController extends Controller
         $this->forcePostRequest();
 
         $space = $this->getSpace();
+
         $moduleId = Yii::$app->request->get('moduleId', "");
 
         if (!$space->isModuleEnabled($moduleId)) {
             $space->enableModule($moduleId);
         }
 
-        return $this->redirect($space->createUrl('/space/manage/module'));
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect($space->createUrl('/space/manage/module'));
+        } else {
+            Yii::$app->response->format = 'json';
+            return [];
+        }
     }
+
 
     /**
      * Disables a space module
-     * 
+     *
      * @return string the output
      */
     public function actionDisable()
@@ -57,13 +64,20 @@ class ModuleController extends Controller
         $this->forcePostRequest();
 
         $space = $this->getSpace();
+
         $moduleId = Yii::$app->request->get('moduleId', "");
 
         if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
             $space->disableModule($moduleId);
         }
 
-        return $this->redirect($space->createUrl('/space/manage/module'));
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect($space->createUrl('/space/manage/module'));
+        } else {
+            Yii::$app->response->format = 'json';
+            return [];
+        }
+
     }
 
 }

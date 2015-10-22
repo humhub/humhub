@@ -11,6 +11,7 @@ namespace humhub\modules\tour\controllers;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
+use yii\helpers\Url;
 
 /**
  * TourController
@@ -87,6 +88,24 @@ class TourController extends \humhub\components\Controller
         }
 
         return $this->redirect($space->createUrl('/space/space', array('tour' => true)));
+    }
+
+    public function actionWelcome()
+    {
+
+        $user = Yii::$app->user->getIdentity();
+
+        if ($user->profile->load(Yii::$app->request->post()) && $user->profile->validate() && $user->profile->save()) {
+            if ($user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
+                // set tour status to seen for current user
+                Yii::$app->user->getIdentity()->setSetting("welcome", 1, "tour");
+                return $this->redirect(Url::to(['/dashboard/dashboard', 'tour' => true]));
+            }
+        }
+
+        return $this->renderAjax('welcome', [
+            'user' => $user
+        ]);
     }
 
 }

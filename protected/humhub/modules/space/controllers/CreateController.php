@@ -49,7 +49,7 @@ class CreateController extends Controller
      */
     public function actionCreate()
     {
-        // Use cannot create spaces (public or private)
+        // User cannot create spaces (public or private)
         if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
@@ -57,12 +57,64 @@ class CreateController extends Controller
         $model = $this->createSpaceModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
-            Yii::$app->getSession()->setFlash('ws', 'created');
-            return $this->htmlRedirect($model->getUrl());
+            return $this->actionModules($model->id);
         }
 
         return $this->renderAjax('create', array('model' => $model));
     }
+
+    /**
+     * Activate / deactivate modules
+     */
+    public function actionModules($space_id)
+    {
+        $space= Space::find()->where(['id' => $space_id])->one();
+
+        return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
+    }
+
+    /**
+     * Invite user
+     */
+    public function actionInvite()
+    {
+
+        $space= Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
+
+        $model = new \humhub\modules\space\models\forms\InviteForm();
+        $model->space = $space;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            // Invite existing members
+            foreach ($model->getInvites() as $user) {
+                $space->inviteMember($user->id, Yii::$app->user->id);
+            }
+            // Invite non existing members
+            if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) {
+                foreach ($model->getInvitesExternal() as $email) {
+                    $space->inviteMemberByEMail($email, Yii::$app->user->id);
+                }
+            }
+
+            return $this->htmlRedirect($space->getUrl());
+        }
+
+        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+    }
+
+    /**
+     * Cancel Space creation
+     */
+    public function actionCancel()
+    {
+
+        $space= Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
+        $space->delete();
+
+    }
+
+
 
     /**
      * Creates an empty space model
