@@ -83,7 +83,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, 'date', 'timestampAttribute' => $this->profileField->internal_name);
+        $rules[] = array($this->profileField->internal_name, 'date', 'format' => 'short', 'timestampAttribute' => $this->profileField->internal_name);
         return parent::getFieldRules($rules);
     }
 
@@ -94,6 +94,7 @@ class DateTime extends BaseType
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
+                'format' => 'short',
                 'class' => 'form-control',
                 'dateTimePickerOptions' => array(
                     'pickTime' => ($this->showTimePicker)
