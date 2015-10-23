@@ -10,6 +10,38 @@ Updating
 	- Backup the whole HumHub installation folder from your webroot
 	- Make a complete MySQL Backup from your HumHub database
 
+
+## Download Package installations
+
+### Option 1: Updater Module
+
+1. Administration -> Modules -> Browse online
+2. Choose **HumHub Updater** and click 'Install'
+3. Switch to 'Installed' Tab
+4. Choose **HumHub Updater** and click 'Enable'
+5. Select in left navigation: Administration -> Update HumHub
+6. Follow the updater steps
+
+### Option 2: Manual Update
+
+1. Delete your current HumHub installation (Don't forget to make a backup as mentioned above, you will need these files later!)
+2. Download the latest HumHub package from [http://www.humhub.org/downloads](http://www.humhub.org/downloads) and extract the package to your webroot
+3. Restore the following files from backup:
+	- /uploads/*
+	- /protected/runtime
+	- /protected/config/*
+	- /protected/modules/* (if any)
+	- /themes (if any) 
+4. Run database migration tool
+
+```
+cd protected
+php yii migrate/up --includeModuleMigrations=1
+```
+
+
+
+
 ## Git/Composer based installations
 
 - Pull latest Git version
@@ -27,29 +59,7 @@ composer update
 
 ```
 cd protected
-php yii migrate/up  --includeModuleMigrations=1
+php yii migrate/up --includeModuleMigrations=1
 ```
 
 
-## Download Package installations
-
-### Manually
-
-1. Delete your current HumHub installation (Don't forget to make a backup as mentioned above, you will need these files later!)
-2. Download the latest HumHub package from [http://www.humhub.org/downloads](http://www.humhub.org/downloads) and extract the package to your webroot
-3. Restore the following files from backup:
-	- /uploads/*
-	- /protected/runtime
-	- /protected/config/*
-	- /protected/modules/* (if any)
-	- /themes (if any) 
-4. Run database migration tool
-
-```
-cd protected
-php yii migrate/up
-```
-
-### Update Module
-
-TBD
