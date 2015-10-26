@@ -130,6 +130,13 @@ $config = [
         'user' => [
             'minUsernameLength' => 4,
         ],
+        'humhub' => [
+            'apiEnabled' => true,
+            'apiUrl' => 'https://api.humhub.com',
+        ],
+        'curl' => [
+            'validateSsl' => true,
+        ],
     ]
 ];
 

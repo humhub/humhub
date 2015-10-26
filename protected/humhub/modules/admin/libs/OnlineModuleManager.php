@@ -13,6 +13,8 @@ use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
 use humhub\models\Setting;
+use humhub\libs\CURLHelper;
+use humhub\modules\admin\libs\HumHubAPI;
 
 /**
  * Handles remote module installation, updates and module listing
@@ -43,7 +45,7 @@ class OnlineModuleManager
             throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', "No compatible module version found!"));
         }
 
-        
+
         $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
         if (is_dir($moduleDir)) {
             $files = new \RecursiveIteratorIterator(
@@ -75,7 +77,7 @@ class OnlineModuleManager
         try {
             $http = new \Zend\Http\Client($downloadUrl, array(
                 'adapter' => '\Zend\Http\Client\Adapter\Curl',
-                'curloptions' => $this->getCurlOptions(),
+                'curloptions' => CURLHelper::getOptions(),
                 'timeout' => 30
             ));
 
@@ -142,28 +144,13 @@ class OnlineModuleManager
             return $this->_modules;
         }
 
-        $url = Yii::$app->getModule('admin')->marketplaceApiUrl . "list?version=" . urlencode(Yii::$app->version) . "&installId=" . Setting::Get('installationId', 'admin');
+        $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
+        if ($this->_modules === null || !is_array($this->_modules)) {
 
-        try {
-
-            $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
-            if ($this->_modules === null || !is_array($this->_modules)) {
-
-                $http = new \Zend\Http\Client($url, array(
-                    'adapter' => '\Zend\Http\Client\Adapter\Curl',
-                    'curloptions' => $this->getCurlOptions(),
-                    'timeout' => 30
-                ));
-
-                $response = $http->send();
-                $json = $response->getBody();
-
-                $this->_modules = \yii\helpers\Json::decode($json);
-                Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Setting::Get('expireTime', 'cache'));
-            }
-        } catch (Exception $ex) {
-            throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not fetch module list online! (%error%)', array('%error%' => $ex->getMessage())));
+            $this->_modules = HumHubAPI::request('v1/modules/list');
+            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Setting::Get('expireTime', 'cache'));
         }
+
         return $this->_modules;
     }
 
@@ -195,86 +182,7 @@ class OnlineModuleManager
      */
     public function getModuleInfo($moduleId)
     {
-
-        $moduleInfo = [];
-
-        // get all module informations
-        $url = Yii::$app->getModule('admin')->marketplaceApiUrl . "info?id=" . urlencode($moduleId) . "&version=" . Yii::$app->version . "&installId=" . Setting::Get('installationId', 'admin');
-        try {
-            $http = new \Zend\Http\Client($url, array(
-                'adapter' => '\Zend\Http\Client\Adapter\Curl',
-                'curloptions' => $this->getCurlOptions(),
-                'timeout' => 30
-            ));
-
-            $response = $http->send();
-
-            if ($response->getStatusCode() == '404') {
-                throw new \yii\base\InvalidParamException("Could not find module online!");
-            }
-
-            $json = $response->getBody();
-
-            $moduleInfo = \yii\helpers\Json::decode($json);
-        } catch (Exception $ex) {
-            throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not get module info online! (%error%)', array('%error%' => $ex->getMessage())));
-        }
-
-        return $moduleInfo;
-    }
-
-    /**
-     * Returns latest HumHub Version
-     */
-    public function getLatestHumHubVersion()
-    {
-        $url = Yii::$app->getModule('admin')->marketplaceApiUrl . "getLatestVersion?version=" . Yii::$app->version . "&installId=" . Setting::Get('installationId', 'admin');
-        try {
-            $http = new \Zend\Http\Client($url, array(
-                'adapter' => '\Zend\Http\Client\Adapter\Curl',
-                'curloptions' => $this->getCurlOptions(),
-                'timeout' => 30
-            ));
-
-            $response = $http->send();
-            $json = \yii\helpers\Json::decode($response->getBody());
-
-            if (isset($json['latestVersion'])) {
-                return $json['latestVersion'];
-            }
-        } catch (Exception $ex) {
-            Yii::error('Could not get latest HumHub Version!' . $ex->getMessage());
-        }
-
-        return "";
-    }
-
-    private function getCurlOptions()
-    {
-        $options = array(
-            CURLOPT_SSL_VERIFYPEER => (Yii::$app->getModule('admin')->marketplaceApiValidateSsl) ? true : false,
-            CURLOPT_SSL_VERIFYHOST => (Yii::$app->getModule('admin')->marketplaceApiValidateSsl) ? 2 : 0,
-            CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            CURLOPT_CAINFO => Yii::getAlias('@humhub/config/cacert.pem')
-        );
-
-
-        if (Setting::Get('enabled', 'proxy')) {
-            $options[CURLOPT_PROXY] = Setting::Get('server', 'proxy');
-            $options[CURLOPT_PROXYPORT] = Setting::Get('port', 'proxy');
-            if (defined('CURLOPT_PROXYUSERNAME')) {
-                $options[CURLOPT_PROXYUSERNAME] = Setting::Get('user', 'proxy');
-            }
-            if (defined('CURLOPT_PROXYPASSWORD')) {
-                $options[CURLOPT_PROXYPASSWORD] = Setting::Get('password', 'proxy');
-            }
-            if (defined('CURLOPT_NOPROXY')) {
-                $options[CURLOPT_NOPROXY] = Setting::Get('noproxy', 'proxy');
-            }
-        }
-
-        return $options;
+        return HumHubAPI::request('v1/modules/info', ['id' => $moduleId]);
     }
 
 }
