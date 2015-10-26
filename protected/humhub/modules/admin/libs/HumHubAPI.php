@@ -40,7 +40,7 @@ class HumHubAPI
 
         $url .= '?';
         foreach ($params as $name => $value) {
-            $url .= urlencode($name) . '=' . urlencode($value);
+            $url .= urlencode($name) . '=' . urlencode($value)."&";
         }
         try {
             $http = new \Zend\Http\Client($url, array(
