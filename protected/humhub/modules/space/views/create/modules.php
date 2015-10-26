@@ -29,7 +29,7 @@ use yii\helpers\Url;
 
                 <?php foreach ($availableModules as $moduleId => $module): ?>
                     <div class="col-md-6">
-                        <div class="media well well-small">
+                        <div class="media well well-small ">
                             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                                  style="width: 64px; height: 64px;"
                                  src="<?php echo $module->getContentContainerImage($space); ?>">
@@ -38,7 +38,7 @@ use yii\helpers\Url;
                                 <h4 class="media-heading"><?php echo $module->getContentContainerName($space); ?>
                                 </h4>
 
-                                <p><?php echo $module->getContentContainerDescription($space); ?></p>
+                                <p style="height: 35px;"><?php echo \humhub\libs\Helpers::truncateText($module->getContentContainerDescription($space), 75); ?></p>
 
                                 <?php
                                 $enable = "";

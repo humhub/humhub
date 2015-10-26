@@ -70,7 +70,16 @@ class CreateController extends Controller
     {
         $space= Space::find()->where(['id' => $space_id])->one();
 
-        return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
+        if (count($space->getAvailableModules()) == 0) {
+
+            $model = new \humhub\modules\space\models\forms\InviteForm();
+            $model->space = $space;
+
+            return $this->renderAjax('invite', ['spaceId' => $space->id, 'model' => $model, 'space' => $space]);
+        } else {
+            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
+        }
+
     }
 
     /**
