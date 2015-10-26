@@ -107,20 +107,15 @@ class Module extends \yii\base\Module
      */
     public function enable()
     {
-        if (!Yii::$app->hasModule($this->id)) {
-
-            $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-            if ($moduleEnabled == null) {
-                $moduleEnabled = new ModuleEnabled();
-                $moduleEnabled->module_id = $this->id;
-                $moduleEnabled->save();
-            }
-
-            $this->migrate();
-            return true;
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
+        if ($moduleEnabled == null) {
+            $moduleEnabled = new ModuleEnabled();
+            $moduleEnabled->module_id = $this->id;
+            $moduleEnabled->save();
         }
 
-        return false;
+        $this->migrate();
+        return true;
     }
 
     /**
@@ -131,11 +126,6 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-        // Is not enabled
-        if (!Yii::$app->hasModule($this->id)) {
-            return;
-        }
-
         // Disable module in database
         $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
         if ($moduleEnabled != null) {

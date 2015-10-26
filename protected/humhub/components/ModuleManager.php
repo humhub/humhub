@@ -112,9 +112,13 @@ class ModuleManager extends \yii\base\Component
         if (isset($config['namespace'])) {
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
+        
+        if (!Yii::$app->params['installed'] && $isInstallerModule) {
+            $this->enabledModules[] = $config['id'];
+        }
 
         // Not enabled and no core/installer module
-        if (!$isCoreModule && (!Yii::$app->params['installed'] && !$isInstallerModule) && !in_array($config['id'], $this->enabledModules)) {
+        if (!$isCoreModule && !in_array($config['id'], $this->enabledModules)) {
             return;
         }
 
