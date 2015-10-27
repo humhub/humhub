@@ -3,7 +3,6 @@
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
 use yii\helpers\Url;
-
 ?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
     <?php $form = CActiveForm::begin(['id' => 'post-edit-form']); ?>
@@ -14,7 +13,7 @@ use yii\helpers\Url;
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input"
          contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message]); ?></div>
 
-    <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message]); ?>
+    <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message, 'record' => $post]); ?>
 
     <?php
     // Creates Uploading Button

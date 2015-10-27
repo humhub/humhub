@@ -10,6 +10,7 @@ namespace humhub\modules\content\widgets;
 
 use Yii;
 use yii\web\HttpException;
+use humhub\components\Widget;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
@@ -21,7 +22,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  *
  * @author luke
  */
-class WallCreateContentForm extends \yii\base\Widget
+class WallCreateContentForm extends Widget
 {
 
     /**

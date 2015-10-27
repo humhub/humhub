@@ -15,13 +15,6 @@ use humhub\modules\space\models\Space;
 
         <?php echo $form; ?>
 
-        <?php
-        /* Modify textarea for mention input */
-        echo \humhub\widgets\RichTextEditor::widget(array(
-            'id' => 'contentForm_message',
-        ));
-        ?>
-
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
             <input type="text" value="" id="notifyUserInput" name="notifyUserInput"/>
 

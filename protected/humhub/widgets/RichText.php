@@ -11,15 +11,19 @@ namespace humhub\widgets;
 use Yii;
 use yii\helpers\Html;
 use humhub\models\UrlOembed;
+use humhub\libs\ParameterEvent;
 
 /**
  * RichText dis
  *
  * @author luke
  */
-class RichText extends \yii\base\Widget
+class RichText extends \humhub\components\Widget
 {
 
+    /**
+     * @var string text to display
+     */
     public $text = "";
 
     /**
@@ -33,9 +37,19 @@ class RichText extends \yii\base\Widget
     public $minimal = false;
 
     /**
+     * @var \humhub\components\ActiveRecord this richtext belongs to
+     */
+    public $record = null;
+
+    /**
      * @var int
      */
     public $maxLength = 0;
+
+    /**
+     * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
+     */
+    const EVENT_BEFORE_OUTPUT = 'beforeOutput';
 
     public function run()
     {
@@ -71,8 +85,12 @@ class RichText extends \yii\base\Widget
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
-        
-        return nl2br($this->text);
+
+        $output = nl2br($this->text);
+
+        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+
+        return $output;
     }
 
     /**

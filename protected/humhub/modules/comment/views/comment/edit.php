@@ -22,6 +22,7 @@ use yii\helpers\Url;
     echo \humhub\widgets\RichTextEditor::widget(array(
         'id' => 'comment_input_' . $comment->id,
         'inputContent' => $comment->message,
+        'record' => $comment,
     ));
     ?>
 

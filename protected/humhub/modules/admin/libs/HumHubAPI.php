@@ -51,15 +51,18 @@ class HumHubAPI
 
             $response = $http->send();
             $json = $response->getBody();
+        } catch (\Zend\Http\Client\Adapter\Exception\RuntimeException $ex) {    
+            Yii::error('Could not connect to HumHub API! ' . $ex->getMessage());
+            return [];
         } catch (Exception $ex) {
-            Yii::error('Could not get HumHub API respone! ' . $ex->getMessage());
+            Yii::error('Could not get HumHub API response! ' . $ex->getMessage());
             return [];
         }
 
         try {
             return Json::decode($json);
         } catch (\yii\base\InvalidParamException $ex) {
-            Yii::error('Could not parse HumHub API respone! ' . $ex->getMessage());
+            Yii::error('Could not parse HumHub API response! ' . $ex->getMessage());
             return [];
         }
     }

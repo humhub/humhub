@@ -20,7 +20,7 @@
 
 namespace humhub\widgets;
 
-use yii\helpers\Html;
+use humhub\components\Widget;
 
 /**
  * HEditorWidget add users to posts and comments
@@ -29,7 +29,7 @@ use yii\helpers\Html;
  * @since 0.5
  * @author Andreas Strobel
  */
-class RichTextEditor extends \yii\base\Widget
+class RichTextEditor extends Widget
 {
 
     /**
@@ -43,7 +43,16 @@ class RichTextEditor extends \yii\base\Widget
      * JSON Search URL
      */
     public $searchUrl = "/search/search/mentioning";
+
+    /**
+     * @var string preset content
+     */
     public $inputContent = "";
+
+    /**
+     * @var \humhub\components\ActiveRecord record record this editor belongs to
+     */
+    public $record = null;
 
     /**
      * Inits the widget
