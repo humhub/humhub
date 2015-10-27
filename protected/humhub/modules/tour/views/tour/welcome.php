@@ -139,7 +139,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control', 'placeholder' => Yii::t('MeetingModule.views_index_edit', 'mm/dd/yyyy')]]); ?>
+                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control', 'placeholder' => Yii::t('TourModule.views_tour_welcome', 'mm/dd/yyyy')]]); ?>
                         </div>
                         <div class="col-md-6">
                             <br><br>
