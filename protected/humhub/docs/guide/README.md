@@ -27,6 +27,7 @@ Development
 
 * [Getting Started](dev-index.md)
 * [Updating / Migrate](dev-migrate.md)
+* [Environment](dev-environment.md)
 * [Contributions](dev-contributing.md)
 
 Development - Modules

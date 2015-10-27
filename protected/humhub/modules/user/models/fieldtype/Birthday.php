@@ -83,6 +83,7 @@ class Birthday extends DateTime
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
+                'format' => 'short',
                 'class' => 'form-control',
             ),
             $this->profileField->internal_name . "_hide_year" => array(
