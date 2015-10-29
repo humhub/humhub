@@ -500,7 +500,6 @@ input[type=select] {
     }
   }
 
-
   .nav > li > a {
     padding: 6px 13px 0;
     text-decoration: none;
@@ -572,10 +571,8 @@ input[type=select] {
     background-color: @background1;
     border: 1px solid @background3;
     color: @background4;
-    padding:3px 3px 2px 3px;
+    padding: 3px 3px 2px 3px;
   }
-
-
 
   li:last-child {
     border-bottom: none;
@@ -2177,10 +2174,19 @@ ul.tag_input.focus {
 .comment_create,
 .content_edit {
   position: relative;
-  .fileinput-button {
-    position: absolute;
+
+  .comment-buttons {
+    position:absolute;
     top: 2px;
-    right: 2px;
+    right: 5px;
+  }
+
+  .btn-comment-submit {
+    margin-top: 3px;
+  }
+
+  .fileinput-button {
+    float: left;
     padding: 6px 10px;
     background: transparent !important;
     .fa {

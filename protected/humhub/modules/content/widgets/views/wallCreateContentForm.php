@@ -62,7 +62,8 @@ use humhub\modules\space\models\Space;
                     ],
                     'htmlOptions' => [
                         'id' => "post_submit_button",
-                        'class' => 'btn btn-info'
+                        'class' => 'btn btn-info',
+                        'type' => 'submit'
                 ]]);
                 ?>
                 <?php
