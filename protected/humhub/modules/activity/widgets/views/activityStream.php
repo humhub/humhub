@@ -7,7 +7,7 @@ $this->registerJsVar('activityStreamUrl', $streamUrl);
 $this->registerJsVar('activityInfoUrl', $infoUrl);
 ?>
 
-<div class="panel panel-default panel-activities">
+<div class="panel panel-default panel-activities hidden-sm hidden-xs">
 
     <div
         class="panel-heading"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', '<strong>Latest</strong> activities'); ?></div>
