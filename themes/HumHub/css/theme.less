@@ -552,6 +552,46 @@ input[type=select] {
   }
 }
 
+
+.dropdown-menu {
+
+  li {
+    border-left: 3px solid #fff;
+
+    a {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 15px;
+      i {
+        margin-right: 5px;
+        font-size: 14px;
+        display: inline-block;
+        width: 14px;
+      }
+    }
+    a:hover,
+    a:visited,
+    a:hover,
+    a:focus {
+      background: none;
+    }
+  }
+  li:hover,
+  li.selected {
+    color: @font3;
+    background-color: @background1;
+    border-left: 3px solid @info;
+  }
+
+  li:first-child {
+    margin-top: 3px;
+  }
+
+  li:last-child {
+    margin-bottom: 3px;
+  }
+}
+
 //
 // Media-Object
 // --------------------------------------------------

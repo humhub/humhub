@@ -18,7 +18,7 @@ use yii\helpers\Url;
         <i class="fa fa-align-justify"></i><br>
         <?php echo Yii::t('base', 'Menu'); ?>
         <b class="caret"></b></a>
-    <ul class="dropdown-menu pull-right">
+    <ul class="dropdown-menu">
 
         <?php foreach ($this->context->getItems() as $item) : ?>
             <li class="<?php if ($item['isActive']): ?>active<?php endif; ?>">
