@@ -5,7 +5,7 @@
  * @package humhub.widgets
  * @since 0.5 */
 
-use \yii\helpers\Html
+use \yii\helpers\Html;
 ?>
 <ul class="nav nav-pills">
 
