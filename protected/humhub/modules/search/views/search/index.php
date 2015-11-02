@@ -18,7 +18,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                         <div class="col-md-6">
                             <?php echo Html::beginForm(Url::to(['index']), 'GET'); ?>
                             <div class="form-group form-group-search">
-                                <?php echo Html::textInput('keyword', $keyword, array('placeholder' => 'Keyword', 'class' => 'form-control form-search', 'id' => 'search-input-field')); ?>
+                                <?php echo Html::textInput('keyword', $keyword, array('placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 'class' => 'form-control form-search', 'id' => 'search-input-field')); ?>
                                 <?php echo Html::submitButton(Yii::t('base', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                             </div>
 
@@ -26,7 +26,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                             <div class="text-center">
                                 <a data-toggle="collapse" id="search-settings-link" href="#collapse-search-settings"
                                    style="font-size: 11px;"><i
-                                        class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced search settings'); ?>
+                                        class="fa fa-caret-right"></i> <?php echo Yii::t('SearchModule.views_search_index', 'Advanced search settings'); ?>
                                 </a>
                             </div>
 
