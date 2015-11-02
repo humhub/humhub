@@ -5,13 +5,13 @@ $space = $this->context->contentContainer;
     <div class="row">
         <div class="col-md-12">
             <?php echo humhub\modules\space\widgets\Header::widget(['space' => $space]); ?>
+
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 layout-nav-container">
             <?php echo \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
-            <?php echo humhub\modules\space\modules\manage\widgets\Menu::widget(['space' => $space]); ?>
-            <br/>
+            <br>
         </div>
 
         <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
