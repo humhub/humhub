@@ -104,9 +104,9 @@ if ($space->isAdmin()) {
             $profileImageExt = pathinfo($space->getProfileImage()->getUrl(), PATHINFO_EXTENSION);
 
             $profileImageOrig = preg_replace('/.[^.]*$/', '', $space->getProfileImage()->getUrl());
-            $defaultImage = (basename($space->getProfileImage()->getUrl()) == 'default_user.jpg' || basename($space->getProfileImage()->getUrl()) == 'default_user.jpg?cacheId=0') ? true : false;
+            $defaultImage = (basename($space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
             $profileImageOrig = $profileImageOrig . '_org.' . $profileImageExt;
-
+            
             if (!$defaultImage) {
                 ?>
 
