@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 ?>
 
-<div class="panel panel-default members hidden-sm hidden-xs" id="space-members-panel">
+<div class="panel panel-default members" id="space-members-panel">
     <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'space-members-panel']); ?>
     <div class="panel-heading"><?php echo Yii::t('SpaceModule.widgets_views_spaceMembers', '<strong>Space</strong> members'); ?></div>
     <div class="panel-body">
