@@ -365,10 +365,10 @@ input[type=select] {
       margin-left: -18px;
       border-top-width: 0;
       border-bottom-color: rgba(0, 0, 0, 0.15);
-      top: -16px;
+      top: -19px;
       z-index: 1035;
     }
-    #dropdown-notifications {
+    .dropdown-menu {
       width: 350px;
       margin-left: -148px;
       ul.media-list {
@@ -422,6 +422,7 @@ input[type=select] {
   .media-list {
     a {
       color: @font3;
+      padding: 0;
     }
     li {
       color: @font3;
@@ -556,12 +557,9 @@ input[type=select] {
 .dropdown-menu {
 
   li {
-    border-left: 3px solid #fff;
-
     a {
       font-size: 13px !important;
       font-weight: 600 !important;
-      padding: 4px 15px;
       i {
         margin-right: 5px;
         font-size: 14px;
@@ -579,8 +577,6 @@ input[type=select] {
   li:hover,
   li.selected {
     color: @font3;
-    background-color: @background1;
-    border-left: 3px solid @info;
   }
 
   li:first-child {
@@ -614,9 +610,6 @@ input[type=select] {
     padding: 3px 3px 2px 3px;
   }
 
-  li:last-child {
-    border-bottom: none;
-  }
   li.new {
     border-left: 3px solid lighten(@info, 30%);
     background-color: lighten(@info, 30%);
@@ -2716,7 +2709,7 @@ img.bounceIn {
     float: left !important;
   }
 
-  #dropdown-notifications {
+  .notifications .dropdown-menu {
     width: 300px !important;
     margin-left: 0 !important;
     .arrow {
