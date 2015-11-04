@@ -23,7 +23,7 @@ class Module extends \humhub\components\Module
             return;
 
         if (Setting::Get('enable', 'tour') == 1 && Yii::$app->user->getIdentity()->getSetting("hideTourPanel", "tour") != 1) {
-            $event->sender->addWidget(Dashboard::className(), array(), array('sortOrder' => 0));
+            $event->sender->addWidget(Dashboard::className(), array(), array('sortOrder' => 100));
         }
     }
 
