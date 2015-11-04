@@ -269,6 +269,7 @@ input[type=select] {
     margin-bottom: 10px;
     font-weight: 300;
     color: @font4;
+
     .dropdown-header-link {
       position: absolute;
       top: 2px;
@@ -279,6 +280,10 @@ input[type=select] {
         font-weight: normal;
       }
     }
+  }
+
+  .dropdown-header:hover {
+    color: @font4;
   }
 }
 
@@ -525,6 +530,20 @@ input[type=select] {
       border-top-color: @font2;
     }
   }
+
+  .nav > li > ul > li > a {
+    border-left: 3px solid #fff;
+    background-color: #fff;
+    color: @font3;
+  }
+
+  .nav > li > ul > li > a:hover, .nav > li > ul > li > a.active {
+    border-left: 3px solid @info;
+    background-color: @background1;
+    color: @font3;
+  }
+
+
   .nav > li.active > a {
     min-height: 46px;
   }
@@ -2729,7 +2748,6 @@ img.bounceIn {
 
 @media (max-width: 991px) {
   .controls-header {
-    margin-top: 40px;
     text-align: left !important;
 
     //margin-left: 15px;
