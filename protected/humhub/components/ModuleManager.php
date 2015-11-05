@@ -60,8 +60,10 @@ class ModuleManager extends \yii\base\Component
     {
         parent::init();
 
-        if (!Yii::$app->params['installed'])
+        // Either database installed and not in installed state
+        if (!Yii::$app->params['databaseInstalled'] && !Yii::$app->params['installed']) {
             return;
+        }
 
         if (Yii::$app instanceof console\Application && !Yii::$app->isDatabaseInstalled()) {
             $this->enabledModules = [];
@@ -112,7 +114,7 @@ class ModuleManager extends \yii\base\Component
         if (isset($config['namespace'])) {
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
-        
+
         if (!Yii::$app->params['installed'] && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];
         }
@@ -148,6 +150,8 @@ class ModuleManager extends \yii\base\Component
 
         // Register Yii Module
         Yii::$app->setModule($config['id'], $moduleConfig);
+
+
 
         // Register Event Handlers
         if (isset($config['events'])) {

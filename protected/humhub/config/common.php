@@ -87,6 +87,7 @@ $config = [
     ],
     'params' => [
         'installed' => false,
+        'databaseInstalled' => false,
         'dynamicConfigFile' => '@app/config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'moduleMarketplacePath' => '@app/modules',
