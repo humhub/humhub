@@ -51,9 +51,7 @@ use yii\helpers\Url;
                     </div>
 
                     <a href="<?php echo $space->getUrl(); ?>" class="pull-left">
-                        <img class="media-object img-rounded"
-                             src="<?php echo $space->getProfileImage()->getUrl(); ?>" width="50"
-                             height="50" alt="50x50" data-src="holder.js/50x50" style="width: 50px; height: 50px;">
+                        <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $space, 'width' => 50, 'height' => 50, 'cssAcronymClass' => 'directory-spaces']); ?>
                     </a>
 
                     <?php if ($space->isMember()) { ?>

@@ -42,6 +42,7 @@ class ImageController extends Controller
             $profileImage->setNew($model->image);
 
             $json['name'] = "";
+            $json['space_id'] = $this->getSpace()->id;
             $json['url'] = $profileImage->getUrl();
             $json['size'] = $model->image->size;
             $json['deleteUrl'] = "";
@@ -143,6 +144,7 @@ class ImageController extends Controller
 
         if ($image) {
             $image->delete();
+            $json['space_id'] = $space->id;
             $json['defaultUrl'] = $image->getUrl();
         }
 

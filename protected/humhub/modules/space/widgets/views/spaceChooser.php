@@ -14,11 +14,8 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
     <a href="#" id="space-menu" class="dropdown-toggle" data-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
         <?php if ($currentSpace) { ?>
-            <img
-                src="<?php echo $currentSpace->getProfileImage()->getUrl(); ?>"
-                width="32" height="32" alt="32x32" data-src="holder.js/24x24"
-                style="width: 32px; height: 32px; margin-right: 3px; margin-top: 3px;" class="img-rounded"/>
-            <?php } ?>
+            <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $currentSpace, 'width' => 32, 'height' => 32, 'cssAcronymClass' => 'chooser-current-space', 'cssImageClass' => 'current-space-image']); ?>
+        <?php } ?>
 
         <?php
         if (!$currentSpace) {
@@ -48,16 +45,16 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
                     <li>
                         <a href="<?php echo $membership->space->getUrl(); ?>">
                             <div class="media">
-                                <!-- Show user image -->
-                                <img class="media-object img-rounded pull-left" alt="24x24" data-src="holder.js/24x24"
-                                     style="width: 24px; height: 24px;"
-                                     src="<?php echo $membership->space->getProfileImage()->getUrl(); ?>">
+                                <!-- Show space image -->
+                                <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $membership->space, 'width' => 24, 'height' => 24, 'cssAcronymClass' => 'chooser pull-left', 'cssImageClass' => 'pull-left']); ?>
                                 <div class="media-body">
                                     <strong><?php echo Html::encode($membership->space->name); ?></strong>
                                     <?php if ($newItems != 0): ?>
-                                        <div class="badge badge-space pull-right" style="display:none"><?php echo $newItems; ?></div>
+                                        <div class="badge badge-space pull-right"
+                                             style="display:none"><?php echo $newItems; ?></div>
                                     <?php endif; ?>
                                     <br>
+
                                     <p><?php echo Html::encode(Helpers::truncateText($membership->space->description, 60)); ?></p>
                                 </div>
                             </div>

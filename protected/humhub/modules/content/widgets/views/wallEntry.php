@@ -35,9 +35,7 @@ $container = $object->content->container;
             <?php if (!Yii::$app->controller instanceof ContentContainerController && $object->content->container instanceof Space): ?>
                 <a href="<?php echo $object->content->container->getUrl(); ?>"
                    class="pull-left">
-                    <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
-                         style="width: 20px; height: 20px;"
-                         src="<?php echo $object->content->container->getProfileImage()->getUrl(); ?>">
+                    <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $object->content->container, 'width' => 20, 'height' => 20, 'cssAcronymClass' => 'stream img-space', 'cssImageClass' => 'img-space']); ?>
                 </a>
             <?php endif; ?>
 

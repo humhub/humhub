@@ -30,6 +30,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property string $ldap_dn
  * @property integer $auto_add_new_members
  * @property integer $contentcontainer_id
+ * @property string $color
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
@@ -71,7 +72,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'unique', 'targetClass' => self::className()],
             [['name'], 'required'],
-            [['description', 'tags'], 'string'],
+            [['description', 'tags', 'color'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
@@ -89,12 +90,12 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'description', 'website', 'tags', 'join_policy', 'visibility', 'default_content_visibility'];
+        $scenarios['edit'] = ['name', 'color', 'description', 'website', 'tags', 'join_policy', 'visibility', 'default_content_visibility'];
         if (Yii::$app->user->isAdmin()) {
             $scenarios['edit'][] = 'ldap_dn';
         }
 
-        $scenarios['create'] = ['name', 'description', 'join_policy', 'visibility'];
+        $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
     }
@@ -107,6 +108,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return array(
             'id' => 'ID',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
+            'color' => Yii::t('SpaceModule.models_Space', 'Color'),
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
             'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),

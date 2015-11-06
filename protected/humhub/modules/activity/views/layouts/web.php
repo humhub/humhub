@@ -10,9 +10,7 @@
 
             <!-- Show space image, if you are outside from a space -->
             <?php if (!Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController && $record->content->space !== null): ?>
-                <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
-                     style="width: 20px; height: 20px;"
-                     src="<?php echo $record->content->space->getProfileImage()->getUrl(); ?>">
+                <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $record->content->space, 'width' => 20, 'height' => 20, 'cssAcronymClass' => 'stream img-space pull-left', 'cssImageClass' => 'img-space pull-left']); ?>
                  <?php endif; ?>
 
             <div class="media-body">

@@ -28,9 +28,11 @@ $(function () {
                     if (data.result.files.error == true) {
                         handleUploadError(data.result);
                     } else {
-                        $('#space-menu img').attr('src', data.result.files.url + '&c=' + Math.random());
-                        $('#space-profile-image').attr('src', data.result.files.url + '&c=' + Math.random());
-                        $('#space-profile-image').addClass('animated bounceIn');
+                        $('.space-profile-image-' + data.result.files.space_id).attr('src', data.result.files.url + '&c=' + Math.random());
+
+                        $('.space-profile-acronym-' + data.result.files.space_id).addClass('hidden');
+                        $('.space-profile-image-' + data.result.files.space_id).removeClass('hidden');
+                        $('.space-profile-image-' + data.result.files.space_id).addClass('animated bounceIn');
                     }
 
                     $('#profile-image-upload-loader').hide();
@@ -107,8 +109,11 @@ function handleUploadError(json) {
 function resetProfileImage(json) {
 
     if (json.type == 'profile') {
-        $('#space-menu img').attr('src', json.defaultUrl);
-        $('#space-profile-image').attr('src', json.defaultUrl);
+        $('.space-profile-image-' + json.space_id).attr('src', json.defaultUrl);
+
+        $('.space-profile-acronym-' + json.space_id).removeClass('hidden');
+        $('.space-profile-image-' + json.space_id).addClass('hidden');
+
     } else if (json.type == "banner") {
         $('#space-banner-image').attr('src', json.defaultUrl);
     }
