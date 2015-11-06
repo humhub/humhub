@@ -107,6 +107,16 @@ class Module extends \humhub\components\Module
         \humhub\libs\DynamicConfig::save($config);
     }
 
+    /**
+     * Sets application database in installed state
+     */
+    public function setDatabaseInstalled()
+    {
+        $config = \humhub\libs\DynamicConfig::load();
+        $config['params']['databaseInstalled'] = true;
+        \humhub\libs\DynamicConfig::save($config);
+    }
+
     protected function initConfigSteps()
     {
 

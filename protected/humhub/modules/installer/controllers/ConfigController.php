@@ -28,6 +28,11 @@ use humhub\models\Setting;
 class ConfigController extends Controller
 {
 
+    const EVENT_INSTALL_SAMPLE_DATA = 'install_sample_data';
+
+    /**
+     * Use Cases
+     */
     const USECASE_SOCIAL_INTRANET = 'social_intranet';
     const USECASE_SOCIAL_COLLABORATION = 'social_collab';
     const USECASE_EDUCATION = 'club';
@@ -141,13 +146,36 @@ class ConfigController extends Controller
      */
     public function actionModules()
     {
+        // Only showed purchased modules
+        $marketplace = new \humhub\modules\admin\libs\OnlineModuleManager();
+        $modules = $marketplace->getModules(false);
+        foreach ($modules as $i => $module) {
+            if (!isset($module['useCases']) || strpos($module['useCases'], Setting::Get('useCase')) === false) {
+                unset($modules[$i]);
+            }
+        }
 
-        if (Yii::$app->request->get('ok') == 1) {
-
+        if (Yii::$app->request->method == 'POST') {
+            $enableModules = Yii::$app->request->post('enableModules');
+            if (is_array($enableModules)) {
+                foreach (array_keys($enableModules) as $moduleId) {
+                    $marketplace->install($moduleId);
+                    $module = Yii::$app->moduleManager->getModule($moduleId);
+                    if ($module !== null) {
+                        $module->enable();
+                    }
+                }
+            }
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
-        return $this->render('modules', array());
+        /*
+          if (Yii::$app->request->get('ok') == 1) {
+          return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+          }
+         */
+
+        return $this->render('modules', array('modules' => $modules));
     }
 
     /**
@@ -164,10 +192,11 @@ class ConfigController extends Controller
 
         $form->sampleData = Setting::Get('sampleData', 'installer');
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->sampleData = Setting::Set('sampleData', $form->sampleData, 'installer');
+            Setting::Set('sampleData', $form->sampleData, 'installer');
 
             if (Setting::Get('sampleData', 'installer') == 1) {
-                // ToDo Create Sample Data
+                $this->trigger(self::EVENT_INSTALL_SAMPLE_DATA);
+                // ToDo: Create Sample Data
             }
 
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());

@@ -137,9 +137,13 @@ class OnlineModuleManager
      *
      * @return Array of modulles
      */
-    public function getModules()
+    public function getModules($cached = true)
     {
-
+        if (!$cached) {
+            $this->_modules = null;
+            Yii::$app->cache->delete('onlineModuleManager_modules');
+        }
+        
         if ($this->_modules !== null) {
             return $this->_modules;
         }

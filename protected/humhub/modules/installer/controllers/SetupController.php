@@ -139,6 +139,8 @@ class SetupController extends Controller
 
         DynamicConfig::rewrite();
 
+        $this->module->setDatabaseInstalled();
+
         return $this->redirect(Url::to(['/installer/config/index']));
     }
 
