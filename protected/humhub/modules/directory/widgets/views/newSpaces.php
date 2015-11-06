@@ -13,10 +13,17 @@ use yii\helpers\Html;
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
-            <a href="<?php echo $space->getUrl(); ?>" class="tt" data-toggle="tooltip" data-placement="top" title=""
-               data-original-title="<?php echo Html::encode($space->name); ?>">
-                <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $space, 'width' => 40, 'height' => 40, 'cssAcronymClass' => 'new-spaces', 'cssImageClass' => 'img_margin']); ?>
-            </a>
+            <?php echo \humhub\modules\space\widgets\Image::widget([
+                'space' => $space,
+                'width' => 40,
+                'link' => true,
+                'linkOptions' => [
+                    'class' => 'tt',
+                    'data-toggle' => 'tooltip',
+                    'data-placement' => 'top',
+                    'title' => Html::encode($space->name),
+                ]
+            ]); ?>
         <?php endforeach; ?>
 
         <?php if ($showMoreButton): ?>

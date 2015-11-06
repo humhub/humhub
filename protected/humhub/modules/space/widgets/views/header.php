@@ -113,12 +113,14 @@ if ($space->isAdmin()) {
                 <!-- profile image output-->
                 <a data-toggle="lightbox" data-gallery="" href="<?php echo $profileImageOrig; ?>#.jpeg"
                    data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Close'); ?></button>'>
-                    <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $space]); ?>
+                    <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
                 </a>
+
+
 
             <?php } else { ?>
 
-                <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $space]); ?>
+                <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
 
             <?php } ?>
 

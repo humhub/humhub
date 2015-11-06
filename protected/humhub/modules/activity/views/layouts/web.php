@@ -6,21 +6,27 @@
                 <img class="media-object img-rounded pull-left" data-src="holder.js/32x32" alt="32x32"
                      style="width: 32px; height: 32px;"
                      src="<?php echo $originator->getProfileImage()->getUrl(); ?>">
-                 <?php endif; ?>
+            <?php endif; ?>
 
             <!-- Show space image, if you are outside from a space -->
             <?php if (!Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController && $record->content->space !== null): ?>
-                <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $record->content->space, 'width' => 20, 'height' => 20, 'cssAcronymClass' => 'stream img-space pull-left', 'cssImageClass' => 'img-space pull-left']); ?>
-                 <?php endif; ?>
+                <?php echo \humhub\modules\space\widgets\Image::widget([
+                    'space' => $record->content->space,
+                    'width' => 20,
+                    'htmlOptions' => [
+                        'class' => 'img-space pull-left',
+                    ]
+                ]); ?>
+            <?php endif; ?>
 
             <div class="media-body">
 
                 <!-- Show content -->
-                <?php echo $content; ?><br />
+                <?php echo $content; ?><br/>
 
                 <!-- show time -->
                 <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $record->content->created_at]); ?>
             </div>
         </div>
     </li>
-    <?php if ($clickable): ?></a><?php endif; ?>
+<?php if ($clickable): ?></a><?php endif; ?>

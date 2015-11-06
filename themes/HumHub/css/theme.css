@@ -848,57 +848,9 @@ input[type=select] {
   text-align: center;
   display: inline-block;
 }
-.space-acronym.profile-image {
-  border-radius: 4px;
-  font-size: 70px;
-  font-weight: 300;
-  padding: 15px 0;
-}
-.space-acronym.chooser {
-  border-radius: 2px;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 5px 0;
-  float: left;
-}
-.space-acronym.chooser-current-space {
-  border-radius: 3px;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 6px 0;
-  margin-right: 3px;
-  margin-top: 3px;
-}
-.space-acronym.profile-user-spaces {
-  border-radius: 2px;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 5px 0;
-}
-.profile-user-image-widget {
-  margin-top: 4px;
-}
 .current-space-image {
   margin-right: 3px;
   margin-top: 3px;
-}
-.space-acronym.stream {
-  border-radius: 2px;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 0;
-}
-.space-acronym.new-spaces {
-  border-radius: 3px;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 9px 0;
-}
-.space-acronym.directory-spaces {
-  border-radius: 3px;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 11px 0;
 }
 .pagination-container {
   text-align: center;

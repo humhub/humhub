@@ -9,6 +9,7 @@
  * @since 0.5
  */
 use yii\helpers\Html;
+
 ?>
 <?php if (count($spaces) > 0) { ?>
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
@@ -22,10 +23,20 @@ use yii\helpers\Html;
 
         <div class="panel-body">
             <?php foreach ($spaces as $space): ?>
-                <a href="<?php echo $space->getUrl(); ?>" class="tt" data-toggle="tooltip" data-placement="top" title=""
-                   data-original-title="<?php echo Html::encode($space->name); ?>">
-                    <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $space, 'width' => 24, 'height' => 24, 'cssAcronymClass' => 'profile-user-spaces', 'cssImageClass' => 'profile-user-image-widget']); ?>
-                </a>
+                <?php echo \humhub\modules\space\widgets\Image::widget([
+                    'space' => $space,
+                    'width' => 24,
+                    'htmlOptions' => [
+                        'class' => 'current-space-image',
+                    ],
+                    'link' => 'true',
+                    'linkOptions' => [
+                        'class' => 'tt',
+                        'data-toggle' => 'tooltip',
+                        'data-placement' => 'top',
+                        'title' => Html::encode($space->name),
+                    ]
+                ]); ?>
             <?php endforeach; ?>
 
         </div>

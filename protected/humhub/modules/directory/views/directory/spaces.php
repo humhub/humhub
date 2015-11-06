@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 ?>
 <div class="panel panel-default">
 
@@ -47,21 +48,31 @@ use yii\helpers\Url;
                             echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . $space->createUrl('/space/space/follow') . '", "' . $space->id . '")', array('class' => 'btn btn-info btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $space->id));
                             echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . $space->createUrl('/space/space/unfollow') . '", "' . $space->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $space->id));
                         }
-                        ?>                        
+                        ?>
                     </div>
 
-                    <a href="<?php echo $space->getUrl(); ?>" class="pull-left">
-                        <?php echo \humhub\modules\space\widgets\SpaceImage::widget(['space' => $space, 'width' => 50, 'height' => 50, 'cssAcronymClass' => 'directory-spaces']); ?>
-                    </a>
+                    <?php echo \humhub\modules\space\widgets\Image::widget([
+                        'space' => $space,
+                        'width' => 50,
+                        'htmlOptions' => [
+                            'class' => 'media-object',
+                        ],
+                        'link' => 'true',
+                        'linkOptions' => [
+                            'class' => 'pull-left',
+                        ],
+                    ]); ?>
 
                     <?php if ($space->isMember()) { ?>
                         <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top"
                            title=""
                            data-original-title="<?php echo Yii::t('DirectoryModule.views_directory_spaces', 'You are a member of this space'); ?>"></i>
-                       <?php } ?>
+                    <?php } ?>
 
                     <div class="media-body">
-                        <h4 class="media-heading"><a href="<?php echo $space->getUrl(); ?>"><?php echo Html::encode($space->name); ?></a></h4>
+                        <h4 class="media-heading"><a
+                                href="<?php echo $space->getUrl(); ?>"><?php echo Html::encode($space->name); ?></a>
+                        </h4>
                         <h5><?php echo Html::encode(humhub\libs\Helpers::truncateText($space->description, 100)); ?></h5>
 
                         <?php $tag_count = 0; ?>
@@ -98,7 +109,8 @@ use yii\helpers\Url;
             'success': function () {
                 $("#button_follow_" + id).addClass('hide');
                 $("#button_unfollow_" + id).removeClass('hide');
-            }});
+            }
+        });
     }
 
     // ajax request to unfollow the user
@@ -109,7 +121,8 @@ use yii\helpers\Url;
             'success': function () {
                 $("#button_follow_" + id).removeClass('hide');
                 $("#button_unfollow_" + id).addClass('hide');
-            }});
+            }
+        });
     }
 
 </script>
