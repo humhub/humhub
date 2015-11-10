@@ -24,17 +24,25 @@ class Theme extends \yii\base\Theme
      */
     public $name;
 
+    /**
+     * @inheritdoc
+     */
+    private $_baseUrl = null;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
+        if ($this->getBasePath() == '') {
+            $this->setBasePath('@webroot/themes/' . $this->name);
+        }
 
-        $this->setBasePath('@webroot/themes/' . $this->name);
         $this->pathMap = [
-            '@humhub/views' => '@webroot/themes/' . $this->name . '/views',
+            '@humhub/views' => $this->getBasePath() . '/views',
         ];
         parent::init();
     }
-
-    private $_baseUrl = null;
 
     /**
      * @return string the base URL (without ending slash) for this theme. All resources of this theme are considered
@@ -114,45 +122,117 @@ class Theme extends \yii\base\Theme
     /**
      * Returns an array of all installed themes.
      *
-     * @return Array
+     * @return Array Theme instances
      */
     public static function getThemes()
     {
         $themes = array();
-        $themePath = \Yii::getAlias('@webroot/themes');
+        $themePaths = [];
+        $themePaths[] = \Yii::getAlias('@webroot/themes');
 
-        foreach (scandir($themePath) as $file) {
-            if ($file == "." || $file == ".." || !is_dir($themePath . DIRECTORY_SEPARATOR . $file)) {
-                continue;
+        // Collect enabled module theme paths
+        foreach (Yii::$app->getModules() as $module) {
+            $basePath = "";
+            if (is_array($module)) {
+                $reflector = new \ReflectionClass($module['class']);
+                $basePath = dirname($reflector->getFileName());
+            } else {
+                $basePath = $module->getBasePath();
             }
-            $themes[$file] = $file;
+
+            if (is_dir($basePath . DIRECTORY_SEPARATOR . 'themes')) {
+                $themePaths[] = $basePath . DIRECTORY_SEPARATOR . 'themes';
+            }
+        }
+
+        foreach ($themePaths as $themePath) {
+            foreach (scandir($themePath) as $file) {
+                if ($file == "." || $file == ".." || !is_dir($themePath . DIRECTORY_SEPARATOR . $file)) {
+                    continue;
+                }
+                $themes[] = Yii::createObject([
+                            'class' => 'humhub\components\Theme',
+                            'basePath' => $themePath . DIRECTORY_SEPARATOR . $file,
+                            'name' => $file
+                ]);
+            }
         }
         return $themes;
     }
 
+    /**
+     * Returns a Theme by given name
+     * 
+     * @param string $name of the theme
+     * @return Theme
+     */
+    public static function getThemeByName($name)
+    {
+        foreach (self::getThemes() as $theme) {
+            if ($theme->name === $name) {
+                return $theme;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns configuration array of given theme
+     * 
+     * @param Theme|string $theme name or theme instance
+     * @return array Configuration
+     */
+    public static function getThemeConfig($theme)
+    {
+        if (is_string($theme)) {
+            $theme = self::getThemeByName($theme);
+        }
+
+        return [
+            'components' => [
+                'view' => [
+                    'theme' => [
+                        'name' => $theme->name,
+                        'basePath' => $theme->getBasePath()
+                    ],
+                ],
+                'mailer' => [
+                    'view' => [
+                        'theme' => [
+                            'name' => $theme->name,
+                            'basePath' => $theme->getBasePath()
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    }
+
     public static function setColorVariables($themeName)
     {
+        $theme = self::getThemeByName($themeName);
 
-        $url = Yii::getAlias('@webroot/themes/' . $themeName . '/css/theme.less');
+        $lessFileName = Yii::getAlias($theme->getBasePath() . '/css/theme.less');
+        if (file_exists($lessFileName)) {
+            $file = fopen($lessFileName, "r") or die("Unable to open file!");
+            $less = fread($file, filesize($lessFileName));
+            fclose($file);
 
-        $file = fopen("$url", "r") or die("Unable to open file!");
-        $less = fread($file, filesize("$url"));
-        fclose($file);
+            $startDefault = strpos($less, '@default') + 10;
+            $startPrimary = strpos($less, '@primary') + 10;
+            $startInfo = strpos($less, '@info') + 7;
+            $startSuccess = strpos($less, '@success') + 10;
+            $startWarning = strpos($less, '@warning') + 10;
+            $startDanger = strpos($less, '@danger') + 9;
+            $length = 7;
 
-        $startDefault = strpos($less, '@default') + 10;
-        $startPrimary = strpos($less, '@primary') + 10;
-        $startInfo = strpos($less, '@info') + 7;
-        $startSuccess = strpos($less, '@success') + 10;
-        $startWarning = strpos($less, '@warning') + 10;
-        $startDanger = strpos($less, '@danger') + 9;
-        $length = 7;
-
-        Setting::Set('colorDefault', substr($less, $startDefault, $length));
-        Setting::Set('colorPrimary', substr($less, $startPrimary, $length));
-        Setting::Set('colorInfo', substr($less, $startInfo, $length));
-        Setting::Set('colorSuccess', substr($less, $startSuccess, $length));
-        Setting::Set('colorWarning', substr($less, $startWarning, $length));
-        Setting::Set('colorDanger', substr($less, $startDanger, $length));
+            Setting::Set('colorDefault', substr($less, $startDefault, $length));
+            Setting::Set('colorPrimary', substr($less, $startPrimary, $length));
+            Setting::Set('colorInfo', substr($less, $startInfo, $length));
+            Setting::Set('colorSuccess', substr($less, $startSuccess, $length));
+            Setting::Set('colorWarning', substr($less, $startWarning, $length));
+            Setting::Set('colorDanger', substr($less, $startDanger, $length));
+        }
     }
 
 }

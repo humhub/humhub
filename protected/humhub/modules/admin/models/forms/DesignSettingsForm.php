@@ -22,8 +22,10 @@ class DesignSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-
-        $themes = \humhub\components\Theme::getThemes();
+        $themes = [];
+        foreach (\humhub\components\Theme::getThemes() as $theme) {
+            $themes[] = $theme->name;
+        }
 
         return array(
             array('paginationSize', 'integer', 'max' => 200, 'min' => 1),
@@ -54,7 +56,6 @@ class DesignSettingsForm extends \yii\base\Model
     {
 
         if (is_object($this->logo)) {
-
             list($width, $height) = getimagesize($this->logo->tempName);
             if ($height < 40)
                 $this->addError('logo', 'Logo size should have at least 40px of height');

@@ -14,6 +14,7 @@ use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\libs\Ldap;
+
 /**
  * SettingController 
  * 
@@ -321,9 +322,10 @@ class SettingController extends Controller
     public function actionDesign()
     {
         $form = new \humhub\modules\admin\models\forms\DesignSettingsForm;
-
-        #$assetPrefix = Yii::$app->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        #Yii::$app->clientScript->registerScriptFile($assetPrefix . '/uploadLogo.js');
+        $form->theme = Setting::Get('theme');
+        $form->paginationSize = Setting::Get('paginationSize');
+        $form->displayName = Setting::Get('displayNameFormat');
+        $form->spaceOrder = Setting::Get('spaceOrder', 'space');
 
         if ($form->load(Yii::$app->request->post())) {
 
@@ -350,14 +352,13 @@ class SettingController extends Controller
                 Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
                 Yii::$app->response->redirect(Url::toRoute('/admin/setting/design'));
             }
-        } else {
-            $form->theme = Setting::Get('theme');
-            $form->paginationSize = Setting::Get('paginationSize');
-            $form->displayName = Setting::Get('displayNameFormat');
-            $form->spaceOrder = Setting::Get('spaceOrder', 'space');
         }
 
-        $themes = \humhub\components\Theme::getThemes();
+        $themes = [];
+        foreach (\humhub\components\Theme::getThemes() as $theme) {
+            $themes[$theme->name] = $theme->name;
+        }
+
         return $this->render('design', array('model' => $form, 'themes' => $themes, 'logo' => new \humhub\libs\LogoImage()));
     }
 

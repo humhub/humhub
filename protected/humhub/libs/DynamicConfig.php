@@ -8,16 +8,30 @@
 
 namespace humhub\libs;
 
-use humhub\models\Setting;
 use Yii;
+use yii\helpers\ArrayHelper;
+use humhub\components\Theme;
+use humhub\models\Setting;
 
 /**
- * Description of DynamicConfig
+ * DynamicConfig provides access to the dynamic configuration file.
  *
  * @author luke
  */
 class DynamicConfig extends \yii\base\Object
 {
+
+    /**
+     * Add an array to the dynamic configuration
+     * 
+     * @param array $new
+     */
+    public static function merge($new)
+    {
+        $config = self::load();
+        \yii\helpers\ArrayHelper::merge($new);
+        self::save($config);
+    }
 
     public static function onSettingChange($setting)
     {
@@ -122,7 +136,6 @@ class DynamicConfig extends \yii\base\Object
                     'keyPrefix' => Yii::$app->id
                 ];
             }
-            
         }
         // Add User settings
         $config['components']['user'] = array();
@@ -163,16 +176,7 @@ class DynamicConfig extends \yii\base\Object
             $mail['useFileTransport'] = true;
         }
         $config['components']['mailer'] = $mail;
-
-        // Add Theme
-        $theme = Setting::Get('theme');
-        if ($theme && $theme != "") {
-            $config['components']['view']['theme']['name'] = $theme;
-            $config['components']['mailer']['view']['theme']['name'] = $theme;
-        } else {
-            unset($config['components']['view']['theme']['name']);
-            unset($config['components']['mailer']['view']['theme']['name']);
-        }
+        $config = ArrayHelper::merge($config, Theme::getThemeConfig(Setting::Get('theme')));
         $config['params']['config_created_at'] = time();
 
         self::save($config);
