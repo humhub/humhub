@@ -34,13 +34,13 @@ $this->context->loadResources($this);
                 placement: "right"
         },
         {
-        element: ".controls-account",
+        element: ".edit-account",
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Edit</strong> account')); ?>,
                 content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'Click on this button to update your profile and account settings. You can also add more information to your profile.')); ?>,
                 placement: "left"
         },
         {
-        element: ".profile-nav-container",
+        element: ".layout-nav-container .panel",
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Profile</strong> menu')); ?>,
                 content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in “Modules” in the account settings menu.')); ?>,
                 placement: "right"
