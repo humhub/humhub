@@ -137,7 +137,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
             $class = $this->wallEntryClass;
             $widget = new $class;
             $widget->contentObject = $this;
-            return §widget;
+            return $widget;
         }
 
         return null;
