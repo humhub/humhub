@@ -23,6 +23,13 @@ class ShowFiles extends \yii\base\Widget
      */
     public function run()
     {
+        $widget = $this->object->getWallEntryWidget();
+
+        // File widget disabled in this wall entry
+        if ($widget->showFiles === false) {
+            return;
+        }
+
         $blacklisted_objects = explode(',', Setting::GetText('showFilesWidgetBlacklist', 'file'));
         if (!in_array(get_class($this->object), $blacklisted_objects)) {
             $files = \humhub\modules\file\models\File::getFilesOfObject($this->object);

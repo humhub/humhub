@@ -113,18 +113,34 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     /**
      * Returns the wall output widget of this content.
      * 
-     * @param array $params optional parameters to WallEntryWidget
+     * @param array $params optional parameters for WallEntryWidget
      * @return string
      */
     public function getWallOut($params = [])
     {
-        if ($this->wallEntryClass !== "") {
+        $wallEntryWidget = $this->getWallEntryWidget();
+        if ($wallEntryWidget !== null) {
+            Yii::configure($wallEntryWidget, $params);
+            return $wallEntryWidget->renderWallEntry();
+        }
+        return "";
+    }
+
+    /**
+     * Returns the assigned wall entry widget instance
+     * 
+     * @return \humhub\modules\content\widgets\WallEntry
+     */
+    public function getWallEntryWidget()
+    {
+        if ($this->wallEntryClass !== '') {
             $class = $this->wallEntryClass;
-            $params['contentObject'] = $this;
-            return $class::widget($params);
+            $widget = new $class;
+            $widget->contentObject = $this;
+            return §widget;
         }
 
-        return "";
+        return null;
     }
 
     /**
