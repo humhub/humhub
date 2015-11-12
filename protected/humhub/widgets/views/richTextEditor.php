@@ -43,9 +43,8 @@ use yii\helpers\Url;
         // init at plugin
         $('#<?php echo $id; ?>_contenteditable').atwho({
             at: "@",
-            data: ["Please type at least 3 characters"],
+            data: ["<?php echo Yii::t('base', 'Please type at least 3 characters') ?>"],
             insert_tpl: "<a href='<?php echo Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
-            //tpl: "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
             tpl: "<li class='hint' data-value=''>${name}</li>",
             search_key: "name",
             limit: 10,
@@ -72,7 +71,8 @@ use yii\helpers\Url;
 
                     // set plugin settings for showing hint
                     this.setting.highlight_first = false;
-                    this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
+                    this.setting.tpl = "<li data-value=''><?php echo Yii::t('base', 'Please type at least 3 characters') ?></li>";
+                    //this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
 
                     // check the char length and data-query attribute for changing plugin settings for showing results
                     if (query.length >= 3 && $('#<?php echo $id; ?>_contenteditable').attr('data-query') == '1') {
@@ -82,8 +82,11 @@ use yii\helpers\Url;
                         this.setting.tpl = "<li data-value='@${name}'>${image} ${name}</li>",
                             // load data
                             $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
-                                callback(data)
+                                callback(data);
                             });
+
+                        // reset query count
+                        query.length = 0;
 
                     }
                 }
