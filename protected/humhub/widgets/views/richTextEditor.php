@@ -79,7 +79,7 @@ use yii\helpers\Url;
 
                         // set plugin settings for showing results
                         this.setting.highlight_first = true;
-                        this.setting.tpl = "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
+                        this.setting.tpl = "<li data-value='@${name}'>${image} ${name}</li>",
                             // load data
                             $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
                                 callback(data)

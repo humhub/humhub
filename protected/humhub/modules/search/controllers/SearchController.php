@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\models\Setting;
+use humhub\modules\space\widgets\Image;
 
 /**
  * Search Controller provides search functions inside the application.
@@ -45,7 +46,7 @@ class SearchController extends Controller
     {
         $keyword = Yii::$app->request->get('keyword', "");
         $scope = Yii::$app->request->get('scope', "");
-        $page = (int) Yii::$app->request->get('page', 1);
+        $page = (int)Yii::$app->request->get('page', 1);
         $limitSpaceGuids = Yii::$app->request->get('limitSpaceGuids', "");
 
         $limitSpaces = array();
@@ -84,12 +85,12 @@ class SearchController extends Controller
         $pagination->pageSize = $searchResultSet->pageSize;
 
         return $this->render('index', array(
-                    'scope' => $scope,
-                    'keyword' => $keyword,
-                    'results' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination,
-                    'totals' => $this->getTotals($keyword, $options),
-                    'limitSpaceGuids' => $limitSpaceGuids
+            'scope' => $scope,
+            'keyword' => $keyword,
+            'results' => $searchResultSet->getResultInstances(),
+            'pagination' => $pagination,
+            'totals' => $this->getTotals($keyword, $options),
+            'limitSpaceGuids' => $limitSpaceGuids
         ));
     }
 
@@ -113,10 +114,10 @@ class SearchController extends Controller
                 'guid' => $container->guid,
                 'type' => ($container instanceof Space) ? "s" : "u",
                 'name' => $container->getDisplayName(),
-                'image' => $container->getProfileImage()->getUrl(),
+                'image' => ($container instanceof Space) ? Image::widget(['space' => $container, 'width' => 20]) : "<img class='img-rounded' src='" . $container->getProfileImage()->getUrl() . "' height='20' width='20' alt=''>",
                 'link' => $container->getUrl()
             );
-        }
+        };
 
         return $results;
     }
