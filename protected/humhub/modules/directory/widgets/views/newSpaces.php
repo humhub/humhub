@@ -17,6 +17,9 @@ use yii\helpers\Html;
                 'space' => $space,
                 'width' => 40,
                 'link' => true,
+                'htmlOptions' => [
+                    'style' => 'margin-bottom: 5px;',
+                ],
                 'linkOptions' => [
                     'class' => 'tt',
                     'data-toggle' => 'tooltip',

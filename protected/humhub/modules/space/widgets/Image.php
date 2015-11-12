@@ -116,7 +116,7 @@ class Image extends Widget
             $borderRadius = 2;
         }
 
-        return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px";
+        return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px;";
     }
 
 
