@@ -22,13 +22,15 @@ return [
 ?>
 ```
 
-## Enable Gii
+## Enable Gii 
+
+### Web
 
 Add following block to your local web configuration (/protected/config/web.php)
 
 ```php
 return [
-     ...
+     // ...
 	 'modules' => [
 		// ...
     
@@ -41,4 +43,20 @@ return [
 	]
 ];
 ?>
+```
+
+
+### Console
+
+Add following block to your local console configuration (/protected/config/console.php)
+
+```php
+return [
+    // ...
+    'bootstrap' => ['gii'],
+    'modules' => [
+        'gii' => 'yii\gii\Module',
+    ],
+    // ...
+];
 ```

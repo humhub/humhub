@@ -12,7 +12,7 @@ $user = $this->context->getUser();
             <?= \humhub\modules\user\widgets\ProfileMenu::widget(['user' => $this->context->user]); ?>
         </div>
 
-        <?php if (isset($this->hideSidebar) && $this->hideSidebar) : ?>
+        <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
             <div class="col-md-10 layout-content-container">
                 <?php echo $content; ?>
             </div>

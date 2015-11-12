@@ -50,6 +50,11 @@ class WallEntry extends Widget
     public $wallEntryLayout = "@humhub/modules/content/widgets/views/wallEntry.php";
 
     /**
+     * @var boolean show files widget containing a list of all assigned files
+     */
+    public $showFiles = true;
+
+    /**
      * @inheritdoc
      */
     public static function widget($config = [])
@@ -81,6 +86,30 @@ class WallEntry extends Widget
         }
 
         return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]); 
+    }
+
+    /**
+     * Renders the wall entry output 
+     * 
+     * @return string the output
+     * @throws \Exception
+     */
+    public function renderWallEntry()
+    {
+        ob_start();
+        ob_implicit_flush(false);
+        try {
+            $out = $this->render($this->wallEntryLayout, [
+                'content' => $this->run(),
+                'object' => $this->contentObject,
+                'wallEntryWidget' => $this
+            ]);
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
+
+        return ob_get_clean() . $out;
     }
 
 }

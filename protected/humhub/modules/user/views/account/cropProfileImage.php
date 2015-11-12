@@ -46,7 +46,7 @@ use yii\helpers\Url;
                         'bgColor' => 'black',
                         'bgOpacity' => '0.5',
                         'boxWidth' => '440',
-                        'onChange' => new yii\web\JsExpression('function(c){ console.log("fooo"); $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
+                        'onChange' => new yii\web\JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
                     ]
                 ]);
                 ?>
