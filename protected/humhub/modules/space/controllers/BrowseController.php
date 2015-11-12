@@ -11,6 +11,7 @@ namespace humhub\modules\space\controllers;
 use Yii;
 use humhub\components\Controller;
 use yii\helpers\Html;
+use humhub\modules\space\widgets\Image;
 
 /**
  * BrowseController
@@ -60,7 +61,7 @@ class BrowseController extends Controller
             $spaceInfo['guid'] = $space->guid;
             $spaceInfo['title'] = Html::encode($space->name);
             $spaceInfo['tags'] = Html::encode($space->tags);
-            $spaceInfo['image'] = $space->getProfileImage()->getUrl();
+            $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
             $spaceInfo['link'] = $space->getUrl();
 
             $json[] = $spaceInfo;

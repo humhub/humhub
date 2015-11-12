@@ -1,24 +1,14 @@
 <?php
 use yii\bootstrap\Html;
 
-?>
-
-<?php if ($link == true) : ?>
-    <?php echo Html::beginTag('a', $linkOptions); ?>
-<?php endif; ?>
-
-<?php
+if ($link == true) :
+    echo Html::beginTag('a', $linkOptions);
+endif;
 echo Html::beginTag('div', $acronymHtmlOptions);
 echo $acronym;
 echo Html::endTag('div');
-?>
-
-<?php
 echo Html::img($space->getProfileImage()->getUrl(), $imageHtmlOptions);
+if ($link == true) :
+    echo Html::endTag('a');
+endif;
 ?>
-
-<?php if ($link == true) : ?>
-    <?php echo Html::endTag('a'); ?>
-<?php endif; ?>
-
-
