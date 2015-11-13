@@ -188,6 +188,10 @@ class Theme extends \yii\base\Theme
             $theme = self::getThemeByName($theme);
         }
 
+        if ($theme === null) {
+            return [];
+        }
+
         return [
             'components' => [
                 'view' => [
