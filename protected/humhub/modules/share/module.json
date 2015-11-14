@@ -1,0 +1,9 @@
+{
+  "id": "share",
+  "name": "Share",
+  "description": "Allows user to share their option with others",
+  "keywords": [
+    "core"
+  ],
+  "version": "1.0"
+}

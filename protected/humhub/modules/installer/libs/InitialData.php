@@ -73,6 +73,7 @@ class InitialData
 
         // Basic
         Setting::Set('enable', 1, 'tour');
+        Setting::Set('enable', 1, 'share');
         Setting::Set('defaultLanguage', Yii::$app->language);
 
         // Notification

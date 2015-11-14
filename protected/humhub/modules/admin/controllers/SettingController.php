@@ -40,6 +40,7 @@ class SettingController extends Controller
         $form->timeZone = Setting::Get('timeZone');
         $form->dashboardShowProfilePostForm = Setting::Get('showProfilePostForm', 'dashboard');
         $form->tour = Setting::Get('enable', 'tour');
+        $form->share = Setting::Get('enable', 'share');
 
         $form->defaultSpaceGuid = "";
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $defaultSpace) {
@@ -52,6 +53,7 @@ class SettingController extends Controller
             Setting::Set('defaultLanguage', $form->defaultLanguage);
             Setting::Set('timeZone', $form->timeZone);
             Setting::Set('enable', $form->tour, 'tour');
+            Setting::Set('enable', $form->share, 'share');
             Setting::Set('showProfilePostForm', $form->dashboardShowProfilePostForm, 'dashboard');
 
             $spaceGuids = explode(",", $form->defaultSpaceGuid);

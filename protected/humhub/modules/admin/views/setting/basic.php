@@ -41,6 +41,7 @@ use yii\widgets\ActiveForm;
         <br>
         <br>
         <?php echo $form->field($model, 'tour')->checkbox(); ?>
+        <?php echo $form->field($model, 'share')->checkbox(); ?>
         <?php echo $form->field($model, 'dashboardShowProfilePostForm')->checkbox(); ?>
 
         <hr>
