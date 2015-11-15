@@ -74,10 +74,10 @@ use humhub\modules\admin\widgets\SpaceGridView;
                             return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
                         },
                                 'update' => function($url, $model) {
-                            return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/admin/edit'), ['class' => 'btn btn-primary btn-xs tt']);
+                            return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/manage'), ['class' => 'btn btn-primary btn-xs tt']);
                         },
                                 'delete' => function($url, $model) {
-                            return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/admin/delete'), ['class' => 'btn btn-danger btn-xs tt']);
+                            return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/manage/default/delete'), ['class' => 'btn btn-danger btn-xs tt']);
                         }
                             ],
                         ],
