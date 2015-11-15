@@ -201,8 +201,13 @@ input[type=select] {
 // Login
 // --------------------------------------------------
 .login-container {
-  background: @primary;
+  background-color: @primary;
+  background-image: linear-gradient(to right, @primary 0%, lighten(@primary, 10%) 50%, lighten(@primary, 10%) 100%),linear-gradient(to right, lighten(@primary, 5%) 0%, lighten(@primary, 25%) 51%, lighten(@primary, 20%) 100%);
+  background-size: 100% 100%;
+  position: relative;
+  overflow: hidden;
   padding-top: 40px;
+
   .text {
     color: #fff;
     font-size: 12px;
