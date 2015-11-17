@@ -1,9 +1,0 @@
-{
-  "id": "share",
-  "name": "Share",
-  "description": "Allows user to share their opinion with others",
-  "keywords": [
-    "core"
-  ],
-  "version": "1.0"
-}
