@@ -23,7 +23,6 @@ use humhub\modules\user\models\User;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property string $ldap_dn
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -48,15 +47,14 @@ class Group extends \yii\db\ActiveRecord
             [['space_id', 'created_by', 'updated_by'], 'integer'],
             [['description', 'adminGuids', 'defaultSpaceGuid'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name'], 'string', 'max' => 45],
-            [['ldap_dn'], 'string', 'max' => 255]
+            [['name'], 'string', 'max' => 45]
         ];
     }
 
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'ldap_dn','adminGuids', 'defaultSpaceGuid'];
+        $scenarios['edit'] = ['name', 'description', 'adminGuids', 'defaultSpaceGuid'];
         return $scenarios;
     }
 
@@ -73,8 +71,7 @@ class Group extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-            'ldap_dn' => 'Ldap Dn',
+            'updated_by' => 'Updated By'
         ];
     }
 

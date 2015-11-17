@@ -27,7 +27,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property string $ldap_dn
  * @property integer $auto_add_new_members
  * @property integer $contentcontainer_id
  * @property string $color
@@ -79,7 +78,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             [['visibility'], 'checkVisibility'],
             [['guid', 'name', 'website'], 'string', 'max' => 45],
             [['website'], 'url'],
-            [['ldap_dn'], 'string', 'max' => 255]
         ];
     }
 
@@ -91,10 +89,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $scenarios = parent::scenarios();
 
         $scenarios['edit'] = ['name', 'color', 'description', 'website', 'tags', 'join_policy', 'visibility', 'default_content_visibility'];
-        if (Yii::$app->user->isAdmin()) {
-            $scenarios['edit'][] = 'ldap_dn';
-        }
-
         $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
@@ -112,7 +106,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
             'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
-            'ldap_dn' => Yii::t('SpaceModule.models_Space', 'Ldap DN'),
             'visibility' => Yii::t('SpaceModule.models_Space', 'Visibility'),
             'status' => Yii::t('SpaceModule.models_Space', 'Status'),
             'tags' => Yii::t('SpaceModule.models_Space', 'Tags'),
@@ -452,7 +445,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
     /**
      * Return user groups
-     * 
+     *
      * @return array user groups
      */
     public function getUserGroups()
@@ -475,7 +468,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
     /**
      * Returns current users group
-     * 
+     *
      * @return string user group id
      */
     public function getUserGroup()
@@ -494,7 +487,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
     /**
      * Returns the default content visibility
-     * 
+     *
      * @see Content
      * @return int the default visiblity
      */

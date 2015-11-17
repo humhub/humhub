@@ -8,10 +8,11 @@
 
 namespace humhub\modules\user\libs;
 
+use Exception;
 use Yii;
 use yii\base\Object;
 use humhub\models\Setting;
-use Exception;
+use humhub\libs\ParameterEvent;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
@@ -22,8 +23,13 @@ use humhub\modules\space\models\Space;
  *
  * @since 0.5
  */
-class Ldap extends Object
+class Ldap extends \yii\base\Component
 {
+
+    /**
+     * @event event when a ldap user is updated
+     */
+    const EVENT_UPDATE_USER = 'update_user';
 
     /**
      * @var Zend_Ldap instance
@@ -48,6 +54,11 @@ class Ldap extends Object
         }
         return self::$instance;
     }
+
+    /**
+     * @var User currently handled user
+     */
+    public $currentUser = null;
 
     /**
      * Creates singleton HLdap Instance which configured Zend_Ldap Class
@@ -147,13 +158,13 @@ class Ldap extends Object
         $usernameAttribute = Setting::Get('usernameAttribute', 'authentication_ldap');
         if ($usernameAttribute == '') {
             $usernameAttribute = 'sAMAccountName';
-        }        
-        
+        }
+
         $emailAttribute = Setting::Get('emailAttribute', 'authentication_ldap');
         if ($emailAttribute == '') {
             $emailAttribute = 'mail';
-        }        
-        
+        }
+
         $username = $node->getAttribute($usernameAttribute, 0);
         $email = $node->getAttribute($emailAttribute, 0);
         $guid = $this->binToStrGuid($node->getAttribute('objectGUID', 0));
@@ -180,16 +191,6 @@ class Ldap extends Object
             Yii::info('Create ldap user ' . $username . '!');
         }
 
-        // Update Group Mapping
-        foreach (Group::find()->andWhere(['!=', 'ldap_dn', ""])->all() as $group) {
-            if (in_array($group->ldap_dn, $node->getAttribute('memberOf'))) {
-                if ($user->group_id != $group->id) {
-                    $userChanged = true;
-                    $user->group_id = $group->id;
-                }
-            }
-        }
-
         // Update Users Field
         if ($user->username != $username) {
             $userChanged = true;
@@ -203,8 +204,9 @@ class Ldap extends Object
         if ($user->validate()) {
 
             // Only Save user when something is changed
-            if ($userChanged || $user->isNewRecord)
+            if ($userChanged || $user->isNewRecord) {
                 $user->save();
+            }
 
             // Update Profile Fields
             foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
@@ -213,15 +215,8 @@ class Ldap extends Object
                 $user->profile->$profileFieldName = $node->getAttribute($ldapAttribute, 0);
             }
 
-            if ($user->profile->validate()) {
-                $user->profile->save();
-
-                // Update Space Mapping
-                foreach (Space::find()->andWhere(['!=', 'ldap_dn', ''])->all() as $space) {
-                    if (in_array($space->ldap_dn, $node->getAttribute('memberOf')) || strpos($node->getDn(), $space->ldap_dn) !== false) {
-                        $space->addMember($user->id);
-                    }
-                }
+            if ($user->profile->validate() && $user->profile->save()) {
+                $this->trigger(self::EVENT_UPDATE_USER, new ParameterEvent(['user' => $user, 'node' => $node]));
             } else {
                 Yii::error('Could not create or update ldap user profile! (' . print_r($user->profile->getErrors(), true) . ")");
             }

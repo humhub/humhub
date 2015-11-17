@@ -39,11 +39,6 @@ use yii\helpers\Html;
         ]);
         ?>
 
-        <?php if (Setting::Get('enabled', 'authentication_ldap')): ?>
-            <?php echo $form->field($group, 'ldap_dn')->textInput(['placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN')]); ?>
-
-        <?php endif; ?>
-
         <?php if (!$group->isNewRecord): ?>
             <strong>Permissions:</strong><br/>
             <?= PermissionGridEditor::widget(['permissionManager' => Yii::$app->user->permissionManager, 'groupId' => $group->id]); ?>
