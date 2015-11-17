@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\share\widgets;
+namespace humhub\modules\dashboard\widgets;
 
 
 /**
