@@ -140,7 +140,7 @@ class Select extends BaseType
         if (!$raw) {
             $options = $this->getSelectItems();
             if (isset($options[$value])) {
-                return Yii::t($this->profileField->getTranslationCategory(), $options[$value]);
+                return \yii\helpers\Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$value]));
             }
         }
 
