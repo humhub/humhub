@@ -193,12 +193,12 @@ class Text extends BaseType
         $value = $user->profile->$internalName;
 
         if (!$raw && $this->validator == self::VALIDATOR_EMAIL) {
-            return \yii\helpers\Html::a($value, $value);
+            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value);
         } elseif (!$raw && $this->validator == self::VALIDATOR_URL) {
-            return \yii\helpers\Html::a($value, $value, array('target' => '_blank'));
+            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value, array('target' => '_blank'));
         }
 
-        return $value;
+        return \yii\helpers\Html::encode($value);
     }
 
 }

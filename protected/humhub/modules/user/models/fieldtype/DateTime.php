@@ -113,8 +113,8 @@ class DateTime extends BaseType
 
         if ($date == "" || $date == "0000-00-00 00:00:00")
             return "";
-
-        return $date;
+     
+        return \yii\helpers\Html::encode($date);
     }
 
     /**

@@ -260,7 +260,13 @@ class BaseType extends \yii\base\Model
     public function getUserValue($user, $raw = true)
     {
         $internalName = $this->profileField->internal_name;
-        return $user->profile->$internalName;
+        
+        if ($raw) {
+            return $user->profile->$internalName;
+        } else {
+            return \yii\helpers\Html::encode($user->profile->$internalName);
+        }
+        
     }
 
     public function getLabels()
