@@ -70,7 +70,7 @@ use yii\helpers\Html;
                         <?php if ($user->tags) : ?>
                             <?php foreach ($user->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo Html::a($tag, Url::to(['/directory/directory/members', 'keyword' => 'tags:' . $tag]), array('class' => 'label label-default')); ?>
+                                    <?php echo Html::a($tag, Url::to(['/directory/directory/members', 'keyword' => $tag]), array('class' => 'label label-default')); ?>
                                     <?php
                                     $tag_count++;
                                 }

@@ -70,7 +70,7 @@ use yii\helpers\Url;
                         <?php if ($space->tags) : ?>
                             <?php foreach ($space->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo Html::a($tag, ['/directory/directory/spaces', 'keyword' => 'tags:' . $tag], array('class' => 'label label-default')); ?>
+                                    <?php echo Html::a($tag, ['/directory/directory/spaces', 'keyword' => $tag], array('class' => 'label label-default')); ?>
                                     <?php
                                     $tag_count++;
                                 }
