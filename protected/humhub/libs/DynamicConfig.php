@@ -62,6 +62,7 @@ class DynamicConfig extends \yii\base\Object
         }
 
         $config['settings'][$moduleId][$setting->name] = $value;
+        Yii::$app->params['settings'][$moduleId][$setting->name] = $value;
     }
 
     public static function getSettingValue($name, $moduleId)
