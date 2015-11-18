@@ -23,10 +23,7 @@ return [
             'username' => 'travis',
             'password' => '',
             'charset' => 'utf8',
-        ],
-        'request' => [
-            'enableCsrfValidation' => false,
-        ],        
+        ], 
         'mailer' => [
             'useFileTransport' => true,
         ],
