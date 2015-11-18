@@ -33,21 +33,48 @@ class DynamicConfig extends \yii\base\Object
         self::save($config);
     }
 
+    /**
+     * This method is called when a a setting is changed.
+     * 
+     * @see Setting
+     * @param Setting $setting
+     */
     public static function onSettingChange($setting)
     {
-        // Only rewrite static configuration file when necessary
-        if ($setting->module_id != 'mailing' &&
-                $setting->module_id != 'cache' &&
-                $setting->name != 'name' &&
-                $setting->name != 'defaultLanguage' &&
-                $setting->name != 'theme' &&
-                $setting->name != 'timeZone' &&
-                $setting->name != 'authentication_internal'
-        ) {
-            return;
+        $config = self::load();
+        self::setSettingValue($config['params'], $setting);
+        self::save($config);
+    }
+
+    public static function setSettingValue(&$config, $setting)
+    {
+
+        $moduleId = $setting->module_id;
+        if ($moduleId == '') {
+            $moduleId = 'core';
         }
 
-        self::rewrite();
+        $value = '';
+        if ($setting->value_text != '') {
+            $value = $setting->value_text;
+        } else {
+            $value = $setting->value;
+        }
+
+        $config['settings'][$moduleId][$setting->name] = $value;
+    }
+
+    public static function getSettingValue($name, $moduleId)
+    {
+        if ($moduleId == '') {
+            $moduleId = 'core';
+        }
+
+        if (isset(Yii::$app->params['settings'][$moduleId][$name])) {
+            return Yii::$app->params['settings'][$moduleId][$name];
+        }
+
+        return null;
     }
 
     /**
@@ -178,6 +205,10 @@ class DynamicConfig extends \yii\base\Object
         $config['components']['mailer'] = $mail;
         $config = ArrayHelper::merge($config, Theme::getThemeConfig(Setting::Get('theme')));
         $config['params']['config_created_at'] = time();
+
+        foreach (Setting::find()->all() as $setting) {
+            self::setSettingValue($config['params'], $setting);
+        }
 
         self::save($config);
     }

@@ -119,6 +119,11 @@ class Setting extends \yii\db\ActiveRecord
             return self::GetFixedValue($name, $moduleId);
         }
 
+        $configValue = DynamicConfig::getSettingValue($name, $moduleId);
+        if ($configValue !== null) {
+            return $configValue;
+        }
+
         $record = self::GetRecord($name, $moduleId);
         return $record->value;
     }
@@ -181,6 +186,10 @@ class Setting extends \yii\db\ActiveRecord
      */
     public static function GetText($name, $moduleId = "")
     {
+
+        if (DynamicConfig::getSettingValue($name, $moduleId) !== null) {
+            return DynamicConfig::getSettingValue($name, $moduleId);
+        }
 
         $record = self::GetRecord($name, $moduleId);
         return $record->value_text;

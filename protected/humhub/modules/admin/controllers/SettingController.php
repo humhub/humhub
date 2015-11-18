@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\libs\DynamicConfig;
 use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
@@ -74,6 +75,7 @@ class SettingController extends Controller
                     $space->save();
                 }
             }
+            DynamicConfig::rewrite();
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -222,6 +224,8 @@ class SettingController extends Controller
             Setting::Set('type', $form->type, 'cache');
             Setting::Set('expireTime', $form->expireTime, 'cache');
 
+            \humhub\libs\DynamicConfig::rewrite();
+
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
 
@@ -306,6 +310,8 @@ class SettingController extends Controller
             $form->systemEmailAddress = Setting::Set('systemEmailAddress', $form->systemEmailAddress, 'mailing');
             $form->systemEmailName = Setting::Set('systemEmailName', $form->systemEmailName, 'mailing');
 
+            DynamicConfig::rewrite();
+
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
@@ -350,6 +356,8 @@ class SettingController extends Controller
 
                 // read and save colors from current theme
                 \humhub\components\Theme::setColorVariables($form->theme);
+
+                DynamicConfig::rewrite();
 
                 Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
                 Yii::$app->response->redirect(Url::toRoute('/admin/setting/design'));
