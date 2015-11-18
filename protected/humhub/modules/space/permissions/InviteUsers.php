@@ -29,6 +29,13 @@ class InviteUsers extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
+    protected $fixedGroups = [
+        Space::USERGROUP_USER
+    ];
+
+    /**
+     * @inheritdoc
+     */
     protected $title = "Invite users";
 
     /**

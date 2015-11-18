@@ -25,6 +25,13 @@ class CreatePost extends \humhub\libs\BasePermission
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
     ];
+    
+    /**
+     * @inheritdoc
+     */
+    protected $fixedGroups = [
+        Space::USERGROUP_USER
+    ];
 
     /**
      * @inheritdoc

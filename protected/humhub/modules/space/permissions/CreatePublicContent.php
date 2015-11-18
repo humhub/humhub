@@ -29,6 +29,13 @@ class CreatePublicContent extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
+    protected $fixedGroups = [
+        Space::USERGROUP_USER
+    ];
+
+    /**
+     * @inheritdoc
+     */
     protected $title = "Create public content";
 
     /**
