@@ -33,15 +33,12 @@ use yii\grid\GridView;
         <?php echo $form->textField($group, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>
 
         <?php
-        /*
-          $this->widget('application.modules_core.space.widgets.SpacePickerWidget', array(
-          'inputId' => 'space_select',
-          'maxSpaces' => 1,
-          'model' => $group,
-          'attribute' => 'defaultSpaceGuid'
-          ));
-         *
-         */
+        echo \humhub\modules\space\widgets\Picker::widget([
+            'inputId' => 'space_select',
+            'maxSpaces' => 1,
+            'model' => $group,
+            'attribute' => 'defaultSpaceGuid'
+        ]);
         ?>
 
         <?php echo $form->labelEx($group, 'adminGuids'); ?>
