@@ -202,7 +202,7 @@ input[type=select] {
 // --------------------------------------------------
 .login-container {
   background-color: @primary;
-  background-image: linear-gradient(to right, @primary 0%, lighten(@primary, 10%) 50%, lighten(@primary, 10%) 100%),linear-gradient(to right, lighten(@primary, 5%) 0%, lighten(@primary, 25%) 51%, lighten(@primary, 20%) 100%);
+  background-image: linear-gradient(to right, @primary 0%, lighten(@primary, 10%) 50%, lighten(@primary, 10%) 100%), linear-gradient(to right, lighten(@primary, 5%) 0%, lighten(@primary, 25%) 51%, lighten(@primary, 20%) 100%);
   background-size: 100% 100%;
   position: relative;
   overflow: hidden;
@@ -1809,6 +1809,7 @@ a.list-group-item.active:focus {
   font-weight: 300;
   padding: 2px 8px 4px;
   font-weight: bold;
+  white-space: pre-wrap;
 }
 
 .tooltip {
@@ -2875,7 +2876,6 @@ img.bounceIn {
   border: 1px solid @info !important;
   background: lighten(@info, 25%) !important;
 }
-
 
 /**** Share Widget ****/
 
