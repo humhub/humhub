@@ -16,6 +16,7 @@ use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
+use humhub\modules\user\widgets\UserListBox;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -239,6 +240,22 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         $membership->save();
 
         return $this->redirect($space->getUrl());
+    }
+
+    /**
+     * Returns an user list which are space members
+     */
+    public function actionMembersList()
+    {
+
+        $space = $this->getSpace();
+        $memberQuery =  $space->getUsers();
+/*        $memberQuery->joinWith('user');
+        $memberQuery->andWhere(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);*/
+
+        $title = Yii::t('SpaceModule.controllers_MembershipController', "<strong>Members</strong>");
+
+        return $this->renderAjaxContent(UserListBox::widget(['query' => $memberQuery, 'title' => $title]));
     }
 
 }

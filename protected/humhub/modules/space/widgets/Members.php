@@ -39,7 +39,7 @@ class Members extends Widget
         $memberQuery->limit($this->maxMembers);
         $memberQuery->where(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);
 
-        return $this->render('members', ['space' => $this->space, 'members' => $memberQuery->all()]);
+        return $this->render('members', ['space' => $this->space, 'maxMembers' => $this->maxMembers, 'members' => $memberQuery->all()]);
     }
 
 }
