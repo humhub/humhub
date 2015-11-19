@@ -67,8 +67,6 @@ class SettingTest extends DbTestCase
 
         $this->assertEquals(Setting::GetText('longText'), $longText);
         $this->assertEquals(Setting::GetText('longText', 'testModule'), $longText . "2");
-
-        $this->assertEquals(Setting::Get('longText'), "");
     }
 
     public function testInstalled()
