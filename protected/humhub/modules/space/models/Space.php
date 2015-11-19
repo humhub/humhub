@@ -228,7 +228,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         // No one can join
         if ($this->join_policy == self::JOIN_POLICY_NONE)
             return
-                false;
+                    false;
 
         return true;
     }
@@ -434,14 +434,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
-        return $query;
-    }
-
-    public function getUsers()
-    {
-        $query = $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('space_membership', ['space_id' => 'id']);
-        //$query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
-        //$query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
         return $query;
     }
 

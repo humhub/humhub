@@ -247,15 +247,16 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
      */
     public function actionMembersList()
     {
-
-        $space = $this->getSpace();
-        $memberQuery =  $space->getUsers();
-/*        $memberQuery->joinWith('user');
-        $memberQuery->andWhere(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);*/
+        $query = User::find();
+        $query->join('LEFT JOIN', 'space_membership', 'space_membership.user_id=user.id');
+        $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
+        $query->andWhere(['user.status' => User::STATUS_ENABLED]);
+        $query->andWhere(['space_id' => $this->getSpace()->id]);
+        $query->orderBy(['space_membership.group_id' => SORT_DESC]);
 
         $title = Yii::t('SpaceModule.controllers_MembershipController', "<strong>Members</strong>");
 
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $memberQuery, 'title' => $title]));
+        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }
