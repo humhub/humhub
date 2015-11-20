@@ -249,7 +249,7 @@ class ConfigController extends Controller
                 $userModel->super_admin = 0;
                 $userModel->language = '';
                 $userModel->group_id = 1;
-                $userModel->tags = "SEM, SEO, MS Office";
+                $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
                 $userModel->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel->save();
 
@@ -279,7 +279,7 @@ class ConfigController extends Controller
                 $userModel2->super_admin = 0;
                 $userModel2->language = '';
                 $userModel2->group_id = 1;
-                $userModel2->tags = "Tag1, Tag2, Tag3";
+                $userModel2->tags = "Yoga, Travel, English, German, French";
                 $userModel2->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel2->save();
 
@@ -428,6 +428,7 @@ class ConfigController extends Controller
             $form->models['User']->status = User::STATUS_ENABLED;
             $form->models['User']->super_admin = true;
             $form->models['User']->language = '';
+            $form->models['User']->tags = 'Administration, Support, HumHub';
             $form->models['User']->last_activity_email = new \yii\db\Expression('NOW()');
             $form->models['User']->save();
 
