@@ -42,7 +42,8 @@ class Image extends Widget
         $this->linkOptions['href'] = $this->space->getUrl();
 
         if ($this->space->color != null) {
-            $color = Html::encode($this->space->color);;
+            $color = Html::encode($this->space->color);
+            ;
         } else {
             $color = '#d7d7d7';
         }
@@ -61,12 +62,12 @@ class Image extends Widget
 
 
         $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym";
-        $acronymHtmlOptions['style'] .= " background-color: ".$color."; width: ".$this->width."px; height: ".$this->height."px;";
-        $acronymHtmlOptions['style'] .= " ". $this->getDynamicStyles($this->width);
+        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
+        $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
 
-        $imageHtmlOptions['class'] .= " space-profile-image-". $this->space->id." img-rounded profile-user-photo";
-        $imageHtmlOptions['style'] .=  " width: ".$this->width."px; height: ".$this->height."px";
-        $imageHtmlOptions['alt'] =  Html::encode($this->space->name);
+        $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
+        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
+        $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
 
@@ -77,28 +78,26 @@ class Image extends Widget
         }
 
         return $this->render('image', [
-            'space' => $this->space,
-            'acronym' => $this->getAcronym(),
-            'link' => $this->link,
-            'linkOptions' => $this->linkOptions,
-            'acronymHtmlOptions' => $acronymHtmlOptions,
-            'imageHtmlOptions' => $imageHtmlOptions,
+                    'space' => $this->space,
+                    'acronym' => $this->getAcronym(),
+                    'link' => $this->link,
+                    'linkOptions' => $this->linkOptions,
+                    'acronymHtmlOptions' => $acronymHtmlOptions,
+                    'imageHtmlOptions' => $imageHtmlOptions,
         ]);
     }
 
-
     protected function getAcronym()
     {
-        $words = explode(" ", strtoupper($this->space->name));
         $acronym = "";
 
-        foreach ($words as $w) {
-            $acronym .= $w[0];
+        foreach (explode(" ", $this->space->name) as $w) {
+            if (mb_strlen($w) >= 1) {
+                $acronym .= mb_substr($w, 0, 1);
+            }
         }
 
-        $acronym = substr($acronym, 0, $this->acronymCount);
-
-        return $acronym;
+        return mb_substr(mb_strtoupper($acronym), 0, $this->acronymCount);
     }
 
     protected function getDynamicStyles($elementWidth)
@@ -118,7 +117,6 @@ class Image extends Widget
 
         return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px;";
     }
-
 
 }
 
