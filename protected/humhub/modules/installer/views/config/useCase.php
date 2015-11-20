@@ -3,27 +3,28 @@
 use humhub\modules\installer\controllers\ConfigController;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
+
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', 'Use <strong>Case</strong>'); ?>
+        <?php echo Yii::t('InstallerModule.views_config_useCase', '<strong>Konfiguration</strong>'); ?>
     </div>
 
     <div class="panel-body">
 
-        <p><?php echo Yii::t('InstallerModule.base', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'); ?></p>
-
+        <p><?php echo Yii::t('InstallerModule.views_config_useCase', 'To simplify the configuration, we have predefined setups for the most common applications with different options for modules and settings. You can adjust them during the next step.'); ?></p>
+        <br>
 
         <?php $form = ActiveForm::begin(); ?>
 
         <?=
         $form->field($model, 'useCase')->radioList([
-            ConfigController::USECASE_SOCIAL_COLLABORATION => 'Social Collaboration',
-            ConfigController::USECASE_SOCIAL_INTRANET => 'Social Intranet',
-            ConfigController::USECASE_EDUCATION => 'Education (e.g. for Schools or Universities)',
-            ConfigController::USECASE_COMMUNITY => 'Commmunity',
-            ConfigController::USECASE_OTHER => 'Other',
+            ConfigController::USECASE_SOCIAL_INTRANET => Yii::t('InstallerModule.views_config_useCase', 'My company (Social Intranet / Project management)'),
+            ConfigController::USECASE_EDUCATION => Yii::t('InstallerModule.views_config_useCase', 'My educational institution (school, university)'),
+            ConfigController::USECASE_CLUB => Yii::t('InstallerModule.views_config_useCase', 'My club'),
+            ConfigController::USECASE_COMMUNITY => Yii::t('InstallerModule.views_config_useCase', 'My community'),
+            ConfigController::USECASE_OTHER => Yii::t('InstallerModule.views_config_useCase', 'Skip this step, I want to set up everything manually'),
         ]);
         ?>
 
@@ -31,8 +32,6 @@ use yii\bootstrap\Html;
 
         <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary')); ?>
 
-<?php ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
-
-

@@ -39,7 +39,7 @@ class UseCaseForm extends \yii\base\Model
     public function attributeLabels()
     {
         return array(
-            'useCase' => Yii::t('InstallerModule.base', 'Planned Use Case'),
+            'useCase' => Yii::t('InstallerModule.forms_UseCaseForm', 'I want to use HumHub for:'),
         );
     }
 

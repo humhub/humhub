@@ -33,3 +33,4 @@ Bundled Software / Libaries
 * Bootstrap Markdown - http://www.codingdrama.com/bootstrap-markdown/
 * JShrink - https://github.com/tedious/JShrink
 * CSSCompressor - http://www.yiiframework.com/extension/minifyclientscript/
+* Sample avatars designed by http://www.freepik.com

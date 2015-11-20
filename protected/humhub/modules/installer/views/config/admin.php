@@ -5,7 +5,7 @@
     </div>
 
     <div class="panel-body">
-        <p><?php echo Yii::t('InstallerModule.views_config_admin', "You're almost done. In the last step you have to fill out the form to create an admin account. With this account you can manage the whole network."); ?></p>
+        <p><?php echo Yii::t('InstallerModule.views_config_admin', "You're almost done. In the this step you have to fill out the form to create an admin account. With this account you can manage the whole network."); ?></p>
         <hr/>
 
         <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false]); ?>

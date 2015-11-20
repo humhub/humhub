@@ -3,17 +3,18 @@
 use humhub\modules\installer\controllers\ConfigController;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Html;
+
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', 'Sample <strong>Data</strong>'); ?>
+        <?php echo Yii::t('InstallerModule.views_config_sample-data', '<strong>Example</strong> contents'); ?>
     </div>
 
     <div class="panel-body">
 
-        <p><?php echo Yii::t('InstallerModule.base', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'); ?></p>
-
+        <p><?php echo Yii::t('InstallerModule.views_config_sample-data', 'To avoid a blank dashboard after your initial login, HumHub can install example contents for you. Those will give you a nice general view of how HumHub works. You can always delete the individual contents.'); ?></p>
+        <br>
 
         <?php $form = ActiveForm::begin(); ?>
 
@@ -22,7 +23,7 @@ use yii\bootstrap\Html;
 
         <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary')); ?>
 
-<?php ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
 

@@ -34,6 +34,11 @@ class SecurityForm extends \yii\base\Model
     public $internalAllowAnonymousRegistration;
 
     /**
+     * @var boolean allow invite from external users by email
+     */
+    public $canInviteExternalUsersByEmail;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -49,9 +54,10 @@ class SecurityForm extends \yii\base\Model
     public function attributeLabels()
     {
         return array(
-            'allowGuestAccess' => Yii::t('InstallerModule.base', 'Allow access for not logged in users'),
-            'internalRequireApprovalAfterRegistration' => Yii::t('InstallerModule.base', 'New registered users requires approval by a administrator'),
-            'internalAllowAnonymousRegistration' => Yii::t('InstallerModule.base', 'Show new user registration'),
+            'allowGuestAccess' => Yii::t('InstallerModule.forms_SecurityForm', 'Allow access for non-registered users to public content (guest access)'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('InstallerModule.forms_SecurityForm', 'Newly registered users have to be activated by an admin first'),
+            'internalAllowAnonymousRegistration' => Yii::t('InstallerModule.forms_SecurityForm', 'External user can register (The registration form will be displayed at Login))'),
+            'canInviteExternalUsersByEmail' => Yii::t('InstallerModule.forms_SecurityForm', 'Registered members can invite new users via email'),
         );
     }
 
