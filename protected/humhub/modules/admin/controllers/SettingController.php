@@ -114,21 +114,21 @@ class SettingController extends Controller
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->internalUsersCanInvite = Setting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
-            $form->internalRequireApprovalAfterRegistration = Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
-            $form->internalAllowAnonymousRegistration = Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
-            $form->defaultUserGroup = Setting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
-            $form->defaultUserIdleTimeoutSec = Setting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
-            $form->allowGuestAccess = Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
+            Setting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
+            Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
+            Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
+            Setting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
+            Setting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
+            Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
 
             if (Setting::Get('allowGuestAccess', 'authentication_internal')) {
-                $form->defaultUserProfileVisibility = Setting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
+                Setting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
             }
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
-            Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication'));
+            #Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication'));
         }
 
         // Build Group Dropdown

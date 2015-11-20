@@ -91,7 +91,10 @@ class DynamicConfig extends \yii\base\Object
             self::save([]);
         }
 
-        $config = require($configFile);
+        // Load config file with file_get_contents and eval, cause require don't reload
+        // the file when it's changed on runtime
+        $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '', file_get_contents($configFile));
+        $config = eval($configContent);
 
         if (!is_array($config))
             return array();
