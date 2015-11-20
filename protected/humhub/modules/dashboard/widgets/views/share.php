@@ -40,9 +40,11 @@ use yii\helpers\Url;
         </a>
 
         <div class="clearfix"></div>
-        <hr>
-        <a href="javascript:hideSharePanel();" class="colorInfo"><i class="fa fa-times"></i> Hide this panel</a>
 
+        <?php if (!Yii::$app->user->isGuest): ?>
+            <hr>
+            <a href="javascript:hideSharePanel();" class="colorInfo"><i class="fa fa-times"></i> Hide this panel</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -50,11 +52,11 @@ use yii\helpers\Url;
     $(document).ready(function () {
         $('.popup').click(function (event) {
             var width = 575,
-                height = 400,
-                left = ($(window).width() - width) / 2,
-                top = ($(window).height() - height) / 2,
-                url = this.href,
-                opts = 'status=1' +
+                    height = 400,
+                    left = ($(window).width() - width) / 2,
+                    top = ($(window).height() - height) / 2,
+                    url = this.href,
+                    opts = 'status=1' +
                     ',width=' + width +
                     ',height=' + height +
                     ',top=' + top +
