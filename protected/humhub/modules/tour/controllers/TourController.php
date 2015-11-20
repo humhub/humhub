@@ -99,7 +99,7 @@ class TourController extends \humhub\components\Controller
             if ($user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
                 // set tour status to seen for current user
                 Yii::$app->user->getIdentity()->setSetting("welcome", 1, "tour");
-                return $this->redirect(Url::to(['/dashboard/dashboard', 'tour' => true]));
+                return $this->redirect(Url::to(['/dashboard/dashboard']));
             }
         }
 
