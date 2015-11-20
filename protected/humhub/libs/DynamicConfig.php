@@ -56,9 +56,9 @@ class DynamicConfig extends \yii\base\Object
 
         $value = '';
         if ($setting->value_text != '') {
-            $value = $setting->value_text;
+            $value = (string) $setting->value_text;
         } else {
-            $value = $setting->value;
+            $value = (string) $setting->value;
         }
 
         $config['settings'][$moduleId][$setting->name] = $value;
@@ -159,14 +159,15 @@ class DynamicConfig extends \yii\base\Object
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
+                'keyPrefix' => Yii::$app->id
             ];
 
             // Prefix APC Cache Keys
-            if ($cacheClass == 'yii\caching\ApcCache') {
-                $config['components']['cache'] = [
-                    'keyPrefix' => Yii::$app->id
-                ];
-            }
+            //if ($cacheClass == 'yii\caching\ApcCache') {
+            //    $config['components']['cache'] = [
+            //        'keyPrefix' => Yii::$app->id
+            //    ];
+            //}
         }
         // Add User settings
         $config['components']['user'] = array();

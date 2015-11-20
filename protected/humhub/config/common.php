@@ -83,6 +83,7 @@ $config = [
             'username' => '',
             'password' => '',
             'charset' => 'utf8',
+            'enableSchemaCache' => true,
         ],
     ],
     'params' => [
