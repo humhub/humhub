@@ -12,10 +12,10 @@ use yii\helpers\Url;
     </div>
     <div class="panel-body">
 
-        <p>Wir freuen uns, dass du <a href="https://www.humhub.org" target="_blank" class="colorInfo">HumHub</a> nutzt. Wenn es dir gefällt dann unterstütze das Projekt und empfehle es weiter.</p>
+        <p>We are glad that you are using <a href="https://www.humhub.org" target="_blank" class="colorInfo">HumHub</a>. If you like it, please support the project and share HumHub with your friends and colleagues.</p>
 
         <a class="popup"
-           href="http://twitter.com/intent/tweet?status=Ich empfehle @HumHub als Social Intranet. Es ist super schick, open source und ich bin schwer begeistert: https://www.humhub.org">
+           href="http://twitter.com/intent/tweet?status=I'm really impressed by @HumHub. An Open Source Social Network for team communication and collaboration. I love it! https://www.humhub.org">
             <div class="share-icon share-icon-twitter"><i class="fa fa-twitter"></i></div>
             <div class="share-text"><?php echo Yii::t('DashboardModule.widgets_views_share', 'Tweet about HumHub'); ?></div>
         </a>
@@ -29,14 +29,14 @@ use yii\helpers\Url;
         <div class="clearfix"></div>
         <a class="popup" href="https://plus.google.com/share?url=https://www.humhub.org">
             <div class="share-icon share-icon-google-plus"><i class="fa fa-google-plus"></i></div>
-            <div class="share-text"><?php echo Yii::t('DashboardModule.widgets_views_share', 'Share it on Google+'); ?></div>
+            <div class="share-text"><?php echo Yii::t('DashboardModule.widgets_views_share', 'Share on Google+'); ?></div>
         </a>
 
         <div class="clearfix"></div>
         <a class="popup"
            href="http://www.linkedin.com/shareArticle?mini=true&url=https://www.humhub.org&title=HumHub - The flexible Open Source Social Network Kit for Collaboration">
             <div class="share-icon share-icon-linkedin"><i class="fa fa-linkedin-square"></i></div>
-            <div class="share-text"><?php echo Yii::t('DashboardModule.widgets_views_share', 'Tell anyone on LinkedIn'); ?></div>
+            <div class="share-text"><?php echo Yii::t('DashboardModule.widgets_views_share', 'Share with people on LinkedIn '); ?></div>
         </a>
 
         <div class="clearfix"></div>
