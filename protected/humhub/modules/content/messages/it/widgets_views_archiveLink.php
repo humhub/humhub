@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Move to archive' => '',
-  'Unarchive' => 'Non archiviare',
+  'Move to archive' => 'Archivia',
+  'Unarchive' => 'Disarchivia',
 );

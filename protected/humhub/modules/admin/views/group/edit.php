@@ -27,7 +27,14 @@ use yii\helpers\Html;
 
         <?php echo $form->field($group, 'defaultSpaceGuid')->textInput(['id' => 'space_select']); ?>
 
-        <?php echo $form->field($group, 'adminGuids')->textInput(['id' => 'user_select']); ?>
+        <?php
+        echo \humhub\modules\space\widgets\Picker::widget([
+            'inputId' => 'space_select',
+            'maxSpaces' => 1,
+            'model' => $group,
+            'attribute' => 'defaultSpaceGuid'
+        ]);
+        ?>
 
         <?php
         echo \humhub\modules\user\widgets\UserPicker::widget([

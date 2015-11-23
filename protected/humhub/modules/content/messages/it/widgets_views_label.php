@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Archived' => '',
+  'Archived' => 'Archiviato',
   'Public' => 'Pubblico',
   'Sticked' => '',
 );

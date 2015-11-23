@@ -134,7 +134,7 @@ class Events extends \yii\base\Object
             return;
         }
 
-        $users = User::find()->joinWith(['httpSessions', 'profile'])->where(['status' => User::STATUS_ENABLED]);
+        $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->where(['status' => User::STATUS_ENABLED]);
         $totalUsers = $users->count();
         $done = 0;
         $mailsSent = 0;
