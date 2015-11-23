@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Member</strong> directory' => 'Elenco dei <strong>Membri</strong>',
+  '<strong>Member</strong> directory' => 'Elenco degli <strong>Utenti</strong>',
   'Follow' => 'Segui',
-  'No members found!' => 'Nessun membro trovato!',
+  'No members found!' => 'Nessun utente trovato!',
   'Search' => 'Cerca',
-  'Unfollow' => 'Non seguire',
-  'search for members' => 'cerca membri',
+  'Unfollow' => 'Non seguire più',
+  'search for members' => 'cerca utenti',
 );

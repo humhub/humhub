@@ -1,9 +1,9 @@
 <?php
 return array (
   'Accept Invite' => 'Accetta invito',
-  'Become member' => 'Diventa membro',
-  'Cancel membership' => 'Cancella membership',
-  'Cancel pending membership application' => 'Annulla richieste di membership pendenti',
+  'Become member' => 'Unisciti allo space',
+  'Cancel membership' => 'Abbandona lo space',
+  'Cancel pending membership application' => 'Annulla richiesta di membership',
   'Deny Invite' => 'Rifiuta invito',
-  'Request membership' => 'Richiedi membership',
+  'Request membership' => 'Chiedi di farne parte',
 );
