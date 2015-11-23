@@ -481,6 +481,8 @@ class ConfigController extends Controller
             Setting::Set('secret', \humhub\libs\UUID::v4());
         }
 
+        \humhub\libs\DynamicConfig::rewrite();
+        
         $this->redirect(['finished']);
     }
 
