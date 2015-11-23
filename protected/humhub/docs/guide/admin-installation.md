@@ -25,7 +25,7 @@ git clone https://github.com/humhub/humhub.git
 - Navigate to your HumHub webroot and fetch dependencies
 
 ```
-composer global require "fxp/composer-asset-plugin:~1.0.0"
+composer global require "fxp/composer-asset-plugin:~1.1.0"
 composer update
 ```
 
