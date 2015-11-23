@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Directory</strong> menu' => 'Menù degli <strong>elenchi</strong>',
+  '<strong>Directory</strong> menu' => 'Menù <strong>Elenchi</strong>',
   'Groups' => 'Gruppi',
-  'Members' => 'Membri',
+  'Members' => 'Utenti',
   'Spaces' => 'Space',
-  'User profile posts' => 'Messaggi del profilo utente',
+  'User profile posts' => 'Articoli dei profili utente',
 );
