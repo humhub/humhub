@@ -8,12 +8,12 @@ use yii\bootstrap\Html;
 <div id="name-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.views_config_useCase', '<strong>Konfiguration</strong>'); ?>
+        <?php echo Yii::t('InstallerModule.views_config_useCase', '<strong>Configuration</strong>'); ?>
     </div>
 
     <div class="panel-body">
 
-        <p><?php echo Yii::t('InstallerModule.views_config_useCase', 'To simplify the configuration, we have predefined setups for the most common applications with different options for modules and settings. You can adjust them during the next step.'); ?></p>
+        <p><?php echo Yii::t('InstallerModule.views_config_useCase', 'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.'); ?></p>
         <br>
 
         <?php $form = ActiveForm::begin(); ?>
