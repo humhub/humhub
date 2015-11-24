@@ -64,6 +64,19 @@ class Menu extends \humhub\widgets\BaseMenu
             ));
         }
 
+        if (!$this->space->isSpaceOwner()) {
+            $this->addItem(array(
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Cancel Membership'),
+                'group' => 'admin',
+                'url' => $this->space->createUrl('/space/membership/revoke-membership'),
+                'icon' => '<i class="fa fa-times"></i>',
+                'sortOrder' => 300,
+                'isActive' => (Yii::$app->controller->id == "module"),
+                'htmlOptions' => ['data-method' => 'POST']
+
+            ));
+        }
+
 
         if (!Yii::$app->user->isGuest || $this->space->isMember()) {
 
@@ -73,25 +86,36 @@ class Menu extends \humhub\widgets\BaseMenu
                 if ($membership->show_at_dashboard) {
 
                     $this->addItem(array(
-                        'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Show at dashboard'),
+                        'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Hide posts on dashboard'),
                         'group' => 'admin',
                         'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 0]),
-                        'icon' => '<i class="fa fa-check-square-o"></i>',
+                        'icon' => '<i class="fa fa-eye-slash"></i>',
                         'sortOrder' => 400,
                         'isActive' => (Yii::$app->controller->id == "module"),
-                        'htmlOptions' => ['data-method' => 'POST'],
+                        'htmlOptions' => [
+                            'data-method' => 'POST',
+                            'class' => 'tt',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'left',
+                            'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will hide new content from this space at your dashboard')
+                        ]
                     ));
 
                 } else {
 
                     $this->addItem(array(
-                        'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Show at dashboard'),
+                        'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Show posts on dashboard'),
                         'group' => 'admin',
                         'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 1]),
-                        'icon' => '<i class="fa fa-square-o"></i>',
+                        'icon' => '<i class="fa fa-eye"></i>',
                         'sortOrder' => 400,
                         'isActive' => (Yii::$app->controller->id == "module"),
-                        'htmlOptions' => ['data-method' => 'POST'],
+                        'htmlOptions' => ['data-method' => 'POST',
+                            'class' => 'tt',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'left',
+                            'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will show new content from this space at your dashboard')
+                        ]
                     ));
 
                 }
