@@ -119,6 +119,11 @@ class Setting extends \yii\db\ActiveRecord
             return self::GetFixedValue($name, $moduleId);
         }
 
+        $configValue = DynamicConfig::getSettingValue($name, $moduleId);
+        if ($configValue !== null) {
+            return $configValue;
+        }
+
         $record = self::GetRecord($name, $moduleId);
         return $record->value;
     }
@@ -182,6 +187,10 @@ class Setting extends \yii\db\ActiveRecord
     public static function GetText($name, $moduleId = "")
     {
 
+        if (DynamicConfig::getSettingValue($name, $moduleId) !== null) {
+            return DynamicConfig::getSettingValue($name, $moduleId);
+        }
+
         $record = self::GetRecord($name, $moduleId);
         return $record->value_text;
     }
@@ -197,11 +206,11 @@ class Setting extends \yii\db\ActiveRecord
     public static function IsFixed($name, $moduleId = "")
     {
         if ($moduleId == "") {
-            if (isset(Yii::$app->params['settings'][$name])) {
+            if (isset(Yii::$app->params['fixed-settings'][$name])) {
                 return true;
             }
         } else {
-            if (isset(Yii::$app->params['settings'][$moduleId][$name])) {
+            if (isset(Yii::$app->params['fixed-settings'][$moduleId][$name])) {
                 return true;
             }
         }
@@ -211,12 +220,12 @@ class Setting extends \yii\db\ActiveRecord
     public static function GetFixedValue($name, $moduleId = "")
     {
         if ($moduleId == "") {
-            if (isset(Yii::$app->params['settings'][$name])) {
-                return Yii::$app->params['settings'][$name];
+            if (isset(Yii::$app->params['fixed-settings'][$name])) {
+                return Yii::$app->params['fixed-settings'][$name];
             }
         } else {
-            if (isset(Yii::$app->params['settings'][$moduleId][$name])) {
-                return Yii::$app->params['settings'][$moduleId][$name];
+            if (isset(Yii::$app->params['fixed-settings'][$moduleId][$name])) {
+                return Yii::$app->params['fixed-settings'][$moduleId][$name];
             }
         }
         return "";

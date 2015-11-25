@@ -11,15 +11,19 @@ namespace humhub\widgets;
 use Yii;
 use yii\helpers\Html;
 use humhub\models\UrlOembed;
+use humhub\libs\ParameterEvent;
 
 /**
  * RichText dis
  *
  * @author luke
  */
-class RichText extends \yii\base\Widget
+class RichText extends \humhub\components\Widget
 {
 
+    /**
+     * @var string text to display
+     */
     public $text = "";
 
     /**
@@ -33,9 +37,19 @@ class RichText extends \yii\base\Widget
     public $minimal = false;
 
     /**
+     * @var \humhub\components\ActiveRecord this richtext belongs to
+     */
+    public $record = null;
+
+    /**
      * @var int
      */
     public $maxLength = 0;
+
+    /**
+     * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
+     */
+    const EVENT_BEFORE_OUTPUT = 'beforeOutput';
 
     public function run()
     {
@@ -71,8 +85,12 @@ class RichText extends \yii\base\Widget
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
-        
-        return nl2br($this->text);
+
+        $output = nl2br($this->text);
+
+        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+
+        return $output;
     }
 
     /**
@@ -83,12 +101,23 @@ class RichText extends \yii\base\Widget
      */
     public static function translateEmojis($text, $show = true)
     {
-        $emojis = array('Ambivalent', 'Angry', 'Confused', 'Cool', 'Frown', 'Gasp', 'Grin', 'Heart', 'Hearteyes', 'Laughing', 'Naughty', 'Slant', 'Smile', 'Wink', 'Yuck');
+        $emojis = array(
+            "Relaxed", "Yum", "Relieved", "Hearteyes", "Cool", "Smirk",
+            "KissingClosedEyes", "StuckOutTongue", "StuckOutTongueWinkingEye", "StuckOutTongueClosedEyes", "Disappointed", "Frown",
+            "ColdSweat", "TiredFace", "Grin", "Sob", "Gasp", "Gasp2",
+            "Laughing", "Joy", "Sweet", "Satisfied", "Innocent", "Wink",
+            "Ambivalent", "Expressionless", "Sad", "Slant", "Worried", "Kissing",
+            "KissingHeart", "Angry", "Naughty", "Furious", "Cry", "OpenMouth",
+            "Fearful", "Confused", "Weary", "Scream", "Astonished", "Flushed",
+            "Sleeping", "NoMouth", "Mask", "Worried", "Smile", "Muscle",
+            "Facepunch", "ThumbsUp", "ThumbsDown", "Beers", "Cocktail", "Burger",
+            "PoultryLeg", "Party", "Cake", "Sun", "Fire", "Heart"
+        );
 
-        return preg_replace_callback('@;(.*?);@', function($hit) use(&$show, &$emojis) {
+        return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".png"), array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
                 }
                 return '';
             }

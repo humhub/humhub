@@ -36,16 +36,12 @@ use yii\helpers\Html;
         <?php endif; ?>
 
         <hr />
-        <p>
             <span class="pull-right">
                 <?php echo Yii::powered(); ?>
             </span>
-            © <?php echo date("Y") ?> <a href="http://www.humhub.com">HumHub GmbH & Co. KG</a>
+            © <?php echo date("Y") ?> HumHub GmbH & Co. KG
             &middot;
-            <?php echo Html::a(Yii::t('AdminModule.views_about_index', 'Licences'), "http://www.humhub.com/licences", array('target' => '_blank')); ?>
-            <br />
-
-        </p>
+            <?php echo Html::a(Yii::t('AdminModule.views_about_index', 'Licences'), "http://www.humhub.org/licences", array('target' => '_blank')); ?>
 
     </div>
 </div>

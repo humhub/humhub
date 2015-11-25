@@ -10,11 +10,11 @@
             ?>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 layout-sidebar-container">
             <?php
             echo \humhub\modules\dashboard\widgets\Sidebar::widget(['widgets' => [
-                    [\humhub\modules\directory\widgets\NewMembers::className(), ['showMoreButton' => true], ['sortOrder' => 10]],
-                    [\humhub\modules\directory\widgets\NewSpaces::className(), ['showMoreButton' => true], ['sortOrder' => 10]],
+                    [\humhub\modules\directory\widgets\NewMembers::className(), ['showMoreButton' => true], ['sortOrder' => 300]],
+                    [\humhub\modules\directory\widgets\NewSpaces::className(), ['showMoreButton' => true], ['sortOrder' => 400]],
             ]]);
             ?>
         </div>

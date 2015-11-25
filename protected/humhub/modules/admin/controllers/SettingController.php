@@ -10,10 +10,12 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\libs\DynamicConfig;
 use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\libs\Ldap;
+
 /**
  * SettingController 
  * 
@@ -39,6 +41,7 @@ class SettingController extends Controller
         $form->timeZone = Setting::Get('timeZone');
         $form->dashboardShowProfilePostForm = Setting::Get('showProfilePostForm', 'dashboard');
         $form->tour = Setting::Get('enable', 'tour');
+        $form->share = Setting::Get('enable', 'share');
 
         $form->defaultSpaceGuid = "";
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $defaultSpace) {
@@ -51,6 +54,7 @@ class SettingController extends Controller
             Setting::Set('defaultLanguage', $form->defaultLanguage);
             Setting::Set('timeZone', $form->timeZone);
             Setting::Set('enable', $form->tour, 'tour');
+            Setting::Set('enable', $form->share, 'share');
             Setting::Set('showProfilePostForm', $form->dashboardShowProfilePostForm, 'dashboard');
 
             $spaceGuids = explode(",", $form->defaultSpaceGuid);
@@ -71,6 +75,7 @@ class SettingController extends Controller
                     $space->save();
                 }
             }
+            DynamicConfig::rewrite();
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -109,21 +114,21 @@ class SettingController extends Controller
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->internalUsersCanInvite = Setting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
-            $form->internalRequireApprovalAfterRegistration = Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
-            $form->internalAllowAnonymousRegistration = Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
-            $form->defaultUserGroup = Setting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
-            $form->defaultUserIdleTimeoutSec = Setting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
-            $form->allowGuestAccess = Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
+            Setting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
+            Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
+            Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
+            Setting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
+            Setting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
+            Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
 
             if (Setting::Get('allowGuestAccess', 'authentication_internal')) {
-                $form->defaultUserProfileVisibility = Setting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
+                Setting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
             }
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
-            Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication'));
+            #Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication'));
         }
 
         // Build Group Dropdown
@@ -219,6 +224,8 @@ class SettingController extends Controller
             Setting::Set('type', $form->type, 'cache');
             Setting::Set('expireTime', $form->expireTime, 'cache');
 
+            \humhub\libs\DynamicConfig::rewrite();
+
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
 
@@ -303,6 +310,8 @@ class SettingController extends Controller
             $form->systemEmailAddress = Setting::Set('systemEmailAddress', $form->systemEmailAddress, 'mailing');
             $form->systemEmailName = Setting::Set('systemEmailName', $form->systemEmailName, 'mailing');
 
+            DynamicConfig::rewrite();
+
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
@@ -321,9 +330,10 @@ class SettingController extends Controller
     public function actionDesign()
     {
         $form = new \humhub\modules\admin\models\forms\DesignSettingsForm;
-
-        #$assetPrefix = Yii::$app->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
-        #Yii::$app->clientScript->registerScriptFile($assetPrefix . '/uploadLogo.js');
+        $form->theme = Setting::Get('theme');
+        $form->paginationSize = Setting::Get('paginationSize');
+        $form->displayName = Setting::Get('displayNameFormat');
+        $form->spaceOrder = Setting::Get('spaceOrder', 'space');
 
         if ($form->load(Yii::$app->request->post())) {
 
@@ -347,17 +357,18 @@ class SettingController extends Controller
                 // read and save colors from current theme
                 \humhub\components\Theme::setColorVariables($form->theme);
 
+                DynamicConfig::rewrite();
+
                 Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
                 Yii::$app->response->redirect(Url::toRoute('/admin/setting/design'));
             }
-        } else {
-            $form->theme = Setting::Get('theme');
-            $form->paginationSize = Setting::Get('paginationSize');
-            $form->displayName = Setting::Get('displayNameFormat');
-            $form->spaceOrder = Setting::Get('spaceOrder', 'space');
         }
 
-        $themes = \humhub\components\Theme::getThemes();
+        $themes = [];
+        foreach (\humhub\components\Theme::getThemes() as $theme) {
+            $themes[$theme->name] = $theme->name;
+        }
+
         return $this->render('design', array('model' => $form, 'themes' => $themes, 'logo' => new \humhub\libs\LogoImage()));
     }
 

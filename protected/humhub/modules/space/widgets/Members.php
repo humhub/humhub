@@ -1,23 +1,37 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\widgets;
 
-use Yii;
 use \yii\base\Widget;
 
 /**
- * This widget will added to the sidebar, when on admin area
+ * Shows space members in sidebar
  *
  * @author Luke
- * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
 class Members extends Widget
 {
 
+    /**
+     * @var int maximum members to display
+     */
     public $maxMembers = 23;
+
+    /**
+     * @var \humhub\modules\space\models\Space
+     */
     public $space;
 
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         $memberQuery = $this->space->getMemberships();
@@ -25,15 +39,7 @@ class Members extends Widget
         $memberQuery->limit($this->maxMembers);
         $memberQuery->where(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);
 
-        $showApplicants = false;
-        $applicants = [];
-
-        if ($this->space->isAdmin() && $this->space->getApplicants()->count() != 0) {
-            $showApplicants = true;
-            $applicants = $this->space->getApplicants()->limit('15')->all();
-        }
-
-        return $this->render('spaceMembers', ['space' => $this->space, 'members' => $memberQuery->all(), 'showApplicants' => $showApplicants, 'applicants' => $applicants]);
+        return $this->render('members', ['space' => $this->space, 'maxMembers' => $this->maxMembers, 'members' => $memberQuery->all()]);
     }
 
 }

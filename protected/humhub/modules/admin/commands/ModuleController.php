@@ -113,13 +113,7 @@ class ModuleController extends \yii\console\Controller
 
         // Look online for module
         $onlineModules = new OnlineModuleManager();
-
-        try {
-            $moduleInfo = $onlineModules->getModuleInfo($moduleId);
-        } catch (Exception $ex) {
-            print "Could not find module online!";
-            return;
-        }
+        $moduleInfo = $onlineModules->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
             print "No compatible version for " . $moduleId . " found online!\n";
@@ -153,9 +147,9 @@ class ModuleController extends \yii\console\Controller
             try {
                 $this->actionUpdate($moduleId);
             } catch (\yii\base\InvalidParamException $ex) {
-                print "Module ". $moduleId. " - Error: ".$ex->getMessage()."\n";
+                print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             } catch (Exception $ex) {
-                print "Module ". $moduleId. " - Error: ".$ex->getMessage()."\n";
+                print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             }
         }
 

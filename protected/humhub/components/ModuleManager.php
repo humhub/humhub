@@ -60,8 +60,10 @@ class ModuleManager extends \yii\base\Component
     {
         parent::init();
 
-        if (!Yii::$app->params['installed'])
+        // Either database installed and not in installed state
+        if (!Yii::$app->params['databaseInstalled'] && !Yii::$app->params['installed']) {
             return;
+        }
 
         if (Yii::$app instanceof console\Application && !Yii::$app->isDatabaseInstalled()) {
             $this->enabledModules = [];
@@ -105,6 +107,7 @@ class ModuleManager extends \yii\base\Component
         }
 
         $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
+        $isInstallerModule = (isset($config['isInstallerModule']) && $config['isInstallerModule']);
 
         $this->modules[$config['id']] = $config['class'];
 
@@ -112,7 +115,11 @@ class ModuleManager extends \yii\base\Component
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
 
-        // Not enabled and no core module
+        if (!Yii::$app->params['installed'] && $isInstallerModule) {
+            $this->enabledModules[] = $config['id'];
+        }
+
+        // Not enabled and no core/installer module
         if (!$isCoreModule && !in_array($config['id'], $this->enabledModules)) {
             return;
         }
@@ -122,7 +129,7 @@ class ModuleManager extends \yii\base\Component
             $config['modules'] = array();
         }
 
-        if (isset($config['isCoreModule']) && $config['isCoreModule']) {
+        if ($isCoreModule) {
             $this->coreModules[] = $config['class'];
         }
 
@@ -143,6 +150,8 @@ class ModuleManager extends \yii\base\Component
 
         // Register Yii Module
         Yii::$app->setModule($config['id'], $moduleConfig);
+
+
 
         // Register Event Handlers
         if (isset($config['events'])) {
@@ -276,7 +285,7 @@ class ModuleManager extends \yii\base\Component
         /**
          * Remove Folder
          */
-        //if ($this->createBackup) {
+        if ($this->createBackup) {
             $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
             if (!is_dir($moduleBackupFolder)) {
                 if (!@mkdir($moduleBackupFolder)) {
@@ -286,11 +295,11 @@ class ModuleManager extends \yii\base\Component
 
             $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
             if (!@rename($module->getBasePath(), $backupFolderName)) {
-                throw new Exception("Could not remove module folder!");
+                throw new Exception("Could not remove module folder!" . $backupFolderName);
             }
-        //} else {
+        } else {
             //TODO: Delete directory
-        //}
+        }
     }
 
 }

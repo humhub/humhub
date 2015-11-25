@@ -8,8 +8,9 @@ use humhub\assets\AppAsset;
 
 AppAsset::register($this);
 ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<?php $this->beginPage() ?>
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title><?php echo Html::encode($this->title); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -25,30 +26,26 @@ AppAsset::register($this);
         <!-- end: render additional head -->
     </head>
     <body>
-        <?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-        <div class="container installer" style="margin: 0 auto; max-width: 700px;">
-            <div class="logo">
-                <?php if (Yii::$app->name == "HumHub") : ?>
-                    <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
-                        <img src="<?php echo Yii::getAlias("@web/resources/installer"); ?>/humhub-logo.png" alt="Logo">
-                    </a>
-                <?php else : ?>
-                    <h1 class="animated fadeIn"><?php echo Html::encode(Yii::$app->name); ?></h1>
-                <?php endif; ?>
-            </div>
-
-            <?php echo $content; ?>
-
-            <div class="text text-center powered">
-                Powered by <a href="http://www.humhub.org" target="_blank">HumHub</a>
-                <br/>
-                <br/>
-            </div>
+    <div class="container installer" style="margin: 0 auto; max-width: 700px;">
+        <div class="logo">
+            <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
+                <img src="<?php echo Yii::getAlias("@web/resources/installer"); ?>/humhub-logo.png" alt="Logo">
+            </a>
         </div>
 
-        <div class="clear"></div>
-        <?php $this->endBody() ?>
+        <?php echo $content; ?>
+
+        <div class="text text-center powered">
+            Powered by <a href="http://www.humhub.org" target="_blank">HumHub</a>
+            <br/>
+            <br/>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    <?php $this->endBody() ?>
     </body>
-</html>
+    </html>
 <?php $this->endPage() ?>

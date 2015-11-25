@@ -44,8 +44,7 @@ class NewVersionAvailable extends BaseNotification
 
     public function getLatestHumHubVersion()
     {
-        $onlineModuleManager = new \humhub\modules\admin\libs\OnlineModuleManager();
-        return $onlineModuleManager->getLatestHumHubVersion();
+        return \humhub\modules\admin\libs\HumHubAPI::getLatestHumHubVersion();
     }
 
 }

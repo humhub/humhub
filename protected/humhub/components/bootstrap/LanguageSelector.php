@@ -20,6 +20,8 @@ class LanguageSelector implements BootstrapInterface
 
     public function bootstrap($app)
     {
+        mb_internal_encoding('UTF-8');
+        
         $isGuest = (!$app->params['installed'] || $app->user->isGuest);
 
         if ($isGuest) {

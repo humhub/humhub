@@ -1,36 +1,31 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
+use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+
 ?>
 <div class="panel panel-default">
     <?php if (!$group->isNewRecord) : ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Edit</strong> group'); ?></div>
+        <div
+            class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Edit</strong> group'); ?></div>
     <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Create</strong> new group'); ?></div>
+        <div
+            class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Create</strong> new group'); ?></div>
     <?php endif; ?>
     <div class="panel-body">
 
-        <?php $form = CActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-        <?php echo $form->errorSummary($group); ?>
 
-        <div class="form-group">
-            <?php echo $form->labelEx($group, 'name'); ?>
-            <?php echo $form->textField($group, 'name', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Group name'))); ?>
-        </div>
+        <?php echo $form->field($group, 'name'); ?>
 
-        <div class="form-group">
-            <?php echo $form->labelEx($group, 'description'); ?>
-            <?php echo $form->textArea($group, 'description', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Description'))); ?>
-        </div>
+        <?php echo $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
-        <?php echo $form->labelEx($group, 'defaultSpaceGuid'); ?>
-        <?php echo $form->textField($group, 'defaultSpaceGuid', array('class' => 'form-control', 'id' => 'space_select')); ?>
+        <?php echo $form->field($group, 'defaultSpaceGuid')->textInput(['id' => 'space_select']); ?>
 
         <?php
         echo \humhub\modules\space\widgets\Picker::widget([
@@ -41,8 +36,6 @@ use yii\grid\GridView;
         ]);
         ?>
 
-        <?php echo $form->labelEx($group, 'adminGuids'); ?>
-        <?php echo $form->textArea($group, 'adminGuids', array('class' => 'span12', 'id' => 'user_select')); ?>
         <?php
         echo \humhub\modules\user\widgets\UserPicker::widget([
             'inputId' => 'user_select',
@@ -53,30 +46,10 @@ use yii\grid\GridView;
         ]);
         ?>
 
-        <?php if (Setting::Get('enabled', 'authentication_ldap')): ?>
-            <div class="form-group">
-                <?php echo $form->labelEx($group, 'ldap_dn'); ?>
-                <?php echo $form->textField($group, 'ldap_dn', array('class' => 'form-control', 'placeholder' => Yii::t('AdminModule.views_group_edit', 'Ldap DN'))); ?>
-            </div>
+        <?php if (!$group->isNewRecord): ?>
+            <strong>Permissions:</strong><br/>
+            <?= PermissionGridEditor::widget(['permissionManager' => Yii::$app->user->permissionManager, 'groupId' => $group->id]); ?>
         <?php endif; ?>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($group, 'can_create_public_spaces'); ?>
-                    <?php echo $group->getAttributeLabel('can_create_public_spaces'); ?>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($group, 'can_create_private_spaces'); ?>
-                    <?php echo $group->getAttributeLabel('can_create_private_spaces'); ?>
-                </label>
-            </div>
-        </div>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
@@ -86,7 +59,7 @@ use yii\grid\GridView;
         }
         ?>
 
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
     </div>
 </div>

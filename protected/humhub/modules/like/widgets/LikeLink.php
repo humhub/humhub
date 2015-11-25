@@ -58,10 +58,10 @@ class LikeLink extends \yii\base\Widget
             // if only one user likes
             if (count($likes) == 1) {
                 // output, if the current user is the only one
-                $userlist = Yii::t('LikeModule.widgets_views_likeLink', '<strong>You</strong> like this.');
+                $userlist = Yii::t('LikeModule.widgets_views_likeLink', 'You like this.');
             } else {
                 // output, if more users like this
-                $userlist .= Yii::t('LikeModule.widgets_views_likeLink', '<strong>You</strong><br>');
+                $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'You'). "\n";
             }
         }
 
@@ -72,14 +72,14 @@ class LikeLink extends \yii\base\Widget
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
-                    $userlist .= "<strong>" . Html::encode($likes[$i]->user->displayName) . "</strong>" . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
+                    $userlist .= Html::encode($likes[$i]->user->displayName) . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
                 }
             } else {
 
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
-                    $userlist .= "<strong>" . Html::encode($likes[$i]->user->displayName) . "</strong><br>";
+                    $userlist .= Html::encode($likes[$i]->user->displayName). "\n";
                 }
 
                 // check if exists more user as limited

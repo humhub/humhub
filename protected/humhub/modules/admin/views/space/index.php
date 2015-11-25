@@ -1,23 +1,15 @@
 <?php
 
-use humhub\modules\space\models\Space;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use humhub\modules\space\models\Space;
+use humhub\modules\admin\widgets\SpaceGridView;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
     <div class="panel-body">
-        <ul class="nav nav-pills">
-            <li class="active"><a
-                    href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
-            </li>
-        </ul>
+        <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
         <p />
-
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'In this overview you can find every space and manage it.'); ?>
         </p>
@@ -37,8 +29,7 @@ use yii\grid\GridView;
         );
 
 
-
-        echo GridView::widget([
+        echo SpaceGridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
@@ -83,10 +74,10 @@ use yii\grid\GridView;
                             return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
                         },
                                 'update' => function($url, $model) {
-                            return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/admin/edit'), ['class' => 'btn btn-primary btn-xs tt']);
+                            return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/manage'), ['class' => 'btn btn-primary btn-xs tt']);
                         },
                                 'delete' => function($url, $model) {
-                            return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/admin/delete'), ['class' => 'btn btn-danger btn-xs tt']);
+                            return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/manage/default/delete'), ['class' => 'btn btn-danger btn-xs tt']);
                         }
                             ],
                         ],
@@ -96,12 +87,3 @@ use yii\grid\GridView;
 
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.grid-view-loading').show();
-        $('.grid-view-loading').css('display', 'block !important');
-        $('.grid-view-loading').css('opacity', '1 !important');
-    });
-
-</script>

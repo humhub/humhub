@@ -9,29 +9,76 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use yii\helpers\Url;
 use humhub\models\Setting;
+use humhub\widgets\BaseMenu;
 
 /**
  * AccountTopMenu Widget
  *
  * @author luke
  */
-class AccountTopMenu extends \yii\base\Widget
+class AccountTopMenu extends BaseMenu
 {
 
-    public function run()
-    {
-        $user = Yii::$app->user->getIdentity();
+    public $template = "@humhub/modules/user/widgets/views/accountTopMenu";
 
-        $showUserApprovals = false;
-        if (!Yii::$app->user->isGuest && Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
-            $showUserApprovals = true;
+    public function init()
+    {
+        if (Yii::$app->user->isGuest) {
+            return;
         }
 
-        return $this->render('accountTopMenu', [
-                    'showUserApprovals' => $showUserApprovals,
-                    'user' => $user
-        ]);
+        $user = Yii::$app->user->getIdentity();
+        $this->addItem(array(
+            'label' => Yii::t('base', 'My profile'),
+            'icon' => '<i class="fa fa-user"></i>',
+            'url' => $user->createUrl('/user/profile'),
+            'sortOrder' => 100,
+        ));
+        $this->addItem(array(
+            'label' => Yii::t('base', 'Account settings'),
+            'icon' => '<i class="fa fa-edit"></i>',
+            'url' => Url::toRoute('/user/account/edit'),
+            'sortOrder' => 200,
+        ));
+
+        if (Yii::$app->user->isAdmin()) {
+            $this->addItem(array(
+                'label' => '---',
+                'url' => '#',
+                'sortOrder' => 300,
+            ));
+
+            $this->addItem(array(
+                'label' => Yii::t('base', 'Administration'),
+                'icon' => '<i class="fa fa-cogs"></i>',
+                'url' => Url::toRoute('/admin'),
+                'sortOrder' => 400,
+            ));
+        }
+
+        if (!Yii::$app->user->isGuest && Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
+            $this->addItem(array(
+                'label' => Yii::t('base', 'User Approvals'),
+                'icon' => '<i class="fa fa-check-circle"></i>',
+                'url' => Url::toRoute('/admin/approval'),
+                'sortOrder' => 500,
+            ));
+        }
+
+        $this->addItem(array(
+            'label' => '---',
+            'url' => '#',
+            'sortOrder' => 600,
+        ));
+
+        $this->addItem(array(
+            'label' => Yii::t('base', 'Logout'),
+            'icon' => '<i class="fa fa-sign-out"></i>',
+            'url' => Url::toRoute('/user/auth/logout'),
+            'sortOrder' => 700,
+        ));
     }
 
 }

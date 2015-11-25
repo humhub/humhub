@@ -1,32 +1,21 @@
 <?php
 
+use yii\helpers\Url;
+use yii\grid\GridView;
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
-use humhub\models\Setting;
-use humhub\modules\space\models\Space;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\grid\GridView;
+use humhub\modules\content\models\Content;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_settings', '<strong>Space</strong> Settings'); ?></div>
     <div class="panel-body">
-        <ul class="nav nav-pills">
-            <li><a
-                    href="<?php echo Url::toRoute('index'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></a>
-            </li>
-            <li class="active">
-                <a href="<?php echo Url::toRoute('settings'); ?>"><?php echo Yii::t('AdminModule.views_space_index', 'Settings'); ?></a>
-            </li>
-        </ul>
+        <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
         <p />
-
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'Define here default settings for new spaces.'); ?>
         </p>
 
         <br />
-
 
         <?php $form = CActiveForm::begin(['id' => 'space-settings-form']); ?>
 
@@ -50,6 +39,12 @@ use yii\grid\GridView;
             <?php echo $form->dropDownList($model, 'defaultVisibility', $visibilities, array('class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'))); ?>
             <?php echo $form->error($model, 'defaultVisibility'); ?>
         </div>
+
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'defaultContentVisibility'); ?>
+            <?php echo $form->dropDownList($model, 'defaultContentVisibility', [Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'), Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')], array('class' => 'form-control')); ?>
+        </div>
+
         <hr>
 
         <?php echo CHtml::submitButton(Yii::t('AdminModule.views_space_settings', 'Save'), array('class' => 'btn btn-primary')); ?>

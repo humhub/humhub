@@ -27,8 +27,4 @@ if ($membership === null) {
     <?php
 } elseif ($membership->status == Membership::STATUS_APPLICANT) {
     echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Cancel pending membership application'), $space->createUrl('/space/membership/revoke-membership'), array('class' => 'btn btn-primary'));
-} else {
-    if (!$space->isSpaceOwner()) {
-        echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', "Cancel membership"), $space->createUrl('//space/membership/revoke-membership'), array('class' => 'btn btn-danger', 'data-method' => 'POST'));
-    }
 }

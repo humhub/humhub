@@ -16,6 +16,7 @@ use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
+use humhub\modules\user\widgets\UserListBox;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -213,6 +214,49 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         }
 
         return $this->redirect($space->getUrl());
+    }
+
+    /**
+     * Toggle space content display at dashboard
+     * 
+     * @throws HttpException
+     */
+    public function actionSwitchDashboardDisplay()
+    {
+        $this->forcePostRequest();
+        $space = $this->getSpace();
+
+        // Load Pending Membership
+        $membership = $space->getMembership();
+        if ($membership == null) {
+            throw new HttpException(404, 'Membership not found!');
+        }
+
+        if (Yii::$app->request->get('show') == 0) {
+            $membership->show_at_dashboard = 0;
+        } else {
+            $membership->show_at_dashboard = 1;
+        }
+        $membership->save();
+
+        return $this->redirect($space->getUrl());
+    }
+
+    /**
+     * Returns an user list which are space members
+     */
+    public function actionMembersList()
+    {
+        $query = User::find();
+        $query->join('LEFT JOIN', 'space_membership', 'space_membership.user_id=user.id');
+        $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
+        $query->andWhere(['user.status' => User::STATUS_ENABLED]);
+        $query->andWhere(['space_id' => $this->getSpace()->id]);
+        $query->orderBy(['space_membership.group_id' => SORT_DESC]);
+
+        $title = Yii::t('SpaceModule.controllers_MembershipController', "<strong>Members</strong>");
+
+        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }

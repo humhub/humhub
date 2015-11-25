@@ -92,11 +92,21 @@ class Module extends \yii\base\Module
         $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
 
         if (is_file($moduleImageFile)) {
-            $published = $assetManager = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath);
-            return $published[1] . '/module_image.png';
+            return $this->getAssetsUrl() . '/module_image.png';
         }
 
         return Yii::getAlias("@web/img/default_module.jpg");
+    }
+
+    /**
+     * Get Assets Url
+     *
+     * @return String Image Url
+     */
+    public function getAssetsUrl()
+    {
+        $published = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath);
+        return $published[1];
     }
 
     /**
@@ -107,20 +117,15 @@ class Module extends \yii\base\Module
      */
     public function enable()
     {
-        if (!Yii::$app->hasModule($this->id)) {
-
-            $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-            if ($moduleEnabled == null) {
-                $moduleEnabled = new ModuleEnabled();
-                $moduleEnabled->module_id = $this->id;
-                $moduleEnabled->save();
-            }
-
-            $this->migrate();
-            return true;
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
+        if ($moduleEnabled == null) {
+            $moduleEnabled = new ModuleEnabled();
+            $moduleEnabled->module_id = $this->id;
+            $moduleEnabled->save();
         }
 
-        return false;
+        $this->migrate();
+        return true;
     }
 
     /**
@@ -131,11 +136,6 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-        // Is not enabled
-        if (!Yii::$app->hasModule($this->id)) {
-            return;
-        }
-
         // Disable module in database
         $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
         if ($moduleEnabled != null) {
@@ -238,6 +238,19 @@ class Module extends \yii\base\Module
     public function getConfigUrl()
     {
         return "";
+    }
+
+    /**
+     * Returns a list of permission objects this module provides.
+     * If a ContentContainer is provided, the method should only return applicable permissions in content container context.
+     * 
+     * @since 0.21
+     * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer 
+     * @return array list of permissions
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        return [];
     }
 
 }

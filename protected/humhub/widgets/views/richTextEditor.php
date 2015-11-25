@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 ?>
 
 <script type="text/javascript">
@@ -22,7 +23,18 @@ use yii\helpers\Url;
 
         }
 
-        var emojis = ["Ambivalent", "Angry", "Confused", "Cool", "Frown", "Gasp", "Grin", "Heart", "Hearteyes", "Laughing", "Slant", "Smile", "Wink", "Yuck"];
+        var emojis = [
+            "Relaxed", "Yum", "Relieved", "Hearteyes", "Cool", "Smirk",
+            "KissingClosedEyes", "StuckOutTongue", "StuckOutTongueWinkingEye", "StuckOutTongueClosedEyes", "Disappointed", "Frown",
+            "ColdSweat", "TiredFace", "Grin", "Sob", "Gasp", "Gasp2",
+            "Laughing", "Joy", "Sweet", "Satisfied", "Innocent", "Wink",
+            "Ambivalent", "Expressionless", "Sad", "Slant", "Worried", "Kissing",
+            "KissingHeart", "Angry", "Naughty", "Furious", "Cry", "OpenMouth",
+            "Fearful", "Confused", "Weary", "Scream", "Astonished", "Flushed",
+            "Sleeping", "NoMouth", "Mask", "Worried", "Smile", "Muscle",
+            "Facepunch", "ThumbsUp", "ThumbsDown", "Beers", "Cocktail", "Burger",
+            "PoultryLeg", "Party", "Cake", "Sun", "Fire", "Heart"
+        ];
 
         var emojis_list = $.map(emojis, function (value, i) {
             return {'id': i, 'name': value};
@@ -31,9 +43,8 @@ use yii\helpers\Url;
         // init at plugin
         $('#<?php echo $id; ?>_contenteditable').atwho({
             at: "@",
-            data: ["Please type at least 3 characters"],
+            data: ["<?php echo Yii::t('base', 'Please type at least 3 characters') ?>"],
             insert_tpl: "<a href='<?php echo Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
-            //tpl: "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
             tpl: "<li class='hint' data-value=''>${name}</li>",
             search_key: "name",
             limit: 10,
@@ -60,28 +71,33 @@ use yii\helpers\Url;
 
                     // set plugin settings for showing hint
                     this.setting.highlight_first = false;
-                    this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
+                    this.setting.tpl = "<li data-value=''><?php echo Yii::t('base', 'Please type at least 3 characters') ?></li>";
+                    //this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
 
                     // check the char length and data-query attribute for changing plugin settings for showing results
                     if (query.length >= 3 && $('#<?php echo $id; ?>_contenteditable').attr('data-query') == '1') {
 
                         // set plugin settings for showing results
                         this.setting.highlight_first = true;
-                        this.setting.tpl = "<li data-value='@${name}'><img class='img-rounded' src='${image}' height='20' width='20' alt=''> ${name}</li>",
-                                // load data
-                                $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
-                                    callback(data)
-                                });
+                        this.setting.tpl = "<li data-value='@${name}'>${image} ${name}</li>",
+                            // load data
+                            $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
+                                callback(data);
+                            });
+
+                        // reset query count
+                        query.length = 0;
 
                     }
                 }
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img class='atwho-emoji' data-emoji-name=';${name};' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.png'); ?>' />",
-            tpl: "<li data-value=';${name};'><img src='<?php echo Yii::getAlias('@web/img/emoji/${name}.png'); ?>' /> ${name}</li>",
+            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
+            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
             data: emojis_list,
-            limit: 10
+            highlight_first: true,
+            limit: 100
         });
 
 
@@ -148,7 +164,7 @@ use yii\helpers\Url;
         });
 
     })
-            ;
+    ;
 
 
     /**

@@ -34,7 +34,11 @@
                 '</div>'
 
             $('body').append(_modal);
-            $('#loaderModal').modal('show');
+            $('#loaderModal').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
 
 
         }

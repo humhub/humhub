@@ -43,7 +43,8 @@ abstract class Search extends \yii\base\Component
      *      model               Mixed String/Array
      *      type                Mixed String/Array
      *      checkPermissions    boolean (TRUE/false)
-     *      limitSpaces         Arraz (Limit Content to given Spaces(
+     *      limitSpaces         Array (Limit Content to given Spaces(
+     *      filters             Array (Additional filter Field=>Value)
      *
      * @param type $query
      * @param array $options

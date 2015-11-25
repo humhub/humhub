@@ -75,13 +75,7 @@ use yii\helpers\Url;
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropProfileImage', 'Close'); ?></button>
 
-            <div id="crop-loader" class="loader loader-modal hidden">
-                <div class="sk-spinner sk-spinner-three-bounce">
-                    <div class="sk-bounce1"></div>
-                    <div class="sk-bounce2"></div>
-                    <div class="sk-bounce3"></div>
-                </div>
-            </div>
+            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>

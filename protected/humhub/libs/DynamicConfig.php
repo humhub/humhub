@@ -8,32 +8,74 @@
 
 namespace humhub\libs;
 
-use humhub\models\Setting;
 use Yii;
+use yii\helpers\ArrayHelper;
+use humhub\components\Theme;
+use humhub\models\Setting;
 
 /**
- * Description of DynamicConfig
+ * DynamicConfig provides access to the dynamic configuration file.
  *
  * @author luke
  */
 class DynamicConfig extends \yii\base\Object
 {
 
+    /**
+     * Add an array to the dynamic configuration
+     * 
+     * @param array $new
+     */
+    public static function merge($new)
+    {
+        $config = self::load();
+        \yii\helpers\ArrayHelper::merge($new);
+        self::save($config);
+    }
+
+    /**
+     * This method is called when a a setting is changed.
+     * 
+     * @see Setting
+     * @param Setting $setting
+     */
     public static function onSettingChange($setting)
     {
-        // Only rewrite static configuration file when necessary
-        if ($setting->module_id != 'mailing' &&
-                $setting->module_id != 'cache' &&
-                $setting->name != 'name' &&
-                $setting->name != 'defaultLanguage' &&
-                $setting->name != 'theme' &&
-                $setting->name != 'timeZone' &&
-                $setting->name != 'authentication_internal'
-        ) {
-            return;
+        $config = self::load();
+        self::setSettingValue($config['params'], $setting);
+        self::save($config);
+    }
+
+    public static function setSettingValue(&$config, $setting)
+    {
+
+        $moduleId = $setting->module_id;
+        if ($moduleId == '') {
+            $moduleId = 'core';
         }
 
-        self::rewrite();
+        $value = '';
+        if ($setting->value_text != '') {
+            $value = (string) $setting->value_text;
+        } else {
+            $value = (string) $setting->value;
+        }
+
+        $config['settings'][$moduleId][$setting->name] = $value;
+        Yii::$app->params['settings'][$moduleId][$setting->name] = $value;
+    }
+
+    public static function getSettingValue($name, $moduleId)
+    {
+        if ($moduleId == '') {
+            $moduleId = 'core';
+        }
+
+        if (isset(Yii::$app->params['settings'][$moduleId][$name])) {
+            return Yii::$app->params['settings'][$moduleId][$name];
+        }
+
+        return null;
     }
 
     /**
@@ -49,7 +91,10 @@ class DynamicConfig extends \yii\base\Object
             self::save([]);
         }
 
-        $config = require($configFile);
+        // Load config file with file_get_contents and eval, cause require don't reload
+        // the file when it's changed on runtime
+        $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '', file_get_contents($configFile));
+        $config = eval($configContent);
 
         if (!is_array($config))
             return array();
@@ -114,15 +159,15 @@ class DynamicConfig extends \yii\base\Object
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
+                'keyPrefix' => Yii::$app->id
             ];
 
             // Prefix APC Cache Keys
-            if ($cacheClass == 'yii\caching\ApcCache') {
-                $config['components']['cache'] = [
-                    'keyPrefix' => Yii::$app->id
-                ];
-            }
-            
+            //if ($cacheClass == 'yii\caching\ApcCache') {
+            //    $config['components']['cache'] = [
+            //        'keyPrefix' => Yii::$app->id
+            //    ];
+            //}
         }
         // Add User settings
         $config['components']['user'] = array();
@@ -163,17 +208,12 @@ class DynamicConfig extends \yii\base\Object
             $mail['useFileTransport'] = true;
         }
         $config['components']['mailer'] = $mail;
-
-        // Add Theme
-        $theme = Setting::Get('theme');
-        if ($theme && $theme != "") {
-            $config['components']['view']['theme']['name'] = $theme;
-            $config['components']['mailer']['view']['theme']['name'] = $theme;
-        } else {
-            unset($config['components']['view']['theme']['name']);
-            unset($config['components']['mailer']['view']['theme']['name']);
-        }
+        $config = ArrayHelper::merge($config, Theme::getThemeConfig(Setting::Get('theme')));
         $config['params']['config_created_at'] = time();
+
+        foreach (Setting::find()->all() as $setting) {
+            self::setSettingValue($config['params'], $setting);
+        }
 
         self::save($config);
     }

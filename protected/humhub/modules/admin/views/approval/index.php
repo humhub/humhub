@@ -5,7 +5,7 @@ use humhub\compat\CHtml;
 use humhub\models\Setting;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use humhub\widgets\GridView;
 ?>
 <div class="panel panel-default">
     <div

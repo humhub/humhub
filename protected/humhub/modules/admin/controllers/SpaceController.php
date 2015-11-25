@@ -10,8 +10,10 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
 use humhub\models\Setting;
+use humhub\modules\space\models\Space;
 
 /**
  * SpaceController provides global space administration.
@@ -43,10 +45,12 @@ class SpaceController extends Controller
         $form = new \humhub\modules\admin\models\forms\SpaceSettingsForm;
         $form->defaultJoinPolicy = Setting::Get('defaultJoinPolicy', 'space');
         $form->defaultVisibility = Setting::Get('defaultVisibility', 'space');
+        $form->defaultContentVisibility = Setting::Get('defaultContentVisibility', 'space');
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Setting::Set('defaultJoinPolicy', $form->defaultJoinPolicy, 'space');
             Setting::Set('defaultVisibility', $form->defaultVisibility, 'space');
+            Setting::Set('defaultContentVisibility', $form->defaultContentVisibility, 'space');
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SpaceController', 'Saved'));

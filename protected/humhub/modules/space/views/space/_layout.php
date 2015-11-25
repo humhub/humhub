@@ -5,13 +5,13 @@ $space = $this->context->contentContainer;
     <div class="row">
         <div class="col-md-12">
             <?php echo humhub\modules\space\widgets\Header::widget(['space' => $space]); ?>
+
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 layout-nav-container">
             <?php echo \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
-            <?php echo \humhub\modules\space\widgets\AdminMenu::widget(['space' => $space]); ?>
-            <br/>
+            <br>
         </div>
 
         <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
@@ -26,7 +26,8 @@ $space = $this->context->contentContainer;
                 <?php
                 echo \humhub\modules\space\widgets\Sidebar::widget(['space' => $space, 'widgets' => [
                         [\humhub\modules\activity\widgets\Stream::className(), ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
-                        [\humhub\modules\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 20]]
+                        [\humhub\modules\space\modules\manage\widgets\PendingApprovals::className(), ['space' => $space], ['sortOrder' => 20]],
+                        [\humhub\modules\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 30]]
                 ]]);
                 ?>
             </div>

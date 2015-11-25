@@ -87,8 +87,12 @@ class CActiveForm extends \yii\widgets\ActiveForm
         return CHtml::activeFileInput($model, $attribute, $htmlOptions);
     }
 
-    public function hiddenField($model, $attribute, $htmlOptions = array())
+    public function hiddenField($model, $attribute, $htmlOptions = array(), $value=null)
     {
+        if ($value !== null) {
+            $model->$attribute = $value;
+        }
+        
         return CHtml::activeHiddenInput($model, $attribute, $htmlOptions);
     }
 

@@ -16,7 +16,7 @@
 var chosen = "";
 var spaceCount = 0;
 
-$.fn.spacepicker = function(options) {
+$.fn.spacepicker = function (options) {
 
     // set standard options
     options = $.extend({
@@ -52,12 +52,12 @@ $.fn.spacepicker = function(options) {
         }
 
         // simulate focus in
-        $('#space_input_field').focusin(function() {
+        $('#space_input_field').focusin(function () {
             $('#space_tags').addClass('focus');
         })
 
         // simulate focus out
-        $('#space_input_field').focusout(function() {
+        $('#space_input_field').focusout(function () {
             $('#space_tags').removeClass('focus');
         })
     }
@@ -68,9 +68,9 @@ $.fn.spacepicker = function(options) {
         $('#space_tags').prepend(html);
 
         // create function for every space tag to remove the element
-        $('#space_tags .spaceInput i').each(function() {
+        $('#space_tags .spaceInput i').each(function () {
 
-            $(this).click(function() {
+            $(this).click(function () {
 
                 // remove user tag
                 $(this).parent().remove();
@@ -90,13 +90,13 @@ $.fn.spacepicker = function(options) {
 
 
     // Set focus on the input field, by clicking the <ul> construct
-    jQuery('#space_tags').click(function() {
+    jQuery('#space_tags').click(function () {
 
         // set focus
         $('#space_input_field').focus();
     })
 
-    $('#space_input_field').keydown(function(event) {
+    $('#space_input_field').keydown(function (event) {
 
         // by pressing the tab key an the input is empty
         if ($(this).val() == "" && event.keyCode == 9) {
@@ -127,7 +127,7 @@ $.fn.spacepicker = function(options) {
 
     })
 
-    $('#space_input_field').keyup(function(event) {
+    $('#space_input_field').keyup(function (event) {
 
         // start search after a specific count of characters
         if ($('#space_input_field').val().length >= 3) {
@@ -192,7 +192,7 @@ $.fn.spacepicker = function(options) {
     })
 
 
-    $('#space_input_field').focusout(function() {
+    $('#space_input_field').focusout(function () {
 
         // set the plain text including user guids to the original input or textarea element
         $(options.inputId).val(parseSpaceInput());
@@ -207,7 +207,7 @@ $.fn.spacepicker = function(options) {
         // show loader while loading
         $('#spacepicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
 
-        jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function(json) {
+        jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function (json) {
 
             // remove existings entries
             $('#spacepicker li').remove();
@@ -217,8 +217,16 @@ $.fn.spacepicker = function(options) {
 
 
                 for (var i = 0; i < json.length; i++) {
+
+                    var _guid = json[i].guid;
+                    var _title = addslashes(htmlDecode(json[i].title));
+                    var _image = $('<div/>').text(json[i].image).html();
+                    _image = _image.replace(/"/g, '\\\'');
+
                     // build <li> entry
-                    var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + addslashes(htmlDecode(json[i].title)) + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].title + '</a></li>';
+                    var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + _guid + '\', \'' + _image + '\', \'' + _title + '\');">' + json[i].image + ' ' + _title + '</a></li>';
+
+                    console.log(str);
 
                     // append the entry to the <ul> list
                     $('#spacepicker').append(str);
@@ -265,10 +273,10 @@ $.fn.spacepicker = function(options) {
 }
 
 // Add a space tag for invitation
-function addSpaceTag(guid, image_url, name) {
+function addSpaceTag(guid, image, name) {
 
     // Building a new <li> entry
-    var _tagcode = '<li class="spaceInput" id="' + guid + '"><img class="img-rounded" src="' + image_url + '" alt="' + name + '" width="24" height="24" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" />' + name + '<i class="fa fa-times-circle"></i></li>';
+    var _tagcode = '<li class="spaceInput" id="' + guid + '">' + image + ' ' + name + '<i class="fa fa-times-circle"></i></li>';
 
 
     // insert the new created <li> entry into the <ul> contruct
@@ -276,7 +284,7 @@ function addSpaceTag(guid, image_url, name) {
 
 
     // remove tag, by clicking the close icon
-    $('#' + guid + " i").click(function() {
+    $('#' + guid + " i").click(function () {
 
         // remove space tag
         $('#' + guid).remove();
@@ -310,7 +318,7 @@ function parseSpaceInput() {
     $('#spaceInputResult').html($('#space_tags').html());
 
 
-    $('#spaceInputResult .spaceInput').each(function() {
+    $('#spaceInputResult .spaceInput').each(function () {
 
         // add the space guid as plain text
         $(this).after(this.id + ",");
@@ -332,7 +340,7 @@ function parseSpaceInput() {
 
 function addslashes(str) {
 
-	return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 
 function htmlDecode(value) {

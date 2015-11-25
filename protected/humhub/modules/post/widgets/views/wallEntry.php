@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$richOutput = humhub\widgets\RichText::widget(['text' => $post->message]);
+$richOutput = humhub\widgets\RichText::widget(['text' => $post->message, 'record' => $post]);
 ?>
 
 <span id="post-content-<?php echo $post->id; ?>" style="overflow: hidden; margin-bottom: 5px;">

@@ -174,24 +174,57 @@ class ZendLuceneSearch extends Search
             }
         }
 
+        // Add custom filters
+        if (isset($options['filters']) && is_array($options['filters'])) {
+            foreach ($options['filters'] as $field => $value) {
+                $term = new \ZendSearch\Lucene\Index\Term($value, $field);
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term($term), true);
+            }
+        }
+
+
         if ($options['checkPermissions'] && !Yii::$app->request->isConsoleRequest) {
+
             $permissionQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
 
-            //--- Public Content
-            $permissionQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')));
+            if (Yii::$app->user->isGuest) {
 
-            //--- Private Space Content
-            $privateSpaceContentQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
-            $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PRIVATE, 'visibility')), true);
-            $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Space::className(), 'containerModel')), true);
-            $privateSpacesListQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+                // Guest Content
+                $guestContentQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
+                $guestContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')), true);
+                $guestContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_TYPE_CONTENT, 'type')), true);
+                $guestContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Space::className(), 'containerModel')), true);
+                $guestSpaceListQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+                foreach (Space::find()->where(['visibility' => Space::VISIBILITY_ALL])->all() as $space) {
+                    $guestSpaceListQuery->addTerm(new \ZendSearch\Lucene\Index\Term($space->id, 'containerPk'));
+                }
+                $guestContentQuery->addSubquery($guestSpaceListQuery, true);
+                $permissionQuery->addSubquery($guestContentQuery);
 
-            foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
-                $privateSpacesListQuery->addTerm(new \ZendSearch\Lucene\Index\Term($space->id, 'containerPk'));
+                // Guest Spaces
+                $guestSpacesQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
+                $guestSpacesQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_TYPE_SPACE, 'type')), true);
+                $guestSpacesQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')), true);
+                $permissionQuery->addSubquery($guestSpacesQuery);
+
+                $permissionQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_TYPE_USER, 'type')));
+            } else {
+                //--- Public Content
+                $permissionQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')));
+
+                //--- Private Space Content
+                $privateSpaceContentQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
+                $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PRIVATE, 'visibility')), true);
+                $privateSpaceContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Space::className(), 'containerModel')), true);
+                $privateSpacesListQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+
+                foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
+                    $privateSpacesListQuery->addTerm(new \ZendSearch\Lucene\Index\Term($space->id, 'containerPk'));
+                }
+
+                $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
+                $permissionQuery->addSubquery($privateSpaceContentQuery);
             }
-
-            $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
-            $permissionQuery->addSubquery($privateSpaceContentQuery);
             $query->addSubquery($permissionQuery, true);
         }
 

@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\Url;
 use humhub\models\Setting;
 use humhub\modules\directory\widgets\Sidebar;
+use yii\web\HttpException;
 
 /**
  * Community/Directory Controller
@@ -21,13 +22,8 @@ use humhub\modules\directory\widgets\Sidebar;
  * @package humhub.modules_core.directory.controllers
  * @since 0.5
  */
-class DirectoryController extends \humhub\components\Controller
+class DirectoryController extends \humhub\modules\directory\components\Controller
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $subLayout = "@humhub/modules/directory/views/directory/_layout";
 
     /**
      * @inheritdoc
@@ -114,7 +110,7 @@ class DirectoryController extends \humhub\components\Controller
             'model' => \humhub\modules\space\models\Space::className(),
             'page' => $page,
             'sortField' => ($keyword == '') ? 'title' : null,
-            'pageSize' => Setting::Get('paginationSize')
+            'pageSize' => Setting::Get('paginationSize'),
         ]);
 
         $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
@@ -127,7 +123,7 @@ class DirectoryController extends \humhub\components\Controller
         return $this->render('spaces', array(
                     'keyword' => $keyword,
                     'spaces' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination
+                    'pagination' => $pagination,
         ));
     }
 

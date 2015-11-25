@@ -11,6 +11,7 @@ namespace humhub\modules\file\controllers;
 use Yii;
 use yii\web\HttpException;
 use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 use humhub\models\Setting;
 use humhub\modules\file\models\File;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -131,15 +132,17 @@ class FileController extends \humhub\components\Controller
      */
     public function actionDownload()
     {
+        // GUID of file
         $guid = Yii::$app->request->get('guid');
+        // Force Download Flag
+        $download = Yii::$app->request->get('download', 0);
+        // Optional suffix of file (e.g. scaled variant of image)
         $suffix = Yii::$app->request->get('suffix');
 
         $file = File::findOne(['guid' => $guid]);
-
         if ($file == null) {
             throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
-
         if (!$file->canRead()) {
             throw new HttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
         }
@@ -151,12 +154,18 @@ class FileController extends \humhub\components\Controller
             throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
         }
 
+        $options = [
+            'inline' => false,
+            'mimeType' => FileHelper::getMimeTypeByExtension($fileName)
+        ];
+
+        if ($download != 1 && in_array($options['mimeType'], Yii::$app->getModule('file')->inlineMimeTypes)) {
+            $options['inline'] = true;
+        }
+
         if (!Setting::Get('useXSendfile', 'file')) {
-            Yii::$app->response->sendFile($filePath . DIRECTORY_SEPARATOR . $fileName);
+            Yii::$app->response->sendFile($filePath . DIRECTORY_SEPARATOR . $fileName, $fileName, $options);
         } else {
-            $options = array(
-                'saveName' => $fileName,
-            );
             if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') === 0) {
                 // set nginx specific X-Sendfile header name
                 $options['xHeader'] = 'X-Accel-Redirect';

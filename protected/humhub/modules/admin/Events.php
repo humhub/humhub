@@ -48,15 +48,13 @@ class Events extends \yii\base\Object
     {
         $controller = $event->sender;
 
-        if (!Yii::$app->getModule('admin')->marketplaceEnabled) {
+        if (!Yii::$app->params['humhub']['apiEnabled']) {
             return;
         }
-
+        
         $controller->stdout("Checking for new HumHub version... ");
 
-        $onlineModuleManager = new OnlineModuleManager();
-        $latestVersion = $onlineModuleManager->getLatestHumHubVersion();
-
+        $latestVersion = libs\HumHubAPI::getLatestHumHubVersion();
         if ($latestVersion != "" && version_compare($latestVersion, Yii::$app->version, ">")) {
             $notification = new notifications\NewVersionAvailable();
             $notification->sendBulk(User::find()->where(['super_admin' => 1]));

@@ -33,15 +33,19 @@ $container = $object->content->container;
 
             <!-- Show space image, if you are outside from a space -->
             <?php if (!Yii::$app->controller instanceof ContentContainerController && $object->content->container instanceof Space): ?>
-                <a href="<?php echo $object->content->container->getUrl(); ?>"
-                   class="pull-left">
-                    <img class="media-object img-rounded img-space pull-left" data-src="holder.js/20x20" alt="20x20"
-                         style="width: 20px; height: 20px;"
-                         src="<?php echo $object->content->container->getProfileImage()->getUrl(); ?>">
-                </a>
+                <?php echo \humhub\modules\space\widgets\Image::widget([
+                    'space' => $object->content->container,
+                    'width' => 20,
+                    'htmlOptions' => [
+                        'class' => 'img-space',
+                    ],
+                    'link' => 'true',
+                    'linkOptions' => [
+                        'class' => 'pull-left',
+                    ],
+                ]); ?>
+
             <?php endif; ?>
-
-
 
 
             <div class="media-body">
@@ -60,7 +64,7 @@ $container = $object->content->container;
                         <?php if (!Yii::$app->controller instanceof ContentContainerController && $container instanceof Space): ?>
                             <?php echo Yii::t('ContentModule.views_wallLayout', 'in'); ?> <strong><a
                                     href="<?php echo $container->getUrl(); ?>"><?php echo Html::encode($container->name); ?></a></strong>&nbsp;
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php echo \humhub\modules\content\widgets\WallEntryLabels::widget(['object' => $object]); ?>
 

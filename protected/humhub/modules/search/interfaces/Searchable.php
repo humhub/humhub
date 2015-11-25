@@ -18,6 +18,8 @@ namespace humhub\modules\search\interfaces;
 interface Searchable
 {
 
+    const EVENT_SEARCH_ADD = 'searchadd';
+
     public function getWallOut();
 
     public function getSearchAttributes();

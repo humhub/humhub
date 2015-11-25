@@ -17,6 +17,7 @@ use humhub\widgets\AjaxButton;
 
     <?php echo humhub\widgets\RichTextEditor::widget(['id' => 'newCommentForm_' . $id]); ?>
 
+    <div class="comment-buttons">
 
     <?php
     // Creates Uploading Button
@@ -34,25 +35,27 @@ use humhub\widgets\AjaxButton;
             $('#newCommentForm_" . $id . "_contenteditable').addClass('atwho-placeholder');
             $('#loader-" . $id . "').remove();
             $('#newCommentForm_" . $id . "_contenteditable').show();
+            $('.comment-buttons').show();
             resetUploader('comment_upload_" . $id . "');
     }";
 
-    // TODO: Submit?
     echo AjaxButton::widget([
-        'label' => Yii::t('CommentModule.widgets_views_form', 'Post'),
+        'label' => Yii::t('CommentModule.widgets_views_form', 'Send'),
         'ajaxOptions' => [
             'type' => 'POST',
-            'beforeSend' => new yii\web\JsExpression("function(html){  $('#newCommentForm_" . $id . "_contenteditable').hide(); showLoader('" . $id . "'); }"),
+            'beforeSend' => new yii\web\JsExpression("function(html){  $('#newCommentForm_" . $id . "_contenteditable').hide(); $('.comment-buttons').hide(); showLoader('" . $id . "'); }"),
             'success' => new yii\web\JsExpression($jsSuccess),
             'url' => Url::to(['/comment/comment/post']),
         ],
         'htmlOptions' => [
             'id' => "comment_create_post_" . $id,
-            'class' => 'btn btn-small btn-primary hidden',
-            'style' => '',
+            'class' => 'btn btn-sm btn-default btn-comment-submit pull-left',
+            'type' => 'submit'
         ],
     ]);
     ?>
+
+    </div>
 
     <?php echo Html::endForm(); ?>
 
@@ -69,68 +72,15 @@ use humhub\widgets\AjaxButton;
 
     $(document).ready(function () {
 
-        // add attribute to manage the enter/submit event (prevent submit, if user press enter to insert an item from atwho plugin)
-        $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
-
-        // Fire click event for comment button by typing enter
-        $('#newCommentForm_<?php echo $id; ?>_contenteditable').keydown(function (event) {
-
-
-            // by pressing enter without shift
-            if (event.keyCode == 13 && event.shiftKey == false) {
-
-                // prevent default behavior
-                event.cancelBubble = true;
-                event.returnValue = false;
-                event.preventDefault();
-
-
-                // check if a submit is allowed
-                if ($('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit') == 'true') {
-
-                    // get plain input text from contenteditable DIV
-                    $('#newCommentForm_<?php echo $id; ?>').val(getPlainInput($('#newCommentForm_<?php echo $id; ?>_contenteditable').clone()));
-
-                    // set focus to submit button
-                    $('#comment_create_post_<?php echo $id; ?>').focus();
-
-                    // emulate the click event
-                    $('#comment_create_post_<?php echo $id; ?>').click();
-
-                }
-            }
-
-            return event.returnValue;
-
-        });
-
         // set the size for one row (Firefox)
         $('#newCommentForm_<?php echo $id; ?>').css({height: '36px'});
 
         // add autosize function to input
         $('.autosize').autosize();
 
-
-        $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("shown.atwho", function (event, flag, query) {
-            // prevent the submit event, by changing the attribute
-            $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'false');
-        });
-
-        $('#newCommentForm_<?php echo $id; ?>_contenteditable').on("hidden.atwho", function (event, flag, query) {
-
-            var interval = setInterval(changeSubmitState, 10);
-
-            // allow the submit event, by changing the attribute (with delay, to prevent the first enter event for insert an item from atwho plugin)
-            function changeSubmitState() {
-                $('#newCommentForm_<?php echo $id; ?>_contenteditable').attr('data-submit', 'true');
-                clearInterval(interval);
-            }
-        });
-
-
     });
 
-    // show laoder during ajax call
+    // show loader during ajax call
     function showLoader(comment_id) {
         $('#newCommentForm_' + comment_id + '_contenteditable').after('<div class="loader" id="loader-' + comment_id + '" style="padding: 15px 0;"><div class="sk-spinner sk-spinner-three-bounce" style="margin:0;"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div>');
     }

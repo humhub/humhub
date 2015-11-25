@@ -40,24 +40,29 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      */
     public function readable($user = null)
     {
-        if ($user === null) {
+        if ($user === null && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         }
 
         $this->joinWith(['content', 'content.space']);
-        $this->leftJoin('space_membership', 'content.space_id=space_membership.space_id AND space_membership.user_id=:userId', [':userId' => $user->id]);
 
-        // Build Access Check based on Content Container
-        $conditionSpace = 'space.id IS NOT NULL AND (';                                         // space content
-        $conditionSpace .= ' (space_membership.status=3)';                                      // user is space member
-        $conditionSpace .= ' OR (content.visibility=1 AND space.visibility != 0)';               // visibile space and public content
-        $conditionSpace .= ')';
-        $conditionUser = 'space.id IS NULL AND (';                                              // No Space Content -> User
-        $conditionUser .= '   (content.visibility = 1) OR';                                     // public visible content
-        $conditionUser .= '   (content.visibility = 0 AND content.user_id=' . $user->id . ')';  // private content of user
-        $conditionUser .= ')';
+        if ($user !== null) {
+            $this->leftJoin('space_membership', 'content.space_id=space_membership.space_id AND space_membership.user_id=:userId', [':userId' => $user->id]);
+            // Build Access Check based on Content Container
+            $conditionSpace = 'space.id IS NOT NULL AND (';                                         // space content
+            $conditionSpace .= ' (space_membership.status=3)';                                      // user is space member
+            $conditionSpace .= ' OR (content.visibility=1 AND space.visibility != 0)';               // visibile space and public content
+            $conditionSpace .= ')';
+            $conditionUser = 'space.id IS NULL AND (';                                              // No Space Content -> User
+            $conditionUser .= '   (content.visibility = 1) OR';                                     // public visible content
+            $conditionUser .= '   (content.visibility = 0 AND content.user_id=' . $user->id . ')';  // private content of user
+            $conditionUser .= ')';
+            $this->andWhere("{$conditionSpace} OR {$conditionUser}");
+        } else {
+            $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL. ' AND content.visibility=1');
+        }
 
-        $this->andWhere("{$conditionSpace} OR {$conditionUser}");
+
 
         return $this;
     }

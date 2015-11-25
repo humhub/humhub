@@ -3,7 +3,7 @@ $this->pageTitle = Yii::t('DashboardModule.views_dashboard_index', 'Dashboard');
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8 layout-content-container">
             <?php
             if ($showProfilePostForm) {
                 echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => \Yii::$app->user->getIdentity()]);
@@ -18,10 +18,10 @@ $this->pageTitle = Yii::t('DashboardModule.views_dashboard_index', 'Dashboard');
             ]);
             ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 layout-sidebar-container">
             <?php
             echo \humhub\modules\dashboard\widgets\Sidebar::widget(['widgets' => [
-                    [\humhub\modules\activity\widgets\Stream::className(), ['streamAction' => '/dashboard/dashboard/stream'], ['sortOrder' => 10]]
+                    [\humhub\modules\activity\widgets\Stream::className(), ['streamAction' => '/dashboard/dashboard/stream'], ['sortOrder' => 150]]
             ]]);
             ?>
         </div>

@@ -5,10 +5,13 @@
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\dashboard;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\models\Setting;
+use humhub\modules\dashboard\widgets\ShareWidget;
 
 /**
  * Description of Events
@@ -36,6 +39,15 @@ class Events
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
         ));
+    }
+
+    public static function onSidebarInit($event)
+    {
+        if (Setting::Get('enable', 'share') == 1) {
+            if (Yii::$app->user->isGuest || Yii::$app->user->getIdentity()->getSetting("hideSharePanel", "share") != 1) {
+                $event->sender->addWidget(ShareWidget::className(), array(), array('sortOrder' => 150));
+            }
+        }
     }
 
 }

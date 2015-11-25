@@ -31,7 +31,7 @@ $this->registerJsFile('@web/resources/like/like.js', ['position' => humhub\compo
 
         // show Tooltips on elements inside the views, which have the class 'tt'
         $('.tt').tooltip({
-            html: true,
+            html: false,
             container: 'body'
         });
 
