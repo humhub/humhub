@@ -134,8 +134,10 @@ class Theme extends \yii\base\Theme
         foreach (Yii::$app->getModules() as $module) {
             $basePath = "";
             if (is_array($module)) {
-                $reflector = new \ReflectionClass($module['class']);
-                $basePath = dirname($reflector->getFileName());
+                if (isset($module['class'])) {
+                    $reflector = new \ReflectionClass($module['class']);
+                    $basePath = dirname($reflector->getFileName());
+                }
             } else {
                 $basePath = $module->getBasePath();
             }

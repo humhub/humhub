@@ -145,7 +145,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     {
         $migrationPaths = ['base' => $this->migrationPath];
         foreach (\Yii::$app->getModules() as $id => $config) {
-            if (is_array($config)) {
+            if (is_array($config) && isset($config['class'])) {
                 $reflector = new \ReflectionClass($config['class']);
                 $path = dirname($reflector->getFileName()) . '/migrations';
                 if (is_dir($path)) {
