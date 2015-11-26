@@ -71,7 +71,7 @@ use yii\helpers\Url;
     function hideSharePanel() {
 
         $.ajax({
-            url: '<?= Url::to(["/share/share/hide-panel", "ajax" => 1]); ?>',
+            url: '<?= Url::to(["/dashboard/dashboard/hide-panel", "ajax" => 1]); ?>',
             //data: {id: '<id>', 'other': '<other>'},
             success: function (data) {
                 $('#share-panel').remove();
