@@ -33,5 +33,10 @@ class Module extends \humhub\components\Module
      * @var boolean is marketplace enabled?
      */
     public $marketplaceEnabled = true;
-
+    
+    
+    /**
+     * @var boolean check daily for new HumHub version
+     */
+    public $dailyCheckForNewVersion = true;
 }
