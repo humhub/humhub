@@ -48,10 +48,13 @@ class Events extends \yii\base\Object
     {
         $controller = $event->sender;
 
+        if (!Yii::$app->getModule('admin')->dailyCheckForNewVersion) {
+            return;
+        }
         if (!Yii::$app->params['humhub']['apiEnabled']) {
             return;
         }
-        
+
         $controller->stdout("Checking for new HumHub version... ");
 
         $latestVersion = libs\HumHubAPI::getLatestHumHubVersion();
