@@ -8,9 +8,9 @@ class m151010_124437_group_permissions extends \humhub\components\Migration
     public function up()
     {
         $this->createTable('group_permission', array(
-            'permission_id' => Schema::TYPE_STRING,
+            'permission_id' => $this->string(150)->notNull(),
             'group_id' => Schema::TYPE_INTEGER,
-            'module_id' => Schema::TYPE_STRING,
+            'module_id' => $this->string(50)->notNull(),
             'class' => Schema::TYPE_STRING,
             'state' => Schema::TYPE_BOOLEAN,
         ));
