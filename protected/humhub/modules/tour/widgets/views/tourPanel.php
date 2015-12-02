@@ -61,7 +61,7 @@ use humhub\models\Setting;
         </div>
     </div>
 
-<?php if (Yii::$app->user->id == 1 && Setting::Get('sampleData', 'installer') != 1 && Yii::$app->user->getIdentity()->getSetting("welcome", "tour") != 1 || Yii::$app->user->getIdentity()->getSetting("welcome", "tour") != 1 && Yii::$app->user->id != 1) : ?>
+<?php if (Yii::$app->user->id == 1 && Setting::Get('sampleData', 'installer') != 1 && Yii::$app->user->getIdentity()->getSetting("welcome", "tour") != 1) : ?>
     <script type="text/javascript">
 
         $(document).ready(function () {
