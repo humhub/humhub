@@ -68,7 +68,12 @@ class Comment extends ContentAddonActiveRecord
      */
     public function afterDelete()
     {
-        $this->updateContentSearch();
+        
+        try {
+            $this->updateContentSearch();
+        } catch (\yii\base\Exception $ex) {
+            ;
+        }
         parent::afterDelete();
     }
 
