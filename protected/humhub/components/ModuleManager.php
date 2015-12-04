@@ -300,6 +300,8 @@ class ModuleManager extends \yii\base\Component
         } else {
             //TODO: Delete directory
         }
+        
+        $this->flushCache();
     }
 
 }
