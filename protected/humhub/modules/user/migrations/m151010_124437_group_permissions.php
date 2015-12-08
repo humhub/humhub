@@ -7,13 +7,19 @@ class m151010_124437_group_permissions extends \humhub\components\Migration
 {
     public function up()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('group_permission', array(
             'permission_id' => $this->string(150)->notNull(),
             'group_id' => Schema::TYPE_INTEGER,
             'module_id' => $this->string(50)->notNull(),
             'class' => Schema::TYPE_STRING,
             'state' => Schema::TYPE_BOOLEAN,
-        ));
+        ), $tableOptions);
 
         $this->addPrimaryKey('permission_pk', 'group_permission', ['permission_id', 'group_id', 'module_id']);
         

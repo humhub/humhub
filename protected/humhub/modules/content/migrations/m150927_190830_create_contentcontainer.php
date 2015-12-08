@@ -8,6 +8,12 @@ class m150927_190830_create_contentcontainer extends Migration
 
     public function up()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('contentcontainer', array(
             'id' => Schema::TYPE_PK,
             'guid' => Schema::TYPE_STRING,
@@ -15,7 +21,7 @@ class m150927_190830_create_contentcontainer extends Migration
             'pk' => Schema::TYPE_INTEGER,
             'owner_user_id' => Schema::TYPE_INTEGER,
             'wall_id' => Schema::TYPE_INTEGER,
-                ), '');
+                ), $tableOptions);
         $this->createIndex('unique_target', 'contentcontainer', ['class', 'pk'], true);
         $this->createIndex('unique_guid', 'contentcontainer', ['guid'], true);
 

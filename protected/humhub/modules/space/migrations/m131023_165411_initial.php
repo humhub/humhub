@@ -5,7 +5,14 @@ use yii\db\Migration;
 
 class m131023_165411_initial extends Migration {
 
-    public function up() {
+    public function up()
+    {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('space', array(
             'id' => 'pk',
             'guid' => 'varchar(45) DEFAULT NULL',
@@ -21,7 +28,7 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ), $tableOptions);
 
         $this->createTable('space_follow', array(
             'user_id' => 'int(11) NOT NULL',
@@ -30,7 +37,7 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ), $tableOptions);
 
         $this->addPrimaryKey('pk_space_follow', 'space_follow', 'user_id,space_id');
 
@@ -42,7 +49,7 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ), '');
+                ), $tableOptions);
     }
 
     public function down() {

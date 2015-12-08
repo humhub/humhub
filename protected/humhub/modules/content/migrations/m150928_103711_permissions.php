@@ -8,6 +8,11 @@ class m150928_103711_permissions extends Migration
 
     public function up()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
 
         $this->createTable('contentcontainer_permission', array(
             'permission_id' =>  $this->string(150)->notNull(),
@@ -16,7 +21,7 @@ class m150928_103711_permissions extends Migration
             'module_id' => $this->string(50)->notNull(),
             'class' => Schema::TYPE_STRING,
             'state' => Schema::TYPE_BOOLEAN,
-        ));
+        ), $tableOptions);
         $this->addPrimaryKey('contentcontainer_permission_pk', 'contentcontainer_permission', ['permission_id', 'group_id', 'module_id', 'contentcontainer_id']);
     }
 
