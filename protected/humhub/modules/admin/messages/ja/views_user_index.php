@@ -18,6 +18,7 @@
  */
 return [
     'Add new user' => '',
+    'Last login' => '',
     'Overview' => '',
     'never' => '',
     'Admin' => '@@管理@@',

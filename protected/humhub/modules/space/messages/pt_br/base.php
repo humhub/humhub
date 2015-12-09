@@ -17,8 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
+    ' Invite and request' => '@@Convite@@',
     'Visible for all' => '@@Visível para todos@@',
-    ' Invite and request' => 'Convite',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Não foi possível excluir o usuário que é dono de um espaço! Nome do espaço: {spacename}',
     'Everyone can enter' => 'Todo mundo pode entrar',
     'Invite and request' => 'Convite',

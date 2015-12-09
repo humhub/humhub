@@ -17,13 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%moduleName% - Set as default module' => '',
-  'Activated' => '',
-  'Always activated' => '',
-  'Close' => '',
-  'Deactivated' => '',
-  'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
-  'Save' => '',
-  'Spaces' => '',
-  'User Profiles' => '',
+  '%moduleName% - Set as default module' => '%moduleName% - Встановити модулем за замовчуванням',
+  'Activated' => 'Активовано',
+  'Always activated' => 'Завжди активний',
+  'Close' => 'Закрити',
+  'Deactivated' => 'Деактивовано',
+  'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Тут ви можете обрати, чи має бути модуль автоматично активованим в спільноті або профілю користувача. Якщо модуль має бути активований, виберіть "завжди активний".',
+  'Save' => 'Зберегти',
+  'Spaces' => 'Спільноти',
+  'User Profiles' => 'Профілі користувачів',
 );

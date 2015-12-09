@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Remove panel' => '',
-  '<strong>Getting</strong> Started' => '',
-  '<strong>Guide:</strong> Administration (Modules)' => '',
-  '<strong>Guide:</strong> Overview' => '',
-  '<strong>Guide:</strong> Spaces' => '',
-  '<strong>Guide:</strong> User profile' => '',
-  'Get to know your way around the site\'s most important features with the following guides:' => '',
+  ' Remove panel' => 'Приховати панель',
+  '<strong>Getting</strong> Started' => '<strong>Початок</strong>',
+  '<strong>Guide:</strong> Administration (Modules)' => '<strong>Гід:</strong> Адміністрування (модулів)',
+  '<strong>Guide:</strong> Overview' => '<strong>Гід:</strong> Огляд',
+  '<strong>Guide:</strong> Spaces' => '<strong>Гід:</strong> Спільноти',
+  '<strong>Guide:</strong> User profile' => '<strong>Гід:</strong> Профайл користувача',
+  'Get to know your way around the site\'s most important features with the following guides:' => 'Дізнайтеся як знайти шлях до найбільш важливих частин сайту з наступними гідами:',
 );

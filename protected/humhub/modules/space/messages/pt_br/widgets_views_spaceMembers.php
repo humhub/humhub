@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Get complete members list' => '',
     'Accept invite' => '@@Aceitar convite@@',
     'Become member' => '@@Seja membro@@',
     'Cancel pending membership application' => '@@Cancelar pedido pendente de adesão@@',

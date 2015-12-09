@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Confirm</strong></strong> your new email address' => '',
-  'Confirm' => '',
-  'Hello' => '',
-  'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '',
+  '<strong>Confirm</strong></strong> your new email address' => '<strong>Підтвердження</strong> вашої нової email адреси',
+  'Confirm' => 'Підтвердити',
+  'Hello' => 'Привіт',
+  'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Ви надсилали запит на зміну e-mail адреси.<br>Ваша нова e-mail адреса {newemail}.<br><br>Для підтвердження нової e-mail адреси,будьласка, натисніть на кнопку нижче.',
 );

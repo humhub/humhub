@@ -17,11 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Manage</strong> users' => '',
-    'Add new user' => '',
-    'In this overview you can find every registered user and manage him.' => '',
-    'Overview' => '',
-    'never' => '',
+    '<strong>Manage</strong> users' => '<strong>Управління</strong> користувачами',
+    'Add new user' => 'Додати нового користувача',
+    'In this overview you can find every registered user and manage him.' => 'В цьому огляді ви можете знайти всіх зареєстрованих користувачів і керувати ними.',
+    'Last login' => 'Останній вхід',
+    'Overview' => 'Огляд',
+    'never' => 'ніколи',
     'Admin' => '@@@@',
     'All' => '@@@@',
     'Delete user account' => '@@@@',

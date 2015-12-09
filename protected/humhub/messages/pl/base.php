@@ -18,7 +18,13 @@
  */
 return [
     '<strong>Search</strong>' => '',
+    'Allow' => '',
     'Choose language:' => '',
+    'Default' => '',
+    'Deny' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'Could not find requested module!' => '@@Nie znaleziono modułu!@@',
     'Invalid request.' => '@@Błędne żądanie.@@',
     'Keyword:' => '@@Słowo kluczowe:@@',

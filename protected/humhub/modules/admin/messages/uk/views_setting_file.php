@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>File</strong> settings' => '',
-  'Comma separated list. Leave empty to allow all.' => '',
-  'Comma separated list. Leave empty to show file list for all objects on wall.' => '',
-  'Current Image Libary: {currentImageLibary}' => '',
-  'If not set, height will default to 200px.' => '',
-  'If not set, width will default to 200px.' => '',
-  'PHP reported a maximum of {maxUploadSize} MB' => '',
-  'Save' => '',
+  '<strong>File</strong> settings' => '<strong>Налаштування</strong> файлів',
+  'Comma separated list. Leave empty to allow all.' => 'Розділений комами список. Залиште порожнім, аби дозволити всі типи.',
+  'Comma separated list. Leave empty to show file list for all objects on wall.' => 'Розділений комами список. Залиште порожнім, щоб показати список файлів для всіх об’єктів на стіні.',
+  'Current Image Libary: {currentImageLibary}' => 'Поточне хранилище зображень: {currentImageLibary}',
+  'If not set, height will default to 200px.' => 'Якщо не встановлено, висота за замовчуванням 200px.',
+  'If not set, width will default to 200px.' => 'Якщо не встановлено, ширина за замовчуванням 200px.',
+  'PHP reported a maximum of {maxUploadSize} MB' => 'PHP налаштування для максимального розміру {maxUploadSize} MB',
+  'Save' => 'Зберегти',
 );

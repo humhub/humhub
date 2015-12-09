@@ -17,13 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Base URL' => '',
-    'Default language' => '',
-    'Default space' => '',
-    'Invalid space' => '',
-    'Logo upload' => '',
-    'Name of the application' => '',
-    'Server Timezone' => '',
-    'Show introduction tour for new users' => '',
-    'Show user profile post form on dashboard' => '',
+    'Base URL' => 'Базовий URL',
+    'Default language' => 'Мова за замовчуванням',
+    'Default space' => 'Спільнота за замовчуванням',
+    'Invalid space' => 'Недоступна спільнота',
+    'Logo upload' => 'Завантажити логотип',
+    'Name of the application' => 'Назва додатка',
+    'Server Timezone' => 'Часовий пояс сервера',
+    'Show introduction tour for new users' => 'Показувати ознайомчий тур для новачків',
+    'Show sharing panel on dashboard' => 'Показувати панель поширень в панелі приладів',
+    'Show user profile post form on dashboard' => 'Показувати форму повідомлення в панелі приладів',
 ];

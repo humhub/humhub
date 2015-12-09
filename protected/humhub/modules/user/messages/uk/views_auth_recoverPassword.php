@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Password</strong> recovery' => '',
-    'Back' => '',
-    'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
-    'Password recovery' => '',
-    'Reset password' => '',
-    'enter security code above' => '',
-    'your email' => '',
+    '<strong>Password</strong> recovery' => '<strong>Відновлення</strong> паролю',
+    'Back' => 'Назад',
+    'Just enter your e-mail address. We´ll send you recovery instructions!' => 'Просто вкажіть вашу e-mail адресу. Ми надішлемо вам інструкцію з відновлення паролю!',
+    'Password recovery' => 'Відновлення паролю',
+    'Reset password' => 'Скинути пароль',
+    'enter security code above' => 'вкажіть секретний код вище',
+    'your email' => 'ваш email',
 ];

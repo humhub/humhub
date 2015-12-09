@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} approved your membership for the space {spaceName}' => '',
+  '{userName} approved your membership for the space {spaceName}' => '{userName} підтвердив ваше членство у спільноті {spaceName}',
 );

@@ -17,11 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not load requested object!' => '',
+    'Could not load requested object!' => 'Не вдалося завантажити необхідний об’єкт!',
     'Maximum number of sticked items reached!
 
 You can stick only two items at once.
-To however stick this item, unstick another before!' => '',
+To however stick this item, unstick another before!' => 'Досягнуто максимальної кількості закріплених публікацій!
+
+Ви можете прикріпити дві публікації за один раз.
+Щоб прикріпити дану публікацію, відкріпіть спочатку іншу!',
     'Maximum number of sticked items reached!
 
 You can stick only two items at once.

@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Base DN' => '',
-    'E-Mail Address Attribute' => '',
-    'Enable LDAP Support' => '',
-    'Encryption' => '',
-    'Fetch/Update Users Automatically' => '',
-    'Hostname' => '',
-    'Login Filter' => '',
-    'Password' => '',
-    'Port' => '',
-    'User Filer' => '',
-    'Username' => '',
-    'Username Attribute' => '',
+    'Base DN' => 'База DN',
+    'E-Mail Address Attribute' => 'Атрибути E-Mail адресів',
+    'Enable LDAP Support' => 'Наявна підтримка LDAP',
+    'Encryption' => 'Шифрування',
+    'Fetch/Update Users Automatically' => 'Завантажити/оновити користувачів автоматично',
+    'Hostname' => 'Ім’я хоста',
+    'Login Filter' => 'Фільтр логінів',
+    'Password' => 'Пароль',
+    'Port' => 'Порт',
+    'User Filer' => 'Фільтр користувачів',
+    'Username' => 'Нікнейм',
+    'Username Attribute' => 'Атрибути користувачів',
 ];

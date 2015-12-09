@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Request</strong> space membership' => '',
-    'Close' => '',
-    'Please shortly introduce yourself, to become an approved member of this space.' => '',
+    '<strong>Request</strong> space membership' => '<strong>Запит</strong> на участь в спільності',
+    'Close' => 'Закрити',
+    'Please shortly introduce yourself, to become an approved member of this space.' => 'Будьласка, коротко розкажіть про себе для прийняття рішення на вашу участь в даній спільноті.',
     'Send' => '@@@@',
 ];

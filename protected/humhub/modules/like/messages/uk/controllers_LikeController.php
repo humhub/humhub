@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Users</strong> who like this' => '',
+    '<strong>Users</strong> who like this' => '<strong>Користувачі</strong> що вподобавли це',
     'Access denied!' => '@@@@',
     'Could not find target class!' => '@@@@',
     'Could not find target record!' => '@@@@',

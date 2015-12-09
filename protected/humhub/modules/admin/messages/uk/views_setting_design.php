@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Design</strong> settings' => '',
-  'Alphabetical' => '',
-  'Firstname Lastname (e.g. John Doe)' => '',
-  'Last visit' => '',
-  'Save' => '',
-  'Username (e.g. john)' => '',
+  '<strong>Design</strong> settings' => '<strong>Налаштування</strong> дизайну',
+  'Alphabetical' => 'Алфавітний порядок',
+  'Firstname Lastname (e.g. John Doe)' => 'Ім’я Фамілія (наприклад John Doe)',
+  'Last visit' => 'Останній візит',
+  'Save' => 'Зберегти',
+  'Username (e.g. john)' => 'Нікнейм (наприклад john)',
 );

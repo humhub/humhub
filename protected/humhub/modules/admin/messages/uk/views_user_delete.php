@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Are you sure you want to delete this user? If this user is owner of some spaces, <b>you</b> will become owner of these spaces.' => '',
-  'Back' => '',
-  'Delete user' => '',
-  'Delete user: <strong>{username}</strong>' => '',
+  'Are you sure you want to delete this user? If this user is owner of some spaces, <b>you</b> will become owner of these spaces.' => 'Ви впевнені, що бажаєте видалити цього користувача? Якщо цей користувач є власником яких-небудь спільнот, <b>ви</b> станете власником цих спільнот.',
+  'Back' => 'Повернутись',
+  'Delete user' => 'Видалити користувача',
+  'Delete user: <strong>{username}</strong>' => 'Видалити користувача: <strong>{username}</strong>',
 );

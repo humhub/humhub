@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Something</strong> went wrong' => '',
-    'Close' => '',
-    'Followers' => '',
-    'Members' => '',
+    '<strong>Something</strong> went wrong' => '<strong>Щось</strong> пішло не так',
+    'Close' => 'Закрити',
+    'Followers' => 'Відслідковує',
+    'Members' => 'Учасників',
     'Ok' => '',
-    'Posts' => '',
+    'Posts' => 'Публікацій',
 ];

@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Member</strong> directory' => '',
-  'Follow' => '',
-  'No members found!' => '',
-  'Search' => '',
-  'Unfollow' => '',
-  'search for members' => '',
+  '<strong>Member</strong> directory' => '<strong>Простір</strong> учасника',
+  'Follow' => 'Слідкувати',
+  'No members found!' => 'Не знайдено учасників!',
+  'Search' => 'Пошук',
+  'Unfollow' => 'Не слідкувати',
+  'search for members' => 'пошук учасників',
 );

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Permalink</strong> to this page' => '@@<strong>Постоянная ссылка</strong> этой страницы@@',
     '<strong>Permalink</strong> to this post' => '<strong>Постоянная ссылка</strong> для этой записи',
-    'Permalink' => 'Постоянная ссылка',
-    '<strong>Permalink</strong> to this page' => '<strong>Постоянная ссылка</strong> этой страницы',
     'Close' => 'Закрыть',
+    'Permalink' => 'Постоянная ссылка',
 ];

@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Manage</strong> spaces' => '',
-    'Define here default settings for new spaces.' => '',
-    'In this overview you can find every space and manage it.' => '',
-    'Overview' => '',
-    'Settings' => '',
+    '<strong>Manage</strong> spaces' => '<strong>Управління</strong> спільнотами',
+    'Define here default settings for new spaces.' => 'Визначте тут налаштування за замовчуванням для нових спільнот.',
+    'In this overview you can find every space and manage it.' => 'У цьому огляді ви можете знайти всі спільноти і керувати ними.',
+    'Overview' => 'Огляд',
+    'Settings' => 'Налаштування',
     'All' => '@@@@',
     'Delete space' => '@@@@',
     'Edit space' => '@@@@',

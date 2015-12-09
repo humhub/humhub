@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum value' => '',
-  'Minimum value' => '',
-  'Number field options' => '',
+  'Maximum value' => 'Максимальне значення',
+  'Minimum value' => 'Мінімальне значення',
+  'Number field options' => 'Опції числового поля',
 );

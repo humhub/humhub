@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Pending</strong> user approvals' => '',
-    'Here you see all users who have registered and still waiting for a approval.' => '',
+    '<strong>Pending</strong> user approvals' => '<strong>Очікуючі</strong> підтвердження користувачів',
+    'Here you see all users who have registered and still waiting for a approval.' => 'Тут ви бачите всіх користувачів, що були зареєстровані і ще очікують на підтвердження.',
     'Email' => '@@@@',
     'Search for email' => '@@@@',
     'Search for username' => '@@@@',

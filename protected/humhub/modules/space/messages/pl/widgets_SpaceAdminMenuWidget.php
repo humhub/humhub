@@ -17,10 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => '',
+    'Hide posts on dashboard' => '',
+    'Show posts on dashboard' => '',
+    'This option will hide new content from this space at your dashboard' => '',
+    'This option will show new content from this space at your dashboard' => '',
+    '<strong>Space</strong> preferences' => '@@<strong>Ustawienia</strong> strefy@@',
     'Archive' => '@@Archiwizuj@@',
     'Back to workspace' => '@@Powróć do grupy roboczej@@',
     'Delete' => '@@Usuń@@',
-    '<strong>Space</strong> preferences' => '<strong>Ustawienia</strong> strefy',
     'General' => 'Ogólne',
     'Members' => 'Członkowie',
     'Modules' => 'Moduły ',

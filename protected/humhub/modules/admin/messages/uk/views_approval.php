@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Accept' => '',
-  'Decline' => '',
+  'Accept' => 'Прийняти',
+  'Decline' => 'Відхилити',
 );

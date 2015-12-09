@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me next time' => '@@Prisiminti mane@@',
     '<strong>Please</strong> sign in' => '<strong>Prašome</strong> prisijungti',
     '<strong>Sign</strong> up' => '<strong>Užsiregistruokite</strong> ',
     'Create a new one.' => 'Sukurti naują.',
@@ -25,7 +26,6 @@ return [
     'Forgot your password?' => 'Pamiršote slaptažodį?',
     'If you\'re already a member, please login with your username/email and password.' => 'Jei Jūs jau esate nariu, prašome prisijungti su savo vartotojo vardu/elektroninio pašto adresu ir slaptažodžiu.',
     'Register' => 'Registruotis',
-    'Remember me next time' => 'Prisiminti mane',
     'Sign in' => 'Prisijungti',
     'email' => 'elektroninio pašto adresas',
     'password' => 'slaptažodis',

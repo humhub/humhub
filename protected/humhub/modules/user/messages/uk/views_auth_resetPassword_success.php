@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Password</strong> changed!' => '',
-  'Login' => '',
-  'Your password has been successfully changed!' => '',
+  '<strong>Password</strong> changed!' => '<strong>Пароль</strong> змінено!',
+  'Login' => 'Вхід',
+  'Your password has been successfully changed!' => 'Ваш пароль було успішно змінено!',
 );

@@ -18,7 +18,7 @@
  */
 return [
     'E-Mail' => '',
-    'Password Recovery' => '',
-    '{attribute} "{value}" was not found!' => '',
+    'Password Recovery' => 'Відновлення паролю',
+    '{attribute} "{value}" was not found!' => '{attribute} "{value}" не був знайдений!',
     'Password recovery is not possible on your account type!' => '@@@@',
 ];

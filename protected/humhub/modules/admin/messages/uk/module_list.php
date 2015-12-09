@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Activated' => '',
-  'No modules installed yet. Install some to enhance the functionality!' => '',
-  'Version:' => '',
+  'Activated' => 'Активовано',
+  'No modules installed yet. Install some to enhance the functionality!' => 'Відсутні встановленні модулі. Встановіть щось для розширення функціональності!',
+  'Version:' => 'Версія:',
 );

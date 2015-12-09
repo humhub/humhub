@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modules</strong> directory' => '',
-    'Are you sure? *ALL* module data will be lost!' => '',
-    'Are you sure? *ALL* module related data and files will be lost!' => '',
-    'Configure' => '',
-    'Disable' => '',
-    'Enable' => '',
-    'Enable module...' => '',
-    'More info' => '',
-    'Set as default' => '',
-    'Uninstall' => '',
+    '<strong>Modules</strong> directory' => '<strong>Розділ</strong> модулів',
+    'Are you sure? *ALL* module data will be lost!' => 'Ви впевнені? *Вся* інформація модуля буде втрачена!',
+    'Are you sure? *ALL* module related data and files will be lost!' => 'Ви впевнені? *Вся* суміжна інформація і файли модуля буде втрачена!',
+    'Configure' => 'Налаштування',
+    'Disable' => 'Дективовано',
+    'Enable' => 'Активовано',
+    'Enable module...' => 'Доступні модулі...',
+    'More info' => 'Більше інформації',
+    'Set as default' => 'Встановити за замовчуванням',
+    'Uninstall' => 'Видалити',
     'Processing...' => '@@@@',
 ];

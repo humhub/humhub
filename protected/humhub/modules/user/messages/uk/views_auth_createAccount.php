@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Account</strong> registration' => '',
-    'Create Account' => '',
+    '<strong>Account</strong> registration' => '<strong>Реєстрація</strong> акаунта',
+    'Create Account' => 'Створити акаунт',
 ];

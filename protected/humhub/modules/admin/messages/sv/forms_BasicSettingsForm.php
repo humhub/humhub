@@ -20,6 +20,7 @@ return [
     'Base URL' => '',
     'Logo upload' => '',
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Show user profile post form on dashboard' => '',
     'Default language' => 'Standard språk',
     'Default space' => 'Standard nätverk',

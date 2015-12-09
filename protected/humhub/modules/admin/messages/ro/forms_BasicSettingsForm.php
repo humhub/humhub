@@ -25,5 +25,6 @@ return [
     'Name of the application' => '',
     'Server Timezone' => '',
     'Show introduction tour for new users' => '',
+    'Show sharing panel on dashboard' => '',
     'Show user profile post form on dashboard' => '',
 ];

@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not find requested file!' => '',
-  'Insufficient permissions!' => '',
+  'Could not find requested file!' => 'Неможливо знайти запитуваний файл!',
+  'Insufficient permissions!' => 'Недостатньо повноважень!',
 );

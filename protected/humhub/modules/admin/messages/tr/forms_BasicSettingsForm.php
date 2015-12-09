@@ -18,6 +18,7 @@
  */
 return [
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Base URL' => 'Temel URL',
     'Default language' => 'Varsayılan dil',
     'Default space' => 'Varsayılan alan',

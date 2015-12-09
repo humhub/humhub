@@ -17,9 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Share</strong> your opinion with others' => '',
-    'Post a message on Facebook' => '',
-    'Share it on Google+' => '',
-    'Tell anyone on LinkedIn' => '',
-    'Tweet about HumHub' => '',
+    '<strong>Share</strong> your opinion with others' => '<strong>Поділіться</strong> вашими думками з іншими',
+    'Post a message on Facebook' => 'Опублікувати повідомлення на Facebook',
+    'Share on Google+' => 'Поширити в Google+',
+    'Share with people on LinkedIn ' => 'Поділитись з людьми на LinkedIn',
+    'Tweet about HumHub' => 'Твітнути про HumHub',
+    'Share it on Google+' => '@@@@',
+    'Tell anyone on LinkedIn' => '@@@@',
 ];

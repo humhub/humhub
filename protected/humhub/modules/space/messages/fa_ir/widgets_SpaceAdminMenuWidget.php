@@ -17,10 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => '',
+    'Hide posts on dashboard' => '',
+    'Show posts on dashboard' => '',
+    'This option will hide new content from this space at your dashboard' => '',
+    'This option will show new content from this space at your dashboard' => '',
+    '<strong>Space</strong> preferences' => '@@تنظیمات <strong>انجمن</strong>@@',
     'Archive' => '@@آرشیو@@',
     'Back to workspace' => '@@بازگشت به محیط کار@@',
     'Delete' => '@@حذف@@',
-    '<strong>Space</strong> preferences' => 'تنظیمات <strong>انجمن</strong>',
     'General' => 'کلی',
     'Members' => 'اعضا',
     'Modules' => 'ماژول‌ها',

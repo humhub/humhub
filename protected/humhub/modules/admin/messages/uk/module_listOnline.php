@@ -17,8 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Installed' => '',
-    'No modules found!' => '',
-    'Search' => '',
-    'search for available modules online' => '',
+    'Installed' => 'Встановлено',
+    'No modules found!' => 'Модулі не знайдені!',
+    'No purchased modules found!' => 'Не знайдено придбаних модулів!',
+    'Register' => 'Реєстрація',
+    'Search' => 'Пошук',
+    'search for available modules online' => 'онлайн пошук доступних модулів',
 ];

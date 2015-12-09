@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Self</strong> test' => '',
-  'Checking HumHub software prerequisites.' => '',
-  'Re-Run tests' => '',
+  '<strong>Self</strong> test' => '<strong>Тестування</strong>',
+  'Checking HumHub software prerequisites.' => 'Перевірте наявність необхідного програмного забезпечення для HumHub',
+  'Re-Run tests' => 'Перезапустити тест',
 );

@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Current password' => '',
-  'Incorrect username/email or password.' => '',
-  'New password' => '',
-  'New password confirm' => '',
-  'Remember me next time' => '',
-  'Your account has not been activated by our staff yet.' => '',
-  'Your account is suspended.' => '',
+  'Current password' => 'Поточний пароль',
+  'Incorrect username/email or password.' => 'Некоректний логін/email або пароль.',
+  'New password' => 'Новий пароль',
+  'New password confirm' => 'Підтвердження нового паролю',
+  'Remember me next time' => 'Запам’ятати мене наступного разу',
+  'Your account has not been activated by our staff yet.' => 'Ваш акаунт ще не був активований.',
+  'Your account is suspended.' => 'Ваш акаунт призупинений.',
 );

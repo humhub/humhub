@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>New</strong> member request' => '',
-    '<strong>Space</strong> members' => '',
+    '<strong>New</strong> member request' => '<strong>Новий</strong> запит на участь',
+    '<strong>Space</strong> members' => '<strong>Учасники</strong> спільноти',
+    'Get complete members list' => 'Отримати повний список учасників',
     'Accept invite' => '@@@@',
     'Become member' => '@@@@',
     'Cancel pending membership application' => '@@@@',

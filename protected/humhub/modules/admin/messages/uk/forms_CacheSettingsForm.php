@@ -18,10 +18,10 @@
  */
 return [
     'APC' => '',
-    'Cache Backend' => '',
-    'Default Expire Time (in seconds)' => '',
-    'File' => '',
-    'No caching (Testing only!)' => '',
-    'PHP APC Extension missing - Type not available!' => '',
-    'PHP SQLite3 Extension missing - Type not available!' => '',
+    'Cache Backend' => 'Бекап кеша',
+    'Default Expire Time (in seconds)' => 'Термін придатності за замовчування (в секундах)',
+    'File' => 'Файл',
+    'No caching (Testing only!)' => 'Без кешування (лише для тестування!)',
+    'PHP APC Extension missing - Type not available!' => 'PHP APC розширення відсутнє - Тип не доступний!',
+    'PHP SQLite3 Extension missing - Type not available!' => 'PHP SQLite3 розширення відсутнє - Тип не доступний!',
 ];

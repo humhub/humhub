@@ -17,8 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
+    ' Invite and request' => '@@Inviter og anmod@@',
     'Visible for all' => '@@Synlig for alle@@',
-    ' Invite and request' => 'Inviter og anmod',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kunne ikke slette bruger som er en side-ejer! Navnet på siden: {spaceName}',
     'Everyone can enter' => 'Alle kan komme ind',
     'Invite and request' => 'Inviter og anmod',

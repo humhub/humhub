@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Login</strong> required' => '',
-    'An internal server error occurred.' => '',
-    'You are not allowed to perform this action.' => '',
+    '<strong>Login</strong> required' => '<strong>Логін</strong> обов’язковий',
+    'An internal server error occurred.' => 'Внутрішня помилка сервера.',
+    'You are not allowed to perform this action.' => 'Вам не дозволена дана дія.',
 ];

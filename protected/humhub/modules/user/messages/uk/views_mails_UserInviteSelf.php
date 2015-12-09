@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Registration Link' => '',
-  'Sign up' => '',
-  'Welcome to %appName%' => '',
-  'Welcome to %appName%. Please click on the button below to proceed with your registration.' => '',
+  'Registration Link' => 'Реєстраційне посилання',
+  'Sign up' => 'Авторизуватись',
+  'Welcome to %appName%' => 'Ласкаво просимо до %appName%',
+  'Welcome to %appName%. Please click on the button below to proceed with your registration.' => 'Ласкаво просимо до %appName%. Будьласка, натисніть на кнопку нижче, щоб продовжити вашу реєстрацію.',
 );

@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Mailing</strong> settings' => '',
-  'Defaults' => '',
-  'SMTP Options' => '',
-  'Save' => '',
-  'Server Settings' => '',
+  '<strong>Mailing</strong> settings' => '<strong>Налаштування</strong> пошти',
+  'Defaults' => 'За замовчуванням',
+  'SMTP Options' => 'SMTP параметри',
+  'Save' => 'Зберегти',
+  'Server Settings' => 'Налаштування сервера',
 );

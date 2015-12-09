@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} declined your membership request for the space {spaceName}' => '',
+  '{userName} declined your membership request for the space {spaceName}' => '{userName} відхилив ваш запит на участь в спільноті {spaceName}',
 );

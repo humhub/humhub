@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Allow Self-Signed Certificates?' => '',
-  'E-Mail sender address' => '',
-  'E-Mail sender name' => '',
-  'Encryption' => '',
-  'Mail Transport Type' => '',
-  'Password' => '',
-  'Port number' => '',
-  'Username' => '',
+  'Allow Self-Signed Certificates?' => 'Дозволити самопідписні сертифікати?',
+  'E-Mail sender address' => 'E-Mail відправника',
+  'E-Mail sender name' => 'Ім’я відправника',
+  'Encryption' => 'Шифрування',
+  'Mail Transport Type' => 'Тип поштового транспорту',
+  'Password' => 'Пароль',
+  'Port number' => 'Порт',
+  'Username' => 'Ім’я користувача',
 );

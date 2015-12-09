@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default pagination size (Entries per page)' => '',
-  'Display Name (Format)' => '',
-  'Dropdown space order' => '',
-  'Theme' => '',
+  'Default pagination size (Entries per page)' => 'Розмір пагінації за замовчуванням (Записів на сторінку)',
+  'Display Name (Format)' => 'Зображення імені (формат)',
+  'Dropdown space order' => 'Сотрування спільнот',
+  'Theme' => 'Тема',
 );

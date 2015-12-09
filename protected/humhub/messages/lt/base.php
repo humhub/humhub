@@ -18,8 +18,14 @@
  */
 return [
     '<strong>Search</strong>' => '',
+    'Allow' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not find content of addon!' => '',
+    'Default' => '',
+    'Deny' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'Could not find requested module!' => '@@Nepavyko rasti prašomo modulio!@@',
     'Invalid request.' => '@@Negalimas veiksmas.@@',
     'Keyword:' => '@@Raktinis žodis:@@',

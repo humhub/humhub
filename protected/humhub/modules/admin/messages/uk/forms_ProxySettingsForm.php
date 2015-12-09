@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Enabled' => '',
-  'No Proxy Hosts' => '',
-  'Password' => '',
-  'Port' => '',
-  'Server' => '',
-  'User' => '',
+  'Enabled' => 'Доступно',
+  'No Proxy Hosts' => 'Проксі=хости відсутні',
+  'Password' => 'Пароль',
+  'Port' => 'Порт',
+  'Server' => 'Сервер',
+  'User' => 'Користувач',
 );

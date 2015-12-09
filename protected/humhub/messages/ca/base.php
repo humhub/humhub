@@ -18,11 +18,17 @@
  */
 return [
     '<strong>Search</strong>' => '',
+    'Allow' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not determine content container!' => '',
     'Could not find content of addon!' => '',
+    'Default' => '',
+    'Deny' => '',
     'It looks like you may have taken the wrong turn.' => '',
     'Module is not on this content container enabled!' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'Could not find requested module!' => '@@No s\'ha pogut trobar el mòdul sol·licitat!@@',
     'Invalid request.' => '@@Petició invàlida.@@',
     'Keyword:' => '@@Etiqueta:@@',

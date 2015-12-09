@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Error</strong> logging' => '',
-  'Displaying {count} entries per page.' => '',
-  'Flush entries' => '',
-  'Total {count} entries found.' => '',
+  '<strong>Error</strong> logging' => '<strong>Журнал</strong> помилок',
+  'Displaying {count} entries per page.' => 'Зображено {count} записів на сторінці.',
+  'Flush entries' => 'Записи захешовано',
+  'Total {count} entries found.' => 'Всього знайдено {count} записів.',
 );

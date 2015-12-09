@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Proxy</strong> settings' => '',
-  'Save' => '',
+  '<strong>Proxy</strong> settings' => '<strong>Налаштування</strong> proxy сервера',
+  'Save' => 'Зберегти',
 );

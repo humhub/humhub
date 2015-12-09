@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Confirm</strong> post deleting' => '',
-  'Cancel' => '',
-  'Delete' => '',
-  'Do you really want to delete this post? All likes and comments will be lost!' => '',
+  '<strong>Confirm</strong> post deleting' => '<strong>Підтвердження</strong> видалення публікації',
+  'Cancel' => 'Відмінити',
+  'Delete' => 'Видалити',
+  'Do you really want to delete this post? All likes and comments will be lost!' => 'Ви насправді бажаєте видалити дану публікацію? Всі вподобання і коментарі будуть втрачені!',
 );

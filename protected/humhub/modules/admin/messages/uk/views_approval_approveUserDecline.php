@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Cancel' => '',
-  'Decline & delete user: <strong>{displayName}</strong>' => '',
+  'Cancel' => 'Відмінити',
+  'Decline & delete user: <strong>{displayName}</strong>' => 'Відхилити і видалити користувача: <strong>{displayName}</strong>',
 );

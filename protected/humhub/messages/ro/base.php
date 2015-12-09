@@ -18,6 +18,12 @@
  */
 return [
     '<strong>Search</strong>' => '',
+    'Allow' => '',
+    'Default' => '',
+    'Deny' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'Could not find requested module!' => '@@Nu s-a putut găsi modulul cerut!@@',
     'Invalid request.' => '@@Cerere invalidă.@@',
     'Keyword:' => '@@Cuvânt cheie:@@',

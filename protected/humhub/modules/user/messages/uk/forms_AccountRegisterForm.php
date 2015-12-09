@@ -18,5 +18,5 @@
  */
 return array (
   'E-Mail' => '',
-  'E-Mail is already in use! - Try forgot password.' => '',
+  'E-Mail is already in use! - Try forgot password.' => 'E-Mail вже використовується! Спробуйте згадати пароль.',
 );

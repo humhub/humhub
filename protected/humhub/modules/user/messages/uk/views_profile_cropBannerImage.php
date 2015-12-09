@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> your title image' => '',
-    'Close' => '',
-    'Save' => '',
+    '<strong>Modify</strong> your title image' => '<strong>Зміна</strong> вашого заголовку до зображення',
+    'Close' => 'Закрити',
+    'Save' => 'Зберегти',
     'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '@@@@',
 ];

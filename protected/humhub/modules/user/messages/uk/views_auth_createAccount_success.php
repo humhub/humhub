@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Your account</strong> has been successfully created!' => '',
-  'After activating your account by the administrator, you will receive a notification by email.' => '',
-  'Go to login page' => '',
-  'To log in with your new account, click the button below.' => '',
-  'back to home' => '',
+  '<strong>Your account</strong> has been successfully created!' => '<strong>Ваш акаунт</strong> був успішно створений!',
+  'After activating your account by the administrator, you will receive a notification by email.' => 'Після активації адміністраторомваш акаунт',
+  'Go to login page' => 'Перейти на сторінку авторизації',
+  'To log in with your new account, click the button below.' => 'Для переходу у ваш новий акаунт, натисніть на кнопку нижче.',
+  'back to home' => 'повернутить на домашню сторінку',
 );

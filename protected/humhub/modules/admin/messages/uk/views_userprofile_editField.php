@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Create</strong> new profile field' => '',
-  '<strong>Edit</strong> profile field' => '',
+  '<strong>Create</strong> new profile field' => '<strong>Створити</strong> нове поле профіля',
+  '<strong>Edit</strong> profile field' => '<strong>Редагування</strong> поля профіля',
 );

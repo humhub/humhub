@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not find requested content!' => '',
-    'Could not find requested permalink!' => '',
+    'Could not find requested content!' => 'Не вдалося знайти запитаний контент!',
+    'Could not find requested permalink!' => 'Не вдалося знайти запитуване посилання!',
     'Invalid model given!' => '@@@@',
     'Unknown content class!' => '@@@@',
 ];

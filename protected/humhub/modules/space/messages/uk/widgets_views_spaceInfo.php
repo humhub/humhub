@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Something</strong> went wrong' => '',
-  '<strong>Space</strong> info' => '',
+  '<strong>Something</strong> went wrong' => '<strong>Щось</strong> пішло не так',
+  '<strong>Space</strong> info' => '<strong>Інформація</strong> про спільноту',
   'Ok' => '',
-  'more' => '',
+  'more' => 'більше',
 );

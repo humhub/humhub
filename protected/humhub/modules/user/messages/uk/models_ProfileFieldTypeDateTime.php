@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Date(-time) field options' => '',
-  'Show date/time picker' => '',
+  'Date(-time) field options' => 'Опції поля дати(-часу)',
+  'Show date/time picker' => 'Показувати дати/часу піктограму',
 );

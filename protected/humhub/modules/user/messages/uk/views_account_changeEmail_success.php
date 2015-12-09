@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Change</strong> E-mail' => '',
-  'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => '',
+  '<strong>Change</strong> E-mail' => '<strong>Зміна</strong> E-mail',
+  'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Ми щойно надіслали e-mail підтвердження на вашу нову адресу.<br />Будьласка, слідкуйте за інструкціями, що вказані в листі.',
 );

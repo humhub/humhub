@@ -29,5 +29,5 @@ return [
     'email' => '',
     'password' => '',
     'username or email' => '',
-    'Remember me next time' => 'Ghi nhớ cho lần đăng nhập tiếp theo',
+    'Remember me next time' => '@@Ghi nhớ cho lần đăng nhập tiếp theo@@',
 ];

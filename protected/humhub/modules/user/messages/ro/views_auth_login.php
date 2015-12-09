@@ -25,9 +25,9 @@ return [
     'If you\'re already a member, please login with your username/email and password.' => '',
     'Login' => '',
     'Register' => '',
-    'Remember me next time' => '',
     'Sign in' => '',
     'email' => '',
     'password' => '',
     'username or email' => '',
+    'Remember me next time' => '@@@@',
 ];

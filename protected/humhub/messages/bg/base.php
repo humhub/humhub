@@ -18,12 +18,18 @@
  */
 return [
     '<strong>Search</strong>' => '',
+    'Allow' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not determine content container!' => '',
     'Could not find content of addon!' => '',
+    'Default' => '',
+    'Deny' => '',
     'Insufficent permissions to create content!' => '',
     'It looks like you may have taken the wrong turn.' => '',
     'Module is not on this content container enabled!' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'User Approvals' => '',
     'You cannot create public visible content!' => '',
     'Your daily summary' => '',

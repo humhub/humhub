@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not find requested module!' => '',
-    'Module path %path% is not writeable!' => '',
+    'Could not find requested module!' => 'Запитуваний модуль не знайдено!',
+    'Module path %path% is not writeable!' => 'Шлях до модуля %path% не має прав на запис!',
     'Could not uninstall module first! Module is protected.' => '@@@@',
 ];

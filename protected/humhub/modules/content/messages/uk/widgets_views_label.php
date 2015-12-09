@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Archived' => '',
-  'Public' => '',
-  'Sticked' => '',
+  'Archived' => 'Архівовано',
+  'Public' => 'Публічно',
+  'Sticked' => 'Прикріплено',
 );

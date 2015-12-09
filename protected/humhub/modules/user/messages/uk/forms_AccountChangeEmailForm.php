@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Current password' => '',
-  'E-Mail change' => '',
-  'New E-Mail address' => '',
+  'Current password' => 'Поточний пароль',
+  'E-Mail change' => 'Змінити E-Mail',
+  'New E-Mail address' => 'Нова E-Mail адреса',
 );
