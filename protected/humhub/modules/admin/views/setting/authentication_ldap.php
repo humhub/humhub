@@ -40,13 +40,13 @@ use yii\helpers\Url;
 
         <?php echo $form->field($model, 'port')->textInput(['readonly' => Setting::IsFixed('port', 'authentication_ldap')]); ?>
 
-        <?php echo $form->field($model, 'encryption')->textInput(['readonly' => Setting::IsFixed('encryption', 'authentication_ldap')]); ?>
+        <?php echo $form->field($model, 'encryption')->dropDownList($model->encryptionTypes, ['readonly' => Setting::IsFixed('encryption', 'authentication_ldap')]); ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.'); ?></p>
 
         <?php echo $form->field($model, 'username')->textInput(['readonly' => Setting::IsFixed('username', 'authentication_ldap')]); ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.'); ?></p>
 
-        <?php echo $form->field($model, 'password')->textInput(['readonly' => Setting::IsFixed('password', 'authentication_ldap')]); ?>
+        <?php echo $form->field($model, 'password')->passwordInput(['readonly' => Setting::IsFixed('password', 'authentication_ldap')]); ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'The default credentials password (used only with username above).'); ?></p>
 
         <?php echo $form->field($model, 'baseDn')->textInput(['readonly' => Setting::IsFixed('baseDn', 'authentication_ldap')]); ?>
