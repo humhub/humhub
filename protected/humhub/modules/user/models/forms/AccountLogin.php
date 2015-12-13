@@ -101,12 +101,16 @@ class AccountLogin extends Model
             // Could not found user -> lookup in LDAP
             if ($this->_user === null && Ldap::isAvailable() && Setting::Get('enabled', 'authentication_ldap')) {
 
-                // Try load/create LDAP user
-                $usernameDn = Ldap::getInstance()->ldap->getCanonicalAccountName($this->username, \Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
-                Ldap::getInstance()->handleLdapUser(Ldap::getInstance()->ldap->getNode($usernameDn));
+                try {
+                    // Try load/create LDAP user
+                    $usernameDn = Ldap::getInstance()->ldap->getCanonicalAccountName($this->username, \Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
+                    Ldap::getInstance()->handleLdapUser(Ldap::getInstance()->ldap->getNode($usernameDn));
 
-                // Check if user is availble now
-                $this->_user = User::find()->where(['username' => $this->username])->orWhere(['email' => $this->username])->one();
+                    // Check if user is availble now
+                    $this->_user = User::find()->where(['username' => $this->username])->orWhere(['email' => $this->username])->one();
+                } catch (\Zend\Ldap\Exception\LdapException $ex) {
+                    // User not found
+                }
             }
         }
 

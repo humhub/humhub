@@ -106,6 +106,8 @@ class Ldap extends \yii\base\Component
             $this->handleLdapUser($node);
 
             return true;
+        } catch (\Zend\Ldap\Exception\LdapException $ex) {
+            return false;
         } catch (Exception $ex) {
             return false;
         }
