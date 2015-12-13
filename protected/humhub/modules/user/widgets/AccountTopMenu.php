@@ -79,6 +79,8 @@ class AccountTopMenu extends BaseMenu
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
         ));
+        
+        parent::init();        
     }
 
 }
