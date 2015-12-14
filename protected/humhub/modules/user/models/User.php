@@ -408,12 +408,22 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
+     * Checks if user has tags
+     * 
+     * @return boolean has tags set
+     */
+    public function hasTags()
+    {
+        return ($this->tags != '');
+    }
+
+    /**
      * Returns an array with assigned Tags
+     * 
+     * @return array tags
      */
     public function getTags()
     {
-
-        // split tags string into individual tags
         return preg_split("/[;,#]+/", $this->tags);
     }
 
@@ -459,7 +469,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
-        
+
         return $attributes;
     }
 
@@ -496,7 +506,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->hasMany(\humhub\modules\user\models\Session::className(), ['user_id' => 'id']);
     }
-
 
     /**
      * User can approve other users

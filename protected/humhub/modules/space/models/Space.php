@@ -331,6 +331,16 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     }
 
     /**
+     * Checks if space has tags
+     * 
+     * @return boolean has tags set
+     */
+    public function hasTags()
+    {
+        return ($this->tags != '');
+    }
+
+    /**
      * Returns an array with assigned Tags
      */
     public function getTags()

@@ -24,10 +24,10 @@ use yii\helpers\Url;
                 <h5><?php echo Html::encode($user->profile->title); ?></h5>
                 <!-- start: tags for user skills -->
                 <?php $tag_count = 0; ?>
-                <?php if ($user->tags) : ?>
+                <?php if ($user->hasTags()) : ?>
                     <?php foreach ($user->getTags() as $tag): ?>
                         <?php if ($tag_count <= 5) { ?>
-                            <?php echo Html::a($tag, Url::to(['/directory/directory/members', 'keyword' =>  $tag]), array('class' => 'label label-default')); ?>
+                            <?php echo Html::a(Html::encode($tag), Url::to(['/directory/directory/members', 'keyword' =>  $tag]), array('class' => 'label label-default')); ?>
                             <?php
                             $tag_count++;
                         }

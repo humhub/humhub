@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
-<?php if ($user->tags) : ?>
+<?php if ($user->hasTags()) : ?>
     <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
 
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-tags-panel']); ?>
@@ -12,9 +12,9 @@ use yii\helpers\Url;
         <div class="panel-body">
             <!-- start: tags for user skills -->
             <div class="tags">
-                <?php foreach ($user->getTags() as $tag) { ?>
-                    <?php echo Html::a($tag, Url::to(['/directory/directory/members', 'keyword' =>  $tag]), array('class' => 'btn btn-default btn-xs tag')); ?>
-                <?php } ?>
+                <?php foreach ($user->getTags() as $tag): ?>
+                    <?php echo Html::a(Html::encode($tag), Url::to(['/directory/directory/members', 'keyword' => $tag]), array('class' => 'btn btn-default btn-xs tag')); ?>
+                <?php endforeach; ?>
             </div>
             <!-- end: tags for user skills -->
 

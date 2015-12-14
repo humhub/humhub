@@ -76,10 +76,10 @@ use yii\helpers\Url;
                         <h5><?php echo Html::encode(humhub\libs\Helpers::truncateText($space->description, 100)); ?></h5>
 
                         <?php $tag_count = 0; ?>
-                        <?php if ($space->tags) : ?>
+                        <?php if ($space->hasTags()) : ?>
                             <?php foreach ($space->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo Html::a($tag, ['/directory/directory/spaces', 'keyword' => $tag], array('class' => 'label label-default')); ?>
+                                    <?php echo Html::a(Html::encode($tag), ['/directory/directory/spaces', 'keyword' => $tag], array('class' => 'label label-default')); ?>
                                     <?php
                                     $tag_count++;
                                 }
