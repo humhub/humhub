@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default Space' => '',
-  'Description' => '',
-  'Group Administrators' => '',
+  'Default Space' => 'Спільнота за замовчуванням',
+  'Description' => 'Опис',
+  'Group Administrators' => 'Адміністратори грури',
   'ID' => '',
   'LDAP DN' => '',
-  'Members can create private spaces' => '',
-  'Members can create public spaces' => '',
-  'Name' => '',
+  'Members can create private spaces' => 'Учасники можуть створювати приватні спільноти',
+  'Members can create public spaces' => 'Учасники можуть створювати публічні спільноти',
+  'Name' => 'Назва',
 );

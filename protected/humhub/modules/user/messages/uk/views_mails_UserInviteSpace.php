@@ -18,9 +18,9 @@
  */
 return [
     '<br>A social network to increase your communication and teamwork.<br>Register now
-                                                        to join this space.' => '',
-    'Sign up now' => '',
-    'Space Invite' => '',
-    'You got a <strong>space</strong> invite' => '',
-    'invited you to the space:' => '',
+                                                        to join this space.' => '<br>Соціальна мережа для вашої комунікації і командної роботи.<br>Зареєструйтесь зараз і приєднуйтесь до спільноти.',
+    'Sign up now' => 'Авторизуватись зараз',
+    'Space Invite' => 'Запрошення у спільноту',
+    'You got a <strong>space</strong> invite' => 'Ви отримали запрошення до <strong>спільноти</strong>',
+    'invited you to the space:' => 'запрошує вас долучитися до спільноти:',
 ];

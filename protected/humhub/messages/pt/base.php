@@ -18,10 +18,16 @@
  */
 return [
     '<strong>Search</strong>' => '',
+    'Allow' => '',
     'Back' => '',
     'Choose language:' => '',
+    'Default' => '',
+    'Deny' => '',
     'Language' => '',
     'Login' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'Could not find requested module!' => '@@O módulo requisitado não pôde ser encontrado!@@',
     'Invalid request.' => '@@Requisição Inválida@@',
     'Keyword:' => '@@Palavra-chave:@@',

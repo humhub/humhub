@@ -17,10 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Space</strong> preferences' => '',
-    'General' => '',
-    'Members' => '',
-    'Modules' => '',
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => 'Відмінити членство',
+    'General' => 'Основи',
+    'Hide posts on dashboard' => 'Прибрати публікацію з панелі',
+    'Members' => 'Учасники',
+    'Modules' => 'Модулі',
+    'Show posts on dashboard' => 'Показати публікацію в панелі',
+    'This option will hide new content from this space at your dashboard' => 'Дана опція буде приховувати весь новий контент цієї спільноти на вашій панелі',
+    'This option will show new content from this space at your dashboard' => 'Дана опція буде відображати весь новий контент цієї спільноти на вашій панелі',
+    '<strong>Space</strong> preferences' => '@@@@',
     'Archive' => '@@@@',
     'Back to workspace' => '@@@@',
     'Delete' => '@@@@',

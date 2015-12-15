@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'End guide' => '',
-  'Next »' => '',
-  '« Prev' => '',
+  'End guide' => 'Кінець гіда',
+  'Next »' => 'Наступний »',
+  '« Prev' => '« Назад',
 );

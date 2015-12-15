@@ -17,12 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Visible for all (members and guests)' => '',
+    ' Invite and request' => '@@Zaproś i złóż podanie @@',
     'Visible for all' => '@@Widoczna dla wszystkich @@',
-    ' Invite and request' => 'Zaproś i złóż podanie ',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nie można usunąć użytkownika który jest właścicielem strefy! Nazwa strefy: {spaceName} ',
     'Everyone can enter' => 'Każdy może dołączyć ',
     'Invite and request' => 'Zaproś i złóż podanie ',

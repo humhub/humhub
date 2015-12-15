@@ -17,14 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Allowed file extensions' => '',
-  'Convert command not found!' => '',
-  'Got invalid image magick response! - Correct command?' => '',
-  'Hide file info (name, size) for images on wall' => '',
+  'Allowed file extensions' => 'Допустимі розширення файлів',
+  'Convert command not found!' => 'Команду конвертування не знайдено!',
+  'Got invalid image magick response! - Correct command?' => 'Отримали у відповіді некоректне зображення! - Команда коректна?',
+  'Hide file info (name, size) for images on wall' => 'Приховати інформацію про файл (ім’я, розмір) для зображень на стіні',
   'Hide file list widget from showing files for these objects on wall.' => '',
-  'Image Magick convert command (optional)' => '',
-  'Maximum preview image height (in pixels, optional)' => '',
-  'Maximum preview image width (in pixels, optional)' => '',
-  'Maximum upload file size (in MB)' => '',
-  'Use X-Sendfile for File Downloads' => '',
+  'Image Magick convert command (optional)' => 'Команда для конвертування зображень (опційно)',
+  'Maximum preview image height (in pixels, optional)' => 'Максимальна висота попереднього перегляду зображення (у пікселях, опційно)',
+  'Maximum preview image width (in pixels, optional)' => 'Максимальна ширина попереднього перегляду зображення (у пікселях, опційно)',
+  'Maximum upload file size (in MB)' => 'Максимальний розмір завантажуваного файла (в МВ)',
+  'Use X-Sendfile for File Downloads' => 'Використовувати X-Sendfile для завантаження',
 );

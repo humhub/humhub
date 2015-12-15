@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me next time' => '@@Recordarme la siguiente vez@@',
     '<strong>Please</strong> sign in' => '<strong>Por favor</strong>, inicia sesión',
     '<strong>Sign</strong> up' => 'Darse de <strong>alta</strong>',
     'Create a new one.' => 'Crear una nueva.',
@@ -25,7 +26,6 @@ return [
     'Forgot your password?' => '¿Olvidaste tu contraseña?',
     'If you\'re already a member, please login with your username/email and password.' => 'Si ya eres miembro, por favor, inicia sesión con tu usuario o correo electrónico y tu contraseña.',
     'Register' => 'Registrarse',
-    'Remember me next time' => 'Recordarme la siguiente vez',
     'Sign in' => 'Iniciar sesión',
     'email' => 'correo electrónico',
     'password' => 'contraseña',

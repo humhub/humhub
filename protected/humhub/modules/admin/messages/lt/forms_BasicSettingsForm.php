@@ -18,6 +18,7 @@
  */
 return [
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Base URL' => 'Pagrindinis URL',
     'Default language' => 'Numatytoji kalba',
     'Default space' => 'Numatytoji erdvė',

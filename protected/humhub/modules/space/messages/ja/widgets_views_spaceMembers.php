@@ -19,6 +19,7 @@
 return [
     '<strong>New</strong> member request' => '',
     '<strong>Space</strong> members' => '',
+    'Get complete members list' => '',
     'Accept invite' => '@@@@',
     'Become member' => '@@@@',
     'Cancel pending membership application' => '@@@@',

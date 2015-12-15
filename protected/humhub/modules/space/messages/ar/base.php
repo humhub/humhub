@@ -17,16 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    ' Invite and request' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => '',
+    'Default' => '',
     'Everyone can enter' => '',
     'Invite and request' => '',
     'Only by invite' => '',
+    'Private' => '',
     'Private (Invisible)' => '',
+    'Public' => '',
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Public (Visible)' => '',
     'Visible for all (members and guests)' => '',
+    ' Invite and request' => '@@@@',
     'Visible for all' => '@@@@',
 ];

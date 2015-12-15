@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Super Admins can delete each content object' => '',
+  'Super Admins can delete each content object' => 'Супер адмін може видаляти любий об’єкт контенту',
 );

@@ -17,11 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modules</strong> directory' => '',
-    'Install' => '',
-    'Installing module...' => '',
-    'Latest compatible version:' => '',
-    'Latest version:' => '',
-    'More info' => '',
-    'No compatible module version found!' => '',
+    '<strong>Modules</strong> directory' => '<strong>Розділ</strong> модулів',
+    'Buy (%price%)' => 'Купити (%price%)',
+    'Install' => 'Встановити',
+    'Installing module...' => 'Встановлення модуля...',
+    'Latest compatible version:' => 'Остання сумісна версія:',
+    'Latest version:' => 'Остання версія:',
+    'Licence Key:' => 'Ключ ліцензії:',
+    'More info' => 'Більше інформації',
+    'No compatible module version found!' => 'Сумісна версія модуля не знайдена!',
 ];

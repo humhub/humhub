@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid link! Please make sure that you entered the entire url.' => '',
-    'Save profile' => '',
-    'Saved' => '',
-    'The entered e-mail address is already in use by another user.' => '',
-    'You cannot change your e-mail address here.' => '',
+    'Invalid link! Please make sure that you entered the entire url.' => 'Посилання недійсне! Будьласка, переконайтесь що вказали коректне посилання.',
+    'Save profile' => 'Зберегти профіль',
+    'Saved' => 'Збережено',
+    'The entered e-mail address is already in use by another user.' => 'Вказана e-mail адреса вже використовується іншим користувачем.',
+    'You cannot change your e-mail address here.' => 'Ви не можете тут змінити свою e-mail адресу.',
     'You cannot change your password here.' => '@@@@',
 ];

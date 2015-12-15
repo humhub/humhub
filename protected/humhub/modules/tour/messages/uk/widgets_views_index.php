@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Account</strong> Menu' => '',
-  '<strong>Notifications</strong>' => '',
-  '<strong>Space</strong> Menu' => '',
-  '<strong>Start</strong> space guide' => '',
-  'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
-  'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
-  'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => '',
+  '<strong>Account</strong> Menu' => '<strong>Меню</strong> акаунта',
+  '<strong>Notifications</strong>' => '<strong>Сповіщення</strong>',
+  '<strong>Space</strong> Menu' => '<strong>Меню</strong> спільноти',
+  '<strong>Start</strong> space guide' => '<strong>Початок</strong> гіда по спільнотам',
+  'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Нічого не пропустіть!<br /><br />Наступний крок розповість вам про активності і публікації.',
+  'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Меню акаунта надає вам доступ до приватних налаштувань і способів управляння вашим публічним профілем.',
+  'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => 'Це найбільш важливе меню, яке ви, мабуть, будете використовувати найчастіше!<br><br>Доступ до всіх спільнот до яких ви приєднаєтися або створите тут.<br><br>Наступний гід покаже вам як це працює:',
 );

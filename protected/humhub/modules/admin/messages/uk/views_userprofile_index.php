@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Manage</strong> profiles fields' => '',
-  'Add new category' => '',
-  'Add new field' => '',
+  '<strong>Manage</strong> profiles fields' => '<strong>Управління</strong> полями профіля',
+  'Add new category' => 'Додати нову категорію',
+  'Add new field' => 'Додати нове поле',
 );

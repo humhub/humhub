@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not extract module!' => '',
-    'Could not fetch module list online! (%error%)' => '',
-    'Could not get module info online! (%error%)' => '',
-    'Download of module failed!' => '',
-    'Module directory %modulePath% is not writeable!' => '',
-    'Module download failed! (%error%)' => '',
-    'No compatible module version found!' => '',
+    'Could not extract module!' => 'Не вдалося отримати модуль!',
+    'Download of module failed!' => 'Невдале завантаження модуля!',
+    'Module directory %modulePath% is not writeable!' => 'Директорія модуля %modulePath% немає прав на запис!',
+    'Module download failed! (%error%)' => 'Невдале завантаження модуля! (%error%)',
+    'No compatible module version found!' => 'Відсутня сумісна версія модуля!',
+    'Could not fetch module list online! (%error%)' => '@@@@',
+    'Could not get module info online! (%error%)' => '@@@@',
     'Module directory for module %moduleId% already exists!' => '@@@@',
 ];

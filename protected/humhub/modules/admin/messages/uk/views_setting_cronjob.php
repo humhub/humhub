@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>CronJob</strong> settings' => '',
-  'Crontab of user: {user}' => '',
-  'Last run (daily):' => '',
-  'Last run (hourly):' => '',
-  'Never' => '',
-  'Or Crontab of root user' => '',
-  'Please make sure following cronjobs are installed:' => '',
+  '<strong>CronJob</strong> settings' => '<strong>CronJob</strong> налаштування',
+  'Crontab of user: {user}' => 'Запуск зачад від імені: {user}',
+  'Last run (daily):' => 'Останнє виконання (щодобово):',
+  'Last run (hourly):' => 'Останнє виконання (щогодини):',
+  'Never' => 'Ніколи',
+  'Or Crontab of root user' => 'Або запуск задач від root користувача',
+  'Please make sure following cronjobs are installed:' => 'Будьласка, переконайтесь, що налаштовані cron наступні задачі',
 );

@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'No purchased modules found!' => '',
+    'Register' => '',
     'search for available modules online' => '',
     'Installed' => 'Installeret',
     'No modules found!' => 'Ingen moduler fundet!',

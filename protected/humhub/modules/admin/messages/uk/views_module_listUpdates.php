@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modules</strong> directory' => '',
-    'Installed version:' => '',
-    'Latest compatible Version:' => '',
-    'Update' => '',
-    'Updating module...' => '',
+    '<strong>Modules</strong> directory' => '<strong>Розділ</strong> модулів',
+    'Installed version:' => 'Встановлена версія:',
+    'Latest compatible Version:' => 'Остання сумісна версія:',
+    'Update' => 'Оновити',
+    'Updating module...' => 'Оновлення модуля...',
 ];

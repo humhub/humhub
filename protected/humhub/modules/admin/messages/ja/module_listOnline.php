@@ -18,6 +18,8 @@
  */
 return [
     'No modules found!' => '',
+    'No purchased modules found!' => '',
+    'Register' => '',
     'search for available modules online' => '',
     'Installed' => 'インストール済',
     'Search' => '検索',

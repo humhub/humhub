@@ -18,6 +18,7 @@
  */
 return [
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Base URL' => 'URL Base',
     'Default language' => 'Idioma por defecto',
     'Default space' => 'Espacio por defecto',

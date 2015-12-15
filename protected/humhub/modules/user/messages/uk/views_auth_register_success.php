@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Registration</strong> successful!' => '',
-    'Please check your email and follow the instructions!' => '',
-    'Registration successful' => '',
-    'back to home' => '',
+    '<strong>Registration</strong> successful!' => '<strong>Реєстрація</strong> пройшла успішно!',
+    'Please check your email and follow the instructions!' => 'Будьласка, перевірте свою пошту і слідуйте інструкціям, що вказані в листі.',
+    'Registration successful' => 'Реєстрація успішна',
+    'back to home' => 'повернутить на домашню сторінку',
 ];

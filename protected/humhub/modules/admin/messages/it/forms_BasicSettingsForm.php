@@ -19,6 +19,7 @@
 return [
     'Logo upload' => '',
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Show user profile post form on dashboard' => '',
     'Base URL' => 'URL base',
     'Default language' => 'Lingua predefinita',

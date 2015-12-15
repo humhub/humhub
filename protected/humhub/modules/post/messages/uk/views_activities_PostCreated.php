@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} created a new {contentTitle}.' => '',
+    '{displayName} created a new {contentTitle}.' => '{displayName} створив нову {contentTitle}.',
     '%displayName% created a new post.' => '@@@@',
 ];

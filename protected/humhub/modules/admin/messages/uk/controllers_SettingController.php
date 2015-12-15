@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'APC' => '',
-    'Could not load LDAP! - Check PHP Extension' => '',
-    'File' => '',
-    'No caching (Testing only!)' => '',
-    'None - shows dropdown in user registration.' => '',
-    'Saved' => '',
-    'Saved and flushed cache' => '',
+    'APC' => 'APC',
+    'Could not load LDAP! - Check PHP Extension' => 'Неможливо завантажити LDAP! - Перевірте PHP розширення',
+    'File' => 'Файл',
+    'No caching (Testing only!)' => 'Без кешування (Лише для тестування!)',
+    'None - shows dropdown in user registration.' => 'Ні - зображувати випадаючий список у формі реєстрації користувача.',
+    'Saved' => 'Збережено',
+    'Saved and flushed cache' => 'Збережено і добавлено в кеш',
     'Database' => '@@@@',
     'No theme' => '@@@@',
 ];

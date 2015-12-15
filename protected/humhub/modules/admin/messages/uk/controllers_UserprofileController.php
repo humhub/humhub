@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Could not load category.' => '',
-  'Delete' => '',
-  'Save' => '',
-  'You can only delete empty categories!' => '',
+  'Could not load category.' => 'Неможливо завантажити категорію.',
+  'Delete' => 'Видалити',
+  'Save' => 'Зберегти',
+  'You can only delete empty categories!' => 'Можна видалити лише пусту категорію!',
 );

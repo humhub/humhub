@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Delete</strong> account' => '',
-  'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => '',
-  'Delete account' => '',
-  'Enter your password to continue' => '',
-  'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.' => '',
+  '<strong>Delete</strong> account' => '<strong>Видалення</strong> акаунту',
+  'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => 'Ви впевнені, що бажаєте видалити ваш акаунт?<br />Всі ваші публікації будуть видалені!',
+  'Delete account' => 'Видалити акаунт',
+  'Enter your password to continue' => 'Вкажіть пароль для підтвердження',
+  'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.' => 'Вибачте, як власник спілноти ви не можете видалити свій акаунт!<br />Будьласка, передайте права власності спільноти іншому користувачу, або видаліть спільноти.',
 );

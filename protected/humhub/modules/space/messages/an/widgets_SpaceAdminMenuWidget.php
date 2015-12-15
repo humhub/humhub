@@ -17,9 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Space</strong> preferences' => '',
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => '',
     'General' => '',
+    'Hide posts on dashboard' => '',
     'Modules' => '',
+    'Show posts on dashboard' => '',
+    'This option will hide new content from this space at your dashboard' => '',
+    'This option will show new content from this space at your dashboard' => '',
+    '<strong>Space</strong> preferences' => '@@@@',
     'Archive' => '@@@@',
     'Back to workspace' => '@@@@',
     'Delete' => '@@Eliminar@@',

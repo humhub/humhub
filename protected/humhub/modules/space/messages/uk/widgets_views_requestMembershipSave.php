@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Close' => '',
-  'Request workspace membership' => '',
-  'Your request was successfully submitted to the workspace administrators.' => '',
+  'Close' => 'Закрити',
+  'Request workspace membership' => 'Запит учасника спільноти',
+  'Your request was successfully submitted to the workspace administrators.' => 'Ваш запит був успішно надіслано адміністратору спільноти.',
 );

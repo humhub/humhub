@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Access denied!' => '',
-    'Insufficent permissions!' => '',
+    'Access denied!' => 'Доступ заборонено!',
+    'Insufficent permissions!' => 'Недостатньо прав!',
     'Could not delete comment!' => '@@@@',
     'Invalid target class given' => '@@@@',
     'Model & Id Parameter required!' => '@@@@',

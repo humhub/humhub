@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>About</strong> HumHub' => '',
-    'Currently installed version: %currentVersion%' => '',
-    'HumHub is currently in debug mode. Disable it when running on production!' => '',
-    'Licences' => '',
-    'See installation manual for more details.' => '',
-    'There is a new update available! (Latest version: %version%)' => '',
-    'This HumHub installation is up to date!' => '',
+    '<strong>About</strong> HumHub' => '<strong>Про</strong> HumHub',
+    'Currently installed version: %currentVersion%' => 'Поточна версія: %currentVersion%',
+    'HumHub is currently in debug mode. Disable it when running on production!' => 'Зараз HumHub в тестовому середовищі. Деактивуйте його на продакшен-сервері!',
+    'Licences' => 'Ліцензія',
+    'See installation manual for more details.' => 'Деталі шукайте в керівництві по встановленню.',
+    'There is a new update available! (Latest version: %version%)' => 'Наявна нова версія! (Остання версія: %version%)',
+    'This HumHub installation is up to date!' => 'Дане HumHub встановлення завершено!',
 ];

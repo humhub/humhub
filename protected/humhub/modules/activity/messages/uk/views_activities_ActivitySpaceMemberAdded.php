@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% joined the space %spaceName%' => '',
-  '%displayName% joined this space.' => '',
+  '%displayName% joined the space %spaceName%' => '%displayName% приєднався до спільноти %spaceName%',
+  '%displayName% joined this space.' => '%displayName% приєднався до цієї спільноти.',
 );

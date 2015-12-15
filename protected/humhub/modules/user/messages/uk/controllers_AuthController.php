@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Account' => '',
-  'Create account' => '',
+  'Account' => 'Акаунт',
+  'Create account' => 'Створити акаунт',
 );

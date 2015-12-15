@@ -17,14 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Become this user' => '',
-  'Delete' => '',
-  'Disabled' => '',
-  'Enabled' => '',
-  'LDAP' => '',
-  'Local' => '',
-  'Save' => '',
-  'Unapproved' => '',
-  'User not found!' => '',
-  'You cannot delete yourself!' => '',
+  'Become this user' => 'Стати цим користувачем',
+  'Delete' => 'Видалити',
+  'Disabled' => 'Не активний',
+  'Enabled' => 'Активний',
+  'LDAP' => 'LDAP',
+  'Local' => 'Локальний',
+  'Save' => 'Зберегти',
+  'Unapproved' => 'Непідтверджений',
+  'User not found!' => 'Користувач не знайдений!',
+  'You cannot delete yourself!' => 'Ви не можете видилити свій профіль!',
 );

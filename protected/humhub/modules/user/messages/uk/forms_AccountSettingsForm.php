@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hide panel on dashboard' => '',
-    'Language' => '',
-    'Profile visibility' => '',
-    'Tags' => '',
-    'TimeZone' => '',
+    'Hide panel on dashboard' => 'Приховати панель',
+    'Language' => 'Мова',
+    'Profile visibility' => 'Видимість профіля',
+    'Tags' => 'Теги',
+    'TimeZone' => 'Часовий пояс',
     'Invalid language!' => '@@@@',
 ];

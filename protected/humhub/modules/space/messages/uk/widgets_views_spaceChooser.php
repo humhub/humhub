@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Create new space' => '',
-  'My spaces' => '',
-  'Search' => '',
+  'Create new space' => 'Створити нову спільноту',
+  'My spaces' => 'Мої спільноти',
+  'Search' => 'Пошук',
 );

@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Global {global} array cleaned using {method} method.' => '',
+  'Global {global} array cleaned using {method} method.' => 'Глобальний {global} масив очищується за допомогою {method} метода.',
 );

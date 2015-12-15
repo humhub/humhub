@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Invites' => '',
-  'New user by e-mail (comma separated)' => '',
-  'User is already member!' => '',
-  'User not found!' => '',
-  '{email} is already registered!' => '',
-  '{email} is not valid!' => '',
+  'Invites' => 'Запрошення',
+  'New user by e-mail (comma separated)' => 'Новий користувач з допомогою e-mail (кома розділювач)',
+  'User is already member!' => 'Користувач вже являється учасником!',
+  'User not found!' => 'Користувач не знайдений!',
+  '{email} is already registered!' => '{email} вже зареєстрований!',
+  '{email} is not valid!' => '{email} не є валідною e-mail адресою!',
 );

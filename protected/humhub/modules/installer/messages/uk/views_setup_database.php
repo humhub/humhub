@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Database</strong> Configuration' => '',
-    'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => '',
-    'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => '',
-    'Initializing database...' => '',
-    'Next' => '',
-    'Ohh, something went wrong!' => '',
-    'The name of the database you want to run HumHub in.' => '',
-    'Your MySQL password.' => '',
-    'Your MySQL username' => '',
+    '<strong>Database</strong> Configuration' => '<strong>Конфігурація</strong> бази даних',
+    'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => 'Нижче ви маєте вказативаші дані для підключення до бази даних. Якщо ви не впевнені, будьласка, зверніться до системного адміністратора.',
+    'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => 'Хост вашого сервера бази даних (наприклад localhost якщо MySQL працює на цій же машині)',
+    'Initializing database...' => 'Ініціація бази даних',
+    'Next' => 'Наступний',
+    'Ohh, something went wrong!' => 'Ох... щось пішло не так!',
+    'The name of the database you want to run HumHub in.' => 'Ім’я бази даних з якою має працювати HumHub.',
+    'Your MySQL password.' => 'Ваш MySQL пароль',
+    'Your MySQL username' => 'Ваш MySQL користувач',
     'Yes, database connection works!' => '@@@@',
 ];

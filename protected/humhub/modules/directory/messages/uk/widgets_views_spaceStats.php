@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>New</strong> spaces' => '',
-  '<strong>Space</strong> stats' => '',
-  'Most members' => '',
-  'Private spaces' => '',
-  'Total spaces' => '',
+  '<strong>New</strong> spaces' => '<strong>Нові</strong> спільноти',
+  '<strong>Space</strong> stats' => '<strong>Статистика</strong> спільнот',
+  'Most members' => 'Найбільше учасників',
+  'Private spaces' => 'Приватних спільнот',
+  'Total spaces' => 'Всього спільнот',
 );

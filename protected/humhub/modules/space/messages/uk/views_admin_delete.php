@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Delete</strong> space' => '',
-  'Are you sure, that you want to delete this space? All published content will be removed!' => '',
-  'Delete' => '',
-  'Please provide your password to continue!' => '',
+  '<strong>Delete</strong> space' => '<strong>Видалення</strong> спільноти',
+  'Are you sure, that you want to delete this space? All published content will be removed!' => 'Ви впевнені, що бажаєте видалити дану спільноту? Всі публікації будуть видалені!',
+  'Delete' => 'Видалити',
+  'Please provide your password to continue!' => 'Будьласка, вкажіть ваш пароль для продовження!',
 );

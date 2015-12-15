@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me next time' => '@@记住密码@@',
     '<strong>Please</strong> sign in' => '<strong>请</strong> 登录',
     '<strong>Sign</strong> up' => '注册',
     'Create a new one.' => '创建一个新的',
@@ -25,7 +26,6 @@ return [
     'Forgot your password?' => '忘记你的密码？',
     'If you\'re already a member, please login with your username/email and password.' => '如果你已经是会员，请登录',
     'Register' => '注册',
-    'Remember me next time' => '记住密码',
     'Sign in' => '登录',
     'email' => '邮件',
     'password' => '密码',

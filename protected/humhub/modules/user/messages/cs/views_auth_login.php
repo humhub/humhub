@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me next time' => '@@Zapamatovat přihlášení@@',
     '<strong>Please</strong> sign in' => '<strong>Přihlášení</strong>',
     '<strong>Sign</strong> up' => '<strong>Registrace</strong>',
     'Create a new one.' => 'Vytvořit nové',
@@ -25,7 +26,6 @@ return [
     'Forgot your password?' => 'Zapomněl(a) jste heslo?',
     'If you\'re already a member, please login with your username/email and password.' => 'Pokud jste již členem, přihlaste se prosím svým uživatelským jménem/e-mailem a heslem.',
     'Register' => 'Registrovat',
-    'Remember me next time' => 'Zapamatovat přihlášení',
     'Sign in' => 'Přihlásit se',
     'email' => 'E-mailová adresa',
     'password' => 'Heslo',

@@ -18,7 +18,7 @@
  */
 return array (
   'Ok' => '',
-  'User has become a member.' => '',
-  'User has been invited.' => '',
-  'User has not been invited.' => '',
+  'User has become a member.' => 'Користувач став учасником.',
+  'User has been invited.' => 'Користувач був запрошений.',
+  'User has not been invited.' => 'Користувач не був запрошений.',
 );

@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Dashboard</strong>' => '',
-  'This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.' => '',
+  '<strong>Dashboard</strong>' => '<strong>Панель приладів</strong>',
+  'This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.' => 'Це ваша панель приладів.<br><br>Будь-які активності або публікації будуть тут відображатись.',
 );

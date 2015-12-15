@@ -19,6 +19,7 @@
 return [
     'Logo upload' => '',
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Show user profile post form on dashboard' => '',
     'Base URL' => 'Base URL',
     'Default language' => 'Idoma por defeito',

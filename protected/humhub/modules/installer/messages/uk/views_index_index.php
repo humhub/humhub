@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox' => '',
-    'Next' => '',
-    'This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.' => '',
+    '<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox' => '<strong>Ласкаво просимо</strong> до HumHub<br>Ваші інструменти соціальної мережі',
+    'Next' => 'Наступний',
+    'This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.' => 'Конструктор встановить і налаштує ваш власний HumHub додаток.<br><br>Для продовження натисніть "Наступний"',
     '<strong>Setup</strong> Wizard' => '@@@@',
 ];

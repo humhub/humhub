@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'never' => 'Nie',
+    'Last login' => '',
     'Admin' => '@@Administrator@@',
     'All' => '@@Alle@@',
     'Delete user account' => '@@Lösche Benutzer@@',
@@ -33,4 +33,5 @@ return [
     'Add new user' => 'Neuen Benutzer hinzufügen',
     'In this overview you can find every registered user and manage him.' => 'In dieser Übersicht kannst du jeden registrierten Benutzer finden und verwalten.',
     'Overview' => 'Übersicht',
+    'never' => 'Nie',
 ];

@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Move to archive' => '',
-  'Unarchive' => '',
+  'Move to archive' => 'Перемістити в архів',
+  'Unarchive' => 'Розархівувати',
 );

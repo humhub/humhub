@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Something</strong> went wrong' => '',
-    'Followers' => '',
-    'Following' => '',
+    '<strong>Something</strong> went wrong' => '<strong>Щось</strong> пішло не так',
+    'Followers' => 'Слідкують',
+    'Following' => 'Я слідкую',
     'Ok' => '',
-    'Spaces' => '',
+    'Spaces' => 'Спільнот',
     'Edit account' => '@@@@',
     'Follow' => '@@@@',
     'Unfollow' => '@@@@',

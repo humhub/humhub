@@ -17,7 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Buy (%price%)' => '',
     'Installing module...' => '',
+    'Licence Key:' => '',
     '<strong>Modules</strong> directory' => '<strong>Modul</strong> bibliotek',
     'Install' => 'Installer',
     'Latest compatible version:' => 'Seneste kompatible version:',

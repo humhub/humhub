@@ -5,7 +5,13 @@ use yii\db\Migration;
 
 class m140507_171527_create_settings_table extends Migration {
 
-    public function up() {
+    public function up()
+    {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
 
         // Create New User Settings Table
         $this->createTable('space_setting', array(
@@ -18,12 +24,13 @@ class m140507_171527_create_settings_table extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ), $tableOptions);
 
         $this->createIndex('idx_space_setting', 'space_setting', 'space_id, module_id, name', true);
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m140507_171527_create_settings_table does not support migration down.\n";
         return false;
     }

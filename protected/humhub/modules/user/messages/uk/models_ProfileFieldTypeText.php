@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default value' => '',
-  'Maximum length' => '',
-  'Minimum length' => '',
-  'Regular Expression: Error message' => '',
-  'Regular Expression: Validator' => '',
-  'Text Field Options' => '',
-  'Validator' => '',
+  'Default value' => 'Значення за замовчуванням',
+  'Maximum length' => 'Максимальна довжина',
+  'Minimum length' => 'Мінімальна довжина',
+  'Regular Expression: Error message' => 'Регулярний вираз: Повідомлення про помилку',
+  'Regular Expression: Validator' => 'Регулярний вираз: Валідатор',
+  'Text Field Options' => 'Опції текстового поля',
+  'Validator' => 'Валідатор',
 );

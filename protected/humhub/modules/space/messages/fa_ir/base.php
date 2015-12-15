@@ -17,8 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
+    ' Invite and request' => '@@دعوت و درخواست@@',
     'Visible for all' => '@@قابل مشاهده برای همه@@',
-    ' Invite and request' => 'دعوت و درخواست',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'امکان حذف کاربری که دارنده‌ی انجمن است وجود ندارد! نام انجمن: {spaceName}',
     'Everyone can enter' => 'همه می‌توانند وارد شوند',
     'Invite and request' => 'دعوت و درخواست',

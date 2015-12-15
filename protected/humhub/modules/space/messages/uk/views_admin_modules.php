@@ -17,12 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> Modules' => '',
-  'Activated' => '',
-  'Are you sure? *ALL* module data for this space will be deleted!' => '',
-  'Configure' => '',
-  'Currently there are no modules available for this space!' => '',
-  'Disable' => '',
-  'Enable' => '',
-  'Enhance this space with modules.' => '',
+  '<strong>Space</strong> Modules' => '<strong>Модулі</strong> спільноти',
+  'Activated' => 'Активовано',
+  'Are you sure? *ALL* module data for this space will be deleted!' => 'Ви впевнені? *Вся* інформація модуля буде видалена!',
+  'Configure' => 'Налаштувати',
+  'Currently there are no modules available for this space!' => 'На даний час відсутні модулі для цієї спільноти!',
+  'Disable' => 'Деактивувати',
+  'Enable' => 'Активувати',
+  'Enhance this space with modules.' => 'Розширте можливості даної спільноти.',
 );

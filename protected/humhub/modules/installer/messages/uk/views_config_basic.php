@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Next' => '',
-  'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => '',
-  'Social Network <strong>Name</strong>' => '',
+  'Next' => 'Наступний',
+  'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => 'Звичайно, ваша нова соціальна мережа потребує назви. Будь ласка, поміняйте назву за замовчуванням на ім’я, яке вам подобається. (Наприклад, назва вашої компанії, організації або клубу)',
+  'Social Network <strong>Name</strong>' => 'Соціальна мережа <strong>Ім’я</strong>',
 );

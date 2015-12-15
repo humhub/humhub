@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Group</strong> stats' => '',
-  'Average members' => '',
-  'Top Group' => '',
-  'Total groups' => '',
+  '<strong>Group</strong> stats' => '<strong>Статистика</strong> групи',
+  'Average members' => 'Кількість учасників',
+  'Top Group' => 'Топ групи',
+  'Total groups' => 'Всього груп',
 );

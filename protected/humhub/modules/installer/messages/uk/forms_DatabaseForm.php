@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Hostname' => '',
-  'Name of Database' => '',
-  'Password' => '',
-  'Username' => '',
+  'Hostname' => 'Хост',
+  'Name of Database' => 'Ім’я бази даних',
+  'Password' => 'Пароль',
+  'Username' => 'Користувач',
 );

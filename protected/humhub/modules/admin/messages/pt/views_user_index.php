@@ -20,6 +20,7 @@ return [
     '<strong>Manage</strong> users' => '',
     'Add new user' => '',
     'In this overview you can find every registered user and manage him.' => '',
+    'Last login' => '',
     'Overview' => '',
     'never' => '',
     'Admin' => '@@@@',

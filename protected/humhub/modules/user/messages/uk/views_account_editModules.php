@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>User</strong> modules' => '',
-  'Are you really sure? *ALL* module data for your profile will be deleted!' => '',
-  'Configure' => '',
-  'Disable' => '',
-  'Enable' => '',
-  'Enhance your profile with modules.' => '',
+  '<strong>User</strong> modules' => '<strong>Модулі</strong> користувача',
+  'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Ви впевнені? *Вся* інформація з модулів буде видалена з вашого профайлу!',
+  'Configure' => 'Налаштування',
+  'Disable' => 'Деактивувати',
+  'Enable' => 'Активувати',
+  'Enhance your profile with modules.' => 'Прокачайте ваш профіль з допомогою модулів.',
 );

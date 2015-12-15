@@ -17,6 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allow' => '',
+    'Default' => '',
+    'Deny' => '',
+    'Next' => '',
+    'Please type at least 3 characters' => '',
+    'Save' => '',
     'Could not find requested module!' => '@@İstenen modül bulunamadı!@@',
     'Invalid request.' => '@@Geçersiz istek.@@',
     'Keyword:' => '@@Anahtar:@@',

@@ -17,15 +17,15 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Mailing</strong> defaults' => '',
-  'Activities' => '',
-  'Always' => '',
-  'Daily summary' => '',
-  'Defaults' => '',
-  'Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.' => '',
-  'Never' => '',
-  'Notifications' => '',
-  'Save' => '',
-  'Server Settings' => '',
-  'When I´m offline' => '',
+  '<strong>Mailing</strong> defaults' => '<strong>Налаштування</strong> пошти',
+  'Activities' => 'Активності',
+  'Always' => 'Завжди',
+  'Daily summary' => 'Щодобові підсумки',
+  'Defaults' => 'За замовчуванням',
+  'Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.' => 'Визначити значення за замовчуванням, коли користувач отримає по електронній пошті про нові сповіщення або активності. Ця установка може бути переписана користувачем в налаштуваннях облікового запису.',
+  'Never' => 'Ніколи',
+  'Notifications' => 'Сповіщення',
+  'Save' => 'Зберегти',
+  'Server Settings' => 'Налаштування сервера',
+  'When I´m offline' => 'Коли я offline',
 );

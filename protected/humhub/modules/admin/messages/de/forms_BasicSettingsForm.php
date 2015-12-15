@@ -18,6 +18,7 @@
  */
 return [
     'Server Timezone' => '',
+    'Show sharing panel on dashboard' => '',
     'Show user profile post form on dashboard' => '',
     'Base URL' => 'Basis URL',
     'Default language' => 'Standardsprache',

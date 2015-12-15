@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> space image' => '',
-    'Close' => '',
+    '<strong>Modify</strong> space image' => '<strong>Модифікація</strong> зображення спільноти',
+    'Close' => 'Закрити',
     'Save' => '@@@@',
     'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '@@@@',
 ];

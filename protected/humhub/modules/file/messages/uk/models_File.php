@@ -17,17 +17,17 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Created By' => '',
-  'Created at' => '',
-  'File name' => '',
+  'Created By' => 'Додано',
+  'Created at' => 'Створено',
+  'File name' => 'Ім’я файла',
   'Guid' => '',
   'ID' => '',
-  'Invalid Mime-Type' => '',
-  'Maximum file size ({maxFileSize}) has been exceeded!' => '',
+  'Invalid Mime-Type' => 'Недопустимий Mime-Type',
+  'Maximum file size ({maxFileSize}) has been exceeded!' => 'Максимальний розмір файла має бути ({maxFileSize})!',
   'Mime Type' => '',
-  'Size' => '',
-  'This file type is not allowed!' => '',
-  'Title' => '',
-  'Updated at' => '',
-  'Updated by' => '',
+  'Size' => 'Розмір',
+  'This file type is not allowed!' => 'Даний тип файла не дозволений!',
+  'Title' => 'Заголовок',
+  'Updated at' => 'Оновлено',
+  'Updated by' => 'Оновлено',
 );

@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Statistic</strong> settings' => '',
-  'Save' => '',
+  '<strong>Statistic</strong> settings' => '<strong>Налаштування</strong> статистики',
+  'Save' => 'Зберегти',
 );

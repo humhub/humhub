@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Add</strong> OEmbed Provider' => '',
-  '<strong>Edit</strong> OEmbed Provider' => '',
-  'Delete' => '',
-  'Save' => '',
-  'Url Prefix without http:// or https:// (e.g. youtube.com)' => '',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '',
+  '<strong>Add</strong> OEmbed Provider' => '<strong>Додати</strong> OEmbed провайдера',
+  '<strong>Edit</strong> OEmbed Provider' => '<strong>Редагувати</strong> OEmbed провайдера',
+  'Delete' => 'Видалити',
+  'Save' => 'Зберегти',
+  'Url Prefix without http:// or https:// (e.g. youtube.com)' => 'Url префікс без http:// чи https:// (наприклад youtube.com)',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Використовуйте %url% як підказку для URL. Формат має бути JSON рядком. (наприклад http://www.youtube.com/oembed?url=%url%&format=json)',
 );

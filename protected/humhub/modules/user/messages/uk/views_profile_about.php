@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>About</strong> this user' => '',
+  '<strong>About</strong> this user' => '<strong>Про</strong> цього користувача',
 );

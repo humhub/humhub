@@ -17,10 +17,10 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Confirm</strong> comment deleting' => '',
-  'Cancel' => '',
-  'Delete' => '',
-  'Do you really want to delete this comment?' => '',
-  'Edit' => '',
-  'Updated :timeago' => '',
+  '<strong>Confirm</strong> comment deleting' => '<strong>Підтвердження</strong> видалення коментара',
+  'Cancel' => 'Відмінити',
+  'Delete' => 'Видалити',
+  'Do you really want to delete this comment?' => 'Ви насправді хочете видалити даний коментар?',
+  'Edit' => 'Редагувати',
+  'Updated :timeago' => 'Оновлено :timeago',
 );

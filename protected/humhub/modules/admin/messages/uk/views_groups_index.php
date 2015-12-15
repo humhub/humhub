@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Create new group' => '',
-  'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.' => '',
+  'Create new group' => 'Створити нову групу',
+  'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.' => 'Ви можете розділити користувачів по різних групах (для команд, відділів і т.д.) і визначити стандартні спільноти і адмінів для них.',
 );

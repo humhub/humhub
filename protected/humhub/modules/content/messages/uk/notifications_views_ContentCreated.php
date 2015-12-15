@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{userName} created a new {contentTitle}.' => '',
+    '{userName} created a new {contentTitle}.' => '{userName} створив новий {contentTitle}.',
 ];

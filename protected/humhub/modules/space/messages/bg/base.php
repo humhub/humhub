@@ -18,13 +18,16 @@
  */
 return [
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => '',
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Public (Visible)' => '',
     'Visible for all (members and guests)' => '',
+    ' Invite and request' => '@@Покани и заявки@@',
     'Visible for all' => '@@Видима за всички@@',
-    ' Invite and request' => 'Покани и заявки',
     'Everyone can enter' => 'Всеки може да се присъедини',
     'Invite and request' => 'Покани и заявки',
     'Only by invite' => 'Само при покана',

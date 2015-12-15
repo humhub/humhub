@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Permalink</strong> to this page' => '',
+    '<strong>Permalink</strong> to this page' => '@@@@',
     '<strong>Permalink</strong> to this post' => '<strong>Lien permanent</strong> vers cette publication',
-    'Permalink' => 'Lien permanent',
     'Close' => 'Fermer',
+    'Permalink' => 'Lien permanent',
 ];

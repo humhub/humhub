@@ -17,11 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>General</strong> space settings' => '',
     'Archive' => '',
+    'Choose if new content should be public or private by default' => '',
     'Choose the kind of membership you want to provide for this workspace.' => '',
     'Choose the security level for this workspace to define the visibleness.' => '',
-    'Delete' => '',
     'Save' => '',
     'Unarchive' => '',
+    '<strong>General</strong> space settings' => '@@@@',
+    'Delete' => '@@@@',
 ];

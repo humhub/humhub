@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account Request for \'{displayName}\' has been approved.' => '',
-    'Account Request for \'{displayName}\' has been declined.' => '',
+    'Account Request for \'{displayName}\' has been approved.' => 'Запит користувача \'{displayName}\' було підтверджено.',
+    'Account Request for \'{displayName}\' has been declined.' => 'Запит користувача for \'{displayName}\' було відхилено.',
     'Hello {displayName},<br><br>
 
    your account has been activated.<br><br>
@@ -27,27 +27,40 @@ return [
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => '',
+   {AdminName}<br><br>' => 'Вітаємо {displayName},<br><br>
+
+   ваш профіль активовано.<br><br>
+
+   Натисніть тут для авторизації:<br>
+   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
+
+   З повагою<br>
+   {AdminName}<br><br>',
     'Hello {displayName},<br><br>
 
    your account request has been declined.<br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => '',
-    'User not found!' => '',
+   {AdminName}<br><br>' => 'Вітаємо {displayName},<br><br>
+
+   ваш запит відхилено.<br><br>
+
+   З повагою<br>
+   {AdminName}<br><br>',
+    'User not found!' => 'Користувач не знайдений!',
     'Hello {displayName},<br><br>
-  
-   your account has been activated.<br><br> 
-   
+
+   your account has been activated.<br><br>
+
    Click here to login:<br>
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>
-   
+
    Kind Regards<br>
    {AdminName}<br><br>' => '@@@@',
     'Hello {displayName},<br><br>
-  
-   your account request has been declined.<br><br> 
-      
+
+   your account request has been declined.<br><br>
+
    Kind Regards<br>
    {AdminName}<br><br>' => '@@@@',
 ];

@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Create</strong> new profile category' => '',
-  '<strong>Edit</strong> profile category' => '',
-  'Delete' => '',
-  'Save' => '',
+  '<strong>Create</strong> new profile category' => '<strong>Створити</strong> нову категорію профіля',
+  '<strong>Edit</strong> profile category' => '<strong>Редагувати</strong> категорію профіля',
+  'Delete' => 'Видалити',
+  'Save' => 'Зберегти',
 );
