@@ -10,5 +10,8 @@ return [
         array('class' => \humhub\widgets\TopMenu::className(), 'event' => \humhub\widgets\TopMenu::EVENT_INIT, 'callback' => array('\humhub\modules\dashboard\Events', 'onTopMenuInit')),
         array('class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => array('\humhub\modules\dashboard\Events', 'onSidebarInit')),
     ),
+    'urlManagerRules' => [
+        'dashboard' => 'dashboard/dashboard'
+    ]
 ];
 ?>
