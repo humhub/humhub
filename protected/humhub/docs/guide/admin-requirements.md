@@ -12,6 +12,7 @@ Requirements
 * PHP Zip Extension (http://php.net/manual/en/book.zip.php)
 * PHP EXIF Extension (http://php.net/manual/en/book.exif.php)
 * PHP INTL Extension (http://php.net/manual/en/intro.intl.php)
+* PHP FileInfo Extension (http://php.net/manual/en/fileinfo.installation.php)
 
 ### Optional:
 * ImageMagick

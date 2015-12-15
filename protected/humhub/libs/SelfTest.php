@@ -110,6 +110,21 @@ class SelfTest
             );
         }
 
+        // Check FileInfo Extension
+        $title = 'PHP - FileInfo Extension';
+        if (extension_loaded('fileinfo')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install FileInfo Extension'
+            );
+        }
+
         // Checks CURL Extension
         $title = 'PHP - Multibyte String Functions';
         if (function_exists('mb_substr')) {
