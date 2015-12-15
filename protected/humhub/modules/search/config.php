@@ -14,5 +14,8 @@ return [
         ['class' => Application::className(), 'event' => Application::EVENT_ON_INIT, 'callback' => array(Events::className(), 'onConsoleApplicationInit')],
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onHourlyCron']],
     ),
+    'urlManagerRules' => [
+        'search' => 'search/search/index',
+    ]    
 ];
 ?>
