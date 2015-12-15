@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>Member</strong> in these spaces' => '<strong>Membro</strong> in questi space',
+  '<strong>Member</strong> in these spaces' => '<strong>Partecipa</strong> in questi space',
 );

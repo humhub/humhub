@@ -4,6 +4,6 @@ return array (
   'Close' => 'Chiudi',
   'Followers' => 'Lo seguono',
   'Members' => 'Membri',
-  'Ok' => '',
+  'Ok' => 'Ok',
   'Posts' => 'Articoli',
 );

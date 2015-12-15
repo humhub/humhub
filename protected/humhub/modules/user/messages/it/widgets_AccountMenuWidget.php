@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Account</strong> settings' => 'Impostazioni <strong>account</strong>',
-  'Delete account' => 'Cancella account',
+  'Delete account' => 'Elimina account',
   'E-Mail' => '',
   'Modules' => 'Moduli',
   'Notifications' => 'Notifiche',

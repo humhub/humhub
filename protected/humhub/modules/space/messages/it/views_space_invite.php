@@ -6,7 +6,7 @@ return array (
   'Email addresses' => 'Indirizzo email',
   'Invite by email' => 'Invita via email',
   'Login' => '',
-  'New user?' => '',
+  'New user?' => 'Nuovo utente?',
   'Pick users' => 'Scegli gli utenti',
   'Send' => 'Invia',
   'To invite users to this space, please type their names below to find and pick them.' => 'Per invitare utenti a questo space per favore scrivi i loro nomi qui sotto per trovarli e sceglierli.',

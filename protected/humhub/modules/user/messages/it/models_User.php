@@ -16,5 +16,5 @@ return array (
   'Username' => 'Username',
   'Username can contain only letters, numbers, spaces and special characters (+-._)' => '',
   'Visibility' => 'Visibilità',
-  'Wall' => '',
+  'Wall' => 'Bacheca',
 );
