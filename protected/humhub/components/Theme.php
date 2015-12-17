@@ -218,6 +218,10 @@ class Theme extends \yii\base\Theme
     {
         $theme = self::getThemeByName($themeName);
 
+        if ($theme === null) {
+            return;
+        }
+
         $lessFileName = Yii::getAlias($theme->getBasePath() . '/css/theme.less');
         if (file_exists($lessFileName)) {
             $file = fopen($lessFileName, "r") or die("Unable to open file!");
