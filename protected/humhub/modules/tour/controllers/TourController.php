@@ -90,21 +90,23 @@ class TourController extends \humhub\components\Controller
         return $this->redirect($space->createUrl('/space/space', array('tour' => true)));
     }
 
+    /**
+     * Admin Welcome Lightbox
+     */
     public function actionWelcome()
     {
-
         $user = Yii::$app->user->getIdentity();
+        $profile = $user->profile;
 
-        if ($user->profile->load(Yii::$app->request->post()) && $user->profile->validate() && $user->profile->save()) {
-            if ($user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
-                // set tour status to seen for current user
-                Yii::$app->user->getIdentity()->setSetting("welcome", 1, "tour");
+        if ($user->id == 1 && $user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
+            if ($profile->load(Yii::$app->request->post()) && $profile->validate() && $profile->save()) {
+                $user->setSetting("welcome", 1, "tour");
                 return $this->redirect(Url::to(['/dashboard/dashboard']));
             }
         }
 
         return $this->renderAjax('welcome', [
-            'user' => $user
+                    'user' => $user
         ]);
     }
 

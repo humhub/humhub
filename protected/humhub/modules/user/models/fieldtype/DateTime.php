@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use Yii;
+use humhub\libs\DbDateValidator;
 
 /**
  * ProfileFieldTypeDateTime
@@ -19,6 +20,12 @@ use Yii;
 class DateTime extends BaseType
 {
 
+    /**
+     * @var string format for datepicker
+     */
+    const DATEPICKER_FORMAT = 'short';
+    
+    
     /**
      * Checkbox show also time picker
      *
@@ -83,7 +90,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, 'date', 'format' => 'short', 'timestampAttribute' => $this->profileField->internal_name);
+        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => self::DATEPICKER_FORMAT);
         return parent::getFieldRules($rules);
     }
 
@@ -94,7 +101,7 @@ class DateTime extends BaseType
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
-                'format' => 'short',
+                'format' => self::DATEPICKER_FORMAT,
                 'class' => 'form-control',
                 'dateTimePickerOptions' => array(
                     'pickTime' => ($this->showTimePicker)
@@ -113,22 +120,8 @@ class DateTime extends BaseType
 
         if ($date == "" || $date == "0000-00-00 00:00:00")
             return "";
-     
+
         return \yii\helpers\Html::encode($date);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeProfileSave($value)
-    {
-        if ($value == "") {
-            return null;
-        }
-
-        $date = new \DateTime;
-        $date->setTimestamp($value);
-        return $date->format('Y-m-d H:i:s');
     }
 
 }

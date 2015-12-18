@@ -1,11 +1,11 @@
 <?php
+
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 $this->registerJsFile('@web/resources/user/profileHeaderImageUpload.js');
 $this->registerJs("var userGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
 $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/profile-image-upload') . "';", \yii\web\View::POS_BEGIN);
-
 ?>
 
 <div class="modal-dialog modal-dialog-medium animated fadeIn">
@@ -13,7 +13,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
         <div class="modal-header">
             <h4 class="modal-title"
                 id="myModalLabel">
-                <?php echo Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using HumHub.', ['%firstname%' => $user->profile->firstname]); ?>
+                    <?php echo Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using HumHub.', ['%firstname%' => $user->profile->firstname]); ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -82,12 +82,11 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                                class="btn btn-info btn-sm"><i
                                     class="fa fa-cloud-upload"></i></a>
                             <!--                            <a id="profile-image-upload-edit-button"
-                               style="<?php
-                            /*                               if (!$user->getProfileImage()->hasImage()) {
-                                                               echo 'display: none;';
-                                                           }
-                                                           */ ?>"
-                               href="<?php /*echo Url::toRoute('/user/account/crop-profile-image'); */ ?>"
+                               style="<?php /*                               if (!$user->getProfileImage()->hasImage()) {
+                          echo 'display: none;';
+                          }
+                         */ ?>"
+                               href="<?php /* echo Url::toRoute('/user/account/crop-profile-image'); */ ?>"
                                class="btn btn-info btn-sm" data-target="#globalModal"><i
                                     class="fa fa-edit"></i></a>-->
                             <?php
@@ -139,7 +138,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control', 'placeholder' => Yii::t('TourModule.views_tour_welcome', 'mm/dd/yyyy')]]); ?>
+                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['dateFormat' => \humhub\modules\user\models\fieldtype\Birthday::DATEPICKER_FORMAT, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                         </div>
                         <div class="col-md-6">
                             <br><br>
