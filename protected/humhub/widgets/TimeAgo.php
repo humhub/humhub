@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use Yii;
+
 /**
  * Shows a given date & time as automatically updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
  * 
@@ -21,17 +23,81 @@ class TimeAgo extends \yii\base\Widget
      */
     public $timestamp;
 
-    public function run()
+    /**
+     * @inheritdoc
+     */
+    public function init()
     {
+        parent::init();
+
+        // Make sure we get an timestamp in server tz
         if (is_numeric($this->timestamp)) {
             $this->timestamp = date('Y-m-d H:i:s', $this->timestamp);
         }
+        $this->timestamp = strtotime($this->timestamp);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        $elapsed = time() - $this->timestamp;
+
+        if (Yii::$app->params['formatter']['timeAgoBefore'] !== false && $elapsed > Yii::$app->params['formatter']['timeAgoBefore']) {
+            return $this->renderDateTime($elapsed);
+        }
+
+        return $this->renderTimeAgo();
+    }
+
+    /**
+     * Render TimeAgo Javascript
+     * 
+     * @return string timeago span
+     */
+    public function renderTimeAgo()
+    {
+        // Use static timeago
+        if (Yii::$app->params['formatter']['timeAgoStatic']) {
+            return '<span class="time"><span title="' . $this->getFullDateTime() . '">' . Yii::$app->formatter->asRelativeTime($this->timestamp) . '</span></span>';
+        }
 
         // Convert timestamp to ISO 8601
-        $this->timestamp = date("c", strtotime($this->timestamp));
+        $this->timestamp = date("c", $this->timestamp);
 
         $this->getView()->registerJs('$(".time").timeago();', \yii\web\View::POS_END, 'timeago');
-        return '<span class="time" title="' . $this->timestamp . '">' . $this->timestamp . '</span>';
+        return '<span class="time" title="' . $this->timestamp . '">' . $this->getFullDateTime() . '</span>';
+
+        #$date = Yii::$app->formatter->asRelativeTime($this->timestamp);
+    }
+
+    /**
+     * Show full date
+     * 
+     * @param int $elasped time in seconds
+     * @return string output of full date and time
+     */
+    public function renderDateTime($elapsed)
+    {
+        $date = Yii::$app->formatter->asDate($this->timestamp, 'medium');
+
+        // Show time within the last 72 hours
+        if ($elapsed < 60 * 60 * 24 * 3) {
+            $date .= " " . Yii::$app->formatter->asTime($this->timestamp, 'short');
+        }
+
+        return '<span class="time"><span title="' . $this->getFullDateTime() . '">' . $date . '</span></span>';
+    }
+
+    /**
+     * Returns full date as text
+     * 
+     * @return string
+     */
+    protected function getFullDateTime()
+    {
+        return Yii::$app->formatter->asDate($this->timestamp, 'full') . ' - ' . Yii::$app->formatter->asTime($this->timestamp, 'short');
     }
 
 }

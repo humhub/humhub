@@ -31,7 +31,6 @@ class AppAsset extends AssetBundle
         'js/jquery.cookie.js',
         'js/jquery.highlight.min.js',
         'js/jquery.autosize.min.js',
-        'js/jquery.timeago.js',
         'js/jquery.knob.min.js',
         'js/wysihtml5-0.3.0.js',
         'js/bootstrap3-wysihtml5.js',
@@ -56,6 +55,7 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
+        'humhub\assets\TimeAgoAsset'
     ];
 
 }
