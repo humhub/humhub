@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} created a new {contentTitle}.' => '',
-    '%displayName% created a new post.' => '@@%displayName% à créé une nouvelle publication.@@',
+    '{displayName} created a new {contentTitle}.' => '{displayName} a créé {contentTitle}',
+    '%displayName% created a new post.' => '@@%displayName% a créé une nouvelle publication.@@',
 ];
