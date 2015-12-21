@@ -132,6 +132,9 @@ $config = [
         'user' => [
             'minUsernameLength' => 4,
         ],
+        'formatter' => [
+            'defaultDateFormat' => 'short',
+        ],
         'humhub' => [
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',

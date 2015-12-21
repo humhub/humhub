@@ -19,13 +19,6 @@ use humhub\libs\DbDateValidator;
  */
 class DateTime extends BaseType
 {
-
-    /**
-     * @var string format for datepicker
-     */
-    const DATEPICKER_FORMAT = 'short';
-    
-    
     /**
      * Checkbox show also time picker
      *
@@ -90,7 +83,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => self::DATEPICKER_FORMAT);
+        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat']);
         return parent::getFieldRules($rules);
     }
 
@@ -101,7 +94,7 @@ class DateTime extends BaseType
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
-                'format' => self::DATEPICKER_FORMAT,
+                'format' => Yii::$app->params['formatter']['defaultDateFormat'],
                 'class' => 'form-control',
                 'dateTimePickerOptions' => array(
                     'pickTime' => ($this->showTimePicker)
