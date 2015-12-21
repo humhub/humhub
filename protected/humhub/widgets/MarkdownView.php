@@ -68,6 +68,7 @@ class MarkdownView extends \yii\base\Widget
 
         if ($this->purifyOutput) {
             $html = \yii\helpers\HtmlPurifier::process($html, function ($config) {
+                        $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true, 'ftp' => true, 'file' => true]);
                         $config->getHTMLDefinition(true)
                                 ->addAttribute('a', 'target', 'Text');
                     });
