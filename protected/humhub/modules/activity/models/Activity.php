@@ -87,13 +87,14 @@ class Activity extends ContentActiveRecord
      */
     public function getWallOut($params = [])
     {
-        $output = Yii::$app->cache->get('activity_wall_out_' . $this->id);
+        $cacheKey = 'activity_wall_out_' . Yii::$app->language . '_' . $this->id;
+        $output = Yii::$app->cache->get($cacheKey);
 
         if ($output === false) {
             $activity = $this->getActivityBaseClass();
             if ($activity !== null) {
                 $output = $activity->render();
-                Yii::$app->cache->set('activity_wall_out_' . $this->id, $output);
+                Yii::$app->cache->set($cacheKey, $output);
                 return $output;
             }
         }
