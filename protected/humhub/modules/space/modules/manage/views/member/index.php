@@ -50,6 +50,10 @@ use humhub\libs\BasePermission;
                     'format' => 'raw',
                     'value' =>
                         function ($data) use (&$groups) {
+                            if ($data->last_visit == '') {
+                                return Yii::t('SpaceModule.views_admin_members', 'never');
+                            }
+                    
                             return humhub\widgets\TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
                 ],

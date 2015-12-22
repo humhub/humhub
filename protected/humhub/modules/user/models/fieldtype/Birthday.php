@@ -83,7 +83,7 @@ class Birthday extends DateTime
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
-                'format' => self::DATEPICKER_FORMAT,
+                'format' => Yii::$app->params['formatter']['defaultDateFormat'],
                 'class' => 'form-control',
             ),
             $this->profileField->internal_name . "_hide_year" => array(

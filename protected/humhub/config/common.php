@@ -7,7 +7,7 @@ Yii::setAlias('@humhub', '@app/humhub');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.0.0-beta.2',
+    'version' => '1.0.0-beta.3',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
@@ -130,13 +130,25 @@ $config = [
             'lt' => 'lietuvių kalba',
         ],
         'user' => [
+            // Minimum username length
             'minUsernameLength' => 4,
         ],
+        'formatter' => [
+            // Default date format, used especially in DatePicker widgets
+            'defaultDateFormat' => 'short',
+            // Seconds before switch from relative time to date format
+            // Set to false to always use relative time in TimeAgo Widget
+            'timeAgoBefore' => 172800,
+            // Use static timeago instead of timeago js
+            'timeAgoStatic' => false,
+        ],
         'humhub' => [
+            // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
         ],
         'curl' => [
+            // Check SSL certificates on CURL requests
             'validateSsl' => true,
         ],
     ]

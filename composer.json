@@ -1,6 +1,6 @@
 {
     "name": "humhub/humhub",
-    "description": "TBD",
+    "description": "HumHub - The flexible Open Source Social Network Kit for Collaboration",
     "keywords": ["humhub", "yii2", "framework"],
     "homepage": "http://www.humhub.com/",
     "type": "project",
@@ -24,7 +24,8 @@
         "zendframework/zend-http": "*",
         "nqxcode/zendsearch": "^2.0",
         "xj/yii2-jplayer-widget": "*",
-        "zendframework/zend-ldap": "^2.5"
+        "zendframework/zend-ldap": "^2.5",
+        "bower-asset/jquery-timeago": "1.4.*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

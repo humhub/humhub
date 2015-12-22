@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Yii;
+use yii\helpers\FileHelper;
 use humhub\models\Setting;
 
 /**
@@ -101,6 +102,7 @@ class Theme extends \yii\base\Theme
     protected function autoFindModuleView($path)
     {
         $sep = preg_quote(DIRECTORY_SEPARATOR);
+        $path = FileHelper::normalizePath($path);
 
         // .../moduleId/views/controllerId/viewName.php
         if (preg_match('@.*' . $sep . '(.*?)' . $sep . 'views' . $sep . '(.*?)' . $sep . '(.*?)\.php$@', $path, $hits)) {
