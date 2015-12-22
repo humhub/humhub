@@ -25,7 +25,12 @@
         "nqxcode/zendsearch": "^2.0",
         "xj/yii2-jplayer-widget": "*",
         "zendframework/zend-ldap": "^2.5",
-        "bower-asset/jquery-timeago": "1.4.*"
+        "bower-asset/jquery-timeago": "1.4.*",
+        "bower-asset/jquery-nicescroll": "3.6.*",
+        "bower-asset/jquery-knob": "1.2.*",
+        "bower-asset/jquery-placeholder": "^2.3.0",
+        "bower-asset/blueimp-file-upload": "9.11.*",
+        "bower-asset/fontawesome": "^4.3.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

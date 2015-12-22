@@ -16,7 +16,7 @@ use yii\web\AssetBundle;
  * 
  * @author luke
  */
-class TimeAgoAsset extends AssetBundle
+class JqueryTimeAgoAsset extends AssetBundle
 {
 
     /**

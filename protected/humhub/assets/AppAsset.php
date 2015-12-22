@@ -19,7 +19,6 @@ class AppAsset extends AssetBundle
         'css/animate.min.css',
         'css/bootstrap.min.css',
         'css/temp.css',
-        'resources/font-awesome/css/font-awesome.min.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
         'resources/at/jquery.atwho.css',
@@ -31,15 +30,8 @@ class AppAsset extends AssetBundle
         'js/jquery.cookie.js',
         'js/jquery.highlight.min.js',
         'js/jquery.autosize.min.js',
-        'js/jquery.knob.min.js',
         'js/wysihtml5-0.3.0.js',
         'js/bootstrap3-wysihtml5.js',
-        'js/jquery.nicescroll.min.js',
-        'js/jquery.placeholder.js',
-        'js/jquery.nicescroll.min.js',
-        'js/jquery.iframe-transport.js',
-        'js/jquery.ui.widget.js',
-        'js/jquery.fileupload.js',
         'js/jquery.color-2.1.0.min.js',
         'js/jquery.flatelements.js',
         'js/jquery.loader.js',
@@ -55,7 +47,13 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
-        'humhub\assets\TimeAgoAsset'
+        'humhub\assets\JqueryNiceScrollAsset',
+        'humhub\assets\JqueryTimeAgoAsset',
+        'humhub\assets\JqueryKnobAsset',
+        'humhub\assets\JqueryWidgetAsset',
+        'humhub\assets\JqueryPlaceholderAsset',
+        'humhub\assets\FontAwesomeAsset',
+        'humhub\assets\BlueimpFileUploadAsset',
     ];
 
 }
