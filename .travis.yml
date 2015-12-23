@@ -8,8 +8,6 @@ php:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: 7.0
 
 # faster builds on new travis setup not using sudo
 sudo: false
