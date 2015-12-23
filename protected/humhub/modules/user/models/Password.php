@@ -75,8 +75,8 @@ class Password extends \yii\db\ActiveRecord
             [['currentPassword'], \humhub\modules\user\components\CheckPasswordValidator::className(), 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
-            [['newPassword'], 'compare', 'compareAttribute' => 'newPasswordConfirm', 'on' => 'changePassword'],
-            [['newPassword'], 'compare', 'compareAttribute' => 'newPasswordConfirm', 'on' => 'registration'],
+            [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => 'changePassword'],
+            [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => 'registration'],
         ];
     }
 
@@ -97,9 +97,11 @@ class Password extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'algorithm' => 'Algorithm',
-            'password' => 'Password',
+            'password' => Yii::t('UserModule.base', 'Password'),
             'salt' => 'Salt',
             'created_at' => 'Created At',
+            'newPassword' => Yii::t('UserModule.base', 'New password'),
+            'newPasswordConfirm' => Yii::t('UserModule.base', 'Confirm new password')
         ];
     }
 
