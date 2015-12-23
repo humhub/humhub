@@ -33,6 +33,10 @@ class Events extends \yii\base\Object
             $notification->delete();
         }
 
+        foreach (Notification::findAll(['source_class' => \humhub\modules\user\models\User::className(), 'source_pk' => $event->sender->id]) as $notification) {
+            $notification->delete();
+        }
+
         return true;
     }
 
