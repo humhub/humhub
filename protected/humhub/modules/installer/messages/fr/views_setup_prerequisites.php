@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>System</strong> Check' => '',
-  'Check again' => '',
+  '<strong>System</strong> Check' => 'Vérification du <strong>système</strong>',
+  'Check again' => 'Vérifier à nouveau',
   'Congratulations! Everything is ok and ready to start over!' => '',
   'Next' => 'Suivant',
   'This overview shows all system requirements of HumHub.' => '',

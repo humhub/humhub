@@ -1,11 +1,11 @@
 <?php
 return array (
   '<strong>Latest</strong> updates' => '<strong>Letzte</strong> Aktualisierungen',
-  '<strong>Search</strong>' => '',
+  '<strong>Search</strong>' => 'Suchen',
   'Account settings' => 'Kontoeinstellungen',
   'Administration' => 'Administration',
   'Back' => 'Zurück',
-  'Back to dashboard' => 'Zurück zum Dashboard',
+  'Back to dashboard' => 'Zurück zur Übersicht',
   'Choose language:' => 'Sprache wählen:',
   'Collapse' => 'Einklappen',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Die Quelle des Addons muss eine Instanz von HActiveRecordContent oder HActiveRecordContentAddon sein!',

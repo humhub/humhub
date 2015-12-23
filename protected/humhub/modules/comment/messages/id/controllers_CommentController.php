@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Access denied!' => '',
-  'Insufficent permissions!' => '',
+  'Access denied!' => 'Akses ditolak!',
+  'Insufficent permissions!' => 'Izin tidak memadai!',
 );
