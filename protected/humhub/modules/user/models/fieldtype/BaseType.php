@@ -200,6 +200,10 @@ class BaseType extends \yii\base\Model
      */
     public function loadFieldConfig()
     {
+        if ($this->profileField->field_type_config == '') {
+            return;
+        }
+
         $config = \yii\helpers\Json::decode($this->profileField->field_type_config);
         if (is_array($config)) {
             foreach ($config as $key => $value) {
@@ -260,13 +264,12 @@ class BaseType extends \yii\base\Model
     public function getUserValue($user, $raw = true)
     {
         $internalName = $this->profileField->internal_name;
-        
+
         if ($raw) {
             return $user->profile->$internalName;
         } else {
             return \yii\helpers\Html::encode($user->profile->$internalName);
         }
-        
     }
 
     public function getLabels()
