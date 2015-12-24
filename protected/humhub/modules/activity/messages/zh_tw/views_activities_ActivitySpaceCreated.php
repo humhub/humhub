@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% created the new space %spaceName%' => '',
-  '%displayName% created this space.' => '',
+  '%displayName% created the new space %spaceName%' => '%displayName% 創建新的空間 %spaceName%',
+  '%displayName% created this space.' => '%displayName% 創建這個空間.',
 );
