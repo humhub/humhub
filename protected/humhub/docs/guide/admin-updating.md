@@ -31,7 +31,7 @@ Updating
 	- /protected/runtime
 	- /protected/config/*
 	- /protected/modules/* (if any)
-	- /themes (if any) 
+	- /themes (if there are any custom themes - except HumHub default theme)
 4. Run database migration tool
 
 ```
