@@ -43,7 +43,7 @@ class MessageController extends \yii\console\controllers\MessageController
             'format' => 'php',
             'ignoreCategories' => [],
                 ], require($configFile));
-        
+
         $config['sourcePath'] = $module->getBasePath();
 
         if (!is_dir($config['sourcePath'] . '/messages')) {
@@ -64,9 +64,9 @@ class MessageController extends \yii\console\controllers\MessageController
                 unset($messages[$category]);
             }
         }
-        
+
         foreach ($config['languages'] as $language) {
-            $dir = $config['sourcePath'] . DIRECTORY_SEPARATOR . 'messages'. DIRECTORY_SEPARATOR . $language;
+            $dir = $config['sourcePath'] . DIRECTORY_SEPARATOR . 'messages' . DIRECTORY_SEPARATOR . $language;
             if (!is_dir($dir)) {
                 @mkdir($dir);
             }
@@ -83,7 +83,7 @@ class MessageController extends \yii\console\controllers\MessageController
         $dirNameBase = $dirName;
 
         foreach ($messages as $category => $msgs) {
-            
+
             /**
              * Fix Directory
              */
@@ -106,7 +106,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
             $coloredFileName = Console::ansiFormat($file, [Console::FG_CYAN]);
             $this->stdout("Saving messages to $coloredFileName...\n");
-        
+
             $this->saveMessagesCategoryToPHP($msgs, $file, $overwrite, $removeUnused, $sort, $category, $markUnused);
         }
     }
@@ -126,6 +126,64 @@ class MessageController extends \yii\console\controllers\MessageController
         }
 
         return null;
+    }
+
+    /**
+     * Collects all translated strings and stores it in a archive.json file.
+     */
+    public function actionBuildArchive()
+    {
+        // Get Message Folders
+        $messageFolders = [Yii::getAlias('@humhub/messages')];
+        foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true, 'returnClass' => false]) as $id => $module) {
+            $messageFolders[] = $module->getBasePath() . '/messages';
+        }
+
+        foreach (Yii::$app->params['availableLanguages'] as $language => $name) {
+            print "Processing " . $language . " ...";
+
+            if (!is_dir(Yii::getAlias("@humhub/messages/" . $language))) {
+                print "Skipped (No message folder)\n";
+                continue;
+            }
+
+            // Load Archive
+            $archive = [];
+            $archiveFile = Yii::getAlias('@humhub/messages/' . $language . '/archive.json');
+            if (file_exists($archiveFile)) {
+                $archive = \yii\helpers\Json::decode(file_get_contents($archiveFile));
+            }
+
+            // Loop overall messages
+            foreach ($messageFolders as $messageFolder) {
+                if (is_dir($messageFolder . '/' . $language)) {
+                    foreach (glob($messageFolder . '/' . $language . '/*.php') as $messageFile) {
+                        $messages = require($messageFile);
+                        foreach ($messages as $original => $translated) {
+
+                            // Removed unused marking
+                            if (substr($translated, 0, 2) == '@@' && substr($translated, -2, 2) == '@@') {
+                                $translated = preg_replace('/^@@/', '', $translated);
+                                $translated = preg_replace('/@@$/', '', $translated);
+                            }
+
+                            if ($translated != "") {
+                                if (isset($archive[$original]) && !in_array($translated, $archive[$original])) {
+                                    $archive[$original][] = $translated;
+                                } else {
+                                    $archive[$original] = [$translated];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Save
+            file_put_contents($archiveFile, \yii\helpers\Json::encode($archive));
+
+            print "Saved!\n";
+        }
     }
 
 }
