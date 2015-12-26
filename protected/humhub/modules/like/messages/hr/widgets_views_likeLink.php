@@ -18,9 +18,9 @@
  */
 return [
     ' likes this.' => '',
-    '<strong>You</strong> like this.' => '',
-    '<strong>You</strong><br>' => '',
     'Like' => '',
     'Unlike' => '',
+    'You' => '',
+    'You like this.' => '',
     'and {count} more like this.' => '',
 ];

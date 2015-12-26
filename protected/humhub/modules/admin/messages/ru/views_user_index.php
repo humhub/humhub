@@ -17,18 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Last login' => '',
     'never' => '',
-    'Admin' => '@@Администратор@@',
-    'All' => '@@Все@@',
-    'Delete user account' => '@@Удалить аккаунт пользователя@@',
-    'Edit user account' => '@@Редактировать аккаунт пользователя@@',
-    'Email' => '@@Email@@',
-    'No' => '@@Нет@@',
-    'Search for email' => '@@Искать по email@@',
-    'Search for username' => '@@Искать по логину@@',
-    'Username' => '@@Логин@@',
-    'View user profile' => '@@Просмотреть профиль пользователя@@',
-    'Yes' => '@@Да@@',
     '<strong>Manage</strong> users' => '<strong>Управление</strong> пользователями',
     'Add new user' => 'Добавить нового пользователя',
     'In this overview you can find every registered user and manage him.' => 'Здесь Вы можете найти любого зарегистрированного пользователя и управлять им.',

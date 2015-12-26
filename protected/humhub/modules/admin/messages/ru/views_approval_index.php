@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Email' => '@@Email@@',
-    'Search for email' => '@@Искать по email@@',
-    'Search for username' => '@@Искать по логину@@',
     '<strong>Pending</strong> user approvals' => '<strong>В ожидании</strong> подтверждения регистрации',
     'Here you see all users who have registered and still waiting for a approval.' => 'Здесь Вы можете видеть пользователей, которые зарегистрировались и  ожидают подтверждения.',
 ];

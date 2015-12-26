@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@ @@',
     'Invalid link! Please make sure that you entered the entire url.' => ' ',
     'Save profile' => ' ',
     'Saved' => ' ',

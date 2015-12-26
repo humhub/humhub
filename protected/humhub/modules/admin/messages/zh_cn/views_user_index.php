@@ -18,19 +18,9 @@
  */
 return [
     'Add new user' => '',
+    'Last login' => '',
     'Overview' => '',
     'never' => '',
-    'Admin' => '@@管理@@',
-    'All' => '@@所有@@',
-    'Delete user account' => '@@删除用户@@',
-    'Edit user account' => '@@编辑用户@@',
-    'Email' => '@@电子邮件@@',
-    'No' => '@@不@@',
-    'Search for email' => '@@通过电子邮件搜索@@',
-    'Search for username' => '@@通过用户名搜索@@',
-    'Username' => '@@用户名@@',
-    'View user profile' => '@@查看用户信息@@',
-    'Yes' => '@@是@@',
     '<strong>Manage</strong> users' => '<strong>管理</strong> 用户',
     'In this overview you can find every registered user and manage him.' => '你可以找到每个注册用户和管理他',
 ];

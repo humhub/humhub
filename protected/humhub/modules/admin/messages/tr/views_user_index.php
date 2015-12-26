@@ -17,18 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Last login' => '',
     'never' => '',
-    'Admin' => '@@Yönetici@@',
-    'All' => '@@Hepsi@@',
-    'Delete user account' => '@@Kullanıcı hesabını sil@@',
-    'Edit user account' => '@@Kullanıcı hesabını düzenle@@',
-    'Email' => '@@Eposta@@',
-    'No' => '@@Hayır@@',
-    'Search for email' => '@@Eposta için arama@@',
-    'Search for username' => '@@Kullanıcı adı için arama@@',
-    'Username' => '@@Kullanıcı adı@@',
-    'View user profile' => '@@Kullanıcı profilini görüntüle@@',
-    'Yes' => '@@Evet@@',
     '<strong>Manage</strong> users' => '<strong>Kullanıcıları</strong> yönet',
     'Add new user' => 'Yeni kullanıcı ekle',
     'In this overview you can find every registered user and manage him.' => 'Kayıtlı kullanıcıları bulabilir, görüntüleyebilir ve yönetebilirsiniz.',

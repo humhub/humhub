@@ -18,7 +18,6 @@
  */
 return [
     'Initializing database...' => '',
-    'Yes, database connection works!' => '@@Yes, der er forbindelse til databasen!@@',
     '<strong>Database</strong> Configuration' => '<strong>Database</strong> Konfiguration',
     'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => 'Nedenunder skal du indtaste oplysningerne for at forbinde til din database. Hvis du ikke er sikker på dette, så kontakt din system administrator.',
     'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => 'Værtsnavn til din MySQL Database Server (e.g. localhost hvis MySQL er kørende på den samme maskine)',

@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => '@@保 存@@',
     '<strong>Security</strong> settings and roles' => '<strong>安全性</strong> 设置和角色',
 ];

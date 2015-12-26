@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Email' => '@@Email@@',
-    'Search for email' => '@@Søg efter email@@',
-    'Search for username' => '@@Søg efter brugernavn@@',
     '<strong>Pending</strong> user approvals' => '<strong>Ventende</strong> bruger godkendelser',
     'Here you see all users who have registered and still waiting for a approval.' => 'Her ser du alle brugere som har registreret sig og stadig venter på godkendelse.',
 ];

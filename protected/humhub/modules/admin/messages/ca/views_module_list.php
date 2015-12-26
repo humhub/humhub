@@ -24,7 +24,6 @@ return [
     'More info' => '',
     'Set as default' => '',
     'Uninstall' => '',
-    'Processing...' => '@@@@',
     'Configure' => 'Configura',
     'Disable' => 'Inhabilita',
     'Enable' => 'Habilita',

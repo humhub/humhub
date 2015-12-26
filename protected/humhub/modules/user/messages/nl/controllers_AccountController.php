@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@Je kan je wachtwoord hier niet aanpassen.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'Ongeldige link! Zorg dat je de volledige URL invoerd.',
     'Save profile' => 'Bewaar profiel',
     'Saved' => 'Opgeslagen',

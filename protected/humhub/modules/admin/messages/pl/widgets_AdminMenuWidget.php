@@ -18,7 +18,6 @@
  */
 return [
     'Proxy' => '',
-    'Security & Roles' => '@@Bezpieczeństwo i role@@',
     '<strong>Administration</strong> menu' => '<strong>Menu<strong> administracji',
     'About' => 'O HumHub',
     'Authentication' => 'Uwierzytelnianie ',

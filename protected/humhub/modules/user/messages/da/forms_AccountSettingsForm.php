@@ -18,7 +18,6 @@
  */
 return [
     'TimeZone' => '',
-    'Invalid language!' => '@@Ugyldigt sprog!@@',
     'Hide panel on dashboard' => 'Skjul panelet på dashboard',
     'Language' => 'Sprog',
     'Profile visibility' => 'Profil synlighed',

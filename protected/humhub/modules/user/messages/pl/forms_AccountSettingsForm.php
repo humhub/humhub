@@ -19,7 +19,6 @@
 return [
     'Profile visibility' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@Nieprawidłowy język! @@',
     'Hide panel on dashboard' => 'Ukryj panel w kokpicie',
     'Language' => 'Język',
     'Tags' => 'Tagi ',

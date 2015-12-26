@@ -21,6 +21,4 @@ return [
     'My space summary' => '',
     'Space directory' => '',
     'Spaces' => '',
-    'Admin' => '@@@@',
-    'Members' => '@@Μέλη@@',
 ];

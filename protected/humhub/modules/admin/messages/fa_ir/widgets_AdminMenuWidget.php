@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Security & Roles' => '@@امنیت و نقش‌ها@@',
     '<strong>Administration</strong> menu' => 'منوی <strong>مدیریت</strong>',
     'About' => 'درباره‌ی',
     'Authentication' => 'احراز هویت',

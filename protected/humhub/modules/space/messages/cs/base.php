@@ -17,12 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Visible for all (members and guests)' => '',
-    'Visible for all' => '@@Viditelné pro všechny@@',
-    ' Invite and request' => 'Pozváním nebo požádáním',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nelze smazat uživatele, který je vlastníkem prostoru! Prostor: {spaceName}',
     'Everyone can enter' => 'Každý se může přidat',
     'Invite and request' => 'Pozváním nebo požádáním',

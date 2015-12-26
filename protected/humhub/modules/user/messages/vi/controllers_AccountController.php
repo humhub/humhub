@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@Bạn không thể thay đổi mật khẩu tại đây.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'Liên kết không hợp lệ ! Hãy chắc chắn rằng bạn đã nhập đúng url .',
     'Save profile' => 'Lưu thông tin',
     'Saved' => 'Đã lưu',

@@ -18,8 +18,6 @@
  */
 return [
     'None - shows dropdown in user registration.' => '',
-    'Database' => '@@Duomenu bazė@@',
-    'No theme' => '@@Be temos@@',
     'APC' => 'APC',
     'Could not load LDAP! - Check PHP Extension' => 'Nepavyko įkelti LDAP! - Patikrinkite PHP versiją',
     'File' => 'Failas',

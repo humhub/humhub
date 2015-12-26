@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Send' => '@@Odeslat@@',
     '<strong>Request</strong> space membership' => '<strong>Žádost</strong> o členství v prostoru',
     'Close' => 'Zavřít',
     'Please shortly introduce yourself, to become an approved member of this space.' => 'Stručně se prosím představte, aby bylo možné schválit vaše členství v tomto prostoru.',

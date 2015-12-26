@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => '@@Speichern@@',
     '<strong>Security</strong> settings and roles' => '<strong>Sicherheits-</strong> Einstellungen und Regeln',
 ];

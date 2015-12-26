@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Archive' => '@@Arquivar@@',
-    'Back to workspace' => '@@Voltar para o espaço@@',
-    'Delete' => '@@Excluir@@',
-    '<strong>Space</strong> preferences' => '<strong>Preferências do espaço</strong>',
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => '',
+    'Hide posts on dashboard' => '',
+    'Show posts on dashboard' => '',
+    'This option will hide new content from this space at your dashboard' => '',
+    'This option will show new content from this space at your dashboard' => '',
     'General' => 'Geral',
     'Members' => 'Membros',
     'Modules' => 'Módulos',

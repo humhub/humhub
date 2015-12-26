@@ -19,6 +19,4 @@
 return [
     '<strong>Space</strong> menu' => '',
     'Stream' => '',
-    'Admin' => '@@管理@@',
-    'Members' => '@@メンバー@@',
 ];

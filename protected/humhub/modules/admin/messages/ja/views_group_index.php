@@ -17,9 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Description' => '@@説明@@',
-    'Group name' => '@@グループ名@@',
-    'Search for description' => '@@説明を検索@@',
-    'Search for group name' => '@@グループ名を検索@@',
     '<strong>Manage</strong> groups' => '<strong>Manage</strong> グループを管理',
 ];

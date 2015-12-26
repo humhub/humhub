@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@您的帐户类型不支持找回密码@@',
     'E-Mail' => '电子邮件',
     'Password Recovery' => '找回密码',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" 找不到!',

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Security & Roles' => '@@Seguridad y roles@@',
     '<strong>Administration</strong> menu' => 'Menú de <strong>administración</strong>',
     'About' => 'Acerca de',
     'Authentication' => 'Autenticación',

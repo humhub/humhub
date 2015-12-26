@@ -18,5 +18,4 @@
  */
 return [
     '<strong>Security</strong> settings and roles' => '',
-    'Save' => '@@Bewaar@@',
 ];

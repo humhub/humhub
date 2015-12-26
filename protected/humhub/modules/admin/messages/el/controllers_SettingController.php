@@ -19,8 +19,6 @@
 return [
     'APC' => '',
     'None - shows dropdown in user registration.' => '',
-    'Database' => '@@Βάση δεδομένων@@',
-    'No theme' => '@@Καμία έτοιμη σχεδιάση@@',
     'Could not load LDAP! - Check PHP Extension' => 'Δεν μπορεί να φορτωθεί το LDAP! - Ελέγξτε την επέκταση PHP',
     'File' => 'Αρχείο',
     'No caching (Testing only!)' => 'Προσωρινή μνήμη εκτός ( Για δοκιμαστικούς λόγους μόνο!)',

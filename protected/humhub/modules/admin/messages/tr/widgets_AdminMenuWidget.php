@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Security & Roles' => '@@Güvenlik ve roller@@',
     '<strong>Administration</strong> menu' => '<strong>Yönetici</strong> Menüsü',
     'About' => 'Hakkında',
     'Authentication' => 'Kimlik doğrulama',

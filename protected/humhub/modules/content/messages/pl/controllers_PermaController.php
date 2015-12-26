@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@@@',
-    'Unknown content class!' => '@@Nieznana klasa zawartości! @@',
     'Could not find requested content!' => 'Nie można znaleźć żądanej zawartości!',
     'Could not find requested permalink!' => 'Nie można znaleźć żądanego linku! ',
 ];

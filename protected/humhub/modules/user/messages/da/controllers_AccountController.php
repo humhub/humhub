@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@Du kan ikke skifte din adgangskode her.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'Ugyldigt link! Vær sikker på at du har indtastet den fulde url.',
     'Save profile' => 'Gem profil',
     'Saved' => 'Gemt',

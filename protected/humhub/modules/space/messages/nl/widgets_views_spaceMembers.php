@@ -17,15 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Accept invite' => '@@@@',
-    'Become member' => '@@@@',
-    'Cancel pending membership application' => '@@@@',
-    'Deny invite' => '@@@@',
-    'Follow' => '@@@@',
-    'Invite' => '@@@@',
-    'Leave space' => '@@@@',
-    'Request membership' => '@@@@',
-    'Unfollow' => '@@@@',
+    'Get complete members list' => '',
     '<strong>New</strong> member request' => '<strong>Nieuwe</strong> lidaanvraag',
     '<strong>Space</strong> members' => '<strong>Ruimte</strong> leden',
 ];

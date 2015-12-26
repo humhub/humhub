@@ -17,9 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Description' => '@@Apibūdinimas@@',
-    'Group name' => '@@Grupės pavadinimas@@',
-    'Search for description' => '@@Ieškoti apibūdinimo@@',
-    'Search for group name' => '@@Ieškoti grupės pavadinimo@@',
     '<strong>Manage</strong> groups' => '<strong>Tvarkyti</strong> grupes',
 ];

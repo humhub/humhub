@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@这里不能改密码@@',
     'Invalid link! Please make sure that you entered the entire url.' => '无效链接！请确保输入完整的URL',
     'Save profile' => '保存信息',
     'Saved' => '已保存',

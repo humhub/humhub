@@ -17,20 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'never' => 'Nie',
-    'Admin' => '@@Administrator@@',
-    'All' => '@@Alle@@',
-    'Delete user account' => '@@Lösche Benutzer@@',
-    'Edit user account' => '@@Bearbeite Benutzeraccount@@',
-    'Email' => '@@E-Mail@@',
-    'No' => '@@Nein@@',
-    'Search for email' => '@@Suche nach E-Mail@@',
-    'Search for username' => '@@Suche nach Benutzername@@',
-    'Username' => '@@Benutzername@@',
-    'View user profile' => '@@Benutzer Profil anzeigen@@',
-    'Yes' => '@@Ja@@',
+    'Last login' => '',
     '<strong>Manage</strong> users' => '<strong>Verwaltung</strong> der Benutzer',
     'Add new user' => 'Neuen Benutzer hinzufügen',
     'In this overview you can find every registered user and manage him.' => 'In dieser Übersicht kannst du jeden registrierten Benutzer finden und verwalten.',
     'Overview' => 'Übersicht',
+    'never' => 'Nie',
 ];

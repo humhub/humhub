@@ -21,13 +21,5 @@ return [
     'Define here default settings for new spaces.' => '',
     'In this overview you can find every space and manage it.' => '',
     'Overview' => '',
-    'All' => '@@@@',
-    'Delete space' => '@@@@',
-    'Edit space' => '@@@@',
-    'Search for space name' => '@@@@',
-    'Search for space owner' => '@@@@',
-    'Space name' => '@@@@',
-    'Space owner' => '@@@@',
-    'View space' => '@@@@',
     'Settings' => 'Configuració',
 ];

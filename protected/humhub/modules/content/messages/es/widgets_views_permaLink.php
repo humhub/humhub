@@ -17,8 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Permalink</strong> to this page' => '',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> a esta entrada',
-    'Permalink' => 'Permalink',
     'Close' => 'Cerrar',
+    'Permalink' => 'Permalink',
 ];

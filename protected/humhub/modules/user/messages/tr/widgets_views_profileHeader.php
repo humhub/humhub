@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit account' => '@@Hesabı düzenle@@',
-    'Follow' => '@@Takip et@@',
-    'Unfollow' => '@@Takibi Bırak@@',
     '<strong>Something</strong> went wrong' => '<strong>Birşeyler</strong> yanlış',
     'Followers' => 'Takipçiler',
     'Following' => 'Takip edilenler',

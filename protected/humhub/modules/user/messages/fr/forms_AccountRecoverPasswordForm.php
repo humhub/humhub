@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@La récupération de mot de passe n\'est pas disponible pour votre type de compte !@@',
     'E-Mail' => 'e-mail',
     'Password Recovery' => 'Récupération de mot de passe',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" introuvable !',

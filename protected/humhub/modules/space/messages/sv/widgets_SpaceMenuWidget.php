@@ -18,7 +18,5 @@
  */
 return [
     'Stream' => '',
-    'Admin' => '@@@@',
-    'Members' => '@@@@',
     '<strong>Space</strong> menu' => '<strong>Nätverks</strong> meny',
 ];

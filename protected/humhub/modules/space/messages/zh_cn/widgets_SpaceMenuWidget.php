@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@管理@@',
-    'Members' => '@@成员@@',
     '<strong>Space</strong> menu' => '<strong>版块</strong> 菜单',
     'Stream' => '动态',
 ];

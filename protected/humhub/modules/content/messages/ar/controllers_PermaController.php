@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@الموديل المطلوب خاطيء@@',
     'Could not find requested content!' => 'لم يتم إيجاد المحتويات المطلوبة!',
     'Could not find requested permalink!' => 'لم يتم ايجاد المحتويات المرتبطة بهذا العنوان!',
 ];

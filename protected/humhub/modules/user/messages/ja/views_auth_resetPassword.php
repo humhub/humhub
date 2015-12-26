@@ -20,6 +20,5 @@ return [
     '<strong>Change</strong> your password' => '',
     'Change password' => '',
     'Password reset' => '',
-    '<strong>Password</strong> reset' => '@@@@',
     'Back' => '戻る',
 ];

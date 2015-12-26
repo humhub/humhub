@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@تمامی@@',
-    'Delete space' => '@@حذف انجمن@@',
-    'Edit space' => '@@ویرایش انجمن@@',
-    'Search for space name' => '@@جستجوی نام انجمن@@',
-    'Search for space owner' => '@@جستجوی دارنده‌ی انجمن@@',
-    'Space name' => '@@نام انجمن@@',
-    'Space owner' => '@@دارنده‌ی انجمن@@',
-    'View space' => '@@نمایش انجمن@@',
     '<strong>Manage</strong> spaces' => '<strong>مدیریت</strong> انجمن‌ها',
     'Define here default settings for new spaces.' => 'اینجا تنظیمات پیش‌فرض برای انجمن‌های جدید تعریف کنید. ',
     'In this overview you can find every space and manage it.' => 'در این بررسی اجمالی شما می‌توانید هر انجمن را پیدا و مدیریت کنید.',

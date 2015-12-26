@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@Jūs negalite pakeisti slaptažodžio čia.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'Neteisinga nuoroda! Patikrinkite ar įvedėte pilną adresą (URL).',
     'Save profile' => 'Išsaugoti profilį',
     'Saved' => 'Išsaugotas',

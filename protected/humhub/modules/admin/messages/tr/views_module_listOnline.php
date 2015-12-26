@@ -17,7 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Buy (%price%)' => '',
     'Installing module...' => '',
+    'Licence Key:' => '',
     '<strong>Modules</strong> directory' => '<strong>Modül</strong> dizini',
     'Install' => 'Yükle',
     'Latest compatible version:' => 'En son uyumlu sürüm:',

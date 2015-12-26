@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Setup</strong> Wizard' => '@@<strong>Einrichtungs</strong> Assistent@@',
     '<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox' => '<strong>Willkommen</strong> bei HumHub.<br>
 Deinem Sozialem Netzwerk.',
     'Next' => 'Weiter',

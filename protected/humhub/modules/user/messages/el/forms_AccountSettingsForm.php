@@ -20,7 +20,6 @@ return [
     'Hide panel on dashboard' => '',
     'Profile visibility' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@Λάθος γλώσσα@@',
     'Language' => 'Γλώσσα',
     'Tags' => 'Λέξεις κλειδιά',
 ];

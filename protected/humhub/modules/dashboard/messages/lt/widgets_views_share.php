@@ -19,7 +19,7 @@
 return [
     '<strong>Share</strong> your opinion with others' => '',
     'Post a message on Facebook' => '',
-    'Share it on Google+' => '',
-    'Tell anyone on LinkedIn' => '',
+    'Share on Google+' => '',
+    'Share with people on LinkedIn ' => '',
     'Tweet about HumHub' => '',
 ];

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Security & Roles' => '@@Apsauga ir funkcijos@@',
     '<strong>Administration</strong> menu' => '<strong>Administravimo</strong> meniu',
     'About' => 'Apie',
     'Authentication' => 'Atpažinimas',

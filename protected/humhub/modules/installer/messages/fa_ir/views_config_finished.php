@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Setup</strong> Complete' => '@@تکمیل <strong>ساخت</strong>@@',
     '<strong>Congratulations</strong>. You\'re done.' => '<strong>تبریک!</strong> کار شما به پایان رسیده‌است.',
     'Sign in' => 'ورود',
     'The installation completed successfully! Have fun with your new social network.' => 'نصب با موفقیت به پایان رسید! اوقات خوشی در شبکه اجتماعی جدید خود داشته‌باشید.',

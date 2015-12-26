@@ -19,8 +19,6 @@
 return [
     'My Space List' => '',
     'My space summary' => '',
-    'Admin' => '@@Správce@@',
-    'Members' => '@@Členové@@',
     'Space directory' => 'Adresář prostoru',
     'Spaces' => 'Prostory',
 ];

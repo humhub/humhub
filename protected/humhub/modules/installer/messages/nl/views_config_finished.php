@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Setup</strong> Complete' => '@@@@',
     '<strong>Congratulations</strong>. You\'re done.' => '<strong>Gefeliciteerd</strong>. Je bent klaar.',
     'Sign in' => 'Log in',
     'The installation completed successfully! Have fun with your new social network.' => 'De installatie is succesvol voltooid! Veel plezier met je nieuwe sociale netwerk.',

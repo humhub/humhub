@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@<b>Nadie ha escrito nada aún.</b><br/>Marca un comienzo y escribe algo...@@',
-    '<b>This profile stream is still empty</b>' => '@@<b>La actividad de este perfil aún está vacia</b>@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>¡Este espacio está aun vacio!</b><br/>Empieza por escribir algo aqui...@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>¡Tu Inicio está vacio!</b><br/>¡Escribe algo en tu perfil o únete a algún espacio!@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b>La actividad de tu perfil aún está vacia</b><br/>Comienza escribiendo algo...@@',
-    'Nothing found which matches your current filter(s)!' => '@@¡No se ha encontrado nada que coincida con tu filtro!@@',
-    'Show all' => '@@Mostrar todo@@',
     'Back to stream' => 'Volver a Actividad',
     'Content with attached files' => 'Contenido con adjuntos',
     'Created by me' => 'Creado por mi',

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not uninstall module first! Module is protected.' => '@@Modul je chráněn, nelze jej nejdříve odinstalovat.@@',
     'Could not find requested module!' => 'Požadovaný modul nebyl nalezen!',
     'Module path %path% is not writeable!' => 'Cesta k modulu %path% nemá právo zápisu!',
 ];

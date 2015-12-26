@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@Todos@@',
-    'Delete space' => '@@Eliminar espacio@@',
-    'Edit space' => '@@Editar espacio@@',
-    'Search for space name' => '@@Buscar por nombre de espacio@@',
-    'Search for space owner' => '@@Buscar por dueño del espacio@@',
-    'Space name' => '@@Nombre del espacio@@',
-    'Space owner' => '@@Dueño del espacio@@',
-    'View space' => '@@Ver espacio@@',
     '<strong>Manage</strong> spaces' => '<strong>Gestionar</strong> espacios',
     'Define here default settings for new spaces.' => 'Define aquí la configuració por defecto para los nuevos espacios.',
     'In this overview you can find every space and manage it.' => 'En esta vista puedes ver cada espacio y gestionarlo.',

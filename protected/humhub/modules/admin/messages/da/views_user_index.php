@@ -17,18 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Last login' => '',
     'never' => '',
-    'Admin' => '@@Admin@@',
-    'All' => '@@Alle@@',
-    'Delete user account' => '@@Slet brugerkonto@@',
-    'Edit user account' => '@@Rediger brugerkonto@@',
-    'Email' => '@@E-mail@@',
-    'No' => '@@Nej@@',
-    'Search for email' => '@@Søg efter e-mail@@',
-    'Search for username' => '@@Søg efter brugernavn@@',
-    'Username' => '@@Brugernavn@@',
-    'View user profile' => '@@Se bruger profil@@',
-    'Yes' => '@@Ja@@',
     '<strong>Manage</strong> users' => '<strong>Administrer</strong> brugere',
     'Add new user' => 'Tilføj ny bruger',
     'In this overview you can find every registered user and manage him.' => 'I denne oversigt kan du finde alle registrerede brugere og redigere dem.',

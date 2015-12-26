@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@Impossible de changer votre mot de passe ici.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'Lien invalide ! Vérifiez que vous avez indiqué l\'URL complète !',
     'Save profile' => 'Enregistrer le profil',
     'Saved' => 'Enregistré',

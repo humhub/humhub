@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@مدل داده‌شده نامعتبر است!@@',
-    'Unknown content class!' => '@@کلاس محتوای ناشناخته@@',
     'Could not find requested content!' => 'محتوای درخواست‌شده یافت نشد!',
     'Could not find requested permalink!' => 'permalink درخواست‌شده یافت نشد!',
 ];

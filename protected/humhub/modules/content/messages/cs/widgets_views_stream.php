@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...@@',
-    '<b>This profile stream is still empty</b>' => '@@<b>Zatím zde není žádný příspěvek.</b>@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>Zatím zde není žádný příspěvek.</b><br>Napište něco na váš profil nebo se připojte k nějakému prostoru.@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b>Zatím zde není žádný příspěvek.</b><br>Můžete něco napsat...@@',
-    'Nothing found which matches your current filter(s)!' => '@@Nebyl nalezen žádný příspěvek, který by odpovídal filtrům, které jste zvolil(a).@@',
-    'Show all' => '@@Zobrazit vše@@',
     'Back to stream' => 'Zpět na příspěvky',
     'Content with attached files' => 'Příspěvky s přílohou',
     'Created by me' => 'Vytvořil(a) jsem',

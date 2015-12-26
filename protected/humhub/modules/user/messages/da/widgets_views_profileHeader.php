@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit account' => '@@Rediger konto@@',
-    'Follow' => '@@Følg@@',
-    'Unfollow' => '@@Følg ikke længere@@',
     '<strong>Something</strong> went wrong' => '<strong>Noget</strong> gik galt',
     'Followers' => 'Følgere',
     'Following' => 'Følger',

@@ -23,7 +23,6 @@ return [
     'Design' => '',
     'OEmbed Provider' => '',
     'Proxy' => '',
-    'Security & Roles' => '@@Sicurezza & Ruoli@@',
     '<strong>Administration</strong> menu' => '<strong>Amministrazione</strong> menù',
     'Authentication' => 'Autenticazione',
     'Cron jobs' => 'Cron job',

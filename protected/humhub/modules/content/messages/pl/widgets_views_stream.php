@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@<b>Nikt jeszcze nic nie napisał.</b><br>Zrób początek i napisz coś...@@',
-    '<b>This profile stream is still empty</b>' => '@@<b>Ten strumień profilu jest wciąż pusty</b>@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>Ta strefa jest wciąż pusta!</b><br>Zacznij pisząc tutaj coś...@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>Twój kokpit jest pusty!</b><br>Napisz coś na swoim profilu i dołącz do stref!@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b>Twój strumień profilu jest wciąż pusty</b><br>Zacznij pisząc coś...@@',
-    'Nothing found which matches your current filter(s)!' => '@@Nie znaleziono niczego pasującego do obecnego filtru(ów)!@@',
-    'Show all' => '@@Pokaż wszystkie@@',
     'Back to stream' => 'Powrót do strumienia',
     'Content with attached files' => 'Zawartość z załączonymi plikami',
     'Created by me' => 'Utworzone przez mnie',

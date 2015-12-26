@@ -17,8 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Permalink</strong> to this page' => '',
     '<strong>Permalink</strong> to this post' => '获取该记录<strong>链接</strong>',
-    'Permalink' => '获取链接',
     'Close' => '关闭',
+    'Permalink' => '获取链接',
 ];

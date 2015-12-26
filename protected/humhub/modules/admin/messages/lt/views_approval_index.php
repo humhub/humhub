@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Email' => '@@Elektroninis paštas@@',
-    'Search for email' => '@@Ieškoti elektroninio pašto adreso@@',
-    'Search for username' => '@@Ieškoti vartotojo vardo@@',
     '<strong>Pending</strong> user approvals' => '<strong>Laukiantys eilėje</strong> vartotojų patvirtinimai',
     'Here you see all users who have registered and still waiting for a approval.' => 'Čia Jūs galite matyti visus prisiregistravusius ir vis dar laukiančius patvirtinimo vartotojus.',
 ];

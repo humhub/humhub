@@ -17,18 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Last login' => '',
     'never' => '',
-    'Admin' => '@@مدیر@@',
-    'All' => '@@تمامی@@',
-    'Delete user account' => '@@حذف حساب کاربری کاربر@@',
-    'Edit user account' => '@@وبرایش حساب کاربری کاربر@@',
-    'Email' => '@@ایمیل@@',
-    'No' => '@@خیر@@',
-    'Search for email' => '@@جستجوی ایمیل@@',
-    'Search for username' => '@@جستجوی نام کاربری@@',
-    'Username' => '@@نام کاربری@@',
-    'View user profile' => '@@نمنایش پروفایل کاربر@@',
-    'Yes' => '@@بلی@@',
     '<strong>Manage</strong> users' => '<strong>مدیریت</strong> کاربران',
     'Add new user' => 'اضافه کردن کاربر جدید',
     'In this overview you can find every registered user and manage him.' => 'در این بررسی اجمالی می‌توانید هر کاربر ثبت نام شده را پیدا و مدیریت کنید.',

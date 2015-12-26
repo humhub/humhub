@@ -18,7 +18,6 @@
  */
 return [
     'E-Mail' => '',
-    'Password recovery is not possible on your account type!' => '@@Il recupero password non è possibile per il tuo tipo di account!@@',
     'Password Recovery' => 'Recupera password',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" non è stato trovato!',
 ];

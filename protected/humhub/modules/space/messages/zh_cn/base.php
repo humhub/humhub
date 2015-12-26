@@ -17,13 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    ' Invite and request' => '',
+    'Default' => '',
     'Everyone can enter' => '',
+    'Private' => '',
+    'Public' => '',
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Visible for all (members and guests)' => '',
-    'Visible for all' => '@@@@',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => '无法删除用户，用户是版块{spaceName}的主人',
     'Invite and request' => '邀请和请求',
     'Only by invite' => '只有通过邀请',

@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Visible for all' => '@@Zichtbaar voor iedereen@@',
-    ' Invite and request' => 'Uitnodigen en aanvragen',
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'De eigenaar van ruimte {spaceName} kan niet verwijderd worden!',
     'Everyone can enter' => 'Iedereen kan lid worden',
     'Invite and request' => 'Uitnodigen en aanvragen',

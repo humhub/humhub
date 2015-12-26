@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => '@@Kaydet@@',
     '<strong>Security</strong> settings and roles' => '<strong>Güvenlik</strong> Ayarları ve Roller',
 ];

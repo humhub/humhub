@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@مدیر@@',
-    'Members' => '@@اعضا@@',
     'My Space List' => 'لیست انجمن من',
     'My space summary' => 'خلاصه‌ی انجمن من',
     'Space directory' => 'فهرست انجمن',

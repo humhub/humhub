@@ -25,7 +25,6 @@ return [
     'Create a new one.' => 'Crea un de nou.',
     'Forgot your password?' => 'No recordes la contrasenya?',
     'Register' => 'Registre',
-    'Remember me next time' => 'Recorda la pròxima vegada',
     'Sign in' => 'Inicia sessió',
     'email' => 'correu electrònic',
     'password' => 'contrasenya',

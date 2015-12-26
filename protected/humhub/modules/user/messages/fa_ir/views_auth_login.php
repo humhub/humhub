@@ -25,7 +25,6 @@ return [
     'Forgot your password?' => 'رمز خود را فراموش‌کرده‌اید؟',
     'If you\'re already a member, please login with your username/email and password.' => 'اگر عضو هستید لطفا با نام کاربری/ایمیل و گذرواژه‌ی خود واردشوید.',
     'Register' => 'ثبت‌نام',
-    'Remember me next time' => 'مرا به خاطر بسپار',
     'Sign in' => 'ورود',
     'email' => 'ایمیل',
     'password' => 'گذرواژه',

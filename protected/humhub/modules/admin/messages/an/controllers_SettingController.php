@@ -23,7 +23,5 @@ return [
     'No caching (Testing only!)' => '',
     'None - shows dropdown in user registration.' => '',
     'Saved and flushed cache' => '',
-    'Database' => '@@@@',
-    'No theme' => '@@@@',
     'Saved' => ' ',
 ];

@@ -18,7 +18,6 @@
  */
 return [
     'Enable module...' => '',
-    'Processing...' => '@@@@',
     '<strong>Modules</strong> directory' => '<strong>Katalog</strong> modułów',
     'Are you sure? *ALL* module data will be lost!' => 'Czy jesteś pewny? *WSZYSTKIE* dane modułu zostaną utracone!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Czy jesteś pewny? *WSZYSTKIE* dane i pliki związane z modułem zostaną utracone!',

@@ -18,7 +18,6 @@
  */
 return [
     'TimeZone' => '',
-    'Invalid language!' => '@@Netinkama kalba!@@',
     'Hide panel on dashboard' => 'Slėpti sąrašą',
     'Language' => 'Kalba',
     'Profile visibility' => 'Profilio matomumas',

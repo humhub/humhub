@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@Hesap türünüz şifre kurtarma için uygun değil!@@',
     'E-Mail' => 'Email',
     'Password Recovery' => 'Şifre Kurtarma',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" bulunamadı!',

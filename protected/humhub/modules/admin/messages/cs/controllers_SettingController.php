@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Database' => '@@Databáze@@',
-    'No theme' => '@@Bez tématu@@',
     'APC' => 'APC',
     'Could not load LDAP! - Check PHP Extension' => 'Nelze načíst LDAP – zkontrolujte rozšíření PHP!',
     'File' => 'Soubor',

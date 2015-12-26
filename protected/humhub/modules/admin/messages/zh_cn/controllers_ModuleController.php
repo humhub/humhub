@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not uninstall module first! Module is protected.' => '@@不能卸载模块，模块已被保护@@',
     'Could not find requested module!' => '找不到请求的模块',
     'Module path %path% is not writeable!' => '模块路径%path%不可写！',
 ];

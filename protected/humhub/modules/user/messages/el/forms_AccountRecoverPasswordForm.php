@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@Η ανακτηση κωδικού δεν είναι δυνατή με τον δικό σας τύπο λογαριασμού@@',
     'E-Mail' => 'E-mail',
     'Password Recovery' => 'Ανάκτηση κωδικού',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" δεν βρέθηκε!',

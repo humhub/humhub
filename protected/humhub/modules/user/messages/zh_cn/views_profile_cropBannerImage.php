@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '@@选择区域点击<strong>保存</strong>@@',
     '<strong>Modify</strong> your title image' => '<strong>修改</strong> 属性图片',
     'Close' => '关闭',
     'Save' => '保存',

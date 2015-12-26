@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit account' => '@@ویرایش حساب کاربری@@',
-    'Follow' => '@@دنبال‌کردن@@',
-    'Unfollow' => '@@انصراف از دنبال‌کردن@@',
     '<strong>Something</strong> went wrong' => '<strong>یک مورد</strong> مشکل دارد',
     'Followers' => 'دنبال‌کننده‌ها',
     'Following' => 'دنبال‌شونده‌ها',

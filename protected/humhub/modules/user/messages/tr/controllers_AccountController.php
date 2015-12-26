@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@Burada şifreni değiştiremezsin.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'Geçersiz link! Lütfen url nin tamamını girdiğinizden emin olun.',
     'Save profile' => 'Profili kaydet',
     'Saved' => 'Kaydedildi',

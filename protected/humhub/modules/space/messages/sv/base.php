@@ -17,12 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Visible for all (members and guests)' => '',
-    'Visible for all' => '@@Synlig för alla@@',
-    ' Invite and request' => 'Inbjudan och begäran',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kan inte ta bort användare som är nätverkets ägare! Namn på nätverket: {spaceName}',
     'Everyone can enter' => 'Vem som helst kan gå med',
     'Invite and request' => 'Inbjudan och begäran',

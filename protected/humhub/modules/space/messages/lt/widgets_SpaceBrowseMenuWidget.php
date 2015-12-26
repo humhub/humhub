@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@Administratorius@@',
-    'Members' => '@@Nariai@@',
     'My Space List' => 'Mano erdvės sąrašas',
     'My space summary' => 'Mano erdvės apžvalga',
     'Space directory' => 'Erdvės adresatų knyga',

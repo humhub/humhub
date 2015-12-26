@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@Admin@@',
-    'Members' => '@@Leden@@',
     'My Space List' => 'Mijn Ruimte Lijst',
     'My space summary' => 'Mijn ruimte overzicht',
     'Space directory' => 'Ruimte overzicht',

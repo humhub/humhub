@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Archive' => '@@Arşiv@@',
-    'Back to workspace' => '@@Mekana geri dön@@',
-    'Delete' => '@@Sil@@',
-    '<strong>Space</strong> preferences' => '<strong>Mekan</strong> tercihleri',
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => '',
+    'Hide posts on dashboard' => '',
+    'Show posts on dashboard' => '',
+    'This option will hide new content from this space at your dashboard' => '',
+    'This option will show new content from this space at your dashboard' => '',
     'General' => 'Genel',
     'Members' => 'Üyeler',
     'Modules' => 'Modüller',

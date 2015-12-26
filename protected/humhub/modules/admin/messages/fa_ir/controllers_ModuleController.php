@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not uninstall module first! Module is protected.' => '@@امکان انصراف از نصب ماژول وجود ندارد! ماژول محافظت‌شده است.@@',
     'Could not find requested module!' => 'ماژول درخواست‌شده یافت نشد!',
     'Module path %path% is not writeable!' => 'مسیر ماژول %path% قابل نوشته‌ شدن نیست!',
 ];

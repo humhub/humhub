@@ -18,10 +18,12 @@
  */
 return [
     '<strong>Modules</strong> directory' => '',
+    'Buy (%price%)' => '',
     'Install' => '',
     'Installing module...' => '',
     'Latest compatible version:' => '',
     'Latest version:' => '',
+    'Licence Key:' => '',
     'More info' => '',
     'No compatible module version found!' => '',
 ];

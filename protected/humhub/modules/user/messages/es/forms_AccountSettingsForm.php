@@ -18,7 +18,6 @@
  */
 return [
     'TimeZone' => '',
-    'Invalid language!' => '@@¡Idioma no válido!@@',
     'Hide panel on dashboard' => 'Esconder panel en Inicio',
     'Language' => 'Idioma',
     'Profile visibility' => 'Visibilidad del perfil',

@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@</b>Chưa có người cập nhật cảm nghĩ tại đây.</b><br>Hãy bắt đầu và viết một vài điều gì đó.@@',
-    '<b>This profile stream is still empty</b>' => '@@@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>Nhóm này còn trống!</b><br>Hãy bắt đầu viết điều gì đó ở đây ...@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>Trang chính của bạn còn trống!</b><br>Viết một vài điều ở trang cá nhân của bạn hoặc trong nhóm nào đó!@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b>Trang cá nhân của bạn còn trống!</b><br>Hãy bắt đầu viết điều gì đó.@@',
-    'Nothing found which matches your current filter(s)!' => '@@Không tìm thấy gì phù hợp với bộ lọc hiện tại của bạn!@@',
-    'Show all' => '@@Hiển thị tất cả@@',
     'Back to stream' => 'Quay lại nhóm ',
     'Content with attached files' => 'Nội dung sẽ được đính kèm một liên kết',
     'Created by me' => 'Tạo bởi tôi',

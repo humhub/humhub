@@ -19,5 +19,4 @@
 return [
     'Could not find requested module!' => '',
     'Module path %path% is not writeable!' => '',
-    'Could not uninstall module first! Module is protected.' => '@@@@',
 ];

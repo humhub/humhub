@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Permalink</strong> to this post' => '<strong>Link permanente</strong> para este post',
-    'Permalink' => 'Link permanente',
-    '<strong>Permalink</strong> to this page' => '<strong>Link permanente</strong> para esta página',
     'Close' => 'Fechar',
+    'Permalink' => 'Link permanente',
 ];

@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@<b>هنوز کسی مطلبی ننوشته‌است.</b><br> با پست کردن یک مطلب شروع‌کننده باشید . . .@@',
-    '<b>This profile stream is still empty</b>' => '@@<b>این جریان پروفایل هنوز خالی است</b>@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>این انجمن هنوز خالی است!</b><br> با پست کردن یک مطلب شروع کنید . . .@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>صفحه‌ی خانه‌ی شما خالی است!</b> در پروفایل خود مطلب پست کنید و یا به انجمن‌ها ملحق شوید!@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b> جریان پروفایل شما هنوز خالی است</b><br>  با پست کردن یک مطلب شروع کنید . . .@@',
-    'Nothing found which matches your current filter(s)!' => '@@هیچ موردی که با فیلتر(های) کنونی شما سازگار باشد یافت‌نشد!@@',
-    'Show all' => '@@نمایش همه@@',
     'Back to stream' => 'بازگشت به جریان',
     'Content with attached files' => 'محتوا با فایل‌های پیوست‌شده',
     'Created by me' => 'ایجادشده توسط من',

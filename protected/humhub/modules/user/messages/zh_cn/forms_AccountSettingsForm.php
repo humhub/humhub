@@ -19,7 +19,6 @@
 return [
     'Profile visibility' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@无效语言@@',
     'Hide panel on dashboard' => '从面板上隐藏',
     'Language' => '语言',
     'Tags' => '标签',

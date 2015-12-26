@@ -19,7 +19,6 @@
 return [
     'Profile visibility' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@Ngôn ngữ bị vô hiệu@@',
     'Hide panel on dashboard' => 'Ẩn khỏi trang chính',
     'Language' => 'Ngôn ngữ',
     'Tags' => 'Thẻ',

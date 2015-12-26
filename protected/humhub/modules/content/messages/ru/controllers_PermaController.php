@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@Дана недействительная модель!@@',
-    'Unknown content class!' => '@@Неизвестный класс контента!@@',
     'Could not find requested content!' => 'Не удалось найти запрашиваемый контент!',
     'Could not find requested permalink!' => 'Не удалось найти запрашиваемую постоянную ссылку!',
 ];

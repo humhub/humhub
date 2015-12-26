@@ -22,12 +22,4 @@ return [
     'In this overview you can find every space and manage it.' => '',
     'Overview' => '',
     'Settings' => '',
-    'All' => '@@@@',
-    'Delete space' => '@@@@',
-    'Edit space' => '@@@@',
-    'Search for space name' => '@@@@',
-    'Search for space owner' => '@@@@',
-    'Space name' => '@@@@',
-    'Space owner' => '@@@@',
-    'View space' => '@@@@',
 ];

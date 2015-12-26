@@ -21,5 +21,4 @@ return [
     'Back' => '',
     'Change password' => '',
     'Password reset' => '',
-    '<strong>Password</strong> reset' => '@@@@',
 ];

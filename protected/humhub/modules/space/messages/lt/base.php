@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Visible for all' => '@@Matomas visiems@@',
-    ' Invite and request' => 'Pakviesti',
+    'Default' => '',
+    'Private' => '',
+    'Public' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Negalima ištrinti vartotojo, kuriam priklauso erdvė! Erdvės pavadinimas: {spaceName}',
     'Everyone can enter' => 'Dalyvauti gali visi',
     'Invite and request' => 'Pakviesti',

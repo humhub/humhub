@@ -29,5 +29,4 @@ return [
     'email' => '',
     'password' => '',
     'username or email' => '',
-    'Remember me next time' => 'Lembrar de mim na próxima vez',
 ];

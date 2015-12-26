@@ -18,7 +18,6 @@
  */
 return [
     'Enable module...' => '',
-    'Processing...' => '@@@@',
     '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
     'Are you sure? *ALL* module data will be lost!' => '确定吗？所有模块数据将被删除！',
     'Are you sure? *ALL* module related data and files will be lost!' => '确定吗？所有模块相关的数据和文件会丢失！',

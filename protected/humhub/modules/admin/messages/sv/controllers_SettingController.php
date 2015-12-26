@@ -18,8 +18,6 @@
  */
 return [
     'APC' => '',
-    'Database' => '@@Databas@@',
-    'No theme' => '@@Inget tema.@@',
     'Could not load LDAP! - Check PHP Extension' => 'Kunde inte ladda LDAP! Kontrollera PHP Extension.',
     'File' => 'Fil',
     'No caching (Testing only!)' => 'Ingen cachering (Endast Testning!)',

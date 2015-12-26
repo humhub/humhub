@@ -19,7 +19,6 @@
 return [
     'OEmbed Provider' => '',
     'Proxy' => '',
-    'Security & Roles' => '@@セキュリティーと役割@@',
     '<strong>Administration</strong> menu' => '<strong>Administration</strong> 管理メニュー',
     'About' => 'About',
     'Authentication' => '認証',

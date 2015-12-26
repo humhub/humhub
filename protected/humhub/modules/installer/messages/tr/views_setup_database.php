@@ -21,7 +21,6 @@ return [
     'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => '',
     'Initializing database...' => '',
     'The name of the database you want to run HumHub in.' => '',
-    'Yes, database connection works!' => '@@Evet, veritabanı bağlantısı çalışıyor!@@',
     '<strong>Database</strong> Configuration' => '<strong>Database</strong> Ayarlamaları',
     'Next' => 'İleri',
     'Ohh, something went wrong!' => 'Ohh, bir şeyler yanlış gitti!',

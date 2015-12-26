@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@Admin@@',
-    'Members' => '@@Medlemmer@@',
     'My Space List' => 'Min side Liste',
     'My space summary' => 'Min side resumé',
     'Space directory' => 'Side bibliotek',

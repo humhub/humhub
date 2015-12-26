@@ -33,7 +33,6 @@ return [
     'User approval' => '',
     'User profiles' => '',
     'Users' => '',
-    'Security & Roles' => '@@@@',
     'About' => 'Informació',
     'Groups' => 'Grups',
     'Modules' => 'Mòduls',

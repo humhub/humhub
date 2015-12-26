@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit account' => '@@@@',
-    'Follow' => '@@@@',
-    'Unfollow' => '@@@@',
     '<strong>Something</strong> went wrong' => 'Er is iets fout gegaan',
     'Followers' => 'Volgers',
     'Following' => 'Volgend',

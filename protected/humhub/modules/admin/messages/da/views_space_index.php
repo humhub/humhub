@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@Alle@@',
-    'Delete space' => '@@Slet side@@',
-    'Edit space' => '@@Rediger side@@',
-    'Search for space name' => '@@Søg efter side navn@@',
-    'Search for space owner' => '@@Søg efter side ejer@@',
-    'Space name' => '@@Side navn@@',
-    'Space owner' => '@@Side ejer@@',
-    'View space' => '@@Se side@@',
     '<strong>Manage</strong> spaces' => '<strong>Administrer</strong> sider',
     'Define here default settings for new spaces.' => 'Definer standard indstillinger for nye sider',
     'In this overview you can find every space and manage it.' => 'I denne oversigt kan du finde alle sider og administrere dem.',

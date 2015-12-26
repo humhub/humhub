@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@Ugyldig model givet!@@',
-    'Unknown content class!' => '@@@@',
     'Could not find requested content!' => 'Kunne ikke finde ønskede indhold!',
     'Could not find requested permalink!' => 'Kunne ikke finde ønskede permalink!',
 ];

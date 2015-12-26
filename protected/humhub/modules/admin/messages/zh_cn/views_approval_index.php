@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Email' => '@@电子邮件@@',
-    'Search for email' => '@@通过电子邮件搜索@@',
-    'Search for username' => '@@通过用户名搜索@@',
     '<strong>Pending</strong> user approvals' => '待处理<strong>用户请求</strong>',
     'Here you see all users who have registered and still waiting for a approval.' => '这里你可以看到那些已注册但仍在等待批准的用户。',
 ];

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@Wachtwoordherstel is niet mogelijk voor dit accounttype!@@',
     'E-Mail' => 'E-mail',
     'Password Recovery' => 'Wachtwoordherstel',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" niet gevonden!',

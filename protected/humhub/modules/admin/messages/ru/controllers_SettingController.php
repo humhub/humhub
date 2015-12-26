@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Database' => '@@База данных@@',
-    'No theme' => '@@Нет темы@@',
     'APC' => 'APC',
     'Could not load LDAP! - Check PHP Extension' => 'Не удалось загрузить LDAP! - Проверьте расширения PHP',
     'File' => 'Файл',

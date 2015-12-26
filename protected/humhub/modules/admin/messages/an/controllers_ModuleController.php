@@ -18,6 +18,5 @@
  */
 return [
     'Module path %path% is not writeable!' => '',
-    'Could not uninstall module first! Module is protected.' => '@@@@',
     'Could not find requested module!' => 'No se puede trobar o modulo solicitau!',
 ];

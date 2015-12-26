@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Username' => '@@Benutzername@@',
     '<strong>Account</strong> settings' => '<strong>Konto</strong>-Verwaltung',
     'Delete account' => 'Konto löschen',
     'E-Mail' => 'E-Mail',

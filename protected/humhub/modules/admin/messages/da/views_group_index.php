@@ -17,9 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Description' => '@@Beskrivelse@@',
-    'Group name' => '@@Gruppe navn@@',
-    'Search for description' => '@@Søg efter beskrivelse@@',
-    'Search for group name' => '@@Søg efter gruppe navn@@',
     '<strong>Manage</strong> groups' => '<strong>Administrer</strong> grupper',
 ];

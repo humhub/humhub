@@ -18,7 +18,6 @@
  */
 return [
     'Password reset' => '',
-    '<strong>Password</strong> reset' => '@@تنظیم مجددا <strong>گذرواژه</strong>@@',
     '<strong>Change</strong> your password' => '<strong>تغییر</strong> گذرواژه',
     'Back' => 'بازگشت',
     'Change password' => 'تغییر گذرواژه',

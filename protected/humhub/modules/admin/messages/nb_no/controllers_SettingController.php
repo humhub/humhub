@@ -24,6 +24,4 @@ return [
     'None - shows dropdown in user registration.' => '',
     'Saved' => '',
     'Saved and flushed cache' => '',
-    'Database' => '@@@@',
-    'No theme' => '@@@@',
 ];

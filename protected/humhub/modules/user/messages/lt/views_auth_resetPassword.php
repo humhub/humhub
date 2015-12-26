@@ -18,7 +18,6 @@
  */
 return [
     'Password reset' => '',
-    '<strong>Password</strong> reset' => '@@<strong>Slaptažodis</strong> nustatytas iš naujo@@',
     '<strong>Change</strong> your password' => '<strong>Pakeisti</strong> slaptažodį',
     'Back' => 'Atgal',
     'Change password' => 'Pakeisti slaptažodį',

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@Pateiktas negalimas modelis!@@',
     'Could not find requested content!' => 'Ieškomas turinys nerastas!',
     'Could not find requested permalink!' => 'Nerandama norima nuoroda!',
 ];

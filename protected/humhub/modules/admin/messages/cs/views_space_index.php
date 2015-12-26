@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@Vše@@',
-    'Delete space' => '@@Smazat prostor@@',
-    'Edit space' => '@@Upravit prostor@@',
-    'Search for space name' => '@@Hledat prostor@@',
-    'Search for space owner' => '@@Hledat vlastníka prostoru@@',
-    'Space name' => '@@Název prostoru@@',
-    'Space owner' => '@@Vlastník@@',
-    'View space' => '@@Zobrazit prostor@@',
     '<strong>Manage</strong> spaces' => '<strong>Správa</strong> prostorů',
     'Define here default settings for new spaces.' => 'Zde nastavíte výchozí nastavení pro nové prostory.',
     'In this overview you can find every space and manage it.' => 'V tomto přehledu naleznete a můžete spravovat libovolný prostor.',

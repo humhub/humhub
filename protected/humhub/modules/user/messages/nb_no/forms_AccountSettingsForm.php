@@ -22,5 +22,4 @@ return [
     'Profile visibility' => '',
     'Tags' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@@@',
 ];

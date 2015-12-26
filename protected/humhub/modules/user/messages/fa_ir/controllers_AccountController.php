@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You cannot change your password here.' => '@@شما نمی‌توانید گذرواژه‌ی خود را این‌جا تغییر دهید.@@',
     'Invalid link! Please make sure that you entered the entire url.' => 'لینک نامعتبر است! لطفا اطمینان حاصل‌کنید که آدرس به طور کامل وارد شود. ',
     'Save profile' => 'ذخیره‌ی پروفایل',
     'Saved' => 'ذخیره شد',

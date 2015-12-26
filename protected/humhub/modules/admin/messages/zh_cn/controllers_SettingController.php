@@ -18,8 +18,6 @@
  */
 return [
     'APC' => '',
-    'Database' => '@@数据库@@',
-    'No theme' => '@@无主题@@',
     'Could not load LDAP! - Check PHP Extension' => '不能加载LDAP！-请检查PHP扩展',
     'File' => '文件',
     'No caching (Testing only!)' => '无缓存(仅测试)',

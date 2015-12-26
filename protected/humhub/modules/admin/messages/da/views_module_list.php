@@ -18,7 +18,6 @@
  */
 return [
     'Enable module...' => '',
-    'Processing...' => '@@Behandler...@@',
     '<strong>Modules</strong> directory' => '<strong>Modul</strong> mapper',
     'Are you sure? *ALL* module data will be lost!' => 'Er du sikker? *ALLE* modul data vil gå tabt!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Er du sikker? *ALLE* modul relaterede data og filer vil gå tabt!',

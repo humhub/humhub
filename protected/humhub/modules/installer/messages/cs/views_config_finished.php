@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Setup</strong> Complete' => '@@<strong>Dokončení</strong> nastavení@@',
     '<strong>Congratulations</strong>. You\'re done.' => '<strong>Výborně</strong>, jste hotovi.',
     'Sign in' => 'Přihlásit se',
     'The installation completed successfully! Have fun with your new social network.' => 'Instalace byla úspěšná! Přejeme, ať vám síť dobře slouží.',

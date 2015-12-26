@@ -19,8 +19,6 @@
 return [
     'Could not load LDAP! - Check PHP Extension' => '',
     'None - shows dropdown in user registration.' => '',
-    'Database' => '@@Base de dades@@',
-    'No theme' => '@@Sense tema@@',
     'APC' => 'APC',
     'File' => 'Arxiu',
     'No caching (Testing only!)' => 'Sense memòria cau (Només proves!)',

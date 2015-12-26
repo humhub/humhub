@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not uninstall module first! Module is protected.' => '@@Não foi possível desinstalar o primeiro módulo! Este módulo está protegido.@@',
     'Could not find requested module!' => 'Não foi possível encontrar os módulos solicitados!',
     'Module path %path% is not writeable!' => 'Módulo do Patch %path% não gravável!',
 ];

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@Pro váš typ účtu není obnova hesla možná!@@',
     'E-Mail' => 'E-mail',
     'Password Recovery' => 'Obnovení hesla',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" nebyl nalezen!',

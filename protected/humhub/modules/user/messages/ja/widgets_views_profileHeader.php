@@ -21,8 +21,5 @@ return [
     'Followers' => '',
     'Following' => '',
     'Ok' => '',
-    'Edit account' => '@@@@',
-    'Follow' => '@@フォロー@@',
-    'Unfollow' => '@@アンフォロー@@',
     'Spaces' => 'スペース',
 ];

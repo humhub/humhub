@@ -17,9 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Description' => '@@描述@@',
-    'Group name' => '@@组名@@',
-    'Search for description' => '@@通过描述搜索@@',
-    'Search for group name' => '@@通过组名搜索@@',
     '<strong>Manage</strong> groups' => '<strong>管理</strong> 用户组',
 ];

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@@@',
     'E-Mail' => 'E-Mail',
     'Password Recovery' => 'Mật khẩu phục hồi',
     '{attribute} "{value}" was not found!' => '{attribute}  không tìm thấy "{value}"',

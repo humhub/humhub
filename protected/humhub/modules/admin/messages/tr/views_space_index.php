@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@Hepsi@@',
-    'Delete space' => '@@Mekan sil@@',
-    'Edit space' => '@@Mekan düzenle@@',
-    'Search for space name' => '@@Mekan adı için arama@@',
-    'Search for space owner' => '@@Mekan sahibi için arama@@',
-    'Space name' => '@@Mekan adı@@',
-    'Space owner' => '@@Mekan sahibi@@',
-    'View space' => '@@Mekan görüntüle@@',
     '<strong>Manage</strong> spaces' => '<strong>Mekan</strong> Yönetimi',
     'Define here default settings for new spaces.' => 'Yeni mekanlar için varsayılan ayarları tanımla',
     'In this overview you can find every space and manage it.' => 'Tüm mekanlar bulunabilir ve yönetilebilir.',

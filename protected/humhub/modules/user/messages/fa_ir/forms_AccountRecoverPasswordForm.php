@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@بازیابی گذرواژه برای حساب کاربری شما امکان‌پذیر نیست!@@',
     'E-Mail' => 'ایمیل',
     'Password Recovery' => 'بازیابی گذرواژه',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" یافت نشد!',

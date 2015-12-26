@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Database' => '@@Veritabanı@@',
-    'No theme' => '@@Tema yok@@',
     'APC' => 'APC',
     'Could not load LDAP! - Check PHP Extension' => 'LDAP yüklenemedi! - PHP Eklentisini kontrol t',
     'File' => 'Dosya',

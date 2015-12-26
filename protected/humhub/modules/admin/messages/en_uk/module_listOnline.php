@@ -19,6 +19,8 @@
 return [
     'Installed' => '',
     'No modules found!' => '',
+    'No purchased modules found!' => '',
+    'Register' => '',
     'Search' => '',
     'search for available modules online' => '',
 ];

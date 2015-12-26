@@ -25,7 +25,6 @@ return [
     'Forgot your password?' => 'Wachtwoord vergeten?',
     'If you\'re already a member, please login with your username/email and password.' => 'Als je reeds lid bent, log dan in met je gebruikersnaam/e-mailadres en paswoord.',
     'Register' => 'Registreren',
-    'Remember me next time' => 'Volgende keer onthouden',
     'Sign in' => 'Inloggen',
     'email' => 'e-mail',
     'password' => 'wachtwoord',

@@ -17,9 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Description' => '@@Popis@@',
-    'Group name' => '@@Název skupiny@@',
-    'Search for description' => '@@Hledat v popisu@@',
-    'Search for group name' => '@@Hledat v názvu@@',
     '<strong>Manage</strong> groups' => '<strong>Správa</strong> skupin',
 ];

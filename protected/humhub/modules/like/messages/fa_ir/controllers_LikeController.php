@@ -17,9 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Access denied!' => '@@عدم دسترسی!‍@@',
-    'Could not find target class!' => '@@کلاس مورد نظر یافت نشد!@@',
-    'Could not find target record!' => '@@رکورد مورد نظر یافت نشد!@@',
-    'Invalid class given!' => '@@کلاس نامعتبر!@@',
     '<strong>Users</strong> who like this' => 'کاربران علاقمند',
 ];

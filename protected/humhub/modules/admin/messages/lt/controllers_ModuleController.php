@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not uninstall module first! Module is protected.' => '@@Pašalinti modulio nepavyko! Modulis yra apsaugotas.@@',
     'Could not find requested module!' => 'Prašomas modulis nerastas!',
     'Module path %path% is not writeable!' => 'Modulio trajektorija %path% nėra įrašoma!',
 ];

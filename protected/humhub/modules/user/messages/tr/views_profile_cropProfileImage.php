@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Select the area of your image you want to save as user avatar and click <strong>Save</strong>.' => '@@Kullanıcı fotoğrafı olarak kullanmak istediğin alanı seç ve <strong>Kaydet</strong> e tıkla@@',
     '<strong>Modify</strong> your profile image' => 'Profil fotoğrafını <strong>değiştir</strong>',
     'Close' => 'Kapat',
     'Save' => 'Kaydet',

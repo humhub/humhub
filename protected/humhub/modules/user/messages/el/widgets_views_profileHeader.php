@@ -22,7 +22,4 @@ return [
     'Following' => '',
     'Ok' => '',
     'Spaces' => '',
-    'Edit account' => '@@@@',
-    'Follow' => '@@Ακολούθησε@@',
-    'Unfollow' => '@@Μην ακολουθείς@@',
 ];

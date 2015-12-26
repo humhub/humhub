@@ -20,5 +20,4 @@ return [
     'E-Mail' => '',
     'Password Recovery' => '',
     '{attribute} "{value}" was not found!' => '',
-    'Password recovery is not possible on your account type!' => '@@@@',
 ];

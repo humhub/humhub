@@ -17,10 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not delete comment!' => '@@Kunne ikke slette kommentar!@@',
-    'Invalid target class given' => '@@Ugyldig class givet@@',
-    'Model & Id Parameter required!' => '@@Model & Id parametre kræves!@@',
-    'Target not found!' => '@@Mål ikke fundet!@@',
     'Access denied!' => 'Adgang nægtet!',
     'Insufficent permissions!' => 'Manglende adgang',
 ];

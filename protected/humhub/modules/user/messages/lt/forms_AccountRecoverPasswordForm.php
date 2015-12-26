@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@Slaptažodžio atkūrimas Jūsų paskyrai negalimas!@@',
     'E-Mail' => 'Elektroninio pašto adresas',
     'Password Recovery' => 'Atkurti slaptažodį',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" nerastas!',

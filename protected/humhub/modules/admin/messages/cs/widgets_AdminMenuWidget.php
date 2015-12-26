@@ -18,7 +18,6 @@
  */
 return [
     'Proxy' => '',
-    'Security & Roles' => '@@Zabezpečení a role@@',
     '<strong>Administration</strong> menu' => '<strong>Menu</strong> administrace',
     'About' => 'O aplikaci',
     'Authentication' => 'Ověřování',

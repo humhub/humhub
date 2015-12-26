@@ -19,7 +19,4 @@
 return [
     '<strong>Pending</strong> user approvals' => '',
     'Here you see all users who have registered and still waiting for a approval.' => '',
-    'Email' => '@@@@',
-    'Search for email' => '@@@@',
-    'Search for username' => '@@@@',
 ];

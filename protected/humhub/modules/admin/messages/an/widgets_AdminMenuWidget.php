@@ -36,7 +36,6 @@ return [
     'User approval' => '',
     'User profiles' => '',
     'Users' => '',
-    'Security & Roles' => '@@@@',
     'Groups' => 'Grupos',
     'Spaces' => 'Espacios',
 ];

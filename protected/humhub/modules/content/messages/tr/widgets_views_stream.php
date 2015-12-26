@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@<b>Daha hiçkimse birşey yazmamış.</b><br>Bir başlangıç yap ve birşeyler yaz...@@',
-    '<b>This profile stream is still empty</b>' => '@@<b>Bu profilin yayını hala boş</b>@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>Bu mekan hala boş!</b><b>Burada bir şey paylaşarak başla...@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>Panon bomboş!</b><b>Profilinde birşeyler paylaş veya birkaç mekana katıl!@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b>Profil yayının hala boş</b><br>Başlangıç olarak birşeyler paylaş...@@',
-    'Nothing found which matches your current filter(s)!' => '@@Filtrenize uyan hiçbir şey bulunamadı!@@',
-    'Show all' => '@@Hepsini göster@@',
     'Back to stream' => 'Yayına dön',
     'Content with attached files' => 'Ekli dosyalarla içerik',
     'Created by me' => 'Benim tarafımdan oluşturuldu',

@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@Все@@',
-    'Delete space' => '@@Удалить пространство@@',
-    'Edit space' => '@@Редактировать пространство@@',
-    'Search for space name' => '@@Поиск по названию пространства@@',
-    'Search for space owner' => '@@Поиск по создателю пространства@@',
-    'Space name' => '@@Название пространства@@',
-    'Space owner' => '@@Создатель пространства@@',
-    'View space' => '@@Посмотреть пространство@@',
     '<strong>Manage</strong> spaces' => '<strong>Управление</strong> пространствами',
     'Define here default settings for new spaces.' => 'Определить настройки по умолчанию для новых пространств.',
     'In this overview you can find every space and manage it.' => 'Здесь Вы можете найти все пространства и управлять ими.',

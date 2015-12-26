@@ -19,7 +19,6 @@
 return [
     'Profile visibility' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@Neplatný jazyk!@@',
     'Hide panel on dashboard' => 'Skrýt panel na Nástěnce',
     'Language' => 'Jazyk',
     'Tags' => 'Štítky',

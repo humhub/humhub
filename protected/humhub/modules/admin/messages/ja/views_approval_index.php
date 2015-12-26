@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Email' => '@@メール@@',
-    'Search for email' => '@@メールを検索@@',
-    'Search for username' => '@@ユーザーを検索@@',
     '<strong>Pending</strong> user approvals' => '<strong>Pending</strong> 保留中ユーザーの承認',
     'Here you see all users who have registered and still waiting for a approval.' => '登録済または、承認待ちユーザーを参照してください。',
 ];

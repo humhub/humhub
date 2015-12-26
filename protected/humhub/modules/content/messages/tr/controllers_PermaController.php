@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid model given!' => '@@@@',
-    'Unknown content class!' => '@@Bilinmeyen içerik sınıfı!@@',
     'Could not find requested content!' => 'İstenen içerik bulunamadı!',
     'Could not find requested permalink!' => 'İstenen permalink bulunamadı!',
 ];

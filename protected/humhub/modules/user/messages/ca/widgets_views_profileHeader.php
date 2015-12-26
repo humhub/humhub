@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit account' => '@@Edita el compte@@',
-    'Follow' => '@@Segueix@@',
-    'Unfollow' => '@@No segueixis@@',
     '<strong>Something</strong> went wrong' => '<strong>Alguna cosa</strong> ha anat malament',
     'Followers' => 'Seguidors',
     'Following' => 'Seguint',

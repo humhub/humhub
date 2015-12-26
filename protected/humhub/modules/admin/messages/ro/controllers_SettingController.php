@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Database' => '@@데이터베이스@@',
-    'No theme' => '@@테마 없음@@',
     'APC' => 'APC',
     'Could not load LDAP! - Check PHP Extension' => 'LDAP 로드 실패! PHP 익스텐션을 확인하세요.',
     'File' => '파일',

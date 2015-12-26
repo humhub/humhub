@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All' => '@@Wszystkie@@',
-    'Delete space' => '@@Usuń strefę@@',
-    'Edit space' => '@@Edytuj strefę@@',
-    'Search for space name' => '@@Szukaj nazwy strefy@@',
-    'Search for space owner' => '@@Szukaj właściciela strefy@@',
-    'Space name' => '@@Nazwa strefy@@',
-    'Space owner' => '@@Właściciel strefy@@',
-    'View space' => '@@Pokaż strefę @@',
     '<strong>Manage</strong> spaces' => '<strong>Zarządzaj</strong> strefami',
     'Define here default settings for new spaces.' => 'Zdefiniuj tutaj domyślne ustawienia dla nowych stref',
     'In this overview you can find every space and manage it.' => 'W tym przeglądzie możesz znaleźć każdą strefę i zarządzać nią.',

@@ -21,6 +21,5 @@ return [
     'Language' => '',
     'Profile visibility' => '',
     'TimeZone' => '',
-    'Invalid language!' => '@@@@',
     'Tags' => 'タグ',
 ];

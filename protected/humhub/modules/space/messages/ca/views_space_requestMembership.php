@@ -19,6 +19,5 @@
 return [
     '<strong>Request</strong> space membership' => '',
     'Please shortly introduce yourself, to become an approved member of this space.' => '',
-    'Send' => '@@Envia@@',
     'Close' => 'Tanca',
 ];

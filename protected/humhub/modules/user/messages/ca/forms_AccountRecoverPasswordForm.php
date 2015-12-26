@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Password recovery is not possible on your account type!' => '@@La recuperació de la contrasenya no està disponible pel teu tipus de compte!@@',
     'E-Mail' => 'Correu electrònic',
     'Password Recovery' => 'Recuperació de la contrasenya',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" no s\'ha trobat!',

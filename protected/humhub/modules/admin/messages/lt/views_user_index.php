@@ -17,18 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Last login' => '',
     'never' => '',
-    'Admin' => '@@Administratorius@@',
-    'All' => '@@Visi@@',
-    'Delete user account' => '@@Ištrinti vartotojo paskyrą@@',
-    'Edit user account' => '@@Redaguoti vartotojo paskyrą@@',
-    'Email' => '@@Elektroninis paštas@@',
-    'No' => '@@Ne@@',
-    'Search for email' => '@@Ieškoti elektroninio pašto adreso@@',
-    'Search for username' => '@@Ieškoti vartotojo vardo@@',
-    'Username' => '@@Vartotojo vardas@@',
-    'View user profile' => '@@Peržiūrėti vartotojo profilį@@',
-    'Yes' => '@@Taip@@',
     '<strong>Manage</strong> users' => '<strong>Redaguoti</strong> profilio kategoriją',
     'Add new user' => 'Pridėti naują vartotoją',
     'In this overview you can find every registered user and manage him.' => 'Šioje apžvalgoje Jūs galite rasti visus registruotus vartotojus ir valdyti juos.',

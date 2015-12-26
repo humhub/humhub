@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Send' => '@@Išsiųsti@@',
     '<strong>Request</strong> space membership' => '<strong>Prašo</strong> erdvės narystės',
     'Close' => 'Uždaryti',
     'Please shortly introduce yourself, to become an approved member of this space.' => 'Norint tapti patvirtintu erdvės nariu, prašome trumpai prisistatyti.',

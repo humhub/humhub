@@ -27,5 +27,4 @@ return [
     'More info' => '',
     'Set as default' => '',
     'Uninstall' => '',
-    'Processing...' => '@@@@',
 ];

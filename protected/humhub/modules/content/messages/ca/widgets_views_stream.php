@@ -19,13 +19,6 @@
 return [
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '@@<b>Ningú ha publicat res encara.</b><br>Sigues el primer i publica alguna cosa...@@',
-    '<b>This profile stream is still empty</b>' => '@@<b>Encara no hi ha activitat en aquest perfil</b>@@',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '@@<b>Aquest espai encara està buit!</b><br>Comença publicant alguna cosa...@@',
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '@@<b>El teu inici està buit!</b><br>Publica alguna cosa en el teu perfil o uneix-te a algun espai!@@',
-    '<b>Your profile stream is still empty</b><br>Get started and post something...' => '@@<b>Encara no hi ha activitat en el teu perfil</b><br>Comença publicant alguna cosa...@@',
-    'Nothing found which matches your current filter(s)!' => '@@No s\'ha trobat res que coincideixi amb aquests filtres!@@',
-    'Show all' => '@@Mostra totes@@',
     'Back to stream' => 'Torna a l\'activitat',
     'Content with attached files' => 'Continguts amb arxius adjunts',
     'Created by me' => 'Creat per mi',

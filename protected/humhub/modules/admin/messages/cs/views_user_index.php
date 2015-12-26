@@ -17,18 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Last login' => '',
     'never' => '',
-    'Admin' => '@@Administrátor@@',
-    'All' => '@@Vše@@',
-    'Delete user account' => '@@Smazat uživatelský účet@@',
-    'Edit user account' => '@@Upravit uživatelský účet@@',
-    'Email' => '@@E-mailová adresa@@',
-    'No' => '@@Ne@@',
-    'Search for email' => '@@Hledat e-mailovou adresu@@',
-    'Search for username' => '@@Hledat uživatelské jméno@@',
-    'Username' => '@@Uživatelské jméno@@',
-    'View user profile' => '@@Zobrazit profil uživatele@@',
-    'Yes' => '@@Ano@@',
     '<strong>Manage</strong> users' => '<strong>Správa</strong> uživatelů',
     'Add new user' => 'Přidat nového uživatele',
     'In this overview you can find every registered user and manage him.' => 'V tomto přehledu naleznete a můžete spravovat libovolného uživatele.',

@@ -18,7 +18,6 @@
  */
 return [
     'Enable module...' => '',
-    'Processing...' => '@@@@',
     '<strong>Modules</strong> directory' => '<strong>Modules</strong> モジュールディレクトリ',
     'Are you sure? *ALL* module data will be lost!' => '本当に全てのモジュールを削除しますか？　モジュールのデータは失われます！',
     'Are you sure? *ALL* module related data and files will be lost!' => '本当に全てのモジュールを削除しますか？　モジュール関連のデータやファイルが失われてしまいます！',

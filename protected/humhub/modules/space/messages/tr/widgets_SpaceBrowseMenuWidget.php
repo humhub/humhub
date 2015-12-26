@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@Yönetici@@',
-    'Members' => '@@Üyeler@@',
     'My Space List' => 'Mekan listesi',
     'My space summary' => 'Mekan özeti',
     'Space directory' => 'Mekan dizini',

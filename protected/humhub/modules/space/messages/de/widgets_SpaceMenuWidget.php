@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Admin' => '@@Administrator@@',
-    'Members' => '@@Mitglieder@@',
     '<strong>Space</strong> menu' => '<strong>Space</strong>-Menü',
     'Stream' => 'Stream',
 ];

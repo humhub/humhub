@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Archive' => '@@存档@@',
-    'Back to workspace' => '@@返回版块@@',
-    'Delete' => '@@删除@@',
-    '<strong>Space</strong> preferences' => '<strong>版块</strong> 首选项',
+    '<i class="fa fa-cog"></i>' => '',
+    'Cancel Membership' => '',
+    'Hide posts on dashboard' => '',
+    'Show posts on dashboard' => '',
+    'This option will hide new content from this space at your dashboard' => '',
+    'This option will show new content from this space at your dashboard' => '',
     'General' => '一般',
     'Members' => '成员',
     'Modules' => '模块',
