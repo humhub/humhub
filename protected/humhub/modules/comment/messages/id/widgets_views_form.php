@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Post' => '',
-  'Write a new comment...' => '',
+  'Post' => 'Kirim',
+  'Write a new comment...' => 'Tulis komentar baru...',
 );
