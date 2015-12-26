@@ -55,6 +55,10 @@ class ContentContainerController extends Controller
      */
     public function init()
     {
+        // Directly redirect guests to login page - if guest access isn't enabled
+        if (Yii::$app->user->isGuest && \humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') != 1) {
+            return Yii::$app->user->loginRequired();
+        }
 
         $spaceGuid = Yii::$app->request->get('sguid', '');
         $userGuid = Yii::$app->request->get('uguid', '');
