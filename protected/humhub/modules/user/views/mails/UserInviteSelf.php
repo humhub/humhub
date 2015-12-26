@@ -122,7 +122,7 @@ use humhub\models\Setting;
                                                         style=" background-color:<?php echo Setting::Get('colorPrimary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
                                                         <span style="color: #ffffff; font-weight: 300;">
-                                                            <a href="<?php echo Url::toRoute(["/user/auth/create-account", 'token' => $token], true); ?>"
+                                                            <a href="<?php echo Url::toRoute(['/user/registration', 'token' => $token], true); ?>"
                                                                style="text-decoration: none; color: #ffffff; font-weight: 300;">
                                                                 <strong><?php echo Yii::t('UserModule.views_mails_UserInviteSelf', 'Sign up'); ?></strong>
                                                             </a>

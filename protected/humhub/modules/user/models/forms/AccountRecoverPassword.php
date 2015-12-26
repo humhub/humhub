@@ -77,7 +77,7 @@ class AccountRecoverPassword extends \yii\base\Model
 
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/RecoverPassword'], [
             'user' => $user,
-            'linkPasswordReset' => Url::to(["/user/auth/reset-password", 'token' => $token, 'guid' => $user->guid], true)
+            'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
         ]);
         $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
         $mail->setTo($user->email);

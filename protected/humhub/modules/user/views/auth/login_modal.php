@@ -75,7 +75,7 @@ use yii\helpers\Url;
                                         'type' => 'POST',
                                         'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                                         'success' => 'function(html){ $("#globalModal").html(html); }',
-                                        'url' => Url::to(['/user/auth/recover-password']),
+                                        'url' => Url::to(['/user/password-recovery']),
                                     ],
                                     'htmlOptions' => [
                                         'id' => 'recoverPasswordBtn'

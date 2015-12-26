@@ -41,7 +41,7 @@ use yii\helpers\Url;
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                     'success' => 'function(html){ $("#globalModal").html(html); }',
-                    'url' => Url::to(['/user/auth/recover-password']),
+                    'url' => Url::to(['/user/password-recovery']),
                 ],
                 'htmlOptions' => [
                     'class' => 'btn btn-primary', 'id' => 'recoverPasswordBtn'
@@ -59,12 +59,12 @@ use yii\helpers\Url;
                     'class' => 'btn btn-primary', 'id' => 'backBtn'
                 ]
             ]);
-            ?>            
+            ?>
             <?php CActiveForm::end() ?>
         </div>
 
     </div>
-</div>    
+</div>
 
 
 <script type="text/javascript">

@@ -19,14 +19,9 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
         <div class="panel-body">
 
             <?php $form = ActiveForm::begin(['id' => 'account-login-form']); ?>
-
             <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
-
             <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
-
             <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
-
-
             <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
 
             <hr>
@@ -38,13 +33,12 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                     <small>
                         <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
                         <a
-                            href="<?php echo Url::toRoute('/user/auth/recover-password'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
+                            href="<?php echo Url::toRoute('/user/password-recovery'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
                     </small>
                 </div>
             </div>
 
             <?php ActiveForm::end(); ?>
-
         </div>
 
     </div>
