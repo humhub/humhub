@@ -18,7 +18,7 @@ use yii\helpers\Html;
         <?php endforeach; ?>
         <?php if (count($members) == $maxMembers) : ?>
             <br>
-            <a href="<?php echo $space->createUrl('/space/membership/members-list'); ?>" data-target="#globalModal" class="btn btn-default btn-sm"><?php echo Yii::t('SpaceModule.widgets_views_spaceMembers', 'Get complete members list'); ?></a>
+            <a href="<?php echo $space->createUrl('/space/membership/members-list'); ?>" data-target="#globalModal" class="btn btn-default btn-sm"><?php echo Yii::t('SpaceModule.widgets_views_spaceMembers', 'Show all'); ?></a>
         <?php endif; ?>
     </div>
 </div>
