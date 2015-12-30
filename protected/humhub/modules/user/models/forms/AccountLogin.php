@@ -54,7 +54,7 @@ class AccountLogin extends Model
                     return;
                 }
             }
-            $this->addError($attribute, 'Incorrect username or password.');
+            $this->addError($attribute, Yii::t('UserModule.forms_AccountLoginForm', 'Incorrect username or password.'));
         }
     }
 
@@ -64,10 +64,10 @@ class AccountLogin extends Model
             $user = $this->getUser();
             if ($user !== null) {
                 if ($user->status == User::STATUS_DISABLED) {
-                    $this->addError($attribute, 'Your account is disabled!');
+                    $this->addError($attribute, Yii::t('UserModule.forms_AccountLoginForm', 'Your account is disabled!'));
                 }
                 if ($user->status == User::STATUS_NEED_APPROVAL) {
-                    $this->addError($attribute, 'Your account is not approved yet!');
+                    $this->addError($attribute, Yii::t('UserModule.forms_AccountLoginForm', 'Your account is not approved yet!'));
                 }
             }
         }
@@ -115,6 +115,15 @@ class AccountLogin extends Model
         }
 
         return $this->_user;
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('UserModule.forms_AccountLoginForm', "Username"),
+            'password' => Yii::t('UserModule.forms_AccountLoginForm', "Password"),
+            'rememberMe' => Yii::t('UserModule.forms_AccountLoginForm', "RememberMe"),
+        ];
     }
 
 }

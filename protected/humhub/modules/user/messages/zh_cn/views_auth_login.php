@@ -29,4 +29,6 @@ return [
     'email' => '邮件',
     'password' => '密码',
     'username or email' => '用户名或邮箱',
+    'Join' => '加入',
+    'the network' => '社区',
 ];

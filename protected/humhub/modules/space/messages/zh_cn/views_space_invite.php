@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Invite</strong> members' => '',
-    'Add an user' => '',
+    '<strong>Invite</strong> members' => '<strong>邀请</strong> 成员',
+    'Add an user' => '增加一个用户',
     'Done' => '',
-    'Email addresses' => '',
+    'Email addresses' => '邮件地址',
     'Invite by email' => '',
-    'Login' => '',
-    'New user?' => '',
+    'Login' => '登录',
+    'New user?' => '新用户？',
     'Pick users' => '',
     'To invite users to this space, please type their names below to find and pick them.' => '',
     'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => '',

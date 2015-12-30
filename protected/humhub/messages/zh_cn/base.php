@@ -18,7 +18,7 @@
  */
 return [
     '<strong>Latest</strong> updates' => '',
-    '<strong>Search</strong>' => '',
+    '<strong>Search</strong>' => '<strong>搜索</strong>',
     'Allow' => '',
     'Choose language:' => '',
     'Could not determine content container!' => '',

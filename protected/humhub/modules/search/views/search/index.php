@@ -32,7 +32,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
                             <div id="collapse-search-settings" class="panel-collapse collapse">
                                 <br>
-                                Search only in certain spaces:
+                                <?php echo Yii::t('SearchModule.views_search_index', 'Search only in certain spaces:');?>
                                 <?php echo Html::textInput('limitSpaceGuids', $limitSpaceGuids, array('placeholder' => 'Specify space', 'style' => 'width:200px', 'id' => 'space_filter')); ?>
                                 <?php
                                 echo humhub\modules\space\widgets\Picker::widget([
@@ -111,7 +111,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>Sorry nothing found :(</p>
+                        <p><?php echo Yii::t('SearchModule.views_search_index', 'Sorry nothing found :(');?></p>
                     <?php endif; ?>
                 </div>
 

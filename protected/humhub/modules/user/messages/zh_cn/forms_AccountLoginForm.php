@@ -24,4 +24,10 @@ return array (
   'Remember me next time' => '记住密码',
   'Your account has not been activated by our staff yet.' => '您的帐户尚未激活',
   'Your account is suspended.' => '您的帐户被暂停',
+  'Username' => '用户名',
+  'Password' => '密码',
+  'RememberMe' => '记住密码',
+  'Incorrect username or password.' => '无效的用户名或密码',
+  'Your account is disabled' => '你的帐号已被禁用',
+  'Your account is not approved yet' => '你的帐号还未审核通过',
 );

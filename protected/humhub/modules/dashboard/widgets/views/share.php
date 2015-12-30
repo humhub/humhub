@@ -12,7 +12,7 @@ use yii\helpers\Url;
     </div>
     <div class="panel-body">
 
-        <p>We are glad that you are using <a href="https://www.humhub.org" target="_blank" class="colorInfo">HumHub</a>. If you like it, please support the project and share HumHub with your friends and colleagues.</p>
+        <p><?php echo Yii::t('DashboardModule.widgets_views_share', 'We are glad that you are using'); ?> <a href="https://www.humhub.org" target="_blank" class="colorInfo"><?=Yii::t('DashboardModule.widgets_views_share', 'HumHub')?></a><?=Yii::t('DashboardModule.widgets_views_share', 'If you like it, please support the project and share HumHub with your friends and colleagues')?></p>
 
         <a class="popup"
            href="http://twitter.com/intent/tweet?status=I'm really impressed by @HumHub. An Open Source Social Network for team communication and collaboration. I love it! https://www.humhub.org">

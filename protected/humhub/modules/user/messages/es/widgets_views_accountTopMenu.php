@@ -17,6 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'E-Mail is already in use! - Try forgot password.' => '此电子邮件已注册，请尝试找回密码。',
-  'E-Mail' => '电子邮件',
+  'Sign in / up' => '',
 );
