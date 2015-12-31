@@ -26,3 +26,4 @@ nbproject
 
 themes/*
 !themes/HumHub
+sftp-config.json
