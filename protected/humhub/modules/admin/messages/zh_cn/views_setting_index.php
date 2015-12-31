@@ -8,5 +8,5 @@ return array (
   'E.g. http://example.com/humhub' => '例如 http://example.com/humhub',
   'New users will automatically added to these space(s).' => '新用户将自动添加到这些版块',
   'Save' => '保 存',
-  'You\'re using no logo at the moment. Upload your logo now.' => '',
+  'You\'re using no logo at the moment. Upload your logo now.' => '没有使用LOGO,现在上传你的LOGO。',
 );

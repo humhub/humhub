@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} accepted your invite for the space {spaceName}' => '',
+  '{userName} accepted your invite for the space {spaceName}' => '{userName} 接受了你加入空间 {spaceName} 的邀请',
 );

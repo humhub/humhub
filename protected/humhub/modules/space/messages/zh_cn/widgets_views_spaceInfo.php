@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'more' => '',
+  'more' => '更多',
   '<strong>Something</strong> went wrong' => '未知错误',
   '<strong>Space</strong> info' => '<strong>版块</strong> 信息',
   'Ok' => 'Ok',

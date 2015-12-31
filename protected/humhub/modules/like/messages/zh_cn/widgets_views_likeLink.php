@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You' => '',
-    'You like this.' => '',
-    'and {count} more like this.' => '',
+    'You' => '你',
+    'You like this.' => '你喜欢这。',
+    'and {count} more like this.' => '其它 {count} 人喜欢这。',
     ' likes this.' => '赞这个',
     'Like' => '赞',
     'Unlike' => '取消赞',

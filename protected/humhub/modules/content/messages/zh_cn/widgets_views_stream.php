@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'No matches with your selected filters!' => '',
-    'Nothing here yet!' => '',
+    'No matches with your selected filters!' => '没有符合过滤条件的内容！',
+    'Nothing here yet!' => '还没有任何内容！',
     'Back to stream' => '返回动态',
     'Content with attached files' => '内容含有附件',
     'Created by me' => '我创建的',

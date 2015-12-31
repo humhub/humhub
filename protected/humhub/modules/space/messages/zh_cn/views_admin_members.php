@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Manage</strong> members' => '',
-    '<strong>Manage</strong> permissions' => '',
-    '<strong>Pending</strong> approvals' => '',
-    '<strong>Pending</strong> invitations' => '',
-    'never' => '',
+    '<strong>Manage</strong> members' => '<strong>成员</strong>管理',
+    '<strong>Manage</strong> permissions' => '<strong>权限</strong>管理',
+    '<strong>Pending</strong> approvals' => '<strong>审核</strong>管理',
+    '<strong>Pending</strong> invitations' => '<strong>邀请</strong>管理',
+    'never' => '从不',
 ];

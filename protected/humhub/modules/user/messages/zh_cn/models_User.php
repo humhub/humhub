@@ -18,4 +18,5 @@
  */
 return [
     'New user needs approval' => '新用户需要审核',
+    'Username' => '用户名',
 ];

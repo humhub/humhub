@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Dropdown space order' => '',
+  'Dropdown space order' => '下拉空间排序',
   'Default pagination size (Entries per page)' => '默认分页大小（条目每页）',
   'Display Name (Format)' => '显示名称（格式）',
   'Theme' => '主题',

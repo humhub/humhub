@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} mentioned you in {contentTitle}.' => '',
+  '{userName} mentioned you in {contentTitle}.' => '{userName} 在 {contentTitle} 中提到了你。',
 );

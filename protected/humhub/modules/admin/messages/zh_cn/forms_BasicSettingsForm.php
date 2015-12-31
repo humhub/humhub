@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Logo upload' => '',
-    'Server Timezone' => '',
-    'Show sharing panel on dashboard' => '',
-    'Show user profile post form on dashboard' => '',
+    'Logo upload' => 'LOGO上传',
+    'Server Timezone' => '服务器时区',
+    'Show sharing panel on dashboard' => '在主面板上显示共享面板',
+    'Show user profile post form on dashboard' => '在主面板上显示用户中心的动态',
     'Base URL' => '基础URL',
     'Default language' => '缺省语言',
     'Default space' => '缺省版块',

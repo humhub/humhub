@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Get complete members list' => '',
+    'Get complete members list' => '获得完整的成员列表',
     '<strong>New</strong> member request' => '<strong>新</strong> 成员请求',
     '<strong>Space</strong> members' => '<strong>版块</strong>成员',
 ];

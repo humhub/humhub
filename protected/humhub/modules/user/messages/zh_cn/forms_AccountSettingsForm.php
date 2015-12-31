@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Profile visibility' => '',
-    'TimeZone' => '',
+    'Profile visibility' => '属性可见性',
+    'TimeZone' => '时区',
     'Hide panel on dashboard' => '从面板上隐藏',
     'Language' => '语言',
     'Tags' => '标签',

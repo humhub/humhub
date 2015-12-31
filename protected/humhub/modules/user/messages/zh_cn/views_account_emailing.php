@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Desktop</strong> Notifications' => '',
-  'Get a desktop notification when you are online.' => '',
+  '<strong>Desktop</strong> Notifications' => '<strong>桌面</strong> 通知',
+  'Get a desktop notification when you are online.' => '在网上获取桌面通知。',
   '<strong>Email</strong> Notifications' => '<strong>邮件</strong> 通知',
   'Activities' => '活跃',
   'Always' => '一直',

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
+    'Color' => '颜色',
     'Created At' => '创建于',
     'Created By' => '创建人',
     'Description' => '描述',

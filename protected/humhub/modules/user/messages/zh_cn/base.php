@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Confirm new password' => '',
-    'New password' => '',
-    'Password' => '',
+    'Confirm new password' => '确认密码',
+    'New password' => '新密码',
+    'Password' => '密码',
 ];

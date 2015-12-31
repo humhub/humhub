@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Choose if new content should be public or private by default' => '',
+    'Choose if new content should be public or private by default' => '选择默认内容是公共或私有',
     'Archive' => '存档',
     'Choose the kind of membership you want to provide for this workspace.' => '选择你想为这个版块的哪种会员。',
     'Choose the security level for this workspace to define the visibleness.' => '选择这个版块的安全级别来定义可见性。',

@@ -18,11 +18,11 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Cancel Membership' => '',
-    'Hide posts on dashboard' => '',
-    'Show posts on dashboard' => '',
-    'This option will hide new content from this space at your dashboard' => '',
-    'This option will show new content from this space at your dashboard' => '',
+    'Cancel Membership' => '取消会员资格',
+    'Hide posts on dashboard' => '隐藏在仪表板上的帖子',
+    'Show posts on dashboard' => '显示在仪表板上的帖子',
+    'This option will hide new content from this space at your dashboard' => '此选项将在您的仪表板中隐藏新的内容',
+    'This option will show new content from this space at your dashboard' => '此选项将在您的仪表板上显示这个空间的新内容',
     'General' => '一般',
     'Members' => '成员',
     'Modules' => '模块',

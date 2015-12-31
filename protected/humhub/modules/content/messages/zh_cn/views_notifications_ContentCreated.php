@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} created a new {contentTitle}.' => '',
+  '{userName} created a new {contentTitle}.' => '{userName} 创建一个新的 {contentTitle}。',
 );

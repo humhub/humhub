@@ -139,7 +139,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'group_id' => 'Group ID',
             'status' => 'Status',
             'super_admin' => 'Super Admin',
-            'username' => 'Username',
+            'username' => Yii::t('UserModule.models_User','Username'),
             'email' => 'Email',
             'auth_mode' => 'Auth Mode',
             'tags' => 'Tags',

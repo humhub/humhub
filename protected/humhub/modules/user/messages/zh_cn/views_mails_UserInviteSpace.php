@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Sign up now' => '',
-    'Space Invite' => '',
+    'Sign up now' => '现在注册',
+    'Space Invite' => '空间邀请',
     '<br>A social network to increase your communication and teamwork.<br>Register now
                                                         to join this space.' => '<br>社交网络可以提高你的沟通和团队合作。<br>现在注册
 加入这个空间。',

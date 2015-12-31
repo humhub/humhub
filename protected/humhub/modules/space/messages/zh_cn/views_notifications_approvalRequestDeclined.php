@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} declined your membership request for the space {spaceName}' => '',
+  '{userName} declined your membership request for the space {spaceName}' => '{userName} 拒绝了你加入空间 {spaceName} 的申请',
 );

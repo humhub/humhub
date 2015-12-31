@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<b>You are not member of this space and there is no public content, yet!</b>' => '',
+    '<b>You are not member of this space and there is no public content, yet!</b>' => '你不是这个空间的成员，没有公共内容',
     '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>这个版块依然是空的</b><br>开始写点什么',
 ];

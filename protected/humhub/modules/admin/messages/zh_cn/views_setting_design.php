@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Alphabetical' => '',
-  'Last visit' => '',
+  'Alphabetical' => '按字母顺序排列',
+  'Last visit' => '最后访问时间',
   '<strong>Design</strong> settings' => '<strong>设计</strong> 设置',
   'Firstname Lastname (e.g. John Doe)' => '姓 名 (例如 John Doe)',
   'Save' => '保 存',

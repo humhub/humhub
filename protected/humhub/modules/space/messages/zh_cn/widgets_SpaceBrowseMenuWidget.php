@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'My Space List' => '',
-    'My space summary' => '',
-    'Space directory' => '',
+    'My Space List' => '我的空间列表',
+    'My space summary' => '我的空间概要',
+    'Space directory' => '空间目录',
     'Spaces' => '版块',
 ];

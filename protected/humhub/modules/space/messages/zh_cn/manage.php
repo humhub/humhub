@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Change</strong> Owner' => '',
-    '<strong>General</strong> settings' => '',
-    '<strong>Security</strong> settings' => '',
-    'As owner of this space you can transfer this role to another administrator in space.' => '',
-    'Color' => '',
-    'Space owner' => '',
-    'Transfer ownership' => '',
+    '<strong>Change</strong> Owner' => '<strong>更换</strong> 拥有者',
+    '<strong>General</strong> settings' => '<strong>常规</strong> 设置',
+    '<strong>Security</strong> settings' => '<strong>安全</strong> 设置',
+    'As owner of this space you can transfer this role to another administrator in space.' => '作为这个空间的所有者，您可以将此角色传递给另一个空间中的管理员',
+    'Color' => '颜色',
+    'Space owner' => '空间拥有者',
+    'Transfer ownership' => '转让所有权',
 ];

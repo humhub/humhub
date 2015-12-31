@@ -12,6 +12,10 @@ $config = [
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
     'components' => [
+        'urlManager' => [
+             'enablePrettyUrl' => true,
+             'showScriptName' => false,
+         ],
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
         ],

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} created a new {contentTitle}.' => '',
-    '%displayName% created a new post.' => '@@%displayName% 创建了一篇新文章.@@',
+    '{displayName} created a new {contentTitle}.' => '{displayName} 发布新文章 {contentTitle}.',
+    '%displayName% created a new post.' => '@@%displayName% 发布了一篇新文章.@@',
 ];
