@@ -18,7 +18,7 @@
  */
 return array (
   'Hello {displayName}' => '你好 {displayName}',
-  'If you don\'t use this link within 24 hours, it will expire.' => '链接会在24小时后失效',
+  'If you don\'t use this link within 24 hours, it will expire.' => '链接会在24小时后失效！',
   'Please use the following link within the next day to reset your password.' => '请点击按钮重置你的密码',
   'Reset Password' => '重置密码',
   '<strong>Password</strong> recovery' => '找回密码',
