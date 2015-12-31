@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Basic</strong> settings' => '<strong>基本</strong> 设置',
-  '<strong>Confirm</strong> image deleting' => '',
+  '<strong>Confirm</strong> image deleting' => '<strong>确认</strong> 删除图片',
   'Cancel' => '取消',
   'Dashboard' => '<strong>主面板</strong>',
   'Delete' => '删除',

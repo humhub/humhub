@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Configuration</strong>' => '',
-    'My club' => '',
-    'My community' => '',
-    'My company (Social Intranet / Project management)' => '',
-    'My educational institution (school, university)' => '',
-    'Skip this step, I want to set up everything manually' => '',
-    'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.' => '',
+    '<strong>Configuration</strong>' => '<strong>配置</strong>',
+    'My club' => '我的俱乐部',
+    'My community' => '我的社区',
+    'My company (Social Intranet / Project management)' => '我的公司（社会网/项目管理）',
+    'My educational institution (school, university)' => '我的教育机构（学校、大学）',
+    'Skip this step, I want to set up everything manually' => '跳过这一步，我想手动设置一切',
+    'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.' => '为了简化配置，我们有一种最常见的使用情况下的预定义设置，用于模块和设置的不同选项。你可以在下一步调整他们。',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Example</strong> contents' => '',
-    'To avoid a blank dashboard after your initial login, HumHub can install example contents for you. Those will give you a nice general view of how HumHub works. You can always delete the individual contents.' => '',
+    '<strong>Example</strong> contents' => '<strong>示例</strong> 内容',
+    'To avoid a blank dashboard after your initial login, HumHub can install example contents for you. Those will give you a nice general view of how HumHub works. You can always delete the individual contents.' => '为了避免初始登录后空白的仪表板，humhub可以安装例子内容。这将给你一个很好humhub预览。你可以随时删除个人内容。',
 ];

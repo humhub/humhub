@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account Request for \'{displayName}\' has been approved.' => '',
-    'Account Request for \'{displayName}\' has been declined.' => '',
+    'Account Request for \'{displayName}\' has been approved.' => '空间 \'{displayName}\' 的帐户请求已通过。',
+    'Account Request for \'{displayName}\' has been declined.' => '空间 \'{displayName}\' 的帐户请求已拒绝。',
     'Hello {displayName},<br><br>
 
    your account has been activated.<br><br>
@@ -27,12 +27,25 @@ return [
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => '',
+   {AdminName}<br><br>' => '你好 {displayName},<br><br>
+
+   你的帐号已激活。<br><br>
+
+   点击这里登录:<br>
+   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
+
+   最美的祝愿<br>
+   {AdminName}<br><br>',
     'Hello {displayName},<br><br>
 
    your account request has been declined.<br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => '',
+   {AdminName}<br><br>' => '你好 {displayName},<br><br>
+
+   你的帐号请求已被拒绝。<br><br>
+
+   最美的祝愿<br>
+   {AdminName}<br><br>',
     'User not found!' => '未找到用户',
 ];

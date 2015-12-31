@@ -18,7 +18,7 @@
  */
 return array (
   'LDAP' => '',
-  'Local' => '',
+  'Local' => '本地',
   'Become this user' => '成为这个用户',
   'Delete' => '删除',
   'Disabled' => '生效',

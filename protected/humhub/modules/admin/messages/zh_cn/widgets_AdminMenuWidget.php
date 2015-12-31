@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'OEmbed Provider' => '',
-    'Proxy' => '',
+    'OEmbed Provider' => 'OEmbed 供应商',
+    'Proxy' => '代理',
     '<strong>Administration</strong> menu' => '<strong>管理</strong> 菜单',
     'About' => '关于',
     'Authentication' => '权限设置',

@@ -18,7 +18,7 @@
  */
 return [
     'LDAP' => '',
-    'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '',
+    'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '邮件地址的 LDAP 属性。 默认: &quotmail&quot;',
     '<strong>Authentication</strong> - LDAP' => '<strong>认证</strong> - LDAP',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '在生产环境中强烈建议使用ATLS / SSL，以防止明文传输密码',
     'Basic' => '基本',

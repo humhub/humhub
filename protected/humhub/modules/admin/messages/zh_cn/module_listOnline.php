@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'No modules found!' => '',
-    'No purchased modules found!' => '',
-    'Register' => '',
-    'search for available modules online' => '',
+    'No modules found!' => '未发现模块',
+    'No purchased modules found!' => '没有发现购买的模块',
+    'Register' => '注册',
+    'search for available modules online' => '在线搜索可用模块',
     'Installed' => '已安装',
     'Search' => '搜 索',
 ];

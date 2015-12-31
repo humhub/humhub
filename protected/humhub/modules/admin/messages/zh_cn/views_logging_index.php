@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Flush entries' => '',
+  'Flush entries' => '清除',
   '<strong>Error</strong> logging' => '<strong>错误</strong> 日志',
   'Displaying {count} entries per page.' => '显示每页条数{count}',
   'Total {count} entries found.' => '总条数{count}',
