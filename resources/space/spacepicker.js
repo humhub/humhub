@@ -25,7 +25,7 @@ $.fn.spacepicker = function (options) {
         searchUrl: "",
         currentValue: "",
         templates: {
-            inputStructure: '<div class="space_picker_container"><ul class="tag_input" id="space_tags"><li id="space_tag_input"><input type="text" id="space_input_field" class="tag_input_field" value="" autocomplete="off" placeholder="增加一个空间"></li></ul><ul class="dropdown-menu" id="spacepicker" role="menu" aria-labelledby="dropdownMenu"></ul></div>'
+            inputStructure: '<div class="space_picker_container"><ul class="tag_input" id="space_tags"><li id="space_tag_input"><input type="text" id="space_input_field" class="tag_input_field" value="" autocomplete="off" placeholder="Add a place"></li></ul><ul class="dropdown-menu" id="spacepicker" role="menu" aria-labelledby="dropdownMenu"></ul></div>'
         }
 
     }, options);
