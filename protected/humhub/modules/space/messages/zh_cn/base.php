@@ -30,4 +30,6 @@ return [
     'Only by invite' => '只有通过邀请',
     'Private (Invisible)' => '私有(不可见)',
     'Public (Visible)' => '公共(可见)',
+    'All' => '所有人',
+    'Actions' => '操作',
 ];

@@ -19,4 +19,9 @@
 return [
     'New user needs approval' => '新用户需要审核',
     'Username' => '用户名',
+    'Email' => '电子邮件',
+    'Group ID' => '所属用户组',
+    'Super Admin' => '超级管理员',
+    'Auth Mode' => '鉴权模块',
+    'Status' => '状态',
 ];

@@ -60,7 +60,7 @@ class UserController extends Controller
         // Add User Form
         $definition['elements']['User'] = array(
             'type' => 'form',
-            'title' => 'Account',
+            'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
             'elements' => array(
                 'username' => array(
                     'type' => 'text',

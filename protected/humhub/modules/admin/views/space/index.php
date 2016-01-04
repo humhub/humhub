@@ -19,13 +19,13 @@ use humhub\modules\admin\widgets\SpaceGridView;
         $visibilities = array(
             Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
             Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Visible)'),
-            Space::VISIBILITY_ALL => 'All',
+            Space::VISIBILITY_ALL => Yii::t('SpaceModule.base', 'All'),
         );
 
         $joinPolicies = array(
             Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
             Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
-            Space::JOIN_POLICY_FREE => 'Everyone can enter',
+            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
         );
 
 
@@ -65,7 +65,7 @@ use humhub\modules\admin\widgets\SpaceGridView;
             },
                 ],
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('SpaceModule.base', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['width' => '80px'],
                     'buttons' => [
