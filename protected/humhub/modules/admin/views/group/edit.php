@@ -47,7 +47,7 @@ use yii\helpers\Html;
         ?>
 
         <?php if (!$group->isNewRecord): ?>
-            <strong>Permissions:</strong><br/>
+            <strong><?php echo Yii::t('AdminModule.views_group_edit','Permissions');?>:</strong><br/>
             <?= PermissionGridEditor::widget(['permissionManager' => Yii::$app->user->permissionManager, 'groupId' => $group->id]); ?>
         <?php endif; ?>
 

@@ -22,12 +22,12 @@ class CreatePublicSpace extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create public space";
+    protected $title = "创建公共空间";
 
     /**
      * @inheritdoc
      */
-    protected $description = "Can create public visible spaces. (Listed in directory)";
+    protected $description = "能创建公共可见的空间。";
 
     /**
      * @inheritdoc

@@ -25,4 +25,5 @@ return array (
   'Members can create private spaces' => '成员能创建私有版块',
   'Members can create public spaces' => '成员能创建公共版块',
   'Name' => '名字',
+  'Default Space Guid' => '默认空间',
 );

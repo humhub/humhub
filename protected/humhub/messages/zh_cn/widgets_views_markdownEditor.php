@@ -4,6 +4,8 @@ return array (
   'Add link' => '增加链接',
   'Bold' => '粗体',
   'Code' => '代码',
+  'Ordered List' => '有序列表',
+  'Unordered List' => '无序列表',
   'Enter a url (e.g. http://example.com)' => '输入一个URL(例如:http://example.com)',
   'Heading' => '标题',
   'Image' => '图片',
