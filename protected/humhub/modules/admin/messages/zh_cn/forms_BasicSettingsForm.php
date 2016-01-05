@@ -23,8 +23,8 @@ return [
     'Show user profile post form on dashboard' => '在主面板上显示用户中心的动态',
     'Base URL' => '基础URL',
     'Default language' => '缺省语言',
-    'Default space' => '缺省版块',
-    'Invalid space' => '无效的版块',
+    'Default space' => '缺省空间',
+    'Invalid space' => '无效的空间',
     'Name of the application' => '应用名称',
     'Show introduction tour for new users' => '新用户显示向导',
 ];

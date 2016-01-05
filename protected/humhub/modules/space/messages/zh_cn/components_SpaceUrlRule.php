@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Space not found!' => '找不到版块！',
+  'Space not found!' => '找不到空间！',
 );

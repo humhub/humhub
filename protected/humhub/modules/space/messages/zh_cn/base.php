@@ -25,7 +25,7 @@ return [
     'Public (Members only)' => '公共 (仅成员)',
     'Public (Registered users only)' => '公共 (仅注册用户)',
     'Visible for all (members and guests)' => '所有人可见 (成员和游客)',
-    'Could not delete user who is a space owner! Name of Space: {spaceName}' => '无法删除用户，用户是版块{spaceName}的主人',
+    'Could not delete user who is a space owner! Name of Space: {spaceName}' => '无法删除用户，用户是空间{spaceName}的主人',
     'Invite and request' => '邀请和请求',
     'Only by invite' => '只有通过邀请',
     'Private (Invisible)' => '私有(不可见)',

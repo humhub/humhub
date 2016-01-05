@@ -30,6 +30,6 @@ return [
     'Updated by' => '修改人',
     'Visibility' => '可见性',
     'Website URL (optional)' => '网站URL(可选)',
-    'You cannot create private visible spaces!' => '你不能创建私有的版块',
-    'You cannot create public visible spaces!' => '你不能创建公共版块',
+    'You cannot create private visible spaces!' => '你不能创建私有的空间',
+    'You cannot create public visible spaces!' => '你不能创建公共空间',
 ];

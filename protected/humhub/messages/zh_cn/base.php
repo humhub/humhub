@@ -51,7 +51,7 @@ return [
     'My profile' => '我的资料',
     'New profile image' => '新图片',
     'Search' => '搜索',
-    'Search for users and spaces' => '搜索用户或版块',
-    'Space not found!' => '没找到版块',
+    'Search for users and spaces' => '搜索用户或空间',
+    'Space not found!' => '没找到空间',
     'User not found!' => '没找到用户',
 ];

@@ -33,7 +33,7 @@ return [
     'Modules' => '模块管理',
     'Self test & update' => '自测试和更新',
     'Settings' => '设置',
-    'Spaces' => '版块管理',
+    'Spaces' => '空间管理',
     'Statistics' => '静态页',
     'User approval' => '请求管理',
     'User profiles' => '用户属性设置',

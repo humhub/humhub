@@ -19,13 +19,13 @@
 return [
     'Color' => '颜色',
     'Next' => '下一步',
-    '<strong>Create</strong> new space' => '<strong>创建</strong> 新版块',
+    '<strong>Create</strong> new space' => '<strong>创建</strong> 新空间',
     'Advanced access settings' => '访问权限设置',
     'For everyone' => '每个用户',
     'Invite and request' => '邀请和请求',
     'Join Policy' => '参加方式',
     'Only by invite' => '只有通过邀请',
     'Visibility' => '可见性',
-    'space description' => '版块描述',
-    'space name' => '版块名',
+    'space description' => '空间描述',
+    'space name' => '空间名',
 ];

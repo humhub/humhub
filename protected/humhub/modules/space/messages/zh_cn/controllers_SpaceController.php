@@ -20,6 +20,6 @@ return array (
   'As owner you cannot revoke your membership!' => '作为拥有者，你不能撤消你的会员资格',
   'Could not request membership!' => '无法请求成为成员',
   'There is no pending invite!' => '没有请求！',
-  'This action is only available for workspace members!' => '此操作仅适用于版块成员！',
-  'You are not allowed to join this space!' => '您不可以参加这个版块！',
+  'This action is only available for workspace members!' => '此操作仅适用于空间成员！',
+  'You are not allowed to join this space!' => '您不可以参加这个空间！',
 );

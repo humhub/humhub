@@ -20,5 +20,5 @@ return [
     'My Space List' => '我的空间列表',
     'My space summary' => '我的空间概要',
     'Space directory' => '空间目录',
-    'Spaces' => '版块',
+    'Spaces' => '空间',
 ];
