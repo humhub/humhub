@@ -1,0 +1,3 @@
+[submodule "protected/modules/translation"]
+	path = protected/modules/translation
+	url = https://github.com/humhub/humhub-modules-translation.git

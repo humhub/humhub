@@ -21,7 +21,7 @@ return array (
   'Incorrect username/email or password.' => '',
   'New password' => '',
   'New password confirm' => '',
-  'Remember me next time' => '',
+  'Remember me next time' => '記住我',
   'Your account has not been activated by our staff yet.' => '',
   'Your account is suspended.' => '',
 );

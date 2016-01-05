@@ -32,6 +32,7 @@ class AppAsset extends AssetBundle
         'js/jquery.highlight.min.js',
         'js/jquery.autosize.min.js',
         'js/jquery.timeago.js',
+        'js/locales/jquery.timeago.zh-tw.js',
         'js/jquery.knob.min.js',
         'js/wysihtml5-0.3.0.js',
         'js/bootstrap3-wysihtml5.js',
