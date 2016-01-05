@@ -19,8 +19,9 @@
 return [
     'Sign up now' => '现在注册',
     'Space Invite' => '空间邀请',
+    'at' => '来自于',
     '<br>A social network to increase your communication and teamwork.<br>Register now
-                                                        to join this space.' => '<br>社交网络可以提高你的沟通和团队合作。<br>现在注册
+                                                        to join this space.' => '<br>社交网络可以提高你的沟通和团队合作能力。<br>现在注册
 加入这个空间。',
     'You got a <strong>space</strong> invite' => '你收到一个 <strong>空间</strong>邀请 ',
     'invited you to the space:' => '邀请你加入空间：',
