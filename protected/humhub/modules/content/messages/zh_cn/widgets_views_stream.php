@@ -32,4 +32,5 @@ return [
     'Posts with links' => '含链接的内容',
     'Sorting' => '排序',
     'Where I´m involved' => '关系密切',
+    'Load more' => '加载更多',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Send' => '',
+    'Send' => '发送',
     'Write a new comment...' => '写新评论...',
 ];
