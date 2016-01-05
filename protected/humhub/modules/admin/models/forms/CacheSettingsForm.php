@@ -52,12 +52,8 @@ class CacheSettingsForm extends \yii\base\Model
 
     public function checkCacheType($attribute, $params)
     {
-        if ($this->type == 'CApcCache' && !function_exists('apc_add')) {
+        if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add')) {
             $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC Extension missing - Type not available!"));
-        }
-
-        if ($this->type == 'CDbCache' && !class_exists('SQLite3')) {
-            $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP SQLite3 Extension missing - Type not available!"));
         }
     }
 
