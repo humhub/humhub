@@ -22,4 +22,11 @@ return [
     '<strong>Pending</strong> approvals' => '<strong>审核</strong>管理',
     '<strong>Pending</strong> invitations' => '<strong>邀请</strong>管理',
     'never' => '从不',
+    'Group' => '用户组',
+    'Last Visit' => '最后访问时间',
+    'Request Message' => '请求消息',
+    'Actions' => '操作',
+    'Remove' => '删除',
+    'Are you sure?' => '你确定吗？',
+    'Current Group' => '当前用户组',
 ];

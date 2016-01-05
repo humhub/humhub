@@ -36,12 +36,12 @@ class CreatePublicContent extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create public content";
+    protected $title = "创建公共内容";
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to create public content";
+    protected $description = "允许用户创建公共内容";
 
     /**
      * @inheritdoc

@@ -13,7 +13,7 @@ use humhub\modules\user\widgets\PermissionGridEditor;
     </div>
     <div class="panel-body">
 
-        <strong>Current Group:</strong>
+        <strong><?php echo Yii::t('SpaceModule.views_admin_members', 'Current Group');?>:</strong>
         <?php
         echo Html::beginForm($space->createUrl('permissions'), 'GET');
         echo Html::dropDownList('groupId', $groupId, $groups, ['class' => 'form-control', 'onchange' => 'this.form.submit()']);

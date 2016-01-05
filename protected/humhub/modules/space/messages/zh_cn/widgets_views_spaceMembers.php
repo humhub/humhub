@@ -20,4 +20,9 @@ return [
     'Get complete members list' => '获得完整的成员列表',
     '<strong>New</strong> member request' => '<strong>新</strong> 成员请求',
     '<strong>Space</strong> members' => '<strong>空间</strong>成员',
+    'Members' => '成员',
+    'Pending Invites' => '待处理邀请',
+    'Pending Approvals' => '待审核',
+    'Permissions' => '权限',
+    'Owner' => '拥有者',
 ];

@@ -36,12 +36,12 @@ class InviteUsers extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Invite users";
+    protected $title = "邀请用户";
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to invite new members to the space";
+    protected $description = "允许用户为此空间邀请新用户";
 
     /**
      * @inheritdoc

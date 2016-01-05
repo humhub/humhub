@@ -115,6 +115,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
+            'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default Content Visibility'),
         );
     }
 
