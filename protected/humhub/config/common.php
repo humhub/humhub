@@ -143,6 +143,9 @@ $config = [
             'timeAgoBefore' => 172800,
             // Use static timeago instead of timeago js
             'timeAgoStatic' => false,
+            // Seconds before hide time from timeago date
+            // Set to false to always display time
+            'timeAgoHideTimeAfter' => 259200,            
         ],
         'humhub' => [
             // Marketplace / New Version Check
