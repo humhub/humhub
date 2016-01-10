@@ -47,7 +47,7 @@ class AccountLogin extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if ($user !== null) {
+            if ($user !== null && $user->currentPassword !== null) {
                 if ($user->auth_mode === User::AUTH_MODE_LOCAL && $user->currentPassword->validatePassword($this->password)) {
                     return;
                 } elseif ($user->auth_mode === User::AUTH_MODE_LDAP && Ldap::isAvailable() && Ldap::getInstance()->authenticate($user->username, $this->password)) {
