@@ -18,11 +18,11 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Cancel Membership' => '',
-    'Hide posts on dashboard' => '',
-    'Show posts on dashboard' => '',
-    'This option will hide new content from this space at your dashboard' => '',
-    'This option will show new content from this space at your dashboard' => '',
+    'Cancel Membership' => 'Annuler votre inscription',
+    'Hide posts on dashboard' => 'Masquer vos posts sur le fil d\'actu',
+    'Show posts on dashboard' => 'Publier vos posts sur le fil d\'actu',
+    'This option will hide new content from this space at your dashboard' => 'Cette option va masquer les nouveaux contenus de cet espace sur le fil d\'actu',
+    'This option will show new content from this space at your dashboard' => 'Cette option va publier les nouveaux contenus de cet espace sur le fil d\'actu',
     'General' => 'Général',
     'Members' => 'Membres',
     'Modules' => 'Modules',
