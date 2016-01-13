@@ -3,7 +3,6 @@
 namespace humhub\modules\notification;
 
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Session; //use Session by Alex
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\models\Setting;
@@ -22,11 +21,7 @@ class Module extends \humhub\components\Module
     {
         $output = "";
 
-        // Delete expired session by Alex
-		foreach (Session::find()->where(['<', 'expire', time()])->all() as $session) {
-            $session->delete();
-        }
-		
+        
         $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', Setting::Get('receive_email_notifications', 'mailing'));
 
         // Never receive notifications
