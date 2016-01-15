@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% joined the space %spaceName%' => '',
-  '%displayName% joined this space.' => '',
+  '%displayName% joined the space %spaceName%' => '%displayName% 已加入這個空間 %spaceName%',
+  '%displayName% joined this space.' => '%displayName% 已加入這個空間.',
 );

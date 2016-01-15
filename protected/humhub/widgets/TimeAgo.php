@@ -82,8 +82,8 @@ class TimeAgo extends \yii\base\Widget
     {
         $date = Yii::$app->formatter->asDate($this->timestamp, 'medium');
 
-        // Show time within the last 72 hours
-        if ($elapsed < 60 * 60 * 24 * 3) {
+        // Show time when within specified range
+        if (Yii::$app->params['formatter']['timeAgoHideTimeAfter'] === false || $elapsed < Yii::$app->params['formatter']['timeAgoHideTimeAfter']) {
             $date .= " " . Yii::$app->formatter->asTime($this->timestamp, 'short');
         }
 

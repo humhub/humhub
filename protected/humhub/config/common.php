@@ -21,10 +21,12 @@ $config = [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                    'logVars' => ['_GET', '_SERVER'],
                 ],
                 [
                     'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
+                    'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
         ],
@@ -145,6 +147,9 @@ $config = [
             'timeAgoBefore' => 172800,
             // Use static timeago instead of timeago js
             'timeAgoStatic' => false,
+            // Seconds before hide time from timeago date
+            // Set to false to always display time
+            'timeAgoHideTimeAfter' => 259200,            
         ],
         'humhub' => [
             // Marketplace / New Version Check
