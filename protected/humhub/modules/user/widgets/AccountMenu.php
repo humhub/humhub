@@ -75,8 +75,8 @@ class AccountMenu extends BaseMenu
             'isActive' => (Yii::$app->controller->action->id == "emailing"),
         ));
 
-        // LDAP users cannot change their e-mail address
-        if (Yii::$app->user->getIdentity()->auth_mode != User::AUTH_MODE_LDAP) {
+
+        if (Yii::$app->user->canChangeEmail()) {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'E-Mail'),
                 'icon' => '<i class="fa fa-paper-plane"></i>',
@@ -87,8 +87,7 @@ class AccountMenu extends BaseMenu
             ));
         }
 
-        // LDAP users cannot changes password or delete account
-        if (Yii::$app->user->getIdentity()->auth_mode != User::AUTH_MODE_LDAP) {
+        if (Yii::$app->user->canChangePassword()) {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Password'),
                 'icon' => '<i class="fa fa-key"></i>',
@@ -97,6 +96,10 @@ class AccountMenu extends BaseMenu
                 'sortOrder' => 500,
                 'isActive' => (Yii::$app->controller->action->id == "change-password"),
             ));
+        }
+
+
+        if (Yii::$app->user->canDeleteAccount()) {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Delete account'),
                 'icon' => '<i class="fa fa-trash-o"></i>',

@@ -16,11 +16,11 @@ use yii\helpers\Url;
             <?php if ($canRegister) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="<?php echo (!isset($_POST['AccountRegister'])) ? "active" : ""; ?> tab-login"><a
+                        <li class="<?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
                                 href="#login"
                                 data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
                         </li>
-                        <li class="<?php echo (isset($_POST['AccountRegister'])) ? "active" : ""; ?> tab-register"><a
+                        <li class="<?php echo (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
                                 href="#register"
                                 data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
                         </li>
@@ -31,18 +31,12 @@ use yii\helpers\Url;
 
 
             <div class="tab-content">
-                <div class="tab-pane <?php echo (!isset($_POST['AccountRegister'])) ? "active" : ""; ?>" id="login">
+                <div class="tab-pane <?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
                     <?php $form = ActiveForm::begin(); ?>
-
-
                     <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
-
                     <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
-
                     <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
-
-
                     <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
                     <hr>
                     <div class="row">
@@ -87,16 +81,17 @@ use yii\helpers\Url;
                     </div>
 
                     <?php ActiveForm::end(); ?>
+                    <?= humhub\modules\user\widgets\AuthChoice::widget([]) ?>            
                 </div>
 
                 <?php if ($canRegister) : ?>
-                    <div class="tab-pane <?php echo (isset($_POST['AccountRegister'])) ? "active" : ""; ?>"
+                    <div class="tab-pane <?php echo (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 
                         <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                         <?php $form = ActiveForm::begin(); ?>
 
-                        <?php echo $form->field($registerModel, 'email')->textInput(['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
+                        <?php echo $form->field($invite, 'email')->textInput(['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                         <hr>
 
                         <?php

@@ -42,12 +42,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 {
 
     /**
-     * Authentication Modes
-     */
-    const AUTH_MODE_LDAP = "ldap";
-    const AUTH_MODE_LOCAL = "local";
-
-    /**
      * User Status Flags
      */
     const STATUS_DISABLED = 0;
@@ -90,10 +84,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['guid'], 'string', 'max' => 45],
             [['username'], 'string', 'max' => 25, 'min' => Yii::$app->params['user']['minUsernameLength']],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
-            [['email'], 'string', 'max' => 100],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
             [['email'], 'unique'],
+            [['email'], 'email'],
+            [['email'], 'string', 'max' => 100],
             [['username'], 'unique'],
             [['guid'], 'unique'],
             [['wall_id'], 'unique']
@@ -122,8 +117,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         $scenarios = parent::scenarios();
         $scenarios['login'] = ['username', 'password'];
-        $scenarios['editAdmin'] = ['username', 'email', 'group_id', 'super_admin', 'auth_mode', 'status'];
-        $scenarios['registration'] = ['username', 'email', 'group_id'];
+        $scenarios['editAdmin'] = ['username', 'email', 'group_id', 'super_admin', 'status'];
+        $scenarios['registration_email'] = ['username', 'email', 'group_id'];
+        $scenarios['registration'] = ['username', 'group_id'];
         return $scenarios;
     }
 
@@ -176,7 +172,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * @inheritdoc
-     * 
+     *
      * @return ActiveQueryContent
      */
     public static function find()
@@ -261,11 +257,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function beforeSave($insert)
     {
-
         if ($insert) {
 
-            if ($this->auth_mode == "") {
-                $this->auth_mode = self::AUTH_MODE_LOCAL;
+            if ($this->auth_mode == '') {
+                $passwordAuth = new \humhub\modules\user\authclient\Password();
+                $this->auth_mode = $passwordAuth->getId();
             }
 
             if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal')) {
@@ -277,13 +273,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
             $this->last_activity_email = new \yii\db\Expression('NOW()');
 
-            // Set Status
             if ($this->status == "") {
-                if (\humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
-                    $this->status = User::STATUS_NEED_APPROVAL;
-                } else {
-                    $this->status = User::STATUS_ENABLED;
-                }
+                $this->status = self::STATUS_ENABLED;
             }
 
             if ((\humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal'))) {
@@ -296,7 +287,17 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         if ($this->group_id == "") {
-            throw new \yii\base\Exception("Could not save user without group!");
+            // Try autoset group
+            $availableGroups = Group::getRegistrationGroups();
+            $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
+            if ($defaultUserGroup != '') {
+                $this->group_id = $defaultUserGroup;
+            } elseif (isset($availableGroups[0])) {
+                // Fallback to first available group
+                $this->group_id = $availableGroups[0]->id;
+            } else {
+                throw new \yii\base\Exception("Could not save user without group!");
+            }
         }
 
         return parent::beforeSave($insert);
@@ -409,7 +410,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Checks if user has tags
-     * 
+     *
      * @return boolean has tags set
      */
     public function hasTags()
@@ -419,7 +420,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Returns an array with assigned Tags
-     * 
+     *
      * @return array tags
      */
     public function getTags()
@@ -523,6 +524,14 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         return false;
+    }
+
+    /**
+     * @return type
+     */
+    public function getAuths()
+    {
+        return $this->hasMany(\humhub\modules\user\models\Auth::className(), ['user_id' => 'id']);
     }
 
 }

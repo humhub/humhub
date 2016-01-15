@@ -109,6 +109,40 @@ class AccountController extends Controller
         return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
     }
 
+    public function actionConnectedAccounts()
+    {
+        if (Yii::$app->request->isPost && Yii::$app->request->get('disconnect')) {
+            foreach (Yii::$app->user->getAuthClients() as $authClient) {
+                if ($authClient->getId() == Yii::$app->request->get('disconnect')) {
+                    \humhub\modules\user\authclient\AuthClientHelpers::removeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+                }
+            }
+            return $this->redirect(['connected-accounts']);
+        }
+        $clients = [];
+        foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
+            if (!$client instanceof humhub\modules\user\authclient\BaseFormAuth && !$client instanceof \humhub\modules\user\authclient\interfaces\PrimaryClient) {
+                $clients[] = $client;
+            }
+        }
+
+        $currentAuthProviderId = "";
+        if (Yii::$app->user->getCurrentAuthClient() !== null) {
+            $currentAuthProviderId = Yii::$app->user->getCurrentAuthClient()->getId();
+        }
+
+        $activeAuthClientIds = [];
+        foreach (Yii::$app->user->getAuthClients() as $authClient) {
+            $activeAuthClientIds[] = $authClient->getId();
+        }
+
+        return $this->render('connected-accounts', [
+                    'authClients' => $clients,
+                    'currentAuthProviderId' => $currentAuthProviderId,
+                    'activeAuthClientIds' => $activeAuthClientIds
+        ]);
+    }
+
     /**
      * Allows the user to enable user specifc modules
      */
@@ -159,8 +193,8 @@ class AccountController extends Controller
         $isSpaceOwner = false;
         $user = Yii::$app->user->getIdentity();
 
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new HttpException(500, 'This is not a local account! You cannot delete it. (e.g. LDAP)!');
+        if (!Yii::$app->user->canDeleteAccount()) {
+            throw new HttpException(500, 'Account deletion not allowed');
         }
 
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
@@ -213,9 +247,8 @@ class AccountController extends Controller
      */
     public function actionChangeEmail()
     {
-        $user = Yii::$app->user->getIdentity();
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+        if (!Yii::$app->user->canChangeEmail()) {
+            throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
         $model = new \humhub\modules\user\models\forms\AccountChangeEmail;
@@ -233,14 +266,14 @@ class AccountController extends Controller
      */
     public function actionChangeEmailValidate()
     {
-        $user = Yii::$app->user->getIdentity();
-
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+        if (!Yii::$app->user->canChangeEmail()) {
+            throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
         $token = Yii::$app->request->get('token');
         $email = Yii::$app->request->get('email');
+
+        $user = Yii::$app->user->getIdentity();
 
         // Check if Token is valid
         if (md5(\humhub\models\Setting::Get('secret') . $user->guid . $email) != $token) {
@@ -264,10 +297,8 @@ class AccountController extends Controller
      */
     public function actionChangePassword()
     {
-        $user = Yii::$app->user->getIdentity();
-
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+        if (!Yii::$app->user->canChangePassword()) {
+            throw new HttpException(500, 'Password change is not allowed');
         }
 
         $userPassword = new \humhub\modules\user\models\Password();

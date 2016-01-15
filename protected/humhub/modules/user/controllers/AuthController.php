@@ -10,6 +10,11 @@ namespace humhub\modules\user\controllers;
 
 use Yii;
 use humhub\components\Controller;
+use humhub\modules\user\models\User;
+use humhub\modules\user\models\Auth;
+use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\forms\Login;
+use humhub\modules\user\authclient\AuthClientHelpers;
 
 /**
  * AuthController handles login and logout
@@ -38,7 +43,22 @@ class AuthController extends Controller
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
             ],
+            'external-auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        // Remove authClient from session - if already exists
+        Yii::$app->session->remove('authClient');
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -46,52 +66,125 @@ class AuthController extends Controller
      */
     public function actionLogin()
     {
-
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::$app->user->isGuest) {
             $this->redirect(Yii::$app->user->returnUrl);
         }
 
-        // Show/Allow Anonymous Registration
-        $loginModel = new \humhub\modules\user\models\forms\AccountLogin;
-        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
-            if (Yii::$app->request->getIsAjax()) {
-                return $this->htmlRedirect(Yii::$app->user->returnUrl);
-            } else {
-                return $this->redirect(Yii::$app->user->returnUrl);
-            }
+        // Login Form Handling
+        $login = new Login;
+        if ($login->load(Yii::$app->request->post()) && $login->validate()) {
+            return $this->onAuthSuccess($login->authClient);
         }
-        $loginModel->password = "";
 
-        $canRegister = \humhub\models\Setting::Get('anonymousRegistration', 'authentication_internal');
-        $registerModel = new \humhub\modules\user\models\forms\AccountRegister;
-
-        if ($canRegister) {
-            if ($registerModel->load(Yii::$app->request->post()) && $registerModel->validate()) {
-
-                $invite = \humhub\modules\user\models\Invite::findOne(['email' => $registerModel->email]);
-                if ($invite === null) {
-                    $invite = new \humhub\modules\user\models\Invite();
-                }
-                $invite->email = $registerModel->email;
-                $invite->source = \humhub\modules\user\models\Invite::SOURCE_SELF;
-                $invite->language = Yii::$app->language;
-                $invite->save();
-                $invite->sendInviteMail();
-
-                if (Yii::$app->request->getIsAjax()) {
-                    return $this->render('register_success_modal', ['model' => $registerModel]);
-                } else {
-                    return $this->render('register_success', ['model' => $registerModel]);
-                }
+        // Self Invite 
+        $invite = new Invite();
+        $invite->scenario = 'invite';
+        if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
+            if (Yii::$app->request->getIsAjax()) {
+                return $this->render('register_success_modal', ['model' => $invite]);
+            } else {
+                return $this->render('register_success', ['model' => $invite]);
             }
         }
 
         if (Yii::$app->request->getIsAjax()) {
-            return $this->renderAjax('login_modal', array('model' => $loginModel, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
-        } else {
-            return $this->render('login', array('model' => $loginModel, 'registerModel' => $registerModel, 'canRegister' => $canRegister));
+            return $this->renderAjax('login_modal', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
         }
+        return $this->render('login', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
+    }
+
+    /**
+     * Handle successful authentication
+     * 
+     * @param \yii\authclient\BaseClient $authClient
+     * @return Response
+     */
+    public function onAuthSuccess(\yii\authclient\BaseClient $authClient)
+    {
+        $attributes = $authClient->getUserAttributes();
+
+        // User already logged in - Add new authclient to existing user
+        if (!Yii::$app->user->isGuest) {
+            AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+            return $this->redirect(['/user/account/connected-accounts']);
+        }
+
+        // Login existing user 
+        $user = AuthClientHelpers::getUserByAuthClient($authClient);
+        if ($user !== null) {
+            return $this->login($user, $authClient);
+        }
+
+        // Check if E-Mail is given
+        if (!isset($attributes['email'])) {
+            Yii::$app->session->setFlash('error', "Missing E-Mail Attribute from AuthClient.");
+            return $this->redirect(['/user/auth/login']);
+        }
+
+        if (!isset($attributes['id'])) {
+            Yii::$app->session->setFlash('error', "Missing ID AuthClient Attribute from AuthClient.");
+            return $this->redirect(['/user/auth/login']);
+        }
+
+        // Check if e-mail is already taken
+        if (User::findOne(['email' => $attributes['email']]) !== null) {
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.'));
+            return $this->redirect(['/user/auth/login']);
+        }
+
+        // Try automatically create user & login user
+        $user = AuthClientHelpers::createUser($authClient);
+        if ($user !== null) {
+            return $this->login($user, $authClient);
+        }
+
+        // Make sure we normalized user attributes before put it in session (anonymous functions)
+        $authClient->setNormalizeUserAttributeMap([]);
+
+        // Store authclient in session - for registration controller
+        Yii::$app->session->set('authClient', $authClient);
+
+        // Start registration process
+        return $this->redirect(['/user/registration']);
+    }
+
+    /**
+     * Login user
+     * 
+     * @param User $user
+     * @param \yii\authclient\BaseClient $authClient
+     * @return Response the current response object
+     */
+    protected function login($user, $authClient)
+    {
+        $redirectUrl = ['/user/auth/login'];
+        if ($user->status == User::STATUS_ENABLED) {
+            $duration = 0;
+            if ($authClient instanceof \humhub\modules\user\authclient\BaseFormAuth) {
+                if ($authClient->login->rememberMe) {
+                    $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
+                }
+            }
+            AuthClientHelpers::updateUser($authClient, $user);
+
+            if (Yii::$app->user->login($user, $duration)) {
+                Yii::$app->user->setCurrentAuthClient($authClient);
+                $url = Yii::$app->user->returnUrl;
+            }
+        } elseif ($user->status == User::STATUS_DISABLED) {
+            Yii::$app->session->setFlash('error', 'Your account is disabled!');
+        } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
+            Yii::$app->session->setFlash('error', 'Your account is not approved yet!');
+        } else {
+            Yii::$app->session->setFlash('error', 'Unknown user status!');
+        }
+
+        if (Yii::$app->request->getIsAjax()) {
+            return $this->htmlRedirect($redirectUrl);
+        }
+
+        return $this->redirect($redirectUrl);
     }
 
     /**

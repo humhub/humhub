@@ -243,7 +243,6 @@ class ConfigController extends Controller
                 $profileModel->scenario = 'registration';
 
                 $userModel->status = User::STATUS_ENABLED;
-                $userModel->auth_mode = "local";
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@humhub.com";
                 $userModel->super_admin = 0;
@@ -273,7 +272,6 @@ class ConfigController extends Controller
                 $profileModel2->scenario = 'registration';
 
                 $userModel2->status = User::STATUS_ENABLED;
-                $userModel2->auth_mode = "local";
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@humhub.com";
                 $userModel2->super_admin = 0;
@@ -361,7 +359,7 @@ class ConfigController extends Controller
 
 
         $userModel = new User();
-        $userModel->scenario = 'registration';
+        $userModel->scenario = 'registration_email';
         $userPasswordModel = new Password();
         $userPasswordModel->scenario = 'registration';
         $profileModel = $userModel->profile;
@@ -482,7 +480,7 @@ class ConfigController extends Controller
         }
 
         \humhub\libs\DynamicConfig::rewrite();
-        
+
         $this->redirect(['finished']);
     }
 

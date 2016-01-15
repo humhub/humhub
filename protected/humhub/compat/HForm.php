@@ -24,10 +24,17 @@ class HForm extends \yii\base\Component
     public $models = array();
     public $definition = array();
 
-    public function __construct($definition, $primaryModel = null)
+    /**
+     * @var boolean manually mark form as submitted
+     */
+    public $markedAsSubmitted = false;
+
+    public function __construct($definition = [], $primaryModel = null)
     {
         $this->definition = $definition;
         $this->primaryModel = $primaryModel;
+
+        $this->init();
     }
 
     public function submitted($buttonName = "")
@@ -43,6 +50,8 @@ class HForm extends \yii\base\Component
                 }
                 return true;
             }
+        } elseif ($this->markedAsSubmitted) {
+            return true;
         }
 
         return false;
@@ -57,13 +66,24 @@ class HForm extends \yii\base\Component
                 $hasErrors = true;
             }
         }
-        
+
         foreach ($this->models as $model) {
             if (!$model->validate()) {
                 $hasErrors = true;
             }
         }
         return !$hasErrors;
+    }
+
+    public function clearErrors()
+    {
+        if ($this->primaryModel !== null) {
+            $this->primaryModel->clearErrors();
+        }
+
+        foreach ($this->models as $model) {
+            $model->clearErrors();
+        }
     }
 
     public function save()

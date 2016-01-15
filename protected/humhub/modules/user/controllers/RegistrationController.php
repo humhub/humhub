@@ -9,13 +9,15 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use yii\web\HttpException;
 use yii\helpers\Url;
+use yii\web\HttpException;
+use yii\authclient\ClientInterface;
 use humhub\components\Controller;
-use humhub\modules\user\models\Invite;
-use humhub\compat\HForm;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Password;
+use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\authclient\AuthClientHelpers;
+use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
  * RegistrationController handles new user registration 
@@ -36,6 +38,18 @@ class RegistrationController extends Controller
     public $subLayout = "_layout";
 
     /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!Yii::$app->user->isGuest) {
+            throw new HttpException(401, 'Your are already logged in! - Logout first!');
+        }
+
+        return parent::beforeAction($action);
+    }
+
+    /**
      * Registration Form
      * 
      * @return type
@@ -43,136 +57,78 @@ class RegistrationController extends Controller
      */
     public function actionIndex()
     {
-        $needApproval = \humhub\models\Setting::Get('needApproval', 'authentication_internal');
+        $registration = new Registration();
 
-        if (!Yii::$app->user->isGuest)
-            throw new HttpException(401, 'Your are already logged in! - Logout first!');
+        /**
+         * @var \yii\authclient\BaseClient
+         */
+        $authClient = null;
+        $inviteToken = Yii::$app->request->get('token', '');
 
-
-        $userInvite = Invite::findOne(['token' => Yii::$app->request->get('token')]);
-        if (!$userInvite)
-            throw new HttpException(404, 'Token not found!');
-
-        if ($userInvite->language)
-            Yii::$app->language = $userInvite->language;
-
-        $userModel = new User();
-        $userModel->scenario = 'registration';
-        $userModel->email = $userInvite->email;
-
-        $userPasswordModel = new Password();
-        $userPasswordModel->scenario = 'registration';
-
-        $profileModel = $userModel->profile;
-        $profileModel->scenario = 'registration';
-
-        // Build Form Definition
-        $definition = array();
-        $definition['elements'] = array();
-
-
-        $groupModels = \humhub\modules\user\models\Group::find()->orderBy('name ASC')->all();
-        $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
-        $groupFieldType = "dropdownlist";
-        if ($defaultUserGroup != "") {
-            $groupFieldType = "hidden";
-        } else if (count($groupModels) == 1) {
-            $groupFieldType = "hidden";
-            $defaultUserGroup = $groupModels[0]->id;
-        }
-        if ($groupFieldType == 'hidden') {
-            $userModel->group_id = $defaultUserGroup;
+        if ($inviteToken != '') {
+            $this->handleInviteRegistration($inviteToken, $registration);
+        } elseif (Yii::$app->session->has('authClient')) {
+            $authClient = Yii::$app->session->get('authClient');
+            $this->handleAuthClientRegistration($authClient, $registration);
+        } else {
+            Yii::$app->session->setFlash('error', 'Registration failed.');
+            return $this->redirect(['/user/auth/login']);
         }
 
-        // Add User Form
-        $definition['elements']['User'] = array(
-            'type' => 'form',
-            'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
-            'elements' => array(
-                'username' => array(
-                    'type' => 'text',
-                    'class' => 'form-control',
-                    'maxlength' => 25,
-                ),
-                'group_id' => array(
-                    'type' => $groupFieldType,
-                    'class' => 'form-control',
-                    'items' => \yii\helpers\ArrayHelper::map($groupModels, 'id', 'name'),
-                    'value' => $defaultUserGroup,
-                ),
-            ),
-        );
+        if ($registration->submitted('save') && $registration->validate() && $registration->register($authClient)) {
+            Yii::$app->session->remove('authClient');
 
-        // Add User Password Form
-        $definition['elements']['UserPassword'] = array(
-            'type' => 'form',
-            #'title' => 'Password',
-            'elements' => array(
-                'newPassword' => array(
-                    'type' => 'password',
-                    'class' => 'form-control',
-                    'maxlength' => 255,
-                ),
-                'newPasswordConfirm' => array(
-                    'type' => 'password',
-                    'class' => 'form-control',
-                    'maxlength' => 255,
-                ),
-            ),
-        );
-
-        // Add Profile Form
-        $definition['elements']['Profile'] = array_merge(array('type' => 'form'), $profileModel->getFormDefinition());
-
-        // Get Form Definition
-        $definition['buttons'] = array(
-            'save' => array(
-                'type' => 'submit',
-                'class' => 'btn btn-primary',
-                'label' => Yii::t('UserModule.controllers_AuthController', 'Create account'),
-            ),
-        );
-
-        $form = new HForm($definition);
-        $form->models['User'] = $userModel;
-        $form->models['UserPassword'] = $userPasswordModel;
-        $form->models['Profile'] = $profileModel;
-
-        if ($form->submitted('save') && $form->validate()) {
-
-            $this->forcePostRequest();
-
-            // Registe User
-            $form->models['User']->email = $userInvite->email;
-            $form->models['User']->language = Yii::$app->language;
-            if ($form->models['User']->save()) {
-
-                // Save User Profile
-                $form->models['Profile']->user_id = $form->models['User']->id;
-                $form->models['Profile']->save();
-
-                // Save User Password
-                $form->models['UserPassword']->user_id = $form->models['User']->id;
-                $form->models['UserPassword']->setPassword($form->models['UserPassword']->newPassword);
-                $form->models['UserPassword']->save();
-
-                // Autologin user
-                if (!$needApproval) {
-                    Yii::$app->user->switchIdentity($form->models['User']);
-                    return $this->redirect(Url::to(['/dashboard/dashboard']));
-                }
-
-                return $this->render('success', array(
-                            'form' => $form,
-                            'needApproval' => $needApproval,
-                ));
+            // Autologin when user is enabled (no approval required)
+            if ($registration->getUser()->status === User::STATUS_ENABLED) {
+                Yii::$app->user->switchIdentity($registration->models['User']);
+                return $this->redirect(Url::to(['/dashboard/dashboard']));
             }
+
+            return $this->render('success', [
+                        'form' => $registration,
+                        'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+            ]);
         }
 
-        return $this->render('index', array(
-                    'hForm' => $form,
-                    'needAproval' => $needApproval)
-        );
+        return $this->render('index', ['hForm' => $registration]);
+    }
+
+    protected function handleInviteRegistration($inviteToken, Registration $form)
+    {
+        $userInvite = Invite::findOne(['token' => $inviteToken]);
+        if (!$userInvite) {
+            throw new HttpException(404, 'Invalid registration token!');
+        }
+        if ($userInvite->language) {
+            Yii::$app->language = $userInvite->language;
+        }
+        $form->getUser()->email = $userInvite->email;
+    }
+
+    /**
+     * @param \yii\authclient\BaseClient $authClient
+     * @param Registration $registration
+     * @return boolean already all registration data gathered
+     * @throws Exception
+     */
+    protected function handleAuthClientRegistration(ClientInterface $authClient, Registration $registration)
+    {
+        $attributes = $authClient->getUserAttributes();
+
+        if (!isset($attributes['id'])) {
+            throw new Exception("No user id given by authclient!");
+        }
+
+        $registration->enablePasswordForm = false;
+        if ($authClient instanceof ApprovalBypass) {
+            $registration->enableUserApproval = false;
+        }
+
+        // do not store id attribute
+        unset($attributes['id']);
+
+        $registration->getUser()->setAttributes($attributes, false);
+        $registration->getProfile()->setAttributes($attributes, false);
     }
 
 }

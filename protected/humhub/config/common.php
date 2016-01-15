@@ -85,6 +85,10 @@ $config = [
             'charset' => 'utf8',
             'enableSchemaCache' => true,
         ],
+        'authClientCollection' => [
+            'class' => 'humhub\modules\user\authclient\Collection',
+            'clients' => [],
+        ],        
     ],
     'params' => [
         'installed' => false,

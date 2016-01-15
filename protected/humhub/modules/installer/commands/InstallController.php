@@ -18,7 +18,7 @@ use humhub\modules\space\models\Space;
 
 /**
  * Console Install
- * 
+ *
  * @author Luke
  */
 class InstallController extends Controller
@@ -38,7 +38,6 @@ class InstallController extends Controller
         $user = new User();
         $user->group_id = 1;
         $user->username = "Admin";
-        $user->auth_mode = 'local';
         $user->email = 'humhub@example.com';
         $user->status = User::STATUS_ENABLED;
         $user->language = '';

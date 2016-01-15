@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user;
 
+use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\GroupAdmin;
 use humhub\modules\user\models\Password;
@@ -22,7 +23,7 @@ class Events extends \yii\base\Object
     /**
      * On rebuild of the search index, rebuild all user records
      *
-     * @param type $event
+     * @param \yii\base\Event $event
      */
     public static function onSearchRebuild($event)
     {
@@ -34,7 +35,7 @@ class Events extends \yii\base\Object
     /**
      * On delete of a Content or ContentAddon
      *
-     * @param type $event
+     * @param \yii\base\Event $event
      */
     public static function onContentDelete($event)
     {
@@ -45,7 +46,7 @@ class Events extends \yii\base\Object
     /**
      * Callback to validate module database records.
      *
-     * @param Event $event
+     * @param \yii\base\Event $event
      */
     public static function onIntegrityCheck($event)
     {
@@ -126,14 +127,22 @@ class Events extends \yii\base\Object
         }
     }
 
+    /**
+     * Tasks on hourly cron job
+     * 
+     * @param \yii\base\Event $event
+     */
     public static function onHourlyCron($event)
     {
         $controller = $event->sender;
 
-        if (Setting::Get('enabled', 'authentication_ldap') && Setting::Get('refreshUsers', 'authentication_ldap') && Ldap::isAvailable()) {
-            $controller->stdout("Refresh ldap users... ");
-            Ldap::getInstance()->refreshUsers();
-            $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
+            if ($authClient instanceof authclient\interfaces\AutoSyncUsers) {
+                /**
+                 * @var authclient\interfaces\AutoSyncUsers $authClient 
+                 */
+                $authClient->syncUsers();
+            }
         }
     }
 

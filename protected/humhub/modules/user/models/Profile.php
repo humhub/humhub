@@ -160,9 +160,13 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getFormDefinition()
     {
-
         $definition = array();
         $definition['elements'] = array();
+
+        $syncAttributes = [];
+        if ($this->user !== null) {
+            $syncAttributes = \humhub\modules\user\authclient\AuthClientHelpers::getSyncAttributesByUser($this->user);
+        }
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $profileFieldCategory) {
 
@@ -190,7 +194,7 @@ class Profile extends \yii\db\ActiveRecord
                 }
 
                 // Dont allow editing of ldap syned fields - will be overwritten on next ldap sync.
-                if ($this->user !== null && $this->user->auth_mode == User::AUTH_MODE_LDAP && $profileField->ldap_attribute != "") {
+                if (in_array($profileField->internal_name, $syncAttributes)) {
                     $profileField->editable = false;
                 }
 

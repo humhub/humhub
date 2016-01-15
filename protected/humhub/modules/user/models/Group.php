@@ -187,4 +187,25 @@ class Group extends \yii\db\ActiveRecord
         return true;
     }
 
+    /**
+     * Returns groups which are available in user registration
+     */
+    public static function getRegistrationGroups()
+    {
+        $groups = [];
+
+        $defaultGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
+        if ($defaultGroup != '') {
+            $group = self::findOne(['id' => $defaultGroup]);
+            if ($group !== null) {
+                $groups[] = $group;
+                return $groups;
+            }
+        } else {
+            $groups = self::find()->orderBy('name ASC')->all();
+        }
+
+        return $groups;
+    }
+
 }

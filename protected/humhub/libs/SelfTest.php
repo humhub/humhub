@@ -171,7 +171,7 @@ class SelfTest
 
         // Checks LDAP Extension
         $title = 'LDAP Support';
-        if (\humhub\modules\user\libs\Ldap::isAvailable()) {
+        if (\humhub\modules\user\authclient\ZendLdapClient::isLdapAvailable()) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'

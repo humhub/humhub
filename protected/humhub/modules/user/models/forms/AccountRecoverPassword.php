@@ -52,7 +52,9 @@ class AccountRecoverPassword extends \yii\base\Model
 
         if ($this->email != "") {
             $user = User::findOne(array('email' => $this->email));
-            if ($user != null && $user->auth_mode != "local") {
+            $passwordAuth = new \humhub\modules\user\authclient\Password();
+
+            if ($user != null && $user->auth_mode !== $passwordAuth->getId()) {
                 $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', "Password recovery is not possible on your account type!")));
             }
         }
