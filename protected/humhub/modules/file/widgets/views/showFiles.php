@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use humhub\libs\Helpers;
 
 $object = $this->context->object;
@@ -36,7 +37,7 @@ $object = $this->context->object;
             ?>
             <li class="mime <?php echo \humhub\libs\MimeHelper::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
-                        class="filename"><?php echo Helpers::trimText($file->file_name, 40); ?></span></a>
+                        class="filename"><?php echo Html::encode(Helpers::trimText($file->file_name, 40)); ?></span></a>
                 <span class="time" style="padding-right: 20px;"> - <?php echo Yii::$app->formatter->asSize($file->size); ?></span>
 
                 <?php if ($file->getExtension() == "mp3") : ?>
