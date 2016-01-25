@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Accept user: <strong>{displayName}</strong> ' => 'Utilisateur autorisé : <strong>{displayName}</strong> ',
+  'Accept user: <strong>{displayName}</strong> ' => '@@Utilisateur autorisé : <strong>{displayName}</strong>@@',
   'Cancel' => 'Annuler',
-  'Send & save' => 'Sauvegarder & Envoyer',
+  'Send & save' => 'Enregistrer & Envoyer',
 );
