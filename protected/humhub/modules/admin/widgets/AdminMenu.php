@@ -137,7 +137,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'icon' => '<i class="fa fa-wrench"></i>',
             'group' => 'settings',
             'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'userprofile'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user-profile'),
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
 
