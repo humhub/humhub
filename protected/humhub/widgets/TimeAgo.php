@@ -44,7 +44,7 @@ class TimeAgo extends \yii\base\Widget
     {
         $elapsed = time() - $this->timestamp;
 
-        if (Yii::$app->params['formatter']['timeAgoBefore'] !== false && $elapsed > Yii::$app->params['formatter']['timeAgoBefore']) {
+        if (Yii::$app->params['formatter']['timeAgoBefore'] !== false && $elapsed >= Yii::$app->params['formatter']['timeAgoBefore']) {
             return $this->renderDateTime($elapsed);
         }
 
@@ -98,7 +98,7 @@ class TimeAgo extends \yii\base\Widget
         if (isset(Yii::$app->params['formatter']['timeAgoFullDateCallBack']) && is_callable(Yii::$app->params['formatter']['timeAgoFullDateCallBack'])) {
             return call_user_func(Yii::$app->params['formatter']['timeAgoFullDateCallBack'], $this->timestamp);
         }
-        
+
         return Yii::$app->formatter->asDate($this->timestamp, 'medium') . ' - ' . Yii::$app->formatter->asTime($this->timestamp, 'short');
     }
 
