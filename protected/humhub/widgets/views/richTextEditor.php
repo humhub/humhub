@@ -53,19 +53,14 @@ use yii\helpers\Url;
                 matcher: function (flag, subtext, should_start_with_space) {
                     var match, regexp;
 
-                    flag = flag.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-
-                    if (should_start_with_space) {
-                        flag = '(?:^|\\s)' + flag;
+                    regexp = new RegExp(/(\s+|^)@([\u00BF-\u1FFF\u2C00-\uD7FF\w\s\-\']+$)/); 
+                    match = regexp.exec(subtext);
+                    
+                    if (match && typeof match[2] !== 'undefined') {
+                        return match[2];
                     }
-
-                    regexp = new RegExp(flag + '([A-Za-z0-9_\\s\+\-\]*)$', 'gi');
-                    match = regexp.exec(subtext.replace(/\s/g, " "));
-                    if (match) {
-                        return match[2] || match[1];
-                    } else {
-                        return null;
-                    }
+                    
+                    return null;
                 },
                 remote_filter: function (query, callback) {
 
