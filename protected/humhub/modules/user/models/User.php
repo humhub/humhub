@@ -122,7 +122,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         $scenarios = parent::scenarios();
         $scenarios['login'] = ['username', 'password'];
-        $scenarios['editAdmin'] = ['username', 'email', 'group_id', 'super_admin', 'auth_mode', 'status'];
+        $scenarios['editAdmin'] = ['username', 'email', 'group_id', 'super_admin', 'status'];
         $scenarios['registration'] = ['username', 'email', 'group_id'];
         return $scenarios;
     }
