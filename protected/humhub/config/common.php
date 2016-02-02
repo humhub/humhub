@@ -87,6 +87,13 @@ $config = [
             'charset' => 'utf8',
             'enableSchemaCache' => true,
         ],
+        'assetManager' => [
+            'bundles' => [
+                'yii\bootstrap\BootstrapAsset' => [
+                    'css' => []
+                ],
+            ],
+        ],
     ],
     'params' => [
         'installed' => false,
@@ -146,10 +153,10 @@ $config = [
             // Seconds before hide time from timeago date
             // Set to false to always display time
             'timeAgoHideTimeAfter' => 259200,
-            // Optional: Callback for TimageAgo FullDateFormat
-            //'timeAgoFullDateCallBack' => function($timestamp) {
-            //    return 'formatted';
-            //}
+        // Optional: Callback for TimageAgo FullDateFormat
+        //'timeAgoFullDateCallBack' => function($timestamp) {
+        //    return 'formatted';
+        //}
         ],
         'humhub' => [
             // Marketplace / New Version Check
