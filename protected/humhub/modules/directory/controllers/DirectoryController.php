@@ -85,6 +85,10 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
             'pageSize' => Setting::Get('paginationSize'),
         ];
 
+        if ($this->module->memberListSortField != "") {
+            $searchOptions['sortField'] = $this->module->memberListSortField;
+        }
+
         if ($group !== null) {
             $searchOptions['filters'] = ['groupId' => $group->id];
         }
