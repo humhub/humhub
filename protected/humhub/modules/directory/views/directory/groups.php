@@ -25,7 +25,7 @@ use humhub\modules\user\models\User;
                              width="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/></a>
                     <?php endforeach; ?>
                     <?php if ($userCount >= 30) : ?>
-                        <?php echo Html::a(Yii::t('DirectoryModule.views_directory_groups', "show all members"), Url::to(['/directory/directory/members', 'keyword' => 'groupId:' . $group->id])); ?>
+                        <?php echo Html::a(Yii::t('DirectoryModule.views_directory_groups', "show all members"), Url::to(['/directory/directory/members', 'keyword' => '', 'groupId' => $group->id])); ?>
                     <?php endif; ?>
                 <hr>
             <?php endif; ?>

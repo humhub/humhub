@@ -460,6 +460,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
+            'groupId' => $this->group_id,
         );
 
         if (!$this->profile->isNewRecord) {

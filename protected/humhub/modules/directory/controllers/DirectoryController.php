@@ -72,13 +72,24 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
     {
         $keyword = Yii::$app->request->get('keyword', "");
         $page = (int) Yii::$app->request->get('page', 1);
-        //$_GET['keyword'] = $keyword; // Fix for post var
+        $groupId = (int) Yii::$app->request->get('groupId', "");
 
-        $searchResultSet = Yii::$app->search->find($keyword, [
+        $group = null;
+        if ($groupId) {
+            $group = \humhub\modules\user\models\Group::findOne(['id' => $groupId]);
+        }
+
+        $searchOptions = [
             'model' => \humhub\modules\user\models\User::className(),
             'page' => $page,
-            'pageSize' => Setting::Get('paginationSize')
-        ]);
+            'pageSize' => Setting::Get('paginationSize'),
+        ];
+
+        if ($group !== null) {
+            $searchOptions['filters'] = ['groupId' => $group->id];
+        }
+
+        $searchResultSet = Yii::$app->search->find($keyword, $searchOptions);
 
         $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
 
@@ -89,6 +100,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
 
         return $this->render('members', array(
                     'keyword' => $keyword,
+                    'group' => $group,
                     'users' => $searchResultSet->getResultInstances(),
                     'pagination' => $pagination
         ));
