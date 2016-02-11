@@ -26,6 +26,7 @@ class BaseActivity extends \yii\base\Component
 
     const OUTPUT_WEB = 'web';
     const OUTPUT_MAIL = 'mail';
+    const OUTPUT_MAIL_PLAINTEXT = 'mail_plaintext';
 
     /**
      * The source object/record which created this activity
@@ -74,6 +75,13 @@ class BaseActivity extends \yii\base\Component
      */
     protected $layoutMail = "@humhub/modules/activity/views/layouts/mail.php";
 
+	/**
+     * Layout file for mail plaintext version
+     *
+     * @var string
+     */
+    protected $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
+
     /**
      * The actvity record this belongs to
      *
@@ -120,8 +128,8 @@ class BaseActivity extends \yii\base\Component
         $viewFile = $this->getViewPath() . '/' . $this->viewName . '.php';
 
         // Switch to extra mail view file - if exists (otherwise use web view)
-        if ($mode == self::OUTPUT_MAIL) {
-            $viewMailFile = $this->getViewPath() . '/mail/' . $this->viewName . '.php';
+        if ($mode == self::OUTPUT_MAIL || $mode == self::OUTPUT_MAIL_PLAINTEXT) {
+            $viewMailFile = $this->getViewPath() . '/mail/' . ($mode == self::OUTPUT_MAIL_PLAINTEXT ? 'plaintext/' : '') . $this->viewName . '.php';
             if (file_exists($viewMailFile)) {
                 $viewFile = $viewMailFile;
             }
@@ -129,7 +137,7 @@ class BaseActivity extends \yii\base\Component
 
         $params['content'] = Yii::$app->getView()->renderFile($viewFile, $params, $this);
 
-        return Yii::$app->getView()->renderFile(($mode == self::OUTPUT_WEB) ? $this->layoutWeb : $this->layoutMail, $params, $this);
+        return Yii::$app->getView()->renderFile(($mode == self::OUTPUT_WEB) ? $this->layoutWeb : ($mode == self::OUTPUT_MAIL_PLAINTEXT ? $this->layoutMailPlaintext : $this->layoutMail), $params, $this);
     }
 
     /**

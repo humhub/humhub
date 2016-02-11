@@ -82,7 +82,7 @@ class ApprovalController extends Controller
    Kind Regards<br>
    {AdminName}<br><br>', array(
                     '{displayName}' => Html::encode($user->displayName),
-                    '{loginURL}' => Url::to(["/user/auth/login"], true),
+                    '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ));
 

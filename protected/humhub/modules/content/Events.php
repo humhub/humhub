@@ -10,6 +10,7 @@ namespace humhub\modules\content;
 
 use Yii;
 use humhub\modules\content\models\Content;
+use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use humhub\commands\CronController;
 use humhub\models\Setting;
@@ -159,12 +160,17 @@ class Events extends \yii\base\Object
             $notifications = Yii::$app->getModule('notification')->getMailUpdate($user, $interval);
             $activities = Yii::$app->getModule('activity')->getMailUpdate($user, $interval);
 
-            if ($notifications != "" || $activities != "") {
+            if ((is_array($notifications) && isset($notifications['html']) && $notifications['html'] != "") || (is_array($activities) && isset($activities['html']) && $activities['html'] != "")) {
 
                 try {
-                    $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/content/views/mails/Update'], [
-                        'activities' => $activities,
-                        'notifications' => $notifications
+                    $mail = Yii::$app->mailer->compose([
+                        'html' => '@humhub/modules/content/views/mails/Update',
+                        'text' => '@humhub/modules/content/views/mails/plaintext/Update'
+                    ], [
+                        'activities' => (isset($activities['html']) ? $activities['html'] : ''),
+                        'activities_plaintext' => (isset($activities['plaintext']) ? $activities['plaintext'] : ''),
+                        'notifications' => (isset($notifications['html']) ? $notifications['html'] : ''),
+                        'notifications_plaintext' => (isset($notifications['plaintext']) ? $notifications['plaintext'] : ''),
                     ]);
                     $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
                     $mail->setTo($user->email);
