@@ -80,8 +80,8 @@ class AccountLogin extends Model
     public function login()
     {
         if ($this->validate() && Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)) {
-        	$this->_user->last_login = new Expression('NOW()');
-        	$this->_user->save();
+            $this->_user->last_login = new Expression('NOW()');
+            $this->_user->save();
             return true;
         } else {
             return false;
@@ -115,6 +115,18 @@ class AccountLogin extends Model
         }
 
         return $this->_user;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'username' => Yii::t('UserModule.views_auth_login', 'username or email'),
+            'password' => Yii::t('UserModule.views_auth_login', 'password'),
+            'rememberMe' => Yii::t('UserModule.views_auth_login', 'Remember me'),
+        );
     }
 
 }
