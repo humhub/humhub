@@ -19,7 +19,7 @@ class Module extends \humhub\components\Module
 
     public function getMailUpdate(User $user, $interval)
     {
-        $output = "";
+        $output = ['html' => '', 'plaintext' => ''];
 
         
         $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', Setting::Get('receive_email_notifications', 'mailing'));
@@ -48,12 +48,13 @@ class Module extends \humhub\components\Module
             }
         }
         
-        
+
         $query = Notification::find()->where(['user_id' => $user->id])->andWhere(['!=', 'seen', 1])->andWhere(['!=', 'emailed', 1]);
         foreach ($query->all() as $notification) {
-            $output .= $notification->getClass()->render(BaseNotification::OUTPUT_MAIL);
+            $output['html'] .= $notification->getClass()->render(BaseNotification::OUTPUT_MAIL);
+            $output['plaintext'] .= $notification->getClass()->render(BaseNotification::OUTPUT_MAIL_PLAINTEXT);
 
-            
+
             $notification->emailed = 1;
             $notification->save();
         }
