@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Создать</strong> новое пространство',
     'Advanced access settings' => 'Расширенные настройки доступа',
-    'For everyone' => 'Для каждого',
-    'Invite and request' => 'Приглашения или запросы',
-    'Join Policy' => 'Полномочия',
-    'Only by invite' => 'Только по приглашению',
-    'Visibility' => 'Визуализация',
     'space description' => 'описание пространства',
     'space name' => 'название пространства',
 ];

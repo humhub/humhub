@@ -5,6 +5,7 @@ return array (
   'All' => 'Global',
   'Content' => 'Inhalte',
   'Search for user, spaces and content' => 'Nach Benutzern, Spaces und Inhalten suchen',
+  'Search only in certain spaces:' => 'Nur in diesen Spaces suchen:',
   'Spaces' => 'Spaces',
   'Users' => 'Benutzer',
 );

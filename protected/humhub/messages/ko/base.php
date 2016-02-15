@@ -24,7 +24,6 @@ return [
     'Please type at least 3 characters' => '',
     'Save' => '',
     '<strong>Latest</strong> updates' => '<strong>최신</strong> 업데이트',
-    '<strong>Search</strong>' => '<strong>검색</strong>',
     'Account settings' => '계정 설정',
     'Administration' => '관리',
     'Back' => '돌아가기',

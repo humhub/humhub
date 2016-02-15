@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Maak</strong> nieuwe ruimte',
     'Advanced access settings' => 'Geavanceerde instellingen voor toegang',
-    'For everyone' => 'Voor iedereen',
-    'Invite and request' => 'Uitnodigen en aanvragen',
-    'Join Policy' => 'Policy om lid te worden',
-    'Only by invite' => 'Enkel door uitnodiging',
-    'Visibility' => 'Zichtbaarheid',
     'space description' => 'Ruimte beschrijving',
     'space name' => 'Ruimte naam',
 ];

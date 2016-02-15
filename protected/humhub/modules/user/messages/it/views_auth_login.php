@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me' => '',
     'email' => '',
     'password' => '',
     '<strong>Please</strong> sign in' => '<strong>Per favore</strong> accedi',

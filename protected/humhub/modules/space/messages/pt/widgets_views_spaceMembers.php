@@ -19,5 +19,5 @@
 return [
     '<strong>New</strong> member request' => '',
     '<strong>Space</strong> members' => '',
-    'Get complete members list' => '',
+    'Show all' => '',
 ];

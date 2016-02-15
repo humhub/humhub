@@ -20,12 +20,7 @@ return [
     '<strong>Create</strong> new space' => '',
     'Advanced access settings' => '',
     'Color' => '',
-    'For everyone' => '',
-    'Invite and request' => '',
-    'Join Policy' => '',
     'Next' => '',
-    'Only by invite' => '',
     'space description' => '',
     'space name' => '',
-    'Visibility' => 'Ορατότητα',
 ];

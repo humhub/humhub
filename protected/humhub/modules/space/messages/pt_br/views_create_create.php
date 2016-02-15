@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Criar</strong> novo espaço',
     'Advanced access settings' => 'Configurações avançadas de acesso',
-    'For everyone' => 'Para todos',
-    'Invite and request' => 'Convite e pedido',
-    'Join Policy' => 'Política de acesso',
-    'Only by invite' => 'Apenas por convite',
-    'Visibility' => 'Visibilidade',
     'space description' => 'descrição do espaço',
     'space name' => 'nome do espaço',
 ];

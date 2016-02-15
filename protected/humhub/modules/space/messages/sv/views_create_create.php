@@ -19,13 +19,8 @@
 return [
     'Advanced access settings' => '',
     'Color' => '',
-    'For everyone' => '',
-    'Join Policy' => '',
     'Next' => '',
-    'Visibility' => '',
     '<strong>Create</strong> new space' => '<strong>Skapa</strong> nytt nätverk',
-    'Invite and request' => 'Inbjudan och begäran',
-    'Only by invite' => 'Endast via inbjudan',
     'space description' => 'nätverkets beskrivning ',
     'space name' => 'nätverkets namn',
 ];

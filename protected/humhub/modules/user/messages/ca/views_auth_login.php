@@ -20,6 +20,7 @@ return [
     'Don\'t have an account? Join the network by entering your e-mail address.' => '',
     'If you\'re already a member, please login with your username/email and password.' => '',
     'Login' => '',
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>Si us plau</strong> inicia sessió',
     '<strong>Sign</strong> up' => '<strong>Registrar-me</strong>',
     'Create a new one.' => 'Crea un de nou.',

@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Latest</strong> updates' => '',
-    '<strong>Search</strong>' => '',
     'Allow' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not determine content container!' => '',

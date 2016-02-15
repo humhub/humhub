@@ -23,5 +23,4 @@ return [
     'Cache Backend' => '缓存后台',
     'Default Expire Time (in seconds)' => '过期时间(以秒为单位)',
     'PHP APC Extension missing - Type not available!' => 'PHP APC扩展丢失-类型不可用！',
-    'PHP SQLite3 Extension missing - Type not available!' => 'PHP SQLite3扩展丢失-类型不可用！',
 ];
