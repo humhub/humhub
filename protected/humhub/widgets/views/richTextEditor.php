@@ -53,7 +53,7 @@ use yii\helpers\Url;
                 matcher: function (flag, subtext, should_start_with_space) {
                     var match, regexp;
 
-                    regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']+$)/); 
+                    regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']*$)/); 
                     match = regexp.exec(subtext);
                     
                     if (match && typeof match[2] !== 'undefined') {
