@@ -12,7 +12,7 @@ use yii\helpers\Url;
 
     <!-- create contenteditable div for HEditorWidget to place the data -->
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input"
-         contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message]); ?></div>
+         contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message, 'edit' => true]); ?></div>
 
     <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message, 'record' => $post]); ?>
 
