@@ -56,6 +56,8 @@ class UrlOembed extends \yii\db\ActiveRecord
     public static function GetOEmbed($url)
     {
 
+        $url = trim($url);
+        
         // Check if the given URL has OEmbed Support
         if (UrlOembed::HasOEmbedSupport($url)) {
 
@@ -111,7 +113,7 @@ class UrlOembed extends \yii\db\ActiveRecord
                 try {
                     $data = \yii\helpers\Json::decode($jsonOut);
                     if (isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
-                        $html = "<div class='oembed_snippet'>" . $data['html'] . "</div>";
+                        $html = "<div class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
                     }
                 } catch (\yii\base\InvalidParamException $ex) {
                     Yii::warning($ex->getMessage());

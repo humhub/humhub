@@ -37,6 +37,11 @@ class RichText extends \humhub\components\Widget
     public $minimal = false;
 
     /**
+     * @var boolean edit mode 
+     */
+    public $edit = false;
+
+    /**
      * @var \humhub\components\ActiveRecord this richtext belongs to
      */
     public $record = null;
@@ -60,8 +65,13 @@ class RichText extends \humhub\components\Widget
         if (!$this->minimal) {
             $maxOembedCount = 3; // Maximum OEmbeds
             $oembedCount = 0; // OEmbeds used
+            $that = $this;
 
-            $this->text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount) {
+            $this->text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
+
+                if ($that->edit) {
+                    return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
+                }
 
                 // Try use oembed
                 if ($maxOembedCount > $oembedCount) {
@@ -71,7 +81,6 @@ class RichText extends \humhub\components\Widget
                         return $oembed;
                     }
                 }
-
                 return Html::a($match[1], Html::decode($match[1]), array('target' => '_blank')) . $match[2];
             }, $this->text);
         }
