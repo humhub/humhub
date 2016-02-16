@@ -6,13 +6,16 @@ use yii\helpers\Html;
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Member</strong> directory'); ?>
+        <?php if ($group === null) : ?>
+            <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Member</strong> directory'); ?>
+        <?php else: ?>
+            <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Group</strong> members - {group}', ['{group}' => $group->name]); ?>
+        <?php endif; ?>
     </div>
 
     <div class="panel-body">
 
         <!-- search form -->
-
         <?php echo Html::beginForm(Url::to(['/directory/directory/members']), 'get', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>

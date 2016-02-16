@@ -23,5 +23,4 @@ return [
     'File' => '',
     'No caching (Testing only!)' => '',
     'PHP APC Extension missing - Type not available!' => '',
-    'PHP SQLite3 Extension missing - Type not available!' => '',
 ];

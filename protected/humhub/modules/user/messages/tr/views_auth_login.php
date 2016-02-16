@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>Giriş</strong> yap',
     '<strong>Sign</strong> up' => '<strong>Kayıt</strong> ol',
     'Create a new one.' => 'Yeni oluştur',

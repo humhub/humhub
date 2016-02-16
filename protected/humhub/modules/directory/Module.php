@@ -21,9 +21,16 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
+    /**
+     * @inheritdoc
+     */
     public $isCoreModule = true;
 
+    /**
+     * @var string sort field (e.g. lastname) of member list (leave empty to sort by auto sort search)
+     */
+    public $memberListSortField = "";
+    
     /**
      * On build of the TopMenu, check if module is enabled
      * When enabled add a menu item

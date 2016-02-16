@@ -17,11 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Advanced search settings' => '',
-    'Search for user, spaces and content' => '',
+    'Search only in certain spaces:' => '',
     '<strong>Search </strong> results' => '<strong>Поиск </strong> результатов',
+    'Advanced search settings' => 'Расширенный поиск настроек',
     'All' => 'Все',
     'Content' => 'Контент',
+    'Search for user, spaces and content' => 'Поиск пользователей, пространств и содержания',
     'Spaces' => 'Пространства',
     'Users' => 'Пользователи',
 ];

@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Yeni</strong> mekan oluştur',
     'Advanced access settings' => 'Gelişmiş erişim ayarları ',
-    'For everyone' => 'Herkes için',
-    'Invite and request' => 'Davet ve istek',
-    'Join Policy' => 'Politikaya Katıl',
-    'Only by invite' => 'Sadece davet ile',
-    'Visibility' => 'Görünüm',
     'space description' => 'mekan açıklaması',
     'space name' => 'mekan adı',
 ];

@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>Proszę</strong> zaloguj się ',
     '<strong>Sign</strong> up' => '<strong>Zarejestruj się</strong>',
     'Create a new one.' => 'Stwórz nowe. ',

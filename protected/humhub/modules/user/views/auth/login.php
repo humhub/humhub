@@ -27,8 +27,8 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
             <?php $form = ActiveForm::begin(['id' => 'account-login-form']); ?>
             <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
-            <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
-            <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
+            <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')])->label(false); ?>
+            <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')])->label(false); ?>
             <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
 
             <hr>
@@ -65,7 +65,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
-                <?php echo $form->field($invite, 'email')->textInput(['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
+                <?php echo $form->field($invite, 'email')->textInput(['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <hr>
                 <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('class' => 'btn btn-primary')); ?>
 

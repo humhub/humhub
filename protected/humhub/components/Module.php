@@ -105,7 +105,7 @@ class Module extends \yii\base\Module
      */
     public function getAssetsUrl()
     {
-        $published = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath);
+        $published = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath, ['forceCopy' => true]);
         return $published[1];
     }
 

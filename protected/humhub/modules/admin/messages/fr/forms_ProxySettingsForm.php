@@ -4,6 +4,6 @@ return array (
   'No Proxy Hosts' => '',
   'Password' => 'Mot de passe',
   'Port' => 'Port',
-  'Server' => '',
+  'Server' => 'Serveur',
   'User' => 'Nom d\'utilisateur',
 );

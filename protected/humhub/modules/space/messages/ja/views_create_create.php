@@ -20,12 +20,7 @@ return [
     '<strong>Create</strong> new space' => '',
     'Advanced access settings' => '',
     'Color' => '',
-    'For everyone' => '',
-    'Invite and request' => '',
     'Next' => '',
-    'Only by invite' => '',
     'space description' => '',
     'space name' => '',
-    'Join Policy' => 'ポリシーに参加',
-    'Visibility' => '可視性',
 ];

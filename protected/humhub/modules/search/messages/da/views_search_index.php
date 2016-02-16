@@ -17,11 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search </strong> results' => '',
-    'Advanced search settings' => '',
-    'All' => '',
-    'Content' => '',
-    'Search for user, spaces and content' => '',
-    'Spaces' => '',
-    'Users' => '',
+    'Search only in certain spaces:' => '',
+    '<strong>Search </strong> results' => '<strong>Søge </strong> resultater',
+    'Advanced search settings' => 'Avanceret søge indstillinger',
+    'All' => 'Alle',
+    'Content' => 'Indhold',
+    'Search for user, spaces and content' => 'Søg efter bruger, sider og indhold',
+    'Spaces' => 'Sider',
+    'Users' => 'Brugere',
 ];

@@ -56,8 +56,6 @@ class Birthday extends DateTime
         if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
             $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName.'_hide_year', 'INT(1)');
             Yii::$app->db->createCommand($query)->execute();
-        } else {
-            Yii::error('Could not add profile column - already exists!');
         }
 
         return parent::save();

@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Vytvořit</strong> nový prostor',
     'Advanced access settings' => 'Pokročilá nastavení přístupu a viditelnosti',
-    'For everyone' => 'Pro každého',
-    'Invite and request' => 'Pozváním a požádáním',
-    'Join Policy' => 'Jak se lze stát členem?',
-    'Only by invite' => 'Jen pozváním',
-    'Visibility' => 'Viditelnost',
     'space description' => 'Popis prostoru',
     'space name' => 'Název prostoru',
 ];

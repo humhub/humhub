@@ -72,7 +72,10 @@ class AccountChangeEmail extends \yii\base\Model
 
         $token = md5(Setting::Get('secret') . $user->guid . $this->newEmail);
 
-        $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/ChangeEmail'], [
+        $mail = Yii::$app->mailer->compose([
+			'html' => '@humhub/modules/user/views/mails/ChangeEmail',
+			'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail'
+		], [
             'user' => $user,
             'newEmail' => $this->newEmail,
             'approveUrl' => Url::to(["/user/account/change-email-validate", 'email' => $this->newEmail, 'token' => $token], true)

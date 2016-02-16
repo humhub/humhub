@@ -24,7 +24,6 @@ return [
     'Please type at least 3 characters' => '',
     'Save' => '',
     '<strong>Latest</strong> updates' => '<strong>Update</strong> terbaru',
-    '<strong>Search</strong>' => '<strong>Cari</strong>',
     'Account settings' => 'Pengaturan akun',
     'Administration' => 'Administrasi',
     'Back' => 'Kembali',

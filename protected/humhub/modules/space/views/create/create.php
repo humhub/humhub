@@ -3,13 +3,9 @@
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
-use humhub\models\Setting;
-use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\space\permissions\CreatePrivateSpace;
 
 $this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position' => \humhub\components\View::POS_BEGIN]);
 $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css');
-
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -44,41 +40,12 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
 
             <div id="collapse-access-settings" class="panel-collapse collapse">
                 <br/>
-
-                <?php $joinPolicies = array(0 => Yii::t('SpaceModule.views_create_create', 'Only by invite'), 1 => Yii::t('SpaceModule.views_create_create', 'Invite and request'), 2 => Yii::t('SpaceModule.views_create_create', 'For everyone')); ?>
-
                 <div class="row">
                     <div class="col-md-6">
-                        <label
-                            for=""><strong><?php echo Yii::t('SpaceModule.views_create_create', 'Join Policy'); ?></strong></label>
-
-                        <div class="chk_rdo">
-                            <?php echo $form->field($model, 'join_policy')->radio(['value' => 0, 'id' => 'invite_radio', 'label' => Yii::t('SpaceModule.base', 'Only by invite')]); ?>
-                            <?php echo $form->field($model, 'join_policy')->radio(['value' => 1, 'id' => 'request_radio', 'label' => Yii::t('SpaceModule.base', 'Invite and request')]); ?>
-                            <?php echo $form->field($model, 'join_policy')->radio(['value' => 2, 'id' => 'everyone_radio', 'label' => Yii::t('SpaceModule.base', 'Everyone can enter')]); ?>
-                            <br>
-                        </div>
+                        <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions); ?>
                     </div>
                     <div class="col-md-6">
-                        <label
-                            for=""><strong><?php echo Yii::t('SpaceModule.views_create_create', 'Visibility'); ?></strong></label>
-
-                        <div class="chk_rdo">
-                            <?php if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())): ?>
-                                <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')) : ?>
-                                    <?php echo $form->field($model, 'visibility')->radio(['value' => 2, 'id' => 'public_radio_guests', 'label' => Yii::t('SpaceModule.base', 'Public (Members & Guests)')]); ?>
-                                <?php endif; ?>
-
-                                <?php echo $form->field($model, 'visibility')->radio(['value' => 1, 'id' => 'public_radio', 'label' => Yii::t('SpaceModule.base', 'Public (Members only)')]); ?>
-
-                                <?php echo $form->field($model, 'visibility')->radio(['value' => 0, 'id' => 'private_radio', 'label' => Yii::t('SpaceModule.base', 'Private (Invisible)')]); ?>
-
-                            <?php elseif (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)): ?>
-                                <?php echo $form->field($model, 'visibility')->radio(['value' => 0, 'id' => 'private_radio', 'label' => Yii::t('SpaceModule.base', 'Private (Invisible)')]); ?>
-                            <?php elseif (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())): ?>
-                                <?php echo $form->field($model, 'visibility')->radio(['value' => 0, 'id' => 'private_radio', 'label' => Yii::t('SpaceModule.base', 'Private (Invisible)')]); ?>
-                            <?php endif; ?>
-                        </div>
+                        <?= $form->field($model, 'visibility')->radioList($visibilityOptions); ?>
                     </div>
                 </div>
             </div>
@@ -121,10 +88,10 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
     $('.tt').tooltip({html: false});
 
     // Shake modal after wrong validation
-    <?php if ($model->hasErrors()) { ?>
-    $('.modal-dialog').removeClass('fadeIn');
-    $('.modal-dialog').addClass('shake');
-    <?php } ?>
+<?php if ($model->hasErrors()) { ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
+<?php } ?>
 
     $('#collapse-access-settings').on('show.bs.collapse', function () {
         // change link arrow

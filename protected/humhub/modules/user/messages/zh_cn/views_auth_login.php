@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>请</strong> 登录',
     '<strong>Sign</strong> up' => '注册',
     'Create a new one.' => '创建一个新的',

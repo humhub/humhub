@@ -17,15 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
-    'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Crea</strong> nuovo space',
     'Advanced access settings' => 'Impostazioni avanzate di accesso',
-    'For everyone' => 'Per tutti',
-    'Invite and request' => 'Inviti e richieste',
-    'Join Policy' => 'Policy di aggiunta',
-    'Only by invite' => 'Solo per invito',
-    'Visibility' => 'Visibilità',
+    'Color' => 'Colore',
+    'Next' => 'Avanti',
     'space description' => 'descrizione space',
     'space name' => 'nome space',
 ];

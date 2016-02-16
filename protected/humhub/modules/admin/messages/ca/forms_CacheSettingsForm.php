@@ -21,7 +21,6 @@ return [
     'File' => '',
     'No caching (Testing only!)' => '',
     'PHP APC Extension missing - Type not available!' => '',
-    'PHP SQLite3 Extension missing - Type not available!' => '',
     'Cache Backend' => 'Cache del servidor',
     'Default Expire Time (in seconds)' => 'Temps d\'expiració per defecte (en segons)',
 ];

@@ -24,7 +24,6 @@ return [
     'Please type at least 3 characters' => '',
     'Save' => '',
     '<strong>Latest</strong> updates' => '<strong>Laatste</strong> updates',
-    '<strong>Search</strong>' => '<strong>Zoeken</strong>',
     'Account settings' => 'Accountinstellingen',
     'Administration' => 'Administratie',
     'Back' => 'Terug',

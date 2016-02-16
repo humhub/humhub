@@ -91,6 +91,13 @@ $config = [
             'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [],
         ],        
+        'assetManager' => [
+            'bundles' => [
+                'yii\bootstrap\BootstrapAsset' => [
+                    'css' => []
+    ],
+            ],
+        ],
     ],
     'params' => [
         'installed' => false,
@@ -149,7 +156,11 @@ $config = [
             'timeAgoStatic' => false,
             // Seconds before hide time from timeago date
             // Set to false to always display time
-            'timeAgoHideTimeAfter' => 259200,            
+            'timeAgoHideTimeAfter' => 259200,
+        // Optional: Callback for TimageAgo FullDateFormat
+        //'timeAgoFullDateCallBack' => function($timestamp) {
+        //    return 'formatted';
+        //}
         ],
         'humhub' => [
             // Marketplace / New Version Check

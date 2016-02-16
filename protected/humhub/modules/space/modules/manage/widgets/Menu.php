@@ -64,7 +64,7 @@ class Menu extends \humhub\widgets\BaseMenu
             ));
         }
 
-        if (!$this->space->isSpaceOwner()) {
+        if (!$this->space->isSpaceOwner() && $this->space->isMember()) {
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Cancel Membership'),
                 'group' => 'admin',

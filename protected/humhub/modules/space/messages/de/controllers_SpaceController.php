@@ -4,5 +4,5 @@ return array (
   'Could not request membership!' => 'Mitgliedschaft konnte nicht beantragt werden!',
   'There is no pending invite!' => 'Es gibt keine offenen Einladungen!',
   'This action is only available for workspace members!' => 'Diese Aktion ist nur für Space-Mitglieder verfügbar!',
-  'You are not allowed to join this space!' => 'Du darfst diesen Space nicht betreten!',
+  'You are not allowed to join this space!' => 'Du darfst diesem Space nicht betreten!',
 );

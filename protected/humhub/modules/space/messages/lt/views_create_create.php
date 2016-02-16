@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Sukurti</strong> naują erdvę',
     'Advanced access settings' => 'Išplėstiniai prieigos nustatymai',
-    'For everyone' => 'Visiems',
-    'Invite and request' => 'Pakviesti',
-    'Join Policy' => 'Prisijungimo politika',
-    'Only by invite' => 'Tik su pakvietimu',
-    'Visibility' => 'Matomumas',
     'space description' => 'erdvės apibūdinimas',
     'space name' => 'erdvės pavadinimas',
 ];

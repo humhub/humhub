@@ -37,6 +37,7 @@ use humhub\widgets\AjaxButton;
             $('#newCommentForm_" . $id . "_contenteditable').show();
             $('.comment-buttons').show();
             resetUploader('comment_upload_" . $id . "');
+            $('#newCommentForm_" . $id . "_contenteditable').focus();
     }";
 
     echo AjaxButton::widget([

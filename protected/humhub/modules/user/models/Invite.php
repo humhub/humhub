@@ -111,7 +111,10 @@ class Invite extends \yii\db\ActiveRecord
         // User requested registration link by its self
         if ($this->source == self::SOURCE_SELF) {
 
-            $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/UserInviteSelf'], ['token' => $this->token]);
+            $mail = Yii::$app->mailer->compose([
+                'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
+                'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
+            ], ['token' => $this->token]);
             $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
@@ -121,7 +124,10 @@ class Invite extends \yii\db\ActiveRecord
             // Switch to systems default language
             Yii::$app->language = \humhub\models\Setting::Get('defaultLanguage');
 
-            $mail = Yii::$app->mailer->compose(['html' => '@humhub/modules/user/views/mails/UserInviteSpace'], [
+            $mail = Yii::$app->mailer->compose([
+                'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
+                'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSpace'
+            ], [
                 'token' => $this->token,
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,

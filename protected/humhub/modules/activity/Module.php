@@ -26,7 +26,7 @@ class Module extends \humhub\components\Module
 
     public function getMailUpdate(User $user, $interval)
     {
-        $output = "";
+        $output = ['html' => '', 'plaintext' => ''];
 
         $receive_email_activities = $user->getSetting("receive_email_activities", 'core', Setting::Get('receive_email_activities', 'mailing'));
 
@@ -68,7 +68,8 @@ class Module extends \humhub\components\Module
         foreach ($stream->getWallEntries() as $wallEntry) {
             try {
                 $activity = $wallEntry->content->getPolymorphicRelation();
-                $output .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL);
+                $output['html'] .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL);
+                $output['plaintext'] .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL_PLAINTEXT);
             } catch (\yii\base\Exception $ex) {
                 \Yii::error($ex->getMessage());
             }

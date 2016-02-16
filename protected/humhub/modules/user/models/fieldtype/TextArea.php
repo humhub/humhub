@@ -56,10 +56,8 @@ class TextArea extends BaseType
         if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
             $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'TEXT');
             Yii::$app->db->createCommand($query)->execute();
-        } else {
-            Yii::error('Could not add profile column - already exists!');
         }
-
+        
         return parent::save();
     }
 
