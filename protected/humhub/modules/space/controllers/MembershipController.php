@@ -147,6 +147,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         if ($space->isSpaceOwner()) {
             throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'As owner you cannot revoke your membership!'));
+        } elseif (!$space->canLeave()) {
+            throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'Sorry, you are not allowed to leave this space!'));
         }
 
         $space->removeMember();
