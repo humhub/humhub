@@ -83,6 +83,11 @@ class RichText extends \humhub\components\Widget
                 }
                 return Html::a($match[1], Html::decode($match[1]), array('target' => '_blank')) . $match[2];
             }, $this->text);
+            
+            // mark emails
+            $this->text = preg_replace_callback('/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})/', function ($match) {
+                return Html::mailto($match[0]);
+            }, $this->text);
         }
 
         // get user and space details from guids
