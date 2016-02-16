@@ -28,8 +28,7 @@ class DynamicConfig extends \yii\base\Object
      */
     public static function merge($new)
     {
-        $config = self::load();
-        \yii\helpers\ArrayHelper::merge($new);
+        $config = \yii\helpers\ArrayHelper::merge(self::load(), $new);
         self::save($config);
     }
 
