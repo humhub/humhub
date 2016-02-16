@@ -17,6 +17,7 @@ use humhub\modules\comment\models\Comment;
  * @property string $request_message
  * @property string $last_visit
  * @property integer $show_at_dashboard
+ * @property boolean $can_leave
  * @property string $group_id
  * @property string $created_at
  * @property integer $created_by
@@ -67,6 +68,7 @@ class Membership extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
+            'can_leave' => 'Can Leave',
         ];
     }
 

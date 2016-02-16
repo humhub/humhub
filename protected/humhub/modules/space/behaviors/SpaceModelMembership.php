@@ -46,6 +46,27 @@ class SpaceModelMembership extends Behavior
 
         return false;
     }
+    
+    /**
+     * Checks if a given Userid is allowed to leave this space.
+     *
+     * @param number $userId, if empty hte currently logged in user is taken.
+     * @return bool
+     */
+    public function canLeave($userId = "")
+    {
+    
+        // Take current userid if none is given
+        if ($userId == "")
+            $userId = Yii::$app->user->id;
+    
+        $membership = $this->getMembership($userId);
+    
+        if ($membership != null && !empty($membership->can_leave))
+            return true;
+    
+        return false;
+    }
 
     /**
      * Checks if given Userid is Admin of this Space.
