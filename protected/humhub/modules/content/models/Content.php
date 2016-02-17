@@ -398,7 +398,8 @@ class Content extends \humhub\components\ActiveRecord
     public function stick()
     {
         $this->sticked = 1;
-        $this->save();
+        //This prevents the call of beforesave, and the setting of update_at 
+        $this->updateAttributes(['sticked']);
     }
 
     /**
@@ -408,7 +409,7 @@ class Content extends \humhub\components\ActiveRecord
     {
 
         $this->sticked = 0;
-        $this->save();
+        $this->updateAttributes(['sticked']);
     }
 
     /**
