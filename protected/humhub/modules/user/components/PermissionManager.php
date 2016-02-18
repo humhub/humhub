@@ -44,7 +44,7 @@ class PermissionManager extends \yii\base\Component
         $record = $this->getGroupStateRecord($groupId, $permission);
 
         // No need to store default state
-        if ($state === '' || $state == null) {
+        if ($state === '' || $state === null) {
             if ($record !== null) {
                 $record->delete();
             }
