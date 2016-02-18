@@ -10,8 +10,11 @@
  * @since 0.5
  */
 ?>
-<?php if ($mode != "activity") : ?>
-    <div class="wall-entry" id="wallEntry_<?php echo $entry->id; ?>">
+<?php 
+$cssClass = ($entry->content->sticked) ? 'wall-entry sticked-entry' : 'wall-entry';
+
+if ($mode != "activity") : ?>
+    <div class="<?php echo $cssClass ?>" id="wallEntry_<?php echo $entry->id; ?>">
 <?php endif; ?>
 
 <?php echo $content; ?>

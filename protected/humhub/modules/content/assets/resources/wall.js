@@ -25,11 +25,8 @@ function wallUnstick(url) {
         url: url
     }).done(function (data) {
         if (data.success) {
-            if (currentStream) {
-                $.each(data.wallEntryIds, function (k, wallEntryId) {
-                    currentStream.reloadWallEntry(wallEntryId);
-                });
-            }
+            //Reload the whole stream, since we have to reorder the entries
+            currentStream.showStream();
         }
     });
 }

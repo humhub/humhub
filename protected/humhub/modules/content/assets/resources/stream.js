@@ -203,8 +203,7 @@ function Stream(baseElement) {
         me = this;
 
         $("#wallEntry_" + wallEntryId).each(function () {
-            me.loadedEntryCount -= 1;
-            $(this).hide();
+            $(this).remove();
         });
 
         // Start normal stream
@@ -219,7 +218,7 @@ function Stream(baseElement) {
      */
     this.prependEntry = function (wallEntryId) {
 
-        me = this;
+        var me = this;
 
         // Start normal stream
         if (this.currentMode == 'single' || this.loadedEntryCount == 0) {
@@ -227,7 +226,7 @@ function Stream(baseElement) {
             return;
         }
 
-        url = streamUrl;
+        var url = streamUrl;
         url = url.replace('-filter-', '');
         url = url.replace('-sort-', '');
         url = url.replace('-from-', parseInt(wallEntryId)+1);
@@ -236,9 +235,18 @@ function Stream(baseElement) {
         jQuery.getJSON(url, function (json) {
             me.loadedEntryCount += 1;
 
-            streamDiv = $(me.baseDiv).find(".s2_streamContent");
-            $(parseEntriesHtml(json)).prependTo($(streamDiv)).fadeIn('fast');
-
+            var $streamDiv = $(me.baseDiv).find(".s2_streamContent");
+            var $newEntryHtml = $(parseEntriesHtml(json)).hide();
+            
+            var $firstUnstickedEntry = $streamDiv.find('.wall-entry:not(.sticked-entry)').first();
+            
+            if($firstUnstickedEntry.length) {
+                $firstUnstickedEntry.before($newEntryHtml);
+                $newEntryHtml.fadeIn('fast');
+            } else {
+                $newEntryHtml.prependTo($streamDiv).fadeIn('fast');
+            }
+            
             me.onNewEntries();
 
             // In case of first post / hide message
@@ -246,7 +254,7 @@ function Stream(baseElement) {
 
         });
 
-    }
+    };
 
 
     /**

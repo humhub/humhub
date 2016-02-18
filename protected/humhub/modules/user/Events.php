@@ -83,7 +83,7 @@ class Events extends \yii\base\Object
         $integrityController->showTestHeadline("User Module - Profile (" . Profile::find()->count() . " entries)");
         foreach (Profile::find()->joinWith(['user'])->all() as $profile) {
             if ($profile->user == null) {
-                if ($integrityController->showFix("Deleting profile " . $profile->id . " without existing user!")) {
+                if ($integrityController->showFix("Deleting profile " . $profile->user_id . " without existing user!")) {
                     $profile->delete();
                 }
             }
