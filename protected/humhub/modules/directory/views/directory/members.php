@@ -45,7 +45,7 @@ use yii\helpers\Html;
                     <!-- Follow Handling -->
                     <div class="pull-right">
                         <?php
-                        if (!Yii::$app->user->isGuest && !Yii::$app->user->id === $user->id) {
+                        if (!Yii::$app->user->isGuest && !(Yii::$app->user->id === $user->id)) {
                             $followed = $user->isFollowedByUser();
                             echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . Url::to(['/user/profile/follow']) . '", "' . $user->id . '")', array('class' => 'btn btn-info btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $user->id));
                             echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . Url::to(['/user/profile/unfollow']) . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $user->id));
