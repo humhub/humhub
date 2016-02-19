@@ -26,6 +26,8 @@ class RequestController extends Controller
      */
     public function actionAdd()
     {
+        $this->forcePostRequest();
+
         $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
 
         if ($friend === null) {
@@ -42,6 +44,8 @@ class RequestController extends Controller
      */
     public function actionDelete()
     {
+        $this->forcePostRequest();
+
         $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
 
         if ($friend === null) {
