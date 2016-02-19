@@ -13,6 +13,7 @@ use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\GroupAdmin;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * This is the model class for table "user".
@@ -398,11 +399,27 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function canAccessPrivateContent(User $user = null)
     {
-        return ($this->isCurrentUser());
+        if ($this->isCurrentUser()) {
+            return true;
+        }
+
+        if ($user !== null && Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getWallOut()
     {
         return \humhub\modules\user\widgets\UserWall::widget(['user' => $this]);

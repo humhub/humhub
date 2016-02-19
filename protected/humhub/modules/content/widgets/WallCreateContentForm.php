@@ -80,6 +80,7 @@ class WallCreateContentForm extends Widget
 
         $defaultVisibility = Content::VISIBILITY_PUBLIC;
         $canSwitchVisibility = false;
+
         if ($this->contentContainer instanceof Space) {
             $defaultVisibility = $this->contentContainer->getDefaultContentVisibility();
             if ($this->contentContainer->permissionManager->can(new \humhub\modules\space\permissions\CreatePublicContent())) {
@@ -87,6 +88,9 @@ class WallCreateContentForm extends Widget
             } else {
                 $defaultVisibility = Content::VISIBILITY_PRIVATE;
             }
+        } elseif ($this->contentContainer instanceof User) {
+            $canSwitchVisibility = true;
+            $defaultVisibility = Content::VISIBILITY_PRIVATE;
         }
 
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', array(
@@ -131,7 +135,7 @@ class WallCreateContentForm extends Widget
         if ($contentContainer instanceof Space) {
             $record->content->visibility = Yii::$app->request->post('visibility');
         } elseif ($contentContainer instanceof User) {
-            $record->content->visibility = 1;
+            $record->content->visibility = Yii::$app->request->post('visibility');
         } else {
             throw new \yii\base\Exception("Invalid content container!");
         }
