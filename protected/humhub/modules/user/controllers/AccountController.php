@@ -9,42 +9,25 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use \humhub\components\Controller;
 use \yii\helpers\Url;
 use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
+use humhub\modules\user\components\BaseAccountController;
 
 /**
  * AccountController provides all standard actions for the current logged in
  * user account.
  *
  * @author Luke
- * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class AccountController extends Controller
+class AccountController extends BaseAccountController
 {
-
-    public $subLayout = "@humhub/modules/user/views/account/_layout";
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-            ]
-        ];
-    }
 
     /**
      * Edit Users Profile
      */
     public function actionEdit()
     {
-
         $user = Yii::$app->user->getIdentity();
 
         // Get Form Definition
