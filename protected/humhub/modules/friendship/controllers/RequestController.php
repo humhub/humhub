@@ -28,10 +28,11 @@ class RequestController extends Controller
     {
         $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
 
-        $friendship = new Friendship();
-        $friendship->user_id = Yii::$app->user->id;
-        $friendship->friend_user_id = $friend->id;
-        $friendship->save();
+        if ($friend === null) {
+            throw new \yii\web\HttpException(404, 'User not found!');
+        }
+
+        Friendship::add(Yii::$app->user->getIdentity(), $friend);
 
         return $this->redirect($friend->getUrl());
     }
@@ -43,17 +44,11 @@ class RequestController extends Controller
     {
         $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
 
-        // Delete my entry 
-        $myFriendship = Friendship::findOne(['user_id' => Yii::$app->user->id, 'friend_user_id' => $friend->id]);
-        if ($myFriendship !== null) {
-            $myFriendship->delete();
+        if ($friend === null) {
+            throw new \yii\web\HttpException(404, 'User not found!');
         }
 
-        // Delete friends entry
-        $friendsFriendship = Friendship::findOne(['user_id' => $friend->id, 'friend_user_id' => Yii::$app->user->id]);
-        if ($friendsFriendship !== null) {
-            $friendsFriendship->delete();
-        }
+        Friendship::cancel(Yii::$app->user->getIdentity(), $friend);
 
         return $this->redirect($friend->getUrl());
     }

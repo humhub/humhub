@@ -18,10 +18,9 @@ use yii\helpers\Html;
                          data-original-title="<?php echo Html::encode($friend->displayName); ?>">
                 </a>
             <?php endforeach; ?>
-
-            <br />
-            <br />
             <?php if ($totalCount > $limit): ?>
+                <br />
+                <br />
                 <?php echo Html::a(Yii::t('FriendshipModule.base', 'Show all friends'), ['/friendship/list/popup', 'userId' => $user->id], ['class' => 'btn btn-xs', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
