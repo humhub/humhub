@@ -62,7 +62,7 @@ class WallCreateContentForm extends Widget
 
     /**
      * Returns the custom form implementation.
-     * 
+     *
      * @return string
      */
     public function renderForm()
@@ -75,21 +75,15 @@ class WallCreateContentForm extends Widget
      */
     public function run()
     {
-        if (!$this->contentContainer->canWrite())
-            return;
-
         $defaultVisibility = Content::VISIBILITY_PUBLIC;
-        $canSwitchVisibility = false;
-
         if ($this->contentContainer instanceof Space) {
             $defaultVisibility = $this->contentContainer->getDefaultContentVisibility();
-            if ($this->contentContainer->permissionManager->can(new \humhub\modules\space\permissions\CreatePublicContent())) {
-                $canSwitchVisibility = true;
-            } else {
-                $defaultVisibility = Content::VISIBILITY_PRIVATE;
-            }
-        } elseif ($this->contentContainer instanceof User) {
+        }
+
+        $canSwitchVisibility = false;
+        if ($this->contentContainer->permissionManager->can(new \humhub\modules\content\permissions\CreatePublicContent())) {
             $canSwitchVisibility = true;
+        } else {
             $defaultVisibility = Content::VISIBILITY_PRIVATE;
         }
 
@@ -105,41 +99,27 @@ class WallCreateContentForm extends Widget
 
     /**
      * Creates the given ContentActiveRecord based on given submitted form information.
-     * 
+     *
      * - Automatically assigns ContentContainer
      * - Access Check
      * - User Notification / File Uploads
      * - Reloads Wall after successfull creation or returns error json
-     * 
+     *
      * [See guide section](guide:dev-module-stream.md#CreateContentForm)
-     * 
+     *
      * @param ContentActiveRecord $record
-     * @return string json 
+     * @return string json
      */
     public static function create(ContentActiveRecord $record, ContentContainerActiveRecord $contentContainer = null)
     {
         Yii::$app->response->format = 'json';
 
-        // Get Content Container by Parameter (deprecated!)
-        if ($contentContainer === null) {
-            $containerClass = Yii::$app->request->post('containerClass');
-            $containerGuid = Yii::$app->request->post('containerGuid', "");
-            if ($containerClass === User::className()) {
-                $contentContainer = User::findOne(['guid' => $containerGuid]);
-            } elseif ($containerClass === Space::className()) {
-                $contentContainer = Space::findOne(['guid' => $containerGuid]);
-            }
+        $visibility = Yii::$app->request->post('visibility');
+        if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->permissionManager->can(new \humhub\modules\content\permissions\CreatePublicContent())) {
+            $visibility = Content::VISIBILITY_PRIVATE;
         }
-
-        // Set Visibility
-        if ($contentContainer instanceof Space) {
-            $record->content->visibility = Yii::$app->request->post('visibility');
-        } elseif ($contentContainer instanceof User) {
-            $record->content->visibility = Yii::$app->request->post('visibility');
-        } else {
-            throw new \yii\base\Exception("Invalid content container!");
-        }
-
+        $record->content->visibility = $visibility;
+        
         $record->content->container = $contentContainer;
 
         // Handle Notify User Features of ContentFormWidget

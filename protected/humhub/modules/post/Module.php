@@ -27,7 +27,7 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        if ($contentContainer instanceof \humhub\modules\space\models\Space) {
+        if ($contentContainer !== null) {
             return [
                 new permissions\CreatePost()
             ];

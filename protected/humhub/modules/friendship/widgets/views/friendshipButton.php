@@ -16,7 +16,7 @@ use humhub\modules\friendship\models\Friendship;
         </ul>
     </div>
 <?php elseif ($friendshipState === Friendship::STATE_NONE) : ?>
-    <?= Html::a(Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), array('class' => 'btn btn-info', 'data-method' => 'POST')); ?>
+    <?= Html::a('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), array('class' => 'btn btn-info', 'data-method' => 'POST')); ?>
 <?php elseif ($friendshipState === Friendship::STATE_REQUEST_RECEIVED) : ?>
     <div class="btn-group">
         <?= Html::a(Yii::t("FriendshipModule.base", "Accept Friend Request"), Url::to(['/friendship/request/add', 'userId' => $user->id]), array('class' => 'btn btn-success', 'data-method' => 'POST')); ?>

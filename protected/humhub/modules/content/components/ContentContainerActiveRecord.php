@@ -15,7 +15,7 @@ use humhub\modules\content\models\Wall;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
- * 
+ *
  * Required Attributes:
  *      - wall_id
  *      - guid
@@ -68,18 +68,6 @@ class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Check write permissions on content container.
-     * Overwrite this with your own implementation.
-     *
-     * @param type $userId
-     * @return boolean
-     */
-    public function canWrite($userId = "")
-    {
-        return false;
-    }
-
-    /**
      * Creates url in content container scope.
      * E.g. add uguid or sguid parameter to parameters.
      *
@@ -105,9 +93,9 @@ class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Checks if the user is allowed to access private content in this container
-     * 
+     *
      * @param User $user
-     * @return boolean can access private content 
+     * @return boolean can access private content
      */
     public function canAccessPrivateContent(User $user = null)
     {
@@ -117,7 +105,7 @@ class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the wall output for this content container.
      * This is e.g. used in search results.
-     * 
+     *
      * @return string
      */
     public function getWallOut()
@@ -186,7 +174,7 @@ class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns the permissionManager of this container
-     * 
+     *
      * @return ContentContainerPermissionManager
      */
     public function getPermissionManager()
@@ -202,7 +190,7 @@ class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns current users group
-     * 
+     *
      * @return string
      */
     public function getUserGroup()

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\post\permissions;
 
+use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 
 /**
@@ -24,13 +25,16 @@ class CreatePost extends \humhub\libs\BasePermission
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
+        User::USERGROUP_SELF,
+        User::USERGROUP_FRIEND
     ];
-    
+
     /**
      * @inheritdoc
      */
     protected $fixedGroups = [
-        Space::USERGROUP_USER
+        Space::USERGROUP_USER,
+        User::USERGROUP_SELF
     ];
 
     /**

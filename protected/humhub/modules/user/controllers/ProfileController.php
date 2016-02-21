@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -48,19 +48,17 @@ class ProfileController extends ContentContainerController
         );
     }
 
-    /**
-     *
-     */
     public function actionIndex()
     {
         return $this->render('index', ['user' => $this->contentContainer]);
     }
 
-    /**
-     *
-     */
     public function actionAbout()
     {
+        if (!$this->contentContainer->permissionManager->can(new \humhub\modules\user\permissions\ViewAboutPage())) {
+            throw new \yii\web\HttpException(403, 'Forbidden');
+        }
+
         return $this->render('about', ['user' => $this->contentContainer]);
     }
 

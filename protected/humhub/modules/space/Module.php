@@ -8,6 +8,8 @@
 
 namespace humhub\modules\space;
 
+use humhub\modules\user\models\User;
+
 /**
  * SpaceModule provides all space related classes & functions.
  *
@@ -30,8 +32,9 @@ class Module extends \humhub\components\Module
         if ($contentContainer instanceof models\Space) {
             return [
                 new permissions\InviteUsers(),
-                new permissions\CreatePublicContent,
             ];
+        } elseif ($contentContainer instanceof User) {
+            return [];
         }
 
         return [

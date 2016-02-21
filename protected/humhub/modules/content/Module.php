@@ -29,6 +29,7 @@ class Module extends \humhub\components\Module
         if ($contentContainer !== null) {
             return [
                 new permissions\ManageContent(),
+                new permissions\CreatePublicContent()
             ];
         }
 

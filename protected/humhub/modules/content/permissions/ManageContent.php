@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\permissions;
 
+use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 
 /**
@@ -26,6 +27,10 @@ class ManageContent extends \humhub\libs\BasePermission
         Space::USERGROUP_GUEST,
         Space::USERGROUP_MEMBER,
         Space::USERGROUP_USER,
+        User::USERGROUP_SELF,
+        User::USERGROUP_FRIEND,
+        User::USERGROUP_USER,
+        User::USERGROUP_GUEST
     ];
 
     /**
@@ -35,6 +40,7 @@ class ManageContent extends \humhub\libs\BasePermission
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
+        User::USERGROUP_SELF
     ];
 
     /**
@@ -51,10 +57,5 @@ class ManageContent extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $moduleId = 'content';
-
-    /**
-     * @inheritdoc
-     */
-    protected $defaultState = self::STATE_DENY;
 
 }

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\widgets;
 
 use Yii;
@@ -14,16 +20,25 @@ use humhub\modules\user\models\User;
  * The current user can be gathered via:
  *  $user = Yii::$app->getController()->getUser();
  *
- * @package humhub.modules_core.user.widgets
  * @since 0.5
  * @author Luke
  */
 class ProfileMenu extends \humhub\widgets\BaseMenu
 {
 
+    /**
+     * @var User
+     */
     public $user;
+
+    /**
+     * @inheritdoc
+     */
     public $template = "@humhub/widgets/views/leftNavigation";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->addItemGroup(array(
@@ -40,19 +55,21 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->id == "profile" && Yii::$app->controller->action->id == "index"),
         ));
 
-        //if (Yii::$app->getController()->getUser()->profile->about != "") {
-        $this->addItem(array(
-            'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'About'),
-            'group' => 'profile',
-            'url' => $this->user->createUrl('//user/profile/about'),
-            'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->id == "profile" && Yii::$app->controller->action->id == "about"),
-        ));
-        //}
-
+        if ($this->user->permissionManager->can(new \humhub\modules\user\permissions\ViewAboutPage())) {
+            $this->addItem(array(
+                'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'About'),
+                'group' => 'profile',
+                'url' => $this->user->createUrl('//user/profile/about'),
+                'sortOrder' => 300,
+                'isActive' => (Yii::$app->controller->id == "profile" && Yii::$app->controller->action->id == "about"),
+            ));
+        }
         parent::init();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         if (Yii::$app->user->isGuest && $this->user->visibility != User::VISIBILITY_ALL) {

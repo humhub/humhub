@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\components;
 
+use Yii;
 use humhub\components\behaviors\AccessControl;
 
 /**

@@ -53,6 +53,15 @@ class AccountMenu extends BaseMenu
             'isActive' => (Yii::$app->controller->action->id == "edit-settings"),
         ));
 
+        $this->addItem(array(
+            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Security'),
+            'icon' => '<i class="fa fa-lock"></i>',
+            'group' => 'account',
+            'url' => Url::toRoute('/user/account/security'),
+            'sortOrder' => 115,
+            'isActive' => (Yii::$app->controller->action->id == "security"),
+        ));        
+        
 
         // Only show this page when really user specific modules available
         if (count(Yii::$app->user->getIdentity()->getAvailableModules()) != 0) {
