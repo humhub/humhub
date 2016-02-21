@@ -222,11 +222,11 @@ class BaseActivity extends \yii\base\Component
 
         // Automatically determine originator - if not set
         if ($this->originator !== null) {
-            $model->content->user_id = $this->originator->id;
+            $model->content->created_by = $this->originator->id;
         } elseif ($this->source instanceof ContentActiveRecord) {
-            $model->content->user_id = $this->source->content->user_id;
+            $model->content->created_by = $this->source->content->created_by;
         } elseif ($this->source instanceof ContentAddonActiveRecord) {
-            $model->content->user_id = $this->source->created_by;
+            $model->content->created_by = $this->source->created_by;
         } else {
             throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
         }

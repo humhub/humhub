@@ -31,10 +31,9 @@ class Events extends \yii\base\Object
 
         models\WallEntry::deleteAll(['wall_id' => $user->wall_id]);
         models\Wall::deleteAll(['id' => $user->wall_id]);
-        foreach (Content::findAll(['user_id' => $user->id]) as $content) {
+        foreach (Content::findAll(['created_by' => $user->id]) as $content) {
             $content->delete();
         }
-
         return true;
     }
 
@@ -44,7 +43,7 @@ class Events extends \yii\base\Object
 
         models\WallEntry::deleteAll(['wall_id' => $space->wall_id]);
         models\Wall::deleteAll(['id' => $space->wall_id]);
-        foreach (Content::findAll(['space_id' => $space->id]) as $content) {
+        foreach (Content::findAll(['contentcontainer_id' => $space->contentContainerRecord->id]) as $content) {
             $content->delete();
         }
 
@@ -78,11 +77,6 @@ class Events extends \yii\base\Object
             }
             if ($content->getPolymorphicRelation() == null) {
                 if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
-                    $content->delete();
-                }
-            }
-            if ($content->space_id != "" && $content->space == null) {
-                if ($integrityController->showFix("Deleting content id " . $content->id . " without valid space!")) {
                     $content->delete();
                 }
             }
@@ -166,7 +160,7 @@ class Events extends \yii\base\Object
                     $mail = Yii::$app->mailer->compose([
                         'html' => '@humhub/modules/content/views/mails/Update',
                         'text' => '@humhub/modules/content/views/mails/plaintext/Update'
-                    ], [
+                            ], [
                         'activities' => (isset($activities['html']) ? $activities['html'] : ''),
                         'activities_plaintext' => (isset($activities['plaintext']) ? $activities['plaintext'] : ''),
                         'notifications' => (isset($notifications['html']) ? $notifications['html'] : ''),
@@ -188,7 +182,7 @@ class Events extends \yii\base\Object
                 }
             }
 
-            Console::updateProgress( ++$done, $totalUsers);
+            Console::updateProgress(++$done, $totalUsers);
         }
 
         Console::endProgress(true);

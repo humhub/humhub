@@ -2,21 +2,20 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\components;
 
-use Yii;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\Wall;
-use humhub\models\Setting;
 
 /**
- *
+ * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
+ * 
  * Required Attributes:
  *      - wall_id
  *      - guid
@@ -25,6 +24,8 @@ use humhub\models\Setting;
  *      - getProfileImage()
  *      - getUrl()
  *
+ * @since 1.0
+ * @author Luke
  */
 class ContentContainerActiveRecord extends ActiveRecord
 {
@@ -102,11 +103,23 @@ class ContentContainerActiveRecord extends ActiveRecord
         return "Container: " . get_class($this) . " - " . $this->getPrimaryKey();
     }
 
+    /**
+     * Checks if the user is allowed to access private content in this container
+     * 
+     * @param User $user
+     * @return boolean can access private content 
+     */
     public function canAccessPrivateContent(User $user = null)
     {
         return false;
     }
 
+    /**
+     * Returns the wall output for this content container.
+     * This is e.g. used in search results.
+     * 
+     * @return string
+     */
     public function getWallOut()
     {
         return "Default Wall Output for Class " . get_class($this);
@@ -136,13 +149,14 @@ class ContentContainerActiveRecord extends ActiveRecord
             } elseif ($this->hasAttribute('created_by')) {
                 $contentContainer->owner_user_id = $this->created_by;
             }
+
             $contentContainer->save();
 
             $this->contentcontainer_id = $contentContainer->id;
             $this->update(false, ['contentcontainer_id']);
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -159,16 +173,22 @@ class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns the related ContentContainer model
+     * Returns the related ContentContainer model (e.g. Space or User)
      *
      * @see ContentContainer
      * @return \yii\db\ActiveQuery
      */
     public function getContentContainerRecord()
     {
-        return $this->hasOne(ContentContainer::className(), ['id' => 'content_container_id']);
+        return $this->hasOne(ContentContainer::className(), ['pk' => 'id'])
+                        ->andOnCondition(['class' => self::className()]);
     }
 
+    /**
+     * Returns the permissionManager of this container
+     * 
+     * @return ContentContainerPermissionManager
+     */
     public function getPermissionManager()
     {
         if ($this->permissionManager !== null) {
@@ -180,9 +200,14 @@ class ContentContainerActiveRecord extends ActiveRecord
         return $this->permissionManager;
     }
 
+    /**
+     * Returns current users group
+     * 
+     * @return string
+     */
     public function getUserGroup()
     {
-	    return "";
+        return "";
     }
 
     /**
@@ -190,7 +215,7 @@ class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getUserGroups()
     {
-		return [];
+        return [];
     }
 
 }

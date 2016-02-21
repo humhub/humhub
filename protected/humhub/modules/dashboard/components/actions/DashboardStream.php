@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -113,7 +113,7 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
                 );
             }
 
-            $condition = ' (wall.object_model=:userModel AND content.visibility=0 AND content.user_id = :userId) OR ';
+            $condition = ' (wall.object_model=:userModel AND content.visibility=0 AND content.created_by = :userId) OR ';
             if ($friendshipEnabled) {
                 // In case of friendship we can also display private content
                 $condition .= ' (wall.object_model=:userModel AND content.visibility=0 AND user_friendship.id IS NOT NULL) OR ';

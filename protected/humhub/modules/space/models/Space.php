@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\models;
 
 use Yii;
@@ -135,16 +141,10 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert)
-    {
-        return parent::beforeSave($insert);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function afterSave($insert, $changedAttributes)
     {
+        parent::afterSave($insert, $changedAttributes);
+
         Yii::$app->search->update($this);
 
         $user = \humhub\modules\user\models\User::findOne(['id' => $this->created_by]);
@@ -166,8 +166,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
-
-        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
