@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\models;
 
 use Yii;
@@ -135,16 +141,10 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert)
-    {
-        return parent::beforeSave($insert);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function afterSave($insert, $changedAttributes)
     {
+        parent::afterSave($insert, $changedAttributes);
+
         Yii::$app->search->update($this);
 
         $user = \humhub\modules\user\models\User::findOne(['id' => $this->created_by]);
@@ -166,8 +166,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
-
-        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -256,35 +254,12 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return false;
     }
 
-    /**
-     * Check if current user can wri
-     * te to this workspace
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function canWrite($userId = "")
-    {
-
-        // No writes allowed for archived workspaces
-        if ($this->status == Space::STATUS_ARCHIVED)
-            return false;
-
-        // Take current userid if none is given
-
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        // User needs to be member to post
-        if ($this->isMember($userId))
-            return true;
-
-        return false;
-    }
 
     /**
      * Checks if given user can invite people to this workspace
+     * Note: use directly permission instead
      *
+     * @deprecated since version 1.1
      * @return boolean
      */
     public function canInvite()
@@ -295,12 +270,14 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     /**
      * Checks if given user can share content.
      * Shared Content is public and is visible also for non members of the space.
+     * Note: use directly permission instead
      *
+     * @deprecated since version 1.1
      * @return boolean
      */
     public function canShare()
     {
-        return $this->getPermissionManager()->can(new \humhub\modules\space\permissions\CreatePublicContent());
+        return $this->getPermissionManager()->can(new \humhub\modules\content\permissions\CreatePublicContent());
     }
 
     /**
@@ -332,7 +309,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
     /**
      * Checks if space has tags
-     * 
+     *
      * @return boolean has tags set
      */
     public function hasTags()

@@ -1,38 +1,39 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 /**
- * @package humhub.modules_core.user.widgets
+ * Displays the profile header of a user
+ * 
  * @since 0.5
  * @author Luke
  */
 class ProfileHeader extends \yii\base\Widget
 {
 
+    /**
+     * @var User
+     */
     public $user;
+
+    /**
+     * @var boolean is owner of the current profile 
+     */
     protected $isProfileOwner = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         /**
@@ -45,11 +46,28 @@ class ProfileHeader extends \yii\base\Widget
         $this->isProfileOwner = (Yii::$app->user->id == $this->user->id);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
+        $friendshipsEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
+
+        $countFriends = 0;
+        if ($friendshipsEnabled) {
+            $countFriends = \humhub\modules\friendship\models\Friendship::getFriendsQuery($this->user)->count();
+        }
+
+        $countFollowing = $this->user->getFollowingCount(User::className()) + $this->user->getFollowingCount(Space::className());
+
         return $this->render('profileHeader', array(
                     'user' => $this->user,
-                    'isProfileOwner' => $this->isProfileOwner
+                    'isProfileOwner' => $this->isProfileOwner,
+                    'friendshipsEnabled' => $friendshipsEnabled,
+                    'countFriends' => $countFriends,
+                    'countFollowers' => $this->user->getFollowerCount(),
+                    'countFollowing' => $countFollowing,
+                    'countSpaces' => count($this->user->spaces),
         ));
     }
 

@@ -13,7 +13,6 @@ use yii\widgets\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-
         <?php echo $form->field($model, 'name'); ?>
 
         <?php echo $form->field($model, 'baseUrl'); ?>
@@ -43,6 +42,11 @@ use yii\widgets\ActiveForm;
         <?php echo $form->field($model, 'tour')->checkbox(); ?>
         <?php echo $form->field($model, 'share')->checkbox(); ?>
         <?php echo $form->field($model, 'dashboardShowProfilePostForm')->checkbox(); ?>
+
+        <strong><?php echo Yii::t('AdminModule.views_setting_index', 'Friendship'); ?></strong>
+        <br>
+        <br>
+        <?php echo $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
 
         <hr>
 

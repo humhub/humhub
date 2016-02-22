@@ -132,6 +132,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
             $form->canInviteExternalUsersByEmail = false;
+            $form->enableFriendshipModule = false;
         }
 
         if (Setting::Get("useCase") == self::USECASE_EDUCATION) {
@@ -139,6 +140,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = true;
             $form->internalAllowAnonymousRegistration = true;
             $form->canInviteExternalUsersByEmail = false;
+            $form->enableFriendshipModule = false;
         }
 
         if (Setting::Get("useCase") == self::USECASE_CLUB) {
@@ -146,6 +148,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
             $form->canInviteExternalUsersByEmail = true;
+            $form->enableFriendshipModule = true;
         }
 
         if (Setting::Get("useCase") == self::USECASE_COMMUNITY) {
@@ -153,14 +156,15 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = true;
             $form->canInviteExternalUsersByEmail = true;
+            $form->enableFriendshipModule = false;
         }
 
-
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->internalRequireApprovalAfterRegistration = Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
-            $form->internalAllowAnonymousRegistration = Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
-            $form->allowGuestAccess = Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
-            $form->canInviteExternalUsersByEmail = Setting::Set('internalUsersCanInvite', $form->canInviteExternalUsersByEmail, 'authentication_internal');
+            Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
+            Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
+            Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
+            Setting::Set('internalUsersCanInvite', $form->canInviteExternalUsersByEmail, 'authentication_internal');
+            Setting::Set('enable', $form->enableFriendshipModule, 'friendship');
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
@@ -209,8 +213,6 @@ class ConfigController extends Controller
         } else {
             return $this->render('modules', array('modules' => $modules));
         }
-
-
     }
 
     /**
@@ -334,7 +336,6 @@ class ConfigController extends Controller
 
                 // trigger install sample data event
                 $this->trigger(self::EVENT_INSTALL_SAMPLE_DATA);
-
             }
 
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
@@ -456,7 +457,7 @@ class ConfigController extends Controller
             $space->save();
 
             // activate all available modules for this space
-            foreach($space->getAvailableModules() as $module) {
+            foreach ($space->getAvailableModules() as $module) {
                 $space->enableModule($module->id);
             }
 

@@ -29,4 +29,18 @@ class Module extends \humhub\components\Module
      */
     public $loginRememberMeDuration = 2592000;
 
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if ($contentContainer instanceof models\User) {
+            return [
+                new permissions\ViewAboutPage(),
+            ];
+        }
+
+        return [];
+    }
+
 }

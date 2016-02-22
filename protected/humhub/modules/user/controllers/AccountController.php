@@ -9,42 +9,26 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use \humhub\components\Controller;
-use \yii\helpers\Url;
-use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
+use yii\helpers\Url;
+use yii\web\HttpException;
+use humhub\modules\user\components\BaseAccountController;
+use humhub\modules\user\models\User;
 
 /**
  * AccountController provides all standard actions for the current logged in
  * user account.
  *
  * @author Luke
- * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class AccountController extends Controller
+class AccountController extends BaseAccountController
 {
-
-    public $subLayout = "@humhub/modules/user/views/account/_layout";
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-            ]
-        ];
-    }
 
     /**
      * Edit Users Profile
      */
     public function actionEdit()
     {
-
         $user = Yii::$app->user->getIdentity();
 
         // Get Form Definition
@@ -107,6 +91,40 @@ class AccountController extends Controller
         }
 
         return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
+    }
+
+    /**
+     * Change Account
+     *
+     * @todo Add Group
+     */
+    public function actionSecurity()
+    {
+        $groups = [];
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            $groups[User::USERGROUP_FRIEND] = 'Friends';
+        }
+        $groups[User::USERGROUP_USER] = 'Members';
+        $groups[User::USERGROUP_GUEST] = 'Guests';
+
+        $currentGroup = Yii::$app->request->get('groupId');
+        if ($currentGroup == '' || !isset($groups[$currentGroup])) {
+            $currentGroup = User::USERGROUP_USER;
+        }
+
+        // Handle permission state change
+        if (Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+            $permission = $this->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
+            if ($permission === null) {
+                throw new \yii\web\HttpException(500, 'Could not find permission!');
+            }
+            $this->user->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
+            return [];
+        }
+
+        return $this->render('security', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup]);
     }
 
     public function actionConnectedAccounts()

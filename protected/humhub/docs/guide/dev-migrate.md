@@ -2,6 +2,15 @@
 
 Here you will learn how you can adapt existing modules to working fine with actually versions.
 
+## to 1.1
+
+- ContentContainer Model Changes
+    - Removed canWrite method (now requires own implementation using permissions)
+
+- Content Model Changes
+    - Removed space_id / user_id columns - added contentcontainer_id
+    - Not longer validates content visibility (private/public) permissions
+
 ## to 0.20
 
 **Important: This release upgrades from Yii1 to Yii2 Framework!**

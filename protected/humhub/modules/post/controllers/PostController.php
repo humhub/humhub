@@ -22,12 +22,10 @@ class PostController extends \humhub\modules\content\components\ContentContainer
     public function actionPost()
     {
         // Check createPost Permission
-        if ($this->contentContainer instanceof \humhub\modules\space\models\Space) {
-            if (!$this->contentContainer->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) {
-                return [];
-            }
+        if (!$this->contentContainer->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) {
+            return [];
         }
-        
+
         $post = new Post();
         $post->message = \Yii::$app->request->post('message');
 

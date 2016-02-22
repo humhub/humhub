@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -148,9 +148,12 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
      */
     public function afterDelete()
     {
-        if ($this->content !== null) {
-            $this->content->delete();
+
+        $content = Content::findOne(['object_id' => $this->id, 'object_model' => $this->className()]);
+        if ($content !== null) {
+            $content->delete();
         }
+
         parent::afterDelete();
     }
 
@@ -174,7 +177,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     {
         // Auto follow this content
         if ($this->className() != \humhub\modules\activity\models\Activity::className()) {
-            $this->follow($this->content->user_id);
+            $this->follow($this->content->created_by);
         }
 
         // Set polymorphic relation
@@ -190,14 +193,6 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
 
         if ($insert && $this->autoAddToWall && $this->wallEntryClass != "") {
             $this->content->addToWall();
-        }
-
-        // When Space Content, update also last visit
-        if ($this->content->space_id) {
-            $membership = $this->content->space->getMembership();
-            if ($membership) {
-                $membership->updateLastVisit();
-            }
         }
     }
 

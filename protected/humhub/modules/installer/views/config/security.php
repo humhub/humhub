@@ -23,6 +23,7 @@ use yii\helpers\Url;
         <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
         <?= $form->field($model, 'allowGuestAccess')->checkbox(); ?>
         <?= $form->field($model, 'canInviteExternalUsersByEmail')->checkbox(); ?>
+        <?= $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
 
         <br>
 

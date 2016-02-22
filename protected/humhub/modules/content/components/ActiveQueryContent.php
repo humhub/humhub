@@ -44,10 +44,12 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        $this->joinWith(['content', 'content.space']);
+        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
 
         if ($user !== null) {
-            $this->leftJoin('space_membership', 'content.space_id=space_membership.space_id AND space_membership.user_id=:userId', [':userId' => $user->id]);
+            $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::className()]);
+            $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
+
             // Build Access Check based on Content Container
             $conditionSpace = 'space.id IS NOT NULL AND (';                                         // space content
             $conditionSpace .= ' (space_membership.status=3)';                                      // user is space member
@@ -55,11 +57,11 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $conditionSpace .= ')';
             $conditionUser = 'space.id IS NULL AND (';                                              // No Space Content -> User
             $conditionUser .= '   (content.visibility = 1) OR';                                     // public visible content
-            $conditionUser .= '   (content.visibility = 0 AND content.user_id=' . $user->id . ')';  // private content of user
+            $conditionUser .= '   (content.visibility = 0 AND content.created_by=' . $user->id . ')';  // private content of user
             $conditionUser .= ')';
             $this->andWhere("{$conditionSpace} OR {$conditionUser}");
         } else {
-            $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL. ' AND content.visibility=1');
+            $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1');
         }
 
 
@@ -76,17 +78,8 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      */
     public function contentContainer($container)
     {
-        $this->joinWith(['content', 'content.user', 'content.space']);
-
-        if ($container->className() == Space::className()) {
-            $this->andWhere(['content.space_id' => $container->id]);
-        } elseif ($container->className() == User::className()) {
-            $this->andWhere(['content.user_id' => $container->id]);
-            $this->andWhere('content.space_id IS NULL OR content.space_id = ""');
-        } else {
-            throw new \yii\base\Exception("Invalid container given!");
-        }
-
+        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+        $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
         return $this;
     }
 
@@ -118,14 +111,15 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        $this->joinWith(['content']);
+        $this->joinWith(['content', 'content.contentContainer']);
 
         $conditions = [];
         $params = [];
 
         if (in_array(self::USER_RELATED_SCOPE_OWN_PROFILE, $scopes)) {
-            $conditions[] = 'content.space_id IS NULL and content.user_id=:userId';
+            $conditions[] = 'contentcontainer.pk=:userId AND class=:userClass';
             $params[':userId'] = $user->id;
+            $params[':userClass'] = $user->className();
         }
 
         if (in_array(self::USER_RELATED_SCOPE_SPACES, $scopes)) {
@@ -134,8 +128,9 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                     ->from('space_membership')
                     ->leftJoin('space sm', 'sm.id=space_membership.space_id')
                     ->where('space_membership.user_id=:userId AND space_membership.status=' . \humhub\modules\space\models\Membership::STATUS_MEMBER);
-            $conditions[] = 'content.space_id IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ')';
+            $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ') AND contentcontainer.class = :spaceClass';
             $params[':userId'] = $user->id;
+            $params[':spaceClass'] = Space::className();
         }
 
         if (in_array(self::USER_RELATED_SCOPE_SPACES, $scopes)) {
@@ -144,12 +139,13 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                     ->from('space_membership')
                     ->leftJoin('space sm', 'sm.id=space_membership.space_id')
                     ->where('space_membership.user_id=:userId AND space_membership.status=' . \humhub\modules\space\models\Membership::STATUS_MEMBER);
-            $conditions[] = 'content.space_id IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ')';
+            $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ') AND contentcontainer.class = :spaceClass';
             $params[':userId'] = $user->id;
+            $params[':spaceClass'] = Space::className();
         }
 
         if (in_array(self::USER_RELATED_SCOPE_OWN, $scopes)) {
-            $conditions[] = 'content.user_id = :userId';
+            $conditions[] = 'content.created_by = :userId';
             $params[':userId'] = $user->id;
         }
 
@@ -159,7 +155,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                     ->from('user_follow')
                     ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model=:spaceClass')
                     ->where('user_follow.user_id=:userId AND sf.wall_id IS NOT NULL');
-            $conditions[] = 'content.space_id IN (' . Yii::$app->db->getQueryBuilder()->build($spaceFollow)[0] . ')';
+            $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceFollow)[0] . ') AND contentcontainer.class = :spaceClass';
             $params[':spaceClass'] = Space::className();
             $params[':userId'] = $user->id;
         }
@@ -170,7 +166,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                     ->from('user_follow')
                     ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=:userClass')
                     ->where('user_follow.user_id=:userId AND uf.wall_id IS NOT NULL');
-            $conditions[] = 'content.user_id IN (' . Yii::$app->db->getQueryBuilder()->build($userFollow)[0] . ' AND content.space_id IS NULL)';
+            $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($userFollow)[0] . ' AND contentcontainer.class=:userClass)';
             $params[':userClass'] = User::className();
             $params[':userId'] = $user->id;
         }

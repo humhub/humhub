@@ -19,6 +19,7 @@ class BasicSettingsForm extends \yii\base\Model
     public $share;
     public $timeZone;
     public $dashboardShowProfilePostForm;
+    public $enableFriendshipModule;
 
     /**
      * Declares the validation rules.
@@ -31,7 +32,7 @@ class BasicSettingsForm extends \yii\base\Model
             array('defaultLanguage', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])),
             array('timeZone', 'in', 'range' => \DateTimeZone::listIdentifiers()),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
-            array(['tour', 'share', 'dashboardShowProfilePostForm'], 'in', 'range' => array(0, 1))
+            array(['tour', 'share', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => array(0, 1))
         );
     }
 
@@ -50,7 +51,8 @@ class BasicSettingsForm extends \yii\base\Model
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
             'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
             'share' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show sharing panel on dashboard'),
-            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard')
+            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard'),
+            'enableFriendshipModule' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Enable user friendship system'),
         );
     }
 

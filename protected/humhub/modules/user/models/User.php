@@ -13,6 +13,7 @@ use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\GroupAdmin;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * This is the model class for table "user".
@@ -63,9 +64,16 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const VISIBILITY_ALL = 2; // Visible for all (also guests)
 
     /**
+     * User Groups
+     */
+    const USERGROUP_SELF = 'u_self';
+    const USERGROUP_FRIEND = 'u_friend';
+    const USERGROUP_USER = 'u_user';
+    const USERGROUP_GUEST = 'u_guest';
+
+    /**
      * @inheritdoc
      */
-
     public static function tableName()
     {
         return 'user';
@@ -398,11 +406,27 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function canAccessPrivateContent(User $user = null)
     {
-        return ($this->isCurrentUser());
+        if ($this->isCurrentUser()) {
+            return true;
+        }
+
+        if ($user !== null && Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getWallOut()
     {
         return \humhub\modules\user\widgets\UserWall::widget(['user' => $this]);
@@ -426,24 +450,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function getTags()
     {
         return preg_split("/[;,#]+/", $this->tags);
-    }
-
-    /**
-     * Checks if given userId can write to this users wall
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function canWrite($userId = "")
-    {
-
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        if ($userId == $this->id)
-            return true;
-
-        return false;
     }
 
     /**
@@ -532,6 +538,26 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function getAuths()
     {
         return $this->hasMany(\humhub\modules\user\models\Auth::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUserGroup()
+    {
+        if (Yii::$app->user->isGuest) {
+            return self::USERGROUP_GUEST;
+        } elseif (Yii::$app->user->getIdentity()->id === $this->id) {
+            return self::USERGROUP_SELF;
+        }
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Friendship::getStateForUser($this, Yii::$app->user->getIdentity()) === Friendship::STATE_FRIENDS) {
+                return self::USERGROUP_FRIEND;
+            }
+        }
+
+        return self::USERGROUP_USER;
     }
 
 }

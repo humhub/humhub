@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\space\permissions;
+namespace humhub\modules\content\permissions;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 /**
  * CreatePublicContent Permission
@@ -24,13 +25,18 @@ class CreatePublicContent extends \humhub\libs\BasePermission
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
+        User::USERGROUP_SELF,
     ];
 
     /**
      * @inheritdoc
      */
     protected $fixedGroups = [
-        Space::USERGROUP_USER
+        Space::USERGROUP_USER,
+        User::USERGROUP_SELF,
+        User::USERGROUP_FRIEND,
+        User::USERGROUP_USER,
+        User::USERGROUP_GUEST
     ];
 
     /**
@@ -46,6 +52,6 @@ class CreatePublicContent extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $moduleId = 'space';
+    protected $moduleId = 'content';
 
 }
