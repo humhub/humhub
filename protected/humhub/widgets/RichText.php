@@ -81,7 +81,8 @@ class RichText extends \humhub\components\Widget
 
         // create image tag for emojis
         $this->text = self::translateEmojis($this->text, ($this->minimal) ? false : true);
-
+        $this->text = self::convertHashtags($this->text, ($this->minimal) ? false : true);
+        
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
@@ -155,5 +156,17 @@ class RichText extends \humhub\components\Widget
             return $hit[0];
         }, $text);
     }
-
+    public static function convertHashtags($text)
+	{
+    return preg_replace_callback(
+        '/#([\w]+)/',  // all "word" characters, all digits, and underscore
+                       // brackets around the string AFTER the hashtag
+        function( $hit ) {
+            // $matches[0] is the complete match (including the hashtag)
+            // $matches[1] is the match for the subpattern enclosed in brackets
+            return '<a href="https://YOURDOMAIN.COM/search/search/index?keyword='
+                . strtolower($hit[1]) .'">'
+                . $hit[0] .'</a>';
+        }, $text);
+	}
 }
