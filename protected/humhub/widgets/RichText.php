@@ -164,7 +164,7 @@ class RichText extends \humhub\components\Widget
         function( $hit ) {
             // $matches[0] is the complete match (including the hashtag)
             // $matches[1] is the match for the subpattern enclosed in brackets
-            return '<a href="https://YOURDOMAIN.COM/search/search/index?keyword='
+            return '<a href="/search/search/index?keyword='
                 . strtolower($hit[1]) .'">'
                 . $hit[0] .'</a>';
         }, $text);
