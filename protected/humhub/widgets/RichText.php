@@ -159,7 +159,7 @@ class RichText extends \humhub\components\Widget
     public static function convertHashtags($text)
 	{
     return preg_replace_callback(
-        '/#([\w]+)/',  // all "word" characters, all digits, and underscore
+        '/[^&](\#([A-Za-z0-9_]+))/',  // all "word" characters, all digits, and underscore
                        // brackets around the string AFTER the hashtag
         function( $hit ) {
             // $matches[0] is the complete match (including the hashtag)
