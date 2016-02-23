@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 ?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
-    <?php $form = CActiveForm::begin(['id' => 'post-edit-form']); ?>
+    <?php $form = CActiveForm::begin(['id' => 'post-edit-form_'+$post->id]); ?>
 
     <?php echo $form->textArea($post, 'message', array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
 
