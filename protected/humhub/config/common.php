@@ -87,13 +87,6 @@ $config = [
             'charset' => 'utf8',
             'enableSchemaCache' => true,
         ],
-        'assetManager' => [
-            'bundles' => [
-                'yii\bootstrap\BootstrapAsset' => [
-                    'css' => []
-                ],
-            ],
-        ],
     ],
     'params' => [
         'installed' => false,
