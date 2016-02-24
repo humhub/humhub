@@ -1,44 +1,106 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\widgets;
 
+use Yii;
+use yii\bootstrap\Html;
+
 /**
- * UserFollowButtonWidget
+ * UserFollowButton
  *
  * @author luke
- * @package humhub.modules_core.user.widgets
  * @since 0.11
  */
 class UserFollowButton extends \yii\base\Widget
 {
 
+    /**
+     * @var \humhub\modules\user\models\User
+     */
     public $user;
 
+    /**
+     * @var string label for follow button (optional)
+     */
+    public $followLabel = null;
+
+    /**
+     * @var string label for unfollow button (optional)
+     */
+    public $unfollowLabel = null;
+
+    /**
+     * @var string options for follow button 
+     */
+    public $followOptions = ['class' => 'btn btn-primary'];
+
+    /**
+     * @var array options for unfollow button 
+     */
+    public $unfollowOptions = ['class' => 'btn btn-info'];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if ($this->followLabel === null) {
+            $this->followLabel = Yii::t("UserModule.widgets_views_followButton", "Follow");
+        }
+        if ($this->unfollowLabel === null) {
+            $this->unfollowLabel = Yii::t("UserModule.widgets_views_followButton", "Unfollow");
+        }
+
+        if (!isset($this->followOptions['class'])) {
+            $this->followOptions['class'] = "";
+        }
+        if (!isset($this->unfollowOptions['class'])) {
+            $this->unfollowOptions['class'] = "";
+        }
+
+        if (!isset($this->followOptions['style'])) {
+            $this->followOptions['style'] = "";
+        }
+        if (!isset($this->unfollowOptions['style'])) {
+            $this->unfollowOptions['style'] = "";
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         if ($this->user->isCurrentUser() || \Yii::$app->user->isGuest) {
             return;
         }
 
-        return $this->render('followButton', array('user' => $this->user));
+        // Add class for javascript handling
+        $this->followOptions['class'] .= ' followButton';
+        $this->unfollowOptions['class'] .= ' unfollowButton';
+
+        // Hide inactive button
+        if ($this->user->isFollowedByUser()) {
+            $this->followOptions['style'] .= ' display:none;';
+        } else {
+            $this->unfollowOptions['style'] .= ' display:none;';
+        }
+
+        // Add UserId Buttons
+        $this->followOptions['data-userid'] = $this->user->id;
+        $this->unfollowOptions['data-userid'] = $this->user->id;
+
+
+        $this->view->registerJsFile('@web/resources/user/followButton.js');
+
+        return Html::a($this->unfollowLabel, $this->user->createUrl('/user/profile/unfollow'), $this->unfollowOptions) .
+                Html::a($this->followLabel, $this->user->createUrl('/user/profile/follow'), $this->followOptions);
     }
 
 }

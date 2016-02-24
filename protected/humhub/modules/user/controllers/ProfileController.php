@@ -2,12 +2,13 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\controllers;
 
+use Yii;
 use humhub\modules\content\components\ContentContainerController;
 
 /**
@@ -72,6 +73,11 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->follow();
+
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
+
         return $this->redirect($this->getUser()->getUrl());
     }
 
@@ -82,6 +88,11 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->unfollow();
+
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
+
         return $this->redirect($this->getUser()->getUrl());
     }
 
