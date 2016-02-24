@@ -75,8 +75,8 @@ class Invite extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'language' => 'Language',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname'
+            'firstname' => 'First name',
+            'lastname' => 'Last name'
         ];
     }
 
