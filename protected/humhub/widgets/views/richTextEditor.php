@@ -8,7 +8,6 @@ use yii\helpers\Url;
 <script type="text/javascript">
 
     $(document).ready(function () {
-
         //The original form input element will be hidden
         var $formInput = $('#<?php echo $id; ?>').hide();
         var placeholder = $formInput.attr('placeholder');
@@ -16,7 +15,8 @@ use yii\helpers\Url;
         var $editableContent = $('#<?php echo $id; ?>_contenteditable');
 
         if (!$editableContent.length) {
-            $editableContent = $formInput.after('<div id="<?php echo $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" data-query="0" contenteditable="true">' + placeholder + '</div>');
+            $formInput.after('<div id="<?php echo $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" data-query="0" contenteditable="true">' + placeholder + '</div>');
+            $editableContent = $('#<?php echo $id; ?>_contenteditable');
         }
 
         var emojis = [
@@ -48,7 +48,6 @@ use yii\helpers\Url;
             callbacks: {
                 matcher: function (flag, subtext, should_start_with_space) {
                     var match, regexp;
-
                     regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']*$)/); 
                     match = regexp.exec(subtext);
                     
