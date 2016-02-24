@@ -135,6 +135,11 @@ class Events extends \yii\base\Object
             Ldap::getInstance()->refreshUsers();
             $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
         }
+
+        // Delete expired session
+        foreach (models\Session::find()->where(['<', 'expire', time()])->all() as $session) {
+            $session->delete();
+        }
     }
 
 }
