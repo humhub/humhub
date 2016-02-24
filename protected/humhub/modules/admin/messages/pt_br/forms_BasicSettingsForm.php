@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Date input format' => '',
     'Show sharing panel on dashboard' => '',
     'Base URL' => 'URL base',
     'Default language' => 'Idioma padrão',
