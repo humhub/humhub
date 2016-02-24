@@ -79,6 +79,7 @@ class BaseType extends \yii\base\Model
             Select::className() => Yii::t('UserModule.models_ProfileFieldType', 'Select List'),
             DateTime::className() => Yii::t('UserModule.models_ProfileFieldType', 'Datetime'),
             Birthday::className() => Yii::t('UserModule.models_ProfileFieldType', 'Birthday'),
+            CountrySelect::className() => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
                 ), $this->fieldTypes);
         return $fieldTypes;
     }
