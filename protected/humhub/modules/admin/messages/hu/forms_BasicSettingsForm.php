@@ -18,6 +18,7 @@
  */
 return [
     'Base URL' => '',
+    'Date input format' => '',
     'Default language' => '',
     'Default space' => '',
     'Invalid space' => '',

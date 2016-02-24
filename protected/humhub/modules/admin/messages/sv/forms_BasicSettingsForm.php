@@ -18,6 +18,7 @@
  */
 return [
     'Base URL' => '',
+    'Date input format' => '',
     'Logo upload' => '',
     'Server Timezone' => '',
     'Show sharing panel on dashboard' => '',
