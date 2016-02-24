@@ -54,8 +54,13 @@ $config = [
                 ],
             ],
         ],
+        'formatter' => [
+            'class' => 'humhub\components\i18n\Formatter',
+        ],        
+        /**
+         * Deprecated
+         */
         'formatterApp' => [
-            // Used to format date/times in applications timezone
             'class' => 'yii\i18n\Formatter',
         ],
         'cache' => [
@@ -137,6 +142,7 @@ $config = [
         ],
         'formatter' => [
             // Default date format, used especially in DatePicker widgets
+            // Deprecated: Use Yii::$app->formatter->dateInputFormat instead.
             'defaultDateFormat' => 'short',
             // Seconds before switch from relative time to date format
             // Set to false to always use relative time in TimeAgo Widget

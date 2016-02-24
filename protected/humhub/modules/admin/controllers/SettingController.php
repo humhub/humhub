@@ -334,6 +334,7 @@ class SettingController extends Controller
         $form->paginationSize = Setting::Get('paginationSize');
         $form->displayName = Setting::Get('displayNameFormat');
         $form->spaceOrder = Setting::Get('spaceOrder', 'space');
+        $form->dateInputDisplayFormat = Setting::Get('defaultDateInputFormat', 'admin');
 
         if ($form->load(Yii::$app->request->post())) {
 
@@ -348,6 +349,7 @@ class SettingController extends Controller
                 Setting::Set('paginationSize', $form->paginationSize);
                 Setting::Set('displayNameFormat', $form->displayName);
                 Setting::Set('spaceOrder', $form->spaceOrder, 'space');
+                Setting::Set('defaultDateInputFormat', $form->dateInputDisplayFormat, 'admin');
 
                 if ($form->logo) {
                     $logoImage = new \humhub\libs\LogoImage();
