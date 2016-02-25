@@ -1,19 +1,21 @@
 <?php
 
+use humhub\assets\BootstrapMarkdownAsset;
 use yii\helpers\Url;
 use yii\helpers\Html;
+
+/**
+ * Register BootstrapMarkdown & changes
+ */
+BootstrapMarkdownAsset::register($this);
+$this->registerCssFile('@web/css/bootstrap-markdown-override.css');
+$this->registerJsFile('@web/js/markdownEditor.js');
 
 /**
  * Create a hidden field to store uploaded files guids
  */
 echo Html::hiddenInput('fileUploaderHiddenGuidField', "", array('id' => 'fileUploaderHiddenGuidField_' . $fieldId));
 
-
-$this->registerCssFile('@web/resources/bootstrap-markdown/css/bootstrap-markdown.min.css');
-$this->registerCssFile('@web/css/bootstrap-markdown-override.css');
-
-$this->registerJsFile('@web/resources/bootstrap-markdown/js/bootstrap-markdown.js');
-$this->registerJsFile('@web/js/markdownEditor.js');
 $this->registerJsVar('markdownPreviewUrl', $previewUrl);
 
 $translations = array(

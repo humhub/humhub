@@ -81,7 +81,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat']);
+        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->formatter->dateInputFormat);
         return parent::getFieldRules($rules);
     }
 
@@ -92,7 +92,7 @@ class DateTime extends BaseType
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
-                'format' => Yii::$app->params['formatter']['defaultDateFormat'],
+                'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
                 'dateTimePickerOptions' => array(
                     'pickTime' => ($this->showTimePicker)

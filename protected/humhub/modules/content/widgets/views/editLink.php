@@ -15,7 +15,9 @@ use yii\web\JsExpression;
             'success' => new JsExpression('function(html){ $(".preferences .dropdown").removeClass("open"); $("#wall_content_' . $content->getUniqueId() . '").replaceWith(html); }'),
             'url' => $editUrl,
         ],
-        'htmlOptions' => []
+        'htmlOptions' => [
+            'href' => '#'
+        ]
     ]);
     ?>
 </li>

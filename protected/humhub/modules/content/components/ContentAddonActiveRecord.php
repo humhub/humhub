@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -76,13 +76,10 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
     /**
      * Returns the source of this content addon.
      *
-     * This can be a HActiveRecordContent or HActiveRecordContentAddon object.
-     *
-     * @return Mixed HActiveRecordContent or HActiveRecordContentAddon
+     * @return ContentAddonActiveRecord|ContentActiveRecord the model which this addon belongs to
      */
     public function getSource()
     {
-
         if ($this->_source != null) {
             return $this->_source;
         }
