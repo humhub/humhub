@@ -23,6 +23,11 @@ use humhub\modules\space\models\Space;
 class SpaceController extends Controller
 {
 
+    public function init() {
+        $this->prependPageTitle(Yii::t('AdminModule.base', 'Spaces'));
+        return parent::init();
+    }
+    
     /**
      * Shows all available spaces
      */
