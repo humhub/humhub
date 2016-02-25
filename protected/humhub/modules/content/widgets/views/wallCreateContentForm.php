@@ -154,16 +154,24 @@ use humhub\modules\space\models\Space;
         // Switch from default private to public
         changeVisibility();
     <?php endif; ?>
+        
+    function setVisiblePost() {
+        $('#contentForm_visibility').prop( "checked", true );
+        $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make private'); ?>');
+        $('.label-public').removeClass('hidden');
+    }
+    
+    function setInvisiblePost() {
+        $('#contentForm_visibility').prop( "checked", false );
+            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>');
+            $('.label-public').addClass('hidden');
+    }
 
     function changeVisibility() {
         if (!$('#contentForm_visibility').prop('checked')) {
-            $('#contentForm_visibility').prop( "checked", true );
-            $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make private'); ?>');
-            $('.label-public').removeClass('hidden');
+            setVisiblePost();
         } else {
-            $('#contentForm_visibility').prop( "checked", false );
-            $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>');
-            $('.label-public').addClass('hidden');
+            setInvisiblePost();
         }
     }
 
@@ -186,11 +194,9 @@ use humhub\modules\space\models\Space;
             $('#notifyUserContainer').addClass('hidden');
             $('#notifyUserInput').val('');
             
-            if(!$('.profile-layout-container').length) {
-                //TODO: better way to determine the current controller/page should be implemented with the javascript rewrite
-                //Also rather use a configuration like definition humhub.modules.post.cfg['defaultVisibility']
-                $('.label-public').addClass('hidden');
-            }
+            <?php if ($defaultVisibility == humhub\modules\content\models\Content::VISIBILITY_PRIVATE) : ?>
+            setInvisiblePost();
+            <?php endif ;?>
             
             $('#contentFrom_files').val('');
             $('#public').attr('checked', false);
