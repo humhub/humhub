@@ -156,12 +156,12 @@ use humhub\modules\space\models\Space;
     <?php endif; ?>
 
     function changeVisibility() {
-        if ($('#contentForm_visibility').attr('checked') != 'checked') {
-            $('#contentForm_visibility').attr('checked', 'checked');
+        if (!$('#contentForm_visibility').prop('checked')) {
+            $('#contentForm_visibility').prop( "checked", true );
             $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make private'); ?>');
             $('.label-public').removeClass('hidden');
         } else {
-            $('#contentForm_visibility').removeAttr('checked');
+            $('#contentForm_visibility').prop( "checked", false );
             $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>');
             $('.label-public').addClass('hidden');
         }
@@ -185,7 +185,13 @@ use humhub\modules\space\models\Space;
             $('.userInput').remove(); // used by UserPickerWidget
             $('#notifyUserContainer').addClass('hidden');
             $('#notifyUserInput').val('');
-            $('.label-public').addClass('hidden');
+            
+            if(!$('.profile-layout-container').length) {
+                //TODO: better way to determine the current controller/page should be implemented with the javascript rewrite
+                //Also rather use a configuration like definition humhub.modules.post.cfg['defaultVisibility']
+                $('.label-public').addClass('hidden');
+            }
+            
             $('#contentFrom_files').val('');
             $('#public').attr('checked', false);
             $('#contentForm_message_contenteditable').html('<?php echo Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What's on your mind?")); ?>');
