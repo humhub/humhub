@@ -95,9 +95,8 @@ use yii\helpers\Url;
 
         // remove placeholder text
         $editableContent.on('focus', function () {
-            $(this).removeClass('atwho-placeholder');
-
-            if ($(this).html() == placeholder) {
+            if ($(this).hasClass('atwho-placeholder')) {
+                $(this).removeClass('atwho-placeholder');
                 $(this).html('');
                 $(this).focus();
             }
