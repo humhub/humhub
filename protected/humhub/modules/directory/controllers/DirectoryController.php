@@ -25,6 +25,16 @@ use yii\web\HttpException;
 class DirectoryController extends \humhub\modules\directory\components\Controller
 {
 
+    public function init()
+    {
+        $this->setActionTitles([
+            'members' => Yii::t('DirectoryModule.base', 'Members'),
+            'spaces' => Yii::t('AdminModule.base', 'Spaces'),
+            'user-posts' => Yii::t('AdminModule.base', 'User posts'),
+            ]);
+        return parent::init();
+    }
+    
     /**
      * @inheritdoc
      */

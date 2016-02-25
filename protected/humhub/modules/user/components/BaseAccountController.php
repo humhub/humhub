@@ -22,6 +22,11 @@ class BaseAccountController extends \humhub\components\Controller
 
     public $subLayout = "@humhub/modules/user/views/account/_layout";
 
+    public function init() {
+        $this->prependPageTitle(\Yii::t('UserModule.base', 'My Account'));
+        return parent::init();
+    }
+    
     /**
      * @inheritdoc
      */

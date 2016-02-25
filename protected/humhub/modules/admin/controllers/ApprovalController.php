@@ -24,6 +24,11 @@ use humhub\modules\admin\models\forms\ApproveUserForm;
 class ApprovalController extends Controller
 {
 
+    public function init() {
+        $this->prependPageTitle(Yii::t('AdminModule.base', 'Approval'));
+        return parent::init();
+    }
+    
     /**
      * @inheritdoc
      */

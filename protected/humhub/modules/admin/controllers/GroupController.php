@@ -23,6 +23,11 @@ use humhub\modules\user\models\User;
 class GroupController extends Controller
 {
 
+    public function init() {
+        $this->prependPageTitle(Yii::t('AdminModule.base', 'Groups'));
+        return parent::init();
+    }
+    
     /**
      * List all available user groups
      */

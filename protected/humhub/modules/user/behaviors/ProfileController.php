@@ -24,6 +24,7 @@ use Yii;
 use yii\base\Behavior;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
+use humhub\components\Controller;
 
 /**
  * This Behavior needs to be attached to all controllers which are provides
@@ -38,6 +39,13 @@ class ProfileController extends Behavior
 
     public $user = null;
 
+    public function events() {
+    
+        return [
+        Controller::EVENT_BEFORE_ACTION => 'beforeAction',
+        ];
+    }
+    
     public function getUser()
     {
         if ($this->user != null) {
@@ -65,6 +73,11 @@ class ProfileController extends Behavior
         }
     }
 
+    public function beforeAction($action) {
+    
+        $this->owner->prependPageTitle($this->user->displayName);
+    }
+    
 }
 
 ?>

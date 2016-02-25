@@ -29,6 +29,12 @@ class SearchController extends Controller
     const SCOPE_SPACE = "space";
     const SCOPE_CONTENT = "content";
 
+    public function init()
+    {
+        $this->prependPageTitle(\Yii::t('SearchModule.base', 'Search'));
+        return parent::init();
+    }
+    
     /**
      * @inheritdoc
      */

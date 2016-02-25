@@ -21,6 +21,11 @@ use humhub\modules\admin\libs\HumHubAPI;
 class AboutController extends Controller
 {
 
+    public function init() {
+        $this->prependPageTitle(Yii::t('AdminModule.base', 'About'));
+        return parent::init();
+    }
+    
     public function actionIndex()
     {
         $isNewVersionAvailable = false;
