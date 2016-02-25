@@ -205,7 +205,7 @@ class InitialData
         $field->title = 'Country';
         $field->sort_order = 700;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\CountrySelect::className();
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
