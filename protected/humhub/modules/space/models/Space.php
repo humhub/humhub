@@ -429,11 +429,21 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return $this->name;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function canAccessPrivateContent(\humhub\modules\user\models\User $user = null)
     {
+        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && Yii::$app->user->getIdentity()->super_admin === 1) {
+            return true;
+        }
+        
         return ($this->isMember());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getWallOut()
     {
         return \humhub\modules\space\widgets\Wall::widget(['space' => $this]);
