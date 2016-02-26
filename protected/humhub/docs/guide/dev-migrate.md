@@ -4,6 +4,8 @@ Here you will learn how you can adapt existing modules to working fine with actu
 
 ## to 1.1
 
+- Dropped unused space attribute "website"
+
 - ContentContainer Model Changes
     - Removed canWrite method (now requires own implementation using permissions)
 

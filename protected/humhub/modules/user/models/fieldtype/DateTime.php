@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -19,6 +19,7 @@ use humhub\libs\DbDateValidator;
  */
 class DateTime extends BaseType
 {
+
     /**
      * Checkbox show also time picker
      *
@@ -81,7 +82,7 @@ class DateTime extends BaseType
      */
     public function getFieldRules($rules = array())
     {
-        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat']);
+        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->formatter->dateInputFormat);
         return parent::getFieldRules($rules);
     }
 
@@ -92,8 +93,9 @@ class DateTime extends BaseType
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
-                'format' => Yii::$app->params['formatter']['defaultDateFormat'],
+                'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
+                'readonly' => (!$this->profileField->editable),
                 'dateTimePickerOptions' => array(
                     'pickTime' => ($this->showTimePicker)
                 )

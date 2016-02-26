@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use Yii;
 use humhub\modules\content\components\ContentContainerController;
 
 /**
@@ -70,6 +71,11 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->follow();
+
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
+
         return $this->redirect($this->getUser()->getUrl());
     }
 
@@ -80,6 +86,11 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->unfollow();
+
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
+
         return $this->redirect($this->getUser()->getUrl());
     }
 

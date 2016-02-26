@@ -25,7 +25,6 @@ use humhub\modules\user\models\User;
  * @property integer $wall_id
  * @property string $name
  * @property string $description
- * @property string $website
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
@@ -83,8 +82,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
-            [['guid', 'name', 'website'], 'string', 'max' => 45],
-            [['website'], 'url'],
+            [['guid', 'name'], 'string', 'max' => 45],
         ];
     }
 
@@ -95,7 +93,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'website', 'tags', 'join_policy', 'visibility', 'default_content_visibility'];
+        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility'];
         $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
@@ -111,7 +109,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
             'color' => Yii::t('SpaceModule.models_Space', 'Color'),
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
-            'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.models_Space', 'Visibility'),
             'status' => Yii::t('SpaceModule.models_Space', 'Status'),

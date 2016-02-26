@@ -144,6 +144,11 @@ class Events extends \yii\base\Object
                 $authClient->syncUsers();
             }
         }
+
+        // Delete expired session
+        foreach (models\Session::find()->where(['<', 'expire', time()])->all() as $session) {
+            $session->delete();
+        }
     }
 
 }

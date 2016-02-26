@@ -171,7 +171,7 @@ class FileController extends \humhub\components\Controller
                 // make path relative to docroot
                 $docroot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
                 if (substr($filePath, 0, strlen($docroot)) == $docroot) {
-                    $filePath = substr($file, strlen($docroot));
+                    $filePath = substr($filePath, strlen($docroot));
                 }
             }
             

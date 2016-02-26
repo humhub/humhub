@@ -17,7 +17,6 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/animate.min.css',
-        'css/bootstrap.min.css',
         'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',

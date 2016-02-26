@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
@@ -23,7 +11,6 @@ namespace humhub\libs;
 /**
  * This class contains a lot of html helpers for the views
  *
- * @package humhub.libs
  * @since 0.5
  */
 class Helpers
@@ -169,8 +156,8 @@ class Helpers
      */
     public static function CheckClassType($className, $type = "")
     {
-        $className = preg_replace("/[^a-z0-9\\\]/i", "", $className);
-
+        $className = preg_replace('/[^a-z0-9_\-\\\]/i', "", $className);
+        
         if (is_array($type)) {
             foreach ($type as $t) {
                 if (class_exists($className) && is_subclass_of($className, $t)) {
@@ -183,7 +170,7 @@ class Helpers
             }
         }
 
-        throw new \yii\base\Exception("Invalid class type! |" . $className . "|");
+        throw new \yii\base\Exception("Invalid class type! (" . $className . ")");
     }
 
     /**

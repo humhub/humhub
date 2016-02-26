@@ -24,6 +24,31 @@ use humhub\modules\user\libs\Ldap;
 class SettingController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->setActionTitles([
+            'basic' => Yii::t('AdminModule.base', 'Basic'),
+            'authentication' => Yii::t('AdminModule.base', 'Authentication'),
+            'authentication-ldap' => Yii::t('AdminModule.base', 'Authentication'),
+            'caching' => Yii::t('AdminModule.base', 'Caching'),
+            'statistic' => Yii::t('AdminModule.base', 'Statistics'),
+            'mailing' => Yii::t('AdminModule.base', 'Mailing'),
+            'mailing-server' => Yii::t('AdminModule.base', 'Mailing'),
+            'design' => Yii::t('AdminModule.base', 'Design'),
+            'security' => Yii::t('AdminModule.base', 'Security'),
+            'file' => Yii::t('AdminModule.base', 'Files'),
+            'cronjobs' => Yii::t('AdminModule.base', 'Cronjobs'),
+            'proxy' => Yii::t('AdminModule.base', 'Proxy'),
+            'oembed' => Yii::t('AdminModule.base', 'OEmbed providers'),
+            'oembed-edit' => Yii::t('AdminModule.base', 'OEmbed providers'),
+            'self-test' => Yii::t('AdminModule.base', 'Self test'),
+        ]);
+        return parent::init();
+    }
+
     public function actionIndex()
     {
         Yii::$app->response->redirect(Url::toRoute('basic'));
@@ -335,6 +360,7 @@ class SettingController extends Controller
         $form->paginationSize = Setting::Get('paginationSize');
         $form->displayName = Setting::Get('displayNameFormat');
         $form->spaceOrder = Setting::Get('spaceOrder', 'space');
+        $form->dateInputDisplayFormat = Setting::Get('defaultDateInputFormat', 'admin');
 
         if ($form->load(Yii::$app->request->post())) {
 
@@ -349,6 +375,7 @@ class SettingController extends Controller
                 Setting::Set('paginationSize', $form->paginationSize);
                 Setting::Set('displayNameFormat', $form->displayName);
                 Setting::Set('spaceOrder', $form->spaceOrder, 'space');
+                Setting::Set('defaultDateInputFormat', $form->dateInputDisplayFormat, 'admin');
 
                 if ($form->logo) {
                     $logoImage = new \humhub\libs\LogoImage();

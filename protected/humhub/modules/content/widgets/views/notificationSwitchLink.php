@@ -17,6 +17,7 @@
         ],
         'htmlOptions' => [
             'style' => 'display: ' . ($state ? 'block' : 'none'),
+            'href' => '#',
             'id' => $offLinkId
         ]
     ]);
@@ -31,6 +32,7 @@
         ],
         'htmlOptions' => [
             'style' => 'display: ' . ($state ? 'none' : 'block'),
+            'href' => '#',
             'id' => $onLinkId
         ]
     ]);

@@ -24,6 +24,11 @@ use humhub\modules\user\models\fieldtype\BaseType;
 class UserProfileController extends Controller
 {
 
+    public function init() {
+        $this->prependPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
+        return parent::init();
+    }
+    
     /**
      * Shows overview of all
      *

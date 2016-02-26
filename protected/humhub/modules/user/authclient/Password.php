@@ -1,11 +1,10 @@
 <?php
 
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
-
 namespace humhub\modules\user\authclient;
 
 use humhub\modules\user\models\User;
@@ -55,7 +54,7 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
      */
     public function auth()
     {
-        $user = User::find()->where(['username' => $this->login->username])->orWhere(['email' => $this->login->password])->one();
+        $user = User::find()->where(['username' => $this->login->username])->orWhere(['email' => $this->login->username])->one();
 
         if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($this->login->password)) {
             $this->setUserAttributes(['id' => $user->id]);

@@ -20,6 +20,11 @@ use humhub\modules\admin\components\Controller;
 class LoggingController extends Controller
 {
 
+    public function init() {
+        $this->prependPageTitle(Yii::t('AdminModule.base', 'Logging'));
+        return parent::init();
+    }
+    
     public function actionIndex()
     {
         $pageSize = 10;

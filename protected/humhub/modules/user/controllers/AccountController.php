@@ -24,6 +24,23 @@ use humhub\modules\user\models\User;
 class AccountController extends BaseAccountController
 {
 
+    public function init()
+    {
+        $this->setActionTitles([
+            'edit' => Yii::t('UserModule.base', 'Profile'),
+            'edit-settings' => Yii::t('UserModule.base', 'Settings'),
+            'security' => Yii::t('UserModule.base', 'Security'),
+            'connected-accounts' => Yii::t('UserModule.base', 'Connected accounts'),
+            'edit-modules' => Yii::t('UserModule.base', 'Modules'),
+            'delete' => Yii::t('UserModule.base', 'Delete'),
+            'emailing' => Yii::t('UserModule.base', 'Notifications'),
+            'change-email' => Yii::t('UserModule.base', 'Email'),
+            'change-email-validate' => Yii::t('UserModule.base', 'Email'),
+            'change-password' => Yii::t('UserModule.base', 'Password'),
+            ]);
+        return parent::init();
+    }
+    
     /**
      * Edit Users Profile
      */

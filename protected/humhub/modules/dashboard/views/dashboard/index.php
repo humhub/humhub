@@ -1,6 +1,3 @@
-<?php
-$this->pageTitle = Yii::t('DashboardModule.views_dashboard_index', 'Dashboard');
-?>
 <div class="container">
     <div class="row">
         <div class="col-md-8 layout-content-container">

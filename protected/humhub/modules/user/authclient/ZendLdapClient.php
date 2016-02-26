@@ -153,6 +153,20 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
             $normalized['objectguid'] = \humhub\libs\StringHelper::binaryToGuid($normalized['objectguid']);
         }
 
+        // Handle date fields (formats are specified in config)
+        foreach ($normalized as $name => $value) {
+            if (isset(Yii::$app->params['ldap']['dateFields'][$name]) && $value != '') {
+                $dateFormat = Yii::$app->params['ldap']['dateFields'][$name];
+                $date = \DateTime::createFromFormat($dateFormat, $value);
+                if ($date !== false) {
+                    $normalized[$name] = $date->format('Y-m-d 00:00:00');
+                } else {
+                    $normalized[$name] = "";
+                }
+            }
+        }
+
+
         return parent::normalizeUserAttributes($normalized);
     }
 

@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016r HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
@@ -94,7 +82,38 @@ class SelfTest
                 'hint' => 'Install INTL Extension'
             );
         }
-        
+
+        $icuVersion = (defined('INTL_ICU_VERSION')) ? INTL_ICU_VERSION : 0;
+        $icuMinVersion = '4.8.1';
+        $title = 'PHP - INTL Extension - ICU Version (' . INTL_ICU_VERSION . ')';
+        if (version_compare($icuVersion, $icuMinVersion, '>=')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'ICU Data ' . $icuMinVersion . ' or higher is required'
+            );
+        }
+        $icuDataVersion = (defined('INTL_ICU_DATA_VERSION')) ? INTL_ICU_DATA_VERSION : 0;
+        $icuMinDataVersion = '4.8.1';
+        $title = 'PHP - INTL Extension - ICU Data Version (' . INTL_ICU_DATA_VERSION . ')';
+        if (version_compare($icuDataVersion, $icuMinDataVersion, '>=')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'ICU Data ' . $icuMinDataVersion . ' or higher is required'
+            );
+        }
+
         // Checks GD Extension
         $title = 'PHP - EXIF Extension';
         if (function_exists('exif_read_data')) {
@@ -283,7 +302,7 @@ class SelfTest
 
         // Check Custom Modules Directory
         $title = 'Permissions - Module Directory';
-        
+
         $path = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
         if (is_writeable($path)) {
             $checks[] = array(
@@ -299,12 +318,12 @@ class SelfTest
         }
         // Check Custom Modules Directory
         $title = 'Permissions - Dynamic Config';
-        
+
         $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
         if (!is_file($path)) {
             $path = dirname($path);
         }
-        
+
         if (is_writeable($path)) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),

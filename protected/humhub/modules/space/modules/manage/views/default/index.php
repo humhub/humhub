@@ -33,8 +33,6 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
 
         <?php echo $form->field($model, 'description')->textarea(['rows' => 6]); ?>
 
-        <?php echo $form->field($model, 'website')->textInput(['maxlength' => 45]); ?>
-
         <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
         <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>

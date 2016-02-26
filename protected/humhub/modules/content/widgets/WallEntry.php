@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,6 +10,7 @@ namespace humhub\modules\content\widgets;
 
 use Yii;
 use humhub\components\Widget;
+use humhub\modules\space\models\Space;
 
 /**
  * WallEntry is responsible to show a content inside a stream/wall.
@@ -85,6 +86,11 @@ class WallEntry extends Widget
             return "";
         }
 
+        // Don't show edit link, when content container is space and archived
+        if ($this->contentObject->content->container instanceof Space && $this->contentObject->content->container->status == Space::STATUS_ARCHIVED) {
+            return "";
+        }
+        
         return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]); 
     }
 

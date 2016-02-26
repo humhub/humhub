@@ -16,7 +16,7 @@ use humhub\models\Setting;
         <div class="knob-container" style="text-align: center; opacity: 0;">
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Total spaces'); ?></strong><br><br>
 
-            <input id="spaces-total" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
+            <input id="spaces-total" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="<?php echo Setting::Get('colorPrimary'); ?>" data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsCountSpaces; ?>"
                    data-max="<?php echo $statsCountSpaces; ?>"
@@ -28,7 +28,7 @@ use humhub\models\Setting;
         <div class="knob-container" style="text-align: center; opacity: 0;">
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Private spaces'); ?></strong><br><br>
 
-            <input id="spaces-private" class="knob" data-width="120" data-displayprevious="true" data-readOnly="true"
+            <input id="spaces-private" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="<?php echo Setting::Get('colorPrimary'); ?>"
                    data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsCountSpacesHidden; ?>"

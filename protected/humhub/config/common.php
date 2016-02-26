@@ -7,7 +7,7 @@ Yii::setAlias('@humhub', '@app/humhub');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.0.0-beta.3',
+    'version' => '1.1.0-dev',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
@@ -52,10 +52,19 @@ $config = [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@humhub/messages'
                 ],
+                'iso3166Codes' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@humhub/messages'
+                ],
             ],
         ],
+        'formatter' => [
+            'class' => 'humhub\components\i18n\Formatter',
+        ],
+        /**
+         * Deprecated
+         */
         'formatterApp' => [
-            // Used to format date/times in applications timezone
             'class' => 'yii\i18n\Formatter',
         ],
         'cache' => [
@@ -90,13 +99,6 @@ $config = [
         'authClientCollection' => [
             'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [],
-        ],        
-        'assetManager' => [
-            'bundles' => [
-                'yii\bootstrap\BootstrapAsset' => [
-                    'css' => []
-    ],
-            ],
         ],
     ],
     'params' => [
@@ -146,8 +148,15 @@ $config = [
             // Minimum username length
             'minUsernameLength' => 4,
         ],
+        'ldap' => [
+            // LDAP date field formats
+            'dateFields' => [
+            //'birthday' => 'Y.m.d'
+            ],
+        ],
         'formatter' => [
             // Default date format, used especially in DatePicker widgets
+            // Deprecated: Use Yii::$app->formatter->dateInputFormat instead.
             'defaultDateFormat' => 'short',
             // Seconds before switch from relative time to date format
             // Set to false to always use relative time in TimeAgo Widget
