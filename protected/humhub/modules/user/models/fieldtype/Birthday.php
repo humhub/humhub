@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,19 +21,36 @@ class Birthday extends DateTime
 {
 
     /**
-     * Returns Form Definition for edit/create this field.
-     *
-     * @return Array Form Definition
+     * @var boolean hide age per default
+     */
+    public $defaultHideAge = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return array(
+            array(['defaultHideAge'], 'in', 'range' => array(0, 1))
+        );
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getFormDefinition($definition = array())
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
-                        'elements' => array(
-                        )
-        )));
+
+        $definition = parent::getFormDefinition();
+        $definition[self::className()]['title'] = Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options');
+        $definition[self::className()]['elements'] = [
+            'defaultHideAge' => array(
+                'type' => 'checkbox',
+                'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
+                'class' => 'form-control',
+            ),
+        ];
+        return $definition;
     }
 
     public function delete()
@@ -54,7 +71,7 @@ class Birthday extends DateTime
     {
         $columnName = $this->profileField->internal_name;
         if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName.'_hide_year', 'INT(1)');
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName . '_hide_year', 'INT(1)');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -83,9 +100,11 @@ class Birthday extends DateTime
                 'type' => 'datetime',
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
+                'readonly' => (!$this->profileField->editable)
             ),
             $this->profileField->internal_name . "_hide_year" => array(
                 'type' => 'checkbox',
+                'readonly' => (!$this->profileField->editable)
             ),
         );
     }
@@ -98,9 +117,11 @@ class Birthday extends DateTime
         return $labels;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getUserValue($user, $raw = true)
     {
-
         $internalName = $this->profileField->internal_name;
         $birthdayDate = $user->profile->$internalName;
 
@@ -108,10 +129,9 @@ class Birthday extends DateTime
             return "";
 
         $internalNameHideAge = $this->profileField->internal_name . "_hide_year";
+
         $hideAge = $user->profile->$internalNameHideAge;
-
-        if (!$hideAge) {
-
+        if (($hideAge === null && !$this->defaultHideAge) || $hideAge === 0) {
             $birthDate = new \DateTime($birthdayDate);
             $lifeSpan = $birthDate->diff(new \DateTime());
             $age = Yii::t('UserModule.models_ProfileFieldTypeBirthday', '%y Years', array('%y' => $lifeSpan->format("%y")));
@@ -119,6 +139,17 @@ class Birthday extends DateTime
             return Yii::$app->formatter->asDate($birthdayDate, 'long') . " (" . $age . ")";
         } else {
             return Yii::$app->formatter->asDate($birthdayDate, 'dd. MMMM');
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loadDefaults(\humhub\modules\user\models\Profile $profile)
+    {
+        $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
+        if ($profile->$internalNameHideAge === null) {
+            $profile->$internalNameHideAge = $this->defaultHideAge;
         }
     }
 
