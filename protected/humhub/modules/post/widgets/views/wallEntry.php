@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 
+$this->registerJsFile(Yii::$app->getModule('post')->getAssetsUrl().'/js/post.js');
+
 $richOutput = humhub\widgets\RichText::widget(['text' => $post->message, 'record' => $post]);
 ?>
 
