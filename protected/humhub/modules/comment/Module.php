@@ -18,4 +18,37 @@ class Module extends \humhub\components\Module
      */
     public $commentsBlockLoadSize = 25;
 
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if ($contentContainer instanceof \humhub\modules\space\models\Space) {
+            return [
+                new permissions\CreateComment()
+            ];
+        }
+
+        return [];
+    }
+
+    /**
+     * Checks if given content object can be commented
+     * 
+     * @param \humhub\modules\content\models\Content $content
+     * @return boolean can comment
+     */
+    public function canComment(\humhub\modules\content\models\Content $content)
+    {
+
+        if ($content->container instanceof \humhub\modules\space\models\Space) {
+            $space = $content->container;
+            if (!$space->permissionManager->can(new permissions\CreateComment())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
