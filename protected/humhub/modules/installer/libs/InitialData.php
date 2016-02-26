@@ -208,7 +208,6 @@ class InitialData
         $field->field_type_class = \humhub\modules\user\models\fieldtype\CountrySelect::className();
         $field->is_system = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 100;
             $field->fieldType->save();
         }
 
