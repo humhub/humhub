@@ -29,9 +29,11 @@ $(function() {
                     if (data.result.files.error == true) {
                         handleUploadError(data.result);
                     } else {
-                        $('#user-account-image').attr('src', data.result.files.url + '&c=' + Math.random());
+                        if (profileImageUploaderUserGuid === profileImageUploaderCurrentUserGuid) {
+                            $('#user-account-image').attr('src', data.result.files.url + '&c=' + Math.random());
+                        } 
                         $('#user-profile-image').attr('src', data.result.files.url + '&c=' + Math.random());
-                        $('.user-' + userGuid).attr('src', data.result.files.url + '&c=' + Math.random());
+                        $('.user-' + profileImageUploaderUserGuid).attr('src', data.result.files.url + '&c=' + Math.random());
                         $('#user-profile-image').addClass('animated bounceIn');
                     }
 

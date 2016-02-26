@@ -290,14 +290,14 @@ class AccountController extends Controller
     public function actionCropBannerImage()
     {
         $model = new \humhub\models\forms\CropProfileImage();
-        $profileImage = new \humhub\libs\ProfileBannerImage(Yii::$app->user->guid);
+        $profileImage = new \humhub\libs\ProfileBannerImage($this->getUser()->guid);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-            return $this->htmlRedirect(Yii::$app->user->getIdentity()->getUrl());
+            return $this->htmlRedirect($this->getUser()->getUrl());
         }
 
-        return $this->renderAjax('cropBannerImage', ['model' => $model, 'profileImage' => $profileImage, 'user' => Yii::$app->user->getIdentity()]);
+        return $this->renderAjax('cropBannerImage', ['model' => $model, 'profileImage' => $profileImage, 'user' => $this->getUser()]);
     }
 
     /**
@@ -315,7 +315,7 @@ class AccountController extends Controller
         $model->image = $file;
 
         if ($model->validate()) {
-            $profileImage = new \humhub\libs\ProfileBannerImage(Yii::$app->user->guid);
+            $profileImage = new \humhub\libs\ProfileBannerImage($this->getUser()->guid);
             $profileImage->setNew($model->image);
 
             $json['error'] = false;
@@ -351,7 +351,7 @@ class AccountController extends Controller
 
             $json['error'] = false;
 
-            $profileImage = new \humhub\libs\ProfileImage(Yii::$app->user->guid);
+            $profileImage = new \humhub\libs\ProfileImage($this->getUser()->guid);
             $profileImage->setNew($model->image);
 
             $json['name'] = "";
@@ -373,14 +373,14 @@ class AccountController extends Controller
     public function actionCropProfileImage()
     {
         $model = new \humhub\models\forms\CropProfileImage();
-        $profileImage = new \humhub\libs\ProfileImage(Yii::$app->user->guid);
+        $profileImage = new \humhub\libs\ProfileImage($this->getUser()->guid);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
-            return $this->htmlRedirect(Yii::$app->user->getIdentity()->getUrl());
+            return $this->htmlRedirect($this->getUser()->getUrl());
         }
 
-        return $this->renderAjax('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => Yii::$app->user->getIdentity()));
+        return $this->renderAjax('cropProfileImage', array('model' => $model, 'profileImage' => $profileImage, 'user' => $this->getUser()));
     }
 
     /**
@@ -398,9 +398,9 @@ class AccountController extends Controller
 
         $image = null;
         if ($type == 'profile') {
-            $image = new \humhub\libs\ProfileImage(Yii::$app->user->guid);
+            $image = new \humhub\libs\ProfileImage($this->getUser()->guid);
         } elseif ($type == 'banner') {
-            $image = new \humhub\libs\ProfileBannerImage(Yii::$app->user->guid);
+            $image = new \humhub\libs\ProfileBannerImage($this->getUser()->guid);
         }
 
         if ($image) {
@@ -409,6 +409,27 @@ class AccountController extends Controller
         }
 
         return $json;
+    }
+
+    /**
+     * Returns the current user of this account
+     * 
+     * An administration can also pass a user id via GET parameter to change users
+     * accounts settings.
+     * 
+     * @return User the user
+     */
+    public function getUser()
+    {
+        if (Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->super_admin === 1) {
+            $user = User::findOne(['guid' => Yii::$app->request->get('userGuid')]);
+            if ($user === null) {
+                throw new HttpException(404, 'Could not find user!');
+            }
+            return $user;
+        }
+
+        return Yii::$app->user->getIdentity();
     }
 
 }
