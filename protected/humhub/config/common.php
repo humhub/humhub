@@ -56,7 +56,7 @@ $config = [
         ],
         'formatter' => [
             'class' => 'humhub\components\i18n\Formatter',
-        ],        
+        ],
         /**
          * Deprecated
          */
@@ -139,6 +139,12 @@ $config = [
         'user' => [
             // Minimum username length
             'minUsernameLength' => 4,
+        ],
+        'ldap' => [
+            // LDAP date field formats
+            'dateFields' => [
+            //'birthday' => 'Y.m.d'
+            ],
         ],
         'formatter' => [
             // Default date format, used especially in DatePicker widgets
