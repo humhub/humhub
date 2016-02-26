@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use Yii;
+use humhub\modules\user\models\Profile;
 
 /**
  * ProfileFieldType is the base class for all Profile Field Types.
@@ -298,6 +299,16 @@ class BaseType extends \yii\base\Model
         }
 
         return $value;
+    }
+
+    /**
+     * Load field type default settings to the profile
+     * 
+     * @param Profile $profile
+     */
+    public function loadDefaults(Profile $profile)
+    {
+        
     }
 
 }

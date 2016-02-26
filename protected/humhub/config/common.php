@@ -148,6 +148,12 @@ $config = [
             // Minimum username length
             'minUsernameLength' => 4,
         ],
+        'ldap' => [
+            // LDAP date field formats
+            'dateFields' => [
+            //'birthday' => 'Y.m.d'
+            ],
+        ],
         'formatter' => [
             // Default date format, used especially in DatePicker widgets
             // Deprecated: Use Yii::$app->formatter->dateInputFormat instead.

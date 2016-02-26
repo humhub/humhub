@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -19,6 +19,7 @@ use humhub\libs\DbDateValidator;
  */
 class DateTime extends BaseType
 {
+
     /**
      * Checkbox show also time picker
      *
@@ -94,6 +95,7 @@ class DateTime extends BaseType
                 'type' => 'datetime',
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
+                'readonly' => (!$this->profileField->editable),
                 'dateTimePickerOptions' => array(
                     'pickTime' => ($this->showTimePicker)
                 )
