@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -57,7 +57,7 @@ class HForm extends \yii\base\Component
                 $hasErrors = true;
             }
         }
-        
+
         foreach ($this->models as $model) {
             if (!$model->validate()) {
                 $hasErrors = true;
@@ -173,13 +173,18 @@ class HForm extends \yii\base\Component
             if (isset($definition['prompt']) && $definition['prompt']) {
                 $options['prompt'] = $definition['prompt'];
             }
-
+            if (isset($definition['label']) && $definition['label']) {
+                $options['label'] = $definition['label'];
+            }
             if (isset($definition['type'])) {
                 if ($definition['type'] == 'text') {
                     $output .= $this->form->field($model, $name)->textInput($options);
                 } elseif ($definition['type'] == 'dropdownlist') {
                     $output .= $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                 } elseif ($definition['type'] == 'checkbox') {
+                    if (isset($options['readOnly']) && $options['readOnly']) {
+                        $options['disabled'] = 'disabled';
+                    }
                     $output .= $this->form->field($model, $name)->checkbox($options);
                 } elseif ($definition['type'] == 'textarea') {
                     $output .= $this->form->field($model, $name)->textarea($options);
@@ -192,7 +197,7 @@ class HForm extends \yii\base\Component
                     if (isset($definition['format'])) {
                         $format = $definition['format'];
                     }
-                    $output .= $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['dateFormat' => $format, 'clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true], 'options' => ['class' => 'form-control']]);
+                    $output .= $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['dateFormat' => $format, 'clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 'options' => ['class' => 'form-control']]);
                 } else {
                     $output .= "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
