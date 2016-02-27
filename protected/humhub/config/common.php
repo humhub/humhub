@@ -77,6 +77,9 @@ $config = [
                 ],
             ],
         ],
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
         'view' => [
             'class' => '\humhub\components\View',
             'theme' => [
