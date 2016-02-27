@@ -233,10 +233,10 @@ class Ldap extends \yii\base\Component
             if ($user->profile->validate() && $user->profile->save()) {
                 $this->trigger(self::EVENT_UPDATE_USER, new ParameterEvent(['user' => $user, 'node' => $node]));
             } else {
-                Yii::error('Could not create or update ldap user profile! (' . print_r($user->profile->getErrors(), true) . ")");
+                Yii::error('Could not create or update ldap user profil for user ' . $user->username . '! (' . print_r($user->profile->getErrors(), true) . ")");
             }
         } else {
-            Yii::error('Could not create or update ldap user ' . $user->username . '! (' . print_r($user->getErrors(), true) . ")");
+            Yii::error('Could not create or update ldap user: ' . $user->username . '! (' . print_r($user->getErrors(), true) . ")");
         }
 
         return $user;
