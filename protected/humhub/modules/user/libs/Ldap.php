@@ -221,7 +221,7 @@ class Ldap extends \yii\base\Component
                     $dateFormat = Yii::$app->params['ldap']['dateFields'][$ldapAttribute];
                     $date = \DateTime::createFromFormat($dateFormat, $ldapValue);
                     if ($date !== false) {
-                        $ldapValue = $date->format('Y-m-d 00:00:00');
+                        $ldapValue = $date->format('Y-m-d');
                     } else {
                         $ldapValue = "";
                     }
