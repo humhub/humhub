@@ -47,25 +47,6 @@ use yii\helpers\Url;
                     ]
                 ]);
                 ?>
-
-                <?php
-                /*
-                  $this->widget('ext.yii-jcrop.jCropWidget', array(
-                  'imageUrl' => $profileImage->getUrl('_org') . "?nocache=" . time(),
-                  'formElementX' => 'CropProfileImageForm_cropX',
-                  'formElementY' => 'CropProfileImageForm_cropY',
-                  'formElementWidth' => 'CropProfileImageForm_cropW',
-                  'formElementHeight' => 'CropProfileImageForm_cropH',
-                  'jCropOptions' => array(
-                  'aspectRatio' => '6.3',
-                  'boxWidth' => 400,
-                  'setSelect' => array(0, 0, 267, 48),
-                  ),
-                  )
-                  );
-                 *
-                 */
-                ?>
             </div>
 
 
@@ -78,7 +59,7 @@ use yii\helpers\Url;
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                     'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => Url::toRoute('/user/account/crop-banner-image'),
+                    'url' => Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]),
                 ],
                 'htmlOptions' => [
                     'class' => 'btn btn-primary'

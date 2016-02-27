@@ -62,15 +62,13 @@ use yii\helpers\Url;
                     'id' => 'blabla',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
                     'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => Url::toRoute('/user/account/crop-profile-image'),
+                    'url' => Url::toRoute(['/user/account/crop-profile-image', 'userGuid' => $user->guid]),
                 ],
                 'htmlOptions' => [
                     'class' => 'btn btn-primary'
                 ]
             ]);
             ?>
-
-            <?php //echo CHtml::submitButton(Yii::t('UserModule.views_profile_cropProfileImage', 'Save'), array('class' => 'btn btn-primary'));    ?>
 
             <button type="button" class="btn btn-primary"
                     data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropProfileImage', 'Close'); ?></button>

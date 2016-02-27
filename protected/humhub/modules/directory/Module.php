@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,6 +21,7 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
+
     /**
      * @inheritdoc
      */
@@ -30,7 +31,12 @@ class Module extends \humhub\components\Module
      * @var string sort field (e.g. lastname) of member list (leave empty to sort by auto sort search)
      */
     public $memberListSortField = "";
-    
+
+    /**
+     * @var int default page size for directory pages
+     */
+    public $pageSize = 25;
+
     /**
      * On build of the TopMenu, check if module is enabled
      * When enabled add a menu item

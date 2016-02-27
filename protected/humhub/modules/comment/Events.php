@@ -81,7 +81,13 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryLinksInit($event)
     {
-        $event->sender->addWidget(widgets\CommentLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
+        if ($event->sender->object->content === null) {
+            return;
+        }
+        
+        if (\Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
+            $event->sender->addWidget(widgets\CommentLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
+        }
     }
 
     /**

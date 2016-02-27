@@ -14,10 +14,9 @@ use Yii;
  * ProfileFieldTypeBirthday is a special profile fields for birthdays.
  * It provides an extra option to hide the year on profile
  *
- * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class Birthday extends DateTime
+class Birthday extends Date
 {
 
     /**
@@ -125,7 +124,7 @@ class Birthday extends DateTime
         $internalName = $this->profileField->internal_name;
         $birthdayDate = $user->profile->$internalName;
 
-        if ($birthdayDate == "" || $birthdayDate == "0000-00-00 00:00:00")
+        if ($birthdayDate == "" || $birthdayDate == "0000-00-00")
             return "";
 
         $internalNameHideAge = $this->profileField->internal_name . "_hide_year";

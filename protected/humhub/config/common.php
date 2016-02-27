@@ -147,6 +147,8 @@ $config = [
         'user' => [
             // Minimum username length
             'minUsernameLength' => 4,
+            // Administrators can change profile image/banners of alle users
+            'adminCanChangeProfileImages' => false
         ],
         'ldap' => [
             // LDAP date field formats

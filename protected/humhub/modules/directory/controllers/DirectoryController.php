@@ -92,7 +92,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
         $searchOptions = [
             'model' => \humhub\modules\user\models\User::className(),
             'page' => $page,
-            'pageSize' => Setting::Get('paginationSize'),
+            'pageSize' => $this->module->pageSize,
         ];
 
         if ($this->module->memberListSortField != "") {
@@ -136,7 +136,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
             'model' => \humhub\modules\space\models\Space::className(),
             'page' => $page,
             'sortField' => ($keyword == '') ? 'title' : null,
-            'pageSize' => Setting::Get('paginationSize'),
+            'pageSize' => $this->module->pageSize,
         ]);
 
         $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
