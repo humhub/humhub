@@ -19,6 +19,9 @@
     border-bottom: none;
 }
 
+.md-editor textarea {
+    padding:10px;    
+}
 
 .md-editor > textarea:focus {
      border: 0;
