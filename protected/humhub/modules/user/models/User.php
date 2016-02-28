@@ -415,6 +415,10 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             return true;
         }
 
+        if ($user === null) {
+            $user = Yii::$app->user->getIdentity();
+        }
+        
         if ($user !== null && Yii::$app->getModule('friendship')->getIsEnabled()) {
             if (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS) {
                 return true;
