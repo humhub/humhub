@@ -1,11 +1,11 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use yii\bootstrap\ActiveForm;
 use humhub\models\Setting;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
-        <?php $form = CActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
@@ -29,8 +29,6 @@ use humhub\models\Setting;
                 <br/>
             <?php endif; ?>
 
-            <?php echo $form->error($model, 'invite'); ?>
-
             <div class="tab-content">
                 <div class="tab-pane active" id="internal">
 
@@ -38,7 +36,8 @@ use humhub\models\Setting;
                     <?php echo Yii::t('SpaceModule.views_space_invite', 'To invite users to this space, please type their names below to find and pick them.'); ?>
 
                     <br/><br/>
-                    <?php echo $form->textField($model, 'invite', array('class' => 'form-control', 'id' => 'invite')); ?>
+
+                    <?php echo $form->field($model, 'invite')->textInput(['id' => 'invite'])->label(false); ?>
                     <?php
                     // attach mention widget to it
                     echo humhub\modules\user\widgets\UserPicker::widget(array(
@@ -55,11 +54,8 @@ use humhub\models\Setting;
                     <div class="tab-pane" id="external">
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>
-
                         <div class="form-group">
-                            <?php //echo $form->label($model, 'inviteExternal'); ?>
-                            <?php echo $form->textArea($model, 'inviteExternal', array('class' => 'form-control', 'rows' => '3', 'id' => 'email_invite', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses'))); ?>
-                            <?php echo $form->error($model, 'inviteExternal'); ?>
+                            <?php echo $form->field($model, 'inviteExternal')->textArea(['rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses'), 'id' => 'email_invite'])->label(false); ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -89,7 +85,7 @@ use humhub\models\Setting;
             <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
     </div>
 
 </div>
@@ -103,11 +99,9 @@ use humhub\models\Setting;
         $('.modal-dialog').addClass('shake');
 
         // check if there is an error at the second tab
-    <?php if ($form->error($model, 'inviteExternal') != null) : ?>
-
-            // show tab
+    <?php if ($model->hasErrors('inviteExternal')) : ?>
+            // show tab external tab
             $('#tabs a:last').tab('show');
-
     <?php endif; ?>
 
 <?php endif; ?>

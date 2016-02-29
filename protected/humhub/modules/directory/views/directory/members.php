@@ -6,13 +6,16 @@ use yii\helpers\Html;
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Member</strong> directory'); ?>
+        <?php if ($group === null) : ?>
+            <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Member</strong> directory'); ?>
+        <?php else: ?>
+            <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Group</strong> members - {group}', ['{group}' => $group->name]); ?>
+        <?php endif; ?>
     </div>
 
     <div class="panel-body">
 
         <!-- search form -->
-
         <?php echo Html::beginForm(Url::to(['/directory/directory/members']), 'get', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>
@@ -41,12 +44,12 @@ use yii\helpers\Html;
 
                     <!-- Follow Handling -->
                     <div class="pull-right">
-                        <?php
-                        if (!Yii::$app->user->isGuest && !Yii::$app->user->id === $user->id) {
-                            $followed = $user->isFollowedByUser();
-                            echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Follow'), 'javascript:setFollow("' . Url::to(['/user/profile/follow']) . '", "' . $user->id . '")', array('class' => 'btn btn-info btn-sm ' . (($followed) ? 'hide' : ''), 'id' => 'button_follow_' . $user->id));
-                            echo Html::a(Yii::t('DirectoryModule.views_directory_members', 'Unfollow'), 'javascript:setUnfollow("' . Url::to(['/user/profile/unfollow']) . '", "' . $user->id . '")', array('class' => 'btn btn-primary btn-sm ' . (($followed) ? '' : 'hide'), 'id' => 'button_unfollow_' . $user->id));
-                        }
+                        <?=
+                        \humhub\modules\user\widgets\UserFollowButton::widget([
+                            'user' => $user,
+                            'followOptions' => ['class' => 'btn btn-primary btn-sm'],
+                            'unfollowOptions' => ['class' => 'btn btn-info btn-sm']
+                        ]);
                         ?>
                     </div>
 
@@ -94,29 +97,3 @@ use yii\helpers\Html;
 <div class="pagination-container">
     <?php echo \humhub\widgets\LinkPager::widget(['pagination' => $pagination]); ?>
 </div>
-
-<script type="text/javascript">
-
-    // ajax request to follow the user
-    function setFollow(url, id) {
-        jQuery.ajax({
-            url: url,
-            type: "POST",
-            'success': function () {
-                $("#button_follow_" + id).addClass('hide');
-                $("#button_unfollow_" + id).removeClass('hide');
-            }});
-    }
-
-    // ajax request to unfollow the user
-    function setUnfollow(url, id) {
-        jQuery.ajax({
-            url: url,
-            type: "POST",
-            'success': function () {
-                $("#button_follow_" + id).removeClass('hide');
-                $("#button_unfollow_" + id).addClass('hide');
-            }});
-    }
-
-</script>

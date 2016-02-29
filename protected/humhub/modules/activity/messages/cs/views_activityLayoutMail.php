@@ -1,5 +1,5 @@
 <?php
 return array (
-  'see online' => 'otevřít v prohlížeči',
-  'via' => 'přes',
+  'see online' => 'Otevřít v prohlížeči',
+  'via' => 'prostřednictvím',
 );

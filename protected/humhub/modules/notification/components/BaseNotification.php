@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -28,6 +28,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
 
     const OUTPUT_WEB = 'web';
     const OUTPUT_MAIL = 'mail';
+    const OUTPUT_MAIL_PLAINTEXT = 'mail_plaintext';
     const OUTPUT_TEXT = 'text';
 
     /**
@@ -73,6 +74,13 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
      */
     protected $layoutMail = "@humhub/modules/notification/views/layouts/mail.php";
 
+	/**
+     * Layout file for mail plaintext version
+     *
+     * @var string
+     */
+    protected $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
+
     /**
      * The notification record this notification belongs to
      *
@@ -107,8 +115,8 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
         $viewFile = $this->getViewPath() . '/' . $this->viewName . '.php';
 
         // Switch to extra mail view file - if exists (otherwise use web view)
-        if ($mode == self::OUTPUT_MAIL) {
-            $viewMailFile = $this->getViewPath() . '/mail/' . $this->viewName . '.php';
+        if ($mode == self::OUTPUT_MAIL || $mode == self::OUTPUT_MAIL_PLAINTEXT) {
+            $viewMailFile = $this->getViewPath() . '/mail/' . ($mode == self::OUTPUT_MAIL_PLAINTEXT ? 'plaintext/' : '') . $this->viewName . '.php';
             if (file_exists($viewMailFile)) {
                 $viewFile = $viewMailFile;
             }
@@ -119,7 +127,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
 
         $params['content'] = Yii::$app->getView()->renderFile($viewFile, $params, $this);
 
-        return Yii::$app->getView()->renderFile(($mode == self::OUTPUT_WEB) ? $this->layoutWeb : $this->layoutMail, $params, $this);
+        return Yii::$app->getView()->renderFile(($mode == self::OUTPUT_WEB) ? $this->layoutWeb : ($mode == self::OUTPUT_MAIL_PLAINTEXT ? $this->layoutMailPlaintext : $this->layoutMail), $params, $this);
     }
 
     /**

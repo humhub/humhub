@@ -24,7 +24,6 @@ return [
     'Please type at least 3 characters' => '',
     'Save' => '',
     '<strong>Latest</strong> updates' => 'Atualizações',
-    '<strong>Search</strong>' => '<strong>Busca</strong>',
     'Account settings' => 'Configurações da conta',
     'Administration' => 'Administração',
     'Back' => 'Voltar',

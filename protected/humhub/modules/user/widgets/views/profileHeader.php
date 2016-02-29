@@ -7,9 +7,10 @@ use humhub\modules\space\models\Space;
 
 if ($isProfileOwner) {
     $this->registerJsFile('@web/resources/user/profileHeaderImageUpload.js');
-    $this->registerJs("var userGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
-    $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/profile-image-upload') . "';", \yii\web\View::POS_BEGIN);
-    $this->registerJs("var profileHeaderUploaderUrl='" . Url::toRoute('/user/account/banner-image-upload') . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileImageUploaderUserGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileImageUploaderCurrentUserGuid='" . Yii::$app->user->getIdentity()->guid . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileImageUploaderUrl='" . Url::to(['/user/account/profile-image-upload', 'userGuid' => $user->guid]) . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileHeaderUploaderUrl='" . Url::to(['/user/account/banner-image-upload', 'userGuid' => $user->guid]) . "';", \yii\web\View::POS_BEGIN);
 }
 ?>
 <div class="panel panel-default panel-profile">
@@ -71,7 +72,7 @@ if ($isProfileOwner) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Url::toRoute('/user/account/crop-banner-image'); ?>"
+                       href="<?php echo Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                     <?php
@@ -85,7 +86,7 @@ if ($isProfileOwner) {
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'banner']),
+                        'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'banner', 'userGuid' => $user->guid]),
                         'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                     ));
                     ?>
@@ -151,7 +152,7 @@ if ($isProfileOwner) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Url::toRoute('/user/account/crop-profile-image'); ?>"
+                       href="<?php echo Url::to(['/user/account/crop-profile-image', 'userGuid' => $user->guid]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
                     <?php
@@ -165,7 +166,7 @@ if ($isProfileOwner) {
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'profile']),
+                        'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'profile', 'userGuid' => $user->guid]),
                         'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                     ));
                     ?>

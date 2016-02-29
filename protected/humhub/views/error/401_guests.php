@@ -15,7 +15,7 @@ use yii\helpers\Url;
             <br />
             <hr>
 
-            <?php echo Html::a(Yii::t('base', 'Login'), Yii::$app->user->loginUrl, array('class' => 'btn btn-info', 'data-toggle'=>'modal', 'data-target'=>'#globalModal')); ?>
+            <?php echo Html::a(Yii::t('base', 'Login'), Yii::$app->user->loginUrl, array('class' => 'btn btn-info', 'data-target' => '#globalModal')); ?>
             <a href="javascript:history.back();" class="btn btn-primary  pull-right"><?php echo Yii::t('base', 'Back'); ?></a>
         </div>
     </div>

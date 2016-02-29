@@ -1,11 +1,18 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * AuthenticationSettingsForm
+ * 
  * @since 0.5
  */
 class AuthenticationSettingsForm extends \yii\base\Model
@@ -27,7 +34,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
         return array(
             array(['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess'], 'boolean'),
             array('defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\modules\user\models\Group::className()),
-            array('defaultUserProfileVisibility', 'boolean'),
+            array('defaultUserProfileVisibility', 'in', 'range' => [1, 2]),
             array('defaultUserIdleTimeoutSec', 'integer', 'min' => 20),
             array('defaultUserIdleTimeoutSec', 'string', 'max' => 10)
         );

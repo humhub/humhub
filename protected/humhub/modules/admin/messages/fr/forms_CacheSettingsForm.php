@@ -17,11 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'APC' => '',
-    'File' => '',
-    'No caching (Testing only!)' => '',
-    'Cache Backend' => 'BackEnd de la cache',
-    'Default Expire Time (in seconds)' => 'Temps d\'Expiration par défaut (en secondes)',
+    'APC' => 'APC',
+    'Cache Backend' => 'Type de mémoire cache',
+    'Default Expire Time (in seconds)' => 'Temps d\'expiration par défaut (en secondes)',
+    'File' => 'Fichier',
+    'No caching (Testing only!)' => 'Pas de cache',
     'PHP APC Extension missing - Type not available!' => 'Extension PHP APC non trouvée - Service non disponible !',
-    'PHP SQLite3 Extension missing - Type not available!' => 'Extension PHP SQLite3 non trouvée - Service non disponible !',
 ];

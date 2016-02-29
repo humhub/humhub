@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>لطقا</strong> واردشوید',
     '<strong>Sign</strong> up' => '<strong>عضو</strong> شوید',
     'Create a new one.' => 'ایجاد یک مورد جدید.',

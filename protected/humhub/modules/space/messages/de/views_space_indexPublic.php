@@ -2,8 +2,8 @@
 return array (
   'Accept Invite' => 'Einladung annehmen',
   'Become member' => 'Mitglied werden',
-  'Cancel membership' => 'Mitgliedschaft kündigen',
-  'Cancel pending membership application' => 'Offenen Mitgliedschaftsantrag zurückziehen',
+  'Cancel membership' => 'Mitgliedschaft beenden',
+  'Cancel pending membership application' => 'Offenen Mitgliedschaftsantrag widerrufen',
   'Deny Invite' => 'Einladung ablehnen',
   'Follow' => 'Folgen',
   'Request membership' => 'Mitgliedschaft beantragen',

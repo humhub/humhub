@@ -82,7 +82,7 @@ class Events extends \yii\base\Object
         $integrityController->showTestHeadline("User Module - Profile (" . Profile::find()->count() . " entries)");
         foreach (Profile::find()->joinWith(['user'])->all() as $profile) {
             if ($profile->user == null) {
-                if ($integrityController->showFix("Deleting profile " . $profile->id . " without existing user!")) {
+                if ($integrityController->showFix("Deleting profile " . $profile->user_id . " without existing user!")) {
                     $profile->delete();
                 }
             }
@@ -134,6 +134,11 @@ class Events extends \yii\base\Object
             $controller->stdout("Refresh ldap users... ");
             Ldap::getInstance()->refreshUsers();
             $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        }
+
+        // Delete expired session
+        foreach (models\Session::find()->where(['<', 'expire', time()])->all() as $session) {
+            $session->delete();
         }
     }
 

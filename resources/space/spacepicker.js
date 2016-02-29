@@ -23,11 +23,15 @@ $.fn.spacepicker = function (options) {
         inputId: "",
         maxSpaces: 0,
         searchUrl: "",
+        placeholder: "",
         currentValue: "",
-        templates: {
-            inputStructure: '<div class="space_picker_container"><ul class="tag_input" id="space_tags"><li id="space_tag_input"><input type="text" id="space_input_field" class="tag_input_field" value="" autocomplete="off" placeholder="Add a place"></li></ul><ul class="dropdown-menu" id="spacepicker" role="menu" aria-labelledby="dropdownMenu"></ul></div>'
-        }
+    }, options);
 
+    // add input structure template
+    options = $.extend({
+        templates: {
+            inputStructure: '<div class="space_picker_container"><ul class="tag_input" id="space_tags"><li id="space_tag_input"><input type="text" id="space_input_field" class="tag_input_field" value="" autocomplete="off" placeholder="'+options.placeholder+'"></li></ul><ul class="dropdown-menu" id="spacepicker" role="menu" aria-labelledby="dropdownMenu"></ul></div>'
+        }
     }, options);
 
 

@@ -84,6 +84,7 @@ class UserController extends Controller
                     'type' => 'dropdownlist',
                     'disabled' => 'disabled',
                     'class' => 'form-control',
+                    'readonly' => 'true',
                     'items' => array(
                         User::AUTH_MODE_LOCAL => Yii::t('AdminModule.controllers_UserController', 'Local'),
                         User::AUTH_MODE_LDAP => Yii::t('AdminModule.controllers_UserController', 'LDAP'),

@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Group</strong> members - {group}' => '',
     '<strong>Member</strong> directory' => '',
     'Follow' => '',
     'No members found!' => '',

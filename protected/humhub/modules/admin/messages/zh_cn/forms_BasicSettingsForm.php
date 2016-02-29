@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Date input format' => '日期格式',
     'Logo upload' => 'LOGO上传',
     'Server Timezone' => '服务器时区',
     'Show sharing panel on dashboard' => '在主面板上显示分享面板',

@@ -11,7 +11,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
     <div class="row">
         <div class="col-md-12">
             <div class="panel">
-                <div class="panel-heading"><?php echo Yii::t('base', '<strong>Search</strong>'); ?></div>
+                <div class="panel-heading"><strong><?php echo Yii::t('base', 'Search'); ?></strong></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-3"></div>
@@ -32,7 +32,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
                             <div id="collapse-search-settings" class="panel-collapse collapse">
                                 <br>
-                                <?php echo Yii::t('SearchModule.views_search_index', 'Search only in certain spaces:');?>
+                                <?php echo Yii::t('SearchModule.views_search_index', 'Search only in certain spaces:'); ?>
                                 <?php echo Html::textInput('limitSpaceGuids', $limitSpaceGuids, array('placeholder' => 'Specify space', 'style' => 'width:200px', 'id' => 'space_filter')); ?>
                                 <?php
                                 echo humhub\modules\space\widgets\Picker::widget([

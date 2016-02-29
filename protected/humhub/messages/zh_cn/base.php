@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Latest</strong> updates' => '<strong>最近</strong> 更新',
-    '<strong>Search</strong>' => '<strong>搜索</strong>',
     'Allow' => '允许',
     'Choose language:' => '选择语言',
     'Could not determine content container!' => '无法检测到内容容器！',

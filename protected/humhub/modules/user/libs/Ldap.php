@@ -213,17 +213,30 @@ class Ldap extends \yii\base\Component
             // Update Profile Fields
             foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
                 $ldapAttribute = $profileField->ldap_attribute;
+                $ldapValue = $node->getAttribute($ldapAttribute, 0);
                 $profileFieldName = $profileField->internal_name;
-                $user->profile->$profileFieldName = $node->getAttribute($ldapAttribute, 0);
+
+                // Handle date fields (formats are specified in config)
+                if (isset(Yii::$app->params['ldap']['dateFields'][$ldapAttribute]) && $ldapValue != '') {
+                    $dateFormat = Yii::$app->params['ldap']['dateFields'][$ldapAttribute];
+                    $date = \DateTime::createFromFormat($dateFormat, $ldapValue);
+                    if ($date !== false) {
+                        $ldapValue = $date->format('Y-m-d');
+                    } else {
+                        $ldapValue = "";
+                    }
+                }
+
+                $user->profile->$profileFieldName = $ldapValue;
             }
 
             if ($user->profile->validate() && $user->profile->save()) {
                 $this->trigger(self::EVENT_UPDATE_USER, new ParameterEvent(['user' => $user, 'node' => $node]));
             } else {
-                Yii::error('Could not create or update ldap user profile! (' . print_r($user->profile->getErrors(), true) . ")");
+                Yii::error('Could not create or update ldap user profil for user ' . $user->username . '! (' . print_r($user->profile->getErrors(), true) . ")");
             }
         } else {
-            Yii::error('Could not create or update ldap user '.$user->username.'! (' . print_r($user->getErrors(), true) . ")");
+            Yii::error('Could not create or update ldap user: ' . $user->username . '! (' . print_r($user->getErrors(), true) . ")");
         }
 
         return $user;

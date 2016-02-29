@@ -17,15 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
-    'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Opret</strong> ny side',
     'Advanced access settings' => 'Avancerede adgangsindstillinger',
-    'For everyone' => 'For alle',
-    'Invite and request' => 'Inviter og anmod',
-    'Join Policy' => 'Adgangs politik',
-    'Only by invite' => 'Kun ved invitation',
-    'Visibility' => 'Synlighed',
+    'Color' => 'Farve',
+    'Next' => 'Næste',
     'space description' => 'side beskrivelse',
     'space name' => 'side navn',
 ];

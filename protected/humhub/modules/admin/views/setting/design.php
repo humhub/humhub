@@ -23,6 +23,13 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
 
         <?php echo $form->field($model, 'spaceOrder')->dropdownList(['0' => Yii::t('AdminModule.views_setting_design', 'Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design', 'Last visit')]); ?>
 
+        <?php
+        echo $form->field($model, 'dateInputDisplayFormat')->dropdownList([
+            '' => Yii::t('AdminModule.views_setting_design', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
+            'php:d/m/Y' => Yii::t('AdminModule.views_setting_design', 'Fixed format (mm/dd/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
+        ]);
+        ?>
+
         <?php echo $form->field($model, 'logo')->fileInput(['id' => 'logo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
 
         <div class="well">

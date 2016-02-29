@@ -44,7 +44,7 @@ class TimeAgo extends \yii\base\Widget
     {
         $elapsed = time() - $this->timestamp;
 
-        if (Yii::$app->params['formatter']['timeAgoBefore'] !== false && $elapsed > Yii::$app->params['formatter']['timeAgoBefore']) {
+        if (Yii::$app->params['formatter']['timeAgoBefore'] !== false && $elapsed >= Yii::$app->params['formatter']['timeAgoBefore']) {
             return $this->renderDateTime($elapsed);
         }
 
@@ -68,8 +68,6 @@ class TimeAgo extends \yii\base\Widget
 
         $this->getView()->registerJs('$(".time").timeago();', \yii\web\View::POS_END, 'timeago');
         return '<span class="time" title="' . $this->timestamp . '">' . $this->getFullDateTime() . '</span>';
-
-        #$date = Yii::$app->formatter->asRelativeTime($this->timestamp);
     }
 
     /**
@@ -80,11 +78,11 @@ class TimeAgo extends \yii\base\Widget
      */
     public function renderDateTime($elapsed)
     {
-        $date = Yii::$app->formatter->asDate($this->timestamp, 'medium');
-
-        // Show time within the last 72 hours
-        if ($elapsed < 60 * 60 * 24 * 3) {
-            $date .= " " . Yii::$app->formatter->asTime($this->timestamp, 'short');
+        // Show time when within specified range
+        if (Yii::$app->params['formatter']['timeAgoHideTimeAfter'] === false || $elapsed <= Yii::$app->params['formatter']['timeAgoHideTimeAfter']) {
+            $date = $this->getFullDateTime();
+        } else {
+            $date = Yii::$app->formatter->asDate($this->timestamp, 'medium');
         }
 
         return '<span class="time"><span title="' . $this->getFullDateTime() . '">' . $date . '</span></span>';
@@ -97,7 +95,11 @@ class TimeAgo extends \yii\base\Widget
      */
     protected function getFullDateTime()
     {
-        return Yii::$app->formatter->asDate($this->timestamp, 'full') . ' - ' . Yii::$app->formatter->asTime($this->timestamp, 'short');
+        if (isset(Yii::$app->params['formatter']['timeAgoFullDateCallBack']) && is_callable(Yii::$app->params['formatter']['timeAgoFullDateCallBack'])) {
+            return call_user_func(Yii::$app->params['formatter']['timeAgoFullDateCallBack'], $this->timestamp);
+        }
+
+        return Yii::$app->formatter->asDate($this->timestamp, 'medium') . ' - ' . Yii::$app->formatter->asTime($this->timestamp, 'short');
     }
 
 }

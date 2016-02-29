@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Crea</strong> un nou espai',
     'Advanced access settings' => 'Configuració avançada',
-    'For everyone' => 'Per tothom',
-    'Invite and request' => 'Invitació i petició',
-    'Join Policy' => 'Política d\'admissió',
-    'Only by invite' => 'Només per invitació',
-    'Visibility' => 'Visibilitat',
     'space description' => 'descripció de l\'espai',
     'space name' => 'nom de l\'espai',
 ];

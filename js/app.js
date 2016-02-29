@@ -156,9 +156,9 @@ $(document).ready(function () {
 function setModalHandler() {
 
     // unbind all previously-attached events
-    $("a[data-target=#globalModal]").unbind();
+    $("a[data-target='#globalModal']").unbind();
 
-    $("a[data-target=#globalModal]").click(function (ev) {
+    $("a[data-target='#globalModal']").click(function (ev) {
         ev.preventDefault();
 
         $("#globalModal").modal("show");

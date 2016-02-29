@@ -1,11 +1,11 @@
 <?php
 return array (
-  'LDAP' => 'LDAP',
-  'Local' => 'Lokal',
-  'Become this user' => 'Werden Sie dieser Benutzer',
+  'Become this user' => 'Als dieser Benutzer anmelden',
   'Delete' => 'Löschen',
   'Disabled' => 'Deaktivieren',
   'Enabled' => 'Aktivieren',
+  'LDAP' => 'LDAP',
+  'Local' => 'Lokal',
   'Save' => 'Speichern',
   'Unapproved' => 'Nicht genehmigt',
   'User not found!' => 'Benutzer nicht gefunden!',

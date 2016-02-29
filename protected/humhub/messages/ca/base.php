@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search</strong>' => '',
     'Allow' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not determine content container!' => '',

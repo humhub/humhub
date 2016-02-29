@@ -2,6 +2,11 @@
 
 Here you will learn how you can adapt existing themes to working fine with actually versions.
 
+## Migrate from 1.0.0-beta.4
+
+The following line was added to the HumHub Base Theme Less/Css file due to a Bootstrap update:
+https://github.com/humhub/humhub/blob/0a388d225a53fd873773cf0989d6e10aaf66996a/themes/HumHub/css/theme.less#L648
+
 ## Migrate from 0.11.x to 0.20
 
 As you know, HumHub based on the Yii Framework. In the new 0.20 release, the Framework was changed from Yii 1.1 to Yii 2. With this change the style.css in **webroot/css/** was removed and from now all styles are merged in the theme.css under  **webroot/themes/humhub/css/**.

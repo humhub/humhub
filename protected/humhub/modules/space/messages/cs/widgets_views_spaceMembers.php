@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Get complete members list' => '',
+    'Show all' => '',
     '<strong>New</strong> member request' => '<strong>Nová</strong> žádost o členství',
     '<strong>Space</strong> members' => '<strong>Členové</strong> prostoru',
 ];

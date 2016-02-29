@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => 'انجمن جدید <strong>ایجاد کنید</strong>',
     'Advanced access settings' => 'تنظیمات پیشرفته‌ی دسترسی',
-    'For everyone' => 'برای همه',
-    'Invite and request' => 'دعوت و درخواست',
-    'Join Policy' => 'سیاست پیوستن',
-    'Only by invite' => 'فقط با دعوت',
-    'Visibility' => 'قابلیت مشاهده',
     'space description' => 'توضیحات انجمن',
     'space name' => 'نام انجمن',
 ];

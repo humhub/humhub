@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Latest</strong> updates' => '',
-    '<strong>Search</strong>' => '',
     'Account settings' => '',
     'Administration' => '',
     'Allow' => '',

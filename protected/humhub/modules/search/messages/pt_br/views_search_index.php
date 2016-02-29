@@ -19,6 +19,7 @@
 return [
     'Advanced search settings' => '',
     'Search for user, spaces and content' => '',
+    'Search only in certain spaces:' => '',
     '<strong>Search </strong> results' => '<strong>Resultados </strong> da pesquisa',
     'All' => 'Todos',
     'Content' => 'Conteúdo',

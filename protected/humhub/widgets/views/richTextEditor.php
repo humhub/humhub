@@ -8,19 +8,15 @@ use yii\helpers\Url;
 <script type="text/javascript">
 
     $(document).ready(function () {
+        //The original form input element will be hidden
+        var $formInput = $('#<?php echo $id; ?>').hide();
+        var placeholder = $formInput.attr('placeholder');
+        
+        var $editableContent = $('#<?php echo $id; ?>_contenteditable');
 
-        // Get placeholder
-        var placeholder = $('#<?php echo $id; ?>').attr('placeholder');
-
-        // hide original input element
-        $('#<?php echo $id; ?>').hide();
-
-        // check if contenteditable div already exists
-        if ($('#<?php echo $id; ?>_contenteditable').length == 0) {
-
-            // add contenteditable div
-            $('#<?php echo $id; ?>').after('<div id="<?php echo $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" data-query="0" contenteditable="true">' + placeholder + '</div>');
-
+        if (!$editableContent.length) {
+            $formInput.after('<div id="<?php echo $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" data-query="0" contenteditable="true">' + placeholder + '</div>');
+            $editableContent = $('#<?php echo $id; ?>_contenteditable');
         }
 
         var emojis = [
@@ -41,7 +37,7 @@ use yii\helpers\Url;
         });
 
         // init at plugin
-        $('#<?php echo $id; ?>_contenteditable').atwho({
+        $editableContent.atwho({
             at: "@",
             data: ["<?php echo Yii::t('base', 'Please type at least 3 characters') ?>"],
             insert_tpl: "<a href='<?php echo Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
@@ -52,20 +48,14 @@ use yii\helpers\Url;
             callbacks: {
                 matcher: function (flag, subtext, should_start_with_space) {
                     var match, regexp;
-
-                    flag = flag.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-
-                    if (should_start_with_space) {
-                        flag = '(?:^|\\s)' + flag;
+                    regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']*$)/); 
+                    match = regexp.exec(subtext);
+                    
+                    if (match && typeof match[2] !== 'undefined') {
+                        return match[2];
                     }
-
-                    regexp = new RegExp(flag + '([A-Za-z0-9_\\s\+\-\]*)$', 'gi');
-                    match = regexp.exec(subtext.replace(/\s/g, " "));
-                    if (match) {
-                        return match[2] || match[1];
-                    } else {
-                        return null;
-                    }
+                    
+                    return null;
                 },
                 remote_filter: function (query, callback) {
 
@@ -100,27 +90,25 @@ use yii\helpers\Url;
             limit: 100
         });
 
+        //it seems atwho detatches the original element so we have to do a requery
+        $editableContent = $('#<?php echo $id; ?>_contenteditable');
 
         // remove placeholder text
-        $('#<?php echo $id; ?>_contenteditable').focus(function () {
-            $(this).removeClass('atwho-placeholder');
-
-            if ($(this).html() == placeholder) {
+        $editableContent.on('focus', function () {
+            if ($(this).hasClass('atwho-placeholder')) {
+                $(this).removeClass('atwho-placeholder');
                 $(this).html('');
                 $(this).focus();
             }
-        })
-        // add placeholder text, if input is empty
-        $('#<?php echo $id; ?>_contenteditable').focusout(function () {
+        }).on('focusout', function () {
+            // add placeholder text, if input is empty
             if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
                 $(this).html(placeholder);
                 $(this).addClass('atwho-placeholder');
             } else {
                 $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
             }
-        })
-
-        $('#<?php echo $id; ?>_contenteditable').on('paste', function (event) {
+        }).on('paste', function (event) {
 
 
             // disable standard behavior
@@ -143,29 +131,19 @@ use yii\helpers\Url;
             // set plain text at current cursor position
             insertTextAtCursor($result.text());
 
-        });
-
-
-        $('#<?php echo $id; ?>_contenteditable').keypress(function (e) {
+        }).on('keypress', function (e) {
             if (e.which == 13) {
                 // insert a space by hitting enter for a clean convert of user guids
                 insertTextAtCursor(' ');
             }
-        });
-
-        $('#<?php echo $id; ?>_contenteditable').on("shown.atwho", function (event) {
+        }).on("shown.atwho", function (event) {
             // set attribute for showing search results
             $(this).attr('data-query', '1');
-        });
-
-        $('#<?php echo $id; ?>_contenteditable').on("inserted.atwho", function (event, $li) {
+        }).on("inserted.atwho", function (event, $li) {
             // set attribute for showing search hint
             $(this).attr('data-query', '0');
         });
-
-    })
-    ;
-
+    });
 
     /**
      * Convert contenteditable div content into plain text

@@ -21,11 +21,6 @@ return [
     'Next' => '',
     '<strong>Create</strong> new space' => '<strong>Utwórz</strong> nową strefę',
     'Advanced access settings' => 'Zaawansowanie ustawienia dostępu',
-    'For everyone' => 'Dla wszystkich',
-    'Invite and request' => 'Zaproś i złóż podanie',
-    'Join Policy' => 'Polityka dołączania',
-    'Only by invite' => 'Tylko przez zaproszenie',
-    'Visibility' => 'Widzialność',
     'space description' => 'opis strefy',
     'space name' => 'nazwa strefy',
 ];

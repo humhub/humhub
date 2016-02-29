@@ -21,10 +21,8 @@ return [
     'Advanced search settings' => '高级搜索设置',
     'All' => '全部',
     'Content' => '内容',
-    'Search for user, spaces and content' => '搜索用户，空间，内容',
+    'Search for user, spaces and content' => '搜索用户，空间和内容',
+    'Search only in certain spaces:' => '只搜索以下空间:',
     'Spaces' => '空间',
     'Users' => '用户',
-    'Search' => '搜索',
-    'Search only in certain spaces:' => '只搜索以下空间:',
-    'Sorry nothing found :(' => '抱歉，没有找到内容',
 ];

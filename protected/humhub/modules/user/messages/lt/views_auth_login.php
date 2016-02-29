@@ -18,6 +18,7 @@
  */
 return [
     'Login' => '',
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>Prašome</strong> prisijungti',
     '<strong>Sign</strong> up' => '<strong>Užsiregistruokite</strong> ',
     'Create a new one.' => 'Sukurti naują.',

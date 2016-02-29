@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>Connexion</strong>',
     '<strong>Sign</strong> up' => '<strong>Inscription</strong>',
     'Create a new one.' => 'Créer un nouveau.',

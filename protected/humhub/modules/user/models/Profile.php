@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use Yii;
@@ -196,6 +202,8 @@ class Profile extends \yii\db\ActiveRecord
 
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
+
+                $profileField->fieldType->loadDefaults($this);
             }
 
             $definition['elements']['category_' . $profileFieldCategory->id] = $category;
@@ -204,6 +212,9 @@ class Profile extends \yii\db\ActiveRecord
         return $definition;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         foreach (ProfileField::find()->all() as $profileField) {

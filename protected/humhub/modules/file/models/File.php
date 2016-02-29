@@ -140,8 +140,7 @@ class File extends \humhub\components\ActiveRecord
     {
         // Set new uploaded file
         if ($this->uploadedFile !== null && $this->uploadedFile instanceof UploadedFile) {
-            $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
-
+            $newFilename = $this->getStoredFilePath();
             if (is_uploaded_file($this->uploadedFile->tempName)) {
                 move_uploaded_file($this->uploadedFile->tempName, $newFilename);
                 @chmod($newFilename, 0744);
@@ -158,31 +157,12 @@ class File extends \humhub\components\ActiveRecord
 
         // Set file by given contents
         if ($this->newFileContent != null) {
-            $newFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
+            $newFilename = $this->getStoredFilePath();
             file_put_contents($newFilename, $this->newFileContent);
             @chmod($newFilename, 0744);
         }
 
         return parent::afterSave($insert, $changedAttributes);
-    }
-
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
-    {
-        return array(
-            'id' => Yii::t('FileModule.models_File', 'ID'),
-            'guid' => Yii::t('FileModule.models_File', 'Guid'),
-            'file_name' => Yii::t('FileModule.models_File', 'File name'),
-            'title' => Yii::t('FileModule.models_File', 'Title'),
-            'mime_type' => Yii::t('FileModule.models_File', 'Mime Type'),
-            'size' => Yii::t('FileModule.models_File', 'Size'),
-            'created_at' => Yii::t('FileModule.models_File', 'Created at'),
-            'created_by' => Yii::t('FileModule.models_File', 'Created By'),
-            'updated_at' => Yii::t('FileModule.models_File', 'Updated at'),
-            'updated_by' => Yii::t('FileModule.models_File', 'Updated by'),
-        );
     }
 
     /**
@@ -225,19 +205,39 @@ class File extends \humhub\components\ActiveRecord
     /**
      * Returns the filename
      *
-     * @param string $prefix
+     * @param string $suffix
      * @return string
      */
-    public function getFilename($prefix = "")
+    public function getFilename($suffix = "")
     {
         // without prefix
-        if ($prefix == "") {
+        if ($suffix == "") {
             return $this->file_name;
         }
 
         $fileParts = pathinfo($this->file_name);
 
-        return $fileParts['filename'] . "_" . $prefix . "." . $fileParts['extension'];
+        return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
+    }
+
+    /**
+     * Returns the file and path to the stored file
+     */
+    public function getStoredFilePath($suffix = '')
+    {
+        /*
+        // Fallback for older versions
+        $oldFile = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename($suffix);
+        if (file_exists($oldFile)) {
+            return $oldFile;
+        }
+        * 
+        */
+        
+        $suffix = preg_replace("/[^a-z0-9_]/i", "", $suffix);
+        
+        $file = ($suffix == '') ? 'file' : $suffix;
+        return $this->getPath() . DIRECTORY_SEPARATOR . $file;
     }
 
     public function getMimeBaseType()
@@ -262,14 +262,14 @@ class File extends \humhub\components\ActiveRecord
 
     public function getPreviewImageUrl($maxWidth = 1000, $maxHeight = 1000)
     {
-        $prefix = 'pi_' . $maxWidth . "x" . $maxHeight;
+        $suffix = 'pi_' . $maxWidth . "x" . $maxHeight;
 
-        $originalFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename();
-        $previewFilename = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename($prefix);
+        $originalFilename = $this->getStoredFilePath();
+        $previewFilename = $this->getStoredFilePath($suffix);
 
         // already generated
         if (is_file($previewFilename)) {
-            return $this->getUrl($prefix);
+            return $this->getUrl($suffix);
         }
 
         // Check file exists & has valid mime type
@@ -290,7 +290,7 @@ class File extends \humhub\components\ActiveRecord
         }
 
         ImageConverter::Resize($originalFilename, $previewFilename, array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
-        return $this->getUrl($prefix);
+        return $this->getUrl($suffix);
     }
 
     public function getExtension()
@@ -350,7 +350,6 @@ class File extends \humhub\components\ActiveRecord
     public function sanitizeFilename()
     {
         $this->file_name = trim($this->file_name);
-        $this->file_name = preg_replace("/[^a-z0-9_\-s\. ]/i", "", $this->file_name);
 
         // Ensure max length
         $pathInfo = pathinfo($this->file_name);

@@ -47,9 +47,12 @@ class ImageConverter
             $ret = passthru($command);
         } else {
             $gdImage = self::getGDImageByFile($sourceFile);
-            $gdImage = self::fixOrientation($gdImage, $sourceFile);
-            imagejpeg($gdImage, $targetFile, 100);
-            imagedestroy($gdImage);
+            
+            if ($gdImage !== null) {
+                $gdImage = self::fixOrientation($gdImage, $sourceFile);
+                imagejpeg($gdImage, $targetFile, 100);
+                imagedestroy($gdImage);
+            }
         }
 
         return true;
@@ -280,7 +283,8 @@ class ImageConverter
      */
     public static function getGDImageByFile($fileName)
     {
-
+        $gdImage = null;
+        
         list($width, $height, $imageType) = getimagesize($fileName);
 
         switch ($imageType) {

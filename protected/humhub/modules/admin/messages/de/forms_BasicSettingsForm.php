@@ -17,8 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show sharing panel on dashboard' => '',
-    'Show user profile post form on dashboard' => '',
+    'Date input format' => '',
     'Base URL' => 'Basis URL',
     'Default language' => 'Standardsprache',
     'Default space' => 'Standardspace',
@@ -27,4 +26,6 @@ return [
     'Name of the application' => 'Name der Anwendung',
     'Server Timezone' => 'Zeitzone des Servers',
     'Show introduction tour for new users' => 'Zeige Einführungstour für neue Benutzer',
+    'Show sharing panel on dashboard' => 'Zeige Auswahlfeld für Soziale Netzwerke in der Übersicht',
+    'Show user profile post form on dashboard' => 'Zeige Eingabeformular für die Benutzeraktivitäten in der Übersicht',
 ];

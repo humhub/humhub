@@ -60,7 +60,24 @@ class CreateController extends Controller
             return $this->actionModules($model->id);
         }
 
-        return $this->renderAjax('create', array('model' => $model));
+        $visibilityOptions = [];
+        if (Setting::Get('allowGuestAccess', 'authentication_internal') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+            $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
+        }
+        if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+            $visibilityOptions[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Members only)');
+        }
+        if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
+            $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
+        }
+        
+        $joinPolicyOptions = [
+            Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
+            Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
+            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter')
+        ];
+
+        return $this->renderAjax('create', ['model' => $model, 'visibilityOptions' => $visibilityOptions, 'joinPolicyOptions' => $joinPolicyOptions]);
     }
 
     /**
@@ -68,7 +85,7 @@ class CreateController extends Controller
      */
     public function actionModules($space_id)
     {
-        $space= Space::find()->where(['id' => $space_id])->one();
+        $space = Space::find()->where(['id' => $space_id])->one();
 
         if (count($space->getAvailableModules()) == 0) {
 
@@ -79,7 +96,6 @@ class CreateController extends Controller
         } else {
             return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
         }
-
     }
 
     /**
@@ -88,7 +104,7 @@ class CreateController extends Controller
     public function actionInvite()
     {
 
-        $space= Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
+        $space = Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
@@ -118,12 +134,9 @@ class CreateController extends Controller
     public function actionCancel()
     {
 
-        $space= Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
+        $space = Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
         $space->delete();
-
     }
-
-
 
     /**
      * Creates an empty space model

@@ -6,13 +6,13 @@ use yii\helpers\Url;
 
 ?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
-    <?php $form = CActiveForm::begin(['id' => 'post-edit-form']); ?>
+    <?php $form = CActiveForm::begin(['id' => 'post-edit-form_'+$post->id]); ?>
 
     <?php echo $form->textArea($post, 'message', array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
 
     <!-- create contenteditable div for HEditorWidget to place the data -->
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input"
-         contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message]); ?></div>
+         contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message, 'edit' => true]); ?></div>
 
     <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message, 'record' => $post]); ?>
 
