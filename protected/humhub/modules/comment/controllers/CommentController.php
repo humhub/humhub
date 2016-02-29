@@ -74,9 +74,17 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
     {
         $this->forcePostRequest();
 
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+        
+        if (!Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
+            return;
+        }
+        
         $message = Yii::$app->request->post('message');
 
-        if ($message != "" && !Yii::$app->user->isGuest) {
+        if ($message != "") {
             $comment = new Comment;
             $comment->message = $message;
             $comment->object_model = $this->parentContent->className();

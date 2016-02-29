@@ -43,6 +43,15 @@ class ProfileHeader extends \yii\base\Widget
             $this->user = $this->getController()->getUser();
         }
 
+        // Check if profile header can be edited
+        if (!Yii::$app->user->isGuest) {
+            if (Yii::$app->user->getIdentity()->super_admin === 1 && Yii::$app->params['user']['adminCanChangeProfileImages']) {
+                $this->isProfileOwner = true;
+            } elseif (Yii::$app->user->id == $this->user->id) {
+                $this->isProfileOwner = true;
+            }
+        }
+
         $this->isProfileOwner = (Yii::$app->user->id == $this->user->id);
     }
 

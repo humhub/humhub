@@ -10,6 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\bootstrap\Html;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * UserFollowButton
