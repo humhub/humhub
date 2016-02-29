@@ -153,6 +153,8 @@ class Profile extends \yii\db\ActiveRecord
         foreach (ProfileField::find()->all() as $profileField) {
             $labels = array_merge($labels, $profileField->fieldType->getLabels());
         }
+        $labels['firstname'] = Yii::t('UserModule.models_Profile', 'Firstname');
+        $labels['lastname'] = Yii::t('UserModule.models_Profile', 'Lastname');
         return $labels;
     }
 

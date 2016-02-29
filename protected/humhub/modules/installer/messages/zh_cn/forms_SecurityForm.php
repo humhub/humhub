@@ -18,7 +18,7 @@
  */
 return [
     'Allow access for non-registered users to public content (guest access)' => '允许非注册用户访问公共内容（访问权限）',
-    'External user can register (The registration form will be displayed at Login))' => '外部用户可以注册（登记表将显示在登录时））',
+    'External user can register (The registration form will be displayed at Login))' => '外部用户可以注册（登记表将显示在登录时）',
     'Newly registered users have to be activated by an admin first' => '新注册的用户必须首先被管理员激活',
     'Registered members can invite new users via email' => '注册会员可通过电子邮件邀请新用户',
 ];
