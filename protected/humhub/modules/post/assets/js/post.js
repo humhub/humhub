@@ -1,9 +1,9 @@
-alert('asdf');
 humhub.modules.post = (function(module, $) {
-    humhub.modules.registerHandler('humhub.modules.post.create', function(json) {
-        humhub.getStream();
+    humhub.modules.registerAjaxHandler('humhub.modules.post.create', function(json) {
+        humhub.modules.stream.getStream();
     }, function(error) {
-        
+        if(error)
+        alert(error);
     });
     return module;
     

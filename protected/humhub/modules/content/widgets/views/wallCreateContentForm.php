@@ -49,15 +49,7 @@ use humhub\modules\space\models\Space;
 
                 <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'postform-loader', 'cssClass' => 'loader-postform hidden']); ?>
                 
-                <button type="submit" 
-                        data-action-click="humhub.modules.post.create" 
-                        data-url-click="<?= $submitUrl ?>"
-                        id="post_submit_button" 
-                        class="btn btn-info"><?= $submitButtonText ?></button>
-                        
-                <?php /*DataButton::widget(['data-handler' => 'humhub.modules.posts.create', 'url' => $url]); */ ?>
                 <?php
-                /*
                 echo \humhub\widgets\AjaxButton::widget([
                     'label' => $submitButtonText,
                     'ajaxOptions' => [
@@ -73,7 +65,7 @@ use humhub\modules\space\models\Space;
                         'data-action' => 'post_create',
                         'class' => 'btn btn-info',
                         'type' => 'submit'
-                ]]);*/
+                ]]);
                 ?>
                 <?php
                 // Creates Uploading Button

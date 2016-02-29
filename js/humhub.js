@@ -1,8 +1,54 @@
 var humhub = humhub || {};
 
+humhub.util = (function(module, $) {
+    module.object = {
+        isFunction: function(obj) {
+            return Object.prototype.toString.call(obj) === '[object Function]';
+        },
+
+        isObject: function(obj) {
+            return $.isPlainObject(obj);
+        },
+
+        isJQuery: function(obj) {
+            return obj.jquery;
+        },
+
+        isString: function(obj) {
+            return typeof obj === 'string';
+        },
+
+        isNumber: function(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        },
+
+        isBoolean: function(obj) {
+            return typeof obj === 'boolean';
+        },
+
+        isDefined: function(obj) {
+            if(arguments.length > 1) {
+                var result = true;
+                var that = this;
+                this.each(arguments, function(index, value) {
+                    if(!that.isDefined(value)) {
+                        result = false;
+                        return false;
+                    }
+                });
+
+                return result;
+            }
+            return typeof obj !== 'undefined';
+        }
+    };
+    return module;
+})(humhub.util || {}, $);
+
 humhub.modules = (function(module, $) {
     var _handler = {};
     var _errorHandler = {};
+    var object = humhub.util.object;
     
     var DATA_ACTION = 'action';
     
@@ -17,21 +63,25 @@ humhub.modules = (function(module, $) {
     };
     
     module.registerAjaxHandler = function(id, success, error, cfg) {
+        debugger;
+        cfg = cfg || {};
         if(!id) {
             return;
         }
         
-        if($.isPlainObject(success)) {
-            error = success.error;
-            success = success.success;
+        if(object.isFunction(success)) {
+            cfg.success = success;
+            cfg.error = error;
+        } else {
+            cfg = success;
         }
         
         if(success) {
+            var that = this;
             _handler[id] = function(event) {
-                var url = $(this).data('url-'+event.type) || $(this).data('url');
-               
-                //module.ajax(url, 
-            }
+                var path = $(this).data('url-'+event.type) || $(this).data('url');
+                that.ajax(path, cfg, event);
+            };
         }
         
         if(error) {
@@ -48,7 +98,7 @@ humhub.modules = (function(module, $) {
             $trigger = $(this);
             var handlerId = $trigger.data(DATA_ACTION+'-'+type);
             var handler = _handler[handlerId];
-            var event = {type:type, $trigger:trigger};
+            var event = {type:type, $trigger:$trigger};
             handler.apply($trigger, [event]);
         });
     };
@@ -83,21 +133,15 @@ humhub.modules = (function(module, $) {
         return "{ status: "+this.data.status+" error: "+this.data.error+" data: "+this.data.data+" }";
     };
     
-    var errorHandler = function(cfg, xhr,type,errorThrown, errorCode) {
+    var errorHandler = function(cfg, xhr,type,errorThrown, errorCode, path) {
         errorCode = (xhr) ? xhr.status : parseInt(errorCode);
-        console.warn("ajaxError: "+type+" "+errorThrown+" - "+errorCode);
+        console.warn("AjaxError: "+type+" "+errorThrown+" - "+errorCode);
 
         if(cfg.error && object.isFunction(cfg.error)) {
             // "timeout", "error", "abort", "parsererror" or "application"
+            //TODO: den trigger als this verwenden
             cfg.error(errorThrown, errorCode, type);
-        } else if(cfg.error) {
-            var msg = cfg.error[errorCode] || cfg.error['default'];
-            if(object.isDefined(msg)) {
-                event.trigger('error', msg);
-            }
-        }
-
-        if(!cfg.error && !cfg.errorMessage) {
+        } else {
             console.warn('Unhandled ajax error: '+path+" type"+type+" error: "+errorThrown);
         }
     };
@@ -108,7 +152,7 @@ humhub.modules = (function(module, $) {
         var dataType = cfg.dataType || "json";
         
         var error = function(xhr,type,errorThrown, errorCode) {
-            errorHandler(cfg, xhr,type,errorThrown, errorCode);
+            errorHandler(cfg, xhr,type,errorThrown, errorCode, path);
         };
 
         var success = function(response) {
@@ -132,13 +176,12 @@ humhub.modules = (function(module, $) {
             success: success,
             error: error
         });
-    }
-    
+    };
     
     return module;
 })(humhub.modules || {}, $);
 
-humhub.core = (function(module, $) {
+humhub.modules.stream = (function(module, $) {
     
     var ENTRY_ID_SELECTOR_PREFIX = '#wallEntry_';
     var WALLSTREAM_ID = 'wallStream';
