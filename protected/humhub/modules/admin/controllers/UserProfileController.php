@@ -25,7 +25,7 @@ class UserProfileController extends Controller
 {
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
         return parent::init();
     }
     

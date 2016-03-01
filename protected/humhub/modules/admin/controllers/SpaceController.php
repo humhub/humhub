@@ -24,7 +24,7 @@ class SpaceController extends Controller
 {
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'Spaces'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Spaces'));
         return parent::init();
     }
     

@@ -25,7 +25,7 @@ class ApprovalController extends Controller
 {
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'Approval'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
         return parent::init();
     }
     

@@ -24,6 +24,8 @@ class Controller extends \yii\web\Controller
     public $pageTitle;
 
     public $actionTitlesMap = [];
+    
+    public $prependActionTitles = true;
 
     public function renderAjaxContent($content)
     {
@@ -65,7 +67,11 @@ class Controller extends \yii\web\Controller
     {
         if (parent::beforeAction($action)) {
             if (array_key_exists($this->action->id, $this->actionTitlesMap)) {
-                $this->appendPageTitle($this->actionTitlesMap[$this->action->id]);
+                if($this->prependActionTitles) {
+                    $this->prependPageTitle($this->actionTitlesMap[$this->action->id]);
+                } else {
+                    $this->appendPageTitle($this->actionTitlesMap[$this->action->id]);
+                }
             }
             if (! empty($this->pageTitle)) {
                 $this->getView()->pageTitle = $this->pageTitle;
@@ -111,9 +117,11 @@ class Controller extends \yii\web\Controller
      *
      * @param array $map
      *            [action_id => action_page_title]
+     * @param boolean $prependActionTitles set to false if the action titles should rather be appended
      */
-    public function setActionTitles($map = [])
+    public function setActionTitles($map = [], $prependActionTitles = true)
     {
         $this->actionTitlesMap = is_array($map) ? $map : [];
+        $this->prependActionTitles = $prependActionTitles;
     }
 }

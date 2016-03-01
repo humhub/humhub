@@ -24,7 +24,7 @@ class GroupController extends Controller
 {
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'Groups'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Groups'));
         return parent::init();
     }
     
