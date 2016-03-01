@@ -24,4 +24,5 @@ return [
     'All' => '所有',
     'Yes' => '是',
     'No' => '否',
+    'Current password' => '当前密码',
 ];

@@ -43,7 +43,7 @@ use yii\helpers\Url;
         <?php echo $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => Setting::IsFixed('defaultUserIdleTimeoutSec', 'authentication_internal')]); ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
 
-        <?php echo $form->field($model, 'defaultUserProfileVisibility')->dropdownList([1 => 'Visible for members only', 2 => 'Visible for members+guests'], ['readonly' => (!Setting::Get('allowGuestAccess', 'authentication_internal'))]); ?>
+        <?php echo $form->field($model, 'defaultUserProfileVisibility')->dropdownList([1 => Yii::t('AdminModule.views_setting_authentication', 'Visible for members only'), 2 => Yii::t('AdminModule.views_setting_authentication', 'Visible for members+guests')], ['readonly' => (!Setting::Get('allowGuestAccess', 'authentication_internal'))]); ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
 
         <hr>

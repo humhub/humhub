@@ -6,4 +6,6 @@ return array (
   '<strong>Authentication</strong> - Basic' => '<strong>授权</strong> - 基础',
   'Basic' => '基础',
   'Save' => '保存',
+  'Visible for members only' => '仅对成员可见',
+  'Visible for members+guests' => '对成员和游客都可见',
 );
