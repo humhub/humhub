@@ -2,7 +2,7 @@
 
 Here you will learn how you can adapt existing themes to working fine with actually versions.
 
-## Migrate from 1.0.0-beta.4
+## Migrate to 1.0.0-beta.4
 
 The following line was added to the HumHub Base Theme Less/Css file due to a Bootstrap update:
 https://github.com/humhub/humhub/blob/0a388d225a53fd873773cf0989d6e10aaf66996a/themes/HumHub/css/theme.less#L648
