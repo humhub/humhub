@@ -33,7 +33,7 @@ use yii\helpers\Url;
                 'type' => 'POST',
                 'beforeSend' => new yii\web\JsExpression('function(html){  $("#post_input_' . $post->id . '_contenteditable").hide(); showLoader("' . $post->id . '"); }'),
                 'success' => new yii\web\JsExpression('function(html){ $(".wall_' . $post->getUniqueId() . '").replaceWith(html); }'),
-                'statusCode' => ['400' => new yii\web\JsExpression('function(xhr) { $("#post_edit_'. $post->id.'").html(xhr.responseText); }')],
+                'statusCode' => ['400' => new yii\web\JsExpression('function(xhr) { $("#post_edit_'. $post->id.'").replaceWith(xhr.responseText); }')],
                 'url' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
             ],
             'htmlOptions' => [
