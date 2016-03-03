@@ -67,7 +67,7 @@ class RichText extends \humhub\components\Widget
             $oembedCount = 0; // OEmbeds used
             $that = $this;
 
-            $this->text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
+            $this->text = preg_replace_callback('/((https?|ftp):\/\/([-a-zA-Z0-9@:;%_\+.~\#?&=]{2,256}\.[a-z]{2,4})\b(\/[-a-zA-Z0-9@:;%_\+.~\#?&\/=()]*)?)/iu', function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
                 if ($that->edit) {
                     return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));

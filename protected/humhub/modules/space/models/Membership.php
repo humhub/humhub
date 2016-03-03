@@ -59,14 +59,14 @@ class Membership extends \yii\db\ActiveRecord
         return [
             'space_id' => 'Space ID',
             'user_id' => 'User ID',
-            'originator_user_id' => 'Originator User ID',
-            'status' => 'Status',
-            'request_message' => 'Request Message',
-            'last_visit' => 'Last Visit',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'originator_user_id' => Yii::t('SpaceModule.models_Membership', 'Originator User ID'),
+            'status' => Yii::t('SpaceModule.models_Membership', 'Status'),
+            'request_message' => Yii::t('SpaceModule.models_Membership', 'Request Message'),
+            'last_visit' => Yii::t('SpaceModule.models_Membership', 'Last Visit'),
+            'created_at' => Yii::t('SpaceModule.models_Membership', 'Created At'),
+            'created_by' => Yii::t('SpaceModule.models_Membership', 'Created By'),
+            'updated_at' => Yii::t('SpaceModule.models_Membership', 'Updated At'),
+            'updated_by' => Yii::t('SpaceModule.models_Membership', 'Updated By'),
         ];
     }
 
