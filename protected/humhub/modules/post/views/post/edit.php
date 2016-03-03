@@ -7,12 +7,12 @@ use yii\helpers\Url;
 ?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
     <?php $form = CActiveForm::begin(['id' => 'post-edit-form_'+$post->id]); ?>
-
-    <?php echo $form->textArea($post, 'message', array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
-
+    
     <!-- create contenteditable div for HEditorWidget to place the data -->
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input"
          contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message, 'edit' => true]); ?></div>
+
+    <?php echo $form->field($post, 'message')->label(false)->textArea(array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
 
     <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message, 'record' => $post]); ?>
 
@@ -33,6 +33,7 @@ use yii\helpers\Url;
                 'type' => 'POST',
                 'beforeSend' => new yii\web\JsExpression('function(html){  $("#post_input_' . $post->id . '_contenteditable").hide(); showLoader("' . $post->id . '"); }'),
                 'success' => new yii\web\JsExpression('function(html){ $(".wall_' . $post->getUniqueId() . '").replaceWith(html); }'),
+                'statusCode' => ['400' => new yii\web\JsExpression('function(xhr) { $("#post_edit_'. $post->id.'").replaceWith(xhr.responseText); }')],
                 'url' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
             ],
             'htmlOptions' => [
