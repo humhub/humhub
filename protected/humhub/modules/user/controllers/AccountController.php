@@ -37,10 +37,18 @@ class AccountController extends BaseAccountController
             'change-email' => Yii::t('UserModule.base', 'Email'),
             'change-email-validate' => Yii::t('UserModule.base', 'Email'),
             'change-password' => Yii::t('UserModule.base', 'Password'),
-            ]);
+        ]);
         return parent::init();
     }
-    
+
+    /**
+     * Redirect to current users profile
+     */
+    public function actionIndex()
+    {
+        return $this->redirect(Yii::$app->user->getIdentity()->getUrl());
+    }
+
     /**
      * Edit Users Profile
      */
