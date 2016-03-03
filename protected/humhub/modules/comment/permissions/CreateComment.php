@@ -35,16 +35,23 @@ class CreateComment extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create comment";
+    protected $title = 'Create comment';
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to add comments";
+    protected $description = 'Allows the user to add comments';
 
     /**
      * @inheritdoc
      */
     protected $moduleId = 'comment';
+    
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        
+        $this->title = \Yii::t('CommentModule.permissions', 'Create comment');
+        $this->description = \Yii::t('CommentModule.permissions', 'Allows the user to add comments');
+    }  
 
 }
