@@ -36,16 +36,23 @@ class CreatePublicContent extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create public content";
+    protected $title = 'Create public content';
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to create public content";
+    protected $description = 'Allows the user to create public content';
 
     /**
      * @inheritdoc
      */
     protected $moduleId = 'space';
 
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        
+        $this->title = \Yii::t('SpaceModule.permissions', 'Create public content');
+        $this->description = \Yii::t('SpaceModule.permissions', 'Allows the user to create public content');
+    }
+    
 }
