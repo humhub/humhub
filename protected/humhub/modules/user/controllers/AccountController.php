@@ -115,7 +115,7 @@ class AccountController extends BaseAccountController
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
+        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
     }
 
     /**
