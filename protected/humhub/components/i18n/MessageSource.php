@@ -21,7 +21,7 @@ class MessageSource extends \yii\i18n\PhpMessageSource
     protected function getMessageFilePath($category, $language)
     {
         $category = str_replace($this->sourceCategory, '', $category);
-        return  parent::getMessageFilePath($category, $language);
+        return parent::getMessageFilePath($category, $language);
     }
 
     protected function loadMessagesFromFile($messageFile)
@@ -29,11 +29,10 @@ class MessageSource extends \yii\i18n\PhpMessageSource
         $messageFile = str_replace($this->sourceCategory, '', $messageFile);
         return parent::loadMessagesFromFile($messageFile);
     }
-    
+
     protected function getConfigMessageFilePath($category, $language)
     {
-        $category = str_replace($this->sourceCategory, '', $category);
-        return Yii::getAlias("@app/config/messages"."/$language/".$category.'.php');
+        return Yii::getAlias("@config/messages" . "/$language/" . $category . '.php');
     }
 
     /**
@@ -43,15 +42,19 @@ class MessageSource extends \yii\i18n\PhpMessageSource
      */
     protected function loadMessages($category, $language)
     {
+        
         $messageFile = $this->getMessageFilePath($category, $language);
         $messages = $this->loadMessagesFromFile($messageFile);
-        
+
         //Used for overwriting the default language files under @app/config/messages/.
         $configMessageFile = $this->getConfigMessageFilePath($category, $language);
-        $configMessages = $this->loadMessagesFromFile($configMessageFile);
+        $configMessages = parent::loadMessagesFromFile($configMessageFile);
 
-        $messages = ($configMessages != null)? array_merge($messages, $configMessages) : $messages;
-        
+        if ($messages !== null && $configMessages !== null) {
+            $messages = array_merge($messages, $configMessages);
+        } elseif ($messages === null && $configMessages !== null) {
+            $messages = $configMessages;
+        }
         
         $fallbackLanguage = substr($language, 0, 2);
         if ($fallbackLanguage != $language) {
@@ -72,4 +75,5 @@ class MessageSource extends \yii\i18n\PhpMessageSource
         }
         return (array) $messages;
     }
+
 }
