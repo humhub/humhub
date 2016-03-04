@@ -71,4 +71,42 @@ class View extends \yii\web\View
         return ob_get_clean();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function registerJsFile($url, $options = array(), $key = null)
+    {
+        parent::registerJsFile($this->addCacheBustQuery($url), $options, $key);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function registerCssFile($url, $options = array(), $key = null)
+    {
+        parent::registerCssFile($this->addCacheBustQuery($url), $options, $key);
+    }
+
+    /**
+     * Adds cache bust query string to given url if no query is present
+     * 
+     * @param string $url
+     * @return string the URL with cache bust paramter
+     */
+    protected function addCacheBustQuery($url)
+    {
+        if (strpos($url, '?') === false) {
+            $file = str_replace('@web', '@webroot', $url);
+            $file = Yii::getAlias($file);
+
+            if (file_exists($file)) {
+                $url .= '?v=' . filemtime($file);
+            } else {
+                $url .= '?v=' . urlencode(Yii::$app->version);
+            }
+        }
+
+        return $url;
+    }
+
 }
