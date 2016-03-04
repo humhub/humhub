@@ -18,7 +18,10 @@ use yii\widgets\ActiveForm;
         <?php echo $form->field($model, 'baseUrl'); ?>
         <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'E.g. http://example.com/humhub'); ?></p>
 
-        <?php echo $form->field($model, 'defaultLanguage')->dropdownList(Yii::$app->params['availableLanguages']); ?>
+        <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
+        <?php if(count($allowedLanguages) > 1) : ?>
+            <?php echo $languageDropDown = $form->field($model, 'defaultLanguage')->dropdownList($allowedLanguages); ?>
+        <?php endif; ?>
 
         <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
 

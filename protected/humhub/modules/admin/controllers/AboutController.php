@@ -22,7 +22,7 @@ class AboutController extends Controller
 {
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'About'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'About'));
         return parent::init();
     }
     

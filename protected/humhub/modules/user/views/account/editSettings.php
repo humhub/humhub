@@ -16,7 +16,9 @@ use \humhub\models\Setting;
 
     <?php echo $form->field($model, 'tags'); ?>
 
-    <?php echo $form->field($model, 'language')->dropdownList($languages); ?>
+    <?php if(count($languages) > 1) : ?>
+        <?php echo $form->field($model, 'language')->dropdownList($languages); ?>
+    <?php endif; ?>
 
     <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
 

@@ -27,7 +27,7 @@ class ModuleController extends Controller
     private $_onlineModuleManager = null;
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'Modules'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
         return parent::init();
     }
     
