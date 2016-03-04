@@ -1,8 +1,8 @@
 <?php
+
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use humhub\models\Setting;
-
 ?>
 
 <div class="modal-dialog modal-dialog-small animated fadeIn">
@@ -96,19 +96,17 @@ use humhub\models\Setting;
 <script type="text/javascript">
 
     // Shake modal after wrong validation
-    <?php if ($model->hasErrors()) : ?>
-    $('.modal-dialog').removeClass('fadeIn');
-    $('.modal-dialog').addClass('shake');
+<?php if ($model->hasErrors()) : ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
 
-    // check if there is an error at the second tab
-    <?php if ($form->error($model, 'inviteExternal') != null) : ?>
+        // check if there is an error at the second tab
 
-    // show tab
-    $('#tabs a:last').tab('show');
-
+    <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal') && $model->hasError('inviteExternal')) : ?>
+            // show tab
+            $('#tabs a:last').tab('show');
     <?php endif; ?>
-
-    <?php endif; ?>
+<?php endif; ?>
 
     $('.tab-internal a').on('shown.bs.tab', function (e) {
         $('#invite_tag_input_field').focus();

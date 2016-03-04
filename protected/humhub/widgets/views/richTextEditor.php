@@ -101,12 +101,11 @@ use yii\helpers\Url;
                 $(this).focus();
             }
         }).on('focusout', function () {
+            $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
             // add placeholder text, if input is empty
             if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
                 $(this).html(placeholder);
                 $(this).addClass('atwho-placeholder');
-            } else {
-                $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
             }
         }).on('paste', function (event) {
 

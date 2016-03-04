@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,7 +12,6 @@ namespace humhub\widgets;
  * MarkdownEditorWidget replaces a textarea element with bootstrap-markdown editor
  *
  * @todo Allow multiple MarkdownEditorWidget instances on a page
- *
  * @author luke
  * @since 0.11
  */
@@ -45,6 +44,9 @@ class MarkdownEditor extends \yii\base\Widget
      */
     public $previewUrl = "";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if ($this->previewUrl == "") {
@@ -52,6 +54,9 @@ class MarkdownEditor extends \yii\base\Widget
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         return $this->render('markdownEditor', array(

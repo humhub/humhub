@@ -74,9 +74,8 @@ class HumHubAPI
      */
     public static function getLatestHumHubVersion()
     {
-        $latestVersion = "";
-        $data = Yii::$app->cache->get('latestVersion');
-        if ($data === false) {
+        $latestVersion = Yii::$app->cache->get('latestVersion');
+        if ($latestVersion === false) {
             $info = self::request('v1/modules/getLatestVersion');
 
             if (isset($info['latestVersion'])) {
