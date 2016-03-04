@@ -22,4 +22,5 @@ return [
     'Saved' => '已保存',
     'The entered e-mail address is already in use by another user.' => '输入的电子邮件地址已被使用',
     'You cannot change your e-mail address here.' => '这里不能改变邮件地址',
+    'Your are already logged in! - Logout first!' => '你已经登录！请先退出！',
 ];

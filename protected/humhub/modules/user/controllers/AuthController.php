@@ -173,7 +173,7 @@ class AuthController extends Controller
         $needApproval = \humhub\models\Setting::Get('needApproval', 'authentication_internal');
 
         if (!Yii::$app->user->isGuest)
-            throw new HttpException(401, 'Your are already logged in! - Logout first!');
+            throw new HttpException(401, Yii::t('UserModule.controllers_AccountController', 'Your are already logged in! - Logout first!'));
 
 
         $userInvite = Invite::findOne(['token' => Yii::$app->request->get('token')]);
