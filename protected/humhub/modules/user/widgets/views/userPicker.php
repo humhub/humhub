@@ -21,7 +21,6 @@ $this->registerJsFile("@web/resources/user/userpicker.js");
 <?php
 // Resolve guids to user tags
 $newValue = "";
-
 foreach (explode(",", $currentValue) as $guid) {
     $user = User::findOne(['guid' => trim($guid)]);
     if ($user != null) {
@@ -41,6 +40,7 @@ foreach (explode(",", $currentValue) as $guid) {
             currentValue: '<?php echo $newValue; ?>',
             focus: '<?php echo $focus; ?>',
             userGuid: '<?php echo $userGuid; ?>',
+            userRole: '<?php echo $userRole; ?>',
             placeholderText: '<?php echo $placeholderText; ?>'
         });
     });

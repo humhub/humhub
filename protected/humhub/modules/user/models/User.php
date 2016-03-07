@@ -217,6 +217,14 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->hasOne(Group::className(), ['id' => 'group_id']);
     }
+    
+    public function getFriends()
+    {
+        if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+            return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
+        }
+        return null;
+    }
 
     /**
      * Before Delete of a User

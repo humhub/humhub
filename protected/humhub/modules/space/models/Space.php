@@ -430,6 +430,28 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
         return $query;
     }
+    
+    public function getMembershipUser($status = null)
+    {
+        $status = ($status == null) ? Membership::STATUS_MEMBER : $status;
+        $query = User::find();
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', 
+                ['space_id' => $this->id, 'member' => $status]);
+        $query->andWhere('space_membership.space_id IS NOT NULL');
+        $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
+        return $query;
+    }
+    
+    public function getNonMembershipUser()
+    {
+        $query = User::find();
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id ', 
+                ['space_id' => $this->id]);
+        $query->andWhere('space_membership.space_id IS NULL');
+        $query->orWhere(['!=', 'space_membership.status', Membership::STATUS_MEMBER]);
+        $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
+        return $query;
+    }
 
     public function getApplicants()
     {

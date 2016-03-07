@@ -5,7 +5,7 @@ namespace humhub\modules\user\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Html;
-use humhub\modules\user\models\User;
+use humhub\modules\user\models\UserFilter;
 
 /**
  * Search Controller provides action for searching users.
@@ -44,33 +44,10 @@ class SearchController extends Controller
 
         $maxResults = 10;
         $keyword = Yii::$app->request->get('keyword');
-
-        $query = User::find()->limit($maxResults)->joinWith('profile');
-
-        foreach (explode(" ", $keyword) as $part) {
-            $query->orFilterWhere(['like', 'user.email', $part]);
-            $query->orFilterWhere(['like', 'user.username', $part]);
-            $query->orFilterWhere(['like', 'profile.firstname', $part]);
-            $query->orFilterWhere(['like', 'profile.lastname', $part]);
-            $query->orFilterWhere(['like', 'profile.title', $part]);
-        }
-
-        $query->active();
+        $userRole = Yii::$app->request->get('userRole');
         
-        $results = [];
-        foreach ($query->all() as $user) {
-            if ($user != null) {
-                $userInfo = array();
-                $userInfo['guid'] = $user->guid;
-                $userInfo['displayName'] = Html::encode($user->displayName);
-                $userInfo['image'] = $user->getProfileImage()->getUrl();
-                $userInfo['link'] = $user->getUrl();
-                $results[] = $userInfo;
-            }
-        }
-
-        
-        return $results;
+        $friendsOnly = ($userRole != null && $userRole == User::USERGROUP_FRIEND);
+        return UserFilter::forUser()->getUserPickerResult($keyword, $maxResults, $friendsOnly);
     }
 
 }

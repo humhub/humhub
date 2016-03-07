@@ -86,6 +86,12 @@ class UserPicker extends \yii\base\Widget
      * @var string for input placeholder attribute.
      */
     public $placeholderText = "";
+    
+    /**
+     * Can be used to filter user roles like friends only
+     * @var type 
+     */
+    public $userRole = null;
 
     /**
      * Inits the User Picker
@@ -125,6 +131,7 @@ class UserPicker extends \yii\base\Widget
                     'inputId' => $this->inputId,
                     'focus' => $this->focus,
                     'userGuid' => $this->userGuid,
+                    'userRole' => $this->userRole,
                     'placeholderText' => $this->placeholderText,
         ));
     }
