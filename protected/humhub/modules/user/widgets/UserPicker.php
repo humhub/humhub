@@ -3,6 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use yii\helpers\Html;
 use \yii\helpers\Url;
 
 /**
@@ -135,7 +136,56 @@ class UserPicker extends \yii\base\Widget
                     'placeholderText' => $this->placeholderText,
         ));
     }
+    
+    /**
+     * Creates an json result with user information arrays. A user will be marked
+     * as disabled, if the permission check fails on this user.
+     * 
+     * @param type $users
+     * @param type $permission
+     * @return type
+     */
+    public static function asJSON($users, $permission = null)
+    {
+        if (is_array($users)) {
+            $result = [];
+            foreach ($users as $user) {
+                if ($user != null) {
+                    $result[] = self::createJSONUserInfo($user, $permission);
+                }
+            }
+            return $result;
+        } else {
+            return self::createJsonUserInfo($users, $permission);
+        }
+    }
 
+    /**
+     * Creates an single user-information array for a given user. A user will be marked
+     * as disabled, if the permission check fails on this user.
+     * 
+     * @param type $user
+     * @param type $permission
+     * @return type
+     */
+    private static function createJSONUserInfo($user, $permission = null)
+    {
+        $disabled = false;
+        
+        if($permission != null && $permission instanceof \humhub\libs\BasePermission) {
+            $disabled = !$user->getPermissionManager()->can($permission);
+        } else if($permission != null) {
+            $disabled = $permission;
+        }
+        
+        $userInfo = [];
+        $userInfo['guid'] = $user->guid;
+        $userInfo['disabled'] = $disabled;
+        $userInfo['displayName'] = Html::encode($user->displayName);
+        $userInfo['image'] = $user->getProfileImage()->getUrl();
+        $userInfo['link'] = $user->getUrl();
+        return $userInfo;
+    }
 }
 
 ?>

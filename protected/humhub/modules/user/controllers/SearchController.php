@@ -4,7 +4,6 @@ namespace humhub\modules\user\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\helpers\Html;
 use humhub\modules\user\models\UserFilter;
 
 /**

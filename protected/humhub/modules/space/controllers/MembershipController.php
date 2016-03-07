@@ -13,6 +13,7 @@ use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserFilter;
+use \humhub\modules\user\widgets\UserPicker;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
@@ -62,7 +63,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         
         //Filter all members of this space by keyword
         $user = UserFilter::addQueryFilter($space->getMembershipUser(), $keyword, 10, false)->all();
-        return UserFilter::asJSON($user);
+        return UserPicker::asJSON($user);
     }
     
      /**
@@ -84,13 +85,13 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         
         //Filter all members of this space by keyword
         $user = UserFilter::addQueryFilter($space->getNonMembershipUser(), $keyword, $maxResult)->all();
-        $result =  UserFilter::asJSON($user);
+        $result =  UserPicker::asJSON($user);
         
         if(count($user) < $maxResult) {
             $members = UserFilter::addQueryFilter($space->getMembershipUser(), $keyword, ($maxResult - count($user)))->all();
             foreach($members as $member) {
                 //Add disabled members
-                $result[] = UserFilter::asJSON($member, true);
+                $result[] = UserPicker::asJSON($member, true);
             }
         }
         

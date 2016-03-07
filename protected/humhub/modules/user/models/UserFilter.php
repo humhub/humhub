@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
-use yii\helpers\Html;
+use \humhub\modules\user\widgets\UserPicker;
 
 /**
  * Special user model class for the purpose of searching users.
@@ -37,7 +37,7 @@ class UserFilter extends User
     }
 
     /**
-     * Returns a json representation for a userpicker search. 
+     * Default implementation for user picker filter.
      * 
      * @param type $keywords
      * @param type $maxResults
@@ -48,18 +48,18 @@ class UserFilter extends User
     public function getUserPickerResult($keywords = null, $maxResults = null, $friendsOnly = false, $permission = null)
     {
         if (!Yii::$app->getModule('friendship')->getIsEnabled()) {
-            //We don't use the permission here for filtering since include user with no permission as disabled in the result.
+            //We don't use the permission here for filtering since we include user with no permission as disabled in the result.
             //The problem here is we do not prefer users with permission in the query.
             $users = $this->getUserByFilter($keywords, $maxResults);
-            return self::asJSON($users, $permission);
+            return UserPicker::asJSON($users, $permission);
         }
 
-        $friends = $this->getFriendsByFilter($keywords, $maxResults);
+        $friends = self::getFriendsByFilter($keywords, $maxResults);
         
         //Create userinfo json with with set 'disabled' field if the user is not permitted
-        $jsonResult = self::asJSON($friends, $permission);
+        $jsonResult = UserPicker::asJSON($friends, $permission);
         
-        //Fill the remaining space with member users with permission
+        //Fill the remaining space with member users with the given permission
         if (!$friendsOnly && count($friends) < $maxResults) {
             $additionalUser = [];
             //Here we filter with permission since we don't want to have non friend user without the permission in the result
@@ -68,7 +68,7 @@ class UserFilter extends User
                     $additionalUser[] = $user;
                 }
             }
-            $jsonResult = array_merge($jsonResult, self::asJSON($additionalUser));
+            $jsonResult = array_merge($jsonResult, UserPicker::asJSON($additionalUser));
         }
 
         return $jsonResult;
@@ -92,7 +92,7 @@ class UserFilter extends User
      * @param type $permission
      * @return type
      */
-    public function getUserByFilter($keywords = null, $maxResults = null, $permission = null)
+    public static function getUserByFilter($keywords = null, $maxResults = null, $permission = null)
     {
         return self::filter(User::find(), $keywords, $maxResults, $permission);
     }
@@ -137,11 +137,6 @@ class UserFilter extends User
         $query->joinWith('profile');
         $parts = explode(" ", $keyword);
         foreach ($parts as $part) {
-            /*$query->andWhere("(user.email LIKE :match OR "
-                    . "user.username LIKE :match OR "
-                    . "profile.firstname LIKE :match OR "
-                    . "profile.lastname LIKE :match OR "
-                    . "profile.title LIKE :match)", ['match' => '%' . $part . '%']);*/
             $query->andFilterWhere(
                     ['or',
                         ['like', 'user.email', $part],
@@ -178,55 +173,4 @@ class UserFilter extends User
 
         return $result;
     }
-
-    /**
-     * Creates an json result with user information arrays. A user will be marked
-     * as disabled, if the permission check fails on this user.
-     * 
-     * @param type $users
-     * @param type $permission
-     * @return type
-     */
-    public static function asJSON($users, $permission = null)
-    {
-        if (is_array($users)) {
-            $result = [];
-            foreach ($users as $user) {
-                if ($user != null) {
-                    $result[] = self::createJSONUserInfo($user, $permission);
-                }
-            }
-            return $result;
-        } else {
-            return self::createJsonUserInfo($users, $permission);
-        }
-    }
-
-    /**
-     * Creates an single user-information array for a given user. A user will be marked
-     * as disabled, if the permission check fails on this user.
-     * 
-     * @param type $user
-     * @param type $permission
-     * @return type
-     */
-    private static function createJSONUserInfo($user, $permission = null)
-    {
-        $disabled = false;
-        
-        if($permission != null && $permission instanceof \humhub\libs\BasePermission) {
-            $disabled = !$user->getPermissionManager()->can($permission);
-        } else if($permission != null) {
-            $disabled = $permission;
-        }
-        
-        $userInfo = [];
-        $userInfo['guid'] = $user->guid;
-        $userInfo['disabled'] = $disabled;
-        $userInfo['displayName'] = Html::encode($user->displayName);
-        $userInfo['image'] = $user->getProfileImage()->getUrl();
-        $userInfo['link'] = $user->getUrl();
-        return $userInfo;
-    }
-
 }
