@@ -23,6 +23,7 @@ $.fn.userpicker = function (options) {
         renderType: "normal", // possible values are "normal", "partial"
         focus: false,
         userGuid: "",
+        data: {},
         placeholderText: 'Add an user'
     }, options);
 
@@ -113,7 +114,7 @@ $.fn.userpicker = function (options) {
 
         // set focus
         $('#' + uniqueID + '_tag_input_field').focus();
-    })
+    });
 
     $('#' + uniqueID + '_tag_input_field').keydown(function (event) {
 
@@ -144,7 +145,7 @@ $.fn.userpicker = function (options) {
             }
         }
 
-    })
+    });
 
     $('#' + uniqueID + '_tag_input_field').keyup(function (event) {
 
@@ -208,17 +209,17 @@ $.fn.userpicker = function (options) {
         }
 
 
-    })
+    });
 
 
     $('#' + uniqueID + '_tag_input_field').focusout(function () {
 
         // set the plain text including user guids to the original input or textarea element
         $(options.inputId).val($.fn.userpicker.parseUserInput(uniqueID));
-    })
+    });
 
 
-    function loadUser(string) {
+    function loadUser(keyword) {
 
         // remove existings entries
         $('#' + uniqueID + '_userpicker li').remove();
@@ -226,10 +227,40 @@ $.fn.userpicker = function (options) {
         // show loader while loading
         $('#' + uniqueID + '_userpicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
 
-        jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', string), function (json) {
+        // build data object
+        var data = options['data'] || {};
+        
+        //This is the preferred way of adding the keyword
+        if(options['searchUrl'].indexOf('-keywordPlaceholder-') < 0) {
+            data['keyword'] = keyword;
+        }
+        
+        //Set the user role filter
+        if(options['userRole']) {
+            data['userRole'] = options['userRole'];
+        }
+        
+        console.log(data);
+
+        jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', keyword), data, function (json) {
 
             // remove existings entries
             $('#' + uniqueID + '_userpicker li').remove();
+
+            // quick sort by disabled/enabled and contains keyword
+            json.sort(function(a,b) {
+                if(a.disabled !== b.disabled) {
+                    return (a.disabled < b.disabled) ? -1 : 1;
+                } else if(a.priority !== b.priority) {
+                    return (a.priority > b.priority) ? -1 : 1;
+                }  else if(a.displayName.indexOf(keyword) >= 0 && b.displayName.indexOf(keyword) < 0) {
+                    return -1;
+                } else if(a.displayName.indexOf(keyword) < 0 && b.displayName.indexOf(keyword) >= 0) {
+                      return 1;
+                }
+  
+                return 0;
+            });
 
 
             if (json.length > 0) {
@@ -239,9 +270,9 @@ $.fn.userpicker = function (options) {
 
                     var _takenStyle = "";
                     var _takenData = false;
-
+                    
                     // set options to link, that this entry is already taken or not available
-                    if ($('#' + uniqueID + '_' + json[i].guid).length != 0 || json[i].isMember == true || json[i].guid == options.userGuid) {
+                    if (json[i].disabled == true || $('#' + uniqueID + '_' + json[i].guid).length != 0 || json[i].isMember == true || json[i].guid == options.userGuid) {
                         _takenStyle = "opacity: 0.4;"
                         _takenData = true;
                     }
@@ -275,7 +306,7 @@ $.fn.userpicker = function (options) {
             $('#' + uniqueID + '_userpicker li').removeHighlight();
 
             // add new highlight matching strings
-            $('#' + uniqueID + '_userpicker li').highlight(string);
+            $('#' + uniqueID + '_userpicker li').highlight(keyword);
 
             // add selection to the first space entry
             $('#' + uniqueID + '_userpicker li:eq(0)').addClass('selected');
