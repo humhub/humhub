@@ -90,7 +90,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['tags'], 'string'],
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => 25, 'min' => Yii::$app->params['user']['minUsernameLength']],
+            [['username'], 'string', 'max' => 50, 'min' => Yii::$app->params['user']['minUsernameLength']],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
