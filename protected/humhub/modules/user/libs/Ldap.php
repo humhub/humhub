@@ -135,12 +135,23 @@ class Ldap extends \yii\base\Component
             }
 
 
-            foreach (User::find()->where(['auth_mode' => User::AUTH_MODE_LDAP])->andWhere(['!=', 'status', User::STATUS_DISABLED])->each() as $user) {
+            foreach (User::find()->where(['auth_mode' => User::AUTH_MODE_LDAP])->each() as $user) {
                 if (!in_array($user->id, $ldapUserIds)) {
-                    // User no longer available in ldap
-                    $user->status = User::STATUS_DISABLED;
-                    $user->save();
-                    Yii::warning('Disabled user ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!');
+                    if($user->status != User::STATUS_DISABLED) {
+                        // User no longer available in ldap
+                        $user->status = User::STATUS_DISABLED;
+                        \humhub\modules\user\models\Setting::Set($user->id, 'disabled_by_ldap', true, 'user');
+                        $user->save();
+                        Yii::warning('Disabled user ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!');
+                    }
+                } else {
+                    if($user->status == User::STATUS_DISABLED && \humhub\modules\user\models\Setting::Get($user->id, 'disabled_by_ldap', 'user', false)) {
+                        // User no longer available in ldap
+                        $user->status = User::STATUS_ENABLED;
+                        \humhub\modules\user\models\Setting::Set($user->id, 'disabled_by_ldap', '', 'user');
+                        $user->save();
+                        Yii::info('Reenabled disabled user ' . $user->username . ' (' . $user->id . ') - Found again in LDAP!');
+                    }
                 }
             }
         } catch (Exception $ex) {
