@@ -173,6 +173,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return static::findOne(['guid' => $token]);
     }
+    
 
     /**
      * @inheritdoc
@@ -212,6 +213,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function getGroup()
     {
         return $this->hasOne(Group::className(), ['id' => 'group_id']);
+    }
+    
+    public function isActive()
+    {
+        return $this->status === User::STATUS_ENABLED;
     }
 
     /**
