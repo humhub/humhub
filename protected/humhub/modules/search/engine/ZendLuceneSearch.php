@@ -92,7 +92,7 @@ class ZendLuceneSearch extends Search
         foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
             if ($fileInfo->isDot())
                 continue;
-            unlink($indexPath . $fileInfo->getFilename());
+            unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 
         $this->index = null;
@@ -271,7 +271,7 @@ class ZendLuceneSearch extends Search
 
     protected function getIndexPath()
     {
-        $path = Yii::getAlias('@runtime/searchdb/');
+        $path = Yii::getAlias(Yii::$app->params['search']['zendLucenceDataDir']);
 
         if (!is_dir($path)) {
             mkdir($path);
