@@ -23,6 +23,7 @@ $.fn.userpicker = function (options) {
         renderType: "normal", // possible values are "normal", "partial"
         focus: false,
         userGuid: "",
+        data: {},
         placeholderText: 'Add an user'
     }, options);
 
@@ -227,7 +228,7 @@ $.fn.userpicker = function (options) {
         $('#' + uniqueID + '_userpicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
 
         // build data object
-        var data = {};
+        var data = options['data'] || {};
         
         //This is the preferred way of adding the keyword
         if(options['searchUrl'].indexOf('-keywordPlaceholder-') < 0) {
@@ -238,6 +239,8 @@ $.fn.userpicker = function (options) {
         if(options['userRole']) {
             data['userRole'] = options['userRole'];
         }
+        
+        console.log(data);
 
         jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', keyword), data, function (json) {
 
@@ -248,11 +251,13 @@ $.fn.userpicker = function (options) {
             json.sort(function(a,b) {
                 if(a.disabled !== b.disabled) {
                     return (a.disabled < b.disabled) ? -1 : 1;
+                } else if(a.priority !== b.priority) {
+                    return (a.priority > b.priority) ? -1 : 1;
                 }  else if(a.displayName.indexOf(keyword) >= 0 && b.displayName.indexOf(keyword) < 0) {
                     return -1;
-              } else if(a.displayName.indexOf(keyword) < 0 && b.displayName.indexOf(keyword) >= 0) {
-                    return 1;
-              }
+                } else if(a.displayName.indexOf(keyword) < 0 && b.displayName.indexOf(keyword) >= 0) {
+                      return 1;
+                }
   
                 return 0;
             });

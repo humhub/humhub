@@ -177,6 +177,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return static::findOne(['guid' => $token]);
     }
+    
 
     /**
      * @inheritdoc
@@ -224,6 +225,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
         }
         return null;
+    }
+    
+    public function isActive()
+    {
+        return $this->status === User::STATUS_ENABLED;
     }
 
     /**

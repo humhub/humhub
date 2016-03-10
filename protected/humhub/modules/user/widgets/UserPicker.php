@@ -93,6 +93,12 @@ class UserPicker extends \yii\base\Widget
      * @var type 
      */
     public $userRole = null;
+    
+    /**
+     * Used to transfer additional data to the server
+     * @var type 
+     */
+    public $data = null;
 
     /**
      * Inits the User Picker
@@ -125,7 +131,7 @@ class UserPicker extends \yii\base\Widget
             $currentValue = $this->model->$attribute;
         }
 
-        return $this->render('userPicker', array(
+        return $this->render('userPicker', [
                     'userSearchUrl' => $this->userSearchUrl,
                     'maxUsers' => $this->maxUsers,
                     'currentValue' => $currentValue,
@@ -133,8 +139,9 @@ class UserPicker extends \yii\base\Widget
                     'focus' => $this->focus,
                     'userGuid' => $this->userGuid,
                     'userRole' => $this->userRole,
+                    'data' => json_encode($this->data),
                     'placeholderText' => $this->placeholderText,
-        ));
+        ]);
     }
     
     /**
@@ -168,7 +175,7 @@ class UserPicker extends \yii\base\Widget
      * @param type $permission
      * @return type
      */
-    private static function createJSONUserInfo($user, $permission = null)
+    private static function createJSONUserInfo($user, $permission = null, $priority = null)
     {
         $disabled = false;
         
@@ -178,11 +185,14 @@ class UserPicker extends \yii\base\Widget
             $disabled = $permission;
         }
         
+        $priority = ($priority == null) ? 0 : $priority;
+        
         $userInfo = [];
         $userInfo['guid'] = $user->guid;
         $userInfo['disabled'] = $disabled;
         $userInfo['displayName'] = Html::encode($user->displayName);
         $userInfo['image'] = $user->getProfileImage()->getUrl();
+        $userInfo['priority'] = $priority;
         $userInfo['link'] = $user->getUrl();
         return $userInfo;
     }
