@@ -487,7 +487,7 @@ class AccountController extends BaseAccountController
      */
     public function getUser()
     {
-        if (Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->super_admin === 1) {
+        if (Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             $user = User::findOne(['guid' => Yii::$app->request->get('userGuid')]);
             if ($user === null) {
                 throw new HttpException(404, 'Could not find user!');

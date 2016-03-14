@@ -10,10 +10,8 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use yii\data\ArrayDataProvider;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\Group;
-use humhub\modules\user\models\User;
 
 /**
  * Group Administration Controller
@@ -57,7 +55,7 @@ class GroupController extends Controller
         $group->scenario = 'edit';
         $group->populateDefaultSpaceGuid();
         $group->populateAdminGuids();
-
+         
         if ($group->load(Yii::$app->request->post()) && $group->validate()) {
             $group->save();
             $this->redirect(Url::toRoute('/admin/group'));
@@ -90,15 +88,16 @@ class GroupController extends Controller
     public function actionDelete()
     {
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
-        if ($group == null)
+        if ($group == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+        }
 
         $model = new \humhub\modules\admin\models\forms\AdminDeleteGroupForm;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            foreach (User::findAll(['group_id' => $group->id]) as $user) {
-                $user->group_id = $model->group_id;
-                $user->save();
-            }
+            //TODO: obsolete ? foreignkeys
+            foreach($group->groupUsers as $groupUser) {
+                $groupUser->delete();
+            } 
             $group->delete();
             $this->redirect(Url::toRoute("/admin/group"));
         }

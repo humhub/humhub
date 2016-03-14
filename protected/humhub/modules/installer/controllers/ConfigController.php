@@ -247,7 +247,6 @@ class ConfigController extends Controller
                 $userModel->status = User::STATUS_ENABLED;
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@humhub.com";
-                $userModel->super_admin = 0;
                 $userModel->language = '';
                 $userModel->group_id = 1;
                 $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
@@ -276,7 +275,6 @@ class ConfigController extends Controller
                 $userModel2->status = User::STATUS_ENABLED;
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@humhub.com";
-                $userModel2->super_admin = 0;
                 $userModel2->language = '';
                 $userModel2->group_id = 1;
                 $userModel2->tags = "Yoga, Travel, English, German, French";

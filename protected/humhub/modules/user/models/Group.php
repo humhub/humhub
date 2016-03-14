@@ -67,6 +67,7 @@ class Group extends \yii\db\ActiveRecord
             'id' => 'ID',
             'space_id' => 'Space ID',
             'name' => 'Name',
+            'adminGuids' => 'Administrators',
             'description' => 'Description',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
@@ -99,20 +100,31 @@ class Group extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->scenario == 'edit') {
-            \humhub\modules\user\models\GroupAdmin::deleteAll(['group_id' => $this->id]);
-            $adminUsers = array();
-            foreach (explode(",", $this->adminGuids) as $adminGuid) {
-
+            $adminGuids = explode(",", $this->adminGuids);
+            foreach ($adminGuids as $adminGuid) {
                 // Ensure guids valid characters
                 $adminGuid = preg_replace("/[^A-Za-z0-9\-]/", '', $adminGuid);
 
                 // Try load user
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $adminGuid]);
                 if ($user != null) {
-                    $groupAdmin = new GroupAdmin;
-                    $groupAdmin->user_id = $user->id;
-                    $groupAdmin->group_id = $this->id;
-                    $groupAdmin->save();
+                    $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $user->id]);
+                    if($groupUser != null && !$groupUser->is_group_admin) {
+                        $groupUser->is_group_admin = true;
+                        $groupUser->save();
+                    } else {
+                        $this->addUser($user, true);
+                    }
+                }
+            }
+            
+            foreach ($this->getAdmins()->all() as $admin) {
+                if(!in_array($admin->guid, $adminGuids)) {
+                    $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $admin->id]);
+                    if($groupUser != null) {
+                        $groupUser->is_group_admin = false;
+                        $groupUser->save();
+                    }
                 }
             }
         }
@@ -132,18 +144,54 @@ class Group extends \yii\db\ActiveRecord
     {
         $this->adminGuids = "";
         foreach ($this->admins as $admin) {
-            $this->adminGuids .= $admin->user->guid . ",";
+            $this->adminGuids .= $admin->guid . ",";
         }
+    }
+    
+    public static function getAdminGroup()
+    {
+        return self::findOne(['is_admin_group', '1']);
     }
 
     public function getAdmins()
     {
-        return $this->hasMany(GroupAdmin::className(), ['group_id' => 'id']);
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+                ->via('groupUsers', function($query){
+                    $query->where(['is_group_admin' => '1']);
+                });
+    }
+    
+    public function hasAdmin()
+    {
+        return $this->getAdmins()->count() > 0;
+    }
+    
+    public function getGroupUsers()
+    {
+        return $this->hasMany(GroupUser::className(), ['group_id' => 'id']);
     }
 
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['user_id' => 'id']);
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+                ->via('groupUsers');
+    }
+    
+    public function hasUsers()
+    {
+        return $this->getUsers()->count() > 0;
+    }
+    
+    public function addUser($user, $isAdmin = false)
+    {
+        $userId = ($user instanceof User) ? $user->id : $user;
+        $newGroupUser = new GroupUser();
+        $newGroupUser->user_id = $userId;
+        $newGroupUser->group_id = $this->id;
+        $newGroupUser->created_at = new \yii\db\Expression('NOW()');
+        $newGroupUser->created_by = Yii::$app->user->id;
+        $newGroupUser->is_group_admin = $isAdmin;
+        $newGroupUser->save();
     }
 
     public function getSpace()

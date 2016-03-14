@@ -110,9 +110,6 @@ class Registration extends HForm
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
-        if ($groupFieldType == 'hidden') {
-            $this->getUser()->group_id = $defaultUserGroup;
-        }
 
         $form = array(
             'type' => 'form',
@@ -131,12 +128,12 @@ class Registration extends HForm
                 'class' => 'form-control',
             ];
         }
-        $form['elements']['group_id'] = [
+        /*$form['elements']['group_id'] = [
             'type' => $groupFieldType,
             'class' => 'form-control',
             'items' => ArrayHelper::map($groupModels, 'id', 'name'),
             'value' => $defaultUserGroup,
-        ];
+        ];*/
 
         return $form;
     }

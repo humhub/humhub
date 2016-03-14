@@ -35,13 +35,15 @@ use yii\helpers\Html;
             'attribute' => 'defaultSpaceGuid'
         ]);
         ?>
-
+        
+        <?php echo $form->field($group, 'adminGuids', ['inputOptions' => ['id' => 'user_select']]); ?>
+        
         <?php
         echo \humhub\modules\user\widgets\UserPicker::widget([
             'inputId' => 'user_select',
-            'maxUsers' => 2,
             'model' => $group,
             'attribute' => 'adminGuids',
+            'userSearchUrl' => Url::toRoute('admin/group/admin-user-serach'),
             'placeholderText' => 'Add a user'
         ]);
         ?>

@@ -408,7 +408,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function canAccessPrivateContent(\humhub\modules\user\models\User $user = null)
     {
-        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && Yii::$app->user->getIdentity()->super_admin === 1) {
+        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             return true;
         }
         
