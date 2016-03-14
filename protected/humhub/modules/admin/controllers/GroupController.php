@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\Url;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\UserFilter;
 
 /**
  * Group Administration Controller
@@ -92,18 +93,24 @@ class GroupController extends Controller
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
         }
 
-        $model = new \humhub\modules\admin\models\forms\AdminDeleteGroupForm;
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            //TODO: obsolete ? foreignkeys
-            foreach($group->groupUsers as $groupUser) {
-                $groupUser->delete();
-            } 
-            $group->delete();
-            $this->redirect(Url::toRoute("/admin/group"));
-        }
-
-        $alternativeGroups = \yii\helpers\ArrayHelper::map(Group::find()->where('id != :id', array(':id' => $group->id))->all(), 'id', 'name');
-        return $this->render('delete', array('group' => $group, 'model' => $model, 'alternativeGroups' => $alternativeGroups));
+        //TODO: obsolete ? foreignkeys
+        foreach($group->groupUsers as $groupUser) {
+            $groupUser->delete();
+        } 
+        $group->delete();
+        $this->redirect(Url::toRoute("/admin/group"));
+    }
+    
+    public function actionAdminUserSearch()
+    {
+        Yii::$app->response->format = 'json';
+        $maxResult = 10;
+        $keyword = Yii::$app->request->get('keyword');
+        
+        $group = Group::findOne(Yii::$app->request->get('id'));
+        $user = UserFilter::filter($group->getUsers(), $keyword, $maxResult);
+        
+        return \humhub\modules\user\widgets\UserPicker::asJSON($user);
     }
 
 }

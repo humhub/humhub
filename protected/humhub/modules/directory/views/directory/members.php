@@ -66,7 +66,7 @@ use yii\helpers\Html;
                                 href="<?php echo $user->getUrl(); ?>"><?php echo Html::encode($user->displayName); ?></a>
                                 <?php if ($user->hasGroup()) { ?>
                                 <small>(
-                                    <?php $groups = $user->selectedGroups;
+                                    <?php $groups = $user->groups;
                                     $last_key = end(array_keys($groups));
                                      foreach($groups as $key => $group) {
                                         echo $group->name;

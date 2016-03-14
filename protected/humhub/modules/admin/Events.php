@@ -9,9 +9,6 @@
 namespace humhub\modules\admin;
 
 use Yii;
-use humhub\modules\user\models\User;
-use \humhub\modules\user\models\Group;
-use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\models\Setting;
 
 /**
