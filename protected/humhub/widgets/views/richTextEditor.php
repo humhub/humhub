@@ -92,7 +92,7 @@ use yii\helpers\Url;
 
         //it seems atwho detatches the original element so we have to do a requery
         $editableContent = $('#<?php echo $id; ?>_contenteditable');
-
+        
         // remove placeholder text
         $editableContent.on('focus', function () {
             if ($(this).hasClass('atwho-placeholder')) {
@@ -101,15 +101,13 @@ use yii\helpers\Url;
                 $(this).focus();
             }
         }).on('focusout', function () {
+            $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
             // add placeholder text, if input is empty
             if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
                 $(this).html(placeholder);
                 $(this).addClass('atwho-placeholder');
-            } else {
-                $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
             }
         }).on('paste', function (event) {
-
 
             // disable standard behavior
             event.preventDefault();
@@ -142,6 +140,9 @@ use yii\helpers\Url;
         }).on("inserted.atwho", function (event, $li) {
             // set attribute for showing search hint
             $(this).attr('data-query', '0');
+        }).on('clear', function(evt) {
+             $(this).html(placeholder);
+             $(this).addClass('atwho-placeholder');
         });
     });
 

@@ -88,7 +88,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['tags'], 'string'],
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => 25, 'min' => Yii::$app->params['user']['minUsernameLength']],
+            [['username'], 'string', 'max' => 50, 'min' => Yii::$app->params['user']['minUsernameLength']],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -184,6 +184,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return static::findOne(['guid' => $token]);
     }
+    
 
     /**
      * @inheritdoc
@@ -252,6 +253,19 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
             $query->andWhere(['is_group_admin' => '1']);
         });
+    }
+    
+    public function getFriends()
+    {
+        if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+            return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
+        }
+        return null;
+    }
+    
+    public function isActive()
+    {
+        return $this->status === User::STATUS_ENABLED;
     }
 
     /**

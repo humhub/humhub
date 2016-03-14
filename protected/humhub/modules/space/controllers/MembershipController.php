@@ -12,6 +12,8 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\UserFilter;
+use \humhub\modules\user\widgets\UserPicker;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
@@ -57,40 +59,43 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
-        $results = array();
         $keyword = Yii::$app->request->get('keyword');
+        
+        //Filter all members of this space by keyword
+        $user = UserFilter::addQueryFilter($space->getMembershipUser(), $keyword, 10, false)->all();
+        return UserPicker::asJSON($user);
+    }
+    
+     /**
+     * Provides a searchable user list of all workspace members in json.
+     *
+     */
+    public function actionSearchInvite()
+    {
+        Yii::$app->response->format = 'json';
 
+        $space = $this->getSpace();
 
-        $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', ['space_id' => $space->id, 'member' => Membership::STATUS_MEMBER]);
-        $query->andWhere('space_membership.space_id IS NOT NULL');
-
-
-        $query->joinWith('profile');
-        $query->limit(10);
-
-        // Build Search Condition
-        $parts = explode(" ", $keyword);
-        $i = 0;
-        foreach ($parts as $part) {
-            $i++;
-            $query->andWhere("(user.email LIKE :match OR "
-                    . "user.username LIKE :match OR "
-                    . "profile.firstname LIKE :match OR "
-                    . "profile.lastname LIKE :match OR "
-                    . "profile.title LIKE :match)", ['match' => '%' . $part . '%']);
+        if (!$space->isMember()) {
+            throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
-        foreach ($query->all() as $user) {
-            $userInfo['guid'] = $user->guid;
-            $userInfo['displayName'] = \yii\helpers\Html::encode($user->displayName);
-            $userInfo['email'] = $user->email;
-            $userInfo['image'] = $user->getProfileImage()->getUrl();
-            $userInfo['link'] = $user->getUrl();
-            $results[] = $userInfo;
+        $maxResult = 10;
+        $keyword = Yii::$app->request->get('keyword');
+        
+        //Filter all members of this space by keyword
+        $user = UserFilter::addQueryFilter($space->getNonMembershipUser(), $keyword, $maxResult)->all();
+        $result =  UserPicker::asJSON($user);
+        
+        if(count($user) < $maxResult) {
+            $members = UserFilter::addQueryFilter($space->getMembershipUser(), $keyword, ($maxResult - count($user)))->all();
+            foreach($members as $member) {
+                //Add disabled members
+                $result[] = UserPicker::asJSON($member, true);
+            }
         }
-
-        return $results;
+        
+        return $result;
     }
 
     /**

@@ -7,8 +7,9 @@ Add following block to your local web configuration (/protected/config/web.php)
 ```php
 <?php
 return [
-     ...
-	 'modules' => [
+    // ...
+    'bootstrap' => ['debug'],
+	'modules' => [
 		// ...
     
 	    'debug' => [

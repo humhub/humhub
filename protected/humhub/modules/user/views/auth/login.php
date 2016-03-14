@@ -25,7 +25,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
             <?php endif; ?>
 
 
-            <?php $form = ActiveForm::begin(['id' => 'account-login-form']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation'=>false]); ?>
             <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
             <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')])->label(false); ?>
             <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')])->label(false); ?>

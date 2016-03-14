@@ -75,8 +75,9 @@ class Module extends \humhub\components\Module
             }
         }
 
-        $user->last_activity_email = new \yii\db\Expression('NOW()');
-        $user->save();
+        $user->updateAttributes([
+            'last_activity_email' => new \yii\db\Expression('NOW()')
+        ]);
 
         return $output;
     }

@@ -1,5 +1,5 @@
 <?php
-
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use humhub\models\Setting;
 ?>
@@ -44,6 +44,7 @@ use humhub\models\Setting;
                         'inputId' => 'invite',
                         'model' => $model, // CForm Instanz
                         'attribute' => 'invite',
+                        'userSearchUrl' => Yii::$app->controller->getSpace()->createUrl('/space/membership/search-invite'),
                         'placeholderText' => Yii::t('SpaceModule.views_space_invite', 'Add an user'),
                         'focus' => true,
                     ));

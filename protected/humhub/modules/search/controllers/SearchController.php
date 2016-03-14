@@ -31,7 +31,7 @@ class SearchController extends Controller
 
     public function init()
     {
-        $this->prependPageTitle(\Yii::t('SearchModule.base', 'Search'));
+        $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
         return parent::init();
     }
     

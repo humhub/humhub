@@ -8,8 +8,8 @@ class m150928_134934_groups extends Migration
 
     public function up()
     {
-        $this->addColumn('space_membership', 'group_id', Schema::TYPE_STRING. " DEFAULT '".humhub\modules\space\models\Space::USERGROUP_MEMBER."'");
-        $this->update('space_membership', ['group_id' => humhub\modules\space\models\Space::USERGROUP_ADMIN], 'space_membership.admin_role=1');
+        $this->addColumn('space_membership', 'group_id', Schema::TYPE_STRING. " DEFAULT 'member'");
+        $this->update('space_membership', ['group_id' => 'admin'], 'space_membership.admin_role=1');
         
         $this->dropColumn('space_membership', 'admin_role');
         $this->dropColumn('space_membership', 'share_role');

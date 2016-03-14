@@ -21,7 +21,7 @@ class LoggingController extends Controller
 {
 
     public function init() {
-        $this->prependPageTitle(Yii::t('AdminModule.base', 'Logging'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         return parent::init();
     }
     

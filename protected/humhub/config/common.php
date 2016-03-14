@@ -4,6 +4,7 @@ Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
+Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
@@ -81,6 +82,9 @@ $config = [
                 ],
             ],
         ],
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
         'view' => [
             'class' => '\humhub\components\View',
             'theme' => [
@@ -104,7 +108,7 @@ $config = [
     'params' => [
         'installed' => false,
         'databaseInstalled' => false,
-        'dynamicConfigFile' => '@app/config/dynamic.php',
+        'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'moduleMarketplacePath' => '@app/modules',
         'availableLanguages' => [
@@ -178,10 +182,15 @@ $config = [
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
         ],
+        'search' => [
+            'zendLucenceDataDir' => '@runtime/searchdb',
+        ],
         'curl' => [
             // Check SSL certificates on CURL requests
             'validateSsl' => true,
         ],
+        // Allowed languages limitation (optional)
+        'allowedLanguages' => [],
     ]
 ];
 

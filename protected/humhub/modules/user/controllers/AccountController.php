@@ -37,10 +37,18 @@ class AccountController extends BaseAccountController
             'change-email' => Yii::t('UserModule.base', 'Email'),
             'change-email-validate' => Yii::t('UserModule.base', 'Email'),
             'change-password' => Yii::t('UserModule.base', 'Password'),
-            ]);
+        ]);
         return parent::init();
     }
-    
+
+    /**
+     * Redirect to current users profile
+     */
+    public function actionIndex()
+    {
+        return $this->redirect(Yii::$app->user->getIdentity()->getUrl());
+    }
+
     /**
      * Edit Users Profile
      */
@@ -107,7 +115,7 @@ class AccountController extends BaseAccountController
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
+        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
     }
 
     /**

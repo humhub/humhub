@@ -44,13 +44,14 @@ class LanguageSelector implements BootstrapInterface
                 /**
                  * Use cookie or preferred language
                  */
-                $language = $app->request->getPreferredLanguage(array_keys($app->params['availableLanguages']));
+                $allowedLanguages = $app->i18n->getAllowedLanguages();
+                $language = $app->request->getPreferredLanguage(array_keys($allowedLanguages));
 
                 if (isset($app->request->cookies['language'])) {
                     $language = (string) $app->request->cookies['language'];
 
                     // Check cookie given language is available
-                    if (!array_key_exists($language, $app->params['availableLanguages'])) {
+                    if (!array_key_exists($language, $allowedLanguages)) {
                         $cookie = new \yii\web\Cookie([
                             'name' => 'language',
                             'value' => 'en',
