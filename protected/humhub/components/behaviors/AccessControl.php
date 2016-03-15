@@ -48,8 +48,7 @@ class AccessControl extends \yii\base\ActionFilter
         $identity = Yii::$app->user->getIdentity();
         if($identity != null && !$identity->isActive()) {
             Yii::$app->user->logout();
-            $action->isValid = false;
-            $this->redirect(Yii::$app->createUrl('user/auth/login'));
+            Yii::$app->response->redirect(Yii::$app->urlManager->createUrl('user/auth/login'));
         }
 
         if (Yii::$app->user->isGuest) {
