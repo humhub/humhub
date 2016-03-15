@@ -1,7 +1,5 @@
 <?php
 
-use yii\helpers\Url;
-use yii\grid\GridView;
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
 use humhub\modules\content\models\Content;

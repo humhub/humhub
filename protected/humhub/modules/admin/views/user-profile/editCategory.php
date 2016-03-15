@@ -1,12 +1,8 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
-use humhub\modules\space\models\Space;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
 ?>
 
 <div class="panel panel-default">
