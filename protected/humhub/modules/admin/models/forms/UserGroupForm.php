@@ -53,8 +53,7 @@ class UserGroupForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'groupSelection' => 'Groups',
-            'adminGroupSelection' => 'Admin Groups'
+            'groupSelection' => 'Groups'
         ];
     }
 
@@ -88,7 +87,7 @@ class UserGroupForm extends \yii\base\Model
             }
         }
         
-        //Add all selectedGroups to the given user and set the admin by means of the selectedAdminGroups
+        //Add all selectedGroups to the given user
         foreach ($this->groupSelection as $groupId) {
             if (!$this->isCurrentlyMemberOf($groupId)) {
                 Group::findOne($groupId)->addUser($this->user);
@@ -116,6 +115,7 @@ class UserGroupForm extends \yii\base\Model
      */
     private function isCurrentlyMemberOf($groupId)
     {
+        $groupId = ($groupId instanceof Group) ? $groupId->id : $groupId;
         foreach ($this->currentGroups as $userGroup) {
             if ($userGroup->id === $groupId) {
                 return true;

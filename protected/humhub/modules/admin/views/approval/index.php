@@ -1,8 +1,4 @@
 <?php
-
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\GridView;

@@ -12,8 +12,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\UserFilter;
-use \humhub\modules\user\widgets\UserPicker;
+use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
@@ -58,12 +57,12 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->isMember()) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
-
-        $keyword = Yii::$app->request->get('keyword');
         
-        //Filter all members of this space by keyword
-        $user = UserFilter::addQueryFilter($space->getMembershipUser(), $keyword, 10, false)->all();
-        return UserPicker::asJSON($user);
+        return UserPicker::filter([
+            'query' => $space->getMembershipUser(),
+            'keyword' => Yii::$app->request->get('keyword'),
+            'fillUser' => true
+        ]);
     }
     
      /**
@@ -79,23 +78,12 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->isMember()) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
-
-        $maxResult = 10;
-        $keyword = Yii::$app->request->get('keyword');
         
-        //Filter all members of this space by keyword
-        $user = UserFilter::addQueryFilter($space->getNonMembershipUser(), $keyword, $maxResult)->all();
-        $result =  UserPicker::asJSON($user);
-        
-        if(count($user) < $maxResult) {
-            $members = UserFilter::addQueryFilter($space->getMembershipUser(), $keyword, ($maxResult - count($user)))->all();
-            foreach($members as $member) {
-                //Add disabled members
-                $result[] = UserPicker::asJSON($member, true);
-            }
-        }
-        
-        return $result;
+        return UserPicker::filter([
+            'query' => $space->getNonMembershipUser(),
+            'keyword' => Yii::$app->request->get('keyword'),
+            'fillUser' => true
+        ]);
     }
 
     /**

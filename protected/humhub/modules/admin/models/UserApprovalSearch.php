@@ -107,7 +107,7 @@ class UserApprovalSearch extends User
         if (Yii::$app->user->isAdmin()) {
             return \humhub\modules\user\models\Group::find()->all();
         } else {
-            return Yii::$app->user->adminGroups;
+            return Yii::$app->user->getIdentity()->adminGroups;
         }
     }
 }

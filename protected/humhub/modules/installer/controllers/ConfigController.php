@@ -248,7 +248,6 @@ class ConfigController extends Controller
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@humhub.com";
                 $userModel->language = '';
-                $userModel->group_id = 1;
                 $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
                 $userModel->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel->save();
@@ -276,7 +275,6 @@ class ConfigController extends Controller
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@humhub.com";
                 $userModel2->language = '';
-                $userModel2->group_id = 1;
                 $userModel2->tags = "Yoga, Travel, English, German, French";
                 $userModel2->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel2->save();
@@ -416,7 +414,6 @@ class ConfigController extends Controller
 
         $form = new \humhub\compat\HForm($definition);
         $form->models['User'] = $userModel;
-        $form->models['User']->group_id = 1;
         $form->models['Password'] = $userPasswordModel;
         $form->models['Profile'] = $profileModel;
 

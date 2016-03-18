@@ -19,6 +19,8 @@ use humhub\modules\user\models\Group;
 class GroupUser extends \yii\db\ActiveRecord
 {
 
+    const SCENARIO_REGISTRATION = 'registration';
+    
     /**
      * @inheritdoc
      */
@@ -38,6 +40,13 @@ class GroupUser extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.']
         ];
+    }
+    
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_REGISTRATION] = ['group_id'];
+        return $scenarios;
     }
 
     /**

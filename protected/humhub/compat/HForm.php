@@ -194,6 +194,11 @@ class HForm extends \yii\base\Component
             if (isset($definition['readonly']) && $definition['readonly']) {
                 $options['readOnly'] = true;
             }
+            
+            if (isset($definition['value'])) {
+                $options['value'] = $definition['value'];
+            }
+            
             if (isset($definition['prompt']) && $definition['prompt']) {
                 $options['prompt'] = $definition['prompt'];
             }

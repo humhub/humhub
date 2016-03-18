@@ -70,6 +70,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const USERGROUP_GUEST = 'u_guest';
     
     /**
+     * A initial group for the user assigned while registration.
+     * @var type 
+     */
+    public $registrationGroupId = null;
+    
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -359,7 +365,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             if ($this->status == User::STATUS_ENABLED) {
                 $this->setUpApproved();
             } else {
-                $this->group->notifyAdminsForUserApproval($this);
+                Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
         }
@@ -388,13 +394,13 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         // Auto Assign User to the Group Space
-        $group = Group::findOne(['id' => $this->group_id]);
+        /*$group = Group::findOne(['id' => $this->group_id]);
         if ($group != null && $group->space_id != "") {
             $space = \humhub\modules\space\models\Space::findOne(['id' => $group->space_id]);
             if ($space !== null) {
                 $space->addMember($this->id);
             }
-        }
+        }*/
 
         // Auto Add User to the default spaces
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
@@ -561,13 +567,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             return true;
         }
         
-        //TODO: should be done per permission !
-        /*
-        if (GroupAdmin::find()->where(['user_id' => $this->id])->count() != 0) {
-            return true;
-        }*/
-
-        return false;
+        return $this->getAdminGroups()->count() > 0;
     }
 
     /**

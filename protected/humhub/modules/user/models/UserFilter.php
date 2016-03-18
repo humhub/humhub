@@ -37,6 +37,7 @@ class UserFilter extends User
     }
 
     /**
+     * @deprecated since version number
      * Default implementation for user picker filter.
      * 
      * @param type $keywords
@@ -160,6 +161,7 @@ class UserFilter extends User
                     ]
             );
         }
+        return $query;
     }
 
     /**

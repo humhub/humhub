@@ -16,7 +16,6 @@ use humhub\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Registration;
-use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
