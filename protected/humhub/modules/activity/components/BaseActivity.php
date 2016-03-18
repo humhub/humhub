@@ -164,13 +164,20 @@ class BaseActivity extends \yii\base\Component
      */
     public function getUrl()
     {
+        $url = '#';
+        
         if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
-            return $this->source->content->getUrl();
+            $url = $this->source->content->getUrl();
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            return $this->source->getUrl();
+            $url = $this->source->getUrl();
         }
 
-        return "#";
+        // Create absolute URL, for E-Mails
+        if (substr($url, 0, 4) !== 'http') {
+            $url = \yii\helpers\Url::to($url, true);
+        }
+        
+        return $url;
     }
 
     /**
