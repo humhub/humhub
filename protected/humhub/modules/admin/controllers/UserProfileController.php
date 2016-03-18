@@ -15,6 +15,11 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\fieldtype\BaseType;
+use humhub\modules\user\models\ProfileFieldGroup;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\User;
+use humhub\modules\admin\models\FieldAssignment;
+use humhub\modules\admin\models\FieldAssignmentData;
 
 /**
  * UserprofileController provides manipulation of the user's profile fields & categories.
@@ -30,7 +35,13 @@ class UserProfileController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', array());
+        $searchModel = new \humhub\modules\admin\models\UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', array(
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
+        ));
     }
 
     /**
@@ -52,6 +63,20 @@ class UserProfileController extends Controller
         }
 
         return $this->render('editCategory', array('category' => $category));
+    }
+    
+    public function actionFieldAssignment()
+    {
+        $model = new FieldAssignment();
+        $groups = \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name');
+        
+        //wurde gespeichert? http://www.yiiframework.com/doc-2.0/guide-db-active-record.html
+        if($model->load(Yii::$app->request->post())){
+            $groupId = Yii::$app->request->post()["FieldAssignment"]["groups"]; //Group-Id
+            $fields = Yii::$app->request->post()["fieldAssignemnt"]; //checkFieldIds
+            $model->saveFieldAssignmentData($groupId, $fields);
+        }
+        return $this->render('fieldAssignment', array('model'=>$model, 'groups' =>$groups));
     }
 
     /**

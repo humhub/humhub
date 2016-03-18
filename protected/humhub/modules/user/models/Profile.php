@@ -186,6 +186,12 @@ class Profile extends \yii\db\ActiveRecord
                 if ($this->scenario == 'registration' && !$profileField->show_at_registration)
                     continue;
 
+                //Check profile field assignment
+
+                if(!$this->hasUserProfileField($this->user["group_id"], $profileField["id"]))
+                    continue;
+                    
+                    
                 // Mark field as editable when we are on register scenario and field should be shown at registration
                 if ($this->scenario == 'registration' && $profileField->show_at_registration)
                     $profileField->editable = true;
@@ -202,8 +208,7 @@ class Profile extends \yii\db\ActiveRecord
 
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
-
-                $profileField->fieldType->loadDefaults($this);
+				$profileField->fieldType->loadDefaults($this);
             }
 
             $definition['elements']['category_' . $profileFieldCategory->id] = $category;
@@ -211,8 +216,7 @@ class Profile extends \yii\db\ActiveRecord
 
         return $definition;
     }
-
-    /**
+	/**
      * @inheritdoc
      */
     public function beforeSave($insert)
@@ -259,6 +263,17 @@ class Profile extends \yii\db\ActiveRecord
         return $categories;
     }
 
+    function hasUserProfileField($groupId, $profile_field_id){
+       $queryFieldMapping = ProfileFieldGroup::find();
+       $queryFieldMapping->where(["group_id"=>$groupId]);
+       $queryFieldMapping->andWhere(["profile_field_id"=>$profile_field_id]);
+       
+       if(count($queryFieldMapping->all())>0){
+           return true;
+       }
+       return false;             
+    }
+
     /**
      * Returns all profile fields with user data by given category
      *
@@ -269,6 +284,7 @@ class Profile extends \yii\db\ActiveRecord
     public function getProfileFields(ProfileFieldCategory $category = null)
     {
         $fields = array();
+       
 
         $query = ProfileField::find();
         $query->where(['visible' => 1]);
@@ -277,13 +293,14 @@ class Profile extends \yii\db\ActiveRecord
             $query->andWhere(['profile_field_category_id' => $category->id]);
         }
         foreach ($query->all() as $field) {
-
-            if ($field->getUserValue($this->user) != "") {
-                $fields[] = $field;
-            }
+                if ($this->hasUserProfileField($this->user["group_id"], $field["id"]) 
+                    && $field->getUserValue($this->user) != "") {
+                    $fields[] = $field;
+                } 
         }
 
         return $fields;
     }
+    
 
 }
