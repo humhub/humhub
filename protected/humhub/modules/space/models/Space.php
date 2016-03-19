@@ -12,7 +12,6 @@ use Yii;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\content\models\Wall;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
@@ -408,7 +407,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function canAccessPrivateContent(\humhub\modules\user\models\User $user = null)
     {
-        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && Yii::$app->user->getIdentity()->super_admin === 1) {
+        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             return true;
         }
         
@@ -521,5 +520,4 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         return Content::VISIBILITY_PRIVATE;
     }
-
 }

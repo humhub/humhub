@@ -48,7 +48,7 @@ use humhub\modules\space\models\Space;
             <div class="btn_container">
 
                 <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'postform-loader', 'cssClass' => 'loader-postform hidden']); ?>
-
+                
                 <?php
                 echo \humhub\widgets\AjaxButton::widget([
                     'label' => $submitButtonText,
@@ -62,6 +62,7 @@ use humhub\modules\space\models\Space;
                     ],
                     'htmlOptions' => [
                         'id' => "post_submit_button",
+                        'data-action' => 'post_create',
                         'class' => 'btn btn-info',
                         'type' => 'submit'
                 ]]);

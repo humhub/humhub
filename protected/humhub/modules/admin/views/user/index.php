@@ -34,15 +34,6 @@ use humhub\widgets\GridView;
                 'profile.firstname',
                 'profile.lastname',
                 [
-                    'attribute' => 'super_admin',
-                    'label' => 'Admin',
-                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'super_admin', array('' => 'All', '0' => 'No', '1' => 'Yes')),
-                    'value' =>
-                    function($data) {
-                        return ($data->super_admin == 1) ? 'Yes' : 'No';
-                    }
-                ],
-                [
                     'attribute' => 'last_login',
                     'label' => Yii::t('AdminModule.views_user_index', 'Last login'),
                     'filter' => \yii\jui\DatePicker::widget([

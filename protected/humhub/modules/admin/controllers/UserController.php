@@ -15,6 +15,7 @@ use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
+use humhub\modules\admin\models\forms\UserGroupForm;
 
 /**
  * User management
@@ -36,7 +37,6 @@ class UserController extends Controller
     {
         $searchModel = new \humhub\modules\admin\models\UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', array(
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel
@@ -63,7 +63,7 @@ class UserController extends Controller
         $definition = array();
         $definition['elements'] = array();
         // Add User Form
-        $definition['elements']['User'] = array(
+        $definition['elements']['User'] = [
             'type' => 'form',
             'title' => 'Account',
             'elements' => array(
@@ -77,14 +77,6 @@ class UserController extends Controller
                     'class' => 'form-control',
                     'maxlength' => 100,
                 ),
-                'group_id' => array(
-                    'type' => 'dropdownlist',
-                    'class' => 'form-control',
-                    'items' => \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name'),
-                ),
-                'super_admin' => array(
-                    'type' => 'checkbox',
-                ),
                 'status' => array(
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
@@ -95,7 +87,22 @@ class UserController extends Controller
                     ),
                 ),
             ),
-        );
+        ];
+        
+        $userGroupForm = new UserGroupForm();
+        $userGroupForm->setUser($user);
+        
+        // Add User Form
+        $definition['elements']['UserGroupForm'] = [
+            'type' => 'form',
+            'elements' => [
+                'groupSelection' => [
+                    'id' => 'user_edit_groups',
+                    'type' => 'multiselectdropdown',
+                    'items' => UserGroupForm::getGroupItems(Group::find()->all())
+                ]
+            ]
+        ];
 
         // Add Profile Form
         $definition['elements']['Profile'] = array_merge(array('type' => 'form'), $profile->getFormDefinition());
@@ -122,9 +129,11 @@ class UserController extends Controller
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
+        $form->models['UserGroupForm'] = $userGroupForm;
 
         if ($form->submitted('save') && $form->validate()) {
             if ($form->save()) {
+                
                 return $this->redirect(Url::toRoute('/admin/user'));
             }
         }
