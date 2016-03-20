@@ -2,7 +2,7 @@
 return array (
   '<i class="fa fa-cog"></i>' => '',
   'Cancel Membership' => 'Отменить членство',
-  'General' => 'Основной',
+  'General' => 'Основные',
   'Hide posts on dashboard' => 'Скрыть сообщения в панели События',
   'Members' => 'Члены',
   'Modules' => 'Модули',
