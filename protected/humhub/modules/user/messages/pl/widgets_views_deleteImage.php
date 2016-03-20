@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Confirm</strong> image deleting' => '<strong>Potwierdź</strong> usunięcie obrazka',
+  '<strong>Confirm</strong> image deleting' => '',
   'Cancel' => 'Anuluj',
   'Delete' => 'Usuń',
-  'Do you really want to delete your profile image?' => 'Czy na pewno usunąć obrazek profilowy?',
+  'Do you really want to delete your profile image?' => '',
 );

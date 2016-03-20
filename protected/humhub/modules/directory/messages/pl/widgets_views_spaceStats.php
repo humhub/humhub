@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>New</strong> spaces' => '<strong>Nowe</strong> strefy',
+  '<strong>New</strong> spaces' => '<strong>Nowych</strong> stref',
   '<strong>Space</strong> stats' => '<strong>Statystyki</strong> stref',
   'Most members' => 'Najwięcej użytkowników',
   'Private spaces' => 'Prywatne strefy',
-  'Total spaces' => 'Łącznie stref ',
+  'Total spaces' => 'W sumie stref ',
 );

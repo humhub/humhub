@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Proxy</strong> settings' => 'Ustawienia <strong>Proxy</strong>',
+  '<strong>Proxy</strong> settings' => '',
   'Save' => 'Zapisz ',
 );

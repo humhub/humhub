@@ -1,9 +1,9 @@
 <?php
 return array (
   'Enabled' => 'Włączony ',
-  'No Proxy Hosts' => 'Brak Hostów Proxy',
+  'No Proxy Hosts' => '',
   'Password' => 'Hasło',
   'Port' => 'Port',
-  'Server' => 'Serwer',
+  'Server' => '',
   'User' => 'Użytkownik ',
 );

@@ -23,7 +23,7 @@ use humhub\core\activity\components\BaseActivity;
 /**
  * Notifies a user about something happend
  */
-class SomethingHappend extends BaseActivity
+class SomethingHappend extends BaseNotification
 {
 	// View Name for activity
     public $viewName = "somethingHappend";

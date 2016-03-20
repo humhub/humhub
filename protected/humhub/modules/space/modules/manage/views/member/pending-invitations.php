@@ -33,7 +33,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                         }
                             ],
                             [
-                                'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
+                                'header' => 'Actions',
                                 'class' => 'yii\grid\ActionColumn',
                                 'buttons' => [
                                     'view' => function() {
