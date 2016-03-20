@@ -17,8 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Manage</strong> profiles fields' => '<strong>Profilfelder</strong> vewalten',
-  'Add new category' => 'Neue Kategorie hinzufügen',
-  'Add new field' => 'Neues Feld hinzufügen',
-  'Assign profile field to group' => 'Profilfeld einer Gruppe zuordnen'
+  '<strong>Assignment</strong> of profile fields' => '',
+  '<strong>Profile fields</strong>' => '',
+  '<strong>Group</strong>' => '',
+  'Add new field' => '',
+  'Save' => ''
 );

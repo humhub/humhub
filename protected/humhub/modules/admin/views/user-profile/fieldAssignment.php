@@ -7,11 +7,13 @@ use humhub\modules\user\models\Group;
 use humhub\compat\CHtml;
 ?>
 <div class="panel panel-default">
+
+    <div class="panel-heading"> <?php echo Yii::t('AdminModule.views_userprofile_fieldAssignment', '<strong>Assignment</strong> of profile fields');   ?></div>
+        
     <div class="panel-body">
-        <div class="panel-heading"> <strong><?php echo 'Field Assignment'; ?></strong></div>
         
         <?php  
-        
+
             $form = CActiveForm::begin(['options'=>['class'=>'fieldForm']]);
             echo '<div class="dropdown">';
 
@@ -23,18 +25,18 @@ use humhub\compat\CHtml;
                 $recievedGroupId = Group::find()->all()[0]->id;
             }
                 
-            echo "Group selection: ";
+            echo Yii::t('AdminModule.views_userprofile_fieldAssignment', '<strong>Group</strong>');
             echo $form->dropDownList($model, 
                                     'groups', 
                                     \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name'),
                                     array(
                                         'options' => array($recievedGroupId=>array('selected '=>'selected')), // white space needed -> https://github.com/yiisoft/yii2/issues/2728
-                                        'style' => array('margin-bottom'=>'10px')
+                                        'style' => array('margin'=>'0 0 10px 10px')
                                     )); 
                 
             echo '</div>';
             
-            echo '<strong>Fields</strong>';              
+            echo Yii::t('AdminModule.views_userprofile_fieldAssignment', '<strong>Profile fields</strong>');             
                 
             $fieldGroup = $model->getFieldAssignmentDataOfGroup($recievedGroupId);
 
@@ -50,16 +52,19 @@ use humhub\compat\CHtml;
             
             echo '<div class="checkboxgroup">';
             echo CHtml::checkBoxList('fieldAssignemnt',$fieldGroupNewPreSelected,$fieldGroupNew,
-                        array('template'=>'{input}{label}',
-                        'separator'=>'</br>')); 
+                        array(
+                            'template'=>'{input}{label}',
+                            'separator'=>'</br>'
+                        )); 
             echo '</div>';
             
             echo Html::submitButton(Yii::t('AdminModule.views_userprofile_fieldAssignment', 'Save'), array('class' => 'btn btn-primary'));
-            echo Html::a(Yii::t('AdminModule.views_userprofile_index', 'Add new field'), Url::to(['edit-field']), array('class' => 'btn btn-default form-button-search'));
+            echo Html::a(Yii::t('AdminModule.views_userprofile_fieldAssignment', 'Add new field'), Url::to(['edit-field']), array('class' => 'btn btn-default form-button-search'));
             CActiveForm::end(); 
         ?>
         
     </div>
+    
 </div>
 
 <script>
