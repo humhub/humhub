@@ -64,7 +64,7 @@ use humhub\modules\admin\widgets\SpaceGridView;
                 },
                     ],
                     [
-                        'header' => 'Actions',
+                        'header' => Yii::t('AdminModule.views_space_index', 'Actions'),
                         'class' => 'yii\grid\ActionColumn',
                         'options' => ['width' => '80px'],
                         'buttons' => [

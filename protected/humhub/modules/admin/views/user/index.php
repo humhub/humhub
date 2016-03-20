@@ -56,7 +56,7 @@ use humhub\widgets\GridView;
                     }
                 ],
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
                     'buttons' => [
