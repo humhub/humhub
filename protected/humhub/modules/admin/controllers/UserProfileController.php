@@ -35,13 +35,7 @@ class UserProfileController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\admin\models\UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', array(
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
-        ));
+        return $this->render('index', array());
     }
 
     /**
