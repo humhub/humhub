@@ -10,6 +10,7 @@ class m160318_113535_role_concept extends Migration
 					'group_id' => 'int NOT NULL',
 					'profile_field_id' => 'int NOT NULL',
 						), '');
+        $this->addPrimaryKey('pk_sen_profile_field_group', 'sen_profile_field_group', 'group_id,profile_field_id');
     }
 
     public function down()
