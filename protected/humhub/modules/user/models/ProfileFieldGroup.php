@@ -11,7 +11,7 @@ namespace humhub\modules\user\models;
 use Yii;
 
 /**
- * This is the model class for table "sen_profile_field_group".
+ * This is the model class for table "profile_field_assignment".
  *
  * @property integer $group_id
  * @property integer $profile_field_id
@@ -24,7 +24,7 @@ class ProfileFieldGroup extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'sen_profile_field_group';
+        return 'profile_field_assignment';
     }
 
     /**
