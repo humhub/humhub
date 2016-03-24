@@ -41,7 +41,11 @@ class AppAsset extends AssetBundle
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
         'js/app.js',
+        'js/dist/humhub.all.js'
     ];
+    
+    //TODO if !debug use humhub.all.min.js
+    
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
