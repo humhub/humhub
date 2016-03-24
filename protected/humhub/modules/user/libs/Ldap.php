@@ -99,16 +99,23 @@ class Ldap extends \yii\base\Component
     {
         try {
             $username = $this->ldap->getCanonicalAccountName($username, \Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
+            // check Password
             $this->ldap->bind($username, $password);
-
+            // disconnect id needed here because otherwise binding/ldap connection again can cause errors.
+            $this->ldap->disconnect();
+            
             // Update Users Data
             $node = $this->ldap->getNode($username);
             $this->handleLdapUser($node);
-
             return true;
         } catch (\Zend\Ldap\Exception\LdapException $ex) {
+            // log errors other than invalid credentials
+            if ($ex->getCode() !== LdapException::LDAP_INVALID_CREDENTIALS) {
+                Yii::error('LDAP Error: ' . $ex->getMessage());
+            }
             return false;
         } catch (Exception $ex) {
+            Yii::error('LDAP Error: ' . $ex->getMessage());
             return false;
         }
     }
