@@ -13,9 +13,9 @@ use humhub\compat\CHtml;
     
     <hr>
 
-    <?php echo $form->field($model, 'newPassword')->textInput(['maxlength' => 45]); ?>
+    <?php echo $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
 
-    <?php echo $form->field($model, 'newPasswordConfirm')->textInput(['maxlength' => 45]); ?>
+    <?php echo $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
     <hr>
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_changePassword', 'Save'), array('class' => 'btn btn-primary')); ?>
