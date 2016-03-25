@@ -11,24 +11,17 @@ use Yii;
 class FieldAssignment extends \yii\base\Model
 {
     public $groups;
-    public $title;
-    
-    public $data;
     
     public function rules()
     {
         return array(
-            array('groups', 'in', 'range' => \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name')),
-            array('title', 'boolean')
+             array('groups', 'in', 'range' => \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name')),
         );
     }
     
     public function attributeLabels()
     {
-        return array(
-            'groups' => 'Groups',
-            'title' =>'Title',
-        );
+        return array('groups' => 'Groups');
     }
     
     public function getFieldAssignmentDataOfGroup($groupid)
@@ -63,7 +56,7 @@ class FieldAssignment extends \yii\base\Model
         
     }
     
-      private function hasFieldAssignmentCombination($groupId, $fieldId){
+    private function hasFieldAssignmentCombination($groupId, $fieldId){
         $queryFieldMapping = ProfileFieldGroup::findOne(["group_id"=>$groupId, 
                 "profile_field_id"=>$fieldId]);
                 
@@ -81,7 +74,7 @@ class FieldAssignment extends \yii\base\Model
              {
                 $newProfileFieldGroup = new ProfileFieldGroup(); 
                 $newProfileFieldGroup->group_id=$groupId;
-                $newProfileFieldGroup->profile_field_id =$tempFieldId;
+                $newProfileFieldGroup->profile_field_id = $tempFieldId;
                 $newProfileFieldGroup->save();
              }
          }
@@ -95,7 +88,7 @@ class FieldAssignment extends \yii\base\Model
          foreach($queryFieldMappings as $row){
              if(!in_array($row->profile_field_id, $usedFieldIds)){
                 $rowToDelete =  ProfileFieldGroup::findOne(["group_id"=>$groupId, 
-                "profile_field_id"=>$row->profile_field_id]);
+                                                            "profile_field_id"=>$row->profile_field_id]);
                 if($rowToDelete!=null){
                     $rowToDelete->delete();
                 }

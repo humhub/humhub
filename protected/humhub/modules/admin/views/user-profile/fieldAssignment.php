@@ -27,7 +27,7 @@ use humhub\compat\CHtml;
                 
             echo Yii::t('AdminModule.views_userprofile_fieldAssignment', '<strong>Group</strong>');
             echo $form->dropDownList($model, 
-                                    'groups', 
+                                    'groups',
                                     \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name'),
                                     array(
                                         'options' => array($recievedGroupId=>array('selected '=>'selected')), // white space needed -> https://github.com/yiisoft/yii2/issues/2728

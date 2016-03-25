@@ -62,15 +62,13 @@ class UserProfileController extends Controller
     public function actionFieldAssignment()
     {
         $model = new FieldAssignment();
-        $groups = \yii\helpers\ArrayHelper::map(Group::find()->all(), 'id', 'name');
         
-        //wurde gespeichert? http://www.yiiframework.com/doc-2.0/guide-db-active-record.html
         if($model->load(Yii::$app->request->post())){
             $groupId = Yii::$app->request->post()["FieldAssignment"]["groups"]; //Group-Id
             $fields = Yii::$app->request->post()["fieldAssignemnt"]; //checkFieldIds
             $model->saveFieldAssignmentData($groupId, $fields);
         }
-        return $this->render('fieldAssignment', array('model'=>$model, 'groups' =>$groups));
+        return $this->render('fieldAssignment', array('model'=>$model));
     }
 
     /**
