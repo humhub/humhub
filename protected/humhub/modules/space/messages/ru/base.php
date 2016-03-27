@@ -9,8 +9,8 @@ return array (
   'Private (Invisible)' => 'Приватное (Скрыто)',
   'Public' => 'Публичное',
   'Public (Members & Guests)' => 'Открыто (Участники & Гости)',
-  'Public (Members only)' => 'Открыто (только участники)',
-  'Public (Registered users only)' => 'Открыто (только для зарегистрированных)',
+  'Public (Members only)' => 'Открыто (Только участники)',
+  'Public (Registered users only)' => 'Открыто (Только для зарегистрированных)',
   'Public (Visible)' => 'Открыто (Отображается)',
-  'Visible for all (members and guests)' => 'Отображается для всех (участники и гости)',
+  'Visible for all (members and guests)' => 'Отображается для всех (Участники и гости)',
 );

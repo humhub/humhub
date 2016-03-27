@@ -12,6 +12,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
         <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Pending</strong> approvals'); ?>
     </div>
     <div class="panel-body">
+        <div class="table-responsive">
         <?php
         $groups = $space->getUserGroups();
 
@@ -25,7 +26,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                 'user.profile.lastname',
                 'request_message',
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'buttons' => [
                         'view' => function() {
@@ -42,5 +43,6 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                     ],
                 ]);
                 ?>
+        </div>
     </div>
 </div>
