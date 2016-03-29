@@ -52,7 +52,7 @@ class ProfileFieldGroup extends \yii\db\ActiveRecord
     {
         return array(
             'profile_field_id' => array(self::BELONGS_TO, 'ProfileField', 'profile_field_id'),
-            'group_id' => array(self::BELONGS_TO, 'Group', 'id'),
+            'group_id' => array(self::BELONGS_TO, 'field_assignment_group', 'field_assignment_group_id'),
         );
     }
 }
