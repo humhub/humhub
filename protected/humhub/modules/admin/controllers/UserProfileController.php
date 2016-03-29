@@ -15,6 +15,8 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\fieldtype\BaseType;
+use humhub\modules\admin\models\FieldAssignment;
+use humhub\modules\user\models\ProfileFieldGroup;
 
 /**
  * UserprofileController provides manipulation of the user's profile fields & categories.
@@ -78,6 +80,18 @@ class UserProfileController extends Controller
         return $this->redirect(Url::to(['/admin/user-profile']));
     }
 
+    public function actionFieldAssignment()
+    {
+        $model = new FieldAssignment();
+        
+        if($model->load(Yii::$app->request->post())){
+            $groupId = Yii::$app->request->post()["FieldAssignment"]["groups"]; //Group-Id
+            $fields = Yii::$app->request->post()["fieldAssignemnt"]; //checkFieldIds
+            $model->saveFieldAssignmentData($groupId, $fields);
+        }
+        return $this->render('fieldAssignment', array('model'=>$model));
+    }
+    
     public function actionEditField()
     {
         $id = (int) Yii::$app->request->get('id');
