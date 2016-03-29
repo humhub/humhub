@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
+use humhub\modules\user\models\Group;
 use yii\helpers\Url;
 use humhub\models\Setting;
 
@@ -420,7 +421,6 @@ class ConfigController extends Controller
         if ($form->submitted('save') && $form->validate()) {
 
             $form->models['User']->status = User::STATUS_ENABLED;
-            $form->models['User']->super_admin = true;
             $form->models['User']->language = '';
             $form->models['User']->tags = 'Administration, Support, HumHub';
             $form->models['User']->last_activity_email = new \yii\db\Expression('NOW()');
@@ -437,6 +437,9 @@ class ConfigController extends Controller
 
             $userId = $form->models['User']->id;
 
+            Group::getAdminGroup()->addUser($form->models['User']);
+
+            
             // Switch Identity
             Yii::$app->user->switchIdentity($form->models['User']);
 
