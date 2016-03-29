@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
+use humhub\modules\user\models\Group;
 use yii\helpers\Url;
 use humhub\models\Setting;
 
@@ -247,9 +248,7 @@ class ConfigController extends Controller
                 $userModel->status = User::STATUS_ENABLED;
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@humhub.com";
-                $userModel->super_admin = 0;
                 $userModel->language = '';
-                $userModel->group_id = 1;
                 $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
                 $userModel->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel->save();
@@ -276,9 +275,7 @@ class ConfigController extends Controller
                 $userModel2->status = User::STATUS_ENABLED;
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@humhub.com";
-                $userModel2->super_admin = 0;
                 $userModel2->language = '';
-                $userModel2->group_id = 1;
                 $userModel2->tags = "Yoga, Travel, English, German, French";
                 $userModel2->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel2->save();
@@ -418,14 +415,12 @@ class ConfigController extends Controller
 
         $form = new \humhub\compat\HForm($definition);
         $form->models['User'] = $userModel;
-        $form->models['User']->group_id = 1;
         $form->models['Password'] = $userPasswordModel;
         $form->models['Profile'] = $profileModel;
 
         if ($form->submitted('save') && $form->validate()) {
 
             $form->models['User']->status = User::STATUS_ENABLED;
-            $form->models['User']->super_admin = true;
             $form->models['User']->language = '';
             $form->models['User']->tags = 'Administration, Support, HumHub';
             $form->models['User']->last_activity_email = new \yii\db\Expression('NOW()');
@@ -442,6 +437,9 @@ class ConfigController extends Controller
 
             $userId = $form->models['User']->id;
 
+            Group::getAdminGroup()->addUser($form->models['User']);
+
+            
             // Switch Identity
             Yii::$app->user->switchIdentity($form->models['User']);
 

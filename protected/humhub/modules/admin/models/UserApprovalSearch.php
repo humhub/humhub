@@ -53,7 +53,7 @@ class UserApprovalSearch extends User
      */
     public function search($params = [])
     {
-        $query = User::find()->joinWith(['profile', 'group']);
+        $query = User::find()->joinWith(['profile', 'groups']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -62,7 +62,6 @@ class UserApprovalSearch extends User
 
         $dataProvider->setSort([
             'attributes' => [
-                'group.id',
                 'username',
                 'email',
                 'super_admin',
@@ -88,12 +87,9 @@ class UserApprovalSearch extends User
         foreach ($groups as $group) {
             $groupIds[] = $group->id;
         }
-        $query->andWhere(['IN', 'group_id', $groupIds]);
-
+        $query->andWhere(['IN', 'group.id', $groupIds]);
         $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['group.id' => $this->getAttribute('group.id')]);
-        $query->andFilterWhere(['super_admin' => $this->super_admin]);
         $query->andFilterWhere(['like', 'id', $this->id]);
         $query->andFilterWhere(['like', 'username', $this->username]);
         $query->andFilterWhere(['like', 'email', $this->email]);
@@ -111,13 +107,7 @@ class UserApprovalSearch extends User
         if (Yii::$app->user->isAdmin()) {
             return \humhub\modules\user\models\Group::find()->all();
         } else {
-            $groups = [];
-            foreach (\humhub\modules\user\models\GroupAdmin::find()->joinWith('group')->where(['user_id' => Yii::$app->user->id])->all() as $groupAdmin) {
-                if ($groupAdmin->group !== null)
-                    $groups[] = $groupAdmin->group;
-            }
-            return $groups;
+            return Yii::$app->user->getIdentity()->adminGroups;
         }
     }
-
 }

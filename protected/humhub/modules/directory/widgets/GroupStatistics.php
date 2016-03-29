@@ -25,7 +25,7 @@ class GroupStatistics extends \yii\base\Widget
         $users = User::find()->count();
 
         $statsAvgMembers = $users / $groups;
-        $statsTopGroup = Group::find()->where('id = (SELECT group_id  FROM user GROUP BY group_id ORDER BY count(*) DESC LIMIT 1)')->one();
+        $statsTopGroup = Group::find()->where('id = (SELECT group_id  FROM group_user GROUP BY group_id ORDER BY count(*) DESC LIMIT 1)')->one();
 
         // Render widgets view
         return $this->render('groupStats', array(

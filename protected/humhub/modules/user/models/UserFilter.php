@@ -37,6 +37,7 @@ class UserFilter extends User
     }
 
     /**
+     * @deprecated since version number
      * Default implementation for user picker filter.
      * 
      * @param type $keywords
@@ -110,6 +111,19 @@ class UserFilter extends User
         return self::filter($this->getFriends(), $keywords, $maxResults, $permission);
     }
     
+    /**
+     * Returns an array of user models filtered by a $keyword and $permission. These filters
+     * are added to the provided $query. The $keyword filter can be used to filter the users
+     * by email, username, firstname, lastname and title. By default this functions does not
+     * consider inactive user.
+     * 
+     * @param type $query
+     * @param type $keywords
+     * @param type $maxResults
+     * @param type $permission
+     * @param type $active
+     * @return type
+     */
     public static function filter($query, $keywords = null, $maxResults = null, $permission = null, $active = null)
     {
         $user = self::addQueryFilter($query, $keywords, $maxResults, $active)->all();
@@ -147,6 +161,7 @@ class UserFilter extends User
                     ]
             );
         }
+        return $query;
     }
 
     /**

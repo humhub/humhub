@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -15,6 +15,7 @@ use humhub\models\Setting;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Group;
 
 /**
  * Console Install
@@ -36,7 +37,7 @@ class InstallController extends Controller
         Setting::Set('secret', \humhub\libs\UUID::v4());
 
         $user = new User();
-        $user->group_id = 1;
+        //$user->group_id = 1;
         $user->username = "Admin";
         $user->email = 'humhub@example.com';
         $user->status = User::STATUS_ENABLED;
@@ -55,7 +56,9 @@ class InstallController extends Controller
         $password->user_id = $user->id;
         $password->setPassword('test');
         $password->save();
-
+        
+        // Assign to system admin group
+        Group::getAdminGroup()->addUser($user);
 
 
         return self::EXIT_CODE_NORMAL;

@@ -40,13 +40,12 @@ class SearchController extends Controller
     public function actionJson()
     {
         Yii::$app->response->format = 'json';
-
-        $maxResults = 10;
-        $keyword = Yii::$app->request->get('keyword');
-        $userRole = Yii::$app->request->get('userRole');
         
-        $friendsOnly = ($userRole != null && $userRole == User::USERGROUP_FRIEND);
-        return UserFilter::forUser()->getUserPickerResult($keyword, $maxResults, $friendsOnly);
+        return \humhub\modules\user\widgets\UserPicker::filter([
+            'keyword' => Yii::$app->request->get('keyword'),
+            'fillUser' => true,
+            'disableFillUser' => false
+        ]);
     }
 
 }

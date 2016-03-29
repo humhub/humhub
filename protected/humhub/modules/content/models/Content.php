@@ -596,7 +596,7 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         // Check Superadmin can see all content option
-        if ($user->super_admin === 1 && Yii::$app->getModule('content')->adminCanViewAllContent) {
+        if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
             return true;
         }
 
