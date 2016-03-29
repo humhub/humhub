@@ -22,12 +22,12 @@ class CreatePublicSpace extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "创建公共空间";
+    protected $title = 'Create public space';
 
     /**
      * @inheritdoc
      */
-    protected $description = "能创建公共可见的空间。";
+    protected $description = 'Can create public visible spaces. (Listed in directory)';
 
     /**
      * @inheritdoc
@@ -38,5 +38,12 @@ class CreatePublicSpace extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $defaultState = self::STATE_ALLOW;
+    
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        
+        $this->title = \Yii::t('SpaceModule.permissions', 'Create public space');
+        $this->description = \Yii::t('SpaceModule.permissions', 'Can create public visible spaces. (Listed in directory)');
+    }
 
 }

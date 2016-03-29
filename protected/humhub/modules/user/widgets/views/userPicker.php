@@ -41,6 +41,7 @@ foreach (explode(",", $currentValue) as $guid) {
             currentValue: '<?php echo $newValue; ?>',
             focus: '<?php echo $focus; ?>',
             userGuid: '<?php echo $userGuid; ?>',
+            data: <?php echo $data ?>,
             placeholderText: '<?php echo $placeholderText; ?>'
         });
     });

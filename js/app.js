@@ -158,9 +158,10 @@ function setModalHandler() {
     // unbind all previously-attached events
     $("a[data-target='#globalModal']").unbind();
 
-    $("a[data-target='#globalModal']").click(function (ev) {
+    $(document).off('click.humhub');
+    $(document).on('click.humhub', "a[data-target='#globalModal']", function (ev) {
         ev.preventDefault();
-
+       
         $("#globalModal").modal("show");
         var target = $(this).attr("href");
 

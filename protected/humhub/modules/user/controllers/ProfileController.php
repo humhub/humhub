@@ -44,7 +44,7 @@ class ProfileController extends ContentContainerController
             'stream' => array(
                 'class' => \humhub\modules\content\components\actions\ContentContainerStream::className(),
                 'mode' => \humhub\modules\content\components\actions\ContentContainerStream::MODE_NORMAL,
-                'contentContainer' => $this->getUser()
+                'contentContainer' => $this->contentContainer
             ),
         );
     }

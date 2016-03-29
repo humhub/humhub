@@ -36,16 +36,23 @@ class InviteUsers extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "邀请用户";
+    protected $title = 'Invite users';
 
     /**
      * @inheritdoc
      */
-    protected $description = "允许用户为此空间邀请新用户";
+    protected $description = 'Allows the user to invite new members to the space';
 
     /**
      * @inheritdoc
      */
     protected $moduleId = 'space';
+    
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        
+        $this->title = \Yii::t('SpaceModule.permissions', 'Invite users');
+        $this->description = \Yii::t('SpaceModule.permissions', 'Allows the user to invite new members to the space');
+    }
 
 }

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use humhub\assets\AppAsset;
+use humhub\models\Setting;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -78,7 +79,7 @@ AppAsset::register($this);
             $('body').find(':checkbox, :radio').flatelements();
         </script>
 
-        <?php //echo HSetting::GetText('trackingHtmlCode'); ?>
+        <?php echo Setting::GetText('trackingHtmlCode'); ?>
         <?php $this->endBody() ?>
         <div class="text text-center powered">
             Powered by <a href="http://www.humhub.org" target="_blank">HumHub</a>

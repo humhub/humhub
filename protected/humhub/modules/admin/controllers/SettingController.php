@@ -209,6 +209,11 @@ class SettingController extends Controller
         return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
     }
 
+    public function actionLdapRefresh() {
+        Ldap::getInstance()->refreshUsers();
+        Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication-ldap'));
+    }
+    
     /**
      * Caching Options
      */
