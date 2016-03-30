@@ -186,6 +186,10 @@ class Profile extends \yii\db\ActiveRecord
 
                 if (!$profileField->visible && $this->scenario != 'editAdmin')
                     continue;
+                    
+                //Check profile field assignment
+                if(!$this->hasUserProfileField($this->user, $profileField["id"]))
+                    continue;
 
                 if ($this->scenario == 'registration' && !$profileField->show_at_registration)
                     continue;
@@ -227,6 +231,22 @@ class Profile extends \yii\db\ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+    
+    
+    function hasUserProfileField($user, $profile_field_id){
+       $groupUsers = GroupUser::find(['user_id'=>$user['id']])->all();
+       foreach($groupUsers as $groupUserData)
+       {
+            $queryFieldMapping = ProfileFieldGroup::find();
+            $queryFieldMapping->where(["group_id"=>$groupUserData['group_id']]);
+            $queryFieldMapping->andWhere(["profile_field_id"=>$profile_field_id]);
+            
+            if(count($queryFieldMapping->all())>0){
+               return true;
+            }
+       }
+       return false;             
     }
 
     /**
@@ -282,7 +302,7 @@ class Profile extends \yii\db\ActiveRecord
         }
         foreach ($query->all() as $field) {
 
-            if ($field->getUserValue($this->user) != "") {
+            if ($this->hasUserProfileField($this->user, $field["id"]) && $field->getUserValue($this->user) != "") {
                 $fields[] = $field;
             }
         }
