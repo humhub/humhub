@@ -11,18 +11,6 @@ class m160318_113535_profile_field_assignment extends Migration
 					'profile_field_id' => 'int NOT NULL',
 						), '');
         $this->addPrimaryKey('pk_profile_field_assignment', 'profile_field_assignment', 'group_id,profile_field_id');
-        
-        $this->createTable('profile_field_assignment_group', array(
-					'field_assignment_group_id' => 'int NOT NULL',
-					'name' => 'int NOT NULL',
-						), '');
-        $this->addPrimaryKey('pk_profile_field_assignment', 'profile_field_assignment_group', 'field_assignment_group_id');
-        
-        $this->createTable('profile_field_assignment_group_user', array(
-            'field_assignment_group_id' => 'int NOT NULL',
-            'user_id' => 'int NOT NULL'
-        ),'');
-        $this->addPrimaryKey('pk_profile_field_assignment', 'profile_field_assignment_group_user', 'field_assignment_group_id, user_id');
     }
 
     public function down()
@@ -32,8 +20,6 @@ class m160318_113535_profile_field_assignment extends Migration
         return false;        
         
         $this->dropTable('profile_field_assignment');
-        $this->dropTable('profile_field_assignment_group');
-        $this->dropTable('profile_field_assignment_group_user');
     }
 
     /*
