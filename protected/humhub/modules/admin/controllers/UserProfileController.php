@@ -92,6 +92,11 @@ class UserProfileController extends Controller
         return $this->render('fieldAssignment', array('model'=>$model));
     }
     
+    public function actionFieldAssignmentGroup()
+    {
+        return $this->render('fieldAssignmentGroup');
+    }
+    
     public function actionEditField()
     {
         $id = (int) Yii::$app->request->get('id');
