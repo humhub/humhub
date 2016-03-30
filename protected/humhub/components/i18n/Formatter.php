@@ -17,6 +17,11 @@ class Formatter extends \yii\i18n\Formatter
 {
 
     /**
+     * @inheritdoc
+     */
+    public $sizeFormatBase = 1000;
+    
+    /**
      * @var string the default format string to be used to format a input field [[asDate()|date]].
      * This mostly used in forms (DatePicker).
      * @see dateFormat
