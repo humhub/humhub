@@ -28,7 +28,7 @@ use yii\helpers\Url;
 
         <?php
         echo \humhub\widgets\AjaxButton::widget([
-            'label' => 'Save',
+            'label' => Yii::t('PostModule.views_edit', 'Save'),
             'ajaxOptions' => [
                 'type' => 'POST',
                 'beforeSend' => new yii\web\JsExpression('function(html){  $("#post_input_' . $post->id . '_contenteditable").hide(); showLoader("' . $post->id . '"); }'),
