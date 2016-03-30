@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid Mime-Type' => '',
-    'Maximum file size ({maxFileSize}) has been exceeded!' => '',
-    'This file type is not allowed!' => '',
+    'Invalid Mime-Type' => '非法的文件类型',
+    'Maximum file size ({maxFileSize}) has been exceeded!' => '已超过最大文件大小({maxFileSize})',
+    'This file type is not allowed!' => '不支持此类文件',
 ];

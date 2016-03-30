@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default value' => '',
-  'Maximum length' => '',
-  'Minimum length' => '',
-  'Regular Expression: Error message' => '',
-  'Regular Expression: Validator' => '',
-  'Validator' => '',
+  'Default value' => '默认值',
+  'Maximum length' => '最大长度',
+  'Minimum length' => '最小长度',
+  'Regular Expression: Error message' => '正则表达式：错误信息',
+  'Regular Expression: Validator' => '正则表达式：验证器',
+  'Validator' => '验证器',
   'Text Field Options' => '文本类型选项',
 );

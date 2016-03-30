@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} approved your membership for the space {spaceName}' => '',
+  '{userName} approved your membership for the space {spaceName}' => '{userName} 通过了你加入空间 {spaceName} 的申请',
 );

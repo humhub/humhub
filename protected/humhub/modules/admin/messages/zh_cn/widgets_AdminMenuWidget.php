@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'OEmbed Provider' => '',
-    'Proxy' => '',
+    'OEmbed Provider' => 'OEmbed 供应商',
+    'Proxy' => '代理',
     '<strong>Administration</strong> menu' => '<strong>管理</strong> 菜单',
     'About' => '关于',
     'Authentication' => '权限设置',
@@ -33,7 +33,7 @@ return [
     'Modules' => '模块管理',
     'Self test & update' => '自测试和更新',
     'Settings' => '设置',
-    'Spaces' => '版块管理',
+    'Spaces' => '空间管理',
     'Statistics' => '静态页',
     'User approval' => '请求管理',
     'User profiles' => '用户属性设置',

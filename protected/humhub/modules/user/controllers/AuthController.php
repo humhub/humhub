@@ -127,7 +127,7 @@ class AuthController extends Controller
         $user = User::findOne(array('guid' => Yii::$app->request->get('guid')));
 
         if ($user === null || !$this->checkPasswordResetToken($user, Yii::$app->request->get('token'))) {
-            throw new HttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
+            throw new HttpException('500', Yii::t('UserModule.views_auth_resetPassword', 'It looks like you clicked on an invalid password reset link. Please try again.'));
         }
 
         $model = new Password();
@@ -173,7 +173,7 @@ class AuthController extends Controller
         $needApproval = \humhub\models\Setting::Get('needApproval', 'authentication_internal');
 
         if (!Yii::$app->user->isGuest)
-            throw new HttpException(401, 'Your are already logged in! - Logout first!');
+            throw new HttpException(401, Yii::t('UserModule.controllers_AccountController', 'Your are already logged in! - Logout first!'));
 
 
         $userInvite = Invite::findOne(['token' => Yii::$app->request->get('token')]);

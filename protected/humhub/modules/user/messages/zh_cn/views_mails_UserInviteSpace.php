@@ -18,12 +18,13 @@
  */
 return [
     '<br>A social network to increase your communication and teamwork.<br>Register now
-to join this space.' => '',
-    'Sign up now' => '',
-    'Space Invite' => '',
+to join this space.' => '一个可以增加你的沟通和团队协作的社交网络。<br>
+现在注册加入这个空间。',
+    'Sign up now' => '现在注册',
+    'Space Invite' => '空间邀请',
     '<br>A social network to increase your communication and teamwork.<br>Register now
-                                                        to join this space.' => '<br>社交网络可以提高你的沟通和团队合作。<br>现在注册
+                                                        to join this space.' => '<br>社交网络可以提高你的沟通和团队合作能力。<br>现在注册
 加入这个空间。',
-    'You got a <strong>space</strong> invite' => '你收到一个 <strong>版块</strong>邀请 ',
-    'invited you to the space:' => '邀请你加入版块：',
+    'You got a <strong>space</strong> invite' => '你收到一个 <strong>空间</strong>邀请 ',
+    'invited you to the space:' => '邀请你加入空间：',
 ];

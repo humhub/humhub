@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Add new user' => '',
-    'Last login' => '',
-    'Overview' => '',
-    'never' => '',
-    '<strong>Manage</strong> users' => '<strong>管理</strong> 用户',
+    'Actions' => '动作',
+    'Add new user' => '增加新用户',
+    'Last login' => '最后登录',
+    'Overview' => '概述',
+    'never' => '从不',    '<strong>Manage</strong> users' => '<strong>管理</strong> 用户',
     'In this overview you can find every registered user and manage him.' => '你可以找到每个注册用户和管理他',
+    'Admin' => '管理员',
 ];

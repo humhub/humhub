@@ -18,8 +18,8 @@
  */
 return array (
   'LDAP' => '',
-  'Local' => '',
-  'Become this user' => '成为这个用户',
+  'Local' => '本地',
+  'Become this user' => '切换(登录)到这个用户',
   'Delete' => '删除',
   'Disabled' => '生效',
   'Enabled' => '失效',

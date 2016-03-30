@@ -21,4 +21,5 @@ return [
     '<strong>Edit</strong> group' => '<strong>编辑</strong> 组',
     'Delete' => '删除',
     'Save' => '保存',
+    'Permissions' => '权限',
 ];

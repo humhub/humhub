@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not find requested content!' => '',
-    'Could not find requested permalink!' => '',
+    'Could not find requested content!' => '找不到请求的内容',
+    'Could not find requested permalink!' => '找不到请求的链接',
 ];

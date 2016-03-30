@@ -17,12 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Default Space' => '缺省版块',
+  'Default Space' => '缺省空间',
   'Description' => '描述',
   'Group Administrators' => '小组管理',
   'ID' => '',
   'LDAP DN' => '',
-  'Members can create private spaces' => '成员能创建私有版块',
-  'Members can create public spaces' => '成员能创建公共版块',
+  'Members can create private spaces' => '成员能创建私有空间',
+  'Members can create public spaces' => '成员能创建公共空间',
   'Name' => '名字',
+  'Default Space Guid' => '默认空间',
 );

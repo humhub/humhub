@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Date input format' => '',
-    'Logo upload' => '',
-    'Server Timezone' => '',
-    'Show sharing panel on dashboard' => '',
-    'Show user profile post form on dashboard' => '',
+    'Date input format' => '日期格式',
+    'Logo upload' => 'LOGO上传',
+    'Server Timezone' => '服务器时区',
+    'Show sharing panel on dashboard' => '在主面板上显示分享面板',
+    'Show user profile post form on dashboard' => '在主面板上显示用户中心的动态',
     'Base URL' => '基础URL',
     'Default language' => '缺省语言',
-    'Default space' => '缺省版块',
-    'Invalid space' => '无效的版块',
+    'Default space' => '缺省空间',
+    'Invalid space' => '无效的空间',
     'Name of the application' => '应用名称',
     'Show introduction tour for new users' => '新用户显示向导',
 ];

@@ -193,7 +193,7 @@ use humhub\models\Setting;
                                                         <!-- START: CONTENT -->
                                                         <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'invited you to the space:'); ?>
                                                         <strong><?php echo Html::encode($space->name); ?></strong>
-                                                        at <?php echo Html::encode(Yii::$app->name); ?>.<?php echo Yii::t('UserModule.views_mails_UserInviteSpace', '<br>A social network to increase your communication and teamwork.<br>Register now
+                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'at');?> <?php echo Html::encode(Yii::$app->name); ?>.<?php echo Yii::t('UserModule.views_mails_UserInviteSpace', '<br>A social network to increase your communication and teamwork.<br>Register now
                                                         to join this space.'); ?><br/>
                                                         &nbsp;
                                                         <!-- END: CONTENT -->

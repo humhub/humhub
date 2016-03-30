@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Request</strong> space membership' => '',
-    'Please shortly introduce yourself, to become an approved member of this space.' => '',
+    '<strong>Request</strong> space membership' => '空间成员<strong>请求</strong>',
+    'Please shortly introduce yourself, to become an approved member of this space.' => '请简单介绍一下自己，成为这个空间的一个认可的成员。',
     'Close' => '关闭',
 ];

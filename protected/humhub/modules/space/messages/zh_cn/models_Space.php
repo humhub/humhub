@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
+    'Color' => '颜色',
     'Created At' => '创建于',
     'Created By' => '创建人',
     'Description' => '描述',
@@ -30,6 +30,7 @@ return [
     'Updated by' => '修改人',
     'Visibility' => '可见性',
     'Website URL (optional)' => '网站URL(可选)',
-    'You cannot create private visible spaces!' => '你不能创建私有的版块',
-    'You cannot create public visible spaces!' => '你不能创建公共版块',
+    'You cannot create private visible spaces!' => '你不能创建私有的空间',
+    'You cannot create public visible spaces!' => '你不能创建公共空间',
+    'Default Content Visibility' => '默认内容可见性',
 ];

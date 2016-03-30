@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Mark all as seen' => '',
+  'Mark all as seen' => '标记所有为已读',
   'Notifications' => '通知消息',
-  'There are no notifications yet.' => '',
+  'There are no notifications yet.' => '没有新通知。',
 );

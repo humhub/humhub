@@ -36,11 +36,11 @@ use humhub\widgets\GridView;
                 'profile.lastname',
                 [
                     'attribute' => 'super_admin',
-                    'label' => 'Admin',
-                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'super_admin', array('' => 'All', '0' => 'No', '1' => 'Yes')),
+                    'label' => Yii::t('AdminModule.views_user_index', 'Admin'),
+                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'super_admin', array('' => Yii::t('UserModule.base', 'All'), '0' => Yii::t('UserModule.base', 'No'), '1' => Yii::t('UserModule.base', 'Yes'))),
                     'value' =>
                     function($data) {
-                        return ($data->super_admin == 1) ? 'Yes' : 'No';
+                        return ($data->super_admin == 1) ? Yii::t('UserModule.base', 'Yes') : Yii::t('UserModule.base', 'No');
                     }
                 ],
                 [

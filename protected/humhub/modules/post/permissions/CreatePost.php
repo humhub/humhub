@@ -36,12 +36,12 @@ class CreatePost extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create post";
+    protected $title = "发表文章";
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to create posts";
+    protected $description = "允许用户发表文章";
 
     /**
      * @inheritdoc

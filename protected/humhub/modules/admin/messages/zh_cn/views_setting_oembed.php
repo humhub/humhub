@@ -17,8 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>OEmbed</strong> Provider' => '',
-  'Add new provider' => '',
-  'Currently active providers:' => '',
-  'Currently no provider active!' => '',
+  '<strong>OEmbed</strong> Provider' => '<strong>OEmbed</strong> 供应商',
+  'Add new provider' => '增加新的供应商',
+  'Currently active providers:' => '当前激活供应商：',
+  'Currently no provider active!' => '当前没有激活的供应商！',
 );

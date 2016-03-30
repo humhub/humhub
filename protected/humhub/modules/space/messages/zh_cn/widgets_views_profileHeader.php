@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Close' => '',
-    'Posts' => '',
+    'Close' => '关闭',
+    'Posts' => '帖子',
     '<strong>Something</strong> went wrong' => '未知错误',
     'Followers' => '被关注',
     'Members' => '成员',

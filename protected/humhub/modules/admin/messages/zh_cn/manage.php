@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Basic' => '',
-    'Delete' => '',
-    'Security' => '',
+    'Basic' => '基础',
+    'Delete' => '删除',
+    'Security' => '安全',
 ];

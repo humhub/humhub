@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Accept Invite' => '',
-    'Deny Invite' => '',
+    'Accept Invite' => '接受邀请',
+    'Deny Invite' => '拒绝邀请',
     'Become member' => '成为成员',
     'Cancel pending membership application' => '取消成员申请',
     'Request membership' => '请求成员',

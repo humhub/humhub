@@ -17,13 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Current Group:</strong>' => '',
-    '<strong>Manage</strong> members' => '',
-    '<strong>Manage</strong> permissions' => '',
-    '<strong>Pending</strong> approvals' => '',
-    '<strong>Pending</strong> invitations' => '',
-    'Actions' => '',
-    'Group' => '',
-    'Remove' => '',
-    'never' => '',
+    '<strong>Current Group:</strong>' => '当前用户组',
+    '<strong>Manage</strong> members' => '<strong>成员</strong>管理',
+    '<strong>Manage</strong> permissions' => '<strong>权限</strong>管理',
+    '<strong>Pending</strong> approvals' => '<strong>审核</strong>管理',
+    '<strong>Pending</strong> invitations' => '<strong>邀请</strong>管理',
+    'Actions' => '操作',
+    'Group' => '用户组',
+    'Remove' => '删除',
+    'never' => '从不',
+    'Are you sure?' => '你确定吗？',
+    'Current Group' => '当前用户组',
+    'Last Visit' => '最后访问时间',
+    'Request Message' => '请求消息',
 ];

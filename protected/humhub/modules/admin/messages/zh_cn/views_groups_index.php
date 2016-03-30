@@ -19,4 +19,5 @@
 return array (
   'Create new group' => '创建新组',
   'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.' => '你可以将用户划分为不同的群体（团队，部门等）并为它们定义标准的空间和管理员',
+  'Actions' => '操作',
 );

@@ -19,4 +19,5 @@
 return [
     'Actions' => '',
     '<strong>Manage</strong> groups' => '<strong>管理</strong> 用户组',
+    'Actions' => '操作',
 ];

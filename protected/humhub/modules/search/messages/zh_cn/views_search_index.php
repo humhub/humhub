@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search </strong> results' => '',
-    'Advanced search settings' => '',
-    'All' => '',
-    'Content' => '',
-    'Search for user, spaces and content' => '',
-    'Search only in certain spaces:' => '',
-    'Spaces' => '',
-    'Users' => '',
+    '<strong>Search </strong> results' => '<strong>搜索 </strong> 结果',
+    'Advanced search settings' => '高级搜索设置',
+    'All' => '全部',
+    'Content' => '内容',
+    'Search for user, spaces and content' => '搜索用户，空间和内容',
+    'Search only in certain spaces:' => '只搜索以下空间:',
+    'Spaces' => '空间',
+    'Users' => '用户',
 ];

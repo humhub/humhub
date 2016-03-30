@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Admin</strong> Account' => '',
-    'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => '',
+    '<strong>Admin</strong> Account' => '<strong>管理</strong> 帐户',
+    'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => '你几乎完成了。在这一步中，您必须填写表单，创建一个管理员帐户。有了这个账号你就可以管理整个网络。',
 ];

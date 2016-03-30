@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Change</strong> your password' => '',
-    'Change password' => '',
-    'Password reset' => '',
+    '<strong>Change</strong> your password' => '<strong>修改</strong> 密码',
+    'Change password' => '修改密码',
+    'Password reset' => '重置密码',
     'Back' => '返回',
+    'It looks like you clicked on an invalid password reset link. Please try again.' => '非法的重置密码链接，请重试。',
 ];

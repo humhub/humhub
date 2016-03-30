@@ -17,9 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Share</strong> your opinion with others' => '',
-    'Post a message on Facebook' => '',
-    'Share on Google+' => '',
-    'Share with people on LinkedIn ' => '',
-    'Tweet about HumHub' => '',
+    '<strong>Share</strong> your opinion with others' => '<strong>分享</strong> 给其它人',
+    'We are glad that you are using' => '非常感谢来到',
+    'If you like it, please support the project and share HumHub with your friends and colleagues' => '如果你喜欢它，请分享给你的朋友',
+    'Post a message on Facebook' => '分享到脸书网',
+    'Share on Google+' => '分享到谷歌+',
+    'Share with people on LinkedIn ' => '分享到Linked In',
+    'Tweet about HumHub' => '分享到推特',
+    'HumHub' => '自学分享网',
 ];

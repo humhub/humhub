@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Registered users only' => '',
-    'Visible for all (also unregistered users)' => '',
+    'Registered users only' => '仅注册用户',
+    'Visible for all (also unregistered users)' => '所有人可见（包括未注册用户）',
     '<strong>User</strong> settings' => '<strong>用户</strong> 设置',
     'Save' => '保存',
 ];

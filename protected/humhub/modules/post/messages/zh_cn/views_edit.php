@@ -17,5 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Edit your post...' => '',
+  'Edit your post...' => '编辑你的文章...',
+  'Save' => '保存',
 );

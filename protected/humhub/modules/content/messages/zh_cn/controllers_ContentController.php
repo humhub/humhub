@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not load requested object!' => '',
+    'Could not load requested object!' => '不能加载请求对象！',
     'Maximum number of sticked items reached!
 
 You can stick only two items at once.

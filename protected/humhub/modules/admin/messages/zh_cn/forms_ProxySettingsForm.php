@@ -1,9 +1,9 @@
 <?php
 return array (
   'Enabled' => '失效',
-  'No Proxy Hosts' => '',
+  'No Proxy Hosts' => '没有代理主机',
   'Password' => '密码',
   'Port' => '端口',
-  'Server' => '',
+  'Server' => '服务器',
   'User' => '用户',
 );

@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '{userName} is now following you.' => '',
+  '{userName} is now following you.' => '{userName} 现在关注了你。',
 );

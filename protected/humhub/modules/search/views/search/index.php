@@ -111,7 +111,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>Sorry nothing found :(</p>
+                        <p><?php echo Yii::t('SearchModule.views_search_index', 'Sorry nothing found :(');?></p>
                     <?php endif; ?>
                 </div>
 

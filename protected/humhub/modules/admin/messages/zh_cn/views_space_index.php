@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Define here default settings for new spaces.' => '',
-    'Overview' => '',
-    '<strong>Manage</strong> spaces' => '<strong>管理</strong> 版块',
+    'Actions' => '动作',
+    'Define here default settings for new spaces.' => '定义新的空间的默认设置',
+    'Overview' => '概述',
+    '<strong>Manage</strong> spaces' => '<strong>管理</strong> 空间',
     'In this overview you can find every space and manage it.' => '你可以找到每一个空间和管理它',
     'Settings' => '设置',
 ];

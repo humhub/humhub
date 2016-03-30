@@ -21,5 +21,5 @@ return [
     'Followers' => '被关注',
     'Following' => '关注',
     'Ok' => 'Ok',
-    'Spaces' => '版块',
+    'Spaces' => '空间',
 ];

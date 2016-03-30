@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Enter your password to continue' => '',
+  'Enter your password to continue' => '输入密码继续',
   '<strong>Delete</strong> account' => '<strong>删除</strong> 帐户',
   'Are you sure, that you want to delete your account?<br />All your published content will be removed! ' => '你确定想删除你的账户？<br />你发表的内容将被删除',
   'Delete account' => '删除帐户',
-  'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.' => '对不起，作为一个版块拥有者，您无法删除帐户！<br />请为版块指定另一个拥有者再删除',
+  'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.' => '对不起，作为一个空间拥有者，您无法删除帐户！<br />请为空间指定另一个拥有者再删除',
 );
