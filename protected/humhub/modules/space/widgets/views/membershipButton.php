@@ -26,5 +26,5 @@ if ($membership === null) {
     </div>
     <?php
 } elseif ($membership->status == Membership::STATUS_APPLICANT) {
-    echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Cancel pending membership application'), $space->createUrl('/space/membership/revoke-membership'), array('class' => 'btn btn-primary'));
+    echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Cancel pending membership application'), $space->createUrl('/space/membership/revoke-membership'), array('data-method' => 'POST', 'class' => 'btn btn-primary'));
 }
