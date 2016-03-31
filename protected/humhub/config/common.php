@@ -7,7 +7,7 @@ Yii::setAlias('@humhub', '@app/humhub');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.0.0-beta.4',
+    'version' => '1.0.0',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
@@ -172,6 +172,9 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
+        ],
+        'search' => [
+            'zendLucenceDataDir' => '@runtime/searchdb',
         ],
         'curl' => [
             // Check SSL certificates on CURL requests
