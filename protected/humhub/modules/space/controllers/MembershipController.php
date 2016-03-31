@@ -142,6 +142,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
      */
     public function actionRevokeMembership()
     {
+        $this->forcePostRequest();
         $space = $this->getSpace();
 
         if ($space->isSpaceOwner()) {
