@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,45 +11,50 @@ namespace humhub\modules\activity;
 use Yii;
 use humhub\models\Setting;
 use humhub\modules\user\models\User;
-use humhub\commands\CronController;
-use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\content\components\MailUpdateSender;
 
 /**
- * ActivityModule is responsible for all activities functions.
+ * Activity BaseModule
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
- * @package humhub.modules_core.activity
  * @since 0.5
  */
 class Module extends \humhub\components\Module
 {
 
-    public function getMailUpdate(User $user, $interval)
+    /**
+     * Returns all activities which should be send by e-mail to the given user
+     * in the given interval
+     * 
+     * @see \humhub\modules\content\components\MailUpdateSender
+     * @param User $user
+     * @param int $interval
+     * @return components\BaseActivity[] 
+     */
+    public function getMailActivities(User $user, $interval)
     {
-        $output = ['html' => '', 'plaintext' => ''];
-
         $receive_email_activities = $user->getSetting("receive_email_activities", 'core', Setting::Get('receive_email_activities', 'mailing'));
 
         // User never wants activity content
         if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
-            return "";
+            return [];
         }
 
         // We are in hourly mode and user wants receive a daily summary
-        if ($interval == CronController::EVENT_ON_HOURLY_RUN && $receive_email_activities == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
-            return "";
+        if ($interval == MailUpdateSender::INTERVAL_HOURY && $receive_email_activities == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
+            return [];
         }
 
         // We are in daily mode and user wants receive not daily
-        if ($interval == CronController::EVENT_ON_DAILY_RUN && $receive_email_activities != User::RECEIVE_EMAIL_DAILY_SUMMARY) {
-            return "";
+        if ($interval == MailUpdateSender::INTERVAL_DAILY && $receive_email_activities != User::RECEIVE_EMAIL_DAILY_SUMMARY) {
+            return [];
         }
 
         // User is online and want only receive when offline
-        if ($interval == CronController::EVENT_ON_HOURLY_RUN) {
+        if ($interval == MailUpdateSender::INTERVAL_HOURY) {
             $isOnline = (count($user->httpSessions) > 0);
             if ($receive_email_activities == User::RECEIVE_EMAIL_WHEN_OFFLINE && $isOnline) {
-                return "";
+                return [];
             }
         }
 
@@ -65,13 +70,14 @@ class Module extends \humhub\components\Module
         $stream->init();
         $stream->activeQuery->andWhere(['>', 'content.created_at', $lastMailDate]);
 
+        $activities = [];
         foreach ($stream->getWallEntries() as $wallEntry) {
             try {
                 $activity = $wallEntry->content->getPolymorphicRelation();
-                $output['html'] .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL);
-                $output['plaintext'] .= $activity->getActivityBaseClass()->render(BaseActivity::OUTPUT_MAIL_PLAINTEXT);
+                $activities[] = $activity->getActivityBaseClass();
             } catch (\yii\base\Exception $ex) {
                 \Yii::error($ex->getMessage());
+                return [];
             }
         }
 
@@ -79,7 +85,7 @@ class Module extends \humhub\components\Module
             'last_activity_email' => new \yii\db\Expression('NOW()')
         ]);
 
-        return $output;
+        return $activities;
     }
 
 }
