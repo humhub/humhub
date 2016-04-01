@@ -14,34 +14,31 @@ use yii\helpers\Html;
             <br/>
         </div>
 
-        <?php if (count($users) === 0): ?>
+        <?php if (count($spaces) === 0): ?>
             <div class="modal-body">
-                <p><?php echo Yii::t('UserModule.base', 'No users found.'); ?></p>
+                <p><?php echo Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
             </div>
         <?php endif; ?>      
 
 
-        <div id="userlist-content">
+        <div id="spacelist-content">
 
             <ul class="media-list">
                 <!-- BEGIN: Results -->
-                <?php foreach ($users as $user) : ?>
+                <?php foreach ($spaces as $space) : ?>
                     <li>
-                        <a href="<?php echo $user->getUrl(); ?>">
+                        <a href="<?php echo $space->getUrl(); ?>">
 
                             <div class="media">
                                 <img class="media-object img-rounded pull-left"
-                                     src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="50"
+                                     src="<?php echo $space->getProfileImage()->getUrl(); ?>" width="50"
                                      height="50" alt="50x50" data-src="holder.js/50x50"
                                      style="width: 50px; height: 50px;">
 
 
                                 <div class="media-body">
-                                    <h4 class="media-heading"><?php echo Html::encode($user->displayName); ?>
-                                        <?php if ($user->group != null) { ?>
-                                            <small>(<?php echo Html::encode($user->group->name); ?>)</small><?php } ?>
-                                    </h4>
-                                    <h5><?php echo Html::encode($user->profile->title); ?></h5>
+                                    <h4 class="media-heading"><?php echo Html::encode($space->name); ?>
+                                    <h5><?php echo Html::encode($space->description); ?></h5>
                                 </div>
                             </div>
                         </a>

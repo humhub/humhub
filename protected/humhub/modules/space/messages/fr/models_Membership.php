@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Created At' => '',
-    'Created By' => '',
-    'Last Visit' => '',
+    'Created At' => 'Créée le',
+    'Created By' => 'Créee par',
+    'Last Visit' => 'Dernière visite',
     'Originator User ID' => '',
-    'Request Message' => '',
-    'Status' => '',
-    'Updated At' => '',
-    'Updated By' => '',
+    'Request Message' => 'Message de la demande',
+    'Status' => 'Statut',
+    'Updated At' => 'Mis à jour le',
+    'Updated By' => 'Mis à jour par',
 ];

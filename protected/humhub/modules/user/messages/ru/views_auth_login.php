@@ -12,5 +12,5 @@ return array (
   'Sign in' => 'Войти',
   'email' => 'email',
   'password' => 'Пароль',
-  'username or email' => 'Имя пользователя или пароль',
+  'username or email' => 'Имя пользователя или Email',
 );

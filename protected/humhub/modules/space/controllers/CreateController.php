@@ -129,16 +129,6 @@ class CreateController extends Controller
     }
 
     /**
-     * Cancel Space creation
-     */
-    public function actionCancel()
-    {
-
-        $space = Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
-        $space->delete();
-    }
-
-    /**
      * Creates an empty space model
      * 
      * @return Space
