@@ -75,21 +75,21 @@ if ($isProfileOwner) {
                        href="<?php echo Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
-                    <?php
-                    echo \humhub\widgets\ModalConfirm::widget(array(
-                        'uniqueID' => 'modal_bannerimagedelete',
-                        'linkOutput' => 'a',
-                        'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
-                        'message' => Yii::t('UserModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
-                        'buttonTrue' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete'),
-                        'buttonFalse' => Yii::t('UserModule.widgets_views_deleteBanner', 'Cancel'),
-                        'linkContent' => '<i class="fa fa-times"></i>',
-                        'cssClass' => 'btn btn-danger btn-sm',
-                        'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'banner', 'userGuid' => $user->guid]),
-                        'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                    ));
-                    ?>
+                        <?php
+                        echo \humhub\widgets\ModalConfirm::widget(array(
+                            'uniqueID' => 'modal_bannerimagedelete',
+                            'linkOutput' => 'a',
+                            'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
+                            'message' => Yii::t('UserModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
+                            'buttonTrue' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete'),
+                            'buttonFalse' => Yii::t('UserModule.widgets_views_deleteBanner', 'Cancel'),
+                            'linkContent' => '<i class="fa fa-times"></i>',
+                            'cssClass' => 'btn btn-danger btn-sm',
+                            'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
+                            'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'banner', 'userGuid' => $user->guid]),
+                            'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                        ));
+                        ?>
                 </div>
 
             <?php } ?>
@@ -155,21 +155,21 @@ if ($isProfileOwner) {
                        href="<?php echo Url::to(['/user/account/crop-profile-image', 'userGuid' => $user->guid]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal"><i
                             class="fa fa-edit"></i></a>
-                    <?php
-                    echo \humhub\widgets\ModalConfirm::widget(array(
-                        'uniqueID' => 'modal_profileimagedelete',
-                        'linkOutput' => 'a',
-                        'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
-                        'message' => Yii::t('UserModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
-                        'buttonTrue' => Yii::t('UserModule.widgets_views_deleteImage', 'Delete'),
-                        'buttonFalse' => Yii::t('UserModule.widgets_views_deleteImage', 'Cancel'),
-                        'linkContent' => '<i class="fa fa-times"></i>',
-                        'cssClass' => 'btn btn-danger btn-sm',
-                        'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'profile', 'userGuid' => $user->guid]),
-                        'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                    ));
-                    ?>
+                        <?php
+                        echo \humhub\widgets\ModalConfirm::widget(array(
+                            'uniqueID' => 'modal_profileimagedelete',
+                            'linkOutput' => 'a',
+                            'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
+                            'message' => Yii::t('UserModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
+                            'buttonTrue' => Yii::t('UserModule.widgets_views_deleteImage', 'Delete'),
+                            'buttonFalse' => Yii::t('UserModule.widgets_views_deleteImage', 'Cancel'),
+                            'linkContent' => '<i class="fa fa-times"></i>',
+                            'cssClass' => 'btn btn-danger btn-sm',
+                            'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
+                            'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'profile', 'userGuid' => $user->guid]),
+                            'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                        ));
+                        ?>
                 </div>
             <?php } ?>
 
@@ -186,26 +186,30 @@ if ($isProfileOwner) {
                 <div class="col-md-12">
                     <div class="statistics pull-left">
 
-                        <div class="pull-left entry">
-                            <span class="count"><?php echo $user->getFollowerCount(); ?></span></a>
-                            <br>
-                            <span
-                                class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
-                        </div>
-
-                        <div class="pull-left entry">
-                            <span
-                                class="count"><?php echo $user->getFollowingCount(User::className()) + $user->getFollowingCount(Space::className()); ?></span>
-                            <br>
-                            <span
-                                class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
-                        </div>
-
-                        <div class="pull-left entry">
-                            <span class="count"><?php echo count($user->spaces); ?></span><br>
-                            <span
-                                class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
-                        </div>
+                        <a href="<?= $user->createUrl('/user/profile/follower-list'); ?>" data-target="#globalModal">
+                            <div class="pull-left entry">
+                                <span class="count"><?php echo $user->getFollowerCount(); ?></span>
+                                <br>
+                                <span
+                                    class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                            </div>
+                        </a>
+                        <a href="<?= $user->createUrl('/user/profile/followed-users-list'); ?>" data-target="#globalModal">
+                            <div class="pull-left entry">
+                                <span
+                                    class="count"><?php echo $user->getFollowingCount(User::className()) + $user->getFollowingCount(Space::className()); ?></span>
+                                <br>
+                                <span
+                                    class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
+                            </div>
+                        </a>
+                        <a href="<?= $user->createUrl('/user/profile/space-membership-list'); ?>" data-target="#globalModal">
+                            <div class="pull-left entry">
+                                <span class="count"><?php echo count($user->spaces); ?></span><br>
+                                <span
+                                    class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
+                            </div>
+                        </a>
 
                     </div>
                     <!-- end: User statistics -->
@@ -213,13 +217,13 @@ if ($isProfileOwner) {
                     <div class="controls controls-header pull-right">
                         <?php
                         echo \humhub\modules\user\widgets\ProfileHeaderControls::widget(
-                            array(
-                                'user' => $user,
-                                'widgets' => array(
-                                    array(\humhub\modules\user\widgets\ProfileEditButton::className(), array('user' => $user), array()),
-                                    array(\humhub\modules\user\widgets\UserFollowButton::className(), array('user' => $user), array()),
-                                )
-                            ));
+                                array(
+                                    'user' => $user,
+                                    'widgets' => array(
+                                        array(\humhub\modules\user\widgets\ProfileEditButton::className(), array('user' => $user), array()),
+                                        array(\humhub\modules\user\widgets\UserFollowButton::className(), array('user' => $user), array()),
+                                    )
+                        ));
                         ?>
                     </div>
                 </div>
