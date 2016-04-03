@@ -187,9 +187,18 @@ class HForm extends \yii\base\Component
         if ($model) {
             $options = [];
 
+            if (isset($definition['id'])) {
+                $options['id'] = $definition['id'];
+            }
+            
             if (isset($definition['readonly']) && $definition['readonly']) {
                 $options['readOnly'] = true;
             }
+            
+            if (isset($definition['value'])) {
+                $options['value'] = $definition['value'];
+            }
+            
             if (isset($definition['prompt']) && $definition['prompt']) {
                 $options['prompt'] = $definition['prompt'];
             }
@@ -197,33 +206,39 @@ class HForm extends \yii\base\Component
                 $options['label'] = $definition['label'];
             }
             if (isset($definition['type'])) {
-                if ($definition['type'] == 'text') {
-                    $output .= $this->form->field($model, $name)->textInput($options);
-                } elseif ($definition['type'] == 'dropdownlist') {
-                    $output .= $this->form->field($model, $name)->dropDownList($definition['items'], $options);
-                } elseif ($definition['type'] == 'checkbox') {
-                    if (isset($options['readOnly']) && $options['readOnly']) {
-                        $options['disabled'] = 'disabled';
-                    }
-                    $output .= $this->form->field($model, $name)->checkbox($options);
-                } elseif ($definition['type'] == 'textarea') {
-                    $output .= $this->form->field($model, $name)->textarea($options);
-                } elseif ($definition['type'] == 'hidden') {
-                    $output .= $this->form->field($model, $name)->hiddenInput($options)->label(false);
-                } elseif ($definition['type'] == 'password') {
-                    $output .= $this->form->field($model, $name)->passwordInput($options);
-                } elseif ($definition['type'] == 'datetime') {
-                    $format = Yii::$app->formatter->dateFormat;
-                    if (isset($definition['format'])) {
-                        $format = $definition['format'];
-                    }
-                    $output .= $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['dateFormat' => $format, 'clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 'options' => ['class' => 'form-control']]);
-                } else {
-                    $output .= "Field Type " . $definition['type'] . " not supported by Compat HForm";
+                switch($definition['type']) {
+                    case 'text':
+                        return $this->form->field($model, $name)->textInput($options);
+                    case 'multiselectdropdown':
+                        $options['class'] = 'form-control multiselect_dropdown';
+                        $options['multiple'] = 'multiple';
+                        return $this->form->field($model, $name)->listBox($definition['items'], $options);
+                        //return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
+                    case 'dropdownlist':
+                        return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
+                    case 'checkbox':
+                        if (isset($options['readOnly']) && $options['readOnly']) {
+                            $options['disabled'] = 'disabled';
+                        }
+                        return $this->form->field($model, $name)->checkbox($options);
+                    case 'textarea':
+                        return $this->form->field($model, $name)->textarea($options);
+                    case 'hidden':
+                        return $this->form->field($model, $name)->hiddenInput($options)->label(false);
+                    case 'password':
+                        return $this->form->field($model, $name)->passwordInput($options);
+                    case 'datetime':
+                        $format = Yii::$app->formatter->dateFormat;
+                        if (isset($definition['format'])) {
+                            $format = $definition['format'];
+                        }
+                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['dateFormat' => $format, 'clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 'options' => ['class' => 'form-control']]);
+                     default:
+                        return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
+            } else {
+                return "No model for: FieldName: " . $name . " Type:" . $definition['type'] . " Forms: " . print_r($forms, 1) . "<br>";
             }
-        } else {
-            $output .= "No model for: FieldName: " . $name . " Type:" . $definition['type'] . " Forms: " . print_r($forms, 1) . "<br>";
         }
 
         return $output;

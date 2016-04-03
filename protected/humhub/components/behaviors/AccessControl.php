@@ -48,8 +48,7 @@ class AccessControl extends \yii\base\ActionFilter
         $identity = Yii::$app->user->getIdentity();
         if($identity != null && !$identity->isActive()) {
             Yii::$app->user->logout();
-            $this->redirect(Yii::$app->createUrl('user/auth/login'));
-            //return Yii::$app->getResponse()->redirect(\yii\helpers\Url::toRoute('/user/auth/login'));
+            Yii::$app->response->redirect(Yii::$app->urlManager->createUrl('user/auth/login'));
         }
 
         if (Yii::$app->user->isGuest) {
@@ -63,6 +62,7 @@ class AccessControl extends \yii\base\ActionFilter
             Yii::$app->user->loginRequired();
             return false;
         }
+        
         if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
             $this->forbidden();
         }

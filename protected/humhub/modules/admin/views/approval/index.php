@@ -1,8 +1,4 @@
 <?php
-
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\GridView;
@@ -21,21 +17,13 @@ use humhub\widgets\GridView;
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                [
-                    'attribute' => 'group.id',
-                    'label' => 'Group',
-                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'group.id', \yii\helpers\ArrayHelper::map($searchModel->getGroups(), 'id', 'name')),
-                    'value' =>
-                    function($data) {
-                        return $data->group->name . " (" . $data->group->id . ")";
-                    }
-                ], 'username',
+                'username',
                 'email',
                 'profile.firstname',
                 'profile.lastname',
                 'profile.lastname',
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('AdminModule.views_approval_index', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['width' => '150px'],
                     'buttons' => [

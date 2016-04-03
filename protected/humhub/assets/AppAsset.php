@@ -40,6 +40,7 @@ class AppAsset extends AssetBundle
         'resources/at/jquery.atwho.min.js',
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
+        'js/jquery.nicescroll.min.js',
         'js/app.js',
         'js/dist/humhub.all.js'
     ];
@@ -50,7 +51,11 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
-        'humhub\assets\JqueryNiceScrollAsset',
+        /**
+         * Temporary disabled
+         * https://github.com/inuyaksa/jquery.nicescroll/issues/574
+         */
+        //'humhub\assets\JqueryNiceScrollAsset', 
         'humhub\assets\JqueryTimeAgoAsset',
         'humhub\assets\JqueryKnobAsset',
         'humhub\assets\JqueryWidgetAsset',

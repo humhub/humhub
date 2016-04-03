@@ -4,13 +4,10 @@ namespace humhub\modules\user;
 
 use Yii;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\GroupAdmin;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\Follow;
-use humhub\modules\user\libs\Ldap;
-use humhub\models\Setting;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -57,16 +54,15 @@ class Events extends \yii\base\Object
             if ($user->profile == null) {
                 $integrityController->showWarning("User with id " . $user->id . " has no profile record!");
             }
-            if ($user->group == null) {
+            if (!$user->hasGroup()) {
                 $integrityController->showWarning("User with id " . $user->id . " has no group assignment!");
             }
         }
-
-        $integrityController->showTestHeadline("User Module - GroupAdmin (" . GroupAdmin::find()->count() . " entries)");
-        foreach (GroupAdmin::find()->joinWith(['user'])->all() as $groupAdmin) {
-            if ($groupAdmin->user == null) {
-                if ($integrityController->showFix("Deleting group admin " . $groupAdmin->id . " without existing user!")) {
-                    $groupAdmin->delete();
+        
+        foreach (GroupUser::find()->joinWith(['user'])->all() as $groupUser) {
+            if ($groupUser->user == null) {
+                if ($integrityController->showFix("Deleting group admin " . $groupUser->id . " without existing user!")) {
+                    $groupUser->delete();
                 }
             }
         }

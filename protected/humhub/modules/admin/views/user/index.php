@@ -10,12 +10,13 @@ use humhub\widgets\GridView;
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
     <div class="panel-body">
+        
         <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
         <p />
         <p>
             <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>
         </p>
-
+        <div class="table-responsive">
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -34,15 +35,6 @@ use humhub\widgets\GridView;
                 'profile.firstname',
                 'profile.lastname',
                 [
-                    'attribute' => 'super_admin',
-                    'label' => 'Admin',
-                    'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'super_admin', array('' => 'All', '0' => 'No', '1' => 'Yes')),
-                    'value' =>
-                    function($data) {
-                        return ($data->super_admin == 1) ? 'Yes' : 'No';
-                    }
-                ],
-                [
                     'attribute' => 'last_login',
                     'label' => Yii::t('AdminModule.views_user_index', 'Last login'),
                     'filter' => \yii\jui\DatePicker::widget([
@@ -55,7 +47,7 @@ use humhub\widgets\GridView;
                     }
                 ],
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
                     'buttons' => [
@@ -170,6 +162,6 @@ use humhub\widgets\GridView;
                  *
                  */
                 ?>
-
+        </div>
     </div>
 </div>

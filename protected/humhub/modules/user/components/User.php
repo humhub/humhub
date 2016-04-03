@@ -35,7 +35,7 @@ class User extends \yii\web\User
         if ($this->isGuest)
             return false;
 
-        return ($this->getIdentity()->super_admin == 1);
+        return $this->getIdentity()->isSystemAdmin();
     }
 
     public function getLanguage()

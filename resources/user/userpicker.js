@@ -247,7 +247,7 @@ $.fn.userpicker = function (options) {
             // remove existings entries
             $('#' + uniqueID + '_userpicker li').remove();
 
-            // quick sort by disabled/enabled and contains keyword
+            // sort by disabled/enabled and contains keyword
             json.sort(function(a,b) {
                 if(a.disabled !== b.disabled) {
                     return (a.disabled < b.disabled) ? -1 : 1;
@@ -265,14 +265,13 @@ $.fn.userpicker = function (options) {
 
             if (json.length > 0) {
 
-
                 for (var i = 0; i < json.length; i++) {
 
                     var _takenStyle = "";
                     var _takenData = false;
-                    
+                   
                     // set options to link, that this entry is already taken or not available
-                    if (json[i].disabled == true || $('#' + uniqueID + '_' + json[i].guid).length != 0 || json[i].isMember == true || json[i].guid == options.userGuid) {
+                    if (json[i].disabled == true || $('#' + uniqueID + '_' + json[i].guid).length || $('#'+json[i].guid).length || json[i].isMember == true || json[i].guid == options.userGuid) {
                         _takenStyle = "opacity: 0.4;"
                         _takenData = true;
                     }
@@ -335,9 +334,9 @@ $.fn.userpicker = function (options) {
 
 // Add an usertag for invitation
 $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
-
+    
     if ($('#user_' + guid + ' a').attr('data-taken') != "true") {
-
+      
         // Building a new <li> entry
         var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="fa fa-times-circle"></i></li>';
 

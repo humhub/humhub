@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
-    'Created At' => 'Créé à',
+    'Color' => 'Couleur',
+    'Created At' => 'Créé le',
     'Created By' => 'Créé par',
     'Description' => 'Description',
     'Join Policy' => 'Conditions d\'adhésion',
@@ -26,7 +26,7 @@ return [
     'Owner' => 'Propriétaire',
     'Status' => 'Statut',
     'Tags' => 'Mots-clés',
-    'Updated At' => 'Mis à jour à',
+    'Updated At' => 'Mis à jour le',
     'Updated by' => 'Mis à jour par',
     'Visibility' => 'Visibilité',
     'Website URL (optional)' => 'Lien vers site Web (option)',

@@ -30,7 +30,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'super_admin'], 'integer'],
+            [['id'], 'integer'],
             [['username', 'email', 'created_at', 'profile.firstname', 'profile.lastname', 'last_login'], 'safe'],
         ];
     }
@@ -65,8 +65,7 @@ class UserSearch extends User
                 'id',
                 'username',
                 'email',
-                'super_admin',
-        		'last_login',
+        	'last_login',
                 'profile.firstname',
                 'profile.lastname',
                 'created_at',
@@ -81,7 +80,6 @@ class UserSearch extends User
         }
 
         $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['super_admin' => $this->super_admin]);
         $query->andFilterWhere(['like', 'id', $this->id]);
         $query->andFilterWhere(['like', 'username', $this->username]);
         $query->andFilterWhere(['like', 'email', $this->email]);

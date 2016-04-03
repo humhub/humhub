@@ -14,6 +14,7 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Password;
+use humhub\modules\user\models\GroupUser;
 
 /**
  * Description of Registration
@@ -47,7 +48,12 @@ class Registration extends HForm
      * @var Password
      */
     private $_password = null;
-
+    
+    /**
+     * @var Group Id
+     */
+    private $_groupUser = null;
+    
     /**
      * @var Profile
      */
@@ -81,6 +87,7 @@ class Registration extends HForm
         $this->definition = [];
         $this->definition['elements'] = [];
         $this->definition['elements']['User'] = $this->getUserFormDefinition();
+        $this->definition['elements']['GroupUser'] = $this->getGroupFormDefinition();
         if ($this->enablePasswordForm) {
             $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
         }
@@ -101,19 +108,6 @@ class Registration extends HForm
      */
     protected function getUserFormDefinition()
     {
-        $groupModels = \humhub\modules\user\models\Group::find()->orderBy('name ASC')->all();
-        $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
-        $groupFieldType = "dropdownlist";
-        if ($defaultUserGroup != "") {
-            $groupFieldType = "hidden";
-        } else if (count($groupModels) == 1) {
-            $groupFieldType = "hidden";
-            $defaultUserGroup = $groupModels[0]->id;
-        }
-        if ($groupFieldType == 'hidden') {
-            $this->getUser()->group_id = $defaultUserGroup;
-        }
-
         $form = array(
             'type' => 'form',
             'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
@@ -131,12 +125,6 @@ class Registration extends HForm
                 'class' => 'form-control',
             ];
         }
-        $form['elements']['group_id'] = [
-            'type' => $groupFieldType,
-            'class' => 'form-control',
-            'items' => ArrayHelper::map($groupModels, 'id', 'name'),
-            'value' => $defaultUserGroup,
-        ];
 
         return $form;
     }
@@ -164,6 +152,32 @@ class Registration extends HForm
             ),
         );
     }
+    
+    protected function getGroupFormDefinition()
+    {
+        $groupModels = \humhub\modules\user\models\Group::getRegistrationGroups();
+        $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
+        $groupFieldType = "dropdownlist";
+        
+        if ($defaultUserGroup != "") {
+            $groupFieldType = "hidden";
+        } else if (count($groupModels) == 1) {
+            $groupFieldType = "hidden";
+            $defaultUserGroup = $groupModels[0]->id;
+        }
+        
+        return [
+            'type' => 'form',
+            'elements' => [
+                'group_id' => [
+                    'type' => $groupFieldType,
+                    'class' => 'form-control',
+                    'items' => ArrayHelper::map($groupModels, 'id', 'name'),
+                    'value' => $defaultUserGroup,
+                ]
+            ]
+        ];
+    }
 
     /**
      * Set models User, Profile and Password to Form
@@ -173,6 +187,7 @@ class Registration extends HForm
         // Set Models
         $this->models['User'] = $this->getUser();
         $this->models['Profile'] = $this->getProfile();
+        $this->models['GroupUser'] = $this->getGroupUser();
         if ($this->enablePasswordForm) {
             $this->models['Password'] = $this->getPassword();
         }
@@ -213,6 +228,7 @@ class Registration extends HForm
         $this->models['User']->language = Yii::$app->language;
         if ($this->enableUserApproval) {
             $this->models['User']->status = User::STATUS_NEED_APPROVAL;
+            $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;
         }
         
         if ($this->models['User']->save()) {
@@ -221,6 +237,9 @@ class Registration extends HForm
             $this->models['Profile']->user_id = $this->models['User']->id;
             $this->models['Profile']->save();
 
+            $this->models['GroupUser']->user_id = $this->models['User']->id;
+            $this->models['GroupUser']->save();
+            
             if ($this->enablePasswordForm) {
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
@@ -286,6 +305,21 @@ class Registration extends HForm
         }
 
         return $this->_password;
+    }
+    
+    /**
+     * Returns Password model
+     * 
+     * @return Password
+     */
+    public function getGroupUser()
+    {
+        if ($this->_groupUser === null) {
+            $this->_groupUser = new GroupUser();
+            $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
+        }
+
+        return $this->_groupUser;
     }
 
 }
