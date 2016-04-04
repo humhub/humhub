@@ -38,7 +38,7 @@ class SpaceController extends \yii\console\Controller
     {
         $space = Space::findOne(['id' => $spaceId]);
         if ($space == null) {
-            print "Error: Space not found! Check guid!\n\n";
+            print "Error: Space not found! Check id!\n\n";
             return;
         }
 
