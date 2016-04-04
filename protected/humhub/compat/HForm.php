@@ -237,8 +237,10 @@ class HForm extends \yii\base\Component
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
             } else {
-                return "No model for: FieldName: " . $name . " Type:" . $definition['type'] . " Forms: " . print_r($forms, 1) . "<br>";
+                return "No type found for: FieldName: " . $name . " Forms: " . print_r($forms, 1) . "<br>";
             }
+        } else {
+            return "No model for: FieldName: " . $name . " Forms: " . print_r($forms, 1) . "<br>";
         }
 
         return $output;
