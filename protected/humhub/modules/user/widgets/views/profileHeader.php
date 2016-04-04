@@ -84,7 +84,7 @@ if ($isProfileOwner) {
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'banner', 'userGuid' => $user->guid]),
+                            'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'banner', 'userGuid' => $user->guid]),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -164,7 +164,7 @@ if ($isProfileOwner) {
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'profile', 'userGuid' => $user->guid]),
+                            'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'profile', 'userGuid' => $user->guid]),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -185,30 +185,35 @@ if ($isProfileOwner) {
                     <div class="statistics pull-left">
 
                         <?php if ($friendshipsEnabled): ?>
-                            <div class="pull-left entry">
-                                <span class="count"><?php echo $countFriends; ?></span></a>
-                                <br>
-                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Friends'); ?></span>
-                            </div>
+                            <a href="<?= Url::to(['/friendship/list/popup', 'userId' => $user->id]); ?>" data-target="#globalModal">
+                                <div class="pull-left entry">
+                                    <span class="count"><?php echo $countFriends; ?></span>
+                                    <br>
+                                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Friends'); ?></span>
+                                </div>
+                            </a>
                         <?php endif; ?>
 
-                        <div class="pull-left entry">
-                            <span class="count"><?php echo $countFollowers; ?></span></a>
-                            <br>
-                            <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
-                        </div>
-
-                        <div class="pull-left entry">
-                            <span class="count"><?php echo $countFollowing; ?></span>
-                            <br>
-                            <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
-                        </div>
-
-                        <div class="pull-left entry">
-                            <span class="count"><?php echo $countSpaces; ?></span><br>
-                            <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
-                        </div>
-
+                        <a href="<?= $user->createUrl('/user/profile/follower-list'); ?>" data-target="#globalModal">
+                            <div class="pull-left entry">
+                                <span class="count"><?php echo $countFollowers; ?></span>
+                                <br>
+                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                            </div>
+                        </a>
+                        <a href="<?= $user->createUrl('/user/profile/followed-users-list'); ?>" data-target="#globalModal">
+                            <div class="pull-left entry">
+                                <span class="count"><?php echo $countFollowing; ?></span>
+                                <br>
+                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
+                            </div>
+                        </a>
+                        <a href="<?= $user->createUrl('/user/profile/space-membership-list'); ?>" data-target="#globalModal">
+                            <div class="pull-left entry">
+                                <span class="count"><?php echo $countSpaces; ?></span><br>
+                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
+                            </div>
+                        </a>
                     </div>
                     <!-- end: User statistics -->
 

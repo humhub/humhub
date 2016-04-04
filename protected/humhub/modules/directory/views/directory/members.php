@@ -64,17 +64,9 @@ use yii\helpers\Html;
                     <div class="media-body">
                         <h4 class="media-heading"><a
                                 href="<?php echo $user->getUrl(); ?>"><?php echo Html::encode($user->displayName); ?></a>
-                                <?php if ($user->hasGroup()) { ?>
-                                <small>(
-                                    <?php $groups = $user->groups;
-                                    $last_key = end(array_keys($groups));
-                                     foreach($groups as $key => $group) {
-                                        echo $group->name;
-                                        if($key != $last_key) {
-                                            echo ', ';
-                                        }
-                                    } ?>
-                                )</small><?php } ?>
+                                <?php if ($user->hasGroup()) : ?>
+                                    <small>(<?= implode(', ', array_map(function($g) { return Html::encode($group->name); }, $user->groups)); ?>)</small>
+                                <?php endif; ?>
                         </h4>
                         <h5><?php echo Html::encode($user->profile->title); ?></h5>
 

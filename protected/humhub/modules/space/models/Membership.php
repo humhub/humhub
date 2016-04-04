@@ -60,14 +60,14 @@ class Membership extends \yii\db\ActiveRecord
         return [
             'space_id' => 'Space ID',
             'user_id' => 'User ID',
-            'originator_user_id' => 'Originator User ID',
-            'status' => 'Status',
-            'request_message' => 'Request Message',
-            'last_visit' => 'Last Visit',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'originator_user_id' => Yii::t('SpaceModule.models_Membership', 'Originator User ID'),
+            'status' => Yii::t('SpaceModule.models_Membership', 'Status'),
+            'request_message' => Yii::t('SpaceModule.models_Membership', 'Request Message'),
+            'last_visit' => Yii::t('SpaceModule.models_Membership', 'Last Visit'),
+            'created_at' => Yii::t('SpaceModule.models_Membership', 'Created At'),
+            'created_by' => Yii::t('SpaceModule.models_Membership', 'Created By'),
+            'updated_at' => Yii::t('SpaceModule.models_Membership', 'Updated At'),
+            'updated_by' => Yii::t('SpaceModule.models_Membership', 'Updated By'),
             'can_leave' => 'Can Leave',
         ];
     }
@@ -154,6 +154,26 @@ class Membership extends \yii\db\ActiveRecord
         return $spaces;
     }
 
+    /**
+     * Returns Space for user space membership
+     * 
+     * @since 1.0
+     * @param \humhub\modules\user\models\User $user
+     * @param boolean $memberOnly include only member status - no pending/invite states
+     * @return \yii\db\ActiveQuery for space model
+     */
+    public static function getUserSpaceQuery($user, $memberOnly = true)
+    {
+        $query = Space::find();
+        $query->leftJoin('space_membership', 'space_membership.space_id=space.id and space_membership.user_id=:userId', [':userId' => $user->id]);
 
+        if ($memberOnly) {
+            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+        }
+
+        $query->orderBy(['name' => SORT_ASC]);
+
+        return $query;
+    }
 
 }

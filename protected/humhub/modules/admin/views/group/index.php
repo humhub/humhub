@@ -22,7 +22,7 @@ use humhub\widgets\GridView;
                 'name',
                 'description',
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('AdminModule.views_group_index', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['width' => '80px'],
                     'buttons' => [

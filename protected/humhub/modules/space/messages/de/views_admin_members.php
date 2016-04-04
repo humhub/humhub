@@ -1,8 +1,12 @@
 <?php
 return array (
-  '<strong>Manage</strong> members' => '<strong>Mitglieder</strong> verwalten',
-  '<strong>Manage</strong> permissions' => '<strong>Mitglieder</strong> Berechtigungen',
+  '<strong>Current Group:</strong>' => '<strong>Aktuelle Gruppe:</strong>',
+  '<strong>Manage</strong> members' => 'Mitglieder <strong>verwalten</strong>',
+  '<strong>Manage</strong> permissions' => 'Berechtigungen <strong>verwalten</strong>',
   '<strong>Pending</strong> approvals' => '<strong>Ausstehende</strong> Freigaben',
   '<strong>Pending</strong> invitations' => '<strong>Ausstehende</strong> Einladungen',
-  'never' => 'nie',
+  'Actions' => 'Aktionen',
+  'Group' => 'Gruppe',
+  'Remove' => 'Entfernen',
+  'never' => 'Nie',
 );

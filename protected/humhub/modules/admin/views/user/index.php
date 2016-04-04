@@ -10,12 +10,13 @@ use humhub\widgets\GridView;
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
     <div class="panel-body">
+        
         <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
         <p />
         <p>
             <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>
         </p>
-
+        <div class="table-responsive">
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -46,7 +47,7 @@ use humhub\widgets\GridView;
                     }
                 ],
                 [
-                    'header' => 'Actions',
+                    'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
                     'buttons' => [
@@ -161,6 +162,6 @@ use humhub\widgets\GridView;
                  *
                  */
                 ?>
-
+        </div>
     </div>
 </div>

@@ -57,7 +57,7 @@ class Events extends \yii\base\Object
 
         $latestVersion = libs\HumHubAPI::getLatestHumHubVersion();
         if ($latestVersion != "") {
-            $adminUsers = \humhub\modules\user\models\Group::getAdminGroup()->user;
+            $adminUsers = \humhub\modules\user\models\Group::getAdminGroup()->users;
             $latestNotifiedVersion = Setting::Get('lastVersionNotify', 'admin');
             $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
             $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));

@@ -51,12 +51,12 @@ class Setting extends \yii\db\ActiveRecord
             'id' => 'ID',
             'space_id' => 'Space ID',
             'module_id' => 'Module ID',
-            'name' => 'Name',
-            'value' => 'Value',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'name' => Yii::t('SpaceModule.models_Setting', 'Name'),
+            'value' => Yii::t('SpaceModule.models_Setting', 'Value'),
+            'created_at' => Yii::t('SpaceModule.models_Setting', 'Created At'),
+            'created_by' => Yii::t('SpaceModule.models_Setting', 'Created By'),
+            'updated_at' => Yii::t('SpaceModule.models_Setting', 'Updated At'),
+            'updated_by' => Yii::t('SpaceModule.models_Setting', 'Updated by'),
         ];
     }
 

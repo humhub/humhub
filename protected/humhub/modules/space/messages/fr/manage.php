@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Change</strong> Owner' => '',
-    '<strong>General</strong> settings' => '',
-    '<strong>Security</strong> settings' => '',
-    'As owner of this space you can transfer this role to another administrator in space.' => '',
-    'Color' => '',
-    'Space owner' => '',
-    'Transfer ownership' => '',
+    '<strong>Change</strong> Owner' => '<strong>Modifier</strong> le propriétaire',
+    '<strong>General</strong> settings' => 'Paramètres <strong>généraux</strong>',
+    '<strong>Security</strong> settings' => 'Paramètres de <strong>sécurité</strong>',
+    'As owner of this space you can transfer this role to another administrator in space.' => 'En tant que propriétaire de cet espace, vous pouvez transférer ce rôle à un autre administrateur dans l\'espace',
+    'Color' => 'Couleur',
+    'Space owner' => 'Propriétaire de l\'espace',
+    'Transfer ownership' => 'Transférer la propriété',
 ];
