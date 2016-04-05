@@ -46,11 +46,20 @@ class Date extends BaseType
         ];
         return parent::getFieldRules($rules);
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getFormDefinition($definition = array())
+    {
+        //No extra form definition
+        return [];
+    }
 
     /**
      * @inheritdoc
      */
-    public function getFormDefinition()
+    public function getFieldFormDefinition()
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
