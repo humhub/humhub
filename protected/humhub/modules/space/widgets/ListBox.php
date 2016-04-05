@@ -6,27 +6,28 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\user\widgets;
+namespace humhub\modules\space\widgets;
 
 /**
- * UserListBox returns the content of the user list modal
+ * ListBox returns the content of the space list modal
  * 
  * Example Action:
  * 
  * ```php
- * public actionUserList() {
- *       $query = User::find();
+ * public actionSpaceList() {
+ *       $query = Space::find();
  *       $query->where(...);
  *        
- *       $title = "Some Users";
+ *       $title = "Some Spaces";
  *  
- *       return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
+ *       return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
  * }
  * ```
- *
+ * 
+ * @since 1.1
  * @author luke
  */
-class UserListBox extends \yii\base\Widget
+class ListBox extends \yii\base\Widget
 {
 
     /**
@@ -37,12 +38,12 @@ class UserListBox extends \yii\base\Widget
     /**
      * @var string title of the box (not html encoded!)
      */
-    public $title = 'Users';
+    public $title = 'Spaces';
 
     /**
      * @var int displayed users per page
      */
-    public $pageSize = 8;
+    public $pageSize = 25;
 
     /**
      * @inheritdoc
@@ -53,9 +54,9 @@ class UserListBox extends \yii\base\Widget
         $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render("userListBox", [
+        return $this->render("listBox", [
                     'title' => $this->title,
-                    'users' => $this->query->all(),
+                    'spaces' => $this->query->all(),
                     'pagination' => $pagination
         ]);
     }

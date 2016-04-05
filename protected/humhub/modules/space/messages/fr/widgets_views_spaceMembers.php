@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show all' => '',
+    'Show all' => 'Afficher tout',
     '<strong>New</strong> member request' => '<strong>Nouvelles</strong> demandes d\'affiliation',
     '<strong>Space</strong> members' => '<strong>Membres</strong> de l\'espace',
 ];

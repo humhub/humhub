@@ -17,6 +17,10 @@ defined('YII_ENV') or define('YII_ENV', 'test');
 require(__DIR__ . '/protected/vendor/autoload.php');
 require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
-$config = require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php');
+$config = yii\helpers\ArrayHelper::merge(
+    require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php'),
+    // add more configurations here
+    (is_readable(__DIR__ . '/protected/config/dynamic.php')) ? require(__DIR__ . '/protected/config/dynamic.php') : []
+);
 
 (new humhub\components\Application($config))->run();

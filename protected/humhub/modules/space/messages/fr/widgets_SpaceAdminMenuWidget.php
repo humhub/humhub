@@ -18,11 +18,11 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Cancel Membership' => '',
-    'Hide posts on dashboard' => '',
-    'Show posts on dashboard' => '',
-    'This option will hide new content from this space at your dashboard' => '',
-    'This option will show new content from this space at your dashboard' => '',
+    'Cancel Membership' => 'Annuler la participation',
+    'Hide posts on dashboard' => 'Cacher les messages sur le tableau de bord',
+    'Show posts on dashboard' => 'Afficher les messages sur le tableau de bord',
+    'This option will hide new content from this space at your dashboard' => 'Cette option va cacher les nouveaux contenus de cet espace sur votre tableau de bord',
+    'This option will show new content from this space at your dashboard' => 'Cette option va afficher les nouveaux contenus de cet espace sur votre tableau de bord',
     'General' => 'Général',
     'Members' => 'Membres',
     'Modules' => 'Modules',

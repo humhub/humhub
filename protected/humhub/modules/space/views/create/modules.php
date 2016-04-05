@@ -6,19 +6,6 @@ use yii\helpers\Url;
 <div class="modal-dialog modal-dialog-medium animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => '&times;',
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").modal("hide"); }'),
-                    'url' => Url::to(['/space/create/cancel', 'spaceId' => $space->id]),
-                ],
-                'htmlOptions' => [
-                    'class' => 'close'
-                ]
-            ]);
-            ?>
             <h4 class="modal-title"
                 id="myModalLabel"><?php echo Yii::t('SpaceModule.views_create_modules', 'Add <strong>Modules</strong>') ?></h4>
         </div>
