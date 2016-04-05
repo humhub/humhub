@@ -235,7 +235,7 @@ class Profile extends \yii\db\ActiveRecord
     
     
     function hasUserProfileField($user, $profile_field_id){
-       $groupUsers = GroupUser::find(['user_id'=>$user['id']])->all();
+       $groupUsers = GroupUser::find()->where(['user_id'=>$user->id])->all();
        foreach($groupUsers as $groupUserData)
        {
             $queryFieldMapping = ProfileFieldGroup::find();
