@@ -50,7 +50,7 @@ class Date extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFormDefinition()
     {
         return array($this->profileField->internal_name => array(
                 'type' => 'datetime',
