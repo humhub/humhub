@@ -327,8 +327,11 @@ class File extends \humhub\components\ActiveRecord
     public function canDelete($userId = "")
     {
         $object = $this->getPolymorphicRelation();
-        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canWrite($userId);
+        if ($object !== null) {
+            if ($object instanceof ContentAddonActiveRecord)
+                return $object->canWrite($userId);
+            else if ($object instanceof ContentActiveRecord)
+                return $object->content->canWrite($userId);
         }
 
         // File is not bound to an object
