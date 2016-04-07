@@ -115,8 +115,8 @@ class InitialData
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
         $field->ldap_attribute = 'givenName';
         $field->is_system = 1;
-        $field->required = 1;
-        $field->show_at_registration = 1;
+        $field->required = 0;
+        $field->show_at_registration = 0;
         if ($field->save()) {
             $field->fieldType->maxLength = 20;
             $field->fieldType->save();
@@ -131,8 +131,8 @@ class InitialData
         $field->profile_field_category_id = $cGeneral->id;
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
         $field->ldap_attribute = 'sn';
-        $field->show_at_registration = 1;
-        $field->required = 1;
+        $field->show_at_registration = 0;
+        $field->required = 0;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 30;

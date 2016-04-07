@@ -12,7 +12,9 @@ use humhub\modules\user\models\ProfileField;
         <?php echo Html::a(Yii::t('AdminModule.views_userprofile_index', 'Add new category'), Url::to(['edit-category']), array('class' => 'btn btn-primary')); ?>
 
         <?php echo Html::a(Yii::t('AdminModule.views_userprofile_index', 'Add new field'), Url::to(['edit-field']), array('class' => 'btn btn-primary')); ?>
-
+        
+        <?php echo Html::a(Yii::t('AdminModule.views_userprofile_index', 'Field Assignment'), Url::to(['field-assignment']), array('class' => 'btn btn-primary')); ?>
+        
         <hr>
         <ul>
             <?php foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category): ?>
