@@ -82,5 +82,36 @@ class Notification extends \humhub\components\ActiveRecord
         }
         return null;
     }
+    
+    /**
+     * Returns a distinct list of notification classes already in the database.
+     */
+    public static function getNotificationClasses()
+    {
+        return (new yii\db\Query())
+        ->select(['class'])
+        ->from(self::tableName())
+        ->distinct()->all();
+    }
+    
+    public static function findByUser($user, $limit = null, $maxId = null)
+    {
+        $userId = ($user instanceof \humhub\modules\user\models\User) ? $user->id : $user;
+        
+        $query = self::find();
+        $query->andWhere(['user_id' => $userId]);
+        
+        if ($maxId != null && $maxId != 0) {
+            $query->andWhere(['<', 'id', $maxId]);
+        }
+        
+        if($limit != null && $limit > 0) {
+            $query->limit($limit);
+        }
+        
+        $query->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC]);
+        
+        return $query;
+    }
 
 }
