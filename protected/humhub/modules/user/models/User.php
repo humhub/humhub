@@ -227,40 +227,58 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
     
-    public function isAdminOf($group)
-    {
-        $groupId = ($group instanceof Group) ? $group.id : $group;
-        return $this->getAdminGroupUser()
-                ->where(['group_id' => $groupId])->count() > 0;
-    }
-    
+    /**
+     * Returns all GroupUser relations of this user as AcriveQuery
+     * @return type
+     */
     public function getGroupUsers()
     {
         return $this->hasMany(GroupUser::className(), ['user_id' => 'id']);
     }
     
+    /**
+     * Returns all Group relations of this user as AcriveQuery
+     * @return AcriveQuery
+     */
     public function getGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers');
     }
     
+    /**
+     * Checks if the user has at least one group assigned.
+     * @return boolean
+     */
     public function hasGroup()
     {
         return $this->getGroups()->count() > 0;
     }
     
-    public function getAdminGroupsUser()
+    /**
+     * Returns all GroupUser relations this user is a manager of as AcriveQuery.
+     * @return AcriveQuery
+     */
+    public function getManagerGroupsUser()
     {
         return $this->getGroupUsers()->where(['is_group_admin' => '1']);
     }
     
-    public function getAdminGroups()
+    /**
+     * Returns all Groups this user is a maanger of as AcriveQuery.
+     * @return AcriveQuery
+     */
+    public function getManagerGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
             $query->andWhere(['is_group_admin' => '1']);
         });
     }
     
+    /**
+     * Returns all user this user is related as friend as AcriveQuery. 
+     * Returns null if the friendship module is deactivated.
+     * @return AcriveQuery
+     */
     public function getFriends()
     {
         if(Yii::$app->getModule('friendship')->getIsEnabled()) {
@@ -567,7 +585,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             return true;
         }
         
-        return $this->getAdminGroups()->count() > 0;
+        return $this->getManagerGroups()->count() > 0;
     }
 
     /**
