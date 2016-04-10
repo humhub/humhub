@@ -260,7 +260,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getManagerGroupsUser()
     {
-        return $this->getGroupUsers()->where(['is_group_admin' => '1']);
+        return $this->getGroupUsers()->where(['is_group_manager' => '1']);
     }
     
     /**
@@ -270,7 +270,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function getManagerGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
-            $query->andWhere(['is_group_admin' => '1']);
+            $query->andWhere(['is_group_manager' => '1']);
         });
     }
     
