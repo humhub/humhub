@@ -235,6 +235,9 @@ class Profile extends \yii\db\ActiveRecord
     
     
     function hasUserProfileField($user, $profile_field_id){
+       if(is_null($user) || !isset($user)){
+           return false;
+       }
        $groupUsers = GroupUser::find()->where(['user_id'=>$user->id])->all();
        foreach($groupUsers as $groupUserData)
        {
