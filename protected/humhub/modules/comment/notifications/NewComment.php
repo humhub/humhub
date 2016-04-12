@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\notifications;
 
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Notification for new comments
@@ -39,6 +40,11 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
         }
 
         return parent::send($user);
+    }
+    
+    public static function getTitle()
+    {
+        return Yii::t('CommentModule.notifications_NewComment', 'New Comment');
     }
 
 }

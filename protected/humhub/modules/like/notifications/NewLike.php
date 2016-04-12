@@ -8,6 +8,7 @@
 
 namespace humhub\modules\like\notifications;
 
+use Yii;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
@@ -27,6 +28,11 @@ class NewLike extends BaseNotification
      * @inheritdoc
      */
     public $viewName = "newLike";
+    
+    public static function getTitle()
+    {
+        return Yii::t('LikeModule.notifiations_NewLike', 'New Like');
+    }
 
 }
 
