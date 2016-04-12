@@ -9,6 +9,7 @@
 namespace humhub\modules\friendship\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
+use Yii;
 
 /**
  * Friends Request
@@ -39,6 +40,11 @@ class RequestApproved extends BaseNotification
     public function getUrl()
     {
         return $this->originator->getUrl();
+    }
+    
+    public static function getTitle()
+    {
+        return Yii::t('FriendshipModule.notifications_RequestApproved', 'Friendship Approved');
     }
 
 }
