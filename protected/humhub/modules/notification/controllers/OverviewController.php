@@ -58,10 +58,16 @@ class OverviewController extends Controller
         
         $query = Notification::findByUser(Yii::$app->user->id);
         
-        if(in_array('other', $filterForm->classFilter)) {
+        if($filterForm->classFilter != null && in_array('other', $filterForm->classFilter)) {
             $query->andFilterWhere(['not in' ,'class' , $filterForm->getExcludeFilter()]);
-        } else {
+        } else if($filterForm->classFilter != null){
             $query->andFilterWhere(['in' ,'class' , $filterForm->classFilter]);
+        } else {
+            return $this->render('index',[ 
+                    'notificationEntries' => [],
+                    'filterForm' => $filterForm,
+                    'pagination' => null
+            ]);
         }
 
         $countQuery = clone $query;

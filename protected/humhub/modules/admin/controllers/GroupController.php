@@ -56,7 +56,7 @@ class GroupController extends Controller
 
         $group->scenario = Group::SCENARIO_EDIT;
         $group->populateDefaultSpaceGuid();
-        $group->populateAdminGuids();
+        $group->populateManagerGuids();
          
         
         

@@ -17,9 +17,12 @@ use yii\widgets\ActiveForm;
                         <?php foreach($notificationEntries as $notification) :?>
                             <?=  $notification->getClass()->render(); ?>
                         <?php endforeach; ?>
+                        <?php if(count($notificationEntries) == 0) :?>
+                            <?= Yii::t('NotificationModule.views_overview_index', 'No Notification found!'); ?>
+                        <?php endif; ?>
                     </ul>
                     <center>
-                        <?= \humhub\widgets\LinkPager::widget(['pagination' => $pagination]); ?>
+                        <?= ($pagination != null) ? \humhub\widgets\LinkPager::widget(['pagination' => $pagination]) : ''; ?>
                     </center>
                 </div>
             </div>
