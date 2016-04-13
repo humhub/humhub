@@ -8,6 +8,8 @@
 
 namespace humhub\modules\admin;
 
+use Yii;
+
 /**
  * Admin Module
  */
@@ -39,4 +41,23 @@ class Module extends \humhub\components\Module
      * @var boolean check daily for new HumHub version
      */
     public $dailyCheckForNewVersion = true;
+    
+    public function getName()
+    {
+        return Yii::t('AdminModule.base', 'Admin');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+        if(Yii::$app->user->isAdmin()) {
+            return [
+                'humhub\modules\user\notifications\Followed',
+                'humhub\modules\user\notifications\Mentioned'
+            ];
+        } 
+        return [];
+    }
 }

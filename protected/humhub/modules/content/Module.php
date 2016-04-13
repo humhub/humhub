@@ -2,6 +2,8 @@
 
 namespace humhub\modules\content;
 
+use Yii;
+
 /**
  * Content Module
  * 
@@ -33,6 +35,11 @@ class Module extends \humhub\components\Module
      */
     public $emailSubjectDailyUpdate = null;
 
+    public function getName()
+    {
+        return Yii::t('ContentModule.base', 'Content');
+    }
+    
     /**
      * @inheritdoc
      */
@@ -46,6 +53,16 @@ class Module extends \humhub\components\Module
         }
 
         return [];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+       return [
+           'humhub\modules\content\notifications\ContentCreated'
+       ];
     }
 
 }

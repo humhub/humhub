@@ -33,8 +33,8 @@ use yii\widgets\ActiveForm;
                     <?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?>
                 </div>
                 <div class="panel-body">
-                    <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter']); ?>
-                        <?php echo $form->field($filterForm, 'classFilter')->checkboxList($filterForm->getClassFilterSelection())->label(false); ?>
+                    <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
+                        <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
                         <button class="btn btn-info btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
                     <?php  ActiveForm::end(); ?>
                 </div>
