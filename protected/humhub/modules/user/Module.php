@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user;
 
+use Yii;
+
 /**
  * User Module
  */
@@ -41,6 +43,22 @@ class Module extends \humhub\components\Module
         }
 
         return [];
+    }
+    
+    public function getName()
+    {
+        return Yii::t('UserModule.base', 'User');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+       return [
+           'humhub\modules\user\notifications\Followed',
+           'humhub\modules\user\notifications\Mentioned'
+       ];
     }
 
 }

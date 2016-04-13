@@ -252,5 +252,16 @@ class Module extends \yii\base\Module
     {
         return [];
     }
+    
+    /**
+     * Returns a list of notification classes this module provides.
+     * 
+     * @since 1.1
+     * @return array list of notification classes
+     */
+    public function getNotifications()
+    {
+        return [];
+    }
 
 }

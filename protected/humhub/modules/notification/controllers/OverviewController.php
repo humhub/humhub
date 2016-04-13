@@ -35,33 +35,23 @@ class OverviewController extends Controller
     }
 
     /**
-     * Returns a List of all notifications for an user
+     * Returns a List of all notifications for the session user
      */
     public function actionIndex()
     {
         $pageSize = 10;
         $session = Yii::$app->session;
-        $filterForm;    
         
-        if($session->has('notification_overview_filter')) {
-            $filterForm = $session->get('notification_overview_filter');
-        } else {
-            $filterForm = new FilterForm();
-            $filterForm->initFilter();
-        }
-        
-        //Fill filter and set session when post
-        if(Yii::$app->request->post()) {
-            $filterForm->load(Yii::$app->request->post());
-            $session->set('notification_overview_filter', $filterForm);
-        }
+        $filterForm = new FilterForm();
+        $filterForm->initFilter();
+        $filterForm->load(Yii::$app->request->get());
         
         $query = Notification::findByUser(Yii::$app->user->id);
         
-        if($filterForm->classFilter != null && in_array('other', $filterForm->classFilter)) {
-            $query->andFilterWhere(['not in' ,'class' , $filterForm->getExcludeFilter()]);
-        } else if($filterForm->classFilter != null){
-            $query->andFilterWhere(['in' ,'class' , $filterForm->classFilter]);
+        if($filterForm->isExcludeFilter()) {
+            $query->andFilterWhere(['not in' ,'class' , $filterForm->getExcludeClassFilter()]);
+        } else if($filterForm->isActive()){
+            $query->andFilterWhere(['in' ,'class' , $filterForm->getIncludeClassFilter()]);
         } else {
             return $this->render('index',[ 
                     'notificationEntries' => [],
