@@ -82,5 +82,55 @@ class Notification extends \humhub\components\ActiveRecord
         }
         return null;
     }
+    
+    /**
+     * Returns all available notifications of a module identified by its modulename.
+     * 
+     * @return array with format [moduleId => notifications[]]
+     */
+    public static function getModuleNotifications()
+    {
+        $result = [];
+        foreach(Yii::$app->moduleManager->getModules(['includeCoreModules' => true]) as $module) {
+            if($module instanceof \humhub\components\Module) {
+                $notifications = $module->getNotifications();
+                if(count($notifications) > 0) {
+                    $result[$module->getName()] = $notifications;
+                }
+            }
+        }
+        return $result;
+    }
+    
+    /**
+     * Returns a distinct list of notification classes already in the database.
+     */
+    public static function getNotificationClasses()
+    {
+        return (new yii\db\Query())
+        ->select(['class'])
+        ->from(self::tableName())
+        ->distinct()->all();
+    }
+    
+    public static function findByUser($user, $limit = null, $maxId = null)
+    {
+        $userId = ($user instanceof \humhub\modules\user\models\User) ? $user->id : $user;
+        
+        $query = self::find();
+        $query->andWhere(['user_id' => $userId]);
+        
+        if ($maxId != null && $maxId != 0) {
+            $query->andWhere(['<', 'id', $maxId]);
+        }
+        
+        if($limit != null && $limit > 0) {
+            $query->limit($limit);
+        }
+        
+        $query->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC]);
+        
+        return $query;
+    }
 
 }

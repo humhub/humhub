@@ -8,6 +8,8 @@
 
 namespace humhub\modules\friendship;
 
+use Yii;
+
 /**
  * Friedship Module
  */
@@ -32,5 +34,21 @@ class Module extends \humhub\components\Module
 
         return false;
     }
+    
+    public function getName()
+    {
+        return Yii::t('FriendshipModule.base', 'Friendship');
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+       return [
+           'humhub\modules\friendship\notifications\Request',
+           'humhub\modules\friendship\notifications\RequestApproved',
+           'humhub\modules\friendship\notifications\RequestDeclined'
+       ];
+    }
 }

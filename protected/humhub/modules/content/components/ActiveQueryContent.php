@@ -141,17 +141,6 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $params[':spaceClass'] = Space::className();
         }
 
-        if (in_array(self::USER_RELATED_SCOPE_SPACES, $scopes)) {
-            $spaceMemberships = (new \yii\db\Query())
-                    ->select("sm.id")
-                    ->from('space_membership')
-                    ->leftJoin('space sm', 'sm.id=space_membership.space_id')
-                    ->where('space_membership.user_id=:userId AND space_membership.status=' . \humhub\modules\space\models\Membership::STATUS_MEMBER);
-            $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ') AND contentcontainer.class = :spaceClass';
-            $params[':userId'] = $user->id;
-            $params[':spaceClass'] = Space::className();
-        }
-
         if (in_array(self::USER_RELATED_SCOPE_OWN, $scopes)) {
             $conditions[] = 'content.created_by = :userId';
             $params[':userId'] = $user->id;

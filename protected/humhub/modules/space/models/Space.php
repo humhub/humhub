@@ -72,9 +72,9 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function rules()
     {
-        return [
+        $rules = [
             [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
-            [['name'], 'unique', 'targetClass' => self::className()],
+            
             [['name'], 'required'],
             [['description', 'tags', 'color'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -83,6 +83,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             [['visibility'], 'checkVisibility'],
             [['guid', 'name'], 'string', 'max' => 45],
         ];
+        
+        if(Yii::$app->getModule('space')->useUniqueSpaceNames) {
+            $rules[] = [['name'], 'unique', 'targetClass' => self::className()];
+        }
+        return $rules;
     }
 
     /**

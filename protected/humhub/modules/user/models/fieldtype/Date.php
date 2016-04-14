@@ -46,6 +46,14 @@ class Date extends BaseType
         ];
         return parent::getFieldRules($rules);
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getFormDefinition($definition = array())
+    {
+        return count($definition) > 0 ? parent::getFormDefinition($definition) : [];
+    } 
 
     /**
      * @inheritdoc

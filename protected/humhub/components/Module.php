@@ -36,7 +36,7 @@ class Module extends \yii\base\Module
     /**
      * Returns modules name provided by module.json file
      *
-     * @return string Description
+     * @return string Name
      */
     public function getName()
     {
@@ -45,7 +45,6 @@ class Module extends \yii\base\Module
         if ($info['name']) {
             return $info['name'];
         }
-
         return $this->getId();
     }
 
@@ -249,6 +248,17 @@ class Module extends \yii\base\Module
      * @return array list of permissions
      */
     public function getPermissions($contentContainer = null)
+    {
+        return [];
+    }
+    
+    /**
+     * Returns a list of notification classes this module provides.
+     * 
+     * @since 1.1
+     * @return array list of notification classes
+     */
+    public function getNotifications()
     {
         return [];
     }

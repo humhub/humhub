@@ -40,6 +40,11 @@ class Mentioned extends BaseNotification
 
         return parent::send($user);
     }
+    
+    public static function getTitle()
+    {
+        return Yii::t('UserModule.notifiations_Mentioned', 'Mentioned');
+    }
 
 }
 

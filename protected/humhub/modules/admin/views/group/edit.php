@@ -35,7 +35,7 @@ use yii\helpers\Html;
         ]);
         ?>
         
-        <?php echo $form->field($group, 'adminGuids', ['inputOptions' => ['id' => 'user_select']]); ?>
+        <?php echo $form->field($group, 'managerGuids', ['inputOptions' => ['id' => 'user_select']]); ?>
         
         <strong><?php echo Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
         <br>
@@ -48,7 +48,7 @@ use yii\helpers\Html;
         echo \humhub\modules\user\widgets\UserPicker::widget([
             'inputId' => 'user_select',
             'model' => $group,
-            'attribute' => 'adminGuids',
+            'attribute' => 'managerGuids',
             'userSearchUrl' => $url,
             'data' => ['id' => $group->id],
             'placeholderText' => 'Add a user'
