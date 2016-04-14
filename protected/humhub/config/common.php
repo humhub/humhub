@@ -7,7 +7,7 @@ Yii::setAlias('@humhub', '@app/humhub');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.0.0',
+    'version' => '1.0.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
