@@ -113,6 +113,8 @@ function resetProfileImage(json) {
     if (json.type == 'profile') {
         $('#user-profile-image img').attr('src', json.defaultUrl);
         $('#user-profile-image').attr('src', json.defaultUrl);
+        $('#deleteLinkPost_modal_profileimagedelete').hide();
+        $('#profile-image-upload-edit-button').hide();
     } else if (json.type == "banner") {
         $('#user-banner-image').attr('src', json.defaultUrl);
     }
@@ -137,7 +139,7 @@ $(document).ready(function() {
     // show buttons also at buttons rollover (better: prevent the mouseleave event)
     $('#profile-image-upload-buttons').mouseover(function() {
         $('#profile-image-upload-buttons').show();
-    })
+    });
 
     // hide buttons at image mouse leave
     $('#profilefileupload').mouseleave(function() {
