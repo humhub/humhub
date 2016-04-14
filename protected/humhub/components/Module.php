@@ -36,7 +36,7 @@ class Module extends \yii\base\Module
     /**
      * Returns modules name provided by module.json file
      *
-     * @return string Description
+     * @return string Name
      */
     public function getName()
     {
@@ -45,7 +45,6 @@ class Module extends \yii\base\Module
         if ($info['name']) {
             return $info['name'];
         }
-
         return $this->getId();
     }
 

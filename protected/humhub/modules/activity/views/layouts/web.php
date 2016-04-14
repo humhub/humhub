@@ -19,7 +19,7 @@
                 ]); ?>
             <?php endif; ?>
 
-            <div class="media-body">
+            <div class="media-body text-break">
 
                 <!-- Show content -->
                 <?php echo $content; ?><br/>

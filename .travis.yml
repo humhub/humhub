@@ -27,7 +27,6 @@ install:
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.0"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --dev --prefer-dist --no-interaction
-  
   - travis_retry composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
 
   - |
@@ -36,7 +35,6 @@ install:
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii installer/auto
     cd ../../../../..
-
     cd protected/humhub/tests
     codecept build
     cd ../../../

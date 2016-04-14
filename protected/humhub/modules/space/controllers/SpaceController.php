@@ -70,6 +70,10 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         if (!$space->isMember()) {
             $space->follow();
         }
+        
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
 
         return $this->redirect($space->getUrl());
     }
@@ -82,6 +86,10 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $this->forcePostRequest();
         $space = $this->getSpace();
         $space->unfollow();
+        
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
 
         return $this->redirect($space->getUrl());
     }
