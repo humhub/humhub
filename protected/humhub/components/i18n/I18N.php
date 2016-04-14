@@ -25,6 +25,13 @@ class I18N extends \yii\i18n\I18N
         if (($language == 'en' || $language == 'en_gb') && $category == 'yii') {
             $language = 'en-US';
         }
+        if ($language == 'zh_cn' && $category == 'yii') {
+            $language = 'zh-CN';
+        }
+        if ($language == 'zh_tw' && $category == 'yii') {
+            $language = 'zh-TW';
+        }
+        
 
         return parent::translate($category, $message, $params, $language);
     }
