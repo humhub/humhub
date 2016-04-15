@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -194,6 +194,7 @@ class Group extends \yii\db\ActiveRecord
     public function addUser($user, $isAdmin = false)
     {
         $userId = ($user instanceof User) ? $user->id : $user;
+
         $newGroupUser = new GroupUser();
         $newGroupUser->user_id = $userId;
         $newGroupUser->group_id = $this->id;

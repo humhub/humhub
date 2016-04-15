@@ -12,13 +12,13 @@ $loginPage = LoginPage::openBy($I);
 $I->amGoingTo('try to login with empty credentials');
 $loginPage->login('', '');
 $I->expectTo('see validations errors');
-$I->see('username or email cannot be blank.');
-$I->see('password cannot be blank.');
+$I->see('Username cannot be blank.');
+$I->see('Password cannot be blank.');
 
 $I->amGoingTo('try to login with wrong credentials');
 $loginPage->login('admin', 'wrong');
 $I->expectTo('see validations errors');
-$I->see('Incorrect username or password.');
+$I->see('User or Password incorrect.');
 
 $I->amGoingTo('try to login with correct credentials');
 $loginPage->login('admin', 'test');

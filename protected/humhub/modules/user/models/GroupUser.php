@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use humhub\modules\user\models\User;
@@ -16,11 +22,11 @@ use humhub\modules\user\models\Group;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class GroupUser extends \yii\db\ActiveRecord
+class GroupUser extends \humhub\components\ActiveRecord
 {
 
     const SCENARIO_REGISTRATION = 'registration';
-    
+
     /**
      * @inheritdoc
      */
@@ -41,7 +47,10 @@ class GroupUser extends \yii\db\ActiveRecord
             [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.']
         ];
     }
-    
+
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -63,6 +72,20 @@ class GroupUser extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            if ($this->group !== null && $this->group->space !== null) {
+                $this->group->space->addMember($this->user->id);
+            }
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function getGroup()
