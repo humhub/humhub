@@ -102,7 +102,7 @@ use humhub\models\Setting;
 
         // check if there is an error at the second tab
 
-    <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal') && $model->hasError('inviteExternal')) : ?>
+    <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal') && $model->hasErrors('inviteExternal')) : ?>
             // show tab
             $('#tabs a:last').tab('show');
     <?php endif; ?>

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -100,7 +100,11 @@ class RichText extends \humhub\components\Widget
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
 
-        $output = nl2br($this->text);
+        if (!$this->minimal) {
+            $output = nl2br($this->text);
+        } else {
+            $output = $this->text;
+        }
 
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 

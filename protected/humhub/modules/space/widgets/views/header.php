@@ -215,7 +215,11 @@ if ($space->isAdmin()) {
                         echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
                                 [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
                                 [\humhub\modules\space\widgets\MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
-                                [\humhub\modules\space\widgets\FollowButton::className(), ['space' => $space], ['sortOrder' => 30]]
+                                [\humhub\modules\space\widgets\FollowButton::className(), [
+                                    'space' => $space,
+                                    'followOptions' => ['class' => 'btn btn-primary'],
+                                    'unfollowOptions' => ['class' => 'btn btn-info']], 
+                                    ['sortOrder' => 30]]
                         ]]);
                         ?>
 
