@@ -173,7 +173,7 @@ function setModalHandler() {
 }
 
 function initPlugins() {
-    /*
+    
     // show Tooltips on elements inside the views, which have the class 'tt'
     $('.tt').tooltip({
         html: false,
@@ -189,7 +189,7 @@ function initPlugins() {
     // Replace the standard checkbox and radio buttons
     $('body').find(':checkbox, :radio').flatelements();
 
-    $('a[data-loader="modal"], button[data-loader="modal"]').loader();*/
+    $('a[data-loader="modal"], button[data-loader="modal"]').loader();
 
 }
 

@@ -32,7 +32,8 @@
         "bower-asset/jquery-placeholder": "^2.3.0",
         "bower-asset/blueimp-file-upload": "9.11.*",
         "bower-asset/fontawesome": "^4.3.0",
-        "bower-asset/bootstrap-markdown": "2.10.*"
+        "bower-asset/bootstrap-markdown": "2.10.*",
+        "bower-asset/jquery-pjax": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -4,6 +4,9 @@ assets/*
 protected/runtime/*
 !protected/runtime/.gitignore
 
+node_modules/*
+!node_modules/.gitignore
+
 protected/config/local/*
 !protected/config/local/.gitignore
 

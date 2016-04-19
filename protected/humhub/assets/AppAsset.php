@@ -36,12 +36,14 @@ class AppAsset extends AssetBundle
         'js/jquery.loader.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
+        'js/jquery.pjax.js',
         'resources/at/jquery.caret.min.js',
         'resources/at/jquery.atwho.min.js',
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
         'js/app.js',
-        'js/dist/humhub.all.js'
+        'js/dist/humhub.all.js',
+       
     ];
     
     //TODO if !debug use humhub.all.min.js

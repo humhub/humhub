@@ -2,7 +2,7 @@
  * Core module for managing Streams and StreamItems
  * @type Function
  */
-humhub.modules.stream = (function (module, $) {
+humhub.initModule('stream', function(module, require, $) {
 
     var ENTRY_ID_SELECTOR_PREFIX = '#wallEntry_';
     var WALLSTREAM_ID = 'wallStream';
@@ -12,7 +12,7 @@ humhub.modules.stream = (function (module, $) {
      * @param {type} id
      * @returns {undefined}
      */
-    module.StreamItem = function (id) {
+    var StreamItem = function (id) {
         if (typeof id === 'string') {
             this.id = id;
             this.$ = $('#' + id);
@@ -25,25 +25,25 @@ humhub.modules.stream = (function (module, $) {
     /**
      * Removes the stream item from stream
      */
-    module.StreamItem.prototype.remove = function () {
+    StreamItem.prototype.remove = function () {
         this.$.remove();
     };
     
-    module.StreamItem.prototype.getContentKey = function () {}
+    StreamItem.prototype.getContentKey = function () {}
     
-    module.StreamItem.prototype.edit = function () {
+    StreamItem.prototype.edit = function () {
         //Search for data-content-edit-url on root.
         //Call this url with data-content-pk
         //Trigger delete event
     };
     
-    module.StreamItem.prototype.delete = function () {
+    StreamItem.prototype.delete = function () {
         //Search for data-content-delte-url on root.
         //Call this url with data-content-pk
         //Trigger delete event
     };
 
-    module.StreamItem.prototype.getContent = function () {
+    StreamItem.prototype.getContent = function () {
         return this.$.find('.content');
     };
 
@@ -62,18 +62,18 @@ humhub.modules.stream = (function (module, $) {
      * @param {type} id
      * @returns {undefined}
      */
-    module.Stream = function (id) {
+    var Stream = function (id) {
         this.id = id;
         this.$ = $('#' + id);
     };
 
-    module.Stream.prototype.getEntry = function (id) {
+    Stream.prototype.getEntry = function (id) {
         //Search for data-content-base and try to initiate the Item class
         
         return new module.Entry(this.$.find(ENTRY_ID_SELECTOR_PREFIX + id));
     };
 
-    module.Stream.prototype.wallStick = function (url) {
+    Stream.prototype.wallStick = function (url) {
         $.ajax({
             dataType: "json",
             type: 'post',
@@ -93,7 +93,7 @@ humhub.modules.stream = (function (module, $) {
         });
     };
 
-    module.Stream.prototype.wallUnstick = function (url) {
+    Stream.prototype.wallUnstick = function (url) {
         $.ajax({
             dataType: "json",
             type: 'post',
@@ -113,7 +113,7 @@ humhub.modules.stream = (function (module, $) {
      * @param {type} className
      * @param {type} id
      */
-    module.Stream.prototype.wallArchive = function (id) {
+    Stream.prototype.wallArchive = function (id) {
 
         url = wallArchiveLinkUrl.replace('-id-', id);
 
@@ -147,7 +147,7 @@ humhub.modules.stream = (function (module, $) {
      * @param {type} className
      * @param {type} id
      */
-    module.Stream.prototype.wallUnarchive = function (id) {
+    Stream.prototype.wallUnarchive = function (id) {
         url = wallUnarchiveLinkUrl.replace('-id-', id);
 
         $.ajax({
@@ -165,18 +165,20 @@ humhub.modules.stream = (function (module, $) {
             }
         });
     };
-
-
-    module.getStream = function () { 
+    
+    var getStream = function () { 
         if (!module.mainStream) {
             module.mainStream = new module.Stream(WALLSTREAM_ID);
         }
         return module.mainStream;
     };
 
-    module.getEntry = function (id) {
+    var getEntry = function (id) {
         return module.getStream().getEntry(id);
     };
-
-    return module;
-})(humhub.modules || {}, $);
+    
+    module.export({
+       getStream : getStream,
+       getEntry : getEntry
+    });
+});

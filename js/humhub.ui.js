@@ -1,8 +1,8 @@
-humhub.ui = (function (module, $) {
-    //Init default additions
-    humhub.additions.registerAddition('.autosize', function($match) {
-        $match.autosize();
-    });
-    
-    return module;
-})(humhub.ui || {}, $);
+humhub.initModule('ui', function(module, require, $) {
+    var additions = require('additions');
+    module.init = function() {
+        additions.registerAddition('.autosize', function($match) {
+            $match.autosize();
+        });
+    }
+});

@@ -18,6 +18,9 @@ use Yii;
 class JSONResponse
 {
     
+    const STATE_CONFIRM = 0;
+    const STATE_ERROR_APPLICATION = 1;
+    const STATE_ERROR_VALIDATOIN = 2;    
     /**
      * The resulting json array
      * @var type 
@@ -29,16 +32,26 @@ class JSONResponse
         $result = [];
     }
     
-    public function error($errorMessage, $errorCode)
+    public function error($errors, $errorTitle = null, $status = null)
     {
-        $this->result['error'] = $errorMessage;
-        $this->result['errorCode'] = $errorCode;
+        $this->result['errorTitle'] = $errorTitle;
+        $this->result['errors'] = $errors;
+        $this->result['status'] = ($status != null && $status > 0) ? $status : self::STATE_ERROR_APPLICATION;
         return $this;
     }
     
     public function content($content)
     {
         $this->result['content'] = $content;
+        return $this;
+    }
+    
+    public function confirm($content)
+    {
+        if($content != null) {
+            $this->content($content);
+        }
+        $this->result['status'] = self::STATE_CONFIRM;
         return $this;
     }
     

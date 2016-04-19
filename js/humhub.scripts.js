@@ -1,5 +1,14 @@
-humhub.scripts = (function (module, $) {
-    
+/**
+ * This module is not in use since Yii provides an build in mechanism for blocking
+ * ajax requests for scripts already loaded.
+ * 
+ * This module provides functions to keep track of loaded scripts and load scripts
+ * once synchronously or asynchronously.
+ * 
+ * @param {type} param1
+ * @param {type} param2
+ */
+humhub.initModule('scripts', function(module, require, $) {
     var _scripts = [];
     
     $(document).ready(function() {
@@ -12,12 +21,8 @@ humhub.scripts = (function (module, $) {
         return url.split('?')[0];
     };
     
-    var loadOnce = function(urls, sync, callback) {
+    var loadOnce = function(urls) {
         urls = $.isArray(urls) ? urls : [urls];
-        
-        if(sync) {
-            return _loadOnceSync(urls, callback);
-        }
             
         var promises = [];
         $.each(urls, function(index, scriptUrl) {            
@@ -34,7 +39,7 @@ humhub.scripts = (function (module, $) {
         return $.when.apply(null, promises);
     };
     
-    var _loadOnceSync = function(urls, callback) {
+    var loadOnceSync = function(urls, callback) {
         var deferred = new $.Deferred();
         var promise = deferred.promise();
         $.each(urls, function(index, scriptUrl) {
@@ -64,7 +69,6 @@ humhub.scripts = (function (module, $) {
         });
         
         deferred.resolve();
-         
     };
     
     var containsScript = function(url) {
@@ -73,7 +77,7 @@ humhub.scripts = (function (module, $) {
         $.each(_scripts, function(index, scriptUrl) {
             if(scriptUrl === url) {
                 result = true;
-                return false;
+                return false; //leave each
             }
         });
         return result;
@@ -84,9 +88,10 @@ humhub.scripts = (function (module, $) {
         _scripts.push(url);
     };
     
-    return {
+    module.export({
         loadOnce: loadOnce,
+        loadOnceSync: loadOnceSync,
         containsScript: containsScript,
         addScript:addScript
-    };
-})(humhub.scripts || {}, $);
+    });
+});

@@ -1,16 +1,16 @@
 /**
  * Util module with sub module for object and string utility functions
  */
-humhub.util = (function (module, $) { 
-    module.object = {
+humhub.initModule('util', function(module, require, $) {
+    var object = {
         isFunction: function (obj) {
-            return this.prototype.toString.call(obj) === '[object Function]';
+            return $.isFunction(obj);
         },
         isObject: function (obj) {
             return $.isPlainObject(obj);
         },
         isJQuery: function (obj) {
-            return obj.jquery;
+            return this.isDefined(obj) && obj.jquery;
         },
         isArray: function(obj) {
             return $.isArray(obj);
@@ -19,7 +19,7 @@ humhub.util = (function (module, $) {
             return typeof obj === 'string';
         },
         isNumber: function (n) {
-            return !isNaN(parseFloat(n)) && isFinite(n);
+            return this.isDefined(n) && !isNaN(parseFloat(n)) && isFinite(n);
         },
         isBoolean: function (obj) {
             return typeof obj === 'boolean';
@@ -44,23 +44,32 @@ humhub.util = (function (module, $) {
         }
     };
     
-    module.string = {
-        cutprefix : function(val, suffix) {
-            return val.substring(suffix.length, val.length);
+    var string = {
+        cutprefix : function(val, prefix) {
+            if(!this.startsWith(prefix)) {
+                return val;
+            }
+            return val.substring(prefix.length, val.length);
+        },
+        cutsuffix : function(val, suffix) {
+            return val.slice(0, suffix.length * -1);
         },
         startsWith : function(val, prefix) {
-            if(!module.object.isDefined(val) || !module.object.isDefined(prefix)) {
+            if(!object.isDefined(val) || !object.isDefined(prefix)) {
                 return false;
             }
             return val.indexOf(prefix) === 0;
         },
         endsWith : function(val, suffix) {
-            if(!module.object.isDefined(val) || !module.object.isDefined(suffix)) {
+            if(!object.isDefined(val) || !object.isDefined(suffix)) {
                 return false;
             }
             return val.indexOf(suffix, val.length - suffix.length) !== -1;
         }
     };
     
-    return module;
-})(humhub.util || {}, $);
+    module.export({
+        object: object,
+        string: string
+    });
+});
