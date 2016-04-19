@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\notifications;
 
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Notification for new comments
@@ -33,14 +34,17 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
      */
     public function send(User $user)
     {
-        // Check there is also an mentioned notifications, so ignore this notification
-        /*
-          if (Notification::model()->findByAttributes(array('class' => 'MentionedNotification', 'source_object_model' => 'Comment', 'source_object_id' => $comment->id)) !== null) {
-          continue;
-          }
-         */
+        // Check if there is also a mention notification, so skip this notification
+		if (\humhub\modules\notification\models\Notification::find()->where(['class' => \humhub\modules\user\notifications\Mentioned::className(), 'user_id' => $user->id, 'source_class' => $this->source->className(), 'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
+            return;
+        }
 
         return parent::send($user);
+    }
+    
+    public static function getTitle()
+    {
+        return Yii::t('CommentModule.notifications_NewComment', 'New Comment');
     }
 
 }

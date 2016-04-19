@@ -10,9 +10,9 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use yii\data\ArrayDataProvider;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\user\models\User;
 
 /**
@@ -54,16 +54,18 @@ class GroupController extends Controller
             $group = new Group();
         }
 
-        $group->scenario = 'edit';
+        $group->scenario = Group::SCENARIO_EDIT;
         $group->populateDefaultSpaceGuid();
-        $group->populateAdminGuids();
-
+        $group->populateManagerGuids();
+         
+        
+        
         if ($group->load(Yii::$app->request->post()) && $group->validate()) {
             $group->save();
             $this->redirect(Url::toRoute('/admin/group'));
         }
 
-        $showDeleteButton = (!$group->isNewRecord && Group::find()->count() > 1);
+        $showDeleteButton = (!$group->isNewRecord && !$group->is_admin_group);
 
         // Save changed permission states
         if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
@@ -90,21 +92,31 @@ class GroupController extends Controller
     public function actionDelete()
     {
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
-        if ($group == null)
+        
+        if ($group == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
-
-        $model = new \humhub\modules\admin\models\forms\AdminDeleteGroupForm;
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            foreach (User::findAll(['group_id' => $group->id]) as $user) {
-                $user->group_id = $model->group_id;
-                $user->save();
-            }
+        } 
+        
+        //Double check to get sure we don't remove the admin group
+        if(!$group->is_admin_group) {
             $group->delete();
-            $this->redirect(Url::toRoute("/admin/group"));
         }
-
-        $alternativeGroups = \yii\helpers\ArrayHelper::map(Group::find()->where('id != :id', array(':id' => $group->id))->all(), 'id', 'name');
-        return $this->render('delete', array('group' => $group, 'model' => $model, 'alternativeGroups' => $alternativeGroups));
+        
+        $this->redirect(Url::toRoute("/admin/group"));
+    }
+    
+    public function actionAdminUserSearch()
+    {
+        Yii::$app->response->format = 'json';
+        
+        $keyword = Yii::$app->request->get('keyword');
+        $group = Group::findOne(Yii::$app->request->get('id'));
+        
+        return UserPicker::filter([
+            'query' => $group->getUsers(),
+            'keyword' => $keyword,
+            'fillQuery' => User::find()
+        ]);
     }
 
 }

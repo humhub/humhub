@@ -2,7 +2,6 @@
 
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
-use humhub\models\Setting;
 use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -35,13 +34,23 @@ use yii\helpers\Html;
             'attribute' => 'defaultSpaceGuid'
         ]);
         ?>
-
+        
+        <?php echo $form->field($group, 'managerGuids', ['inputOptions' => ['id' => 'user_select']]); ?>
+        
+        <strong><?php echo Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
+        <br>
+        <br>
+        <?php echo $form->field($group, 'show_at_registration')->checkbox(); ?>
+        <?php echo $form->field($group, 'show_at_directory')->checkbox(); ?>
+        
         <?php
+        $url = ($group->isNewRecord) ? null : Url::toRoute('/admin/group/admin-user-search');
         echo \humhub\modules\user\widgets\UserPicker::widget([
             'inputId' => 'user_select',
-            'maxUsers' => 2,
             'model' => $group,
-            'attribute' => 'adminGuids',
+            'attribute' => 'managerGuids',
+            'userSearchUrl' => $url,
+            'data' => ['id' => $group->id],
             'placeholderText' => 'Add a user'
         ]);
         ?>

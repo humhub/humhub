@@ -97,7 +97,7 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
      * @var boolean automatically mark notification as seen after click on it
      */
     public $markAsSeenOnClick = true;
-
+    
     /**
      * Renders the notification
      *
@@ -266,6 +266,16 @@ class BaseNotification extends \yii\base\Component implements ViewContextInterfa
     {
         $this->record->seen = 1;
         $this->record->save();
+    }
+    
+     /**
+     * Should be overwritten by subclasses. This method provides a user friendly
+     * title for the different notification types.
+     * @return type
+     */
+    public static function getTitle()
+    {
+        return null;
     }
     
 }

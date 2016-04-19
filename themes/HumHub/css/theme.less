@@ -197,6 +197,18 @@ input[type=select] {
   appearance: none;
 }
 
+.text-break {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;  
+}
+
 //
 // Login
 // --------------------------------------------------
@@ -409,6 +421,7 @@ input[type=select] {
       }
     }
   }
+  
   .dropdown-footer {
     margin: 10px 10px 5px;
   }
@@ -712,7 +725,7 @@ input[type=select] {
 }
 
 .content span {
-  word-wrap: break-word;
+  .text-break;
 }
 
 // Modules
@@ -779,6 +792,10 @@ input[type=select] {
   .panel-heading {
     .heading;
     border-radius: 4px;
+    .heading-link {
+        color:#6fdbe8 !important;
+        font-size: 0.8em;
+    }
   }
   .panel-body {
     padding: 10px;
@@ -2053,6 +2070,37 @@ ul.tag_input {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+// Multi Dropdown Select2 Overwrites
+.select2-container--default .select2-selection--multiple {
+    border: 2px solid #ededed !important;
+    background-image: url("../img/select_arrow.png") !important;
+    background-repeat: no-repeat;
+    background-position: right 16px;
+}
+
+.select2-container--default .select2-selection--focus {
+    border: 2px solid #6fdbe8 !important;
+}
+
+.select2-selection__choice {
+   background-color: #6fdbe8 !important;
+   padding: 5px 0px 5px 5px !important;
+   border: none !important;
+}
+
+.select2-search--inline { 
+    background-color: transparent !important;
+    padding: 5px 0px 5px 5px !important;
+}
+
+.select2-selection__choice__remove {
+    display:none !important;
+}
+
+#notification_overview_filter label {
+    display:block;
 }
 
 // Activities

@@ -4,5 +4,5 @@ return array (
   '<strong>New</strong> people' => '<strong>Nowi</strong> ludzie',
   'Follows somebody' => 'Obserwujący ',
   'Online right now' => 'Teraz online',
-  'Total users' => 'W sumie użytkowników ',
+  'Total users' => 'Łącznie użytkowników ',
 );

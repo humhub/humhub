@@ -9,8 +9,6 @@
 namespace humhub\modules\admin;
 
 use Yii;
-use humhub\modules\user\models\User;
-use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\models\Setting;
 
 /**
@@ -59,7 +57,7 @@ class Events extends \yii\base\Object
 
         $latestVersion = libs\HumHubAPI::getLatestHumHubVersion();
         if ($latestVersion != "") {
-            $adminUserQuery = User::find()->where(['super_admin' => 1]);
+            $adminUsers = \humhub\modules\user\models\Group::getAdminGroup()->users;
             $latestNotifiedVersion = Setting::Get('lastVersionNotify', 'admin');
             $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
             $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));
@@ -67,14 +65,14 @@ class Events extends \yii\base\Object
 
             // Cleanup existing notifications
             if (!$newVersionAvailable || ($newVersionAvailable && !$adminsNotified)) {
-                foreach ($adminUserQuery->all() as $admin) {
+                foreach ($adminUsers as $admin) {
                     $updateNotification->delete($admin);
                 }
             }
 
             // Create new notification
             if ($newVersionAvailable && !$adminsNotified) {
-                $updateNotification->sendBulk($adminUserQuery);
+                $updateNotification->sendBulk($adminUsers);
                 Setting::Set('lastVersionNotify', $latestVersion, 'admin');
             }
         }

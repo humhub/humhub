@@ -30,25 +30,25 @@ class MemberMenu extends \humhub\widgets\BaseMenu
     {
 
         $this->addItem(array(
-            'label' => 'Members',
+            'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu','Members'),
             'url' => $this->space->createUrl('/space/manage/member/index'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->action->id == 'index' && Yii::$app->controller->id === 'member'),
         ));
         $this->addItem(array(
-            'label' => 'Pending Invites',
+            'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu','Pending Invites'),
             'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->action->id == 'pending-invitations'),
         ));
         $this->addItem(array(
-            'label' => 'Pending Approvals',
+            'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu','Pending Approvals'),
             'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
             'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->action->id == 'pending-approvals'),
         ));
         $this->addItem(array(
-            'label' => 'Permissions',
+            'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu','Permissions'),
             'url' => $this->space->createUrl('/space/manage/member/permissions'),
             'sortOrder' => 400,
             'isActive' => (Yii::$app->controller->action->id == 'permissions'),
@@ -56,7 +56,7 @@ class MemberMenu extends \humhub\widgets\BaseMenu
 
         if ($this->space->isSpaceOwner()) {
             $this->addItem(array(
-                'label' => 'Owner',
+                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu','Owner'),
                 'url' => $this->space->createUrl('/space/manage/member/change-owner'),
                 'sortOrder' => 500,
                 'isActive' => (Yii::$app->controller->action->id == 'change-owner'),

@@ -31,6 +31,16 @@ class Module extends \humhub\components\Module
 
         return [];
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+       return [
+           'humhub\modules\comment\notifications\NewComment'
+       ];
+    }
 
     /**
      * Checks if given content object can be commented

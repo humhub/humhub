@@ -13,6 +13,9 @@ Here you will learn how you can adapt existing modules to working fine with actu
     - Removed space_id / user_id columns - added contentcontainer_id
     - Not longer validates content visibility (private/public) permissions
 
+- system_admin attribute in user table was removed
+
+
 ## to 0.20
 
 **Important: This release upgrades from Yii1 to Yii2 Framework!**

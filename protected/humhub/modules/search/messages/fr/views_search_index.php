@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Advanced search settings' => '',
-    'Search for user, spaces and content' => '',
-    'Search only in certain spaces:' => '',
+    'Advanced search settings' => 'Paramètres avancés de la recherche',
+    'Search for user, spaces and content' => 'Chercher des utilisateurs, des espaces et des contenus',
+    'Search only in certain spaces:' => 'Chercher seulement dans certains espaces :',
     '<strong>Search </strong> results' => 'Résultats de la <strong>recherche</strong>',
     'All' => 'Tous',
     'Content' => 'Contenu',

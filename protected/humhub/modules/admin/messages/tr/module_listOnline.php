@@ -5,5 +5,5 @@ return array (
   'No purchased modules found!' => 'Satın alınan modül bulunamadı!',
   'Register' => 'Kayıt',
   'Search' => 'Ara',
-  'search for available modules online' => '',
+  'search for available modules online' => 'bulunabilir modül ara',
 );

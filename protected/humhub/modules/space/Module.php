@@ -9,6 +9,7 @@
 namespace humhub\modules\space;
 
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * SpaceModule provides all space related classes & functions.
@@ -30,6 +31,12 @@ class Module extends \humhub\components\Module
     public $globalAdminCanAccessPrivateContent = false;
     
     /**
+     *
+     * @var boolean Do not allow multiple spaces with the same name 
+     */
+    public $useUniqueSpaceNames = true;
+    
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -46,6 +53,26 @@ class Module extends \humhub\components\Module
             new permissions\CreatePrivateSpace(),
             new permissions\CreatePublicSpace(),
         ];
+    }
+    
+    public function getName()
+    {
+        return Yii::t('SpaceModule.base', 'Space');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+       return [
+           'humhub\modules\space\notifications\ApprovalRequest',
+           'humhub\modules\space\notifications\ApprovalRequestAccepted',
+           'humhub\modules\space\notifications\ApprovalRequestDeclined',
+           'humhub\modules\space\notifications\Invite',
+           'humhub\modules\space\notifications\InviteAccepted',
+           'humhub\modules\space\notifications\InviteDeclined'
+       ];
     }
 
 }

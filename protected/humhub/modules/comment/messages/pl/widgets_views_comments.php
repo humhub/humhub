@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Show all {total} comments.' => 'Pokaż {total}  wszystkich komentarzy. ',
+  'Show all {total} comments.' => 'Pokaż wszystkie {total} komentarze. ',
 );

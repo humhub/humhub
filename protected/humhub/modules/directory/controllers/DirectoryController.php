@@ -10,9 +10,7 @@ namespace humhub\modules\directory\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
 use humhub\modules\directory\widgets\Sidebar;
-use yii\web\HttpException;
 
 /**
  * Community/Directory Controller
@@ -160,7 +158,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionGroups()
     {
-        $groups = \humhub\modules\user\models\Group::find()->orderBy(['name' => SORT_ASC])->all();
+        $groups = \humhub\modules\user\models\Group::getDirectoryGroups();
 
         \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
             $event->sender->addWidget(\humhub\modules\directory\widgets\GroupStatistics::className(), [], ['sortOrder' => 10]);
