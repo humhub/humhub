@@ -12,7 +12,8 @@ Administration
 * [Requirements](admin-requirements.md)
 * [Installation](admin-installation.md)
 * [Updating](admin-updating.md)
-
+* [User](admin-user.md)
+* [Spaces](admin-spaces.md)
 
 Administration - Topics
 -------------------------
@@ -27,7 +28,13 @@ Development
 
 * [Getting Started](dev-index.md)
 * [Updating / Migrate](dev-migrate.md)
-* [Environment](dev-environment.md)
+* [Application Overview](dev-overview.md)
+* [Content](dev-content.md)
+* [Notification](dev-notifications.md)
+* [Activities](dev-environment.md)
+* [Search](dev-environment.md)
+* [User](dev-environment.md)
+* [Build](dev-environment.md)
 * [Contributions](dev-contributing.md)
 
 Development - Modules
@@ -36,11 +43,9 @@ Development - Modules
 * [Getting Started](dev-module-index.md)
 * [Events](dev-module-events.md)
 * [Database](dev-module-db.md)
-* [Content](dev-module-content.md)
 * [Space/User](dev-module-spaceuser.md)
 * [Navigations](dev-module-menus.md)
 * [Widget Stacks](dev-module-stack.md)
-* [Notifications](dev-module-notifications.md)
 * [Activities](dev-module-activities.md)
 * [Streams / Walls](dev-module-stream.md)
 * [Search](dev-module-search.md)
