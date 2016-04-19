@@ -91,12 +91,12 @@ class UserApprovalSearch extends User
         $query->andWhere(['IN', 'group_id', $groupIds]);
 
         $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
-        $query->andFilterWhere(['id' => $this->id]);
+        $query->andFilterWhere(['user.id' => $this->id]);
         $query->andFilterWhere(['group.id' => $this->getAttribute('group.id')]);
         $query->andFilterWhere(['super_admin' => $this->super_admin]);
-        $query->andFilterWhere(['like', 'id', $this->id]);
-        $query->andFilterWhere(['like', 'username', $this->username]);
-        $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'user.id', $this->id]);
+        $query->andFilterWhere(['like', 'user.username', $this->username]);
+        $query->andFilterWhere(['like', 'user.email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
 
