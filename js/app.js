@@ -161,8 +161,11 @@ function setModalHandler() {
     $(document).off('click.humhub');
     $(document).on('click.humhub', "a[data-target='#globalModal']", function (ev) {
         ev.preventDefault();
-       
-        $("#globalModal").modal("show");
+        var options = {
+            'show' : true,
+            'backdrop': $(this).data('backdrop')
+        }
+        $("#globalModal").modal(options);
         var target = $(this).attr("href");
 
         // load the url and show modal on success
