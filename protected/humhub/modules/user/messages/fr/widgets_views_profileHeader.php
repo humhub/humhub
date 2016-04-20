@@ -18,8 +18,8 @@
  */
 return [
     '<strong>Something</strong> went wrong' => '<strong>Quelque chose</strong> n\'a pas fonctionné',
-    'Followers' => 'Vous suivent',
-    'Following' => 'Vous suivez',
+    'Followers' => 'Abonnés',
+    'Following' => 'Abonnements',
     'Ok' => 'Ok',
     'Spaces' => 'Espaces',
 ];

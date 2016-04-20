@@ -18,7 +18,7 @@
  */
 return [
     '<strong>Group</strong> members - {group}' => '',
-    '<strong>Member</strong> directory' => 'Annuaire <strong>des membres</strong>',
+    '<strong>Member</strong> directory' => 'Annuaire des <strong>membres</strong>',
     'Follow' => 'Suivre',
     'No members found!' => 'Aucun membre.',
     'Search' => 'Rechercher',
