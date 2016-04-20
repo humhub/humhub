@@ -20,6 +20,8 @@ use humhub\modules\user\models\User;
  */
 class UserSearch extends User
 {
+    
+    public $query;
 
     public function attributes()
     {
@@ -53,7 +55,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->joinWith('profile');
+        $query = ($this->query == null) ? User::find()->joinWith('profile') : $this->query;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
