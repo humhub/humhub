@@ -55,7 +55,7 @@ If you want to build modules, you will also find there color classes for font, b
 ## Custom theme files
 To load additional **CSS** or **JavaScript** files to your theme, add them to the **head.php** in
 
-    /themes/mytheme/views/layout/
+    /themes/mytheme/views/layouts/
 
 
 ---
