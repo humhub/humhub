@@ -333,7 +333,7 @@ humhub.initModule('client', function (module, require, $) {
     var scripts = require('scripts');
     
     var init = function() {
-        $.ajaxPrefilter('html', function(options, originalOptions, jqXHR) {
+        /*$.ajaxPrefilter('html', function(options, originalOptions, jqXHR) {
             debugger;
             console.log(options);
             var pjaxHandler = options.success;
@@ -346,13 +346,13 @@ humhub.initModule('client', function (module, require, $) {
             };
         });
         
-        ///TEESSS
+        ///TEESSS 
         $.pjax.defaults.maxCacheLength = 0;
         $('a.dashboard').on('click', function(evt) {
             debugger;
             evt.preventDefault();
             $.pjax({url:$(this).attr('href'), container: '#main-content', maxCacheLength:0, timeout:2000});
-        });
+        });*/
     }
     /**
      * Response Wrapper Object for easily accessing common data
