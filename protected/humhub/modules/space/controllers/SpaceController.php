@@ -2,11 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
+
+use Yii;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserListBox;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -65,6 +70,10 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         if (!$space->isMember()) {
             $space->follow();
         }
+        
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
 
         return $this->redirect($space->getUrl());
     }
@@ -77,8 +86,27 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $this->forcePostRequest();
         $space = $this->getSpace();
         $space->unfollow();
+        
+        if (Yii::$app->request->isAjax) {
+            return;
+        }
 
         return $this->redirect($space->getUrl());
+    }
+
+    /**
+     * Modal to  list followers of a space
+     */
+    public function actionFollowerList()
+    {
+        $query = User::find();
+        $query->leftJoin('user_follow', 'user.id=user_follow.user_id and object_model=:userClass and user_follow.object_id=:spaceId', [':userClass' => Space::className(), ':spaceId' => $this->getSpace()->id]);
+        $query->orderBy(['user_follow.id' => SORT_DESC]);
+        $query->andWhere(['IS NOT', 'user_follow.id', new \yii\db\Expression('NULL')]);
+        $query->active();
+
+        $title = Yii::t('SpaceModule.base', '<strong>Space</strong> followers');
+        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }

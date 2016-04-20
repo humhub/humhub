@@ -152,6 +152,26 @@ class Membership extends \yii\db\ActiveRecord
         return $spaces;
     }
 
+    /**
+     * Returns Space for user space membership
+     * 
+     * @since 1.0
+     * @param \humhub\modules\user\models\User $user
+     * @param boolean $memberOnly include only member status - no pending/invite states
+     * @return \yii\db\ActiveQuery for space model
+     */
+    public static function getUserSpaceQuery($user, $memberOnly = true)
+    {
+        $query = Space::find();
+        $query->leftJoin('space_membership', 'space_membership.space_id=space.id and space_membership.user_id=:userId', [':userId' => $user->id]);
 
+        if ($memberOnly) {
+            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+        }
+
+        $query->orderBy(['name' => SORT_ASC]);
+
+        return $query;
+    }
 
 }

@@ -236,17 +236,25 @@
 
             img = new Image();
             if ((onLoadShowImage == null) || onLoadShowImage === true) {
+                var maxW = 700;
+                var maxH = 700;
                 img.onload = function () {
-                    var image, width;
-                    width = _this.checkImageDimensions(img.width);
-                    image = $('<img />');
+                    var image;
+                    var width = img.width;
+                    //width = _this.checkImageDimensions(img.width);
+                    var image = $('<img />');
                     image.attr('src', img.src);
-                    image.css('max-width', '100%');
+                    image.css('max-width', maxW+'px');
+                    image.css('max-height', maxH+'px');
+                    image.css('width', 'auto');
+                    image.css('height', 'auto');
+                    image.css('display', 'block');
+                    image.css('margin', 'auto');
                     _this.lightbox_body.html(image);
                     if (_this.modal_arrows) {
                         _this.modal_arrows.css('display', 'block');
                     }
-                    return _this.resize(width);
+                    return _this.resize((width < maxW) ? width : maxW);
                 };
                 img.onerror = function () {
                     return _this.error('Failed to load image: ' + src);
@@ -260,6 +268,7 @@
             width_inc_padding = width + this.padding.left + this.padding.right;
             //this.modal.find('.modal-content').css('width', width_inc_padding);
             //this.modal.find('.modal-dialog').css('width', width_inc_padding + 20);
+            console.log('width: '+width+' incPadding: '+width_inc_padding);
             this.modal.find('.modal-content').animate({width: width_inc_padding}, 200);
             this.modal.find('.modal-dialog').animate({width: width_inc_padding + 20}, 200);
             this.lightbox_container.find('a').css('padding-top', function () {

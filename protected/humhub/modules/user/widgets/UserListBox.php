@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -42,7 +42,7 @@ class UserListBox extends \yii\base\Widget
     /**
      * @var int displayed users per page
      */
-    public $pageSize = 25;
+    public $pageSize = 8;
 
     /**
      * @inheritdoc

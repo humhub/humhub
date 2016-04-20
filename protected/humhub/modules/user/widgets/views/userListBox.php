@@ -14,7 +14,15 @@ use yii\helpers\Html;
             <br/>
         </div>
 
+        <?php if (count($users) === 0): ?>
+            <div class="modal-body">
+                <p><?php echo Yii::t('UserModule.base', 'No users found.'); ?></p>
+            </div>
+        <?php endif; ?>      
+
+
         <div id="userlist-content">
+
             <ul class="media-list">
                 <!-- BEGIN: Results -->
                 <?php foreach ($users as $user) : ?>
