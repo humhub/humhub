@@ -51,25 +51,6 @@ class UserTest extends DbTestCase
         Yii::$app->cache->flush();
     }
 
-    public function testCreateApproval()
-    {
-        \humhub\models\Setting::Set('needApproval', 0, 'authentication_internal');
-        $user = new User();
-        $user->username = "TestWithoutApproval";
-        $user->email = "approveduser@example.com";
-        $user->group_id = 1;
-        $this->assertTrue($user->save());
-        $this->assertEquals($user->status, User::STATUS_ENABLED);
-
-        \humhub\models\Setting::Set('needApproval', 1, 'authentication_internal');
-        $user = new User();
-        $user->username = "TestWithApproval";
-        $user->email = "unapproveduser@example.com";
-        $user->group_id = 1;
-        $this->assertTrue($user->save());
-        $this->assertEquals($user->status, User::STATUS_NEED_APPROVAL);
-    }
-
     /**
      * Tests if user automatically added to the group´s default space
      */
@@ -81,9 +62,12 @@ class UserTest extends DbTestCase
 
         $user = new User();
         $user->username = "TestGroup";
-        $user->group_id = 1;
         $user->email = "group@example.com";
         $this->assertTrue($user->save());
+
+        $group = Group::findOne(['id' => 1]);
+        $group->addUser($user);
+        
         $this->assertTrue($space->isMember($user->id));
     }
 
@@ -101,7 +85,6 @@ class UserTest extends DbTestCase
         $space = Space::findOne(['id' => 2]);
         $user = new User();
         $user->username = "TestSpaceInvite";
-        $user->group_id = 1;
         $user->email = "testspaceinvite@example.com";
         $this->assertTrue($user->save());
         $this->assertTrue($space->isMember($user->id));
@@ -118,7 +101,6 @@ class UserTest extends DbTestCase
 
         $user = new User();
         $user->username = "TestSpaceAutoAdd";
-        $user->group_id = 1;
         $user->email = "testautoadd@example.com";
 
         $this->assertTrue($user->save());
@@ -127,22 +109,6 @@ class UserTest extends DbTestCase
         $this->assertTrue($space3->isMember($user->id)); // via global assign
     }
 
-    public function testGroupAssignment()
-    {
-
-        $group2 = new Group();
-        $group2->name = "TestGrp1";
-        $group2->description = "test";
-        $this->assertTrue($group2->save());
-
-        \humhub\models\Setting::Set('defaultUserGroup', $group2->id, 'authentication_internal');
-
-        $user = new User();
-        $user->username = "TestSpaceAutoAdd";
-        $user->email = "testautoadd@example.com";
-        $this->assertTrue($user->save());
-        $this->assertEquals($user->group_id, $group2->id);
-    }
 
     public function testAutoWallCreation()
     {

@@ -39,17 +39,19 @@ class Birthday extends Date
      */
     public function getFormDefinition($definition = array())
     {
-
-        $definition = parent::getFormDefinition();
-        $definition[self::className()]['title'] = Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options');
-        $definition[self::className()]['elements'] = [
-            'defaultHideAge' => array(
-                'type' => 'checkbox',
-                'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
-                'class' => 'form-control',
-            ),
-        ];
-        return $definition;
+        return parent::getFormDefinition([
+            get_class($this) => [
+                    'type' => 'form',
+                    'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
+                    'elements' => [
+                        'defaultHideAge' => [
+                        'type' => 'checkbox',
+                        'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
+                        'class' => 'form-control',
+                    ],
+                ]
+            ]
+        ]);
     }
 
     public function delete()

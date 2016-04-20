@@ -1,18 +1,22 @@
 Notifications
 =============
 
-Notifications are used to inform one or a given set of users about something.
+Notifications are derived from [[humhub\modules\notification\components\BaseNotification]] and are used to inform one or a given set of users about a specific event.
 
-### Create 
+![Notification Class Diagram](images/notificationClassDiag.jpg)
 
-Create a folder ** notifications ** in your module and a new class ** SomethingHappend ** 
+### Create Notifications
+
+Notifications should reside in the `notifications` directory of a module. (e.g. `/modules/examples/notifications/`)
+
+Example notification: 
 
 ```php
 <?php
 
 namespace johndoe\example\notifications;
 
-use humhub\core\notification\components\BaseNotification;
+use humhub\modules\notification\components\BaseNotification;
 
 /**
  * Notifies a user about something happend
@@ -25,12 +29,11 @@ class SomethingHappend extends BaseNotification
     public $viewName = "somethingHappend";
 }
 ?>
-
 ```
 
-By default notification views should be located inside a subfolder named ** views ** where your notification class is located. (e.g. /modules/examples/notifications/views/)
+By default, the view of a notification should be located inside a subfolder `notifications/views`. (e.g. `/modules/examples/notifications/views/`)
 
-Example view file ** somethingHappend.php **:
+Example view file _somethingHappend.php_:
 
 ```php
 <?php
@@ -41,14 +44,11 @@ echo Yii::t('LikeModule.views_notifications_newLike', "%someUser% did something 
     '%someUser%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
 ));
 ?>
-
-
 ```
 
-If you require a diffrent view in mails. You can create a subfolder inside the subfolder called ** mail ** in your views directory.  
+> Info: If you require a different notification view for mails. You have to add a view file to a subfolder `notifications/views/mail`.  
 
-
-### Send it 
+### Send Notifications
 
 ```php
 $notification = new \johndoe\example\notifications\SomethingHappend();
@@ -64,12 +64,12 @@ $notification->sendBulk(User::find()->where([...]));
 
 // or: a single user
 $notification->send($user);
-
 ```
+> Info: The `send` and `sendBulk` will create and persist an own [[humhub\modules\notification\models\Notification]] for each user.
 
-### Delete
+### Delete Notifications
 
-By default notifications will automatically deleted after a given period of time or if the source / user object not longer exists.
+By default notifications will automatically be deleted after a given period of time or if the originator(user) object is removed.
 
 Example for manual notification deletion:
 

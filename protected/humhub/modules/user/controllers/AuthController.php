@@ -206,7 +206,7 @@ class AuthController extends Controller
             Yii::$app->getResponse()->getCookies()->add($cookie);
         }
 
-        $this->redirect(Yii::$app->homeUrl);
+        $this->redirect(($this->module->logoutUrl) ? $this->module->logoutUrl : Yii::$app->homeUrl);
     }
 
     /**

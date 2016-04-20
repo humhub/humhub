@@ -55,11 +55,6 @@ class ContentContainerController extends Controller
      */
     public function init()
     {
-        // Directly redirect guests to login page - if guest access isn't enabled
-        if (Yii::$app->user->isGuest && \humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') != 1) {
-            return Yii::$app->user->loginRequired();
-        }
-
         $spaceGuid = Yii::$app->request->get('sguid', '');
         $userGuid = Yii::$app->request->get('uguid', '');
 
@@ -107,8 +102,27 @@ class ContentContainerController extends Controller
             throw new HttpException(405, Yii::t('base', 'Module is not on this content container enabled!'));
         }
 
-
         return parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+
+        if (parent::beforeAction($action)) {
+
+            // Directly redirect guests to login page - if guest access isn't enabled
+            if (Yii::$app->user->isGuest && \humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') != 1) {
+                Yii::$app->user->loginRequired();
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

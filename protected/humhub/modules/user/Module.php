@@ -32,6 +32,11 @@ class Module extends \humhub\components\Module
     public $loginRememberMeDuration = 2592000;
 
     /**
+     * @var string redirect url after logout (if not set, home url will be used)
+     */
+    public $logoutUrl = null;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -44,7 +49,7 @@ class Module extends \humhub\components\Module
 
         return [];
     }
-    
+
     public function getName()
     {
         return Yii::t('UserModule.base', 'User');
@@ -53,12 +58,12 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
-       return [
-           'humhub\modules\user\notifications\Followed',
-           'humhub\modules\user\notifications\Mentioned'
-       ];
+        return [
+            'humhub\modules\user\notifications\Followed',
+            'humhub\modules\user\notifications\Mentioned'
+        ];
     }
 
 }

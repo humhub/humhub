@@ -258,7 +258,7 @@ class SpaceModelMembership extends Behavior
     public function getAdmins()
     {
         $admins = array();
-        $adminMemberships = Membership::findAll(['space_id' => $this->owner->id, ['group_id' => Space::USERGROUP_ADMIN]]);
+        $adminMemberships = Membership::findAll(['space_id' => $this->owner->id, 'group_id' => Space::USERGROUP_ADMIN]);
 
         foreach ($adminMemberships as $admin) {
             $admins[] = $admin->user;
