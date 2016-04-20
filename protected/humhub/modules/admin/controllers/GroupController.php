@@ -14,6 +14,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\user\models\User;
+use humhub\modules\admin\models\forms\AddGroupMemberForm;
 
 /**
  * Group Administration Controller
@@ -57,8 +58,6 @@ class GroupController extends Controller
         $group->scenario = Group::SCENARIO_EDIT;
         $group->populateDefaultSpaceGuid();
         $group->populateManagerGuids();
-         
-        
         
         if ($group->load(Yii::$app->request->post()) && $group->validate()) {
             $group->save();
@@ -66,6 +65,7 @@ class GroupController extends Controller
         }
 
         $showDeleteButton = (!$group->isNewRecord && !$group->is_admin_group);
+        $isCreateForm = $group->isNewRecord;
 
         // Save changed permission states
         if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
@@ -81,7 +81,30 @@ class GroupController extends Controller
         return $this->render('edit', [
                     'group' => $group,
                     'showDeleteButton' => $showDeleteButton,
+                    'isCreateForm' => $isCreateForm
         ]);
+    }
+    
+    public function actionManageGroupUsers()
+    {
+        $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
+        $searchModel = new \humhub\modules\admin\models\UserSearch();
+        $searchModel->query = $group->getUsers();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('manageGroupUsers', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'group' => $group,
+                    'addGroupMemberForm' => new AddGroupMemberForm()
+        ]);
+    }
+    
+    public function actionRemoveGroupUser()
+    {
+        $this->forcePostRequest();
+        $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
+        $group->removeUser(Yii::$app->request->get('userId'));
+        $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $group->id]));
     }
 
     /**
@@ -91,6 +114,7 @@ class GroupController extends Controller
      */
     public function actionDelete()
     {
+        $this->forcePostRequest();
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         
         if ($group == null) {
@@ -105,6 +129,59 @@ class GroupController extends Controller
         $this->redirect(Url::toRoute("/admin/group"));
     }
     
+    public function actionToggleAdmin()
+    {
+        $this->forcePostRequest();
+        $group = Group::findOne(Yii::$app->request->get('id'));
+        
+        if($group == null) {
+            throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+        }
+        
+        $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->get('userId')));
+        
+        if($groupUser == null) {
+            throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group user not found!'));
+        }
+
+        $groupUser->is_group_manager = !$groupUser->is_group_manager;
+        $groupUser->save();
+        
+        $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $group->id]));
+    }
+    
+    public function actionAddMembers()
+    {
+        $this->forcePostRequest();
+        $form = new AddGroupMemberForm();
+        if($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $form->save();
+        }
+        $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $form->groupId]));
+    }
+    
+    public function actionNewMemberSearch()
+    {
+        Yii::$app->response->format = 'json';
+        
+        $keyword = Yii::$app->request->get('keyword');
+        $group = Group::findOne(Yii::$app->request->get('id'));
+        
+        $result = UserPicker::filter([
+            'keyword' => $keyword,
+            'query' => User::find()
+        ]);
+        
+        $i = 0;
+        foreach($result as $jsonUser) {
+            if($group->isMember($jsonUser['id'])) {
+                $result[$i]['disabled'] = true; 
+            }
+            $i++;
+        }
+        return $result;
+    }
+    
     public function actionAdminUserSearch()
     {
         Yii::$app->response->format = 'json';
@@ -115,7 +192,8 @@ class GroupController extends Controller
         return UserPicker::filter([
             'query' => $group->getUsers(),
             'keyword' => $keyword,
-            'fillQuery' => User::find()
+            'fillQuery' => User::find(),
+            'disableFillUser' => false
         ]);
     }
 
