@@ -269,6 +269,7 @@ class UserPicker extends \yii\base\Widget
         $priority = ($priority == null) ? 0 : $priority;
         
         $userInfo = [];
+        $userInfo['id'] = $user->id;
         $userInfo['guid'] = $user->guid;
         $userInfo['disabled'] = $disabled;
         $userInfo['displayName'] = Html::encode($user->displayName);

@@ -20,6 +20,8 @@ use humhub\modules\user\models\User;
  */
 class UserSearch extends User
 {
+    
+    public $query;
 
     public function attributes()
     {
@@ -53,7 +55,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->joinWith('profile');
+        $query = ($this->query == null) ? User::find()->joinWith('profile') : $this->query;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -80,9 +82,9 @@ class UserSearch extends User
         }
 
         $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['like', 'id', $this->id]);
-        $query->andFilterWhere(['like', 'username', $this->username]);
-        $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'user.id', $this->id]);
+        $query->andFilterWhere(['like', 'user.username', $this->username]);
+        $query->andFilterWhere(['like', 'user.email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
         

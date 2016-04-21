@@ -71,7 +71,7 @@ if ($isProfileOwner) {
                        }
                        ?>"
                        href="<?php echo Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]); ?>"
-                       class="btn btn-info btn-sm" data-target="#globalModal"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
                         <?php
                         echo \humhub\widgets\ModalConfirm::widget(array(
@@ -151,7 +151,7 @@ if ($isProfileOwner) {
                        }
                        ?>"
                        href="<?php echo Url::to(['/user/account/crop-profile-image', 'userGuid' => $user->guid]); ?>"
-                       class="btn btn-info btn-sm" data-target="#globalModal"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
                         <?php
                         echo \humhub\widgets\ModalConfirm::widget(array(

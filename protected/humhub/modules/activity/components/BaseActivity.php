@@ -68,19 +68,19 @@ class BaseActivity extends \yii\base\Component
     /**
      * @var string the layout file for web view
      */
-    protected $layoutWeb = "@humhub/modules/activity/views/layouts/web.php";
+    public $layoutWeb = "@humhub/modules/activity/views/layouts/web.php";
 
     /**
      * @var string the layotu file for mail view
      */
-    protected $layoutMail = "@humhub/modules/activity/views/layouts/mail.php";
+    public $layoutMail = "@humhub/modules/activity/views/layouts/mail.php";
 
-	/**
+    /**
      * Layout file for mail plaintext version
      *
      * @var string
      */
-    protected $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
+    public $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
 
     /**
      * The actvity record this belongs to
@@ -165,7 +165,7 @@ class BaseActivity extends \yii\base\Component
     public function getUrl()
     {
         $url = '#';
-        
+
         if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
             $url = $this->source->content->getUrl();
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
@@ -176,7 +176,7 @@ class BaseActivity extends \yii\base\Component
         if (substr($url, 0, 4) !== 'http') {
             $url = \yii\helpers\Url::to($url, true);
         }
-        
+
         return $url;
     }
 

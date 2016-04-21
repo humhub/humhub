@@ -6,16 +6,13 @@ use Yii;
 use yii\codeception\DbTestCase;
 use Codeception\Specify;
 use tests\codeception\fixtures\UserFixture;
-use tests\codeception\fixtures\GroupFixture;
+use tests\codeception\fixtures\ContentContainerFixture;
 use tests\codeception\fixtures\SpaceFixture;
 use tests\codeception\fixtures\SpaceMembershipFixture;
-use tests\codeception\fixtures\WallFixture;
-use tests\codeception\fixtures\WallEntryFixture;
 use humhub\modules\post\models\Post;
 use humhub\modules\content\components\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\content\models\Content;
 
 class ContentContainerStreamTest extends DbTestCase
@@ -32,6 +29,7 @@ class ContentContainerStreamTest extends DbTestCase
             'user' => [ 'class' => UserFixture::className()],
             'space' => [ 'class' => SpaceFixture::className()],
             'space_membership' => [ 'class' => SpaceMembershipFixture::className()],
+            'contentcontainer' => [ 'class' => ContentContainerFixture::className()],
         ];
     }
 
