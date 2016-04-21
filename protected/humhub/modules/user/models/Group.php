@@ -46,8 +46,7 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['managerGuids', 'name'], 'required', 'on' => self::SCENARIO_EDIT],
-            ['managerGuids', 'atleasOneAdminCheck', 'on' => self::SCENARIO_EDIT],
+            [['name'], 'required', 'on' => self::SCENARIO_EDIT],
             [['space_id', 'created_by', 'updated_by'], 'integer'],
             [['description', 'managerGuids', 'defaultSpaceGuid'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -71,6 +70,7 @@ class Group extends \yii\db\ActiveRecord
             'id' => 'ID',
             'space_id' => 'Space ID',
             'name' => 'Name',
+            'defaultSpaceGuid' => 'Default Space',
             'managerGuids' => 'Manager',
             'description' => 'Description',
             'created_at' => 'Created At',
@@ -78,11 +78,6 @@ class Group extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By'
         ];
-    }
-
-    public function atleasOneAdminCheck()
-    {
-        return !$this->show_at_registration || count(explode(",", $this->managerGuids) > 0);
     }
 
     public function beforeSave($insert)

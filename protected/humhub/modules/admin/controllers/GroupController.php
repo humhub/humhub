@@ -15,6 +15,7 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\user\models\User;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
+use humhub\models\Setting;
 
 /**
  * Group Administration Controller
@@ -61,12 +62,21 @@ class GroupController extends Controller
         
         if ($group->load(Yii::$app->request->post()) && $group->validate()) {
             $group->save();
-            $this->redirect(Url::toRoute('/admin/group'));
+            $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $group->id]));
         }
-
-        $showDeleteButton = (!$group->isNewRecord && !$group->is_admin_group);
-        $isCreateForm = $group->isNewRecord;
-
+        
+        return $this->render('edit', [
+                    'group' => $group,
+                    'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group),
+                    'isCreateForm' => $group->isNewRecord,
+                    'isManagerApprovalSetting' => Setting::Get('needApproval', 'authentication_internal')
+        ]);
+    }
+    
+    public function actionManagePermissions()
+    {
+        $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
+        
         // Save changed permission states
         if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
@@ -77,11 +87,9 @@ class GroupController extends Controller
             Yii::$app->user->permissionManager->setGroupState($group->id, $permission, Yii::$app->request->post('state'));
             return [];
         }
-
-        return $this->render('edit', [
-                    'group' => $group,
-                    'showDeleteButton' => $showDeleteButton,
-                    'isCreateForm' => $isCreateForm
+        
+        return $this->render('permissions', [
+            'group' => $group
         ]);
     }
     
@@ -91,11 +99,12 @@ class GroupController extends Controller
         $searchModel = new \humhub\modules\admin\models\UserSearch();
         $searchModel->query = $group->getUsers();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('manageGroupUsers', [
+        return $this->render('members', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'group' => $group,
-                    'addGroupMemberForm' => new AddGroupMemberForm()
+                    'addGroupMemberForm' => new AddGroupMemberForm(),
+                    'isManagerApprovalSetting' => Setting::Get('needApproval', 'authentication_internal')
         ]);
     }
     
@@ -129,25 +138,30 @@ class GroupController extends Controller
         $this->redirect(Url::toRoute("/admin/group"));
     }
     
-    public function actionToggleAdmin()
+    public function actionEditManagerRole()
     {
+        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
-        $group = Group::findOne(Yii::$app->request->get('id'));
+        $group = Group::findOne(Yii::$app->request->post('id'));
+        $value = Yii::$app->request->post('value');
         
         if($group == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+        } else if($value == null) {
+            throw new \yii\web\HttpException(400, Yii::t('AdminModule.controllers_GroupController', 'No value found!'));
         }
         
-        $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->get('userId')));
+        $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->post('userId')));
         
         if($groupUser == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group user not found!'));
         }
-
-        $groupUser->is_group_manager = !$groupUser->is_group_manager;
+        
+  
+        $groupUser->is_group_manager = ($value) ? true : false;
         $groupUser->save();
         
-        $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $group->id]));
+        return [];
     }
     
     public function actionAddMembers()
