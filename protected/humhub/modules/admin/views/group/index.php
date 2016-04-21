@@ -27,7 +27,7 @@ use humhub\widgets\GridView;
                     'format' => 'raw',
                     'options' => ['style' => 'text-align:center;'],
                     'value' => function ($data) {
-                        return Html::a($data->getUsers()->count().' <i class="fa fa-pencil"></i>', Url::toRoute(['manage-group-users', 'id' => $data->id]), ['class' => 'btn btn-primary btn-xs tt']);
+                        return $data->getUsers()->count();
                     }
                 ],
                 [
