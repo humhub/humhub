@@ -1,7 +1,7 @@
 <?php echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => $space]); ?>
 <?php
 
-echo \humhub\modules\content\widgets\Stream::widget(array(
+echo \humhub\modules\stream\widgets\StreamViewer::widget(array(
     'contentContainer' => $space,
     'streamAction' => '/space/space/stream',
     'messageStreamEmpty' => ($space->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) ?

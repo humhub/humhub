@@ -2,7 +2,7 @@
 
 use \yii\web\View;
 
-\humhub\modules\content\assets\Stream::register($this);
+\humhub\modules\stream\assets\Stream::register($this);
 
 $this->registerJs('var streamUrl="' . $streamUrl . '"', View::POS_BEGIN);
 

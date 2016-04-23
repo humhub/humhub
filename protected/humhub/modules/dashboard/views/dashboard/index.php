@@ -1,3 +1,6 @@
+<?php
+    use humhub\modules\stream\widgets\StreamViewer;
+?>
 <div class="container">
     <div class="row">
         <div class="col-md-8 layout-content-container">
@@ -8,7 +11,7 @@
             ?>
 
             <?php
-            echo \humhub\modules\content\widgets\Stream::widget([
+            echo StreamViewer::widget([
                 'streamAction' => '//dashboard/dashboard/stream',
                 'showFilters' => false,
                 'messageStreamEmpty' => Yii::t('DashboardModule.views_dashboard_index', '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!'),

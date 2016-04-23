@@ -1,17 +1,16 @@
 <?php
 
-namespace humhub\modules\content\widgets;
+namespace humhub\modules\stream\widgets;
 
 use Yii;
 use yii\helpers\Url;
 
 /**
- * Wall Stream Widget creates a wall widget.
+ * Stream View Widget creates a stream.
  *
- * @package humhub.modules_core.wall.widgets
  * @since 0.11
  */
-class Stream extends \yii\base\Widget
+class StreamViewer extends \yii\base\Widget
 {
 
     /**
