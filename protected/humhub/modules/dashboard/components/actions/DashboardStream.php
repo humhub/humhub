@@ -10,7 +10,7 @@ namespace humhub\modules\dashboard\components\actions;
 
 use Yii;
 use yii\db\Query;
-use humhub\modules\content\components\actions\Stream;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;

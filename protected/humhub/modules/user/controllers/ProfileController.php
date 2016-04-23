@@ -10,6 +10,7 @@ namespace humhub\modules\user\controllers;
 
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 
@@ -44,8 +45,8 @@ class ProfileController extends ContentContainerController
     {
         return array(
             'stream' => array(
-                'class' => \humhub\modules\content\components\actions\ContentContainerStream::className(),
-                'mode' => \humhub\modules\content\components\actions\ContentContainerStream::MODE_NORMAL,
+                'class' => ContentContainerStream::className(),
+                'mode' => ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
             ),
         );
@@ -116,7 +117,7 @@ class ProfileController extends ContentContainerController
     public function actionSpaceMembershipList()
     {
         $query = \humhub\modules\space\models\Membership::getUserSpaceQuery($this->getUser());
-        
+
         if (!$this->getUser()->isCurrentUser()) {
             $query->andWhere(['!=', 'space.visibility', \humhub\modules\space\models\Space::VISIBILITY_NONE]);
         }

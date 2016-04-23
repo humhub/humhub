@@ -57,7 +57,7 @@ class Stream extends \yii\base\Widget
         $params = array(
             'limit' => '10',
             'from' => '-from-',
-            'mode' => \humhub\modules\content\components\actions\Stream::MODE_ACTIVITY
+            'mode' => \humhub\modules\stream\actions\Stream::MODE_ACTIVITY
         );
 
         if ($this->contentContainer) {

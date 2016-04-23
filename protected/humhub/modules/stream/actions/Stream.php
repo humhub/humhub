@@ -6,15 +6,16 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\content\components\actions;
+namespace humhub\modules\stream\actions;
 
 use Yii;
+use yii\base\Action;
+use yii\base\Exception;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
-use yii\base\Exception;
 
 /**
- * BaseStreamAction
+ * Stream is the basic action for content streams.
  *
  * @author luke
  * @since 0.11
@@ -89,7 +90,6 @@ abstract class Stream extends \yii\base\Action
      */
     public function init()
     {
-
         $this->activeQuery = Content::find();
 
         // If no user is set, take current if logged in

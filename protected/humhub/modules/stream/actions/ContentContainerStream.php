@@ -6,13 +6,13 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\content\components\actions;
+namespace humhub\modules\stream\actions;
 
-use Yii;
 use humhub\modules\content\models\Content;
 
 /**
- * ContentContainerStreamAction
+ * ContentContainerStream is used to stream contentcontainers (space or users) content.
+ * 
  * Used to stream contents of a specific a content container.
  *
  * @since 0.11

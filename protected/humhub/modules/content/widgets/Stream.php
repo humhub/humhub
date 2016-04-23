@@ -117,7 +117,7 @@ class Stream extends \yii\base\Widget
             'filters' => '-filter-',
             'sort' => '-sort-',
             'from' => '-from-',
-            'mode' => \humhub\modules\content\components\actions\Stream::MODE_NORMAL
+            'mode' => \humhub\modules\stream\actions\Stream::MODE_NORMAL
         ];
 
         if ($this->contentContainer) {
@@ -136,4 +136,5 @@ class Stream extends \yii\base\Widget
     }
 
 }
+
 ?>

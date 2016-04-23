@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
+use humhub\modules\stream\actions\ContentContainerStream;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -46,7 +47,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         return array(
             'stream' => array(
-                'class' => \humhub\modules\content\components\actions\ContentContainerStream::className(),
+                'class' => ContentContainerStream::className(),
                 'contentContainer' => $this->contentContainer
             ),
         );
@@ -70,7 +71,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         if (!$space->isMember()) {
             $space->follow();
         }
-        
+
         if (Yii::$app->request->isAjax) {
             return;
         }
@@ -86,7 +87,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $this->forcePostRequest();
         $space = $this->getSpace();
         $space->unfollow();
-        
+
         if (Yii::$app->request->isAjax) {
             return;
         }
