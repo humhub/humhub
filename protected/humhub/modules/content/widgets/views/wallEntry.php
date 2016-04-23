@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerController;
 
-$user = $object->content->user;
+$user = $object->content->createdBy;
 $container = $object->content->container;
 ?>
 

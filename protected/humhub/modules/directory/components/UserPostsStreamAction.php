@@ -28,13 +28,14 @@ class UserPostsStreamAction extends \humhub\modules\content\components\actions\S
         $this->activeQuery->andWhere(['content.visibility' => \humhub\modules\content\models\Content::VISIBILITY_PUBLIC]);
 
         $wallIdsQuery = (new \yii\db\Query())
-                ->select('wall_id')
-                ->from('user uw');
+                ->select('contentcontainer.id')
+                ->from('user')
+                ->leftJoin('contentcontainer', 'contentcontainer.pk=user.id AND contentcontainer.class=:userClass');
         if (Yii::$app->user->isGuest) {
             $wallIdsQuery->andWhere('visibility=' . User::VISIBILITY_ALL);
         }
         $wallIdsSql = Yii::$app->db->getQueryBuilder()->build($wallIdsQuery)[0];
-        $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $wallIdsSql . ')');
+        $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $wallIdsSql . ')', [':userClass' => User::className()]);
     }
 
 }

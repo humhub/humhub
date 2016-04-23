@@ -1,10 +1,14 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\models;
 
 use Yii;
-use humhub\modules\content\models\WallEntry;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
 
 /**
@@ -113,10 +117,10 @@ class Membership extends \yii\db\ActiveRecord
      */
     public function countNewItems($since = "")
     {
-        $query = WallEntry::find()->joinWith('content');
-        $query->where(['!=', 'content.object_model', Activity::className()]);
-        $query->andWhere(['wall_entry.wall_id' => $this->space->wall_id]);
-        $query->andWhere(['>', 'wall_entry.created_at', $this->last_visit]);
+        $query = \humhub\modules\content\models\Content::find();
+        $query->where(['!=', 'object_model', \humhub\modules\activity\widgets\Activity::className()]);
+        $query->andWhere(['contentcontainer_id' => $this->space->contentContainerRecord->id]);
+        $query->andWhere(['>', 'created_at', $this->last_visit]);
         $count = $query->count();
 
         $count += Comment::find()->where(['space_id' => $this->space_id])->andWhere(['>', 'created_at', $this->last_visit])->count();

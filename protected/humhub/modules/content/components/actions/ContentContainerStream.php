@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\components\actions;
@@ -28,47 +16,49 @@ use humhub\modules\content\models\Content;
  * Used to stream contents of a specific a content container.
  *
  * @since 0.11
- * @package humhub.modules_core.wall
  * @author luke
  */
 class ContentContainerStream extends Stream
 {
 
+    /**
+     * @var \humhub\modules\content\components\ContentContainerActiveRecord
+     */
     public $contentContainer;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
 
-        // Get Content Container by Param
-        if ($this->contentContainer->wall_id != "") {
-            $this->activeQuery->andWhere("wall_entry.wall_id = " . $this->contentContainer->wall_id);
-        } else {
-            Yii::warning("No wall id for content container " . get_class($this->contentContainer) . " - " . $this->contentContainer->getPrimaryKey() . " set - stopped stream action!");
-            // Block further execution
-            $this->activeQuery->andWhere("1=2");
-        }
+        // Limit to this content container
+        $this->activeQuery->andWhere(['content.contentcontainer_id' => $this->contentContainer->contentContainerRecord->id]);
 
-        /**
-         * Limit to public posts when no member
-         */
+        // Limit to public posts when no member
         if (!$this->contentContainer->canAccessPrivateContent($this->user)) {
             $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC . " OR content.created_by = :userId", [':userId' => $this->user->id]);
         }
 
-        /**
-         * Handle sticked posts only in content containers
-         */
-        if ($this->limit != 1) {
-            if ($this->from == '') {
-                $oldOrder = $this->activeQuery->orderBy;
-                $this->activeQuery->orderBy("");
+        // Add all sticked contents to initial request
+        if ($this->isInitialRequest()) {
+            // Get number of sticked contents
+            $stickedQuery = clone $this->activeQuery;
+            $stickedQuery->andWhere(['content.sticked' => 1]);
+            $stickedCount = $stickedQuery->count();
 
-                $this->activeQuery->addOrderBy('content.sticked DESC');
-                $this->activeQuery->addOrderBy($oldOrder);
-            } else {
-                $this->activeQuery->andWhere("(content.sticked != 1 OR content.sticked is NULL)");
-            }
+            // Increase query result limit to ensure there are also  not sticked entries
+            $this->activeQuery->limit += $stickedCount;
+
+            // Modify order - sticked content first
+            $oldOrder = $this->activeQuery->orderBy;
+            $this->activeQuery->orderBy("");
+            $this->activeQuery->addOrderBy('content.sticked DESC');
+            $this->activeQuery->addOrderBy($oldOrder);
+        } else {
+            // No sticked content in further queries
+            $this->activeQuery->andWhere("content.sticked = 0");
         }
     }
 

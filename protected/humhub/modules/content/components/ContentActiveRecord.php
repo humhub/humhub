@@ -50,13 +50,6 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
      */
     public $wallEntryClass = "";
 
-    /**
-     * Should this content automatically added to the wall on creation.
-     * Note: you need to also specify the wallEntryClass attribute! 
-     * 
-     * @var boolean
-     */
-    public $autoAddToWall = true;
 
     /**
      * @inheritdoc
@@ -190,10 +183,6 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
         $this->content->save();
 
         parent::afterSave($insert, $changedAttributes);
-
-        if ($insert && $this->autoAddToWall && $this->wallEntryClass != "") {
-            $this->content->addToWall();
-        }
     }
 
     /**

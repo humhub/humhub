@@ -11,14 +11,9 @@ namespace humhub\modules\content\components;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\models\Wall;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
- *
- * Required Attributes:
- *      - wall_id
- *      - guid
  *
  * Required Methods:
  *      - getProfileImage()
@@ -27,7 +22,7 @@ use humhub\modules\content\models\Wall;
  * @since 1.0
  * @author Luke
  */
-class ContentContainerActiveRecord extends ActiveRecord
+abstract class ContentContainerActiveRecord extends ActiveRecord
 {
 
     /**
@@ -119,19 +114,10 @@ class ContentContainerActiveRecord extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-
-            $wall = new Wall();
-            $wall->object_model = $this->className();
-            $wall->object_id = $this->id;
-            $wall->save();
-            $this->wall_id = $wall->id;
-            $this->update(false, ['wall_id']);
-
             $contentContainer = new ContentContainer;
             $contentContainer->guid = $this->guid;
             $contentContainer->class = $this->className();
             $contentContainer->pk = $this->getPrimaryKey();
-            $contentContainer->wall_id = $this->wall_id;
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
             } elseif ($this->hasAttribute('created_by')) {

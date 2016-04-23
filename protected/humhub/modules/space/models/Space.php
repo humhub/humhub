@@ -21,7 +21,6 @@ use humhub\modules\user\models\User;
  *
  * @property integer $id
  * @property string $guid
- * @property integer $wall_id
  * @property string $name
  * @property string $description
  * @property integer $join_policy

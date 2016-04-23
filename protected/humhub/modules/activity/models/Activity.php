@@ -74,7 +74,7 @@ class Activity extends ContentActiveRecord
             return Yii::createObject([
                         'class' => $this->class,
                         'record' => $this,
-                        'originator' => $this->content->user,
+                        'originator' => $this->content->createdBy,
                         'source' => $this->getSource(),
             ]);
         } else {

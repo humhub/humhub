@@ -10,8 +10,6 @@ namespace humhub\modules\content\components\actions;
 
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\models\Wall;
-use humhub\modules\content\models\WallEntry;
 use humhub\modules\user\models\User;
 use yii\base\Exception;
 
@@ -21,7 +19,7 @@ use yii\base\Exception;
  * @author luke
  * @since 0.11
  */
-class Stream extends \yii\base\Action
+abstract class Stream extends \yii\base\Action
 {
 
     /**
@@ -86,10 +84,13 @@ class Stream extends \yii\base\Action
      */
     public $user = null;
 
+    /**
+     * @inheritdocs
+     */
     public function init()
     {
 
-        $this->activeQuery = WallEntry::find();
+        $this->activeQuery = Content::find();
 
         // If no user is set, take current if logged in
         if (!Yii::$app->user->isGuest && $this->user == null) {
@@ -126,9 +127,8 @@ class Stream extends \yii\base\Action
 
     public function setupCriteria()
     {
-        $this->activeQuery->joinWith('content');
-        $this->activeQuery->joinWith('content.createdBy');
-        $this->activeQuery->joinWith('content.contentContainer');
+        $this->activeQuery->joinWith('createdBy');
+        $this->activeQuery->joinWith('contentContainer');
 
         $this->activeQuery->limit($this->limit);
         $this->activeQuery->andWhere(['user.status' => User::STATUS_ENABLED]);
@@ -153,13 +153,13 @@ class Stream extends \yii\base\Action
          * Setup Sorting
          */
         if ($this->sort == self::SORT_UPDATED_AT) {
-            $this->activeQuery->orderBy('wall_entry.updated_at DESC');
+            $this->activeQuery->orderBy('content.stream_sort_date DESC');
             if ($this->from != "")
-                $this->activeQuery->andWhere("wall_entry.updated_at < (SELECT updated_at FROM wall_entry wd WHERE wd.id=" . $this->from . ")");
+                $this->activeQuery->andWhere("content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=" . $this->from . ")");
         } else {
-            $this->activeQuery->orderBy('wall_entry.id DESC');
+            $this->activeQuery->orderBy('content.id DESC');
             if ($this->from != "")
-                $this->activeQuery->andWhere("wall_entry.id < " . $this->from);
+                $this->activeQuery->andWhere("content.id < " . $this->from);
         }
     }
 
@@ -213,49 +213,79 @@ class Stream extends \yii\base\Action
         }
     }
 
-    public function getWallEntries()
-    {
-        return $this->activeQuery->all();
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $output = [];
 
         $this->init();
-        $wallEntries = $this->activeQuery->all();
 
-        $output = "";
-        $generatedWallEntryIds = array();
-        $lastEntryId = "";
-        foreach ($wallEntries as $wallEntry) {
-
-            $underlyingObject = $wallEntry->content->getPolymorphicRelation();
-
-            if ($underlyingObject === null) {
-                throw new Exception('Could not get contents underlying object!');
-            }
-
-            $underlyingObject->populateRelation('content', $wallEntry->content);
-
-            $output .= $this->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
-                'entry' => $wallEntry,
-                'user' => $underlyingObject->content->user,
-                'mode' => $this->mode,
-                'object' => $underlyingObject,
-                'content' => $underlyingObject->getWallOut()
-                    ], true);
-
-            $generatedWallEntryIds[] = $wallEntry->id;
-            $lastEntryId = $wallEntry->id;
+        $output['contents'] = [];
+        foreach ($this->activeQuery->all() as $content) {
+            $output['contents'][$content->id] = $this->getContentResultEntry($content);
         }
+        $output['total'] = count($output['contents']);
+        $output['is_last'] = ($output['total'] < $this->activeQuery->limit);
 
-        return [
-            'output' => $output,
-            'lastEntryId' => $lastEntryId,
-            'counter' => count($wallEntries),
-            'entryIds' => $generatedWallEntryIds
-        ];
+        // BEGIN: TEMPORARY until JS Rewrite
+        $output['output'] = '';
+        foreach ($output['contents'] as $i => $c) {
+            $output['output'] .= $c['output'];
+            $output['lastEntryId'] = $i;
+            $output['entryIds'][] = $i;
+        }
+        $output['counter'] = $output['total'];
+        $output['counter'] = $output['total'];
+        // END: Temporary
+
+        return $output;
+    }
+
+    /**
+     * Returns an array contains all informations required to display a content
+     * in stream.
+     * 
+     * @param Content $content the content
+     * @return array
+     */
+    protected function getContentResultEntry(Content $content)
+    {
+        $result = [];
+
+        // Get Underlying Object (e.g. Post, Poll, ...)
+        $underlyingObject = $content->getPolymorphicRelation();
+        if ($underlyingObject === null) {
+            throw new Exception('Could not get contents underlying object!');
+        }
+        $underlyingObject->populateRelation('content', $content);
+
+        $result['output'] = $this->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
+            'entry' => $content,
+            'user' => $underlyingObject->content->createdBy,
+            'mode' => $this->mode,
+            'object' => $underlyingObject,
+            'content' => $underlyingObject->getWallOut()
+                ], true);
+
+        $result['sticked'] = (boolean) $content->sticked;
+        $result['archived'] = (boolean) $content->archived;
+        $result['guid'] = $content->guid;
+        $result['id'] = $content->id;
+
+        return $result;
+    }
+
+    /**
+     * Is inital stream requests (show first stream content)
+     * 
+     * @return boolean Is initial request
+     */
+    protected function isInitialRequest()
+    {
+        return ($this->from == '' && $this->limit != 1);
     }
 
 }

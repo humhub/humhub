@@ -11,7 +11,7 @@
  */
 ?>
 <?php 
-$cssClass = ($entry->content->sticked) ? 'wall-entry sticked-entry' : 'wall-entry';
+$cssClass = ($entry->sticked) ? 'wall-entry sticked-entry' : 'wall-entry';
 
 if ($mode != "activity") : ?>
     <div class="<?php echo $cssClass ?>" id="wallEntry_<?php echo $entry->id; ?>">

@@ -71,7 +71,7 @@ class Module extends \humhub\components\Module
         $stream->activeQuery->andWhere(['>', 'content.created_at', $lastMailDate]);
 
         $activities = [];
-        foreach ($stream->getWallEntries() as $wallEntry) {
+        foreach ($stream->activeQuery->all() as $wallEntry) {
             try {
                 $activity = $wallEntry->content->getPolymorphicRelation();
                 $activities[] = $activity->getActivityBaseClass();

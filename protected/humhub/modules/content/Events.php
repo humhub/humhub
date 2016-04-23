@@ -11,11 +11,6 @@ namespace humhub\modules\content;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\MailUpdateSender;
-use humhub\modules\user\models\User;
-use humhub\commands\CronController;
-use humhub\models\Setting;
-use yii\helpers\Console;
-use yii\base\Exception;
 
 /**
  * Events provides callbacks to handle events.
@@ -28,9 +23,6 @@ class Events extends \yii\base\Object
     public static function onUserDelete($event)
     {
         $user = $event->sender;
-
-        models\WallEntry::deleteAll(['wall_id' => $user->wall_id]);
-        models\Wall::deleteAll(['id' => $user->wall_id]);
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
             $content->delete();
         }
@@ -40,9 +32,6 @@ class Events extends \yii\base\Object
     public static function onSpaceDelete($event)
     {
         $space = $event->sender;
-
-        models\WallEntry::deleteAll(['wall_id' => $space->wall_id]);
-        models\Wall::deleteAll(['id' => $space->wall_id]);
         foreach (Content::findAll(['contentcontainer_id' => $space->contentContainerRecord->id]) as $content) {
             $content->delete();
         }
@@ -58,15 +47,6 @@ class Events extends \yii\base\Object
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;
-
-        $integrityController->showTestHeadline("Content Module - Wall Entries " . models\WallEntry::find()->count() . " entries)");
-        foreach (models\WallEntry::find()->joinWith('content')->each() as $w) {
-            if ($w->content === null) {
-                if ($integrityController->showFix("Deleting wall entry id " . $w->id . " without assigned wall entry!")) {
-                    $w->delete();
-                }
-            }
-        }
 
         $integrityController->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
         foreach (Content::find()->all() as $content) {

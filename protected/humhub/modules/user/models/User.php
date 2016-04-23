@@ -20,7 +20,6 @@ use humhub\modules\friendship\models\Friendship;
  *
  * @property integer $id
  * @property string $guid
- * @property integer $wall_id
  * @property integer $status
  * @property string $username
  * @property string $email
@@ -90,7 +89,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return [
             [['username', 'email'], 'required'],
-            [['wall_id', 'status', 'created_by', 'updated_by', 'visibility'], 'integer'],
+            [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
@@ -103,7 +102,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['email'], 'string', 'max' => 100],
             [['username'], 'unique'],
             [['guid'], 'unique'],
-            [['wall_id'], 'unique']
         ];
     }
     
@@ -154,7 +152,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return [
             'id' => 'ID',
             'guid' => 'Guid',
-            'wall_id' => 'Wall ID',
             'status' => 'Status',
             'username' => 'Username',
             'email' => 'Email',

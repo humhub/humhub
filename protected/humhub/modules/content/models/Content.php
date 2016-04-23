@@ -181,11 +181,6 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Loop over each eall entry and make sure its update_at / update_by
-        // will also updated. (Sorting wall against update)
-        foreach ($this->getWallEntries() as $wallEntry) {
-            $wallEntry->save();
-        }
 
         if ($insert) {
 
@@ -208,19 +203,6 @@ class Content extends \humhub\components\ActiveRecord
         \humhub\modules\file\models\File::attachPrecreated($this->getPolymorphicRelation(), $this->attachFileGuidsAfterSave);
 
         return parent::afterSave($insert, $changedAttributes);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeDelete()
-    {
-        // delete also all wall entries
-        foreach ($this->getWallEntries() as $entry) {
-            $entry->delete();
-        }
-
-        return parent::beforeDelete();
     }
 
     /**
@@ -352,8 +334,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function countStickedItems()
     {
-        $wallId = $this->container->wall_id;
-        return WallEntry::find()->joinWith('content')->where(['wall_entry.wall_id' => $wallId, 'content.sticked' => 1])->count();
+        return Content::find()->where(['content.contentcontainer_id' => $this->contentcontainer_id, 'content.sticked' => 1])->count();
     }
 
     /**
@@ -413,68 +394,6 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Adds this this content to a given wall id
-     *
-     * If no wallId is given, the wallId of underlying content container is
-     * used.
-     *
-     * @param Integer $wallId
-     * @return \WallEntry
-     */
-    public function addToWall($wallId = 0)
-    {
-        if ($wallId == 0) {
-            $contentContainer = $this->getContainer();
-            $wallId = $contentContainer->wall_id;
-        }
-
-        $wallEntry = new WallEntry();
-        $wallEntry->wall_id = $wallId;
-        $wallEntry->content_id = $this->id;
-        $wallEntry->save();
-
-        return $wallEntry;
-    }
-
-    /**
-     * Returns the Wall Entries, which belongs to this Content.
-     *
-     * @return Array of wall entries for this content
-     */
-    public function getWallEntries()
-    {
-        $entries = WallEntry::findAll(['content_id' => $this->id]);
-        return $entries;
-    }
-
-    /**
-     * Returns the first found wall entry Id of this object
-     */
-    public function getFirstWallEntryId()
-    {
-        $wallEntries = $this->getWallEntries();
-        if (isset($wallEntries[0])) {
-            return $wallEntries[0]->id;
-        }
-        return 0;
-    }
-
-    /**
-     * Returns an array of all wall entry Ids used
-     * by this content.
-     *
-     * @return Array
-     */
-    public function getWallEntryIds()
-    {
-        $ids = array();
-        foreach ($this->getWallEntries() as $entry) {
-            $ids[] = $entry->id;
-        }
-        return $ids;
-    }
-
-    /**
      * Returns the url of this content.
      *
      * By default is returns the url of the wall entry.
@@ -491,13 +410,7 @@ class Content extends \humhub\components\ActiveRecord
             return $this->getPolymorphicRelation()->getUrl();
         }
 
-        $firstWallEntryId = $this->getFirstWallEntryId();
-
-        if ($firstWallEntryId == "") {
-            throw new Exception("Could not create url for content!");
-        }
-
-        return \yii\helpers\Url::toRoute(['/content/perma/wall-entry', 'id' => $firstWallEntryId]);
+        return \yii\helpers\Url::toRoute(['/content/perma', 'id' => $this->id]);
     }
 
     /**
