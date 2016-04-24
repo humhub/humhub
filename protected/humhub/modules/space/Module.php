@@ -28,6 +28,12 @@ class Module extends \humhub\components\Module
     public $globalAdminCanAccessPrivateContent = false;
     
     /**
+     *
+     * @var boolean Do not allow multiple spaces with the same name 
+     */
+    public $useUniqueSpaceNames = true;
+    
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
