@@ -110,7 +110,7 @@ class Ldap extends \yii\base\Component
             return true;
         } catch (\Zend\Ldap\Exception\LdapException $ex) {
             // log errors other than invalid credentials
-            if ($ex->getCode() !== LdapException::LDAP_INVALID_CREDENTIALS) {
+            if ($ex->getCode() !== \Zend\Ldap\Exception\LdapException::LDAP_INVALID_CREDENTIALS) {
                 Yii::error('LDAP Error: ' . $ex->getMessage());
             }
             return false;
