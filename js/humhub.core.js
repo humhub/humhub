@@ -149,6 +149,38 @@ var humhub = humhub || (function($) {
         }
     };
     
+     /**
+     * Config implementation
+     */
+    
+    var config = {
+        get : function(module, key, defaultVal) {
+            if(_isDefined(key)) {
+                var result = this.getModuleConfig(module)[key];
+                return (_isDefined(result)) ? result : defaultVal;
+            }
+        },
+        getModuleConfig: function(module) {
+            if(!this.module) {
+                this.module = {};
+            }
+            return this.module;
+        },
+
+        is : function(module, key, defaultVal) {
+            return this.get(module, key,defaultVal) === true;
+        },
+
+        set : function(module, key, value) {
+            //Moduleid with multiple values
+            if(arguments.length === 2) {
+                $.extend(this.getModuleConfig(module), key);
+            } else if(arguments.length === 3) {
+                this.getModuleConfig(module)[key] = value;
+            }
+        }
+    };
+    
     /**
      * Cuts the prefix humub.modules or modules. from the given value.
      * @param {type} value
@@ -186,6 +218,10 @@ var humhub = humhub || (function($) {
         return val.indexOf(prefix) === 0;
     };
     
+    var _isDefined = function(obj) {
+        return typeof obj !== 'undefined';
+    };
+    
     //Initialize all initial modules
     $(document).ready(function() {
         $.each(initialModules, function(i, module) {
@@ -197,7 +233,11 @@ var humhub = humhub || (function($) {
         });
     });
     
+   
+    
     return {
-        initModule: initModule
+        initModule: initModule,
+        modules: modules,
+        config: config
     };
 })($);

@@ -7,8 +7,8 @@ module.exports = function (grunt) {
           },
           dist: {
             src: ['js/humhub.core.js', 'js/humhub.util.js' ,'js/humhub.additions.js',
-                'js/humhub.client.js', 'js/humhub.ui.js', 'js/humhub.actions.js', 'js/humhub.content.js', 
-                'js/humhub.stream.js', 'js/humhub.ui.modal.js'],
+                'js/humhub.client.js', 'js/humhub.ui.js', 'js/humhub.ui.modal.js', 'js/humhub.actions.js', 
+                'js/humhub.content.js', 'js/humhub.stream.js'],
             dest: 'js/dist/humhub.all.js'
           }
         },

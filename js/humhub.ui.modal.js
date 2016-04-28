@@ -16,8 +16,8 @@
  * @param {type} param2
  */
 humhub.initModule('ui.modal', function (module, require, $) {
+    var object = require('util').object;
     var additions = require('additions');
-    var actions = require('actions');
 
     //Keeps track of all initialized modals
     var modals = [];
@@ -284,6 +284,18 @@ humhub.initModule('ui.modal', function (module, require, $) {
     Modal.prototype.getBody = function () {
         return this.$modal.find('.modal-body');
     };
+    
+    var ConfirmModal = function(id, confirmHandler) {
+        Modal.call(this, id);
+        this.initButtons();
+    };
+    
+    ConfirmModal.prototype.initButtons = function(confirmHandler) {
+        this.$confirm = this.$modal.find('[data-modal-submit]');
+        this.$confirm.on('click', confirmHandler);
+    };
+    
+    object.inherits(ConfirmModal, Modal);
     
     module.export({
         init: function () {

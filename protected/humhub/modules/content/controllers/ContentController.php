@@ -34,6 +34,13 @@ class ContentController extends Controller
         ];
     }
 
+    public function actionDeleteById()
+    {
+        Yii::$app->response->format = 'json';
+        $id = (int) Yii::$app->request->get('id');
+        Content::findOne($id);
+    }
+    
     /**
      * Deletes a content object
      *
@@ -44,22 +51,27 @@ class ContentController extends Controller
         Yii::$app->response->format = 'json';
 
         $this->forcePostRequest();
-        $json = [
-            'success' => 'false'
-        ];
 
         $model = Yii::$app->request->get('model');
-        $id = (int) Yii::$app->request->get('id');
+        
+        //Due to backward compatibility we use the old delte mechanism in case a model parameter is provided
+        $id = (int) ($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
-        $contentObj = Content::get($model, $id);
+        $contentObj = ($model != null) ? Content::get($model, $id) : Content::findOne($id);
 
-        if ($contentObj !== null && $contentObj->content->canDelete() && $contentObj->delete()) {
+        if(!$contentObj->canDelete()) {
+            throw new HttpException(400, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content: Access denied!'));
+        }
+        
+        if ($contentObj !== null && $contentObj->delete()) {
             $json = [
                 'success' => true,
                 'uniqueId' => $contentObj->getUniqueId(),
                 'model' => $model,
                 'pk' => $id
             ];
+        } else {
+            throw new HttpException(500, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content!'));
         }
 
         return $json;

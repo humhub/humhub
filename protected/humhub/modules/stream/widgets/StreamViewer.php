@@ -112,10 +112,6 @@ class StreamViewer extends \yii\base\Widget
     {
         $params = [
             $this->streamAction,
-            'limit' => '-limit-',
-            'filters' => '-filter-',
-            'sort' => '-sort-',
-            'from' => '-from-',
             'mode' => \humhub\modules\stream\actions\Stream::MODE_NORMAL
         ];
 

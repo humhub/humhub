@@ -58,6 +58,7 @@ class AppAsset extends AssetBundle
          * https://github.com/inuyaksa/jquery.nicescroll/issues/574
          */
         //'humhub\assets\JqueryNiceScrollAsset', 
+        'humhub\assets\BluebirdAsset',
         'humhub\assets\JqueryTimeAgoAsset',
         'humhub\assets\JqueryKnobAsset',
         'humhub\assets\JqueryWidgetAsset',

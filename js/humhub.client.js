@@ -33,6 +33,7 @@ humhub.initModule('client', function (module, require, $) {
      */
     var Response = function (data) {
         this.data = data;
+        $.extend(this, data);
     };
 
     /**
@@ -52,14 +53,10 @@ humhub.initModule('client', function (module, require, $) {
     Response.prototype.isError = function () {
         return this.getStatus() > 0 || this.getErrors().length;
     };
-
-    Response.prototype.getStatus = function () {
-        return (this.data && object.isDefined(this.data.status)) ? this.data.status : -1;
-    };
     
-    Response.prototype.getErrorTitle = function() {
-        return (this.data) ? this.data.errorTitle : undefined;
-    };
+     Response.prototype.getStatus = function () {
+         return (this.status) ? this.status : -1;
+     };
     
     Response.prototype.getFirstError = function() {
         var errors = this.getErrors();
@@ -71,9 +68,8 @@ humhub.initModule('client', function (module, require, $) {
     Response.prototype.setAjaxError = function(xhr, errorThrown, textStatus,data , status) {
         this.xhr = xhr;
         this.textStatus = textStatus;
-        this.data = data || {};
-        this.data.status = status || xhr.status;
-        this.data.errors = [errorThrown];
+        this.status = status || xhr.status;
+        this.errors = [errorThrown];
     };
 
     /**
@@ -82,40 +78,8 @@ humhub.initModule('client', function (module, require, $) {
      * @returns {array} error array or empty array
      */
     Response.prototype.getErrors = function () {
-        if (this.data) {
-            var errors = this.data.errors || [];
-            return (object.isString(errors)) ? [errors] : errors;
-        }
-        return [];
-    };
-
-    /**
-     * Returns the raw content object. The content object can either be an
-     * object with multiple partials {partialId: content string} or a single content string.
-     * @param {type} id
-     * @returns {undefined|humhub.client_L5.Response.data.content}1
-     */
-    Response.prototype.getContent = function () {
-        return this.data.content;
-    };
-
-    /**
-     * Returns the response partial. If no id is given we return the first partial
-     * we find.
-     * @returns {humhub.client_L5.Response.data.content}
-     */
-    Response.prototype.getPartial = function (id) {
-        if (!this.data) {
-            return;
-        }
-        //TODO: handleResponse filter...
-        if (object.isObject(this.data.content)) {
-            return (id) ? this.data.content[id] : this.data.content;
-        } else if (!id) {
-            return this.data.content;
-        }
-
-        return;
+        var errors = this.errors || [];
+        return (object.isString(errors)) ? [errors] : errors;
     };
 
     Response.prototype.toString = function () {
@@ -126,53 +90,62 @@ humhub.initModule('client', function (module, require, $) {
         var cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
         cfg.type = $form.attr('method') || 'post';
-        cfg.data = $form.serialize()
+        cfg.data = $form.serialize();
         ajax($form.attr('action'), cfg);
     };
 
-    var ajax = function (path, cfg) {
+    var post = function(path, cfg) {
         var cfg = cfg || {};
-        var async = cfg.async || true;
-        var dataType = cfg.dataType || "json";
+        cfg.type = 'POST';
+        return ajax(path, cfg);
+    };
 
-        var error = function (xhr, textStatus, errorThrown, data, status) {
-            //Textstatus = "timeout", "error", "abort", "parsererror", "application"
-            if (cfg.error && object.isFunction(cfg.error)) {
-                var response = new Response();
-                response.setAjaxError(xhr, errorThrown, textStatus, data, status);
-                cfg.error(response);
-            } else {
-                console.warn('Unhandled ajax error: ' + path + " type" + type + " error: " + errorThrown);
-            }
-        };
+    var ajax = function (path, cfg) {
+        return new Promise(function(resolve, reject) {
+            var cfg = cfg || {};
+            var async = cfg.async || true;
+            var dataType = cfg.dataType || "json";
 
-        var success = function (json, textStatus, xhr) {
-            var response = new Response(json);
-            if (response.isError()) { //Application errors
-                return error(xhr, "application", response.getErrors(), json, response.getStatus() );
-            } else if (cfg.success) {
-                response.textStatus = textStatus;
-                response.xhr = xhr;
-                cfg.success(response);
-            }
-        };
+            var error = function (xhr, textStatus, errorThrown, data, status) {
+                //Textstatus = "timeout", "error", "abort", "parsererror", "application"
+                if (cfg.error && object.isFunction(cfg.error)) {
+                    var response = new Response();
+                    response.setAjaxError(xhr, errorThrown, textStatus, data, status);
+                    cfg.error(response);
+                }
+                reject(xhr, textStatus, errorThrown, data, status);
+            };
 
-        $.ajax({
-            url: path,
-            data: cfg.data,
-            type: cfg.type,
-            beforeSend: cfg.beforeSend,
-            processData: cfg.processData,
-            contentType: cfg.contentType,
-            async: async,
-            dataType: dataType,
-            success: success,
-            error: error
+            var success = function (json, textStatus, xhr) {
+                var response = new Response(json);
+                if (response.isError()) { //Application errors
+                    return error(xhr, "application", response.getErrors(), json, response.getStatus() );
+                } else if (cfg.success) {
+                    response.textStatus = textStatus;
+                    response.xhr = xhr;
+                    cfg.success(response);
+                }
+                resolve(response);
+            };
+
+            $.ajax({
+                url: path,
+                data: cfg.data,
+                type: cfg.type,
+                beforeSend: cfg.beforeSend,
+                processData: cfg.processData,
+                contentType: cfg.contentType,
+                async: async,
+                dataType: dataType,
+                success: success,
+                error: error
+            });
         });
     };
 
     module.export({
         ajax: ajax,
+        post: post,
         submit: submit,
         init: init
     });

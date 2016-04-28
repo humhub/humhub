@@ -1,24 +1,11 @@
 <?php
+use yii\helpers\Url;
 
-use \yii\web\View;
-
-\humhub\modules\stream\assets\Stream::register($this);
-
-$this->registerJs('var streamUrl="' . $streamUrl . '"', View::POS_BEGIN);
-
-$jsLoadWall = "s = new Stream('#wallStream');\n";
-$wallEntryId = (int) Yii::$app->request->getQueryParam('wallEntryId');
-if ($wallEntryId != "") {
-    $jsLoadWall .= "s.showItem(" . $wallEntryId . ");\n";
-} else {
-    $jsLoadWall .= "s.showStream();\n";
-}
-$jsLoadWall .= "currentStream = s;\n";
-$jsLoadWall .= "mainStream = s;\n";
-$jsLoadWall .= "$('#btn-load-more').click(function() { currentStream.loadMore(); })\n";
-$this->registerJs($jsLoadWall, View::POS_READY);
+$contentId = (int) Yii::$app->request->getQueryParam('wallEntryId');
+$contentIdData = ($contentId != "") ? 'data-stream-contentid="'.$contentId.'"' : '' ;    
 ?>
 
+<!-- Stream filter section -->
 <?php if ($this->context->showFilters) { ?>
     <ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
         <li class=" dropdown">
@@ -26,11 +13,12 @@ $this->registerJs($jsLoadWall, View::POS_READY);
                     class="caret"></b></a>
             <ul class="dropdown-menu">
                 <?php foreach ($filters as $filterId => $filterTitle): ?>
-                    <li><a href="#" class="wallFilter" id="<?php echo $filterId; ?>"><i
-                                class="fa fa-square-o"></i> <?php echo $filterTitle; ?></a>
+                    <li>
+                        <a href="#" class="wallFilter" id="<?php echo $filterId; ?>">
+                            <i class="fa fa-square-o"></i> <?php echo $filterTitle; ?>
+                        </a>
                     </li>
                 <?php endforeach; ?>
-
             </ul>
         </li>
         <li class="dropdown">
@@ -46,16 +34,20 @@ $this->registerJs($jsLoadWall, View::POS_READY);
     </ul>
 <?php } ?>
 
-<div id="wallStream">
-
+<!-- Stream content -->
+<div id="wallStream" data-stream="<?= $streamUrl ?>" <?= $contentIdData ?> 
+     data-content-base="humhub.modules.stream.Stream" 
+     data-content-delete-url="<?= Url::to(['/content/content/delete']) ?>">
+    
     <!-- DIV for a normal wall stream -->
     <div class="s2_stream" style="display:none">
-
+        <div class="back_button_holder" style="display:none">
+            <a href="#" class="singleBackLink btn btn-primary"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
+        </div>
         <div class="s2_streamContent"></div>
         <?php echo \humhub\widgets\LoaderWidget::widget(['cssClass' => 'streamLoader']); ?>
 
-        <div class="emptyStreamMessage">
-
+        <div class="emptyStreamMessage" style="display:none;">
             <div class="<?php echo $this->context->messageStreamEmptyCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
@@ -63,9 +55,8 @@ $this->registerJs($jsLoadWall, View::POS_READY);
                     </div>
                 </div>
             </div>
-
         </div>
-        <div class="emptyFilterStreamMessage">
+        <div class="emptyFilterStreamMessage" style="display:none;">
             <div class="placeholder <?php echo $this->context->messageStreamEmptyWithFiltersCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
@@ -76,19 +67,6 @@ $this->registerJs($jsLoadWall, View::POS_READY);
 
         </div>
 
-    </div>
-
-    <!-- DIV for an single wall entry -->
-    <div class="s2_single" style="display: none;">
-        <div class="back_button_holder">
-            <a href="#"
-               class="singleBackLink btn btn-primary"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
-        </div>
-        <div class="p_border"></div>
-
-        <div class="s2_singleContent"></div>
-        <div class="loader streamLoaderSingle"></div>
-        <div class="test"></div>
     </div>
 </div>
 

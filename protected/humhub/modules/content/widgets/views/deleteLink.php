@@ -6,8 +6,11 @@ use yii\helpers\Url;
 ?>
 <li>
     <!-- load modal confirm widget -->
+    <a  href="#" data-action-click="delete">
+           <i class="fa fa-trash-o"></i> <?= Yii::t('ContentModule.widgets_views_deleteLink', 'Delete') ?> 
+    </a>
     <?php
-    echo humhub\widgets\ModalConfirm::widget(array(
+    /*echo humhub\widgets\ModalConfirm::widget(array(
         'uniqueID' => 'modal_postdelete_' . $id,
         'linkOutput' => 'a',
         'title' => Yii::t('ContentModule.widgets_views_deleteLink', '<strong>Confirm</strong> post deleting'),
@@ -17,6 +20,6 @@ use yii\helpers\Url;
         'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('ContentModule.widgets_views_deleteLink', 'Delete'),
         'linkHref' => Url::to(['/content/content/delete', 'model' => $model, 'id' => $id]),
         'confirmJS' => 'function(json) { $(".wall_"+json.uniqueId).remove(); }'
-    ));
+    ));*/
     ?>
 </li>

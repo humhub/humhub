@@ -20,7 +20,7 @@ use humhub\modules\user\models\User;
  * @author luke
  * @since 0.11
  */
-abstract class Stream extends \yii\base\Action
+abstract class Stream extends Action
 {
 
     /**
@@ -96,7 +96,6 @@ abstract class Stream extends \yii\base\Action
         if (!Yii::$app->user->isGuest && $this->user == null) {
             $this->user = Yii::$app->user->getIdentity();
         }
-
 
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
@@ -191,16 +190,19 @@ abstract class Stream extends \yii\base\Action
                 $this->activeQuery->andWhere("(content.archived != 1 OR content.archived IS NULL)");
             }
         }
+        
         // Show only mine items
         if (in_array('entry_mine', $this->filters) && $this->user !== null) {
             $this->activeQuery->andWhere(['content.created_by' => $this->user->id]);
         }
+        
         // Show only items where the current user is involed
         if (in_array('entry_userinvoled', $this->filters) && $this->user !== null) {
 
             $this->activeQuery->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->user->id]);
             $this->activeQuery->andWhere("user_follow.id IS NOT NULL");
         }
+       
         if (in_array('model_posts', $this->filters)) {
             $this->activeQuery->andWhere(["content.object_model" => \humhub\modules\post\models\Post::className()]);
         }
@@ -223,21 +225,20 @@ abstract class Stream extends \yii\base\Action
 
         $this->init();
 
-        $output['contents'] = [];
+        $output['content'] = [];
         foreach ($this->activeQuery->all() as $content) {
-            $output['contents'][$content->id] = $this->getContentResultEntry($content);
+            $output['content'][$content->id] = $this->getContentResultEntry($content);
         }
-        $output['total'] = count($output['contents']);
+        $output['total'] = count($output['content']);
         $output['is_last'] = ($output['total'] < $this->activeQuery->limit);
 
         // BEGIN: TEMPORARY until JS Rewrite
         $output['output'] = '';
-        foreach ($output['contents'] as $i => $c) {
+        foreach ($output['content'] as $i => $c) {
             $output['output'] .= $c['output'];
-            $output['lastEntryId'] = $i;
-            $output['entryIds'][] = $i;
+            $output['lastContentId'] = $i;
+            $output['contentIds'][] = $i;
         }
-        $output['counter'] = $output['total'];
         $output['counter'] = $output['total'];
         // END: Temporary
 

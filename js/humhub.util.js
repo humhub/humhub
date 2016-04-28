@@ -15,6 +15,9 @@ humhub.initModule('util', function(module, require, $) {
         isArray: function(obj) {
             return $.isArray(obj);
         },
+        isEmpty: function(obj) {
+            return $.isEmptyObject(obj);
+        },
         isString: function (obj) {
             return typeof obj === 'string';
         },
@@ -46,7 +49,7 @@ humhub.initModule('util', function(module, require, $) {
     
     var string = {
         cutprefix : function(val, prefix) {
-            if(!this.startsWith(prefix)) {
+            if(!this.startsWith(val, prefix)) {
                 return val;
             }
             return val.substring(prefix.length, val.length);

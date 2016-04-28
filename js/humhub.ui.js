@@ -4,5 +4,5 @@ humhub.initModule('ui', function(module, require, $) {
         additions.registerAddition('.autosize', function($match) {
             $match.autosize();
         });
-    }
+    };
 });

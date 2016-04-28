@@ -149,6 +149,38 @@ var humhub = humhub || (function($) {
         }
     };
     
+     /**
+     * Config implementation
+     */
+    
+    var config = {
+        get : function(module, key, defaultVal) {
+            if(_isDefined(key)) {
+                var result = this.getModuleConfig(module)[key];
+                return (_isDefined(result)) ? result : defaultVal;
+            }
+        },
+        getModuleConfig: function(module) {
+            if(!this.module) {
+                this.module = {};
+            }
+            return this.module;
+        },
+
+        is : function(module, key, defaultVal) {
+            return this.get(module, key,defaultVal) === true;
+        },
+
+        set : function(module, key, value) {
+            //Moduleid with multiple values
+            if(arguments.length === 2) {
+                $.extend(this.getModuleConfig(module), key);
+            } else if(arguments.length === 3) {
+                this.getModuleConfig(module)[key] = value;
+            }
+        }
+    };
+    
     /**
      * Cuts the prefix humub.modules or modules. from the given value.
      * @param {type} value
@@ -186,6 +218,10 @@ var humhub = humhub || (function($) {
         return val.indexOf(prefix) === 0;
     };
     
+    var _isDefined = function(obj) {
+        return typeof obj !== 'undefined';
+    };
+    
     //Initialize all initial modules
     $(document).ready(function() {
         $.each(initialModules, function(i, module) {
@@ -197,8 +233,12 @@ var humhub = humhub || (function($) {
         });
     });
     
+   
+    
     return {
-        initModule: initModule
+        initModule: initModule,
+        modules: modules,
+        config: config
     };
 })($);;/**
  * Util module with sub module for object and string utility functions
@@ -216,6 +256,9 @@ humhub.initModule('util', function(module, require, $) {
         },
         isArray: function(obj) {
             return $.isArray(obj);
+        },
+        isEmpty: function(obj) {
+            return $.isEmptyObject(obj);
         },
         isString: function (obj) {
             return typeof obj === 'string';
@@ -248,7 +291,7 @@ humhub.initModule('util', function(module, require, $) {
     
     var string = {
         cutprefix : function(val, prefix) {
-            if(!this.startsWith(prefix)) {
+            if(!this.startsWith(val, prefix)) {
                 return val;
             }
             return val.substring(prefix.length, val.length);
@@ -359,6 +402,7 @@ humhub.initModule('client', function (module, require, $) {
      */
     var Response = function (data) {
         this.data = data;
+        $.extend(this, data);
     };
 
     /**
@@ -378,14 +422,10 @@ humhub.initModule('client', function (module, require, $) {
     Response.prototype.isError = function () {
         return this.getStatus() > 0 || this.getErrors().length;
     };
-
-    Response.prototype.getStatus = function () {
-        return (this.data && object.isDefined(this.data.status)) ? this.data.status : -1;
-    };
     
-    Response.prototype.getErrorTitle = function() {
-        return (this.data) ? this.data.errorTitle : undefined;
-    };
+     Response.prototype.getStatus = function () {
+         return (this.status) ? this.status : -1;
+     };
     
     Response.prototype.getFirstError = function() {
         var errors = this.getErrors();
@@ -397,9 +437,8 @@ humhub.initModule('client', function (module, require, $) {
     Response.prototype.setAjaxError = function(xhr, errorThrown, textStatus,data , status) {
         this.xhr = xhr;
         this.textStatus = textStatus;
-        this.data = data || {};
-        this.data.status = status || xhr.status;
-        this.data.errors = [errorThrown];
+        this.status = status || xhr.status;
+        this.errors = [errorThrown];
     };
 
     /**
@@ -408,40 +447,8 @@ humhub.initModule('client', function (module, require, $) {
      * @returns {array} error array or empty array
      */
     Response.prototype.getErrors = function () {
-        if (this.data) {
-            var errors = this.data.errors || [];
-            return (object.isString(errors)) ? [errors] : errors;
-        }
-        return [];
-    };
-
-    /**
-     * Returns the raw content object. The content object can either be an
-     * object with multiple partials {partialId: content string} or a single content string.
-     * @param {type} id
-     * @returns {undefined|humhub.client_L5.Response.data.content}1
-     */
-    Response.prototype.getContent = function () {
-        return this.data.content;
-    };
-
-    /**
-     * Returns the response partial. If no id is given we return the first partial
-     * we find.
-     * @returns {humhub.client_L5.Response.data.content}
-     */
-    Response.prototype.getPartial = function (id) {
-        if (!this.data) {
-            return;
-        }
-        //TODO: handleResponse filter...
-        if (object.isObject(this.data.content)) {
-            return (id) ? this.data.content[id] : this.data.content;
-        } else if (!id) {
-            return this.data.content;
-        }
-
-        return;
+        var errors = this.errors || [];
+        return (object.isString(errors)) ? [errors] : errors;
     };
 
     Response.prototype.toString = function () {
@@ -452,53 +459,62 @@ humhub.initModule('client', function (module, require, $) {
         var cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
         cfg.type = $form.attr('method') || 'post';
-        cfg.data = $form.serialize()
+        cfg.data = $form.serialize();
         ajax($form.attr('action'), cfg);
     };
 
-    var ajax = function (path, cfg) {
+    var post = function(path, cfg) {
         var cfg = cfg || {};
-        var async = cfg.async || true;
-        var dataType = cfg.dataType || "json";
+        cfg.type = 'POST';
+        return ajax(path, cfg);
+    };
 
-        var error = function (xhr, textStatus, errorThrown, data, status) {
-            //Textstatus = "timeout", "error", "abort", "parsererror", "application"
-            if (cfg.error && object.isFunction(cfg.error)) {
-                var response = new Response();
-                response.setAjaxError(xhr, errorThrown, textStatus, data, status);
-                cfg.error(response);
-            } else {
-                console.warn('Unhandled ajax error: ' + path + " type" + type + " error: " + errorThrown);
-            }
-        };
+    var ajax = function (path, cfg) {
+        return new Promise(function(resolve, reject) {
+            var cfg = cfg || {};
+            var async = cfg.async || true;
+            var dataType = cfg.dataType || "json";
 
-        var success = function (json, textStatus, xhr) {
-            var response = new Response(json);
-            if (response.isError()) { //Application errors
-                return error(xhr, "application", response.getErrors(), json, response.getStatus() );
-            } else if (cfg.success) {
-                response.textStatus = textStatus;
-                response.xhr = xhr;
-                cfg.success(response);
-            }
-        };
+            var error = function (xhr, textStatus, errorThrown, data, status) {
+                //Textstatus = "timeout", "error", "abort", "parsererror", "application"
+                if (cfg.error && object.isFunction(cfg.error)) {
+                    var response = new Response();
+                    response.setAjaxError(xhr, errorThrown, textStatus, data, status);
+                    cfg.error(response);
+                }
+                reject(xhr, textStatus, errorThrown, data, status);
+            };
 
-        $.ajax({
-            url: path,
-            data: cfg.data,
-            type: cfg.type,
-            beforeSend: cfg.beforeSend,
-            processData: cfg.processData,
-            contentType: cfg.contentType,
-            async: async,
-            dataType: dataType,
-            success: success,
-            error: error
+            var success = function (json, textStatus, xhr) {
+                var response = new Response(json);
+                if (response.isError()) { //Application errors
+                    return error(xhr, "application", response.getErrors(), json, response.getStatus() );
+                } else if (cfg.success) {
+                    response.textStatus = textStatus;
+                    response.xhr = xhr;
+                    cfg.success(response);
+                }
+                resolve(response);
+            };
+
+            $.ajax({
+                url: path,
+                data: cfg.data,
+                type: cfg.type,
+                beforeSend: cfg.beforeSend,
+                processData: cfg.processData,
+                contentType: cfg.contentType,
+                async: async,
+                dataType: dataType,
+                success: success,
+                error: error
+            });
         });
     };
 
     module.export({
         ajax: ajax,
+        post: post,
         submit: submit,
         init: init
     });
@@ -532,515 +548,7 @@ humhub.initModule('client', function (module, require, $) {
         additions.registerAddition('.autosize', function($match) {
             $match.autosize();
         });
-    }
-});;/**
- * Thid module can be used by humhub sub modules for registering handlers and serves as core module for executing actions triggered in the gui.
- * A module can either register global handler by using the registerHandler and registerAjaxHandler functions or use the content mechanism.
- */
-humhub.initModule('actions', function (module, require, $) {
-    var _handler = {};
-    var object = require('util').object;
-    var string = require('util').string;
-    var client = require('client');
-
-    /**
-     * Constructor for initializing the module.
-     */
-    module.init = function () {
-        //Binding default action types
-        this.bindAction(document, 'click', '[data-action-click]');
-        this.bindAction(document, 'dblclick', '[data-action-dblclick]');
-        this.bindAction(document, 'change', '[data-action-mouseout]');
-        
-        //Add addition for loader buttons
-        require('additions').registerAddition('[data-action-load-button]', function () {
-            var that = this;
-            this.on('click.humhub-action-load-button', function (evt) {
-                if (!that.find('.action-loader').length) {
-                    that.append('<span class="action-loader"><i class="fa fa-spinner fa-pulse"></i></span>');
-                }
-            });
-        });
     };
-
-    /**
-     * Registers a given handler with the given id.
-     * 
-     * This handler will be called e.g. after clicking a button with the handler id as
-     * data-action-click attribute.
-     * 
-     * The handler can access additional event information through the argument event.
-     * The this object within the handler will be the trigger of the event.
-     * 
-     * @param {string} id handler id should contain the module namespace
-     * @param {function} handler function with one event argument
-     * @returns {undefined}
-     */
-    module.registerHandler = function (id, handler) {
-        if (!id) {
-            return;
-        }
-
-        if (handler) {
-            _handler[id] = handler;
-        }
-    };
-
-    /**
-     * Registers an ajax eventhandler.
-     * The function can either be called with four arguments (id, successhandler, errorhandler, additional config)
-     * or with two (id, cfg) where tha handlers are contained in the config object itself.
-     * 
-     * The successhandler will be called only if the response does not contain any errors or errormessages.
-     * So the errorhandler is called for application and http errors.
-     * 
-     * The config can contain additional ajax settings.
-     * 
-     * @param {type} id
-     * @param {type} success
-     * @param {type} error
-     * @param {type} cfg
-     * @returns {undefined}
-     */
-    module.registerAjaxHandler = function (id, success, error, cfg) {
-        cfg = cfg || {};
-        if (!id) {
-            return;
-        }
-
-        if (object.isFunction(success)) {
-            cfg.success = success;
-            cfg.error = error;
-        } else {
-            cfg = success;
-        }
-
-        if (success) {
-            _handler[id] = function (event) {
-                var path = $(this).data('url-' + event.type) || $(this).data('url');
-                client.ajax(path, cfg, event);
-            };
-        }
-    };
-
-    /**
-     * Binds an delegate wrapper event handler to the parent node. This is used to detect action handlers like 
-     * data-action-click events and map the call to either a stand alone handler or a content
-     * action handler. The trigger of a contentAction has to be contained in a data-content-base node.
-     * 
-     * This function uses the jQuery event delegation:
-     * 
-     *  $(parent).on(type, selector, function(){...});
-     * 
-     * This assures the event binding for dynamic content (ajax content etc..)
-     * 
-     * @see {@link humhub.modules.content.handleAction}
-     * @param {Node|jQuery} parent - the event target
-     * @param {string} type - event type e.g. click, change,...
-     * @param {string} selector - jQuery selector 
-     * @param {string} selector - jQuery selector 
-     */
-    module.bindAction = function (parent, type, selector, directHandler) {
-        parent = parent || document;
-        var $parent = parent.jquery ? parent : $(parent);
-        $parent.on(type+'.humhub-action', selector, function (evt) {
-            evt.preventDefault();
-            //The element which triggered the action e.g. a button or link
-            $trigger = $(this);
-
-            //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
-            var handlerId = $trigger.data('action' + '-' + type);
-            var event = {type: type, $trigger: $trigger, handler: handlerId};
-            
-            event.finish = function() {
-                _removeLoaderFromEventTarget(evt);
-            };
-            
-            //TODO: handle with $.Event
-            //var event = $.Event(type, {$trigger: $trigger});
-            //event.originalEvent = evt;
-            
-            //Search and execute a stand alone handler or try to call the content action handler
-            try {
-                if(object.isFunction(directHandler)) {
-                    //Direct action handler
-                    directHandler.apply($trigger, [event]);
-                } else if (_handler[handlerId]) {
-                    //Registered action handler
-                    var handler = _handler[handlerId];
-                    handler.apply($trigger, [event]);
-                } else if (!_handler['humhub.modules.content.actiontHandler'](event)) { //Content action handler
-                    //If the content handler did not accept this event we try to find a handler by namespace
-                    var splittedNS = handlerId.split('.');
-                    var handler = splittedNS[splittedNS.length - 1];
-                    var target = require(string.cutsuffix(handlerId, '.' + handler));
-                    target[handler]({type: type, $trigger: $trigger});
-                }
-            } catch (e) {
-                //TODO: handle error !
-                console.error('Error while handling action event for handler "' + handlerId+'"', e);
-                _removeLoaderFromEventTarget(evt);
-            }
-        });
-    };
-
-    var _removeLoaderFromEventTarget = function (evt) {
-        if (evt.target) {
-            $target = $(evt.target);
-            $loader = $target.find('.action-loader');
-
-            if ($loader.length) {
-                $loader.remove();
-            }
-        }
-    };
-});;/**
- * This module provides an api for handling content objects e.g. Posts, Polls...
- *
- * @type undefined|Function
- */
-
-humhub.initModule('content', function(module, require, $) {
-    var client = require('client');
-    var object = require('util').object;
-    var actions = require('actions');
-    
-    module.init = function() {
-        actions.registerHandler('humhub.modules.content.actiontHandler', function(event) {
-            return module.handleAction(event);
-        });
-    };
-    
-    /**
-     * Handles the given contentAction event. The event should provide the following properties:
-     * 
-     *  $trigger (required) : the trigger node of the event
-     *  handler (required)  : the handler functionn name to be executed on the content
-     *  type (optoinal)     : the event type 'click', 'change',...
-     * 
-     * @param {object} event - event object
-     * @returns {Boolean} true if the contentAction could be executed else false
-     */
-    module.handleAction = function(event) {
-        var $contentBase = this.getContentBase(event.$trigger);
-        if($contentBase.length) {
-            //Initialize a content instance by means of the content-base type and execute the handler
-            var ContentType = require($contentBase.data('content-base'));
-            if(ContentType) {
-                var content = new ContentType($contentBase);
-                if(event.handler && content[event.handler]) {
-                    content[event.handler](event);
-                    return true;
-                }
-            } else {
-                console.error('No ContentType found for '+$contentBase.data('content-base'));
-            }
-        }
-        return false;
-    };
-    
-    module.getContentBase = function($element) {
-        return $element.closest('[data-content-base]');
-    };
-    
-    var Content = function(id) {
-        if(!id) { //Create content
-            return;
-        }
-        if (typeof id === 'string') {
-            this.id = id;
-            this.$ = $('#' + id);
-        } else if (id.jquery) {
-            this.$ = id;
-            this.id = this.$.attr('id');
-        }
-    };
-    
-    Content.prototype.getKey = function () {
-        return this.$.data('content-key');
-    };
-    
-    Content.prototype.getEditUrl = function () {
-        var result = this.$.data('content-edit-url');
-        if(!result) {
-            var parentContent = this.getParentContentBase('[data-content-base]');
-            if(parentContent) {
-                return parentContent.getEditUrl();
-            }
-        }
-        return result;
-    };
-    
-    Content.prototype.getParentContentBase = function() {
-        var $parent = this.$.parent().closest('[data-content-base]');
-        if($parent.length) {
-            try {
-                var ParentType = require($parent.data('content-base'));
-                return new ParentType($parent);
-            } catch(err) {
-                console.error('Could not instantiate parent content base: '+$parent.data('content-base'));
-            }
-        }
-    };
-    
-    Content.prototype.create = function (addContentHandler) {
-        //Note that this Content won't have an id, so the backend will create an instance
-        this.edit(addContentHandler);
-    };
-    
-    Content.prototype.edit = function (successHandler) {
-        var editUrl = this.getEditUrl();
-        var contentId = this.getKey();
-        var modal = require('ui.modal').global;
-        
-        if(!editUrl) {
-            //Todo: handle error
-            console.error('No editUrl found for edit content action editUrl: '+editUrl+ ' contentId '+contentId);
-            return;
-        }
-   
-        var that = this;
-        
-        client.ajax(editUrl, {
-            data: {
-                'id' : contentId
-            },
-            beforeSend: function() {
-                modal.loader();
-            },
-            success: function(response) {
-                //Successfully retrieved the edit form, now show it within a modal
-                modal.content(response.getContent(), function() {
-                    //Bind direct action handler we could use a global registeredHandler but this is more efficient
-                    actions.bindAction(modal.getBody(), 'click', '[data-content-save]', function(event) {
-                        client.submit(modal.getForm(), {
-                            success : function(response) {
-                                if(object.isFunction(successHandler)) {
-                                    if(successHandler(response, modal)) {modal.close();};
-                                } else {
-                                    that.replaceContent(response.getContent());
-                                    //TODO: check for content.highlight
-                                    modal.close();
-                                } 
-                                event.finish();
-                            },
-                            error : function(error) {
-                                //TODO: handle error
-                                modal.error(error);
-                                console.error('Error while submitting form :'+error);
-                                event.finish();
-                            }
-                        });
-                    });
-                });
-            },
-            error: function(errResponse) {
-                modal.error(errResponse);
-                console.log('Error occured while editing content: '+errResponse.getFirstError());
-                //Todo: handle error
-            }
-        });
-    };
-    
-    Content.prototype.replaceContent = function(content) {
-        try {
-            this.$.html($(content).children());
-        } catch(e) {
-            console.error('Error occured while replacing content: '+this.id , e);
-        }
-    };
-    
-    Content.prototype.delete = function () {
-        //Search for data-content-delte-url on root.
-        //if(this.deleteModal) {open modal bla}
-        //Call this url with data-content-pk
-        //Trigger delete event
-    };
-    
-    module.Content = Content;
-});;/**
- * Core module for managing Streams and StreamItems
- * @type Function
- */
-humhub.initModule('stream', function(module, require, $) {
-
-    var ENTRY_ID_SELECTOR_PREFIX = '#wallEntry_';
-    var WALLSTREAM_ID = 'wallStream';
-
-    /**
-     * Base class for all StreamItems
-     * @param {type} id
-     * @returns {undefined}
-     */
-    var StreamItem = function (id) {
-        if (typeof id === 'string') {
-            this.id = id;
-            this.$ = $('#' + id);
-        } else if (id.jquery) {
-            this.$ = id;
-            this.id = this.$.attr('id');
-        }
-    };
-
-    /**
-     * Removes the stream item from stream
-     */
-    StreamItem.prototype.remove = function () {
-        this.$.remove();
-    };
-    
-    StreamItem.prototype.getContentKey = function () {}
-    
-    StreamItem.prototype.edit = function () {
-        //Search for data-content-edit-url on root.
-        //Call this url with data-content-pk
-        //Trigger delete event
-    };
-    
-    StreamItem.prototype.delete = function () {
-        //Search for data-content-delte-url on root.
-        //Call this url with data-content-pk
-        //Trigger delete event
-    };
-
-    StreamItem.prototype.getContent = function () {
-        return this.$.find('.content');
-    };
-
-/*
-    module.StreamItem.prototype.highlightContent = function () {
-        var $content = this.getContent();
-        $content.addClass('highlight');
-        $content.delay(200).animate({backgroundColor: 'transparent'}, 1000, function () {
-            $content.removeClass('highlight');
-            $content.css('backgroundColor', '');
-        });
-    };
-*/
-    /**
-     * Stream implementation
-     * @param {type} id
-     * @returns {undefined}
-     */
-    var Stream = function (id) {
-        this.id = id;
-        this.$ = $('#' + id);
-    };
-
-    Stream.prototype.getEntry = function (id) {
-        //Search for data-content-base and try to initiate the Item class
-        
-        return new module.Entry(this.$.find(ENTRY_ID_SELECTOR_PREFIX + id));
-    };
-
-    Stream.prototype.wallStick = function (url) {
-        $.ajax({
-            dataType: "json",
-            type: 'post',
-            url: url
-        }).done(function (data) {
-            if (data.success) {
-                if (currentStream) {
-                    $.each(data.wallEntryIds, function (k, wallEntryId) {
-                        currentStream.deleteEntry(wallEntryId);
-                        currentStream.prependEntry(wallEntryId);
-                    });
-                    $('html, body').animate({scrollTop: 0}, 'slow');
-                }
-            } else {
-                alert(data.errorMessage);
-            }
-        });
-    };
-
-    Stream.prototype.wallUnstick = function (url) {
-        $.ajax({
-            dataType: "json",
-            type: 'post',
-            url: url
-        }).done(function (data) {
-            if (data.success) {
-                //Reload the whole stream, since we have to reorder the entries
-                currentStream.showStream();
-            }
-        });
-    };
-
-    /**
-     * Click Handler for Archive Link of Wall Posts
-     * (archiveLink.php)
-     * 
-     * @param {type} className
-     * @param {type} id
-     */
-    Stream.prototype.wallArchive = function (id) {
-
-        url = wallArchiveLinkUrl.replace('-id-', id);
-
-        $.ajax({
-            dataType: "json",
-            type: 'post',
-            url: url
-        }).done(function (data) {
-            if (data.success) {
-                if (currentStream) {
-                    $.each(data.wallEntryIds, function (k, wallEntryId) {
-                        //currentStream.reloadWallEntry(wallEntryId);
-                        // fade out post
-                        setInterval(fadeOut(), 1000);
-
-                        function fadeOut() {
-                            // fade out current archived post
-                            $('#wallEntry_' + wallEntryId).fadeOut('slow');
-                        }
-                    });
-                }
-            }
-        });
-    };
-
-
-    /**
-     * Click Handler for Un Archive Link of Wall Posts
-     * (archiveLink.php)
-     * 
-     * @param {type} className
-     * @param {type} id
-     */
-    Stream.prototype.wallUnarchive = function (id) {
-        url = wallUnarchiveLinkUrl.replace('-id-', id);
-
-        $.ajax({
-            dataType: "json",
-            type: 'post',
-            url: url
-        }).done(function (data) {
-            if (data.success) {
-                if (currentStream) {
-                    $.each(data.wallEntryIds, function (k, wallEntryId) {
-                        currentStream.reloadWallEntry(wallEntryId);
-                    });
-
-                }
-            }
-        });
-    };
-    
-    var getStream = function () { 
-        if (!module.mainStream) {
-            module.mainStream = new module.Stream(WALLSTREAM_ID);
-        }
-        return module.mainStream;
-    };
-
-    var getEntry = function (id) {
-        return module.getStream().getEntry(id);
-    };
-    
-    module.export({
-       getStream : getStream,
-       getEntry : getEntry
-    });
 });;/**
  * Module for creating an manipulating modal dialoges.
  * Normal layout of a dialog:
@@ -1059,8 +567,8 @@ humhub.initModule('stream', function(module, require, $) {
  * @param {type} param2
  */
 humhub.initModule('ui.modal', function (module, require, $) {
+    var object = require('util').object;
     var additions = require('additions');
-    var actions = require('actions');
 
     //Keeps track of all initialized modals
     var modals = [];
@@ -1328,10 +836,879 @@ humhub.initModule('ui.modal', function (module, require, $) {
         return this.$modal.find('.modal-body');
     };
     
+    var ConfirmModal = function(id, confirmHandler) {
+        Modal.call(this, id);
+        this.initButtons();
+    };
+    
+    ConfirmModal.prototype.initButtons = function(confirmHandler) {
+        this.$confirm = this.$modal.find('[data-modal-submit]');
+        this.$confirm.on('click', confirmHandler);
+    };
+    
+    object.inherits(ConfirmModal, Modal);
+    
     module.export({
         init: function () {
             module.global = new Modal('global-modal');
         },
         Modal: Modal
     });
+});;/**
+ * Thid module can be used by humhub sub modules for registering handlers and serves as core module for executing actions triggered in the gui.
+ * A module can either register global handler by using the registerHandler and registerAjaxHandler functions or use the content mechanism.
+ */
+humhub.initModule('actions', function (module, require, $) {
+    var _handler = {};
+    var object = require('util').object;
+    var string = require('util').string;
+    var client = require('client');
+
+    /**
+     * Constructor for initializing the module.
+     */
+    module.init = function () {
+        //Binding default action types
+        this.bindAction(document, 'click', '[data-action-click]');
+        this.bindAction(document, 'dblclick', '[data-action-dblclick]');
+        this.bindAction(document, 'change', '[data-action-mouseout]');
+        
+        //Add addition for loader buttons
+        require('additions').registerAddition('[data-action-load-button]', function () {
+            var that = this;
+            this.on('click.humhub-action-load-button', function (evt) {
+                if (!that.find('.action-loader').length) {
+                    that.append('<span class="action-loader"><i class="fa fa-spinner fa-pulse"></i></span>');
+                }
+            });
+        });
+    };
+
+    /**
+     * Registers a given handler with the given id.
+     * 
+     * This handler will be called e.g. after clicking a button with the handler id as
+     * data-action-click attribute.
+     * 
+     * The handler can access additional event information through the argument event.
+     * The this object within the handler will be the trigger of the event.
+     * 
+     * @param {string} id handler id should contain the module namespace
+     * @param {function} handler function with one event argument
+     * @returns {undefined}
+     */
+    module.registerHandler = function (id, handler) {
+        if (!id) {
+            return;
+        }
+
+        if (handler) {
+            _handler[id] = handler;
+        }
+    };
+
+    /**
+     * Registers an ajax eventhandler.
+     * The function can either be called with four arguments (id, successhandler, errorhandler, additional config)
+     * or with two (id, cfg) where tha handlers are contained in the config object itself.
+     * 
+     * The successhandler will be called only if the response does not contain any errors or errormessages.
+     * So the errorhandler is called for application and http errors.
+     * 
+     * The config can contain additional ajax settings.
+     * 
+     * @param {type} id
+     * @param {type} success
+     * @param {type} error
+     * @param {type} cfg
+     * @returns {undefined}
+     */
+    module.registerAjaxHandler = function (id, success, error, cfg) {
+        cfg = cfg || {};
+        if (!id) {
+            return;
+        }
+
+        if (object.isFunction(success)) {
+            cfg.success = success;
+            cfg.error = error;
+        } else {
+            cfg = success;
+        }
+
+        if (success) {
+            _handler[id] = function (event) {
+                var path = $(this).data('url-' + event.type) || $(this).data('url');
+                client.ajax(path, cfg, event);
+            };
+        }
+    };
+
+    /**
+     * Binds an delegate wrapper event handler to the parent node. This is used to detect action handlers like 
+     * data-action-click events and map the call to either a stand alone handler or a content
+     * action handler. The trigger of a contentAction has to be contained in a data-content-base node.
+     * 
+     * This function uses the jQuery event delegation:
+     * 
+     *  $(parent).on(type, selector, function(){...});
+     * 
+     * This assures the event binding for dynamic content (ajax content etc..)
+     * 
+     * @see {@link humhub.modules.content.handleAction}
+     * @param {Node|jQuery} parent - the event target
+     * @param {string} type - event type e.g. click, change,...
+     * @param {string} selector - jQuery selector 
+     * @param {string} selector - jQuery selector 
+     */
+    module.bindAction = function (parent, type, selector, directHandler) {
+        parent = parent || document;
+        var $parent = parent.jquery ? parent : $(parent);
+        $parent.on(type+'.humhub-action', selector, function (evt) {
+            evt.preventDefault();
+            //The element which triggered the action e.g. a button or link
+            $trigger = $(this);
+
+            //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
+            var handlerId = $trigger.data('action' + '-' + type);
+            var event = {type: type, $trigger: $trigger, handler: handlerId};
+            
+            event.finish = function() {
+                _removeLoaderFromEventTarget(evt);
+            };
+            
+            //TODO: handle with $.Event
+            //var event = $.Event(type, {$trigger: $trigger});
+            //event.originalEvent = evt;
+            
+            //Search and execute a stand alone handler or try to call the content action handler
+            try {
+                if(object.isFunction(directHandler)) {
+                    //Direct action handler
+                    directHandler.apply($trigger, [event]);
+                } else if (_handler[handlerId]) {
+                    //Registered action handler
+                    var handler = _handler[handlerId];
+                    handler.apply($trigger, [event]);
+                } else if (!_handler['humhub.modules.content.actiontHandler'](event)) { //Content action handler
+                    //If the content handler did not accept this event we try to find a handler by namespace
+                    var splittedNS = handlerId.split('.');
+                    var handler = splittedNS[splittedNS.length - 1];
+                    var target = require(string.cutsuffix(handlerId, '.' + handler));
+                    target[handler]({type: type, $trigger: $trigger});
+                }
+            } catch (e) {
+                //TODO: handle error !
+                console.error('Error while handling action event for handler "' + handlerId+'"', e);
+                _removeLoaderFromEventTarget(evt);
+            }
+        });
+    };
+
+    var _removeLoaderFromEventTarget = function (evt) {
+        if (evt.target) {
+            $target = $(evt.target);
+            $loader = $target.find('.action-loader');
+
+            if ($loader.length) {
+                $loader.remove();
+            }
+        }
+    };
+});;/**
+ * This module provides an api for handling content objects e.g. Posts, Polls...
+ *
+ * @type undefined|Function
+ */
+
+humhub.initModule('content', function(module, require, $) {
+    var client = require('client');
+    var object = require('util').object;
+    var actions = require('actions');
+    
+    var Content = function(container) {
+        if(!container) { //Create content
+            return;
+        }
+        this.$ = (object.isString(container)) ? $('#' + container) : container;
+        this.contentBase = this.$.data('content-base');
+    };
+    
+    Content.prototype.getContentActions = function() {
+        return ['create','edit','delete'];
+    };
+    
+    Content.prototype.getKey = function () {
+        return this.$.data('content-pk');
+    };
+    
+    Content.prototype.data = function(dataSuffix) {
+        var result = this.$.data(dataSuffix);
+        if(!result) {
+            var parentContent = this.getParentContentBase();
+            if(parentContent) {
+                return parentContent.data(dataSuffix);
+            }
+        }
+        return result;
+    };
+    
+    Content.prototype.getParentContentBase = function() {
+        var $parent = this.$.parent().closest('[data-content-base]');
+        if($parent.length) {
+            try {
+                var ParentType = require($parent.data('content-base'));
+                return new ParentType($parent);
+            } catch(err) {
+                console.error('Could not instantiate parent content base: '+$parent.data('content-base'));
+            }
+        }
+    };
+    
+    Content.prototype.create = function (addContentHandler) {
+        //Note that this Content won't have an id, so the backend will create an instance
+        if(indexOf(this.getContentActions(), 'create') < 0) {
+            return;
+        }
+        
+        this.edit(addContentHandler);
+    };
+    
+    Content.prototype.edit = function (successHandler) {
+        if(indexOf(this.getContentActions(), 'edit') < 0) {
+            return;
+        }
+        
+        var editUrl = this.data('content-edit-url');
+        var contentId = this.getKey();
+        var modal = require('ui.modal').global;
+        
+        if(!editUrl) {
+            //Todo: handle error
+            console.error('No editUrl found for edit content action editUrl: '+editUrl+ ' contentId '+contentId);
+            return;
+        }
+   
+        var that = this;
+        
+        client.ajax(editUrl, {
+            data: {
+                'id' : contentId
+            },
+            beforeSend: function() {
+                modal.loader();
+            },
+            success: function(response) {
+                //Successfully retrieved the edit form, now show it within a modal
+                modal.content(response.getContent(), function() {
+                    //Bind direct action handler we could use a global registeredHandler but this is more efficient
+                    actions.bindAction(modal.getBody(), 'click', '[data-content-save]', function(event) {
+                        client.submit(modal.getForm(), {
+                            success : function(response) {
+                                if(object.isFunction(successHandler)) {
+                                    if(successHandler(response, modal)) {modal.close();};
+                                } else {
+                                    that.replaceContent(response.getContent());
+                                    //TODO: check for content.highlight
+                                    modal.close();
+                                } 
+                                event.finish();
+                            },
+                            error : function(error) {
+                                //TODO: handle error
+                                modal.error(error);
+                                console.error('Error while submitting form :'+error);
+                                event.finish();
+                            }
+                        });
+                    });
+                });
+            },
+            error: function(errResponse) {
+                modal.error(errResponse);
+                console.log('Error occured while editing content: '+errResponse.getFirstError());
+                //Todo: handle error
+            }
+        });
+    };
+    
+    Content.prototype.delete = function () {
+        if(this.getContentActions().indexOf('delete') < 0) {
+            return;
+        }
+        
+        var that = this;
+        var url = this.data('content-delete-url');
+        if(url) {
+             client.post(url, {
+                 data: {
+                     id: that.getKey()
+                 },
+                 success: function(json) {
+                     json.success;
+                     that.remove();
+                 },
+                 error: function(json) {
+                     console.error(json);
+                 }
+             })
+        } else {
+            console.error('Content delete was called, but no url could be determined for '+this.contentBase);
+        }
+    };
+    
+    Content.prototype.replaceContent = function(content) {
+        try {
+            var that = this;
+            this.$.animate({ opacity: 0 }, 'fast', function() {
+                that.$.html($(content).children());
+                that.$.stop().animate({ opacity: 1 }, 'fast');
+                if(that.highlight) {
+                    that.highlight();
+                }
+            });
+        } catch(e) {
+            console.error('Error occured while replacing content: '+this.$.attr('id') , e);
+        }
+    };
+    
+    Content.prototype.remove = function() {
+        var that = this;
+        this.$.animate({ height: 'toggle', opacity: 'toggle' }, 'fast', function() {
+            that.$.remove();
+            //TODO: fire global event
+        });
+    };
+    
+    Content.getContentBase = function($element) {
+        return $element.closest('[data-content-base]');
+    };
+    
+    Content.getInstance = function($contentBase) {
+        $contentBase = (object.isString($contentBase)) ? $('#'+$contentBase) : $contentBase;
+        var ContentType = require($contentBase.data('content-base'));
+        if(ContentType) {
+            return new ContentType($contentBase);
+        }
+    };
+    
+    var init = function() {
+        actions.registerHandler('humhub.modules.content.actiontHandler', function(event) {
+            return module.handleAction(event);
+        });
+    };
+    
+    /**
+     * Handles the given contentAction event. The event should provide the following properties:
+     * 
+     *  $trigger (required) : the trigger node of the event
+     *  handler (required)  : the handler functionn name to be executed on the content
+     *  type (optoinal)     : the event type 'click', 'change',...
+     * 
+     * @param {object} event - event object
+     * @returns {Boolean} true if the contentAction could be executed else false
+     */
+    handleAction = function(event) {
+        var $contentBase = Content.getContentBase(event.$trigger);
+        if($contentBase.length) {
+            //Initialize a content instance by means of the content-base type and execute the handler
+            var content = Content.getInstance($contentBase);
+            if(content) {
+                //Check if the content instance provides this actionhandler
+                if(event.handler && content[event.handler]) {
+                    content[event.handler](event);
+                    return true;
+                }
+            } else {
+                console.error('No ContentType found for '+$contentBase.data('content-base'));
+            }
+        }
+        return false;
+    };
+    
+    module.export({
+        Content : Content,
+        init : init,
+        handleAction: handleAction
+    });
+});;/**
+ * Core module for managing Streams and StreamItems
+ * @type Function
+ */
+humhub.initModule('stream', function (module, require, $) {
+
+    var util = require('util');
+    var object = util.object;
+    var string = util.string;
+    var client = require('client');
+    var modal = require('modal');
+    var Content = require('content').Content;
+
+    var STREAM_INIT_COUNT = 8;
+    var STREAM_LOAD_COUNT = 4;
+
+    //TODO: load streamUrl from config
+    //TODO: readonly
+
+    /**
+     * Base class for all StreamContent
+     * @param {type} id
+     * @returns {undefined}
+     */
+    var StreamEntry = function (id) {
+        this.$ = object.isString(id) ? this.$ = $('#' + id) : id;
+        Content.call(this);
+    };
+    
+    object.inherits(StreamEntry, Content);
+    
+    StreamEntry.prototype.getContentActions = function() {
+        return ['delete', 'edit'];
+    };
+    
+    StreamEntry.prototype.delete = function () {
+        var content = this.getContentInstance();
+        if(content && content.delete) {
+            //TODO: modalconfirm
+            content.delete();
+        } else {
+            StreamEntry._super.delete.call(this);
+        }
+    };
+    
+    StreamEntry.prototype.reload = function () {
+        getStream().reload(this);
+    };
+
+    StreamEntry.prototype.edit = function () {
+        //Search for data-content-edit-url on root.
+        //Call this url with data-content-pk
+        //Trigger delete event
+    };
+
+    StreamEntry.prototype.getContentInstance = function () {
+        return Content.getInstance(this.$.find('[data-content-base]'));
+    };
+    
+    /**
+     * Stream implementation.
+     * 
+     * @param {type} container id or jQuery object of the stream container
+     * @returns {undefined}
+     */
+    var Stream = function (container) {
+        this.$ = (object.isString(container)) ? $('#' + container) : container;
+        
+        if (!this.$.length) {
+            console.error('Could not initialize stream, invalid container given'+ container);
+            return;
+        }
+        
+        //If a contentId is set on the stream root we will only show the single content
+        if(this.$.data('stream-contentid')) {
+            this.contentId = parseInt(this.$.data('stream-contentid'));
+        }
+        
+        this.$stream = this.$.find(".s2_stream");
+        
+        //Cache some stream relevant data/nodes
+        this.url = this.$.data('stream'); //TODO: set this in config instead of data field
+        this.$loader = this.$stream.find(".streamLoader");
+        this.$content = this.$stream.find('.s2_streamContent');
+        this.$filter = $('.wallFilterPanel');
+
+        //TODO: make this configurable
+        this.filters = [];
+        this.sort = "c";
+        
+        Content.call(this);
+    };
+    
+    object.inherits(Stream, Content);
+    
+    Stream.prototype.getContentActions = function() {
+        return [];
+    };
+    
+    /**
+     * Initializes the stream, by clearing the stream and reloading initial stream entries,
+     * this should be called if any filter/sort settings are changed or the stream
+     * needs an reload.
+     * 
+     * @returns {humhub.stream_L5.Stream.prototype}
+     */
+    Stream.prototype.init = function () {
+        this.clear();
+        this.$stream.show();
+        if (this.isShowSingleEntry()) {
+            this.loadSingleEntry(this.contentId);
+        } else {
+            this.loadEntries(STREAM_INIT_COUNT);
+        }
+        return this;
+    };
+    
+    Stream.prototype.clear = function() {
+        this.lastEntryLoaded = false;	
+        this.readOnly = false;
+        this.loading = false;
+        this.$.find(".s2_streamContent").empty();
+        this.$.find(".s2_stream").hide();
+        this.$.find(".s2_single").hide();
+        this.$.find(".streamLoader").hide();
+        this.$.find(".emptyStreamMessage").hide();
+        this.$.find(".emptyFilterStreamMessage").hide();
+        this.$.find('.back_button_holder').hide();
+        this.$filter.hide();
+    };
+
+    Stream.prototype.loadSingleEntry = function(contentId) {
+        this.$.find('.back_button_holder').show();
+        this.loadEntries(1, (contentId + 1), '');
+    };
+    
+    Stream.prototype.reloadEntry = function(entry) {
+        var that = this;
+        return new Promise(function(resolve, reject) {
+           entry = (entry instanceof StreamEntry) ? entry : that.getEntry(entry);
+        
+            if(!entry) {
+                console.warn('Attempt to reload of non existent entry: '+entry);
+                reject();
+                return;
+            }
+
+            var contentId = entry.getKey();
+            return that._load(1, (contentId + 1), '').then(function(response) {
+                  if(response.content[contentId]) {
+                      entry.replaceContent(response.content[contentId].output);
+                      resolve(entry);
+                  } else {
+                      console.warn('Reload failed: ContentId not found in response: '+contentId);
+                      reject();
+                  }
+            }, reject); 
+        });
+           };
+
+    Stream.prototype.loadEntries = function (limit, from, filter, sort) {
+        if (this.loading || this.lastEntryLoaded) {
+            return;
+        }
+
+        //Initialize loading process
+        this.$loader.show();
+        this.loading = true;
+
+        //Overwrite the stream settings if provided
+        limit   = limit || STREAM_LOAD_COUNT;
+        from    = from  || this.getLastContentId();
+        filter  = filter || this.getFilterString();
+        sort    = sort  || this.sort;
+        
+        var that = this;
+        return new Promise(function(resolve, reject) {
+            that._load(limit, from, filter,sort).then(function(response) {
+                that.$loader.hide();
+                if (object.isEmpty(response.content)) {
+                    that.lastEntryLoaded = true;
+                    $('#btn-load-more').hide();
+                } else {
+                    that.lastEntryLoaded = response.is_last;
+                    that.appendEntries(response);
+                }
+                
+                that.loading = false;
+                that.onChange();
+                resolve();
+            }).catch(function(err) {
+                //TODO: handle error
+                that.loading = false;
+                that.$loader.hide();
+                reject();
+            });
+        });
+    };
+    
+    Stream.prototype._load = function (limit, from, filter, sort) {
+        return client.ajax(this.url, {
+            data: {
+                filters: filter,
+                sort: sort,
+                from: from,
+                limit: limit
+            }
+        });
+    };
+
+    Stream.prototype.getLastContentId = function () {
+        var $lastEntry = this.$stream.find('[data-content-pk]').last();
+        if ($lastEntry.length) {
+            return $lastEntry.data('stream-contentid');
+        }
+    };
+
+    Stream.prototype.appendEntries = function (response) {
+        var that = this;
+        var result = '';
+        $.each(response.contentIds, function (i, key) {
+            var $entry = that.$.find('[data-content-pk="' + key + '"]');
+            if ($entry.length) {
+                $entry.remove();
+            }
+            result += response.content[key].output;
+        });
+        return this.$content.append(result);
+    };
+
+    /**
+     * Fired when new entries are shown
+     */
+    Stream.prototype.onChange = function () {
+        if (this.readOnly) {
+            $('.wallReadOnlyHide').hide();
+            $('.wallReadOnlyShow').show();
+        } else {
+            $('.wallReadOnlyShow').hide();
+        }
+
+        var hasEntries = this.hasEntries();
+        if (!hasEntries && !this.hasFilter()) {
+            this.$.find('.emptyStreamMessage').show();
+            this.$filter.hide();
+        } else if (!hasEntries) {
+            this.$.find('.emptyFilterStreamMessage').hide();
+        } else if(!this.isShowSingleEntry()) {
+            this.$filter.show();
+            this.$.find('.emptyStreamMessage').hide();
+            this.$.find('.emptyFilterStreamMessage').hide();
+        }
+
+        //TODO: fire global event
+    };
+    
+    Stream.prototype.isShowSingleEntry = function () {
+        return object.isDefined(this.contentId);
+    };
+
+    Stream.prototype.hasEntries = function () {
+        return this.getEntryCount() > 0;
+    };
+
+    Stream.prototype.getEntryCount = function () {
+        return this.$.find('[data-content-pk]').length;
+    };
+    
+    Stream.prototype.hasFilter = function () {
+        return this.filters.length > 0;
+    };
+    
+    Stream.prototype.getFilterString = function () {
+        var result = '';
+        $.each(this.filters, function(i, filter) {
+            result += filter+',';
+        });
+        
+        return string.cutsuffix(result, ',');
+    };
+    
+    Stream.prototype.setFilter = function (filterId) {
+        if(this.filters.indexOf(filterId) < 0) {
+            this.filters.push(filterId);
+        }
+    };
+    
+    Stream.prototype.unsetFilter = function (filterId) {
+        var index = this.filters.indexOf(filterId);
+        if(index > -1) {
+            this.filters.splice(index, 1);
+        }
+    };
+
+    Stream.prototype.getEntry = function(key) {
+        return new StreamEntry(this.$.find('[data-content-pk="' + key + '"]'));
+    };
+    
+    Stream.prototype.getEntryByNode = function($childNode) {
+        return new StreamEntry($childNode.closest('[data-content-pk]'));
+    };
+
+    var getStream = function () {
+        if (!module.instance) {
+            module.instance = new Stream($('[data-stream]'));
+        }
+        return module.instance;
+    };
+
+    var getEntry = function (id) {
+        return module.getStream().getEntry(id);
+    };
+
+    var init = function () {
+        var stream = getStream().init();
+        $(window).scroll(function () {
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                if (stream && !stream.loading && !stream.isShowSingleEntry() && !stream.lastEntryLoaded) {
+                    stream.loadEntries();
+                }
+            }
+        });
+        
+        stream.$.on('click', '.singleBackLink', function() {
+            stream.contentId = undefined;
+            stream.init();
+            $(this).hide();
+        });
+        
+        initFilterNav();
+    };
+
+    var initFilterNav = function() {
+        $(".wallFilter").click(function () {
+            var $filter = $(this);
+            var checkboxi = $filter.children("i");
+            checkboxi.toggleClass('fa-square-o').toggleClass('fa-check-square-o');
+            if(checkboxi.hasClass('fa-check-square-o')) {
+                getStream().setFilter($filter.attr('id').replace('filter_', ''));
+            } else {
+                getStream().unsetFilter($filter.attr('id').replace('filter_', ''));
+            }
+            getStream().init();
+        });
+
+        $(".wallSorting").click(function () {
+            var newSortingMode = $(this).attr('id');
+
+            // uncheck all sorting
+            $(".wallSorting").find('i')
+                    .removeClass('fa-check-square-o')
+                    .addClass('fa-square-o');
+
+            // check current sorting mode
+            $("#" + newSortingMode).children("i")
+                    .removeClass('fa-square-o')
+                    .addClass('fa-check-square-o');
+
+            // remove sorting id append
+            newSortingMode = newSortingMode.replace('sorting_', '');
+
+            // Switch sorting mode and reload stream
+            getStream().sort = newSortingMode;
+            getStream().init();
+        });
+    };
+
+    module.export({
+        StreamEntry: StreamEntry,
+        Stream: Stream,
+        getStream: getStream,
+        getEntry: getEntry,
+        init: init
+    });
 });
+
+/* TODO:
+ Stream.prototype.wallStick = function (url) {
+ $.ajax({
+ dataType: "json",
+ type: 'post',
+ url: url
+ }).done(function (data) {
+ if (data.success) {
+ if (currentStream) {
+ $.each(data.wallEntryIds, function (k, wallEntryId) {
+ currentStream.deleteEntry(wallEntryId);
+ currentStream.prependEntry(wallEntryId);
+ });
+ $('html, body').animate({scrollTop: 0}, 'slow');
+ }
+ } else {
+ alert(data.errorMessage);
+ }
+ });
+ };
+ 
+ Stream.prototype.wallUnstick = function (url) {
+ $.ajax({
+ dataType: "json",
+ type: 'post',
+ url: url
+ }).done(function (data) {
+ if (data.success) {
+ //Reload the whole stream, since we have to reorder the entries
+ currentStream.showStream();
+ }
+ });
+ };
+ 
+ /**
+ * Click Handler for Archive Link of Wall Posts
+ * (archiveLink.php)
+ * 
+ * @param {type} className
+ * @param {type} id
+ 
+ Stream.prototype.wallArchive = function (id) {
+ 
+ url = wallArchiveLinkUrl.replace('-id-', id);
+ 
+ $.ajax({
+ dataType: "json",
+ type: 'post',
+ url: url
+ }).done(function (data) {
+ if (data.success) {
+ if (currentStream) {
+ $.each(data.wallEntryIds, function (k, wallEntryId) {
+ //currentStream.reloadWallEntry(wallEntryId);
+ // fade out post
+ setInterval(fadeOut(), 1000);
+ 
+ function fadeOut() {
+ // fade out current archived post
+ $('#wallEntry_' + wallEntryId).fadeOut('slow');
+ }
+ });
+ }
+ }
+ });
+ };
+ 
+ 
+ /**
+ * Click Handler for Un Archive Link of Wall Posts
+ * (archiveLink.php)
+ * 
+ * @param {type} className
+ * @param {type} id
+ 
+ Stream.prototype.wallUnarchive = function (id) {
+ url = wallUnarchiveLinkUrl.replace('-id-', id);
+ 
+ $.ajax({
+ dataType: "json",
+ type: 'post',
+ url: url
+ }).done(function (data) {
+ if (data.success) {
+ if (currentStream) {
+ $.each(data.wallEntryIds, function (k, wallEntryId) {
+ currentStream.reloadWallEntry(wallEntryId);
+ });
+ 
+ }
+ }
+ });
+ };
+ 
+ 
+ /*
+ module.StreamItem.prototype.highlightContent = function () {
+ var $content = this.getContent();
+ $content.addClass('highlight');
+ $content.delay(200).animate({backgroundColor: 'transparent'}, 1000, function () {
+ $content.removeClass('highlight');
+ $content.css('backgroundColor', '');
+ });
+ };
+ */    
