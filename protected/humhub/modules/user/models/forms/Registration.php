@@ -317,6 +317,8 @@ class Registration extends HForm
         if ($this->_groupUser === null) {
             $this->_groupUser = new GroupUser();
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
+            // assign default value for group_id
+            $this->_groupUser->group_id = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
         }
 
         return $this->_groupUser;
