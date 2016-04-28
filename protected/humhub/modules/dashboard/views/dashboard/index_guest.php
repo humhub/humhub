@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-8">
             <?php
-            echo \humhub\modules\content\widgets\Stream::widget([
+            echo \humhub\modules\stream\widgets\StreamViewer::widget([
                 'streamAction' => '//dashboard/dashboard/stream',
                 'showFilters' => false,
                 'messageStreamEmpty' => Yii::t('DashboardModule.views_dashboard_index_guest', '<b>No public contents to display found!</b>'),
@@ -19,4 +19,4 @@
             ?>
         </div>
     </div>
-</div>
+</div> 
