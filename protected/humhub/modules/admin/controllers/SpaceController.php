@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -54,7 +54,7 @@ class SpaceController extends Controller
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SpaceController', 'Saved'));
-            $this->redirect(Url::toRoute('settings'));
+            return $this->redirect(Url::toRoute('settings'));
         }
 
         return $this->render('settings', array('model' => $form));

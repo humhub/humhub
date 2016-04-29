@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -174,7 +174,7 @@ class AccountController extends Controller
         if (!$isSpaceOwner && $model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->delete();
             Yii::$app->user->logout();
-            $this->redirect(Yii::$app->homeUrl);
+            return $this->redirect(Yii::$app->homeUrl);
         }
 
         return $this->render('delete', array(

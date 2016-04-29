@@ -51,7 +51,7 @@ class AuthController extends Controller
 
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::$app->user->isGuest) {
-            $this->redirect(Yii::$app->user->returnUrl);
+            return $this->redirect(Yii::$app->user->returnUrl);
         }
 
         // Show/Allow Anonymous Registration
@@ -322,7 +322,7 @@ class AuthController extends Controller
             Yii::$app->getResponse()->getCookies()->add($cookie);
         }
 
-        $this->redirect(Yii::$app->homeUrl);
+        return $this->redirect(Yii::$app->homeUrl);
     }
 
     /**
