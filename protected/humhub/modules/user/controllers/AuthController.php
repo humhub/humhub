@@ -68,7 +68,7 @@ class AuthController extends Controller
     {
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::$app->user->isGuest) {
-            $this->redirect(Yii::$app->user->returnUrl);
+            return $this->redirect(Yii::$app->user->returnUrl);
         }
 
         // Login Form Handling
