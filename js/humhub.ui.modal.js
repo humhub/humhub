@@ -18,7 +18,7 @@
 humhub.initModule('ui.modal', function (module, require, $) {
     var object = require('util').object;
     var additions = require('additions');
-
+    var config = humhub.config.getModuleConfig('ui.modal');
     //Keeps track of all initialized modals
     var modals = [];
 
@@ -37,7 +37,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      */
     var Modal = function (id) {
         this.$modal = $('#' + id);
-        if (!this.$modal.lengh) {
+        if (!this.$modal.length) {
             this.createModal(id);
         }
         this.initModal();
@@ -86,7 +86,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
     Modal.prototype.close = function () {
         var that = this;
         this.$modal.fadeOut('fast', function () {
-            that.getContent().html('');
+            that.$modal.modal('hide');
             that.reset();
         });
     };
@@ -105,7 +105,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.reset = function () {
-        this.content('<div class="modal-body"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div>');
+        this.setBody('div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
         this.isFilled = false;
     };
 
@@ -156,7 +156,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
             this.setTitle(title);
             this.setBody('');
             this.setErrorMessage(message);
-            this.$modal.show();
+            this.show();
         } else {
             //TODO: allow to set errorMessage and title even for inline messages
             this.setErrorMessage(message);
@@ -205,7 +205,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.show = function () {
-        this.$modal.show();
+        this.$modal.modal('show');
     };
 
     /**
@@ -285,21 +285,63 @@ humhub.initModule('ui.modal', function (module, require, $) {
         return this.$modal.find('.modal-body');
     };
     
-    var ConfirmModal = function(id, confirmHandler) {
+    var ConfirmModal = function(id, cfg) {
         Modal.call(this, id);
-        this.initButtons();
-    };
-    
-    ConfirmModal.prototype.initButtons = function(confirmHandler) {
-        this.$confirm = this.$modal.find('[data-modal-submit]');
-        this.$confirm.on('click', confirmHandler);
     };
     
     object.inherits(ConfirmModal, Modal);
     
+    ConfirmModal.prototype.open = function(cfg) {
+        this.clear();
+        cfg['header'] = cfg['header'] || config['defaultConfirmHeader'];
+        cfg['body'] = cfg['body'] || config['defaultConfirmBody'];
+        cfg['confirmText'] = cfg['confirmText'] || config['defaultConfirmText'];
+        cfg['cancleText'] = cfg['cancleText'] || config['defaultCancelText'];
+        this.setTitle(cfg['header']);
+        this.setBody(cfg['body']);
+        this.initButtons(cfg);
+        this.show();
+    };
+    
+    ConfirmModal.prototype.clear = function(cfg) {
+        this.$modal.find('[data-modal-confirm]').off('click');
+        this.$modal.find('[data-modal-cancel]').off('click');
+    };
+    
+    ConfirmModal.prototype.initButtons = function(cfg) {
+        //Set button text
+        var $cancelButton = this.$modal.find('[data-modal-cancel]');
+        $cancelButton.text(cfg['cancleText']);
+        
+        var $confirmButton = this.$modal.find('[data-modal-confirm]');
+        $confirmButton.text(cfg['confirmText']);
+        
+        //Init handler
+        var that = this;
+        if(cfg['confirm']) {
+            $confirmButton.one('click', function(evt) {
+                that.clear();
+                cfg['confirm'](evt);
+            });
+        }
+
+        if(cfg['cancel']) {
+            $cancelButton.one('click', function(evt) {
+                that.clear();
+                cfg['cancel'](evt);
+            });
+        }
+        
+        
+    };
+    
     module.export({
         init: function () {
-            module.global = new Modal('global-modal');
+            module.global = new Modal('globalModal');
+            module.globalConfirm = new ConfirmModal('globalModalConfirm');
+            module.confirm = function(cfg) {
+                module.globalConfirm.open(cfg);
+            };
         },
         Modal: Modal
     });

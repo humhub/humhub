@@ -82,8 +82,8 @@ humhub.initModule('actions', function (module, require, $) {
 
         if (success) {
             _handler[id] = function (event) {
-                var path = $(this).data('url-' + event.type) || $(this).data('url');
-                client.ajax(path, cfg, event);
+                var path = $(this).data('action-url-' + event.type) || $(this).data('action-url');
+                client.ajax(path, cfg);
             };
         }
     };

@@ -82,6 +82,8 @@ AppAsset::register($this);
     <body>
     <?php $this->beginBody() ?>
 
+    <?php echo \humhub\widgets\JSConfig::widget(); ?>
+        
     <!-- start: first top navigation bar -->
     <div id="topbar-first" class="topbar">
         <div class="container">
@@ -138,17 +140,17 @@ AppAsset::register($this);
     <?php endif; ?>
     <!-- end: show content -->
 
-    <!-- start: Modal (every lightbox will/should use this construct to show content)-->
-    <div class="modal" id="globalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end: Modal -->
+    
+    <?php echo \humhub\widgets\Modal::widget([
+        'id' => 'globalModal'
+    ]); ?>
+    <?php echo \humhub\widgets\Modal::widget([
+        'id' => 'globalModalConfirm',
+        'size' => 'extra-small',
+        'centerText' => true,
+        'animation' => 'pulse',
+        'footer' => '<button data-modal-cancel data-modal-close class="btn btn-primary"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
+    ]); ?>
 
     <?php echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
     <?php $this->endBody() ?>

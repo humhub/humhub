@@ -35,7 +35,9 @@ Development
 * [Search](dev-environment.md)
 * [User](dev-environment.md)
 * [Build](dev-environment.md)
+* [Frontend](dev-javascript.md)
 * [Contributions](dev-contributing.md)
+
 
 Development - Modules
 ---------------------

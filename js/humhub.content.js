@@ -121,23 +121,26 @@ humhub.initModule('content', function(module, require, $) {
         }
         
         var that = this;
-        var url = this.data('content-delete-url');
-        if(url) {
-             client.post(url, {
-                 data: {
-                     id: that.getKey()
-                 },
-                 success: function(json) {
-                     json.success;
-                     that.remove();
-                 },
-                 error: function(json) {
-                     console.error(json);
-                 }
-             })
-        } else {
-            console.error('Content delete was called, but no url could be determined for '+this.contentBase);
-        }
+        require('ui.modal').confirm({
+            confirm : function() {
+                var url = that.data('content-delete-url');
+                if(url) {
+                     client.post(url, {
+                         data: {
+                             id: that.getKey()
+                         }
+                     }).then(function(response) {
+                         that.remove();
+                     }).catch(function(err) {
+                         console.error('Error removing content',err);
+                     });
+                } else {
+                    console.error('Content delete was called, but no url could be determined for '+this.contentBase);
+                }
+            }
+        });
+        
+        return;
     };
     
     Content.prototype.replaceContent = function(content) {
@@ -169,7 +172,13 @@ humhub.initModule('content', function(module, require, $) {
     
     Content.getInstance = function($contentBase) {
         $contentBase = (object.isString($contentBase)) ? $('#'+$contentBase) : $contentBase;
-        var ContentType = require($contentBase.data('content-base'));
+        var contentTypePath = $contentBase.data('content-base');
+        
+        if(!contentTypePath) {
+            return;
+        
+        }
+        var ContentType = require(contentTypePath);
         if(ContentType) {
             return new ContentType($contentBase);
         }

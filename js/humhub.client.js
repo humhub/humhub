@@ -32,7 +32,6 @@ humhub.initModule('client', function (module, require, $) {
      * Response Wrapper Object for easily accessing common data
      */
     var Response = function (data) {
-        this.data = data;
         $.extend(this, data);
     };
 
@@ -97,49 +96,48 @@ humhub.initModule('client', function (module, require, $) {
     var post = function(path, cfg) {
         var cfg = cfg || {};
         cfg.type = 'POST';
+        cfg.method = 'POST';
         return ajax(path, cfg);
     };
 
     var ajax = function (path, cfg) {
         return new Promise(function(resolve, reject) {
-            var cfg = cfg || {};
-            var async = cfg.async || true;
-            var dataType = cfg.dataType || "json";
-
+            cfg = cfg || {};
+            
+            //Wrap the actual error handler with our own and call 
+            var errorHandler = cfg.error;
             var error = function (xhr, textStatus, errorThrown, data, status) {
                 //Textstatus = "timeout", "error", "abort", "parsererror", "application"
-                if (cfg.error && object.isFunction(cfg.error)) {
+                if (errorHandler && object.isFunction(errorHandler)) {
                     var response = new Response();
                     response.setAjaxError(xhr, errorThrown, textStatus, data, status);
-                    cfg.error(response);
+                    errorHandler(response);
                 }
                 reject(xhr, textStatus, errorThrown, data, status);
             };
 
+            var successHandler = cfg.success;
             var success = function (json, textStatus, xhr) {
                 var response = new Response(json);
                 if (response.isError()) { //Application errors
                     return error(xhr, "application", response.getErrors(), json, response.getStatus() );
-                } else if (cfg.success) {
+                } else if (successHandler) {
                     response.textStatus = textStatus;
                     response.xhr = xhr;
-                    cfg.success(response);
+                    successHandler(response);
                 }
                 resolve(response);
             };
-
-            $.ajax({
-                url: path,
-                data: cfg.data,
-                type: cfg.type,
-                beforeSend: cfg.beforeSend,
-                processData: cfg.processData,
-                contentType: cfg.contentType,
-                async: async,
-                dataType: dataType,
-                success: success,
-                error: error
-            });
+            
+            //Overwriting the handler with our wrapper handler
+            cfg.success = success;
+            cfg.error = error;
+            cfg.url = path;
+            
+            //Setting some default values
+            cfg.dataType = cfg.dataType || "json";
+            
+            $.ajax(cfg);
         });
     };
 

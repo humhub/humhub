@@ -155,25 +155,32 @@ var humhub = humhub || (function($) {
     
     var config = {
         get : function(module, key, defaultVal) {
-            if(_isDefined(key)) {
+            if(arguments.length === 1) {
+                return this.getModuleConfig(module);
+            } else if(_isDefined(key)) {
                 var result = this.getModuleConfig(module)[key];
                 return (_isDefined(result)) ? result : defaultVal;
             }
         },
         getModuleConfig: function(module) {
-            if(!this.module) {
-                this.module = {};
+            if(!this[module]) {
+                this[module] = {};
             }
-            return this.module;
+            return this[module];
         },
 
         is : function(module, key, defaultVal) {
-            return this.get(module, key,defaultVal) === true;
+            return this.get(module, key, defaultVal) === true;
         },
 
         set : function(module, key, value) {
             //Moduleid with multiple values
-            if(arguments.length === 2) {
+            if(arguments.length === 1) {
+                var that = this;
+                $.each(module, function(moduleKey, config) {
+                    that.set(module, config);
+                });
+            }else if(arguments.length === 2) {
                 $.extend(this.getModuleConfig(module), key);
             } else if(arguments.length === 3) {
                 this.getModuleConfig(module)[key] = value;

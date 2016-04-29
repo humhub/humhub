@@ -155,25 +155,32 @@ var humhub = humhub || (function($) {
     
     var config = {
         get : function(module, key, defaultVal) {
-            if(_isDefined(key)) {
+            if(arguments.length === 1) {
+                return this.getModuleConfig(module);
+            } else if(_isDefined(key)) {
                 var result = this.getModuleConfig(module)[key];
                 return (_isDefined(result)) ? result : defaultVal;
             }
         },
         getModuleConfig: function(module) {
-            if(!this.module) {
-                this.module = {};
+            if(!this[module]) {
+                this[module] = {};
             }
-            return this.module;
+            return this[module];
         },
 
         is : function(module, key, defaultVal) {
-            return this.get(module, key,defaultVal) === true;
+            return this.get(module, key, defaultVal) === true;
         },
 
         set : function(module, key, value) {
             //Moduleid with multiple values
-            if(arguments.length === 2) {
+            if(arguments.length === 1) {
+                var that = this;
+                $.each(module, function(moduleKey, config) {
+                    that.set(module, config);
+                });
+            }else if(arguments.length === 2) {
                 $.extend(this.getModuleConfig(module), key);
             } else if(arguments.length === 3) {
                 this.getModuleConfig(module)[key] = value;
@@ -401,7 +408,6 @@ humhub.initModule('client', function (module, require, $) {
      * Response Wrapper Object for easily accessing common data
      */
     var Response = function (data) {
-        this.data = data;
         $.extend(this, data);
     };
 
@@ -466,49 +472,48 @@ humhub.initModule('client', function (module, require, $) {
     var post = function(path, cfg) {
         var cfg = cfg || {};
         cfg.type = 'POST';
+        cfg.method = 'POST';
         return ajax(path, cfg);
     };
 
     var ajax = function (path, cfg) {
         return new Promise(function(resolve, reject) {
-            var cfg = cfg || {};
-            var async = cfg.async || true;
-            var dataType = cfg.dataType || "json";
-
+            cfg = cfg || {};
+            
+            //Wrap the actual error handler with our own and call 
+            var errorHandler = cfg.error;
             var error = function (xhr, textStatus, errorThrown, data, status) {
                 //Textstatus = "timeout", "error", "abort", "parsererror", "application"
-                if (cfg.error && object.isFunction(cfg.error)) {
+                if (errorHandler && object.isFunction(errorHandler)) {
                     var response = new Response();
                     response.setAjaxError(xhr, errorThrown, textStatus, data, status);
-                    cfg.error(response);
+                    errorHandler(response);
                 }
                 reject(xhr, textStatus, errorThrown, data, status);
             };
 
+            var successHandler = cfg.success;
             var success = function (json, textStatus, xhr) {
                 var response = new Response(json);
                 if (response.isError()) { //Application errors
                     return error(xhr, "application", response.getErrors(), json, response.getStatus() );
-                } else if (cfg.success) {
+                } else if (successHandler) {
                     response.textStatus = textStatus;
                     response.xhr = xhr;
-                    cfg.success(response);
+                    successHandler(response);
                 }
                 resolve(response);
             };
-
-            $.ajax({
-                url: path,
-                data: cfg.data,
-                type: cfg.type,
-                beforeSend: cfg.beforeSend,
-                processData: cfg.processData,
-                contentType: cfg.contentType,
-                async: async,
-                dataType: dataType,
-                success: success,
-                error: error
-            });
+            
+            //Overwriting the handler with our wrapper handler
+            cfg.success = success;
+            cfg.error = error;
+            cfg.url = path;
+            
+            //Setting some default values
+            cfg.dataType = cfg.dataType || "json";
+            
+            $.ajax(cfg);
         });
     };
 
@@ -569,7 +574,7 @@ humhub.initModule('client', function (module, require, $) {
 humhub.initModule('ui.modal', function (module, require, $) {
     var object = require('util').object;
     var additions = require('additions');
-
+    var config = humhub.config.getModuleConfig('ui.modal');
     //Keeps track of all initialized modals
     var modals = [];
 
@@ -588,7 +593,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      */
     var Modal = function (id) {
         this.$modal = $('#' + id);
-        if (!this.$modal.lengh) {
+        if (!this.$modal.length) {
             this.createModal(id);
         }
         this.initModal();
@@ -637,7 +642,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
     Modal.prototype.close = function () {
         var that = this;
         this.$modal.fadeOut('fast', function () {
-            that.getContent().html('');
+            that.$modal.modal('hide');
             that.reset();
         });
     };
@@ -656,7 +661,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.reset = function () {
-        this.content('<div class="modal-body"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div>');
+        this.setBody('div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
         this.isFilled = false;
     };
 
@@ -707,7 +712,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
             this.setTitle(title);
             this.setBody('');
             this.setErrorMessage(message);
-            this.$modal.show();
+            this.show();
         } else {
             //TODO: allow to set errorMessage and title even for inline messages
             this.setErrorMessage(message);
@@ -756,7 +761,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.show = function () {
-        this.$modal.show();
+        this.$modal.modal('show');
     };
 
     /**
@@ -836,21 +841,63 @@ humhub.initModule('ui.modal', function (module, require, $) {
         return this.$modal.find('.modal-body');
     };
     
-    var ConfirmModal = function(id, confirmHandler) {
+    var ConfirmModal = function(id, cfg) {
         Modal.call(this, id);
-        this.initButtons();
-    };
-    
-    ConfirmModal.prototype.initButtons = function(confirmHandler) {
-        this.$confirm = this.$modal.find('[data-modal-submit]');
-        this.$confirm.on('click', confirmHandler);
     };
     
     object.inherits(ConfirmModal, Modal);
     
+    ConfirmModal.prototype.open = function(cfg) {
+        this.clear();
+        cfg['header'] = cfg['header'] || config['defaultConfirmHeader'];
+        cfg['body'] = cfg['body'] || config['defaultConfirmBody'];
+        cfg['confirmText'] = cfg['confirmText'] || config['defaultConfirmText'];
+        cfg['cancleText'] = cfg['cancleText'] || config['defaultCancelText'];
+        this.setTitle(cfg['header']);
+        this.setBody(cfg['body']);
+        this.initButtons(cfg);
+        this.show();
+    };
+    
+    ConfirmModal.prototype.clear = function(cfg) {
+        this.$modal.find('[data-modal-confirm]').off('click');
+        this.$modal.find('[data-modal-cancel]').off('click');
+    };
+    
+    ConfirmModal.prototype.initButtons = function(cfg) {
+        //Set button text
+        var $cancelButton = this.$modal.find('[data-modal-cancel]');
+        $cancelButton.text(cfg['cancleText']);
+        
+        var $confirmButton = this.$modal.find('[data-modal-confirm]');
+        $confirmButton.text(cfg['confirmText']);
+        
+        //Init handler
+        var that = this;
+        if(cfg['confirm']) {
+            $confirmButton.one('click', function(evt) {
+                that.clear();
+                cfg['confirm'](evt);
+            });
+        }
+
+        if(cfg['cancel']) {
+            $cancelButton.one('click', function(evt) {
+                that.clear();
+                cfg['cancel'](evt);
+            });
+        }
+        
+        
+    };
+    
     module.export({
         init: function () {
-            module.global = new Modal('global-modal');
+            module.global = new Modal('globalModal');
+            module.globalConfirm = new ConfirmModal('globalModalConfirm');
+            module.confirm = function(cfg) {
+                module.globalConfirm.open(cfg);
+            };
         },
         Modal: Modal
     });
@@ -938,8 +985,8 @@ humhub.initModule('actions', function (module, require, $) {
 
         if (success) {
             _handler[id] = function (event) {
-                var path = $(this).data('url-' + event.type) || $(this).data('url');
-                client.ajax(path, cfg, event);
+                var path = $(this).data('action-url-' + event.type) || $(this).data('action-url');
+                client.ajax(path, cfg);
             };
         }
     };
@@ -1138,23 +1185,26 @@ humhub.initModule('content', function(module, require, $) {
         }
         
         var that = this;
-        var url = this.data('content-delete-url');
-        if(url) {
-             client.post(url, {
-                 data: {
-                     id: that.getKey()
-                 },
-                 success: function(json) {
-                     json.success;
-                     that.remove();
-                 },
-                 error: function(json) {
-                     console.error(json);
-                 }
-             })
-        } else {
-            console.error('Content delete was called, but no url could be determined for '+this.contentBase);
-        }
+        require('ui.modal').confirm({
+            confirm : function() {
+                var url = that.data('content-delete-url');
+                if(url) {
+                     client.post(url, {
+                         data: {
+                             id: that.getKey()
+                         }
+                     }).then(function(response) {
+                         that.remove();
+                     }).catch(function(err) {
+                         console.error('Error removing content',err);
+                     });
+                } else {
+                    console.error('Content delete was called, but no url could be determined for '+this.contentBase);
+                }
+            }
+        });
+        
+        return;
     };
     
     Content.prototype.replaceContent = function(content) {
@@ -1186,7 +1236,13 @@ humhub.initModule('content', function(module, require, $) {
     
     Content.getInstance = function($contentBase) {
         $contentBase = (object.isString($contentBase)) ? $('#'+$contentBase) : $contentBase;
-        var ContentType = require($contentBase.data('content-base'));
+        var contentTypePath = $contentBase.data('content-base');
+        
+        if(!contentTypePath) {
+            return;
+        
+        }
+        var ContentType = require(contentTypePath);
         if(ContentType) {
             return new ContentType($contentBase);
         }
