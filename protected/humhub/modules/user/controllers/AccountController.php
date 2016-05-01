@@ -93,10 +93,12 @@ class AccountController extends Controller
 
         $model->tags = $user->tags;
         $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
+        $model->show_share_panel = $user->getSetting("hideSharePanel", "share");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
+            $user->setSetting("hideSharePanel", $model->show_share_panel, "share");
             $user->language = $model->language;
             $user->tags = $model->tags;
             $user->time_zone = $model->timeZone;
