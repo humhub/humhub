@@ -4,7 +4,6 @@
  */
 humhub.initModule('client', function (module, require, $) {
     var object = require('util').object;
-    var scripts = require('scripts');
     
     var init = function() {
         /*$.ajaxPrefilter('html', function(options, originalOptions, jqXHR) {

@@ -86,7 +86,11 @@ var humhub = humhub || (function($) {
         };
         
         //Setup the module
-        module(instance, require, $);
+        try {
+            module(instance, require, $);
+        } catch(err) {
+            console.error('Error while creating module: '+id, err);
+        }
         
         //Initialize the module when document is ready
         if(!initialized) {
@@ -233,7 +237,11 @@ var humhub = humhub || (function($) {
     $(document).ready(function() {
         $.each(initialModules, function(i, module) {
            if(module.init) {
-               module.init();
+               try {
+                    module.init();
+               } catch(err) {
+                   console.error('Could not initialize module: '+module.id, err);
+               }
            } 
            initialized = true;
            console.log('Module initialized: '+module.id);

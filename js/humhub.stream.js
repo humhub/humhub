@@ -8,7 +8,6 @@ humhub.initModule('stream', function (module, require, $) {
     var object = util.object;
     var string = util.string;
     var client = require('client');
-    var modal = require('modal');
     var Content = require('content').Content;
 
     var STREAM_INIT_COUNT = 8;
@@ -67,7 +66,6 @@ humhub.initModule('stream', function (module, require, $) {
         this.$ = (object.isString(container)) ? $('#' + container) : container;
         
         if (!this.$.length) {
-            console.error('Could not initialize stream, invalid container given'+ container);
             return;
         }
         
@@ -302,7 +300,8 @@ humhub.initModule('stream', function (module, require, $) {
 
     var getStream = function () {
         if (!module.instance) {
-            module.instance = new Stream($('[data-stream]'));
+            var $stream = $('[data-stream]').first();
+            module.instance = $stream.length ? new Stream($stream) : undefined;
         }
         return module.instance;
     };
@@ -312,7 +311,15 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     var init = function () {
-        var stream = getStream().init();
+        var stream = getStream();
+        
+        if(!stream) {
+            console.log('Non-Stream Page!');
+            return;
+        } 
+        
+        stream.init();
+        
         $(window).scroll(function () {
             if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                 if (stream && !stream.loading && !stream.isShowSingleEntry() && !stream.lastEntryLoaded) {

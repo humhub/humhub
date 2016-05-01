@@ -1,85 +1,41 @@
-@import "lib.less";
-@import "base.less";
-@import "modules/login.less";
-@import "modules/layout.less";
-@import "modules/media.less";
+@HUMHUB:  "../../../HumHub/css/less";
 
-// Modules
-.module-installed {
-  opacity: 0.5;
-  .label-success {
-    background-color: @background3;
-  }
-}
-
-//
-// Dropdowns todo use mixin
-// --------------------------------------------------
-.modal,
-.panel,
-.nav-tabs {
-  .dropdown-menu {
-    border: 1px solid @background3;
-    li.divider {
-      background-color: @background1;
-      border-bottom: none;
-      margin: 9px 1px !important;
-    }
-    li {
-      border-left: 3px solid white;
-      a {
-        color: @font3;
-        font-size: 14px;
-        font-weight: 400;
-        padding: 4px 15px;
-        i {
-          margin-right: 5px;
-        }
-      }
-      a:hover {
-        background: none;
-      }
-    }
-    li:hover,
-    li.selected {
-      border-left: 3px solid @info;
-      background-color: @background1 !important;
-    }
-  }
-}
-
-@import "modules/panels.less";
-@import "modules/pagination.less";
-@import "modules/thumbnails.less";
-@import "modules/nav.less";
-@import "modules/buttons.less";
-@import "modules/forms.less";
-@import "modules/labels.less";
-@import "modules/alerts.less";
-@import "modules/badges.less";
-@import "modules/list-group.less";
-@import "modules/progressbar.less";
-@import "modules/tooltips.less";
-@import "modules/tables.less";
-@import "modules/comments.less";
-@import "modules/gridview.less";
-@import "modules/tags.less";
-@import "modules/placeholder.less";
-@import "modules/picker.less";
-@import "modules/oembed.less";
-@import "modules/activities.less";
-@import "modules/stream.less";
-@import "modules/content-form.less";
-@import "modules/files.less";
-@import "modules/tour.less";
-@import "modules/ekko-lightbox.less";
-@import "modules/loader.less";
-@import "modules/space.less";
-@import "modules/markdown.less";
-@import "modules/notification.less";
-@import "modules/profile.less";
-@import "modules/jquery-ui.less";
-@import "modules/share.less";
-
-
-
+@import "@{HUMHUB}/base/lib.less";
+@import "@{HUMHUB}/base/base.less";
+@import "@{HUMHUB}/modules/login.less";
+@import "@{HUMHUB}/modules/layout.less";
+@import "@{HUMHUB}/modules/media.less";
+@import "@{HUMHUB}/modules/modules.less";
+@import "@{HUMHUB}/modules/dropdown.less";
+@import "@{HUMHUB}/modules/panels.less";
+@import "@{HUMHUB}/modules/pagination.less";
+@import "@{HUMHUB}/modules/thumbnails.less";
+@import "@{HUMHUB}/modules/nav.less";
+@import "@{HUMHUB}/modules/buttons.less";
+@import "@{HUMHUB}/modules/forms.less";
+@import "@{HUMHUB}/modules/labels.less";
+@import "@{HUMHUB}/modules/alerts.less";
+@import "@{HUMHUB}/modules/badges.less";
+@import "@{HUMHUB}/modules/list-group.less";
+@import "@{HUMHUB}/modules/progressbar.less";
+@import "@{HUMHUB}/modules/tooltips.less";
+@import "@{HUMHUB}/modules/tables.less";
+@import "@{HUMHUB}/modules/comments.less";
+@import "@{HUMHUB}/modules/gridview.less";
+@import "@{HUMHUB}/modules/tags.less";
+@import "@{HUMHUB}/modules/placeholder.less";
+@import "@{HUMHUB}/modules/picker.less";
+@import "@{HUMHUB}/modules/oembed.less";
+@import "@{HUMHUB}/modules/activities.less";
+@import "@{HUMHUB}/modules/stream.less";
+@import "@{HUMHUB}/modules/content-form.less";
+@import "@{HUMHUB}/modules/files.less";
+@import "@{HUMHUB}/modules/tour.less";
+@import "@{HUMHUB}/modules/ekko-lightbox.less";
+@import "@{HUMHUB}/modules/loader.less";
+@import "@{HUMHUB}/modules/space.less";
+@import "@{HUMHUB}/modules/markdown.less";
+@import "@{HUMHUB}/modules/notification.less";
+@import "@{HUMHUB}/modules/profile.less";
+@import "@{HUMHUB}/modules/jquery-ui.less";
+@import "@{HUMHUB}/modules/share.less";
