@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Created At' => '',
+  'Created At' => 'Erstellt am',
   'Created By' => 'Erstellt von',
   'Last Visit' => 'Letzter Besuch',
-  'Originator User ID' => '',
-  'Request Message' => '',
+  'Originator User ID' => 'Ersteller User ID',
+  'Request Message' => 'Anfrage Nachricht',
   'Status' => 'Status',
-  'Updated At' => '',
+  'Updated At' => 'Aktualisiert am',
   'Updated By' => 'Aktualisiert von',
 );

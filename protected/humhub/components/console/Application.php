@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -34,9 +34,11 @@ class Application extends \yii\console\Application
 
         if ($this->isDatabaseInstalled()) {
             $baseUrl = Setting::get('baseUrl');
-            Yii::setAlias(("@web"), $baseUrl);
-            $this->urlManager->scriptUrl = $baseUrl;
-            $this->urlManager->baseUrl = $baseUrl;
+            if ($baseUrl !== null) {
+                Yii::setAlias(("@web"), $baseUrl);
+                $this->urlManager->scriptUrl = $baseUrl;
+                $this->urlManager->baseUrl = $baseUrl;
+            }
         }
     }
 
@@ -64,7 +66,7 @@ class Application extends \yii\console\Application
         if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
             return true;
         }
-            
+
         return false;
     }
 
