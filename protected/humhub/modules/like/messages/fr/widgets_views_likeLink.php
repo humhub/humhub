@@ -1,6 +1,6 @@
 <?php
 return array (
-  ' likes this.' => ' aiment ça.',
+  ' likes this.' => ' aime ça.',
   'Like' => 'Aime',
   'Unlike' => 'N\'aime plus',
   'You' => 'Vous',
