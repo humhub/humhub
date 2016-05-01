@@ -11,7 +11,7 @@ Authentication
     'components' => [
         // ...
         'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
+            'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [
                 'github' => [
                     'class' => 'yii\authclient\clients\GitHub',
@@ -46,7 +46,7 @@ Authentication
     'components' => [
         // ...
         'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
+            'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [
                 'facebook' => [
                     'class' => 'yii\authclient\clients\Facebook',
