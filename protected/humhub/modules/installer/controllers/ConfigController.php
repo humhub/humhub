@@ -57,14 +57,14 @@ class ConfigController extends Controller
 
             // Database Connection seems not to work
             if (!$this->module->checkDBConnection()) {
-                $this->redirect(Url::to(['/installer/setup']));
+                $this->redirect(['/installer/setup']);
                 return false;
             }
 
             // When not at index action, verify that database is not already configured
             if ($action->id != 'finished') {
                 if ($this->module->isConfigured()) {
-                    $this->redirect(Url::to(['finished']));
+                    $this->redirect(['finished']);
                     return false;
                 }
             }
@@ -480,7 +480,7 @@ class ConfigController extends Controller
 
         \humhub\libs\DynamicConfig::rewrite();
 
-        $this->redirect(['finished']);
+        return $this->redirect(['finished']);
     }
 
     /**

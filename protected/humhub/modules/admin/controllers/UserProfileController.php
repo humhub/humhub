@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\ProfileFieldCategory;
@@ -53,7 +54,7 @@ class UserProfileController extends Controller
         $category->translation_category = $category->getTranslationCategory();
 
         if ($category->load(Yii::$app->request->post()) && $category->validate() && $category->save()) {
-            return $this->redirect(Url::to(['/admin/user-profile']));
+            return $this->redirect(['/admin/user-profile']);
         }
 
         return $this->render('editCategory', array('category' => $category));
@@ -75,7 +76,7 @@ class UserProfileController extends Controller
 
         $category->delete();
 
-        return $this->redirect(Url::to(['/admin/user-profile']));
+        return $this->redirect(['/admin/user-profile']);
     }
 
     public function actionEditField()
@@ -135,12 +136,12 @@ class UserProfileController extends Controller
             $fieldType = $form->models[$field->field_type_class];
 
             if ($field->save() && $fieldType->save()) {
-                return $this->redirect(Url::to(['/admin/user-profile']));
+                return $this->redirect(['/admin/user-profile']);
             }
         }
         if ($form->submitted('delete')) {
             $field->delete();
-            return $this->redirect(Url::to(['/admin/user-profile']));
+            return $this->redirect(['/admin/user-profile']);
         }
 
 

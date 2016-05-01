@@ -64,11 +64,11 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionIndex()
     {
-
-        if (\humhub\modules\user\models\Group::find()->count() > 1)
-            $this->redirect(Url::to(['groups']));
-        else
-            $this->redirect(Url::to(['members']));
+        if (\humhub\modules\user\models\Group::find()->count() > 1) {
+            return $this->redirect(['groups']);
+        } else {
+            return $this->redirect(['members']);
+        }
     }
 
     /**
