@@ -51,7 +51,7 @@ class SettingController extends Controller
 
     public function actionIndex()
     {
-        Yii::$app->response->redirect(Url::toRoute('basic'));
+        return $this->redirect(['basic']);
     }
 
     /**
@@ -106,7 +106,7 @@ class SettingController extends Controller
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
-            return Yii::$app->response->redirect(Url::toRoute('/admin/setting/basic'));
+            return $this->redirect(['/admin/setting/basic']);
         }
 
         return $this->render('basic', array('model' => $form));
@@ -213,7 +213,7 @@ class SettingController extends Controller
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
-            Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication-ldap'));
+            return $this->redirect(['/admin/setting/authentication-ldap']);
         }
 
 
@@ -229,7 +229,7 @@ class SettingController extends Controller
                 $userCount = $ldap->count(Setting::Get('userFilter', 'authentication_ldap'), Setting::Get('baseDn', 'authentication_ldap'), \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
             } catch (\Zend\Ldap\Exception\LdapException $ex) {
                 $errorMessage = $ex->getMessage();
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
         }
@@ -237,9 +237,10 @@ class SettingController extends Controller
         return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
     }
 
-    public function actionLdapRefresh() {
+    public function actionLdapRefresh()
+    {
         Ldap::getInstance()->refreshUsers();
-        Yii::$app->response->redirect(Url::toRoute('/admin/setting/authentication-ldap'));
+        return $this->redirect(['/admin/setting/authentication-ldap']);
     }
     
     /**
@@ -262,7 +263,7 @@ class SettingController extends Controller
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
 
-            return Yii::$app->response->redirect(Url::toRoute('/admin/setting/caching'));
+            return $this->redirect(['/admin/setting/caching']);
         }
 
         $cacheTypes = array(
@@ -285,7 +286,7 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->trackingHtmlCode = Setting::SetText('trackingHtmlCode', $form->trackingHtmlCode);
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
-            Yii::$app->response->redirect(Url::toRoute('/admin/setting/statistic'));
+            return $this->redirect(['/admin/setting/statistic']);
         }
 
         return $this->render('statistic', array('model' => $form));
@@ -348,7 +349,7 @@ class SettingController extends Controller
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
-            Yii::$app->response->redirect(Url::toRoute('/admin/setting/mailing-server'));
+            return $this->redirect(['/admin/setting/mailing-server']);
         }
 
         $encryptionTypes = array('' => 'None', 'ssl' => 'SSL', 'tls' => 'TLS');
@@ -395,7 +396,7 @@ class SettingController extends Controller
                 DynamicConfig::rewrite();
 
                 Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
-                Yii::$app->response->redirect(Url::toRoute('/admin/setting/design'));
+                return $this->redirect(['/admin/setting/design']);
             }
         }
 
@@ -417,7 +418,7 @@ class SettingController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->canAdminAlwaysDeleteContent = Setting::Set('canAdminAlwaysDeleteContent', $form->canAdminAlwaysDeleteContent, 'security');
-            Yii::$app->response->redirect(Url::toRoute('/admin/setting/security'));
+            return $this->redirect(['/admin/setting/security']);
         }
         return $this->render('security', array('model' => $form));
     }
@@ -452,7 +453,7 @@ class SettingController extends Controller
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
 
-            return Yii::$app->response->redirect(Url::toRoute('/admin/setting/file'));
+            return $this->redirect(['/admin/setting/file']);
         }
 
         // Determine PHP Upload Max FileSize
@@ -501,7 +502,7 @@ class SettingController extends Controller
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_ProxyController', 'Saved'));
-            return Yii::$app->response->redirect(Url::toRoute('/admin/setting/proxy'));
+            return $this->redirect(['/admin/setting/proxy']);
         }
 
         return $this->render('proxy', array('model' => $form));
@@ -539,7 +540,7 @@ class SettingController extends Controller
             $providers[$form->prefix] = $form->endpoint;
             UrlOembed::setProviders($providers);
 
-            return Yii::$app->response->redirect(Url::toRoute('/admin/setting/oembed'));
+            return $this->redirect(['/admin/setting/oembed']);
         }
 
         return $this->render('oembed_edit', array('model' => $form, 'prefix' => $prefix));
@@ -559,7 +560,7 @@ class SettingController extends Controller
             unset($providers[$prefix]);
             UrlOembed::setProviders($providers);
         }
-        return Yii::$app->response->redirect(Url::toRoute('/admin/setting/oembed'));
+        return $this->redirect(['/admin/setting/oembed']);
     }
 
     /**

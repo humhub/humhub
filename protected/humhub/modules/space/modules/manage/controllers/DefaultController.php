@@ -82,7 +82,7 @@ class DefaultController extends Controller
         $model = new DeleteForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $this->getSpace()->delete();
-            return $this->redirect(Url::home());
+            return $this->goHome();
         }
 
         return $this->render('delete', array('model' => $model, 'space' => $this->getSpace()));

@@ -62,7 +62,7 @@ class GroupController extends Controller
         
         if ($group->load(Yii::$app->request->post()) && $group->validate()) {
             $group->save();
-            $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $group->id]));
+            return $this->redirect(['/admin/group/manage-group-users', 'id' => $group->id]);
         }
         
         return $this->render('edit', [
@@ -113,7 +113,7 @@ class GroupController extends Controller
         $this->forcePostRequest();
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         $group->removeUser(Yii::$app->request->get('userId'));
-        $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $group->id]));
+        return $this->redirect(['/admin/group/manage-group-users', 'id' => $group->id]);
     }
 
     /**
@@ -135,7 +135,7 @@ class GroupController extends Controller
             $group->delete();
         }
         
-        $this->redirect(Url::toRoute("/admin/group"));
+        return $this->redirect(['/admin/group']);
     }
     
     public function actionEditManagerRole()
@@ -171,7 +171,7 @@ class GroupController extends Controller
         if($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->save();
         }
-        $this->redirect(Url::toRoute(["/admin/group/manage-group-users", 'id' => $form->groupId]));
+        return $this->redirect(['/admin/group/manage-group-users', 'id' => $form->groupId]);
     }
     
     public function actionNewMemberSearch()

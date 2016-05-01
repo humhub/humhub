@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
@@ -134,7 +135,7 @@ class UserController extends Controller
         if ($form->submitted('save') && $form->validate()) {
             if ($form->save()) {
                 
-                return $this->redirect(Url::toRoute('/admin/user'));
+                return $this->redirect(['/admin/user']);
             }
         }
 
@@ -146,7 +147,7 @@ class UserController extends Controller
         }
 
         if ($form->submitted('delete')) {
-            return $this->redirect(Url::toRoute(['/admin/user/delete', 'id' => $user->id]));
+            return $this->redirect(['/admin/user/delete', 'id' => $user->id]);
         }
 
         return $this->render('edit', array('hForm' => $form));
@@ -158,7 +159,7 @@ class UserController extends Controller
         $registration->enableEmailField = true;
         $registration->enableUserApproval = false;
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
-            return $this->redirect(Url::to(['edit', 'id' => $registration->getUser()->id]));
+            return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
         return $this->render('add', array('hForm' => $registration));
     }
@@ -192,7 +193,7 @@ class UserController extends Controller
                 }
             }
             $user->delete();
-            return $this->redirect(Url::to(['/admin/user']));
+            return $this->redirect(['/admin/user']);
         }
 
         return $this->render('delete', array('model' => $user));

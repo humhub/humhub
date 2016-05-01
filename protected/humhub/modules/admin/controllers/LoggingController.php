@@ -46,7 +46,7 @@ class LoggingController extends Controller
     {
         $this->forcePostRequest();
         \humhub\modules\admin\models\Log::deleteAll();
-        $this->redirect(Url::toRoute('index'));
+        return $this->redirect(['index']);
     }
 
 }
