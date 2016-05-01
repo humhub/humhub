@@ -171,15 +171,17 @@ Example of a `direct-handler`:
 
 ```html
 <!-- Somewhere in my view -->
-<button class="mySendButton" data-action-url="<?= Url::to(...) ?>">Send</button>
+<div id="#myContainer">
+    <button class="mySendButton" data-action-url="<?= Url::to(...) ?>">Send</button>
+</div>
 ```
 
 ```javascript
 //Somewhere in myModule
 var action = require('action');
 
-//Bind a click handler to all .mySpecialButtons within the page (also if they are inserted afterward)
-action.bindAction(document, 'click', '.mySendButton', function(evt) {
+//Bind a click handler to all .mySpecialButtons within  #myContainer
+action.bindAction('#myContainer', 'click', '.mySendButton', function(evt) {
     //this within a handler function always points to the triggered jQuery node
     client.post(this.data('action-url').then(function(resp) {...});
 });
@@ -188,7 +190,7 @@ action.bindAction(document, 'click', '.mySendButton', function(evt) {
 
 > TIP: In case of direct action-handlers, there is no need to define a action-handler like data-action-click="myHandler" on the trigger element.
 
-> NOTE: The first argument of the bindAction should be the first static (never removed from dom or lazy loaded) parent node of all nodes you wish to bind. To many delegated events to the `document` is a performance antipattern.
+> NOTE: The first argument of the bindAction should be the first static (never removed from dom or lazy loaded) parent node of all nodes you wish to bind. Too many delegated events to the `document` is a performance antipattern.
 
 Example registered `ajax-handler`:
 

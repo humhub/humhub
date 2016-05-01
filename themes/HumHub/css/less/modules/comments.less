@@ -1,0 +1,39 @@
+//
+// Comments
+// --------------------------------------------------
+.comment-container {
+  margin-top: 10px;
+}
+
+.comment {
+  .media {
+    position: relative !important;
+    margin-top: 0;
+    .nav-pills.preferences {
+      display: none;
+      right: -3px;
+      top: -3px;
+    }
+  }
+}
+
+.comment.guest-mode {
+  .media:last-child {
+    .wall-entry-controls {
+      margin-bottom: 0;
+    }
+    hr {
+      display: none;
+    }
+  }
+}
+
+// jPlayer Extension
+.comment {
+  .jp-progress {
+    background-color: #dbdcdd !important;
+  }
+  .jp-play-bar {
+    background: #cacaca;
+  }
+}

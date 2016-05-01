@@ -1,0 +1,85 @@
+@import "lib.less";
+@import "base.less";
+@import "modules/login.less";
+@import "modules/layout.less";
+@import "modules/media.less";
+
+// Modules
+.module-installed {
+  opacity: 0.5;
+  .label-success {
+    background-color: @background3;
+  }
+}
+
+//
+// Dropdowns todo use mixin
+// --------------------------------------------------
+.modal,
+.panel,
+.nav-tabs {
+  .dropdown-menu {
+    border: 1px solid @background3;
+    li.divider {
+      background-color: @background1;
+      border-bottom: none;
+      margin: 9px 1px !important;
+    }
+    li {
+      border-left: 3px solid white;
+      a {
+        color: @font3;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 4px 15px;
+        i {
+          margin-right: 5px;
+        }
+      }
+      a:hover {
+        background: none;
+      }
+    }
+    li:hover,
+    li.selected {
+      border-left: 3px solid @info;
+      background-color: @background1 !important;
+    }
+  }
+}
+
+@import "modules/panels.less";
+@import "modules/pagination.less";
+@import "modules/thumbnails.less";
+@import "modules/nav.less";
+@import "modules/buttons.less";
+@import "modules/forms.less";
+@import "modules/labels.less";
+@import "modules/alerts.less";
+@import "modules/badges.less";
+@import "modules/list-group.less";
+@import "modules/progressbar.less";
+@import "modules/tooltips.less";
+@import "modules/tables.less";
+@import "modules/comments.less";
+@import "modules/gridview.less";
+@import "modules/tags.less";
+@import "modules/placeholder.less";
+@import "modules/picker.less";
+@import "modules/oembed.less";
+@import "modules/activities.less";
+@import "modules/stream.less";
+@import "modules/content-form.less";
+@import "modules/files.less";
+@import "modules/tour.less";
+@import "modules/ekko-lightbox.less";
+@import "modules/loader.less";
+@import "modules/space.less";
+@import "modules/markdown.less";
+@import "modules/notification.less";
+@import "modules/profile.less";
+@import "modules/jquery-ui.less";
+@import "modules/share.less";
+
+
+

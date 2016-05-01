@@ -1,0 +1,139 @@
+//
+// Modals
+// --------------------------------------------------
+@media screen and (max-width: 768px) {
+  .modal-dialog {
+    width: auto !important;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+.modal-open {
+  overflow: visible;
+}
+
+.modal {
+  overflow-y: visible;
+}
+
+.modal-dialog-extra-small {
+  width: 400px;
+}
+
+.modal-dialog-small {
+  width: 500px;
+}
+
+.modal-dialog-normal {
+  width: 600px;
+}
+
+.modal-dialog-medium {
+  width: 768px;
+}
+
+.modal-dialog-large {
+  width: 900px;
+}
+
+@media screen and (max-width: 920px) {
+  .modal-dialog-large {
+    width: auto !important;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+.modal {
+  border: none;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-top: 20px;
+    color: @font3;
+    font-weight: 300;
+  }
+  h4.media-heading {
+    margin-top: 0;
+  }
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 200;
+  color: @font3;
+}
+
+.modal-dialog, .modal-content {
+   min-width:150px; 
+}
+
+.modal-content {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  border: none;
+  .modal-header {
+    padding: 20px 20px 0;
+    border-bottom: none;
+    text-align: center;
+    .close {
+      margin-top: 2px;
+      margin-right: 5px;
+    }
+  }
+  .modal-body {
+    padding: 20px;
+    font-size: 13px;
+    ul.medialist {
+      li > a {
+
+      }
+    }
+  }
+  .modal-footer {
+    margin-top: 0;
+    text-align: left;
+    padding: 10px 20px 30px;
+    border-top: none;
+    text-align: center;
+    hr {
+      margin-top: 0;
+    }
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.ekko-lightbox {
+  .modal-content {
+    .modal-body {
+      padding: 10px;
+    }
+    .modal-footer {
+      padding: 0 10px 10px;
+    }
+  }
+}
+
+.ekko-lightbox-nav-overlay a,
+.ekko-lightbox-nav-overlay a:hover {
+  color: @primary;
+}
+
+//
+// Animate.css modifications
+// --------------------------------------------------
+.modal-dialog.fadeIn,
+.modal-dialog.pulse {
+  -webkit-animation-duration: 200ms;
+  -moz-animation-duration: 200ms;
+  animation-duration: 200ms;
+}

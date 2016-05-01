@@ -1,0 +1,122 @@
+ul.tag_input {
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  padding: 0 0 9px 4px;
+  li img {
+    margin: 0 5px 0 0;
+  }
+}
+
+.tag_input_field {
+  outline: none;
+  border: none !important;
+  padding: 5px 4px 0 !important;
+  width: 170px;
+  margin: 2px 0 0 !important;
+}
+
+.userInput,
+.spaceInput {
+  background-color: @info;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 12px !important;
+  padding: 2px;
+  float: left;
+  margin: 3px 4px 0 0;
+}
+
+.userInput i,
+.spaceInput i {
+  padding: 0 6px;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 8px;
+}
+
+// Multi Dropdown (group select)
+.select2-container--default .select2-selection--multiple {
+    border: 2px solid #ededed !important;
+    background-image: url("../img/select_arrow.png") !important;
+    background-repeat: no-repeat;
+    background-position: right 16px;
+}
+
+.select2-container--default .select2-selection--focus {
+    border: 2px solid #6fdbe8 !important;
+}
+
+.select2-selection__choice {
+   background-color: #6fdbe8 !important;
+   padding: 5px 0px 5px 5px !important;
+   border: none !important;
+}
+
+.select2-search--inline { 
+    background-color: transparent !important;
+    padding: 5px 0px 5px 5px !important;
+}
+
+.select2-selection__choice__remove {
+    display:none !important;
+}
+
+// atwho Plugin (user mentioning)
+.atwho-view .cur {
+  border-left: 3px solid @info;
+  background-color: #f7f7f7 !important;
+}
+
+.atwho-user,
+.atwho-space,
+.atwho-input a {
+  color: @info;
+}
+
+.atwho-input a:hover {
+  color: @info;
+}
+
+.atwho-view strong {
+  background-color: #f9f0d2;
+}
+
+.atwho-view .cur strong {
+  background-color: #f9f0d2;
+}
+
+// Datepicker
+.ui-widget-header {
+  border: none !important;
+  background: #fff !important;
+  color: @font2 !important;
+  font-weight: 300 !important;
+}
+
+.ui-widget-content {
+  border: 1px solid #dddcda !important;
+  border-radius: 0 !important;
+  background: #fff;
+  color: @font3 !important;
+  -webkit-box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+  opacity: 0.2;
+}
+
+.ui-datepicker .ui-datepicker-prev:hover,
+.ui-datepicker .ui-datepicker-next:hover {
+  background: #fff !important;
+  border: none;
+  margin: 1px;
+}
