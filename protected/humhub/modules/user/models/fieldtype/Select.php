@@ -96,6 +96,7 @@ class Select extends BaseType
         return array($this->profileField->internal_name => array(
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
+                'readonly' => (!$this->profileField->editable),
                 'items' => $this->getSelectItems(),
                 'prompt' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Please select:'),
         ));
