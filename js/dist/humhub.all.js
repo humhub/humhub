@@ -624,15 +624,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
             that.close();
         }).on('click', '[data-modal-clear-error]', function () {
             that.clearErrorMessage();
-        }).on('click', function (evt) {
-            //We don't want to bubble this event to the modal root
-            evt.stopPropagation();
-        });
-
-        //A click on modal root (background) will close the modal
-        this.$modal.on('click', function () {
-            that.close();
-        });
+        }); 
     };
 
     /**
@@ -661,7 +653,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.reset = function () {
-        this.setBody('div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
+        this.setBody('<div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
         this.isFilled = false;
     };
 
