@@ -14,8 +14,8 @@
 $cssClass = ($entry->sticked) ? 'wall-entry sticked-entry' : 'wall-entry';
 
 if ($mode != "activity") : ?>
-    <div class="<?php echo $cssClass ?>" data-content-base="humhub.modules.stream.StreamEntry" 
-            data-content-pk="<?php echo $entry->id; ?>" data-stream-sticked="<?= $entry->sticked ?>">
+    <div class="<?php echo $cssClass ?>" data-stream-entry data-stream-sticked="<?= $entry->sticked ?>"
+         data-action-component="stream.StreamEntry" data-content-key="<?php echo $entry->id; ?>" >
 <?php endif; ?>
 
 <?php echo $content; ?>

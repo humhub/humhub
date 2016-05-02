@@ -177,17 +177,17 @@ var humhub = humhub || (function($) {
             return this.get(module, key, defaultVal) === true;
         },
 
-        set : function(module, key, value) {
+        set : function(moduleId, key, value) {
             //Moduleid with multiple values
             if(arguments.length === 1) {
                 var that = this;
-                $.each(module, function(moduleKey, config) {
-                    that.set(module, config);
+                $.each(moduleId, function(moduleKey, config) {
+                    that.set(moduleKey, config);
                 });
             }else if(arguments.length === 2) {
-                $.extend(this.getModuleConfig(module), key);
+                $.extend(this.getModuleConfig(moduleId), key);
             } else if(arguments.length === 3) {
-                this.getModuleConfig(module)[key] = value;
+                this.getModuleConfig(moduleId)[key] = value;
             }
         }
     };

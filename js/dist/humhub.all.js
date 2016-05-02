@@ -177,17 +177,17 @@ var humhub = humhub || (function($) {
             return this.get(module, key, defaultVal) === true;
         },
 
-        set : function(module, key, value) {
+        set : function(moduleId, key, value) {
             //Moduleid with multiple values
             if(arguments.length === 1) {
                 var that = this;
-                $.each(module, function(moduleKey, config) {
-                    that.set(module, config);
+                $.each(moduleId, function(moduleKey, config) {
+                    that.set(moduleKey, config);
                 });
             }else if(arguments.length === 2) {
-                $.extend(this.getModuleConfig(module), key);
+                $.extend(this.getModuleConfig(moduleId), key);
             } else if(arguments.length === 3) {
-                this.getModuleConfig(module)[key] = value;
+                this.getModuleConfig(moduleId)[key] = value;
             }
         }
     };
@@ -909,7 +909,101 @@ humhub.initModule('actions', function (module, require, $) {
     var object = require('util').object;
     var string = require('util').string;
     var client = require('client');
+    
+    var DATA_COMPONENT = 'action-component';
+    var DATA_COMPONENT_SELECTOR  = '[data-'+DATA_COMPONENT+']';
+   
+    var Component = function(container) {
+        if(!container) {
+            return;
+        }
+        this.$ = (object.isString(container)) ? $('#' + container) : container;
+        this.base = this.$.data(DATA_COMPONENT);
+    };
 
+    Component.prototype.data = function(dataSuffix) {
+        var result = this.$.data(dataSuffix);
+        if(!result) {
+            var parentComponent = this.parent();
+            if(parentComponent) {
+                return parentComponent.data(dataSuffix);
+            }
+        }
+        return result;
+    };
+    
+    Component.prototype.parent = function() {
+        var $parent = this.$.parent().closest(DATA_COMPONENT_SELECTOR);
+        if($parent.length) {
+            try {
+                var ParentType = require($parent.data(DATA_COMPONENT));
+                return new ParentType($parent);
+            } catch(err) {
+                console.error('Could not instantiate parent component: '+$parent.data(DATA_COMPONENT));
+            }
+        }
+    };
+    
+    Component.prototype.children = function() {
+        var result = [];
+        this.$.find(DATA_COMPONENT_SELECTOR).each(function() {
+            var component = Component.getInstance($(this));
+            if(component) {
+                result.push(component);
+            }
+        });
+        return result;
+    };
+    
+    Component.prototype.hasAction = function(action) {
+        return this.actions().indexOf(action) >= 0;
+    };
+    
+    Component.prototype.actions = function() {
+        return [];
+    };
+    
+    Component.getInstance = function($node) {
+        //Determine closest component node (parent or or given node)
+        $node = (object.isString($node)) ? $('#'+$node) : $node;
+        var $componentRoot = ($node.data(DATA_COMPONENT)) ? $node : Component.getClosestComponentNode($node);
+        
+        var componentType = $componentRoot.data(DATA_COMPONENT);
+        
+        var ComponentType = require(componentType);
+        if(ComponentType) {
+            return new ComponentType($componentRoot);
+        } else {
+            console.error('Tried to instantiate component with invalid type: '+componentType);
+        }
+    };
+    
+    Component.getClosestComponentNode = function($element) {
+        return $element.closest(DATA_COMPONENT_SELECTOR);
+    };
+    
+    /**
+     * Handles the given componentAction event. The event should provide the following properties:
+     * 
+     *  $trigger (required) : the trigger node of the event
+     *  handler (required)  : the handler functionn name to be executed on the component
+     *  type (optoinal)     : the event type 'click', 'change',...
+     * 
+     * @param {object} event - event object
+     * @returns {Boolean} true if the componentAction could be executed else false
+     */
+    Component.handleAction = function(event) {
+        var component = Component.getInstance(event.$trigger);
+        if(component) {
+            //Check if the content instance provides this actionhandler
+            if(event.handler && component[event.handler]) {
+                component[event.handler](event);
+                return true;
+            }
+        }
+        return false;
+    };
+    
     /**
      * Constructor for initializing the module.
      */
@@ -1029,19 +1123,33 @@ humhub.initModule('actions', function (module, require, $) {
             
             //Search and execute a stand alone handler or try to call the content action handler
             try {
+                //Direct action handler
                 if(object.isFunction(directHandler)) {
-                    //Direct action handler
                     directHandler.apply($trigger, [event]);
-                } else if (_handler[handlerId]) {
+                    return;
+                }
+                
+                //Component handler
+                if(Component.handleAction(event)) {
+                    return;
+                }
+                
+                //Registered handler
+                if(_handler[handlerId]) {
                     //Registered action handler
                     var handler = _handler[handlerId];
                     handler.apply($trigger, [event]);
-                } else if (!_handler['humhub.modules.content.actiontHandler'](event)) { //Content action handler
-                    //If the content handler did not accept this event we try to find a handler by namespace
-                    var splittedNS = handlerId.split('.');
-                    var handler = splittedNS[splittedNS.length - 1];
-                    var target = require(string.cutsuffix(handlerId, '.' + handler));
-                    target[handler]({type: type, $trigger: $trigger});
+                    return;
+                }
+                
+                //As last resort we try to call the action by namespace handler
+                var splittedNS = handlerId.split('.');
+                var handler = splittedNS[splittedNS.length - 1];
+                var target = require(string.cutsuffix(handlerId, '.' + handler));
+                if(object.isFunction(target)) {
+                    target[handler]({type: type, $trigger: $trigger}); 
+                } else {
+                    console.error('Could not determine actionhandler for: '+handlerId);
                 }
             } catch (e) {
                 //TODO: handle error !
@@ -1061,6 +1169,10 @@ humhub.initModule('actions', function (module, require, $) {
             }
         }
     };
+    
+     module.export({
+        Component: Component
+    });
 });;/**
  * This module provides an api for handling content objects e.g. Posts, Polls...
  *
@@ -1071,49 +1183,31 @@ humhub.initModule('content', function(module, require, $) {
     var client = require('client');
     var object = require('util').object;
     var actions = require('actions');
+    var Component = actions.Component;
+    
+    var DATA_CONTENT_KEY = "content-key";
+    var DATA_CONTENT_EDIT_URL = "content-edit-url";
+    var DATA_CONTENT_SAVE_SELECTOR = "[data-content-save]";
+    var DATA_CONTENT_DELETE_URL = "content-delete-url";
+    
     
     var Content = function(container) {
-        if(!container) { //Create content
-            return;
-        }
-        this.$ = (object.isString(container)) ? $('#' + container) : container;
-        this.contentBase = this.$.data('content-base');
+        Component.call(this, container);
     };
     
-    Content.prototype.getContentActions = function() {
+    object.inherits(Content, Component);
+    
+    Content.prototype.actions = function() {
         return ['create','edit','delete'];
     };
     
     Content.prototype.getKey = function () {
-        return this.$.data('content-pk');
-    };
-    
-    Content.prototype.data = function(dataSuffix) {
-        var result = this.$.data(dataSuffix);
-        if(!result) {
-            var parentContent = this.getParentContentBase();
-            if(parentContent) {
-                return parentContent.data(dataSuffix);
-            }
-        }
-        return result;
-    };
-    
-    Content.prototype.getParentContentBase = function() {
-        var $parent = this.$.parent().closest('[data-content-base]');
-        if($parent.length) {
-            try {
-                var ParentType = require($parent.data('content-base'));
-                return new ParentType($parent);
-            } catch(err) {
-                console.error('Could not instantiate parent content base: '+$parent.data('content-base'));
-            }
-        }
+        return this.$.data(DATA_CONTENT_KEY);
     };
     
     Content.prototype.create = function (addContentHandler) {
         //Note that this Content won't have an id, so the backend will create an instance
-        if(indexOf(this.getContentActions(), 'create') < 0) {
+        if(this.hasAction('create')) {
             return;
         }
         
@@ -1121,11 +1215,11 @@ humhub.initModule('content', function(module, require, $) {
     };
     
     Content.prototype.edit = function (successHandler) {
-        if(indexOf(this.getContentActions(), 'edit') < 0) {
+        if(!this.hasAction('edit')) {
             return;
         }
         
-        var editUrl = this.data('content-edit-url');
+        var editUrl = this.data(DATA_CONTENT_EDIT_URL);
         var contentId = this.getKey();
         var modal = require('ui.modal').global;
         
@@ -1148,7 +1242,7 @@ humhub.initModule('content', function(module, require, $) {
                 //Successfully retrieved the edit form, now show it within a modal
                 modal.content(response.getContent(), function() {
                     //Bind direct action handler we could use a global registeredHandler but this is more efficient
-                    actions.bindAction(modal.getBody(), 'click', '[data-content-save]', function(event) {
+                    actions.bindAction(modal.getBody(), 'click', DATA_CONTENT_SAVE_SELECTOR, function(event) {
                         client.submit(modal.getForm(), {
                             success : function(response) {
                                 if(object.isFunction(successHandler)) {
@@ -1179,14 +1273,14 @@ humhub.initModule('content', function(module, require, $) {
     };
     
     Content.prototype.delete = function () {
-        if(this.getContentActions().indexOf('delete') < 0) {
+        if(!this.hasAction('delete')) {
             return;
         }
         
         var that = this;
         require('ui.modal').confirm({
             confirm : function() {
-                var url = that.data('content-delete-url');
+                var url = that.data(DATA_CONTENT_DELETE_URL);
                 if(url) {
                      client.post(url, {
                          data: {
@@ -1198,27 +1292,12 @@ humhub.initModule('content', function(module, require, $) {
                          console.error('Error removing content',err);
                      });
                 } else {
-                    console.error('Content delete was called, but no url could be determined for '+this.contentBase);
+                    console.error('Content delete was called, but no url could be determined for '+this.base);
                 }
             }
         });
         
         return;
-    };
-    
-    Content.prototype.replaceContent = function(content) {
-        try {
-            var that = this;
-            this.$.animate({ opacity: 0 }, 'fast', function() {
-                that.$.html($(content).children());
-                that.$.stop().animate({ opacity: 1 }, 'fast');
-                if(that.highlight) {
-                    that.highlight();
-                }
-            });
-        } catch(e) {
-            console.error('Error occured while replacing content: '+this.$.attr('id') , e);
-        }
     };
     
     Content.prototype.remove = function() {
@@ -1229,62 +1308,8 @@ humhub.initModule('content', function(module, require, $) {
         });
     };
     
-    Content.getContentBase = function($element) {
-        return $element.closest('[data-content-base]');
-    };
-    
-    Content.getInstance = function($contentBase) {
-        $contentBase = (object.isString($contentBase)) ? $('#'+$contentBase) : $contentBase;
-        var contentTypePath = $contentBase.data('content-base');
-        
-        if(!contentTypePath) {
-            return;
-        
-        }
-        var ContentType = require(contentTypePath);
-        if(ContentType) {
-            return new ContentType($contentBase);
-        }
-    };
-    
-    var init = function() {
-        actions.registerHandler('humhub.modules.content.actiontHandler', function(event) {
-            return module.handleAction(event);
-        });
-    };
-    
-    /**
-     * Handles the given contentAction event. The event should provide the following properties:
-     * 
-     *  $trigger (required) : the trigger node of the event
-     *  handler (required)  : the handler functionn name to be executed on the content
-     *  type (optoinal)     : the event type 'click', 'change',...
-     * 
-     * @param {object} event - event object
-     * @returns {Boolean} true if the contentAction could be executed else false
-     */
-    handleAction = function(event) {
-        var $contentBase = Content.getContentBase(event.$trigger);
-        if($contentBase.length) {
-            //Initialize a content instance by means of the content-base type and execute the handler
-            var content = Content.getInstance($contentBase);
-            if(content) {
-                //Check if the content instance provides this actionhandler
-                if(event.handler && content[event.handler]) {
-                    content[event.handler](event);
-                    return true;
-                }
-            } else {
-                console.error('No ContentType found for '+$contentBase.data('content-base'));
-            }
-        }
-        return false;
-    };
-    
     module.export({
-        Content : Content,
-        init : init,
-        handleAction: handleAction
+        Content : Content
     });
 });;/**
  * Core module for managing Streams and StreamItems
@@ -1298,31 +1323,60 @@ humhub.initModule('stream', function (module, require, $) {
     var client = require('client');
     var Content = require('content').Content;
 
+    /**
+     * Number of initial stream enteis loaded when stream is initialized.
+     * @type Number
+     */
     var STREAM_INIT_COUNT = 8;
+    
+    /**
+     * Number of stream entries loaded with each request (except initial request)
+     * @type Number
+     */
     var STREAM_LOAD_COUNT = 4;
+    
+    /**
+     * Set on the stream root node to identify a stream. The value of this data
+     * attribute contains the stream url for loading new entries.
+     * @type String
+     */
+    var DATA_STREAM_SELECTOR = '[data-stream]';
+    
+    /**
+     * Set on a stream entry root node to identify stream-entries.
+     * @type String
+     */
+    var DATA_STREAM_ENTRY_SELECTOR = '[data-stream-entry]';
+    
+    /**
+     * If a data-stream-contentid is set on the stream root only one entry will
+     * be loaded. e.g. for permlinks
+     * @type String
+     */
+    var DATA_STREAM_CONTENTID = 'stream-contentid';
+    
 
     //TODO: load streamUrl from config
     //TODO: readonly
 
     /**
-     * Base class for all StreamContent
+     * Represents an stream entry within a stream.
      * @param {type} id
      * @returns {undefined}
      */
     var StreamEntry = function (id) {
-        this.$ = object.isString(id) ? this.$ = $('#' + id) : id;
-        Content.call(this);
+        Content.call(this, id);
     };
-    
+
     object.inherits(StreamEntry, Content);
-    
-    StreamEntry.prototype.getContentActions = function() {
+
+    StreamEntry.prototype.actions = function () {
         return ['delete', 'edit'];
     };
-    
+
     StreamEntry.prototype.delete = function () {
-        var content = this.getContentInstance();
-        if(content && content.delete) {
+        var content = this.getContentComponent();
+        if (content && content.delete) {
             //TODO: modalconfirm
             content.delete();
         } else {
@@ -1330,20 +1384,21 @@ humhub.initModule('stream', function (module, require, $) {
         }
     };
     
+    StreamEntry.prototype.getContentComponent = function () {
+        var children = this.children();
+        return children.length ? children[0] : undefined;
+    };
+
     StreamEntry.prototype.reload = function () {
         getStream().reload(this);
     };
 
     StreamEntry.prototype.edit = function () {
         //Search for data-content-edit-url on root.
-        //Call this url with data-content-pk
+        //Call this url with data-content-key
         //Trigger delete event
     };
 
-    StreamEntry.prototype.getContentInstance = function () {
-        return Content.getInstance(this.$.find('[data-content-base]'));
-    };
-    
     /**
      * Stream implementation.
      * 
@@ -1351,19 +1406,15 @@ humhub.initModule('stream', function (module, require, $) {
      * @returns {undefined}
      */
     var Stream = function (container) {
-        this.$ = (object.isString(container)) ? $('#' + container) : container;
-        
-        if (!this.$.length) {
-            return;
-        }
-        
+        Content.call(this, container);
+
         //If a contentId is set on the stream root we will only show the single content
-        if(this.$.data('stream-contentid')) {
-            this.contentId = parseInt(this.$.data('stream-contentid'));
+        if (this.$.data(DATA_STREAM_CONTENTID)) {
+            this.contentId = parseInt(this.$.data(DATA_STREAM_CONTENTID));
         }
-        
+
         this.$stream = this.$.find(".s2_stream");
-        
+
         //Cache some stream relevant data/nodes
         this.url = this.$.data('stream'); //TODO: set this in config instead of data field
         this.$loader = this.$stream.find(".streamLoader");
@@ -1373,16 +1424,14 @@ humhub.initModule('stream', function (module, require, $) {
         //TODO: make this configurable
         this.filters = [];
         this.sort = "c";
-        
-        Content.call(this);
     };
-    
+
     object.inherits(Stream, Content);
-    
-    Stream.prototype.getContentActions = function() {
+
+    Stream.prototype.getContentActions = function () {
         return [];
     };
-    
+
     /**
      * Initializes the stream, by clearing the stream and reloading initial stream entries,
      * this should be called if any filter/sort settings are changed or the stream
@@ -1400,9 +1449,9 @@ humhub.initModule('stream', function (module, require, $) {
         }
         return this;
     };
-    
-    Stream.prototype.clear = function() {
-        this.lastEntryLoaded = false;	
+
+    Stream.prototype.clear = function () {
+        this.lastEntryLoaded = false;
         this.readOnly = false;
         this.loading = false;
         this.$.find(".s2_streamContent").empty();
@@ -1415,34 +1464,34 @@ humhub.initModule('stream', function (module, require, $) {
         this.$filter.hide();
     };
 
-    Stream.prototype.loadSingleEntry = function(contentId) {
+    Stream.prototype.loadSingleEntry = function (contentId) {
         this.$.find('.back_button_holder').show();
         this.loadEntries(1, (contentId + 1), '');
     };
-    
-    Stream.prototype.reloadEntry = function(entry) {
+
+    Stream.prototype.reloadEntry = function (entry) {
         var that = this;
-        return new Promise(function(resolve, reject) {
-           entry = (entry instanceof StreamEntry) ? entry : that.getEntry(entry);
-        
-            if(!entry) {
-                console.warn('Attempt to reload of non existent entry: '+entry);
+        return new Promise(function (resolve, reject) {
+            entry = (entry instanceof StreamEntry) ? entry : that.getEntry(entry);
+
+            if (!entry) {
+                console.warn('Attempt to reload of non existent entry: ' + entry);
                 reject();
                 return;
             }
 
             var contentId = entry.getKey();
-            return that._load(1, (contentId + 1), '').then(function(response) {
-                  if(response.content[contentId]) {
-                      entry.replaceContent(response.content[contentId].output);
-                      resolve(entry);
-                  } else {
-                      console.warn('Reload failed: ContentId not found in response: '+contentId);
-                      reject();
-                  }
-            }, reject); 
+            return that._load(1, (contentId + 1), '').then(function (response) {
+                if (response.content[contentId]) {
+                    entry.replaceContent(response.content[contentId].output);
+                    resolve(entry);
+                } else {
+                    console.warn('Reload failed: ContentId not found in response: ' + contentId);
+                    reject();
+                }
+            }, reject);
         });
-           };
+    };
 
     Stream.prototype.loadEntries = function (limit, from, filter, sort) {
         if (this.loading || this.lastEntryLoaded) {
@@ -1454,14 +1503,14 @@ humhub.initModule('stream', function (module, require, $) {
         this.loading = true;
 
         //Overwrite the stream settings if provided
-        limit   = limit || STREAM_LOAD_COUNT;
-        from    = from  || this.getLastContentId();
-        filter  = filter || this.getFilterString();
-        sort    = sort  || this.sort;
-        
+        limit = limit || STREAM_LOAD_COUNT;
+        from = from || this.getLastContentId();
+        filter = filter || this.getFilterString();
+        sort = sort || this.sort;
+
         var that = this;
-        return new Promise(function(resolve, reject) {
-            that._load(limit, from, filter,sort).then(function(response) {
+        return new Promise(function (resolve, reject) {
+            that._load(limit, from, filter, sort).then(function (response) {
                 that.$loader.hide();
                 if (object.isEmpty(response.content)) {
                     that.lastEntryLoaded = true;
@@ -1470,11 +1519,11 @@ humhub.initModule('stream', function (module, require, $) {
                     that.lastEntryLoaded = response.is_last;
                     that.appendEntries(response);
                 }
-                
+
                 that.loading = false;
                 that.onChange();
                 resolve();
-            }).catch(function(err) {
+            }).catch(function (err) {
                 //TODO: handle error
                 that.loading = false;
                 that.$loader.hide();
@@ -1482,7 +1531,7 @@ humhub.initModule('stream', function (module, require, $) {
             });
         });
     };
-    
+
     Stream.prototype._load = function (limit, from, filter, sort) {
         return client.ajax(this.url, {
             data: {
@@ -1495,9 +1544,9 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     Stream.prototype.getLastContentId = function () {
-        var $lastEntry = this.$stream.find('[data-content-pk]').last();
+        var $lastEntry = this.$stream.find(DATA_STREAM_ENTRY_SELECTOR).last();
         if ($lastEntry.length) {
-            return $lastEntry.data('stream-contentid');
+            return $lastEntry.data(DATA_STREAM_CONTENTID);
         }
     };
 
@@ -1505,7 +1554,7 @@ humhub.initModule('stream', function (module, require, $) {
         var that = this;
         var result = '';
         $.each(response.contentIds, function (i, key) {
-            var $entry = that.$.find('[data-content-pk="' + key + '"]');
+            var $entry = that.getEntry(key);
             if ($entry.length) {
                 $entry.remove();
             }
@@ -1531,15 +1580,17 @@ humhub.initModule('stream', function (module, require, $) {
             this.$filter.hide();
         } else if (!hasEntries) {
             this.$.find('.emptyFilterStreamMessage').hide();
-        } else if(!this.isShowSingleEntry()) {
+        } else if (!this.isShowSingleEntry()) {
             this.$filter.show();
             this.$.find('.emptyStreamMessage').hide();
             this.$.find('.emptyFilterStreamMessage').hide();
         }
+        
+        this.$entryCache = this.getEntryNodes();
 
         //TODO: fire global event
     };
-    
+
     Stream.prototype.isShowSingleEntry = function () {
         return object.isDefined(this.contentId);
     };
@@ -1549,46 +1600,50 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     Stream.prototype.getEntryCount = function () {
-        return this.$.find('[data-content-pk]').length;
+        return this.$.find(DATA_STREAM_ENTRY_SELECTOR).length;
     };
-    
+
+    Stream.prototype.getEntryNodes = function () {
+        return this.$.find(DATA_STREAM_ENTRY_SELECTOR);
+    };
+
     Stream.prototype.hasFilter = function () {
         return this.filters.length > 0;
     };
-    
+
     Stream.prototype.getFilterString = function () {
         var result = '';
-        $.each(this.filters, function(i, filter) {
-            result += filter+',';
+        $.each(this.filters, function (i, filter) {
+            result += filter + ',';
         });
-        
+
         return string.cutsuffix(result, ',');
     };
-    
+
     Stream.prototype.setFilter = function (filterId) {
-        if(this.filters.indexOf(filterId) < 0) {
+        if (this.filters.indexOf(filterId) < 0) {
             this.filters.push(filterId);
         }
     };
-    
+
     Stream.prototype.unsetFilter = function (filterId) {
         var index = this.filters.indexOf(filterId);
-        if(index > -1) {
+        if (index > -1) {
             this.filters.splice(index, 1);
         }
     };
 
-    Stream.prototype.getEntry = function(key) {
-        return new StreamEntry(this.$.find('[data-content-pk="' + key + '"]'));
+    Stream.prototype.getEntry = function (key) {
+        return new StreamEntry(this.$.find(DATA_STREAM_ENTRY_SELECTOR+'[data-content-key="' + key + '"]'));
     };
-    
-    Stream.prototype.getEntryByNode = function($childNode) {
-        return new StreamEntry($childNode.closest('[data-content-pk]'));
+
+    Stream.prototype.getEntryByNode = function ($childNode) {
+        return new StreamEntry($childNode.closest(DATA_STREAM_ENTRY_SELECTOR));
     };
 
     var getStream = function () {
         if (!module.instance) {
-            var $stream = $('[data-stream]').first();
+            var $stream = $(DATA_STREAM_SELECTOR).first();
             module.instance = $stream.length ? new Stream($stream) : undefined;
         }
         return module.instance;
@@ -1600,37 +1655,63 @@ humhub.initModule('stream', function (module, require, $) {
 
     var init = function () {
         var stream = getStream();
-        
-        if(!stream) {
+
+        if (!stream) {
             console.log('Non-Stream Page!');
             return;
-        } 
-        
+        }
+
         stream.init();
-        
+
+        var lastKey;
         $(window).scroll(function () {
-            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            var $window = $(window);
+            var scrollTop = $window.scrollTop();
+            var windowHeight = $window.height();
+            if (scrollTop === ($(document).height() - $window.height())) {
                 if (stream && !stream.loading && !stream.isShowSingleEntry() && !stream.lastEntryLoaded) {
                     stream.loadEntries();
                 }
             }
+
+            // Defines our base y position for changing the current entry
+            var yLimit = scrollTop + (windowHeight / 2);
+
+            // Get id of current scroll item
+            //TODO: chache the entry nodes !
+            var matchingNodes = stream.$entryCache.map(function () {
+                var $this = $(this);
+                if ($this.offset().top < yLimit) {
+                    return $this;
+                }
+            });
+            
+            // Get the id of the current element 
+            var $current = matchingNodes[matchingNodes.length - 1];
+            var currentKey = $current && $current.length ? $current.data('content-key') : "";
+
+            if (lastKey !== currentKey) {
+                lastKey = currentKey;
+                // Set/remove active class
+                console.log(currentKey);
+            }
         });
-        
-        stream.$.on('click', '.singleBackLink', function() {
+
+        stream.$.on('click', '.singleBackLink', function () {
             stream.contentId = undefined;
             stream.init();
             $(this).hide();
         });
-        
+
         initFilterNav();
     };
 
-    var initFilterNav = function() {
+    var initFilterNav = function () {
         $(".wallFilter").click(function () {
             var $filter = $(this);
             var checkboxi = $filter.children("i");
             checkboxi.toggleClass('fa-square-o').toggleClass('fa-check-square-o');
-            if(checkboxi.hasClass('fa-check-square-o')) {
+            if (checkboxi.hasClass('fa-check-square-o')) {
                 getStream().setFilter($filter.attr('id').replace('filter_', ''));
             } else {
                 getStream().unsetFilter($filter.attr('id').replace('filter_', ''));
@@ -1641,7 +1722,7 @@ humhub.initModule('stream', function (module, require, $) {
         $(".wallSorting").click(function () {
             var newSortingMode = $(this).attr('id');
 
-            // uncheck all sorting
+            // uncheck all sortings
             $(".wallSorting").find('i')
                     .removeClass('fa-check-square-o')
                     .addClass('fa-square-o');

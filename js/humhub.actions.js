@@ -7,7 +7,101 @@ humhub.initModule('actions', function (module, require, $) {
     var object = require('util').object;
     var string = require('util').string;
     var client = require('client');
+    
+    var DATA_COMPONENT = 'action-component';
+    var DATA_COMPONENT_SELECTOR  = '[data-'+DATA_COMPONENT+']';
+   
+    var Component = function(container) {
+        if(!container) {
+            return;
+        }
+        this.$ = (object.isString(container)) ? $('#' + container) : container;
+        this.base = this.$.data(DATA_COMPONENT);
+    };
 
+    Component.prototype.data = function(dataSuffix) {
+        var result = this.$.data(dataSuffix);
+        if(!result) {
+            var parentComponent = this.parent();
+            if(parentComponent) {
+                return parentComponent.data(dataSuffix);
+            }
+        }
+        return result;
+    };
+    
+    Component.prototype.parent = function() {
+        var $parent = this.$.parent().closest(DATA_COMPONENT_SELECTOR);
+        if($parent.length) {
+            try {
+                var ParentType = require($parent.data(DATA_COMPONENT));
+                return new ParentType($parent);
+            } catch(err) {
+                console.error('Could not instantiate parent component: '+$parent.data(DATA_COMPONENT));
+            }
+        }
+    };
+    
+    Component.prototype.children = function() {
+        var result = [];
+        this.$.find(DATA_COMPONENT_SELECTOR).each(function() {
+            var component = Component.getInstance($(this));
+            if(component) {
+                result.push(component);
+            }
+        });
+        return result;
+    };
+    
+    Component.prototype.hasAction = function(action) {
+        return this.actions().indexOf(action) >= 0;
+    };
+    
+    Component.prototype.actions = function() {
+        return [];
+    };
+    
+    Component.getInstance = function($node) {
+        //Determine closest component node (parent or or given node)
+        $node = (object.isString($node)) ? $('#'+$node) : $node;
+        var $componentRoot = ($node.data(DATA_COMPONENT)) ? $node : Component.getClosestComponentNode($node);
+        
+        var componentType = $componentRoot.data(DATA_COMPONENT);
+        
+        var ComponentType = require(componentType);
+        if(ComponentType) {
+            return new ComponentType($componentRoot);
+        } else {
+            console.error('Tried to instantiate component with invalid type: '+componentType);
+        }
+    };
+    
+    Component.getClosestComponentNode = function($element) {
+        return $element.closest(DATA_COMPONENT_SELECTOR);
+    };
+    
+    /**
+     * Handles the given componentAction event. The event should provide the following properties:
+     * 
+     *  $trigger (required) : the trigger node of the event
+     *  handler (required)  : the handler functionn name to be executed on the component
+     *  type (optoinal)     : the event type 'click', 'change',...
+     * 
+     * @param {object} event - event object
+     * @returns {Boolean} true if the componentAction could be executed else false
+     */
+    Component.handleAction = function(event) {
+        var component = Component.getInstance(event.$trigger);
+        if(component) {
+            //Check if the content instance provides this actionhandler
+            if(event.handler && component[event.handler]) {
+                component[event.handler](event);
+                return true;
+            }
+        }
+        return false;
+    };
+    
     /**
      * Constructor for initializing the module.
      */
@@ -127,19 +221,33 @@ humhub.initModule('actions', function (module, require, $) {
             
             //Search and execute a stand alone handler or try to call the content action handler
             try {
+                //Direct action handler
                 if(object.isFunction(directHandler)) {
-                    //Direct action handler
                     directHandler.apply($trigger, [event]);
-                } else if (_handler[handlerId]) {
+                    return;
+                }
+                
+                //Component handler
+                if(Component.handleAction(event)) {
+                    return;
+                }
+                
+                //Registered handler
+                if(_handler[handlerId]) {
                     //Registered action handler
                     var handler = _handler[handlerId];
                     handler.apply($trigger, [event]);
-                } else if (!_handler['humhub.modules.content.actiontHandler'](event)) { //Content action handler
-                    //If the content handler did not accept this event we try to find a handler by namespace
-                    var splittedNS = handlerId.split('.');
-                    var handler = splittedNS[splittedNS.length - 1];
-                    var target = require(string.cutsuffix(handlerId, '.' + handler));
-                    target[handler]({type: type, $trigger: $trigger});
+                    return;
+                }
+                
+                //As last resort we try to call the action by namespace handler
+                var splittedNS = handlerId.split('.');
+                var handler = splittedNS[splittedNS.length - 1];
+                var target = require(string.cutsuffix(handlerId, '.' + handler));
+                if(object.isFunction(target)) {
+                    target[handler]({type: type, $trigger: $trigger}); 
+                } else {
+                    console.error('Could not determine actionhandler for: '+handlerId);
                 }
             } catch (e) {
                 //TODO: handle error !
@@ -159,4 +267,8 @@ humhub.initModule('actions', function (module, require, $) {
             }
         }
     };
+    
+     module.export({
+        Component: Component
+    });
 });

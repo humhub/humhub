@@ -211,11 +211,7 @@ action.registerAjaxHandler('humhub.modules.myModule.sendAjax', {
 }
 
 //No need to call bindAction, since data-action-click nodes are bound automatically
-```
-> TIP: The action handler will determine the action url and execute the provides success/error handler automatically
-
-> TIP: If you have multiple actions with different action urls you can specify `data-action-url-click`, `data-action-url-change`,... 
-data-action-url is always used as fallback
+``
 
 Example a `namepace-handler`:
 
@@ -224,27 +220,32 @@ Example a `namepace-handler`:
 <button data-action-click="humhub.modules.myModule.myFunction">Do something !</button>
 ```
 
+> TIP: The action handler will determine the action url and execute the provides success/error handler automatically
+
+> TIP: If you have multiple actions with different action urls you can specify `data-action-url-click`, `data-action-url-change`,... 
+data-action-url is always used as fallback
+
 > TIP: The action module binds some default actions like click, dbclick and change to nodes with a data-action-<type> attribute, so these event types do not have to be bound manually.
 
-## Content
+### Components
 
-One of the main tasks of HumHub is the manipulation (create/edit/delete) of content entries as posts, wikis and polls. The `humhub.modules.content` module provides a
-interface for representing and handling content entries on the frontend.
-
-### Content Base
-
-To mark a dom node as a container of content information you have to set a `data-content-base` attribute with the content class (e.g. `data-content-base="humhub.modules.tasks.Task"`). 
-Nodes provided with this attribute are either container of content entries (e.g. a list of tasks) or a content entry itself (e.g. task). This makes it possible
-to cascade different types `data-content-base`.
+Action components can be used to connect specific dom sections to a javascript action component class. The root of a component is marked with a ´data-action-component´ assignment. This data attribute
+contains the component type e.g `humhub.modules.tasks.Task` or short `tasks.Task`. The component class must be dereived from ´humhub.modules.action.Component´.
+Action components can be cascaded for to share data between a container and entry components e.g. a `tasks.TaskList` contains multiple `tasks.Task` entries. 
+The TaskList can provide action urls for all its Task entries and provide additional actions.
+For this purpose the components `data` function can be used to search for data values which are either set on the component root itself or a parent component root. 
 
 ```html
-<!-- In my view -->
-<div id="taskContainer" data-content-base="humhub.modules.tasks.TaskList" 
+<!-- Start of container component TaskList with given data values needed by its entries -->
+<div id="taskContainer" data-action-component="tasks.TaskList" 
         data-content-edit-url="<?= $contentContainer->createUrl('/tasks/task/edit') ?>"
         data-content-delete-url="<?= $contentContainer->createUrl('/tasks/task/delete') ?>">
+    
+     <!-- Will execute tasks.TaskList.create on click -->
     <a data-action-click="create">Create new</a>
     
-    <div class="task" data-content-base="humhub.modules.tasks.Task" data-content-pk="<?= $task->id ?>">
+    <!-- First Task entry with data-content-key -->
+    <div class="task" data-action-component="tasks.Task" data-content-key="<?= $task->id ?>">
         ...
         <button data-action-click="edit">Edit</button>
         <button data-action-click="delete">Delete</button>
@@ -252,6 +253,21 @@ to cascade different types `data-content-base`.
     ...
 </div>
 ```
+
+> TIP: If you want to handle content models as posts which are extending [[humhub\modules\content\components\ContentActiveRecord]] you should extend the content-component described in the next section!
+
+### Content
+
+One of the main tasks of HumHub is the manipulation (create/edit/delete) of content entries as posts, wikis and polls. The `humhub.modules.content` module provides a
+interface for representing and handling content entries on the frontend. The following module implements a task module with an Task content component and a Tasklist content component.
+If your content class supports the actions edit and delete, it will have to set a data-content-key attribute with the given content id. This is not necessary if your
+implementation does not support these functions as in the TaskList example.
+
+The ´Content´ component class provides the following actions by default:
+
+ - ´delete´ deletes a content object by using a confirm modal
+ - ´edit´ edits the given content by loading a edit modal
+ - ´create´ used to create new content
 
 ```javascript
 //Initializing the tasks module
@@ -293,16 +309,16 @@ humhub.initModule('tasks', function(module, require, $) {
 __How does it work:__
 
 1. An action-event-handler is bound to all dom nodes with a `data-action-click` on startup. 
-2. If a click event is fired on this node, the action-event-handler will search for a global registered event "edit" (which should not be registered)
-3. Since there is no global "edit" handler the action-handler will try to call the content-action-handler
-4. This handler will search a parent node of the triggered button node with a data-content-base and instanziate the content by type.
-5. After content instance creation, the given handler is called (in this case edit).
+2. When triggered the action-event-handler does check if a direct handler was provided
+2. If not it will try to call `Component.handleAction`
+3. If this handler does find a sorrounding component it will instantiate the component and try to execute the given handler.
+4. If no other handler was found, the handler will try to find a handler in the humhub namespace.
 
-The default action-handler for actions like delete/edit need to determine an action url this can either be done by adding a data-action-url/data-action-url-click directly to the trigger node
-or by adding data-content-edit-url/data-content-delete-url to the data-content-base or a parent data-content-base, in which the direct trigger assignment will overwrite an data-content-base
-assignment, which will overwrite the url setting of a parent data-content-base.
+The content-action-handler for actions like delete/edit need to lookup an action url this can either be done by adding a data-action-url/data-action-url-click directly to the trigger node
+or by adding data-content-edit-url/data-content-delete-url to the component root or a parent component root. A direct trigger assignment will overwrite a direct component assignment, 
+which will overwrite the setting of a parent data-content-base.
 
-> TIP: If your content does not need to overwrite the defaults or provides some additional actions (Like the Task in the example) you can just set the data-content-base without any value.
+> TIP: If your content does not need to overwrite the defaults or provides some additional actions (Like the Task in the example) you can just set ´content.Content´ as ´data-action-component´.
 
 > TIP: beside the default handler the content can define other handler by simply adding it to the content prototype
 

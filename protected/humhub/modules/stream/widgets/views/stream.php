@@ -36,7 +36,7 @@ $contentIdData = ($contentId != "") ? 'data-stream-contentid="'.$contentId.'"' :
 
 <!-- Stream content -->
 <div id="wallStream" data-stream="<?= $streamUrl ?>" <?= $contentIdData ?> 
-     data-content-base="humhub.modules.stream.Stream" 
+     data-action-component="humhub.modules.stream.Stream" 
      data-content-delete-url="<?= Url::to(['/content/content/delete']) ?>">
     
     <!-- DIV for a normal wall stream -->
