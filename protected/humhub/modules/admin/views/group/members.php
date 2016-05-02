@@ -69,7 +69,7 @@ use yii\widgets\ActiveForm;
                         $isManager = $group->isManager($data);
                         $yesSelected = ($isManager) ? 'selected' : '';
                         $noSelected = ($isManager) ? '' : 'selected';
-                            $result = '<select class="managerDropDown" data-userid="'.$data->id.'"  data-groupid="'.$group->id.'">';
+                            $result = '<select class="managerDropDown editableCell form-control" data-userid="'.$data->id.'"  data-groupid="'.$group->id.'">';
                         $result .= '<option value="0" '.$noSelected.'>'.Yii::t('AdminModule.views_group_manageGroupUser', 'No').'</option>';
                         $result .= '<option value="1" '.$yesSelected.'>'.Yii::t('AdminModule.views_group_manageGroupUser', 'Yes').'</option>';
                         return $result;
