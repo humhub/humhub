@@ -59,7 +59,7 @@ class SpaceController extends Controller
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SpaceController', 'Saved'));
-            $this->redirect(Url::toRoute('settings'));
+            return $this->redirect(['settings']);
         }
 
         return $this->render('settings', array('model' => $form));

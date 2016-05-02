@@ -7,7 +7,7 @@ return array (
   'Daily summary' => 'Tägliche Zusammenfassung',
   'Get a desktop notification when you are online.' => 'Erhalte Desktop Benachrichtigungen, wenn du online bist.',
   'Get an email, by every activity from other users you follow or work<br>together in workspaces.' => 'Erhalte eine E-Mail bei jeder Aktivität anderer Benutzer, denen du folgst oder mit denen du in Spaces zusammenarbeitest.',
-  'Get an email, when other users comment or like your posts.' => 'Erhalte eine E-Mail, wenn andere Benutzer Ihre Beiträge kommentieren oder bewerten.',
+  'Get an email, when other users comment or like your posts.' => 'Erhalte eine E-Mail, wenn andere Benutzer deine Beiträge kommentieren oder anderen Benutzer deine Beiträge gefallen.',
   'Never' => 'Nie',
   'Notifications' => 'Benachrichtigungen',
   'Save' => 'Speichern',

@@ -31,7 +31,7 @@ class Application extends \yii\web\Application
          * Check if it's already installed - if not force controller module
          */
         if (!$this->params['installed'] && $this->controller->module != null && $this->controller->module->id != 'installer') {
-            $this->controller->redirect(\yii\helpers\Url::to(['/installer/index']));
+            $this->controller->redirect(['/installer/index']);
             return false;
         }
 

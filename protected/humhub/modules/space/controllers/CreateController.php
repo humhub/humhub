@@ -41,7 +41,7 @@ class CreateController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect(Url::to(['create']));
+        return $this->redirect(['create']);
     }
 
     /**

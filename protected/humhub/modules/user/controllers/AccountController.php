@@ -74,7 +74,7 @@ class AccountController extends BaseAccountController
             $user->save();
 
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
-            return $this->redirect(Url::to(['edit']));
+            return $this->redirect(['edit']);
         }
 
         return $this->render('edit', array('hForm' => $form));
@@ -208,7 +208,7 @@ class AccountController extends BaseAccountController
             $user->enableModule($moduleId);
         }
 
-        return $this->redirect(Url::toRoute('/user/account/edit-modules'));
+        return $this->redirect(['/user/account/edit-modules']);
     }
 
     public function actionDisableModule()
@@ -222,7 +222,7 @@ class AccountController extends BaseAccountController
             $user->disableModule($moduleId);
         }
 
-        return $this->redirect(Url::toRoute('/user/account/edit-modules'));
+        return $this->redirect(['/user/account/edit-modules']);
     }
 
     /**
@@ -251,7 +251,7 @@ class AccountController extends BaseAccountController
         if (!$isSpaceOwner && $model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->delete();
             Yii::$app->user->logout();
-            $this->redirect(Yii::$app->homeUrl);
+            return $this->goHome();
         }
 
         return $this->render('delete', array(

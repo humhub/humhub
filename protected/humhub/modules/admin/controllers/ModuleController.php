@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -104,7 +104,7 @@ class ModuleController extends Controller
         }
 
         // Redirect to Module Install?
-        $this->redirect(['/admin/module/list']);
+        return $this->redirect(['/admin/module/list']);
     }
 
     /**

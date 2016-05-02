@@ -98,7 +98,8 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
             // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-            $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $union . ')', [':spaceClass' => \humhub\modules\space\models\Space::className(), ':userClass' => \humhub\modules\user\models\User::className()]);
+            // Double union query - to avoid MySQL performance problems 
+            $this->activeQuery->andWhere('wall_entry.wall_id IN (select subselect.wall_id from (' . $union . ') subselect)', [':spaceClass' => \humhub\modules\space\models\Space::className(), ':userClass' => \humhub\modules\user\models\User::className()]);
 
             /**
              * Begin visibility checks regarding the content container

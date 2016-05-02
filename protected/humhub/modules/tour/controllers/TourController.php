@@ -101,7 +101,7 @@ class TourController extends \humhub\components\Controller
         if ($user->id == 1 && $user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
             if ($profile->load(Yii::$app->request->post()) && $profile->validate() && $profile->save()) {
                 $user->setSetting("welcome", 1, "tour");
-                return $this->redirect(Url::to(['/dashboard/dashboard']));
+                return $this->redirect(['/dashboard/dashboard']);
             }
         }
 

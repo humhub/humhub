@@ -146,7 +146,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         $space->removeMember();
 
-        return $this->redirect(Url::home());
+        return $this->goHome();
     }
 
     /**

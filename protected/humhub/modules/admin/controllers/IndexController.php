@@ -25,7 +25,7 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        return Yii::$app->response->redirect(Url::toRoute('/admin/setting'));
+        return $this->redirect(['/admin/setting']);
     }
 
 }

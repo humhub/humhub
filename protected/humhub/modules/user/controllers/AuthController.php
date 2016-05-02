@@ -68,7 +68,7 @@ class AuthController extends Controller
     {
         // If user is already logged in, redirect him to the dashboard
         if (!Yii::$app->user->isGuest) {
-            $this->redirect(Yii::$app->user->returnUrl);
+            return $this->goBack();
         }
 
         // Login Form Handling
@@ -206,7 +206,7 @@ class AuthController extends Controller
             Yii::$app->getResponse()->getCookies()->add($cookie);
         }
 
-        $this->redirect(($this->module->logoutUrl) ? $this->module->logoutUrl : Yii::$app->homeUrl);
+        return $this->redirect(($this->module->logoutUrl) ? $this->module->logoutUrl : Yii::$app->homeUrl);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -59,7 +59,7 @@ class DefaultController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
-        $this->redirect($space->createUrl('/space/manage'));
+        return $this->redirect($space->createUrl('/space/manage'));
     }
 
     /**
@@ -70,7 +70,7 @@ class DefaultController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
-        $this->redirect($space->createUrl('/space/manage'));
+        return $this->redirect($space->createUrl('/space/manage'));
     }
 
     /**
@@ -82,7 +82,7 @@ class DefaultController extends Controller
         $model = new DeleteForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $this->getSpace()->delete();
-            return $this->redirect(Url::home());
+            return $this->goHome();
         }
 
         return $this->render('delete', array('model' => $model, 'space' => $this->getSpace()));
