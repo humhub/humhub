@@ -34,7 +34,13 @@ use \humhub\models\Setting;
 
     <?php endif; ?>
 
-    <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+    <?php if (Setting::Get('enable', 'tour') == 1) : ?>
+        <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+    <?php endif; ?>
+
+    <?php if (Setting::Get('enable', 'share') == 1) : ?>
+        <?php echo $form->field($model, 'show_share_panel')->checkbox(); ?>
+    <?php endif; ?>
     <hr>
 
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>
