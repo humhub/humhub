@@ -547,6 +547,7 @@ class Content extends \humhub\components\ActiveRecord
      * Checks if user can edit this content
      * 
      * @todo create possibility to define own canEdit in ContentActiveRecord
+     * @todo also check content containers canManage content permission
      * @since 1.1
      * @param User $user
      * @return boolean can edit this content
@@ -559,6 +560,11 @@ class Content extends \humhub\components\ActiveRecord
 
         // Only owner can edit his content
         if ($user !== null && $this->created_by == $user->id) {
+            return true;
+        }
+
+        // Global Admin can edit/delete arbitrarily content
+        if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             return true;
         }
 
