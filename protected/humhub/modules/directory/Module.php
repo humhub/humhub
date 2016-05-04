@@ -55,4 +55,14 @@ class Module extends \humhub\components\Module
         ));
     }
 
+    /**
+     * Show groups in directory
+     * 
+     * @return boolean
+     */
+    public function isGroupListingEnabled()
+    {
+        return (\humhub\modules\user\models\Group::find()->where(['show_at_directory' => 1])->count() > 1);
+    }
+
 }

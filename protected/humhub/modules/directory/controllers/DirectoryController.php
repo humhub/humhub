@@ -29,10 +29,10 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
             'members' => Yii::t('DirectoryModule.base', 'Members'),
             'spaces' => Yii::t('AdminModule.base', 'Spaces'),
             'user-posts' => Yii::t('AdminModule.base', 'User posts'),
-            ]);
+        ]);
         return parent::init();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -64,7 +64,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionIndex()
     {
-        if (\humhub\modules\user\models\Group::find()->count() > 1) {
+        if ($this->module->isGroupListingEnabled()) {
             return $this->redirect(['groups']);
         } else {
             return $this->redirect(['members']);
@@ -158,6 +158,10 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionGroups()
     {
+        if (!$this->module->isGroupListingEnabled()) {
+            return $this->redirect(['members']);
+        }
+
         $groups = \humhub\modules\user\models\Group::getDirectoryGroups();
 
         \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
