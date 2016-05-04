@@ -53,7 +53,7 @@ class ContentController extends Controller
 
         $contentObj = Content::get($model, $id);
 
-        if ($contentObj !== null && $contentObj->content->canDelete() && $contentObj->delete()) {
+        if ($contentObj !== null && $contentObj->content->canEdit() && $contentObj->delete()) {
             $json = [
                 'success' => true,
                 'uniqueId' => $contentObj->getUniqueId(),

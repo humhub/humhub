@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\content;
 
 use Yii;
@@ -19,9 +25,15 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.1
-     * @var boolean admin can see all content
+     * @var boolean global admin can see all content
      */
     public $adminCanViewAllContent = false;
+
+    /**
+     * @since 1.1
+     * @var boolean global admin can edit/delete all content
+     */
+    public $adminCanEditAllContent = true;
 
     /**
      * @since 1.1
@@ -35,11 +47,14 @@ class Module extends \humhub\components\Module
      */
     public $emailSubjectDailyUpdate = null;
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return Yii::t('ContentModule.base', 'Content');
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -54,15 +69,15 @@ class Module extends \humhub\components\Module
 
         return [];
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
-       return [
-           'humhub\modules\content\notifications\ContentCreated'
-       ];
+        return [
+            'humhub\modules\content\notifications\ContentCreated'
+        ];
     }
 
 }
