@@ -27,7 +27,7 @@ use humhub\widgets\GridView;
                     'format' => 'raw',
                     'options' => ['style' => 'text-align:center;'],
                     'value' => function ($data) {
-                        return $data->getUsers()->count();
+                        return $data->getGroupUsers()->count();
                     }
                 ],
                 [
