@@ -182,7 +182,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->getManager()->count() > 0;
     }
-    
+
     /**
      * Returns the GroupUser relation for a given user.
      * @return boolean
@@ -204,12 +204,18 @@ class Group extends \yii\db\ActiveRecord
 
     /**
      * Returns all member user of this group as ActiveQuery
+     * 
      * @return ActiveQuery
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['id' => 'user_id'])
-                        ->via('groupUsers');
+        $query = User::find();
+        $query->leftJoin('group_user', 'group_user.user_id=user.id AND group_user.group_id=:groupId', [
+            ':groupId' => $this->id
+        ]);
+        $query->andWhere(['IS NOT', 'group_user.id', new \yii\db\Expression('NULL')]);
+        $query->multiple = true;
+        return $query;
     }
 
     /**
@@ -220,13 +226,15 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->getUsers()->count() > 0;
     }
-    
-    public function isManager($user) {
+
+    public function isManager($user)
+    {
         $userId = ($user instanceof User) ? $user->id : $user;
-        return $this->getGroupUsers()->where(['user_id' => $userId , 'is_group_manager' => true])->count() > 0;
+        return $this->getGroupUsers()->where(['user_id' => $userId, 'is_group_manager' => true])->count() > 0;
     }
-    
-    public function isMember($user) {
+
+    public function isMember($user)
+    {
         return $this->getGroupUser($user) != null;
     }
 
@@ -238,10 +246,10 @@ class Group extends \yii\db\ActiveRecord
      */
     public function addUser($user, $isManager = false)
     {
-        if($this->isMember($user)) {
+        if ($this->isMember($user)) {
             return;
         }
-        
+
         $userId = ($user instanceof User) ? $user->id : $user;
 
         $newGroupUser = new GroupUser();
@@ -252,7 +260,7 @@ class Group extends \yii\db\ActiveRecord
         $newGroupUser->is_group_manager = $isManager;
         $newGroupUser->save();
     }
-    
+
     /**
      * Removes a user from the group.
      * @param type $user userId or user model
@@ -260,7 +268,7 @@ class Group extends \yii\db\ActiveRecord
     public function removeUser($user)
     {
         $groupUser = $this->getGroupUser($user);
-        if($groupUser != null) {
+        if ($groupUser != null) {
             $groupUser->delete();
         }
     }
