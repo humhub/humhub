@@ -9,9 +9,9 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use humhub\libs\ThemeHelper;
 
 /**
- * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
 class DesignSettingsForm extends \yii\base\Model
@@ -30,7 +30,7 @@ class DesignSettingsForm extends \yii\base\Model
     public function rules()
     {
         $themes = [];
-        foreach (\humhub\components\Theme::getThemes() as $theme) {
+        foreach (ThemeHelper::getThemes() as $theme) {
             $themes[] = $theme->name;
         }
 

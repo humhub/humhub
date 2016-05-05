@@ -9,8 +9,8 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use humhub\libs\DynamicConfig;
+use humhub\libs\ThemeHelper;
 use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
@@ -162,7 +162,7 @@ class SettingController extends Controller
         $groups = array();
         $groups[''] = Yii::t('AdminModule.controllers_SettingController', 'None - shows dropdown in user registration.');
         foreach (\humhub\modules\user\models\Group::find()->all() as $group) {
-            if(!$group->is_admin_group) {
+            if (!$group->is_admin_group) {
                 $groups[$group->id] = $group->name;
             }
         }
@@ -242,7 +242,7 @@ class SettingController extends Controller
         Ldap::getInstance()->refreshUsers();
         return $this->redirect(['/admin/setting/authentication-ldap']);
     }
-    
+
     /**
      * Caching Options
      */
@@ -390,9 +390,6 @@ class SettingController extends Controller
                     $logoImage->setNew($form->logo);
                 }
 
-                // read and save colors from current theme
-                \humhub\components\Theme::setColorVariables($form->theme);
-
                 DynamicConfig::rewrite();
 
                 Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -401,7 +398,7 @@ class SettingController extends Controller
         }
 
         $themes = [];
-        foreach (\humhub\components\Theme::getThemes() as $theme) {
+        foreach (ThemeHelper::getThemes() as $theme) {
             $themes[$theme->name] = $theme->name;
         }
 

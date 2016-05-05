@@ -10,7 +10,7 @@ namespace humhub\libs;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use humhub\components\Theme;
+use humhub\libs\ThemeHelper;
 use humhub\models\Setting;
 
 /**
@@ -160,13 +160,6 @@ class DynamicConfig extends \yii\base\Object
                 'class' => $cacheClass,
                 'keyPrefix' => Yii::$app->id
             ];
-
-            // Prefix APC Cache Keys
-            //if ($cacheClass == 'yii\caching\ApcCache') {
-            //    $config['components']['cache'] = [
-            //        'keyPrefix' => Yii::$app->id
-            //    ];
-            //}
         }
         // Add User settings
         $config['components']['user'] = array();
@@ -207,7 +200,7 @@ class DynamicConfig extends \yii\base\Object
             $mail['useFileTransport'] = true;
         }
         $config['components']['mailer'] = $mail;
-        $config = ArrayHelper::merge($config, Theme::getThemeConfig(Setting::Get('theme')));
+        $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Setting::Get('theme')));
         $config['params']['config_created_at'] = time();
 
         foreach (Setting::find()->all() as $setting) {
