@@ -29,7 +29,7 @@ return [
         ],
         'urlManager' => [
             'showScriptName' => true,
-            'scriptUrl' => 'index.php',
+            'scriptUrl' => 'index-test.php',
         ],
     ],
 ];
