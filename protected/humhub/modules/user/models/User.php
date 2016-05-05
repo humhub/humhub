@@ -546,6 +546,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'title' => $this->profile->title,
         );
 
+        // Add user group ids
+        $groupIds = array_map(function($group) {
+            return $group->id;
+        }, $this->groups);
+        $attributes['groups'] = $groupIds;
+
         if (!$this->profile->isNewRecord) {
             foreach ($this->profile->getProfileFields() as $profileField) {
                 $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);

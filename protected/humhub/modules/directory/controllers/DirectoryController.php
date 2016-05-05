@@ -84,7 +84,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
 
         $group = null;
         if ($groupId) {
-            $group = \humhub\modules\user\models\Group::findOne(['id' => $groupId]);
+            $group = \humhub\modules\user\models\Group::findOne(['id' => $groupId, 'show_at_directory' => 1]);
         }
 
         $searchOptions = [
@@ -98,7 +98,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
         }
 
         if ($group !== null) {
-            $searchOptions['filters'] = ['groupId' => $group->id];
+            $searchOptions['filters'] = ['groups' => $group->id];
         }
 
         $searchResultSet = Yii::$app->search->find($keyword, $searchOptions);
