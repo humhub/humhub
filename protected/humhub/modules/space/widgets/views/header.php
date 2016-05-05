@@ -92,40 +92,22 @@ if ($space->isAdmin()) {
                 </div>
 
             <?php } ?>
-
-
         </div>
 
         <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
 
-            <?php
-            /* Get original profile image URL */
-
-            $profileImageExt = pathinfo($space->getProfileImage()->getUrl(), PATHINFO_EXTENSION);
-
-            $profileImageOrig = preg_replace('/.[^.]*$/', '', $space->getProfileImage()->getUrl());
-            $defaultImage = (basename($space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
-            $profileImageOrig = $profileImageOrig . '_org.' . $profileImageExt;
-
-            if (!$defaultImage) {
-                ?>
-
+            <?php if ($space->profileImage->hasImage()) : ?>
                 <!-- profile image output-->
-                <a data-toggle="lightbox" data-gallery="" href="<?php echo $profileImageOrig; ?>#.jpeg"
+                <a data-toggle="lightbox" data-gallery="" href="<?= $space->profileImage->getUrl('_org'); ?>"
                    data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Close'); ?></button>'>
                        <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
                 </a>
-
-
-
-            <?php } else { ?>
-
+            <?php else : ?>
                 <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
-
-            <?php } ?>
+            <?php endif; ?>
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($space->isAdmin()) { ?>
+            <?php if ($space->isAdmin()) : ?>
                 <form class="fileupload" id="profilefileupload" action="" method="POST" enctype="multipart/form-data"
                       style="position: absolute; top: 0; left: 0; opacity: 0; height: 140px; width: 140px;">
                     <input type="file" name="spacefiles[]">
@@ -168,7 +150,7 @@ if ($space->isAdmin()) {
                         ));
                         ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
 
         </div>
 
@@ -216,9 +198,9 @@ if ($space->isAdmin()) {
                                 [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
                                 [\humhub\modules\space\widgets\MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
                                 [\humhub\modules\space\widgets\FollowButton::className(), [
-                                    'space' => $space,
-                                    'followOptions' => ['class' => 'btn btn-primary'],
-                                    'unfollowOptions' => ['class' => 'btn btn-info']], 
+                                        'space' => $space,
+                                        'followOptions' => ['class' => 'btn btn-primary'],
+                                        'unfollowOptions' => ['class' => 'btn btn-info']],
                                     ['sortOrder' => 30]]
                         ]]);
                         ?>
