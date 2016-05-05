@@ -55,6 +55,7 @@ class AccountController extends BaseAccountController
     public function actionEdit()
     {
         $user = Yii::$app->user->getIdentity();
+        $user->profile->scenario = 'editProfile';
 
         // Get Form Definition
         $definition = $user->profile->getFormDefinition();
