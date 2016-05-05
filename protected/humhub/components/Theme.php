@@ -60,7 +60,7 @@ class Theme extends \yii\base\Theme
             return $this->_baseUrl;
         }
 
-        $this->_baseUrl = ($this->publishResources) ? $this->publishResources() : $this->theme->getBaseUrl();
+        $this->_baseUrl = ($this->publishResources) ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
         return $this->_baseUrl;
     }
 
