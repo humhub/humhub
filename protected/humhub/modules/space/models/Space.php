@@ -80,7 +80,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $rules = [
             [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
-            
+            [['indexUrl'], 'string'],
             [['name'], 'required'],
             [['description', 'tags', 'color'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -103,7 +103,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'tags','indexUrl', 'join_policy', 'visibility', 'default_content_visibility'];
+        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'indexUrl', 'join_policy', 'visibility', 'default_content_visibility'];
         $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;

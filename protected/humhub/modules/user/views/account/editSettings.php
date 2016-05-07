@@ -43,7 +43,7 @@ use \humhub\models\Setting;
     <?php endif; ?>
     <hr>
 
-    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>
+    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
     <!-- show flash message after saving -->
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
