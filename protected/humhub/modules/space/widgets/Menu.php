@@ -24,7 +24,11 @@ class Menu extends \humhub\widgets\BaseMenu
         // Reckon the current controller is a valid space controller
         // (Needs to implement the SpaceControllerBehavior)
         $spaceGuid = Yii::$app->controller->getSpace()->guid;
-
+        
+        if($this->space == null) {
+            $this->space = \humhub\modules\space\models\Space::findByGuid($spaceGuid);
+        }
+        
         $this->addItemGroup(array(
             'id' => 'modules',
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu'),

@@ -60,6 +60,12 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     const USERGROUP_GUEST = 'guest';
 
     /**
+     * Contains the form value for indexUrl setting
+     * @var type 
+     */
+    public $indexUrl = null;
+    
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -97,7 +103,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility'];
+        $scenarios['edit'] = ['name', 'color', 'description', 'tags','indexUrl', 'join_policy', 'visibility', 'default_content_visibility'];
         $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
@@ -111,6 +117,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return array(
             'id' => 'ID',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
+            'indexUrl' => Yii::t('SpaceModule.models_Space', 'Index'),
             'color' => Yii::t('SpaceModule.models_Space', 'Color'),
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
@@ -151,7 +158,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $user = \humhub\modules\user\models\User::findOne(['id' => $this->created_by]);
 
         if ($insert) {
-
             // Auto add creator as admin
             $membership = new Membership();
             $membership->space_id = $this->id;
@@ -164,6 +170,13 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
+        }
+        
+        if($this->indexUrl != null) {
+            Setting::Set($this->id, 'indexUrl', $this->indexUrl);
+        } else {
+            //Remove entry from db
+            Setting::Set($this->id, 'indexUrl', '');
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);

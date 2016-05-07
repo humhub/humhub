@@ -7,7 +7,6 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
 $this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js');
 $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css');
-
 ?>
 
 <?= DefaultMenu::widget(['space' => $model]); ?>
@@ -19,21 +18,30 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="row">
-            <div
-                class="col-md-8"> <?php echo $form->field($model, 'name')->textInput(['id' => 'space-name', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name'), 'maxlength' => 45]); ?></div>
-            <div class="col-md-4"><strong><?php echo Yii::t('SpaceModule.manage', 'Color'); ?></strong>
-
+            <div class="col-md-8"> 
+                <?php echo $form->field($model, 'name')->textInput(['id' => 'space-name', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name'), 'maxlength' => 45]); ?>
+            </div>
+            <div class="col-md-4">
+                <strong><?php echo Yii::t('SpaceModule.manage', 'Color'); ?></strong>
                 <div class="input-group space-color-chooser-edit" style="margin-top: 5px;">
-
                     <?= Html::activeTextInput($model, 'color', ['class' => 'form-control', 'id' => 'space-color-picker-edit', 'value' => $model->color]); ?>
                     <span class="input-group-addon"><i></i></span>
                 </div>
-                <br></div>
+                <br>
+            </div>
         </div>
 
         <?php echo $form->field($model, 'description')->textarea(['rows' => 6]); ?>
 
-        <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
+        <div class="row">
+            <div class="col-md-3"> 
+                 <?php echo $form-> field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
+            </div>
+            <div class="col-md-9">
+               <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
+            </div>
+        </div>
+        
 
         <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 

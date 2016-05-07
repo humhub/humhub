@@ -112,6 +112,11 @@ class ContentContainerActiveRecord extends ActiveRecord
     {
         return "Default Wall Output for Class " . get_class($this);
     }
+    
+    public static function findByGuid($token)
+    {
+        return static::findOne(['guid' => $token]);
+    }
 
     /**
      * @inheritdoc
