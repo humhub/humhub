@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use Yii;
 use yii\helpers\FileHelper;
+use humhub\libs\ThemeHelper;
 use humhub\models\Setting;
 
 /**
@@ -31,6 +32,11 @@ class Theme extends \yii\base\Theme
     private $_baseUrl = null;
 
     /**
+     * Indicates that resources should be published via assetManager
+     */
+    public $publishResources = false;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -46,18 +52,29 @@ class Theme extends \yii\base\Theme
     }
 
     /**
-     * @return string the base URL (without ending slash) for this theme. All resources of this theme are considered
-     * to be under this base URL.
+     * @inheritdoc
      */
     public function getBaseUrl()
     {
-
         if ($this->_baseUrl !== null) {
             return $this->_baseUrl;
         }
 
-        $this->_baseUrl = rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
+        $this->_baseUrl = ($this->publishResources) ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
         return $this->_baseUrl;
+    }
+
+    /**
+     * This method will be called before when this theme is written to the
+     * dynamic configuration file.
+     */
+    public function beforeActivate()
+    {
+        // Force republish theme files
+        $this->publishResources(true);
+
+        // Store color variables to configuration
+        $this->storeColorsToConfig();
     }
 
     /**
@@ -65,7 +82,6 @@ class Theme extends \yii\base\Theme
      */
     public function applyTo($path)
     {
-
         $autoPath = $this->autoFindModuleView($path);
         if ($autoPath !== null && file_exists($autoPath)) {
             return $autoPath;
@@ -82,6 +98,25 @@ class Theme extends \yii\base\Theme
         }
 
         return parent::applyTo($path);
+    }
+
+    /**
+     * Publishs theme assets (e.g. images or css)
+     * 
+     * @param boolean|null $force
+     * @return string url of published resources
+     */
+    public function publishResources($force = null)
+    {
+        if ($force === null) {
+            $force = (YII_DEBUG);
+        }
+
+        $published = Yii::$app->assetManager->publish(
+                $this->getBasePath(), ['forceCopy' => $force, 'except' => ['views/']]
+        );
+
+        return $published[1];
     }
 
     /**
@@ -122,113 +157,13 @@ class Theme extends \yii\base\Theme
     }
 
     /**
-     * Returns an array of all installed themes.
-     *
-     * @return Array Theme instances
+     * Stores color informations to configuration for use in modules.
      */
-    public static function getThemes()
+    public function storeColorsToConfig()
     {
-        $themes = array();
-        $themePaths = [];
-        $themePaths[] = \Yii::getAlias('@webroot/themes');
-
-        // Collect enabled module theme paths
-        foreach (Yii::$app->getModules() as $module) {
-            $basePath = "";
-            if (is_array($module)) {
-                if (isset($module['class'])) {
-                    $reflector = new \ReflectionClass($module['class']);
-                    $basePath = dirname($reflector->getFileName());
-                }
-            } else {
-                $basePath = $module->getBasePath();
-            }
-
-            if (is_dir($basePath . DIRECTORY_SEPARATOR . 'themes')) {
-                $themePaths[] = $basePath . DIRECTORY_SEPARATOR . 'themes';
-            }
-        }
-
-        foreach ($themePaths as $themePath) {
-            foreach (scandir($themePath) as $file) {
-                if ($file == "." || $file == ".." || !is_dir($themePath . DIRECTORY_SEPARATOR . $file)) {
-                    continue;
-                }
-                $themes[] = Yii::createObject([
-                            'class' => 'humhub\components\Theme',
-                            'basePath' => $themePath . DIRECTORY_SEPARATOR . $file,
-                            'name' => $file
-                ]);
-            }
-        }
-        return $themes;
-    }
-
-    /**
-     * Returns a Theme by given name
-     * 
-     * @param string $name of the theme
-     * @return Theme
-     */
-    public static function getThemeByName($name)
-    {
-        foreach (self::getThemes() as $theme) {
-            if ($theme->name === $name) {
-                return $theme;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns configuration array of given theme
-     * 
-     * @param Theme|string $theme name or theme instance
-     * @return array Configuration
-     */
-    public static function getThemeConfig($theme)
-    {
-        if (is_string($theme)) {
-            $theme = self::getThemeByName($theme);
-        }
-
-        if ($theme === null) {
-            return [];
-        }
-
-        return [
-            'components' => [
-                'view' => [
-                    'theme' => [
-                        'name' => $theme->name,
-                        'basePath' => $theme->getBasePath()
-                    ],
-                ],
-                'mailer' => [
-                    'view' => [
-                        'theme' => [
-                            'name' => $theme->name,
-                            'basePath' => $theme->getBasePath()
-                        ]
-                    ]
-                ]
-            ]
-        ];
-    }
-
-    public static function setColorVariables($themeName)
-    {
-        $theme = self::getThemeByName($themeName);
-
-        if ($theme === null) {
-            return;
-        }
-
-        $lessFileName = Yii::getAlias($theme->getBasePath() . '/css/theme.less');
+        $lessFileName = $this->getBasePath() . '/css/theme.less';
         if (file_exists($lessFileName)) {
-            $file = fopen($lessFileName, "r") or die("Unable to open file!");
-            $less = fread($file, filesize($lessFileName));
-            fclose($file);
+            $less = file_get_contents($lessFileName);
 
             $startDefault = strpos($less, '@default') + 10;
             $startPrimary = strpos($less, '@primary') + 10;
@@ -244,6 +179,21 @@ class Theme extends \yii\base\Theme
             Setting::Set('colorSuccess', substr($less, $startSuccess, $length));
             Setting::Set('colorWarning', substr($less, $startWarning, $length));
             Setting::Set('colorDanger', substr($less, $startDanger, $length));
+        }
+    }
+
+    /**
+     * Store colors to configuration.
+     * 
+     * @deprecated since version 1.1
+     * @param type $themeName
+     */
+    public static function setColorVariables($themeName)
+    {
+        $theme = ThemeHelper::getThemeByName($themeName);
+
+        if ($theme !== null) {
+            $theme->storeColorsToConfig();
         }
     }
 

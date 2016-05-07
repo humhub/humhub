@@ -68,13 +68,18 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const USERGROUP_FRIEND = 'u_friend';
     const USERGROUP_USER = 'u_user';
     const USERGROUP_GUEST = 'u_guest';
-    
+
     /**
      * A initial group for the user assigned while registration.
      * @var type 
      */
     public $registrationGroupId = null;
-    
+
+    /**
+     * @var boolean is system admin (cached)
+     */
+    private $_isSystemAdmin = null;
+
     /**
      * @inheritdoc
      */
@@ -106,25 +111,38 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['wall_id'], 'unique']
         ];
     }
-    
-    public function isSystemAdmin()
+
+    /**
+     * Checks if user is system administrator
+     * 
+     * @param boolean $cached Used cached result if available
+     * @return boolean user is system admin
+     */
+    public function isSystemAdmin($cached = true)
     {
-        return $this->getGroups()->where(['is_admin_group' => '1'])->count() > 0;
+        if ($this->_isSystemAdmin === null || !$cached) {
+            $this->_isSystemAdmin = ($this->getGroups()->where(['is_admin_group' => '1'])->count() > 0);
+        }
+
+        return $this->_isSystemAdmin;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __get($name)
     {
-        
-        if($name == 'super_admin') {
-          /**
-           * Replacement for old super_admin flag version
-           */  
+
+        if ($name == 'super_admin') {
+            /**
+             * Replacement for old super_admin flag version
+             */
             return $this->isSystemAdmin();
         } else if ($name == 'profile') {
-          /**
-            * Ensure there is always a related Profile Model also when it's
-            * not really exists yet.
-            */
+            /**
+             * Ensure there is always a related Profile Model also when it's
+             * not really exists yet.
+             */
             $profile = parent::__get('profile');
             if (!$this->isRelationPopulated('profile') || $profile === null) {
                 $profile = new Profile();
@@ -190,7 +208,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return static::findOne(['guid' => $token]);
     }
-    
 
     /**
      * @inheritdoc
@@ -226,7 +243,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
-    
+
     /**
      * Returns all GroupUser relations of this user as AcriveQuery
      * @return type
@@ -235,7 +252,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->hasMany(GroupUser::className(), ['user_id' => 'id']);
     }
-    
+
     /**
      * Returns all Group relations of this user as AcriveQuery
      * @return AcriveQuery
@@ -244,7 +261,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers');
     }
-    
+
     /**
      * Checks if the user has at least one group assigned.
      * @return boolean
@@ -253,7 +270,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->getGroups()->count() > 0;
     }
-    
+
     /**
      * Returns all GroupUser relations this user is a manager of as AcriveQuery.
      * @return AcriveQuery
@@ -262,7 +279,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return $this->getGroupUsers()->where(['is_group_manager' => '1']);
     }
-    
+
     /**
      * Returns all Groups this user is a maanger of as AcriveQuery.
      * @return AcriveQuery
@@ -270,10 +287,10 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function getManagerGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
-            $query->andWhere(['is_group_manager' => '1']);
-        });
+                    $query->andWhere(['is_group_manager' => '1']);
+                });
     }
-    
+
     /**
      * Returns all user this user is related as friend as AcriveQuery. 
      * Returns null if the friendship module is deactivated.
@@ -281,12 +298,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getFriends()
     {
-        if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
             return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
         }
         return null;
     }
-    
+
     public function isActive()
     {
         return $this->status === User::STATUS_ENABLED;
@@ -412,13 +429,13 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         // Auto Assign User to the Group Space
-        /*$group = Group::findOne(['id' => $this->group_id]);
-        if ($group != null && $group->space_id != "") {
-            $space = \humhub\modules\space\models\Space::findOne(['id' => $group->space_id]);
-            if ($space !== null) {
-                $space->addMember($this->id);
-            }
-        }*/
+        /* $group = Group::findOne(['id' => $this->group_id]);
+          if ($group != null && $group->space_id != "") {
+          $space = \humhub\modules\space\models\Space::findOne(['id' => $group->space_id]);
+          if ($space !== null) {
+          $space->addMember($this->id);
+          }
+          } */
 
         // Auto Add User to the default spaces
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
@@ -474,7 +491,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
         }
-        
+
         if ($user !== null && Yii::$app->getModule('friendship')->getIsEnabled()) {
             if (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS) {
                 return true;
@@ -528,6 +545,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
         );
+
+        // Add user group ids
+        $groupIds = array_map(function($group) {
+            return $group->id;
+        }, $this->groups);
+        $attributes['groups'] = $groupIds;
 
         if (!$this->profile->isNewRecord) {
             foreach ($this->profile->getProfileFields() as $profileField) {
@@ -584,7 +607,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if ($this->isSystemAdmin()) {
             return true;
         }
-        
+
         return $this->getManagerGroups()->count() > 0;
     }
 
