@@ -36,7 +36,7 @@ use humhub\compat\CActiveForm;
             });
         </script>
         <hr/>
-        <?php echo Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), array('class' => 'btn btn-danger')); ?>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), array('class' => 'btn btn-danger', 'data-ui-loader' => "")); ?>
         <a href="<?php echo Url::to(['index']); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
 
         <?php CActiveForm::end(); ?>

@@ -36,7 +36,7 @@ use yii\helpers\Url;
         </div>        
 
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_oembed_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_oembed_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>
         <?php CActiveForm::end(); ?>        
 
         <?php if ($prefix != ""): ?>

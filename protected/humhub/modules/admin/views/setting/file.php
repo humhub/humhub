@@ -71,7 +71,7 @@ use yii\helpers\Url;
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_file', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_file', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
         <?php CActiveForm::end(); ?>

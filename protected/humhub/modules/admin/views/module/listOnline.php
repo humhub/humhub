@@ -19,7 +19,7 @@ use yii\helpers\Html;
             <div class="col-md-6">
                 <div class="form-group form-group-search">
                     <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('AdminModule.module_listOnline', 'search for available modules online'))); ?>
-                    <?php echo Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search', 'data-ui-loader' => "")); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>

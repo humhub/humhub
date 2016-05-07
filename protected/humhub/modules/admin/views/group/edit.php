@@ -57,7 +57,7 @@ use yii\helpers\Html;
             <?php endif; ?>
             <?php echo $form->field($group, 'show_at_directory')->checkbox(); ?>
 
-            <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary')); ?>  
+            <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>  
 
             <?php
             if ($showDeleteButton) {

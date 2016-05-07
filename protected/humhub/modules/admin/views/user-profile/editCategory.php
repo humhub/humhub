@@ -45,7 +45,7 @@ use yii\helpers\Html;
 
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>
 
         <?php if (!$category->isNewRecord && !$category->is_system) : ?>
             <?php echo Html::a(Yii::t('AdminModule.views_userprofile_editCategory', 'Delete'), Url::to(['delete-category', 'id' => $category->id]), array('class' => 'btn btn-danger')); ?>

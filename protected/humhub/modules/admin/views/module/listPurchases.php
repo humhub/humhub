@@ -19,7 +19,7 @@ use yii\helpers\Html;
             <div class="col-md-6">
                 <div class="form-group form-group-search">
                     <?php echo Html::textInput("licenceKey", $licenceKey, array("class" => "form-control form-search", "placeholder" => Yii::t('AdminModule.base', 'Add purchased module by licence key'))); ?>
-                    <?php echo Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Register'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Register'), array('class' => 'btn btn-default btn-sm form-button-search' , 'data-ui-loader' => "")); ?>
                 </div>
                 <?php if ($message != ""): ?>
                     <div style="color:<?php echo ($hasError) ? 'red' : 'green'; ?>"><?= Html::encode($message); ?></div>
