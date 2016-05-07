@@ -53,7 +53,7 @@ use yii\widgets\ActiveForm;
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader'=>"")); ?>
 
         <!-- show flash message after saving -->
         <?php \humhub\widgets\DataSaved::widget(); ?>

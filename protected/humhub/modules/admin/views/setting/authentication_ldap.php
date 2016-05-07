@@ -69,7 +69,7 @@ use yii\helpers\Url;
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication_ldap', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication_ldap', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
         <?php ActiveForm::end(); ?>

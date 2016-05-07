@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
+use humhub\modules\space\models\Setting;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -57,6 +58,19 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionIndex()
     {
+        $space = $this->getSpace();
+        $indexUrl = Setting::Get($space->id, 'indexUrl');
+        
+        if($indexUrl != null) {
+            $pages = \humhub\modules\space\models\SpacePages::getAvailablePages();
+            if(isset($pages[$indexUrl])) {
+                return $this->redirect($indexUrl);
+            } else {
+                //Either the module was deactivated or url changed
+                Setting::Set($space->id, 'indexUrl', '');
+            }
+        }
+        
         return $this->render('index', ['space' => $this->contentContainer]);
     }
 

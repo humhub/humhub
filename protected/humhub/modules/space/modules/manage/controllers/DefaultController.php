@@ -9,9 +9,9 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
+use humhub\modules\space\models\SpacePages;
 
 /**
  * Default space admin action
@@ -28,12 +28,22 @@ class DefaultController extends Controller
     {
         $space = $this->contentContainer;
         $space->scenario = 'edit';
-
+        $space->indexUrl = \humhub\modules\space\models\Setting::Get($space->id, 'indexUrl');
+        
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('index'));
         }
-        return $this->render('index', array('model' => $space));
+        
+        $indexModuleSelection = SpacePages::getAvailablePages();
+        
+        //To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
+        array_shift($indexModuleSelection);
+        $indexModuleSelection = ["" => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
+        
+        
+        
+        return $this->render('index', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
     }
 
     /**

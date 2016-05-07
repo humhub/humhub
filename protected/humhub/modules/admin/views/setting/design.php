@@ -69,7 +69,7 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
         </div>
 
         <hr>
-        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_design', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_design', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
         <?php ActiveForm::end(); ?>

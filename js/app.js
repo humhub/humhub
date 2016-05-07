@@ -143,13 +143,51 @@ $(document).ready(function () {
         $(this).removeData('bs.modal');
 
         // just close modal and reset modal content to default (shows the loader)
-        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></div>');
-    })
+        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body">\n\
+<div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></div>');
+    });
 
     // set Modal handler to all modal links
     setModalHandler();
 
     initPlugins();
+
+    var x = 0;
+    $('a[data-ui-loader], button[data-ui-loader]').on('click', function () {
+        var $this = $(this);
+        
+        if($this.find('.loader').length) {
+            return false;
+        }
+        
+        var color = $this.css('color') || '#ffffff';
+        var $loader = $('<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>');
+        
+        $loader.find('.sk-bounce1, .sk-bounce2, .sk-bounce3')
+                .addClass('disabled')
+                .css( {'background-color': color, 'width': '10px', 'height': '10px'});
+        
+        $this.css('overflow', 'hidden');
+        $this.addClass('disabled');
+        
+        
+        //Prevent the container from resizing
+        $this.css('min-width', this.getBoundingClientRect().width);
+        $this.data('text', $this.text());
+        $this.html($loader);
+    });
+    
+    $(document).on('afterValidate', function(evt, messages, errors) {
+        if(errors.length) {
+            $('[data-ui-loader]').each(function() {
+                var $this = $(this);
+                if($this.find('.loader').length) {
+                    $this.html($(this).data('text'));
+                    $this.removeClass('disabled');
+                }
+            });
+        }
+    });
 
 });
 
@@ -162,7 +200,7 @@ function setModalHandler() {
     $(document).on('click.humhub', "a[data-target='#globalModal']", function (ev) {
         ev.preventDefault();
         var options = {
-            'show' : true,
+            'show': true,
             'backdrop': $(this).data('backdrop')
         }
         $("#globalModal").modal(options);
