@@ -99,13 +99,20 @@ class RichText extends \humhub\components\Widget
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
+        
+        
 
         if (!$this->minimal) {
             $output = nl2br($this->text);
+            
         } else {
             $output = $this->text;
         }
-
+        
+        $output = preg_replace_callback('/^( +)/m', function($m) {
+            return str_repeat("&nbsp;", strlen($m[1])); 
+        }, $output);
+        
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return $output;
