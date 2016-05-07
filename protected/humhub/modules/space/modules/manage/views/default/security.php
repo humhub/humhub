@@ -37,7 +37,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
         <?php echo $form->field($model, 'default_content_visibility')->dropdownList($contentVisibilities); ?>
         <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default'); ?></p>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('base', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
 

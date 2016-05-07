@@ -43,7 +43,7 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
         </div>
         
 
-        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
