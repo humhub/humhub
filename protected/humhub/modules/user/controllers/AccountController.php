@@ -103,12 +103,12 @@ class AccountController extends BaseAccountController
 
         $model->tags = $user->tags;
         $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
-        $model->show_share_panel = $user->getSetting("hideSharePanel", "share");
+        $model->show_share_panel = $user->getSetting("hideSharePanel", "dashboard");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
-            $user->setSetting("hideSharePanel", $model->show_share_panel, "share");
+            $user->setSetting("hideSharePanel", $model->show_share_panel, "dashboard");
             $user->language = $model->language;
             $user->tags = $model->tags;
             $user->time_zone = $model->timeZone;
@@ -273,14 +273,14 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $model = new \humhub\modules\user\models\forms\AccountEmailing();
 
-        $model->receive_email_activities = $user->getSetting("receive_email_activities", 'core', \humhub\models\Setting::Get('receive_email_activities', 'mailing'));
-        $model->receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', \humhub\models\Setting::Get('receive_email_notifications', 'mailing'));
-        $model->enable_html5_desktop_notifications = $user->getSetting("enable_html5_desktop_notifications", 'core', \humhub\models\Setting::Get('enable_html5_desktop_notifications', 'notification'));
+        $model->receive_email_activities = $user->getSetting('receive_email_activities', 'activity', \humhub\models\Setting::Get('receive_email_activities', 'activity'));
+        $model->receive_email_notifications = $user->getSetting('receive_email_notifications', 'notification', \humhub\models\Setting::Get('receive_email_notifications', 'notification'));
+        $model->enable_html5_desktop_notifications = $user->getSetting('enable_html5_desktop_notifications', 'notification', \humhub\models\Setting::Get('enable_html5_desktop_notifications', 'notification'));
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->setSetting("receive_email_activities", $model->receive_email_activities);
-            $user->setSetting("receive_email_notifications", $model->receive_email_notifications);
-            $user->setSetting('enable_html5_desktop_notifications', $model->enable_html5_desktop_notifications);
+            $user->setSetting('receive_email_activities', $model->receive_email_activities, 'activity');
+            $user->setSetting('receive_email_notifications', $model->receive_email_notifications, 'notification');
+            $user->setSetting('enable_html5_desktop_notifications', $model->enable_html5_desktop_notifications, 'notification');
 
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
@@ -490,10 +490,10 @@ class AccountController extends BaseAccountController
 
     /**
      * Returns the current user of this account
-     * 
+     *
      * An administration can also pass a user id via GET parameter to change users
      * accounts settings.
-     * 
+     *
      * @return User the user
      */
     public function getUser()

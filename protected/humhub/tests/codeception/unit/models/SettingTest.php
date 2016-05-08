@@ -13,7 +13,7 @@ use humhub\models\Setting;
  * @package humhub.tests.unit.models
  * @since 0.9
  * @group core
- * 
+ *
  * @author luke
  */
 class SettingTest extends DbTestCase
@@ -35,9 +35,6 @@ class SettingTest extends DbTestCase
 
     public function testSetGet()
     {
-
-        $this->assertTrue((Setting::Get('theme') == 'HumHub'));
-        // Without Module
         $this->assertTrue((Setting::Get('theme') == 'HumHub'));
 
         Setting::Set('theme', 'HumHub2');
@@ -45,28 +42,28 @@ class SettingTest extends DbTestCase
         $this->assertTrue((Setting::Get('theme', '') == 'HumHub2'));
 
         // Module
-        $this->assertFalse((Setting::Get('expireTime') == '3600'));
-        $this->assertTrue((Setting::Get('expireTime', 'cache') == '3600'));
+        $this->assertFalse((Setting::Get('cache.expireTime', 'user') == '3600'));
+        $this->assertTrue((Setting::Get('cache.expireTime', 'base') == '3600'));
 
-        Setting::Set('expireTime', '3601', 'cache');
-        $this->assertTrue((Setting::Get('expireTime', 'cache') == '3601'));
+        Setting::Set('cache.expireTime', '3601');
+        $this->assertTrue((Setting::Get('cache.expireTime') == '3601'));
 
         // Create
         Setting::Set('newSetting', 'newValue');
         $this->assertTrue((Setting::Get('newSetting') == 'newValue'));
 
-        Setting::Set('newSetting', 'newValue2', 'someModuleId');
-        $this->assertTrue((Setting::Get('newSetting', 'someModuleId') == 'newValue2'));
+        Setting::Set('newSetting', 'newValue2', 'user');
+        $this->assertTrue((Setting::Get('newSetting', 'user') == 'newValue2'));
     }
 
     public function testTextSettings()
     {
         $longText = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
         Setting::SetText('longText', $longText);
-        Setting::SetText('longText', $longText . "2", 'testModule');
+        Setting::SetText('longText', $longText . "2", 'admin');
 
         $this->assertEquals(Setting::GetText('longText'), $longText);
-        $this->assertEquals(Setting::GetText('longText', 'testModule'), $longText . "2");
+        $this->assertEquals(Setting::GetText('longText', 'admin'), $longText . "2");
     }
 
     public function testInstalled()

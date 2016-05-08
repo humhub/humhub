@@ -83,7 +83,7 @@ class Collection extends Component
 
     /**
      * Sets a client by id and config
-     * 
+     *
      * @param string $id auth client id.
      * @param array $config auth client instance configuration.
      */
@@ -94,7 +94,7 @@ class Collection extends Component
 
     /**
      * Removes client by id
-     * 
+     *
      * @param string $id client id.
      */
     public function removeClient($id)
@@ -117,7 +117,7 @@ class Collection extends Component
 
     /**
      * Returns the configuration of default auth clients
-     * 
+     *
      * @return array the default auth clients
      */
     protected function getDefaultClients()
@@ -128,7 +128,7 @@ class Collection extends Component
             'class' => 'humhub\modules\user\authclient\Password'
         ];
 
-        if (Setting::Get('enabled', 'authentication_ldap')) {
+        if (Setting::Get('auth.ldap.enabled', 'user')) {
             $clients['ldap'] = [
                 'class' => 'humhub\modules\user\authclient\ZendLdapClient'
             ];

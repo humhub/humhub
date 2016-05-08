@@ -25,15 +25,15 @@ class Module extends \humhub\components\Module
     /**
      * Returns all activities which should be send by e-mail to the given user
      * in the given interval
-     * 
+     *
      * @see \humhub\modules\content\components\MailUpdateSender
      * @param User $user
      * @param int $interval
-     * @return components\BaseActivity[] 
+     * @return components\BaseActivity[]
      */
     public function getMailActivities(User $user, $interval)
     {
-        $receive_email_activities = $user->getSetting("receive_email_activities", 'core', Setting::Get('receive_email_activities', 'mailing'));
+        $receive_email_activities = $user->getSetting("receive_email_activities", 'activity', Setting::Get('receive_email_activities', 'activity'));
 
         // User never wants activity content
         if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {

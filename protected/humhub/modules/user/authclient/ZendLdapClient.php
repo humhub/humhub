@@ -112,14 +112,14 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         $map = [];
 
         // Username field 
-        $usernameAttribute = Setting::Get('usernameAttribute', 'authentication_ldap');
+        $usernameAttribute = Setting::Get('auth.ldap.usernameAttribute', 'user');
         if ($usernameAttribute == '') {
             $usernameAttribute = 'sAMAccountName';
         }
         $map['username'] = strtolower($usernameAttribute);
 
         // E-Mail field 
-        $emailAttribute = Setting::Get('emailAttribute', 'authentication_ldap');
+        $emailAttribute = Setting::Get('auth.ldap.emailAttribute', 'user');
         if ($emailAttribute == '') {
             $emailAttribute = 'mail';
         }
@@ -242,15 +242,15 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         if ($this->_ldap === null) {
             $options = array(
-                'host' => Setting::Get('hostname', 'authentication_ldap'),
-                'port' => Setting::Get('port', 'authentication_ldap'),
-                'username' => Setting::Get('username', 'authentication_ldap'),
-                'password' => Setting::Get('password', 'authentication_ldap'),
-                'useStartTls' => (Setting::Get('encryption', 'authentication_ldap') == 'tls'),
-                'useSsl' => (Setting::Get('encryption', 'authentication_ldap') == 'ssl'),
+                'host' => Setting::Get('auth.ldap.hostname', 'user'),
+                'port' => Setting::Get('auth.ldap.port', 'user'),
+                'username' => Setting::Get('auth.ldap.username', 'user'),
+                'password' => Setting::Get('auth.ldap.password', 'user'),
+                'useStartTls' => (Setting::Get('auth.ldap.encryption', 'user') == 'tls'),
+                'useSsl' => (Setting::Get('auth.ldap.encryption', 'user') == 'ssl'),
                 'bindRequiresDn' => true,
-                'baseDn' => Setting::Get('baseDn', 'authentication_ldap'),
-                'accountFilterFormat' => Setting::Get('loginFilter', 'authentication_ldap'),
+                'baseDn' => Setting::Get('auth.ldap.baseDn', 'user'),
+                'accountFilterFormat' => Setting::Get('auth.ldap.loginFilter', 'user'),
             );
 
             $this->_ldap = new \Zend\Ldap\Ldap($options);
@@ -292,12 +292,12 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     public function syncUsers()
     {
-        if (!Setting::Get('enabled', 'authentication_ldap') || !Setting::Get('refreshUsers', 'authentication_ldap')) {
+        if (!Setting::Get('auth.ldap.enabled', 'user') || !Setting::Get('auth.ldap.refreshUsers', 'user')) {
             return;
         }
 
-        $userFilter = Setting::Get('userFilter', 'authentication_ldap');
-        $baseDn = Setting::Get('baseDn', 'authentication_ldap');
+        $userFilter = Setting::Get('auth.ldap.userFilter', 'user');
+        $baseDn = Setting::Get('auth.ldap.baseDn', 'user');
         $userCollection = $this->getLdap()->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
 
         $ids = [];

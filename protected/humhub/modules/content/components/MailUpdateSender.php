@@ -81,7 +81,7 @@ class MailUpdateSender extends \yii\base\Component
 
     /**
      * Sends mail update to user
-     * 
+     *
      * @return type
      */
     public function send()
@@ -110,7 +110,7 @@ class MailUpdateSender extends \yii\base\Component
                     'notifications_plaintext' => $notifications['text'],
                 ]);
 
-                $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
+                $mail->setFrom([Setting::Get('mailer.systemEmailAddress') => Setting::Get('mailer.systemEmailName')]);
                 $mail->setTo($this->user->email);
                 $mail->setSubject($this->getSubject());
                 if ($mail->send()) {
@@ -126,7 +126,7 @@ class MailUpdateSender extends \yii\base\Component
 
     /**
      * Renders notifications mail output
-     * 
+     *
      * @return array
      */
     protected function renderNotifications()
@@ -146,7 +146,7 @@ class MailUpdateSender extends \yii\base\Component
 
     /**
      * Renders activity mail output
-     * 
+     *
      * @return array
      */
     protected function renderActivities()
@@ -166,7 +166,7 @@ class MailUpdateSender extends \yii\base\Component
 
     /**
      * Switch to current language
-     * 
+     *
      * @param User $user optional user
      */
     protected static function switchLanguage($user = null)

@@ -60,33 +60,33 @@ class SpaceController extends Behavior
         if ($this->space != null) {
             return $this->space;
         }
-        
+
         // Get Space GUID by parameter
         $guid = Yii::$app->request->get('sguid');
-        
+
         // Try Load the space
         $this->space = Space::findOne([
             'guid' => $guid
         ]);
         if ($this->space == null)
             throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
-        
+
         $this->checkAccess();
         return $this->space;
     }
 
     public function checkAccess()
     {
-        if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
+        if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
             throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
-        
+
         // Save users last action on this space
         $membership = $this->space->getMembership(Yii::$app->user->id);
         if ($membership != null) {
             $membership->updateLastVisit();
         } else {
-            
+
             // Super Admin can always enter
             if (! Yii::$app->user->isAdmin()) {
                 // Space invisible?

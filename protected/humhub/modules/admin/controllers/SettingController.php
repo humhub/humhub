@@ -17,8 +17,8 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\user\libs\Ldap;
 
 /**
- * SettingController 
- * 
+ * SettingController
+ *
  * @since 0.5
  */
 class SettingController extends Controller
@@ -59,15 +59,15 @@ class SettingController extends Controller
      */
     public function actionBasic()
     {
-        $form = new \humhub\modules\admin\models\forms\BasicSettingsForm;
-        $form->name = Setting::Get('name');
-        $form->baseUrl = Setting::Get('baseUrl');
-        $form->defaultLanguage = Setting::Get('defaultLanguage');
-        $form->timeZone = Setting::Get('timeZone');
-        $form->dashboardShowProfilePostForm = Setting::Get('showProfilePostForm', 'dashboard');
-        $form->tour = Setting::Get('enable', 'tour');
-        $form->share = Setting::Get('enable', 'share');
-        $form->enableFriendshipModule = Setting::Get('enable', 'friendship');
+        $form = new \humhub\modules\admin\models\forms\BasicSettingsForm();
+        $form->name = Yii::$app->settings->get('name');
+        $form->baseUrl = Yii::$app->settings->get('baseUrl');
+        $form->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
+        $form->timeZone = Yii::$app->settings->get('timeZone');
+        $form->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
+        $form->tour = Yii::$app->getModule('tour')->settings->get('enable');
+        $form->share = Yii::$app->getModule('dashboard')->settings->get('share.enable');
+        $form->enableFriendshipModule = Yii::$app->getModule('friendship')->settings->get('enable');
 
         $form->defaultSpaceGuid = "";
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $defaultSpace) {
@@ -75,14 +75,14 @@ class SettingController extends Controller
         }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('name', $form->name);
-            Setting::Set('baseUrl', $form->baseUrl);
-            Setting::Set('defaultLanguage', $form->defaultLanguage);
-            Setting::Set('timeZone', $form->timeZone);
-            Setting::Set('enable', $form->tour, 'tour');
-            Setting::Set('enable', $form->share, 'share');
-            Setting::Set('enable', $form->enableFriendshipModule, 'friendship');
-            Setting::Set('showProfilePostForm', $form->dashboardShowProfilePostForm, 'dashboard');
+            Yii::$app->settings->get('name', $form->name);
+            Yii::$app->settings->get('baseUrl', $form->baseUrl);
+            Yii::$app->settings->get('defaultLanguage', $form->defaultLanguage);
+            Yii::$app->settings->get('timeZone', $form->timeZone);
+            Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $form->dashboardShowProfilePostForm);
+            Yii::$app->getModule('tour')->settings->set('enable', $form->tour);
+            Yii::$app->getModule('dashboard')->settings->set('share.enable', $form->share);
+            Yii::$app->getModule('friendship')->settings->set('enable', $form->enableFriendshipModule);
 
             $spaceGuids = explode(",", $form->defaultSpaceGuid);
 
@@ -131,25 +131,25 @@ class SettingController extends Controller
     public function actionAuthentication()
     {
         $form = new \humhub\modules\admin\models\forms\AuthenticationSettingsForm;
-        $form->internalUsersCanInvite = Setting::Get('internalUsersCanInvite', 'authentication_internal');
-        $form->internalRequireApprovalAfterRegistration = Setting::Get('needApproval', 'authentication_internal');
-        $form->internalAllowAnonymousRegistration = Setting::Get('anonymousRegistration', 'authentication_internal');
-        $form->defaultUserGroup = Setting::Get('defaultUserGroup', 'authentication_internal');
-        $form->defaultUserIdleTimeoutSec = Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
-        $form->allowGuestAccess = Setting::Get('allowGuestAccess', 'authentication_internal');
-        $form->defaultUserProfileVisibility = Setting::Get('defaultUserProfileVisibility', 'authentication_internal');
+        $form->internalUsersCanInvite = Setting::Get('auth.internalUsersCanInvite', 'user');
+        $form->internalRequireApprovalAfterRegistration = Setting::Get('auth.needApproval', 'user');
+        $form->internalAllowAnonymousRegistration = Setting::Get('auth.anonymousRegistration', 'user');
+        $form->defaultUserGroup = Setting::Get('auth.defaultUserGroup', 'user');
+        $form->defaultUserIdleTimeoutSec = Setting::Get('auth.defaultUserIdleTimeoutSec', 'user');
+        $form->allowGuestAccess = Setting::Get('auth.allowGuestAccess', 'user');
+        $form->defaultUserProfileVisibility = Setting::Get('auth.defaultUserProfileVisibility', 'user');
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('internalUsersCanInvite', $form->internalUsersCanInvite, 'authentication_internal');
-            Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
-            Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
-            Setting::Set('defaultUserGroup', $form->defaultUserGroup, 'authentication_internal');
-            Setting::Set('defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'authentication_internal');
-            Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
+            Setting::Set('auth.internalUsersCanInvite', $form->internalUsersCanInvite, 'user');
+            Setting::Set('auth.needApproval', $form->internalRequireApprovalAfterRegistration, 'user');
+            Setting::Set('auth.anonymousRegistration', $form->internalAllowAnonymousRegistration, 'user');
+            Setting::Set('auth.defaultUserGroup', $form->defaultUserGroup, 'user');
+            Setting::Set('auth.defaultUserIdleTimeoutSec', $form->defaultUserIdleTimeoutSec, 'user');
+            Setting::Set('auth.allowGuestAccess', $form->allowGuestAccess, 'user');
 
-            if (Setting::Get('allowGuestAccess', 'authentication_internal')) {
-                Setting::Set('defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'authentication_internal');
+            if (Setting::Get('auth.allowGuestAccess', 'user')) {
+                Setting::Set('auth.defaultUserProfileVisibility', $form->defaultUserProfileVisibility, 'user');
             }
 
             // set flash message
@@ -179,36 +179,36 @@ class SettingController extends Controller
         $form = new \humhub\modules\admin\models\forms\AuthenticationLdapSettingsForm;
 
         // Load Defaults
-        $form->enabled = Setting::Get('enabled', 'authentication_ldap');
-        $form->refreshUsers = Setting::Get('refreshUsers', 'authentication_ldap');
-        $form->username = Setting::Get('username', 'authentication_ldap');
-        $form->password = Setting::Get('password', 'authentication_ldap');
-        $form->hostname = Setting::Get('hostname', 'authentication_ldap');
-        $form->port = Setting::Get('port', 'authentication_ldap');
-        $form->encryption = Setting::Get('encryption', 'authentication_ldap');
-        $form->baseDn = Setting::Get('baseDn', 'authentication_ldap');
-        $form->loginFilter = Setting::Get('loginFilter', 'authentication_ldap');
-        $form->userFilter = Setting::Get('userFilter', 'authentication_ldap');
-        $form->usernameAttribute = Setting::Get('usernameAttribute', 'authentication_ldap');
-        $form->emailAttribute = Setting::Get('emailAttribute', 'authentication_ldap');
+        $form->enabled = Setting::Get('auth.ldap.enabled', 'user');
+        $form->refreshUsers = Setting::Get('auth.ldap.refreshUsers', 'user');
+        $form->username = Setting::Get('auth.ldap.username', 'user');
+        $form->password = Setting::Get('auth.ldap.password', 'user');
+        $form->hostname = Setting::Get('auth.ldap.hostname', 'user');
+        $form->port = Setting::Get('auth.ldap.port', 'user');
+        $form->encryption = Setting::Get('auth.ldap.encryption', 'user');
+        $form->baseDn = Setting::Get('auth.ldap.baseDn', 'user');
+        $form->loginFilter = Setting::Get('auth.ldap.loginFilter', 'user');
+        $form->userFilter = Setting::Get('auth.ldap.userFilter', 'user');
+        $form->usernameAttribute = Setting::Get('auth.ldap.usernameAttribute', 'user');
+        $form->emailAttribute = Setting::Get('auth.ldap.emailAttribute', 'user');
 
         if ($form->password != '')
             $form->password = '---hidden---';
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('enabled', $form->enabled, 'authentication_ldap');
-            Setting::Set('refreshUsers', $form->refreshUsers, 'authentication_ldap');
-            Setting::Set('hostname', $form->hostname, 'authentication_ldap');
-            Setting::Set('port', $form->port, 'authentication_ldap');
-            Setting::Set('encryption', $form->encryption, 'authentication_ldap');
-            Setting::Set('username', $form->username, 'authentication_ldap');
+            Setting::Set('auth.ldap.enabled', $form->enabled, 'user');
+            Setting::Set('auth.ldap.refreshUsers', $form->refreshUsers, 'user');
+            Setting::Set('auth.ldap.hostname', $form->hostname, 'user');
+            Setting::Set('auth.ldap.port', $form->port, 'user');
+            Setting::Set('auth.ldap.encryption', $form->encryption, 'user');
+            Setting::Set('auth.ldap.username', $form->username, 'user');
             if ($form->password != '---hidden---')
-                Setting::Set('password', $form->password, 'authentication_ldap');
-            Setting::Set('baseDn', $form->baseDn, 'authentication_ldap');
-            Setting::Set('loginFilter', $form->loginFilter, 'authentication_ldap');
-            Setting::Set('userFilter', $form->userFilter, 'authentication_ldap');
-            Setting::Set('usernameAttribute', $form->usernameAttribute, 'authentication_ldap');
-            Setting::Set('emailAttribute', $form->emailAttribute, 'authentication_ldap');
+                Setting::Set('auth.ldap.password', $form->password, 'user');
+            Setting::Set('auth.ldap.baseDn', $form->baseDn, 'user');
+            Setting::Set('auth.ldap.loginFilter', $form->loginFilter, 'user');
+            Setting::Set('auth.ldap.userFilter', $form->userFilter, 'user');
+            Setting::Set('auth.ldap.usernameAttribute', $form->usernameAttribute, 'user');
+            Setting::Set('auth.ldap.emailAttribute', $form->emailAttribute, 'user');
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -221,12 +221,12 @@ class SettingController extends Controller
         $userCount = 0;
         $errorMessage = "";
 
-        if (Setting::Get('enabled', 'authentication_ldap')) {
+        if (Setting::Get('auth.ldap.enabled', 'user')) {
             $enabled = true;
             try {
                 $ldapAuthClient = new \humhub\modules\user\authclient\ZendLdapClient();
                 $ldap = $ldapAuthClient->getLdap();
-                $userCount = $ldap->count(Setting::Get('userFilter', 'authentication_ldap'), Setting::Get('baseDn', 'authentication_ldap'), \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
+                $userCount = $ldap->count(Setting::Get('auth.ldap.userFilter', 'user'), Setting::Get('auth.ldap.baseDn', 'user'), \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
             } catch (\Zend\Ldap\Exception\LdapException $ex) {
                 $errorMessage = $ex->getMessage();
             } catch (\Exception $ex) {
@@ -249,14 +249,14 @@ class SettingController extends Controller
     public function actionCaching()
     {
         $form = new \humhub\modules\admin\models\forms\CacheSettingsForm;
-        $form->type = Setting::Get('type', 'cache');
-        $form->expireTime = Setting::Get('expireTime', 'cache');
+        $form->type = Setting::Get('cache.class');
+        $form->expireTime = Setting::Get('cache.expireTime');
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
 
             Yii::$app->cache->flush();
-            Setting::Set('type', $form->type, 'cache');
-            Setting::Set('expireTime', $form->expireTime, 'cache');
+            Setting::Set('cache.class', $form->type);
+            Setting::Set('cache.expireTime', $form->expireTime);
 
             \humhub\libs\DynamicConfig::rewrite();
 
@@ -299,13 +299,13 @@ class SettingController extends Controller
     {
         $model = new \humhub\modules\admin\models\forms\MailingDefaultsForm();
 
-        $model->receive_email_activities = Setting::Get("receive_email_activities", 'mailing');
-        $model->receive_email_notifications = Setting::Get("receive_email_notifications", 'mailing');
+        $model->receive_email_activities = Setting::Get('receive_email_activities', 'activity');
+        $model->receive_email_notifications = Setting::Get('receive_email_notifications', 'notification');
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            Setting::Set('receive_email_activities', $model->receive_email_activities, 'mailing');
-            Setting::Set('receive_email_notifications', $model->receive_email_notifications, 'mailing');
+            Setting::Set('receive_email_activities', $model->receive_email_activities, 'activity');
+            Setting::Set('receive_email_notifications', $model->receive_email_notifications, 'notification');
 
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
         }
@@ -319,30 +319,30 @@ class SettingController extends Controller
     public function actionMailingServer()
     {
         $form = new \humhub\modules\admin\models\forms\MailingSettingsForm;
-        $form->transportType = Setting::Get('transportType', 'mailing');
-        $form->hostname = Setting::Get('hostname', 'mailing');
-        $form->username = Setting::Get('username', 'mailing');
-        if (Setting::Get('password', 'mailing') != '')
+        $form->transportType = Setting::Get('mailer.transportType');
+        $form->hostname = Setting::Get('mailer.hostname');
+        $form->username = Setting::Get('mailer.username');
+        if (Setting::Get('mailer.password') != '')
             $form->password = '---invisible---';
 
-        $form->port = Setting::Get('port', 'mailing');
-        $form->encryption = Setting::Get('encryption', 'mailing');
-        $form->allowSelfSignedCerts = Setting::Get('allowSelfSignedCerts', 'mailing');
-        $form->systemEmailAddress = Setting::Get('systemEmailAddress', 'mailing');
-        $form->systemEmailName = Setting::Get('systemEmailName', 'mailing');
+        $form->port = Setting::Get('mailer.port');
+        $form->encryption = Setting::Get('mailer.encryption');
+        $form->allowSelfSignedCerts = Setting::Get('mailer.allowSelfSignedCerts');
+        $form->systemEmailAddress = Setting::Get('mailer.systemEmailAddress');
+        $form->systemEmailName = Setting::Get('mailer.systemEmailName');
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->transportType = Setting::Set('transportType', $form->transportType, 'mailing');
-            $form->hostname = Setting::Set('hostname', $form->hostname, 'mailing');
-            $form->username = Setting::Set('username', $form->username, 'mailing');
+            $form->transportType = Setting::Set('mailer.transportType', $form->transportType);
+            $form->hostname = Setting::Set('mailer.hostname', $form->hostname);
+            $form->username = Setting::Set('mailer.username', $form->username);
             if ($form->password != '---invisible---')
-                $form->password = Setting::Set('password', $form->password, 'mailing');
-            $form->port = Setting::Set('port', $form->port, 'mailing');
-            $form->encryption = Setting::Set('encryption', $form->encryption, 'mailing');
-            $form->allowSelfSignedCerts = Setting::Set('allowSelfSignedCerts', $form->allowSelfSignedCerts, 'mailing');
-            $form->systemEmailAddress = Setting::Set('systemEmailAddress', $form->systemEmailAddress, 'mailing');
-            $form->systemEmailName = Setting::Set('systemEmailName', $form->systemEmailName, 'mailing');
+                $form->password = Setting::Set('mailer.password', $form->password);
+            $form->port = Setting::Set('mailer.port', $form->port);
+            $form->encryption = Setting::Set('mailer.encryption', $form->encryption);
+            $form->allowSelfSignedCerts = Setting::Set('mailer.allowSelfSignedCerts', $form->allowSelfSignedCerts);
+            $form->systemEmailAddress = Setting::Set('mailer.systemEmailAddress', $form->systemEmailAddress);
+            $form->systemEmailName = Setting::Set('mailer.systemEmailName', $form->systemEmailName);
 
             DynamicConfig::rewrite();
 
@@ -411,10 +411,10 @@ class SettingController extends Controller
     public function actionSecurity()
     {
         $form = new \humhub\modules\admin\models\forms\SecuritySettingsForm;
-        $form->canAdminAlwaysDeleteContent = Setting::Get('canAdminAlwaysDeleteContent', 'security');
+        $form->canAdminAlwaysDeleteContent = Setting::Get('canAdminAlwaysDeleteContent', 'content');
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->canAdminAlwaysDeleteContent = Setting::Set('canAdminAlwaysDeleteContent', $form->canAdminAlwaysDeleteContent, 'security');
+            $form->canAdminAlwaysDeleteContent = Setting::Set('canAdminAlwaysDeleteContent', $form->canAdminAlwaysDeleteContent, 'content');
             return $this->redirect(['/admin/setting/security']);
         }
         return $this->render('security', array('model' => $form));
@@ -482,20 +482,20 @@ class SettingController extends Controller
     public function actionProxy()
     {
         $form = new \humhub\modules\admin\models\forms\ProxySettingsForm;
-        $form->enabled = Setting::Get('enabled', 'proxy');
-        $form->server = Setting::Get('server', 'proxy');
-        $form->port = Setting::Get('port', 'proxy');
-        $form->user = Setting::Get('user', 'proxy');
-        $form->password = Setting::Get('password', 'proxy');
-        $form->noproxy = Setting::Get('noproxy', 'proxy');
+        $form->enabled = Setting::Get('proxy.enabled');
+        $form->server = Setting::Get('proxy.server');
+        $form->port = Setting::Get('proxy.port');
+        $form->user = Setting::Get('proxy.user');
+        $form->password = Setting::Get('proxy.password');
+        $form->noproxy = Setting::Get('proxy.noproxy');
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('enabled', $form->enabled, 'proxy');
-            Setting::Set('server', $form->server, 'proxy');
-            Setting::Set('port', $form->port, 'proxy');
-            Setting::Set('user', $form->user, 'proxy');
-            Setting::Set('password', $form->password, 'proxy');
-            Setting::Set('noproxy', $form->noproxy, 'proxy');
+            Setting::Set('proxy.enabled', $form->enabled);
+            Setting::Set('proxy.server', $form->server);
+            Setting::Set('proxy.port', $form->port);
+            Setting::Set('proxy.user', $form->user);
+            Setting::Set('proxy.password', $form->password);
+            Setting::Set('proxy.noproxy', $form->noproxy);
 
             // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_ProxyController', 'Saved'));

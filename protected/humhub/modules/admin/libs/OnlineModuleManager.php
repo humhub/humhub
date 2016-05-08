@@ -143,7 +143,7 @@ class OnlineModuleManager
             $this->_modules = null;
             Yii::$app->cache->delete('onlineModuleManager_modules');
         }
-        
+
         if ($this->_modules !== null) {
             return $this->_modules;
         }
@@ -152,7 +152,7 @@ class OnlineModuleManager
         if ($this->_modules === null || !is_array($this->_modules)) {
 
             $this->_modules = HumHubAPI::request('v1/modules/list');
-            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Setting::Get('expireTime', 'cache'));
+            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Setting::Get('cache.expireTime'));
         }
 
         return $this->_modules;

@@ -15,7 +15,7 @@ use humhub\models\Setting;
 
             <br/>
 
-            <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+            <?php if (Setting::Get('auth.internalUsersCanInvite', 'user')) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="active tab-internal"><a href="#internal"
@@ -51,7 +51,7 @@ use humhub\models\Setting;
                     ?>
 
                 </div>
-                <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+                <?php if (Setting::Get('auth.internalUsersCanInvite', 'user')) : ?>
                     <div class="tab-pane" id="external">
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>

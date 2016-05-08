@@ -110,7 +110,7 @@ class ListController extends Controller
 
         $update['notifications'] = array();
         foreach ($query->all() as $notification) {
-            if ($user->getSetting("enable_html5_desktop_notifications", 'core', Setting::Get('enable_html5_desktop_notifications', 'notification'))) {
+            if ($user->getSetting("enable_html5_desktop_notifications", 'notification', Setting::Get('enable_html5_desktop_notifications', 'notification'))) {
                 $update['notifications'][] = $notification->getClass()->render(BaseNotification::OUTPUT_TEXT);
             }
             $notification->desktop_notified = 1;

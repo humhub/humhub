@@ -61,7 +61,7 @@ class CreateController extends Controller
         }
 
         $visibilityOptions = [];
-        if (Setting::Get('allowGuestAccess', 'authentication_internal') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+        if (Setting::Get('auth.allowGuestAccess', 'user') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
             $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
         }
         if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
@@ -70,7 +70,7 @@ class CreateController extends Controller
         if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
-        
+
         $joinPolicyOptions = [
             Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
             Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
@@ -116,7 +116,7 @@ class CreateController extends Controller
                 $space->inviteMember($user->id, Yii::$app->user->id);
             }
             // Invite non existing members
-            if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) {
+            if (Setting::Get('auth.internalUsersCanInvite', 'user')) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $space->inviteMemberByEMail($email, Yii::$app->user->id);
                 }
@@ -130,7 +130,7 @@ class CreateController extends Controller
 
     /**
      * Creates an empty space model
-     * 
+     *
      * @return Space
      */
     protected function createSpaceModel()

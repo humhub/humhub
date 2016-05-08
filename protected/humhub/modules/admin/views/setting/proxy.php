@@ -16,7 +16,7 @@ use yii\helpers\Url;
         <div class="form-group">
             <div class="checkbox">
                 <label>
-                    <?php echo $form->checkBox($model, 'enabled', array('readonly' => Setting::IsFixed('enabled', 'proxy'))); ?> <?php echo $model->getAttributeLabel('enabled'); ?>
+                    <?php echo $form->checkBox($model, 'enabled', array('readonly' => Setting::IsFixed('proxy.enabled'))); ?> <?php echo $model->getAttributeLabel('enabled'); ?>
                 </label>
             </div>
         </div>

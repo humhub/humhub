@@ -44,7 +44,7 @@ class AccessControl extends \yii\base\ActionFilter
      */
     public function beforeAction($action)
     {
-        
+
         $identity = Yii::$app->user->getIdentity();
         if($identity != null && !$identity->isActive()) {
             Yii::$app->user->logout();
@@ -56,14 +56,14 @@ class AccessControl extends \yii\base\ActionFilter
             if (!$this->loggedInOnly && !$this->adminOnly) {
                 return true;
             }
-            if (in_array($action->id, $this->guestAllowedActions) && Setting::Get('allowGuestAccess', 'authentication_internal') == 1) {
+            if (in_array($action->id, $this->guestAllowedActions) && Setting::Get('auth.allowGuestAccess', 'user') == 1) {
                 return true;
             }
 
             Yii::$app->user->loginRequired();
             return false;
         }
-        
+
         if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
             $this->forbidden();
         }

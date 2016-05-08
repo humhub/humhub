@@ -63,13 +63,13 @@ class DashboardController extends Controller
             ));
         }
     }
-    
+
     /*
      * Update user settings for hiding share panel on dashboard
      */
     public function actionHidePanel()
     {
         // set tour status to seen for current user
-        return Yii::$app->user->getIdentity()->setSetting('hideSharePanel', 1, "share");
+        return Yii::$app->user->getIdentity()->setSetting('hideSharePanel', 1, "dashboard");
     }
 }

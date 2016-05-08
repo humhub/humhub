@@ -29,7 +29,7 @@ class Events extends \yii\base\Object
             return;
         }
 
-        if (Setting::Get('needApproval', 'authentication_internal')) {
+        if (Setting::Get('auth.needApproval', 'user')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
                 $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
             }

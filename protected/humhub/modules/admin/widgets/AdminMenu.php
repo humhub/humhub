@@ -50,7 +50,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'group' => 'manage',
             'sortOrder' => 201,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'approval'),
-            'isVisible' => (Setting::Get('needApproval', 'authentication_internal') && Yii::$app->user->getIdentity()->canApproveUsers()),
+            'isVisible' => (Setting::Get('auth.needApproval', 'user') && Yii::$app->user->getIdentity()->canApproveUsers()),
         ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Groups'),

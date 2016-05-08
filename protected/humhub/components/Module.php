@@ -34,6 +34,20 @@ class Module extends \yii\base\Module
     public $resourcesPath = 'assets';
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Set settings component
+        $this->set('settings', [
+            'class' => SettingsManager::className(),
+            'moduleId' => $this->id
+        ]);
+    }
+
+    /**
      * Returns modules name provided by module.json file
      *
      * @return string Name
@@ -251,7 +265,7 @@ class Module extends \yii\base\Module
     {
         return [];
     }
-    
+
     /**
      * Returns a list of notification classes this module provides.
      * 

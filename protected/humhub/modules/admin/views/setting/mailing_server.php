@@ -26,19 +26,19 @@ use yii\helpers\Url;
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'systemEmailAddress'); ?>
-            <?php echo $form->textField($model, 'systemEmailAddress', array('class' => 'form-control', 'readonly' => Setting::IsFixed('systemEmailAddress', 'mailing'))); ?>
+            <?php echo $form->textField($model, 'systemEmailAddress', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.systemEmailAddress'))); ?>
         </div>
 
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'systemEmailName'); ?>
-            <?php echo $form->textField($model, 'systemEmailName', array('class' => 'form-control', 'readonly' => Setting::IsFixed('systemEmailName', 'mailing'))); ?>
+            <?php echo $form->textField($model, 'systemEmailName', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.systemEmailName'))); ?>
         </div>
 
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'transportType'); ?>
-            <?php echo $form->dropDownList($model, 'transportType', $transportTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('transportType', 'mailing'))); ?>
+            <?php echo $form->dropDownList($model, 'transportType', $transportTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.transportType'))); ?>
         </div>
 
         <div id="smtpOptions">
@@ -47,27 +47,27 @@ use yii\helpers\Url;
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'hostname'); ?>
-                <?php echo $form->textField($model, 'hostname', array('class' => 'form-control', 'readonly' => Setting::IsFixed('hostname', 'mailing'))); ?>
+                <?php echo $form->textField($model, 'hostname', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.hostname'))); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'username'); ?>
-                <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'readonly' => Setting::IsFixed('username', 'mailing'))); ?>
+                <?php echo $form->textField($model, 'username', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.username'))); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'password'); ?>
-                <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'readonly' => Setting::IsFixed('password', 'mailing'))); ?>
+                <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.password'))); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'port'); ?>
-                <?php echo $form->textField($model, 'port', array('class' => 'form-control', 'readonly' => Setting::IsFixed('port', 'mailing'))); ?>
+                <?php echo $form->textField($model, 'port', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.port'))); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'encryption'); ?>
-                <?php echo $form->dropDownList($model, 'encryption', $encryptionTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('encryption', 'mailing'))); ?>
+                <?php echo $form->dropDownList($model, 'encryption', $encryptionTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.encryption'))); ?>
             </div>
 
             <div id="encryptionOptions">
@@ -75,7 +75,7 @@ use yii\helpers\Url;
                     <strong>Encryption Options</strong>
                     <div class="checkbox">
                         <label>
-                            <?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('allowSelfSignedCerts', 'mailing'))); ?>
+                            <?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.allowSelfSignedCerts'))); ?>
                             <?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
                         </label>
                     </div>
@@ -116,7 +116,7 @@ use yii\helpers\Url;
             $("#encryptionOptions").show();
         }
     });
-</script>    
+</script>
 
 
 

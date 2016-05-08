@@ -84,7 +84,7 @@ class AccountRecoverPassword extends \yii\base\Model
             'user' => $user,
             'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
         ]);
-        $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+        $mail->setFrom([\humhub\models\Setting::Get('mailer.systemEmailAddress') => \humhub\models\Setting::Get('mailer.systemEmailName')]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery'));
         $mail->send();

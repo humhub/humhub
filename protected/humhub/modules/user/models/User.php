@@ -71,7 +71,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * A initial group for the user assigned while registration.
-     * @var type 
+     * @var type
      */
     public $registrationGroupId = null;
 
@@ -114,7 +114,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Checks if user is system administrator
-     * 
+     *
      * @param boolean $cached Used cached result if available
      * @return boolean user is system admin
      */
@@ -193,7 +193,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return array(
             \humhub\components\behaviors\GUID::className(),
-            \humhub\modules\user\behaviors\UserSetting::className(),
+            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
             \humhub\modules\user\behaviors\Followable::className(),
             \humhub\modules\user\behaviors\UserModelModules::className()
         );
@@ -292,7 +292,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all user this user is related as friend as AcriveQuery. 
+     * Returns all user this user is related as friend as AcriveQuery.
      * Returns null if the friendship module is deactivated.
      * @return AcriveQuery
      */
@@ -363,9 +363,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 $this->auth_mode = $passwordAuth->getId();
             }
 
-            if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal')) {
+            if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user')) {
                 // Set users profile default visibility to all
-                if (\humhub\models\Setting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
+                if (\humhub\models\Setting::Get('auth.defaultUserProfileVisibility', 'user') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;
                 }
             }
@@ -620,7 +620,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * TODO: deprecated 
+     * TODO: deprecated
      * @inheritdoc
      */
     public function getUserGroup()

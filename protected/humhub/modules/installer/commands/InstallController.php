@@ -32,8 +32,8 @@ class InstallController extends Controller
         \humhub\modules\installer\libs\InitialData::bootstrap();
 
         Setting::Set('name', "HumHub Test");
-        Setting::Set('systemEmailName', "humhub@example.com", 'mailing');
-        Setting::Set('systemEmailName', "humhub@example.com", 'mailing');
+        Setting::Set('mailer.systemEmailName', "humhub@example.com");
+        Setting::Set('mailer.systemEmailName', "humhub@example.com");
         Setting::Set('secret', \humhub\libs\UUID::v4());
 
         $user = new User();
@@ -56,7 +56,7 @@ class InstallController extends Controller
         $password->user_id = $user->id;
         $password->setPassword('test');
         $password->save();
-        
+
         // Assign to system admin group
         Group::getAdminGroup()->addUser($user);
 

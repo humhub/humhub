@@ -58,7 +58,7 @@ class AccountTopMenu extends BaseMenu
             ));
         }
 
-        if (!Yii::$app->user->isGuest && Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
+        if (!Yii::$app->user->isGuest && Setting::Get('auth.needApproval', 'user') && $user->canApproveUsers()) {
             $this->addItem(array(
                 'label' => Yii::t('base', 'User Approvals'),
                 'icon' => '<i class="fa fa-check-circle"></i>',
@@ -79,8 +79,8 @@ class AccountTopMenu extends BaseMenu
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
         ));
-        
-        parent::init();        
+
+        parent::init();
     }
 
 }

@@ -22,17 +22,17 @@ class Module extends \humhub\components\Module
     /**
      * Returns all notifications which should be send by e-mail to the given user
      * in the given interval
-     * 
+     *
      * @see \humhub\modules\content\components\MailUpdateSender
      * @param User $user
      * @param int $interval
-     * @return components\BaseNotification[] 
+     * @return components\BaseNotification[]
      */
     public function getMailNotifications(User $user, $interval)
     {
         $notifications = [];
 
-        $receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', Setting::Get('receive_email_notifications', 'mailing'));
+        $receive_email_notifications = $user->getSetting('receive_email_notifications', 'notification', Setting::Get('receive_email_notifications', 'notification'));
 
         // Never receive notifications
         if ($receive_email_notifications == User::RECEIVE_EMAIL_NEVER) {

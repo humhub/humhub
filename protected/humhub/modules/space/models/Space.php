@@ -61,10 +61,10 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
     /**
      * Contains the form value for indexUrl setting
-     * @var type 
+     * @var type
      */
     public $indexUrl = null;
-    
+
     /**
      * @inheritdoc
      */
@@ -89,7 +89,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             [['visibility'], 'checkVisibility'],
             [['guid', 'name'], 'string', 'max' => 45],
         ];
-        
+
         if(Yii::$app->getModule('space')->useUniqueSpaceNames) {
             $rules[] = [['name'], 'unique', 'targetClass' => self::className()];
         }
@@ -139,7 +139,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         return array(
             \humhub\components\behaviors\GUID::className(),
-            \humhub\modules\space\behaviors\SpaceSetting::className(),
+            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
             \humhub\modules\space\behaviors\SpaceModelModules::className(),
             \humhub\modules\space\behaviors\SpaceModelMembership::className(),
             \humhub\modules\user\behaviors\Followable::className(),
@@ -171,7 +171,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $activity->originator = $user;
             $activity->create();
         }
-        
+
         if($this->indexUrl != null) {
             Setting::Set($this->id, 'indexUrl', $this->indexUrl);
         } else {
@@ -405,7 +405,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         if (($visibility == self::VISIBILITY_REGISTERED_ONLY || $visibility == self::VISIBILITY_ALL) && !Yii::$app->user->permissionManager->can(new CreatePublicSpace())) {
-            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!' . $visibility));
+            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'));
         }
     }
 
@@ -428,7 +428,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             return true;
         }
-        
+
         return ($this->isMember());
     }
 
@@ -447,22 +447,22 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
         return $query;
     }
-    
+
     public function getMembershipUser($status = null)
     {
         $status = ($status == null) ? Membership::STATUS_MEMBER : $status;
         $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', 
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member',
                 ['space_id' => $this->id, 'member' => $status]);
         $query->andWhere('space_membership.space_id IS NOT NULL');
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
         return $query;
     }
-    
+
     public function getNonMembershipUser()
     {
         $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id ', 
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id ',
                 ['space_id' => $this->id]);
         $query->andWhere('space_membership.space_id IS NULL');
         $query->orWhere(['!=', 'space_membership.status', Membership::STATUS_MEMBER]);
@@ -493,7 +493,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         ];
 
         // Add guest groups if enabled
-        if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal')) {
+        if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user')) {
             $groups[self::USERGROUP_GUEST] = 'Guests';
         }
 

@@ -57,14 +57,14 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->isMember()) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
-        
+
         return UserPicker::filter([
             'query' => $space->getMembershipUser(),
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true
         ]);
     }
-    
+
      /**
      * Provides a searchable user list of all workspace members in json.
      *
@@ -78,7 +78,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->isMember()) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
-        
+
         return UserPicker::filter([
             'query' => $space->getNonMembershipUser(),
             'keyword' => Yii::$app->request->get('keyword'),
@@ -175,7 +175,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
 
             // Invite non existing members
-            if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) {
+            if (Setting::Get('auth.internalUsersCanInvite', 'user')) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id)) ? Membership::STATUS_INVITED : false;
                 }
@@ -213,7 +213,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
     /**
      * Toggle space content display at dashboard
-     * 
+     *
      * @throws HttpException
      */
     public function actionSwitchDashboardDisplay()

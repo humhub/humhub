@@ -16,13 +16,13 @@ use yii\helpers\Url;
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'type'); ?>
-            <?php echo $form->dropDownList($model, 'type', $cacheTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('type', 'cache'))); ?>
+            <?php echo $form->dropDownList($model, 'type', $cacheTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('cache.class'))); ?>
             <br>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'expireTime'); ?>
-            <?php echo $form->textField($model, 'expireTime', array('class' => 'form-control', 'readonly' => Setting::IsFixed('expireTime', 'cache'))); ?>
+            <?php echo $form->textField($model, 'expireTime', array('class' => 'form-control', 'readonly' => Setting::IsFixed('cache.expireTime'))); ?>
             <br>
         </div>
 

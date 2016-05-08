@@ -34,17 +34,17 @@ class CURLHelper
             CURLOPT_CAINFO => Yii::getAlias('@humhub/config/cacert.pem')
         );
 
-        if (Setting::Get('enabled', 'proxy')) {
-            $options[CURLOPT_PROXY] = Setting::Get('server', 'proxy');
-            $options[CURLOPT_PROXYPORT] = Setting::Get('port', 'proxy');
+        if (Setting::Get('proxy.enabled')) {
+            $options[CURLOPT_PROXY] = Setting::Get('proxy.server');
+            $options[CURLOPT_PROXYPORT] = Setting::Get('proxy.port');
             if (defined('CURLOPT_PROXYUSERNAME')) {
-                $options[CURLOPT_PROXYUSERNAME] = Setting::Get('user', 'proxy');
+                $options[CURLOPT_PROXYUSERNAME] = Setting::Get('proxy.user');
             }
             if (defined('CURLOPT_PROXYPASSWORD')) {
-                $options[CURLOPT_PROXYPASSWORD] = Setting::Get('password', 'proxy');
+                $options[CURLOPT_PROXYPASSWORD] = Setting::Get('proxy.password');
             }
             if (defined('CURLOPT_NOPROXY')) {
-                $options[CURLOPT_NOPROXY] = Setting::Get('noproxy', 'proxy');
+                $options[CURLOPT_NOPROXY] = Setting::Get('proxy.noproxy');
             }
         }
 

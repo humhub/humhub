@@ -39,19 +39,17 @@ class InitialData
         Setting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 
         // Authentication
-        Setting::Set('authInternal', '1', 'authentication');
-        Setting::Set('authLdap', '0', 'authentication');
-        Setting::Set('refreshUsers', '1', 'authentication_ldap');
-        Setting::Set('needApproval', '0', 'authentication_internal');
-        Setting::Set('anonymousRegistration', '1', 'authentication_internal');
-        Setting::Set('internalUsersCanInvite', '1', 'authentication_internal');
+        Setting::Set('auth.ldap.refreshUsers', '1', 'user');
+        Setting::Set('auth.needApproval', '0', 'user');
+        Setting::Set('auth.anonymousRegistration', '1', 'user');
+        Setting::Set('auth.internalUsersCanInvite', '1', 'user');
 
         // Mailing
-        Setting::Set('transportType', 'php', 'mailing');
-        Setting::Set('systemEmailAddress', 'social@example.com', 'mailing');
-        Setting::Set('systemEmailName', 'My Social Network', 'mailing');
-        Setting::Set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY, 'mailing');
-        Setting::Set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE, 'mailing');
+        Setting::Set('mailer.transportType', 'php');
+        Setting::Set('mailer.systemEmailAddress', 'social@example.com');
+        Setting::Set('mailer.systemEmailName', 'My Social Network');
+        Setting::Set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY, 'activity');
+        Setting::Set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE, 'notification');
 
         // File
         Setting::Set('maxFileSize', '1048576', 'file');
@@ -60,8 +58,8 @@ class InitialData
         Setting::Set('hideImageFileInfo', '0', 'file');
 
         // Caching
-        Setting::Set('type', 'CFileCache', 'cache');
-        Setting::Set('expireTime', '3600', 'cache');
+        Setting::Set('cache.class', 'yii\caching\FileCache');
+        Setting::Set('cache.expireTime', '3600');
         Setting::Set('installationId', md5(uniqid("", true)), 'admin');
 
         // Design
@@ -73,7 +71,7 @@ class InitialData
 
         // Basic
         Setting::Set('enable', 1, 'tour');
-        Setting::Set('enable', 1, 'share');
+        Setting::Set('share.enable', 1, 'dashboard');
         Setting::Set('defaultLanguage', Yii::$app->language);
 
         // Notification

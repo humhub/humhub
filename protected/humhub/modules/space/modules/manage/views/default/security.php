@@ -24,7 +24,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
             0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
             1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
         );
-        if (Setting::Get('allowGuestAccess', 'authentication_internal') == 1) {
+        if (Setting::Get('auth.allowGuestAccess', 'user') == 1) {
             $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
         }
         ?>

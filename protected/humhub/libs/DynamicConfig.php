@@ -23,7 +23,7 @@ class DynamicConfig extends \yii\base\Object
 
     /**
      * Add an array to the dynamic configuration
-     * 
+     *
      * @param array $new
      */
     public static function merge($new)
@@ -33,53 +33,8 @@ class DynamicConfig extends \yii\base\Object
     }
 
     /**
-     * This method is called when a a setting is changed.
-     * 
-     * @see Setting
-     * @param Setting $setting
-     */
-    public static function onSettingChange($setting)
-    {
-        $config = self::load();
-        self::setSettingValue($config['params'], $setting);
-        self::save($config);
-    }
-
-    public static function setSettingValue(&$config, $setting)
-    {
-
-        $moduleId = $setting->module_id;
-        if ($moduleId == '') {
-            $moduleId = 'core';
-        }
-
-        $value = '';
-        if ($setting->value_text != '') {
-            $value = (string) $setting->value_text;
-        } else {
-            $value = (string) $setting->value;
-        }
-
-        $config['settings'][$moduleId][$setting->name] = $value;
-        Yii::$app->params['settings'][$moduleId][$setting->name] = $value;
-    }
-
-    public static function getSettingValue($name, $moduleId)
-    {
-        if ($moduleId == '') {
-            $moduleId = 'core';
-        }
-
-        if (isset(Yii::$app->params['settings'][$moduleId][$name])) {
-            return Yii::$app->params['settings'][$moduleId][$name];
-        }
-
-        return null;
-    }
-
-    /**
      * Returns the dynamic configuration
-     * 
+     *
      * @return array
      */
     public static function load()
@@ -103,7 +58,7 @@ class DynamicConfig extends \yii\base\Object
 
     /**
      * Sets a new dynamic configuration
-     * 
+     *
      * @param array $config
      */
     public static function save($config)
@@ -154,7 +109,7 @@ class DynamicConfig extends \yii\base\Object
         }
 
         // Add Caching
-        $cacheClass = Setting::Get('type', 'cache');
+        $cacheClass = Setting::Get('cache.class');
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
@@ -163,30 +118,30 @@ class DynamicConfig extends \yii\base\Object
         }
         // Add User settings
         $config['components']['user'] = array();
-        if (Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal')) {
-            $config['components']['user']['authTimeout'] = Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
+        if (Setting::Get('auth.defaultUserIdleTimeoutSec', 'user')) {
+            $config['components']['user']['authTimeout'] = Setting::Get('auth.defaultUserIdleTimeoutSec', 'user');
         }
 
         // Install Mail Component
         $mail = [];
         $mail['transport'] = array();
-        if (Setting::Get('transportType', 'mailing') == 'smtp') {
+        if (Setting::Get('mailer.transportType') == 'smtp') {
             $mail['transport']['class'] = 'Swift_SmtpTransport';
 
-            if (Setting::Get('hostname', 'mailing'))
-                $mail['transport']['host'] = Setting::Get('hostname', 'mailing');
+            if (Setting::Get('mailer.hostname'))
+                $mail['transport']['host'] = Setting::Get('mailer.hostname');
 
-            if (Setting::Get('username', 'mailing'))
-                $mail['transport']['username'] = Setting::Get('username', 'mailing');
+            if (Setting::Get('mailer.username'))
+                $mail['transport']['username'] = Setting::Get('mailer.username');
 
-            if (Setting::Get('password', 'mailing'))
-                $mail['transport']['password'] = Setting::Get('password', 'mailing');
+            if (Setting::Get('mailer.password'))
+                $mail['transport']['password'] = Setting::Get('mailer.password');
 
-            if (Setting::Get('encryption', 'mailing'))
-                $mail['transport']['encryption'] = Setting::Get('encryption', 'mailing');
+            if (Setting::Get('mailer.encryption'))
+                $mail['transport']['encryption'] = Setting::Get('mailer.encryption');
 
-            if (Setting::Get('port', 'mailing'))
-                $mail['transport']['port'] = Setting::Get('port', 'mailing');
+            if (Setting::Get('mailer.port'))
+                $mail['transport']['port'] = Setting::Get('mailer.port');
 
             /*
               if (Setting::Get('allowSelfSignedCerts', 'mailing')) {
@@ -194,7 +149,7 @@ class DynamicConfig extends \yii\base\Object
               $mail['transport']['ssl']['verify_peer'] = false;
               }
              */
-        } elseif (Setting::Get('transportType', 'mailing') == 'php') {
+        } elseif (Setting::Get('mailer.transportType') == 'php') {
             $mail['transport']['class'] = 'Swift_MailTransport';
         } else {
             $mail['useFileTransport'] = true;
@@ -202,10 +157,6 @@ class DynamicConfig extends \yii\base\Object
         $config['components']['mailer'] = $mail;
         $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Setting::Get('theme')));
         $config['params']['config_created_at'] = time();
-
-        foreach (Setting::find()->all() as $setting) {
-            self::setSettingValue($config['params'], $setting);
-        }
 
         self::save($config);
     }

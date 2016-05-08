@@ -99,7 +99,7 @@ class ConfigController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Setting::Set('name', $form->name);
-            Setting::Set('systemEmailName', $form->name, 'mailing');
+            Setting::Set('mailer.systemEmailName', $form->name);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
@@ -161,10 +161,10 @@ class ConfigController extends Controller
         }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
-            Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
-            Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
-            Setting::Set('internalUsersCanInvite', $form->canInviteExternalUsersByEmail, 'authentication_internal');
+            Setting::Set('auth.needApproval', $form->internalRequireApprovalAfterRegistration, 'user');
+            Setting::Set('auth.anonymousRegistration', $form->internalAllowAnonymousRegistration, 'user');
+            Setting::Set('auth.allowGuestAccess', $form->allowGuestAccess, 'user');
+            Setting::Set('auth.internalUsersCanInvite', $form->canInviteExternalUsersByEmail, 'user');
             Setting::Set('enable', $form->enableFriendshipModule, 'friendship');
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -439,9 +439,13 @@ class ConfigController extends Controller
 
             Group::getAdminGroup()->addUser($form->models['User']);
 
+
+            // Reload User
+            $adminUser = User::findOne(['id' => 1]);
+            
             
             // Switch Identity
-            Yii::$app->user->switchIdentity($form->models['User']);
+            Yii::$app->user->switchIdentity($adminUser);
 
             // Create Welcome Space
             $space = new Space();
@@ -449,7 +453,7 @@ class ConfigController extends Controller
             $space->description = Yii::t("InstallerModule.controllers_ConfigController", "Your first sample space to discover the platform.");
             $space->join_policy = Space::JOIN_POLICY_FREE;
             $space->visibility = Space::VISIBILITY_ALL;
-            $space->created_by = $userId;
+            $space->created_by = $adminUser->id;
             $space->auto_add_new_members = 1;
             $space->color = '#6fdbe8';
             $space->save();
