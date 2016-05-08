@@ -132,6 +132,28 @@ class Setting extends \yii\db\ActiveRecord
     {
         if ($name == 'allowGuestAccess' && $moduleId == 'authentication_internal') {
             return array('allowGuestAccess', 'user');
+        } elseif ($name == 'defaultUserGroup' && $moduleId == 'authentication_internal') {
+            return array('auth.allowGuestAccess', 'user');
+        } elseif ($name == 'enabled' && $moduleId == 'authentication_ldap') {
+            return array('auth.ldap.enabled', 'user');
+        } elseif ($name == 'enabled' && $moduleId == 'authentication_ldap') {
+            return array('auth.ldap.enabled', 'user');
+        } elseif ($name == 'systemEmailAddress' && $moduleId == 'mailing') {
+            return array('mailer.systemEmailAddress', 'user');
+        } elseif ($name == 'systemEmailName' && $moduleId == 'mailing') {
+            return array('mailer.systemEmailName', 'user');
+        } elseif ($name == 'enabled' && $moduleId == 'proxy') {
+            return array('proxy.enabled', 'base');
+        } elseif ($name == 'server' && $moduleId == 'proxy') {
+            return array('proxy.server', 'base');
+        } elseif ($name == 'port' && $moduleId == 'proxy') {
+            return array('proxy.port', 'base');
+        } elseif ($name == 'user' && $moduleId == 'proxy') {
+            return array('proxy.user', 'base');
+        } elseif ($name == 'pass' && $moduleId == 'proxy') {
+            return array('proxy.pass', 'base');
+        } elseif ($name == 'noproxy' && $moduleId == 'proxy') {
+            return array('proxy.noproxy', 'base');
         }
 
         return array($name, $moduleId);
