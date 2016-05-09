@@ -13,7 +13,7 @@ use yii\helpers\Html;
 
         <div class="text-center">
             <br>
-            <?php echo Html::a(Yii::t('InstallerModule.views_config_finished', 'Sign in'), Url::home(), array('class' => 'btn btn-primary')); ?>
+            <?php echo Html::a(Yii::t('InstallerModule.views_config_finished', 'Sign in'), Url::home(), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
             <br><br>
         </div>
     </div>
