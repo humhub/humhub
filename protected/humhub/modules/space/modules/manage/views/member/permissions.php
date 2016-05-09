@@ -1,16 +1,15 @@
 <?php
 
-use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\user\widgets\PermissionGridEditor;
 ?>
-<?= MemberMenu::widget(['space' => $space]); ?>
-<br />
+
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> permissions'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
     </div>
+    <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
         <?php
         echo Yii::t('SpaceModule.views_admin_members', '<strong>Current Group:</strong>');
