@@ -2,15 +2,13 @@
 
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
-use humhub\models\Setting;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_mailing', '<strong>Mailing</strong> defaults'); ?></div>
-    <div class="panel-body">
-
-        <ul class="nav nav-pills">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_mailing', '<strong>Mail</strong> settings'); ?></div>
+    <div class="tab-menu">
+        <ul class="nav nav-tabs">
             <li class="active"><a
                     href="<?php echo Url::to(['mailing']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Defaults'); ?></a>
             </li>
@@ -18,9 +16,8 @@ use humhub\modules\user\models\User;
                 <a href="<?php echo Url::to(['mailing-server']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Server Settings'); ?></a>
             </li>
         </ul>
-
-        <br />
-
+    </div>
+    <div class="panel-body">
         <p><?php echo Yii::t('AdminModule.views_setting_mailing', 'Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.'); ?></p>
 
         <br />

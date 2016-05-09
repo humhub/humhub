@@ -5,10 +5,9 @@ use humhub\compat\CHtml;
 use humhub\modules\content\models\Content;
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_settings', '<strong>Space</strong> Settings'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
+    <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
     <div class="panel-body">
-        <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
-        <p />
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'Define here default settings for new spaces.'); ?>
         </p>

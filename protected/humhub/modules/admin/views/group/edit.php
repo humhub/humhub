@@ -2,26 +2,19 @@
 
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
-use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
 ?>
 <div class="panel panel-default">
     <?php if (!$group->isNewRecord) : ?>
-        <div class="panel-heading">
-                <?php echo Yii::t('AdminModule.views_group_edit', '<strong>Edit</strong> group {groupName}', ['groupName' => $group->name]); ?>
-        </div>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Edit</strong> group {groupName}', ['groupName' => $group->name]); ?></div>
+        <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
     <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_edit', '<strong>Create</strong> new group'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_group_index', '<strong>Manage</strong> groups'); ?></div>
+        <?= \humhub\modules\admin\widgets\GroupMenu::widget(); ?>
     <?php endif; ?>
-        
     <div class="panel-body">
-        <?php if (!$group->isNewRecord) : ?>
-            <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
-            <br />
-        <?php endif; ?>
-        
         <?php $form = ActiveForm::begin(); ?>
             <?php echo $form->field($group, 'name'); ?>
             <?php echo $form->field($group, 'description')->textarea(['rows' => 5]); ?>

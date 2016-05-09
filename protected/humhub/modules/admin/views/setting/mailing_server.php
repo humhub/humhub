@@ -6,20 +6,18 @@ use humhub\models\Setting;
 use yii\helpers\Url;
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_mailing_server', '<strong>Mailing</strong> settings'); ?></div>
-    <div class="panel-body">
-
-        <ul class="nav nav-pills">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_mailing', '<strong>Mail</strong> settings'); ?></div>
+    <div class="tab-menu">
+        <ul class="nav nav-tabs">
             <li><a
-                    href="<?php echo Url::to(['mailing']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing_server', 'Defaults'); ?></a>
+                    href="<?php echo Url::to(['mailing']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Defaults'); ?></a>
             </li>
             <li class="active">
-                <a href="<?php echo Url::to(['mailing-server']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing_server', 'Server Settings'); ?></a>
+                <a href="<?php echo Url::to(['mailing-server']); ?>"><?php echo Yii::t('AdminModule.views_setting_mailing', 'Server Settings'); ?></a>
             </li>
         </ul>
-        <br />
-
-
+    </div>
+    <div class="panel-body">
         <?php $form = CActiveForm::begin(); ?>
 
         <?php echo $form->errorSummary($model); ?>
