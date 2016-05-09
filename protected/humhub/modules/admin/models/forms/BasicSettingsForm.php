@@ -3,9 +3,12 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use humhub\modules\space\models\Space;
+use humhub\libs\DynamicConfig;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * BasicSettingsForm
+ * 
  * @since 0.5
  */
 class BasicSettingsForm extends \yii\base\Model
@@ -22,7 +25,30 @@ class BasicSettingsForm extends \yii\base\Model
     public $enableFriendshipModule;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->name = Yii::$app->settings->get('name');
+        $this->baseUrl = Yii::$app->settings->get('baseUrl');
+        $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
+        $this->timeZone = Yii::$app->settings->get('timeZone');
+
+        $this->share = Yii::$app->getModule('dashboard')->settings->get('share.enable');
+        $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
+        $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
+        $this->enableFriendshipModule = Yii::$app->getModule('friendship')->settings->get('enable');
+
+        $this->defaultSpaceGuid = "";
+        foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $defaultSpace) {
+            $this->defaultSpaceGuid .= $defaultSpace->guid . ",";
+        }
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -37,9 +63,7 @@ class BasicSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -76,6 +100,46 @@ class BasicSettingsForm extends \yii\base\Model
                 }
             }
         }
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        Yii::$app->settings->set('name', $this->name);
+        Yii::$app->settings->set('baseUrl', $this->baseUrl);
+        Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
+        Yii::$app->settings->set('timeZone', $this->timeZone);
+
+        Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
+        Yii::$app->getModule('tour')->settings->set('enable', $this->tour);
+        Yii::$app->getModule('dashboard')->settings->set('share.enable', $this->share);
+        Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
+
+        $spaceGuids = explode(",", $this->defaultSpaceGuid);
+
+        // Remove Old Default Spaces
+        foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
+            if (!in_array($space->guid, $spaceGuids)) {
+                $space->auto_add_new_members = 0;
+                $space->save();
+            }
+        }
+
+        // Add new Default Spaces
+        foreach ($spaceGuids as $spaceGuid) {
+            $space = Space::findOne(['guid' => $spaceGuid]);
+            if ($space != null && $space->auto_add_new_members != 1) {
+                $space->auto_add_new_members = 1;
+                $space->save();
+            }
+        }
+        DynamicConfig::rewrite();
+
+        return true;
     }
 
 }

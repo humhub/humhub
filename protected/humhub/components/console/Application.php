@@ -33,7 +33,7 @@ class Application extends \yii\console\Application
         $this->trigger(self::EVENT_ON_INIT);
 
         if ($this->isDatabaseInstalled()) {
-            $baseUrl = Setting::get('baseUrl');
+            $baseUrl = Yii::$app->settings->get('baseUrl');
             if ($baseUrl !== null) {
                 Yii::setAlias(("@web"), $baseUrl);
                 $this->urlManager->scriptUrl = $baseUrl;
@@ -58,7 +58,7 @@ class Application extends \yii\console\Application
 
     /**
      * Checks if database is installed
-     * 
+     *
      * @return boolean is database installed/migrated
      */
     public function isDatabaseInstalled()

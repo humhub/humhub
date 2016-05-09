@@ -27,7 +27,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
             0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
             1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
         );
-        if (Setting::Get('allowGuestAccess', 'authentication_internal') == 1) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
             $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
         }
         ?>
@@ -35,7 +35,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
         <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'); ?></p>
 
         <br>
-        <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((\humhub\models\Setting::Get('defaultContentVisibility', 'space') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
+        <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((Yii::$app->getModule('space')->settings->get('defaultContentVisibility') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
         <?php $contentVisibilities = array('' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')); ?>
         <?php echo $form->field($model, 'default_content_visibility')->dropdownList($contentVisibilities); ?>
         <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default'); ?></p>

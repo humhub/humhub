@@ -34,6 +34,10 @@ $config = [
         'search' => array(
             'class' => 'humhub\modules\search\engine\ZendLuceneSearch',
         ),
+        'settings' => array(
+            'class' => 'humhub\components\SettingsManager',
+            'moduleId' => 'base',
+        ),
         'i18n' => [
             'class' => 'humhub\components\i18n\I18N',
             'translations' => [

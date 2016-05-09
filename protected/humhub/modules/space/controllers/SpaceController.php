@@ -59,7 +59,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     public function actionIndex()
     {
         $space = $this->getSpace();
-        $indexUrl = Setting::Get($space->id, 'indexUrl');
+        $indexUrl = $this->module->settings->contentContainer($space)->get('indexUrl');
         
         if($indexUrl != null) {
             $pages = \humhub\modules\space\models\SpacePages::getAvailablePages();
@@ -67,7 +67,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
                 return $this->redirect($indexUrl);
             } else {
                 //Either the module was deactivated or url changed
-                Setting::Set($space->id, 'indexUrl', '');
+                $indexUrl = $this->module->settings->contentContainer($space)->delete('indexUrl');
             }
         }
         

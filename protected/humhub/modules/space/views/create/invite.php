@@ -17,7 +17,7 @@ use humhub\models\Setting;
 
             <br><br>
 
-            <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+            <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="active tab-internal"><a href="#internal"
@@ -53,7 +53,7 @@ use humhub\models\Setting;
                     ?>
 
                 </div>
-                <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+                <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) : ?>
                     <div class="tab-pane" id="external">
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br><br>
@@ -102,7 +102,7 @@ use humhub\models\Setting;
 
         // check if there is an error at the second tab
 
-    <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal') && $model->hasErrors('inviteExternal')) : ?>
+    <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite') && $model->hasErrors('inviteExternal')) : ?>
             // show tab
             $('#tabs a:last').tab('show');
     <?php endif; ?>

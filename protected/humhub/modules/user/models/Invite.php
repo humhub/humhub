@@ -115,14 +115,14 @@ class Invite extends \yii\db\ActiveRecord
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
                     ], ['token' => $this->token]);
-            $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             // Switch to systems default language
-            Yii::$app->language = \humhub\models\Setting::Get('defaultLanguage');
+            Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
@@ -134,7 +134,7 @@ class Invite extends \yii\db\ActiveRecord
                 'token' => $this->token,
                 'space' => $this->space
             ]);
-            $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Space Invite'));
             $mail->send();
@@ -148,7 +148,7 @@ class Invite extends \yii\db\ActiveRecord
 
     /**
      * Return user which triggered this invite
-     * 
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getOriginator()
@@ -158,7 +158,7 @@ class Invite extends \yii\db\ActiveRecord
 
     /**
      * Return space which is involved in this invite
-     * 
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getSpace()
@@ -168,12 +168,12 @@ class Invite extends \yii\db\ActiveRecord
 
     /**
      * Allow users to invite themself
-     * 
+     *
      * @return boolean allow self invite
      */
     public function allowSelfInvite()
     {
-        return (\humhub\models\Setting::Get('anonymousRegistration', 'authentication_internal'));
+        return (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
 }

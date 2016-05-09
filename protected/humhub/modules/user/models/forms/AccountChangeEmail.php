@@ -67,11 +67,11 @@ class AccountChangeEmail extends \yii\base\Model
      *
      */
     public function sendChangeEmail($approveUrl = '')
-    {        
+    {
         $user = Yii::$app->user->getIdentity();
 
-        $token = md5(Setting::Get('secret') . $user->guid . $this->newEmail);
-        
+        $token = md5(Yii::$app->settings->get('secret') . $user->guid . $this->newEmail);
+
         $mail = Yii::$app->mailer->compose([
 			'html' => '@humhub/modules/user/views/mails/ChangeEmail',
 			'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail'
@@ -80,11 +80,11 @@ class AccountChangeEmail extends \yii\base\Model
             'newEmail' => $this->newEmail,
             'approveUrl' => Url::to([empty($approveUrl) ? "/user/account/change-email-validate" : $approveUrl, 'email' => $this->newEmail, 'token' => $token], true),
         ]);
-        $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+        $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         $mail->setTo($this->newEmail);
         $mail->setSubject(Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change'));
         $mail->send();
-        
+
         return true;
     }
 

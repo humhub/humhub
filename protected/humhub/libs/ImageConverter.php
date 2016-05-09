@@ -1,26 +1,14 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
 
-use humhub\models\Setting;
+use Yii;
 
 /**
  * ImageConverter provides a simple interface for converting or resizing images.
@@ -41,8 +29,8 @@ class ImageConverter
     public static function TransformToJpeg($sourceFile, $targetFile)
     {
 
-        if (Setting::Get('imageMagickPath', 'file')) {
-            $convertCommand = Setting::Get('imageMagickPath', 'file');
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
+            $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
             $command = $convertCommand . " \"{$sourceFile}\" \"{$targetFile}\"";
             $ret = passthru($command);
         } else {
@@ -81,7 +69,7 @@ class ImageConverter
         if (!isset($options['mode']))
             $options['mode'] = 'force';
 
-        if (Setting::Get('imageMagickPath', 'file')) {
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             self::ResizeImageMagick($sourceFile, $targetFile, $options);
         } else {
             self::ResizeGD($sourceFile, $targetFile, $options);
@@ -252,7 +240,7 @@ class ImageConverter
      */
     private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
     {
-        $convertCommand = Setting::Get('imageMagickPath', 'file');
+        $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
         $width = (int) $options['width'];
         $height = (int) $options['height'];
 

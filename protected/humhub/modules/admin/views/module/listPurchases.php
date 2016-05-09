@@ -69,7 +69,7 @@ use yii\helpers\Html;
                         <div class="module-controls">
                             <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                 <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'Install'), Url::to(['install', 'moduleId' => $module['id']]), array('style' => 'font-weight:bold', 'data-loader' => "modal", 'data-message' => Yii::t('AdminModule.views_module_listOnline', 'Installing module...'), 'data-method' => 'POST')); ?>
-                                &middot; 
+                                &middot;
                             <?php endif; ?>
                             <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], array('target' => '_blank')); ?>
                             &middot; <?php echo Yii::t('AdminModule.views_module_listOnline', 'Latest version:'); ?> <?php echo $module['latestVersion']; ?>
@@ -82,4 +82,4 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<small class="pull-right">Installation Id: <?php echo \humhub\models\Setting::get('installationId', 'admin'); ?></small>
+<small class="pull-right">Installation Id: <?php echo Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>

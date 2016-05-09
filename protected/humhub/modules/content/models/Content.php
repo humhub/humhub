@@ -18,7 +18,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 /**
  * This is the model class for table "content".
  *
- * 
+ *
  * The followings are the available columns in table 'content':
  * @property integer $id
  * @property string $guid
@@ -104,7 +104,7 @@ class Content extends \humhub\components\ActiveRecord
     /**
      * User which created this Content
      * Note: Use createdBy attribute instead.
-     * 
+     *
      * @deprecated since version 1.1
      * @return \yii\db\ActiveQuery
      */
@@ -116,7 +116,7 @@ class Content extends \humhub\components\ActiveRecord
     /**
      * Return space (if this content assigned to a space)
      * Note: Use container attribute instead
-     * 
+     *
      * @deprecated since version 1.1
      * @return \yii\db\ActiveQuery
      */
@@ -240,7 +240,7 @@ class Content extends \humhub\components\ActiveRecord
     /**
      * Checks if the content can be deleted
      * Note: Use canEdit method instead.
-     * 
+     *
      * @deprecated since version 1.1
      * @param int $userId optional user id (if empty current user id will be used)
      */
@@ -252,7 +252,7 @@ class Content extends \humhub\components\ActiveRecord
     /**
      * Checks if this content can readed
      * Note: use canView method instead
-     * 
+     *
      * @deprecated since version 1.1
      * @param int $userId
      * @return boolean
@@ -265,7 +265,7 @@ class Content extends \humhub\components\ActiveRecord
     /**
      * Checks if this content can be changed
      * Note: use canEdit method instead
-     * 
+     *
      * @deprecated since version 1.1
      * @param int $userId
      * @return boolean
@@ -316,7 +316,7 @@ class Content extends \humhub\components\ActiveRecord
     public function stick()
     {
         $this->sticked = 1;
-        //This prevents the call of beforesave, and the setting of update_at 
+        //This prevents the call of beforesave, and the setting of update_at
         $this->updateAttributes(['sticked']);
     }
 
@@ -514,7 +514,7 @@ class Content extends \humhub\components\ActiveRecord
 
     /**
      * Returns the content container (e.g. space or user record) of this content
-     * 
+     *
      * @return ContentContainerActiveRecord
      * @throws Exception
      */
@@ -534,7 +534,7 @@ class Content extends \humhub\components\ActiveRecord
     /**
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
-     * 
+     *
      * @since 1.1
      * @return \yii\db\ActiveQuery
      */
@@ -545,7 +545,7 @@ class Content extends \humhub\components\ActiveRecord
 
     /**
      * Checks if user can edit this content
-     * 
+     *
      * @todo create possibility to define own canEdit in ContentActiveRecord
      * @todo also check content containers canManage content permission
      * @since 1.1
@@ -573,7 +573,7 @@ class Content extends \humhub\components\ActiveRecord
 
     /**
      * Checks if user can view this content
-     * 
+     *
      * @since 1.1
      * @param User $user
      * @return boolean can view this content
@@ -586,7 +586,7 @@ class Content extends \humhub\components\ActiveRecord
 
         // Check Guest Visibility
         if ($user === null) {
-            if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') && $this->visibility === self::VISIBILITY_PUBLIC) {
+            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->visibility === self::VISIBILITY_PUBLIC) {
                 // Check container visibility for guests
                 if (($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) ||
                         ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL)) {

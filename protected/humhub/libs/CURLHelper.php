@@ -21,7 +21,7 @@ class CURLHelper
 
     /**
      * Returns CURL Default Options
-     * 
+     *
      * @return array
      */
     public static function getOptions()
@@ -34,17 +34,17 @@ class CURLHelper
             CURLOPT_CAINFO => Yii::getAlias('@humhub/config/cacert.pem')
         );
 
-        if (Setting::Get('enabled', 'proxy')) {
-            $options[CURLOPT_PROXY] = Setting::Get('server', 'proxy');
-            $options[CURLOPT_PROXYPORT] = Setting::Get('port', 'proxy');
+        if (Yii::$app->settings->get('proxy.enabled')) {
+            $options[CURLOPT_PROXY] = Yii::$app->settings->get('proxy.server');
+            $options[CURLOPT_PROXYPORT] = Yii::$app->settings->get('proxy.port');
             if (defined('CURLOPT_PROXYUSERNAME')) {
-                $options[CURLOPT_PROXYUSERNAME] = Setting::Get('user', 'proxy');
+                $options[CURLOPT_PROXYUSERNAME] = Yii::$app->settings->get('proxy.user');
             }
             if (defined('CURLOPT_PROXYPASSWORD')) {
-                $options[CURLOPT_PROXYPASSWORD] = Setting::Get('password', 'proxy');
+                $options[CURLOPT_PROXYPASSWORD] = Yii::$app->settings->get('proxy.password');
             }
             if (defined('CURLOPT_NOPROXY')) {
-                $options[CURLOPT_NOPROXY] = Setting::Get('noproxy', 'proxy');
+                $options[CURLOPT_NOPROXY] = Yii::$app->settings->get('proxy.noproxy');
             }
         }
 

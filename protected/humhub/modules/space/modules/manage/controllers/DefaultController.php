@@ -28,21 +28,21 @@ class DefaultController extends Controller
     {
         $space = $this->contentContainer;
         $space->scenario = 'edit';
-        $space->indexUrl = \humhub\modules\space\models\Setting::Get($space->id, 'indexUrl');
-        
+        $space->indexUrl = Yii::$app->settings->get($space->id, 'indexUrl');
+
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('index'));
         }
-        
+
         $indexModuleSelection = SpacePages::getAvailablePages();
-        
+
         //To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
         array_shift($indexModuleSelection);
         $indexModuleSelection = ["" => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
-        
-        
-        
+
+
+
         return $this->render('index', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
     }
 

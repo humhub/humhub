@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * AuthenticationLdapSettingsForm
  * @since 0.5
  */
 class AuthenticationLdapSettingsForm extends \yii\base\Model
@@ -23,14 +29,41 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     public $userFilter;
     public $usernameAttribute;
     public $emailAttribute;
-    public $encryptionTypes = array(
+    public $encryptionTypes = [
         '' => 'None',
         'tls' => 'TLS (aka SSLV2)',
         'ssl' => 'SSL',
-    );
+    ];
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->getModule('user')->settings;
+
+        // Load Defaults
+        $this->enabled = $settingsManager->get('auth.ldap.enabled');
+        $this->refreshUsers = $settingsManager->get('auth.ldap.refreshUsers');
+        $this->username = $settingsManager->get('auth.ldap.username');
+        $this->password = $settingsManager->get('auth.ldap.password');
+        $this->hostname = $settingsManager->get('auth.ldap.hostname');
+        $this->port = $settingsManager->get('auth.ldap.port');
+        $this->encryption = $settingsManager->get('auth.ldap.encryption');
+        $this->baseDn = $settingsManager->get('auth.ldap.baseDn');
+        $this->loginFilter = $settingsManager->get('auth.ldap.loginFilter');
+        $this->userFilter = $settingsManager->get('auth.ldap.userFilter');
+        $this->usernameAttribute = $settingsManager->get('auth.ldap.usernameAttribute');
+        $this->emailAttribute = $settingsManager->get('auth.ldap.emailAttribute');
+
+        if ($this->password != '')
+            $this->password = '---hidden---';
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -41,9 +74,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -61,6 +92,32 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
             'usernameAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username Attribute'),
             'emailAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'E-Mail Address Attribute'),
         );
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->getModule('user')->settings;
+
+        $settingsManager->set('auth.ldap.enabled', $this->enabled);
+        $settingsManager->set('auth.ldap.refreshUsers', $this->refreshUsers);
+        $settingsManager->set('auth.ldap.hostname', $this->hostname);
+        $settingsManager->set('auth.ldap.port', $this->port);
+        $settingsManager->set('auth.ldap.encryption', $this->encryption);
+        $settingsManager->set('auth.ldap.username', $this->username);
+        if ($this->password != '---hidden---')
+            $settingsManager->set('auth.ldap.password', $this->password);
+        $settingsManager->set('auth.ldap.baseDn', $this->baseDn);
+        $settingsManager->set('auth.ldap.loginFilter', $this->loginFilter);
+        $settingsManager->set('auth.ldap.userFilter', $this->userFilter);
+        $settingsManager->set('auth.ldap.usernameAttribute', $this->usernameAttribute);
+        $settingsManager->set('auth.ldap.emailAttribute', $this->emailAttribute);
+
+        return true;
     }
 
 }

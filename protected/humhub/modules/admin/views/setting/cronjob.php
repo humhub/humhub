@@ -18,8 +18,8 @@ use humhub\models\Setting;
         <p>
             <strong>Status:</strong><br/>
             <?php
-            $lastRunHourly = Setting::get('cronLastHourlyRun');
-            $lastRunDaily = Setting::get('cronLastDailyRun');
+            $lastRunHourly = Yii::$app->settings->get('cronLastHourlyRun');
+            $lastRunDaily = Yii::$app->settings->get('cronLastDailyRun');
 
             if ($lastRunHourly == "") {
                 $lastRunHourly = "<span style='color:red'>" . Yii::t('AdminModule.views_setting_cronjob', 'Never') . "</span>";

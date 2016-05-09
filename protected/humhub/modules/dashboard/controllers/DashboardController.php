@@ -59,17 +59,17 @@ class DashboardController extends Controller
             return $this->render('index_guest', array());
         } else {
             return $this->render('index', array(
-                'showProfilePostForm' => Setting::Get('showProfilePostForm', 'dashboard')
+                'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
             ));
         }
     }
-    
+
     /*
      * Update user settings for hiding share panel on dashboard
      */
     public function actionHidePanel()
     {
         // set tour status to seen for current user
-        return Yii::$app->user->getIdentity()->setSetting('hideSharePanel', 1, "share");
+        return Yii::$app->getModule('dashboard')->settings->user()->set('hideSharePanel', 1);
     }
 }

@@ -150,7 +150,7 @@ AppAsset::register($this);
     </div>
     <!-- end: Modal -->
 
-    <?php echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
+    <?php echo Yii::$app->settings->get('trackingHtmlCode'); ?>
     <?php $this->endBody() ?>
     </body>
     </html>

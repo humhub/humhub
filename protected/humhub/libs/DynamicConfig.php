@@ -23,7 +23,7 @@ class DynamicConfig extends \yii\base\Object
 
     /**
      * Add an array to the dynamic configuration
-     * 
+     *
      * @param array $new
      */
     public static function merge($new)
@@ -33,53 +33,8 @@ class DynamicConfig extends \yii\base\Object
     }
 
     /**
-     * This method is called when a a setting is changed.
-     * 
-     * @see Setting
-     * @param Setting $setting
-     */
-    public static function onSettingChange($setting)
-    {
-        $config = self::load();
-        self::setSettingValue($config['params'], $setting);
-        self::save($config);
-    }
-
-    public static function setSettingValue(&$config, $setting)
-    {
-
-        $moduleId = $setting->module_id;
-        if ($moduleId == '') {
-            $moduleId = 'core';
-        }
-
-        $value = '';
-        if ($setting->value_text != '') {
-            $value = (string) $setting->value_text;
-        } else {
-            $value = (string) $setting->value;
-        }
-
-        $config['settings'][$moduleId][$setting->name] = $value;
-        Yii::$app->params['settings'][$moduleId][$setting->name] = $value;
-    }
-
-    public static function getSettingValue($name, $moduleId)
-    {
-        if ($moduleId == '') {
-            $moduleId = 'core';
-        }
-
-        if (isset(Yii::$app->params['settings'][$moduleId][$name])) {
-            return Yii::$app->params['settings'][$moduleId][$name];
-        }
-
-        return null;
-    }
-
-    /**
      * Returns the dynamic configuration
-     * 
+     *
      * @return array
      */
     public static function load()
@@ -103,7 +58,7 @@ class DynamicConfig extends \yii\base\Object
 
     /**
      * Sets a new dynamic configuration
-     * 
+     *
      * @param array $config
      */
     public static function save($config)
@@ -135,17 +90,17 @@ class DynamicConfig extends \yii\base\Object
         $config = self::load();
 
         // Add Application Name to Configuration
-        $config['name'] = Setting::Get('name');
+        $config['name'] = Yii::$app->settings->get('name');
 
         // Add Default language
-        $defaultLanguage = Setting::Get('defaultLanguage');
+        $defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         if ($defaultLanguage !== null && $defaultLanguage != "") {
-            $config['language'] = Setting::Get('defaultLanguage');
+            $config['language'] = Yii::$app->settings->get('defaultLanguage');
         } else {
             $config['language'] = Yii::$app->language;
         }
 
-        $timeZone = Setting::Get('timeZone');
+        $timeZone = Yii::$app->settings->get('timeZone');
         if ($timeZone != "") {
             $config['timeZone'] = $timeZone;
             $config['components']['formatter']['defaultTimeZone'] = $timeZone;
@@ -154,7 +109,7 @@ class DynamicConfig extends \yii\base\Object
         }
 
         // Add Caching
-        $cacheClass = Setting::Get('type', 'cache');
+        $cacheClass = Yii::$app->settings->get('cache.class');
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
@@ -163,49 +118,45 @@ class DynamicConfig extends \yii\base\Object
         }
         // Add User settings
         $config['components']['user'] = array();
-        if (Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal')) {
-            $config['components']['user']['authTimeout'] = Setting::Get('defaultUserIdleTimeoutSec', 'authentication_internal');
+        if (Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
+            $config['components']['user']['authTimeout'] = Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec');
         }
 
         // Install Mail Component
         $mail = [];
         $mail['transport'] = array();
-        if (Setting::Get('transportType', 'mailing') == 'smtp') {
+        if (Yii::$app->settings->get('mailer.transportType') == 'smtp') {
             $mail['transport']['class'] = 'Swift_SmtpTransport';
 
-            if (Setting::Get('hostname', 'mailing'))
-                $mail['transport']['host'] = Setting::Get('hostname', 'mailing');
+            if (Yii::$app->settings->get('mailer.hostname'))
+                $mail['transport']['host'] = Yii::$app->settings->get('mailer.hostname');
 
-            if (Setting::Get('username', 'mailing'))
-                $mail['transport']['username'] = Setting::Get('username', 'mailing');
+            if (Yii::$app->settings->get('mailer.username'))
+                $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');
 
-            if (Setting::Get('password', 'mailing'))
-                $mail['transport']['password'] = Setting::Get('password', 'mailing');
+            if (Yii::$app->settings->get('mailer.password'))
+                $mail['transport']['password'] = Yii::$app->settings->get('mailer.password');
 
-            if (Setting::Get('encryption', 'mailing'))
-                $mail['transport']['encryption'] = Setting::Get('encryption', 'mailing');
+            if (Yii::$app->settings->get('mailer.encryption'))
+                $mail['transport']['encryption'] = Yii::$app->settings->get('mailer.encryption');
 
-            if (Setting::Get('port', 'mailing'))
-                $mail['transport']['port'] = Setting::Get('port', 'mailing');
+            if (Yii::$app->settings->get('mailer.port'))
+                $mail['transport']['port'] = Yii::$app->settings->get('mailer.port');
 
             /*
-              if (Setting::Get('allowSelfSignedCerts', 'mailing')) {
+              if (Yii::$app->settings->get('mailer.allowSelfSignedCerts')) {
               $mail['transport']['ssl']['allow_self_signed'] = true;
               $mail['transport']['ssl']['verify_peer'] = false;
               }
              */
-        } elseif (Setting::Get('transportType', 'mailing') == 'php') {
+        } elseif (Yii::$app->settings->get('mailer.transportType') == 'php') {
             $mail['transport']['class'] = 'Swift_MailTransport';
         } else {
             $mail['useFileTransport'] = true;
         }
         $config['components']['mailer'] = $mail;
-        $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Setting::Get('theme')));
+        $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Yii::$app->settings->get('theme')));
         $config['params']['config_created_at'] = time();
-
-        foreach (Setting::find()->all() as $setting) {
-            self::setSettingValue($config['params'], $setting);
-        }
 
         self::save($config);
     }

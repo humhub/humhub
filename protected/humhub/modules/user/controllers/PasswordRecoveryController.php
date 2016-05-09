@@ -82,7 +82,7 @@ class PasswordRecoveryController extends Controller
         $model->scenario = 'registration';
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->setSetting('passwordRecoveryToken', '', 'user');
+            Yii::$app->getModule('user')->settings->contentContainer($user)->delete('passwordRecoveryToken');
             $model->user_id = $user->id;
             $model->setPassword($model->newPassword);
             $model->save();
@@ -95,7 +95,7 @@ class PasswordRecoveryController extends Controller
     private function checkPasswordResetToken($user, $token)
     {
         // Saved token - Format: randomToken.generationTime
-        $savedTokenInfo = $user->getSetting('passwordRecoveryToken', 'user');
+        $savedTokenInfo = Yii::$app->getModule('user')->settings->contentContainer($user)->get('passwordRecoveryToken');
 
         if ($savedTokenInfo !== "") {
             list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);

@@ -22,7 +22,8 @@ class Module extends \humhub\components\Module
         if (Yii::$app->user->isGuest)
             return;
 
-        if (Setting::Get('enable', 'tour') == 1 && Yii::$app->user->getIdentity()->getSetting("hideTourPanel", "tour") != 1) {
+        $settings = Yii::$app->getModule('tour')->settings;
+        if ($settings->get('enable') == 1 && $settings->user()->get("hideTourPanel") != 1) {
             $event->sender->addWidget(Dashboard::className(), array(), array('sortOrder' => 100));
         }
     }

@@ -22,7 +22,7 @@ use \humhub\models\Setting;
 
     <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
 
-    <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')): ?>
+    <?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')): ?>
 
         <?php
         echo $form->field($model, 'visibility')->dropdownList([
@@ -34,11 +34,11 @@ use \humhub\models\Setting;
 
     <?php endif; ?>
 
-    <?php if (Setting::Get('enable', 'tour') == 1) : ?>
+    <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>
         <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
     <?php endif; ?>
 
-    <?php if (Setting::Get('enable', 'share') == 1) : ?>
+    <?php if (Yii::$app->getModule('dashboard')->settings->get('share.enable') == 1) : ?>
         <?php echo $form->field($model, 'show_share_panel')->checkbox(); ?>
     <?php endif; ?>
     <hr>

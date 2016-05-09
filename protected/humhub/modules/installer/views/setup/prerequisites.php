@@ -47,10 +47,10 @@ use yii\helpers\Html;
 
         <hr>
 
-        <?php echo Html::a('<i class="fa fa-repeat"></i> ' . Yii::t('InstallerModule.views_setup_prerequisites', 'Check again'), array('/installer/setup/prerequisites'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::a('<i class="fa fa-repeat"></i> ' . Yii::t('InstallerModule.views_setup_prerequisites', 'Check again'), array('/installer/setup/prerequisites'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <?php if (!$hasError): ?>
-            <?php echo Html::a(Yii::t('InstallerModule.views_setup_prerequisites', 'Next') . ' <i class="fa fa-arrow-circle-right"></i>', array('/installer/setup/database'), array('class' => 'btn btn-primary')); ?>
+            <?php echo Html::a(Yii::t('InstallerModule.views_setup_prerequisites', 'Next') . ' <i class="fa fa-arrow-circle-right"></i>', array('/installer/setup/database'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
         <?php endif; ?>
 
     </div>

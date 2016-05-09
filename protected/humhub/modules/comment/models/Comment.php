@@ -68,7 +68,7 @@ class Comment extends ContentAddonActiveRecord
      */
     public function afterDelete()
     {
-        
+
         try {
             $this->updateContentSearch();
         } catch (\yii\base\Exception $ex) {
@@ -151,7 +151,7 @@ class Comment extends ContentAddonActiveRecord
             $query->joinWith('user');
 
             $comments = $query->all();
-            Yii::$app->cache->set($cacheID, $comments, \humhub\models\Setting::Get('expireTime', 'cache'));
+            Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cache.expireTime'));
         }
 
         return $comments;
@@ -171,7 +171,7 @@ class Comment extends ContentAddonActiveRecord
 
         if ($commentCount === false) {
             $commentCount = Comment::find()->where(['object_model' => $model, 'object_id' => $id])->count();
-            Yii::$app->cache->set($cacheID, $commentCount, \humhub\models\Setting::Get('expireTime', 'cache'));
+            Yii::$app->cache->set($cacheID, $commentCount, Yii::$app->settings->get('cache.expireTime'));
         }
 
         return $commentCount;

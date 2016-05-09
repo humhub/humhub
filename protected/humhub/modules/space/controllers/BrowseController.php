@@ -47,7 +47,7 @@ class BrowseController extends Controller
 
         $keyword = Yii::$app->request->get('keyword', "");
         $page = (int) Yii::$app->request->get('page', 1);
-        $limit = (int) Yii::$app->request->get('limit', \humhub\models\Setting::Get('paginationSize'));
+        $limit = (int) Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
 
         $searchResultSet = Yii::$app->search->find($keyword, [
             'model' => \humhub\modules\space\models\Space::className(),

@@ -28,7 +28,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @package humhub.modules_core.like.models
  * @since 0.5
  */
-class Like extends ContentAddonActiveRecord 
+class Like extends ContentAddonActiveRecord
 {
 
     /**
@@ -61,7 +61,7 @@ class Like extends ContentAddonActiveRecord
 
         if ($cacheValue === false) {
             $newCacheValue = Like::findAll(array('object_model' => $objectModel, 'object_id' => $objectId));
-            Yii::$app->cache->set($cacheId, $newCacheValue, Setting::Get('expireTime', 'cache'));
+            Yii::$app->cache->set($cacheId, $newCacheValue, Yii::$app->settings->get('cache.expireTime'));
             return $newCacheValue;
         } else {
             return $cacheValue;
