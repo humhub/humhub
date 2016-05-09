@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
             <div style="flex-grow:1;padding-top:1px;">   
-                <?php echo Html::submitButton(Yii::t('AdminModule.views_group_manageGroupUser', 'Add'), ['class' => 'btn btn-primary']); ?>   
+                <?php echo Html::submitButton(Yii::t('AdminModule.views_group_manageGroupUser', 'Add'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>   
             </div>
             </div>
         <?php ActiveForm::end(); ?>
