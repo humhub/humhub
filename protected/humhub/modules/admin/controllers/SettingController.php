@@ -59,7 +59,6 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\BasicSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            // set flash message
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
             return $this->redirect(['/admin/setting/basic']);
         }
