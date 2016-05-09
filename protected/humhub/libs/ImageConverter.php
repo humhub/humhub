@@ -41,8 +41,8 @@ class ImageConverter
     public static function TransformToJpeg($sourceFile, $targetFile)
     {
 
-        if (Setting::Get('imageMagickPath', 'file')) {
-            $convertCommand = Setting::Get('imageMagickPath', 'file');
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
+            $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
             $command = $convertCommand . " \"{$sourceFile}\" \"{$targetFile}\"";
             $ret = passthru($command);
         } else {
@@ -81,7 +81,7 @@ class ImageConverter
         if (!isset($options['mode']))
             $options['mode'] = 'force';
 
-        if (Setting::Get('imageMagickPath', 'file')) {
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             self::ResizeImageMagick($sourceFile, $targetFile, $options);
         } else {
             self::ResizeGD($sourceFile, $targetFile, $options);
@@ -252,7 +252,7 @@ class ImageConverter
      */
     private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
     {
-        $convertCommand = Setting::Get('imageMagickPath', 'file');
+        $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
         $width = (int) $options['width'];
         $height = (int) $options['height'];
 

@@ -114,7 +114,7 @@ class ContentContainerController extends Controller
         if (parent::beforeAction($action)) {
 
             // Directly redirect guests to login page - if guest access isn't enabled
-            if (Yii::$app->user->isGuest && \humhub\models\Setting::Get('auth.allowGuestAccess', 'user') != 1) {
+            if (Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') != 1) {
                 Yii::$app->user->loginRequired();
                 return false;
             }

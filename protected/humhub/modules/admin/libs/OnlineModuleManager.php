@@ -152,7 +152,7 @@ class OnlineModuleManager
         if ($this->_modules === null || !is_array($this->_modules)) {
 
             $this->_modules = HumHubAPI::request('v1/modules/list');
-            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Setting::Get('cache.expireTime'));
+            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cache.expireTime'));
         }
 
         return $this->_modules;

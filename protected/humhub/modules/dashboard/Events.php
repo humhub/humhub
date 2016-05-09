@@ -44,7 +44,7 @@ class Events
     public static function onSidebarInit($event)
     {
         if (Yii::$app->getModule('dashboard')->settings->get('share.enable') == 1) {
-            if (Yii::$app->user->isGuest || Yii::$app->user->getIdentity()->getSetting("hideSharePanel", "dashboard") != 1) {
+            if (Yii::$app->user->isGuest || Yii::$app->getModule('dashboard')->settings->user()->get('hideSharePanel') != 1) {
                 $event->sender->addWidget(ShareWidget::className(), array(), array('sortOrder' => 150));
             }
         }

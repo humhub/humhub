@@ -52,7 +52,7 @@ abstract class Search extends \yii\base\Component
      */
     public function find($query, Array $options)
     {
-        
+
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class Search extends \yii\base\Component
      */
     public function add(Searchable $object)
     {
-        
+
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class Search extends \yii\base\Component
      */
     public function update(Searchable $object)
     {
-        
+
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class Search extends \yii\base\Component
      */
     public function delete(Searchable $object)
     {
-        
+
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class Search extends \yii\base\Component
      */
     public function flush()
     {
-        
+
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class Search extends \yii\base\Component
      */
     public function optimize()
     {
-        
+
     }
 
     protected function getMetaInfoArray(Searchable $obj)
@@ -166,7 +166,7 @@ abstract class Search extends \yii\base\Component
             $options['page'] = 1;
 
         if (!isset($options['pageSize']) || $options['pageSize'] == "")
-            $options['pageSize'] = Setting::Get('paginationSize');
+            $options['pageSize'] = Yii::$app->settings->get('paginationSize');
 
         if (!isset($options['checkPermissions'])) {
             $options['checkPermissions'] = true;

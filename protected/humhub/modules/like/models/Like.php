@@ -61,7 +61,7 @@ class Like extends ContentAddonActiveRecord
 
         if ($cacheValue === false) {
             $newCacheValue = Like::findAll(array('object_model' => $objectModel, 'object_id' => $objectId));
-            Yii::$app->cache->set($cacheId, $newCacheValue, Setting::Get('cache.expireTime'));
+            Yii::$app->cache->set($cacheId, $newCacheValue, Yii::$app->settings->get('cache.expireTime'));
             return $newCacheValue;
         } else {
             return $cacheValue;

@@ -79,7 +79,7 @@ AppAsset::register($this);
             $('body').find(':checkbox, :radio').flatelements();
         </script>
 
-        <?php echo Setting::GetText('trackingHtmlCode'); ?>
+        <?php echo Yii::$app->settings->get('trackingHtmlCode'); ?>
         <?php $this->endBody() ?>
         <div class="text text-center powered">
             Powered by <a href="http://www.humhub.org" target="_blank">HumHub</a>

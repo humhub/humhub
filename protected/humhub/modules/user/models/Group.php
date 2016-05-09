@@ -287,7 +287,7 @@ class Group extends \yii\db\ActiveRecord
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL || !\humhub\models\Setting::Get('auth.needApproval', 'user')) {
+        if ($user->status != User::STATUS_NEED_APPROVAL || !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
             return;
         }
 
@@ -308,7 +308,7 @@ class Group extends \yii\db\ActiveRecord
             $mail = Yii::$app->mailer->compose(['html' => '@humhub//views/mail/TextOnly'], [
                 'message' => $html,
             ]);
-            $mail->setFrom([\humhub\models\Setting::Get('mailer.systemEmailAddress') => \humhub\models\Setting::Get('mailer.systemEmailName')]);
+            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($manager->email);
             $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
             $mail->send();
@@ -323,7 +323,7 @@ class Group extends \yii\db\ActiveRecord
     {
         $groups = [];
 
-        $defaultGroup = \humhub\models\Setting::Get('auth.defaultUserGroup', 'user');
+        $defaultGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
         if ($defaultGroup != '') {
             $group = self::findOne(['id' => $defaultGroup]);
             if ($group !== null) {

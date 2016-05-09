@@ -110,7 +110,7 @@ class ListController extends Controller
 
         $update['notifications'] = array();
         foreach ($query->all() as $notification) {
-            if ($user->getSetting("enable_html5_desktop_notifications", 'notification', Setting::Get('enable_html5_desktop_notifications', 'notification'))) {
+            if (Yii::$app->getModule('notification')->settings->user()->get("enable_html5_desktop_notifications", Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications'))) {
                 $update['notifications'][] = $notification->getClass()->render(BaseNotification::OUTPUT_TEXT);
             }
             $notification->desktop_notified = 1;

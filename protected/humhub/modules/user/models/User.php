@@ -363,9 +363,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 $this->auth_mode = $passwordAuth->getId();
             }
 
-            if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user')) {
+            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
                 // Set users profile default visibility to all
-                if (\humhub\models\Setting::Get('auth.defaultUserProfileVisibility', 'user') == User::VISIBILITY_ALL) {
+                if (Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;
                 }
             }
@@ -378,7 +378,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         if ($this->time_zone == "") {
-            $this->time_zone = \humhub\models\Setting::Get('timeZone');
+            $this->time_zone = Yii::$app->settings->get('timeZone');
         }
 
         return parent::beforeSave($insert);
@@ -453,7 +453,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         $name = '';
 
-        $format = \humhub\models\Setting::Get('displayNameFormat');
+        $format = Yii::$app->settings->get('displayNameFormat');
 
         if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
             $name = $this->profile->firstname . " " . $this->profile->lastname;

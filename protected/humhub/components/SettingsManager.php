@@ -53,7 +53,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function user()
     {
-        throw new \Exception("Not implemented yet!");
+        return $this->contentContainer(Yii::$app->user->getIdentity());
     }
 
     /**
@@ -62,7 +62,11 @@ class SettingsManager extends BaseSettingsManager
      */
     public function space()
     {
-        throw new \Exception("Not implemented yet!");
+        if (Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController) {
+            if (Yii::$app->controller->contentContainer instanceof \humhub\modules\space\models\Space) {
+                return $this->contentContainer(Yii::$app->controller->contentContainer);
+            }
+        }
     }
 
     /**

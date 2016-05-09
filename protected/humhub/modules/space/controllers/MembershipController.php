@@ -175,7 +175,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
 
             // Invite non existing members
-            if (Setting::Get('auth.internalUsersCanInvite', 'user')) {
+            if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id)) ? Membership::STATUS_INVITED : false;
                 }

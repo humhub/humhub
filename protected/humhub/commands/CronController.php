@@ -15,7 +15,7 @@ use humhub\models\Setting;
 
 /**
  * Cronjobs
- * 
+ *
  * @author Luke
  */
 class CronController extends Controller
@@ -41,7 +41,7 @@ class CronController extends Controller
         $this->trigger(self::EVENT_ON_HOURLY_RUN);
 
         $this->stdout("\n\nAll cron tasks finished.\n\n", Console::FG_GREEN);
-        Setting::Set('cronLastHourlyRun', time());
+        Yii::$app->settings->set('cronLastHourlyRun', time());
 
         return self::EXIT_CODE_NORMAL;
     }
@@ -56,7 +56,7 @@ class CronController extends Controller
         $this->trigger(self::EVENT_ON_DAILY_RUN);
 
         $this->stdout("\n\nAll cron tasks finished.\n\n", Console::FG_GREEN);
-        Setting::Set('cronLastDailyRun', time());
+        Yii::$app->settings->set('cronLastDailyRun', time());
 
         return self::EXIT_CODE_NORMAL;
     }

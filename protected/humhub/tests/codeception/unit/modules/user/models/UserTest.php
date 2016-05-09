@@ -56,7 +56,7 @@ class UserTest extends DbTestCase
      */
     public function testCreateGroupSpaceAdd()
     {
-        \humhub\models\Setting::Set('auth.needApproval', 0, 'user');
+        Yii::$app->getModule('user')->settings->set('auth.needApproval', 0);
 
         $space = Space::findOne(['id' => 1]);
 
@@ -73,7 +73,7 @@ class UserTest extends DbTestCase
 
     public function testInviteToSpace()
     {
-        \humhub\models\Setting::Set('auth.needApproval', 0, 'user');
+        Yii::$app->getModule('user')->settings->set('auth.needApproval', 0);
 
         $invite = new Invite();
         $invite->user_originator_id = 1;

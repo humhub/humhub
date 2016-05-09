@@ -61,7 +61,7 @@ class CreateController extends Controller
         }
 
         $visibilityOptions = [];
-        if (Setting::Get('auth.allowGuestAccess', 'user') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
             $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
         }
         if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
@@ -116,7 +116,7 @@ class CreateController extends Controller
                 $space->inviteMember($user->id, Yii::$app->user->id);
             }
             // Invite non existing members
-            if (Setting::Get('auth.internalUsersCanInvite', 'user')) {
+            if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $space->inviteMemberByEMail($email, Yii::$app->user->id);
                 }
@@ -137,8 +137,8 @@ class CreateController extends Controller
     {
         $model = new Space();
         $model->scenario = 'create';
-        $model->visibility = Setting::Get('defaultVisibility', 'space');
-        $model->join_policy = Setting::Get('defaultJoinPolicy', 'space');
+        $model->visibility = Yii::$app->getModule('space')->settings->get('defaultVisibility');
+        $model->join_policy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy');
         return $model;
     }
 

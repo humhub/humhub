@@ -60,16 +60,16 @@ $module->settings->contentContainer($user)->delete('key');
 Shortcuts for currently logged in user settings:
 
 ```php
-$module->settings->user->get('key');
-$module->settings->user->set('key', $value);
-$module->settings->user->delete('key');
+$module->settings->user()->get('key');
+$module->settings->user()->set('key', $value);
+$module->settings->user()->delete('key');
 ```
 
 Shortcuts for current space settings:
 Note: This is only available if current controller is instance of ContentContainerController.
 
 ```php
-$module->settings->space->get('key');
-$module->settings->space->set('key', $value);
-$module->settings->space->delete('key');
+$module->settings->space()->get('key');
+$module->settings->space()->set('key', $value);
+$module->settings->space()->delete('key');
 ```

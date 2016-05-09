@@ -99,7 +99,7 @@ class AccountLogin extends Model
             $this->_user = User::find()->where(['username' => $this->username])->orWhere(['email' => $this->username])->one();
 
             // Could not found user -> lookup in LDAP
-            if ($this->_user === null && Ldap::isAvailable() && Setting::Get('auth.ldap.enabled', 'user')) {
+            if ($this->_user === null && Ldap::isAvailable() && Yii::$app->getModule('user')->settings->get('auth.ldap.enabled')) {
 
                 try {
                     // Try load/create LDAP user

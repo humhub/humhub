@@ -77,7 +77,7 @@ class SpaceController extends Behavior
 
     public function checkAccess()
     {
-        if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
             throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 

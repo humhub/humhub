@@ -29,7 +29,7 @@ class Events extends \yii\base\Object
             return;
         }
 
-        if (Setting::Get('auth.needApproval', 'user')) {
+        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
                 $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
             }
@@ -58,7 +58,7 @@ class Events extends \yii\base\Object
         $latestVersion = libs\HumHubAPI::getLatestHumHubVersion();
         if ($latestVersion != "") {
             $adminUsers = \humhub\modules\user\models\Group::getAdminGroup()->users;
-            $latestNotifiedVersion = Setting::Get('lastVersionNotify', 'admin');
+            $latestNotifiedVersion = Yii::$app->getModule('admin')->settings->get('lastVersionNotify');
             $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
             $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));
             $updateNotification = new notifications\NewVersionAvailable();
@@ -73,7 +73,7 @@ class Events extends \yii\base\Object
             // Create new notification
             if ($newVersionAvailable && !$adminsNotified) {
                 $updateNotification->sendBulk($adminUsers);
-                Setting::Set('lastVersionNotify', $latestVersion, 'admin');
+                Yii::$app->getModule('admin')->settings->set('lastVersionNotify', $latestVersion);
             }
         }
 

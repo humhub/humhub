@@ -586,7 +586,7 @@ class Content extends \humhub\components\ActiveRecord
 
         // Check Guest Visibility
         if ($user === null) {
-            if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user') && $this->visibility === self::VISIBILITY_PUBLIC) {
+            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->visibility === self::VISIBILITY_PUBLIC) {
                 // Check container visibility for guests
                 if (($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) ||
                         ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL)) {

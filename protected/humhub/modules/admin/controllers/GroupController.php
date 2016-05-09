@@ -69,7 +69,7 @@ class GroupController extends Controller
                     'group' => $group,
                     'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group),
                     'isCreateForm' => $group->isNewRecord,
-                    'isManagerApprovalSetting' => Setting::Get('auth.needApproval', 'user')
+                    'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval')
         ]);
     }
 
@@ -104,7 +104,7 @@ class GroupController extends Controller
                     'searchModel' => $searchModel,
                     'group' => $group,
                     'addGroupMemberForm' => new AddGroupMemberForm(),
-                    'isManagerApprovalSetting' => Setting::Get('auth.needApproval', 'user')
+                    'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval')
         ]);
     }
 

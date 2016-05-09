@@ -61,7 +61,7 @@ class Registration extends HForm
 
     public function init()
     {
-        if (\humhub\models\Setting::Get('auth.needApproval', 'user')) {
+        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
             $this->enableUserApproval = true;
         } else {
             $this->enableUserApproval = false;
@@ -156,7 +156,7 @@ class Registration extends HForm
     protected function getGroupFormDefinition()
     {
         $groupModels = \humhub\modules\user\models\Group::getRegistrationGroups();
-        $defaultUserGroup = \humhub\models\Setting::Get('auth.defaultUserGroup', 'user');
+        $defaultUserGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
         $groupFieldType = "dropdownlist";
 
         if ($defaultUserGroup != "") {
@@ -318,7 +318,7 @@ class Registration extends HForm
             $this->_groupUser = new GroupUser();
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
             // assign default value for group_id
-            $this->_groupUser->group_id = \humhub\models\Setting::Get('auth.defaultUserGroup', 'user');
+            $this->_groupUser->group_id = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
         }
 
         return $this->_groupUser;

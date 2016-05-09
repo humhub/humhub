@@ -33,8 +33,12 @@ class Module extends \humhub\components\Module
      */
     public function getMailActivities(User $user, $interval)
     {
-        $receive_email_activities = $user->getSetting("receive_email_activities", 'activity', Setting::Get('receive_email_activities', 'activity'));
-
+        $receive_email_activities = Yii::$app->getModule('activity')->settings->contentContainer($user)->get('receive_email_activities');
+        if ($receive_email_activities === null) {
+            // Use Default Setting
+            $receive_email_activities = Yii::$app->getModule('activity')->settings->get('receive_email_activities');
+        }
+        
         // User never wants activity content
         if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
             return [];

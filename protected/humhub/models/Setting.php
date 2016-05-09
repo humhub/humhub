@@ -49,7 +49,7 @@ class Setting extends \yii\db\ActiveRecord
 
     /**
      * Returns settings value
-     * 
+     *
      * @deprecated since version 1.1
      * @param string $name
      * @param string $moduleId
@@ -63,7 +63,7 @@ class Setting extends \yii\db\ActiveRecord
 
     /**
      * Sets settings value
-     * 
+     *
      * @deprecated since version 1.1
      * @param string $name
      * @param string $value
@@ -77,7 +77,6 @@ class Setting extends \yii\db\ActiveRecord
 
     /**
      * @deprecated since version 1.1
-     * @see Setting::Set
      */
     public static function SetText($name, $value, $moduleId = "")
     {
@@ -86,7 +85,6 @@ class Setting extends \yii\db\ActiveRecord
 
     /**
      * @deprecated since version 1.1
-     * @see Setting::Get
      */
     public static function GetText($name, $moduleId = "")
     {
@@ -95,7 +93,7 @@ class Setting extends \yii\db\ActiveRecord
 
     /**
      * Checks this setting is fixed
-     * 
+     *
      * @deprecated since version 1.1
      * @see \humhub\libs\BaseSettingsManager::isFixed
      * @param string $name
@@ -109,7 +107,7 @@ class Setting extends \yii\db\ActiveRecord
 
     /**
      * Checks if initial data like settings, groups are installed.
-     * 
+     *
      * @return Boolean Is Installed
      */
     public static function isInstalled()
@@ -122,8 +120,8 @@ class Setting extends \yii\db\ActiveRecord
     }
 
     /**
-     * Temporary for 1.1 migration 
-     * 
+     * Temporary for 1.1 migration
+     *
      * @deprecated since version 1.1
      * @param string $name
      * @param string $moduleId
@@ -160,8 +158,8 @@ class Setting extends \yii\db\ActiveRecord
     }
 
     /**
-     * Temporary for 1.1 migration 
-     * 
+     * Temporary for 1.1 migration
+     *
      * @deprecated since version 1.1
      * @param string $name
      * @param string $moduleId

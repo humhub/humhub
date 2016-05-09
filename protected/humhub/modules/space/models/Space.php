@@ -173,10 +173,10 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         if($this->indexUrl != null) {
-            Setting::Set($this->id, 'indexUrl', $this->indexUrl);
+            Yii::$app->getModule('space')->settings->contentContainer($this)->set('indexUrl', $this->indexUrl);
         } else {
             //Remove entry from db
-            Setting::Set($this->id, 'indexUrl', '');
+            Yii::$app->getModule('space')->settings->contentContainer($this)->delete('indexUrl');
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
@@ -493,7 +493,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         ];
 
         // Add guest groups if enabled
-        if (\humhub\models\Setting::Get('auth.allowGuestAccess', 'user')) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
             $groups[self::USERGROUP_GUEST] = 'Guests';
         }
 
@@ -528,7 +528,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function getDefaultContentVisibility()
     {
         if ($this->default_content_visibility === null) {
-            $globalDefault = \humhub\models\Setting::Get('defaultContentVisibility', 'space');
+            $globalDefault = Yii::$app->getModule('space')->settings->get('defaultContentVisibility');
             if ($globalDefault == Content::VISIBILITY_PUBLIC) {
                 return Content::VISIBILITY_PUBLIC;
             }

@@ -58,7 +58,7 @@ class AccountTopMenu extends BaseMenu
             ));
         }
 
-        if (!Yii::$app->user->isGuest && Setting::Get('auth.needApproval', 'user') && $user->canApproveUsers()) {
+        if (!Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.needApproval') && $user->canApproveUsers()) {
             $this->addItem(array(
                 'label' => Yii::t('base', 'User Approvals'),
                 'icon' => '<i class="fa fa-check-circle"></i>',

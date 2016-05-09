@@ -32,7 +32,11 @@ class Module extends \humhub\components\Module
     {
         $notifications = [];
 
-        $receive_email_notifications = $user->getSetting('receive_email_notifications', 'notification', Setting::Get('receive_email_notifications', 'notification'));
+        $receive_email_notifications = Yii::$app->getModule('notification')->contentContainer($user)->settings->get('receive_email_notifications');
+        if ($receive_email_notifications === null) {
+            // Use Default
+            $receive_email_notifications = Yii::$app->getModule('notification')->settings->get('receive_email_notifications');
+        }
 
         // Never receive notifications
         if ($receive_email_notifications == User::RECEIVE_EMAIL_NEVER) {

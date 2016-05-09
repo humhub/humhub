@@ -110,7 +110,7 @@ class MailUpdateSender extends \yii\base\Component
                     'notifications_plaintext' => $notifications['text'],
                 ]);
 
-                $mail->setFrom([Setting::Get('mailer.systemEmailAddress') => Setting::Get('mailer.systemEmailName')]);
+                $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
                 $mail->setTo($this->user->email);
                 $mail->setSubject($this->getSubject());
                 if ($mail->send()) {
@@ -173,8 +173,8 @@ class MailUpdateSender extends \yii\base\Component
     {
         if ($user !== null && $user->language != "") {
             Yii::$app->language = $user->language;
-        } elseif (Setting::Get('defaultLanguage') != '') {
-            Yii::$app->language = Setting::Get('defaultLanguage');
+        } elseif (Yii::$app->settings->get('defaultLanguage') != '') {
+            Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
         } else {
             Yii::$app->language = 'en';
         }

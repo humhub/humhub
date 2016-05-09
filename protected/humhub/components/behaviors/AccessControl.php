@@ -56,7 +56,7 @@ class AccessControl extends \yii\base\ActionFilter
             if (!$this->loggedInOnly && !$this->adminOnly) {
                 return true;
             }
-            if (in_array($action->id, $this->guestAllowedActions) && Setting::Get('auth.allowGuestAccess', 'user') == 1) {
+            if (in_array($action->id, $this->guestAllowedActions) && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
                 return true;
             }
 

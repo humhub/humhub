@@ -21,7 +21,7 @@ class Theme extends \yii\base\Theme
 
     /**
      * Name of the Theme
-     * 
+     *
      * @var string
      */
     public $name;
@@ -102,7 +102,7 @@ class Theme extends \yii\base\Theme
 
     /**
      * Publishs theme assets (e.g. images or css)
-     * 
+     *
      * @param boolean|null $force
      * @return string url of published resources
      */
@@ -121,7 +121,7 @@ class Theme extends \yii\base\Theme
 
     /**
      * Tries to automatically maps the view file of a module to a themed one.
-     * 
+     *
      * Formats:
 
      *   .../moduleId/views/controllerId/viewName.php
@@ -131,7 +131,7 @@ class Theme extends \yii\base\Theme
      *   .../moduleId/[widgets|activities|notifications]/views/viewName.php
      *   to:
      *   .../views/moduleId/[widgets|activities|notifications]/viewName.php
-     * 
+     *
      * @return string theme view path or null
      */
     protected function autoFindModuleView($path)
@@ -173,18 +173,18 @@ class Theme extends \yii\base\Theme
             $startDanger = strpos($less, '@danger') + 9;
             $length = 7;
 
-            Setting::Set('colorDefault', substr($less, $startDefault, $length));
-            Setting::Set('colorPrimary', substr($less, $startPrimary, $length));
-            Setting::Set('colorInfo', substr($less, $startInfo, $length));
-            Setting::Set('colorSuccess', substr($less, $startSuccess, $length));
-            Setting::Set('colorWarning', substr($less, $startWarning, $length));
-            Setting::Set('colorDanger', substr($less, $startDanger, $length));
+            Yii::$app->settings->set('colorDefault', substr($less, $startDefault, $length));
+            Yii::$app->settings->set('colorPrimary', substr($less, $startPrimary, $length));
+            Yii::$app->settings->set('colorInfo', substr($less, $startInfo, $length));
+            Yii::$app->settings->set('colorSuccess', substr($less, $startSuccess, $length));
+            Yii::$app->settings->set('colorWarning', substr($less, $startWarning, $length));
+            Yii::$app->settings->set('colorDanger', substr($less, $startDanger, $length));
         }
     }
 
     /**
      * Store colors to configuration.
-     * 
+     *
      * @deprecated since version 1.1
      * @param type $themeName
      */
