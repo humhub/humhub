@@ -6,9 +6,8 @@ use humhub\modules\admin\widgets\SpaceGridView;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
+    <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>      
     <div class="panel-body">
-        <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>        
-        <p />
         <p>
             <?php echo Yii::t('AdminModule.views_space_index', 'In this overview you can find every space and manage it.'); ?>
         </p>

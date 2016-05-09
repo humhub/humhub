@@ -1,18 +1,16 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\GridView;
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?></div>
+    <div class="panel-heading">
+        <?php echo Yii::t('AdminModule.views_user_index', '<strong>Manage</strong> users'); ?>
+    </div>
+     <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
+    
     <div class="panel-body">
-        
-        <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
-        <p />
         <p>
             <?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?>
         </p>
@@ -40,7 +38,7 @@ use humhub\widgets\GridView;
                     'filter' => \yii\jui\DatePicker::widget([
                         'model' => $searchModel,
                         'attribute' => 'last_login',
-                        'options' => ['style' => 'width:86px;'],
+                        'options' => ['style' => 'width:86px;', 'class' => 'form-control'],
                     ]),
                     'value' => function ($data) {
                         return ($data->last_login == NULL) ? Yii::t('AdminModule.views_user_index', 'never') : Yii::$app->formatter->asDate($data->last_login);

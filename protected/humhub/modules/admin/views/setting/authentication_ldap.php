@@ -6,10 +6,9 @@ use humhub\models\Setting;
 use yii\helpers\Url;
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', '<strong>Authentication</strong> - LDAP'); ?></div>
-    <div class="panel-body">
-
-        <ul class="nav nav-pills">
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_authentication', '<strong>Authentication</strong> settings'); ?></div>
+    <div class="tab-menu">
+        <ul class="nav nav-tabs">
             <li>
                 <a href="<?php echo Url::toRoute('authentication'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Basic'); ?></a>
             </li>
@@ -17,9 +16,8 @@ use yii\helpers\Url;
                     href="<?php echo Url::toRoute('authentication-ldap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP'); ?></a>
             </li>
         </ul>
-
-        <br/>
-
+    </div>
+    <div class="panel-body">
         <?php if ($enabled): ?>
             <?php if ($errorMessage != ""): ?>
                 <div

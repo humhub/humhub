@@ -10,33 +10,28 @@ use yii\widgets\ActiveForm;
     <div class="panel-heading">
         <?php echo Yii::t('AdminModule.views_group_manageGroupUser', '<strong>Edit</strong> group {groupName}', ['groupName' => $group->name]); ?>
     </div>
-    
+    <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
     <div class="panel-body">
-        <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
-        <br />
-        
         <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
         <div style="display:flex;flex-wrap:wrap;">
             <div style="flex-grow:100;margin-right:5px;">
                 <div>
-            <?php echo $form->field($addGroupMemberForm, 'userGuids', ['inputOptions' => ['id' => 'user_select']])->label(false); ?>
-            <?php echo Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
-            <?php
-            echo \humhub\modules\user\widgets\UserPicker::widget([
-                'inputId' => 'user_select',
-                'model' => $addGroupMemberForm,
-                'attribute' => 'userGuids',
-                'userSearchUrl' => Url::toRoute('/admin/group/new-member-search'),
-                'data' => ['id' => $group->id],
-                'placeholderText' => Yii::t('AdminModule.views_group_manageGroupUser', 'Add new members...')
-            ]);
-            ?>
+                    <?php echo $form->field($addGroupMemberForm, 'userGuids', ['inputOptions' => ['id' => 'user_select']])->label(false); ?>
+                    <?php echo Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
+                    <?php
+                    echo \humhub\modules\user\widgets\UserPicker::widget([
+                        'inputId' => 'user_select',
+                        'model' => $addGroupMemberForm,
+                        'attribute' => 'userGuids',
+                        'userSearchUrl' => Url::toRoute('/admin/group/new-member-search'),
+                        'data' => ['id' => $group->id],
+                        'placeholderText' => Yii::t('AdminModule.views_group_manageGroupUser', 'Add new members...')
+                    ]);
+                    ?>
                 </div>
             </div>
-            <div style="flex-grow:1;">
-                
-            <?php echo Html::submitButton(Yii::t('AdminModule.views_group_manageGroupUser', 'Add'), ['class' => 'btn btn-primary']); ?> 
-            
+            <div style="flex-grow:1;padding-top:1px;">   
+                <?php echo Html::submitButton(Yii::t('AdminModule.views_group_manageGroupUser', 'Add'), ['class' => 'btn btn-primary']); ?>   
             </div>
             </div>
         <?php ActiveForm::end(); ?>
