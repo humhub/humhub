@@ -6,11 +6,14 @@ use \humhub\models\Setting;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 ?>
 
-<?= DefaultMenu::widget(['space' => $model]); ?>
-<br/>
 <div class="panel panel-default">
-    <div
-        class="panel-heading"><?php echo Yii::t('SpaceModule.manage', '<strong>Security</strong> settings'); ?></div>
+    <div>
+        <div class="panel-heading">
+             <?php echo Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
+        </div>
+    </div>
+
+    <?= DefaultMenu::widget(['space' => $model]); ?>
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
 

@@ -1057,6 +1057,41 @@ input[type=select] {
 //
 // Navs
 // --------------------------------------------------
+.tab-menu {
+    padding-top:5px;
+    background-color: #FFFFFF;
+    
+    .nav-tabs {
+        padding-left: 10px;
+        
+        li > a {
+            padding-top:12px;
+            border-color: #ddd;
+            border-bottom:1px solid #ddd;
+            background-color: @background1;
+        }
+        
+        li > a:hover {
+            padding-top:10px;
+            border-top: 3px solid #ddd;
+        }
+        
+        li.active > a, li.active > a:hover {
+            padding-top:10px;
+            border-top: 3px solid @info;
+        } 
+        
+        li > a:hover {
+            background-color: @background1;
+        }
+        
+        li.active > a {
+            background-color:#FFFFFF;
+            border-bottom-color: transparent;
+        }
+    }
+}
+
 .nav-pills,
 .nav-tabs,
 .account {
