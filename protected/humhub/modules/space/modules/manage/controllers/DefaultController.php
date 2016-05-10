@@ -28,11 +28,23 @@ class DefaultController extends Controller
     {
         $space = $this->contentContainer;
         $space->scenario = 'edit';
-        $space->indexUrl = Yii::$app->settings->get($space->id, 'indexUrl');
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('index'));
+        }
+        return $this->render('index', ['model' => $space]);
+    }
+
+    public function actionAdvanced()
+    {
+        $space = $this->contentContainer;
+        $space->scenario = 'edit';
+        $space->indexUrl = Yii::$app->settings->get($space->id, 'indexUrl');
+
+        if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            return $this->redirect($space->createUrl('advanced'));
         }
 
         $indexModuleSelection = SpacePages::getAvailablePages();
@@ -41,24 +53,7 @@ class DefaultController extends Controller
         array_shift($indexModuleSelection);
         $indexModuleSelection = ["" => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
 
-
-
-        return $this->render('index', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
-    }
-
-    /**
-     * Security settings
-     */
-    public function actionSecurity()
-    {
-        $space = $this->contentContainer;
-        $space->scenario = 'edit';
-
-        if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
-            return $this->redirect($space->createUrl('security'));
-        }
-        return $this->render('security', array('model' => $space));
+        return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
     }
 
     /**

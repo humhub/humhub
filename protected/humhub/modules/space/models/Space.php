@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\components\UrlValidator;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
@@ -24,6 +25,7 @@ use humhub\modules\user\models\User;
  * @property integer $wall_id
  * @property string $name
  * @property string $description
+ * @property string $url
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
@@ -61,7 +63,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
     /**
      * Contains the form value for indexUrl setting
-     * @var type
+     * @var string|null 
      */
     public $indexUrl = null;
 
@@ -87,10 +89,12 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
-            [['guid', 'name'], 'string', 'max' => 45],
+            [['url'], 'unique', 'skipOnEmpty' => 'true'],
+            [['guid', 'name', 'url'], 'string', 'max' => 45, 'min' => 2],
+            [['url'], UrlValidator::className()],
         ];
 
-        if(Yii::$app->getModule('space')->useUniqueSpaceNames) {
+        if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
             $rules[] = [['name'], 'unique', 'targetClass' => self::className()];
         }
         return $rules;
@@ -103,7 +107,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'indexUrl', 'join_policy', 'visibility', 'default_content_visibility'];
+        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'indexUrl', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
@@ -129,6 +133,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
+            'indexUrl' => Yii::t('SpaceModule.models_Space', 'Homepage'),
         );
     }
 
@@ -172,7 +177,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $activity->create();
         }
 
-        if($this->indexUrl != null) {
+        if ($this->indexUrl != null) {
             Yii::$app->getModule('space')->settings->contentContainer($this)->set('indexUrl', $this->indexUrl);
         } else {
             //Remove entry from db
@@ -180,6 +185,24 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->url = UrlValidator::autogenerateUniqueSpaceUrl($this->name);
+        }
+
+        if ($this->url == '') {
+            $this->url = new \yii\db\Expression('NULL');
+        } else {
+            $this->url = mb_strtolower($this->url);
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -267,7 +290,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         return false;
     }
-
 
     /**
      * Checks if given user can invite people to this workspace
@@ -452,8 +474,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $status = ($status == null) ? Membership::STATUS_MEMBER : $status;
         $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member',
-                ['space_id' => $this->id, 'member' => $status]);
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', ['space_id' => $this->id, 'member' => $status]);
         $query->andWhere('space_membership.space_id IS NOT NULL');
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
         return $query;
@@ -462,8 +483,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function getNonMembershipUser()
     {
         $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id ',
-                ['space_id' => $this->id]);
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id ', ['space_id' => $this->id]);
         $query->andWhere('space_membership.space_id IS NULL');
         $query->orWhere(['!=', 'space_membership.status', Membership::STATUS_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
@@ -538,4 +558,5 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         return Content::VISIBILITY_PRIVATE;
     }
+
 }

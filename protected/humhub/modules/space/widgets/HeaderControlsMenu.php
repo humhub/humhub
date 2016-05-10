@@ -2,11 +2,11 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\space\modules\manage\widgets;
+namespace humhub\modules\space\widgets;
 
 use Yii;
 use \yii\base\Widget;
@@ -18,7 +18,7 @@ use \yii\base\Widget;
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class Menu extends \humhub\widgets\BaseMenu
+class HeaderControlsMenu extends \humhub\widgets\BaseMenu
 {
 
     public $space;
@@ -37,14 +37,23 @@ class Menu extends \humhub\widgets\BaseMenu
         if ($this->space->isAdmin()) {
 
             $this->addItem(array(
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'General'),
+                'label' => Yii::t('SpaceModule.base', 'Settings'),
                 'group' => 'admin',
                 'url' => $this->space->createUrl('/space/manage'),
                 'icon' => '<i class="fa fa-cogs"></i>',
                 'sortOrder' => 100,
                 'isActive' => (Yii::$app->controller->id == "default"),
             ));
-
+            
+            $this->addItem(array(
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Security'),
+                'group' => 'admin',
+                'url' => $this->space->createUrl('/space/manage/security'),
+                'icon' => '<i class="fa fa-lock"></i>',
+                'sortOrder' => 200,
+                'isActive' => (Yii::$app->controller->id == "security"),
+            ));
+            
             $this->addItem(array(
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
                 'group' => 'admin',
@@ -73,7 +82,6 @@ class Menu extends \humhub\widgets\BaseMenu
                 'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->id == "module"),
                 'htmlOptions' => ['data-method' => 'POST']
-
             ));
         }
 
@@ -100,7 +108,6 @@ class Menu extends \humhub\widgets\BaseMenu
                             'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will hide new content from this space at your dashboard')
                         ]
                     ));
-
                 } else {
 
                     $this->addItem(array(
@@ -117,9 +124,7 @@ class Menu extends \humhub\widgets\BaseMenu
                             'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will show new content from this space at your dashboard')
                         ]
                     ));
-
                 }
-
             }
         }
 

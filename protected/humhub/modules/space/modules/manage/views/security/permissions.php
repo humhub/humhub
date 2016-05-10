@@ -1,15 +1,18 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\user\widgets\PermissionGridEditor;
+use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 ?>
 
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+    <div>
+        <div class="panel-heading">
+            <?php echo Yii::t('SpaceModule.views_settings', '<strong>Security</strong> settings'); ?>
+        </div>
     </div>
-    <?= MemberMenu::widget(['space' => $space]); ?>
+
+    <?= SecurityTabMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
         <?php
         echo Yii::t('SpaceModule.views_admin_members', '<strong>Current Group:</strong>');

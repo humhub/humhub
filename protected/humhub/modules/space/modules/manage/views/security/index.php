@@ -2,18 +2,18 @@
 
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use \humhub\models\Setting;
-use humhub\modules\space\modules\manage\widgets\DefaultMenu;
+use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 ?>
 
 <div class="panel panel-default">
     <div>
         <div class="panel-heading">
-             <?php echo Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
+            <?php echo Yii::t('SpaceModule.views_settings', '<strong>Security</strong> settings'); ?>
         </div>
     </div>
 
-    <?= DefaultMenu::widget(['space' => $model]); ?>
+    <?= SecurityTabMenu::widget(['space' => $model]); ?>
+
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
 
