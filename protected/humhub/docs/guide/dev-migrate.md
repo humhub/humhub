@@ -15,6 +15,11 @@ Here you will learn how you can adapt existing modules to working fine with actu
 
 - system_admin attribute in user table was removed
 
+- Renamed space header settings menu dropdown class
+  from  humhub\modules\space\modules\manage\widgets\Menu to humhub\modules\space\widgets\HeaderControlMenu
+
+
+
 
 ## to 0.20
 

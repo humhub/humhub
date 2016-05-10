@@ -204,8 +204,12 @@ if ($space->isAdmin()) {
                                     ['sortOrder' => 30]]
                         ]]);
                         ?>
-
-                        <?php echo humhub\modules\space\modules\manage\widgets\Menu::widget(['space' => $space, 'template' => '@humhub/widgets/views/dropdownNavigation']); ?>
+                        <?=
+                        humhub\modules\space\widgets\HeaderControlsMenu::widget([
+                            'space' => $space,
+                            'template' => '@humhub/widgets/views/dropdownNavigation'
+                        ]);
+                        ?>
                     </div>
                 </div>
             </div>
