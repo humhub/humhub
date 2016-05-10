@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use yii\widgets\ActiveForm;
-
 ?>
 
 
@@ -23,6 +22,7 @@ use yii\widgets\ActiveForm;
         ?>
         <?= $form->field($model, 'ownerId')->dropDownList($model->getNewOwnerArray()) ?>
 
+        <hr />
         <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Transfer ownership'), ['class' => 'btn btn-danger', 'data-confirm' => 'Are you really sure?']) ?>
 
         <?php ActiveForm::end() ?>
