@@ -1,6 +1,9 @@
 <?php
     use yii\helpers\Html;
     
+    $this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position'=>  yii\web\View::POS_BEGIN, 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]]);
+    $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css', ['position'=>  yii\web\View::POS_BEGIN, 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]]);
+    
     $ts = time();
     $inputId = $ts.'space-color-picker-edit';
     $containerId = $ts.'space-color-chooser-edit';

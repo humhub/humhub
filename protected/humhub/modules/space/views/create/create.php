@@ -1,11 +1,6 @@
 <?php
-
 use yii\widgets\ActiveForm;
-use yii\bootstrap\Html;
 use yii\helpers\Url;
-
-$this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position' => \humhub\components\View::POS_BEGIN]);
-$this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css');
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
