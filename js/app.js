@@ -125,11 +125,23 @@ function HashTable(obj) {
 
 
 /**
- * setModalLoader
- *
- * Change buttons with loader
+ * To allow other frameworks to overlay focusable nodes over an active modal we have
+ * to explicitly allow ith within this overwritten function.
  *
  */
+$.fn.modal.Constructor.prototype.enforceFocus = function () {
+  var that = this;
+  $(document).on('focusin.modal', function (e) {
+     if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('hexInput')) {
+        return true;
+     }
+
+     if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+        that.$element.focus();
+     }
+  });
+};
+
 function setModalLoader() {
     $(".modal-footer .btn").hide();
     $(".modal-footer .loader").removeClass("hidden");

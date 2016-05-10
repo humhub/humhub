@@ -1,16 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
-    <div
-        class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listUpdates', '<strong>Modules</strong> directory'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listUpdates', '<strong>Modules</strong> directory'); ?></div>
+   <?php echo $this->render('_header'); ?>
+    
     <div class="panel-body">
-
-        <?php echo $this->render('_header'); ?>
-
         <?php if (count($modules) == 0): ?>
             <br>
             <div><?php echo Yii::t('AdminModule.module_listUpdates', 'All modules are up to date!'); ?></div>
@@ -18,7 +15,7 @@ use yii\helpers\Url;
         <?php endif; ?>
 
         <?php foreach ($modules as $module): ?>
-            <hr/>
+            
             <?php
             $moduleImageUrl = Yii::getAlias('@web/img/default_module.jpg');
             if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
@@ -48,7 +45,7 @@ use yii\helpers\Url;
                     </div>
                 </div>
             </div>
-
+        <hr/>
         <?php endforeach; ?>
 
     </div>

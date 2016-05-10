@@ -1,11 +1,6 @@
 <?php
-
 use yii\widgets\ActiveForm;
-use yii\bootstrap\Html;
 use yii\helpers\Url;
-
-$this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position' => \humhub\components\View::POS_BEGIN]);
-$this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css');
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -19,17 +14,7 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
 
             <hr>
             <br>
-            <div class="row">
-                <div class="col-md-8"> <?php echo $form->field($model, 'name')->textInput(['id' => 'space-name', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name'), 'maxlength' => 45]); ?></div>
-                <div class="col-md-4">            <strong><?php echo Yii::t('SpaceModule.views_create_create', 'Color'); ?></strong>
-
-                    <div class="input-group space-color-chooser" style="margin-top: 5px;">
-
-                        <?= Html::activeTextInput($model, 'color', ['class' => 'form-control', 'id' => 'space-color-picker', 'value' => '#000000']); ?>
-                        <span class="input-group-addon"><i></i></span>
-                    </div>
-                    <br></div>
-            </div>
+             <?= humhub\modules\space\widgets\SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
 
             <?php echo $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
 

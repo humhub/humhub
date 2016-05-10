@@ -6,10 +6,9 @@ use yii\helpers\Html;
 <div class="panel panel-default">
 
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
+    <?php echo $this->render('_header'); ?>
+    
     <div class="panel-body">
-
-        <?php echo $this->render('_header'); ?>
-        <br/><br/>
 
         <!-- search form -->
 
