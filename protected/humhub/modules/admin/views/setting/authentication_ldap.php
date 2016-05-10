@@ -12,8 +12,8 @@ use yii\helpers\Url;
             <li>
                 <a href="<?php echo Url::toRoute('authentication'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Basic'); ?></a>
             </li>
-            <li class="active"><a
-                    href="<?php echo Url::toRoute('authentication-ldap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP'); ?></a>
+            <li class="active">
+                <a href="<?php echo Url::toRoute('authentication-ldap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP'); ?></a>
             </li>
         </ul>
     </div>

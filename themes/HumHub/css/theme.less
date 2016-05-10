@@ -1057,6 +1057,19 @@ input[type=select] {
 //
 // Navs
 // --------------------------------------------------
+.tab-sub-menu {
+    padding-left: 10px;
+    li > a:hover, li > a:focus {
+        background-color: @background1;
+        border-bottom-color: #ddd;
+    }
+    
+    li.active > a {
+        background-color:#FFFFFF;
+        border-bottom-color: transparent;
+    }
+}
+
 .tab-menu {
     padding-top:5px;
     background-color: #FFFFFF;
@@ -1073,19 +1086,19 @@ input[type=select] {
             outline: none;
         }
         
-        li > a:hover {
+        li > a:hover, li > a:focus {
             padding-top:10px;
             border-top: 3px solid #ddd;
+        }
+        
+        li > a:hover {
+            background-color: @background1;
         }
         
         li.active > a, li.active > a:hover {
             padding-top:10px;
             border-top: 3px solid @info;
         } 
-        
-        li > a:hover {
-            background-color: @background1;
-        }
         
         li.active > a {
             background-color:#FFFFFF;
@@ -1902,6 +1915,7 @@ a.list-group-item.active:focus {
 // Tables
 // --------------------------------------------------
 table {
+  margin-bottom:0px !important;
   th {
     font-size: 11px;
     color: @font4;
@@ -1995,8 +2009,31 @@ table {
       font-size: 13px !important;
       font-weight: bold !important;
     }
+    td {
+        vertical-align:middle !important;
+    }
     tr {
       font-size: 13px !important;
+    }
+    thead {
+        tr {
+            th:first-of-type {
+                padding-left:5px;
+            }
+        }
+    }
+    tbody {
+        tr {
+            height: 50px;
+            td:first-of-type {
+                padding-left:5px;
+            }
+        }
+        
+        tr:nth-child(even) {
+            //background-color: @background1;
+        }
+        
     }
   }
   .summary {
