@@ -62,12 +62,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     const USERGROUP_GUEST = 'guest';
 
     /**
-     * Contains the form value for indexUrl setting
-     * @var string|null 
-     */
-    public $indexUrl = null;
-
-    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -82,7 +76,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $rules = [
             [['join_policy', 'visibility', 'status', 'created_by', 'updated_by', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
-            [['indexUrl'], 'string'],
             [['name'], 'required'],
             [['description', 'tags', 'color'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -107,7 +100,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'indexUrl', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
@@ -121,7 +114,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return array(
             'id' => 'ID',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
-            'indexUrl' => Yii::t('SpaceModule.models_Space', 'Index'),
             'color' => Yii::t('SpaceModule.models_Space', 'Color'),
             'description' => Yii::t('SpaceModule.models_Space', 'Description'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
@@ -133,7 +125,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
-            'indexUrl' => Yii::t('SpaceModule.models_Space', 'Homepage'),
         );
     }
 
@@ -175,13 +166,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
-        }
-
-        if ($this->indexUrl != null) {
-            Yii::$app->getModule('space')->settings->contentContainer($this)->set('indexUrl', $this->indexUrl);
-        } else {
-            //Remove entry from db
-            Yii::$app->getModule('space')->settings->contentContainer($this)->delete('indexUrl');
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);

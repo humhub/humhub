@@ -4,6 +4,8 @@ namespace humhub\modules\space\widgets;
 
 use Yii;
 use \yii\base\Widget;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
 
 /**
  * The Main Navigation for a space. It includes the Modules the Stream
@@ -20,15 +22,14 @@ class Menu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-
-        // Reckon the current controller is a valid space controller
-        // (Needs to implement the SpaceControllerBehavior)
-        $spaceGuid = Yii::$app->controller->getSpace()->guid;
-        
-        if($this->space == null) {
-            $this->space = \humhub\modules\space\models\Space::findByGuid($spaceGuid);
+        if ($this->space === null && Yii::$app->controller instanceof ContentContainerController && Yii::$app->controller->contentContainer instanceof Space) {
+            $this->space = Yii::$app->controller->contentContainer;
         }
-        
+
+        if ($this->space === null) {
+            throw new \yii\base\Exception("Could not instance space menu without space!");
+        }
+
         $this->addItemGroup(array(
             'id' => 'modules',
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu'),
@@ -38,27 +39,54 @@ class Menu extends \humhub\widgets\BaseMenu
         $this->addItem(array(
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Stream'),
             'group' => 'modules',
-            'url' => $this->space->createUrl(),
+            'url' => $this->space->createUrl('/space/space/home'),
             'icon' => '<i class="fa fa-bars"></i>',
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == "space" && Yii::$app->controller->action->id == "index" && Yii::$app->controller->module->id == "space"),
+            'isActive' => (Yii::$app->controller->id == "space" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == "space"),
         ));
 
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Members'),
-#            'url' => Yii::$app->createUrl('//space/space/members', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 200,
-#            'isActive' => (Yii::$app->controller->id == "space" && Yii::$app->controller->action->id == "members"),
-#        ));
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Admin'),
-#            'url' => Yii::$app->createUrl('//space/admin', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 9999,
-#            'isActive' => (Yii::$app->controller->id == "admin" && Yii::$app->controller->action->id == "index"),
-#        ));
-
-
         parent::init();
+    }
+
+    /**
+     * Searches for urls of modules which are activated for the current space
+     * and offer an own site over the space menu.
+     * The urls are associated with a module label.
+     * 
+     * Returns an array of urls with associated module labes for modules 
+     * @param type $space
+     */
+    public static function getAvailablePages()
+    {
+        //Initialize the space Menu to check which active modules have an own page
+        $moduleItems = (new static())->getItems('modules');
+        $result = [];
+        foreach ($moduleItems as $moduleItem) {
+            $result[$moduleItem['url']] = $moduleItem['label'];
+        }
+        return $result;
+    }
+
+    /**
+     * Returns space default / homepage
+     * 
+     * @return string|null the url to redirect or null for default home
+     */
+    public static function getDefaultPageUrl($space)
+    {
+        $settings = Yii::$app->getModule('space')->settings;
+
+        $indexUrl = $settings->contentContainer($space)->get('indexUrl');
+        if ($indexUrl !== null) {
+            $pages = static::getAvailablePages();
+            if (isset($pages[$indexUrl])) {
+                return $indexUrl;
+            } else {
+                //Either the module was deactivated or url changed
+                $indexUrl = $settings->contentContainer($space)->delete('indexUrl');
+            }
+        }
+        return null;
     }
 
 }

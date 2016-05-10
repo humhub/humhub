@@ -38,16 +38,16 @@ class DefaultController extends Controller
 
     public function actionAdvanced()
     {
-        $space = $this->contentContainer;
+        $space = \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace::findOne(['id' => $this->contentContainer->id]);
         $space->scenario = 'edit';
-        $space->indexUrl = Yii::$app->settings->get($space->id, 'indexUrl');
-
+        $space->indexUrl = Yii::$app->getModule('space')->settings->space()->get('indexUrl');
+        
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('advanced'));
         }
 
-        $indexModuleSelection = SpacePages::getAvailablePages();
+        $indexModuleSelection = \humhub\modules\space\widgets\Menu::getAvailablePages();
 
         //To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
         array_shift($indexModuleSelection);

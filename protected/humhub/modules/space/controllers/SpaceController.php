@@ -59,19 +59,23 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     public function actionIndex()
     {
         $space = $this->getSpace();
-        $indexUrl = $this->module->settings->contentContainer($space)->get('indexUrl');
-        
-        if($indexUrl != null) {
-            $pages = \humhub\modules\space\models\SpacePages::getAvailablePages();
-            if(isset($pages[$indexUrl])) {
-                return $this->redirect($indexUrl);
-            } else {
-                //Either the module was deactivated or url changed
-                $indexUrl = $this->module->settings->contentContainer($space)->delete('indexUrl');
-            }
+
+        $defaultPageUrl = \humhub\modules\space\widgets\Menu::getDefaultPageUrl($space);
+        if ($defaultPageUrl != null) {
+            return $this->redirect($defaultPageUrl);
         }
-        
-        return $this->render('index', ['space' => $this->contentContainer]);
+
+        return $this->actionHome();
+    }
+
+    /**
+     * Default space homepage
+     * 
+     * @return type
+     */
+    public function actionHome()
+    {
+        return $this->render('home', ['space' => $this->contentContainer]);
     }
 
     /**
@@ -84,7 +88,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         if (!$space->isMember()) {
             $space->follow();
         }
-        
+
         if (Yii::$app->request->isAjax) {
             return;
         }
@@ -100,7 +104,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $this->forcePostRequest();
         $space = $this->getSpace();
         $space->unfollow();
-        
+
         if (Yii::$app->request->isAjax) {
             return;
         }
