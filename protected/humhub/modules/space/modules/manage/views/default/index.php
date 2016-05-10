@@ -14,7 +14,7 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
 
     <div>
         <div class="panel-heading">
-           <?php echo Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
+            <?php echo Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
         </div>
     </div>
 
@@ -23,22 +23,8 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
 
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm']]); ?>
 
- 
-                <div class="form-group space-color-chooser-edit" style="margin-top: 5px;">
-                    
-                    <?= Html::activeTextInput($model, 'color', ['class' => 'form-control', 'id' => 'space-color-picker-edit', 'value' => $model->color, 'style' => 'display:none']); ?>
-                    <!-- ?= Html::activeTextInput($model, 'name' , ['class' => 'form-control', 'id' => 'space-name', 'placeholder' => Yii::t('SpaceModule.views_create_create', 'space name'), 'maxlength' => 45]) ?-->
-                    <?= $form->field($model, 'name', [ 'template' => '
-                            {label}
-                            <div class="input-group">
-                            <span class="input-group-addon">
-                              <i></i>
-                            </span>
-                           {input}
-                           </input>
-                        </div>
-                        {error}{hint}'])->textInput() ?>
-                </div>
+
+         <?= humhub\modules\space\widgets\SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
 
 
         <?php echo $form->field($model, 'description')->textarea(['rows' => 6]); ?>
@@ -69,56 +55,3 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
     </div>
 
 </div>
-
-<script type="text/javascript">
-    // prevent enter key and simulate ajax button submit click
-    $(document).ready(function () {
-        var $colorPickerHexInput, picker;
-        
-        $('.space-color-chooser-edit').colorpicker({
-            format: 'hex',
-            color: '<?= $model->color; ?>',
-            'align': 'left',
-            horizontal: false,
-            component: '.input-group-addon',
-            input: '#space-color-picker-edit',
-        });
-
-        //Add hex input field to color picker
-        $('.space-color-chooser-edit').on('create', function() {
-            if(typeof $colorPickerHexInput === 'undefined') {
-                picker = $(this).data('colorpicker');
-                $colorPickerHexInput = $('<input type="text" style="border:0px;outline: none;" id="colorPickerHexInput" value="'+picker.color.toHex()+'"></input>');
-                picker.picker.append($colorPickerHexInput);
-                $colorPickerHexInput.on('change', function() {
-                    picker.color.setColor($(this).val());
-                    picker.update();
-                });
-                
-                $colorPickerHexInput.on('keydown', function(e) { 
-                    var keyCode = e.keyCode || e.which; 
-                    //Close On Tab
-                    if (keyCode === 9) { 
-                      e.preventDefault(); 
-                      picker.hide();
-                      $('#space-name').focus();
-                    } 
-              });
-            }
-        });
-        
-        $('.colorpicker').on('click', function() {
-            $colorPickerHexInput.select();
-        });
-        
-        $('.space-color-chooser-edit').on('showPicker', function() {
-            $colorPickerHexInput.select();
-        });
-        
-        $('.space-color-chooser-edit').on('changeColor', function() {
-            $colorPickerHexInput.val(picker.color.toHex());
-        });
-    });
-</script>
-
-

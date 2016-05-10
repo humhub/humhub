@@ -6,13 +6,10 @@ use yii\helpers\Html;
 <div class="panel panel-default">
 
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
-    <div class="panel-body">
-
-        <?php echo $this->render('_header'); ?>
-        <br/><br/>
-
+    <?php echo $this->render('_header'); ?>
+    
+    <div class="panel-body"> 
         <!-- search form -->
-
         <?php echo Html::beginForm(Url::to(['//admin/module/list-purchases']), 'post', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>
