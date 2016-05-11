@@ -55,7 +55,7 @@ class BaseMenu extends \yii\base\Widget
     /**
      * Adds new Item to the menu
      *
-     * @param Array $item
+     * @param \Array $item
      *            with item definitions
      */
     public function addItem($item)
@@ -113,7 +113,7 @@ class BaseMenu extends \yii\base\Widget
     /**
      * Adds new Item Group to the menu
      *
-     * @param Array $itemGroup
+     * @param \Array $itemGroup
      *            with group definition
      */
     public function addItemGroup($itemGroup)
@@ -139,7 +139,7 @@ class BaseMenu extends \yii\base\Widget
     /**
      * Returns Items of this Navigation
      *
-     * @param String $group
+     * @param \String $group
      *            limits the items to a specified group
      * @return Array a list of items with definition
      */
@@ -215,7 +215,7 @@ class BaseMenu extends \yii\base\Widget
     /**
      * Add the active class from a menue item.
      * 
-     * @param String $url
+     * @param \String $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
     public function markAsActive($url)
@@ -231,7 +231,7 @@ class BaseMenu extends \yii\base\Widget
     /**
      * Remove the active class from a menue item.
      * 
-     * @param String $url
+     * @param \String $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
     public function markAsInactive($url)
@@ -247,7 +247,7 @@ class BaseMenu extends \yii\base\Widget
     /**
      * Removes Item by URL
      * 
-     * @param string $url
+     * @param \String $url
      */
     public function deleteItemByUrl($url)
     {
