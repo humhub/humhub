@@ -114,7 +114,9 @@ class ModuleManager extends \yii\base\Component
         if (isset($config['namespace'])) {
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
-
+        Yii::setAlias('@'.$config['id'], $basePath);
+        
+        
         if (!Yii::$app->params['installed'] && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];
         }
