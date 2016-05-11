@@ -38,30 +38,10 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'icon' => '<i class="fa fa-user"></i>',
             'group' => 'manage',
             'sortOrder' => 200,
-            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user'),
+            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'user-profile')),
             'isVisible' => \Yii::$app->user->isAdmin(),
         ));
 
-        $this->addItem(array(
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User approval'),
-            'id' => 'approval',
-            'url' => Url::toRoute('/admin/approval'),
-            'icon' => '<i class="fa fa-check-circle"></i>',
-            'group' => 'manage',
-            'sortOrder' => 201,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'approval'),
-            'isVisible' => (Yii::$app->getModule('user')->settings->get('auth.needApproval') && Yii::$app->user->getIdentity()->canApproveUsers()),
-        ));
-        $this->addItem(array(
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Groups'),
-            'id' => 'groups',
-            'url' => Url::toRoute('/admin/group'),
-            'icon' => '<i class="fa fa-group"></i>',
-            'group' => 'manage',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
-            'sortOrder' => 300,
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
             'id' => 'spaces',
@@ -94,7 +74,6 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'about'),
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
-
 
         $this->addItemGroup(array(
             'id' => 'settings',
@@ -131,15 +110,6 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
 
-        $this->addItem(array(
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User profiles'),
-            'url' => Url::toRoute('/admin/user-profile/index'),
-            'icon' => '<i class="fa fa-wrench"></i>',
-            'group' => 'settings',
-            'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user-profile'),
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ));
 
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Mailing'),

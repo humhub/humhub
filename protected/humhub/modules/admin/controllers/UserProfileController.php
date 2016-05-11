@@ -25,11 +25,16 @@ use humhub\modules\user\models\fieldtype\BaseType;
 class UserProfileController extends Controller
 {
 
-    public function init() {
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
+        $this->subLayout = '@admin/views/layouts/user';
         return parent::init();
     }
-    
+
     /**
      * Shows overview of all
      *

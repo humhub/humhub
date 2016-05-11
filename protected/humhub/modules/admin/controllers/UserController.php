@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,11 +26,13 @@ use humhub\modules\admin\models\forms\UserGroupForm;
 class UserController extends Controller
 {
 
-    public function init() {
+    public function init()
+    {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
+        $this->subLayout = '@admin/views/layouts/user';
         return parent::init();
     }
-    
+
     /**
      * Returns a List of Users
      */
@@ -89,10 +91,10 @@ class UserController extends Controller
                 ),
             ),
         ];
-        
+
         $userGroupForm = new UserGroupForm();
         $userGroupForm->setUser($user);
-        
+
         // Add User Form
         $definition['elements']['UserGroupForm'] = [
             'type' => 'form',
@@ -134,7 +136,7 @@ class UserController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
             if ($form->save()) {
-                
+
                 return $this->redirect(['/admin/user']);
             }
         }
@@ -150,7 +152,7 @@ class UserController extends Controller
             return $this->redirect(['/admin/user/delete', 'id' => $user->id]);
         }
 
-        return $this->render('edit', array('hForm' => $form));
+        return $this->render('edit', array('hForm' => $form, 'user' => $user));
     }
 
     public function actionAdd()

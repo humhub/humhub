@@ -25,18 +25,29 @@ class UserMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.views_user_index', 'Overview'),
-            'url' => Url::toRoute(['/admin/user/index']),
+            'label' => Yii::t('AdminModule.views_user_index', 'Users'),
+            'url' => Url::to(['/admin/user/index']),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user' && Yii::$app->controller->action->id == 'index'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user'),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.views_user_index', 'Add new user'),
-            'url' => Url::toRoute(['/admin/user/add']),
+            'label' => Yii::t('AdminModule.user', 'Pending approvals'),
+            'url' => Url::to(['/admin/approval']),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user' && Yii::$app->controller->action->id == 'add'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'approval'),
+        ));
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.user', 'Profiles'),
+            'url' => Url::to(['/admin/user-profile']),
+            'sortOrder' => 300,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user-profile'),
+        ));
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.user', 'Groups'),
+            'url' => Url::to(['/admin/group']),
+            'sortOrder' => 400,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
         ));
 
         parent::init();

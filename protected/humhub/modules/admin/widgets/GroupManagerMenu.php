@@ -20,7 +20,7 @@ class GroupManagerMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
+    public $template = "@humhub/widgets/views/subTabMenu";
 
     public function init()
     {
