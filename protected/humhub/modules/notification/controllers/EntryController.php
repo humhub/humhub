@@ -59,7 +59,7 @@ class EntryController extends Controller
         }
 
         // Redirect to notification URL
-        $this->redirect($notification->getUrl());
+        return $this->redirect($notification->getUrl());
     }
 
 }

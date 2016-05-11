@@ -483,7 +483,7 @@ class ConfigController extends Controller
 
         \humhub\libs\DynamicConfig::rewrite();
         
-        $this->redirect(['finished']);
+        return $this->redirect(['finished']);
     }
 
     /**

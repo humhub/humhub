@@ -295,7 +295,7 @@ class ModuleManager extends \yii\base\Component
 
             $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
             if (!@rename($module->getBasePath(), $backupFolderName)) {
-                throw new Exception("Could not remove module folder!" . $backupFolderName);
+                throw new Exception("Could not move module to backup folder!" . $backupFolderName);
             }
         } else {
             //TODO: Delete directory

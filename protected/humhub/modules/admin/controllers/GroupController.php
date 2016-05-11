@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -55,7 +55,7 @@ class GroupController extends Controller
 
         if ($group->load(Yii::$app->request->post()) && $group->validate()) {
             $group->save();
-            $this->redirect(Url::toRoute('/admin/group'));
+            return $this->redirect(Url::toRoute('/admin/group'));
         }
 
         $showDeleteButton = (!$group->isNewRecord && Group::find()->count() > 1);
@@ -95,7 +95,7 @@ class GroupController extends Controller
                 $user->save();
             }
             $group->delete();
-            $this->redirect(Url::toRoute("/admin/group"));
+            return $this->redirect(Url::toRoute("/admin/group"));
         }
 
         $alternativeGroups = \yii\helpers\ArrayHelper::map(Group::find()->where('id != :id', array(':id' => $group->id))->all(), 'id', 'name');

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -103,14 +103,14 @@ class Ldap extends \yii\base\Component
             $this->ldap->bind($username, $password);
             // disconnect id needed here because otherwise binding/ldap connection again can cause errors.
             $this->ldap->disconnect();
-            
+
             // Update Users Data
             $node = $this->ldap->getNode($username);
             $this->handleLdapUser($node);
             return true;
         } catch (\Zend\Ldap\Exception\LdapException $ex) {
             // log errors other than invalid credentials
-            if ($ex->getCode() !== LdapException::LDAP_INVALID_CREDENTIALS) {
+            if ($ex->getCode() !== \Zend\Ldap\Exception\LdapException::LDAP_INVALID_CREDENTIALS) {
                 Yii::error('LDAP Error: ' . $ex->getMessage());
             }
             return false;
@@ -144,7 +144,7 @@ class Ldap extends \yii\base\Component
 
             foreach (User::find()->where(['auth_mode' => User::AUTH_MODE_LDAP])->each() as $user) {
                 if (!in_array($user->id, $ldapUserIds)) {
-                    if($user->status != User::STATUS_DISABLED) {
+                    if ($user->status != User::STATUS_DISABLED) {
                         // User no longer available in ldap
                         $user->status = User::STATUS_DISABLED;
                         \humhub\modules\user\models\Setting::Set($user->id, 'disabled_by_ldap', true, 'user');
@@ -152,7 +152,7 @@ class Ldap extends \yii\base\Component
                         Yii::warning('Disabled user ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!');
                     }
                 } else {
-                    if($user->status == User::STATUS_DISABLED && \humhub\modules\user\models\Setting::Get($user->id, 'disabled_by_ldap', 'user', false)) {
+                    if ($user->status == User::STATUS_DISABLED && \humhub\modules\user\models\Setting::Get($user->id, 'disabled_by_ldap', 'user', false)) {
                         // User no longer available in ldap
                         $user->status = User::STATUS_ENABLED;
                         \humhub\modules\user\models\Setting::Set($user->id, 'disabled_by_ldap', '', 'user');

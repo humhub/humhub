@@ -2,7 +2,7 @@
 return array (
   'Accept Invite' => 'Daveti kabul et',
   'Become member' => 'Üye ol',
-  'Cancel membership' => 'Üyeliği iptal et',
+  'Cancel membership' => 'Mekandan Ayrıl',
   'Cancel pending membership application' => 'Bekleyen üyelik başvurusunu iptal et',
   'Deny Invite' => 'Daveti reddet',
   'Follow' => 'Takip et',

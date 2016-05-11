@@ -85,7 +85,7 @@ class SelfTest
 
         $icuVersion = (defined('INTL_ICU_VERSION')) ? INTL_ICU_VERSION : 0;
         $icuMinVersion = '4.8.1';
-        $title = 'PHP - INTL Extension - ICU Version (' . INTL_ICU_VERSION . ')';
+        $title = 'PHP - INTL Extension - ICU Version (' . $icuVersion . ')';
         if (version_compare($icuVersion, $icuMinVersion, '>=')) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -100,7 +100,7 @@ class SelfTest
         }
         $icuDataVersion = (defined('INTL_ICU_DATA_VERSION')) ? INTL_ICU_DATA_VERSION : 0;
         $icuMinDataVersion = '4.8.1';
-        $title = 'PHP - INTL Extension - ICU Data Version (' . INTL_ICU_DATA_VERSION . ')';
+        $title = 'PHP - INTL Extension - ICU Data Version (' . $icuDataVersion . ')';
         if (version_compare($icuDataVersion, $icuMinDataVersion, '>=')) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),

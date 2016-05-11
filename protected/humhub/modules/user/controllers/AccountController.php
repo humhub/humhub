@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -93,10 +93,12 @@ class AccountController extends Controller
 
         $model->tags = $user->tags;
         $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
+        $model->show_share_panel = $user->getSetting("hideSharePanel", "share");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
+            $user->setSetting("hideSharePanel", $model->show_share_panel, "share");
             $user->language = $model->language;
             $user->tags = $model->tags;
             $user->time_zone = $model->timeZone;
@@ -174,7 +176,7 @@ class AccountController extends Controller
         if (!$isSpaceOwner && $model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->delete();
             Yii::$app->user->logout();
-            $this->redirect(Yii::$app->homeUrl);
+            return $this->redirect(Yii::$app->homeUrl);
         }
 
         return $this->render('delete', array(
