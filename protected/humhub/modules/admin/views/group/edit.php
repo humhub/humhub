@@ -1,13 +1,14 @@
 <?php
-
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 use yii\helpers\Url;
 use yii\helpers\Html;
+
+
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
-
+<div class="panel-body">
 <?php $form = ActiveForm::begin(); ?>
 <?php echo $form->field($group, 'name'); ?>
 <?php echo $form->field($group, 'description')->textarea(['rows' => 5]); ?>
@@ -51,5 +52,5 @@ if ($showDeleteButton) {
 }
 ?>
 <?php ActiveForm::end(); ?>
-
+</div>
 <?php $this->endContent(); ?>
