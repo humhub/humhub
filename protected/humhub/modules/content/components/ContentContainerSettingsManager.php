@@ -35,7 +35,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     protected function createRecord()
     {
         $record = parent::createRecord();
-        $record->contentcontainer_id = $this->contentContainer->id;
+        $record->contentcontainer_id = $this->contentContainer->contentContainerRecord->id;
         return $record;
     }
 
@@ -44,7 +44,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      */
     protected function find()
     {
-        return parent::find()->andWhere(['contentcontainer_id' => $this->contentContainer->id]);
+        return parent::find()->andWhere(['contentcontainer_id' => $this->contentContainer->contentContainerRecord->id]);
     }
 
     /**

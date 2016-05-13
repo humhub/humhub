@@ -344,7 +344,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         Profile::deleteAll(['user_id' => $this->id]);
         GroupUser::deleteAll(['user_id' => $this->id]);
         Session::deleteAll(['user_id' => $this->id]);
-        Setting::deleteAll(['user_id' => $this->id]);
 
         return parent::beforeDelete();
     }
