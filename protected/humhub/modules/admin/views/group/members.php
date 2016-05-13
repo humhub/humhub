@@ -6,7 +6,7 @@ use humhub\widgets\GridView;
 use yii\widgets\ActiveForm;
 ?>
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
-
+<div class="panel-body">
 <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
 <div style="display:flex;flex-wrap:wrap;">
     <div style="flex-grow:100;margin-right:5px;">
@@ -105,5 +105,5 @@ use yii\widgets\ActiveForm;
         });
     });
 </script>
-
+</div>
 <?php $this->endContent(); ?>

@@ -5,8 +5,6 @@
     </div>
     <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
 
-    <div class="panel-body">
-        <?php echo $content; ?>
-    </div>
+    <?php echo $content; ?>
 </div>
 <?php $this->endContent(); ?>

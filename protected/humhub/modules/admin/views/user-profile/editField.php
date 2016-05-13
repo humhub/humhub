@@ -4,23 +4,24 @@ use yii\bootstrap\Html;
 use yii\helpers\Url;
 ?>
 
-<div class="pull-right">
-<?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default')); ?>
-</div>   
+<div class="panel-body">
+    <div class="pull-right">
+        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default')); ?>
+    </div>   
 
 
-<?php if (!$field->isNewRecord) : ?>
-    <h4><?php echo Yii::t('AdminModule.views_userprofile_editField', 'Edit profile field'); ?></h4>
-<?php else: ?>
-    <h4><?php echo Yii::t('AdminModule.views_userprofile_editField', 'Create new profile field'); ?></h4>
-<?php endif; ?>
+    <?php if (!$field->isNewRecord) : ?>
+        <h4><?php echo Yii::t('AdminModule.views_userprofile_editField', 'Edit profile field'); ?></h4>
+    <?php else: ?>
+        <h4><?php echo Yii::t('AdminModule.views_userprofile_editField', 'Create new profile field'); ?></h4>
+    <?php endif; ?>
 
-<br />
+    <br />
 
-<?php $form = \yii\widgets\ActiveForm::begin(); ?>
-<?php echo $hForm->render($form); ?>
-<?php \yii\widgets\ActiveForm::end(); ?>
-
+    <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+    <?php echo $hForm->render($form); ?>
+    <?php \yii\widgets\ActiveForm::end(); ?>
+</div>
 
 
 <script>
