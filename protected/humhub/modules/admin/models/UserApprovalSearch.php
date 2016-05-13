@@ -87,7 +87,7 @@ class UserApprovalSearch extends User
         foreach ($groups as $group) {
             $groupIds[] = $group->id;
         }
-        $query->andWhere(['IN', 'group.id', $groupIds]);
+        //$query->andWhere(['IN', 'group.id', $groupIds]);
         $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['like', 'id', $this->id]);
@@ -97,6 +97,11 @@ class UserApprovalSearch extends User
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
 
         return $dataProvider;
+    }
+    
+    public static function getUserApprovalCount()
+    {
+        return User::find()->where(['status' => User::STATUS_NEED_APPROVAL])->count();
     }
 
     /**

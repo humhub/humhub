@@ -9,7 +9,7 @@
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
 </div>
 <div class="panel-body">
-    <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false, 'options' => ['class' => 'tabbed-form']]); ?>
+    <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false, 'options' => ['data-ui-tabbed-form' => '']]); ?>
     <?php echo $hForm->render($form); ?>
     <?php \yii\widgets\ActiveForm::end(); ?>
 </div>

@@ -18,7 +18,9 @@ if (Yii::$app->controller->id == 'module') {
 }
 ?>
 <div class="panel-body">
-<p><?php echo Yii::t('AdminModule.views_module_header', 'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.') ?></p>
+    <div class="help-block">
+        <?php echo Yii::t('AdminModule.views_module_header', 'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.') ?>
+    </div>
 </div>
 <div class="tab-menu">
     <ul class="nav nav-tabs" id="moduleTabs">

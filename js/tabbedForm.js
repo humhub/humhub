@@ -6,6 +6,7 @@ $(document).ready(function () {
      */
     var getPreparedFieldSets = function ($form) {
         var result = {};
+        var $lastFieldSet;
         
         // Assamble all fieldsets with label
         $form.find('fieldset').each(function () {
@@ -15,7 +16,10 @@ $(document).ready(function () {
             var legend = $fieldSet.children('legend').text();
             if (legend && legend.length) {
                 // Make sure all fieldsets are direct children
-                result[legend] = $fieldSet;
+                result[legend] = $lastFieldSet = $fieldSet;
+            } else if($lastFieldSet) {
+                // We append form groups to the previous fieldset if no label is defined
+                $lastFieldSet.append($fieldSet.children(".form-group"));
             }
         });
         return result;
@@ -41,7 +45,7 @@ $(document).ready(function () {
 
     };
     
-    $('.tabbed-form').each(function () {
+    $('[data-ui-tabbed-form]').each(function () {
         var activeTab = 0;
         
         var $form = $(this);
