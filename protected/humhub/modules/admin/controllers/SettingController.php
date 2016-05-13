@@ -44,6 +44,7 @@ class SettingController extends Controller
             'oembed-edit' => Yii::t('AdminModule.base', 'OEmbed providers'),
             'self-test' => Yii::t('AdminModule.base', 'Self test'),
         ]);
+        $this->subLayout = '@admin/views/layouts/setting';
         return parent::init();
     }
 
@@ -250,14 +251,6 @@ class SettingController extends Controller
     }
 
     /**
-     * Caching Options
-     */
-    public function actionCronjob()
-    {
-        return $this->render('cronjob', array());
-    }
-
-    /**
      * Proxy Settings
      */
     public function actionProxy()
@@ -287,7 +280,6 @@ class SettingController extends Controller
      */
     public function actionOembedEdit()
     {
-
         $form = new \humhub\modules\admin\models\forms\OEmbedProviderForm;
 
         $prefix = Yii::$app->request->get('prefix');
@@ -316,7 +308,6 @@ class SettingController extends Controller
      */
     public function actionOembedDelete()
     {
-
         $this->forcePostRequest();
         $prefix = Yii::$app->request->get('prefix');
         $providers = UrlOembed::getProviders();
@@ -328,12 +319,9 @@ class SettingController extends Controller
         return $this->redirect(['/admin/setting/oembed']);
     }
 
-    /**
-     * Self Test
-     */
-    public function actionSelfTest()
+    public function actionAdvanced()
     {
-        return $this->render('selftest', array('checks' => \humhub\libs\SelfTest::getResults(), 'migrate' => \humhub\commands\MigrateController::webMigrateAll()));
+        return $this->redirect(['caching']);
     }
 
 }

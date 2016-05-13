@@ -9,25 +9,31 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\HumHubAPI;
 
 /**
- * AboutController shows informations about the HumHub installation
+ * Informations
  * 
  * @since 0.5
  */
-class AboutController extends Controller
+class InformationController extends Controller
 {
 
-    public function init() {
-        $this->appendPageTitle(Yii::t('AdminModule.base', 'About'));
+    /**
+     * @inheritdoc
+     */
+    public $defaultAction = 'about';
+
+    public function init()
+    {
+        $this->subLayout = '@admin/views/layouts/information';
         return parent::init();
     }
-    
-    public function actionIndex()
+
+    public function actionAbout()
     {
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'About'));
         $isNewVersionAvailable = false;
         $isUpToDate = false;
 
@@ -37,12 +43,30 @@ class AboutController extends Controller
             $isUpToDate = !$isNewVersionAvailable;
         }
 
-        return $this->render('index', array(
+        return $this->render('about', array(
                     'currentVersion' => Yii::$app->version,
                     'latestVersion' => $latestVersion,
                     'isNewVersionAvailable' => $isNewVersionAvailable,
                     'isUpToDate' => $isUpToDate
         ));
+    }
+
+    public function actionPrerequisites()
+    {
+        return $this->render('prerequisites', ['checks' => \humhub\libs\SelfTest::getResults()]);
+    }
+
+    public function actionDatabase()
+    {
+        return $this->render('database', ['migrate' => \humhub\commands\MigrateController::webMigrateAll()]);
+    }
+
+    /**
+     * Caching Options
+     */
+    public function actionCronjobs()
+    {
+        return $this->render('cronjobs', array());
     }
 
 }
