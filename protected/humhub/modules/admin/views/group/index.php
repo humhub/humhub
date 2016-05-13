@@ -4,7 +4,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\GridView;
 ?>
-
+<div class="panel-body">
+    
 <h4><?php echo Yii::t('AdminModule.views_group_index', 'Manage groups'); ?></h4>
 
 <p>
@@ -54,3 +55,4 @@ echo GridView::widget([
             ],
         ]);
         ?>           
+</div>
