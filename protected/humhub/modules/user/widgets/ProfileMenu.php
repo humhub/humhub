@@ -52,7 +52,7 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
             'group' => 'profile',
             'url' => $this->user->createUrl('//user/profile'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == "profile" && Yii::$app->controller->action->id == "index"),
+            'isActive' => (Yii::$app->controller->id == "profile" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == "home")),
         ));
 
         if ($this->user->permissionManager->can(new \humhub\modules\user\permissions\ViewAboutPage())) {

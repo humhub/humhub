@@ -51,9 +51,20 @@ class ProfileController extends ContentContainerController
         );
     }
 
+    /**
+     * User profile home
+     * 
+     * @todo Allow change of default action
+     * @return string the response
+     */
     public function actionIndex()
     {
-        return $this->render('index', ['user' => $this->contentContainer]);
+        return $this->actionHome();
+    }
+
+    public function actionHome()
+    {
+        return $this->render('home', ['user' => $this->contentContainer]);
     }
 
     public function actionAbout()
@@ -116,7 +127,7 @@ class ProfileController extends ContentContainerController
     public function actionSpaceMembershipList()
     {
         $query = \humhub\modules\space\models\Membership::getUserSpaceQuery($this->getUser());
-        
+
         if (!$this->getUser()->isCurrentUser()) {
             $query->andWhere(['!=', 'space.visibility', \humhub\modules\space\models\Space::VISIBILITY_NONE]);
         }
