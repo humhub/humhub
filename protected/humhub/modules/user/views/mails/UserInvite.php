@@ -191,9 +191,7 @@ use humhub\models\Setting;
                                                     <td  style="font-size: 14px; line-height: 22px; padding-left: 50px; padding-right: 50px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:center; ">
 
                                                         <!-- START: CONTENT -->
-                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'invited you to join {space} on {name}.', ['space' => '<strong>' . Html::encode($space->name) . '</strong>', 'name' => Html::encode(Yii::$app->name)]); ?>
-                                                        <br />
-                                                        <br />
+                                                        <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'invited you to join {name}.', ['name' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>']); ?><br />
                                                         <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'Register now and participate!'); ?><br/>
                                                         &nbsp;
                                                         <!-- END: CONTENT -->
