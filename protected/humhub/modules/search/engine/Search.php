@@ -8,12 +8,13 @@
 
 namespace humhub\modules\search\engine;
 
+
+use Yii;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\models\Setting;
 
 /**
  * Description of HSearchComponent
