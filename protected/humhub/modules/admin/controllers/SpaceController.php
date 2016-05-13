@@ -9,11 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
-use humhub\models\Setting;
-use humhub\modules\space\models\Space;
 
 /**
  * SpaceController provides global space administration.
@@ -23,7 +19,12 @@ use humhub\modules\space\models\Space;
 class SpaceController extends Controller
 {
 
-    public function init() {
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->subLayout = '@admin/views/layouts/space';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Spaces'));
         return parent::init();
     }

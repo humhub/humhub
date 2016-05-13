@@ -2,18 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
-use humhub\models\Setting;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 
@@ -21,11 +19,15 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
  * CreateController is responsible for creation of new spaces
  *
  * @author Luke
- * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
 class CreateController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $defaultAction = 'create';
 
     /**
      * @inheritdoc
