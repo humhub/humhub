@@ -9,8 +9,6 @@
     </div>
     <?= \humhub\modules\admin\widgets\SettingsMenu::widget(); ?>
 
-    <div class="panel-body">
-        <?php echo $content; ?>
-    </div>
+    <?php echo $content; ?>
 </div>
 <?php $this->endContent(); ?>

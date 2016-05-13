@@ -8,9 +8,9 @@ use humhub\widgets\GridView;
 <div class="panel-body">
     <h4><?php echo Yii::t('AdminModule.views_approval_index', 'Pending user approvals'); ?></h4>
 
-    <p>
-        <?php echo Yii::t('AdminModule.views_approval_index', 'Here you see all users who have registered and still waiting for a approval.'); ?>
-    </p>
+    <div class="help-block">
+        <?php echo Yii::t('AdminModule.views_approval_index', 'The following list contains all registered users awaiting an approval.'); ?>
+    </div>
 
     <?php
     echo GridView::widget([

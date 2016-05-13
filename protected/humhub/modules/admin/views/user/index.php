@@ -7,8 +7,9 @@ use humhub\widgets\GridView;
 
 <div class="panel-body">
     <h4><?php echo Yii::t('AdminModule.user', 'Overview'); ?></h4>
-    <p><?php echo Yii::t('AdminModule.views_user_index', 'In this overview you can find every registered user and manage him.'); ?></p>
-
+    <div class="help-block">
+        <?php echo Yii::t('AdminModule.views_user_index', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
+    </div>
     <div class="table-responsive">
         <div class="pull-right">
             <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add new user', ['/admin/user/add'], ['class' => 'btn btn-success']); ?>
