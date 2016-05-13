@@ -10,7 +10,6 @@ namespace humhub\modules\admin\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
 
 /**
  * Group Administration Menu
@@ -33,6 +32,14 @@ class GroupMenu extends \humhub\widgets\BaseMenu
         ));
 
         parent::init();
+    }
+    
+    public function run()
+    {
+        if(count($this->getItemGroups()) > 1) {
+            return parent::run();
+        }
+        return '';
     }
 
 }

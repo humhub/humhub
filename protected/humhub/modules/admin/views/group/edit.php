@@ -3,8 +3,6 @@ use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 use yii\helpers\Url;
 use yii\helpers\Html;
-
-
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>

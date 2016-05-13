@@ -7,7 +7,9 @@ use humhub\modules\user\models\ProfileFieldCategory;
 
 <div class="panel-body">
     <h4><?php echo Yii::t('AdminModule.views_userprofile_index', 'Manage profile attributes'); ?></h4>
-
+    <div class="help-block">
+        <?php echo Yii::t('AdminModule.views_userprofile_index', 'Here you can create or edit profile categories and fields.'); ?>
+    </div>
     <br />
 
     <div class="pull-right">

@@ -8,13 +8,19 @@ use yii\helpers\Url;
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<h4><?php
-    if ($prefix == "") {
-        echo Yii::t('AdminModule.views_setting_oembed_edit', 'Add OEmbed provider');
-    } else {
-        echo Yii::t('AdminModule.views_setting_oembed_edit', 'Edit OEmbed provider');
-    }
-    ?></h4>
+<div class="clearfix">
+    <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_setting_oembed_edit', 'Back to overview'), 
+                Url::to(['setting/oembed']), array('class' => 'btn btn-default pull-right')); ?>
+    <h4 class="pull-left">
+        <?php
+        if ($prefix == "") {
+            echo Yii::t('AdminModule.views_setting_oembed_edit', 'Add OEmbed provider');
+        } else {
+            echo Yii::t('AdminModule.views_setting_oembed_edit', 'Edit OEmbed provider');
+        }
+        ?>
+    </h4>
+</div>
 
 <br />
 
