@@ -9,7 +9,6 @@
 namespace humhub\modules\activity;
 
 use Yii;
-use humhub\models\Setting;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\MailUpdateSender;
 

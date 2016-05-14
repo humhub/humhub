@@ -8,7 +8,6 @@
 
 namespace humhub\modules\notification\components;
 
-
 use yii\helpers\Url;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
@@ -22,6 +21,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  */
 abstract class BaseNotification extends \humhub\components\SocialActivity
 {
+
     /**
      * Space this notification belongs to. (Optional)
      * If source is a Content, ContentAddon or ContentContainer this will be
@@ -45,7 +45,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     protected $layoutMail = "@humhub/modules/notification/views/layouts/mail.php";
 
-	/**
+    /**
      * Layout file for mail plaintext version
      *
      * @var string
@@ -56,19 +56,17 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      * @var boolean automatically mark notification as seen after click on it
      */
     public $markAsSeenOnClick = true;
-    
+
     /**
-     * Renders the notification
-     *
-     * @return string
+     * @inheritdoc
      */
-    public function getViewParams()
+    public function getViewParams($params = [])
     {
-        return [
-            'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
-            'space' => $this->space,
-            'isNew' => ($this->record->seen != 1)
-        ];
+        $params['url'] = Url::to(['/notification/entry', 'id' => $this->record->id], true);
+        $params['space'] = $this->space;
+        $params['isNew'] = ($this->record->seen != 1);
+
+        return parent::getViewParams($params);
     }
 
     /**
@@ -164,8 +162,8 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         $this->record->seen = 1;
         $this->record->save();
     }
-    
-     /**
+
+    /**
      * Should be overwritten by subclasses. This method provides a user friendly
      * title for the different notification types.
      * @return type
@@ -174,5 +172,5 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         return null;
     }
-    
+
 }

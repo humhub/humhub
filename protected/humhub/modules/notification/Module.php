@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification;
 
+use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\models\Notification;
-use humhub\models\Setting;
 use humhub\modules\content\components\MailUpdateSender;
 
 /**
@@ -32,7 +32,7 @@ class Module extends \humhub\components\Module
     {
         $notifications = [];
 
-        $receive_email_notifications = Yii::$app->getModule('notification')->contentContainer($user)->settings->get('receive_email_notifications');
+        $receive_email_notifications = Yii::$app->getModule('notification')->settings->contentContainer($user)->get('receive_email_notifications');
         if ($receive_email_notifications === null) {
             // Use Default
             $receive_email_notifications = Yii::$app->getModule('notification')->settings->get('receive_email_notifications');
