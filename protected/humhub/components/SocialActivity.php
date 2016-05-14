@@ -8,10 +8,10 @@
 
 namespace humhub\components;
 
-use Yii;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\libs\Viewable;
 
 /**
  * Name (SocialEvent/NetworkEvent/SocialActivity/BaseEvent)
@@ -25,13 +25,8 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\Component implements \yii\base\ViewContextInterface
+abstract class SocialActivity extends Viewable
 {
-
-    const OUTPUT_WEB = 'web';
-    const OUTPUT_MAIL = 'mail';
-    const OUTPUT_MAIL_PLAINTEXT = 'mail_plaintext';
-    const OUTPUT_TEXT = 'text';
 
     /**
      * User which performed the activity.
@@ -70,37 +65,7 @@ abstract class SocialActivity extends \yii\base\Component implements \yii\base\V
     public $record;
 
     /**
-     * Name of the view, used for rendering the event
-     * 
-     * @var string
-     */
-    public $viewName = null;
-
-    /**
-     * Layout file for web version
-     *
-     * @var string
-     */
-    protected $layoutWeb;
-
-    /**
-     * Layout file for mail version
-     *
-     * @var string
-     */
-    protected $layoutMail;
-
-    /**
-     * Layout file for mail plaintext version
-     *
-     * @var string
-     */
-    protected $layoutMailPlaintext;
-
-    /**
-     * Assambles all parameter required for rendering the view.
-     * 
-     * @return array all view parameter
+     * @inheritdoc
      */
     protected function getViewParams($params = [])
     {
@@ -111,79 +76,6 @@ abstract class SocialActivity extends \yii\base\Component implements \yii\base\V
         $params['url'] = $this->getUrl();
 
         return $params;
-    }
-
-    /**
-     * Renders the notification
-     *
-     * @return string
-     */
-    public function render($mode = self::OUTPUT_WEB, $params = [])
-    {
-        $viewFile = $this->getViewFile($mode);
-        $viewParams = $this->getViewParams($params);
-
-        $result = Yii::$app->getView()->renderFile($viewFile, $viewParams, $this);
-
-        if ($mode == self::OUTPUT_TEXT) {
-            return strip_tags($result);
-        }
-
-        $viewParams['content'] = $result;
-        return Yii::$app->getView()->renderFile($this->getLayoutFile($mode), $viewParams, $this);
-    }
-
-    /**
-     * Returns the correct view file 
-     * 
-     * @param string $mode the output mode
-     * @return string the view file
-     */
-    protected function getViewFile($mode)
-    {
-        $viewFile = $this->getViewPath() . '/' . $this->viewName . '.php';
-        $alternativeViewFile = "";
-        
-        // Lookup alternative view file based on view mode
-        if ($mode == self::OUTPUT_MAIL) {
-            $alternativeViewFile = $this->getViewPath() . '/mail/' . $this->viewName . '.php';
-        } elseif ($mode === self::OUTPUT_MAIL_PLAINTEXT) {
-            $alternativeViewFile = $this->getViewPath() . '/mail/plaintext/' . $this->viewName . '.php';
-        }
-
-        if ($alternativeViewFile != "" && file_exists($alternativeViewFile)) {
-            $viewFile = $alternativeViewFile;
-        }
-
-        return $viewFile;
-    }
-
-    /**
-     * Returns the layout file
-     * 
-     * @param string $mode the output mode
-     * @return string the layout file
-     */
-    protected function getLayoutFile($mode)
-    {
-        if ($mode == self::OUTPUT_MAIL_PLAINTEXT) {
-            return $this->layoutMailPlaintext;
-        } elseif ($mode == self::OUTPUT_MAIL) {
-            return $this->layoutMail;
-        }
-
-        return $this->layoutWeb;
-    }
-
-    /**
-     * Returns the directory containing the view files for this event.
-     * The default implementation returns the 'views' subdirectory under the directory containing the notification class file.
-     * @return string the directory containing the view files for this notification.
-     */
-    public function getViewPath()
-    {
-        $class = new \ReflectionClass($this);
-        return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
     }
 
     /**
