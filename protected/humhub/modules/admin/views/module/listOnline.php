@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
     <?php echo $this->render('_header'); ?>
-    
+
     <div class="panel-body">
 
         <!-- search form -->
@@ -47,7 +47,13 @@ use yii\helpers\Html;
                         $moduleImageUrl = $module['moduleImageUrl'];
                     }
                     ?>
-
+                    <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
+                        <small><a href="<?= Url::to(['thirdparty-disclaimer']); ?>" data-target="#globalModal">
+                                <span class="label label-warning pull-right">
+                                    <?php echo Yii::t('AdminModule.module_listOnline', 'Third-party'); ?>
+                                </span>
+                            </a></small>
+                    <?php endif; ?>
                     <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                          style="width: 64px; height: 64px;"
                          src="<?php echo $moduleImageUrl; ?>">
@@ -60,12 +66,13 @@ use yii\helpers\Html;
                                 </small></span>
                             <?php endif; ?>
                         </h4>
+
                         <p><?php echo $module['description']; ?></p>
 
                         <div class="module-controls">
                             <?php echo Yii::t('AdminModule.views_module_listOnline', 'Latest version:'); ?> <?php echo $module['latestVersion']; ?>
                             <?php if (isset($module['purchased']) && $module['purchased']) : ?>
-                                 &nbsp; Purchased
+                                &nbsp; Purchased
                             <?php endif; ?>
 
                             <?php if (isset($module['latestCompatibleVersion'])) : ?>
@@ -88,6 +95,9 @@ use yii\helpers\Html;
                                     style="color:red"><?php echo Yii::t('AdminModule.views_module_listOnline', 'No compatible module version found!'); ?></span>
                             <?php endif; ?>
                             &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], array('target' => '_blank')); ?>
+                            <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
+                                &middot; <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'Disclaimer'), Url::to(['thirdparty-disclaimer']), array('data-target' => '#globalModal')); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
