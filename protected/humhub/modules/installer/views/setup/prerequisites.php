@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use humhub\modules\admin\widgets\PrerequisitesList;
 ?>
 <div class="panel panel-default animated fadeIn">
 
@@ -12,33 +13,8 @@ use yii\helpers\Html;
         <p><?php echo Yii::t('InstallerModule.views_setup_prerequisites', 'This overview shows all system requirements of HumHub.'); ?></p>
 
         <hr/>
-        <div class="prerequisites-list">
-
-            <ul>
-
-                <?php foreach ($checks as $check): ?>
-                    <li>
-
-                        <?php if ($check['state'] == 'OK') : ?>
-                            <i class="fa fa-check-circle check-ok animated bounceIn"></i>
-                        <?php elseif ($check['state'] == 'WARNING') : ?>
-                            <i class="fa fa-exclamation-triangle check-warning animated swing"></i>
-                        <?php else : ?>
-                            <i class="fa fa-minus-circle check-error animated wobble"></i>
-                        <?php endif; ?>
-
-                        <strong><?php echo $check['title']; ?></strong>
-
-                        <?php if (isset($check['hint'])): ?>
-                            <span>(Hint: <?php echo $check['hint']; ?>)</span>
-                        <?php endif; ?>
-
-                    </li>
-                <?php endforeach; ?>
-
-            </ul>
-        </div>
-
+        <?= PrerequisitesList::widget(); ?>
+        
         <?php if (!$hasError): ?>
             <div class="alert alert-success">
                 <?php echo Yii::t('InstallerModule.views_setup_prerequisites', 'Congratulations! Everything is ok and ready to start over!'); ?>
