@@ -104,6 +104,7 @@ use yii\helpers\Url;
             $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
             // add placeholder text, if input is empty
             if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
+                $(this).attr('spellcheck', false);
                 $(this).html(placeholder);
                 $(this).addClass('atwho-placeholder');
             }
@@ -133,6 +134,7 @@ use yii\helpers\Url;
                 // insert a space by hitting enter for a clean convert of user guids
                 insertTextAtCursor(' ');
             }
+            $(this).attr('spellcheck', true);
         }).on("shown.atwho", function (event) {
             // set attribute for showing search results
             $(this).attr('data-query', '1');
