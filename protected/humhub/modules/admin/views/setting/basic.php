@@ -9,7 +9,9 @@ use yii\widgets\ActiveForm;
     <div class="help-block">
         <?php echo Yii::t('AdminModule.setting', 'Here you can configure basic settings of your social network.'); ?>
     </div>
-      
+    
+    <br />
+    
     <?php $form = ActiveForm::begin(); ?>
 
     <?php echo $form->field($model, 'name'); ?>

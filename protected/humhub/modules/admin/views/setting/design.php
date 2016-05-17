@@ -12,6 +12,9 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
     <div class="help-block">
         <?php echo Yii::t('AdminModule.setting', 'These settings refer to the appearance of your social network.'); ?>
     </div>
+    
+    <br />
+    
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
 

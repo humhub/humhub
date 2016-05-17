@@ -19,7 +19,6 @@ use yii\helpers\Url;
 
 <?php if (!$group->isNewRecord) : ?>
     <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
-    <br />
 <?php endif; ?>
 
 <?php echo $content; ?>
