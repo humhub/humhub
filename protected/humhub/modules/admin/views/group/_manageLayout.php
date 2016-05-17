@@ -20,7 +20,6 @@ use yii\helpers\Url;
 <?php if (!$group->isNewRecord) : ?>
     <div class="pull-right"><span class="label label-danger"><?php echo Yii::t('AdminModule.group', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
     <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
-    <br />
 <?php endif; ?>
 
 <?php echo $content; ?>
