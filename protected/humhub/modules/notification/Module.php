@@ -43,7 +43,6 @@ class Module extends \humhub\components\Module
             return [];
         }
 
-
         // We are in hourly mode and user wants daily
         if ($interval == MailUpdateSender::INTERVAL_HOURY && $receive_email_notifications == User::RECEIVE_EMAIL_DAILY_SUMMARY) {
             return [];
@@ -61,8 +60,8 @@ class Module extends \humhub\components\Module
                 return [];
             }
         }
-
-        $query = Notification::find()->where(['user_id' => $user->id])->andWhere(['!=', 'seen', 1])->andWhere(['!=', 'emailed', 1]);
+        
+        $query = Notification::findGrouped()->andWhere(['user_id' => $user->id])->andWhere(['!=', 'seen', 1])->andWhere(['!=', 'emailed', 1]);
         foreach ($query->all() as $notification) {
             $notifications[] = $notification->getClass();
 
