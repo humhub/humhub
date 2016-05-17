@@ -17,7 +17,7 @@ use humhub\models\Setting;
 
             <br><br>
 
-            <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) : ?>
+            <?php if ($canInviteExternal) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="active tab-internal"><a href="#internal"

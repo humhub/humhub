@@ -47,11 +47,10 @@ class ModuleController extends Controller
     /**
      * Enables a module
      *
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function actionEnable()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -255,6 +254,17 @@ class ModuleController extends Controller
         return $this->renderAjax('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd));
     }
 
+    /**
+     * Returns the thirdparty disclaimer
+     *
+     * @throws HttpException
+     */
+    public function actionThirdpartyDisclaimer()
+    {
+        return $this->renderAjax('thirdpartyDisclaimer', array());
+    }
+    
+    
     /**
      * Sets default enabled/disabled on User or/and Space Modules
      *

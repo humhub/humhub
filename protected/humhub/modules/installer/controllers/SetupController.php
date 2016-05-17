@@ -9,11 +9,10 @@
 namespace humhub\modules\installer\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use humhub\models\Setting;
 use humhub\components\Controller;
 use humhub\modules\installer\forms\DatabaseForm;
 use humhub\libs\DynamicConfig;
+use humhub\modules\admin\widgets\PrerequisitesList;
 
 /**
  * SetupController checks prerequisites and is responsible for database
@@ -39,16 +38,7 @@ class SetupController extends Controller
      */
     public function actionPrerequisites()
     {
-        $checks = \humhub\libs\SelfTest::getResults();
-
-        $hasError = false;
-        foreach ($checks as $check) {
-            if ($check['state'] == 'ERROR')
-                $hasError = true;
-        }
-
-        // Render Template
-        return $this->render('prerequisites', array('checks' => $checks, 'hasError' => $hasError));
+        return $this->render('prerequisites', ['hasError' => PrerequisitesList::hasError()]);
     }
 
     /**

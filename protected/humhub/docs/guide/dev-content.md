@@ -3,7 +3,7 @@ Content
 
 ## ContentContainer
 
-A [[humhub\modules\content\models\ContentContainer|ContentContainer]] in HumHub is the base concept for assigning content to a specific container instance.
+A [[humhub\modules\content\models\ContentContainer|ContentContainer]] in HumHub is the base concept for assigning content entries to a specific container instance (user or space).
 A [[humhub\modules\content\models\ContentContainer|ContentContainer]] is assigned with a unique guid, which is used in controllers to identify the context of its actions.
 Currently there are two types of ContentContainer:
  
@@ -16,7 +16,7 @@ Currently there are two types of ContentContainer:
 
 ### ContentContainerController
 
-The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class should be extended by controllers, which are working in the context of a [[humhub\modules\content\models\ContentContainer|ContentContainer]].
+The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class should be extended by controllers, which are working in the context of a specific [[humhub\modules\content\models\ContentContainer|ContentContainer]].
 A [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] will automatically search a **sguid** (Space) or **uguid** (User) request parameter for every request and will instantiate the associated [[humhub\modules\content\models\ContentContainer|ContentContainer]].
 
 The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] provides common tasks like:
@@ -64,12 +64,10 @@ TBD (URL, AccessChecking, ProfileImage)
 
 ### ContentContainerModule
 
-If a module should be shown in the content containers module section, the module class must extend [[humhub\modules\content\components\ContentContainerModule]].
+If a module should appear in the content containers module section, the module class must extend [[humhub\modules\content\components\ContentContainerModule]].
 A ContentContainerModule can be enabled or disabled for a specific ContentContainer. The calendar module, for example, can be enabled for a specific space or a specific user account.
 
-If you're working with content or other persistent data, make also sure to delete it when the module is disabled on a content container. Do this by overwriting the method [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]].
-
-See [[humhub\modules\content\components\ContentContainerModule]] class for a full list of  options.
+See the [[humhub\modules\content\components\ContentContainerModule]] class for a full list of  options.
 
 Example of a modules `Module.php` file:
 
@@ -77,27 +75,31 @@ Example of a modules `Module.php` file:
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
 
+    // Defines for which content container type this module is appropriate
     public function getContentContainerTypes()
     {
-        //This content container can be assigned to Spaces and User
+        // This content container can be assigned to Spaces and User
         return [
             Space::className(),
             User::className(),
         ];
     }
 
+    // Is called when the whole module is disabled
     public function disable()
     {
         // Clear all Module data and call parent disable
         parent::disable();
     }
 
+    // Is called when the module is disabled on a specific container
     public function disableContentContainer(ContentContainerActiveRecord $container)
     {
         parent::disableContentContainer($container);
         //Here you can clear all data related to the given container
     }
 
+    // Can be used to define a specific description text for different container types
     public function getContentContainerDescription(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
@@ -107,6 +109,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         }
     }
 ```
+> Note: If you're working with content or other persistent data, make sure to delete the container related data, when the module is disabled on a content container. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]] method.
 
 ### ContentContainerPermissionManager
 

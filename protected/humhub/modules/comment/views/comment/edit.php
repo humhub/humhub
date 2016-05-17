@@ -40,7 +40,7 @@ use yii\helpers\Url;
 
         <?php
         echo \humhub\widgets\AjaxButton::widget([
-            'label' => "Save",
+            'label' => Yii::t('CommentModule.views_edit', 'Save'),
             'ajaxOptions' => [
                 'type' => 'POST',
                 'beforeSend' => new yii\web\JsExpression('function(html){  $("#comment_input_' . $comment->id . '_contenteditable").hide(); showLoader("' . $comment->id . '"); }'),

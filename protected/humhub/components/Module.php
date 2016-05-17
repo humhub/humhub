@@ -96,7 +96,7 @@ class Module extends \yii\base\Module
 
     /**
      * Returns image url for this module
-     * Place your modules image in assets/module_image.png
+     * Place your modules image in <resourcesPath>/module_image.png
      *
      * @return String Image Url
      */
@@ -105,7 +105,8 @@ class Module extends \yii\base\Module
         $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
 
         if (is_file($moduleImageFile)) {
-            return $this->getAssetsUrl() . '/module_image.png';
+            list($path, $url) = Yii::$app->assetManager->publish($moduleImageFile);
+            return $url;
         }
 
         return Yii::getAlias("@web/img/default_module.jpg");

@@ -12,12 +12,10 @@ use Yii;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\models\Setting;
 
 /**
  * ListController
  *
- * @package humhub.modules_core.notification.controllers
  * @since 0.5
  */
 class ListController extends Controller
@@ -42,14 +40,13 @@ class ListController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $maxId = (int) Yii::$app->request->get('from', 0);
+        $query = Notification::findGrouped();
 
-        $query = Notification::find();
+        $maxId = (int) Yii::$app->request->get('from', 0);
         if ($maxId != 0) {
             $query->andWhere(['<', 'id', $maxId]);
         }
         $query->andWhere(['user_id' => Yii::$app->user->id]);
-        $query->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC]);
         $query->limit(6);
 
         $output = "";
@@ -102,10 +99,13 @@ class ListController extends Controller
     public static function getUpdates()
     {
         $user = Yii::$app->user->getIdentity();
-        $query = Notification::find()->where(['seen' => 0])->orWhere(['IS', 'seen', new \yii\db\Expression('NULL')])->andWhere(['user_id' => $user->id]);
+
+        $query = Notification::findGrouped()
+                ->andWhere(['seen' => 0])
+                ->orWhere(['IS', 'seen', new \yii\db\Expression('NULL')])
+                ->andWhere(['user_id' => $user->id]);
 
         $update['newNotifications'] = $query->count();
-
         $query->andWhere(['desktop_notified' => 0]);
 
         $update['notifications'] = array();

@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "user_invite".
@@ -108,18 +109,23 @@ class Invite extends \yii\db\ActiveRecord
     public function sendInviteMail()
     {
 
+        $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
+
         // User requested registration link by its self
         if ($this->source == self::SOURCE_SELF) {
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
-                    ], ['token' => $this->token]);
+                    ], [
+                'token' => $this->token,
+                'registrationUrl' => $registrationUrl
+            ]);
             $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
             $mail->send();
-        } elseif ($this->source == self::SOURCE_INVITE) {
+        } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
 
             // Switch to systems default language
             Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
@@ -132,11 +138,35 @@ class Invite extends \yii\db\ActiveRecord
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
                 'token' => $this->token,
-                'space' => $this->space
+                'space' => $this->space,
+                'registrationUrl' => $registrationUrl
             ]);
             $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
-            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Space Invite'));
+            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Invitation to join: {space}', ['space' => $this->space->name]));
+            $mail->send();
+
+            // Switch back to users language
+            if (Yii::$app->user->language !== "") {
+                Yii::$app->language = Yii::$app->user->language;
+            }
+        } elseif ($this->source == self::SOURCE_INVITE) {
+
+            // Switch to systems default language
+            Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+
+            $mail = Yii::$app->mailer->compose([
+                'html' => '@humhub/modules/user/views/mails/UserInvite',
+                'text' => '@humhub/modules/user/views/mails/plaintext/UserInvite'
+                    ], [
+                'originator' => $this->originator,
+                'originatorName' => $this->originator->displayName,
+                'token' => $this->token,
+                'registrationUrl' => $registrationUrl
+            ]);
+            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
+            $mail->setTo($this->email);
+            $mail->setSubject(Yii::t('UserModule.invite', 'Invitation to join'));
             $mail->send();
 
             // Switch back to users language

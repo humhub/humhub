@@ -2,18 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\controllers;
 
-use Yii;
-use yii\helpers\Url;
 use humhub\modules\admin\components\Controller;
 
 /**
- * IndexController is the Admin section start point.
+ * IndexController is the admin section start point.
  * 
  * @since 0.5
  */
@@ -25,7 +23,7 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect(['/admin/setting']);
+        return $this->redirect(['/admin/user']);
     }
 
 }

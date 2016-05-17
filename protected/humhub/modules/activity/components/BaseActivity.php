@@ -62,9 +62,14 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         parent::init();
     }
 
-    public function getViewParams()
+    /**
+     * @inheritdoc
+     */
+    public function getViewParams($params = [])
     {
-        return ['clickable' => $this->clickable];
+        $params['clickable'] = $this->clickable;
+
+        return parent::getViewParams($params);
     }
 
     /**
@@ -81,18 +86,18 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         if (!$this->source instanceof \yii\db\ActiveRecord) {
             throw new \yii\base\InvalidConfigException("Invalid source object given!");
         }
-       
+
         if ($this->container == null) {
             $this->container = $this->getContentContainerFromSource();
-            
-            if($this->container == null) {
+
+            if ($this->container == null) {
                 throw new \yii\base\InvalidConfigException("Could not determine content container for activity!");
             }
         }
-        
+
         $this->saveModelInstance();
     }
-    
+
     protected function getContentContainerFromSource()
     {
         if ($this->hasContentSource()) {
@@ -101,13 +106,12 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
             return $this->source;
         }
     }
-    
+
     protected function hasContentSource()
     {
-        return $this->source instanceof ContentActiveRecord 
-                || $this->source instanceof ContentAddonActiveRecord;
+        return $this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord;
     }
-    
+
     private function saveModelInstance()
     {
         $model = new Activity();
@@ -119,20 +123,20 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $model->content->visibility = $this->getContentVisibility();
         $model->content->created_by = $this->getOriginatorId();
 
-        if($model->content->created_by == null) {
+        if ($model->content->created_by == null) {
             throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
         }
-        
+
         if (!$model->validate() || !$model->save()) {
             throw new \yii\base\Exception("Could not save activity!" . $model->getErrors());
         }
     }
-    
+
     protected function getContentVisibility()
     {
         return $this->hasContentSource() ? $this->source->content->visibility : $this->visibility;
     }
-    
+
     protected function getOriginatorId()
     {
         if ($this->originator !== null) {
@@ -141,6 +145,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
             return $this->source->content->created_by;
         } elseif ($this->source instanceof ContentAddonActiveRecord) {
             return $this->source->created_by;
-        } 
+        }
     }
+
 }

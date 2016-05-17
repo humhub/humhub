@@ -79,10 +79,12 @@ class Like extends ContentAddonActiveRecord
         $activity->source = $this;
         $activity->create();
 
-        $notification = new \humhub\modules\like\notifications\NewLike();
-        $notification->source = $this;
-        $notification->originator = $this->user;
-        $notification->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
+        if ($this->getSource()->createdBy !== null) {
+            $notification = new \humhub\modules\like\notifications\NewLike();
+            $notification->source = $this;
+            $notification->originator = $this->user;
+            $notification->send($this->getSource()->createdBy);
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }

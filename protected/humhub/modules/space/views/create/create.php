@@ -1,5 +1,5 @@
 <?php
-use yii\widgets\ActiveForm;
+use humhub\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">

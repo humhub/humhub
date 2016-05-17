@@ -11,7 +11,7 @@ namespace humhub\modules\like\activities;
 use humhub\modules\activity\components\BaseActivity;
 
 /**
- * Description of SpaceCreated
+ * Like Activity
  *
  * @author luke
  */

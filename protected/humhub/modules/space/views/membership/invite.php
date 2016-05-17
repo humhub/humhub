@@ -1,7 +1,6 @@
 <?php
-use yii\helpers\Url;
+
 use yii\bootstrap\ActiveForm;
-use humhub\models\Setting;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -15,7 +14,7 @@ use humhub\models\Setting;
 
             <br/>
 
-            <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) : ?>
+            <?php if ($canInviteExternal) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="active tab-internal"><a href="#internal"
@@ -51,7 +50,7 @@ use humhub\models\Setting;
                     ?>
 
                 </div>
-                <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) : ?>
+                <?php if ($canInviteExternal) : ?>
                     <div class="tab-pane" id="external">
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>

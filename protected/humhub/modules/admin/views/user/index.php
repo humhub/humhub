@@ -11,7 +11,10 @@ use humhub\widgets\GridView;
         <?php echo Yii::t('AdminModule.views_user_index', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
     <div class="table-responsive">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add new user', ['/admin/user/add'], ['class' => 'btn btn-success pull-right']); ?>
+        <div class="pull-right">
+            <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add new user', ['/admin/user/add'], ['class' => 'btn btn-success']); ?>
+            <?= Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;Send invite', ['/user/invite'], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
+        </div>
 
         <?php
         echo GridView::widget([
