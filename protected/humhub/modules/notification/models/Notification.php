@@ -154,9 +154,13 @@ class Notification extends \humhub\components\ActiveRecord
     public static function findGrouped()
     {
         $query = self::find();
-        $query->addSelect(['notification.*', new \yii\db\Expression('count(id) as group_count'), new \yii\db\Expression('max(created_at) as group_created_at'),]);
+        $query->addSelect(['notification.*', 
+            new \yii\db\Expression('count(id) as group_count'),
+            new \yii\db\Expression('max(created_at) as group_created_at'),
+            new \yii\db\Expression('min(seen) as group_seen'),
+        ]);
         $query->addGroupBy(['COALESCE(group_key, id)', 'class']);
-        $query->orderBy(['seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
+        $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 
         return $query;
     }
