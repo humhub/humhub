@@ -73,7 +73,9 @@ abstract class SocialActivity extends Viewable
         $params['source'] = $this->source;
         $params['contentContainer'] = $this->container;
         $params['record'] = $this->record;
-        $params['url'] = $this->getUrl();
+        if (!isset($params['url'])) {
+            $params['url'] = $this->getUrl();
+        }
 
         return $params;
     }

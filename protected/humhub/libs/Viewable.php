@@ -35,6 +35,13 @@ abstract class Viewable extends Component implements ViewContextInterface
     public $viewName = null;
 
     /**
+     * View path
+     * 
+     * @var string
+     */
+    public $viewPath = null;
+
+    /**
      * Layout file for web version
      *
      * @var string
@@ -140,6 +147,10 @@ abstract class Viewable extends Component implements ViewContextInterface
      */
     public function getViewPath()
     {
+        if ($this->viewPath !== null) {
+            return Yii::getAlias($this->viewPath);
+        }
+
         $class = new \ReflectionClass($this);
         return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
     }
