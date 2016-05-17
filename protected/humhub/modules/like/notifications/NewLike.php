@@ -50,12 +50,12 @@ class NewLike extends BaseNotification
         $contentInfo = $this->getContentInfo($this->getLikedRecord());
 
         if ($this->groupCount > 1) {
-            return Yii::t('LikeModule.views_notifications_newLike', "{displayNames} likes {contentTitle}.", array(
+            return Yii::t('LikeModule.notification', "{displayNames} likes {contentTitle}.", array(
                         'displayNames' => $this->getGroupUserDisplayNames(),
                         'contentTitle' => $contentInfo
             ));
         }
-        return Yii::t('LikeModule.views_notifications_newLike', "{displayName} likes {contentTitle}.", array(
+        return Yii::t('LikeModule.notification', "{displayName} likes {contentTitle}.", array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $contentInfo
         ));

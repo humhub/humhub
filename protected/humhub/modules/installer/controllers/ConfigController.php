@@ -331,6 +331,11 @@ class ConfigController extends Controller
                 $like->object_id = $comment->getPrimaryKey();
                 $like->save();
 
+                $like = new \humhub\modules\like\models\Like();
+                $like->object_model = $post->className();
+                $like->object_id = $post->getPrimaryKey();
+                $like->save();
+
                 // trigger install sample data event
                 $this->trigger(self::EVENT_INSTALL_SAMPLE_DATA);
             }
