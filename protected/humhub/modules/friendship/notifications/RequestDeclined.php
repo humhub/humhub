@@ -8,6 +8,8 @@
 
 namespace humhub\modules\friendship\notifications;
 
+use Yii;
+use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
@@ -26,11 +28,6 @@ class RequestDeclined extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $viewName = "requestDeclined";
-
-    /**
-     * @inheritdoc
-     */
     public $markAsSeenOnClick = true;
 
     /**
@@ -39,6 +36,16 @@ class RequestDeclined extends BaseNotification
     public function getUrl()
     {
         return $this->originator->getUrl();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAsHtml()
+    {
+        return Yii::t('FriendshipModule.notification', '{displayName} declined your friend request.', array(
+                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+        ));
     }
 
 }

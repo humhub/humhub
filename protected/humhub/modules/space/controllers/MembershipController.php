@@ -190,7 +190,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             ]);
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', array('model' => $model, 'space' => $space, 'canInviteExternal' => $canInviteExternal));
     }
 
     /**

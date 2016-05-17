@@ -8,15 +8,15 @@
 
 namespace humhub\modules\admin\notifications;
 
-use humhub\modules\notification\components\BaseNotification;
 use Yii;
+use humhub\modules\notification\components\BaseNotification;
+use yii\bootstrap\Html;
 
 /**
  * HumHubUpdateNotification
  *
  * Notifies about new HumHub Version
  *
- * @package humhub.modules_core.admin.notifications
  * @since 0.11
  */
 class NewVersionAvailable extends BaseNotification
@@ -30,21 +30,25 @@ class NewVersionAvailable extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $viewName = 'newVersionAvailable';
-
-    public function renderText()
-    {
-        return Yii::t('AdminModule.views_notifications_newUpdate', "There is a new HumHub Version (%version%) available.", ['%version%' => $notification->getLatestHumHubVersion()]);
-    }
-
     public function getUrl()
     {
-        return \yii\helpers\Url::to(['/admin/about']);
+        return \yii\helpers\Url::to(['/admin/information/about']);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLatestHumHubVersion()
     {
         return \humhub\modules\admin\libs\HumHubAPI::getLatestHumHubVersion();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAsHtml()
+    {
+        return Yii::t('AdminModule.notification', "There is a new HumHub Version ({version}) available.", ['version' => Html::tag('strong', $this->getLatestHumHubVersion())]);
     }
 
 }

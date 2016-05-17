@@ -8,8 +8,9 @@
 
 namespace humhub\modules\friendship\notifications;
 
-use humhub\modules\notification\components\BaseNotification;
 use Yii;
+use yii\bootstrap\Html;
+use humhub\modules\notification\components\BaseNotification;
 
 /**
  * Friends Request
@@ -27,11 +28,6 @@ class RequestApproved extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $viewName = "requestApproved";
-
-    /**
-     * @inheritdoc
-     */
     public $markAsSeenOnClick = true;
 
     /**
@@ -41,10 +37,23 @@ class RequestApproved extends BaseNotification
     {
         return $this->originator->getUrl();
     }
-    
+
+    /**
+     * @inheritdoc
+     */
     public static function getTitle()
     {
         return Yii::t('FriendshipModule.notifications_RequestApproved', 'Friendship Approved');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAsHtml()
+    {
+        return Yii::t('FriendshipModule.notification', '{displayName} accepted your friend request.', array(
+                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+        ));
     }
 
 }

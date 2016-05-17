@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use humhub\modules\notification\models\Notification;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\libs\Viewable;
 

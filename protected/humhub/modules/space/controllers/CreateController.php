@@ -111,6 +111,8 @@ class CreateController extends Controller
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
 
+        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             // Invite existing members
@@ -118,7 +120,7 @@ class CreateController extends Controller
                 $space->inviteMember($user->id, Yii::$app->user->id);
             }
             // Invite non existing members
-            if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
+            if ($canInviteExternal) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $space->inviteMemberByEMail($email, Yii::$app->user->id);
                 }
@@ -127,7 +129,11 @@ class CreateController extends Controller
             return $this->htmlRedirect($space->getUrl());
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', [
+                    'canInviteExternal' => $canInviteExternal,
+                    'model' => $model,
+                    'space' => $space
+        ]);
     }
 
     /**

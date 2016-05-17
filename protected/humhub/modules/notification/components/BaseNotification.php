@@ -281,15 +281,15 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         if ($this->groupCount > 2) {
             list($user) = $this->getGroupLastUsers(1);
             return Yii::t('NotificationModule.base', '{displayName} and {number} others', [
-                        'displayName' => Html::tag('strong', $user->displayName),
+                        'displayName' => Html::tag('strong', Html::encode($user->displayName)),
                         'number' => $this->groupCount - 1
             ]);
         }
 
         list($user1, $user2) = $this->getGroupLastUsers(2);
         return Yii::t('NotificationModule.base', '{displayName} and {displayName2}', [
-                    'displayName' => Html::tag('strong', $user1->displayName),
-                    'displayName2' => Html::tag('strong', $user2->displayName),
+                    'displayName' => Html::tag('strong', Html::encode($user1->displayName)),
+                    'displayName2' => Html::tag('strong', Html::encode($user2->displayName)),
         ]);
     }
 
