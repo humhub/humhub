@@ -21,6 +21,12 @@ FLUSH PRIVILEGES;
 git clone https://github.com/humhub/humhub.git
 ```
 
+- Switch to stable branch (recommended)
+
+```
+git checkout stable
+```
+
 - Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
 - Navigate to your HumHub webroot and fetch dependencies
 
