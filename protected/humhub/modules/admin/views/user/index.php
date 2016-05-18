@@ -12,7 +12,7 @@ use humhub\widgets\GridView;
     </div>
     <div class="table-responsive">
         <div class="pull-right">
-            <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add new user', ['/admin/user/add'], ['class' => 'btn btn-success']); ?>
+            <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add new user', ['/admin/user/add'], ['class' => 'btn btn-success', 'data-ui-loader'=>'']); ?>
             <?= Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;Send invite', ['/user/invite'], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
         </div>
 
