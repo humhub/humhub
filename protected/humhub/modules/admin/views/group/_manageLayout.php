@@ -18,7 +18,9 @@ use yii\helpers\Url;
 <br />
 
 <?php if (!$group->isNewRecord) : ?>
+    <?php if($group->is_admin_group) : ?>
     <div class="pull-right"><span class="label label-danger"><?php echo Yii::t('AdminModule.group', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
+    <?php endif; ?>
     <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
 <?php endif; ?>
 
