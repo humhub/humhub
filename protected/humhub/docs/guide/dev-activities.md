@@ -1,13 +1,14 @@
 Activities
 ==========
 
-Contrary to Notifications - Activities are bound to a ContentContainer, so they are not especially linked against a user or  a given set of them.
+An activity is instance is created for special events in the context of a [[humhub\modules\content\models\ContentContainer|ContentContainer]] as the creation of new content.
 
-Besides the link to the ContentContainer - an Activity can be also assigned to a Content or ContentAddon. So it will automatically inherits some Content Attributes such as Visiblity.
+Contrary to notifications - activities are always bound to a [[humhub\modules\content\models\ContentContainer|ContentContainer]], so they are not especially linked against a user or a given set of them.
+Besides the link to the [[humhub\modules\content\models\ContentContainer|ContentContainer]] - an activity can also be assigned with a Content or ContentAddon. So it will automatically inherit some content attributes such as visiblity.
 
-Note: Internally Activities will be handled as Content.
+> Note: Internally activities are handled as content.
 
-## Steps to create an Activity
+## Implement a Custom Activity
 
 ### Create Class & View
 
@@ -25,16 +26,13 @@ use humhub\core\activity\components\BaseActivity;
  */
 class SomethingHappend extends BaseActivity
 {
-	// View Name for activity
+    // View Name for activity
     public $viewName = "somethingHappend";
 
-	// Module Id (required)
-	public $moduleId = "example";
-
+    // Module Id (required)
+    public $moduleId = "example";
 }
-
 ?>
-
 ```
 
 By default activity views should be located inside a subfolder named ** views ** where your activity class is located. (e.g. /modules/examples/activities/views/)
@@ -50,14 +48,11 @@ echo Yii::t('ExampleModule.views_notifications_newLike', "%someUser% did somethi
     '%someUser%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
 ));
 ?>
-
-
 ```
 
-If you require a diffrent view in mails. You can create a subfolder inside the subfolder called ** mail ** in your views directory.  
+If you require a different view for mails. You can create a  ** mail ** folder in your views directory.  
 
-
-### Create it
+### Persist an Activity
 
 ```php
 $activity = new \johndoe\example\activities\NewLike();
