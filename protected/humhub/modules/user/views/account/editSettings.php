@@ -38,9 +38,6 @@ use \humhub\models\Setting;
         <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
     <?php endif; ?>
 
-    <?php if (Yii::$app->getModule('dashboard')->settings->get('share.enable') == 1) : ?>
-        <?php echo $form->field($model, 'show_share_panel')->checkbox(); ?>
-    <?php endif; ?>
     <hr>
 
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>

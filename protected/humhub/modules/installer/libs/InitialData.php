@@ -67,7 +67,6 @@ class InitialData
 
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);
-        Yii::$app->getModule('dashboard')->settings->set('share.enable', 1);
         Yii::$app->settings->set('defaultLanguage', Yii::$app->language);
 
         // Notification

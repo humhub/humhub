@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\dashboard\controllers;
 
 use Yii;
@@ -59,17 +60,9 @@ class DashboardController extends Controller
             return $this->render('index_guest', array());
         } else {
             return $this->render('index', array(
-                'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
+                        'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
             ));
         }
     }
 
-    /*
-     * Update user settings for hiding share panel on dashboard
-     */
-    public function actionHidePanel()
-    {
-        // set tour status to seen for current user
-        return Yii::$app->getModule('dashboard')->settings->user()->set('hideSharePanel', 1);
-    }
 }

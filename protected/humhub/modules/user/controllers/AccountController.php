@@ -102,12 +102,10 @@ class AccountController extends BaseAccountController
 
         $model->tags = $user->tags;
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
-        $model->show_share_panel = Yii::$app->getModule('dashboard')->settings->contentContainer($user)->get("hideSharePanel");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
-            Yii::$app->getModule('dashboard')->settings->contentContainer($user)->set("hideSharePanel", $model->show_share_panel);
             $user->language = $model->language;
             $user->tags = $model->tags;
             $user->time_zone = $model->timeZone;

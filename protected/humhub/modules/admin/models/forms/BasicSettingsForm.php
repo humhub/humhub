@@ -8,7 +8,7 @@ use humhub\libs\DynamicConfig;
 
 /**
  * BasicSettingsForm
- * 
+ *
  * @since 0.5
  */
 class BasicSettingsForm extends \yii\base\Model
@@ -19,7 +19,6 @@ class BasicSettingsForm extends \yii\base\Model
     public $defaultLanguage;
     public $defaultSpaceGuid;
     public $tour;
-    public $share;
     public $timeZone;
     public $dashboardShowProfilePostForm;
     public $enableFriendshipModule;
@@ -36,7 +35,6 @@ class BasicSettingsForm extends \yii\base\Model
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->timeZone = Yii::$app->settings->get('timeZone');
 
-        $this->share = Yii::$app->getModule('dashboard')->settings->get('share.enable');
         $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
         $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
         $this->enableFriendshipModule = Yii::$app->getModule('friendship')->settings->get('enable');
@@ -58,7 +56,7 @@ class BasicSettingsForm extends \yii\base\Model
             array('defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())),
             array('timeZone', 'in', 'range' => \DateTimeZone::listIdentifiers()),
             array('defaultSpaceGuid', 'checkSpaceGuid'),
-            array(['tour', 'share', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => array(0, 1))
+            array(['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => array(0, 1))
         );
     }
 
@@ -74,7 +72,6 @@ class BasicSettingsForm extends \yii\base\Model
             'timeZone' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Server Timezone'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
             'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
-            'share' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show sharing panel on dashboard'),
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Enable user friendship system'),
         );
@@ -104,7 +101,7 @@ class BasicSettingsForm extends \yii\base\Model
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()
@@ -116,7 +113,6 @@ class BasicSettingsForm extends \yii\base\Model
 
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);
-        Yii::$app->getModule('dashboard')->settings->set('share.enable', $this->share);
         Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
 
         $spaceGuids = explode(",", $this->defaultSpaceGuid);
