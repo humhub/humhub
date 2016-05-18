@@ -27,7 +27,7 @@ return [
     'No matches with your selected filters!' => 'Нет вариантов с выбранными фильтрами!',
     'Nothing here yet!' => 'Здесь ничего еще нет!',
     'Only private posts' => 'Только личные сообщения',
-    'Only public posts' => 'Только обнародованные сообщение',
+    'Only public posts' => 'Только публичные сообщения',
     'Posts only' => 'Только сообщения',
     'Posts with links' => 'Сообщения с ссылками',
     'Sorting' => 'Сортировка',
