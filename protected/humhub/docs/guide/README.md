@@ -6,17 +6,17 @@ Introduction
 * [About HumHub](intro-index.md)
 * [Licence](intro-licence.md)
 
-Administration
+Getting Started
 ---------------
 
 * [Requirements](admin-requirements.md)
 * [Installation](admin-installation.md)
 * [Updating](admin-updating.md)
+
+Administration
+---------------------
 * [User](admin-user.md)
 * [Spaces](admin-spaces.md)
-
-Administration - Topics
--------------------------
 * [Advanced Configuration](admin-adv-config.md)
 * [Console](admin-adv-console.md)
 * [Search](admin-adv-search.md)
@@ -27,27 +27,25 @@ Development
 ---------------------
 
 * [Getting Started](dev-index.md)
-* [Updating / Migrate](dev-migrate.md)
-* [Application Overview](dev-overview.md)
+* [Update / Migration](dev-migrate.md)
 * [Content](dev-content.md)
-* [Notification](dev-notifications.md)
+* [Permissions](dev-permissions.md)
+* [Notifications](dev-notifications.md)
 * [Activities](dev-activities.md)
-* [Streams / Walls](dev-stream.md)
+* [Streams](dev-stream.md)
+* [Events](dev-module-events.md)
+* [Widgets](dev-widgets.md)
+* [Internationalization](dev-module-i18n.md)
+* [Models / Database](dev-module-db.md)
 * [Search](dev-search.md)
-* [User](dev-environment.md)
-* [Build](dev-environment.md)
+* [Build](dev-build.md)
 * [Contributions](dev-contributing.md)
 
-Development - Modules
+Module Development
 ---------------------
 
 * [Getting Started](dev-module-index.md)
-* [Events](dev-module-events.md)
-* [Database](dev-module-db.md)
 * [Space/User](dev-module-spaceuser.md)
-* [Navigations](dev-module-menus.md)
-* [Widget Stacks](dev-module-stack.md)
-* [Translations](dev-module-i18n.md)
 * [CronJobs](dev-module-cron.md)
 * [Console](dev-module-console.md)
 * [Special Topics](dev-module-special-topics.md)

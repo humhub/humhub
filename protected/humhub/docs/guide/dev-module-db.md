@@ -1,37 +1,34 @@
-Database
-========
+Database and Models
+====================
 
-### Conventions
+## Conventions
 
 - prefix your tables with the module id. e.g. example_foo
 - singular table names
 - use underscorce in fieldnames/attributes e.g. user_id
 
-### ActiveRecord
+## ActiveRecord (Model)
 
-TBD
+To be able to provide persistent data a module has to implement model class derived from [[humhub\components\ActiveRecord]].
+Yii follows the concept of rich models, which means a model class can contain content in form of attributes as well as domain logic.
+More information about the use of ActiveRecords is available in the [Yii2 guide](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html).
 
-[[humhub\components\ActiveRecord]]
+> Info: [[humhub\components\ActiveRecord]] is derived from [[yii\db\ActiveRecord]] and provides some automatic attribute settings as `created_by` and `crated_at` if the underlying table contains these fields.
 
-
-### Migrations
+## Migrations
 
 See Yii 2.0 guide for more details about migrations [http://www.yiiframework.com/doc-2.0/guide-db-migrations.html](http://www.yiiframework.com/doc-2.0/guide-db-migrations.html).
 
 HumHub provides an enhanced Migration class [[humhub\components\Migration]] which provides the ability to rename class files. This is required because HumHub also stores some class names in database for Polymorphic relations.
 
-
-** Examples: **
-
+#### Usage
 
 - Create a module migration
-	> php yii migrate/create example --migrationPath='@app/modules/polls/migrations'
-
-- Execute module migrations
-	> php yii migrate/up --migrationPath='@app/modules/polls/migrations'
-
+	`> php yii migrate/create example --migrationPath='@app/modules/polls/migrations'`
+- Execute module migration
+	`> php yii migrate/up --migrationPath='@app/modules/polls/migrations'`
 - Execute all migrations (including enabled modules)
-	> php yii migrate/up --includeModuleMigrations=1
+	`> php yii migrate/up --includeModuleMigrations=1`
 
 #### Uninstall
 

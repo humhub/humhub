@@ -4,7 +4,8 @@ Content
 ## ContentContainer
 
 A [[humhub\modules\content\models\ContentContainer|ContentContainer]] in HumHub is the base concept for assigning content entries to a specific container instance (user or space).
-A [[humhub\modules\content\models\ContentContainer|ContentContainer]] is assigned with a unique guid, which is used in controllers to identify the context of its actions.
+Each [[humhub\modules\content\models\ContentContainer|ContentContainer]] is assigned with an unique guid, which is used in controllers to identify the context of its actions.
+
 Currently there are two types of ContentContainer:
  
 - [[humhub\modules\user\models\User|User]]
@@ -16,8 +17,8 @@ Currently there are two types of ContentContainer:
 
 ### ContentContainerController
 
-The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class should be extended by controllers, which are working in the context of a specific [[humhub\modules\content\models\ContentContainer|ContentContainer]].
-A [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] will automatically search a **sguid** (Space) or **uguid** (User) request parameter for every request and will instantiate the associated [[humhub\modules\content\models\ContentContainer|ContentContainer]].
+The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class is extended by controllers working in the context of a specific [[humhub\modules\content\models\ContentContainer|ContentContainer]].
+A [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] will automatically search a **sguid** (Space) or **uguid** (User) request parameter for every request and will instantiate and provide the associated [[humhub\modules\content\models\ContentContainer|ContentContainer]].
 
 The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] provides common tasks like:
 
@@ -26,7 +27,7 @@ The [[humhub\modules\content\components\ContentContainerController|ContentContai
 - Layout selection based on container type (User or Space)
 - Create URL's for the given ContentContainer
 
-For example,
+For example:
 
 ```php
 class ExampleController extends \humhub\modules\content\components\ContentContainerController
@@ -57,10 +58,19 @@ Links to a [[humhub\modules\content\components\ContentContainerController|Conten
 Each ContentContainer class is derived from [[\humhub\modules\content\components\ContentContainerActiveRecord]].
 Beside others, this abstract class provides the following functionality:
 
-- Permission Management
-- Getter for Profile-/BannerImage
+- [Permission Management](dev-permissions.md) `getPermissionManager()`
+- Profile-/Banner-image access `getProfileImage()`, `getProfileBannerImage()`
+- Rendering the container stream `getWallOut()` (see [Permission Management](dev-stream.md))
 
-TBD (URL, AccessChecking, ProfileImage)
+Profile image example:
+
+```php
+//Get Profile Image Url
+$profileImage = $space->getProfileImage();
+if($profileImage->hasImage()) {
+    $url = $profileImage->getUrl();
+}
+```
 
 ### ContentContainerModule
 
@@ -111,19 +121,6 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
 ```
 > Note: If you're working with content or other persistent data, make sure to delete the container related data, when the module is disabled on a content container. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]] method.
 
-### ContentContainerPermissionManager
-
-Beside permissions for groups, you can assign permissions to a ContentContainer.
-
-(TBD link to permissions docs)
-
-### ContentContainerPermission
-
-(TBD)
-
-### ContentContainerStream
-
-(TBD)
 
 ## Content
 
@@ -141,10 +138,10 @@ This Content record holds all neccessary informations and provides common method
 - Archiving / Sticking
 - And more...
 
-If you're implementing an ActiveRecord based on [[humhub\modules\content\components\ContentContainerActiveRecord]] you need to implement following abstract methods:
+If you're implementing an ActiveRecord based on [[humhub\modules\content\components\ContentContainerActiveRecord]] you need to implement the following abstract methods:
 
-- getContentName() - Returns the displayed name of the Content (e.g. Post or Poll)
-- getContentDescription() - Returns a preview of the Content - which is used in Notifications for example.
+- `getContentName()` - Returns the displayed name of the Content (e.g. Post or Poll)
+- `getContentDescription()` - Returns a preview of the Content - which is used in Notifications for example.
 
 Example:
 
@@ -153,21 +150,16 @@ Example:
 
 ```
 
-
 #### Wall/Stream Output
-
+(TBD)
 
 #### Querying Content
 
-If you're calling find() on a [[\humhub\modules\content\components\ContentActiveRecord]] instance you'll get an special [[\humhub\modules\content\components\ActiveQueryContent]] which provides additional method to select content.
+If you're calling find() on a [[\humhub\modules\content\components\ContentActiveRecord]] instance you'll get an special [[\humhub\modules\content\components\ActiveQueryContent]] which provides additional methods to select content.
 
 - contentContainer($container) - Find content only inside a given container
 - readable($user) - Return only user readable content
 - ...
-
-#### Permissions
-
-TBD (Read Permissions not enhanceable)
 
 
 ### Controller
