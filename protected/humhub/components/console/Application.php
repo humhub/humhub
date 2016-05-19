@@ -38,6 +38,14 @@ class Application extends \yii\console\Application
                 Yii::setAlias(("@web"), $baseUrl);
                 $this->urlManager->scriptUrl = $baseUrl;
                 $this->urlManager->baseUrl = $baseUrl;
+
+                // Set hostInfo based on given baseUrl
+                $urlParts = parse_url($baseUrl);
+                $hostInfo = $urlParts['scheme'] . '://' . $urlParts['host'];
+                if (isset($urlParts['port'])) {
+                    $hostInfo .= ':' . $urlParts['port'];
+                }
+                $this->urlManager->hostInfo = $hostInfo;
             }
         }
     }
