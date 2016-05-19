@@ -155,13 +155,19 @@ class ZendLuceneSearch extends Search
         \ZendSearch\Lucene\Search\Query\Wildcard::setMinPrefixLength(0);
 
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
+        $emptyQuery = true;
         foreach (explode(" ", $keyword) as $k) {
-            // Require at least 3 non-wildcard characters
-            if (strlen($k) < $this->minQueryTokenLength) {
-                return null;
+            // Require a minimum of non-wildcard characters
+            if (mb_strlen($k, Yii::$app->charset) >= $this->minQueryTokenLength) {
+                $term = new \ZendSearch\Lucene\Index\Term("*$k*");
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard($term), true);
+                $emptyQuery = false;
             }
-            $term = new \ZendSearch\Lucene\Index\Term("*" . $k . "*");
-            $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard($term), true);
+        }
+
+        // if no keywords or only too short keywords are given, the result is empty.
+        if ($emptyQuery) {
+            return null;
         }
 
         // Add model filter

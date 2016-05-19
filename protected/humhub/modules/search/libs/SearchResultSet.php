@@ -8,6 +8,9 @@
 
 namespace humhub\modules\search\libs;
 
+use humhub\components\ActiveRecord;
+use Yii;
+
 /**
  * SearchResultSet
  *
@@ -36,22 +39,24 @@ class SearchResultSet
      */
     public $pageSize;
 
+
     /**
      * Returns active record instances of the search results
      * 
-     * @return \yii\db\ActiveRecord
+     * @return ActiveRecord[]
      */
     public function getResultInstances()
     {
         $instances = array();
 
         foreach ($this->results as $result) {
+            /** @var $modelClass ActiveRecord */
             $modelClass = $result->model;
             $instance = $modelClass::findOne(['id' => $result->pk]);
             if ($instance !== null) {
                 $instances[] = $instance;
             } else {
-                \Yii::error('Could not load search result ' . $result->model . " - " . $result->pk);
+                Yii::error('Could not load search result ' . $result->model . " - " . $result->pk);
             }
         }
 
