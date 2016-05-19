@@ -8,7 +8,6 @@
 
 namespace humhub\modules\search\engine;
 
-
 use Yii;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\content\models\Content;
@@ -32,6 +31,11 @@ abstract class Search extends \yii\base\Component
     const DOCUMENT_TYPE_OTHER = 'other';
     const DOCUMENT_VISIBILITY_PUBLIC = 'public';
     const DOCUMENT_VISIBILITY_PRIVATE = 'private';
+
+    /**
+     * @var int the minimum length of a search token
+     */
+    public $minQueryTokenLength = 2;
 
     /**
      * Retrieves results from search
@@ -95,7 +99,7 @@ abstract class Search extends \yii\base\Component
      */
     public function optimize()
     {
-
+        
     }
 
     protected function getMetaInfoArray(Searchable $obj)

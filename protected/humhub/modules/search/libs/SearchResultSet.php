@@ -2,25 +2,45 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\search\libs;
 
 /**
- * Description of SearchResult
+ * SearchResultSet
  *
  * @author luke
  */
 class SearchResultSet
 {
 
+    /**
+     * @var SearchResult[] the search rsults
+     */
     public $results = array();
-    public $total;
-    public $page;
+
+    /**
+     * @var int number of total results
+     */
+    public $total = 0;
+
+    /**
+     * @var int the current page
+     */
+    public $page = 1;
+
+    /**
+     * @var int page size
+     */
     public $pageSize;
 
+    /**
+     * Returns active record instances of the search results
+     * 
+     * @return \yii\db\ActiveRecord
+     */
     public function getResultInstances()
     {
         $instances = array();

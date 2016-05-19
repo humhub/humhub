@@ -25,6 +25,9 @@ use humhub\modules\space\models\Space;
 class ZendLuceneSearch extends Search
 {
 
+    /**
+     * @var \ZendSearch\Lucene\SearchIndexInterface the lucence index
+     */
     public $index = null;
 
     public function add(Searchable $obj)
@@ -108,10 +111,15 @@ class ZendLuceneSearch extends Search
         $index = $this->getIndex();
         $keyword = str_replace(array('*', '?', '_', '$'), ' ', mb_strtolower($keyword, 'utf-8'));
 
+        $query = $this->buildQuery($keyword, $options);
+        if ($query === null) {
+            return new SearchResultSet();
+        }
+
         if (!isset($options['sortField']) || $options['sortField'] == "") {
-            $hits = new \ArrayObject($index->find($this->buildQuery($keyword, $options)));
+            $hits = new \ArrayObject($index->find($query));
         } else {
-            $hits = new \ArrayObject($index->find($this->buildQuery($keyword, $options), $options['sortField']));
+            $hits = new \ArrayObject($index->find($query, $options['sortField']));
         }
 
         $resultSet = new SearchResultSet();
@@ -134,19 +142,26 @@ class ZendLuceneSearch extends Search
         return $resultSet;
     }
 
+    /**
+     * Returns the lucence search query
+     * 
+     * @param string $keyword
+     * @param array $options
+     * @return \ZendSearch\Lucene\Search\Query\AbstractQuery
+     */
     protected function buildQuery($keyword, $options)
     {
-
         // Allow *Token*
         \ZendSearch\Lucene\Search\Query\Wildcard::setMinPrefixLength(0);
 
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
         foreach (explode(" ", $keyword) as $k) {
             // Require at least 3 non-wildcard characters
-            if (strlen($k) > 2) {
-                $term = new \ZendSearch\Lucene\Index\Term("*" . $k . "*");
-                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard($term), true);
+            if (strlen($k) < $this->minQueryTokenLength) {
+                return null;
             }
+            $term = new \ZendSearch\Lucene\Index\Term("*" . $k . "*");
+            $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard($term), true);
         }
 
         // Add model filter
