@@ -52,5 +52,3 @@ class Searchable extends Behavior
     }
 
 }
-
-?>
