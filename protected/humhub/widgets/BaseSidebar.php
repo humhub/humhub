@@ -6,19 +6,15 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\directory\widgets;
-
-use humhub\widgets\BaseSidebar;
+namespace humhub\widgets;
 
 /**
- * Sidebar for the directory section
+ * BaseSidebar
  *
- * @since 0.5
+ * @since 1.1
  * @author Luke
  */
-class Sidebar extends BaseSidebar
+class BaseSidebar extends BaseStack
 {
     
 }
-
-?>

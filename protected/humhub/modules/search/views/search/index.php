@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use humhub\modules\search\controllers\SearchController;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-
 ?>
 <div class="container">
     <div class="row">
@@ -111,7 +110,13 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>Sorry nothing found :(</p>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <p><strong><?php echo Yii::t('SearchModule.views_search_index', 'Your search returned no matches.'); ?></strong></p>
+                            </div>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -127,7 +132,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 <script type="text/javascript">
 
-    $( document ).ready(function() {
+    $(document).ready(function () {
         // set focus to input for seach field
         $('#search-input-field').focus();
     });
@@ -150,11 +155,11 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
     });
 
 
-    <?php foreach (explode(" ", $keyword) as $k) : ?>
-    $(".searchResults").highlight("<?php echo Html::encode($k); ?>");
-    $(document).ajaxComplete(function (event, xhr, settings) {
+<?php foreach (explode(" ", $keyword) as $k) : ?>
         $(".searchResults").highlight("<?php echo Html::encode($k); ?>");
-    });
-    <?php endforeach; ?>
+        $(document).ajaxComplete(function (event, xhr, settings) {
+            $(".searchResults").highlight("<?php echo Html::encode($k); ?>");
+        });
+<?php endforeach; ?>
 </script>
 

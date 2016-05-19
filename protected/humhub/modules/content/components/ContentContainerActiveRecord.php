@@ -71,11 +71,11 @@ class ContentContainerActiveRecord extends ActiveRecord
      * Creates url in content container scope.
      * E.g. add uguid or sguid parameter to parameters.
      *
-     * @param type $route
-     * @param type $params
-     * @param type $ampersand
+     * @param string $route
+     * @param array $params
+     * @param boolean|string $scheme
      */
-    public function createUrl($route, $params = array(), $ampersand = '&')
+    public function createUrl($route = null, $params = array(), $scheme = false)
     {
         return "";
     }
