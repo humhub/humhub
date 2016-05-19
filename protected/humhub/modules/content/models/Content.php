@@ -613,4 +613,15 @@ class Content extends \humhub\components\ActiveRecord
         return false;
     }
 
+    /**
+     * Updates the wall/stream sorting time of this content for "updated at" sorting
+     */
+    public function updateStreamSortTime()
+    {
+        foreach ($this->getWallEntries() as $wallEntry) {
+            $wallEntry->updated_at = new \yii\db\Expression('NOW()');
+            $wallEntry->save();
+        }
+    }
+
 }

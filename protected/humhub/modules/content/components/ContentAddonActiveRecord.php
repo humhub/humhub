@@ -34,6 +34,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
 {
 
     /**
+     * @var boolean also update underlying contents last update stream sorting 
+     */
+    protected $updateContentStreamSort = true;
+
+    /**
      * Content object which this addon belongs to
      *
      * @var Content
@@ -189,6 +194,10 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
     {
         // Auto follow the content which this addon belongs to
         $this->content->getPolymorphicRelation()->follow($this->created_by);
+
+        if ($this->updateContentStreamSort) {
+            $this->getSource()->content->updateStreamSortTime();
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }

@@ -25,8 +25,8 @@ use yii\widgets\ActiveForm;
     <?php endif; ?>
 
     <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
-
     <?php echo $form->field($model, 'defaultSpaceGuid')->textInput(['id' => 'space_select']); ?>
+    <?php echo $form->field($model, 'defaultStreamSort')->dropdownList($model->getDefaultStreamSortOptions()); ?>
 
     <?php
     echo \humhub\modules\space\widgets\Picker::widget([

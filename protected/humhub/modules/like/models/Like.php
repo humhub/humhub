@@ -32,6 +32,11 @@ class Like extends ContentAddonActiveRecord
 {
 
     /**
+     * @inheritdoc
+     */
+    protected $updateContentStreamSort = false;
+
+    /**
      * @return string the associated database table name
      */
     public static function tableName()
