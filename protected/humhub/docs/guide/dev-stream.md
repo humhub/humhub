@@ -123,7 +123,7 @@ Create a view file for widget which contains module specific fields. All standar
 </div>
 ```
 
-### Create Create Action
+### Create Action
 
 Create an action in your modules controller to receive form inputs.
 

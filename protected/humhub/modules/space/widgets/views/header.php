@@ -174,7 +174,7 @@ if ($space->isAdmin()) {
 
                         <a href="<?= $space->createUrl('/space/membership/members-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo count($space->memberships); ?></span>
+                                <span class="count"><?php echo $space->getMemberships()->count(); ?></span>
                                 <br>
                                 <span
                                     class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
