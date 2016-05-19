@@ -1,9 +1,9 @@
-Settings
-========
+Settings and Configuration
+============================
 
+##Settings
 
-Global Settings
----------------
+### Global Settings
 
 Example:
 
@@ -14,8 +14,8 @@ Example:
 
 
 
-User Settings
--------------
+### User Settings
+
 
 Example:
 
@@ -26,8 +26,7 @@ Example:
 
 
 
-Space Settings
---------------
+### Space Settings
 
 Example:
 
@@ -35,3 +34,6 @@ Example:
     $space->setSetting("someName", "someValue", "exampleModuleId");
     $mySetting = $space->getSetting("someName", "exampleModuleId");
 ```
+
+## Configuration
+(TBD)

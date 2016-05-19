@@ -5,6 +5,7 @@ Introduction
 ------------
 * [About HumHub](intro-index.md)
 * [Licence](intro-licence.md)
+* [Bundled Software](intro-bundled_software.md)
 
 Getting Started
 ---------------
@@ -33,33 +34,19 @@ Development
 * [Notifications](dev-notifications.md)
 * [Activities](dev-activities.md)
 * [Streams](dev-stream.md)
-* [Events](dev-module-events.md)
+* [Events](dev-events.md)
 * [Widgets](dev-widgets.md)
-* [Internationalization](dev-module-i18n.md)
-* [Models / Database](dev-module-db.md)
+* [Internationalization](dev-i18n.md)
+* [Models / Database](dev-db.md)
 * [Search](dev-search.md)
-* [Build](dev-build.md)
-* [Contributions](dev-contributing.md)
-
-Module Development
----------------------
-
-* [Getting Started](dev-module-index.md)
-* [Space/User](dev-module-spaceuser.md)
-* [CronJobs](dev-module-cron.md)
-* [Console](dev-module-console.md)
-* [Special Topics](dev-module-special-topics.md)
+* [CronJobs](dev-cron.md)
+* [Settings and Configuration](dev-settings.md)
+* [Console Application](dev-console.md)
+* [Module Development](dev-module.md)
 
 Theming
 -------
 
 * [Getting Started](theming-index.md)
 * [Update / Migrate](theming-migrate.md)
-
-
-Special Topics
---------------
-
-* [Translations](special-translations.md)
-* [Bundled Software](special-bundled_software.md)
 
