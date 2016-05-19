@@ -1,4 +1,4 @@
-Modules - General
+Modules - Getting Started
 =================
 
 Basically modules in HumHub are identical to Yii2 modules [http://www.yiiframework.com/doc-2.0/guide-structure-modules.html](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
@@ -10,8 +10,8 @@ The enhanced HumHub module class provides additional features like:
 - Usable as Space or User Profile module
 
 
-config.php
--------------
+## config.php
+
 
 If the module is placed inside the */protected/modules* folder, you can create a *config.php* in the module directory which provides automatic loading without manually modifing the application config.
 
@@ -43,24 +43,22 @@ return [
 ?>
 ```
 
-**Note: ** Do not execute any code in the config.php - the result will be cached!
+> Note: Do not execute any code in the __config.php__ - the result will be cached!
 
 
-module.json
------------
+## module.json
 
 This file holds basic information about the module like name, description or current version. Locate this file in the root directory of the module.
 
-Example of a ´´module.json file:
 ```
-    {
-        "id": "example",
-        "name": "My Example Module",
-        "description": "My testing module.",
-        "keywords": ["my", "cool", "module"],
-        "version": "1.0",
-        "humhub": {
-            "minVersion": "0.20"
-        }
+{
+    "id": "example",
+    "name": "My Example Module",
+    "description": "My testing module.",
+    "keywords": ["my", "cool", "module"],
+    "version": "1.0",
+    "humhub": {
+    "minVersion": "0.20"
     }
+}
 ```
