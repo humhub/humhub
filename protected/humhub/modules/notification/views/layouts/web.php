@@ -1,3 +1,12 @@
+<?php
+
+/** @var \humhub\modules\user\models\User $originator */
+/** @var \humhub\modules\space\models\Space $space */
+/** @var \humhub\modules\notification\models\Notification $record */
+/** @var boolean $isNew */
+/** @var string $content */
+
+?>
 <li class="<?php if ($isNew) : ?>new<?php endif; ?>">
     <a href="<?php echo $url; ?>">
         <div class="media">

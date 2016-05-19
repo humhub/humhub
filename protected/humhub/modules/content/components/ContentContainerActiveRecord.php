@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\libs\ProfileBannerImage;
+use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
@@ -43,9 +45,9 @@ class ContentContainerActiveRecord extends ActiveRecord
     public function getProfileImage()
     {
         if ($this instanceof \humhub\modules\space\models\Space) {
-            return new \humhub\libs\ProfileImage($this->guid, 'default_space');
+            return new ProfileImage($this->guid, 'default_space');
         }
-        return new \humhub\libs\ProfileImage($this->guid);
+        return new ProfileImage($this->guid);
     }
 
     /**
@@ -55,8 +57,7 @@ class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getProfileBannerImage()
     {
-
-        return new \humhub\libs\ProfileBannerImage($this->guid);
+        return new ProfileBannerImage($this->guid);
     }
 
     /**
@@ -212,5 +213,3 @@ class ContentContainerActiveRecord extends ActiveRecord
     }
 
 }
-
-?>

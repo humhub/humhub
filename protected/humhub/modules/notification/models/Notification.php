@@ -140,7 +140,7 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public static function getNotificationClasses()
     {
-        return (new yii\db\Query())
+        return (new \yii\db\Query())
                         ->select(['class'])
                         ->from(self::tableName())
                         ->distinct()->all();

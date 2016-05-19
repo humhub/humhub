@@ -72,5 +72,3 @@ class NewLike extends BaseNotification
     }
 
 }
-
-?>
