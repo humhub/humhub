@@ -51,50 +51,33 @@ abstract class Search extends \yii\base\Component
      * @param array $options
      * @return SearchResultSet
      */
-    public function find($query, Array $options)
-    {
-
-    }
+    abstract public function find($query, Array $options);
 
     /**
-     * Stores an object in search.
+     * Stores an object in search index.
      *
      * @param Searchable $object
      */
-    public function add(Searchable $object)
-    {
-
-    }
+    abstract public function add(Searchable $object);
 
     /**
      * Updates an object in search index.
      *
      * @param Searchable $object
      */
-    public function update(Searchable $object)
-    {
-
-    }
+    abstract public function update(Searchable $object);
 
     /**
-     * Deletes an object in search.
+     * Deletes an object from search.
      *
      * @param Searchable $object
      */
-    public function delete(Searchable $object)
-    {
-
-    }
+    abstract public function delete(Searchable $object);
 
     /**
      * Deletes all objects from search index.
-     *
-     * @param Searchable $object
      */
-    public function flush()
-    {
-
-    }
+    abstract public function flush();
 
     /**
      * Rebuilds search index
@@ -107,7 +90,8 @@ abstract class Search extends \yii\base\Component
     }
 
     /**
-     * Optimizes the search index
+     * Optimizes the search index.
+     * Default implementation does nothing, may be overidden by child classes.
      */
     public function optimize()
     {
