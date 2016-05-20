@@ -99,8 +99,6 @@ class RichText extends \humhub\components\Widget
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
-        
-        
 
         if (!$this->minimal) {
             $output = nl2br($this->text);
@@ -109,6 +107,7 @@ class RichText extends \humhub\components\Widget
             $output = $this->text;
         }
         
+        // replace leading spaces with no break spaces to keep the text format
         $output = preg_replace_callback('/^( +)/m', function($m) {
             return str_repeat("&nbsp;", strlen($m[1])); 
         }, $output);

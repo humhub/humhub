@@ -20,7 +20,7 @@
 
 namespace humhub\modules\file\libs;
 
-use humhub\models\Setting;
+use Yii;
 
 /**
  * ImageConverter provides a simple interface for converting or resizing images.
