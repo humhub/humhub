@@ -115,7 +115,7 @@ class RichText extends \humhub\components\Widget
         
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
-        return $output;
+        return trim($output);
     }
 
     /**
