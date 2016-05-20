@@ -147,7 +147,7 @@ class ModuleManager extends \yii\base\Component
 
         // Add config file values to module
         if (isset(Yii::$app->modules[$config['id']]) && is_array(Yii::$app->modules[$config['id']])) {
-            $moduleConfig = yii\helpers\ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
+            $moduleConfig = \yii\helpers\ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
         }
 
         // Register Yii Module

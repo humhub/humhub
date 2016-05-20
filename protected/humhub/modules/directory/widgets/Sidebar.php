@@ -20,5 +20,3 @@ class Sidebar extends BaseSidebar
 {
     
 }
-
-?>
