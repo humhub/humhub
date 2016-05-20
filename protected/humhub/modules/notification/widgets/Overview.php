@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\notification\widgets;
 
 use Yii;
@@ -8,14 +14,13 @@ use Yii;
  * NotificationListWidget shows an stream of notifications for an user at the top menu.
  *
  * @author andystrobel
- * @package humhub.modules_core.notification
  * @since 0.5
  */
 class Overview extends \yii\base\Widget
 {
 
     /**
-     * Runs the notification widget
+     * @inheritdoc
      */
     public function run()
     {
@@ -23,7 +28,8 @@ class Overview extends \yii\base\Widget
             return;
 
         return $this->render('overview', array(
-                    'update' => \humhub\modules\notification\controllers\ListController::getUpdates()
+                    'update' => \humhub\modules\notification\controllers\ListController::getUpdates(),
+                    'updateInterval' => Yii::$app->getModule('notification')->pollClientUpdateInterval
         ));
     }
 

@@ -1,18 +1,27 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\widgets;
 
+use humhub\widgets\BaseSidebar;
+
 /**
- * SpaceSidebarWidget is a extended StackWidget which allows modifications of the
- * space sidebars.
- *
+ * Sidebar implements the default space sidebar.
+ * 
  * @author Luke
- * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class Sidebar extends \humhub\widgets\BaseStack
+class Sidebar extends BaseSidebar
 {
 
+    /**
+     * @var \humhub\modules\space\models\Space the space this sidebar is in
+     */
     public $space;
 
 }

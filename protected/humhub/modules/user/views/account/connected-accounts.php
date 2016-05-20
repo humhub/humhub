@@ -23,7 +23,7 @@ use \humhub\models\Setting;
                         <?php elseif (in_array($client->getId(), $activeAuthClientIds)) : ?>
                             <?php echo Html::a(Yii::t('UserModule.base', 'Disconnect account'), ['connected-accounts', 'disconnect' => $client->getId()], ['class' => 'btn btn-danger pull-right', 'data-method' => 'POST']); ?>
                         <?php else: ?>
-                            <?php echo Html::a(Yii::t('UserModule.base', 'Connect account'), Url::to(['/user/auth/external-auth', 'authclient' => $client->getId()]), ['class' => 'btn btn-success pull-right']); ?>
+                            <?php echo Html::a(Yii::t('UserModule.base', 'Connect account'), Url::to(['/user/auth/external', 'authclient' => $client->getId()]), ['class' => 'btn btn-success pull-right']); ?>
                         <?php endif; ?>
 
             </div>

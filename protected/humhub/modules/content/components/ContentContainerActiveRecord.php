@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\libs\ProfileBannerImage;
+use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
@@ -43,9 +45,9 @@ class ContentContainerActiveRecord extends ActiveRecord
     public function getProfileImage()
     {
         if ($this instanceof \humhub\modules\space\models\Space) {
-            return new \humhub\libs\ProfileImage($this->guid, 'default_space');
+            return new ProfileImage($this->guid, 'default_space');
         }
-        return new \humhub\libs\ProfileImage($this->guid);
+        return new ProfileImage($this->guid);
     }
 
     /**
@@ -55,8 +57,7 @@ class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getProfileBannerImage()
     {
-
-        return new \humhub\libs\ProfileBannerImage($this->guid);
+        return new ProfileBannerImage($this->guid);
     }
 
     /**
@@ -71,11 +72,11 @@ class ContentContainerActiveRecord extends ActiveRecord
      * Creates url in content container scope.
      * E.g. add uguid or sguid parameter to parameters.
      *
-     * @param type $route
-     * @param type $params
-     * @param type $ampersand
+     * @param string $route
+     * @param array $params
+     * @param boolean|string $scheme
      */
-    public function createUrl($route, $params = array(), $ampersand = '&')
+    public function createUrl($route = null, $params = array(), $scheme = false)
     {
         return "";
     }
@@ -212,5 +213,3 @@ class ContentContainerActiveRecord extends ActiveRecord
     }
 
 }
-
-?>

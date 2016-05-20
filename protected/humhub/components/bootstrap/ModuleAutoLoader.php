@@ -38,8 +38,8 @@ class ModuleAutoLoader implements BootstrapInterface
                     if (is_dir($moduleDir) && is_file($moduleDir . DIRECTORY_SEPARATOR . 'config.php')) {
                         try {
                             $modules[$moduleDir] = require($moduleDir . DIRECTORY_SEPARATOR . 'config.php');
-                        } catch (Exception $ex) {
-                            
+                        } catch (\Exception $ex) {
+
                         }
                     }
                 }

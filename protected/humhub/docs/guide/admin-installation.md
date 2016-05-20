@@ -1,7 +1,7 @@
 Installation
 ============
 
-## 1. Preparation
+## Preparation
 
 Create an MySQL Database, e.g.:
 
@@ -11,14 +11,29 @@ GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_cha
 FLUSH PRIVILEGES;
 ```
 
-## 2. Get HumHub
+> Note: Do not forget to change the `humhub_dbuser` and `password_changeme`!
+
+## Get HumHub
+
+### Via: Download Package
+
+The easiest way to get HumHub is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
+After the download is completed, just extract the package into the htdocs folder of your webserver.
 
 ### Via: Git/Composer
+
+To be able to install a branch retrieved by git you'll have to run a composer update to download all external dependencies.
 
 - Clone Git Repository
 
 ```
 git clone https://github.com/humhub/humhub.git
+```
+
+- Switch to stable branch (recommended)
+
+```
+git checkout stable
 ```
 
 - Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
@@ -29,11 +44,9 @@ php composer.phar global require "fxp/composer-asset-plugin:~1.1.1"
 composer update
 ```
 
-### Via: Download Package
+> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](http://localhost/codebase/doku/guide-admin-updating.html#gitcomposer-based-installations))
 
-Download package at [http://www.humhub.org/downloads](http://www.humhub.org/downloads)  and extract it somewhere into your htdocs folder.
-
-## 3. Setting up
+## Setting up
 
 ### File Modes / Permissions
 
@@ -48,19 +61,26 @@ Make the following files executable:
  - /protected/yii
  - /protected/yii.bat
 
+**Make sure following directories are not accessible throu webserver!**
+
+(These folders are protected by default with ".htaccess")
+
+- protected
+- uploads/file
+
 ### Start Installer
 
 Open installation in your browser (e.g. [http://localhost/humhub](http://localhost/humhub))
 
 
-## 4. Fine Tuning
+## Fine Tuning
 
 ### E-Mail Configuration
 
-Depending on your environment which you are using you may want specify a local or remote SMTP Server.
-You can change this settings at `Administration -> Mailing -> Server Settings`.
+Depending on your environment you are using, you may want to specify a local or remote SMTP Server.
+You can change the mail-server settings under `Administration -> Mailing -> Server Settings`.
 
-By default PHP Mail Transport is used. <http://php.net/manual/en/mail.setup.php>
+By default the PHP Mail Transport is used. <http://php.net/manual/en/mail.setup.php>
 
 
 ### Enable Url Rewriting (Optional)
@@ -84,11 +104,8 @@ return [
 
 ### Enable Cron Jobs
 
-Daily cron command: 
-> yii cron/daily
-
-Hourly cron command:
-> yii cron/hourly
+ - Daily cron command: `> yii cron/daily`
+ - Hourly cron command: `> yii cron/hourly`
 
 Example Tab:
 
@@ -96,15 +113,6 @@ Example Tab:
 30 * * * * /path/to/humhub/protected/yii cron/hourly >/dev/null 2>&1
 00 18 * * * /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
 ```
-
-### Check Directory Protection
-
-**Make sure following directories are not accessible throu webserver!**
-
-(These folders are protected by default with ".htaccess")
-
-- protected
-- uploads/file
 
 ### Disable Errors / Debugging
 
