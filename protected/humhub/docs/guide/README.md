@@ -18,6 +18,7 @@ Administration
 ---------------------
 * [User](admin-user.md)
 * [Spaces](admin-spaces.md)
+* [Authentication](admin-authentication.md)
 * [Advanced Configuration](admin-adv-config.md)
 * [Console](admin-adv-console.md)
 * [Search](admin-adv-search.md)
@@ -37,6 +38,7 @@ Development
 * [Events](dev-events.md)
 * [Widgets](dev-widgets.md)
 * [Internationalization](dev-i18n.md)
+* [Authentication](dev-authentication.md)
 * [Models / Database](dev-db.md)
 * [Search](dev-search.md)
 * [CronJobs](dev-cron.md)

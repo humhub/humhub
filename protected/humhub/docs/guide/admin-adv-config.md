@@ -66,7 +66,7 @@ config/messages/de/PostModule.widgets_views_postForm.php
 
 with the content:
 
-``` php
+```php
 <?php
 return array (
   'What\'s on your mind?' => 'Wie geht es dir heute?',
