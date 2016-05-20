@@ -43,7 +43,7 @@ class AuthController extends Controller
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
             ],
-            'external-auth' => [
+            'external' => [
                 'class' => 'yii\authclient\AuthAction',
                 'successCallback' => [$this, 'onAuthSuccess'],
             ],

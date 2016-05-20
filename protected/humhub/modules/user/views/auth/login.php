@@ -24,9 +24,9 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 </div>
             <?php endif; ?>
 
+            <?= humhub\modules\user\widgets\AuthChoice::widget([]) ?>
 
-            <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation'=>false]); ?>
-            <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+            <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
             <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')])->label(false); ?>
             <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')])->label(false); ?>
             <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
@@ -46,7 +46,6 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
             </div>
 
             <?php ActiveForm::end(); ?>
-            <?= humhub\modules\user\widgets\AuthChoice::widget([]) ?>            
         </div>
 
     </div>
