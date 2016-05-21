@@ -159,6 +159,7 @@ class AuthClientHelpers
         unset($attributes['id']);
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
+        $registration->getGroupUser()->setAttributes($attributes, false);
 
         if ($registration->validate() && $registration->register($authClient)) {
             return $registration->getUser();
