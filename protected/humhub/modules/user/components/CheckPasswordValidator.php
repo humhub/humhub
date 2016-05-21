@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -19,6 +19,9 @@ use yii\validators\Validator;
 class CheckPasswordValidator extends Validator
 {
 
+    /**
+     * @inheritdoc
+     */
     public function validateAttribute($object, $attribute)
     {
         $value = $object->$attribute;
@@ -27,6 +30,17 @@ class CheckPasswordValidator extends Validator
         if ($user->currentPassword !== null && !$user->currentPassword->validatePassword($value)) {
             $object->addError($attribute, Yii::t('UserModule.components_CheckPasswordValidator', "Your password is incorrect!"));
         }
+    }
+
+    /**
+     * Checks if current user has a password set.
+     * 
+     * @return boolean
+     */
+    public static function hasPassword()
+    {
+        $user = Yii::$app->user->getIdentity();
+        return ($user->currentPassword !== null);
     }
 
 }

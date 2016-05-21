@@ -62,8 +62,17 @@ class AuthClientHelpers
             $user->auth_mode = $authClient->getId();
             $user->save();
         } else {
-            $auth = Auth::findOne(['user_id' => $user->id, 'source' => $authClient->getId(), 'source_id' => $attributes['id']]);
+            $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
 
+            /**
+             * Make sure authClient is not double assigned
+             */
+            if ($auth !== null && $auth->user_id != $user->id) {
+                $auth->delete();
+                $auth = null;
+            }
+            
+            
             if ($auth === null) {
                 $auth = new \humhub\modules\user\models\Auth([
                     'user_id' => $user->id,
