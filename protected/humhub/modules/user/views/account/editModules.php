@@ -9,7 +9,7 @@ use yii\helpers\Url;
 </div>
 
 <div class="panel-body">
-    <p><?php echo Yii::t('UserModule.views_account_editModules', 'Enhance your profile with modules.'); ?></p>
+    <div class="help-block"><?php echo Yii::t('UserModule.views_account_editModules', 'Enhance your profile with modules.'); ?></div>
 
     <?php foreach ($availableModules as $moduleId => $module): ?>
         <hr>

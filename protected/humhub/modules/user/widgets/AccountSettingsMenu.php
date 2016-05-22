@@ -10,7 +10,6 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
 
 /**
  * Account Settings Tab Menu
@@ -46,6 +45,13 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
         }
 
         parent::init();
+    }
+    
+    public function run()
+    {
+        if(count($this->items) > 1) {
+            return parent::run();
+        }
     }
 
     /**

@@ -8,10 +8,9 @@ use \humhub\models\Setting;
 <div class="panel-heading">
     <?php echo Yii::t('UserModule.views_account_editSettings', '<strong>User</strong> settings'); ?>
 </div>
+<?= humhub\modules\user\widgets\AccountSettingsMenu::widget(); ?>
 <div class="panel-body">
-    <?= humhub\modules\user\widgets\AccountSettingsMenu::widget(); ?>
-    <br />
-    <p />
+
     <?php $form = ActiveForm::begin(['id' => 'basic-settings-form']); ?>
 
     <?php echo $form->field($model, 'tags'); ?>
