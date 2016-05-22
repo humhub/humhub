@@ -318,6 +318,8 @@ class Group extends \yii\db\ActiveRecord
 
     /**
      * Returns groups which are available in user registration
+     * 
+     * @return Group[] the groups which can be selected in registration
      */
     public static function getRegistrationGroups()
     {

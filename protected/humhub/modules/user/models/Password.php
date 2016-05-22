@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\models;
 
 use Yii;
+use humhub\modules\user\components\CheckPasswordValidator;
 
 /**
  * This is the model class for table "user_password".
@@ -72,7 +73,7 @@ class Password extends \yii\db\ActiveRecord
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
             [['algorithm'], 'string', 'max' => 20],
-            [['currentPassword'], \humhub\modules\user\components\CheckPasswordValidator::className(), 'on' => 'changePassword'],
+            [['currentPassword'], CheckPasswordValidator::className(), 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => 'changePassword'],
@@ -83,7 +84,12 @@ class Password extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['changePassword'] = ['newPassword', 'newPasswordConfirm', 'currentPassword'];
+
+        $scenarios['changePassword'] = ['newPassword', 'newPasswordConfirm'];
+        if (CheckPasswordValidator::hasPassword()) {
+            $scenarios['changePassword'][] = 'currentPassword';
+        }
+
         $scenarios['registration'] = ['newPassword', 'newPasswordConfirm'];
         return $scenarios;
     }

@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use humhub\compat\HForm;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\GroupUser;
@@ -59,6 +60,9 @@ class Registration extends HForm
      */
     private $_profile = null;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
@@ -317,8 +321,12 @@ class Registration extends HForm
         if ($this->_groupUser === null) {
             $this->_groupUser = new GroupUser();
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
+
             // assign default value for group_id
-            $this->_groupUser->group_id = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
+            $registrationGroups = \humhub\modules\user\models\Group::getRegistrationGroups();
+            if (count($registrationGroups) == 1) {
+                $this->_groupUser->group_id = $registrationGroups[0]->id;
+            }
         }
 
         return $this->_groupUser;

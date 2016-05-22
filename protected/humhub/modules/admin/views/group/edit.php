@@ -42,7 +42,7 @@ use yii\helpers\Html;
     <strong><?php echo Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
     <br>
     <br>
-    <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
+    <?php if (!$group->is_admin_group): ?>
         <?php echo $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
     <?php echo $form->field($group, 'show_at_directory')->checkbox(); ?>

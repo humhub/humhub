@@ -16,8 +16,9 @@ use \humhub\compat\CHtml;
     </div>
     <hr>
 
-    <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
-
+    <?php if ($model->isAttributeRequired('currentPassword')): ?>
+        <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
+    <?php endif; ?>
 
     <?php echo $form->field($model, 'newEmail')->textInput(['maxlength' => 45]); ?>
 
