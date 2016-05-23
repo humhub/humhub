@@ -72,6 +72,11 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         return count($authClients) > 0;
     }
     
+    /**
+     * Filters out clients which need login form
+     * @param type $clients
+     * @return \humhub\modules\user\authclient\BaseFormAuth
+     */
     private static function filterClients($clients)
     {
         $result = [];
@@ -97,6 +102,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         return $baseAuthUrl;
     }
     
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if(count($this->getClients()) == 0) {
@@ -106,6 +114,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         }
     }
     
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         if(count($this->getClients()) == 0) {

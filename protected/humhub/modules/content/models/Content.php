@@ -554,7 +554,11 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function canEdit($user = null)
     {
-        if ($user === null && !Yii::$app->user->isGuest) {
+        if(Yii::$app->user->isGuest) {
+            return false;
+        }
+        
+        if ($user === null) {
             $user = Yii::$app->user->getIdentity();
         }
 
