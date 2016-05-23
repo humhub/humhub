@@ -155,6 +155,7 @@ class ZendLuceneSearch extends Search
         \ZendSearch\Lucene\Search\Query\Wildcard::setMinPrefixLength(0);
 
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
+        
         $emptyQuery = true;
         foreach (explode(" ", $keyword) as $k) {
             // Require a minimum of non-wildcard characters
@@ -165,8 +166,9 @@ class ZendLuceneSearch extends Search
             }
         }
 
-        // if no keywords or only too short keywords are given, the result is empty.
-        if ($emptyQuery) {
+        // if only too short keywords are given, the result is empty
+        // when no keyword was given - show some results
+        if ($emptyQuery && $keyword != '') {
             return null;
         }
 
