@@ -7,6 +7,7 @@
  */
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\libs\ISO3166Codes;
 
@@ -22,7 +23,7 @@ class CountrySelect extends Select
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = array())
     {
@@ -45,17 +46,17 @@ class CountrySelect extends Select
     /**
      * Returns a list of possible options
      *
-     * @return Array
+     * @return array
      */
     public function getSelectItems()
     {
-        $items = array();
+        $items = [];
         
         // if no options set basically return a translated map of all defined countries
         if (empty($this->options) || trim($this->options) == false) {
             $items = ISO3166Codes::$countries;
             foreach ($items as $code => $value) {
-                $items[$code] = Yii::t('iso3166Codes', $value);
+                $items[$code] = ISO3166Codes::country($code);
             }
         } else {
             foreach (explode(",", $this->options) as $code) {

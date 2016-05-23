@@ -58,10 +58,6 @@ $config = [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@humhub/messages'
                 ],
-                'iso3166Codes' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@humhub/messages'
-                ],
             ],
         ],
         'formatter' => [
