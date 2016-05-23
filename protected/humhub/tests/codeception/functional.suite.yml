@@ -10,6 +10,8 @@ modules:
     enabled:
       - Filesystem
       - Yii2
+      - tests\codeception\_support\FixtureHelper
     config:
         Yii2:
+            cleanup: true
             configFile: 'codeception/config/functional.php'

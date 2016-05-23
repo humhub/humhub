@@ -63,7 +63,7 @@ class AccountEmailing extends \yii\base\Model
         return array(
             'receive_email_notifications' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send notifications?'),
             'receive_email_activities' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send activities?'),
-            'enable_html5_desktop_notifications' => Yii::t('UserModule.views_account_emailing', 'Get a desktop notification when you are online.')
+            'enable_html5_desktop_notifications' => Yii::t('UserModule.views_account_emailing', 'Receive desktop notifications when you are online.')
         );
     }
 

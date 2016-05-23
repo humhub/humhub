@@ -33,11 +33,21 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'basic'),
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
+        
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User'),
+            'url' => Url::toRoute('/admin/setting/authentication'),
+            'icon' => '<i class="fa fa-lock"></i>',
+            'sortOrder' => 200,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'authentication' || Yii::$app->controller->action->id == 'authentication-ldap')),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ));
+        
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Appearance'),
             'url' => Url::toRoute('/admin/setting/design'),
             'icon' => '<i class="fa fa-magic"></i>',
-            'sortOrder' => 200,
+            'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'design'),
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
@@ -46,21 +56,10 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'E-Mails'),
             'url' => Url::toRoute('/admin/setting/mailing'),
             'icon' => '<i class="fa fa-envelope"></i>',
-            'sortOrder' => 300,
+            'sortOrder' => 400,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'mailing' || Yii::$app->controller->action->id == 'mailing-server')),
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
-
-
-        $this->addItem(array(
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'User'),
-            'url' => Url::toRoute('/admin/setting/authentication'),
-            'icon' => '<i class="fa fa-lock"></i>',
-            'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'authentication' || Yii::$app->controller->action->id == 'authentication-ldap')),
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ));
-
 
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Advanced'),

@@ -2,17 +2,12 @@
 
 use \yii\bootstrap\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
-use \humhub\models\Setting;
 ?>
 
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.base', '<strong>Connected</strong> accounts'); ?>
-</div>
-<div class="panel-body">
-    <?= humhub\modules\user\widgets\AccountSettingsMenu::widget(); ?>
-    <br />
-
+<?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
+    <div class="help-block">
+        <?php echo Yii::t('UserModule.base', 'Here you can connect to external service provider for using external services like a single sign on authentication.'); ?>
+    </div>
     <table class="table table-hover">
         <?php foreach ($authClients as $client) : ?>
             <tr>
@@ -39,5 +34,4 @@ use \humhub\models\Setting;
             </tr>
         <?php endforeach; ?>
     </table>
-
-</div>
+<?php $this->endContent(); ?>

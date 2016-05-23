@@ -5,49 +5,44 @@ use humhub\compat\CHtml;
 use humhub\modules\user\models\User;
 
 ?>
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Desktop</strong> Notifications'); ?>
-</div>
-<div class="panel-body">
+
+<?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
     <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $form->field($model, 'enable_html5_desktop_notifications')->checkbox(); ?>
+    <label class="control-label" for="accountemailing-receive_email_notifications">
+        <?php echo $model->attributeLabels()['receive_email_notifications']; ?>
+    </label>
 
-    <hr>
-</div>
-
-<div class="panel-heading" style="padding-top:0px;">
-    <?php echo Yii::t('UserModule.views_account_emailing', '<strong>Email</strong> Notifications'); ?>
-</div>
-<div class="panel-body">
     <div class="help-block">
-    <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, when other users comment or like your posts.'); ?>
+        <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, when other users comment or like your posts.'); ?>
     </div>
 
     <?php echo $form->field($model, 'receive_email_notifications')->dropdownList([User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
         User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),
-        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always')]); ?>
-    <hr>
+        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always')])->label(false); ?>
 
-    <strong><?php echo Yii::t('UserModule.views_account_emailing', 'Activities'); ?></strong><br/>
+    <label class="control-label" for="accountemailing-receive_email_activities">
+        <?php echo $model->attributeLabels()['receive_email_activities']; ?>
+    </label>
+    
     <div class="help-block">
-        <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, by every activity from other users you follow or work together in workspaces.'); ?>
+        <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, for every activity of other users you follow or work together in a workspace.'); ?>
     </div>
     
     <?php echo $form->field($model, 'receive_email_activities')->dropdownList([
         User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
         User::RECEIVE_EMAIL_DAILY_SUMMARY => Yii::t('UserModule.views_account_emailing', 'Daily summary'),
         User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),
-        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always')]); ?>
+        User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always')])->label(false); ?>
 
-    <hr>
-
+    
+    <?php echo $form->field($model, 'enable_html5_desktop_notifications')->checkbox(); ?>
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_emailing', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
     <!-- show flash message after saving -->
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
     <?php ActiveForm::end(); ?>
-</div>
+<?php $this->endContent() ?>
 
 
