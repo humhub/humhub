@@ -184,9 +184,9 @@ class Profile extends \yii\db\ActiveRecord
             );
 
             foreach (ProfileField::find()->orderBy('sort_order')->where(['profile_field_category_id' => $profileFieldCategory->id])->all() as $profileField) {
-                
+
                 $profileField->editable = true;
-                
+
                 if (!in_array($profileField->internal_name, $safeAttributes)) {
                     if ($profileField->visible && $this->scenario != 'registration') {
                         $profileField->editable = false;
@@ -199,7 +199,7 @@ class Profile extends \yii\db\ActiveRecord
                 if (in_array($profileField->internal_name, $syncAttributes)) {
                     $profileField->editable = false;
                 }
-                
+
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
 
@@ -268,8 +268,12 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getProfileFields(ProfileFieldCategory $category = null)
     {
-        $fields = array();
+        if ($this->user === null) {
+            return [];
+        }
 
+        $fields = [];
+        
         $query = ProfileField::find();
         $query->where(['visible' => 1]);
         $query->orderBy('sort_order');
@@ -277,7 +281,6 @@ class Profile extends \yii\db\ActiveRecord
             $query->andWhere(['profile_field_category_id' => $category->id]);
         }
         foreach ($query->all() as $field) {
-
             if ($field->getUserValue($this->user) != "") {
                 $fields[] = $field;
             }
