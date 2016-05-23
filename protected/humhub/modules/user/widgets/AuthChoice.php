@@ -16,6 +16,12 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
 
     /**
+     * Used to retrieve the auth clients in a static way
+     * @var type 
+     */
+    private static $authclientCollection = 'authClientCollection';
+    
+    /**
      * @var int number of clients to show without folding
      */
     public $maxShowClients = 2;
@@ -49,17 +55,34 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public function getClients()
     {
         if ($this->_clients === null) {
-            $clients = [];
-            foreach ($this->defaultClients() as $client) {
-                // Don't show clients which need login form
-                if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
-                    $clients[] = $client;
-                }
-            }
-            $this->_clients = $clients;
+            $this->_clients = self::filterClients($this->defaultClients());
         }
 
         return $this->_clients;
+    }
+    
+    /**
+     * Returns default auth clients list.
+     * @return ClientInterface[] auth clients list.
+     */
+    public static function hasClients()
+    {
+        $authClients = self::filterClients(Yii::$app->get(self::$authclientCollection)->getClients());
+       
+        return count($authClients) > 0;
+    }
+    
+    private static function filterClients($clients)
+    {
+        $result = [];
+        foreach ($clients as $client) {
+            
+            // Don't show clients which need login form
+            if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
+                $result[] = $client;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -73,6 +96,24 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
         return $baseAuthUrl;
     }
+    
+    public function init()
+    {
+        if(count($this->getClients()) == 0) {
+            return;
+        } else {
+            return parent::init();
+        }
+    }
+    
+    public function run()
+    {
+        if(count($this->getClients()) == 0) {
+            return;
+        } else {
+            return parent::run();
+        }
+    }
 
     /**
      * Renders the main content, which includes all external services links.
@@ -81,7 +122,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     {
         $clients = $this->getClients();
         $clientCount = count($clients);
-        if (count($clientCount) == 0) {
+       
+        if ($clientCount == 0) {
             return;
         }
 

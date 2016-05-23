@@ -4,11 +4,7 @@ use yii\bootstrap\Html;
 use humhub\widgets\DataSaved;
 use humhub\widgets\ActiveForm;
 ?>
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_delete', '<strong>Delete</strong> account'); ?>
-</div>
-
-<div class="panel-body">
+<?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
     <?php if ($isSpaceOwner) : ?>
         <?php echo Yii::t('UserModule.views_account_delete', 'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.'); ?>
     <?php else: ?>
@@ -28,6 +24,6 @@ use humhub\widgets\ActiveForm;
         <?php ActiveForm::end(); ?>
 
     <?php endif; ?>
-</div>
+<?php $this->endContent(); ?>
 
 

@@ -6,9 +6,11 @@ use humhub\widgets\GridView;
 <div class="panel-heading">
     <?php echo Yii::t('FriendshipModule.base', '<strong>Sent</strong> friend requests'); ?>
 </div>
-<div class="panel-body">
-    <?php echo \humhub\modules\friendship\widgets\ManageMenu::widget(['user' => $user]); ?>
 
+
+<?php echo \humhub\modules\friendship\widgets\ManageMenu::widget(['user' => $user]); ?>
+
+<div class="panel-body">
     <?php
     echo GridView::widget([
         'dataProvider' => $dataProvider,

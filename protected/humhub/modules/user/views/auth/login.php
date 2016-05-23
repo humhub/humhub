@@ -3,6 +3,7 @@
 use \yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
+use humhub\modules\user\widgets\AuthChoice;
 
 $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 ?>
@@ -24,8 +25,12 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 </div>
             <?php endif; ?>
 
-            <?= humhub\modules\user\widgets\AuthChoice::widget([]) ?>
-
+            <?php if(AuthChoice::hasClients()): ?>
+                <?= AuthChoice::widget([]) ?>
+            <?php else: ?>
+                <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+            <?php endif; ?>
+            
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
             <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')])->label(false); ?>
             <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')])->label(false); ?>

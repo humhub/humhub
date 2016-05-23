@@ -3,10 +3,10 @@
 use humhub\widgets\ActiveForm;
 use yii\bootstrap\Html;
 ?>
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_changePassword', '<strong>Change</strong> password'); ?>
-</div>
-<div class="panel-body">
+<?php $this->beginContent('@user/views/account/_userProfileLayout.php'); ?>
+    <div class="help-block">
+         <?php echo Yii::t('UserModule.views_account_changePassword', 'Your current password can be changed here.') ?>
+    </div>
     <?php $form = ActiveForm::begin(); ?>
 
     <?php if ($model->isAttributeSafe('currentPassword')): ?>
@@ -23,5 +23,4 @@ use yii\bootstrap\Html;
 
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
-
-</div>
+<?php $this->endContent(); ?>

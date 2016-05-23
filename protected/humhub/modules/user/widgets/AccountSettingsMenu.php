@@ -34,24 +34,24 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit-settings'),
         ));
+        
+        $this->addItem(array(
+            'label' => Yii::t('UserModule.base', 'Notifications'),
+            'url' => Url::toRoute(['/user/account/emailing']),
+            'sortOrder' => 200,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'emailing'),
+        ));
 
         if (count($this->getSecondoaryAuthProviders()) != 0) {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.base', 'Connected Accounts'),
                 'url' => Url::toRoute(['/user/account/connected-accounts']),
-                'sortOrder' => 200,
+                'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'connected-accounts'),
             ));
         }
 
         parent::init();
-    }
-    
-    public function run()
-    {
-        if(count($this->items) > 1) {
-            return parent::run();
-        }
     }
 
     /**

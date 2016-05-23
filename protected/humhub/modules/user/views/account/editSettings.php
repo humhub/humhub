@@ -2,14 +2,9 @@
 
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
-use \humhub\models\Setting;
 ?>
 
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_editSettings', '<strong>User</strong> settings'); ?>
-</div>
-<?= humhub\modules\user\widgets\AccountSettingsMenu::widget(); ?>
-<div class="panel-body">
+<?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
 
     <?php $form = ActiveForm::begin(['id' => 'basic-settings-form']); ?>
 
@@ -45,4 +40,4 @@ use \humhub\models\Setting;
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
     <?php ActiveForm::end(); ?>
-</div>
+<?php $this->endContent(); ?>
