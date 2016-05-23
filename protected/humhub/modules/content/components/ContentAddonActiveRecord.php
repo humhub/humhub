@@ -209,4 +209,3 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
 
 }
 
-?>
