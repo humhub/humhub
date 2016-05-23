@@ -61,8 +61,8 @@ class File extends \humhub\components\ActiveRecord
      * Returns all files belongs to a given HActiveRecord Object.
      * @todo Add chaching
      *
-     * @param HActiveRecord $object
-     * @return Array of File instances
+     * @param \yii\db\ActiveRecord $object
+     * @return array of File instances
      */
     public static function getFilesOfObject(\yii\db\ActiveRecord $object)
     {
@@ -402,13 +402,13 @@ class File extends \humhub\components\ActiveRecord
      * Attaches a given list of files to an record (HActiveRecord).
      * This is used when uploading files before the record is created yet.
      *
-     * @param HActiveRecord $object is a HActiveRecord
+     * @param \yii\db\ActiveRecord $object is a HActiveRecord
      * @param string $files is a comma seperated list of newly uploaded file guids
      */
     public static function attachPrecreated($object, $files)
     {
         if (!$object instanceof \yii\db\ActiveRecord) {
-            throw new Exception("Invalid object given - require instance of HActiveRecord!");
+            throw new Exception('Invalid object given - require instance of \yii\db\ActiveRecord!');
         }
 
         // Attach Files
