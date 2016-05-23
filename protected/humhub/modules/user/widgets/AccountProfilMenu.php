@@ -41,7 +41,6 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-email' || Yii::$app->controller->action->id == 'change-email-validate')),
         ));
 
-
         if (Yii::$app->user->canChangePassword()) {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.base', 'Change Password'),
@@ -61,13 +60,6 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
         }
 
         parent::init();
-    }
-
-    public function run()
-    {
-        if (count($this->items) > 1) {
-            return parent::run();
-        }
     }
 
     /**
