@@ -35,12 +35,24 @@ class Facebook extends \yii\authclient\clients\Facebook
         return [
             'username' => 'name',
             'firstname' => function ($attributes) {
-                list($f, $l) = mb_split(' ', $attributes['name'], 2);
-                return $f;
+                if (!isset($attributes['name'])) {
+                    return '';
+                }
+                $parts = mb_split(' ', $attributes['name'], 2);
+                if (isset($parts[0])) {
+                    return $parts[0];
+                }
+                return '';
             },
             'lastname' => function ($attributes) {
-                list($f, $l) = mb_split(' ', $attributes['name'], 2);
-                return $l;
+                if (!isset($attributes['name'])) {
+                    return '';
+                }
+                $parts = mb_split(' ', $attributes['name'], 2);
+                if (isset($parts[1])) {
+                    return $parts[1];
+                }
+                return '';
             },
         ];
     }
