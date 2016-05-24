@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Space not found!' => 'Группа не найдена!',
+  'Space not found!' => 'Пространство не найдено!',
 );
