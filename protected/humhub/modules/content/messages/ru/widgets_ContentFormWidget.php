@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Submit' => 'Опубликовать',
+  'Submit' => 'Отправить',
 );
