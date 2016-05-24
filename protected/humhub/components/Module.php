@@ -125,20 +125,14 @@ class Module extends \yii\base\Module
 
     /**
      * Enables this module
-     * It will be available on the next request.
      *
      * @return boolean
      */
     public function enable()
     {
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-        if ($moduleEnabled == null) {
-            $moduleEnabled = new ModuleEnabled();
-            $moduleEnabled->module_id = $this->id;
-            $moduleEnabled->save();
-        }
-
+        Yii::$app->moduleManager->enable($this);
         $this->migrate();
+
         return true;
     }
 
@@ -150,11 +144,7 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-        // Disable module in database
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-        if ($moduleEnabled != null) {
-            $moduleEnabled->delete();
-        }
+
 
         /**
          * Remove database tables
@@ -188,24 +178,23 @@ class Module extends \yii\base\Module
             }
         }
 
+        foreach (\humhub\modules\content\models\ContentContainerSetting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
 
-        /*
-          HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+        foreach (\humhub\models\Setting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
 
-          // Delete also records with disabled state from SpaceApplicationModule Table
-          foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
-          $sam->delete();
-          }
+        foreach (\humhub\modules\user\models\Module::findAll(['module_id' => $this->id]) as $userModule) {
+            $userModule->delete();
+        }
 
-          // Delete also records with disabled state from UserApplicationModule Table
-          foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
-          $uam->delete();
-          }
+        foreach (\humhub\modules\space\models\Module::findAll(['module_id' => $this->id]) as $spaceModule) {
+            $spaceModule->delete();
+        }
 
-          ModuleManager::flushCache();
-         */
+        Yii::$app->moduleManager->disable($this);
     }
 
     /**
