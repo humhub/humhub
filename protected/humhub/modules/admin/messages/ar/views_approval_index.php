@@ -18,6 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Pending</strong> user approvals' => 'العضويات التي تنتظر الموافقة',
-    'Here you see all users who have registered and still waiting for a approval.' => 'هنا توجد أسماء جميع الأعضاء الذين قاموا بالتسجيل و ينتظرون الموافقة',
+    'Pending user approvals' => '',
+    'The following list contains all registered users awaiting an approval.' => '',
 ];

@@ -22,6 +22,8 @@ return [
     'No spaces found.' => '',
     'Private' => '',
     'Public' => '',
+    'Settings' => '',
+    'Space' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'De eigenaar van ruimte {spaceName} kan niet verwijderd worden!',
     'Everyone can enter' => 'Iedereen kan lid worden',
     'Invite and request' => 'Uitnodigen en aanvragen',

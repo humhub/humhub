@@ -18,10 +18,12 @@
  */
 return [
     'Actions' => '',
+    'Group Manager' => '',
     'Last login' => '',
+    'Settings' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+    'Users' => '',
     'never' => '',
-    '<strong>Manage</strong> users' => '<strong>Správa</strong> uživatelů',
     'Add new user' => 'Přidat nového uživatele',
-    'In this overview you can find every registered user and manage him.' => 'V tomto přehledu naleznete a můžete spravovat libovolného uživatele.',
     'Overview' => 'Přehled',
 ];

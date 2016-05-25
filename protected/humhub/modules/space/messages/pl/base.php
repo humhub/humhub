@@ -19,6 +19,8 @@
 return [
     '<strong>Space</strong> followers' => '',
     'No spaces found.' => '',
+    'Settings' => '',
+    'Space' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nie można usunąć użytkownika który jest właścicielem strefy! Nazwa strefy: {spaceName} ',
     'Default' => 'Domyślna',
     'Everyone can enter' => 'Każdy może dołączyć ',

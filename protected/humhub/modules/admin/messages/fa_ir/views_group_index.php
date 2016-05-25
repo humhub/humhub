@@ -18,5 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Manage</strong> groups' => '<strong>مدیریت</strong> گروه‌ها',
+    'Manage groups' => '',
+    'Members' => '',
 ];

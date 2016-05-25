@@ -18,10 +18,12 @@
  */
 return [
     'Actions' => '',
+    'Group Manager' => '',
     'Last login' => '',
+    'Settings' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+    'Users' => '',
     'never' => '',
-    '<strong>Manage</strong> users' => '<strong>مدیریت</strong> کاربران',
     'Add new user' => 'اضافه کردن کاربر جدید',
-    'In this overview you can find every registered user and manage him.' => 'در این بررسی اجمالی می‌توانید هر کاربر ثبت نام شده را پیدا و مدیریت کنید.',
     'Overview' => 'بررسی اجمالی',
 ];

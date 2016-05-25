@@ -18,6 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Pending</strong> user approvals' => '<strong>Pending</strong> 保留中ユーザーの承認',
-    'Here you see all users who have registered and still waiting for a approval.' => '登録済または、承認待ちユーザーを参照してください。',
+    'Pending user approvals' => '',
+    'The following list contains all registered users awaiting an approval.' => '',
 ];

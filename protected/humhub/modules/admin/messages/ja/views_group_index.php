@@ -18,5 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Manage</strong> groups' => '<strong>Manage</strong> グループを管理',
+    'Manage groups' => '',
+    'Members' => '',
 ];
