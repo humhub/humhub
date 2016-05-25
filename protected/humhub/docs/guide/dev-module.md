@@ -10,7 +10,7 @@ The enhanced HumHub module class provides additional features like:
 - Usable as Space or User Profile module
 
 ## Quick start with HumHub Module Generator
-You can use the HumHub module generator to quickly create a basic HumHub module for you to build on top of.
+You can use the HumHub module generator to quickly create a basic module for you to build on top of.
 
 ### Enabling the Module Generator
 The module generator extends Gii, a code generation tool for the Yii framework. As such, you must enable Gii and configure it to use HumHub's generators.
@@ -49,8 +49,6 @@ http://localhost/path/to/index.php/gii
 
 You can then click the "Start" button for the HumHub Module Generator.
 
-
-
 #### Console
 Add the following to your console configuration (/protected/config/console.php) to enable the generator in your console.
 ```php
@@ -81,10 +79,8 @@ cd protected
 php yii gii/module --moduleClass="app\modules\example\Module" --moduleID=example --template="humhub"
 ```
 
-
-
-## config.php
-
+## Manual Module Creation
+### config.php
 
 If the module is placed inside the */protected/modules* folder, you can create a *config.php* in the module directory which provides automatic loading without manually modifing the application config.
 
@@ -119,7 +115,7 @@ return [
 > Note: Do not execute any code in the __config.php__ - the result will be cached!
 
 
-## module.json
+### module.json
 
 This file holds basic information about the module like name, description or current version. Locate this file in the root directory of the module.
 
