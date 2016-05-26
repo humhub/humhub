@@ -19,6 +19,8 @@
 return [
     '<strong>Space</strong> followers' => '',
     'No spaces found.' => '',
+    'Settings' => '',
+    'Space' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kunne ikke slette bruger som er en side-ejer! Navnet på siden: {spaceName}',
     'Default' => 'Standard',
     'Everyone can enter' => 'Alle kan komme ind',

@@ -25,6 +25,8 @@ return [
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
+    'Settings' => '',
+    'Space' => '',
     'Visible for all (members and guests)' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nelze smazat uživatele, který je vlastníkem prostoru! Prostor: {spaceName}',
     'Everyone can enter' => 'Každý se může přidat',

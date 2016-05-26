@@ -19,9 +19,11 @@
 return [
     'Actions' => '',
     'Add new user' => '',
+    'Group Manager' => '',
     'Last login' => '',
     'Overview' => '',
+    'Settings' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+    'Users' => '',
     'never' => '',
-    '<strong>Manage</strong> users' => '<strong>管理</strong> 用户',
-    'In this overview you can find every registered user and manage him.' => '你可以找到每个注册用户和管理他',
 ];

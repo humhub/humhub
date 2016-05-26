@@ -22,6 +22,8 @@ return [
     'No spaces found.' => '',
     'Private' => '',
     'Public' => '',
+    'Settings' => '',
+    'Space' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Negalima ištrinti vartotojo, kuriam priklauso erdvė! Erdvės pavadinimas: {spaceName}',
     'Everyone can enter' => 'Dalyvauti gali visi',
     'Invite and request' => 'Pakviesti',

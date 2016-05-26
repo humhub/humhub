@@ -23,7 +23,7 @@ class m160229_162959_multiusergroups extends \humhub\components\Migration
         $this->addForeignKey('fk-group-group', 'group_user', 'group_id', '`group`', 'id', 'CASCADE');
         
         //Merge old group user and group admins
-        $this->execute('INSERT INTO group_user (user_id, group_id) SELECT DISTINCT id, group_id from user ;');
+        $this->execute('INSERT INTO group_user (user_id, group_id) SELECT DISTINCT user.id, user.group_id FROM user LEFT JOIN `group` ON user.group_id=group.id WHERE group.id IS NOT NULL');
         $this->execute('UPDATE group_user u SET is_group_admin = :value WHERE EXISTS (Select 1 FROM group_admin a WHERE u.user_id = a.user_id);', [':value' => 1]);
        
         //Add group columns

@@ -18,10 +18,12 @@
  */
 return [
     'Actions' => '',
+    'Group Manager' => '',
     'Last login' => '',
+    'Settings' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+    'Users' => '',
     'never' => '',
-    '<strong>Manage</strong> users' => '<strong>Redaguoti</strong> profilio kategoriją',
     'Add new user' => 'Pridėti naują vartotoją',
-    'In this overview you can find every registered user and manage him.' => 'Šioje apžvalgoje Jūs galite rasti visus registruotus vartotojus ir valdyti juos.',
     'Overview' => 'Apžvalga',
 ];

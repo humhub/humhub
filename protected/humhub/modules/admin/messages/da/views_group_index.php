@@ -18,5 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Manage</strong> groups' => '<strong>Administrer</strong> grupper',
+    'Manage groups' => '',
+    'Members' => '',
 ];

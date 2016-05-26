@@ -17,6 +17,27 @@ class GitHub extends \yii\authclient\clients\GitHub
     /**
      * @inheritdoc
      */
+    protected function normalizeUserAttributes($attributes)
+    {
+        if (!isset($attributes['email'])) {
+            $emails = $this->api('user/emails', 'GET');
+
+            if (is_array($emails)) {
+                foreach ($emails as $email) {
+                    if ($email['primary'] == 1 && $email['verified'] == 1) {
+                        $attributes['email'] = $email['email'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return parent::normalizeUserAttributes($attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function defaultViewOptions()
     {
         return [
