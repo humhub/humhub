@@ -3,9 +3,9 @@ return array (
   'Allow Self-Signed Certificates?' => '',
   'E-Mail sender address' => '',
   'E-Mail sender name' => '',
-  'Encryption' => '',
+  'Encryption' => '암호화',
   'Mail Transport Type' => '',
-  'Password' => '',
+  'Password' => '패스워드',
   'Port number' => '',
-  'Username' => '',
+  'Username' => '유저네임',
 );
