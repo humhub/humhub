@@ -182,7 +182,7 @@ class Comment extends ContentAddonActiveRecord
      */
     public function getContentName()
     {
-        return Yii::t('CommentModule.models_comment', 'Comment');
+        return Yii::t('CommentModule.models_comment', 'comment');
     }
 
     /**
