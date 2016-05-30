@@ -17,7 +17,7 @@ return array (
   'Preview' => '',
   'Quote' => '',
   'Target' => '',
-  'Title' => '',
+  'Title' => 'Заголовок',
   'Title of your link' => '',
   'URL/Link' => '',
   'code text here' => '',

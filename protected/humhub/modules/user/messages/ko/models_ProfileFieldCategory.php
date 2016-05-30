@@ -9,7 +9,7 @@ return array (
   'Module' => '',
   'Social bookmarks' => '',
   'Sort order' => '',
-  'Title' => '',
+  'Title' => '제목',
   'Translation Category ID' => '',
   'Updated at' => '',
   'Updated by' => '',

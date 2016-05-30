@@ -24,7 +24,7 @@ return array (
   'Skype Nickname' => '',
   'State' => '',
   'Street' => '',
-  'Title' => '',
+  'Title' => '제목',
   'Twitter URL' => '',
   'Url' => '',
   'User' => '',

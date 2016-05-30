@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Space not found!' => '',
+  'Space not found!' => 'لم اتمكن من إيجاد الباحة!',
 );

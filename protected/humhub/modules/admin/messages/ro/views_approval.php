@@ -1,5 +1,5 @@
 <?php
 return array (
   'Accept' => '',
-  'Decline' => '',
+  'Decline' => 'Respinge',
 );

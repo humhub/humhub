@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Created At' => '',
-  'Created By' => '',
+  'Created At' => 'Oluşturulma zamanı',
+  'Created By' => 'Oluşturan',
   'Name' => 'İsim',
-  'Updated At' => '',
-  'Updated by' => '',
+  'Updated At' => 'Güncelleme zamanı',
+  'Updated by' => 'Güncelleyen',
   'Value' => '',
 );

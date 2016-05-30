@@ -7,5 +7,5 @@ return array (
   'Mail Transport Type' => '',
   'Password' => 'Contrasenya',
   'Port number' => '',
-  'Username' => '',
+  'Username' => 'Nom d\'usuari',
 );

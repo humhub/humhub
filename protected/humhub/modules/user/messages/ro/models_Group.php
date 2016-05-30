@@ -1,9 +1,9 @@
 <?php
 return array (
   'Default Space' => '',
-  'Description' => '',
+  'Description' => 'Descriere',
   'Group Administrators' => '',
-  'ID' => '',
+  'ID' => 'ID',
   'LDAP DN' => '',
   'Members can create private spaces' => '',
   'Members can create public spaces' => '',
