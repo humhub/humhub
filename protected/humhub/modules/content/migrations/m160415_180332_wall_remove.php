@@ -30,11 +30,17 @@ class m160415_180332_wall_remove extends Migration
             'IS', new Expression('(SELECT wall_entry.id FROM wall_entry WHERE wall_entry.content_id=content.id LIMIT 1)'), new Expression('NULL')
         ]);
 
-        $this->dropTable('wall');
-        $this->dropTable('wall_entry');
+        
+        
+        $this->dropForeignKey('fk_space-wall_id', 'space');
+        $this->dropForeignKey('fk_wall_entry-wall_id', 'wall_entry');
+        
         $this->dropColumn('user', 'wall_id');
         $this->dropColumn('space', 'wall_id');
         $this->dropColumn('contentcontainer', 'wall_id');
+        
+        $this->dropTable('wall_entry');
+        $this->dropTable('wall');
     }
 
     public function down()
