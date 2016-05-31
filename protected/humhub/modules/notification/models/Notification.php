@@ -64,6 +64,7 @@ class Notification extends \humhub\components\ActiveRecord
                         ->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC])
                         ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
                         ->one();
+                $params['originator'] = $params['record']->originator;
             } else {
                 $params['record'] = $this;
             }
@@ -155,7 +156,7 @@ class Notification extends \humhub\components\ActiveRecord
     {
         $query = self::find();
         $query->addSelect(['notification.*', 
-            new \yii\db\Expression('count(id) as group_count'),
+            new \yii\db\Expression('count(distinct(originator_user_id)) as group_count'),
             new \yii\db\Expression('max(created_at) as group_created_at'),
             new \yii\db\Expression('min(seen) as group_seen'),
         ]);

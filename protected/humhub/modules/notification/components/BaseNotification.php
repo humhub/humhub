@@ -311,6 +311,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
                 ])
                 ->joinWith(['originator', 'originator.profile'])
                 ->orderBy(['notification.created_at' => SORT_DESC])
+                ->groupBy(['notification.originator_user_id'])
                 ->andWhere(['IS NOT', 'user.id', new \yii\db\Expression('NULL')])
                 ->limit($limit);
 
