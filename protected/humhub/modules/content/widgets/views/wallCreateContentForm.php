@@ -58,7 +58,7 @@ use humhub\modules\space\models\Space;
                         'dataType' => 'json',
                         'beforeSend' => "function() { $('.contentForm').removeClass('error'); $('#contentFormError').hide(); $('#contentFormError').empty(); }",
                         'beforeSend' => 'function(){ $("#contentFormError").hide(); $("#contentFormError li").remove(); $(".contentForm_options .btn").hide(); $("#postform-loader").removeClass("hidden"); }',
-                        'success' => "function(response) { handleResponse(response);}"
+                        'success' => "function(response) { handleResponse(response);updateSpaceStatistic();}"
                     ],
                     'htmlOptions' => [
                         'id' => "post_submit_button",
@@ -226,5 +226,15 @@ use humhub\modules\space\models\Space;
         }
         $('.contentForm_options .btn').show();
         $('#postform-loader').addClass('hidden');
+    }
+
+    function updateSpaceStatistic() {
+        $.ajax({
+            type: "POST",
+            url: "<?=$contentContainer->createUrl('/space/space/update-space-statistic')?>",
+            success: function (html) {
+                if (html) $("#space-statistic").replaceWith(html);
+            }
+        });
     }
 </script>

@@ -127,6 +127,14 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
+    /**
+     * Update Space Statistic
+     * @return string
+     */
+    public function actionUpdateSpaceStatistic()
+    {
+        return \humhub\modules\space\widgets\SpaceStatistic::widget(['space' => $this->contentContainer]);
+    }
 }
 
 ?>
