@@ -10,6 +10,11 @@ In the upcoming 1.2.x releases we'll split the 'theme' less file into multiple f
 - There were also many view file updates this release, please check changes (e.g. diff) of your themed versions.
 We are constantly reducing view complexity to ease this process.
 
+**Important changed views:**
+
+- Logins (Standalone / Modal)
+- Registration
+- Main Layout
 
 ## Migrate from 0.20 to 1.0
 

@@ -14,11 +14,12 @@ Here you will learn how you can adapt existing modules to working fine with actu
     - Not longer validates content visibility (private/public) permissions
 
 - system_admin attribute in user table was removed
+ see [[humhub\modules\user\models\User::isSystemAdmin]]
 
 - Renamed space header settings menu dropdown class
-  from  humhub\modules\space\modules\manage\widgets\Menu to humhub\modules\space\widgets\HeaderControlMenu
+  from  [[humhub\modules\space\modules\manage\widgets\Menu]] to [[humhub\modules\space\widgets\HeaderControlsMenu]]
 
-- Refactored settings system. see [dev-settings.md](Settings Documentation) for more details.
+- Refactored settings system. see [Settings Documentation](dev-settings.md) for more details.
   Old settings api is still available in 1.1.x 
 
 - Refactored user group system
