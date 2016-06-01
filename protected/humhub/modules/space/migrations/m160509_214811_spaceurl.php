@@ -8,6 +8,10 @@ class m160509_214811_spaceurl extends Migration
 
     public function up()
     {
+        if (!class_exists('URLify')) {
+            throw new Exception('URLify class not found - please run composer update!');
+        }
+
         $this->addColumn('space', 'url', $this->string(45));
         $this->createIndex('url-unique', 'space', 'url', true);
 
