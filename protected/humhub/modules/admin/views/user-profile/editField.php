@@ -1,18 +1,26 @@
-<div class="panel panel-default">
+<?php
+
+use yii\bootstrap\Html;
+use yii\helpers\Url;
+?>
+
+<div class="panel-body">
+    <div class="pull-right">
+        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default')); ?>
+    </div>   
+
 
     <?php if (!$field->isNewRecord) : ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_editField', '<strong>Edit</strong> profile field'); ?></div>
+        <h4><?php echo Yii::t('AdminModule.views_userprofile_editField', 'Edit profile field'); ?></h4>
     <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('AdminModule.views_userprofile_editField', '<strong>Create</strong> new profile field'); ?></div>
+        <h4><?php echo Yii::t('AdminModule.views_userprofile_editField', 'Create new profile field'); ?></h4>
     <?php endif; ?>
 
-    <div class="panel-body">
+    <br />
 
-        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
-        <?php echo $hForm->render($form); ?>
-        <?php \yii\widgets\ActiveForm::end(); ?>
-
-    </div>
+    <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+    <?php echo $hForm->render($form); ?>
+    <?php \yii\widgets\ActiveForm::end(); ?>
 </div>
 
 

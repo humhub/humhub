@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -54,6 +54,9 @@ class Post extends ContentActiveRecord implements Searchable
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         // Prebuild Previews for URLs in Message
@@ -69,9 +72,7 @@ class Post extends ContentActiveRecord implements Searchable
     }
 
     /**
-     * Before Save Addons
-     *
-     * @return type
+     * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -105,7 +106,7 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getContentName()
     {
-        return Yii::t('PostModule.models_Post', 'Post');
+        return Yii::t('PostModule.models_Post', 'post');
     }
 
     /**

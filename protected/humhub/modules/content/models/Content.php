@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,16 +13,12 @@ use yii\base\Exception;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\activity\models\Activity;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * This is the model class for table "content".
  *
- * Content Container Assignment:
- * If the "space_id" attribute is set, the record belongs to a Space.
- * If not the "user_id" will be used as Content Container.
- * 
+ *
  * The followings are the available columns in table 'content':
  * @property integer $id
  * @property string $guid
@@ -31,14 +27,11 @@ use humhub\modules\activity\models\Activity;
  * @property integer $visibility
  * @property integer $sticked
  * @property string $archived
- * @property integer $space_id
- * @property integer $user_id
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
  *
- * @package humhub.models
  * @since 0.5
  */
 class Content extends \humhub\components\ActiveRecord
@@ -64,13 +57,13 @@ class Content extends \humhub\components\ActiveRecord
     const VISIBILITY_PUBLIC = 1;
 
     /**
-     * Container where content belongs to.
-     * Usually a space or user.
-     *
-     * @var IContentContainer
+     * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -98,58 +91,42 @@ class Content extends \humhub\components\ActiveRecord
     public function rules()
     {
         return [
-            [['object_id', 'visibility', 'sticked', 'space_id', 'user_id', 'created_by', 'updated_by'], 'integer'],
+            [['object_id', 'visibility', 'sticked', 'created_by', 'updated_by'], 'integer'],
             [['archived'], 'safe'],
             [['created_at', 'updated_at'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['object_model'], 'string', 'max' => 100],
             [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
-            [['visibility'], 'validateVisibility'],
             [['guid'], 'unique']
         ];
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
-    {
-        return array(
-            'id' => 'ID',
-            'guid' => 'Guid',
-            'object_model' => 'Object Model',
-            'object_id' => 'Object',
-            'visibility' => 'Visibility',
-            'sticked' => 'Sticked',
-            'archived' => 'Archived',
-            'space_id' => 'Space',
-            'user_id' => 'User',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-        );
-    }
-
-    /**
-     * User which created this Content - May also be the ContentContainer of this Content
-     * when no Space Relation exists
-     * 
+     * User which created this Content
+     * Note: Use createdBy attribute instead.
+     *
+     * @deprecated since version 1.1
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
+        return $this->createdBy;
     }
 
     /**
-     * Related space (if ContentContainer is a Space)
-     * 
+     * Return space (if this content assigned to a space)
+     * Note: Use container attribute instead
+     *
+     * @deprecated since version 1.1
      * @return \yii\db\ActiveQuery
      */
     public function getSpace()
     {
-        return $this->hasOne(\humhub\modules\space\models\Space::className(), ['id' => 'space_id']);
+        if ($this->getContainer() instanceof Space) {
+            return $this->getContainer();
+        }
+
+        return null;
     }
 
     /**
@@ -188,17 +165,20 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         if ($insert) {
-            if ($this->user_id == "") {
-                $this->user_id = Yii::$app->user->id;
+            if ($this->created_by == "") {
+                $this->created_by = Yii::$app->user->id;
             }
         }
 
-        if ($this->user_id == "")
-            throw new Exception("Could not save content without user_id!");
+        if ($this->created_by == "")
+            throw new Exception("Could not save content without created_by!");
 
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         // Loop over each eall entry and make sure its update_at / update_by
@@ -231,11 +211,10 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Before deleting a SIContent try to delete all corresponding SIContentAddons.
+     * @inheritdoc
      */
     public function beforeDelete()
     {
-
         // delete also all wall entries
         foreach ($this->getWallEntries() as $entry) {
             $entry->delete();
@@ -244,6 +223,9 @@ class Content extends \humhub\components\ActiveRecord
         return parent::beforeDelete();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterDelete()
     {
         // Try delete the underlying object (Post, Question, Task, ...)
@@ -256,105 +238,41 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Checks if the given / or current user can delete this content.
-     * Currently only the creator can remove.
+     * Checks if the content can be deleted
+     * Note: Use canEdit method instead.
      *
-     * @todo Ask the underlying "real" content for deletion?
-     *
-     * @param type $userId
+     * @deprecated since version 1.1
+     * @param int $userId optional user id (if empty current user id will be used)
      */
     public function canDelete($userId = "")
     {
-
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        if ($this->user_id == $userId)
-            return true;
-
-        if (Yii::$app->user->isAdmin()) {
-            return true;
-        }
-
-        if ($this->container instanceof Space && $this->container->isAdmin($userId)) {
-            return true;
-        }
-
-        return false;
+        return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
 
     /**
      * Checks if this content can readed
+     * Note: use canView method instead
      *
-     * @param type $userId
-     * @return type
+     * @deprecated since version 1.1
+     * @param int $userId
+     * @return boolean
      */
     public function canRead($userId = "")
     {
-
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-
-        // For guests users
-        if (Yii::$app->user->isGuest) {
-            if ($this->visibility == 1) {
-                if ($this->container instanceof Space) {
-                    if ($this->container->visibility == Space::VISIBILITY_ALL) {
-                        return true;
-                    }
-                } elseif ($this->container instanceof User) {
-                    if ($this->container->visibility == User::VISIBILITY_ALL) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        if ($this->visibility == 0) {
-            // Space/User Content Access Check
-            if ($this->space_id != "") {
-
-                $space = null;
-                if (isset(Yii::$app->params['currentSpace']) && Yii::$app->params['currentSpace']->id == $this->space_id) {
-                    $space = Yii::$app->params['currentSpace'];
-                } else {
-                    $space = Space::findOne(['id' => $this->space_id]);
-                }
-
-                // Space Found
-                if ($space != null) {
-                    if (!$space->isMember($userId)) {
-                        return false;
-                    }
-                }
-            } else {
-                // Check for user content
-                if ($userId != $this->user_id) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return $this->canView(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
 
     /**
      * Checks if this content can be changed
+     * Note: use canEdit method instead
      *
-     * @param type $userId
-     * @return type
+     * @deprecated since version 1.1
+     * @param int $userId
+     * @return boolean
      */
     public function canWrite($userId = "")
     {
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        if ($this->user_id == $userId)
-            return true;
-
-        return false;
+        return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
 
     /**
@@ -398,7 +316,7 @@ class Content extends \humhub\components\ActiveRecord
     public function stick()
     {
         $this->sticked = 1;
-        //This prevents the call of beforesave, and the setting of update_at 
+        //This prevents the call of beforesave, and the setting of update_at
         $this->updateAttributes(['sticked']);
     }
 
@@ -424,13 +342,7 @@ class Content extends \humhub\components\ActiveRecord
             return false;
         }
 
-        if ($this->container instanceof Space) {
-            return ($this->container->isAdmin());
-        } elseif ($this->container instanceof User) {
-            return (Yii::$app->user->id == $this->container->id);
-        }
-
-        return false;
+        return $this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent());
     }
 
     /**
@@ -441,13 +353,13 @@ class Content extends \humhub\components\ActiveRecord
     public function countStickedItems()
     {
         $wallId = $this->container->wall_id;
-        return WallEntry::find()->joinWith('content')->where(['wall_entry.wall_id'=>$wallId, 'content.sticked' => 1])->count();
+        return WallEntry::find()->joinWith('content')->where(['wall_entry.wall_id' => $wallId, 'content.sticked' => 1])->count();
     }
 
     /**
      * Checks if current content object is archived
      *
-     * @return type
+     * @return boolean
      */
     public function isArchived()
     {
@@ -462,15 +374,12 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function canArchive()
     {
-        if ($this->container instanceof Space) {
-            if ($this->canWrite())
-                return true;
-            return ($this->container->isAdmin());
-        } elseif ($this->container instanceof User) {
-            return false; // Not available on user profiels because there are no filters?
+        // Disabled on user profiles, there is no stream filter available yet.
+        if ($this->getContainer() instanceof User) {
+            return false;
         }
 
-        return false;
+        return $this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent());
     }
 
     /**
@@ -592,29 +501,21 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Sets container of this content.
+     * Sets container (e.g. space or user record) for this content.
      *
-     * @param IContentContainer $container
+     * @param ContentContainerActiveRecord $container
      * @throws Exception
      */
-    public function setContainer($container)
+    public function setContainer(ContentContainerActiveRecord $container)
     {
-        if ($container instanceof Space) {
-            $this->space_id = $container->id;
-        } elseif ($container instanceof User) {
-            $this->user_id = $container->id;
-        } else {
-            throw new Exception("Invalid container type!");
-        }
-
+        $this->contentcontainer_id = $container->contentContainerRecord->id;
         $this->_container = $container;
     }
 
     /**
-     * Returns the container which this content belongs to.
-     * This is usally a space or user.
+     * Returns the content container (e.g. space or user record) of this content
      *
-     * @return IContentContainer
+     * @return ContentContainerActiveRecord
      * @throws Exception
      */
     public function getContainer()
@@ -623,38 +524,107 @@ class Content extends \humhub\components\ActiveRecord
             return $this->_container;
         }
 
-        if ($this->space_id != null) {
-            $container = $this->space;
-        } elseif ($this->user_id != null) {
-            $container = $this->user;
-        } else {
-            throw new Exception("Could not determine container type!");
+        if ($this->contentContainer !== null) {
+            $this->_container = $this->contentContainer->getPolymorphicRelation();
         }
-
-        $this->_container = $container;
 
         return $this->_container;
     }
 
-    public function beforeValidate()
+    /**
+     * Relation to ContentContainer model
+     * Note: this is not a Space or User instance!
+     *
+     * @since 1.1
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContentContainer()
     {
-        if (!$this->container->canWrite($this->user_id) && $this->getPolymorphicRelation()->className() != Activity::className()) {
-            $this->addError('visibility', Yii::t('base', 'Insufficent permissions to create content!'));
-        }
-
-        return parent::beforeValidate();
+        return $this->hasOne(ContentContainer::className(), ['id' => 'contentcontainer_id']);
     }
 
-    public function validateVisibility()
+    /**
+     * Checks if user can edit this content
+     *
+     * @todo create possibility to define own canEdit in ContentActiveRecord
+     * @todo also check content containers canManage content permission
+     * @since 1.1
+     * @param User $user
+     * @return boolean can edit this content
+     */
+    public function canEdit($user = null)
     {
-        if ($this->object_model == Activity::className() || $this->getPolymorphicRelation()->className() == Activity::className()) {
-            return;
+        if(Yii::$app->user->isGuest) {
+            return false;
+        }
+        
+        if ($user === null) {
+            $user = Yii::$app->user->getIdentity();
         }
 
-        if ($this->container->className() == Space::className()) {
-            if (!$this->container->canShare() && $this->visibility) {
-                $this->addError('visibility', Yii::t('base', 'You cannot create public visible content!'));
+        // Only owner can edit his content
+        if ($user !== null && $this->created_by == $user->id) {
+            return true;
+        }
+
+        // Global Admin can edit/delete arbitrarily content
+        if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if user can view this content
+     *
+     * @since 1.1
+     * @param User $user
+     * @return boolean can view this content
+     */
+    public function canView($user = null)
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        // Check Guest Visibility
+        if ($user === null) {
+            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->visibility === self::VISIBILITY_PUBLIC) {
+                // Check container visibility for guests
+                if (($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) ||
+                        ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL)) {
+                    return true;
+                }
             }
+            return false;
+        }
+
+        // Public visible content
+        if ($this->visibility === self::VISIBILITY_PUBLIC) {
+            return true;
+        }
+
+        // Check Superadmin can see all content option
+        if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
+            return true;
+        }
+
+        if ($this->visibility === self::VISIBILITY_PRIVATE && $this->getContainer()->canAccessPrivateContent($user)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Updates the wall/stream sorting time of this content for "updated at" sorting
+     */
+    public function updateStreamSortTime()
+    {
+        foreach ($this->getWallEntries() as $wallEntry) {
+            $wallEntry->updated_at = new \yii\db\Expression('NOW()');
+            $wallEntry->save();
         }
     }
 

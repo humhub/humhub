@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -15,10 +15,11 @@ use humhub\models\Setting;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Group;
 
 /**
  * Console Install
- * 
+ *
  * @author Luke
  */
 class InstallController extends Controller
@@ -30,15 +31,14 @@ class InstallController extends Controller
 
         \humhub\modules\installer\libs\InitialData::bootstrap();
 
-        Setting::Set('name', "HumHub Test");
-        Setting::Set('systemEmailName', "humhub@example.com", 'mailing');
-        Setting::Set('systemEmailName', "humhub@example.com", 'mailing');
-        Setting::Set('secret', \humhub\libs\UUID::v4());
+        Yii::$app->settings->set('name', "HumHub Test");
+        Yii::$app->settings->set('mailer.systemEmailName', "humhub@example.com");
+        Yii::$app->settings->set('mailer.systemEmailName', "humhub@example.com");
+        Yii::$app->settings->set('secret', \humhub\libs\UUID::v4());
 
         $user = new User();
-        $user->group_id = 1;
+        //$user->group_id = 1;
         $user->username = "Admin";
-        $user->auth_mode = 'local';
         $user->email = 'humhub@example.com';
         $user->status = User::STATUS_ENABLED;
         $user->language = '';
@@ -57,6 +57,8 @@ class InstallController extends Controller
         $password->setPassword('test');
         $password->save();
 
+        // Assign to system admin group
+        Group::getAdminGroup()->addUser($user);
 
 
         return self::EXIT_CODE_NORMAL;

@@ -9,8 +9,6 @@
 namespace humhub\modules\admin;
 
 use Yii;
-use humhub\modules\user\models\User;
-use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\models\Setting;
 
 /**
@@ -31,7 +29,7 @@ class Events extends \yii\base\Object
             return;
         }
 
-        if (Setting::Get('needApproval', 'authentication_internal')) {
+        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
                 $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
             }
@@ -59,23 +57,23 @@ class Events extends \yii\base\Object
 
         $latestVersion = libs\HumHubAPI::getLatestHumHubVersion();
         if ($latestVersion != "") {
-            $adminUserQuery = User::find()->where(['super_admin' => 1]);
-            $latestNotifiedVersion = Setting::Get('lastVersionNotify', 'admin');
+            $adminUsers = \humhub\modules\user\models\Group::getAdminGroup()->users;
+            $latestNotifiedVersion = Yii::$app->getModule('admin')->settings->get('lastVersionNotify');
             $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
             $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));
             $updateNotification = new notifications\NewVersionAvailable();
 
             // Cleanup existing notifications
             if (!$newVersionAvailable || ($newVersionAvailable && !$adminsNotified)) {
-                foreach ($adminUserQuery->all() as $admin) {
+                foreach ($adminUsers as $admin) {
                     $updateNotification->delete($admin);
                 }
             }
 
             // Create new notification
             if ($newVersionAvailable && !$adminsNotified) {
-                $updateNotification->sendBulk($adminUserQuery);
-                Setting::Set('lastVersionNotify', $latestVersion, 'admin');
+                $updateNotification->sendBulk($adminUsers);
+                Yii::$app->getModule('admin')->settings->set('lastVersionNotify', $latestVersion);
             }
         }
 

@@ -8,6 +8,10 @@
 
 namespace humhub\modules\user\components;
 
+use Yii;
+use yii\authclient\ClientInterface;
+use humhub\modules\user\authclient\AuthClientHelpers;
+
 /**
  * Description of User
  *
@@ -15,6 +19,11 @@ namespace humhub\modules\user\components;
  */
 class User extends \yii\web\User
 {
+
+    /**
+     * @var ClientInterface[] the users authclients
+     */
+    private $_authClients = null;
 
     /**
      * @var PermissionManager
@@ -26,7 +35,7 @@ class User extends \yii\web\User
         if ($this->isGuest)
             return false;
 
-        return ($this->getIdentity()->super_admin == 1);
+        return $this->getIdentity()->isSystemAdmin();
     }
 
     public function getLanguage()
@@ -61,6 +70,60 @@ class User extends \yii\web\User
 
         $this->permissionManager = new PermissionManager;
         return $this->permissionManager;
+    }
+
+    public function canChangePassword()
+    {
+        foreach ($this->getAuthClients() as $authClient) {
+            if ($authClient->className() == \humhub\modules\user\authclient\Password::className()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function canChangeEmail()
+    {
+        if (in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function canDeleteAccount()
+    {
+        foreach ($this->getAuthClients() as $authClient) {
+            if ($authClient instanceof \humhub\modules\user\authclient\interfaces\AutoSyncUsers) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function getAuthClients()
+    {
+        if ($this->_authClients === null) {
+            $this->_authClients = AuthClientHelpers::getAuthClientsByUser($this->getIdentity());
+        }
+
+        return $this->_authClients;
+    }
+
+    public function setCurrentAuthClient(ClientInterface $authClient)
+    {
+        Yii::$app->session->set('currentAuthClientId', $authClient->getId());
+    }
+
+    public function getCurrentAuthClient()
+    {
+        foreach ($this->getAuthClients() as $authClient) {
+            if ($authClient->getId() == Yii::$app->session->get('currentAuthClientId')) {
+                return $authClient;
+            }
+        }
+        return null;
     }
 
 }

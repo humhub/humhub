@@ -2,14 +2,13 @@
 
 namespace humhub\modules\user;
 
+use Yii;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\GroupAdmin;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\Follow;
-use humhub\modules\user\libs\Ldap;
-use humhub\models\Setting;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -22,7 +21,7 @@ class Events extends \yii\base\Object
     /**
      * On rebuild of the search index, rebuild all user records
      *
-     * @param type $event
+     * @param \yii\base\Event $event
      */
     public static function onSearchRebuild($event)
     {
@@ -34,7 +33,7 @@ class Events extends \yii\base\Object
     /**
      * On delete of a Content or ContentAddon
      *
-     * @param type $event
+     * @param \yii\base\Event $event
      */
     public static function onContentDelete($event)
     {
@@ -45,27 +44,23 @@ class Events extends \yii\base\Object
     /**
      * Callback to validate module database records.
      *
-     * @param Event $event
+     * @param \yii\base\Event $event
      */
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline("User Module - Users (" . User::find()->count() . " entries)");
-        foreach (User::find()->joinWith(['profile', 'group'])->all() as $user) {
+        foreach (User::find()->joinWith(['profile'])->all() as $user) {
             if ($user->profile == null) {
                 $integrityController->showWarning("User with id " . $user->id . " has no profile record!");
             }
-            if ($user->group == null) {
-                $integrityController->showWarning("User with id " . $user->id . " has no group assignment!");
-            }
         }
-
-        $integrityController->showTestHeadline("User Module - GroupAdmin (" . GroupAdmin::find()->count() . " entries)");
-        foreach (GroupAdmin::find()->joinWith(['user'])->all() as $groupAdmin) {
-            if ($groupAdmin->user == null) {
-                if ($integrityController->showFix("Deleting group admin " . $groupAdmin->id . " without existing user!")) {
-                    $groupAdmin->delete();
+        
+        foreach (GroupUser::find()->joinWith(['user'])->all() as $groupUser) {
+            if ($groupUser->user == null) {
+                if ($integrityController->showFix("Deleting group admin " . $groupUser->id . " without existing user!")) {
+                    $groupUser->delete();
                 }
             }
         }
@@ -126,14 +121,22 @@ class Events extends \yii\base\Object
         }
     }
 
+    /**
+     * Tasks on hourly cron job
+     * 
+     * @param \yii\base\Event $event
+     */
     public static function onHourlyCron($event)
     {
         $controller = $event->sender;
 
-        if (Setting::Get('enabled', 'authentication_ldap') && Setting::Get('refreshUsers', 'authentication_ldap') && Ldap::isAvailable()) {
-            $controller->stdout("Refresh ldap users... ");
-            Ldap::getInstance()->refreshUsers();
-            $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
+            if ($authClient instanceof authclient\interfaces\AutoSyncUsers) {
+                /**
+                 * @var authclient\interfaces\AutoSyncUsers $authClient 
+                 */
+                $authClient->syncUsers();
+            }
         }
 
         // Delete expired session

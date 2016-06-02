@@ -2,41 +2,51 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use \humhub\components\Controller;
-use \yii\helpers\Url;
-use \yii\web\HttpException;
-use \humhub\modules\user\models\User;
+use yii\helpers\Url;
+use yii\web\HttpException;
+use humhub\modules\user\components\BaseAccountController;
+use humhub\modules\user\models\User;
 
 /**
  * AccountController provides all standard actions for the current logged in
  * user account.
  *
  * @author Luke
- * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
-class AccountController extends Controller
+class AccountController extends BaseAccountController
 {
 
-    public $subLayout = "@humhub/modules/user/views/account/_layout";
+    public function init()
+    {
+        $this->setActionTitles([
+            'edit' => Yii::t('UserModule.base', 'Profile'),
+            'edit-settings' => Yii::t('UserModule.base', 'Settings'),
+            'security' => Yii::t('UserModule.base', 'Security'),
+            'connected-accounts' => Yii::t('UserModule.base', 'Connected accounts'),
+            'edit-modules' => Yii::t('UserModule.base', 'Modules'),
+            'delete' => Yii::t('UserModule.base', 'Delete'),
+            'emailing' => Yii::t('UserModule.base', 'Notifications'),
+            'change-email' => Yii::t('UserModule.base', 'Email'),
+            'change-email-validate' => Yii::t('UserModule.base', 'Email'),
+            'change-password' => Yii::t('UserModule.base', 'Password'),
+        ]);
+        return parent::init();
+    }
 
     /**
-     * @inheritdoc
+     * Redirect to current users profile
      */
-    public function behaviors()
+    public function actionIndex()
     {
-        return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-            ]
-        ];
+        return $this->redirect(Yii::$app->user->getIdentity()->getUrl());
     }
 
     /**
@@ -44,8 +54,8 @@ class AccountController extends Controller
      */
     public function actionEdit()
     {
-
         $user = Yii::$app->user->getIdentity();
+        $user->profile->scenario = 'editProfile';
 
         // Get Form Definition
         $definition = $user->profile->getFormDefinition();
@@ -65,7 +75,7 @@ class AccountController extends Controller
             $user->save();
 
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
-            return $this->redirect(Url::to(['edit']));
+            return $this->redirect(['edit']);
         }
 
         return $this->render('edit', array('hForm' => $form));
@@ -83,22 +93,19 @@ class AccountController extends Controller
         $model = new \humhub\modules\user\models\forms\AccountSettings();
         $model->language = $user->language;
         if ($model->language == "") {
-            $model->language = \humhub\models\Setting::Get('defaultLanguage');
+            $model->language = Yii::$app->settings->get('defaultLanguage');
         }
         $model->timeZone = $user->time_zone;
         if ($model->timeZone == "") {
-            $model->timeZone = \humhub\models\Setting::Get('timeZone');
+            $model->timeZone = Yii::$app->settings->get('timeZone');
         }
-        $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
 
         $model->tags = $user->tags;
-        $model->show_introduction_tour = $user->getSetting("hideTourPanel", "tour");
-        $model->show_share_panel = $user->getSetting("hideSharePanel", "share");
+        $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->setSetting('hideTourPanel', $model->show_introduction_tour, "tour");
-            $user->setSetting("hideSharePanel", $model->show_share_panel, "share");
+            Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
             $user->language = $model->language;
             $user->tags = $model->tags;
             $user->time_zone = $model->timeZone;
@@ -108,7 +115,75 @@ class AccountController extends Controller
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
+        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
+    }
+
+    /**
+     * Change Account
+     *
+     * @todo Add Group
+     */
+    public function actionSecurity()
+    {
+        $groups = [];
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            $groups[User::USERGROUP_FRIEND] = 'Friends';
+        }
+        $groups[User::USERGROUP_USER] = 'Members';
+        $groups[User::USERGROUP_GUEST] = 'Guests';
+
+        $currentGroup = Yii::$app->request->get('groupId');
+        if ($currentGroup == '' || !isset($groups[$currentGroup])) {
+            $currentGroup = User::USERGROUP_USER;
+        }
+
+        // Handle permission state change
+        if (Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+            $permission = $this->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
+            if ($permission === null) {
+                throw new \yii\web\HttpException(500, 'Could not find permission!');
+            }
+            $this->user->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
+            return [];
+        }
+
+        return $this->render('security', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup]);
+    }
+
+    public function actionConnectedAccounts()
+    {
+        if (Yii::$app->request->isPost && Yii::$app->request->get('disconnect')) {
+            foreach (Yii::$app->user->getAuthClients() as $authClient) {
+                if ($authClient->getId() == Yii::$app->request->get('disconnect')) {
+                    \humhub\modules\user\authclient\AuthClientHelpers::removeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+                }
+            }
+            return $this->redirect(['connected-accounts']);
+        }
+        $clients = [];
+        foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
+            if (!$client instanceof humhub\modules\user\authclient\BaseFormAuth && !$client instanceof \humhub\modules\user\authclient\interfaces\PrimaryClient) {
+                $clients[] = $client;
+            }
+        }
+
+        $currentAuthProviderId = "";
+        if (Yii::$app->user->getCurrentAuthClient() !== null) {
+            $currentAuthProviderId = Yii::$app->user->getCurrentAuthClient()->getId();
+        }
+
+        $activeAuthClientIds = [];
+        foreach (Yii::$app->user->getAuthClients() as $authClient) {
+            $activeAuthClientIds[] = $authClient->getId();
+        }
+
+        return $this->render('connected-accounts', [
+                    'authClients' => $clients,
+                    'currentAuthProviderId' => $currentAuthProviderId,
+                    'activeAuthClientIds' => $activeAuthClientIds
+        ]);
     }
 
     /**
@@ -133,7 +208,7 @@ class AccountController extends Controller
             $user->enableModule($moduleId);
         }
 
-        return $this->redirect(Url::toRoute('/user/account/edit-modules'));
+        return $this->redirect(['/user/account/edit-modules']);
     }
 
     public function actionDisableModule()
@@ -147,7 +222,7 @@ class AccountController extends Controller
             $user->disableModule($moduleId);
         }
 
-        return $this->redirect(Url::toRoute('/user/account/edit-modules'));
+        return $this->redirect(['/user/account/edit-modules']);
     }
 
     /**
@@ -161,8 +236,8 @@ class AccountController extends Controller
         $isSpaceOwner = false;
         $user = Yii::$app->user->getIdentity();
 
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new HttpException(500, 'This is not a local account! You cannot delete it. (e.g. LDAP)!');
+        if (!Yii::$app->user->canDeleteAccount()) {
+            throw new HttpException(500, 'Account deletion not allowed');
         }
 
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
@@ -176,7 +251,7 @@ class AccountController extends Controller
         if (!$isSpaceOwner && $model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->delete();
             Yii::$app->user->logout();
-            return $this->redirect(Yii::$app->homeUrl);
+            return $this->goHome();
         }
 
         return $this->render('delete', array(
@@ -195,14 +270,28 @@ class AccountController extends Controller
         $user = Yii::$app->user->getIdentity();
         $model = new \humhub\modules\user\models\forms\AccountEmailing();
 
-        $model->receive_email_activities = $user->getSetting("receive_email_activities", 'core', \humhub\models\Setting::Get('receive_email_activities', 'mailing'));
-        $model->receive_email_notifications = $user->getSetting("receive_email_notifications", 'core', \humhub\models\Setting::Get('receive_email_notifications', 'mailing'));
-        $model->enable_html5_desktop_notifications = $user->getSetting("enable_html5_desktop_notifications", 'core', \humhub\models\Setting::Get('enable_html5_desktop_notifications', 'notification'));
+        $model->receive_email_activities = Yii::$app->getModule('activity')->settings->contentContainer($user)->get('receive_email_activities');
+        if ($model->receive_email_activities === null) {
+            // Use site default value
+            $model->receive_email_activities = Yii::$app->getModule('activity')->settings->get('receive_email_activities');
+        }
+
+        $model->receive_email_notifications = Yii::$app->getModule('notification')->settings->contentContainer($user)->get('receive_email_notifications');
+        if ($model->receive_email_notifications === null) {
+            // Use site default value
+            $model->receive_email_notifications = Yii::$app->getModule('notification')->settings->get('receive_email_notifications');
+        }
+
+        $model->enable_html5_desktop_notifications = Yii::$app->getModule('notification')->settings->contentContainer($user)->get('enable_html5_desktop_notifications');
+        if ($model->enable_html5_desktop_notifications === null) {
+            // Use site default value
+            $model->enable_html5_desktop_notifications = Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications');
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->setSetting("receive_email_activities", $model->receive_email_activities);
-            $user->setSetting("receive_email_notifications", $model->receive_email_notifications);
-            $user->setSetting('enable_html5_desktop_notifications', $model->enable_html5_desktop_notifications);
+            Yii::$app->getModule('activity')->settings->contentContainer($user)->get('receive_email_activities', $model->receive_email_activities);
+            Yii::$app->getModule('notification')->settings->contentContainer($user)->get('receive_email_notifications', $model->receive_email_notifications);
+            Yii::$app->getModule('notification')->settings->contentContainer($user)->get('enable_html5_desktop_notifications', $model->enable_html5_desktop_notifications);
 
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
@@ -215,9 +304,8 @@ class AccountController extends Controller
      */
     public function actionChangeEmail()
     {
-        $user = Yii::$app->user->getIdentity();
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+        if (!Yii::$app->user->canChangeEmail()) {
+            throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
         $model = new \humhub\modules\user\models\forms\AccountChangeEmail;
@@ -235,17 +323,17 @@ class AccountController extends Controller
      */
     public function actionChangeEmailValidate()
     {
-        $user = Yii::$app->user->getIdentity();
-
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+        if (!Yii::$app->user->canChangeEmail()) {
+            throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
         $token = Yii::$app->request->get('token');
         $email = Yii::$app->request->get('email');
 
+        $user = Yii::$app->user->getIdentity();
+
         // Check if Token is valid
-        if (md5(\humhub\models\Setting::Get('secret') . $user->guid . $email) != $token) {
+        if (md5(Yii::$app->settings->get('secret') . $user->guid . $email) != $token) {
             throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'Invalid link! Please make sure that you entered the entire url.'));
         }
 
@@ -266,10 +354,8 @@ class AccountController extends Controller
      */
     public function actionChangePassword()
     {
-        $user = Yii::$app->user->getIdentity();
-
-        if ($user->auth_mode != User::AUTH_MODE_LOCAL) {
-            throw new CHttpException(500, Yii::t('UserModule.controllers_AccountController', 'You cannot change your e-mail address here.'));
+        if (!Yii::$app->user->canChangePassword()) {
+            throw new HttpException(500, 'Password change is not allowed');
         }
 
         $userPassword = new \humhub\modules\user\models\Password();
@@ -415,15 +501,15 @@ class AccountController extends Controller
 
     /**
      * Returns the current user of this account
-     * 
+     *
      * An administration can also pass a user id via GET parameter to change users
      * accounts settings.
-     * 
+     *
      * @return User the user
      */
     public function getUser()
     {
-        if (Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->super_admin === 1) {
+        if (Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             $user = User::findOne(['guid' => Yii::$app->request->get('userGuid')]);
             if ($user === null) {
                 throw new HttpException(404, 'Could not find user!');

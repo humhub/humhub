@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\space\models\Space;
 use humhub\models\Setting;
 use humhub\modules\space\models\Membership;
@@ -57,40 +58,32 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
-        $results = array();
-        $keyword = Yii::$app->request->get('keyword');
+        return UserPicker::filter([
+                    'query' => $space->getMembershipUser(),
+                    'keyword' => Yii::$app->request->get('keyword'),
+                    'fillUser' => true
+        ]);
+    }
 
+    /**
+     * Provides a searchable user list of all workspace members in json.
+     *
+     */
+    public function actionSearchInvite()
+    {
+        Yii::$app->response->format = 'json';
 
-        $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', ['space_id' => $space->id, 'member' => Membership::STATUS_MEMBER]);
-        $query->andWhere('space_membership.space_id IS NOT NULL');
+        $space = $this->getSpace();
 
-
-        $query->joinWith('profile');
-        $query->limit(10);
-
-        // Build Search Condition
-        $parts = explode(" ", $keyword);
-        $i = 0;
-        foreach ($parts as $part) {
-            $i++;
-            $query->andWhere("(user.email LIKE :match OR "
-                    . "user.username LIKE :match OR "
-                    . "profile.firstname LIKE :match OR "
-                    . "profile.lastname LIKE :match OR "
-                    . "profile.title LIKE :match)", ['match' => '%' . $part . '%']);
+        if (!$space->isMember()) {
+            throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
-        foreach ($query->all() as $user) {
-            $userInfo['guid'] = $user->guid;
-            $userInfo['displayName'] = \yii\helpers\Html::encode($user->displayName);
-            $userInfo['email'] = $user->email;
-            $userInfo['image'] = $user->getProfileImage()->getUrl();
-            $userInfo['link'] = $user->getUrl();
-            $results[] = $userInfo;
-        }
-
-        return $results;
+        return UserPicker::filter([
+                    'query' => $space->getNonMembershipUser(),
+                    'keyword' => Yii::$app->request->get('keyword'),
+                    'fillUser' => true
+        ]);
     }
 
     /**
@@ -147,11 +140,13 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         if ($space->isSpaceOwner()) {
             throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'As owner you cannot revoke your membership!'));
+        } elseif (!$space->canLeave()) {
+            throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'Sorry, you are not allowed to leave this space!'));
         }
 
         $space->removeMember();
 
-        return $this->redirect(Url::home());
+        return $this->goHome();
     }
 
     /**
@@ -165,6 +160,9 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->canInvite()) {
             throw new HttpException(403, 'Access denied - You cannot invite members!');
         }
+
+        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
@@ -180,16 +178,19 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
 
             // Invite non existing members
-            if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) {
+            if ($canInviteExternal) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id)) ? Membership::STATUS_INVITED : false;
                 }
             }
 
-            return $this->renderAjax('statusInvite', array('status' => $statusInvite));
+            return $this->renderAjax('statusInvite', [
+                        'status' => $statusInvite,
+                        'canInviteExternal' => $canInviteExternal
+            ]);
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', array('model' => $model, 'space' => $space, 'canInviteExternal' => $canInviteExternal));
     }
 
     /**
@@ -218,7 +219,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
     /**
      * Toggle space content display at dashboard
-     * 
+     *
      * @throws HttpException
      */
     public function actionSwitchDashboardDisplay()

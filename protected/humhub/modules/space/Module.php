@@ -8,6 +8,9 @@
 
 namespace humhub\modules\space;
 
+use humhub\modules\user\models\User;
+use Yii;
+
 /**
  * SpaceModule provides all space related classes & functions.
  *
@@ -41,14 +44,35 @@ class Module extends \humhub\components\Module
         if ($contentContainer instanceof models\Space) {
             return [
                 new permissions\InviteUsers(),
-                new permissions\CreatePublicContent,
             ];
+        } elseif ($contentContainer instanceof User) {
+            return [];
         }
 
         return [
             new permissions\CreatePrivateSpace(),
             new permissions\CreatePublicSpace(),
         ];
+    }
+    
+    public function getName()
+    {
+        return Yii::t('SpaceModule.base', 'Space');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications() 
+    {
+       return [
+           'humhub\modules\space\notifications\ApprovalRequest',
+           'humhub\modules\space\notifications\ApprovalRequestAccepted',
+           'humhub\modules\space\notifications\ApprovalRequestDeclined',
+           'humhub\modules\space\notifications\Invite',
+           'humhub\modules\space\notifications\InviteAccepted',
+           'humhub\modules\space\notifications\InviteDeclined'
+       ];
     }
 
 }

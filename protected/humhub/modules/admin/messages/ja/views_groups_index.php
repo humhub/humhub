@@ -1,5 +1,7 @@
 <?php
 return array (
   'Create new group' => '新しいグループを作成',
-  'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.' => 'あなたは別のユーザーをグループ（チーム、部署などに）に分割し、それらのためにスペースと管理者を定義することができます。',
+  'Members' => 'メンバー',
+  'Permissions' => '',
+  'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => '',
 );

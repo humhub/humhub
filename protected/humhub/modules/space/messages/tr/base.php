@@ -2,7 +2,7 @@
 return array (
   '<strong>Space</strong> followers' => '',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Mekan sahibi bir kullanıcı silinemedi! Mekanın adı: {spaceName}',
-  'Default' => '',
+  'Default' => 'Standart',
   'Everyone can enter' => 'Herkes girebilir',
   'Invite and request' => 'Davet et ve İstek yolla',
   'No spaces found.' => '',
@@ -14,5 +14,7 @@ return array (
   'Public (Members only)' => 'Genel (Üyeler için)',
   'Public (Registered users only)' => 'Genel (Sadece kayıtlı kullanıcılar)',
   'Public (Visible)' => 'Genel (Görünür)',
+  'Settings' => 'Ayarlar',
+  'Space' => '',
   'Visible for all (members and guests)' => 'Tümü görebilir (Üye ve Misafir)',
 );

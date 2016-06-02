@@ -1,6 +1,7 @@
 <?php
 return array (
   'Birthday' => 'День рождения',
+  'Country' => 'Страна',
   'Date' => 'Дата',
   'Datetime' => 'Дата-время',
   'Number' => 'Номер',

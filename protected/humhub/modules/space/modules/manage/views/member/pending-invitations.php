@@ -5,12 +5,12 @@ use yii\helpers\Html;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 ?>
-<?= MemberMenu::widget(['space' => $space]); ?>
-<br />
+
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Pending</strong> invitations'); ?>
+        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
     </div>
+    <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
         <div class="table-responsive">
             <?php

@@ -41,13 +41,4 @@ class Events
         ));
     }
 
-    public static function onSidebarInit($event)
-    {
-        if (Setting::Get('enable', 'share') == 1) {
-            if (Yii::$app->user->isGuest || Yii::$app->user->getIdentity()->getSetting("hideSharePanel", "share") != 1) {
-                $event->sender->addWidget(ShareWidget::className(), array(), array('sortOrder' => 150));
-            }
-        }
-    }
-
 }

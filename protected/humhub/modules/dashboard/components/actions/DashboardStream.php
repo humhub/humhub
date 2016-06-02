@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,6 +26,8 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
     public function init()
     {
         parent::init();
+
+        $friendshipEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
 
         if ($this->user == null) {
 
@@ -77,6 +79,17 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
                     ->where('space_membership.user_id=' . $this->user->id . ' AND sm.wall_id IS NOT NULL AND space_membership.show_at_dashboard = 1');
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0];
 
+            if ($friendshipEnabled) {
+                // User to user follows
+                $usersFriends = (new \yii\db\Query())
+                        ->select(["ufr.wall_id"])
+                        ->from('user ufr')
+                        ->leftJoin('user_friendship recv', 'ufr.id=recv.friend_user_id AND recv.user_id=' . intval($this->user->id))
+                        ->leftJoin('user_friendship snd', 'ufr.id=snd.user_id AND snd.friend_user_id=' . intval($this->user->id))
+                        ->where('recv.id IS NOT NULL AND snd.id IS NOT NULL AND ufr.wall_id IS NOT NULL');
+                $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($usersFriends)[0];
+            }
+
             // Glue together also with current users wall
             $wallIdsSql = (new \yii\db\Query())
                     ->select('wall_id')
@@ -85,7 +98,8 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
             // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-            $this->activeQuery->andWhere('wall_entry.wall_id IN (' . $union . ')', [':spaceClass' => \humhub\modules\space\models\Space::className(), ':userClass' => \humhub\modules\user\models\User::className()]);
+            // Double union query - to avoid MySQL performance problems 
+            $this->activeQuery->andWhere('wall_entry.wall_id IN (select subselect.wall_id from (' . $union . ') subselect)', [':spaceClass' => \humhub\modules\space\models\Space::className(), ':userClass' => \humhub\modules\user\models\User::className()]);
 
             /**
              * Begin visibility checks regarding the content container
@@ -94,9 +108,18 @@ class DashboardStream extends \humhub\modules\content\components\actions\Stream
             $this->activeQuery->leftJoin(
                     'space_membership', 'wall.object_id=space_membership.space_id AND space_membership.user_id=:userId AND space_membership.status=:status', ['userId' => $this->user->id, ':status' => \humhub\modules\space\models\Membership::STATUS_MEMBER]
             );
+            if ($friendshipEnabled) {
+                $this->activeQuery->leftJoin(
+                        'user_friendship', 'wall.object_id=user_friendship.user_id AND user_friendship.friend_user_id=:userId', ['userId' => $this->user->id]
+                );
+            }
 
+            $condition = ' (wall.object_model=:userModel AND content.visibility=0 AND content.created_by = :userId) OR ';
+            if ($friendshipEnabled) {
+                // In case of friendship we can also display private content
+                $condition .= ' (wall.object_model=:userModel AND content.visibility=0 AND user_friendship.id IS NOT NULL) OR ';
+            }
             // In case of an space entry, we need to join the space membership to verify the user can see private space content
-            $condition = ' (wall.object_model=:userModel AND content.visibility=0 AND content.user_id = :userId) OR ';
             $condition .= ' (wall.object_model=:spaceModel AND content.visibility = 0 AND space_membership.status = ' . \humhub\modules\space\models\Membership::STATUS_MEMBER . ') OR ';
             $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) ';
             $this->activeQuery->andWhere($condition, [':userId' => $this->user->id, ':spaceModel' => \humhub\modules\space\models\Space::className(), ':userModel' => \humhub\modules\user\models\User::className()]);

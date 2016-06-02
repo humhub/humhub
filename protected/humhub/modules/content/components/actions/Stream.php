@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\components\actions;
@@ -30,7 +18,6 @@ use yii\base\Exception;
 /**
  * BaseStreamAction
  *
- * @package humhub.modules_core.wall
  * @author luke
  * @since 0.11
  */
@@ -116,10 +103,17 @@ class Stream extends \yii\base\Action
             if ($from != 0) {
                 $this->from = (int) $from;
             }
-            $sort = Yii::$app->getRequest()->get('sort', '');
-            if ($sort != "") {
+
+            /**
+             * Sorting
+             */
+            $sort = Yii::$app->getRequest()->get('sort', Yii::$app->getModule('content')->settings->get('stream.defaultSort'));
+            if ($sort === static::SORT_CREATED_AT || $sort === static::SORT_UPDATED_AT) {
                 $this->sort = $sort;
+            } else {
+                $this->sort = static::SORT_CREATED_AT;
             }
+
             $limit = Yii::$app->getRequest()->get('limit', '');
             if ($limit != "" && $limit <= self::MAX_LIMIT) {
                 $this->limit = $limit;
@@ -140,8 +134,8 @@ class Stream extends \yii\base\Action
     public function setupCriteria()
     {
         $this->activeQuery->joinWith('content');
-        $this->activeQuery->joinWith('content.user');
-        $this->activeQuery->joinWith('content.space');
+        $this->activeQuery->joinWith('content.createdBy');
+        $this->activeQuery->joinWith('content.contentContainer');
 
         $this->activeQuery->limit($this->limit);
         $this->activeQuery->andWhere(['user.status' => User::STATUS_ENABLED]);
@@ -156,7 +150,7 @@ class Stream extends \yii\base\Action
             // Dont show own activities
             if ($this->user != null) {
                 $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
-                $this->activeQuery->andWhere('content.user_id != :userId', array(':userId' => $this->user->id));
+                $this->activeQuery->andWhere('content.created_by != :userId', array(':userId' => $this->user->id));
             }
         } else {
             $this->activeQuery->andWhere(['!=', 'content.object_model', \humhub\modules\activity\models\Activity::className()]);
@@ -206,7 +200,7 @@ class Stream extends \yii\base\Action
         }
         // Show only mine items
         if (in_array('entry_mine', $this->filters) && $this->user !== null) {
-            $this->activeQuery->andWhere(['content.user_id' => $this->user->id]);
+            $this->activeQuery->andWhere(['content.created_by' => $this->user->id]);
         }
         // Show only items where the current user is involed
         if (in_array('entry_userinvoled', $this->filters) && $this->user !== null) {

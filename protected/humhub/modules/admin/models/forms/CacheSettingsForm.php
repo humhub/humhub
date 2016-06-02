@@ -6,17 +6,30 @@ use Yii;
 use yii\base\Model;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * CachingForm
+ * 
  * @since 0.5
  */
-class CacheSettingsForm extends \yii\base\Model
+class CacheSettingsForm extends Model
 {
 
     public $type;
     public $expireTime;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->settings;
+        $this->type = $settingsManager->get('cache.class');
+        $this->expireTime = $settingsManager->get('cache.expireTime');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -29,9 +42,7 @@ class CacheSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -41,6 +52,9 @@ class CacheSettingsForm extends \yii\base\Model
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTypes()
     {
         return array(
@@ -50,11 +64,30 @@ class CacheSettingsForm extends \yii\base\Model
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function checkCacheType($attribute, $params)
     {
         if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add')) {
             $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC Extension missing - Type not available!"));
         }
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->settings;
+
+        $settingsManager->set('cache.class', $this->type);
+        $settingsManager->set('cache.expireTime', $this->expireTime);
+
+        \humhub\libs\DynamicConfig::rewrite();
+        return true;
     }
 
 }

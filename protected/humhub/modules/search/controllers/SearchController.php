@@ -29,6 +29,12 @@ class SearchController extends Controller
     const SCOPE_SPACE = "space";
     const SCOPE_CONTENT = "content";
 
+    public function init()
+    {
+        $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
+        return parent::init();
+    }
+
     /**
      * @inheritdoc
      */
@@ -65,7 +71,7 @@ class SearchController extends Controller
         $options = [
             'page' => $page,
             'sort' => ($keyword == '') ? 'title' : null,
-            'pageSize' => Setting::Get('paginationSize'),
+            'pageSize' => Yii::$app->settings->get('paginationSize'),
             'limitSpaces' => $limitSpaces
         ];
         if ($scope == self::SCOPE_CONTENT) {

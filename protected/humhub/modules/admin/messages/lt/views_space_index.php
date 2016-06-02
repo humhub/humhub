@@ -18,9 +18,9 @@
  */
 return [
     'Actions' => '',
+    'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
+    'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     '<strong>Manage</strong> spaces' => '<strong>Tvarkyti</strong> erdves',
-    'Define here default settings for new spaces.' => 'Apibrėžti numatytuosius nustatymus visoms erdvėms.',
-    'In this overview you can find every space and manage it.' => 'Šioje apžvalgoje Jūs galite rasti visas erdves ir tvarkyti jas.',
     'Overview' => 'Apžvalga',
     'Settings' => 'Nustatymai',
 ];

@@ -102,13 +102,19 @@ class RichText extends \humhub\components\Widget
 
         if (!$this->minimal) {
             $output = nl2br($this->text);
+            
         } else {
             $output = $this->text;
         }
-
+        
+        // replace leading spaces with no break spaces to keep the text format
+        $output = preg_replace_callback('/^( +)/m', function($m) {
+            return str_repeat("&nbsp;", strlen($m[1])); 
+        }, $output);
+        
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
-        return $output;
+        return trim($output);
     }
 
     /**

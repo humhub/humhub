@@ -1,58 +1,57 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\models\forms;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
+use humhub\modules\user\models\User;
+use humhub\modules\user\components\CheckPasswordValidator;
 
 /**
  * Form Model for email change
  *
- * @package humhub.modules_core.user.forms
  * @since 0.5
  */
 class AccountChangeEmail extends \yii\base\Model
 {
 
+    /**
+     * @var string the users password
+     */
     public $currentPassword;
+
+    /**
+     * @var string the users new email address
+     */
     public $newEmail;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
      */
     public function rules()
     {
-        return array(
-            array(['currentPassword', 'newEmail'], 'required'),
-            array('currentPassword', \humhub\modules\user\components\CheckPasswordValidator::className()),
-            array('newEmail', 'email'),
-            array('newEmail', 'unique', 'targetAttribute' => 'email', 'targetClass' => \humhub\modules\user\models\User::className(), 'message' => '{attribute} "{value}" is already in use!'),
-        );
+        $rules = [
+            ['newEmail', 'required'],
+            ['newEmail', 'email'],
+            ['newEmail', 'unique', 'targetAttribute' => 'email', 'targetClass' => User::className(), 'message' => '{attribute} "{value}" is already in use!'],
+        ];
+
+        if (CheckPasswordValidator::hasPassword()) {
+            $rules[] = ['currentPassword', CheckPasswordValidator::className()];
+            $rules[] = ['currentPassword', 'required'];
+        }
+
+        return $rules;
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -64,27 +63,26 @@ class AccountChangeEmail extends \yii\base\Model
 
     /**
      * Sends Change E-Mail E-Mail
-     *
      */
-    public function sendChangeEmail()
+    public function sendChangeEmail($approveUrl = '')
     {
         $user = Yii::$app->user->getIdentity();
 
-        $token = md5(Setting::Get('secret') . $user->guid . $this->newEmail);
+        $token = md5(Yii::$app->settings->get('secret') . $user->guid . $this->newEmail);
 
         $mail = Yii::$app->mailer->compose([
-			'html' => '@humhub/modules/user/views/mails/ChangeEmail',
-			'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail'
-		], [
+            'html' => '@humhub/modules/user/views/mails/ChangeEmail',
+            'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail'
+                ], [
             'user' => $user,
             'newEmail' => $this->newEmail,
-            'approveUrl' => Url::to(["/user/account/change-email-validate", 'email' => $this->newEmail, 'token' => $token], true)
+            'approveUrl' => Url::to([empty($approveUrl) ? "/user/account/change-email-validate" : $approveUrl, 'email' => $this->newEmail, 'token' => $token], true),
         ]);
-        $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+        $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         $mail->setTo($this->newEmail);
         $mail->setSubject(Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change'));
         $mail->send();
-        
+
         return true;
     }
 

@@ -18,6 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Pending</strong> user approvals' => 'Aprovações de usuários <strong>pendentes</strong> ',
-    'Here you see all users who have registered and still waiting for a approval.' => 'Aqui você pode ver todos os usuários que se cadastraram e ainda estão aguardando por aprovação.',
+    'Pending user approvals' => '',
+    'The following list contains all registered users awaiting an approval.' => '',
 ];

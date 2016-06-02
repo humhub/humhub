@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Change</strong> password' => '',
-  'Save' => '',
+  'Save' => 'Salvează',
+  'Your current password can be changed here.' => '',
 );

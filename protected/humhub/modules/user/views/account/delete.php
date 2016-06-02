@@ -1,37 +1,31 @@
 <?php
 
-use \humhub\compat\CActiveForm;
-use \humhub\compat\CHtml;
+use yii\bootstrap\Html;
+use humhub\widgets\DataSaved;
+use humhub\widgets\ActiveForm;
 ?>
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_delete', '<strong>Delete</strong> account'); ?>
-</div>
+<?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
+<?php if ($isSpaceOwner) : ?>
+    <?php echo Yii::t('UserModule.views_account_delete', 'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.'); ?>
+<?php else: ?>
+    <?php echo Yii::t('UserModule.views_account_delete', 'Are you sure, that you want to delete your account?<br />All your published content will be removed! '); ?>
+    <br />
+    <br />
 
-<div class="panel-body">
-    <?php if ($isSpaceOwner) { ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-        <?php echo Yii::t('UserModule.views_account_delete', 'Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.'); ?>
+    <?php if ($model->isAttributeRequired('currentPassword')): ?>
+        <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'placeholder' => Yii::t('UserModule.views_account_delete', 'Enter your password to continue')])->label(false); ?>
+    <?php else: ?>
+        <?php echo $form->field($model, 'currentPassword')->hiddenInput()->label(false); ?>
+    <?php endif; ?>
 
-    <?php } else { ?>
+    <?php echo Html::submitButton(Yii::t('UserModule.views_account_delete', 'Delete account'), array('class' => 'btn btn-danger', 'data-ui-loader' => '')); ?>
+    <?php echo DataSaved::widget(); ?>
 
-        <?php echo Yii::t('UserModule.views_account_delete', 'Are you sure, that you want to delete your account?<br />All your published content will be removed! '); ?>
+    <?php ActiveForm::end(); ?>
 
-        <?php $form = CActiveForm::begin(); ?>
-
-        <p class="help-block">Fields with <span class="required">*</span> are required.</p><br>
-
-        <?php echo $form->errorSummary($model); ?>
-        <div class="form-group">
-            <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_account_delete', 'Enter your password to continue'), 'maxlength' => 45)); ?>
-        </div>
-        <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_delete', 'Delete account'), array('class' => 'btn btn-danger')); ?>
-
-
-        <!-- show flash message after saving -->
-        <?php echo \humhub\widgets\DataSaved::widget(); ?>
-
-        <?php CActiveForm::end(); ?>
-    <?php } ?>
-</div>
+<?php endif; ?>
+<?php $this->endContent(); ?>
 
 

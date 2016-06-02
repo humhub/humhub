@@ -16,9 +16,8 @@ function Stream(baseElement) {
     this.baseDiv = baseElement;
     this.debug = true;
     this.filters = "";
-    this.sorting = "c";
+    this.sorting = defaultStreamSort;
     this.limit = 4;
-
 
     /**
      * Return parseHtml result and delete dublicated entries from container
@@ -112,15 +111,15 @@ function Stream(baseElement) {
         url = streamUrl;
         url = url.replace('-filter-', '');
         url = url.replace('-sort-', '');
-        url = url.replace('-from-', parseInt(wallEntryId)+1);
+        url = url.replace('-from-', parseInt(wallEntryId) + 1);
         url = url.replace('-limit-', 1);
-        
+
 
         // Load Entry
         jQuery.getJSON(url, function (json) {
             streamDiv = $(me.baseDiv).find(".s2_singleContent");
             //$(json.output).appendTo(streamDiv).fadeIn('fast');
-            $(streamDiv).append(parseEntriesHtml(json,streamDiv ));
+            $(streamDiv).append(parseEntriesHtml(json, streamDiv));
 
             me.lastEntryLoaded = true;
             me.loadedEntryCount += json.counter;
@@ -184,15 +183,20 @@ function Stream(baseElement) {
 
             streamDiv = $(me.baseDiv).find(".s2_streamContent");
             //$(json.output).appendTo(streamDiv).fadeIn('fast');
-            $(streamDiv).append(parseEntriesHtml(json,streamDiv ));
+            $(streamDiv).append(parseEntriesHtml(json, streamDiv));
 
             me.lastLoadedEntryId = json.lastEntryId;
             me.onNewEntries();
             me.loadMore();
             installAutoLoader();
-
         });
 
+        $('.wallSorting').children("i").removeClass('fa-check-square-o');
+        $('.wallSorting').children("i").removeClass('fa-square-o');
+        $('.wallSorting').children("i").addClass('fa-square-o');
+
+        $('#sorting_' + this.sorting).children("i").removeClass('fa-square-o');
+        $('#sorting_' + this.sorting).children("i").addClass('fa-check-square-o');
     }
 
 
@@ -229,7 +233,7 @@ function Stream(baseElement) {
         var url = streamUrl;
         url = url.replace('-filter-', '');
         url = url.replace('-sort-', '');
-        url = url.replace('-from-', parseInt(wallEntryId)+1);
+        url = url.replace('-from-', parseInt(wallEntryId) + 1);
         url = url.replace('-limit-', 1);
 
         jQuery.getJSON(url, function (json) {
@@ -237,16 +241,16 @@ function Stream(baseElement) {
 
             var $streamDiv = $(me.baseDiv).find(".s2_streamContent");
             var $newEntryHtml = $(parseEntriesHtml(json)).hide();
-            
+
             var $firstUnstickedEntry = $streamDiv.find('.wall-entry:not(.sticked-entry)').first();
-            
-            if($firstUnstickedEntry.length) {
+
+            if ($firstUnstickedEntry.length) {
                 $firstUnstickedEntry.before($newEntryHtml);
                 $newEntryHtml.fadeIn('fast');
             } else {
                 $newEntryHtml.prependTo($streamDiv).fadeIn('fast');
             }
-            
+
             me.onNewEntries();
 
             // In case of first post / hide message
@@ -291,7 +295,7 @@ function Stream(baseElement) {
 
                 streamDiv = $(me.baseDiv).find(".s2_streamContent");
                 //$(json.output).appendTo(streamDiv).fadeIn('fast');
-                $(streamDiv).append(parseEntriesHtml(json,streamDiv ));
+                $(streamDiv).append(parseEntriesHtml(json, streamDiv));
 
                 me.lastLoadedEntryId = json.lastEntryId;
                 me.onNewEntries();
@@ -365,7 +369,6 @@ function Stream(baseElement) {
             me.showStream();
 
         });
-
     }
 
     /**

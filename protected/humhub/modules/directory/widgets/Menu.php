@@ -32,7 +32,7 @@ class Menu extends \humhub\widgets\BaseMenu
             'sortOrder' => 100,
         ));
 
-        if (Group::find()->count() > 1) {
+        if (Yii::$app->getModule('directory')->isGroupListingEnabled()) {
             $this->addItem(array(
                 'label' => Yii::t('DirectoryModule.views_directory_layout', 'Groups'),
                 'group' => 'directory',

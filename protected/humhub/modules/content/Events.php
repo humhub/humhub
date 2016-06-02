@@ -10,7 +10,7 @@ namespace humhub\modules\content;
 
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\content\components\MailUpdateSender;
 use humhub\modules\user\models\User;
 use humhub\commands\CronController;
 use humhub\models\Setting;
@@ -31,10 +31,9 @@ class Events extends \yii\base\Object
 
         models\WallEntry::deleteAll(['wall_id' => $user->wall_id]);
         models\Wall::deleteAll(['id' => $user->wall_id]);
-        foreach (Content::findAll(['user_id' => $user->id]) as $content) {
+        foreach (Content::findAll(['created_by' => $user->id]) as $content) {
             $content->delete();
         }
-
         return true;
     }
 
@@ -44,7 +43,7 @@ class Events extends \yii\base\Object
 
         models\WallEntry::deleteAll(['wall_id' => $space->wall_id]);
         models\Wall::deleteAll(['id' => $space->wall_id]);
-        foreach (Content::findAll(['space_id' => $space->id]) as $content) {
+        foreach (Content::findAll(['contentcontainer_id' => $space->contentContainerRecord->id]) as $content) {
             $content->delete();
         }
 
@@ -78,11 +77,6 @@ class Events extends \yii\base\Object
             }
             if ($content->getPolymorphicRelation() == null) {
                 if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
-                    $content->delete();
-                }
-            }
-            if ($content->space_id != "" && $content->space == null) {
-                if ($integrityController->showFix("Deleting content id " . $content->id . " without valid space!")) {
                     $content->delete();
                 }
             }
@@ -122,77 +116,14 @@ class Events extends \yii\base\Object
         );
     }
 
+    /**
+     * Handle cron runs
+     * 
+     * @param \yii\base\ActionEvent $event
+     */
     public static function onCronRun($event)
     {
-        $controller = $event->sender;
-
-        $interval = "";
-        if (Yii::$app->controller->action->id == 'hourly') {
-            $interval = CronController::EVENT_ON_HOURLY_RUN;
-        } elseif (Yii::$app->controller->action->id == 'daily') {
-            $interval = CronController::EVENT_ON_DAILY_RUN;
-        } else {
-            return;
-        }
-
-        $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->where(['user.status' => User::STATUS_ENABLED]);
-        $totalUsers = $users->count();
-        $done = 0;
-        $mailsSent = 0;
-        $defaultLanguage = Yii::$app->language;
-
-        Console::startProgress($done, $totalUsers, 'Sending update e-mails to users... ', false);
-        foreach ($users->each() as $user) {
-
-            if ($user->email === "") {
-                continue;
-            }
-
-
-            // Check user should receive an email
-            Yii::$app->user->switchIdentity($user);
-            if ($user->language != "") {
-                Yii::$app->language = $user->language;
-            } else {
-                Yii::$app->language = $defaultLanguage;
-            }
-
-            $notifications = Yii::$app->getModule('notification')->getMailUpdate($user, $interval);
-            $activities = Yii::$app->getModule('activity')->getMailUpdate($user, $interval);
-
-            if ((is_array($notifications) && isset($notifications['html']) && $notifications['html'] != "") || (is_array($activities) && isset($activities['html']) && $activities['html'] != "")) {
-
-                try {
-                    $mail = Yii::$app->mailer->compose([
-                        'html' => '@humhub/modules/content/views/mails/Update',
-                        'text' => '@humhub/modules/content/views/mails/plaintext/Update'
-                    ], [
-                        'activities' => (isset($activities['html']) ? $activities['html'] : ''),
-                        'activities_plaintext' => (isset($activities['plaintext']) ? $activities['plaintext'] : ''),
-                        'notifications' => (isset($notifications['html']) ? $notifications['html'] : ''),
-                        'notifications_plaintext' => (isset($notifications['plaintext']) ? $notifications['plaintext'] : ''),
-                    ]);
-                    $mail->setFrom([Setting::Get('systemEmailAddress', 'mailing') => Setting::Get('systemEmailName', 'mailing')]);
-                    $mail->setTo($user->email);
-                    if ($interval == CronController::EVENT_ON_HOURLY_RUN) {
-                        $mail->setSubject(Yii::t('base', "Latest news"));
-                    } else {
-                        $mail->setSubject(Yii::t('base', "Your daily summary"));
-                    }
-                    $mail->send();
-                    $mailsSent++;
-                } catch (\Swift_SwiftException $ex) {
-                    Yii::error('Could not send mail to: ' . $user->email . ' - Error:  ' . $ex->getMessage());
-                } catch (Exception $ex) {
-                    Yii::error('Could not send mail to: ' . $user->email . ' - Error:  ' . $ex->getMessage());
-                }
-            }
-
-            Console::updateProgress( ++$done, $totalUsers);
-        }
-
-        Console::endProgress(true);
-        $controller->stdout('done - ' . $mailsSent . ' email(s) sent.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        MailUpdateSender::processCron($event->sender);
     }
 
     /**

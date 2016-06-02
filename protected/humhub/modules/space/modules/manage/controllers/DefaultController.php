@@ -9,9 +9,9 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
+use humhub\modules\space\models\SpacePages;
 
 /**
  * Default space admin action
@@ -33,22 +33,27 @@ class DefaultController extends Controller
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('index'));
         }
-        return $this->render('index', array('model' => $space));
+        return $this->render('index', ['model' => $space]);
     }
 
-    /**
-     * Security settings
-     */
-    public function actionSecurity()
+    public function actionAdvanced()
     {
-        $space = $this->contentContainer;
+        $space = \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace::findOne(['id' => $this->contentContainer->id]);
         $space->scenario = 'edit';
-
+        $space->indexUrl = Yii::$app->getModule('space')->settings->space()->get('indexUrl');
+        
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
-            return $this->redirect($space->createUrl('security'));
+            return $this->redirect($space->createUrl('advanced'));
         }
-        return $this->render('security', array('model' => $space));
+
+        $indexModuleSelection = \humhub\modules\space\widgets\Menu::getAvailablePages();
+
+        //To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
+        array_shift($indexModuleSelection);
+        $indexModuleSelection = ["" => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
+
+        return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
     }
 
     /**
@@ -82,7 +87,7 @@ class DefaultController extends Controller
         $model = new DeleteForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $this->getSpace()->delete();
-            return $this->redirect(Url::home());
+            return $this->goHome();
         }
 
         return $this->render('delete', array('model' => $model, 'space' => $this->getSpace()));

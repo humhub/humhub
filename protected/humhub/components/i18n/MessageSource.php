@@ -30,6 +30,11 @@ class MessageSource extends \yii\i18n\PhpMessageSource
         return parent::loadMessagesFromFile($messageFile);
     }
 
+    protected function getConfigMessageFilePath($category, $language)
+    {
+        return Yii::getAlias("@config/messages" . "/$language/" . $category . '.php');
+    }
+
     /**
      * @inheritdoc
      * 
@@ -37,9 +42,20 @@ class MessageSource extends \yii\i18n\PhpMessageSource
      */
     protected function loadMessages($category, $language)
     {
+        
         $messageFile = $this->getMessageFilePath($category, $language);
         $messages = $this->loadMessagesFromFile($messageFile);
 
+        //Used for overwriting the default language files under @app/config/messages/.
+        $configMessageFile = $this->getConfigMessageFilePath($category, $language);
+        $configMessages = parent::loadMessagesFromFile($configMessageFile);
+
+        if ($messages !== null && $configMessages !== null) {
+            $messages = array_merge($messages, $configMessages);
+        } elseif ($messages === null && $configMessages !== null) {
+            $messages = $configMessages;
+        }
+        
         $fallbackLanguage = substr($language, 0, 2);
         if ($fallbackLanguage != $language) {
             $fallbackMessageFile = $this->getMessageFilePath($category, $fallbackLanguage);

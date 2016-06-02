@@ -2,12 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\notifications;
 
+use Yii;
+use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
@@ -25,14 +27,19 @@ class Followed extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $viewName = "follow";
+    public function getUrl()
+    {
+        return $this->originator->getUrl();
+    }
 
     /**
      * @inheritdoc
      */
-    public function getUrl()
+    public function getAsHtml()
     {
-        return $this->originator->getUrl();
+        return Yii::t('UserModule.notification', '{displayName} is now following you.', array(
+                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+        ));
     }
 
 }

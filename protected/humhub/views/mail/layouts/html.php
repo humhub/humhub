@@ -87,15 +87,15 @@ use humhub\models\Setting;
                 }
 
                 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-                    color: <?php echo Setting::Get('colorInfo'); ?> !important;
+                    color: <?php echo Yii::$app->settings->get('colorInfo'); ?> !important;
                 }
 
                 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-                    color: <?php echo Setting::Get('colorInfo'); ?>!important;
+                    color: <?php echo Yii::$app->settings->get('colorInfo'); ?>!important;
                 }
 
                 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-                    color: <?php echo Setting::Get('colorInfo'); ?> !important;
+                    color: <?php echo Yii::$app->settings->get('colorInfo'); ?> !important;
                 }
 
                 table td, table tr {
@@ -525,16 +525,16 @@ use humhub\models\Setting;
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: <?php echo Setting::Get('colorPrimary'); ?>; ">
+                <td align="center" valign="top" style="background-color: <?php echo Yii::$app->settings->get('colorPrimary'); ?>; ">
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="<?php echo Setting::Get('colorPrimary'); ?>"
-                           style="background-color: <?php echo Setting::Get('colorPrimary'); ?>; ">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="<?php echo Yii::$app->settings->get('colorPrimary'); ?>"
+                           style="background-color: <?php echo Yii::$app->settings->get('colorPrimary'); ?>; ">
                         <tr>
                             <td valign="top">
 
                                 <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                                       bgcolor="<?php echo Setting::Get('colorPrimary'); ?>" style="background-color: <?php echo Setting::Get('colorPrimary'); ?>; ">
+                                       bgcolor="<?php echo Yii::$app->settings->get('colorPrimary'); ?>" style="background-color: <?php echo Yii::$app->settings->get('colorPrimary'); ?>; ">
                                     <!-- start space -->
                                     <tr>
                                         <td valign="top" height="10">

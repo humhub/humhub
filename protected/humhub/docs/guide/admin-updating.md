@@ -1,14 +1,16 @@
 Updating
 ========
 
+> Warning: Before you run an update please check, if your installed modules and themes are compatible with your target version. If not, you can follow the migration guides.
+- [Theme Migration Guide](theming-migrate.md)
+- [Module Migration Guide](dev-migrate.md)
+
 > NOTE: Only use this guide if you want to update from HumHub 0.20 or higher!
 > If you want to update from an older version (e.g. 0.11.2 or lower) to HumHub 0.20+, you have to use this guide: **[Upgrade to 0.20 and above](admin-updating-020.md "Guide: Upgrade to 0.20 and above")**
 
-1. Before you run an update please check, if your installed modules and themes are compatible with your target version. If not, you can follow the [Theme Migration Guide](theming-migrate.md) and [Module Migration Guide](dev-migrate.md) to make everything ready for the new version.
-
-2. Backup your data:
-	- Backup the whole HumHub installation folder from your webroot
-	- Make a complete MySQL Backup from your HumHub database
+> NOTE: Backup your data:
+- Backup the whole HumHub installation folder from your webroot
+- Make a complete MySQL Backup from your HumHub database
 
 
 ## Download Package installations

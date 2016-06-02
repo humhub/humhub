@@ -35,12 +35,8 @@ use yii\helpers\Html;
                                      height="50" alt="50x50" data-src="holder.js/50x50"
                                      style="width: 50px; height: 50px;">
 
-
                                 <div class="media-body">
-                                    <h4 class="media-heading"><?php echo Html::encode($user->displayName); ?>
-                                        <?php if ($user->group != null) { ?>
-                                            <small>(<?php echo Html::encode($user->group->name); ?>)</small><?php } ?>
-                                    </h4>
+                                    <h4 class="media-heading"><?php echo Html::encode($user->displayName); ?></h4>
                                     <h5><?php echo Html::encode($user->profile->title); ?></h5>
                                 </div>
                             </div>

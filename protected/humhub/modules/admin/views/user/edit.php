@@ -1,17 +1,22 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
-use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\helpers\Url;
+
+humhub\assets\Select2ExtensionAsset::register($this);
+humhub\assets\TabbedFormAsset::register($this);
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_user_edit', '<strong>Edit</strong> user'); ?></div>
+
+<div class="clearfix">
     <div class="panel-body">
-        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
-        <?php echo $hForm->render($form); ?>
-        <?php \yii\widgets\ActiveForm::end(); ?>
+        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), 
+                Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+        <h4 class="pull-left"><?= Yii::t('AdminModule.views_user_edit', 'Edit user: {name}', ['name' => $user->displayName]); ?></h4>
+  
     </div>
+</div>
+<div class="panel-body">
+    <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['data-ui-tabbed-form' => '']]); ?>
+    <?php echo $hForm->render($form); ?>
+    <?php \yii\widgets\ActiveForm::end(); ?>
 </div>

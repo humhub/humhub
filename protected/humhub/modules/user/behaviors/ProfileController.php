@@ -24,6 +24,7 @@ use Yii;
 use yii\base\Behavior;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
+use humhub\components\Controller;
 
 /**
  * This Behavior needs to be attached to all controllers which are provides
@@ -37,6 +38,13 @@ class ProfileController extends Behavior
 {
 
     public $user = null;
+
+    public function events() {
+
+        return [
+        Controller::EVENT_BEFORE_ACTION => 'beforeAction',
+        ];
+    }
 
     public function getUser()
     {
@@ -60,9 +68,14 @@ class ProfileController extends Behavior
         if ($this->user->status == User::STATUS_NEED_APPROVAL) {
             throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This user account is not approved yet!'));
         }
-        if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') && $this->user->visibility != User::VISIBILITY_ALL && Yii::$app->user->isGuest) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->user->visibility != User::VISIBILITY_ALL && Yii::$app->user->isGuest) {
             throw new HttpException(401, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'You need to login to view this user profile!'));
         }
+    }
+
+    public function beforeAction($action) {
+
+        $this->owner->prependPageTitle($this->user->displayName);
     }
 
 }

@@ -2,8 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
 
 if ($isProfileOwner) {
     $this->registerJsFile('@web/resources/user/profileHeaderImageUpload.js');
@@ -24,7 +22,7 @@ if ($isProfileOwner) {
                  width="100%" style="width: 100%; max-height: 192px;">
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($isProfileOwner) { ?>
+            <?php if ($isProfileOwner) : ?>
                 <form class="fileupload" id="bannerfileupload" action="" method="POST" enctype="multipart/form-data"
                       style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%;">
                     <input type="file" name="bannerfiles[]">
@@ -51,7 +49,7 @@ if ($isProfileOwner) {
                     </div>
                 </div>
 
-            <?php } ?>
+            <?php endif; ?>
 
             <!-- show user name and title -->
             <div class="img-profile-data">
@@ -61,7 +59,7 @@ if ($isProfileOwner) {
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($isProfileOwner) { ?>
+            <?php if ($isProfileOwner): ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
                     <a href="#" onclick="javascript:$('#bannerfileupload input').click();"
                        class="btn btn-info btn-sm"><i
@@ -91,44 +89,26 @@ if ($isProfileOwner) {
                         ));
                         ?>
                 </div>
-
-            <?php } ?>
-
-
+            <?php endif; ?>
         </div>
 
         <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
 
-            <?php
-            /* Get original profile image URL */
-
-            $profileImageExt = pathinfo($user->getProfileImage()->getUrl(), PATHINFO_EXTENSION);
-
-            $profileImageOrig = preg_replace('/.[^.]*$/', '', $user->getProfileImage()->getUrl());
-            $defaultImage = (basename($user->getProfileImage()->getUrl()) == 'default_user.jpg' || basename($user->getProfileImage()->getUrl()) == 'default_user.jpg?cacheId=0') ? true : false;
-            $profileImageOrig = $profileImageOrig . '_org.' . $profileImageExt;
-
-            if (!$defaultImage) {
-                ?>
-
-                <!-- profile image output-->
-                <a data-toggle="lightbox" data-gallery="" href="<?php echo $profileImageOrig; ?>#.jpeg"
+            <?php if ($user->profileImage->hasImage()) : ?>
+                <a data-toggle="lightbox" data-gallery="" href="<?= $user->profileImage->getUrl('_org'); ?>"
                    data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                     <img class="img-rounded profile-user-photo" id="user-profile-image"
                          src="<?php echo $user->getProfileImage()->getUrl(); ?>"
                          data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
                 </a>
-
-            <?php } else { ?>
-
+            <?php else : ?>
                 <img class="img-rounded profile-user-photo" id="user-profile-image"
                      src="<?php echo $user->getProfileImage()->getUrl(); ?>"
                      data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
-
-            <?php } ?>
+                 <?php endif; ?>
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($isProfileOwner) { ?>
+            <?php if ($isProfileOwner) : ?>
                 <form class="fileupload" id="profilefileupload" action="" method="POST" enctype="multipart/form-data"
                       style="position: absolute; top: 0; left: 0; opacity: 0; height: 140px; width: 140px;">
                     <input type="file" name="profilefiles[]">
@@ -171,7 +151,7 @@ if ($isProfileOwner) {
                         ));
                         ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
 
         </div>
 
@@ -186,31 +166,36 @@ if ($isProfileOwner) {
                 <div class="col-md-12">
                     <div class="statistics pull-left">
 
+                        <?php if ($friendshipsEnabled): ?>
+                            <a href="<?= Url::to(['/friendship/list/popup', 'userId' => $user->id]); ?>" data-target="#globalModal">
+                                <div class="pull-left entry">
+                                    <span class="count"><?php echo $countFriends; ?></span>
+                                    <br>
+                                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Friends'); ?></span>
+                                </div>
+                            </a>
+                        <?php endif; ?>
+
                         <a href="<?= $user->createUrl('/user/profile/follower-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo $user->getFollowerCount(); ?></span>
+                                <span class="count"><?php echo $countFollowers; ?></span>
                                 <br>
-                                <span
-                                    class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
                             </div>
                         </a>
                         <a href="<?= $user->createUrl('/user/profile/followed-users-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span
-                                    class="count"><?php echo $user->getFollowingCount(User::className()) + $user->getFollowingCount(Space::className()); ?></span>
+                                <span class="count"><?php echo $countFollowing; ?></span>
                                 <br>
-                                <span
-                                    class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
+                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
                             </div>
                         </a>
                         <a href="<?= $user->createUrl('/user/profile/space-membership-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo count($user->spaces); ?></span><br>
-                                <span
-                                    class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
+                                <span class="count"><?php echo $countSpaces; ?></span><br>
+                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
                             </div>
                         </a>
-
                     </div>
                     <!-- end: User statistics -->
 
@@ -222,6 +207,7 @@ if ($isProfileOwner) {
                                     'widgets' => array(
                                         array(\humhub\modules\user\widgets\ProfileEditButton::className(), array('user' => $user), array()),
                                         array(\humhub\modules\user\widgets\UserFollowButton::className(), array('user' => $user), array()),
+                                        array(\humhub\modules\friendship\widgets\FriendshipButton::className(), array('user' => $user), array()),
                                     )
                         ));
                         ?>

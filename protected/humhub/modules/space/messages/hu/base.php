@@ -31,5 +31,7 @@ return [
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Public (Visible)' => '',
+    'Settings' => '',
+    'Space' => '',
     'Visible for all (members and guests)' => '',
 ];

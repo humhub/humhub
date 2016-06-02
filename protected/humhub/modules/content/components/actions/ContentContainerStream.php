@@ -53,7 +53,7 @@ class ContentContainerStream extends Stream
          * Limit to public posts when no member
          */
         if (!$this->contentContainer->canAccessPrivateContent($this->user)) {
-            $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC);
+            $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC . " OR content.created_by = :userId", [':userId' => $this->user->id]);
         }
 
         /**

@@ -5,7 +5,8 @@ namespace humhub\modules\admin\models\forms;
 use Yii;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * MailingSettingsForm
+ * 
  * @since 0.5
  */
 class MailingSettingsForm extends \yii\base\Model
@@ -22,7 +23,28 @@ class MailingSettingsForm extends \yii\base\Model
     public $allowSelfSignedCerts;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->settings;
+        $this->transportType = $settingsManager->get('mailer.transportType');
+        $this->hostname = $settingsManager->get('mailer.hostname');
+        $this->username = $settingsManager->get('mailer.username');
+        if ($settingsManager->get('mailer.password') != '')
+            $this->password = '---invisible---';
+
+        $this->port = $settingsManager->get('mailer.port');
+        $this->encryption = $settingsManager->get('mailer.encryption');
+        $this->allowSelfSignedCerts = $settingsManager->get('mailer.allowSelfSignedCerts');
+        $this->systemEmailAddress = $settingsManager->get('mailer.systemEmailAddress');
+        $this->systemEmailName = $settingsManager->get('mailer.systemEmailName');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -38,9 +60,7 @@ class MailingSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -54,6 +74,31 @@ class MailingSettingsForm extends \yii\base\Model
             'encryption' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Encryption'),
             'allowSelfSignedCerts' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Allow Self-Signed Certificates?'),
         );
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->settings;
+
+        $settingsManager->set('mailer.transportType', $this->transportType);
+        $settingsManager->set('mailer.hostname', $this->hostname);
+        $settingsManager->set('mailer.username', $this->username);
+        if ($this->password != '---invisible---')
+            $settingsManager->set('mailer.password', $this->password);
+        $settingsManager->set('mailer.port', $this->port);
+        $settingsManager->set('mailer.encryption', $this->encryption);
+        $settingsManager->set('mailer.allowSelfSignedCerts', $this->allowSelfSignedCerts);
+        $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
+        $settingsManager->set('mailer.systemEmailName', $this->systemEmailName);
+
+        \humhub\libs\DynamicConfig::rewrite();
+
+        return true;
     }
 
 }

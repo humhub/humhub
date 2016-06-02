@@ -52,7 +52,9 @@ class AccountRecoverPassword extends \yii\base\Model
 
         if ($this->email != "") {
             $user = User::findOne(array('email' => $this->email));
-            if ($user != null && $user->auth_mode != "local") {
+            $passwordAuth = new \humhub\modules\user\authclient\Password();
+
+            if ($user != null && $user->auth_mode !== $passwordAuth->getId()) {
                 $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', "Password recovery is not possible on your account type!")));
             }
         }
@@ -73,16 +75,16 @@ class AccountRecoverPassword extends \yii\base\Model
         }
 
         $token = \humhub\libs\UUID::v4();
-        $user->setSetting('passwordRecoveryToken', $token . '.' . time(), 'user');
+        Yii::$app->getModule('user')->settings->contentContainer($user)->set('passwordRecoveryToken', $token . '.' . time());
 
         $mail = Yii::$app->mailer->compose([
 			'html' => '@humhub/modules/user/views/mails/RecoverPassword',
 			'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
 		], [
             'user' => $user,
-            'linkPasswordReset' => Url::to(["/user/auth/reset-password", 'token' => $token, 'guid' => $user->guid], true)
+            'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
         ]);
-        $mail->setFrom([\humhub\models\Setting::Get('systemEmailAddress', 'mailing') => \humhub\models\Setting::Get('systemEmailName', 'mailing')]);
+        $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery'));
         $mail->send();

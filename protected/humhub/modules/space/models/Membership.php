@@ -17,6 +17,7 @@ use humhub\modules\comment\models\Comment;
  * @property string $request_message
  * @property string $last_visit
  * @property integer $show_at_dashboard
+ * @property boolean $can_leave
  * @property string $group_id
  * @property string $created_at
  * @property integer $created_by
@@ -67,6 +68,7 @@ class Membership extends \yii\db\ActiveRecord
             'created_by' => Yii::t('SpaceModule.models_Membership', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.models_Membership', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Membership', 'Updated By'),
+            'can_leave' => 'Can Leave',
         ];
     }
 
@@ -136,7 +138,7 @@ class Membership extends \yii\db\ActiveRecord
         $spaces = Yii::$app->cache->get($cacheId);
         if ($spaces === false) {
 
-            $orderSetting = \humhub\models\Setting::Get('spaceOrder', 'space');
+            $orderSetting = Yii::$app->getModule('space')->settings->get('spaceOrder');
             $orderBy = 'name ASC';
             if ($orderSetting != 0) {
                 $orderBy = 'last_visit DESC';
@@ -154,7 +156,7 @@ class Membership extends \yii\db\ActiveRecord
 
     /**
      * Returns Space for user space membership
-     * 
+     *
      * @since 1.0
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states

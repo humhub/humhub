@@ -36,16 +36,10 @@ class DefaultMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'index'),
         ));
         $this->addItem(array(
-            'label' => Yii::t('AdminModule.manage', 'Security'),
-            'url' => $this->space->createUrl('/space/manage/default/security'),
+            'label' => Yii::t('AdminModule.manage', 'Advanced'),
+            'url' => $this->space->createUrl('/space/manage/default/advanced'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'security'),
-        ));
-        $this->addItem(array(
-            'label' => Yii::t('AdminModule.manage', 'Delete'),
-            'url' => $this->space->createUrl('/space/manage/default/delete'),
-            'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'delete'),
+            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'advanced'),
         ));
         parent::init();
     }

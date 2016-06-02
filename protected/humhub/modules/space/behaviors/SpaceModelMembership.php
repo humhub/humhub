@@ -10,7 +10,6 @@ namespace humhub\modules\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
@@ -44,6 +43,29 @@ class SpaceModelMembership extends Behavior
         if ($membership != null && $membership->status == Membership::STATUS_MEMBER)
             return true;
 
+        return false;
+    }
+    
+    /**
+     * Checks if a given Userid is allowed to leave this space.
+     * A User is allowed to leave, if the can_cancel_membership flag in the space_membership table is 1. If it is 2, the decision is delegated to the space.
+     * 
+     * @param number $userId, if empty hte currently logged in user is taken.
+     * @return bool
+     */
+    public function canLeave($userId = "")
+    {
+    
+        // Take current userid if none is given
+        if ($userId == "")
+            $userId = Yii::$app->user->id;
+    
+        $membership = $this->getMembership($userId);
+
+        if ($membership != null && !empty($membership->can_cancel_membership)) {
+            return $membership->can_cancel_membership === 1 || ($membership->can_cancel_membership === 2 && !empty($this->owner->members_can_leave));
+        }          
+    
         return false;
     }
 
@@ -306,8 +328,9 @@ class SpaceModelMembership extends Behavior
      * after Approval or accepting an invite.
      *
      * @param type $userId
+     * @param type $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      */
-    public function addMember($userId)
+    public function addMember($userId, $canLeave = 1)
     {
         $user = User::findOne(['id' => $userId]);
         $membership = $this->getMembership($userId);
@@ -319,6 +342,7 @@ class SpaceModelMembership extends Behavior
             $membership->user_id = $userId;
             $membership->status = Membership::STATUS_MEMBER;
             $membership->group_id = Space::USERGROUP_MEMBER;
+            $membership->can_cancel_membership = $canLeave;
 
             $userInvite = Invite::findOne(['email' => $user->email]);
             if ($userInvite !== null && $userInvite->source == Invite::SOURCE_INVITE) {

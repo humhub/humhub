@@ -38,7 +38,7 @@ class LanguageChooser extends \yii\base\Widget
     {
         $model = new \humhub\models\forms\ChooseLanguage();
         $model->language = Yii::$app->language;
-        return $this->render('languageChooser', array('model' => $model, 'languages' => Yii::$app->params['availableLanguages']));
+        return $this->render('languageChooser', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
     }
 
 }

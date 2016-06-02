@@ -1,10 +1,12 @@
 <?php
 return array (
-  '<strong>Manage</strong> users' => '<strong>Kullanıcıları</strong> yönet',
   'Actions' => 'Eylemler',
   'Add new user' => 'Yeni kullanıcı ekle',
-  'In this overview you can find every registered user and manage him.' => 'Kayıtlı kullanıcıları bulabilir, görüntüleyebilir ve yönetebilirsiniz.',
+  'Group Manager' => '',
   'Last login' => 'Son giriş',
   'Overview' => 'Genel Bakış',
+  'Settings' => 'Ayarlar',
+  'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+  'Users' => 'Kullanıcılar',
   'never' => 'asla',
 );

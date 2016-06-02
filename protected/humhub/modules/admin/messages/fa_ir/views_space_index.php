@@ -18,9 +18,9 @@
  */
 return [
     'Actions' => '',
+    'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
+    'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     '<strong>Manage</strong> spaces' => '<strong>مدیریت</strong> انجمن‌ها',
-    'Define here default settings for new spaces.' => 'اینجا تنظیمات پیش‌فرض برای انجمن‌های جدید تعریف کنید. ',
-    'In this overview you can find every space and manage it.' => 'در این بررسی اجمالی شما می‌توانید هر انجمن را پیدا و مدیریت کنید.',
     'Overview' => 'بررسی اجمالی',
     'Settings' => 'تنظیمات',
 ];

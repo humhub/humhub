@@ -1,0 +1,71 @@
+.or-container {
+    text-align: center;
+    margin: 0;
+    margin-top:-10px;
+    padding: 0;
+    clear: both;
+    color: #6a737c;
+    font-variant: small-caps;
+}                    
+
+.or-container hr {
+    margin-bottom: 0;
+    position: relative;
+    top: 19px;
+    height: 0;
+    border: 0;
+    border-top: 1px solid #e4e6e8;
+}
+
+.or-container div {
+    display: inline-block;
+    position: relative;
+    padding: 8px;
+
+    background-color: #FFF;
+}
+
+.authChoiceMore {
+    display:none;
+    padding-top:6px;
+}
+
+.authChoiceMore a {
+    margin-top:6px !important;
+} 
+
+.authChoice i {
+    padding-right:7px;
+}
+
+#btnAuthChoiceMore i {
+    padding-right:0px;
+}
+
+.auth-clients {
+    padding:0px !important;
+    margin:0px !important;
+}
+
+
+
+.btn-fb, .btn-fb:hover, .btn-fb:active, .btn-fb:visited {
+    color:white !important;
+    background-color: #395697 !important;
+}
+.btn-steam, .btn-steam:hover, .btn-steam:active, .btn-steam:visited {
+    color:white !important;
+    background-color: #000 !important;
+}   
+.btn-github, .btn-github:hover, .btn-github:active, .btn-github:visited {
+    color:white !important;
+    background-color: #4078C0 !important;
+}
+.btn-linkedin, .btn-linkedin:hover, .btn-linkedin:active, .btn-linkedin:visited {
+    color:white !important;
+    background-color: #0077B5 !important;
+}
+.btn-twitter, .btn-twitter:hover, .btn-twitter:active, .btn-twitter:visited {
+    color:white !important;
+    background-color: #1da1f2 !important;
+}

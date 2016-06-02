@@ -14,5 +14,7 @@ return array (
   'Public (Members only)' => 'Открыто (Только участники)',
   'Public (Registered users only)' => 'Открыто (Только для зарегистрированных)',
   'Public (Visible)' => 'Открыто (Отображается)',
+  'Settings' => 'Настройки',
+  'Space' => '',
   'Visible for all (members and guests)' => 'Отображается для всех (Участники и гости)',
 );

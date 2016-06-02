@@ -1,6 +1,6 @@
 <?php
 return array (
   'Create new space' => '',
-  'My spaces' => '',
-  'Search' => '',
+  'My spaces' => 'Spațiile mele',
+  'Search' => 'Căutare',
 );

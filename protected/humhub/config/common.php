@@ -4,10 +4,11 @@ Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
+Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.0.1',
+    'version' => '1.1.0-beta.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
@@ -26,12 +27,17 @@ $config = [
                 [
                     'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
+                    'except' => ['yii\web\HttpException:404'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
         ],
         'search' => array(
             'class' => 'humhub\modules\search\engine\ZendLuceneSearch',
+        ),
+        'settings' => array(
+            'class' => 'humhub\components\SettingsManager',
+            'moduleId' => 'base',
         ),
         'i18n' => [
             'class' => 'humhub\components\i18n\I18N',
@@ -95,11 +101,15 @@ $config = [
             'charset' => 'utf8',
             'enableSchemaCache' => true,
         ],
+        'authClientCollection' => [
+            'class' => 'humhub\modules\user\authclient\Collection',
+            'clients' => [],
+        ],
     ],
     'params' => [
         'installed' => false,
         'databaseInstalled' => false,
-        'dynamicConfigFile' => '@app/config/dynamic.php',
+        'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'moduleMarketplacePath' => '@app/modules',
         'availableLanguages' => [
@@ -180,6 +190,8 @@ $config = [
             // Check SSL certificates on CURL requests
             'validateSsl' => true,
         ],
+        // Allowed languages limitation (optional)
+        'allowedLanguages' => [],
     ]
 ];
 

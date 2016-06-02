@@ -2,18 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
-use humhub\models\Setting;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 
@@ -21,11 +19,15 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
  * CreateController is responsible for creation of new spaces
  *
  * @author Luke
- * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
 class CreateController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $defaultAction = 'create';
 
     /**
      * @inheritdoc
@@ -41,7 +43,7 @@ class CreateController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect(Url::to(['create']));
+        return $this->redirect(['create']);
     }
 
     /**
@@ -61,7 +63,7 @@ class CreateController extends Controller
         }
 
         $visibilityOptions = [];
-        if (Setting::Get('allowGuestAccess', 'authentication_internal') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
             $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
         }
         if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
@@ -70,7 +72,7 @@ class CreateController extends Controller
         if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
-        
+
         $joinPolicyOptions = [
             Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
             Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
@@ -109,6 +111,8 @@ class CreateController extends Controller
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
 
+        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             // Invite existing members
@@ -116,7 +120,7 @@ class CreateController extends Controller
                 $space->inviteMember($user->id, Yii::$app->user->id);
             }
             // Invite non existing members
-            if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) {
+            if ($canInviteExternal) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $space->inviteMemberByEMail($email, Yii::$app->user->id);
                 }
@@ -125,20 +129,24 @@ class CreateController extends Controller
             return $this->htmlRedirect($space->getUrl());
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', [
+                    'canInviteExternal' => $canInviteExternal,
+                    'model' => $model,
+                    'space' => $space
+        ]);
     }
 
     /**
      * Creates an empty space model
-     * 
+     *
      * @return Space
      */
     protected function createSpaceModel()
     {
         $model = new Space();
         $model->scenario = 'create';
-        $model->visibility = Setting::Get('defaultVisibility', 'space');
-        $model->join_policy = Setting::Get('defaultJoinPolicy', 'space');
+        $model->visibility = Yii::$app->getModule('space')->settings->get('defaultVisibility');
+        $model->join_policy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy');
         return $model;
     }
 

@@ -14,5 +14,7 @@ return array (
   'Public (Members only)' => 'Öffentlich (Nur Mitglieder)',
   'Public (Registered users only)' => 'Öffentlich (Nur registrierte User)',
   'Public (Visible)' => 'Öffentlich (sichtbar)',
+  'Settings' => 'Einstellungen',
+  'Space' => 'Space',
   'Visible for all (members and guests)' => 'Offen für alle (Mitglieder & Gäste)',
 );

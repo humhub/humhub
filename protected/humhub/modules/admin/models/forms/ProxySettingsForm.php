@@ -5,7 +5,7 @@ namespace humhub\modules\admin\models\forms;
 use Yii;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * ProxySettingsForm
  */
 class ProxySettingsForm extends \yii\base\Model
 {
@@ -18,7 +18,23 @@ class ProxySettingsForm extends \yii\base\Model
     public $noproxy;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->settings;
+        $this->enabled = $settingsManager->get('proxy.enabled');
+        $this->server = $settingsManager->get('proxy.server');
+        $this->port = $settingsManager->get('proxy.port');
+        $this->user = $settingsManager->get('proxy.user');
+        $this->password = $settingsManager->get('proxy.password');
+        $this->noproxy = $settingsManager->get('proxy.noproxy');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -30,9 +46,7 @@ class ProxySettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -44,6 +58,24 @@ class ProxySettingsForm extends \yii\base\Model
             'password' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Password'),
             'noproxy' => Yii::t('AdminModule.forms_ProxySettingsForm', 'No Proxy Hosts'),
         );
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->settings;
+        $settingsManager->set('proxy.enabled', $this->enabled);
+        $settingsManager->set('proxy.server', $this->server);
+        $settingsManager->set('proxy.port', $this->port);
+        $settingsManager->set('proxy.user', $this->user);
+        $settingsManager->set('proxy.password', $this->password);
+        $settingsManager->set('proxy.noproxy', $this->noproxy);
+
+        return true;
     }
 
 }
