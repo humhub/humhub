@@ -23,8 +23,8 @@ return [
     'Configure' => 'Конфигурация',
     'Disable' => 'Отключить',
     'Enable' => 'Включить',
-    'Enable module...' => 'Включить модуль ...',
+    'Enable module...' => 'Подключение модуля ...',
     'More info' => 'Подробнее',
-    'Set as default' => 'Установить по-умолчанию',
+    'Set as default' => 'Установить по умолчанию',
     'Uninstall' => 'Удалить',
 ];

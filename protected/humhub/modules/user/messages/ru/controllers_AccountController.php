@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid link! Please make sure that you entered the entire url.' => 'Некорректная ссылка! Удостоверьтесь что url по которому вы перешли - правильный.',
+    'Invalid link! Please make sure that you entered the entire url.' => 'Некорректная ссылка! Убедитесь, что url по которому вы перешли - правильный.',
     'Save profile' => 'Сохранить профиль',
     'Saved' => 'Сохранён',
-    'The entered e-mail address is already in use by another user.' => 'Введённый e-mail уже используется другим пользователем',
+    'The entered e-mail address is already in use by another user.' => 'Введённый e-mail уже используется другим пользователем.',
 ];

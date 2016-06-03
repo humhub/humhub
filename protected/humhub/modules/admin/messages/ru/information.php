@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'About HumHub' => '',
+    'About HumHub' => 'О HumHub',
     'CronJobs' => '',
-    'Database' => '',
-    'Logging' => '',
-    'Prerequisites' => '',
+    'Database' => 'База данных',
+    'Logging' => 'Логирование',
+    'Prerequisites' => 'Проверка требований',
 ];

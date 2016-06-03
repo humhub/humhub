@@ -18,5 +18,5 @@
  */
 return [
     'Could not find requested content!' => 'Не удалось найти запрашиваемый контент!',
-    'Could not find requested permalink!' => 'Не удалось найти запрашиваемую постоянную ссылку!',
+    'Could not find requested permalink!' => 'Не удалось найти запрашиваемую ссылку!',
 ];

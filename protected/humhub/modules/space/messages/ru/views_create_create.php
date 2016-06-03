@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space name' => '',
+    'Space name' => 'Название пространства',
     '<strong>Create</strong> new space' => '<strong>Создать</strong> новое пространство',
     'Advanced access settings' => 'Расширенные настройки доступа',
     'Next' => 'Далее',

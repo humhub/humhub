@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Space</strong> menu' => '<strong>Меню</strong>',
+    '<strong>Space</strong> menu' => '<strong>Меню</strong> пространства',
     'Stream' => 'Активность',
 ];
