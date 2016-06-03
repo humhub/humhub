@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Advanced' => '',
+  'Advanced' => 'Avancé',
   'Basic' => 'Général',
   'General' => 'Général',
-  'Permissions' => '',
+  'Permissions' => 'Permissions',
 );
