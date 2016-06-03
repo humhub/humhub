@@ -28,7 +28,7 @@ return [
     'Invalid space' => 'Неверное пространство',
     'Logo upload' => 'Загрузить логотип',
     'Name of the application' => 'Название приложения',
-    'Server Timezone' => 'Часовой пояс сервера',
+    'Server Timezone' => 'Временная зона сервера',
     'Show introduction tour for new users' => 'Показывать приветственный тур для новых пользователей',
     'Show user profile post form on dashboard' => 'Показать поле для ввода сообщений на главной странице',
 ];

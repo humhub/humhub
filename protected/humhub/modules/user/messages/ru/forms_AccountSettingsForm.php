@@ -21,5 +21,5 @@ return [
     'Language' => 'Язык',
     'Profile visibility' => 'Видимость профиля',
     'Tags' => 'Теги',
-    'TimeZone' => 'Часовой пояс',
+    'TimeZone' => 'Временная зона',
 ];
