@@ -194,10 +194,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function beforeDelete()
     {
-        foreach (Setting::findAll(['space_id' => $this->id]) as $spaceSetting) {
-            $spaceSetting->delete();
-        }
-
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
                 $this->disableModule($moduleId);
