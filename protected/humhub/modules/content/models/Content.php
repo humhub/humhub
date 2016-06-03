@@ -535,10 +535,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function updateStreamSortTime()
     {
-        foreach ($this->getWallEntries() as $wallEntry) {
-            $wallEntry->updated_at = new \yii\db\Expression('NOW()');
-            $wallEntry->save();
-        }
+        $this->updateAttributes(['stream_sort_date' => new \yii\db\Expression('NOW()')]);
     }
 
 }
