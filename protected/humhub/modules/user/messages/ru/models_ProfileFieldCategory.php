@@ -17,9 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hide introduction tour panel on dashboard' => 'Скрыть панель ознакомительного тура на главной странице',
-    'Language' => 'Язык',
-    'Profile visibility' => 'Видимость профиля',
-    'Tags' => 'Теги',
-    'TimeZone' => 'Временная зона',
+    'General' => 'Основная информация',
+    'Communication' => 'Контакты',
+    'Social bookmarks' => 'Социальные сети'
 ];
