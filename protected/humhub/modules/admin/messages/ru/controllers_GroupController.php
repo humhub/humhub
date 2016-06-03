@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Group user not found!' => '',
-    'No value found!' => '',
+    'Group user not found!' => 'Участник группы не найден!',
+    'No value found!' => 'Значение не найдено!',
     'Group not found!' => 'Группа не найдена!',
 ];

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Users</strong> who like this' => '<strong>Пользователи</strong> которым это нравится',
+    '<strong>Users</strong> who like this' => '<strong>Пользователи</strong>, которым это нравится',
 ];

@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invitation to join: {space}' => '',
-    'Register now and participate!' => '',
-    'You got an invite' => '',
-    'invited you to join {name}.' => '',
-    'invited you to join {space} on {name}.' => '',
+    'Invitation to join: {space}' => 'Приглашение присоединиться к {space}',
+    'Register now and participate!' => 'Зарегистрируйтесь сейчас',
+    'You got an invite' => 'Вы получили приглашение',
+    'invited you to join {name}.' => 'приглашает Вас присоединиться к {name}.',
+    'invited you to join {space} on {name}.' => 'приглашает Вас присоединиться {space} на {name}',
     'Sign up now' => 'Зарегистрироваться сейчас',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => '',
+    'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => 'Ваш текущий e-mail - <b>{email}</b>. Вы можете изменить его здесь.',
     'Save' => 'Сохранить',
 ];

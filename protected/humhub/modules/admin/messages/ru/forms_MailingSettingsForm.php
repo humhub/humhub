@@ -7,5 +7,5 @@ return array (
   'Mail Transport Type' => 'Способ отправки письма',
   'Password' => 'Пароль',
   'Port number' => 'Порт',
-  'Username' => 'Логин',
+  'Username' => 'Имя пользователя',
 );

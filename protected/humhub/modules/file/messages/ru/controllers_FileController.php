@@ -18,5 +18,5 @@
  */
 return array (
   'Could not find requested file!' => 'Не удалось найти запрашиваемый файл!',
-  'Insufficient permissions!' => 'Недостаточно полномочий!',
+  'Insufficient permissions!' => 'Недостаточно прав!',
 );

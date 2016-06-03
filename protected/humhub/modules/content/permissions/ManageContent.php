@@ -46,16 +46,22 @@ class ManageContent extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Manage content";
+    protected $title;
 
     /**
      * @inheritdoc
      */
-    protected $description = "Can manage (e.g. archive, stick or delete) arbitrary content";
+    protected $description;
 
     /**
      * @inheritdoc
      */
     protected $moduleId = 'content';
 
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+        $this->title = \Yii::t('CommentModule.permissions', 'Manage content');
+        $this->description = \Yii::t('CommentModule.permissions', 'Can manage (e.g. archive, stick or delete) arbitrary content');
+    }
 }

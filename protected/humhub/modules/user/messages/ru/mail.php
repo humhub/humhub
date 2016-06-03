@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Click here to create an account:' => '',
-    '{username} invited you to join "{space}" on {name}.' => '',
-    '{username} invited you to {name}.' => '',
+    'Click here to create an account:' => 'Нажмите сюда, чтобы создать учетную запись:',
+    '{username} invited you to join "{space}" on {name}.' => '{username} пригласил вас присоединиться "{space}" к {name}.',
+    '{username} invited you to {name}.' => '{username} пригласил вас в {name}.',
 ];

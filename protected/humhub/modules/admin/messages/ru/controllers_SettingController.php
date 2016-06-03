@@ -20,7 +20,7 @@ return [
     'APC' => 'APC',
     'File' => 'Файл',
     'No caching (Testing only!)' => 'Нет кэширования (только тестирование!)',
-    'None - shows dropdown in user registration.' => 'Нет - показывать в драпдауне при регистрации пользователя.',
+    'None - shows dropdown in user registration.' => 'Нет - показывать в выпадающем меню при регистрации пользователя.',
     'Saved' => 'Сохранено',
     'Saved and flushed cache' => 'Сохранено, кеш сброшен',
 ];

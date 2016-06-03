@@ -21,5 +21,5 @@ return [
     'Download of module failed!' => 'Не удалось загрузить модуль!',
     'Module directory %modulePath% is not writeable!' => 'Папка модуля %modulePath% запрещена к записи!',
     'Module download failed! (%error%)' => 'Не удалось загрузить модуль!  (%error%)',
-    'No compatible module version found!' => 'Совместимой версии модуля не найдено!',
+    'No compatible module version found!' => 'Не найдено совместимой версии модуля!',
 ];

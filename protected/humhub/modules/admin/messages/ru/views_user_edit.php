@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit user: {name}' => '',
+    'Edit user: {name}' => 'Редактировать пользователя: {name}',
 ];

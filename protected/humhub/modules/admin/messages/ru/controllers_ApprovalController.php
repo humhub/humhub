@@ -29,7 +29,7 @@ return [
    Kind Regards<br>
    {AdminName}<br><br>' => 'Здравствуйте {displayName},<br><br>
 
-   Ваш аккаунт был активирован.<br><br>
+   Ваша учетная запись была активирована.<br><br>
 
    Кликните сюда, чтобы войти:<br>
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>

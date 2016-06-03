@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} accepted your friend request.' => '',
-    '{displayName} declined your friend request.' => '',
-    '{displayName} sent you a friend request.' => '',
+    '{displayName} accepted your friend request.' => '{displayName} принял ваш запрос на добавление в друзья.',
+    '{displayName} declined your friend request.' => '{displayName} отменил ваш запрос на добавление в друзья.',
+    '{displayName} sent you a friend request.' => '{displayName} отправил вам запрос на добавление в друзья.',
 ];
