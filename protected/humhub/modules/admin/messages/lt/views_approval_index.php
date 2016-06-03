@@ -18,6 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Pending</strong> user approvals' => '<strong>Laukiantys eilėje</strong> vartotojų patvirtinimai',
-    'Here you see all users who have registered and still waiting for a approval.' => 'Čia Jūs galite matyti visus prisiregistravusius ir vis dar laukiančius patvirtinimo vartotojus.',
+    'Pending user approvals' => '',
+    'The following list contains all registered users awaiting an approval.' => '',
 ];

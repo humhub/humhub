@@ -162,7 +162,7 @@ class HForm extends \yii\base\Component
         $output = "";
         foreach ($buttons as $buttonName => $definition) {
             if ($definition['type'] == 'submit') {
-                $output .= \yii\helpers\Html::submitButton($definition['label'], ['name' => $buttonName, 'class' => $definition['class']]);
+                $output .= \yii\helpers\Html::submitButton($definition['label'], ['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => '']);
                 $output .= "&nbsp;";
             }
         }
@@ -193,6 +193,7 @@ class HForm extends \yii\base\Component
             
             if (isset($definition['readonly']) && $definition['readonly']) {
                 $options['readOnly'] = true;
+                $options['disabled'] = true;
             }
             
             if (isset($definition['value'])) {

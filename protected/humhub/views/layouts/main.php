@@ -9,8 +9,8 @@ use humhub\assets\AppAsset;
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <!-- start: Meta -->
         <meta charset="utf-8">
@@ -80,80 +80,78 @@ AppAsset::register($this);
     </head>
 
     <body>
-    <?php $this->beginBody() ?>
-
-    <?php echo \humhub\widgets\JSConfig::widget(); ?>
+        <?php $this->beginBody() ?>
+        <?php echo \humhub\widgets\JSConfig::widget(); ?>
         
-    <!-- start: first top navigation bar -->
-    <div id="topbar-first" class="topbar">
-        <div class="container">
-            <div class="topbar-brand hidden-xs">
-                <?php echo \humhub\widgets\SiteLogo::widget(); ?>
-            </div>
+        <!-- start: first top navigation bar -->
+        <div id="topbar-first" class="topbar">
+            <div class="container">
+                <div class="topbar-brand hidden-xs">
+                    <?php echo \humhub\widgets\SiteLogo::widget(); ?>
+                </div>
 
-            <div class="topbar-actions pull-right">
-                <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
-            </div>
+                <div class="topbar-actions pull-right">
+                    <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
+                </div>
 
-            <div class="notifications pull-right">
+                <div class="notifications pull-right">
 
-                <?php
-                echo \humhub\widgets\NotificationArea::widget(['widgets' => [
-                    [\humhub\modules\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
-                ]]);
-                ?>
+                    <?php
+                    echo \humhub\widgets\NotificationArea::widget(['widgets' => [
+                            [\humhub\modules\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
+                    ]]);
+                    ?>
+
+                </div>
 
             </div>
 
         </div>
+        <!-- end: first top navigation bar -->
 
-    </div>
-    <!-- end: first top navigation bar -->
+        <!-- start: second top navigation bar -->
+        <div id="topbar-second" class="topbar">
+            <div class="container">
+                <ul class="nav ">
+                    <!-- load space chooser widget -->
+                    <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
 
+                    <!-- load navigation from widget -->
+                    <?php echo \humhub\widgets\TopMenu::widget(); ?>
+                </ul>
 
-    <!-- start: second top navigation bar -->
-    <div id="topbar-second" class="topbar">
-        <div class="container">
-            <ul class="nav ">
-                <!-- load space chooser widget -->
-                <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
-
-                <!-- load navigation from widget -->
-                <?php echo \humhub\widgets\TopMenu::widget(); ?>
-            </ul>
-
-            <ul class="nav pull-right" id="search-menu-nav">
-                <?php echo \humhub\widgets\TopMenuRightStack::widget(); ?>
-            </ul>
+                <ul class="nav pull-right" id="search-menu-nav">
+                    <?php echo \humhub\widgets\TopMenuRightStack::widget(); ?>
+                </ul>
+            </div>
         </div>
-    </div>
+        <!-- end: second top navigation bar -->
 
-    <!-- end: second top navigation bar -->
+        <!-- start: show content (and check, if exists a sublayout -->
+        <?php if (isset($this->context->subLayout) && $this->context->subLayout != "") : ?>
+            <?php echo $this->render($this->context->subLayout, array('content' => $content)); ?>
+        <?php else: ?>
+            <?php echo $content; ?>
+        <?php endif; ?>
+        <!-- end: show content -->
 
-    <?php echo \humhub\modules\tour\widgets\Tour::widget(); ?>
+        <?= \humhub\widgets\LayoutAddons::widget(); ?>
+        <?php
+        echo \humhub\widgets\Modal::widget([
+            'id' => 'globalModal'
+        ]);
+        ?>
+        <?php
+        echo \humhub\widgets\Modal::widget([
+            'id' => 'globalModalConfirm',
+            'size' => 'extra-small',
+            'centerText' => true,
+            'animation' => 'pulse',
+            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-primary"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
+        ]);
+        ?>
 
-    <!-- start: show content (and check, if exists a sublayout -->
-    <?php if (isset($this->context->subLayout) && $this->context->subLayout != "") : ?>
-        <?php echo $this->render($this->context->subLayout, array('content' => $content)); ?>
-    <?php else: ?>
-        <?php echo $content; ?>
-    <?php endif; ?>
-    <!-- end: show content -->
-
-    
-    <?php echo \humhub\widgets\Modal::widget([
-        'id' => 'globalModal'
-    ]); ?>
-    <?php echo \humhub\widgets\Modal::widget([
-        'id' => 'globalModalConfirm',
-        'size' => 'extra-small',
-        'centerText' => true,
-        'animation' => 'pulse',
-        'footer' => '<button data-modal-cancel data-modal-close class="btn btn-primary"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
-    ]); ?>
-
-    <?php echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
-    <?php $this->endBody() ?>
+        <?php $this->endBody() ?>
     </body>
-    </html>
+</html>
 <?php $this->endPage() ?>

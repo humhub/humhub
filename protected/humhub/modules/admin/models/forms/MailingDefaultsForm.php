@@ -15,7 +15,18 @@ class MailingDefaultsForm extends \yii\base\Model
     public $receive_email_notifications;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->receive_email_activities = Yii::$app->getModule('activity')->settings->get('receive_email_activities');
+        $this->receive_email_notifications = Yii::$app->getModule('notification')->settings->get('receive_email_notifications');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -25,14 +36,25 @@ class MailingDefaultsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
         return array(
         );
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        Yii::$app->getModule('notification')->settings->set('receive_email_notifications', $this->receive_email_notifications);
+        Yii::$app->getModule('activity')->settings->set('receive_email_activities', $this->receive_email_activities);
+
+        return true;
     }
 
 }

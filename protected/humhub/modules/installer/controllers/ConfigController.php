@@ -57,14 +57,14 @@ class ConfigController extends Controller
 
             // Database Connection seems not to work
             if (!$this->module->checkDBConnection()) {
-                $this->redirect(Url::to(['/installer/setup']));
+                $this->redirect(['/installer/setup']);
                 return false;
             }
 
             // When not at index action, verify that database is not already configured
             if ($action->id != 'finished') {
                 if ($this->module->isConfigured()) {
-                    $this->redirect(Url::to(['finished']));
+                    $this->redirect(['finished']);
                     return false;
                 }
             }
@@ -80,8 +80,8 @@ class ConfigController extends Controller
      */
     public function actionIndex()
     {
-        if (Setting::Get('name') == "") {
-            Setting::Set('name', "HumHub");
+        if (Yii::$app->settings->get('name') == "") {
+            Yii::$app->settings->set('name', "HumHub");
         }
 
         \humhub\modules\installer\libs\InitialData::bootstrap();
@@ -95,11 +95,11 @@ class ConfigController extends Controller
     public function actionBasic()
     {
         $form = new \humhub\modules\installer\forms\ConfigBasicForm();
-        $form->name = Setting::Get('name');
+        $form->name = Yii::$app->settings->get('name');
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('name', $form->name);
-            Setting::Set('systemEmailName', $form->name, 'mailing');
+            Yii::$app->settings->set('name', $form->name);
+            Yii::$app->settings->set('mailer.systemEmailName', $form->name);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
@@ -112,9 +112,9 @@ class ConfigController extends Controller
     public function actionUseCase()
     {
         $form = new \humhub\modules\installer\forms\UseCaseForm();
-        $form->useCase = Setting::Get('useCase');
+        $form->useCase = Yii::$app->settings->get('useCase');
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('useCase', $form->useCase);
+            Yii::$app->settings->set('useCase', $form->useCase);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
@@ -128,7 +128,7 @@ class ConfigController extends Controller
     {
         $form = new \humhub\modules\installer\forms\SecurityForm();
 
-        if (Setting::Get("useCase") == self::USECASE_SOCIAL_INTRANET) {
+        if (Yii::$app->settings->get("useCase") == self::USECASE_SOCIAL_INTRANET) {
             $form->allowGuestAccess = false;
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
@@ -136,7 +136,7 @@ class ConfigController extends Controller
             $form->enableFriendshipModule = false;
         }
 
-        if (Setting::Get("useCase") == self::USECASE_EDUCATION) {
+        if (Yii::$app->settings->get("useCase") == self::USECASE_EDUCATION) {
             $form->allowGuestAccess = false;
             $form->internalRequireApprovalAfterRegistration = true;
             $form->internalAllowAnonymousRegistration = true;
@@ -144,7 +144,7 @@ class ConfigController extends Controller
             $form->enableFriendshipModule = false;
         }
 
-        if (Setting::Get("useCase") == self::USECASE_CLUB) {
+        if (Yii::$app->settings->get("useCase") == self::USECASE_CLUB) {
             $form->allowGuestAccess = false;
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
@@ -152,7 +152,7 @@ class ConfigController extends Controller
             $form->enableFriendshipModule = true;
         }
 
-        if (Setting::Get("useCase") == self::USECASE_COMMUNITY) {
+        if (Yii::$app->settings->get("useCase") == self::USECASE_COMMUNITY) {
             $form->allowGuestAccess = true;
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = true;
@@ -161,15 +161,15 @@ class ConfigController extends Controller
         }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('needApproval', $form->internalRequireApprovalAfterRegistration, 'authentication_internal');
-            Setting::Set('anonymousRegistration', $form->internalAllowAnonymousRegistration, 'authentication_internal');
-            Setting::Set('allowGuestAccess', $form->allowGuestAccess, 'authentication_internal');
-            Setting::Set('internalUsersCanInvite', $form->canInviteExternalUsersByEmail, 'authentication_internal');
-            Setting::Set('enable', $form->enableFriendshipModule, 'friendship');
+            Yii::$app->getModule('user')->settings->set('auth.needApproval', $form->internalRequireApprovalAfterRegistration);
+            Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', $form->internalAllowAnonymousRegistration);
+            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', $form->allowGuestAccess);
+            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', $form->canInviteExternalUsersByEmail);
+            Yii::$app->getModule('friendship')->settings->set('enable', $form->enableFriendshipModule);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
-        if (Setting::Get("useCase") == self::USECASE_OTHER) {
+        if (Yii::$app->settings->get("useCase") == self::USECASE_OTHER) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         } else {
             return $this->render('security', array('model' => $form));
@@ -185,7 +185,7 @@ class ConfigController extends Controller
         $marketplace = new \humhub\modules\admin\libs\OnlineModuleManager();
         $modules = $marketplace->getModules(false);
         foreach ($modules as $i => $module) {
-            if (!isset($module['useCases']) || strpos($module['useCases'], Setting::Get('useCase')) === false) {
+            if (!isset($module['useCases']) || strpos($module['useCases'], Yii::$app->settings->get('useCase')) === false) {
                 unset($modules[$i]);
             }
         }
@@ -209,7 +209,7 @@ class ConfigController extends Controller
           return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
           }
          */
-        if (Setting::Get("useCase") == self::USECASE_OTHER) {
+        if (Yii::$app->settings->get("useCase") == self::USECASE_OTHER) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         } else {
             return $this->render('modules', array('modules' => $modules));
@@ -221,7 +221,7 @@ class ConfigController extends Controller
      */
     public function actionSampleData()
     {
-        if (Setting::Get('sampleData', 'installer') == 1) {
+        if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
             // Sample Data already created
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -230,9 +230,9 @@ class ConfigController extends Controller
 
         $form->sampleData = 1;
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Setting::Set('sampleData', $form->sampleData, 'installer');
+            Yii::$app->getModule('installer')->settings->set('sampleData', $form->sampleData);
 
-            if (Setting::Get('sampleData', 'installer') == 1) {
+            if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
 
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
@@ -329,6 +329,11 @@ class ConfigController extends Controller
                 $like = new \humhub\modules\like\models\Like();
                 $like->object_model = $comment->className();
                 $like->object_id = $comment->getPrimaryKey();
+                $like->save();
+
+                $like = new \humhub\modules\like\models\Like();
+                $like->object_model = $post->className();
+                $like->object_id = $post->getPrimaryKey();
                 $like->save();
 
                 // trigger install sample data event
@@ -439,9 +444,13 @@ class ConfigController extends Controller
 
             Group::getAdminGroup()->addUser($form->models['User']);
 
-            
+
+            // Reload User
+            $adminUser = User::findOne(['id' => 1]);
+
+
             // Switch Identity
-            Yii::$app->user->switchIdentity($form->models['User']);
+            Yii::$app->user->switchIdentity($adminUser);
 
             // Create Welcome Space
             $space = new Space();
@@ -449,7 +458,7 @@ class ConfigController extends Controller
             $space->description = Yii::t("InstallerModule.controllers_ConfigController", "Your first sample space to discover the platform.");
             $space->join_policy = Space::JOIN_POLICY_FREE;
             $space->visibility = Space::VISIBILITY_ALL;
-            $space->created_by = $userId;
+            $space->created_by = $adminUser->id;
             $space->auto_add_new_members = 1;
             $space->color = '#6fdbe8';
             $space->save();
@@ -474,13 +483,13 @@ class ConfigController extends Controller
 
     public function actionFinish()
     {
-        if (Setting::Get('secret') == "") {
-            Setting::Set('secret', \humhub\libs\UUID::v4());
+        if (Yii::$app->settings->get('secret') == "") {
+            Yii::$app->settings->set('secret', \humhub\libs\UUID::v4());
         }
 
         \humhub\libs\DynamicConfig::rewrite();
 
-        $this->redirect(['finished']);
+        return $this->redirect(['finished']);
     }
 
     /**
@@ -489,11 +498,11 @@ class ConfigController extends Controller
     public function actionFinished()
     {
         // Should not happen
-        if (Setting::Get('secret') == "") {
+        if (Yii::$app->settings->get('secret') == "") {
             throw new CException("Finished without secret setting!");
         }
 
-        Setting::Set('timeZone', Yii::$app->timeZone);
+        Yii::$app->settings->set('timeZone', Yii::$app->timeZone);
 
         // Set to installed
         $this->module->setInstalled();

@@ -30,7 +30,7 @@ class ContentAddonController extends \humhub\components\Controller
     /**
      * Content this addon belongs to
      *
-     * @var HActiveRecordContent
+     * @var ContentAddonActiveRecord|ContentActiveRecord
      */
     public $parentContent;
 
@@ -38,12 +38,12 @@ class ContentAddonController extends \humhub\components\Controller
      * ContentAddon this addon may belongs to
      * ContentAddons may also belongs to ContentAddons e.g. Like -> Comment
      *
-     * @var HActiveRecordContent
+     * @var ContentAddonActiveRecord
      */
     public $parentContentAddon;
 
     /**
-     * @var HActiveRecordContentAddon
+     * @var ContentAddonActiveRecord
      */
     public $contentAddon;
 
@@ -65,7 +65,7 @@ class ContentAddonController extends \humhub\components\Controller
      * Automatically loads the by content or content addon given by parameter.
      * className & id
      *
-     * @return type
+     * @inheritdoc
      */
     public function beforeAction($action)
     {

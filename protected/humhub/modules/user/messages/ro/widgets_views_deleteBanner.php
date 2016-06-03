@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> image deleting' => '',
-  'Cancel' => '',
-  'Delete' => '',
+  'Cancel' => 'Anulează',
+  'Delete' => 'Șterge',
   'Do you really want to delete your title image?' => '',
 );

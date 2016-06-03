@@ -5,7 +5,8 @@ namespace humhub\modules\admin\models\forms;
 use Yii;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * SettingsForm
+ * 
  * @since 0.5
  */
 class StatisticSettingsForm extends \yii\base\Model
@@ -14,7 +15,18 @@ class StatisticSettingsForm extends \yii\base\Model
     public $trackingHtmlCode;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->settings;
+        $this->trackingHtmlCode = $settingsManager->get('trackingHtmlCode');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -24,15 +36,26 @@ class StatisticSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
         return array(
             'trackingHtmlCode' => Yii::t('AdminModule.forms_StatisticSettingsForm', 'HTML tracking code'),
         );
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->settings;
+        $settingsManager->set('trackingHtmlCode', $this->trackingHtmlCode);
+
+        return true;
     }
 
 }

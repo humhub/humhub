@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,12 +10,13 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
-use humhub\modules\admin\models\forms\UserGroupForm;
+use humhub\modules\admin\models\forms\UserEditForm;
 
 /**
  * User management
@@ -25,11 +26,13 @@ use humhub\modules\admin\models\forms\UserGroupForm;
 class UserController extends Controller
 {
 
-    public function init() {
+    public function init()
+    {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
+        $this->subLayout = '@admin/views/layouts/user';
         return parent::init();
     }
-    
+
     /**
      * Returns a List of Users
      */
@@ -50,58 +53,50 @@ class UserController extends Controller
      */
     public function actionEdit()
     {
-        $user = User::findOne(['id' => Yii::$app->request->get('id')]);
-
-        if ($user == null)
+        $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
+        $user->initGroupSelection();
+        
+        if ($user == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
+        }
 
         $user->scenario = 'editAdmin';
         $user->profile->scenario = 'editAdmin';
         $profile = $user->profile;
 
         // Build Form Definition
-        $definition = array();
-        $definition['elements'] = array();
+        $definition = [];
+        $definition['elements'] = [];
         // Add User Form
         $definition['elements']['User'] = [
             'type' => 'form',
             'title' => 'Account',
-            'elements' => array(
-                'username' => array(
+            'elements' => [
+                'username' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
-                ),
-                'email' => array(
+                ],
+                'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
-                ),
-                'status' => array(
+                ],
+                'status' => [
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
-                    'items' => array(
+                    'items' => [
                         User::STATUS_ENABLED => Yii::t('AdminModule.controllers_UserController', 'Enabled'),
                         User::STATUS_DISABLED => Yii::t('AdminModule.controllers_UserController', 'Disabled'),
                         User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.controllers_UserController', 'Unapproved'),
-                    ),
-                ),
-            ),
-        ];
-        
-        $userGroupForm = new UserGroupForm();
-        $userGroupForm->setUser($user);
-        
-        // Add User Form
-        $definition['elements']['UserGroupForm'] = [
-            'type' => 'form',
-            'elements' => [
+                    ],
+                ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
                     'type' => 'multiselectdropdown',
-                    'items' => UserGroupForm::getGroupItems(Group::find()->all())
+                    'items' => UserEditForm::getGroupItems()
                 ]
-            ]
+            ],
         ];
 
         // Add Profile Form
@@ -129,12 +124,11 @@ class UserController extends Controller
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
-        $form->models['UserGroupForm'] = $userGroupForm;
 
         if ($form->submitted('save') && $form->validate()) {
             if ($form->save()) {
-                
-                return $this->redirect(Url::toRoute('/admin/user'));
+
+                return $this->redirect(['/admin/user']);
             }
         }
 
@@ -146,10 +140,10 @@ class UserController extends Controller
         }
 
         if ($form->submitted('delete')) {
-            return $this->redirect(Url::toRoute(['/admin/user/delete', 'id' => $user->id]));
+            return $this->redirect(['/admin/user/delete', 'id' => $user->id]);
         }
 
-        return $this->render('edit', array('hForm' => $form));
+        return $this->render('edit', array('hForm' => $form, 'user' => $user));
     }
 
     public function actionAdd()
@@ -158,7 +152,7 @@ class UserController extends Controller
         $registration->enableEmailField = true;
         $registration->enableUserApproval = false;
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
-            return $this->redirect(Url::to(['edit', 'id' => $registration->getUser()->id]));
+            return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
         return $this->render('add', array('hForm' => $registration));
     }
@@ -192,7 +186,7 @@ class UserController extends Controller
                 }
             }
             $user->delete();
-            return $this->redirect(Url::to(['/admin/user']));
+            return $this->redirect(['/admin/user']);
         }
 
         return $this->render('delete', array('model' => $user));

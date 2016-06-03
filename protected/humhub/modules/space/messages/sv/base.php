@@ -25,6 +25,8 @@ return [
     'Public (Members & Guests)' => '',
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
+    'Settings' => '',
+    'Space' => '',
     'Visible for all (members and guests)' => '',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kan inte ta bort användare som är nätverkets ägare! Namn på nätverket: {spaceName}',
     'Everyone can enter' => 'Vem som helst kan gå med',

@@ -6,6 +6,7 @@ use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\Follow;
 
@@ -50,12 +51,9 @@ class Events extends \yii\base\Object
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline("User Module - Users (" . User::find()->count() . " entries)");
-        foreach (User::find()->joinWith(['profile', 'group'])->all() as $user) {
+        foreach (User::find()->joinWith(['profile'])->all() as $user) {
             if ($user->profile == null) {
                 $integrityController->showWarning("User with id " . $user->id . " has no profile record!");
-            }
-            if (!$user->hasGroup()) {
-                $integrityController->showWarning("User with id " . $user->id . " has no group assignment!");
             }
         }
         

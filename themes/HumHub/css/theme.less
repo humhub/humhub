@@ -1057,6 +1057,56 @@ input[type=select] {
 //
 // Navs
 // --------------------------------------------------
+.tab-sub-menu {
+    padding-left: 10px;
+    li > a:hover, li > a:focus {
+        background-color: @background1;
+        border-bottom-color: #ddd;
+    }
+    
+    li.active > a {
+        background-color:#FFFFFF;
+        border-bottom-color: transparent;
+    }
+}
+
+.tab-menu {
+    padding-top:10px;
+    background-color: #FFFFFF;
+    
+    .nav-tabs {
+        padding-left: 10px;
+        
+        li > a {
+            padding-top:12px;
+            border-color: #ddd;
+            border-bottom:1px solid #ddd;
+            background-color: @background1;
+            max-height: 41px;
+            outline: none;
+        }
+        
+        li > a:hover, li > a:focus {
+            padding-top:10px;
+            border-top: 3px solid #ddd;
+        }
+        
+        li > a:hover {
+            background-color: @background1;
+        }
+        
+        li.active > a, li.active > a:hover {
+            padding-top:10px;
+            border-top: 3px solid @info;
+        } 
+        
+        li.active > a {
+            background-color:#FFFFFF;
+            border-bottom-color: transparent;
+        }
+    }
+}
+
 .nav-pills,
 .nav-tabs,
 .account {
@@ -1869,6 +1919,7 @@ a.list-group-item.active:focus {
 // Tables
 // --------------------------------------------------
 table {
+  margin-bottom:0px !important;
   th {
     font-size: 11px;
     color: @font4;
@@ -1962,8 +2013,31 @@ table {
       font-size: 13px !important;
       font-weight: bold !important;
     }
+    td {
+        vertical-align:middle !important;
+    }
     tr {
       font-size: 13px !important;
+    }
+    thead {
+        tr {
+            th:first-of-type {
+                padding-left:5px;
+            }
+        }
+    }
+    tbody {
+        tr {
+            height: 50px;
+            td:first-of-type {
+                padding-left:5px;
+            }
+        }
+        
+        tr:nth-child(even) {
+            //background-color: @background1;
+        }
+        
     }
   }
   .summary {
@@ -2626,7 +2700,7 @@ textarea.placeholder {
 // Ajax loader
 .loader {
   padding: 30px 0;
-  .sk-spinner-three-bounce div {
+  .sk-spinner-three-bounce div, .sk-spinner-three-bounce span {
     width: 12px;
     height: 12px;
     background-color: @info;

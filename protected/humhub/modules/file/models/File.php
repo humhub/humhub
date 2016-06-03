@@ -61,8 +61,8 @@ class File extends \humhub\components\ActiveRecord
      * Returns all files belongs to a given HActiveRecord Object.
      * @todo Add chaching
      *
-     * @param HActiveRecord $object
-     * @return Array of File instances
+     * @param \yii\db\ActiveRecord $object
+     * @return array of File instances
      */
     public static function getFilesOfObject(\yii\db\ActiveRecord $object)
     {
@@ -231,11 +231,11 @@ class File extends \humhub\components\ActiveRecord
         if (file_exists($oldFile)) {
             return $oldFile;
         }
-        * 
+        *
         */
-        
+
         $suffix = preg_replace("/[^a-z0-9_]/i", "", $suffix);
-        
+
         $file = ($suffix == '') ? 'file' : $suffix;
         return $this->getPath() . DIRECTORY_SEPARATOR . $file;
     }
@@ -334,7 +334,7 @@ class File extends \humhub\components\ActiveRecord
                 return $object->content->canWrite($userId);
             }
         }
-        
+
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
             return $object->content->canWrite($userId);
         }
@@ -377,13 +377,13 @@ class File extends \humhub\components\ActiveRecord
 
     public function validateExtension($attribute, $params)
     {
-        $allowedExtensions = Setting::GetText('allowedExtensions', 'file');
+        $allowedExtensions = Yii::$app->getModule('file')->settings->get('allowedExtensions');
 
         if ($allowedExtensions != "") {
             $extension = $this->getExtension();
             $extension = trim(strtolower($extension));
 
-            $allowed = array_map('trim', explode(",", Setting::GetText('allowedExtensions', 'file')));
+            $allowed = array_map('trim', explode(",", Yii::$app->getModule('file')->settings->get('allowedExtensions')));
 
             if (!in_array($extension, $allowed)) {
                 $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));
@@ -393,8 +393,8 @@ class File extends \humhub\components\ActiveRecord
 
     public function validateSize($attribute, $params)
     {
-        if ($this->size > Setting::Get('maxFileSize', 'file')) {
-            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::$app->formatter->asSize(Setting::Get('maxFileSize', 'file')))));
+        if ($this->size > Yii::$app->getModule('file')->settings->get('maxFileSize')) {
+            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::$app->formatter->asSize(Yii::$app->getModule('file')->settings->get('maxFileSize')))));
         }
     }
 
@@ -402,13 +402,13 @@ class File extends \humhub\components\ActiveRecord
      * Attaches a given list of files to an record (HActiveRecord).
      * This is used when uploading files before the record is created yet.
      *
-     * @param HActiveRecord $object is a HActiveRecord
+     * @param \yii\db\ActiveRecord $object is a HActiveRecord
      * @param string $files is a comma seperated list of newly uploaded file guids
      */
     public static function attachPrecreated($object, $files)
     {
         if (!$object instanceof \yii\db\ActiveRecord) {
-            throw new Exception("Invalid object given - require instance of HActiveRecord!");
+            throw new Exception('Invalid object given - require instance of \yii\db\ActiveRecord!');
         }
 
         // Attach Files

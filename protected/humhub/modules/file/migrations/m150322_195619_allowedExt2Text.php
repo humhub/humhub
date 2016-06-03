@@ -9,16 +9,16 @@ class m150322_195619_allowedExt2Text extends Migration
 
     public function up()
     {
-        $allowedExtensions = Setting::Get('allowedExtensions', 'file');
+        $allowedExtensions = Yii::$app->getModule('file')->settings->get('allowedExtensions');
         if ($allowedExtensions != "") {
-            Setting::Set('allowedExtensions', '', 'file');
-            Setting::SetText('allowedExtensions', $allowedExtensions, 'file');
+            Yii::$app->getModule('file')->settings->set('allowedExtensions', '');
+            Yii::$app->getModule('file')->settings->set('allowedExtensions', $allowedExtensions);
         }
 
-        $showFilesWidgetBlacklist = Setting::Get('showFilesWidgetBlacklist', 'file');
+        $showFilesWidgetBlacklist = Yii::$app->getModule('file')->settings->get('showFilesWidgetBlacklist');
         if ($showFilesWidgetBlacklist != "") {
-            Setting::Set('showFilesWidgetBlacklist', '', 'file');
-            Setting::SetText('showFilesWidgetBlacklist', $showFilesWidgetBlacklist, 'file');
+            Yii::$app->getModule('file')->settings->set('showFilesWidgetBlacklist', '');
+            Yii::$app->getModule('file')->settings->set('showFilesWidgetBlacklist', $showFilesWidgetBlacklist);
         }
     }
 

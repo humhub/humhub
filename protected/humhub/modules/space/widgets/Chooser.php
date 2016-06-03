@@ -37,7 +37,7 @@ class Chooser extends Widget
     {
         $query = Membership::find();
 
-        if (Setting::Get('spaceOrder', 'space') == 0) {
+        if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
             $query->orderBy('name ASC');
         } else {
             $query->orderBy('last_visit DESC');

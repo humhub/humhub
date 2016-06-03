@@ -34,6 +34,20 @@ class Module extends \yii\base\Module
     public $resourcesPath = 'assets';
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Set settings component
+        $this->set('settings', [
+            'class' => SettingsManager::className(),
+            'moduleId' => $this->id
+        ]);
+    }
+
+    /**
      * Returns modules name provided by module.json file
      *
      * @return string Name
@@ -82,7 +96,7 @@ class Module extends \yii\base\Module
 
     /**
      * Returns image url for this module
-     * Place your modules image in assets/module_image.png
+     * Place your modules image in <resourcesPath>/module_image.png
      *
      * @return String Image Url
      */
@@ -91,7 +105,8 @@ class Module extends \yii\base\Module
         $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
 
         if (is_file($moduleImageFile)) {
-            return $this->getAssetsUrl() . '/module_image.png';
+            list($path, $url) = Yii::$app->assetManager->publish($moduleImageFile);
+            return $url;
         }
 
         return Yii::getAlias("@web/img/default_module.jpg");
@@ -110,20 +125,14 @@ class Module extends \yii\base\Module
 
     /**
      * Enables this module
-     * It will be available on the next request.
      *
      * @return boolean
      */
     public function enable()
     {
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-        if ($moduleEnabled == null) {
-            $moduleEnabled = new ModuleEnabled();
-            $moduleEnabled->module_id = $this->id;
-            $moduleEnabled->save();
-        }
-
+        Yii::$app->moduleManager->enable($this);
         $this->migrate();
+
         return true;
     }
 
@@ -135,11 +144,7 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-        // Disable module in database
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-        if ($moduleEnabled != null) {
-            $moduleEnabled->delete();
-        }
+
 
         /**
          * Remove database tables
@@ -173,24 +178,23 @@ class Module extends \yii\base\Module
             }
         }
 
+        foreach (\humhub\modules\content\models\ContentContainerSetting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
 
-        /*
-          HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+        foreach (\humhub\models\Setting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
 
-          // Delete also records with disabled state from SpaceApplicationModule Table
-          foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
-          $sam->delete();
-          }
+        foreach (\humhub\modules\user\models\Module::findAll(['module_id' => $this->id]) as $userModule) {
+            $userModule->delete();
+        }
 
-          // Delete also records with disabled state from UserApplicationModule Table
-          foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
-          $uam->delete();
-          }
+        foreach (\humhub\modules\space\models\Module::findAll(['module_id' => $this->id]) as $spaceModule) {
+            $spaceModule->delete();
+        }
 
-          ModuleManager::flushCache();
-         */
+        Yii::$app->moduleManager->disable($this);
     }
 
     /**
@@ -251,7 +255,7 @@ class Module extends \yii\base\Module
     {
         return [];
     }
-    
+
     /**
      * Returns a list of notification classes this module provides.
      * 

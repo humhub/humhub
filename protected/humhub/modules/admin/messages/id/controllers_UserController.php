@@ -1,13 +1,11 @@
 <?php
 return array (
   'Become this user' => '',
-  'Delete' => '',
+  'Delete' => 'Hapus',
   'Disabled' => '',
   'Enabled' => '',
-  'LDAP' => '',
-  'Local' => '',
-  'Save' => '',
+  'Save' => 'Simpan',
   'Unapproved' => '',
-  'User not found!' => '',
+  'User not found!' => 'Pengguna tidak ditemukan!',
   'You cannot delete yourself!' => '',
 );

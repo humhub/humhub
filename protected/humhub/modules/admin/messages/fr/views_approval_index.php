@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    '<strong>Pending</strong> user approvals' => 'Utilisateurs <strong>en attente</strong> d\'approbation',
-    'Here you see all users who have registered and still waiting for a approval.' => 'Ici, voici la liste de tous les utilisateurs enregistrés mais en attente d\'une approbation.',
+    'Pending user approvals' => '',
+    'The following list contains all registered users awaiting an approval.' => '',
+    'Actions' => 'Actions',
 ];

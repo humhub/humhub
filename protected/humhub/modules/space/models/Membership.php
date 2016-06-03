@@ -142,7 +142,7 @@ class Membership extends \yii\db\ActiveRecord
         $spaces = Yii::$app->cache->get($cacheId);
         if ($spaces === false) {
 
-            $orderSetting = \humhub\models\Setting::Get('spaceOrder', 'space');
+            $orderSetting = Yii::$app->getModule('space')->settings->get('spaceOrder');
             $orderBy = 'name ASC';
             if ($orderSetting != 0) {
                 $orderBy = 'last_visit DESC';
@@ -160,7 +160,7 @@ class Membership extends \yii\db\ActiveRecord
 
     /**
      * Returns Space for user space membership
-     * 
+     *
      * @since 1.0
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states

@@ -2,16 +2,10 @@
 
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
-use \humhub\models\Setting;
 ?>
 
-<div class="panel-heading">
-    <?php echo Yii::t('UserModule.views_account_editSettings', '<strong>User</strong> settings'); ?>
-</div>
-<div class="panel-body">
-    <?= humhub\modules\user\widgets\AccountSettingsMenu::widget(); ?>
-    <br />
-    <p />
+<?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
+
     <?php $form = ActiveForm::begin(['id' => 'basic-settings-form']); ?>
 
     <?php echo $form->field($model, 'tags'); ?>
@@ -22,7 +16,7 @@ use \humhub\models\Setting;
 
     <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
 
-    <?php if (Setting::Get('allowGuestAccess', 'authentication_internal')): ?>
+    <?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')): ?>
 
         <?php
         echo $form->field($model, 'visibility')->dropdownList([
@@ -34,13 +28,16 @@ use \humhub\models\Setting;
 
     <?php endif; ?>
 
-    <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+    <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>
+        <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+    <?php endif; ?>
+
     <hr>
 
-    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary')); ?>
+    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
     <!-- show flash message after saving -->
     <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
     <?php ActiveForm::end(); ?>
-</div>
+<?php $this->endContent(); ?>

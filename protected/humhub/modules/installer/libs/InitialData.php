@@ -2,24 +2,21 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\installer\libs;
 
 use Yii;
-use humhub\models\Setting;
 use yii\base\Exception;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
-use yii\helpers\Url;
 
 /**
- * Description of InitalData
+ * InitialData
  *
  * @author luke
  */
@@ -29,55 +26,51 @@ class InitialData
     public static function bootstrap()
     {
         // Seems database is already initialized
-        if (Setting::Get('paginationSize') == 10)
+        if (Yii::$app->settings->get('paginationSize') == 10) {
             return;
+        }
 
-        //Yii::$app->search->rebuild();
-
-        Setting::Set('baseUrl', \yii\helpers\BaseUrl::base(true));
-        Setting::Set('paginationSize', 10);
-        Setting::Set('displayNameFormat', '{profile.firstname} {profile.lastname}');
+        Yii::$app->settings->set('baseUrl', \yii\helpers\BaseUrl::base(true));
+        Yii::$app->settings->set('paginationSize', 10);
+        Yii::$app->settings->set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 
         // Authentication
-        Setting::Set('authInternal', '1', 'authentication');
-        Setting::Set('authLdap', '0', 'authentication');
-        Setting::Set('refreshUsers', '1', 'authentication_ldap');
-        Setting::Set('needApproval', '0', 'authentication_internal');
-        Setting::Set('anonymousRegistration', '1', 'authentication_internal');
-        Setting::Set('internalUsersCanInvite', '1', 'authentication_internal');
+        Yii::$app->getModule('user')->settings->set('auth.ldap.refreshUsers', '1');
+        Yii::$app->getModule('user')->settings->set('auth.needApproval', '0');
+        Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
+        Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', '1');
 
         // Mailing
-        Setting::Set('transportType', 'php', 'mailing');
-        Setting::Set('systemEmailAddress', 'social@example.com', 'mailing');
-        Setting::Set('systemEmailName', 'My Social Network', 'mailing');
-        Setting::Set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY, 'mailing');
-        Setting::Set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE, 'mailing');
+        Yii::$app->settings->set('mailer.transportType', 'php');
+        Yii::$app->settings->set('mailer.systemEmailAddress', 'social@example.com');
+        Yii::$app->settings->set('mailer.systemEmailName', 'My Social Network');
+        Yii::$app->getModule('activity')->settings->set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY);
+        Yii::$app->getModule('notification')->settings->set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE);
 
         // File
-        Setting::Set('maxFileSize', '1048576', 'file');
-        Setting::Set('maxPreviewImageWidth', '200', 'file');
-        Setting::Set('maxPreviewImageHeight', '200', 'file');
-        Setting::Set('hideImageFileInfo', '0', 'file');
+        Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
+        Yii::$app->getModule('file')->settings->set('maxPreviewImageWidth', '200');
+        Yii::$app->getModule('file')->settings->set('maxPreviewImageHeight', '200');
+        Yii::$app->getModule('file')->settings->set('hideImageFileInfo', '0');
 
         // Caching
-        Setting::Set('type', 'CFileCache', 'cache');
-        Setting::Set('expireTime', '3600', 'cache');
-        Setting::Set('installationId', md5(uniqid("", true)), 'admin');
+        Yii::$app->settings->set('cache.class', 'yii\caching\FileCache');
+        Yii::$app->settings->set('cache.expireTime', '3600');
+        Yii::$app->getModule('admin')->settings->set('installationId', md5(uniqid("", true)));
 
         // Design
-        Setting::Set('theme', "HumHub");
-        Setting::Set('spaceOrder', 0, 'space');
+        Yii::$app->settings->set('theme', "HumHub");
+        Yii::$app->getModule('space')->settings->set('spaceOrder', 0);
 
         // read and save colors from current theme
         \humhub\components\Theme::setColorVariables('HumHub');
 
         // Basic
-        Setting::Set('enable', 1, 'tour');
-        Setting::Set('enable', 1, 'share');
-        Setting::Set('defaultLanguage', Yii::$app->language);
+        Yii::$app->getModule('tour')->settings->set('enable', 1);
+        Yii::$app->settings->set('defaultLanguage', Yii::$app->language);
 
         // Notification
-        Setting::Set('enable_html5_desktop_notifications', 0, 'notification');
+        Yii::$app->getModule('notification')->settings->set('enable_html5_desktop_notifications', 0);
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory;

@@ -1,53 +1,46 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\models\forms;
 
 use Yii;
+use humhub\modules\user\components\CheckPasswordValidator;
 
 /**
- * Form Model for account deletion
+ * AccountDelete is the model for account deletion.
  *
- * @package humhub.modules_core.user.forms
  * @since 0.5
  */
 class AccountDelete extends \yii\base\Model
 {
 
+    /**
+     * @var string the current password
+     */
     public $currentPassword;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
      */
     public function rules()
     {
-        return array(
-            array('currentPassword', 'required'),
-            array('currentPassword', \humhub\modules\user\components\CheckPasswordValidator::className()),
-        );
+        if (!CheckPasswordValidator::hasPassword()) {
+            return [];
+        }
+
+        return [
+            ['currentPassword', 'required'],
+            ['currentPassword', CheckPasswordValidator::className()],
+        ];
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {

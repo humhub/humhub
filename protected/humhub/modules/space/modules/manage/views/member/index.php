@@ -5,14 +5,15 @@ use yii\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 ?>
-<?= MemberMenu::widget(['space' => $space]); ?>
-<br/>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
     </div>
+    <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
         <div class="table-responsive">
+
             <?php
             $groups = $space->getUserGroups();
             unset($groups[Space::USERGROUP_OWNER]);
@@ -27,7 +28,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                     'user.profile.firstname',
                     'user.profile.lastname',
                     [
-                        'label' => Yii::t('SpaceModule.views_admin_members', 'Group'),
+                        'label' => Yii::t('SpaceModule.views_admin_members', 'Role'),
                         'class' => 'humhub\libs\DropDownGridColumn',
                         'attribute' => 'group_id',
                         'submitAttributes' => ['user_id'],

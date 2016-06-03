@@ -1,4 +1,5 @@
 <?php
 return array (
-  'Saved' => '',
+  'Saved' => 'تم الحفظ',
+  'Stream (Default)' => '',
 );

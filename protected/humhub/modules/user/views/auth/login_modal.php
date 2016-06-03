@@ -1,8 +1,9 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 use yii\helpers\Url;
+use humhub\modules\user\widgets\AuthChoice;
+
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -33,8 +34,13 @@ use yii\helpers\Url;
             <div class="tab-content">
                 <div class="tab-pane <?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
+                    <?php if(AuthChoice::hasClients()): ?>
+                        <?= AuthChoice::widget([]) ?>
+                    <?php else: ?>
+                        <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                    <?php endif; ?>
+
                     <?php $form = ActiveForm::begin(); ?>
-                    <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
                     <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
                     <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
                     <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
@@ -81,7 +87,6 @@ use yii\helpers\Url;
                     </div>
 
                     <?php ActiveForm::end(); ?>
-                    <?= humhub\modules\user\widgets\AuthChoice::widget([]) ?>            
                 </div>
 
                 <?php if ($canRegister) : ?>

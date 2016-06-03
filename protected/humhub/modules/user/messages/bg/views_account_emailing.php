@@ -1,15 +1,11 @@
 <?php
 return array (
-  '<strong>Desktop</strong> Notifications' => '',
-  '<strong>Email</strong> Notifications' => '',
-  'Activities' => '',
   'Always' => '',
   'Daily summary' => '',
-  'Get a desktop notification when you are online.' => '',
-  'Get an email, by every activity from other users you follow or work<br>together in workspaces.' => '',
+  'Get an email, for every activity of other users you follow or work together in a workspace.' => '',
   'Get an email, when other users comment or like your posts.' => '',
   'Never' => '',
-  'Notifications' => '',
-  'Save' => '',
+  'Receive desktop notifications when you are online.' => '',
+  'Save' => 'Запази',
   'When I´m offline' => '',
 );

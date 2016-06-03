@@ -18,9 +18,9 @@
  */
 return [
     'Actions' => '',
-    'Define here default settings for new spaces.' => '',
+    'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
     'Overview' => '',
+    'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     '<strong>Manage</strong> spaces' => '<strong>Manage</strong> スペースの管理',
-    'In this overview you can find every space and manage it.' => 'この概要では、すべてのスペースを見つけて、それを管理することができます。',
     'Settings' => '設定',
 ];

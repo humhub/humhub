@@ -155,7 +155,7 @@ use yii\helpers\Url;
         /**
          * Regulary fetch new notifications
          */
-        reloadNotificationInterval = 15000;
+        reloadNotificationInterval = <?= $updateInterval * 1000; ?>;
         setInterval(function () {
             jQuery.getJSON("<?php echo Url::to(['/notification/list/get-update-json']); ?>", function (json) {
                 handleJsonUpdate(json);
