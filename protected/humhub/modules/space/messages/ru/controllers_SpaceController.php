@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Sorry, you are not allowed to leave this space!' => '',
-    'As owner you cannot revoke your membership!' => 'Как владелец, Вы не можете отменить своё членство!',
-    'Could not request membership!' => 'Не удалось запросить членство!',
+    'Sorry, you are not allowed to leave this space!' => 'Извините, вам не разрешено покинуть это пространство',
+    'As owner you cannot revoke your membership!' => 'Как владелец, вы не можете покинуть это пространство!',
+    'Could not request membership!' => 'Не удалось выполнить запрос на участие в пространстве!',
     'There is no pending invite!' => 'Нет ожидающих приглашений!',
-    'This action is only available for workspace members!' => 'Это действие доступно только для пользователей рабочего пространства!',
+    'This action is only available for workspace members!' => 'Это действие доступно только для пользователей этого пространства!',
     'You are not allowed to join this space!' => 'Вы не можете присоединиться к этому пространству!',
 ];

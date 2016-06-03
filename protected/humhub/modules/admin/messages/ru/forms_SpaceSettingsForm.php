@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Default Content Visiblity' => 'Содержание по умолчанию визуализируется',
+  'Default Content Visiblity' => 'Видимость контента по умолчанию',
   'Default Join Policy' => 'Доступ по умолчанию',
-  'Default Visibility' => 'Визуализация по умолчанию',
+  'Default Visibility' => 'Видимость по умолчанию',
 );

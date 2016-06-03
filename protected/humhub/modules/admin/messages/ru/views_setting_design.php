@@ -18,10 +18,10 @@
  */
 return [
     'Alphabetical' => 'Алфавитный',
-    'Auto format based on user language - Example: {example}' => 'Авто формат на основе языка пользователей - Example: {example}',
+    'Auto format based on user language - Example: {example}' => 'Автоформат на основе языка пользователя - Пример: {example}',
     'Firstname Lastname (e.g. John Doe)' => 'Имя Фамилия (например, Василий Иванов)',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => 'Установленный формат (mm/dd/yyyy) - Example: {example}',
+    'Fixed format (mm/dd/yyyy) - Example: {example}' => 'Установленный формат (mm/dd/yyyy) - Пример: {example}',
     'Last visit' => 'Последний визит',
     'Save' => 'Сохранить',
-    'Username (e.g. john)' => 'Логин',
+    'Username (e.g. john)' => 'Имя пользователя',
 ];

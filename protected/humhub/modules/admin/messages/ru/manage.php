@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Advanced' => '',
-  'Basic' => 'Основной',
+  'Advanced' => 'Раширенные',
+  'Basic' => 'Основные',
   'General' => 'Общее',
-  'Permissions' => '',
+  'Permissions' => 'Доступ',
 );

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Here you can create or edit profile categories and fields.' => '',
-    'Manage profile attributes' => '',
+    'Here you can create or edit profile categories and fields.' => 'Здесь вы можете создать или изменить категории и поля профиля',
+    'Manage profile attributes' => 'Управление атрибутами профиля',
     'Add new category' => 'Добавить новую категорию',
     'Add new field' => 'Добавить новое поле',
 ];

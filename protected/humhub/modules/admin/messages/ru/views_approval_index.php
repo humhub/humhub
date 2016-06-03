@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Pending user approvals' => '',
-    'The following list contains all registered users awaiting an approval.' => '',
+    'Pending user approvals' => 'Ожидает подтверждения пользователей',
+    'The following list contains all registered users awaiting an approval.' => 'Список содержит всех зарегистрированных пользователей, ожидающих подверждения.',
     'Actions' => 'Действия',
 ];

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Мы только что послали вам письмо для подтверждения на на новй адрес <br /> Пожалуйста следуйте приведенным там инструкциям',
+    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Мы только что выслали вам письмо на новый адрес для подтверждения <br/> Пожалуйста следуйте инструкциям',
 ];

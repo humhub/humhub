@@ -17,18 +17,18 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Default stream content order' => '',
-    'Enable user friendship system' => '',
-    'Sort by creation date' => '',
-    'Sort by update date' => '',
+    'Default stream content order' => 'Сортировка ленты по умолчанию',
+    'Enable user friendship system' => 'Включить "систему дружбы"',
+    'Sort by creation date' => 'Сортировка по дате создания',
+    'Sort by update date' => 'Сортировка по дате обновления',
     'Base URL' => 'Основной URL',
     'Date input format' => 'Формат ввода даты',
-    'Default language' => 'Язык по-умолчанию',
-    'Default space' => 'Пространство по-умолчанию',
+    'Default language' => 'Язык по умолчанию',
+    'Default space' => 'Пространство по умолчанию',
     'Invalid space' => 'Неверное пространство',
     'Logo upload' => 'Загрузить логотип',
     'Name of the application' => 'Название приложения',
-    'Server Timezone' => 'Временная зона сервера',
+    'Server Timezone' => 'Часовой пояс сервера',
     'Show introduction tour for new users' => 'Показывать приветственный тур для новых пользователей',
-    'Show user profile post form on dashboard' => 'Показать поле ввода сообщений профиля в панели События',
+    'Show user profile post form on dashboard' => 'Показать поле для ввода сообщений на главной странице',
 ];

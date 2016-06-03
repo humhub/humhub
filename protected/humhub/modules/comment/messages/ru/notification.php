@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayNames} commented {contentTitle}.' => '',
-    '{displayName} commented {contentTitle}.' => '',
+    '{displayNames} commented {contentTitle}.' => '{displayNames} прокомментировал {contentTitle}.',
+    '{displayName} commented {contentTitle}.' => '{displayName} прокомментировал {contentTitle}.',
 ];

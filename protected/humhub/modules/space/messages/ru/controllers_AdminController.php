@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Stream (Default)' => '',
+    'Stream (Default)' => 'Лента (по умолчанию)',
     'Saved' => 'Сохранено',
 ];

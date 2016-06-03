@@ -1,7 +1,7 @@
 <?php
 return array (
   'Base DN' => 'Base DN',
-  'E-Mail Address Attribute' => 'Адрес E-Mail Атрибут',
+  'E-Mail Address Attribute' => 'Атрибут E-Mail',
   'Enable LDAP Support' => 'Включить поддержку LDAP',
   'Encryption' => 'Шифрование',
   'Fetch/Update Users Automatically' => 'Выбор/Обновление пользователей автоматически',

@@ -1,4 +1,4 @@
 <?php
 return array (
-  '%displayName% wrote a new comment ' => '%displayName% добавил комментарий',
+  '%displayName% wrote a new comment ' => '%displayName% прокомментировал',
 );

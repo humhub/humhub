@@ -18,9 +18,9 @@
  */
 return [
     'Currently installed version: %currentVersion%' => 'В настоящее время установлена версия: %currentVersion%',
-    'HumHub is currently in debug mode. Disable it when running on production!' => 'Сайт находится в режиме отладки. Отключите его до окончания процесса!',
+    'HumHub is currently in debug mode. Disable it when running on production!' => 'Сайт находится в режиме отладки. Отключите его на production!',
     'Licences' => 'Лицензии',
-    'See installation manual for more details.' => 'Смотрите руководство по установке для получения более подробной информации.',
+    'See installation manual for more details.' => 'Для получения более подробной информации смотрите руководство по установке.',
     'There is a new update available! (Latest version: %version%)' => 'Доступно новое обновление!  (Последняя версия: %version%)',
-    'This HumHub installation is up to date!' => 'Ваша версия HumHub в актуальном состоянии!',
+    'This HumHub installation is up to date!' => 'Ваша версия HumHub актуальна!',
 ];
