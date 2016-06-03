@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> space image' => '<strong>Изменить</strong> изображение для пространства',
+    '<strong>Modify</strong> space image' => '<strong>Изменить</strong> изображение пространства',
     'Close' => 'Закрыть',
 ];

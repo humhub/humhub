@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Edit account' => 'Редактировать аккаунт',
+  'Edit account' => 'Редактировать учетную запись',
 );

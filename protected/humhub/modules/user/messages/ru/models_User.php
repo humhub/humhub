@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'New user needs approval' => 'Новым пользователям необходимо подтсверждение',
+    'New user needs approval' => 'Новый пользователь ожидает подтверждение',
 ];

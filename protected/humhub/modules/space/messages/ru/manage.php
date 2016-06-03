@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The url contains illegal characters!' => '',
-    'e.g. example for {baseUrl}/s/example' => '',
+    'The url contains illegal characters!' => 'URL содержит недопустимые символы!',
+    'e.g. example for {baseUrl}/s/example' => 'например, для {baseUrl}/s/example',
     'As owner of this space you can transfer this role to another administrator in space.' => 'Вы, как владелец этого пространства, можете передать эту роль другому администратору в пространстве.',
     'Space owner' => 'Владелец пространства',
-    'Transfer ownership' => 'Передать владение',
+    'Transfer ownership' => 'Передать другому владельцу',
 ];

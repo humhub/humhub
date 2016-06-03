@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Members' => 'Члены',
+    'Members' => 'Участники',
     'Owner' => 'Владелец',
-    'Pending Approvals' => 'Ожидающих подтверждений',
-    'Pending Invites' => 'Ожидающих приглашений',
+    'Pending Approvals' => 'Ожидающие подтверждения',
+    'Pending Invites' => 'Ожидающие приглашения',
 ];

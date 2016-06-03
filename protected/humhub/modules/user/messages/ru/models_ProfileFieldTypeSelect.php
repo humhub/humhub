@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Comma separated country codes, e.g. DE,EN,AU' => '',
-    'Supported ISO3166 country codes' => '',
+    'Comma separated country codes, e.g. DE,EN,AU' => 'Коды стран, разделенные запятыми, например: DE, EN, AU',
+    'Supported ISO3166 country codes' => 'Поддерживаемые коды ISO 3166',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => 'Каждая опция должна быть помещена на отдельной строке. Ключ=>Значение (например да=>Да)',
     'Please select:' => 'Пожалуйста выберите:',
     'Possible values' => 'Допустимые значения',
-    'Select field options' => 'Выберите опции поля',
+    'Select field options' => 'Опции поля выбора',
 ];

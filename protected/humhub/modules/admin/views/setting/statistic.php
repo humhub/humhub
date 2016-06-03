@@ -7,7 +7,7 @@ use yii\helpers\Url;
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<p>You can add an statistics HTML code snippet - which will added to all rendered pags.</p>
+<p><?php echo Yii::t('AdminModule.views_setting_statistic', 'You can add an statistics HTML code snippet - which will added to all rendered pags.')?></p>
 <br />
 
 <?php $form = CActiveForm::begin(); ?>
