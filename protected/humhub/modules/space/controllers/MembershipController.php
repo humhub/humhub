@@ -57,15 +57,15 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->isMember()) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
-        
+
         return UserPicker::filter([
-            'query' => $space->getMembershipUser(),
-            'keyword' => Yii::$app->request->get('keyword'),
-            'fillUser' => true
+                    'query' => $space->getMembershipUser(),
+                    'keyword' => Yii::$app->request->get('keyword'),
+                    'fillUser' => true
         ]);
     }
-    
-     /**
+
+    /**
      * Provides a searchable user list of all workspace members in json.
      *
      */
@@ -78,11 +78,11 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->isMember()) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
-        
+
         return UserPicker::filter([
-            'query' => $space->getNonMembershipUser(),
-            'keyword' => Yii::$app->request->get('keyword'),
-            'fillUser' => true
+                    'query' => $space->getNonMembershipUser(),
+                    'keyword' => Yii::$app->request->get('keyword'),
+                    'fillUser' => true
         ]);
     }
 
@@ -146,7 +146,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         $space->removeMember();
 
-        return $this->redirect(Url::home());
+        return $this->goHome();
     }
 
     /**
@@ -160,6 +160,9 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         if (!$space->canInvite()) {
             throw new HttpException(403, 'Access denied - You cannot invite members!');
         }
+
+        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
@@ -175,16 +178,19 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
 
             // Invite non existing members
-            if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) {
+            if ($canInviteExternal) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id)) ? Membership::STATUS_INVITED : false;
                 }
             }
 
-            return $this->renderAjax('statusInvite', array('status' => $statusInvite));
+            return $this->renderAjax('statusInvite', [
+                        'status' => $statusInvite,
+                        'canInviteExternal' => $canInviteExternal
+            ]);
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', array('model' => $model, 'space' => $space, 'canInviteExternal' => $canInviteExternal));
     }
 
     /**
@@ -213,7 +219,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
     /**
      * Toggle space content display at dashboard
-     * 
+     *
      * @throws HttpException
      */
     public function actionSwitchDashboardDisplay()

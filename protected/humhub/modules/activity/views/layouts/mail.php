@@ -67,8 +67,7 @@ use yii\helpers\Html;
                                                                         (<?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
                                                                         <a href="<?php echo $record->content->space->createUrl('/space/space', [], true); ?>"
                                                                            style="text-decoration: none; color: #555555;">
-                                                                               <?php echo Html::encode($record->content->space->name); ?>
-                                                                        </a>)
+                                                                               <?php echo Html::encode($record->content->space->name); ?></a>)
                                                                     <?php endif; ?>
 
                                                                     <?php if ($url != "") : ?>

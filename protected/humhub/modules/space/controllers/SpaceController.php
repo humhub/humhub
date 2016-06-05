@@ -13,6 +13,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\space\models\Setting;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -58,7 +59,24 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionIndex()
     {
-        return $this->render('index', ['space' => $this->contentContainer]);
+        $space = $this->getSpace();
+
+        $defaultPageUrl = \humhub\modules\space\widgets\Menu::getDefaultPageUrl($space);
+        if ($defaultPageUrl != null) {
+            return $this->redirect($defaultPageUrl);
+        }
+
+        return $this->actionHome();
+    }
+
+    /**
+     * Default space homepage
+     * 
+     * @return type
+     */
+    public function actionHome()
+    {
+        return $this->render('home', ['space' => $this->contentContainer]);
     }
 
     /**

@@ -80,7 +80,7 @@ class RegistrationController extends Controller
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
                 Yii::$app->user->switchIdentity($registration->models['User']);
-                return $this->redirect(Url::to(['/dashboard/dashboard']));
+                return $this->redirect(['/dashboard/dashboard']);
             }
 
             return $this->render('success', [

@@ -2,21 +2,18 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 ?>
 <div class="panel panel-default">
-    <div
-        class="panel-heading"><?php echo Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
+    <?php echo $this->render('_header'); ?>
     <div class="panel-body">
-
-        <?php echo $this->render('_header'); ?>
-
         <?php if (count($installedModules) == 0): ?>
             <br>
             <div><?php echo Yii::t('AdminModule.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
         <?php endif; ?>
 
         <?php foreach ($installedModules as $moduleId => $module) : ?>
-            <hr/>
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                      style="width: 64px; height: 64px;"
@@ -63,6 +60,7 @@ use yii\helpers\Url;
 
                 </div>
             </div>
+            <hr/>
         <?php endforeach; ?>
     </div>
 </div>

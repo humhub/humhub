@@ -98,6 +98,11 @@ class UserApprovalSearch extends User
 
         return $dataProvider;
     }
+    
+    public static function getUserApprovalCount()
+    {
+        return User::find()->where(['status' => User::STATUS_NEED_APPROVAL])->count();
+    }
 
     /**
      * Get approval groups

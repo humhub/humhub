@@ -17,13 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Current Group:</strong>' => '',
     'Actions' => '',
-    'Group' => '',
     'Remove' => '',
+    'Role' => '',
     '<strong>Manage</strong> members' => '<strong>Administrer</strong> brugere',
-    '<strong>Manage</strong> permissions' => '<strong>Administrer</strong> tilladelser',
-    '<strong>Pending</strong> approvals' => '<strong>Afventende</strong> godkendelser',
-    '<strong>Pending</strong> invitations' => '<strong>Afventende</strong> invitationer',
     'never' => 'aldrig',
 ];

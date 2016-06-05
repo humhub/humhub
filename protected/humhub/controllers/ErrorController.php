@@ -49,7 +49,7 @@ class ErrorController extends Controller
         /**
          * Show special login required view for guests
          */
-        if (Yii::$app->user->isGuest && $exception instanceof HttpException && $exception->statusCode == "401" && Setting::Get('allowGuestAccess', 'authentication_internal')) {
+        if (Yii::$app->user->isGuest && $exception instanceof HttpException && $exception->statusCode == "401" && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
             return $this->render('@humhub/views/error/401_guests', ['message' => $message]);
         }
 

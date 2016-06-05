@@ -23,18 +23,18 @@ class Module extends \humhub\components\Module
 
     /**
      * Returns if the friendship system is enabled
-     * 
+     *
      * @return boolean is enabled
      */
     public function getIsEnabled()
     {
-        if (\humhub\models\Setting::Get('enable', 'friendship')) {
+        if (Yii::$app->getModule('friendship')->settings->get('enable')) {
             return true;
         }
 
         return false;
     }
-    
+
     public function getName()
     {
         return Yii::t('FriendshipModule.base', 'Friendship');
@@ -43,7 +43,7 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
        return [
            'humhub\modules\friendship\notifications\Request',

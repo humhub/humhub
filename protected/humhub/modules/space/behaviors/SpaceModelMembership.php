@@ -10,7 +10,6 @@ namespace humhub\modules\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;

@@ -44,6 +44,7 @@ class GroupUser extends \humhub\components\ActiveRecord
             [['user_id', 'group_id'], 'required'],
             [['user_id', 'group_id', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['group_id'], 'validateGroupId'],
             [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.']
         ];
     }
@@ -96,6 +97,26 @@ class GroupUser extends \humhub\components\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * Validator for group field during registration
+     */
+    public function validateGroupId()
+    {
+        if ($this->scenario == static::SCENARIO_REGISTRATION) {
+            if ($this->group_id != '') {
+                $registrationGroups = Group::getRegistrationGroups();
+                foreach ($registrationGroups as $group) {
+                    if ($this->group_id == $group->id) {
+                        return;
+                    }
+                }
+
+                // Not found group in groups available during registration
+                $this->addError('group_id', 'Invalid group given!');
+            }
+        }
     }
 
 }

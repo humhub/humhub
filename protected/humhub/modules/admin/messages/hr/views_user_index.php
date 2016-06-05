@@ -17,11 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Manage</strong> users' => '',
     'Actions' => '',
     'Add new user' => '',
-    'In this overview you can find every registered user and manage him.' => '',
+    'Group Manager' => '',
     'Last login' => '',
     'Overview' => '',
+    'Settings' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+    'Users' => '',
     'never' => '',
 ];

@@ -19,7 +19,7 @@ use humhub\modules\user\authclient\AuthClientHelpers;
 
 /**
  * LDAP Authentication
- * 
+ *
  * @todo create base ldap authentication, to bypass ApprovalByPass Interface
  * @since 1.1
  */
@@ -34,8 +34,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     /**
      * ID attribute to uniquely identify user
      * If set to null, automatically a value email or objectguid will be used if available.
-     * 
-     * @var string attribute name to identify node 
+     *
+     * @var string attribute name to identify node
      */
     public $idAttribute = null;
 
@@ -111,15 +111,15 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         $map = [];
 
-        // Username field 
-        $usernameAttribute = Setting::Get('usernameAttribute', 'authentication_ldap');
+        // Username field
+        $usernameAttribute = Yii::$app->getModule('user')->settings->get('auth.ldap.usernameAttribute');
         if ($usernameAttribute == '') {
             $usernameAttribute = 'sAMAccountName';
         }
         $map['username'] = strtolower($usernameAttribute);
 
-        // E-Mail field 
-        $emailAttribute = Setting::Get('emailAttribute', 'authentication_ldap');
+        // E-Mail field
+        $emailAttribute = Yii::$app->getModule('user')->settings->get('auth.ldap.emailAttribute');
         if ($emailAttribute == '') {
             $emailAttribute = 'mail';
         }
@@ -140,7 +140,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         $normalized = [];
 
-        // Fix LDAP Attributes 
+        // Fix LDAP Attributes
         foreach ($attributes as $name => $value) {
             if (is_array($value) && count($value) == 1) {
                 $normalized[$name] = $value[0];
@@ -203,7 +203,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Returns Users LDAP Node
-     * 
+     *
      * @return Node the users ldap node
      */
     protected function getUserNode()
@@ -217,8 +217,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     }
 
     /**
-     * Returns the users LDAP DN 
-     * 
+     * Returns the users LDAP DN
+     *
      * @return string the user dn if found
      */
     protected function getUserDn()
@@ -234,23 +234,23 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     }
 
     /**
-     * Returns Zend LDAP 
-     * 
+     * Returns Zend LDAP
+     *
      * @return \Zend\Ldap\Ldap
      */
     public function getLdap()
     {
         if ($this->_ldap === null) {
             $options = array(
-                'host' => Setting::Get('hostname', 'authentication_ldap'),
-                'port' => Setting::Get('port', 'authentication_ldap'),
-                'username' => Setting::Get('username', 'authentication_ldap'),
-                'password' => Setting::Get('password', 'authentication_ldap'),
-                'useStartTls' => (Setting::Get('encryption', 'authentication_ldap') == 'tls'),
-                'useSsl' => (Setting::Get('encryption', 'authentication_ldap') == 'ssl'),
+                'host' => Yii::$app->getModule('user')->settings->get('auth.ldap.hostname'),
+                'port' => Yii::$app->getModule('user')->settings->get('auth.ldap.port'),
+                'username' => Yii::$app->getModule('user')->settings->get('auth.ldap.username'),
+                'password' => Yii::$app->getModule('user')->settings->get('auth.ldap.password'),
+                'useStartTls' => (Yii::$app->getModule('user')->settings->get('auth.ldap.encryption') == 'tls'),
+                'useSsl' => (Yii::$app->getModule('user')->settings->get('auth.ldap.encryption') == 'ssl'),
                 'bindRequiresDn' => true,
-                'baseDn' => Setting::Get('baseDn', 'authentication_ldap'),
-                'accountFilterFormat' => Setting::Get('loginFilter', 'authentication_ldap'),
+                'baseDn' => Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
+                'accountFilterFormat' => Yii::$app->getModule('user')->settings->get('auth.ldap.loginFilter'),
             );
 
             $this->_ldap = new \Zend\Ldap\Ldap($options);
@@ -262,7 +262,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Sets an Zend LDAP Instance
-     * 
+     *
      * @param \Zend\Ldap\Ldap $ldap
      */
     public function setLdap(\Zend\Ldap\Ldap $ldap)
@@ -286,18 +286,18 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Refresh ldap users
-     * 
+     *
      * New users (found in ldap) will be automatically created if all required fiélds are set.
      * Profile fields which are bind to LDAP will automatically updated.
      */
     public function syncUsers()
     {
-        if (!Setting::Get('enabled', 'authentication_ldap') || !Setting::Get('refreshUsers', 'authentication_ldap')) {
+        if (!Yii::$app->getModule('user')->settings->get('auth.ldap.enabled') || !Yii::$app->getModule('user')->settings->get('auth.ldap.refreshUsers')) {
             return;
         }
 
-        $userFilter = Setting::Get('userFilter', 'authentication_ldap');
-        $baseDn = Setting::Get('baseDn', 'authentication_ldap');
+        $userFilter = Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter');
+        $baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
         $userCollection = $this->getLdap()->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
 
         $ids = [];

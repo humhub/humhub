@@ -52,9 +52,20 @@ class ProfileController extends ContentContainerController
         );
     }
 
+    /**
+     * User profile home
+     * 
+     * @todo Allow change of default action
+     * @return string the response
+     */
     public function actionIndex()
     {
-        return $this->render('index', ['user' => $this->contentContainer]);
+        return $this->actionHome();
+    }
+
+    public function actionHome()
+    {
+        return $this->render('home', ['user' => $this->contentContainer]);
     }
 
     public function actionAbout()

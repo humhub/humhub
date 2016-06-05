@@ -103,10 +103,17 @@ abstract class Stream extends Action
             if ($from != 0) {
                 $this->from = (int) $from;
             }
-            $sort = Yii::$app->getRequest()->get('sort', '');
-            if ($sort != "") {
+
+            /**
+             * Sorting
+             */
+            $sort = Yii::$app->getRequest()->get('sort', Yii::$app->getModule('content')->settings->get('stream.defaultSort'));
+            if ($sort === static::SORT_CREATED_AT || $sort === static::SORT_UPDATED_AT) {
                 $this->sort = $sort;
+            } else {
+                $this->sort = static::SORT_CREATED_AT;
             }
+
             $limit = Yii::$app->getRequest()->get('limit', '');
             if ($limit != "" && $limit <= self::MAX_LIMIT) {
                 $this->limit = $limit;

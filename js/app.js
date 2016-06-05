@@ -125,11 +125,23 @@ function HashTable(obj) {
 
 
 /**
- * setModalLoader
- *
- * Change buttons with loader
+ * To allow other frameworks to overlay focusable nodes over an active modal we have
+ * to explicitly allow ith within this overwritten function.
  *
  */
+$.fn.modal.Constructor.prototype.enforceFocus = function () {
+  var that = this;
+  $(document).on('focusin.modal', function (e) {
+     if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('hexInput')) {
+        return true;
+     }
+
+     if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+        that.$element.focus();
+     }
+  });
+};
+
 function setModalLoader() {
     $(".modal-footer .btn").hide();
     $(".modal-footer .loader").removeClass("hidden");
@@ -143,13 +155,52 @@ $(document).ready(function () {
         $(this).removeData('bs.modal');
 
         // just close modal and reset modal content to default (shows the loader)
-        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></div>');
-    })
+        $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body">\n\
+<div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></div>');
+    });
 
     // set Modal handler to all modal links
     setModalHandler();
 
     initPlugins();
+
+    $('a[data-ui-loader], button[data-ui-loader]').on('click', function () {
+        var $this = $(this);
+        
+        if($this.find('.loader').length) {
+            return false;
+        }
+        
+        //Adopt current color for the loader animation
+        var color = $this.css('color') || '#ffffff';
+        var $loader = $('<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>');
+        
+        //Align bouncer animation color and size
+        $loader.find('.sk-bounce1, .sk-bounce2, .sk-bounce3')
+                .addClass('disabled')
+                .css( {'background-color': color, 'width': '10px', 'height': '10px'});
+        
+        //The loader does have some margin we have to hide
+        $this.css('overflow', 'hidden');
+        $this.addClass('disabled');
+        
+        //Prevent the container from resizing
+        $this.css('min-width', this.getBoundingClientRect().width);
+        $this.data('text', $this.text());
+        $this.html($loader);
+    });
+    
+    $(document).on('afterValidate', function(evt, messages, errors) {
+        if(errors.length) {
+            $('[data-ui-loader]').each(function() {
+                var $this = $(this);
+                if($this.find('.loader').length) {
+                    $this.html($this.data('text'));
+                    $this.removeClass('disabled');
+                }
+            });
+        }
+    });
 
 });
 
@@ -162,7 +213,7 @@ function setModalHandler() {
     $(document).on('click.humhub', "a[data-target='#globalModal']", function (ev) {
         ev.preventDefault();
         var options = {
-            'show' : true,
+            'show': true,
             'backdrop': $(this).data('backdrop')
         }
         $("#globalModal").modal(options);

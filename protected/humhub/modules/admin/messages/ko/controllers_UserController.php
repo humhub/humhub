@@ -4,10 +4,8 @@ return array (
   'Delete' => '',
   'Disabled' => '',
   'Enabled' => '',
-  'LDAP' => '',
-  'Local' => '',
   'Save' => '',
   'Unapproved' => '',
-  'User not found!' => '',
+  'User not found!' => '유저를 찾지 못했습니다!',
   'You cannot delete yourself!' => '',
 );

@@ -11,7 +11,6 @@ namespace humhub\modules\user\widgets;
 use Yii;
 use \humhub\widgets\BaseMenu;
 use \yii\helpers\Url;
-use \humhub\modules\user\models\User;
 
 /**
  * AccountMenuWidget as (usally left) navigation on users account options.
@@ -28,7 +27,8 @@ class AccountMenu extends BaseMenu
 
     public function init()
     {
-
+        
+        $controllerAction = Yii::$app->controller->action->id;
         $this->addItemGroup(array(
             'id' => 'account',
             'label' => Yii::t('UserModule.widgets_AccountMenuWidget', '<strong>Account</strong> settings'),
@@ -41,7 +41,7 @@ class AccountMenu extends BaseMenu
             'group' => 'account',
             'url' => Url::toRoute('/user/account/edit'),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->action->id == "edit"),
+            'isActive' => ($controllerAction == "edit" || $controllerAction == "change-email" || $controllerAction == "change-password" || $controllerAction == "delete"),
         ));
 
         $this->addItem(array(
@@ -50,7 +50,7 @@ class AccountMenu extends BaseMenu
             'group' => 'account',
             'url' => Url::toRoute('/user/account/edit-settings'),
             'sortOrder' => 110,
-            'isActive' => (Yii::$app->controller->action->id == "edit-settings"),
+            'isActive' => ($controllerAction == "edit-settings" || $controllerAction == 'emailing'),
         ));
 
         $this->addItem(array(
@@ -62,7 +62,6 @@ class AccountMenu extends BaseMenu
             'isActive' => (Yii::$app->controller->action->id == "security"),
         ));        
         
-
         // Only show this page when really user specific modules available
         if (count(Yii::$app->user->getIdentity()->getAvailableModules()) != 0) {
             $this->addItem(array(
@@ -72,50 +71,6 @@ class AccountMenu extends BaseMenu
                 'url' => Url::toRoute('//user/account/edit-modules'),
                 'sortOrder' => 120,
                 'isActive' => (Yii::$app->controller->action->id == "editModules"),
-            ));
-        }
-
-        $this->addItem(array(
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Notifications'),
-            'icon' => '<i class="fa fa-bell"></i>',
-            'group' => 'account',
-            'url' => Url::toRoute('//user/account/emailing/'),
-            'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->action->id == "emailing"),
-        ));
-
-
-        if (Yii::$app->user->canChangeEmail()) {
-            $this->addItem(array(
-                'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'E-Mail'),
-                'icon' => '<i class="fa fa-paper-plane"></i>',
-                'group' => 'account',
-                'url' => Url::toRoute('//user/account/change-email'),
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->action->id == "change-email"),
-            ));
-        }
-
-        if (Yii::$app->user->canChangePassword()) {
-            $this->addItem(array(
-                'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Password'),
-                'icon' => '<i class="fa fa-key"></i>',
-                'group' => 'account',
-                'url' => Url::toRoute('//user/account/change-password'),
-                'sortOrder' => 500,
-                'isActive' => (Yii::$app->controller->action->id == "change-password"),
-            ));
-        }
-
-
-        if (Yii::$app->user->canDeleteAccount()) {
-            $this->addItem(array(
-                'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Delete account'),
-                'icon' => '<i class="fa fa-trash-o"></i>',
-                'group' => 'account',
-                'url' => Url::toRoute('//user/account/delete'),
-                'sortOrder' => 600,
-                'isActive' => (Yii::$app->controller->action->id == "delete"),
             ));
         }
 

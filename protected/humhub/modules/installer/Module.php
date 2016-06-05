@@ -26,19 +26,19 @@ class Module extends \humhub\components\Module
     const EVENT_INIT_CONFIG_STEPS = 'steps';
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\installer\controllers';
 
     /**
      * Array of config steps
-     * 
-     * @var array 
+     *
+     * @var array
      */
     public $configSteps = [];
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public function init()
     {
@@ -49,7 +49,7 @@ class Module extends \humhub\components\Module
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
@@ -77,11 +77,11 @@ class Module extends \humhub\components\Module
             // return the current connection state.
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
-            
+
         } catch (\yii\base\Exception $e) {
-            
+
         } catch (\PDOException $e) {
-            
+
         }
         return false;
     }
@@ -91,7 +91,7 @@ class Module extends \humhub\components\Module
      */
     public function isConfigured()
     {
-        if (\humhub\models\Setting::Get('secret') != "") {
+        if (Yii::$app->settings->get('secret') != "") {
             return true;
         }
         return false;

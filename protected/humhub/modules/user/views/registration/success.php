@@ -22,7 +22,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
                     <p><?php echo Yii::t('UserModule.views_auth_createAccount_success', 'To log in with your new account, click the button below.'); ?></p>
                     <br/>
                     <a href="<?php echo Url::home() ?>"
-                       class="btn btn-primary"><?php echo Yii::t('UserModule.views_auth_createAccount_success', 'Go to login page') ?></a>
+                       class="btn btn-primary" data-ui-loader=""><?php echo Yii::t('UserModule.views_auth_createAccount_success', 'Go to login page') ?></a>
                 <?php endif; ?>
             </div>
         </div>

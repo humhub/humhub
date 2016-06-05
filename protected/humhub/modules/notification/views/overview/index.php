@@ -1,6 +1,6 @@
 <?php
-use yii\widgets\ActiveForm;
 
+use yii\widgets\ActiveForm;
 ?>
 <div class="container">
     <div class="row">
@@ -14,11 +14,11 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="panel-body">
                     <ul id="notification_overview_list" class="media-list">
-                        <?php foreach($notificationEntries as $notification) :?>
-                            <?=  $notification->getClass()->render(); ?>
+                        <?php foreach ($notifications as $notification) : ?>
+                            <?= $notification->render(); ?>
                         <?php endforeach; ?>
-                        <?php if(count($notificationEntries) == 0) :?>
-                            <?= Yii::t('NotificationModule.views_overview_index', 'No Notification found!'); ?>
+                        <?php if (count($notifications) == 0) : ?>
+                            <?= Yii::t('NotificationModule.views_overview_index', 'No notifications found!'); ?>
                         <?php endif; ?>
                     </ul>
                     <center>
@@ -34,9 +34,9 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
-                        <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
-                        <button class="btn btn-info btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
-                    <?php  ActiveForm::end(); ?>
+                    <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
+                    <button class="btn btn-info btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
+                    <?php ActiveForm::end(); ?>
                 </div>
             </div>
         </div>
@@ -44,16 +44,16 @@ use yii\widgets\ActiveForm;
 </div>
 
 <script type='text/javascript'>
-    if(!$('#notification_overview_list li.new').length) {
+    if (!$('#notification_overview_list li.new').length) {
         $('#notification_overview_markseen').hide();
     } else {
-        $('#notification_overview_markseen').on('click', function(evt) {
+        $('#notification_overview_markseen').on('click', function (evt) {
             evt.preventDefault();
             $.ajax({
                 'type': 'GET',
                 'url': '<?php echo yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
                 'success': function () {
-                   location.reload();
+                    location.reload();
                 }
             });
         });

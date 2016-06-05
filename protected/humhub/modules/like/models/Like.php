@@ -28,8 +28,13 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @package humhub.modules_core.like.models
  * @since 0.5
  */
-class Like extends ContentAddonActiveRecord 
+class Like extends ContentAddonActiveRecord
 {
+
+    /**
+     * @inheritdoc
+     */
+    protected $updateContentStreamSort = false;
 
     /**
      * @return string the associated database table name
@@ -61,7 +66,7 @@ class Like extends ContentAddonActiveRecord
 
         if ($cacheValue === false) {
             $newCacheValue = Like::findAll(array('object_model' => $objectModel, 'object_id' => $objectId));
-            Yii::$app->cache->set($cacheId, $newCacheValue, Setting::Get('expireTime', 'cache'));
+            Yii::$app->cache->set($cacheId, $newCacheValue, Yii::$app->settings->get('cache.expireTime'));
             return $newCacheValue;
         } else {
             return $cacheValue;
@@ -79,10 +84,12 @@ class Like extends ContentAddonActiveRecord
         $activity->source = $this;
         $activity->create();
 
-        $notification = new \humhub\modules\like\notifications\NewLike();
-        $notification->source = $this;
-        $notification->originator = $this->user;
-        $notification->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
+        if ($this->getSource()->createdBy !== null) {
+            $notification = new \humhub\modules\like\notifications\NewLike();
+            $notification->source = $this;
+            $notification->originator = $this->user;
+            $notification->send($this->getSource()->createdBy);
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }

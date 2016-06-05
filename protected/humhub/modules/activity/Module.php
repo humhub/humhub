@@ -9,7 +9,6 @@
 namespace humhub\modules\activity;
 
 use Yii;
-use humhub\models\Setting;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\MailUpdateSender;
 
@@ -25,16 +24,20 @@ class Module extends \humhub\components\Module
     /**
      * Returns all activities which should be send by e-mail to the given user
      * in the given interval
-     * 
+     *
      * @see \humhub\modules\content\components\MailUpdateSender
      * @param User $user
      * @param int $interval
-     * @return components\BaseActivity[] 
+     * @return components\BaseActivity[]
      */
     public function getMailActivities(User $user, $interval)
     {
-        $receive_email_activities = $user->getSetting("receive_email_activities", 'core', Setting::Get('receive_email_activities', 'mailing'));
-
+        $receive_email_activities = Yii::$app->getModule('activity')->settings->contentContainer($user)->get('receive_email_activities');
+        if ($receive_email_activities === null) {
+            // Use Default Setting
+            $receive_email_activities = Yii::$app->getModule('activity')->settings->get('receive_email_activities');
+        }
+        
         // User never wants activity content
         if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
             return [];

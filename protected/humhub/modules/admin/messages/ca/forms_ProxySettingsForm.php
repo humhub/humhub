@@ -3,7 +3,7 @@ return array (
   'Enabled' => '',
   'No Proxy Hosts' => '',
   'Password' => 'Contrasenya',
-  'Port' => '',
+  'Port' => 'Port',
   'Server' => '',
   'User' => '',
 );

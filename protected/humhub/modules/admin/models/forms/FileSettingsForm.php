@@ -5,7 +5,7 @@ namespace humhub\modules\admin\models\forms;
 use Yii;
 
 /**
- * @package humhub.modules_core.admin.forms
+ * FileSettingsForm
  * @since 0.5
  */
 class FileSettingsForm extends \yii\base\Model
@@ -21,7 +21,26 @@ class FileSettingsForm extends \yii\base\Model
     public $showFilesWidgetBlacklist;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->getModule('file')->settings;
+
+        $this->imageMagickPath = $settingsManager->get('imageMagickPath');
+        $this->maxFileSize = $settingsManager->get('maxFileSize') / 1024 / 1024;
+        $this->maxPreviewImageWidth = $settingsManager->get('maxPreviewImageWidth');
+        $this->maxPreviewImageHeight = $settingsManager->get('maxPreviewImageHeight');
+        $this->hideImageFileInfo = $settingsManager->get('hideImageFileInfo');
+        $this->useXSendfile = $settingsManager->get('useXSendfile');
+        $this->allowedExtensions = $settingsManager->get('allowedExtensions');
+        $this->showFilesWidgetBlacklist = $settingsManager->get('showFilesWidgetBlacklist');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -33,9 +52,7 @@ class FileSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -51,6 +68,12 @@ class FileSettingsForm extends \yii\base\Model
         );
     }
 
+    /**
+     * Check ImageMagick Attribute
+     * 
+     * @param type $attribute
+     * @param type $params
+     */
     public function checkImageMagick($attribute, $params)
     {
         if ($this->$attribute != "") {
@@ -67,6 +90,26 @@ class FileSettingsForm extends \yii\base\Model
                 $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Convert command not found!"));
             }
         }
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->getModule('file')->settings;
+        $settingsManager->set('imageMagickPath', $this->imageMagickPath);
+        $settingsManager->set('maxFileSize', $this->maxFileSize * 1024 * 1024);
+        $settingsManager->set('maxPreviewImageWidth', $this->maxPreviewImageWidth);
+        $settingsManager->set('maxPreviewImageHeight', $this->maxPreviewImageHeight);
+        $settingsManager->set('hideImageFileInfo', $this->hideImageFileInfo);
+        $settingsManager->set('useXSendfile', $this->useXSendfile);
+        $settingsManager->set('allowedExtensions', strtolower($this->allowedExtensions));
+        $settingsManager->set('showFilesWidgetBlacklist', $this->showFilesWidgetBlacklist);
+
+        return true;
     }
 
 }

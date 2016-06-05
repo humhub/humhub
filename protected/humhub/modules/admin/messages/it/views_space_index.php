@@ -18,9 +18,9 @@
  */
 return [
     'Actions' => '',
+    'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
+    'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     '<strong>Manage</strong> spaces' => '<strong>Gestisci</strong> space',
-    'Define here default settings for new spaces.' => 'Definisci qui le impostazioni di default per i nuovi space.',
-    'In this overview you can find every space and manage it.' => 'In questa panoramica puoi trovare tutti gli space e gestirli.',
     'Overview' => 'Panoramica',
     'Settings' => 'Impostazioni',
 ];

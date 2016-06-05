@@ -27,7 +27,25 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public $defaultUserProfileVisibility;
 
     /**
-     * Declares the validation rules.
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settingsManager = Yii::$app->getModule('user')->settings;
+
+        $this->internalUsersCanInvite = $settingsManager->get('auth.internalUsersCanInvite');
+        $this->internalRequireApprovalAfterRegistration = $settingsManager->get('auth.needApproval');
+        $this->internalAllowAnonymousRegistration = $settingsManager->get('auth.anonymousRegistration');
+        $this->defaultUserGroup = $settingsManager->get('auth.defaultUserGroup');
+        $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
+        $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
+        $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function rules()
     {
@@ -41,9 +59,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -56,6 +72,28 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'allowGuestAccess' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Allow limited access for non-authenticated users (guests)'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user profile visibility'),
         );
+    }
+
+    /**
+     * Saves the form
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        $settingsManager = Yii::$app->getModule('user')->settings;
+
+        $settingsManager->set('auth.internalUsersCanInvite', $this->internalUsersCanInvite);
+        $settingsManager->set('auth.needApproval', $this->internalRequireApprovalAfterRegistration);
+        $settingsManager->set('auth.anonymousRegistration', $this->internalAllowAnonymousRegistration);
+        $settingsManager->set('auth.defaultUserGroup', $this->defaultUserGroup);
+        $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
+        $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
+
+        if ($settingsManager->get('auth.allowGuestAccess')) {
+            $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
+        }
+        return true;
     }
 
 }

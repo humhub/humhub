@@ -3,6 +3,9 @@ use yii\helpers\Url;
 
 $contentId = (int) Yii::$app->request->getQueryParam('wallEntryId');
 $contentIdData = ($contentId != "") ? 'data-stream-contentid="'.$contentId.'"' : '' ;    
+
+$defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
+$this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultStreamSort : 'c');
 ?>
 
 <!-- Stream filter section -->
@@ -26,7 +29,7 @@ $contentIdData = ($contentId != "") ? 'data-stream-contentid="'.$contentId.'"' :
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="#" class="wallSorting" id="sorting_c"><i
-                            class="fa fa-check-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?></a></li>
+                            class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?></a></li>
                 <li><a href="#" class="wallSorting" id="sorting_u"><i
                             class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?></a></li>
             </ul>

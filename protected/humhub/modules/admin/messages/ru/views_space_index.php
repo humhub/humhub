@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
+    'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
+    'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     '<strong>Manage</strong> spaces' => '<strong>Управление</strong> пространствами',
-    'Define here default settings for new spaces.' => 'Определить настройки по умолчанию для новых пространств.',
-    'In this overview you can find every space and manage it.' => 'Здесь Вы можете найти все пространства и управлять ими.',
+    'Actions' => 'Действия',
     'Overview' => 'Обзор',
     'Settings' => 'Настройки',
 ];

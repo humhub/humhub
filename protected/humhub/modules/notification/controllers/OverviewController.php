@@ -41,39 +41,47 @@ class OverviewController extends Controller
     {
         $pageSize = 10;
         $session = Yii::$app->session;
-        
+
         $filterForm = new FilterForm();
         $filterForm->initFilter();
         $filterForm->load(Yii::$app->request->get());
-        
-        $query = Notification::findByUser(Yii::$app->user->id);
-        
-        if($filterForm->isExcludeFilter()) {
-            $query->andFilterWhere(['not in' ,'class' , $filterForm->getExcludeClassFilter()]);
-        } else if($filterForm->isActive()){
-            $query->andFilterWhere(['in' ,'class' , $filterForm->getIncludeClassFilter()]);
+
+        $query = Notification::findGrouped();
+        $query->andWhere(['user_id' => Yii::$app->user->id]);
+
+
+        if ($filterForm->isExcludeFilter()) {
+            $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
+        } else if ($filterForm->isActive()) {
+            $query->andFilterWhere(['in', 'class', $filterForm->getIncludeClassFilter()]);
         } else {
-            return $this->render('index',[ 
-                    'notificationEntries' => [],
-                    'filterForm' => $filterForm,
-                    'pagination' => null
+            return $this->render('index', [
+                        'notificationEntries' => [],
+                        'filterForm' => $filterForm,
+                        'pagination' => null
             ]);
         }
 
         $countQuery = clone $query;
         $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
-        
+
         //Reset pagegination after new filter set
-        if(Yii::$app->request->post()) {
+        if (Yii::$app->request->post()) {
             $pagination->setPage(0);
         }
-        
+
         $query->offset($pagination->offset)->limit($pagination->limit);
-        
+
+        $notifications = [];
+        foreach ($query->all() as $notificationRecord) {
+            $notifications[] = $notificationRecord->getClass();
+        }
+
         return $this->render('index', array(
-                    'notificationEntries' => $query->all(),
+                    'notifications' => $notifications,
                     'filterForm' => $filterForm,
                     'pagination' => $pagination
         ));
     }
+
 }

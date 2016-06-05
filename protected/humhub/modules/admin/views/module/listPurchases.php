@@ -6,20 +6,17 @@ use yii\helpers\Html;
 <div class="panel panel-default">
 
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
-    <div class="panel-body">
-
-        <?php echo $this->render('_header'); ?>
-        <br/><br/>
-
+    <?php echo $this->render('_header'); ?>
+    
+    <div class="panel-body"> 
         <!-- search form -->
-
         <?php echo Html::beginForm(Url::to(['//admin/module/list-purchases']), 'post', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
                     <?php echo Html::textInput("licenceKey", $licenceKey, array("class" => "form-control form-search", "placeholder" => Yii::t('AdminModule.base', 'Add purchased module by licence key'))); ?>
-                    <?php echo Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Register'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Register'), array('class' => 'btn btn-default btn-sm form-button-search' , 'data-ui-loader' => "")); ?>
                 </div>
                 <?php if ($message != ""): ?>
                     <div style="color:<?php echo ($hasError) ? 'red' : 'green'; ?>"><?= Html::encode($message); ?></div>
@@ -69,7 +66,7 @@ use yii\helpers\Html;
                         <div class="module-controls">
                             <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                 <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'Install'), Url::to(['install', 'moduleId' => $module['id']]), array('style' => 'font-weight:bold', 'data-loader' => "modal", 'data-message' => Yii::t('AdminModule.views_module_listOnline', 'Installing module...'), 'data-method' => 'POST')); ?>
-                                &middot; 
+                                &middot;
                             <?php endif; ?>
                             <?php echo Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], array('target' => '_blank')); ?>
                             &middot; <?php echo Yii::t('AdminModule.views_module_listOnline', 'Latest version:'); ?> <?php echo $module['latestVersion']; ?>
@@ -82,4 +79,4 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<small class="pull-right">Installation Id: <?php echo \humhub\models\Setting::get('installationId', 'admin'); ?></small>
+<small class="pull-right">Installation Id: <?php echo Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>

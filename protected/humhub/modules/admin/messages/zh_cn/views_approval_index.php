@@ -18,6 +18,6 @@
  */
 return [
     'Actions' => '',
-    '<strong>Pending</strong> user approvals' => '待处理<strong>用户请求</strong>',
-    'Here you see all users who have registered and still waiting for a approval.' => '这里你可以看到那些已注册但仍在等待批准的用户。',
+    'Pending user approvals' => '',
+    'The following list contains all registered users awaiting an approval.' => '',
 ];

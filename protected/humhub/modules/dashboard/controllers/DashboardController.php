@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,19 +10,11 @@ namespace humhub\modules\dashboard\controllers;
 
 use Yii;
 use humhub\components\Controller;
-use humhub\components\behaviors\AccessControl;
 use humhub\models\Setting;
-use humhub\modules\dashboard\components\actions\DashboardStream;
 
-/**
- * DashboardController
- */
 class DashboardController extends Controller
 {
 
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         $this->appendPageTitle(\Yii::t('DashboardModule.base', 'Dashboard'));
@@ -36,7 +28,7 @@ class DashboardController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => \humhub\components\behaviors\AccessControl::className(),
                 'guestAllowedActions' => [
                     'index',
                     'stream'
@@ -52,7 +44,7 @@ class DashboardController extends Controller
     {
         return [
             'stream' => [
-                'class' => DashboardStream::className()
+                'class' => \humhub\modules\dashboard\components\actions\DashboardStream::className()
             ]
         ];
     }
@@ -68,19 +60,9 @@ class DashboardController extends Controller
             return $this->render('index_guest', array());
         } else {
             return $this->render('index', array(
-                        'showProfilePostForm' => Setting::Get('showProfilePostForm', 'dashboard')
+                        'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
             ));
         }
-    }
-
-    /*
-     * Update user settings for hiding share panel on dashboard
-     */
-
-    public function actionHidePanel()
-    {
-        // set tour status to seen for current user
-        return Yii::$app->user->getIdentity()->setSetting('hideSharePanel', 1, "share");
     }
 
 }

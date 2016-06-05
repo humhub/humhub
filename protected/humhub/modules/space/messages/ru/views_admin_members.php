@@ -17,13 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Current Group:</strong>' => '',
-    'Actions' => '',
-    'Group' => '',
-    'Remove' => '',
+    'Role' => '',
     '<strong>Manage</strong> members' => '<strong>Управление</strong> пользователями',
-    '<strong>Manage</strong> permissions' => '<strong>Управление</strong> правами',
-    '<strong>Pending</strong> approvals' => '<strong>В ожидании</strong> одобрения',
-    '<strong>Pending</strong> invitations' => '<strong>В ожидании</strong> приглашения',
+    'Actions' => 'Действия',
+    'Remove' => 'Удалить',
     'never' => 'никогда',
 ];

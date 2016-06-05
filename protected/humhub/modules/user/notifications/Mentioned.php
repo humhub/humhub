@@ -2,12 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\notifications;
 
+use Yii;
+use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
@@ -23,11 +25,6 @@ class Mentioned extends BaseNotification
     public $moduleId = 'user';
 
     /**
-     * @inheritdoc
-     */
-    public $viewName = "mentioned";
-
-    /**
      * inheritdoc
      */
     public function send(\humhub\modules\user\models\User $user)
@@ -40,10 +37,24 @@ class Mentioned extends BaseNotification
 
         return parent::send($user);
     }
-    
+
+    /**
+     * @inheritdoc
+     */
     public static function getTitle()
     {
-        return Yii::t('UserModule.notifiations_Mentioned', 'Mentioned');
+        return Yii::t('UserModule.notification', 'Mentioned');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAsHtml()
+    {
+        return Yii::t('UserModule.notification', '{displayName} mentioned you in {contentTitle}.', array(
+                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+                    'contentTitle' => $this->getContentInfo($this->source)
+        ));
     }
 
 }

@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use humhub\compat\HForm;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\GroupUser;
@@ -48,20 +49,23 @@ class Registration extends HForm
      * @var Password
      */
     private $_password = null;
-    
+
     /**
      * @var Group Id
      */
     private $_groupUser = null;
-    
+
     /**
      * @var Profile
      */
     private $_profile = null;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        if (\humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
+        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
             $this->enableUserApproval = true;
         } else {
             $this->enableUserApproval = false;
@@ -103,7 +107,7 @@ class Registration extends HForm
 
     /**
      * Create User Model form fields required for registration
-     * 
+     *
      * @return array form definition
      */
     protected function getUserFormDefinition()
@@ -131,7 +135,7 @@ class Registration extends HForm
 
     /**
      * Create Password Model form fields required for registration
-     * 
+     *
      * @return array form definition
      */
     protected function getPasswordFormDefinition()
@@ -152,20 +156,20 @@ class Registration extends HForm
             ),
         );
     }
-    
+
     protected function getGroupFormDefinition()
     {
         $groupModels = \humhub\modules\user\models\Group::getRegistrationGroups();
-        $defaultUserGroup = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
+        $defaultUserGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
         $groupFieldType = "dropdownlist";
-        
+
         if ($defaultUserGroup != "") {
             $groupFieldType = "hidden";
         } else if (count($groupModels) == 1) {
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
-        
+
         return [
             'type' => 'form',
             'elements' => [
@@ -220,7 +224,7 @@ class Registration extends HForm
 
     /**
      * Registers users
-     * 
+     *
      * @return boolean state
      */
     public function register(\yii\authclient\ClientInterface $authClient = null)
@@ -230,7 +234,7 @@ class Registration extends HForm
             $this->models['User']->status = User::STATUS_NEED_APPROVAL;
             $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;
         }
-        
+
         if ($this->models['User']->save()) {
 
             // Save User Profile
@@ -239,7 +243,7 @@ class Registration extends HForm
 
             $this->models['GroupUser']->user_id = $this->models['User']->id;
             $this->models['GroupUser']->save();
-            
+
             if ($this->enablePasswordForm) {
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
@@ -260,7 +264,7 @@ class Registration extends HForm
 
     /**
      * Returns User model
-     * 
+     *
      * @return User
      */
     public function getUser()
@@ -279,7 +283,7 @@ class Registration extends HForm
 
     /**
      * Returns Profile model
-     * 
+     *
      * @return Profile
      */
     public function getProfile()
@@ -294,7 +298,7 @@ class Registration extends HForm
 
     /**
      * Returns Password model
-     * 
+     *
      * @return Password
      */
     public function getPassword()
@@ -306,10 +310,10 @@ class Registration extends HForm
 
         return $this->_password;
     }
-    
+
     /**
      * Returns Password model
-     * 
+     *
      * @return Password
      */
     public function getGroupUser()
@@ -317,6 +321,12 @@ class Registration extends HForm
         if ($this->_groupUser === null) {
             $this->_groupUser = new GroupUser();
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
+
+            // assign default value for group_id
+            $registrationGroups = \humhub\modules\user\models\Group::getRegistrationGroups();
+            if (count($registrationGroups) == 1) {
+                $this->_groupUser->group_id = $registrationGroups[0]->id;
+            }
         }
 
         return $this->_groupUser;

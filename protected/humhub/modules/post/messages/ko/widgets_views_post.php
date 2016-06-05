@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Collapse' => '',
+  'Collapse' => '접기',
   'Read full post...' => '',
 );

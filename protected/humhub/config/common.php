@@ -8,7 +8,7 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.1.0-dev',
+    'version' => '1.2.0-dev',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
@@ -27,12 +27,17 @@ $config = [
                 [
                     'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
+                    'except' => ['yii\web\HttpException:404'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
         ],
         'search' => array(
             'class' => 'humhub\modules\search\engine\ZendLuceneSearch',
+        ),
+        'settings' => array(
+            'class' => 'humhub\components\SettingsManager',
+            'moduleId' => 'base',
         ),
         'i18n' => [
             'class' => 'humhub\components\i18n\I18N',
@@ -50,10 +55,6 @@ $config = [
                     'basePath' => '@humhub/messages'
                 ],
                 'widgets_views_markdownEditor' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@humhub/messages'
-                ],
-                'iso3166Codes' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@humhub/messages'
                 ],
