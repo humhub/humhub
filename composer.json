@@ -35,7 +35,8 @@
         "bower-asset/bootstrap-markdown": "2.10.*",
         "bower-asset/select2" : "^4.0.2",
         "bower-asset/bluebird" : "^3.3.5",
-        "bower-asset/select2-bootstrap-theme" : "0.1.0-beta.4"
+        "bower-asset/select2-bootstrap-theme" : "0.1.0-beta.4",
+        "jonnyw/php-phantomjs": "4.*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
@@ -51,6 +52,12 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject"
+        ],
+        "post-install-cmd": [
+            "PhantomInstaller\\Installer::installPhantomJS"
+        ],
+        "post-update-cmd": [
+            "PhantomInstaller\\Installer::installPhantomJS"
         ]
     },
     "extra": {

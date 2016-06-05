@@ -3,23 +3,11 @@
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
-use yii\helpers\Url;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_setting_authentication', '<strong>Authentication</strong> - Basic'); ?></div>
     <div class="panel-body">
-
-        <ul class="nav nav-pills">
-            <li class="active"><a
-                    href="<?php echo Url::toRoute('authentication'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'Basic'); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo Url::toRoute('authentication-ldap'); ?>"><?php echo Yii::t('AdminModule.views_setting_authentication', 'LDAP'); ?></a>
-            </li>
-        </ul>
-
-
-        <br/>
+        <?= \humhub\modules\admin\widgets\UserSettingMenu::widget([]) ?> 
 
         <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
 
