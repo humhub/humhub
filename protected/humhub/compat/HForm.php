@@ -18,6 +18,9 @@ use Yii;
 class HForm extends \yii\base\Component
 {
 
+    const EVENT_BEFORE_VALIDATE = 'beforeValidate';
+    const EVENT_AFTER_VALIDATE = 'afterValidate';
+    
     public $showErrorSummary;
     protected $form;
     public $primaryModel = null;
@@ -60,7 +63,8 @@ class HForm extends \yii\base\Component
     public function validate()
     {
         $hasErrors = false;
-
+        $this->trigger(self::EVENT_BEFORE_VALIDATE);
+        
         if ($this->primaryModel !== null) {
             if (!$this->primaryModel->validate()) {
                 $hasErrors = true;
@@ -72,6 +76,8 @@ class HForm extends \yii\base\Component
                 $hasErrors = true;
             }
         }
+        
+        $this->trigger(self::EVENT_AFTER_VALIDATE);
         return !$hasErrors;
     }
 

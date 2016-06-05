@@ -159,5 +159,19 @@ class InviteForm extends Model
     {
         return $this->invitesExternal;
     }
+    
+     /**
+     * E-Mails entered in form
+     * 
+     * @return array the emails
+     */
+    public function getEmails()
+    {
+        $emails = [];
+        foreach (explode(',', $this->inviteExternal) as $email) {
+            $emails[] = trim($email);
+        }
+        return $emails;
+    }
 
 }
