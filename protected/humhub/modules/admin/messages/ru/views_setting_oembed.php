@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Enabled OEmbed providers' => '',
-    'Add new provider' => 'Добавить нового поставщика',
-    'Currently no provider active!' => 'Не активировано ни одной службы',
+    'Enabled OEmbed providers' => 'Включить OEmbed сревисы',
+    'Add new provider' => 'Добавить новый сервис',
+    'Currently no provider active!' => 'Не активировано ни одного сервиса',
 ];

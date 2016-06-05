@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Third-party' => '',
+    'Third-party' => 'Сторонняя организация ',
     'Installed' => 'Установленные',
     'No modules found!' => 'Модули не найдены!',
     'No purchased modules found!' => 'Приобретенных модулей не найдено!',

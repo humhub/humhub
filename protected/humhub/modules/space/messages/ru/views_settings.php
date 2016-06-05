@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Security</strong> settings' => '',
-    '<strong>Space</strong> settings' => '',
-    'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
+    '<strong>Security</strong> settings' => '<strong>Настройки</strong> безопасности',
+    '<strong>Space</strong> settings' => '<strong>Настройки</strong> пространства',
+    'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => 'Права назначены разным ролям. Чтобы изменить их, у роли, которую вы хотите отредактировать и выберите нужное значение из выпадающего списка.',
 ];

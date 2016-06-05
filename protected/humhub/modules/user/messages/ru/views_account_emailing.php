@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Get an email, for every activity of other users you follow or work together in a workspace.' => '',
-    'Receive desktop notifications when you are online.' => '',
+    'Get an email, for every activity of other users you follow or work together in a workspace.' => 'Получать действия подписчиков или пространств по e-mail.',
+    'Receive desktop notifications when you are online.' => 'Получать оповещения на рабочем столе.',
     'Always' => 'Всегда',
-    'Daily summary' => 'Дневной дайджест',
-    'Get an email, when other users comment or like your posts.' => 'Получать уведомление по email, когда другие пользователи комментируют или ставят лайки вашим записям.',
+    'Daily summary' => 'Ежедневный дайджест',
+    'Get an email, when other users comment or like your posts.' => 'Получать уведомление по e-mail, когда другие пользователи комментируют или ставят лайки вашим записям.',
     'Never' => 'Никогда',
     'Save' => 'Сохранить',
-    'When I´m offline' => 'Когда я оффлайн',
+    'When I´m offline' => 'Когда я не в сети',
 ];

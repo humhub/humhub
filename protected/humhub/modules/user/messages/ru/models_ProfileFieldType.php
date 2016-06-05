@@ -3,9 +3,9 @@ return array (
   'Birthday' => 'День рождения',
   'Country' => 'Страна',
   'Date' => 'Дата',
-  'Datetime' => 'Дата-время',
+  'Datetime' => 'Дата и время',
   'Number' => 'Номер',
-  'Select List' => 'Выбрать',
+  'Select List' => 'Раскрывающийся список',
   'Text' => 'Текст',
   'Text Area' => 'Текстовое поле',
 );

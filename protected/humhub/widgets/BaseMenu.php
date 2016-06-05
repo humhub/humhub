@@ -213,6 +213,33 @@ class BaseMenu extends \yii\base\Widget
         $this->trigger(self::EVENT_RUN);
         return $this->render($this->template, array());
     }
+    
+    /**
+     * Activates the menu item with the given url
+     * @param type $url
+     */
+    public function setActive($url)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($item['url'] == $url) {
+                $this->items[$key]['htmlOptions']['class'] = 'active';
+                $this->items[$key]['htmlOptions']['isActive'] = true;
+            }
+        }
+    }
+    
+    /*
+     * Deactivates the menu item with the given url
+     */
+    public function setInactive($url)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($item['url'] == $url) {
+                $this->items[$key]['htmlOptions']['class'] = '';
+                $this->items[$key]['htmlOptions']['isActive'] = false;
+            }
+        }
+    }
 
     /**
      * Add the active class from a menue item.
@@ -227,12 +254,7 @@ class BaseMenu extends \yii\base\Widget
         }
 
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
-            foreach ($event->sender->items as $key => $item) {
-                if ($item['url'] == $url) {
-                    $event->sender->items[$key]['htmlOptions']['class'] = 'active';
-                    $event->sender->items[$key]['htmlOptions']['isActive'] = true;
-                }
-            }
+            $event->sender->setActive($url);
         });
     }
 
@@ -249,12 +271,7 @@ class BaseMenu extends \yii\base\Widget
         }
         
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
-            foreach ($event->sender->items as $key => $item) {
-                if ($item['url'] == $url) {
-                    $event->sender->items[$key]['htmlOptions']['class'] = '';
-                    $event->sender->items[$key]['htmlOptions']['isActive'] = false;
-                }
-            }
+             $event->sender->setInactive($url);
         });
     }
 

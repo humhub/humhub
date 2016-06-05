@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Account' => 'Аккаунт',
-  'Create account' => 'Создать аккаунт',
+  'Account' => 'Учетная запись',
+  'Create account' => 'Создать учетную запись',
 );

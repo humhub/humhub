@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add OEmbed provider' => '',
-    'Back to overview' => '',
-    'Edit OEmbed provider' => '',
+    'Add OEmbed provider' => 'Добавить OEmbed сервис',
+    'Back to overview' => 'Вернуться',
+    'Edit OEmbed provider' => 'Изменить OEmbed сервис',
     'Delete' => 'Удалить',
     'Save' => 'Сохранить',
     'Url Prefix without http:// or https:// (e.g. youtube.com)' => 'Url Префикс без http:// или https:// (например: youtube.com)',

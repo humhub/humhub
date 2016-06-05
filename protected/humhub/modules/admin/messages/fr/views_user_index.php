@@ -2,7 +2,7 @@
 return array (
   'Actions' => 'Actions',
   'Add new user' => 'Ajouter un utilisateur',
-  'Group Manager' => '',
+  'Group Manager' => 'Gestionnaire du groupe',
   'Last login' => 'Dernière connexion',
   'Overview' => 'Aperçu',
   'Settings' => 'Réglages',

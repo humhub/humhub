@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new profile category' => '',
-    'Edit profile category' => '',
+    'Create new profile category' => 'Создать новую категорию профиля',
+    'Edit profile category' => 'Изменить категорию профиля',
     'Delete' => 'Удалить',
     'Save' => 'Сохранить',
 ];

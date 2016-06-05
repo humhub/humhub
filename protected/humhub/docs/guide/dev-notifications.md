@@ -1,10 +1,10 @@
 Notifications
 =============
 
-Notifications are used to inform one or a given set of users about a specific event as the liking of a post or mentioning of a user, over multiple channels (e.g. web and mail). 
+Notifications are used to inform one or a given set of users about a specific event, as the liking of a post or mentioning of a user, over multiple channels (e.g. web and mail). 
 
 Custom notification types are derived from [[humhub\modules\notification\components\BaseNotification]] and can be assigned with an optional `$originator` user instance, which links
-the notification with the user who triggered the event. Furthermore the [[humhub\modules\notification\components\BaseNotification|BaseNotification]] can be assigned with a `$source` of type [[yii\db\ActiveRecord]], 
+the notification to the user who triggered the event. Furthermore the [[humhub\modules\notification\components\BaseNotification|BaseNotification]] can be assigned with a `$source` attribute of type [[yii\db\ActiveRecord]], 
 which links the notification to a source instance like a Content or ContentAddon (e.g. a Post or Like).
 
 The BaseNotification is responsible for:
@@ -25,7 +25,7 @@ Examples for core notifications are:
 
 #### Notification Class
 
-Custom Notifications are derived from [[humhub\modules\notification\components\BaseNotification|BaseNotification]] and should reside in the a subfolder `notifications` of your module directory.
+Custom Notifications are derived from [[humhub\modules\notification\components\BaseNotification|BaseNotification]] and should reside in the `notifications` subfolder of your module's root directory.
 The notification class at least has to overwrite the `$moduleId` variable with the id of your module and the `$viewName` with the name of the view which is used to render the notification.
 
 ```php
@@ -69,11 +69,10 @@ echo Yii::t('SomethingHappend.views_notifications_somethingHappened', "%someUser
 
 ## Send Notifications
 
-After an event was triggered you'll have to instantiate your custom [[humhub\modules\notification\components\BaseNotification|BaseNotification]] and call its
-`send` or `sendBulk` which will instantiate and persist a [[humhub\modules\notification\models\Notification]] instance for every user you want to notify.
+After an event was triggered, you'll have to instantiate your custom [[humhub\modules\notification\components\BaseNotification|BaseNotification]] and call its
+`send` or `sendBulk` function which will instantiate and persist a [[humhub\modules\notification\models\Notification]] instance for each user you want to notify.
 
 A notification can optionally be assigned with a `$source` model instance (e.g. a post or comment related to the notification) which has to be derived from [[yii\db\ActiveRecord]].
-If the notification was created in the context of a space (e.g. `$source` is a Content, ContentAddon or ContentContainer) the `$space` variable is set with the related space instance automatically.
 
 ```php
 $notification = new \johndoe\example\notifications\SomethingHappend();
@@ -90,12 +89,13 @@ $notification->sendBulk(User::find()->where([...]));
 // or: a single user
 $notification->send($user);
 ```
- 
+> Info: If the notification was created in the context of a space (e.g. `$source` is a Content, ContentAddon or ContentContainer) the `$space` variable is set with the corresponding space instance automatically.
+
 > Info: The `send` and `sendBulk` will create and persist a [[humhub\modules\notification\models\Notification]] instance for each user.
 
 > Tip: Notifications are often created and sent within the `afterSave` hook of the related `source` instance. This should be prefered over the instantiation within a controller.
 
-> Note: Notifications are only sent by mail depending on the users account settings.
+> Note: Notifications are only sent by mail depending on the user's account settings.
 
 ## Delete Notifications
 

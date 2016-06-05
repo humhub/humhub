@@ -18,7 +18,7 @@ Currently there are two types of ContentContainer:
 ### ContentContainerController
 
 The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class is extended by controllers working in the context of a specific [[humhub\modules\content\models\ContentContainer|ContentContainer]].
-A [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] will automatically search a **sguid** (Space) or **uguid** (User) request parameter for every request and will instantiate and provide the associated [[humhub\modules\content\models\ContentContainer|ContentContainer]].
+A [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] will automatically search for a **sguid** (Space) or **uguid** (User) request parameter in every request and will instantiate the corresponding [[humhub\modules\content\models\ContentContainer|ContentContainer]].
 
 The [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] provides common tasks like:
 
@@ -41,17 +41,18 @@ class ExampleController extends \humhub\modules\content\components\ContentContai
 }
 ```
 
-Links to a [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] actions have to be provided with a sguid or uguid parameter, this can either be done by hand or by using a ContentContainer's `createUrl()` method:
+Url's pointing to a ContentContainer action should be created by using the `createUrl()` function
+of your ContentContainer instance. This will add the required sguid or uguid to your request.
 
 ```php
- //Direct ContentContainer call
+ // Direct ContentContainer call
  $space->createUrl('/module/controller/action');
 
- //Within a ContentContainerController:
+ // Within a ContentContainerController:
  $this->contentContainer->createUrl('/module/controller/action');
 ```
 
-> Note: A request for a [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] action without a sguid or uguid parameter will fail!
+> Note: Requests for a [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] action without providing a sguid or uguid parameter will fail!
 
 ### ContentContainerActiveRecord
 
@@ -119,7 +120,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         }
     }
 ```
-> Note: If you're working with content or other persistent data, make sure to delete the container related data, when the module is disabled on a content container. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]] method.
+> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a contentcontainer. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]] function.
 
 
 ## Content
@@ -128,9 +129,9 @@ TBD
 
 ### ContentActiveRecord
 
-Each Content ActiveRecord (derived from [[\humhub\modules\content\components\ContentActiveRecord]]) is automatically linked to a [[humhub\modules\content\models\Content]] record via the *content* Attribute. 
+Each Content ActiveRecord (derived from [[\humhub\modules\content\components\ContentActiveRecord]]) is automatically linked to a [[humhub\modules\content\models\Content]] record via the *content* attribute. 
 
-This Content record holds all neccessary informations and provides common methods:
+This Content record holds all neccessary information and provides common methods:
 
 - ContentContainer which the Content belongs to
 - Meta Informations (created_at, created_by, updated_at, updated_by)
@@ -155,7 +156,7 @@ Example:
 
 #### Querying Content
 
-If you're calling find() on a [[\humhub\modules\content\components\ContentActiveRecord]] instance you'll get an special [[\humhub\modules\content\components\ActiveQueryContent]] which provides additional methods to select content.
+If you're calling find() on a [[\humhub\modules\content\components\ContentActiveRecord]] instance you'll get a special [[\humhub\modules\content\components\ActiveQueryContent]] which provides additional methods to select content.
 
 - contentContainer($container) - Find content only inside a given container
 - readable($user) - Return only user readable content

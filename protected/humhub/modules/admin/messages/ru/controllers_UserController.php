@@ -22,7 +22,7 @@ return [
     'Disabled' => 'Отключен',
     'Enabled' => 'Включен',
     'Save' => 'Сохранить',
-    'Unapproved' => 'Неподтвержден',
+    'Unapproved' => 'Не подтвержден',
     'User not found!' => 'Пользователь не найден!',
     'You cannot delete yourself!' => 'Вы не можете удалить себя!',
 ];

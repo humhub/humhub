@@ -20,6 +20,6 @@ return [
     'Accept Invite' => 'Принять приглашение',
     'Become member' => 'Вступить',
     'Cancel pending membership application' => 'Отозвать заявку на участие',
-    'Deny Invite' => 'Запретить приглашение',
+    'Deny Invite' => 'Отменить приглашение',
     'Request membership' => 'Отправить запрос на вступление',
 ];

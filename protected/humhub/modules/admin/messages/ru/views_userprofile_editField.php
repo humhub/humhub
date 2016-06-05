@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new profile field' => '',
-    'Edit profile field' => '',
+    'Create new profile field' => 'Добавить новое поле профиля',
+    'Edit profile field' => 'Изменить поле профиля',
 ];

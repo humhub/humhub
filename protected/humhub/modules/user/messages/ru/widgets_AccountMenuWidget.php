@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Security' => '',
-    '<strong>Account</strong> settings' => 'Настройки учетной записи',
+    'Security' => 'Безопасность',
+    '<strong>Account</strong> settings' => '<strong>Настройки</strong> учетной записи',
     'Modules' => 'Модули',
     'Profile' => 'Профиль',
     'Settings' => 'Настройки',

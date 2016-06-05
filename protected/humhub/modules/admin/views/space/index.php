@@ -21,7 +21,7 @@ use humhub\modules\admin\widgets\SpaceGridView;
     $joinPolicies = array(
         Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
         Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
-        Space::JOIN_POLICY_FREE => 'Everyone can enter',
+        Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
     );
 
 

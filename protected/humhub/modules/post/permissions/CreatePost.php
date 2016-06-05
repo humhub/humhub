@@ -40,16 +40,23 @@ class CreatePost extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create post";
+    protected $title;
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to create posts";
+    protected $description;
 
     /**
      * @inheritdoc
      */
     protected $moduleId = 'post';
+
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+        $this->title = \Yii::t('CommentModule.permissions', 'Create post');
+        $this->description = \Yii::t('CommentModule.permissions', 'Allows the user to create posts');
+    }
 
 }

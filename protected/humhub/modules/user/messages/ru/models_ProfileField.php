@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Searchable' => '',
-    'Created at' => 'Создано',
-    'Created by' => 'Пользователь',
+    'Searchable' => 'Доступно для поиска',
+    'Created at' => 'Создано в',
+    'Created by' => 'Создано пользователем',
     'Description' => 'Описание',
-    'Editable' => 'Можно редактировать',
-    'Field Type could not be changed!' => 'Нельзя редактировать!',
+    'Editable' => 'Доступно для редактирования',
+    'Field Type could not be changed!' => 'Тип поля не может быть изменен!',
     'Fieldtype' => 'Тип поля',
     'ID' => 'ID',
     'Internal Name' => 'Внутренний Id',
@@ -31,7 +31,7 @@ return [
     'Invalid field type!' => 'Некорректный тип поля!',
     'LDAP Attribute' => 'Атрибут LDAP',
     'Module' => 'Модуль',
-    'Only alphanumeric characters allowed!' => 'Допустимы только  буквенно-цифровые символы',
+    'Only alphanumeric characters allowed!' => 'Допустимы только  алфавитно-цифровые символы',
     'Profile Field Category' => 'Категория профиля',
     'Required' => 'Обязательное',
     'Show at registration' => 'Показывать при регистрации',
@@ -41,5 +41,5 @@ return [
     'Type Config' => 'Тип конфигурации',
     'Updated at' => 'Обновлено',
     'Updated by' => 'Обновлено пользователем',
-    'Visible' => 'Отображается',
+    'Visible' => 'Видимо',
 ];

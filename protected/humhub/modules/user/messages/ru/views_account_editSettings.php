@@ -19,5 +19,5 @@
 return [
     'Registered users only' => 'Только для зарегистрированных пользователей',
     'Save' => 'Сохранить',
-    'Visible for all (also unregistered users)' => 'Отображается для всех (включая незарегистрированных пользователей)',
+    'Visible for all (also unregistered users)' => 'Видимо для всех (включая незарегистрированных пользователей)',
 ];
