@@ -10,10 +10,10 @@ use tests\codeception\fixtures\ContentContainerFixture;
 use tests\codeception\fixtures\SpaceFixture;
 use tests\codeception\fixtures\SpaceMembershipFixture;
 use humhub\modules\post\models\Post;
-use humhub\modules\content\components\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
+use humhub\modules\stream\actions\ContentContainerStream;
 
 class ContentContainerStreamTest extends DbTestCase
 {
@@ -43,14 +43,14 @@ class ContentContainerStreamTest extends DbTestCase
         $post1->content->setContainer($space);
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
-        $w1 = $post1->content->getFirstWallEntryId();
+        $w1 = $post1->content->id;
 
         $post2 = new Post;
         $post2->message = "Public Post";
         $post2->content->setContainer($space);
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
-        $w2 = $post2->content->getFirstWallEntryId();
+        $w2 = $post2->content->id;
 
         $ids = $this->getStreamActionIds($space, 2);
 
@@ -68,14 +68,14 @@ class ContentContainerStreamTest extends DbTestCase
         $post1->content->setContainer($space);
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
-        $w1 = $post1->content->getFirstWallEntryId();
+        $w1 = $post1->content->id;
 
         $post2 = new Post;
         $post2->message = "Public Post";
         $post2->content->setContainer($space);
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
-        $w2 = $post2->content->getFirstWallEntryId();
+        $w2 = $post2->content->id;
 
 
         $this->becomeUser('Admin');
@@ -96,7 +96,7 @@ class ContentContainerStreamTest extends DbTestCase
         $action->contentContainer = $container;
         $action->limit = $limit;
 
-        $wallEntries = $action->getWallEntries();
+        $wallEntries = $action->activeQuery->all();
         $wallEntryIds = array_map(create_function('$entry', 'return $entry->id;'), $wallEntries);
 
         return $wallEntryIds;

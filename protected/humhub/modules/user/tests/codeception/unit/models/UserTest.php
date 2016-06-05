@@ -13,7 +13,7 @@ use tests\codeception\fixtures\InviteFixture;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
-use humhub\modules\content\models\Wall;
+use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\Group;
 
 class UserTest extends DbTestCase
@@ -109,17 +109,16 @@ class UserTest extends DbTestCase
         $this->assertTrue($space3->isMember($user->id)); // via global assign
     }
 
-
-    public function testAutoWallCreation()
+    public function testAutoContentContainerCreation()
     {
         $user = new User();
-        $user->username = "wallTest";
-        $user->email = "wall@example.com";
+        $user->username = "userStreamTest";
+        $user->email = "userStreamTest@example.com";
         $this->assertTrue($user->save());
 
-        $this->assertNotNull($user->wall_id);
-        $wall = Wall::findOne(['id' => $user->wall_id]);
-        $this->assertNotNull($wall);
+        $this->assertNotNull($user->contentcontainer_id);
+        $contentContainer = ContentContainer::findOne(['id' => $user->contentcontainer_id]);
+        $this->assertNotNull($contentContainer);
     }
 
 }

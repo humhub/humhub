@@ -10,13 +10,13 @@ namespace tests\codeception\fixtures;
 
 use yii\test\ActiveFixture;
 
-class UserFixture extends ActiveFixture
+class UserPasswordFixture extends ActiveFixture
 {
 
-    public $modelClass = 'humhub\modules\user\models\User';
-    public $dataFile = '@modules/user/tests/codeception/_data/user.php';
+    public $modelClass = 'humhub\modules\user\models\Password';
+    public $dataFile = '@modules/user/tests/codeception/_data/user_password.php';
     public $depends = [
-        'tests\codeception\fixtures\ContentContainerFixture'
+        'tests\codeception\fixtures\UserFixture'
     ];
 
 }

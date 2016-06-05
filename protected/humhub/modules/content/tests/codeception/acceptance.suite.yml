@@ -11,20 +11,18 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - WebDriver
+        - PhpBrowser
         - tests\codeception\_support\WebHelper
-        #- PhpBrowser
 # you can use WebDriver instead of PhpBrowser to test javascript and ajax.
 # This will require you to install selenium. See http://codeception.com/docs/04-AcceptanceTests#Selenium
 # "restart" option is used by the WebDriver to start each time per test-file new session and cookies,
 # it is useful if you want to login in your app in each test.
-       
+#        - WebDriver
     config:
-        WebDriver:
-            url: http://localhost/codebase/humhub/v1.1-dev/index.php
-            browser: phantomjs
-            restart: true
-        #PhpBrowser:
+        PhpBrowser:
 # PLEASE ADJUST IT TO THE ACTUAL ENTRY POINT WITHOUT PATH INFO
-          #  url: http://localhost:8080
-        
+            url: http://localhost:8080
+#        WebDriver:
+#            url: http://localhost:8080
+#            browser: firefox
+#            restart: true

@@ -20,8 +20,8 @@ return [
     'components' => [
         'db' => [
             'dsn' => 'mysql:host=localhost;dbname=humhub_test',
-            'username' => 'travis',
-            'password' => '',
+            'username' => 'root',
+            'password' => '12manyhacks',
             'charset' => 'utf8',
         ], 
         'mailer' => [
