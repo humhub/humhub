@@ -24,7 +24,7 @@ $object = $this->context->object;
                 </a>
             <?php endif; ?>
             <?php if ($file->getMimeBaseType() == 'video') : ?>
-                <video src="<?= $file->getUrl(); ?>" width="400" height="400" controls></video></br>
+                <video src="<?= $file->getUrl(); ?>" width="400" height="400" controls class="video-cs"></video></br>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
