@@ -68,15 +68,15 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'space_id' => 'Space ID',
-            'name' => 'Name',
-            'defaultSpaceGuid' => 'Default Space',
-            'managerGuids' => 'Manager',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By'
+            'space_id' => Yii::t('UserModule.models_User', 'Space ID'),
+            'name' => Yii::t('UserModule.models_User', 'Name'),
+            'defaultSpaceGuid' => Yii::t('UserModule.models_User', 'Default Space'),
+            'managerGuids' => Yii::t('UserModule.models_User', 'Manager'),
+            'description' => Yii::t('UserModule.models_User', 'Description'),
+            'created_at' => Yii::t('UserModule.models_User', 'Created at'),
+            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_User', 'Updated by')
         ];
     }
 
