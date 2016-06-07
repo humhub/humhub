@@ -76,7 +76,9 @@ class Group extends \yii\db\ActiveRecord
             'created_at' => Yii::t('UserModule.models_User', 'Created at'),
             'created_by' => Yii::t('UserModule.models_User', 'Created by'),
             'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
-            'updated_by' => Yii::t('UserModule.models_User', 'Updated by')
+            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
+            'show_at_registration' => Yii::t('UserModule.models_User', 'Show At Registration'),
+            'show_at_directory' => Yii::t('UserModule.models_User', 'Show At Directory'),
         ];
     }
 

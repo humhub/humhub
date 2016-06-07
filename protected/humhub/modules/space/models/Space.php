@@ -485,11 +485,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function getUserGroups()
     {
         $groups = [
-            self::USERGROUP_OWNER => 'Owner',
-            self::USERGROUP_ADMIN => 'Administrators',
-            self::USERGROUP_MODERATOR => 'Moderators',
-            self::USERGROUP_MEMBER => 'Members',
-            self::USERGROUP_USER => 'Users'
+            self::USERGROUP_OWNER => Yii::t('SpaceModule.models_Space', 'Owner'),
+            self::USERGROUP_ADMIN => Yii::t('SpaceModule.models_Space', 'Administrators'),
+            self::USERGROUP_MODERATOR => Yii::t('SpaceModule.models_Space', 'Moderators'),
+            self::USERGROUP_MEMBER => Yii::t('SpaceModule.models_Space', 'Members'),
+            self::USERGROUP_USER => Yii::t('SpaceModule.models_Space', 'Users')
         ];
 
         // Add guest groups if enabled
