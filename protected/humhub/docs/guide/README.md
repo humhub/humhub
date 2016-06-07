@@ -16,10 +16,8 @@ Getting Started
 
 Administration
 ---------------------
-* [User](admin-user.md)
-* [Spaces](admin-spaces.md)
-* [Authentication](admin-authentication.md)
 * [Advanced Configuration](admin-adv-config.md)
+* [Authentication](admin-authentication.md)
 * [Console](admin-adv-console.md)
 * [Search](admin-adv-search.md)
 * [XSendFile](admin-adv-xsendfile.md)

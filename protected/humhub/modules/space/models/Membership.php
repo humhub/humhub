@@ -3,6 +3,7 @@
 namespace humhub\modules\space\models;
 
 use Yii;
+use humhub\modules\user\models\User;
 use humhub\modules\content\models\WallEntry;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
@@ -173,6 +174,26 @@ class Membership extends \yii\db\ActiveRecord
 
         $query->orderBy(['name' => SORT_ASC]);
 
+        return $query;
+    }
+
+    /**
+     * Returns a user query for space memberships
+     * 
+     * @since 1.1
+     * @param Space $space
+     * @param boolean $membersOnly Only return approved members
+     * @return \humhub\modules\user\components\ActiveQueryUser
+     */
+    public static function getSpaceMembersQuery($space, $membersOnly = true)
+    {
+        $query = User::find()->active();
+        $query->join('LEFT JOIN', 'space_membership', 'space_membership.user_id=user.id');
+        if ($membersOnly) {
+            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+        }
+        $query->andWhere(['space_id' => $space->id]);
+        $query->defaultOrder();
         return $query;
     }
 
