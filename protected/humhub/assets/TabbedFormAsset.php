@@ -17,6 +17,9 @@ use yii\web\AssetBundle;
  */
 class TabbedFormAsset extends AssetBundle
 {
+    
+    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+    
     public $basePath = '@webroot';
     public $baseUrl = '@web';
 
@@ -24,5 +27,9 @@ class TabbedFormAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/tabbedForm.js'];
+    
+    public $depends = [
+        'humhub\assets\AppAsset'
+    ];
     
 }
