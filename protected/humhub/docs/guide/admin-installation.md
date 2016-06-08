@@ -45,7 +45,7 @@ php composer.phar global require "fxp/composer-asset-plugin:~1.1.1"
 composer update
 ```
 
-> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](http://localhost/codebase/doku/guide-admin-updating.html#gitcomposer-based-installations))
+> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](admin-updating.html#gitcomposer-based-installations))
 
 ## Setting up
 
