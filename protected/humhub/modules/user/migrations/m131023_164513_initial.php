@@ -9,7 +9,14 @@ class m131023_164513_initial extends Migration
     public function up()
     {
 
-        $this->createTable('group', array(
+        $tableOptions = null;
+
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'ENGINE=InnoDB';
+        }
+
+        $this->createTable('group',
+            array(
             'id' => 'pk',
             'space_id' => 'int(10) DEFAULT NULL',
             'name' => 'varchar(45) DEFAULT NULL',
@@ -18,9 +25,10 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
-        $this->createTable('group_admin', array(
+        $this->createTable('group_admin',
+            array(
             'id' => 'pk',
             'user_id' => 'int(11) NOT NULL',
             'group_id' => 'int(11) NOT NULL',
@@ -28,16 +36,17 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ), '');
+            ), $tableOptions);
 
 
         $this->createTable('profile', array(
             'user_id' => 'int(11) NOT NULL',
-                ), '');
+            ), $tableOptions);
 
         $this->addPrimaryKey('pk_profile', 'profile', 'user_id');
 
-        $this->createTable('profile_field', array(
+        $this->createTable('profile_field',
+            array(
             'id' => 'pk',
             'profile_field_category_id' => 'int(11) NOT NULL',
             'module_id' => 'varchar(255) DEFAULT NULL',
@@ -55,9 +64,10 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
-        $this->createTable('profile_field_category', array(
+        $this->createTable('profile_field_category',
+            array(
             'id' => 'pk',
             'title' => 'varchar(255) NOT NULL',
             'description' => 'text NOT NULL',
@@ -68,10 +78,11 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
 
-        $this->createTable('user', array(
+        $this->createTable('user',
+            array(
             'id' => 'pk',
             'guid' => 'varchar(45) DEFAULT NULL',
             'user_invite_id' => 'int(11) DEFAULT NULL',
@@ -93,9 +104,10 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
-        $this->createTable('user_content', array(
+        $this->createTable('user_content',
+            array(
             'id' => 'pk',
             'user_id' => 'int(11) NOT NULL',
             'object_model' => 'varchar(100) NOT NULL',
@@ -104,36 +116,40 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ), '');
+            ), $tableOptions);
 
-        $this->createTable('user_follow', array(
+        $this->createTable('user_follow',
+            array(
             'user_follower_id' => 'int(11) NOT NULL',
             'user_followed_id' => 'int(11) NOT NULL',
             'created_at' => 'datetime DEFAULT NULL',
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
         $this->addPrimaryKey('pk_user_follow', 'user_follow', 'user_follower_id,user_followed_id');
 
 
         try {
             // May already created
-            $this->createTable('user_http_session', array(
+            $this->createTable('user_http_session',
+                array(
                 'id' => 'char(32) NOT NULL',
                 'expire' => 'int(11) DEFAULT NULL',
                 'user_id' => 'int(11) DEFAULT NULL',
                 'data' => 'longblob DEFAULT NULL',
-                    ), '');
+                ), $tableOptions);
+
             $this->addPrimaryKey('pk_user_http_session', 'user_http_session', 'id');
         } catch (Exception $ex) {
-            
+
         }
 
 
 
-        $this->createTable('user_invite', array(
+        $this->createTable('user_invite',
+            array(
             'id' => 'pk',
             'user_originator_id' => 'int(11) DEFAULT NULL',
             'space_invite_id' => 'int(11) DEFAULT NULL',
@@ -144,10 +160,11 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
 
-        $this->createTable('user_space_membership', array(
+        $this->createTable('user_space_membership',
+            array(
             'space_id' => 'int(11) NOT NULL',
             'user_id' => 'int(11) NOT NULL',
             'originator_user_id' => 'varchar(45) DEFAULT NULL',
@@ -161,10 +178,11 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+            ), $tableOptions);
 
 
-        $this->createTable('user_module', array(
+        $this->createTable('user_module',
+            array(
             'id' => 'pk',
             'module_id' => 'varchar(255) NOT NULL',
             'user_id' => 'int(11) NOT NULL',
@@ -172,7 +190,7 @@ class m131023_164513_initial extends Migration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ), '');
+            ), $tableOptions);
 
         $this->addPrimaryKey('pk_user_space_membership', 'user_space_membership', 'space_id,user_id');
     }
@@ -189,7 +207,6 @@ class m131023_164513_initial extends Migration
         $this->dropTable('user_invite');
         $this->dropTable('user_module');
     }
-
     /*
       // Use safeUp/safeDown to do migration with transaction
       public function safeUp()

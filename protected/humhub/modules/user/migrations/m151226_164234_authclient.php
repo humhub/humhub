@@ -8,12 +8,20 @@ class m151226_164234_authclient extends Migration
 
     public function up()
     {
-        $this->createTable('user_auth', array(
+        $tableOptions = null;
+
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'ENGINE=InnoDB';
+        }
+
+        $this->createTable('user_auth',
+            array(
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'source' => $this->string(255)->notNull(),
             'source_id' => $this->string(255)->notNull(),
-        ));
+            ), $tableOptions);
+
         $this->addForeignKey('fk_user_id', 'user_auth', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
@@ -23,7 +31,6 @@ class m151226_164234_authclient extends Migration
 
         return false;
     }
-
     /*
       // Use safeUp/safeDown to run migration code within a transaction
       public function safeUp()

@@ -8,12 +8,19 @@ class m160216_160119_initial extends Migration
 
     public function up()
     {
-        $this->createTable('user_friendship', [
+        $tableOptions = null;
+
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'ENGINE=InnoDB';
+        }
+
+        $this->createTable('user_friendship',
+            [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'friend_user_id' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->notNull(),
-        ]);
+            ], $tableOptions);
 
         $this->createIndex('idx-friends', 'user_friendship', ['user_id', 'friend_user_id'], true);
         $this->addForeignKey('fk-user', 'user_friendship', 'user_id', 'user', 'id', 'CASCADE');
@@ -26,7 +33,6 @@ class m160216_160119_initial extends Migration
 
         return false;
     }
-
     /*
       // Use safeUp/safeDown to run migration code within a transaction
       public function safeUp()
