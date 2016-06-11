@@ -90,11 +90,7 @@ class CreateController extends Controller
         $space = Space::find()->where(['id' => $space_id])->one();
 
         if (count($space->getAvailableModules()) == 0) {
-
-            $model = new \humhub\modules\space\models\forms\InviteForm();
-            $model->space = $space;
-
-            return $this->renderAjax('invite', ['spaceId' => $space->id, 'model' => $model, 'space' => $space]);
+            return $this->actionInvite($space);
         } else {
             return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
         }
@@ -103,10 +99,9 @@ class CreateController extends Controller
     /**
      * Invite user
      */
-    public function actionInvite()
+    public function actionInvite($space = null)
     {
-
-        $space = Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
+        $space = ($space == null) ? Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one() : $space;
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
