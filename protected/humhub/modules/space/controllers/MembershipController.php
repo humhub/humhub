@@ -124,7 +124,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $space->requestMembership(Yii::$app->user->id, $model->message);
-            return $this->renderAjax('requestMembershipSave');
+            return $this->renderAjax('requestMembershipSave', ['space' => $space]);
         }
 
         return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
