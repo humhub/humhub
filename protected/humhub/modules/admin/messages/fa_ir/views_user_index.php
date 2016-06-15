@@ -1,12 +1,12 @@
 <?php
 return array (
-  'Actions' => '',
+  'Actions' => 'اعمال',
   'Add new user' => 'اضافه کردن کاربر جدید',
-  'Group Manager' => '',
-  'Last login' => '',
+  'Group Manager' => 'مدیریت گروه ها',
+  'Last login' => 'آخرین ورود',
   'Overview' => 'بررسی اجمالی',
   'Settings' => 'تنطیمات',
-  'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+  'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'این لیست دیدی کلی درباره کاربر های عضو شده می دهد',
   'Users' => 'کاربران',
-  'never' => '',
+  'never' => 'هرگز',
 );

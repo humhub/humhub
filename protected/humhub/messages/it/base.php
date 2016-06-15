@@ -18,7 +18,7 @@ return array (
   'It looks like you may have taken the wrong turn.' => 'Sembrerebbe che tu abbia preso una strada sbagliata.',
   'Language' => 'Lingua',
   'Latest news' => 'Ultime notizie',
-  'Login' => '',
+  'Login' => 'Login',
   'Logout' => 'Esci',
   'Menu' => 'Menu',
   'Module is not on this content container enabled!' => 'Il modulo non è abilitato in questo contenitore!',
