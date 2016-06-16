@@ -248,7 +248,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all GroupUser relations of this user as AcriveQuery
+     * Returns all GroupUser relations of this user as ActiveQuery
      * @return type
      */
     public function getGroupUsers()
@@ -257,8 +257,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all Group relations of this user as AcriveQuery
-     * @return AcriveQuery
+     * Returns all Group relations of this user as ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroups()
     {
@@ -275,8 +275,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all GroupUser relations this user is a manager of as AcriveQuery.
-     * @return AcriveQuery
+     * Returns all GroupUser relations this user is a manager of as ActiveQuery.
+     * @return ActiveQuery
      */
     public function getManagerGroupsUser()
     {
@@ -284,8 +284,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all Groups this user is a maanger of as AcriveQuery.
-     * @return AcriveQuery
+     * Returns all Groups this user is a maanger of as ActiveQuery.
+     * @return ActiveQuery
      */
     public function getManagerGroups()
     {
@@ -295,9 +295,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all user this user is related as friend as AcriveQuery.
+     * Returns all user this user is related as friend as ActiveQuery.
      * Returns null if the friendship module is deactivated.
-     * @return AcriveQuery
+     * @return ActiveQuery
      */
     public function getFriends()
     {
