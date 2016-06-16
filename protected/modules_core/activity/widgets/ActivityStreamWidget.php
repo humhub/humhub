@@ -51,7 +51,7 @@ class ActivityStreamWidget extends HWidget
     protected function getStreamUrl()
     {
         $params = array(
-            'limit' => '10',
+            'limit' => '50',
             'from' => '-from-',
             'mode' => BaseStreamAction::MODE_ACTIVITY
         );
