@@ -8,7 +8,14 @@ class m131023_170033_initial extends Migration
 
     public function up()
     {
-        $this->createTable('notification', array(
+        $tableOptions = null;
+
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'ENGINE=InnoDB';
+        }
+
+        $this->createTable('notification',
+            array(
             'id' => 'pk',
             'class' => 'varchar(100) NOT NULL',
             'user_id' => 'int(11) NOT NULL',
@@ -23,7 +30,7 @@ class m131023_170033_initial extends Migration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ), '');
+            ), $tableOptions);
     }
 
     public function down()
@@ -31,7 +38,6 @@ class m131023_170033_initial extends Migration
         echo "m131023_170033_initial does not support migration down.\n";
         return false;
     }
-
     /*
       // Use safeUp/safeDown to do migration with transaction
       public function safeUp()

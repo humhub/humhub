@@ -8,11 +8,18 @@ class m131203_110444_oembed extends Migration
 
     public function up()
     {
-        $this->createTable('url_oembed', array(
+        $tableOptions = null;
+
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'ENGINE=InnoDB';
+        }
+
+        $this->createTable('url_oembed',
+            array(
             'url' => 'varchar(255) NOT NULL',
             'preview' => 'text NOT NULL',
             'PRIMARY KEY (`url`)'
-        ));
+            ), $tableOptions);
 
         $this->renameColumn('post', 'message', 'message_2trash');
         $this->renameColumn('post', 'original_message', 'message');
@@ -23,7 +30,6 @@ class m131203_110444_oembed extends Migration
         echo "m131203_110444_oembed does not support migration down.\n";
         return false;
     }
-
     /*
       // Use safeUp/safeDown to do migration with transaction
       public function safeUp()

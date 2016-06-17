@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
@@ -45,7 +44,7 @@ class Migration extends \yii\db\Migration
         /**
          * Looking up "NewLike" activities with this className
          * Since 0.20 the className changed to Like (is not longer the target object e.g. post)
-         * 
+         *
          * Use raw query for better performace.
          */
         /*
@@ -58,13 +57,14 @@ class Migration extends \yii\db\Migration
           }
          */
         $updateSql = "
-            UPDATE activity 
+            UPDATE activity
             LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
             SET activity.object_model=:likeModelClass, activity.object_id=like.id
             WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
         ";
-        Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => \humhub\modules\like\models\Like::className(),
+        Yii::$app->db->createCommand($updateSql,
+            [
+            ':likeModelClass'     => \humhub\modules\like\models\Like::className(),
             ':likedActivityClass' => \humhub\modules\like\activities\Liked::className()
         ])->execute();
     }
@@ -93,6 +93,19 @@ class Migration extends \yii\db\Migration
     public function insertSilent($table, $columns)
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createTable($table, $columns, $options = null)
+    {
+        if ($this->db->driverName === 'mysql' && empty($options))
+        {
+            $options = 'ENGINE=InnoDB';
+        }
+
+        return parent::createTable($table, $columns, $options);
     }
 
 }
