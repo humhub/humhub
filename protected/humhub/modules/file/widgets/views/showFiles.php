@@ -23,7 +23,9 @@ $object = $this->context->object;
                     <img src='<?php echo $file->getPreviewImageUrl($maxPreviewImageWidth ? $maxPreviewImageWidth : 200, $maxPreviewImageHeight ? $maxPreviewImageHeight : 200); ?>'>
                 </a>
             <?php endif; ?>
-
+            <?php if ($file->getMimeBaseType() == 'video') : ?>
+                <video src="<?= $file->getUrl(); ?>" width="400" height="400" controls class="video-cs"></video></br>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
 
