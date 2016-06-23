@@ -6,7 +6,7 @@ use humhub\models\Setting;
 <div class="panel panel-default" id="spaces-statistics-panel">
 
     <!-- Display panel menu widget -->
-    <?php \humhub\widgets\PanelMenu::widget(array('id' => 'spaces-statistics-panel')); ?>
+    <?= \humhub\widgets\PanelMenu::widget(array('id' => 'spaces-statistics-panel')); ?>
 
     <div class="panel-heading">
         <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>Space</strong> stats'); ?>
