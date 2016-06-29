@@ -7,9 +7,11 @@ use yii\helpers\Html;
 
         <div class="media">
             <a href="<?php echo $space->getUrl(); ?>" class="pull-left">
-                <img class="media-object img-rounded user-image user-<?php echo $space->guid; ?>" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"
-                     src="<?php echo $space->getProfileImage()->getUrl(); ?>"
-                     width="40" height="40"/>
+                <!-- Show space image -->
+                <?php echo \humhub\modules\space\widgets\Image::widget([
+                    'space' => $space,
+                    'width' => 40,
+                ]); ?>
             </a>
             <div class="media-body">
                 <!-- show username with link and creation time-->
