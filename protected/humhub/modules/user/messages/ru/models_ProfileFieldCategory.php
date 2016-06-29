@@ -17,9 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>User</strong> settings' => '<strong>Пользовательские</strong> настройки',
-    '<strong>Your</strong> profile' => '<strong>Ваш</strong> профиль',
     'General' => 'Основная информация',
     'Communication' => 'Контакты',
-    'Social bookmarks' => 'Социальные сети',
+    'Social bookmarks' => 'Социальные сети'
 ];

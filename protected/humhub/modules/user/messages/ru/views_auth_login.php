@@ -13,4 +13,5 @@ return array (
   'email' => 'e-mail',
   'password' => 'Пароль',
   'username or email' => 'Имя пользователя или e-mail',
+  'User or Password incorrect.' => 'Неверное имя пользователя или пароль',
 );
