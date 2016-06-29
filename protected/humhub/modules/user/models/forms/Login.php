@@ -80,7 +80,7 @@ class Login extends Model
         }
 
         if ($user === null) {
-            $this->addError('password', Yii::t('UserModule.views_auth_login', 'User or Password incorrect.'));
+            $this->addError('password', 'User or Password incorrect.');
         }
 
         // Delete current password value
@@ -89,12 +89,4 @@ class Login extends Model
         parent::afterValidate();
     }
 
-    public function attributeLabels()
-    {
-        return array(
-            'username'=> Yii::t('UserModule.views_auth_login', 'username or email'),
-            'password'=> Yii::t('UserModule.views_auth_login', 'password'),
-            'rememberMe' => Yii::t('UserModule.views_auth_login', 'Remember me'),
-        );
-    }
 }
