@@ -13,7 +13,6 @@ use yii\helpers\Url;
 use humhub\models\Setting;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\user\libs\Ldap;
 /**
  * SettingController 
  * 

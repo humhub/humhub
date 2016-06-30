@@ -8,7 +8,6 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\Follow;
-use humhub\modules\user\libs\Ldap;
 use humhub\models\Setting;
 
 /**
