@@ -39,9 +39,6 @@ use humhub\modules\user\models\User;
     <?php echo $form->field($model, 'enable_html5_desktop_notifications')->checkbox(); ?>
     <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_emailing', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
-    <!-- show flash message after saving -->
-    <?php echo \humhub\widgets\DataSaved::widget(); ?>
-
     <?php ActiveForm::end(); ?>
 <?php $this->endContent() ?>
 

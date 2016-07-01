@@ -2,6 +2,6 @@
 return array (
   'Create new group' => 'Erstelle neue Gruppe',
   'Members' => 'Mitglieder',
-  'Permissions' => '',
+  'Permissions' => 'Berechtigungen',
   'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => '',
 );

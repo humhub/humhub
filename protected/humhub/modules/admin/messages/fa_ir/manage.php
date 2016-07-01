@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Advanced' => '',
-  'Basic' => '',
+  'Advanced' => 'پيشرفته',
+  'Basic' => 'پايه',
   'General' => 'کلی',
-  'Permissions' => '',
+  'Permissions' => 'مجوز ها',
 );

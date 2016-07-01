@@ -3,8 +3,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-humhub\assets\Select2ExtensionAsset::register($this);
 humhub\assets\TabbedFormAsset::register($this);
+
+humhub\assets\Select2ExtensionAsset::register($this);
 ?>
 
 <div class="clearfix">

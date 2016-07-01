@@ -23,7 +23,7 @@ return array (
   'Notifications' => 'Notifiche',
   'Password' => 'Password',
   'Profile' => 'Profilo',
-  'Security' => '',
+  'Security' => 'Sicurezza',
   'Settings' => 'Impostazioni',
   'User' => 'Utente',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',

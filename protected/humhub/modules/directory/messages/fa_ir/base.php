@@ -2,5 +2,5 @@
 return array (
   'Directory' => 'لیست‌ها',
   'Members' => 'اعضا',
-  'Send invite' => '',
+  'Send invite' => 'ارسال دعوتنامه',
 );
