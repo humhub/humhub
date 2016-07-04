@@ -169,6 +169,7 @@ class AuthController extends Controller
             AuthClientHelpers::updateUser($authClient, $user);
 
             if (Yii::$app->user->login($user, $duration)) {
+                $user->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
                 Yii::$app->user->setCurrentAuthClient($authClient);
                 $url = Yii::$app->user->returnUrl;
             }
