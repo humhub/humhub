@@ -75,7 +75,15 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionHome()
     {
-        return $this->render('home', ['space' => $this->contentContainer]);
+        $space = $this->contentContainer;
+        $canCreatePosts = $space->permissionManager->can(new \humhub\modules\post\permissions\CreatePost());
+        $isMember = $space->isMember();
+
+        return $this->render('home', [
+                    'space' => $space,
+                    'canCreatePosts' => $canCreatePosts,
+                    'isMember' => $isMember
+        ]);
     }
 
     /**
