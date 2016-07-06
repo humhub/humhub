@@ -117,6 +117,8 @@ function resetProfileImage(json) {
         $('#profile-image-upload-edit-button').hide();
     } else if (json.type == "banner") {
         $('#user-banner-image').attr('src', json.defaultUrl);
+        $('#deleteLinkPost_modal_bannerimagedelete').hide();
+        $('#banner-image-upload-edit-button').hide();
     }
 
     $('.image-upload-buttons').hide();
