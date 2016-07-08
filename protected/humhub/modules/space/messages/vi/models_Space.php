@@ -17,14 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Administrators' => '',
     'Color' => '',
     'Created At' => '',
     'Created By' => '',
+    'Default content visibility' => '',
     'Homepage' => '',
     'Join Policy' => '',
+    'Members' => '',
+    'Moderators' => '',
     'Owner' => '',
     'Status' => '',
     'Updated At' => '',
+    'Users' => '',
     'Visibility' => '',
     'You cannot create private visible spaces!' => '',
     'You cannot create public visible spaces!' => '',

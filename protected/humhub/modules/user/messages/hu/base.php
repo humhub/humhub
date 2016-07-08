@@ -44,5 +44,6 @@ return [
     'Settings' => '',
     'User' => '',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
+    'Your new password must not equal your current password!' => '',
     'or' => '',
 ];
