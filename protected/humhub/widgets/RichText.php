@@ -67,7 +67,14 @@ class RichText extends \humhub\components\Widget
             $oembedCount = 0; // OEmbeds used
             $that = $this;
 
-            $this->text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
+            $pattern= <<<REGEXP
+                    /(?(R) # in case of recursion match parentheses
+				 \(((?>[^\s()]+)|(?R))*\)
+			|      # else match a link with title
+				(https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
+			)/x
+REGEXP;
+            $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
                 if ($that->edit) {
                     return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
@@ -81,7 +88,7 @@ class RichText extends \humhub\components\Widget
                         return $oembed;
                     }
                 }
-                return Html::a($match[1], Html::decode($match[1]), array('target' => '_blank')) . $match[2];
+                return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
             }, $this->text);
             
             // mark emails
