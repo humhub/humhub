@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Notification</strong> Overview' => '',
     'Filter' => '',
     'Mark all as seen' => '',
     'Module Filter' => '',
     'No notifications found!' => '',
-    'Notification Overview' => '',
 ];
