@@ -88,13 +88,13 @@ class SettingsManager extends BaseSettingsManager
     /**
      * @inheritdoc
      */
-    public function get($name)
+    public function get($name, $default = null)
     {
         if ($this->isFixed($name)) {
             return Yii::$app->params['fixed-settings'][$this->moduleId][$name];
         }
 
-        return parent::get($name);
+        return parent::get($name, $default);
     }
 
 }
