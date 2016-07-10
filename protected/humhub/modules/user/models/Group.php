@@ -143,7 +143,7 @@ class Group extends \yii\db\ActiveRecord
 
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['user_id' => 'id']);
+        return $this->hasMany(User::className(), ['group_id' => 'id']);
     }
 
     public function getSpace()
