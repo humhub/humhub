@@ -76,10 +76,6 @@ class RichText extends \humhub\components\Widget
 REGEXP;
             $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
-                if ($that->edit) {
-                    return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
-                }
-
                 // Try use oembed
                 if ($maxOembedCount > $oembedCount) {
                     $oembed = UrlOembed::GetOembed($match[0]);
