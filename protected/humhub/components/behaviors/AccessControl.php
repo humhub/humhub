@@ -11,6 +11,7 @@ namespace humhub\components\behaviors;
 use Yii;
 use yii\web\ForbiddenHttpException;
 use humhub\models\Setting;
+use yii\helpers\ArrayHelper;
 
 /**
  * AccessControl provides a very basic controller access protection
@@ -26,6 +27,13 @@ class AccessControl extends \yii\base\ActionFilter
      * @var array
      */
     public $guestAllowedActions = [];
+
+    /**
+     * Groups which are allowed full access to controller
+     *
+     * @var array
+     */
+    public $allowedGroups = [];
 
     /**
      * Only allow admins access to this controller
@@ -65,6 +73,19 @@ class AccessControl extends \yii\base\ActionFilter
         }
 
         if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
+            $this->forbidden();
+        }
+
+        if (!empty($this->allowedGroups)) {
+            $userGroups = ArrayHelper::toArray($identity->groups);
+            $userGroups = ArrayHelper::getColumn($userGroups, 'name');
+            $userGroups = array_map('strtolower', $userGroups);
+            $allowedGroups = array_map('strtolower', $this->allowedGroups);
+            foreach ($allowedGroups as $allowedGroup){
+                if(in_array($allowedGroup, $userGroups)){
+                    return true;
+                }
+            }
             $this->forbidden();
         }
 
