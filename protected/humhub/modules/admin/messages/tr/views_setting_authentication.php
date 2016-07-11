@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Visible for members only' => '',
+    'Visible for members+guests' => '',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Minumum 20 saniyedir. 1400 saniye (24 dakika) (varsayılan oturum zaman aşımı) sonra zaman aşımına olacaktır.',
     'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Kimliği doğrulanmış kullanıcılar için sınırlı erişim etkin olduğunda geçerli olur. Sadece yeni kullanıcılar etkiler.',
     'Save' => 'Kaydet',

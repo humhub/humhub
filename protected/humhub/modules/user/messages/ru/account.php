@@ -19,7 +19,4 @@
 return [
     '<strong>User</strong> settings' => '<strong>Пользовательские</strong> настройки',
     '<strong>Your</strong> profile' => '<strong>Ваш</strong> профиль',
-    'General' => 'Основная информация',
-    'Communication' => 'Контакты',
-    'Social bookmarks' => 'Социальные сети',
 ];

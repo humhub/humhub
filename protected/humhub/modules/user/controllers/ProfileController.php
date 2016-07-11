@@ -59,6 +59,10 @@ class ProfileController extends ContentContainerController
      */
     public function actionIndex()
     {
+        if ($this->module->profileDefaultRoute !== null) {
+            return $this->redirect($this->getUser()->createUrl($this->module->profileDefaultRoute));
+        }
+
         return $this->actionHome();
     }
 

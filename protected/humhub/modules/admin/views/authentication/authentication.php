@@ -5,7 +5,7 @@ use humhub\compat\CHtml;
 use humhub\models\Setting;
 ?>
 
-<?php $this->beginContent('@admin/views/setting/_authenticationLayout.php') ?>
+<?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 <div class="panel-body">
     <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
 

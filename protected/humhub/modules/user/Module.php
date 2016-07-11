@@ -37,6 +37,11 @@ class Module extends \humhub\components\Module
     public $logoutUrl = null;
 
     /**
+     * @var string the default route for user profiles
+     */
+    public $profileDefaultRoute = null;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

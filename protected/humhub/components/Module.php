@@ -102,15 +102,49 @@ class Module extends \yii\base\Module
      */
     public function getImage()
     {
-        $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
-
-        if (is_file($moduleImageFile)) {
-            list($path, $url) = Yii::$app->assetManager->publish($moduleImageFile);
-            return $url;
+        $url = $this->getPublishedUrl('/module_image.png');
+        
+        if($url == null) {
+            $url = Yii::getAlias("@web/img/default_module.jpg");
         }
 
-        return Yii::getAlias("@web/img/default_module.jpg");
+        return $url;
     }
+    
+    /**
+     * Returns the url of an asset file and publishes all module assets if
+     * the file is not published yet.
+     * 
+     * @param type $relativePath relative file path e.g. /module_image.jpg
+     * @return type
+     */
+    public function getPublishedUrl($relativePath)
+    {
+        $path = $this->getAssetPath();
+
+        // If the file has not been published yet we publish the module assets
+        if(!$this->isPublished($relativePath)) {
+            $this->publishAssets();
+        }
+        
+        // If its still not published the file does not exist
+        if($this->isPublished($relativePath)) {
+            return Yii::$app->assetManager->getPublishedUrl($path).$relativePath;
+        }
+    }
+    
+    /**
+     * Checks if a specific asset file has already been published
+     * @param type $relativePath
+     * @return type
+     */
+    private function isPublished($relativePath)
+    {
+        $path = $this->getAssetPath();
+        $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
+        return $publishedPath !== false && is_file($publishedPath.$relativePath);
+    }
+
 
     /**
      * Get Assets Url
@@ -119,8 +153,36 @@ class Module extends \yii\base\Module
      */
     public function getAssetsUrl()
     {
-        $published = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath, ['forceCopy' => true]);
-        return $published[1];
+        if(($published = $this->publishAssets()) != null) {
+            return $published[1];
+        }
+    }
+    
+    /**
+     * Publishes the basePath/resourcesPath (assets) module directory if existing.
+     * @return type
+     */
+    public function publishAssets()
+    {
+        if($this->hasAssets()) {
+            return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
+        }
+    }
+    
+    /**
+     * Determines whether or not this module has an asset directory. 
+     * @return type
+     */
+    private function hasAssets()
+    {
+        $path = $this->getAssetPath();
+        $path = Yii::getAlias($path);
+        return is_string($path) && is_dir($path);
+    }
+    
+    private function getAssetPath()
+    {
+        return $this->getBasePath() . '/' . $this->resourcesPath;
     }
 
     /**

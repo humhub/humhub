@@ -50,7 +50,7 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
         $this->addItem(array(
             'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'Stream'),
             'group' => 'profile',
-            'url' => $this->user->createUrl('//user/profile'),
+            'url' => $this->user->createUrl('//user/profile/home'),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id == "profile" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == "home")),
         ));

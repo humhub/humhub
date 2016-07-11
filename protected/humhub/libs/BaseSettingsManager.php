@@ -84,9 +84,9 @@ abstract class BaseSettingsManager extends Component
      * @param string $name the name of setting
      * @return string the setting value or null when not exists
      */
-    public function get($name)
+    public function get($name, $default = null)
     {
-        return isset($this->_loaded[$name]) ? $this->_loaded[$name] : null;
+        return isset($this->_loaded[$name]) ? $this->_loaded[$name] : $default;
     }
 
     /**

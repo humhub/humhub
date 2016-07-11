@@ -223,7 +223,7 @@ class BaseMenu extends \yii\base\Widget
         foreach ($this->items as $key => $item) {
             if ($item['url'] == $url) {
                 $this->items[$key]['htmlOptions']['class'] = 'active';
-                $this->items[$key]['htmlOptions']['isActive'] = true;
+                $this->items[$key]['isActive'] = true;
             }
         }
     }
@@ -236,7 +236,7 @@ class BaseMenu extends \yii\base\Widget
         foreach ($this->items as $key => $item) {
             if ($item['url'] == $url) {
                 $this->items[$key]['htmlOptions']['class'] = '';
-                $this->items[$key]['htmlOptions']['isActive'] = false;
+                $this->items[$key]['isActive'] = false;
             }
         }
     }

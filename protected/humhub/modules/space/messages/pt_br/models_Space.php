@@ -17,8 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
+    'Administrators' => '',
+    'Default content visibility' => '',
     'Homepage' => '',
+    'Members' => '',
+    'Moderators' => '',
+    'Users' => '',
+    'Color' => 'Cor',
     'Created At' => 'Criado em',
     'Created By' => 'Criado por',
     'Description' => 'Descrição',

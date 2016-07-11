@@ -396,6 +396,9 @@ class File extends \humhub\components\ActiveRecord
         if ($this->size > Yii::$app->getModule('file')->settings->get('maxFileSize')) {
             $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::$app->formatter->asSize(Yii::$app->getModule('file')->settings->get('maxFileSize')))));
         }
+        if(isset($this->uploadedFile) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
+            $this->addError($attribute, Yii::t('FileModule.models_File', 'File dimensions are too big to be processed with current server memory limit!'));
+        }
     }
 
     /**

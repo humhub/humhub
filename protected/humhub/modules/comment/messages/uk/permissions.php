@@ -18,5 +18,9 @@
  */
 return [
     'Allows the user to add comments' => '',
+    'Allows the user to create posts' => '',
+    'Can manage (e.g. archive, stick or delete) arbitrary content' => '',
     'Create comment' => '',
+    'Create post' => '',
+    'Manage content' => '',
 ];

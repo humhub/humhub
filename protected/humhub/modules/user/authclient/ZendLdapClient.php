@@ -142,7 +142,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
         // Fix LDAP Attributes
         foreach ($attributes as $name => $value) {
-            if (is_array($value) && count($value) == 1) {
+            if (is_array($value) && count($value) == 1 && $name != 'memberof') {
                 $normalized[$name] = $value[0];
             } else {
                 $normalized[$name] = $value;
