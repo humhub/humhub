@@ -1,8 +1,7 @@
 <?php
 return array (
   'Members' => 'Mitglieder',
-  'Owner' => 'Eigentümer',
+  'Owner' => 'Besitzer',
   'Pending Approvals' => 'Ausstehende Freigaben',
   'Pending Invites' => 'Ausstehende Einladungen',
-  'Permissions' => 'Berechtigungen',
 );

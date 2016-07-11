@@ -23,7 +23,7 @@ class HumHubAPI
 
     /**
      * HumHub API
-     * 
+     *
      * @param string $action
      * @param array $params
      * @return array
@@ -36,7 +36,7 @@ class HumHubAPI
 
         $url = Yii::$app->params['humhub']['apiUrl'] . '/' . $action;
         $params['version'] = urlencode(Yii::$app->version);
-        $params['installId'] = Setting::Get('installationId', 'admin');
+        $params['installId'] = Yii::$app->getModule('admin')->settings->get('installationId');
 
         $url .= '?';
         foreach ($params as $name => $value) {
@@ -51,7 +51,7 @@ class HumHubAPI
 
             $response = $http->send();
             $json = $response->getBody();
-        } catch (\Zend\Http\Client\Adapter\Exception\RuntimeException $ex) {    
+        } catch (\Zend\Http\Client\Adapter\Exception\RuntimeException $ex) {
             Yii::error('Could not connect to HumHub API! ' . $ex->getMessage());
             return [];
         } catch (Exception $ex) {
@@ -69,7 +69,7 @@ class HumHubAPI
 
     /**
      * Fetch latest HumHub version online
-     * 
+     *
      * @return string latest HumHub Version
      */
     public static function getLatestHumHubVersion()

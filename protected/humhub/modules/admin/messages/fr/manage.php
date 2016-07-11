@@ -1,6 +1,7 @@
 <?php
 return array (
+  'Advanced' => 'Avancé',
   'Basic' => 'Général',
-  'Delete' => 'Supprimer',
-  'Security' => 'Sécurité',
+  'General' => 'Général',
+  'Permissions' => 'Permissions',
 );

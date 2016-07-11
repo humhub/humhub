@@ -19,9 +19,12 @@
 return [
     'Actions' => '',
     'Add new user' => '',
+    'Group Manager' => '',
     'Last login' => '',
-    'Overview' => '',
-    'never' => '',
-    '<strong>Manage</strong> users' => '<strong>Gestisci</strong> utenti',
-    'In this overview you can find every registered user and manage him.' => 'In questa panoramica puoi cercare ogni utente registrato e gestirlo.',
+    'Send invite' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
+    'Overview' => 'Panoramica',
+    'Settings' => 'Impostazioni',
+    'Users' => 'Persone',
+    'never' => 'mai',
 ];

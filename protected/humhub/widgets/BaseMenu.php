@@ -2,6 +2,8 @@
 
 namespace humhub\widgets;
 
+use yii\helpers\Url;
+
 class BaseMenu extends \yii\base\Widget
 {
 
@@ -211,6 +213,33 @@ class BaseMenu extends \yii\base\Widget
         $this->trigger(self::EVENT_RUN);
         return $this->render($this->template, array());
     }
+    
+    /**
+     * Activates the menu item with the given url
+     * @param type $url
+     */
+    public function setActive($url)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($item['url'] == $url) {
+                $this->items[$key]['htmlOptions']['class'] = 'active';
+                $this->items[$key]['isActive'] = true;
+            }
+        }
+    }
+    
+    /*
+     * Deactivates the menu item with the given url
+     */
+    public function setInactive($url)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($item['url'] == $url) {
+                $this->items[$key]['htmlOptions']['class'] = '';
+                $this->items[$key]['isActive'] = false;
+            }
+        }
+    }
 
     /**
      * Add the active class from a menue item.
@@ -218,14 +247,15 @@ class BaseMenu extends \yii\base\Widget
      * @param \String $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
-    public function markAsActive($url)
+    public static function markAsActive($url)
     {
-        foreach ($this->items as $key => $item) {
-            if ($item['url'] == $url) {
-                $this->items[$key]['htmlOptions']['class'] = 'active';
-                $this->items[$key]['htmlOptions']['isActive'] = true;
-            }
+        if (is_array($url)) {
+            $url = Url::to($url);
         }
+
+        \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
+            $event->sender->setActive($url);
+        });
     }
 
     /**
@@ -234,14 +264,15 @@ class BaseMenu extends \yii\base\Widget
      * @param \String $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
-    public function markAsInactive($url)
+    public static function markAsInactive($url)
     {
-        foreach ($this->items as $key => $item) {
-            if ($item['url'] == $url) {
-                $this->items[$key]['htmlOptions']['class'] = '';
-                $this->items[$key]['htmlOptions']['isActive'] = false;
-            }
+        if (is_array($url)) {
+            $url = Url::to($url);
         }
+        
+        \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
+             $event->sender->setInactive($url);
+        });
     }
 
     /**

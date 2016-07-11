@@ -18,10 +18,13 @@
  */
 return [
     'Actions' => '',
-    '<strong>Manage</strong> users' => '<strong>Administrer</strong> brugere',
+    'Group Manager' => '',
+    'Send invite' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
     'Add new user' => 'Tilføj ny bruger',
-    'In this overview you can find every registered user and manage him.' => 'I denne oversigt kan du finde alle registrerede brugere og redigere dem.',
     'Last login' => 'Seneste login',
     'Overview' => 'Oversigt',
+    'Settings' => 'Indstillinger',
+    'Users' => 'Brugere',
     'never' => 'Aldrig',
 ];

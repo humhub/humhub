@@ -21,5 +21,4 @@ return [
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
-    'Permissions' => '',
 ];

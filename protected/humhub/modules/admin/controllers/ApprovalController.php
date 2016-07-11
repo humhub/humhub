@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -23,6 +23,13 @@ use humhub\modules\admin\models\forms\ApproveUserForm;
  */
 class ApprovalController extends Controller
 {
+
+    public function init()
+    {
+        $this->subLayout = '@admin/views/layouts/user';
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
+        return parent::init();
+    }
 
     /**
      * @inheritdoc

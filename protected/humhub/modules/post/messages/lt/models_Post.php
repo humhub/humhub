@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Post' => 'Skelbimas',
+  'post' => 'Skelbimas',
 );

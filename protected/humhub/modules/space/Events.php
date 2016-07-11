@@ -52,12 +52,14 @@ class Events extends \yii\base\Object
 
         // Cancel all space memberships
         foreach (Membership::findAll(array('user_id' => $user->id)) as $membership) {
-            $membership->space->removeMember($user->id);
+            // Avoid activities
+            $membership->delete();
         }
 
         // Cancel all space invites by the user
         foreach (Membership::findAll(array('originator_user_id' => $user->id, 'status' => Membership::STATUS_INVITED)) as $membership) {
-            $membership->space->removeMember($membership->user_id);
+            // Avoid activities
+            $membership->delete();
         }
 
         return true;

@@ -18,9 +18,9 @@
  */
 return [
     'Actions' => '',
-    'Define here default settings for new spaces.' => '',
+    'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
     'Overview' => '',
+    'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     '<strong>Manage</strong> spaces' => '<strong>管理</strong> 版块',
-    'In this overview you can find every space and manage it.' => '你可以找到每一个空间和管理它',
     'Settings' => '设置',
 ];

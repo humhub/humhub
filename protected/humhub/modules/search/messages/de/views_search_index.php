@@ -8,4 +8,5 @@ return array (
   'Search only in certain spaces:' => 'Nur in diesen Spaces suchen:',
   'Spaces' => 'Spaces',
   'Users' => 'Benutzer',
+  'Your search returned no matches.' => 'Deine Suche ergab keine Treffer.',
 );

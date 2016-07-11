@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Pending</strong> user approvals' => '<strong>Ausstehende</strong> Benutzerfreigaben',
   'Actions' => 'Aktionen',
-  'Here you see all users who have registered and still waiting for a approval.' => 'Hier siehst du eine Liste aller registrierten Benutzer die noch auf eine Freigabe warten.',
+  'Pending user approvals' => 'Ausstehende Benutzerbestätigungen.',
+  'The following list contains all registered users awaiting an approval.' => 'Die folgende Liste beinhaltet alle registrierten Benutzer mit einer ausstehenden Bestätigung.',
 );

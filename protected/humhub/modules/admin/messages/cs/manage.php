@@ -1,6 +1,7 @@
 <?php
 return array (
+  'Advanced' => '',
   'Basic' => 'Základní',
-  'Delete' => 'Smazat',
-  'Security' => 'Zabezpečení',
+  'General' => 'Obecné',
+  'Permissions' => '',
 );

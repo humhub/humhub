@@ -9,8 +9,8 @@ use humhub\assets\AppAsset;
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <!-- start: Meta -->
         <meta charset="utf-8">
@@ -80,78 +80,62 @@ AppAsset::register($this);
     </head>
 
     <body>
-    <?php $this->beginBody() ?>
+        <?php $this->beginBody() ?>
 
-    <!-- start: first top navigation bar -->
-    <div id="topbar-first" class="topbar">
-        <div class="container">
-            <div class="topbar-brand hidden-xs">
-                <?php echo \humhub\widgets\SiteLogo::widget(); ?>
-            </div>
-
-            <div class="topbar-actions pull-right">
-                <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
-            </div>
-
-            <div class="notifications pull-right">
-
-                <?php
-                echo \humhub\widgets\NotificationArea::widget(['widgets' => [
-                    [\humhub\modules\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
-                ]]);
-                ?>
-
-            </div>
-
-        </div>
-
-    </div>
-    <!-- end: first top navigation bar -->
-
-
-    <!-- start: second top navigation bar -->
-    <div id="topbar-second" class="topbar">
-        <div class="container">
-            <ul class="nav ">
-                <!-- load space chooser widget -->
-                <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
-
-                <!-- load navigation from widget -->
-                <?php echo \humhub\widgets\TopMenu::widget(); ?>
-            </ul>
-
-            <ul class="nav pull-right" id="search-menu-nav">
-                <?php echo \humhub\widgets\TopMenuRightStack::widget(); ?>
-            </ul>
-        </div>
-    </div>
-
-    <!-- end: second top navigation bar -->
-
-    <?php echo \humhub\modules\tour\widgets\Tour::widget(); ?>
-
-    <!-- start: show content (and check, if exists a sublayout -->
-    <?php if (isset($this->context->subLayout) && $this->context->subLayout != "") : ?>
-        <?php echo $this->render($this->context->subLayout, array('content' => $content)); ?>
-    <?php else: ?>
-        <?php echo $content; ?>
-    <?php endif; ?>
-    <!-- end: show content -->
-
-    <!-- start: Modal (every lightbox will/should use this construct to show content)-->
-    <div class="modal" id="globalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
+        <!-- start: first top navigation bar -->
+        <div id="topbar-first" class="topbar">
+            <div class="container">
+                <div class="topbar-brand hidden-xs">
+                    <?php echo \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
+
+                <div class="topbar-actions pull-right">
+                    <?php echo \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
+                </div>
+
+                <div class="notifications pull-right">
+
+                    <?php
+                    echo \humhub\widgets\NotificationArea::widget(['widgets' => [
+                            [\humhub\modules\notification\widgets\Overview::className(), [], ['sortOrder' => 10]],
+                    ]]);
+                    ?>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- end: first top navigation bar -->
+
+        <!-- start: second top navigation bar -->
+        <div id="topbar-second" class="topbar">
+            <div class="container">
+                <ul class="nav ">
+                    <!-- load space chooser widget -->
+                    <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
+
+                    <!-- load navigation from widget -->
+                    <?php echo \humhub\widgets\TopMenu::widget(); ?>
+                </ul>
+
+                <ul class="nav pull-right" id="search-menu-nav">
+                    <?php echo \humhub\widgets\TopMenuRightStack::widget(); ?>
+                </ul>
             </div>
         </div>
-    </div>
-    <!-- end: Modal -->
+        <!-- end: second top navigation bar -->
 
-    <?php echo \humhub\models\Setting::GetText('trackingHtmlCode'); ?>
-    <?php $this->endBody() ?>
+        <!-- start: show content (and check, if exists a sublayout -->
+        <?php if (isset($this->context->subLayout) && $this->context->subLayout != "") : ?>
+            <?php echo $this->render($this->context->subLayout, array('content' => $content)); ?>
+        <?php else: ?>
+            <?php echo $content; ?>
+        <?php endif; ?>
+        <!-- end: show content -->
+
+        <?= \humhub\widgets\LayoutAddons::widget(); ?>
+        <?php $this->endBody() ?>
     </body>
-    </html>
+</html>
 <?php $this->endPage() ?>

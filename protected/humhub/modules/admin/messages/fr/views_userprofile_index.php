@@ -1,6 +1,7 @@
 <?php
 return array (
-  '<strong>Manage</strong> profiles fields' => '<strong>Gestion</strong> des champs de profil',
   'Add new category' => 'Ajouter une catégorie',
   'Add new field' => 'Ajouter un champ',
+  'Here you can create or edit profile categories and fields.' => '',
+  'Manage profile attributes' => 'Gérer les attributs de profil',
 );

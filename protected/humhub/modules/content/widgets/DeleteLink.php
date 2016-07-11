@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -30,7 +30,7 @@ class DeleteLink extends \yii\base\Widget
      */
     public function run()
     {
-        if ($this->content->content->canDelete()) {
+        if ($this->content->content->canEdit()) {
             return $this->render('deleteLink', array(
                         'model' => $this->content->content->object_model,
                         'id' => $this->content->content->object_id

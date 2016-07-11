@@ -16,6 +16,7 @@ return array (
   'Only alphanumeric characters allowed!' => 'Nur alphanumerische Zeichen erlaubt!',
   'Profile Field Category' => 'Profilfeld-Kategorie',
   'Required' => 'Pflichtfeld',
+  'Searchable' => 'Suchbar',
   'Show at registration' => 'Bei der Registrierung anzeigen',
   'Sort order' => 'Sortierung',
   'Title' => 'Titel',

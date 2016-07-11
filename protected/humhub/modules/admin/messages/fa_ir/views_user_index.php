@@ -17,11 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Last login' => '',
-    'never' => '',
-    '<strong>Manage</strong> users' => '<strong>مدیریت</strong> کاربران',
+    'Send invite' => '',
+    'Actions' => 'اعمال',
     'Add new user' => 'اضافه کردن کاربر جدید',
-    'In this overview you can find every registered user and manage him.' => 'در این بررسی اجمالی می‌توانید هر کاربر ثبت نام شده را پیدا و مدیریت کنید.',
+    'Group Manager' => 'مدیریت گروه ها',
+    'Last login' => 'آخرین ورود',
     'Overview' => 'بررسی اجمالی',
+    'Settings' => 'تنطیمات',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'این لیست دیدی کلی درباره کاربر های عضو شده می دهد',
+    'Users' => 'کاربران',
+    'never' => 'هرگز',
 ];

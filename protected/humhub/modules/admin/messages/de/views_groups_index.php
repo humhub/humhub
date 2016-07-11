@@ -1,5 +1,7 @@
 <?php
 return array (
-  'Create new group' => 'Erstelle neue Gruppe',
-  'You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.' => 'Du kannst Benutzer in verschiedene Gruppen aufteilen (z.B. Teams, Abteilungen, usw.) und ihnen einen Standard-Space und Administratoren zuweisen.',
+  'Create new group' => 'Neue Gruppe erstellen',
+  'Members' => 'Mitglieder',
+  'Permissions' => 'Berechtigungen',
+  'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Benutzer können verschiedenen Gruppen hinzugefügt werden (z.B. Teams, Abteilungen etc.) mit jeweils spezifischen Standard-Spaces, Benutzer-mangern und Rechten.',
 );

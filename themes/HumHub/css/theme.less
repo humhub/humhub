@@ -421,6 +421,7 @@ input[type=select] {
       }
     }
   }
+  
   .dropdown-footer {
     margin: 10px 10px 5px;
   }
@@ -791,6 +792,10 @@ input[type=select] {
   .panel-heading {
     .heading;
     border-radius: 4px;
+    .heading-link {
+        color:#6fdbe8 !important;
+        font-size: 0.8em;
+    }
   }
   .panel-body {
     padding: 10px;
@@ -1052,6 +1057,56 @@ input[type=select] {
 //
 // Navs
 // --------------------------------------------------
+.tab-sub-menu {
+    padding-left: 10px;
+    li > a:hover, li > a:focus {
+        background-color: @background1;
+        border-bottom-color: #ddd;
+    }
+    
+    li.active > a {
+        background-color:#FFFFFF;
+        border-bottom-color: transparent;
+    }
+}
+
+.tab-menu {
+    padding-top:10px;
+    background-color: #FFFFFF;
+    
+    .nav-tabs {
+        padding-left: 10px;
+        
+        li > a {
+            padding-top:12px;
+            border-color: #ddd;
+            border-bottom:1px solid #ddd;
+            background-color: @background1;
+            max-height: 41px;
+            outline: none;
+        }
+        
+        li > a:hover, li > a:focus {
+            padding-top:10px;
+            border-top: 3px solid #ddd;
+        }
+        
+        li > a:hover {
+            background-color: @background1;
+        }
+        
+        li.active > a, li.active > a:hover {
+            padding-top:10px;
+            border-top: 3px solid @info;
+        } 
+        
+        li.active > a {
+            background-color:#FFFFFF;
+            border-bottom-color: transparent;
+        }
+    }
+}
+
 .nav-pills,
 .nav-tabs,
 .account {
@@ -1860,6 +1915,7 @@ a.list-group-item.active:focus {
 // Tables
 // --------------------------------------------------
 table {
+  margin-bottom:0px !important;
   th {
     font-size: 11px;
     color: @font4;
@@ -1953,8 +2009,31 @@ table {
       font-size: 13px !important;
       font-weight: bold !important;
     }
+    td {
+        vertical-align:middle !important;
+    }
     tr {
       font-size: 13px !important;
+    }
+    thead {
+        tr {
+            th:first-of-type {
+                padding-left:5px;
+            }
+        }
+    }
+    tbody {
+        tr {
+            height: 50px;
+            td:first-of-type {
+                padding-left:5px;
+            }
+        }
+        
+        tr:nth-child(even) {
+            //background-color: @background1;
+        }
+        
     }
   }
   .summary {
@@ -2061,6 +2140,37 @@ ul.tag_input {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+// Multi Dropdown Select2 Overwrites
+.select2-container--default .select2-selection--multiple {
+    border: 2px solid #ededed !important;
+    background-image: url("../img/select_arrow.png") !important;
+    background-repeat: no-repeat;
+    background-position: right 16px;
+}
+
+.select2-container--default .select2-selection--focus {
+    border: 2px solid #6fdbe8 !important;
+}
+
+.select2-selection__choice {
+   background-color: #6fdbe8 !important;
+   padding: 5px 0px 5px 5px !important;
+   border: none !important;
+}
+
+.select2-search--inline { 
+    background-color: transparent !important;
+    padding: 5px 0px 5px 5px !important;
+}
+
+.select2-selection__choice__remove {
+    display:none !important;
+}
+
+#notification_overview_filter label {
+    display:block;
 }
 
 // Activities
@@ -2586,7 +2696,7 @@ textarea.placeholder {
 // Ajax loader
 .loader {
   padding: 30px 0;
-  .sk-spinner-three-bounce div {
+  .sk-spinner-three-bounce div, .sk-spinner-three-bounce span {
     width: 12px;
     height: 12px;
     background-color: @info;
@@ -2898,37 +3008,4 @@ img.bounceIn {
 .ui-widget-header .ui-state-active {
   border: 1px solid @info !important;
   background: lighten(@info, 25%) !important;
-}
-
-/**** Share Widget ****/
-
-#share-panel {
-
-  .share-icon {
-    float: left;
-    font-size: 20px;
-    width: 20px;
-  }
-
-  .share-text {
-    float: left;
-    padding: 4px 0 0 5px;
-  }
-
-  .share-icon-twitter {
-    color: #55acee;
-  }
-
-  .share-icon-facebook {
-    color: #3a5795;
-  }
-
-  .share-icon-google-plus {
-    color: #f44336;
-  }
-
-  .share-icon-linkedin {
-    color: #0177b5;
-  }
-
 }

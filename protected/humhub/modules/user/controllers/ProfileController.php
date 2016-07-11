@@ -51,13 +51,32 @@ class ProfileController extends ContentContainerController
         );
     }
 
+    /**
+     * User profile home
+     * 
+     * @todo Allow change of default action
+     * @return string the response
+     */
     public function actionIndex()
     {
-        return $this->render('index', ['user' => $this->contentContainer]);
+        if ($this->module->profileDefaultRoute !== null) {
+            return $this->redirect($this->getUser()->createUrl($this->module->profileDefaultRoute));
+        }
+
+        return $this->actionHome();
+    }
+
+    public function actionHome()
+    {
+        return $this->render('home', ['user' => $this->contentContainer]);
     }
 
     public function actionAbout()
     {
+        if (!$this->contentContainer->permissionManager->can(new \humhub\modules\user\permissions\ViewAboutPage())) {
+            throw new \yii\web\HttpException(403, 'Forbidden');
+        }
+
         return $this->render('about', ['user' => $this->contentContainer]);
     }
 
@@ -112,7 +131,7 @@ class ProfileController extends ContentContainerController
     public function actionSpaceMembershipList()
     {
         $query = \humhub\modules\space\models\Membership::getUserSpaceQuery($this->getUser());
-        
+
         if (!$this->getUser()->isCurrentUser()) {
             $query->andWhere(['!=', 'space.visibility', \humhub\modules\space\models\Space::VISIBILITY_NONE]);
         }

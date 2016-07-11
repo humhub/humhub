@@ -18,10 +18,13 @@
  */
 return [
     'Actions' => '',
-    '<strong>Manage</strong> users' => '<strong>Zarządzaj</strong> użytkownikami',
+    'Group Manager' => '',
+    'Send invite' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
     'Add new user' => 'Dodaj nowego użytkownika',
-    'In this overview you can find every registered user and manage him.' => 'W tym przeglądzie możesz znaleźć każdego zarejestrowanego użytkownika i zarządzać nim.',
     'Last login' => 'Ostatnie logowanie',
     'Overview' => 'Przegląd',
+    'Settings' => 'Ustawienia',
+    'Users' => 'Użytkownicy',
     'never' => 'nigdy',
 ];

@@ -5,5 +5,6 @@ return array (
   'No purchased modules found!' => 'Satın alınan modül bulunamadı!',
   'Register' => 'Kayıt',
   'Search' => 'Ara',
+  'Third-party' => 'Üçüncü taraf',
   'search for available modules online' => 'bulunabilir modül ara',
 );

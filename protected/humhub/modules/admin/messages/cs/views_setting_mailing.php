@@ -1,13 +1,14 @@
 <?php
 return array (
-  '<strong>Mailing</strong> defaults' => '<strong>Nastavení</strong> zasílání e-mailů',
   'Activities' => 'Události',
+  'Activities provide an overview of taken actions in context of a space or other users. (e.g. a new post was written or a new member joined the space).' => '',
   'Always' => 'Vždy',
   'Daily summary' => 'Denní souhrn',
-  'Defaults' => 'Výchozí',
-  'Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.' => 'Výchozí nastavení pro zasílání oznámení nebo nových událostí. Toto nastavení může být přepsáno uživatelem v nastavení účtu.',
+  'Define the default behaviour for sending user e-mails. These settings can be overwritten by users in their account settings.' => '',
+  'General' => 'Obecné',
   'Never' => 'Nikdy',
   'Notifications' => 'Oznámení',
+  'Notifications are user related information (e.g. new comments on own posts or a new follower). Notifications will also be created when an user-action is required (e.g. friendship request).' => '',
   'Save' => 'Uložit',
   'Server Settings' => 'Nastavení serveru',
   'When I´m offline' => 'Když jsem offline',

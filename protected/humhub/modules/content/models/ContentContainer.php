@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\content\models;
 
 use Yii;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * This is the model class for table "contentcontainer".
@@ -50,6 +58,21 @@ class ContentContainer extends \yii\db\ActiveRecord
             'pk' => 'Pk',
             'owner_user_id' => 'Owner User ID',
             'wall_id' => 'Wall ID',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => PolymorphicRelation::className(),
+                'mustBeInstanceOf' => array(ContentContainerActiveRecord::className()),
+                'classAttribute' => 'class',
+                'pkAttribute' => 'pk'
+            ]
         ];
     }
 

@@ -36,7 +36,8 @@ class Tour extends \humhub\components\Widget
         }
 
         // Check if tour is activated by admin and users
-        if (Setting::Get('enable', 'tour') == 0 || Yii::$app->user->getIdentity()->getSetting("hideTourPanel", "tour") == 1) {
+        $settings = Yii::$app->getModule('tour')->settings;
+        if ($settings->get('enable') == 0 && $settings->user()->get("hideTourPanel") == 1) {
             return;
         }
 

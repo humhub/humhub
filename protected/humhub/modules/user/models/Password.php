@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\models;
 
 use Yii;
+use humhub\modules\user\components\CheckPasswordValidator;
 
 /**
  * This is the model class for table "user_password".
@@ -68,22 +69,42 @@ class Password extends \yii\db\ActiveRecord
     {
         return [
             [['newPassword', 'newPasswordConfirm'], 'required', 'on' => 'registration'],
+            [['newPassword', 'newPasswordConfirm'], 'trim'],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
             [['algorithm'], 'string', 'max' => 20],
-            [['currentPassword'], \humhub\modules\user\components\CheckPasswordValidator::className(), 'on' => 'changePassword'],
+            [['currentPassword'], CheckPasswordValidator::className(), 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
+            [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => 'registration'],
         ];
+    }
+    
+    /**
+     * The new password has to be unequal to the current password.
+     * 
+     * @param type $attribute
+     * @param type $params
+     */
+    public function unequalsCurrentPassword($attribute, $params)
+    {
+        if($this->newPassword === $this->currentPassword) {
+            $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not equal your current password!'));
+        }
     }
 
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['changePassword'] = ['newPassword', 'newPasswordConfirm', 'currentPassword'];
+
+        $scenarios['changePassword'] = ['newPassword', 'newPasswordConfirm'];
+        if (CheckPasswordValidator::hasPassword()) {
+            $scenarios['changePassword'][] = 'currentPassword';
+        }
+
         $scenarios['registration'] = ['newPassword', 'newPasswordConfirm'];
         return $scenarios;
     }

@@ -3,7 +3,6 @@
 use humhub\modules\installer\controllers\ConfigController;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Html;
-
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
@@ -21,7 +20,7 @@ use yii\bootstrap\Html;
         <?= $form->field($model, 'sampleData')->checkbox(); ?>
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <?php ActiveForm::end(); ?>
     </div>

@@ -16,6 +16,7 @@ return array (
   'Only alphanumeric characters allowed!' => 'Seuls les caractères alphanumériques sont acceptés !',
   'Profile Field Category' => 'Catégorie de champs',
   'Required' => 'Requis',
+  'Searchable' => 'Interrogeable dans la recherche',
   'Show at registration' => 'Voir à l\'enregistrement',
   'Sort order' => 'Ordre de tri',
   'Title' => 'Titre',

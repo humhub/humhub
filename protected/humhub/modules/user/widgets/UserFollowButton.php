@@ -10,6 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\bootstrap\Html;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * UserFollowButton
@@ -79,6 +80,13 @@ class UserFollowButton extends \yii\base\Widget
     {
         if ($this->user->isCurrentUser() || \Yii::$app->user->isGuest) {
             return;
+        }
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            // Don't show follow button, when friends
+            if (Friendship::getFriendsQuery($this->user)->one() !== null) {
+                return;
+            }
         }
 
         // Add class for javascript handling

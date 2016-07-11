@@ -17,6 +17,9 @@ $jsLoadWall .= "currentStream = s;\n";
 $jsLoadWall .= "mainStream = s;\n";
 $jsLoadWall .= "$('#btn-load-more').click(function() { currentStream.loadMore(); })\n";
 $this->registerJs($jsLoadWall, View::POS_READY);
+
+$defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
+$this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultStreamSort : 'c');
 ?>
 
 <?php if ($this->context->showFilters) { ?>
@@ -38,7 +41,7 @@ $this->registerJs($jsLoadWall, View::POS_READY);
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="#" class="wallSorting" id="sorting_c"><i
-                            class="fa fa-check-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?></a></li>
+                            class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?></a></li>
                 <li><a href="#" class="wallSorting" id="sorting_u"><i
                             class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?></a></li>
             </ul>
@@ -94,6 +97,6 @@ $this->registerJs($jsLoadWall, View::POS_READY);
 
 <!-- show "Load More" button on mobile devices -->
 <div class="col-md-12 text-center visible-xs visible-sm">
-    <button id="btn-load-more" class="btn btn-primary btn-lg ">Load more</button>
+    <button id="btn-load-more" class="btn btn-primary btn-lg "><?php echo Yii::t('ContentModule.widgets_views_stream', 'Load more'); ?></button>
     <br/><br/>
 </div>

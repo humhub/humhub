@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Create</strong> new profile field' => '<strong>Criar</strong> novo campo de perfil',
-  '<strong>Edit</strong> profile field' => '<strong>Modificar</strong> campo de perfil',
+  'Create new profile field' => 'Criar novo campo de perfil',
+  'Edit profile field' => 'Editar campo de perfil',
 );

@@ -1,5 +1,4 @@
 <?php
 return array (
-  '<strong>Space</strong> Settings' => '',
-  'Save' => '',
+  'Save' => 'Salvează',
 );

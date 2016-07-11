@@ -9,11 +9,10 @@
 namespace humhub\modules\installer\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use humhub\models\Setting;
 use humhub\components\Controller;
 use humhub\modules\installer\forms\DatabaseForm;
 use humhub\libs\DynamicConfig;
+use humhub\modules\admin\widgets\PrerequisitesList;
 
 /**
  * SetupController checks prerequisites and is responsible for database
@@ -28,7 +27,7 @@ class SetupController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect(Url::to(['prerequisites']));
+        return $this->redirect(['prerequisites']);
     }
 
     /**
@@ -39,16 +38,7 @@ class SetupController extends Controller
      */
     public function actionPrerequisites()
     {
-        $checks = \humhub\libs\SelfTest::getResults();
-
-        $hasError = false;
-        foreach ($checks as $check) {
-            if ($check['state'] == 'ERROR')
-                $hasError = true;
-        }
-
-        // Render Template
-        return $this->render('prerequisites', array('checks' => $checks, 'hasError' => $hasError));
+        return $this->render('prerequisites', ['hasError' => PrerequisitesList::hasError()]);
     }
 
     /**
@@ -106,10 +96,8 @@ class SetupController extends Controller
 
                 DynamicConfig::save($config);
 
-                return $this->redirect(array('init'));
-            } catch (Exception $e) {
-                $errorMessage = $e->getMessage();
-            } catch (\yii\base\Exception $e) {
+                return $this->redirect(['init']);
+            } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
             }
         }
@@ -125,7 +113,7 @@ class SetupController extends Controller
     {
 
         if (!$this->module->checkDBConnection()) {
-            return $this->redirect(Url::to(['/installer/setup/database']));
+            return $this->redirect(['/installer/setup/database']);
         }
 
         // Flush Caches
@@ -141,7 +129,7 @@ class SetupController extends Controller
 
         $this->module->setDatabaseInstalled();
 
-        return $this->redirect(Url::to(['/installer/config/index']));
+        return $this->redirect(['/installer/config/index']);
     }
 
 }

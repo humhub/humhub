@@ -16,9 +16,8 @@ Getting Started
 
 Administration
 ---------------------
-* [User](admin-user.md)
-* [Spaces](admin-spaces.md)
 * [Advanced Configuration](admin-adv-config.md)
+* [Authentication](admin-authentication.md)
 * [Console](admin-adv-console.md)
 * [Search](admin-adv-search.md)
 * [XSendFile](admin-adv-xsendfile.md)
@@ -37,6 +36,7 @@ Development
 * [Events](dev-events.md)
 * [Widgets](dev-widgets.md)
 * [Internationalization](dev-i18n.md)
+* [Authentication](dev-authentication.md)
 * [Models / Database](dev-db.md)
 * [Search](dev-search.md)
 * [CronJobs](dev-cron.md)

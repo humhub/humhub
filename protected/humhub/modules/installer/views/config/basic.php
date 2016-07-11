@@ -27,7 +27,7 @@ use humhub\modules\user\models\User;
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <?php CActiveForm::end(); ?>
     </div>

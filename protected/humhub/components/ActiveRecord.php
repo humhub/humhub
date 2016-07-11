@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Yii;
+use humhub\modules\user\models\User;
 
 /**
  * Description of ActiveRecord
@@ -50,6 +51,26 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function getUniqueId()
     {
         return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
+    }
+
+    /**
+     * Relation to User defined in created_by attribute
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    /**
+     * Relation to User defined in updated_by attribute
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
 }

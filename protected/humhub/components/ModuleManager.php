@@ -12,7 +12,9 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
+use yii\helpers\FileHelper;
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\models\ModuleEnabled;
 
 /**
  * ModuleManager handles all installed modules.
@@ -114,6 +116,8 @@ class ModuleManager extends \yii\base\Component
         if (isset($config['namespace'])) {
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
+        Yii::setAlias('@' . $config['id'], $basePath);
+
 
         if (!Yii::$app->params['installed'] && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];
@@ -145,13 +149,11 @@ class ModuleManager extends \yii\base\Component
 
         // Add config file values to module
         if (isset(Yii::$app->modules[$config['id']]) && is_array(Yii::$app->modules[$config['id']])) {
-            $moduleConfig = yii\helpers\ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
+            $moduleConfig = \yii\helpers\ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
         }
 
         // Register Yii Module
         Yii::$app->setModule($config['id'], $moduleConfig);
-
-
 
         // Register Event Handlers
         if (isset($config['events'])) {
@@ -294,14 +296,53 @@ class ModuleManager extends \yii\base\Component
             }
 
             $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
-            if (!@rename($module->getBasePath(), $backupFolderName)) {
-                throw new Exception("Could not move module to backup folder!" . $backupFolderName);
-            }
+            $moduleBasePath = $module->getBasePath();
+            FileHelper::copyDirectory($moduleBasePath, $backupFolderName);
+            FileHelper::removeDirectory($moduleBasePath);
         } else {
             //TODO: Delete directory
         }
-        
+
         $this->flushCache();
+    }
+
+    /**
+     * Enables a module
+     * 
+     * @since 1.1
+     * @param \humhub\components\Module $module
+     */
+    public function enable(Module $module)
+    {
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
+        if ($moduleEnabled == null) {
+            $moduleEnabled = new ModuleEnabled();
+            $moduleEnabled->module_id = $module->id;
+            $moduleEnabled->save();
+        }
+
+        $this->enabledModules[] = $module->id;
+        $this->register($module->getBasePath());
+    }
+
+    /**
+     * Disables a module
+     * 
+     * @since 1.1 
+     * @param \humhub\components\Module $module
+     */
+    public function disable(Module $module)
+    {
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
+        if ($moduleEnabled != null) {
+            $moduleEnabled->delete();
+        }
+
+        if (($key = array_search($module->id, $this->enabledModules)) !== false) {
+            unset($this->enabledModules[$key]);
+        }
+
+        Yii::$app->setModule($module->id, 'null');
     }
 
 }

@@ -96,8 +96,12 @@ class InviteForm extends Model
                 $user = User::findOne(['guid' => $userGuid]);
                 if ($user != null) {
                     $membership = Membership::findOne(['space_id' => $this->space->id, 'user_id' => $user->id]);
+                    
                     if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
-                        $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User is already member!"));
+                        $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User '{username}' is already a member of this space!", ['username' => $user->getDisplayName()]));
+                        continue;
+                    } else if($membership != null && $membership->status == Membership::STATUS_APPLICANT) {
+                        $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User '{username}' is already an applicant of this space!", ['username' => $user->getDisplayName()]));
                         continue;
                     }
                     $this->invites[] = $user;
@@ -158,6 +162,20 @@ class InviteForm extends Model
     public function getInvitesExternal()
     {
         return $this->invitesExternal;
+    }
+    
+     /**
+     * E-Mails entered in form
+     * 
+     * @return array the emails
+     */
+    public function getEmails()
+    {
+        $emails = [];
+        foreach (explode(',', $this->inviteExternal) as $email) {
+            $emails[] = trim($email);
+        }
+        return $emails;
     }
 
 }

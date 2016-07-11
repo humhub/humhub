@@ -1,11 +1,21 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\libs;
 
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
+use humhub\modules\file\libs\ImageConverter;
 
+/**
+ * LogoImage 
+ */
 class LogoImage
 {
 
@@ -18,11 +28,6 @@ class LogoImage
      * @var String folder name inside the uploads directory
      */
     protected $folder_images = "logo_image";
-
-    public function __construct()
-    {
-        
-    }
 
     /**
      * Returns the URl of Logo Image

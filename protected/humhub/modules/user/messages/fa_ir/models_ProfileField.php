@@ -16,6 +16,7 @@ return array (
   'Only alphanumeric characters allowed!' => 'تنها کاراکترهای عددی و الفبایی مجاز است!',
   'Profile Field Category' => 'گروه فیلد پروفایل',
   'Required' => 'مورد نیاز',
+  'Searchable' => 'قابل جستجو',
   'Show at registration' => 'نمایش در ثبت‌نام',
   'Sort order' => 'ترتیب مرتب‌سازی',
   'Title' => 'عنوان',

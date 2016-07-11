@@ -15,7 +15,6 @@ use humhub\modules\notification\models\Notification;
 /**
  * EntryController
  *
- * @package humhub.modules_core.notification.controllers
  * @since 0.5
  */
 class EntryController extends Controller
@@ -48,14 +47,6 @@ class EntryController extends Controller
 
         if ($notification->markAsSeenOnClick) {
             $notification->markAsSeen();
-
-            // Automatically mark similar notification as seen
-            $similarNotifications = Notification::find()
-                    ->where(['source_class' => $notificationModel->source_class, 'source_pk' => $notificationModel->source_pk, 'user_id' => Yii::$app->user->id])
-                    ->andWhere(['!=', 'seen', '1']);
-            foreach ($similarNotifications->all() as $n) {
-                $n->getClass()->markAsSeen();
-            }
         }
 
         // Redirect to notification URL

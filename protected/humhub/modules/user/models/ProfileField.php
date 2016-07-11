@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use Yii;
@@ -53,7 +59,7 @@ class ProfileField extends \yii\db\ActiveRecord
     {
         return array(
             array(['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'),
-            array(['profile_field_category_id', 'required', 'editable', 'show_at_registration', 'visible', 'sort_order', 'created_by', 'updated_by'], 'integer'),
+            array(['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order', 'created_by', 'updated_by'], 'integer'),
             array(['module_id', 'field_type_class', 'title'], 'string', 'max' => 255),
             array('internal_name', 'string', 'max' => 100),
             array(['ldap_attribute', 'translation_category'], 'string', 'max' => 255),
@@ -92,6 +98,7 @@ class ProfileField extends \yii\db\ActiveRecord
             'show_at_registration' => Yii::t('UserModule.models_ProfileField', 'Show at registration'),
             'translation_category' => Yii::t('UserModule.models_ProfileField', 'Translation Category ID'),
             'required' => Yii::t('UserModule.models_ProfileField', 'Required'),
+            'searchable' => Yii::t('UserModule.models_ProfileField', 'Searchable'),
             'title' => Yii::t('UserModule.models_ProfileField', 'Title'),
             'description' => Yii::t('UserModule.models_ProfileField', 'Description'),
             'sort_order' => Yii::t('UserModule.models_ProfileField', 'Sort order'),
@@ -202,6 +209,9 @@ class ProfileField extends \yii\db\ActiveRecord
                         'type' => 'checkbox',
                     ),
                     'editable' => array(
+                        'type' => 'checkbox',
+                    ),
+                    'searchable' => array(
                         'type' => 'checkbox',
                     ),
                     'profile_field_category_id' => array(

@@ -2,8 +2,8 @@
 
 namespace humhub\modules\file\widgets;
 
+use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\models\Setting;
 
 /**
  * This widget is used include the files functionality to a wall entry.
@@ -33,13 +33,13 @@ class ShowFiles extends \yii\base\Widget
             }
         }
 
-        $blacklisted_objects = explode(',', Setting::GetText('showFilesWidgetBlacklist', 'file'));
+        $blacklisted_objects = explode(',', Yii::$app->getModule('file')->settings->get('showFilesWidgetBlacklist'));
         if (!in_array(get_class($this->object), $blacklisted_objects)) {
             $files = \humhub\modules\file\models\File::getFilesOfObject($this->object);
             return $this->render('showFiles', array('files' => $files,
-                        'maxPreviewImageWidth' => Setting::Get('maxPreviewImageWidth', 'file'),
-                        'maxPreviewImageHeight' => Setting::Get('maxPreviewImageHeight', 'file'),
-                        'hideImageFileInfo' => Setting::Get('hideImageFileInfo', 'file')
+                        'maxPreviewImageWidth' => Yii::$app->getModule('file')->settings->get('maxPreviewImageWidth'),
+                        'maxPreviewImageHeight' => Yii::$app->getModule('file')->settings->get('maxPreviewImageHeight'),
+                        'hideImageFileInfo' => Yii::$app->getModule('file')->settings->get('hideImageFileInfo')
             ));
         }
     }

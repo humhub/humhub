@@ -19,9 +19,12 @@
 return [
     'Actions' => '',
     'Add new user' => '',
+    'Group Manager' => '',
     'Last login' => '',
     'Overview' => '',
+    'Send invite' => '',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
     'never' => '',
-    '<strong>Manage</strong> users' => '<strong>Manage</strong> ユーザーを管理',
-    'In this overview you can find every registered user and manage him.' => 'この概要では、すべての登録ユーザを見つけ、管理することができます。',
+    'Settings' => '設定',
+    'Users' => 'ユーザー',
 ];

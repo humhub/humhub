@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -15,6 +15,11 @@ use Yii;
  */
 class I18N extends \yii\i18n\I18N
 {
+
+    /**
+     * @var string path which contains message overwrites
+     */
+    public $messageOverwritePath = '@config/messages';
 
     /**
      * @inheritdoc
@@ -31,7 +36,7 @@ class I18N extends \yii\i18n\I18N
         if ($language == 'zh_tw' && $category == 'yii') {
             $language = 'zh-TW';
         }
-        
+
 
         return parent::translate($category, $message, $params, $language);
     }
@@ -41,6 +46,7 @@ class I18N extends \yii\i18n\I18N
      */
     public function getMessageSource($category)
     {
+
         // Requested MessageSource already loaded
         if (isset($this->translations[$category]) && $this->translations[$category] instanceof \yii\i18n\MessageSource) {
             return $this->translations[$category];
@@ -61,6 +67,20 @@ class I18N extends \yii\i18n\I18N
             }
         }
         return parent::getMessageSource($category);
+    }
+
+    public function getAllowedLanguages()
+    {
+        $availableLanguages = Yii::$app->params['availableLanguages'];
+        $allowedLanguages = Yii::$app->params['allowedLanguages'];
+        if ($allowedLanguages != null && count($allowedLanguages) > 0) {
+            $result = [];
+            foreach ($allowedLanguages as $lang) {
+                $result[$lang] = $availableLanguages[$lang];
+            }
+            return $result;
+        }
+        return $availableLanguages;
     }
 
     /**

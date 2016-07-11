@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
-
 namespace humhub\modules\space\behaviors;
 
 use Yii;
@@ -26,6 +25,7 @@ use yii\db\ActiveRecord;
 use humhub\modules\user\models\Follow;
 use humhub\modules\space\models\Space;
 use yii\web\HttpException;
+use humhub\components\Controller;
 
 /**
  * SpaceControllerBehavior is a controller behavior used for space modules/controllers.
@@ -39,6 +39,13 @@ class SpaceController extends Behavior
 
     public $space = null;
 
+    public function events()
+    {
+        return [
+            Controller::EVENT_BEFORE_ACTION => 'beforeAction'
+        ];
+    }
+
     /**
      * Returns the current selected space by parameter guid
      *
@@ -50,7 +57,6 @@ class SpaceController extends Behavior
      */
     public function getSpace()
     {
-
         if ($this->space != null) {
             return $this->space;
         }
@@ -59,7 +65,9 @@ class SpaceController extends Behavior
         $guid = Yii::$app->request->get('sguid');
 
         // Try Load the space
-        $this->space = Space::findOne(['guid' => $guid]);
+        $this->space = Space::findOne([
+            'guid' => $guid
+        ]);
         if ($this->space == null)
             throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
 
@@ -69,8 +77,7 @@ class SpaceController extends Behavior
 
     public function checkAccess()
     {
-
-        if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
             throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 
@@ -81,7 +88,7 @@ class SpaceController extends Behavior
         } else {
 
             // Super Admin can always enter
-            if (!Yii::$app->user->isAdmin()) {
+            if (! Yii::$app->user->isAdmin()) {
                 // Space invisible?
                 if ($this->space->visibility == Space::VISIBILITY_NONE) {
                     // Not Space Member
@@ -91,6 +98,10 @@ class SpaceController extends Behavior
         }
     }
 
+    public function beforeAction($action)
+    {
+        $this->owner->prependPageTitle($this->space->name);
+    }
 }
 
 ?>

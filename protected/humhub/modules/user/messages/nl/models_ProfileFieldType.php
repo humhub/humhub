@@ -1,6 +1,7 @@
 <?php
 return array (
   'Birthday' => 'Geboortedatum',
+  'Country' => 'Land',
   'Date' => 'Datum',
   'Datetime' => 'Datumtijd',
   'Number' => 'Getal',

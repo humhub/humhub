@@ -1,6 +1,5 @@
 <?php
 return array (
-  '<strong>Change</strong> E-mail' => '<strong>Changer</strong> d\'adresse e-mail',
-  '<strong>Current E-mail address</strong>' => 'Adresse e-mail <strong>actuelle</strong>',
   'Save' => 'Enregistrer',
+  'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => 'Votre adresse e-mail actuelle est <b>{email}</b>. Vous pouvez modifier votre adresse e-mail ici.',
 );

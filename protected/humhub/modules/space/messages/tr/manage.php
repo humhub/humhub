@@ -1,10 +1,8 @@
 <?php
 return array (
-  '<strong>Change</strong> Owner' => '',
-  '<strong>General</strong> settings' => '',
-  '<strong>Security</strong> settings' => '',
-  'As owner of this space you can transfer this role to another administrator in space.' => '',
-  'Color' => 'Renk',
-  'Space owner' => '',
-  'Transfer ownership' => '',
+  'As owner of this space you can transfer this role to another administrator in space.' => 'Bu mekanın sahibi olarak mekanda başka bir yönetici ile bu rolü ona aktarabilirsiniz.',
+  'Space owner' => 'Mekan sahibi',
+  'The url contains illegal characters!' => 'Url geçersiz karakterler içeriyor!',
+  'Transfer ownership' => 'Mülkiyet transfer',
+  'e.g. example for {baseUrl}/s/example' => 'örn: örneğin {baseUrl}/s/example',
 );

@@ -1,13 +1,14 @@
 <?php
 return array (
-  '<strong>Mailing</strong> defaults' => 'Predeterminados de <strong>correo</strong>',
   'Activities' => 'Actividades',
+  'Activities provide an overview of taken actions in context of a space or other users. (e.g. a new post was written or a new member joined the space).' => '',
   'Always' => 'Siempre',
   'Daily summary' => 'Resumen diario',
-  'Defaults' => 'Predeterminados',
-  'Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.' => 'Define los valores predeterminados para cuando un usuario recibe correos electrónicos sobre notificaciones o nuevas actividades. Estos ajustes pueden ser sobrescritos por los usuarios en los ajustes de la cuenta.',
+  'Define the default behaviour for sending user e-mails. These settings can be overwritten by users in their account settings.' => '',
+  'General' => 'General',
   'Never' => 'Nunca',
   'Notifications' => 'Notificaciones',
+  'Notifications are user related information (e.g. new comments on own posts or a new follower). Notifications will also be created when an user-action is required (e.g. friendship request).' => '',
   'Save' => 'Guardar',
   'Server Settings' => 'Ajustes del servidor',
   'When I´m offline' => 'Cuando no estoy en línea',

@@ -39,9 +39,18 @@ class PermissionGridEditor extends GridView
             'dataProvider' => $this->getDataProvider(),
             'layout' => "{items}\n{pager}",
             'columns' => [
-                'title',
-                'description',
-                'moduleId',
+                [
+                    'label' => Yii::t('UserModule.widgets_PermissionGridEditor', 'Title'),
+                    'attribute' => 'title'
+                ],
+                [
+                    'label' => Yii::t('UserModule.widgets_PermissionGridEditor', 'Description'),
+                    'attribute' => 'description'
+                ],
+                [
+                    'label' => Yii::t('UserModule.widgets_PermissionGridEditor', 'Module'),
+                    'attribute' => 'moduleId'
+                ],
                 [
                     'label' => '',
                     'class' => 'humhub\libs\DropDownGridColumn',

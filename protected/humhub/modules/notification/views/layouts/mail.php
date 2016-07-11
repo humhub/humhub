@@ -77,9 +77,9 @@ use humhub\models\Setting;
 
                                                                     <!-- START: CONTENT LINK -->
                                                                     <span
-                                                                        style="text-decoration: none; color: <?php echo Setting::Get('colorInfo'); ?>;"> - <a
+                                                                        style="text-decoration: none; color: <?php echo Yii::$app->settings->get('colorInfo'); ?>;"> - <a
                                                                             href="<?php echo $url; ?>"
-                                                                            style="text-decoration: none; color: <?php echo Setting::Get('colorInfo'); ?>; "><?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'see online'); ?></a></span>
+                                                                            style="text-decoration: none; color: <?php echo Yii::$app->settings->get('colorInfo'); ?>; "><?php echo Yii::t('NotificationModule.views_notificationLayoutMail', 'see online'); ?></a></span>
                                                                     <!-- END: CONTENT LINK -->
 
                                                                 </td>

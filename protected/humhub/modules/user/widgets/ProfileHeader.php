@@ -9,9 +9,13 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Membership;
+use humhub\modules\friendship\models\Friendship;
 
 /**
- * ProfileHeader
+ * Displays the profile header of a user
  * 
  * @since 0.5
  * @author Luke
@@ -20,12 +24,12 @@ class ProfileHeader extends \yii\base\Widget
 {
 
     /**
-     * @var \humhub\modules\user\models\User the user of this header
+     * @var User
      */
     public $user;
 
     /**
-     * @var boolean can this header edited by current user
+     * @var boolean is owner of the current profile 
      */
     protected $isProfileOwner = false;
 
@@ -43,12 +47,14 @@ class ProfileHeader extends \yii\base\Widget
 
         // Check if profile header can be edited
         if (!Yii::$app->user->isGuest) {
-            if (Yii::$app->user->getIdentity()->super_admin === 1 && Yii::$app->params['user']['adminCanChangeProfileImages']) {
+            if (Yii::$app->user->getIdentity()->isSystemAdmin() && Yii::$app->params['user']['adminCanChangeProfileImages']) {
                 $this->isProfileOwner = true;
             } elseif (Yii::$app->user->id == $this->user->id) {
                 $this->isProfileOwner = true;
             }
         }
+
+        $this->isProfileOwner = (Yii::$app->user->id == $this->user->id);
     }
 
     /**
@@ -56,9 +62,28 @@ class ProfileHeader extends \yii\base\Widget
      */
     public function run()
     {
+        $friendshipsEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
+
+        $countFriends = 0;
+        if ($friendshipsEnabled) {
+            $countFriends = Friendship::getFriendsQuery($this->user)->count();
+        }
+
+        $countFollowing = $this->user->getFollowingCount(User::className()) + $this->user->getFollowingCount(Space::className());
+
+        $countUserSpaces = Membership::getUserSpaceQuery($this->user)
+                ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
+                ->andWhere(['space.status' => Space::STATUS_ENABLED])
+                ->count();
+
         return $this->render('profileHeader', array(
                     'user' => $this->user,
-                    'isProfileOwner' => $this->isProfileOwner
+                    'isProfileOwner' => $this->isProfileOwner,
+                    'friendshipsEnabled' => $friendshipsEnabled,
+                    'countFriends' => $countFriends,
+                    'countFollowers' => $this->user->getFollowerCount(),
+                    'countFollowing' => $countFollowing,
+                    'countSpaces' => $countUserSpaces,
         ));
     }
 

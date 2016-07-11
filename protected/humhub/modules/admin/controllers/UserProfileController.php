@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\ProfileFieldCategory;
@@ -23,6 +24,16 @@ use humhub\modules\user\models\fieldtype\BaseType;
  */
 class UserProfileController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
+        $this->subLayout = '@admin/views/layouts/user';
+        return parent::init();
+    }
 
     /**
      * Shows overview of all
@@ -48,7 +59,7 @@ class UserProfileController extends Controller
         $category->translation_category = $category->getTranslationCategory();
 
         if ($category->load(Yii::$app->request->post()) && $category->validate() && $category->save()) {
-            return $this->redirect(Url::to(['/admin/user-profile']));
+            return $this->redirect(['/admin/user-profile']);
         }
 
         return $this->render('editCategory', array('category' => $category));
@@ -70,7 +81,7 @@ class UserProfileController extends Controller
 
         $category->delete();
 
-        return $this->redirect(Url::to(['/admin/user-profile']));
+        return $this->redirect(['/admin/user-profile']);
     }
 
     public function actionEditField()
@@ -130,12 +141,12 @@ class UserProfileController extends Controller
             $fieldType = $form->models[$field->field_type_class];
 
             if ($field->save() && $fieldType->save()) {
-                return $this->redirect(Url::to(['/admin/user-profile']));
+                return $this->redirect(['/admin/user-profile']);
             }
         }
         if ($form->submitted('delete')) {
             $field->delete();
-            return $this->redirect(Url::to(['/admin/user-profile']));
+            return $this->redirect(['/admin/user-profile']);
         }
 
 

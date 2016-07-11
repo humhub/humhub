@@ -7,9 +7,9 @@ use yii\helpers\Html;
 if ($membership === null) {
     if ($space->canJoin()) {
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
-            echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Request membership'), $space->createUrl('/space/membership/request-membership-form'), array('class' => 'btn btn-primary', 'data-target' => '#globalModal'));
+            echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Request membership'), $space->createUrl('/space/membership/request-membership-form'), array('id' => 'requestMembershipButton', 'class' => 'btn btn-primary', 'data-target' => '#globalModal'));
         } else {
-            echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Become member'), $space->createUrl('/space/membership/request-membership'), array('class' => 'btn btn-primary', 'data-method' => 'POST'));
+            echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Become member'), $space->createUrl('/space/membership/request-membership'), array('id' => 'requestMembershipButton', 'class' => 'btn btn-primary', 'data-method' => 'POST'));
         }
     }
 } elseif ($membership->status == Membership::STATUS_INVITED) {

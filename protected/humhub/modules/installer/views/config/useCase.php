@@ -3,7 +3,6 @@
 use humhub\modules\installer\controllers\ConfigController;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
-
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
@@ -16,7 +15,7 @@ use yii\bootstrap\Html;
         <p><?php echo Yii::t('InstallerModule.views_config_useCase', 'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.'); ?></p>
         <br>
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
         <?=
         $form->field($model, 'useCase')->radioList([
@@ -30,7 +29,7 @@ use yii\bootstrap\Html;
 
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <?php ActiveForm::end(); ?>
     </div>

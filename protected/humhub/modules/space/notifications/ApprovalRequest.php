@@ -2,12 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\notifications;
 
+use Yii;
+use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
@@ -26,12 +28,18 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $viewName = "approvalRequest";
+    public $markAsSeenOnClick = false;
 
     /**
      * @inheritdoc
      */
-    public $markAsSeenOnClick = false;
+    public function getAsHtml()
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', array(
+                    '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
+                    '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
+        ));
+    }
 
 }
 

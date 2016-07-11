@@ -3,6 +3,7 @@
 use \yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
+use humhub\modules\user\widgets\AuthChoice;
 
 $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 ?>
@@ -18,10 +19,19 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
         <div class="panel-body">
 
-            <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation'=>false]); ?>
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= Yii::$app->session->getFlash('error') ?>
+                </div>
+            <?php endif; ?>
 
-            <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
-
+            <?php if(AuthChoice::hasClients()): ?>
+                <?= AuthChoice::widget([]) ?>
+            <?php else: ?>
+                <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+            <?php endif; ?>
+            
+            <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
             <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')])->label(false); ?>
             <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')])->label(false); ?>
             <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
@@ -29,19 +39,18 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
             <hr>
             <div class="row">
                 <div class="col-md-4">
-                    <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('id' => 'login-button', 'class' => 'btn btn-large btn-primary')); ?>
+                    <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary')); ?>
                 </div>
                 <div class="col-md-8 text-right">
                     <small>
                         <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
                         <a
-                            href="<?php echo Url::toRoute('/user/auth/recover-password'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
+                            href="<?php echo Url::toRoute('/user/password-recovery'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
                     </small>
                 </div>
             </div>
 
             <?php ActiveForm::end(); ?>
-
         </div>
 
     </div>
@@ -59,11 +68,10 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
                 <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
 
-                <?php $form = ActiveForm::begin(['id' => 'account-register-form']); ?>
-
-                <?php echo $form->field($registerModel, 'email')->textInput(['id' => 'register-email', 'placeholder' => $registerModel->getAttributeLabel('email')])->label(false); ?>
+                <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
+                <?php echo $form->field($invite, 'email')->textInput(['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <hr>
-                <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('class' => 'btn btn-primary')); ?>
+                <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
                 <?php ActiveForm::end(); ?>
             </div>
@@ -89,7 +97,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 <?php } ?>
 
     // Shake panel after wrong validation
-<?php if ($registerModel->hasErrors()) { ?>
+<?php if ($invite->hasErrors()) { ?>
         $('#register-form').removeClass('bounceInLeft');
         $('#register-form').addClass('shake');
         $('#login-form').removeClass('bounceIn');

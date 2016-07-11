@@ -1,4 +1,4 @@
 <?php
 return array (
-  '{userName} created a new {contentTitle}.' => '{userName} yeni oluşturulan {contentTitle}.',
+  '{displayName} created {contentTitle}.' => '{displayName} oluşturdu {contentTitle}.',
 );

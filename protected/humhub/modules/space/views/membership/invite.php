@@ -1,7 +1,6 @@
 <?php
 
 use yii\bootstrap\ActiveForm;
-use humhub\models\Setting;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -15,7 +14,7 @@ use humhub\models\Setting;
 
             <br/>
 
-            <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+            <?php if ($canInviteExternal) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="active tab-internal"><a href="#internal"
@@ -44,13 +43,14 @@ use humhub\models\Setting;
                         'inputId' => 'invite',
                         'model' => $model, // CForm Instanz
                         'attribute' => 'invite',
+                        'userSearchUrl' => Yii::$app->controller->getSpace()->createUrl('/space/membership/search-invite'),
                         'placeholderText' => Yii::t('SpaceModule.views_space_invite', 'Add an user'),
                         'focus' => true,
                     ));
                     ?>
 
                 </div>
-                <?php if (Setting::Get('internalUsersCanInvite', 'authentication_internal')) : ?>
+                <?php if ($canInviteExternal) : ?>
                     <div class="tab-pane" id="external">
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>

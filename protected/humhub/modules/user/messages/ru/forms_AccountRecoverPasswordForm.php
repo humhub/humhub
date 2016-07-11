@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'E-Mail' => 'E-mail',
+    'E-Mail' => 'e-mail',
     'Password Recovery' => 'Восстановление пароля',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" не найден!',
 ];

@@ -1,36 +1,29 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\file\libs;
 
-use humhub\models\Setting;
+use Yii;
+use yii\base\Exception;
+use humhub\components\SettingsManager;
 
 /**
  * ImageConverter provides a simple interface for converting or resizing images.
  *
- * @package humhub.modules_core.file.libs
  * @since 0.5
  */
 class ImageConverter
 {
 
+    /** Max value of memory allowed to be allocated additional to the currently set memory limit in php.ini in MBytes. **/
+    const DEFAULT_MAX_ADDITIONAL_MEMORY_ALLOCATION = 64; 
+    const SETTINGS_NAME_MAX_MEMORY_ALLOCATION = 'maxImageProcessingMemoryAllocation';
+    
     /**
      * Transforms given File to Jpeg
      *
@@ -41,13 +34,13 @@ class ImageConverter
     public static function TransformToJpeg($sourceFile, $targetFile)
     {
 
-        if (Setting::Get('imageMagickPath', 'file')) {
-            $convertCommand = Setting::Get('imageMagickPath', 'file');
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
+            $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
             $command = $convertCommand . " \"{$sourceFile}\" \"{$targetFile}\"";
             $ret = passthru($command);
         } else {
             $gdImage = self::getGDImageByFile($sourceFile);
-            
+
             if ($gdImage !== null) {
                 $gdImage = self::fixOrientation($gdImage, $sourceFile);
                 imagejpeg($gdImage, $targetFile, 100);
@@ -74,7 +67,7 @@ class ImageConverter
      */
     public static function Resize($sourceFile, $targetFile, $options = array())
     {
-
+        
         if (!isset($options['width']))
             $options['width'] = 0;
 
@@ -83,12 +76,65 @@ class ImageConverter
 
         if (!isset($options['mode']))
             $options['mode'] = 'force';
-
-        if (Setting::Get('imageMagickPath', 'file')) {
+        
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             self::ResizeImageMagick($sourceFile, $targetFile, $options);
         } else {
+            // dynamically allocate memory to process image
+            $memoryLimit = ini_get('memory_limit');
+            self::allocateMemory($sourceFile);
             self::ResizeGD($sourceFile, $targetFile, $options);
+            ini_set('memory_limit', $memoryLimit);
         }
+    }
+    
+    /**
+     * Dynamically allocate enough memory to process the given image.
+     * 
+     * @throws Exception if the memory is not sufficient to process the image.
+     * @param String $sourceFile the source file.
+     * @param boolean $test if true the memory will not really be allocated and no exception will be thrown.
+     * @return boolean true if sufficient memory is available. 
+     */
+    public static function allocateMemory($sourceFile, $test = false) {
+        
+        /**
+         * Temporary disabled
+         */
+        return true;
+        
+        $width = 0;
+        $height = 0;
+        // buffer for memory needed by other stuff
+        $buffer = 10;
+        // usually for RGB 3 pixels are used, for CMYK 4 pixels
+        $bytesPerPixel = 4;
+        // tweak factor, experience value
+        $tweakFactor = 2.2;
+        // getting the image width and height
+        list ($width, $height) = getimagesize($sourceFile);
+        // get defined memory limit from php_ini
+        $memoryLimit = ini_get('memory_limit');
+        // calc needed size for processing image dimensions in Bytes. 
+        $neededMemory = floor(($width * $height * $bytesPerPixel * $tweakFactor + 1048576) / 1048576);
+        $maxMemoryAllocation = Yii::$app->getModule('file')->settings->get(self::SETTINGS_NAME_MAX_MEMORY_ALLOCATION);
+        $maxMemoryAllocation = $maxMemoryAllocation == null ? self::DEFAULT_MAX_ADDITIONAL_MEMORY_ALLOCATION : $maxMemoryAllocation;
+        $newMemoryLimit = $memoryLimit + min($neededMemory, $maxMemoryAllocation);
+        
+        // dynamically allocate memory to process image
+        $result = ini_set('memory_limit', $newMemoryLimit . 'M');
+        // check if we were able to set memory_limit with ini_set with the current server configuration
+        $failure = (version_compare(PHP_VERSION, '5.3.0') >= 0) ? false : '';
+        
+        $allocatedMemory = $result == $failure ? $memoryLimit : $newMemoryLimit;
+        
+        if($neededMemory + $buffer < $allocatedMemory) {
+            return true;
+        }
+        if(!$test) {
+            throw new Exception("Image $sourceFile too large to be resized. Increase MAX_MEMORY_USAGE");
+        }
+        return false;
     }
 
     /**
@@ -255,7 +301,7 @@ class ImageConverter
      */
     private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
     {
-        $convertCommand = Setting::Get('imageMagickPath', 'file');
+        $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
         $width = (int) $options['width'];
         $height = (int) $options['height'];
 
@@ -284,7 +330,7 @@ class ImageConverter
     public static function getGDImageByFile($fileName)
     {
         $gdImage = null;
-        
+
         list($width, $height, $imageType) = getimagesize($fileName);
 
         switch ($imageType) {
@@ -305,7 +351,10 @@ class ImageConverter
     public static function fixOrientation($image, $filename)
     {
         $exif = @exif_read_data($filename);
+        $memoryLimit = ini_get('memory_limit');
         if (is_array($exif) && !empty($exif['Orientation'])) {
+            // dynamically allocate memory to process image
+            self::allocateMemory($filename);
             switch ($exif['Orientation']) {
                 case 8:
                     $image = imagerotate($image, 90, 0);
@@ -318,7 +367,7 @@ class ImageConverter
                     break;
             }
         }
-
+        ini_set('memory_limit', $memoryLimit);
         return $image;
     }
 

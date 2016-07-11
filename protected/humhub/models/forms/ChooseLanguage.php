@@ -18,7 +18,7 @@ class ChooseLanguage extends Model
     public function rules()
     {
         return array(
-            array('language', 'in', 'range' => array_keys(Yii::$app->params['availableLanguages'])),
+            array('language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())),
         );
     }
 

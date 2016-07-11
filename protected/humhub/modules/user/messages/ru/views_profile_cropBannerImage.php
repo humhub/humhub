@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> your title image' => 'Изменить аватар',
+    '<strong>Modify</strong> your title image' => '<strong>Изменить</strong> фото обложки',
     'Close' => 'Закрыть',
     'Save' => 'Сохранить',
 ];

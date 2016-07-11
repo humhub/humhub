@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>Edit</strong> user' => '<strong>Benutzer</strong> bearbeiten',
+  'Edit user: {name}' => 'Benutzer editieren: {name}',
 );

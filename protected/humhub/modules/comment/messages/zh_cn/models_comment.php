@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Comment' => '评论',
+  'comment' => '评论',
 );

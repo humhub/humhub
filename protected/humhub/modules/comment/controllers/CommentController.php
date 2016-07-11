@@ -75,34 +75,38 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         $this->forcePostRequest();
 
         if (Yii::$app->user->isGuest) {
-            return;
+            throw new HttpException(403, 'Guests can not comment.');
         }
         
         if (!Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
-            return;
+            throw new HttpException(403, 'You are not allowed to comment.');
         }
         
         $message = Yii::$app->request->post('message');
+        $files = Yii::$app->request->post('fileList');
 
-        if ($message != "") {
-            $comment = new Comment;
-            $comment->message = $message;
-            $comment->object_model = $this->parentContent->className();
-            $comment->object_id = $this->parentContent->getPrimaryKey();
-            $comment->save();
-
-            \humhub\modules\file\models\File::attachPrecreated($comment, Yii::$app->request->post('fileList'));
-
-            // Reload comment to get populated created_at field
-            $comment = Comment::findOne(['id' => $comment->id]);
-
-            return $this->renderAjaxContent(
-                            \humhub\modules\comment\widgets\Comment::widget([
-                                'comment' => $comment,
-                                'justEdited' => true
-                            ])
-            );
+        if (trim($message) === '' && trim($files) === '') {
+            // do not create empty comments
+            return '';
         }
+
+        $comment = new Comment;
+        $comment->message = $message;
+        $comment->object_model = $this->parentContent->className();
+        $comment->object_id = $this->parentContent->getPrimaryKey();
+        $comment->save();
+
+        \humhub\modules\file\models\File::attachPrecreated($comment, $files);
+
+        // Reload comment to get populated created_at field
+        $comment->refresh();
+
+        return $this->renderAjaxContent(
+            \humhub\modules\comment\widgets\Comment::widget([
+                'comment' => $comment,
+                'justEdited' => true
+            ])
+        );
     }
 
     public function actionEdit()

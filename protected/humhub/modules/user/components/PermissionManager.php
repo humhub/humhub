@@ -24,8 +24,8 @@ class PermissionManager extends \yii\base\Component
 
     public function can(BasePermission $permission)
     {
-        $groupId = Yii::$app->user->getIdentity()->group_id;
-        if ($this->getGroupState($groupId, $permission) == BasePermission::STATE_ALLOW) {
+        $groups = Yii::$app->user->getIdentity()->groups;
+        if ($this->getGroupState($groups, $permission) == BasePermission::STATE_ALLOW) {
             return true;
         }
 
@@ -62,6 +62,31 @@ class PermissionManager extends \yii\base\Component
         $record->state = $state;
         $record->save();
     }
+    
+    /**
+     * Returns the group permission state of the given group or goups.
+     * If the provided $group is an array we check if one of the group states
+     * is a BasePermission::STATE_ALLOW and return this state.
+     * 
+     * @param type $groups either an array of groups or group ids or an single group or goup id
+     * @param BasePermission $permission
+     * @param type $returnDefaultState
+     * @return type
+     */
+    public function getGroupState($groups, BasePermission $permission, $returnDefaultState = true)
+    {
+        if(is_array($groups)) {
+            $state = "";
+            foreach($groups as $group) {
+                $state = $this->getSingleGroupState($group, $permission, $returnDefaultState);
+                if($state === BasePermission::STATE_ALLOW) {
+                    return $state;
+                }
+            }
+            return $state;
+        }
+        return $this->getSingleGroupState($groups, $permission, $returnDefaultState);
+    }
 
     /**
      * Returns the group state
@@ -71,8 +96,12 @@ class PermissionManager extends \yii\base\Component
      * @param boolean $returnDefaultState
      * @return string the state
      */
-    public function getGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
+    private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
     {
+        if($groupId instanceof \humhub\modules\user\models\Group) {
+            $groupId = $groupId->id;
+        }
+        
         // Check if database entry exists
         $dbRecord = $this->getGroupStateRecord($groupId, $permission);
 

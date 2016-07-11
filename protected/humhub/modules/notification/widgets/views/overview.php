@@ -20,6 +20,13 @@ use yii\helpers\Url;
         <li id="loader_notifications">
             <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
         </li>
+        <li>
+            <div class="dropdown-footer">
+                <a class="btn btn-default col-md-12" href="<?= Url::to(['/notification/overview']); ?>">
+                    <?php echo Yii::t('NotificationModule.widgets_views_list', 'Show all notifications'); ?>
+                </a>
+            </div>
+        </li>
     </ul>
 </div>
 
@@ -155,7 +162,7 @@ use yii\helpers\Url;
         /**
          * Regulary fetch new notifications
          */
-        reloadNotificationInterval = 15000;
+        reloadNotificationInterval = <?= $updateInterval * 1000; ?>;
         setInterval(function () {
             jQuery.getJSON("<?php echo Url::to(['/notification/list/get-update-json']); ?>", function (json) {
                 handleJsonUpdate(json);

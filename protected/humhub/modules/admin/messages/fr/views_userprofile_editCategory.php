@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Create</strong> new profile category' => '<strong>Créer</strong> une nouvelle catégorie de Profil',
-  '<strong>Edit</strong> profile category' => '<strong>Éditer</strong> la catégorie',
+  'Create new profile category' => 'Créer une nouvelle catégorie de profil',
   'Delete' => 'Supprimer',
+  'Edit profile category' => 'Modifier la catégorie de profil',
   'Save' => 'Enregistrer',
 );

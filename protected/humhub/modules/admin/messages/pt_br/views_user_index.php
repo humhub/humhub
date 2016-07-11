@@ -17,11 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Last login' => '',
-    'never' => '',
-    '<strong>Manage</strong> users' => '<strong>Gerenciando</strong> usuários',
+    'Send invite' => '',
+    'Actions' => 'Ações',
     'Add new user' => 'Adicionar novo usuário',
-    'In this overview you can find every registered user and manage him.' => 'Nesta visão geral você pode encontrar todos os utilizadores registados e controlá-los.',
+    'Group Manager' => 'Gerenciar Grupo',
+    'Last login' => 'Último login',
     'Overview' => 'Visão global',
+    'Settings' => 'Configurações',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Esta Visão Global contém uma lista de ações para cada usuário registado como visualizar, editar e excluir usuários.',
+    'Users' => 'Usuários',
+    'never' => 'nunca',
 ];

@@ -1,12 +1,12 @@
 <?php
 return array (
-  '<strong>Basic</strong> settings' => '',
   '<strong>Confirm</strong> image deleting' => '',
-  'Cancel' => '',
+  'Cancel' => 'Batal',
   'Dashboard' => '',
-  'Delete' => '',
+  'Delete' => 'Hapus',
   'E.g. http://example.com/humhub' => '',
-  'New users will automatically added to these space(s).' => '',
-  'Save' => '',
+  'Friendship' => '',
+  'New users will automatically be added to these space(s).' => '',
+  'Save' => 'Simpan',
   'You\'re using no logo at the moment. Upload your logo now.' => '',
 );

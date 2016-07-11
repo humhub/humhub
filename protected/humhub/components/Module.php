@@ -34,6 +34,20 @@ class Module extends \yii\base\Module
     public $resourcesPath = 'assets';
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Set settings component
+        $this->set('settings', [
+            'class' => SettingsManager::className(),
+            'moduleId' => $this->id
+        ]);
+    }
+
+    /**
      * Returns modules name provided by module.json file
      *
      * @return string Name
@@ -82,19 +96,39 @@ class Module extends \yii\base\Module
 
     /**
      * Returns image url for this module
-     * Place your modules image in assets/module_image.png
+     * Place your modules image in <resourcesPath>/module_image.png
      *
      * @return String Image Url
      */
     public function getImage()
     {
-        $moduleImageFile = $this->getBasePath() . '/' . $this->resourcesPath . '/module_image.png';
-
-        if (is_file($moduleImageFile)) {
-            return $this->getAssetsUrl() . '/module_image.png';
+        $url = $this->getPublishedUrl('/module_image.png');
+        
+        if($url == null) {
+            $url = Yii::getAlias("@web/img/default_module.jpg");
         }
 
-        return Yii::getAlias("@web/img/default_module.jpg");
+        return $url;
+    }
+    
+    /**
+     * Returns the url of an asset file and publishes all module assets if
+     * the file is not published yet.
+     * 
+     * @param type $relativePath relative file path e.g. /module_image.jpg
+     * @return type
+     */
+    public function getPublishedUrl($relativePath)
+    {
+        $path = $this->getAssetPath().$relativePath;
+
+        $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
+    
+        if($publishedPath === false || !is_file($publishedPath)) {
+            $this->publishAssets();
+        }
+        
+        return Yii::$app->assetManager->getPublishedUrl($path);
     }
 
     /**
@@ -104,26 +138,48 @@ class Module extends \yii\base\Module
      */
     public function getAssetsUrl()
     {
-        $published = Yii::$app->assetManager->publish($this->getBasePath() . '/' . $this->resourcesPath);
-        return $published[1];
+        if(($published = $this->publishAssets()) != null) {
+            return $published[1];
+        }
+    }
+    
+    /**
+     * Publishes the basePath/resourcesPath (assets) module directory if existing.
+     * @return type
+     */
+    public function publishAssets()
+    {
+        if($this->hasAssets()) {
+            return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
+        }
+    }
+    
+    /**
+     * Determines whether or not this module has an asset directory. 
+     * @return type
+     */
+    private function hasAssets()
+    {
+        $path = $this->getAssetPath();
+        $path = Yii::getAlias($path);
+        return is_string($path) && is_dir($path);
+    }
+    
+    private function getAssetPath()
+    {
+        return $this->getBasePath() . '/' . $this->resourcesPath;
     }
 
     /**
      * Enables this module
-     * It will be available on the next request.
      *
      * @return boolean
      */
     public function enable()
     {
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-        if ($moduleEnabled == null) {
-            $moduleEnabled = new ModuleEnabled();
-            $moduleEnabled->module_id = $this->id;
-            $moduleEnabled->save();
-        }
-
+        Yii::$app->moduleManager->enable($this);
         $this->migrate();
+
         return true;
     }
 
@@ -135,11 +191,7 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-        // Disable module in database
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $this->id]);
-        if ($moduleEnabled != null) {
-            $moduleEnabled->delete();
-        }
+
 
         /**
          * Remove database tables
@@ -173,24 +225,23 @@ class Module extends \yii\base\Module
             }
         }
 
+        foreach (\humhub\modules\content\models\ContentContainerSetting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
 
-        /*
-          HSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          SpaceSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
-          UserSetting::model()->deleteAllByAttributes(array('module_id' => $this->getId()));
+        foreach (\humhub\models\Setting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
 
-          // Delete also records with disabled state from SpaceApplicationModule Table
-          foreach (SpaceApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $sam) {
-          $sam->delete();
-          }
+        foreach (\humhub\modules\user\models\Module::findAll(['module_id' => $this->id]) as $userModule) {
+            $userModule->delete();
+        }
 
-          // Delete also records with disabled state from UserApplicationModule Table
-          foreach (UserApplicationModule::model()->findAllByAttributes(array('module_id' => $this->getId())) as $uam) {
-          $uam->delete();
-          }
+        foreach (\humhub\modules\space\models\Module::findAll(['module_id' => $this->id]) as $spaceModule) {
+            $spaceModule->delete();
+        }
 
-          ModuleManager::flushCache();
-         */
+        Yii::$app->moduleManager->disable($this);
     }
 
     /**
@@ -248,6 +299,17 @@ class Module extends \yii\base\Module
      * @return array list of permissions
      */
     public function getPermissions($contentContainer = null)
+    {
+        return [];
+    }
+
+    /**
+     * Returns a list of notification classes this module provides.
+     * 
+     * @since 1.1
+     * @return array list of notification classes
+     */
+    public function getNotifications()
     {
         return [];
     }

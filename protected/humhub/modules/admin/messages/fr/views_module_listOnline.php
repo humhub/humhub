@@ -2,6 +2,7 @@
 return array (
   '<strong>Modules</strong> directory' => 'Annuaire des <strong>modules</strong>',
   'Buy (%price%)' => 'Acheter (%price%)',
+  'Disclaimer' => 'Avertissement',
   'Install' => 'Installer',
   'Installing module...' => 'Installation du module...',
   'Latest compatible version:' => 'Dernière version compatible :',

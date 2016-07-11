@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -19,6 +19,13 @@ use humhub\modules\admin\components\Controller;
  */
 class LoggingController extends Controller
 {
+
+    public function init()
+    {
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
+        $this->subLayout = '@admin/views/layouts/information';
+        return parent::init();
+    }
 
     public function actionIndex()
     {
@@ -41,7 +48,7 @@ class LoggingController extends Controller
     {
         $this->forcePostRequest();
         \humhub\modules\admin\models\Log::deleteAll();
-        return $this->redirect(Url::toRoute('index'));
+        return $this->redirect(['index']);
     }
 
 }

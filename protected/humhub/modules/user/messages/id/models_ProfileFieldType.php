@@ -18,6 +18,7 @@
  */
 return [
     'Birthday' => '',
+    'Country' => '',
     'Date' => '',
     'Datetime' => '',
     'Number' => '',

@@ -11,8 +11,9 @@ namespace humhub\modules\user\models;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\models\GroupAdmin;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * This is the model class for table "user".
@@ -20,9 +21,7 @@ use humhub\modules\user\components\ActiveQueryUser;
  * @property integer $id
  * @property string $guid
  * @property integer $wall_id
- * @property integer $group_id
  * @property integer $status
- * @property integer $super_admin
  * @property string $username
  * @property string $email
  * @property string $auth_mode
@@ -40,12 +39,6 @@ use humhub\modules\user\components\ActiveQueryUser;
  */
 class User extends ContentContainerActiveRecord implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
 {
-
-    /**
-     * Authentication Modes
-     */
-    const AUTH_MODE_LDAP = "ldap";
-    const AUTH_MODE_LOCAL = "local";
 
     /**
      * User Status Flags
@@ -69,9 +62,27 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const VISIBILITY_ALL = 2; // Visible for all (also guests)
 
     /**
+     * User Groups
+     */
+    const USERGROUP_SELF = 'u_self';
+    const USERGROUP_FRIEND = 'u_friend';
+    const USERGROUP_USER = 'u_user';
+    const USERGROUP_GUEST = 'u_guest';
+
+    /**
+     * A initial group for the user assigned while registration.
+     * @var type
+     */
+    public $registrationGroupId = null;
+
+    /**
+     * @var boolean is system admin (cached)
+     */
+    private $_isSystemAdmin = null;
+
+    /**
      * @inheritdoc
      */
-
     public static function tableName()
     {
         return 'user';
@@ -84,29 +95,54 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return [
             [['username', 'email'], 'required'],
-            [['wall_id', 'group_id', 'status', 'super_admin', 'created_by', 'updated_by', 'visibility'], 'integer'],
+            [['wall_id', 'status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['last_activity_email', 'created_at', 'updated_at', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => 25, 'min' => Yii::$app->params['user']['minUsernameLength']],
+            [['username'], 'string', 'max' => 50, 'min' => Yii::$app->params['user']['minUsernameLength']],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
-            [['email'], 'string', 'max' => 100],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
             [['email'], 'unique'],
+            [['email'], 'email'],
+            [['email'], 'string', 'max' => 100],
             [['username'], 'unique'],
             [['guid'], 'unique'],
             [['wall_id'], 'unique']
         ];
     }
 
+    /**
+     * Checks if user is system administrator
+     *
+     * @param boolean $cached Used cached result if available
+     * @return boolean user is system admin
+     */
+    public function isSystemAdmin($cached = true)
+    {
+        if ($this->_isSystemAdmin === null || !$cached) {
+            $this->_isSystemAdmin = ($this->getGroups()->where(['is_admin_group' => '1'])->count() > 0);
+        }
+
+        return $this->_isSystemAdmin;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __get($name)
     {
-        /**
-         * Ensure there is always a related Profile Model also when it's
-         * not really exists yet.
-         */
-        if ($name == 'profile') {
+
+        if ($name == 'super_admin') {
+            /**
+             * Replacement for old super_admin flag version
+             */
+            return $this->isSystemAdmin();
+        } else if ($name == 'profile') {
+            /**
+             * Ensure there is always a related Profile Model also when it's
+             * not really exists yet.
+             */
             $profile = parent::__get('profile');
             if (!$this->isRelationPopulated('profile') || $profile === null) {
                 $profile = new Profile();
@@ -122,8 +158,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         $scenarios = parent::scenarios();
         $scenarios['login'] = ['username', 'password'];
-        $scenarios['editAdmin'] = ['username', 'email', 'group_id', 'super_admin', 'status'];
-        $scenarios['registration'] = ['username', 'email', 'group_id'];
+        $scenarios['editAdmin'] = ['username', 'email', 'status'];
+        $scenarios['registration_email'] = ['username', 'email'];
+        $scenarios['registration'] = ['username'];
         return $scenarios;
     }
 
@@ -136,21 +173,22 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'id' => 'ID',
             'guid' => 'Guid',
             'wall_id' => 'Wall ID',
-            'group_id' => 'Group ID',
-            'status' => 'Status',
-            'super_admin' => 'Super Admin',
-            'username' => 'Username',
-            'email' => 'Email',
-            'auth_mode' => 'Auth Mode',
-            'tags' => 'Tags',
-            'language' => 'Language',
-            'last_activity_email' => 'Last Activity Email',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-            'last_login' => 'Last Login',
-            'visibility' => 'Visibility',
+            'status' => Yii::t('UserModule.models_User', 'Status'),
+            'username' => Yii::t('UserModule.models_User', 'Username'),
+            'email' => Yii::t('UserModule.models_User', 'Email'),
+            'profile.firstname' => Yii::t('UserModule.models_User', 'Firstname'),
+            'profile.lastname' => Yii::t('UserModule.models_User', 'Lastname'),
+            'auth_mode' => Yii::t('UserModule.models_User', 'Auth Mode'),
+            'tags' => Yii::t('UserModule.models_User', 'Tags'),
+            'language' => Yii::t('UserModule.models_User', 'Language'),
+            'last_activity_email' => Yii::t('UserModule.models_User', 'Last Activity Email'),
+            'created_at' => Yii::t('UserModule.models_User', 'Created at'),
+            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
+            'last_login' => Yii::t('UserModule.models_User', 'Last Login'),
+            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
+            
         ];
     }
 
@@ -158,7 +196,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return array(
             \humhub\components\behaviors\GUID::className(),
-            \humhub\modules\user\behaviors\UserSetting::className(),
+            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
             \humhub\modules\user\behaviors\Followable::className(),
             \humhub\modules\user\behaviors\UserModelModules::className()
         );
@@ -173,11 +211,10 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
         return static::findOne(['guid' => $token]);
     }
-    
 
     /**
      * @inheritdoc
-     * 
+     *
      * @return ActiveQueryContent
      */
     public static function find()
@@ -210,11 +247,66 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
-    public function getGroup()
+    /**
+     * Returns all GroupUser relations of this user as ActiveQuery
+     * @return type
+     */
+    public function getGroupUsers()
     {
-        return $this->hasOne(Group::className(), ['id' => 'group_id']);
+        return $this->hasMany(GroupUser::className(), ['user_id' => 'id']);
     }
-    
+
+    /**
+     * Returns all Group relations of this user as ActiveQuery
+     * @return ActiveQuery
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers');
+    }
+
+    /**
+     * Checks if the user has at least one group assigned.
+     * @return boolean
+     */
+    public function hasGroup()
+    {
+        return $this->getGroups()->count() > 0;
+    }
+
+    /**
+     * Returns all GroupUser relations this user is a manager of as ActiveQuery.
+     * @return ActiveQuery
+     */
+    public function getManagerGroupsUser()
+    {
+        return $this->getGroupUsers()->where(['is_group_manager' => '1']);
+    }
+
+    /**
+     * Returns all Groups this user is a maanger of as ActiveQuery.
+     * @return ActiveQuery
+     */
+    public function getManagerGroups()
+    {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
+                    $query->andWhere(['is_group_manager' => '1']);
+                });
+    }
+
+    /**
+     * Returns all user this user is related as friend as ActiveQuery.
+     * Returns null if the friendship module is deactivated.
+     * @return ActiveQuery
+     */
+    public function getFriends()
+    {
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
+        }
+        return null;
+    }
+
     public function isActive()
     {
         return $this->status === User::STATUS_ENABLED;
@@ -253,9 +345,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         Follow::deleteAll(['object_model' => $this->className(), 'object_id' => $this->id]);
         Password::deleteAll(['user_id' => $this->id]);
         Profile::deleteAll(['user_id' => $this->id]);
-        GroupAdmin::deleteAll(['user_id' => $this->id]);
+        GroupUser::deleteAll(['user_id' => $this->id]);
         Session::deleteAll(['user_id' => $this->id]);
-        Setting::deleteAll(['user_id' => $this->id]);
 
         return parent::beforeDelete();
     }
@@ -267,42 +358,29 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function beforeSave($insert)
     {
-
         if ($insert) {
 
-            if ($this->auth_mode == "") {
-                $this->auth_mode = self::AUTH_MODE_LOCAL;
+            if ($this->auth_mode == '') {
+                $passwordAuth = new \humhub\modules\user\authclient\Password();
+                $this->auth_mode = $passwordAuth->getId();
             }
 
-            if (\humhub\models\Setting::Get('allowGuestAccess', 'authentication_internal')) {
+            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
                 // Set users profile default visibility to all
-                if (\humhub\models\Setting::Get('defaultUserProfileVisibility', 'authentication_internal') == User::VISIBILITY_ALL) {
+                if (Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;
                 }
             }
 
             $this->last_activity_email = new \yii\db\Expression('NOW()');
 
-            // Set Status
             if ($this->status == "") {
-                if (\humhub\models\Setting::Get('needApproval', 'authentication_internal')) {
-                    $this->status = User::STATUS_NEED_APPROVAL;
-                } else {
-                    $this->status = User::STATUS_ENABLED;
-                }
-            }
-
-            if ((\humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal'))) {
-                $this->group_id = \humhub\models\Setting::Get('defaultUserGroup', 'authentication_internal');
+                $this->status = self::STATUS_ENABLED;
             }
         }
 
         if ($this->time_zone == "") {
-            $this->time_zone = \humhub\models\Setting::Get('timeZone');
-        }
-
-        if ($this->group_id == "") {
-            throw new \yii\base\Exception("Could not save user without group!");
+            $this->time_zone = Yii::$app->settings->get('timeZone');
         }
 
         return parent::beforeSave($insert);
@@ -324,7 +402,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             if ($this->status == User::STATUS_ENABLED) {
                 $this->setUpApproved();
             } else {
-                $this->group->notifyAdminsForUserApproval($this);
+                Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
         }
@@ -353,13 +431,13 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         // Auto Assign User to the Group Space
-        $group = Group::findOne(['id' => $this->group_id]);
-        if ($group != null && $group->space_id != "") {
-            $space = \humhub\modules\space\models\Space::findOne(['id' => $group->space_id]);
-            if ($space !== null) {
-                $space->addMember($this->id);
-            }
-        }
+        /* $group = Group::findOne(['id' => $this->group_id]);
+          if ($group != null && $group->space_id != "") {
+          $space = \humhub\modules\space\models\Space::findOne(['id' => $group->space_id]);
+          if ($space !== null) {
+          $space->addMember($this->id);
+          }
+          } */
 
         // Auto Add User to the default spaces
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
@@ -377,7 +455,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         $name = '';
 
-        $format = \humhub\models\Setting::Get('displayNameFormat');
+        $format = Yii::$app->settings->get('displayNameFormat');
 
         if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
             $name = $this->profile->firstname . " " . $this->profile->lastname;
@@ -403,11 +481,31 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function canAccessPrivateContent(User $user = null)
     {
-        return ($this->isCurrentUser());
+        if ($this->isCurrentUser()) {
+            return true;
+        }
+
+        if ($user === null) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if ($user !== null && Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getWallOut()
     {
         return \humhub\modules\user\widgets\UserWall::widget(['user' => $this]);
@@ -415,7 +513,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Checks if user has tags
-     * 
+     *
      * @return boolean has tags set
      */
     public function hasTags()
@@ -425,30 +523,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Returns an array with assigned Tags
-     * 
+     *
      * @return array tags
      */
     public function getTags()
     {
         return preg_split("/[;,#]+/", $this->tags);
-    }
-
-    /**
-     * Checks if given userId can write to this users wall
-     *
-     * @param type $userId
-     * @return type
-     */
-    public function canWrite($userId = "")
-    {
-
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        if ($userId == $this->id)
-            return true;
-
-        return false;
     }
 
     /**
@@ -466,12 +546,19 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
-            'groupId' => $this->group_id,
         );
+
+        // Add user group ids
+        $groupIds = array_map(function($group) {
+            return $group->id;
+        }, $this->groups);
+        $attributes['groups'] = $groupIds;
 
         if (!$this->profile->isNewRecord) {
             foreach ($this->profile->getProfileFields() as $profileField) {
-                $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+                if ($profileField->searchable) {
+                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+                }
             }
         }
 
@@ -521,15 +608,40 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function canApproveUsers()
     {
-        if ($this->super_admin == 1) {
+        if ($this->isSystemAdmin()) {
             return true;
         }
 
-        if (GroupAdmin::find()->where(['user_id' => $this->id])->count() != 0) {
-            return true;
+        return $this->getManagerGroups()->count() > 0;
+    }
+
+    /**
+     * @return type
+     */
+    public function getAuths()
+    {
+        return $this->hasMany(\humhub\modules\user\models\Auth::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * TODO: deprecated
+     * @inheritdoc
+     */
+    public function getUserGroup()
+    {
+        if (Yii::$app->user->isGuest) {
+            return self::USERGROUP_GUEST;
+        } elseif (Yii::$app->user->getIdentity()->id === $this->id) {
+            return self::USERGROUP_SELF;
         }
 
-        return false;
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Friendship::getStateForUser($this, Yii::$app->user->getIdentity()) === Friendship::STATE_FRIENDS) {
+                return self::USERGROUP_FRIEND;
+            }
+        }
+
+        return self::USERGROUP_USER;
     }
 
 }

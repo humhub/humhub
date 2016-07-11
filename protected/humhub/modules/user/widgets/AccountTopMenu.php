@@ -33,7 +33,7 @@ class AccountTopMenu extends BaseMenu
         $this->addItem(array(
             'label' => Yii::t('base', 'My profile'),
             'icon' => '<i class="fa fa-user"></i>',
-            'url' => $user->createUrl('/user/profile'),
+            'url' => $user->createUrl('/user/profile/home'),
             'sortOrder' => 100,
         ));
         $this->addItem(array(
@@ -58,15 +58,6 @@ class AccountTopMenu extends BaseMenu
             ));
         }
 
-        if (!Yii::$app->user->isGuest && Setting::Get('needApproval', 'authentication_internal') && $user->canApproveUsers()) {
-            $this->addItem(array(
-                'label' => Yii::t('base', 'User Approvals'),
-                'icon' => '<i class="fa fa-check-circle"></i>',
-                'url' => Url::toRoute('/admin/approval'),
-                'sortOrder' => 500,
-            ));
-        }
-
         $this->addItem(array(
             'label' => '---',
             'url' => '#',
@@ -79,8 +70,8 @@ class AccountTopMenu extends BaseMenu
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
         ));
-        
-        parent::init();        
+
+        parent::init();
     }
 
 }

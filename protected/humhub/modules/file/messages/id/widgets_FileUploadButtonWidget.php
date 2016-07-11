@@ -1,6 +1,6 @@
 <?php
 return array (
   '<strong>Upload</strong> error' => '',
-  'Close' => '',
+  'Close' => 'Tutup',
   'Could not upload File:' => '',
 );

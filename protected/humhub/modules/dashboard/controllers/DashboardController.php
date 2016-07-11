@@ -9,11 +9,17 @@
 namespace humhub\modules\dashboard\controllers;
 
 use Yii;
-use yii\web\Controller;
+use humhub\components\Controller;
 use humhub\models\Setting;
 
 class DashboardController extends Controller
 {
+
+    public function init()
+    {
+        $this->appendPageTitle(\Yii::t('DashboardModule.base', 'Dashboard'));
+        return parent::init();
+    }
 
     /**
      * @inheritdoc
@@ -23,7 +29,10 @@ class DashboardController extends Controller
         return [
             'acl' => [
                 'class' => \humhub\components\behaviors\AccessControl::className(),
-                'guestAllowedActions' => ['index', 'stream']
+                'guestAllowedActions' => [
+                    'index',
+                    'stream'
+                ]
             ]
         ];
     }
@@ -35,8 +44,8 @@ class DashboardController extends Controller
     {
         return [
             'stream' => [
-                'class' => \humhub\modules\dashboard\components\actions\DashboardStream::className(),
-            ],
+                'class' => \humhub\modules\dashboard\components\actions\DashboardStream::className()
+            ]
         ];
     }
 
@@ -50,18 +59,10 @@ class DashboardController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->render('index_guest', array());
         } else {
-            return $this->render('index', array('showProfilePostForm' => Setting::Get('showProfilePostForm', 'dashboard')));
+            return $this->render('index', array(
+                        'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
+            ));
         }
     }
-
-    /*
-    * Update user settings for hiding share panel on dashboard
-    */
-    public function actionHidePanel()
-    {
-        // set tour status to seen for current user
-        return Yii::$app->user->getIdentity()->setSetting('hideSharePanel', 1, "share");
-    }
-
 
 }

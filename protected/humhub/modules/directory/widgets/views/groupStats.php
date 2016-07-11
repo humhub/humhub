@@ -18,7 +18,7 @@ use humhub\models\Setting;
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Total groups'); ?></strong><br><br>
 
             <input id="groups-total" class="knob" data-width="120" data-height="140" data-displayPrevious="true" data-readOnly="true"
-                   data-fgcolor="<?php echo Setting::Get('colorPrimary'); ?>" data-skin="tron"
+                   data-fgcolor="<?php echo Yii::$app->settings->get('colorPrimary'); ?>" data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsTotalGroups; ?>"
                    data-max="<?php echo $statsTotalGroups; ?>"
                    style="font-size: 25px !important; margin-top: 44px !important;">
@@ -30,7 +30,7 @@ use humhub\models\Setting;
             <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Average members'); ?></strong><br><br>
 
             <input id="group-average" class="knob" data-width="120" data-height="140" data-displayPrevious="true" data-readOnly="true"
-                   data-fgcolor="<?php echo Setting::Get('colorPrimary'); ?>"
+                   data-fgcolor="<?php echo Yii::$app->settings->get('colorPrimary'); ?>"
                    data-skin="tron"
                    data-thickness=".2" value="<?php echo $statsAvgMembers; ?>"
                    data-max="<?php echo $statsTotalUsers; ?>"

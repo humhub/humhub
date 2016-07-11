@@ -24,5 +24,3 @@ interface Searchable
 
     public function getSearchAttributes();
 }
-
-?>
