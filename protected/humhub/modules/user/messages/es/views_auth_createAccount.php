@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create Account' => '',
+    'Create Account' => 'Crear Cuenta',
     '<strong>Account</strong> registration' => 'Registro de <strong>cuenta</strong>',
 ];

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Login' => '',
+    'Login' => 'Inicio de Sesión / Registro',
     'Remember me' => 'Recuérdame',
     '<strong>Please</strong> sign in' => '<strong>Por favor</strong>, inicia sesión',
     '<strong>Sign</strong> up' => 'Darse de <strong>alta</strong>',
