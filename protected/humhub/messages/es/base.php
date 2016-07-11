@@ -48,6 +48,7 @@ return [
     'Oooops...' => 'Oooops...',
     'Search' => 'Buscar',
     'Search for users and spaces' => 'Buscar usuarios y espacios',
+    'Sign in / up' => 'Acceder, Registrarse',
     'Space not found!' => '¡Espacio no encontrado!',
     'User Approvals' => 'Aprobaciones de Usuario',
     'User not found!' => '¡Usuario no encontrado!',

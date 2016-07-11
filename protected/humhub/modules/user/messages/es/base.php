@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Confirm new password' => '',
-    'New password' => '',
-    'No users found.' => '',
-    'Password' => '',
+    'Confirm new password' => 'Confirma la nueva contraseña',
+    'New password' => 'Nueva contraseña',
+    'No users found.' => 'Usuarios no encontrados.',
+    'Password' => 'Contraseña',
+    
 ];
