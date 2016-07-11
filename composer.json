@@ -15,13 +15,13 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": ">=2.0.4",
-        "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*",
-        "yiisoft/yii2-authclient": "*",
+        "yiisoft/yii2": "~2.0.4",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-authclient": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "cebe/markdown": "1.0.2",
-        "yiisoft/yii2-jui": "^2.0",
+        "yiisoft/yii2-jui": "~2.0.0",
         "zendframework/zend-http": "*",
         "jbroadway/urlify": "^1.0",
         "nqxcode/zendsearch": "^2.0",
@@ -38,11 +38,11 @@
         "bower-asset/select2-bootstrap-theme" : "0.1.0-beta.4"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "*",
-        "yiisoft/yii2-debug": "*",
-        "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*",
-        "yiisoft/yii2-apidoc": "^2.0"
+        "yiisoft/yii2-codeception": "~2.0.0",
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "yiisoft/yii2-apidoc": "~2.0.0"
     },
     "config": {
         "process-timeout": 1800,
