@@ -8,7 +8,7 @@ use yii\helpers\Url;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><strong>Join</strong> the network</h4>
+            <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('UserModule.views_auth_login','<strong>Join</strong> the network'); ?></h4>
         </div>
         <div class="modal-body">
             <br/>

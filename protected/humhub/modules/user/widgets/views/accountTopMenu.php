@@ -4,7 +4,7 @@ use \yii\helpers\Html;
 use \yii\helpers\Url;
 ?>
 <?php if (Yii::$app->user->isGuest): ?>
-    <a href="<?php echo Url::toRoute('/user/auth/login'); ?>" class="btn btn-enter" data-target="#globalModal">Sign in / up</a>
+    <a href="<?php echo Url::toRoute('/user/auth/login'); ?>" class="btn btn-enter" data-target="#globalModal"><?php echo Yii::t('base','Sign in / up'); ?></a>
 <?php else: ?>
     <ul class="nav">
         <li class="dropdown account">

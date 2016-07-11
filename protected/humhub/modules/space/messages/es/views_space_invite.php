@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Done' => '',
+    'Done' => 'Hecho',
     '<strong>Invite</strong> members' => '<strong>Invitar</strong> miembros',
     'Add an user' => 'Añadir un usuario',
     'Close' => 'Cerrar',

@@ -18,7 +18,7 @@
  */
 return [
     'Login' => '',
-    'Remember me' => '',
+    'Remember me' => 'Recuérdame',
     '<strong>Please</strong> sign in' => '<strong>Por favor</strong>, inicia sesión',
     '<strong>Sign</strong> up' => 'Darse de <strong>alta</strong>',
     'Create a new one.' => 'Crear una nueva.',
@@ -30,4 +30,5 @@ return [
     'email' => 'correo electrónico',
     'password' => 'contraseña',
     'username or email' => 'Usuario o correo electrónico',
+    '<strong>Join</strong> the network' => '<strong>Únete</strong>, a participaATTAC',
 ];
