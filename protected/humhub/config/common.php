@@ -84,6 +84,7 @@ $config = [
             ],
         ],
         'assetManager' => [
+            'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
         ],
         'view' => [
