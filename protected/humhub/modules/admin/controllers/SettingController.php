@@ -149,7 +149,7 @@ class SettingController extends Controller
         $form = new \humhub\modules\admin\models\forms\CacheSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
-
+            Yii::$app->assetManager->clear();
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
