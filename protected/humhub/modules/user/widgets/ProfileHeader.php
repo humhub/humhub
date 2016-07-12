@@ -11,6 +11,8 @@ namespace humhub\modules\user\widgets;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\space\models\Membership;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * Displays the profile header of a user
@@ -64,10 +66,15 @@ class ProfileHeader extends \yii\base\Widget
 
         $countFriends = 0;
         if ($friendshipsEnabled) {
-            $countFriends = \humhub\modules\friendship\models\Friendship::getFriendsQuery($this->user)->count();
+            $countFriends = Friendship::getFriendsQuery($this->user)->count();
         }
 
         $countFollowing = $this->user->getFollowingCount(User::className()) + $this->user->getFollowingCount(Space::className());
+
+        $countUserSpaces = Membership::getUserSpaceQuery($this->user)
+                ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
+                ->andWhere(['space.status' => Space::STATUS_ENABLED])
+                ->count();
 
         return $this->render('profileHeader', array(
                     'user' => $this->user,
@@ -76,7 +83,7 @@ class ProfileHeader extends \yii\base\Widget
                     'countFriends' => $countFriends,
                     'countFollowers' => $this->user->getFollowerCount(),
                     'countFollowing' => $countFollowing,
-                    'countSpaces' => count($this->user->spaces),
+                    'countSpaces' => $countUserSpaces,
         ));
     }
 
