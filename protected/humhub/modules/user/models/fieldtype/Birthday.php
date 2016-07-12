@@ -29,9 +29,9 @@ class Birthday extends Date
      */
     public function rules()
     {
-        return array(
-            array(['defaultHideAge'], 'in', 'range' => array(0, 1))
-        );
+        return [
+            [['defaultHideAge'], 'in', 'range' => array(0, 1)]
+        ];
     }
 
     /**
@@ -88,7 +88,8 @@ class Birthday extends Date
     public function getFieldRules($rules = array())
     {
 
-        $rules[] = array($this->profileField->internal_name . "_hide_year", 'in', 'range' => array(0, 1));
+        $rules[] = [$this->profileField->internal_name . "_hide_year", 'in', 'range' => [0, 1]];
+        $rules[] = [$this->profileField->internal_name, \humhub\components\validators\PastDateValidator::className()];
         return parent::getFieldRules($rules);
     }
 
@@ -97,17 +98,17 @@ class Birthday extends Date
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => array(
+        return [$this->profileField->internal_name => [
                 'type' => 'datetime',
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)
-            ),
-            $this->profileField->internal_name . "_hide_year" => array(
+            ],
+            $this->profileField->internal_name . "_hide_year" => [
                 'type' => 'checkbox',
                 'readonly' => (!$this->profileField->editable)
-            ),
-        );
+            ],
+        ];
     }
 
     public function getLabels()
