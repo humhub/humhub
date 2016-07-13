@@ -23,7 +23,7 @@ use humhub\widgets\GridView;
             'columns' => [
                 [
                     'attribute' => 'group.id',
-                    'label' => 'Group',
+                    'label' => Yii::t('AdminModule.views_approval_index', 'Group'),
                     'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'group.id', \yii\helpers\ArrayHelper::map($searchModel->getGroups(), 'id', 'name')),
                     'value' =>
                     function($data) {
@@ -43,10 +43,10 @@ use humhub\widgets\GridView;
                             return;
                         },
                         'delete' => function($url, $model) {
-                            return Html::a('Decline', Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm']);
+                            return Html::a(Yii::t('AdminModule.views_approval_index', 'Decline'), Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm']);
                         },
                                 'update' => function($url, $model) {
-                            return Html::a('Approve', Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm']);
+                            return Html::a(Yii::t('AdminModule.views_approval_index', 'Approve'), Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm']);
                         },
                             ],
                         ],

@@ -17,7 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
+    'Actions' => 'Acciones',
     '<strong>Pending</strong> user approvals' => 'Aprobaciones de usuario <strong>pendientes</strong>',
     'Here you see all users who have registered and still waiting for a approval.' => 'Aquí ves todos los usuarios que se han registrado y están esperando aprobación.',
+    'Group' => 'Grupo',
+    'Approve' => 'Aprobar',
+    'Decline' => 'Denegar',
 ];

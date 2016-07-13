@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Login' => '',
-    'Remember me' => '',
+    'Login' => 'Inicio de Sesión / Registro',
+    'Remember me' => 'Recuérdame',
     '<strong>Please</strong> sign in' => '<strong>Por favor</strong>, inicia sesión',
     '<strong>Sign</strong> up' => 'Darse de <strong>alta</strong>',
     'Create a new one.' => 'Crear una nueva.',
@@ -30,4 +30,7 @@ return [
     'email' => 'correo electrónico',
     'password' => 'contraseña',
     'username or email' => 'Usuario o correo electrónico',
+    '<strong>Join</strong> the network' => '<strong>Únete</strong> a la red',
+    'Your account is disabled!' => 'Tu cuenta está desactivada',
+    'Your account is not approved yet!' => 'Tu cuenta no se ha aprobado todavía',
 ];
