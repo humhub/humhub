@@ -21,7 +21,7 @@ return array (
   'Login' => '',
   'Logout' => '退出',
   'Menu' => '菜单',
-  'Module is not on this content container enabled!' => '',
+  'Module is not enabled on this content container!' => '',
   'My profile' => '我的资料',
   'New profile image' => '新图片',
   'Next' => '',

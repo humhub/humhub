@@ -18,8 +18,8 @@ Apache Config Example
 ```        
 
 
-More Informations
------------------
+More Information
+----------------
 
 - Apache: [X-Sendfile](http://tn123.org/mod_xsendfile)
 - Lighttpd v1.4: [X-LIGHTTPD-send-file](http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file)

@@ -21,7 +21,7 @@ return array (
   'Login' => 'ورود',
   'Logout' => 'خروج',
   'Menu' => 'منو',
-  'Module is not on this content container enabled!' => 'ماژول در این نگهدارنده‌ی محتوا فعال نیست!',
+  'Module is not enabled on this content container!' => 'ماژول در این نگهدارنده‌ی محتوا فعال نیست!',
   'My profile' => 'پروفایل من',
   'New profile image' => 'عکس پروفایل جدید',
   'Next' => 'بعدي',

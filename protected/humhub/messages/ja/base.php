@@ -39,7 +39,7 @@ return [
     'Login' => 'ログイン',
     'Logout' => 'ログアウト',
     'Menu' => 'メニュー',
-    'Module is not on this content container enabled!' => 'このコンテンツコンテナに有効なモジュールがありません！',
+    'Module is not enabled on this content container!' => 'このコンテンツコンテナに有効なモジュールがありません！',
     'My profile' => 'マイプロフィール',
     'New profile image' => '新しいプロフィール画像',
     'Next' => '次',

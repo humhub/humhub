@@ -20,7 +20,7 @@ return [
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not determine content container!' => '',
     'Could not find content of addon!' => '',
-    'Module is not on this content container enabled!' => '',
+    'Module is not enabled on this content container!' => '',
     'Ok' => '',
     '<strong>Latest</strong> updates' => '<strong>อัพเดท</strong> ล่าสุด',
     'Account settings' => 'ตั้งค่าบัญชี',

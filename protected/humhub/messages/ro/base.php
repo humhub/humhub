@@ -21,7 +21,7 @@ return array (
   'Login' => 'Autentificare',
   'Logout' => 'Ieșire cont',
   'Menu' => 'Meniu',
-  'Module is not on this content container enabled!' => 'Modulul nu este pe acest container de conținut activat!',
+  'Module is not enabled on this content container!' => 'Modulul nu este pe acest container de conținut activat!',
   'My profile' => 'Profilul meu',
   'New profile image' => 'Imagine nouă de profil',
   'Next' => '',

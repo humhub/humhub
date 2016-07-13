@@ -134,7 +134,7 @@ Each Content ActiveRecord (derived from [[\humhub\modules\content\components\Con
 This Content record holds all neccessary information and provides common methods:
 
 - ContentContainer which the Content belongs to
-- Meta Informations (created_at, created_by, updated_at, updated_by)
+- Meta Information (created_at, created_by, updated_at, updated_by)
 - Wall Assignments / Methods
 - Archiving / Sticking
 - And more...

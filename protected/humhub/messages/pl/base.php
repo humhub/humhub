@@ -21,7 +21,7 @@ return array (
   'Login' => 'Login',
   'Logout' => 'Wyloguj',
   'Menu' => 'Menu',
-  'Module is not on this content container enabled!' => 'Moduł w tym kontenerze nie jest uruchomiony!',
+  'Module is not enabled on this content container!' => 'Moduł w tym kontenerze nie jest uruchomiony!',
   'My profile' => 'Mój profil',
   'New profile image' => 'Nowe zdjęcie profilowe',
   'Next' => 'Dalej',

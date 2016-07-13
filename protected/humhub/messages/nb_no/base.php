@@ -21,7 +21,7 @@ return array (
   'Login' => '',
   'Logout' => 'Logg ut',
   'Menu' => 'Meny',
-  'Module is not on this content container enabled!' => 'Modulen er ikke aktivert for dette innholdet',
+  'Module is not enabled on this content container!' => 'Modulen er ikke aktivert for dette innholdet',
   'My profile' => 'Min profil',
   'New profile image' => 'Nytt profilbilde',
   'Next' => '',

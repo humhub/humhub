@@ -21,7 +21,7 @@ return array (
   'Login' => 'تسجيل الدخول',
   'Logout' => 'تسجيل الخروج',
   'Menu' => 'القائمة',
-  'Module is not on this content container enabled!' => 'الموديل ليس متاحاً في هذه الخانة',
+  'Module is not enabled on this content container!' => 'الموديل ليس متاحاً في هذه الخانة',
   'My profile' => 'صفحتي الشخصية',
   'New profile image' => 'صورة شخصية جديدة',
   'Next' => '',
