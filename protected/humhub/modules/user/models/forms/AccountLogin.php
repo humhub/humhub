@@ -64,10 +64,10 @@ class AccountLogin extends Model
             $user = $this->getUser();
             if ($user !== null) {
                 if ($user->status == User::STATUS_DISABLED) {
-                    $this->addError($attribute, 'Your account is disabled!');
+                    $this->addError($attribute, Yii::t('UserModule.views_auth_login','Your account is disabled!'));
                 }
                 if ($user->status == User::STATUS_NEED_APPROVAL) {
-                    $this->addError($attribute, 'Your account is not approved yet!');
+                    $this->addError($attribute, Yii::t('UserModule.views_auth_login','Your account is not approved yet!'));
                 }
             }
         }

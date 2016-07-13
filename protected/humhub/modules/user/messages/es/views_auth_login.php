@@ -30,5 +30,7 @@ return [
     'email' => 'correo electrónico',
     'password' => 'contraseña',
     'username or email' => 'Usuario o correo electrónico',
-    '<strong>Join</strong> the network' => '<strong>Únete</strong>, a participaATTAC',
+    '<strong>Join</strong> the network' => '<strong>Únete</strong> a la red',
+    'Your account is disabled!' => 'Tu cuenta está desactivada',
+    'Your account is not approved yet!' => 'Tu cuenta no se ha aprobado todavía',
 ];
