@@ -1833,22 +1833,6 @@ a.list-group-item.active:focus {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.ekko-lightbox {
-  .modal-content {
-    .modal-body {
-      padding: 10px;
-    }
-    .modal-footer {
-      padding: 0 10px 10px;
-    }
-  }
-}
-
-.ekko-lightbox-nav-overlay a,
-.ekko-lightbox-nav-overlay a:hover {
-  color: @primary;
-}
-
 //
 // Progressbar
 // --------------------------------------------------
@@ -2595,6 +2579,18 @@ textarea.placeholder {
 }
 
 // Ekko lightbox
+
+.ekko-lightbox {
+  .modal-content {
+    .modal-body {
+      padding: 10px;
+    }
+    .modal-footer {
+      padding: 0 10px 10px;
+    }
+  }
+}
+
 .ekko-lightbox-container {
   position: relative;
 }
@@ -2613,20 +2609,22 @@ textarea.placeholder {
   display: block;
   width: 49%;
   height: 100%;
-  padding-top: 35%;
+  //padding-top: 50%;
   font-size: 30px;
   color: #fff;
+  text-shadow: 2px 2px 4px #000;
   opacity: 0;
   outline:none;
   text-decoration: none;
+  filter: dropshadow(color=#000000, offx=2, offy=2);
   -webkit-transition: opacity 0.5s;
-  -moz-transition: opacity 0.5s;
-  -o-transition: opacity 0.5s;
-  transition: opacity 0.5s;
+     -moz-transition: opacity 0.5s;
+       -o-transition: opacity 0.5s;
+          transition: opacity 0.5s;
 }
 
 .ekko-lightbox-nav-overlay a:hover {
-  color: #fff;
+  color: @primary;
 }
 
 .ekko-lightbox-nav-overlay a:empty {
