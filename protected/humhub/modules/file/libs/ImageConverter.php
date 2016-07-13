@@ -97,12 +97,7 @@ class ImageConverter
      * @return boolean true if sufficient memory is available. 
      */
     public static function allocateMemory($sourceFile, $test = false) {
-        
-        /**
-         * Temporary disabled
-         */
-        return true;
-        
+                
         $width = 0;
         $height = 0;
         // buffer for memory needed by other stuff
@@ -111,6 +106,10 @@ class ImageConverter
         $bytesPerPixel = 4;
         // tweak factor, experience value
         $tweakFactor = 2.2;
+        // check if the file exists, if not it seems that we do not have to allocate memory and we return true
+        if (!file_exists ( $sourceFile )) {
+            return true;
+        }        
         // getting the image width and height
         list ($width, $height) = getimagesize($sourceFile);
         // get defined memory limit from php_ini
