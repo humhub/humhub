@@ -97,12 +97,7 @@ class ImageConverter
      * @return boolean true if sufficient memory is available. 
      */
     public static function allocateMemory($sourceFile, $test = false) {
-        
-        /**
-         * Temporary disabled
-         */
-        return true;
-        
+                
         $width = 0;
         $height = 0;
         // buffer for memory needed by other stuff
