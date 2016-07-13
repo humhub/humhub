@@ -120,16 +120,31 @@ class Module extends \yii\base\Module
      */
     public function getPublishedUrl($relativePath)
     {
-        $path = $this->getAssetPath().$relativePath;
+        $path = $this->getAssetPath();
 
-        $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
-    
-        if($publishedPath === false || !is_file($publishedPath)) {
+        // If the file has not been published yet we publish the module assets
+        if(!$this->isPublished($relativePath)) {
             $this->publishAssets();
         }
         
-        return Yii::$app->assetManager->getPublishedUrl($path);
+        // If its still not published the file does not exist
+        if($this->isPublished($relativePath)) {
+            return Yii::$app->assetManager->getPublishedUrl($path).$relativePath;
+        }
     }
+    
+    /**
+     * Checks if a specific asset file has already been published
+     * @param type $relativePath
+     * @return type
+     */
+    private function isPublished($relativePath)
+    {
+        $path = $this->getAssetPath();
+        $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
+        return $publishedPath !== false && is_file($publishedPath.$relativePath);
+    }
+
 
     /**
      * Get Assets Url

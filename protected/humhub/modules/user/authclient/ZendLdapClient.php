@@ -223,10 +223,19 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     protected function getUserDn()
     {
-        // ToDo: Search user even by e-mail address
+        $userName = $this->login->username;
+
+        // Translate given e-mail to username
+        if (strpos($userName, '@') !== false) {
+            $user = User::findOne(['email' => $userName]);
+            if ($user !== null) {
+                $userName = $user->username;
+            }
+        }
+
         try {
-            $this->getLdap()->bind($this->login->username, $this->login->password);
-            return $this->getLdap()->getCanonicalAccountName($this->login->username, Ldap::ACCTNAME_FORM_DN);
+            $this->getLdap()->bind($userName, $this->login->password);
+            return $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
         } catch (LdapException $ex) {
             // User not found in LDAP
         }
