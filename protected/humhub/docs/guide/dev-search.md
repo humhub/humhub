@@ -21,7 +21,7 @@ class Post extends ContentActiveRecord implements Searchable
 	// This is required to display the search result
     public $wallEntryClass = "humhub\modules\post\widgets\WallEntry";
 
-	// Searchable Attributes / Informations
+	// Searchable Attributes / Information
     public function getSearchAttributes()
     {
         return array(

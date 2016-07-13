@@ -99,7 +99,7 @@ class ContentContainerController extends Controller
         }
 
         if (!$this->checkModuleIsEnabled()) {
-            throw new HttpException(405, Yii::t('base', 'Module is not on this content container enabled!'));
+            throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
 
         return parent::init();

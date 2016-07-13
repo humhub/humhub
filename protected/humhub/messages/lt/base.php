@@ -21,7 +21,7 @@ return array (
   'Login' => 'Prisijungti',
   'Logout' => 'Atsijungti',
   'Menu' => 'Meniu',
-  'Module is not on this content container enabled!' => 'Modulis šioje turinio talpykloje negalimas!',
+  'Module is not enabled on this content container!' => 'Modulis šioje turinio talpykloje negalimas!',
   'My profile' => 'Mano profilis',
   'New profile image' => 'Nauja profilio nuotrauka',
   'Next' => 'Kitas',

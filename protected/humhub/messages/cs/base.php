@@ -21,7 +21,7 @@ return array (
   'Login' => 'Přihlásit se',
   'Logout' => 'Odhlásit',
   'Menu' => 'Menu',
-  'Module is not on this content container enabled!' => 'Modul nebyl nalezen nebo je vypnut!',
+  'Module is not enabled on this content container!' => 'Modul nebyl nalezen nebo je vypnut!',
   'My profile' => 'Můj profil',
   'New profile image' => 'Nový profilový obrázek',
   'Next' => 'Další',

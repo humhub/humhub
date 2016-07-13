@@ -21,7 +21,7 @@ return array (
   'Login' => 'Log in',
   'Logout' => 'Uitloggen',
   'Menu' => 'Menu',
-  'Module is not on this content container enabled!' => 'Module is niet op deze inhoud container ingeschakeld!',
+  'Module is not enabled on this content container!' => 'Module is niet op deze inhoud container ingeschakeld!',
   'My profile' => 'Mijn profiel',
   'New profile image' => 'Nieuwe profielfoto',
   'Next' => 'Volgende',

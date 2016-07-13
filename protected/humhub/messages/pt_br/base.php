@@ -21,7 +21,7 @@ return array (
   'Login' => 'Login',
   'Logout' => 'Sair',
   'Menu' => 'Menu',
-  'Module is not on this content container enabled!' => 'O módulo não está habilitado para este container!',
+  'Module is not enabled on this content container!' => 'O módulo não está habilitado para este container!',
   'My profile' => 'Meu perfil',
   'New profile image' => 'Nova imagem de perfil',
   'Next' => 'Avançar',
