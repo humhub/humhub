@@ -49,6 +49,7 @@ foreach ($translations as $key => $value) {
 $translationsJS .= "};\n";
 $this->registerJs($translationsJS);
 $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
+
 ?>
 
 <?php
@@ -58,7 +59,7 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
  */
 ?>
 <script id="markdownEditor_dialogs_<?php echo $fieldId; ?>" type="text/placeholder">
-    <div class="modal" id="addFileModal_<?php echo $fieldId; ?>" tabindex="-1" role="dialog" aria-labelledby="addImageModalLabel" aria-hidden="true">
+    <div class="modal modal-top" id="addFileModal_<?php echo $fieldId; ?>" tabindex="-1" role="dialog" aria-labelledby="addImageModalLabel" style="z-index:99999" aria-hidden="true">
     <div class="modal-dialog">
     <div class="modal-content">
     <div class="modal-header">
@@ -89,7 +90,7 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
     </div>
     </div>
 
-    <div class="modal" id="addLinkModal_<?php echo $fieldId; ?>" tabindex="-1" role="dialog" aria-labelledby="addLinkModalLabel" aria-hidden="true">
+    <div class="modal modal-top" id="addLinkModal_<?php echo $fieldId; ?>" tabindex="-1" role="dialog" style="z-index:99999" aria-labelledby="addLinkModalLabel" aria-hidden="true">
     <div class="modal-dialog">
     <div class="modal-content">
     <div class="modal-header">
@@ -117,3 +118,16 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
     </div>
     </div>
 </script>
+<script type="text/javascript">
+    //alert('#addFileModal_<?php echo $fieldId; ?>');
+    debugger;
+    $('#addFileModal_<?php echo $fieldId; ?>').on('show.bs.modal', function() {
+        alert('asdf');
+    });
+    
+    $('#addFileModal_<?php echo $fieldId; ?>').on('shown.bs.modal', function() {
+        debugger;
+       $(this).css('z-index', "99999");
+    });
+</script>
+    
