@@ -102,7 +102,8 @@ class Birthday extends Date
                 'type' => 'datetime',
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable)
+                'readonly' => (!$this->profileField->editable),
+                'yearRange' => (date('Y') - 100) . ":". date('Y')
             ],
             $this->profileField->internal_name . "_hide_year" => [
                 'type' => 'checkbox',

@@ -239,7 +239,13 @@ class HForm extends \yii\base\Component
                         if (isset($definition['format'])) {
                             $format = $definition['format'];
                         }
-                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), ['dateFormat' => $format, 'clientOptions' => ['changeYear' => true, 'yearRange' => (date('Y') - 100) . ":" . date('Y'), 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 'options' => ['class' => 'form-control']]);
+                        
+                        $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
+                        
+                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
+                            'dateFormat' => $format, 
+                            'clientOptions' => ['changeYear' => true, 'yearRange' => $yearRange, 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 
+                            'options' => ['class' => 'form-control']]);
                      default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
