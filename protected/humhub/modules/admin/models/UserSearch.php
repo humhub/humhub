@@ -90,7 +90,8 @@ class UserSearch extends User
         
         if ($this->getAttribute('last_login') != "") {
             try {
-                $last_login = Yii::$app->formatter->asDate($this->getAttribute('last_login'), 'php:Y-m-d');
+                $last_login = \humhub\libs\DateHelper::parseDateTime($this->getAttribute('last_login'));
+                
                 $query->andWhere([
                     '=',
                     new \yii\db\Expression("DATE(last_login)"),
