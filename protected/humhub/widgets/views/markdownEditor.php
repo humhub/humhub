@@ -118,16 +118,4 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
     </div>
     </div>
 </script>
-<script type="text/javascript">
-    //alert('#addFileModal_<?php echo $fieldId; ?>');
-    debugger;
-    $('#addFileModal_<?php echo $fieldId; ?>').on('show.bs.modal', function() {
-        alert('asdf');
-    });
-    
-    $('#addFileModal_<?php echo $fieldId; ?>').on('shown.bs.modal', function() {
-        debugger;
-       $(this).css('z-index', "99999");
-    });
-</script>
     
