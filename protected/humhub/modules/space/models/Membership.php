@@ -119,8 +119,6 @@ class Membership extends \yii\db\ActiveRecord
         $query->andWhere(['wall_entry.wall_id' => $this->space->wall_id]);
         $query->andWhere(['>', 'wall_entry.created_at', $this->last_visit]);
         $count = $query->count();
-
-        $count += Comment::find()->where(['space_id' => $this->space_id])->andWhere(['>', 'created_at', $this->last_visit])->count();
         return $count;
     }
 
