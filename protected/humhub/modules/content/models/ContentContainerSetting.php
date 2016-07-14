@@ -39,7 +39,7 @@ class ContentContainerSetting extends \yii\db\ActiveRecord
             [['module_id', 'contentcontainer_id', 'name'], 'required'],
             [['contentcontainer_id'], 'integer'],
             [['value'], 'string'],
-            [['module_id', 'name'], 'string', 'max' => 255],
+            [['module_id', 'name'], 'string', 'max' => 50],
             [['module_id', 'contentcontainer_id', 'name'], 'unique', 'targetAttribute' => ['module_id', 'contentcontainer_id', 'name'], 'message' => 'The combination of Module ID, Contentcontainer ID and Name has already been taken.'],
             [['contentcontainer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contentcontainer::className(), 'targetAttribute' => ['contentcontainer_id' => 'id']],
         ];
