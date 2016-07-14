@@ -14,6 +14,5 @@ class SettingFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\models\Setting';
-    public $dataFile = '@tests/codeception/fixtures/data/setting.php';
 
 }

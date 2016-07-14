@@ -8,7 +8,7 @@ use \yii\helpers\Url;
 <?php else: ?>
     <ul class="nav">
         <li class="dropdown account">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" id="account-dropdown-link" class="dropdown-toggle" data-toggle="dropdown">
                 <div class="user-title pull-left hidden-xs">
                     <strong><?php echo Html::encode(Yii::$app->user->getIdentity()->displayName); ?></strong><br/><span class="truncate"><?php echo Html::encode(Yii::$app->user->getIdentity()->profile->title); ?></span>
                 </div>

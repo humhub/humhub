@@ -2,7 +2,6 @@
 
 namespace tests\codeception\_support;
 
-use tests\codeception\fixtures\UserFixture;
 use Codeception\Module;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
@@ -66,12 +65,11 @@ class FixtureHelper extends Module
     public function fixtures()
     {
         return [
-            'user' => [
-                'class' => \tests\codeception\fixtures\UserFixture::className()
-            ],
-            'password' => [
-                'class' => \tests\codeception\fixtures\UserPasswordFixture::className()
-            ]
+            'user' => ['class' => \tests\codeception\fixtures\UserFixture::className()],
+            'settings' => ['class' => \tests\codeception\fixtures\SettingFixture::className()],
+            'space' => [ 'class' => \tests\codeception\fixtures\SpaceFixture::className()],
+            'space_membership' => [ 'class' => \tests\codeception\fixtures\SpaceMembershipFixture::className()],
+            'contentcontainer' => [ 'class' => \tests\codeception\fixtures\ContentContainerFixture::className()],
         ];
     }
 }

@@ -11,6 +11,7 @@ modules:
       - Filesystem
       - Yii2
       - tests\codeception\_support\FixtureHelper
+      - tests\codeception\_support\HumHubHelper
     config:
         Yii2:
             cleanup: true

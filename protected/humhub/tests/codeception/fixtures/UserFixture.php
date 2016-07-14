@@ -14,9 +14,11 @@ class UserFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\user\models\User';
-    public $dataFile = '@modules/user/tests/codeception/_data/user.php';
+    public $dataFile = '@modules/user/tests/codeception/fixtures/data/user.php';
     public $depends = [
-        'tests\codeception\fixtures\ContentContainerFixture'
+        'tests\codeception\fixtures\ContentContainerFixture',
+        'tests\codeception\fixtures\UserPasswordFixture',
+        'tests\codeception\fixtures\GroupFixture'
     ];
 
 }

@@ -132,7 +132,12 @@ humhub.initModule('stream', function (module, require, $) {
         if (this.isShowSingleEntry()) {
             this.loadSingleEntry(this.contentId);
         } else {
-            this.loadEntries(STREAM_INIT_COUNT);
+            this.loadEntries(STREAM_INIT_COUNT).then(function() {
+                /**
+                 * TODO: REWRITE OLD INITPLUGINS!!!
+                 */
+                initPlugins();
+            });
         }
         return this;
     };

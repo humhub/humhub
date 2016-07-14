@@ -4,7 +4,7 @@ namespace humhub\modules\admin\models\forms;
 
 use Yii;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\components\actions\Stream;
+use humhub\modules\stream\actions\Stream;
 use humhub\libs\DynamicConfig;
 
 /**

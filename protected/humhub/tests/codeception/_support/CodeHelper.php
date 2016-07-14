@@ -20,7 +20,33 @@ class CodeHelper extends Module
      */
     public function _beforeSuite($settings = [])
     {
-        include __DIR__.'/../unit/_bootstrap.php';
+        include __DIR__ . '/../unit/_bootstrap.php';
+    }
+
+    public function assertContainsError($model, $message)
+    {
+        $this->assertTrue($model->hasErrors());
+
+        $result = false;
+        foreach ($model->errors as $errorMessages) {
+            if(in_array($message, $errorMessages)) {
+                $result = true;
+                break;
+            }
+        }
+        $this->assertTrue($result);
+    }
+    
+    public function assertNotContainsError($model, $message)
+    {
+        $result = false;
+        foreach ($model->errors as $errorMessages) {
+            if(in_array($message, $errorMessages)) {
+                $result = true;
+                break;
+            }
+        }
+        $this->assertFalse($result);
     }
 
 }

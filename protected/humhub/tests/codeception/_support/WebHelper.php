@@ -22,9 +22,4 @@ class WebHelper extends Module
     {
         include __DIR__.'/../acceptance/_bootstrap.php';
     }
-    
-    public function _before(\Codeception\TestCase $test) {
-        //$this->getModule('WebDriver')->_reconfigure(array('url' => 'http://staff.humhub.org'));
-    }
-
 }

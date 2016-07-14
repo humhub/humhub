@@ -324,6 +324,16 @@ class ModuleManager extends \yii\base\Component
         $this->enabledModules[] = $module->id;
         $this->register($module->getBasePath());
     }
+    
+    public function enableModules($modules = [])
+    {
+        foreach ($modules as $module) {
+            $module = ($module instanceof Module) ? $module : $this->getModule($module);
+            if($module != null) {
+                $module->enable();
+            }
+        }
+    }
 
     /**
      * Disables a module
@@ -343,6 +353,16 @@ class ModuleManager extends \yii\base\Component
         }
 
         Yii::$app->setModule($module->id, 'null');
+    }
+    
+    public function disableModules($modules = [])
+    {
+        foreach ($modules as $module) {
+            $module = ($module instanceof Module) ? $module : $this->getModule($module);
+            if($module != null) {
+                $module->disable();
+            }
+        }
     }
 
 }

@@ -14,9 +14,6 @@ class UserPasswordFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\user\models\Password';
-    public $dataFile = '@modules/user/tests/codeception/_data/user_password.php';
-    public $depends = [
-        'tests\codeception\fixtures\UserFixture'
-    ];
+    public $dataFile = '@modules/user/tests/codeception/fixtures/data/user_password.php';
 
 }

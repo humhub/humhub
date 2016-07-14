@@ -14,6 +14,5 @@ class SpaceMembershipFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\space\models\Membership';
-    public $dataFile = '@tests/codeception/fixtures/data/space_membership.php';
 
 }

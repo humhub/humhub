@@ -42,6 +42,8 @@ class AuthController extends Controller
         return [
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                
             ],
             'external' => [
                 'class' => 'yii\authclient\AuthAction',
