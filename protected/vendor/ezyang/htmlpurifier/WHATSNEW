@@ -1,0 +1,4 @@
+HTML Purifier 4.7.0 is a bugfix release, collecting two years
+worth of accumulated bug fixes.  Highlighted bugfixes are updated
+YouTube filter code, corrected rgb() CSS parsing, and one new
+configuration option, %AutoFormat.RemoveEmpty.Predicate.

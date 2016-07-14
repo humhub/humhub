@@ -1,0 +1,274 @@
+<HTML
+><HEAD
+><TITLE
+>Submitting Patches</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="PEAR Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Contributing"
+HREF="contributing.html"><LINK
+REL="PREVIOUS"
+TITLE="Writing New Packages"
+HREF="contributing.newpackage.html"><LINK
+REL="NEXT"
+TITLE="Reporting Bugs"
+HREF="contributing.bugs.html"><META
+HTTP-EQUIV="Content-type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="sect1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PEAR Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="contributing.newpackage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Contributing</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="contributing.bugs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="sect1"
+><H1
+CLASS="sect1"
+><A
+NAME="contributing.patches">Submitting Patches</H1
+><P
+>&#13;   If you have modified a package to expand its functionality or to fix a
+   bug, you should contribute your changes back to the community (some
+   licenses force you to do so, and it is generally considered immoral not to).
+  </P
+><P
+>&#13;   Before creating the patch, you must first obtain the latest sources of the
+   package you wish to patch from CVS by running the commands (the package
+   in this example is Foo_Bar):
+   <TABLE
+WIDTH="100%"
+CELLSPACING="0"
+CELLPADDING="0"
+BORDER="0"
+BGCOLOR="#EEEEEE"
+><TR
+><TD
+><PRE
+CLASS="screen"
+><TT
+CLASS="userinput"
+><B
+>&#13;cvs -d:pserver:cvsread@cvs.php.net:/repository login
+</B
+></TT
+>
+password is <TT
+CLASS="userinput"
+><B
+>phpfi</B
+></TT
+>
+<TT
+CLASS="userinput"
+><B
+>&#13;cvs -d:pserver:cvsread@cvs.php.net:/repository co pear/Foo_Bar
+</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+   Now that you have the latest sources, you can edit the relevant file(s).
+   Make sure that your patch is fully compatible with the PEAR <A
+HREF="standards.html"
+>coding
+standards.</A
+>.
+  </P
+><P
+>&#13;   After you have finished adding/changing the code, TEST it: We will not
+   accept code that hasn't been carefully tested.
+   When you are absolutely sure the new code doesn't introduce bugs, create a
+   unified diff by running:
+   <TABLE
+WIDTH="100%"
+CELLSPACING="0"
+CELLPADDING="0"
+BORDER="0"
+BGCOLOR="#EEEEEE"
+><TR
+><TD
+><PRE
+CLASS="screen"
+><TT
+CLASS="userinput"
+><B
+>cd pear/Foo_Bar</B
+></TT
+>
+<TT
+CLASS="userinput"
+><B
+>cvs diff -u &#62;Foo_Bar.diff</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+   The resulting .diff file contains your patch. This diff makes it easy
+   for us to see what has been changed.
+  </P
+><P
+>&#13;   Next step is to submit the patch. Send a mail to pear-dev@lists.php.net and
+   Cc the maintainer(s) of the package. The subject of the mail should be
+   prefixed with '[Patch]' to make it clear you are submitting a patch. Also
+   include a verbose explanation of what the patch does.
+   Don't forget to attach the .diff file to the mail. The maintainers of
+   the package are usually listed in the header of each source file. Apart
+   from that their email adresses are available on the package information
+   page on http://pear.php.net/.
+  </P
+><DIV
+CLASS="note"
+><BLOCKQUOTE
+CLASS="note"
+><P
+><B
+>Note: </B
+>
+    If you are using Outlook or Outlook Express, please change the file
+    extension of the diff file to .txt, because Outlook's MIME-Type
+    detection depends on the file extension and attachments with a
+    MIME-Type not equal to <TT
+CLASS="literal"
+>text/plain</TT
+> will be rejected
+    by our mailinglist software.
+   </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="note"
+><BLOCKQUOTE
+CLASS="note"
+><P
+><B
+>Note: </B
+>
+    If your patch does break backwards compatibility, the chances are fairly
+    good that the maintainers won't be happy about it. Thus you should always
+    try to fix a bug in a way that does not seriously change the public API.
+    But if there is absolutely no way to keep backwards compatibility and/or
+    if your patch contains a groundbraking improvement, even API changes are
+    fine.
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="contributing.newpackage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="contributing.bugs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Writing New Packages</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="contributing.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Reporting Bugs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

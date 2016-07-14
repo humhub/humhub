@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="./jssearch.js"></script>
+	<script src="./jssearch.index.js"></script>
+
+	<script type="text/javascript">
+
+		$( document ).ready(function() {
+			$('#searchbox').on("keyup", function() {
+				var result = jssearch.search($(this).val());
+
+				$('#query').html(jssearch.queryWords.join(' '));
+
+				$('#results').html('');
+				var i = 0;
+				result.forEach(function(item) {
+					if (i++ > 20) {
+						return;
+					}
+					var div = $('#results');
+					div.html(div.html() + '<li>"' + item.file.title + '" ' + item.file.url + ' w:' + item.weight + '</li>');
+				});
+			});
+		});
+	</script>
+
+	<title>Example</title>
+</head>
+<body>
+
+	<h1>Example</h1>
+
+	<label for="searchbox" style="display: inline-block; width: 160px;">Search: </label>
+	<input id="searchbox" type="text" value="">
+
+	<br/>
+
+	<label for="query" style="display: inline-block; width: 160px;">Actual query: </label>
+	<span id="query"></span>
+
+	<ul id="results">
+		<li>No results</li>
+	</ul>
+
+</body>
+</html>

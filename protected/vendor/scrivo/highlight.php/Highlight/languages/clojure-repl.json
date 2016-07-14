@@ -1,0 +1,1 @@
+{"contains":[{"className":"prompt","begin":"^([\\w.-]+|\\s*#_)=>","starts":{"end":"$","subLanguage":"clojure"}}]}

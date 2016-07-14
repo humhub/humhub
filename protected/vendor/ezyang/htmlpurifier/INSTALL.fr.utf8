@@ -1,0 +1,60 @@
+﻿
+Installation
+    Comment installer HTML Purifier
+
+Attention : Ce document est encodé en UTF-8, si les lettres avec des accents
+ne s'affichent pas, prenez un meilleur éditeur de texte.
+
+L'installation de HTML Purifier est très simple, parce qu'il n'a pas besoin
+de configuration. Pour les utilisateurs impatients, le code se trouve dans le
+pied de page, mais je recommande de lire le document.
+
+1.  Compatibilité
+
+HTML Purifier fonctionne avec PHP 5. PHP 5.0.5 est la dernière version testée.
+Il ne dépend pas d'autres librairies.
+
+Les extensions optionnelles sont iconv (généralement déjà installée) et tidy
+(répendue aussi). Si vous utilisez UTF-8 et que vous ne voulez pas l'indentation,
+vous pouvez utiliser HTML Purifier sans ces extensions.
+
+
+2.  Inclure la librairie
+
+Quand vous devez l'utilisez, incluez le :
+
+    require_once('/path/to/library/HTMLPurifier.auto.php');
+
+Ne pas l'inclure si ce n'est pas nécessaire, car HTML Purifier est lourd.
+
+HTML Purifier utilise "autoload". Si vous avez défini la fonction __autoload,
+vous devez ajouter cette fonction :
+
+    spl_autoload_register('__autoload')
+
+Plus d'informations dans le document "INSTALL".
+
+3.  Installation rapide
+
+Si votre site Web est en UTF-8 et XHTML Transitional, utilisez :
+
+<?php
+    require_once('/path/to/htmlpurifier/library/HTMLPurifier.auto.php');
+    $purificateur = new HTMLPurifier();
+    $html_propre = $purificateur->purify($html_a_purifier);
+?>
+
+Sinon, utilisez :
+
+<?php
+    require_once('/path/to/html/purifier/library/HTMLPurifier.auto.load');
+    $config = $HTMLPurifier_Config::createDefault();
+    $config->set('Core', 'Encoding', 'ISO-8859-1'); //Remplacez par votre
+    encodage
+    $config->set('Core', 'XHTML', true); //Remplacer par false si HTML 4.01
+    $purificateur = new HTMLPurifier($config);
+    $html_propre = $purificateur->purify($html_a_purifier);
+?>
+
+
+    vim: et sw=4 sts=4

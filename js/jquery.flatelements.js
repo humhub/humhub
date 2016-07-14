@@ -22,10 +22,12 @@
         //
         function checkBootstrapStructure($obj) {
 
-            if ($obj.attr('type') == "checkbox" && $obj.parent().prop("tagName") == "LABEL" && $obj.parent().parent().attr('class') == "checkbox") {
+            //alert($obj.parent().parent().attr('class'));
+
+            if ($obj.attr('type') == "checkbox" && $obj.parent().prop("tagName") == "LABEL") {
                 return true;
 
-            } else if ($obj.attr('type') == "radio" && $obj.parent().prop("tagName") == "LABEL" && $obj.parent().parent().attr('class') == "radio") {
+            } else if ($obj.attr('type') == "radio" && $obj.parent().prop("tagName") == "LABEL") {
                 return true
             } else {
                 return false;

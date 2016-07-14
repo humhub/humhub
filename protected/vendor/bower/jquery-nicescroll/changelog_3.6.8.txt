@@ -1,0 +1,31 @@
+Changelog nicescroll release 3.6.8
+http://nicescroll.areaaperta.com/
+https://github.com/inuyaksa/jquery.nicescroll
+
+
+Changed features
+
+New options
+- disablemutationobserver, = TRUE when you want that MutationObserver disabled #580
+
+Fixes
+- Fix show of null #583
+- Refactoring js #582
+- Removed comments #577
+- Timeouts & using on dynamic DOM Elements: "Uncaught TypeError" #579
+- version 3.6.6 stack overflow #578 
+- MutationObserver. IE11 crashes #568 
+- Xbox One IE Edge browser can't scroll anywhere #581 (to test on real hw!)
+- NIce Scroll doesnt work on Window Surface IE Edge #555
+
+
+Thanks to great contributors!!
+@silversonicaxel
+@vsn4ik
+@ronar
+@StephanBijzitter
+ 
+
+
+TODO
+- deprecate legacy browsers

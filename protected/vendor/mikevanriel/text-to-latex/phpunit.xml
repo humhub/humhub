@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<phpunit bootstrap="vendor/autoload.php" colors="true" strict="true">
+    <testsuites>
+        <testsuite name="TextToLatex">
+            <directory>./tests/unit/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

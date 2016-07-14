@@ -1,0 +1,35 @@
+.mostactiveusers {
+	margin-left: 0;
+  	font-size: 12px;
+}
+
+.mostactiveusers .entry {
+	margin-right: 20px;
+}
+
+.mostactiveusers .entry .count {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 0.8em;
+}
+
+.media .circle {
+    border-radius: 50%;
+    behavior: url(PIE.htc);
+
+    width: 36px;
+    height: 36px;
+    padding:3px;
+
+	margin-top: 7px;
+    background: transparent;
+    border: 2px solid #aeaeae;
+    color: #aeaeae;
+    text-align: center;
+    font: 20px Open Sans, sans-serif;
+	font-weight: 600;
+}
+
+#mostactiveusers-panel img {
+    margin-bottom: 5px;
+}

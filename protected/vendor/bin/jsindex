@@ -1,0 +1,133 @@
+#!/usr/bin/env php
+<?php
+
+// Send all errors to stderr
+ini_set('display_errors', 'stderr');
+
+// setup composer autoloading
+$composerAutoload = [
+	__DIR__ . '/../vendor/autoload.php', // standalone with "composer install" run
+	__DIR__ . '/../../../autoload.php', // script is installed as a composer binary
+];
+foreach ($composerAutoload as $autoload) {
+	if (file_exists($autoload)) {
+		require($autoload);
+		break;
+	}
+}
+
+if (!class_exists('cebe\jssearch\Indexer')) {
+	error('Autoloading does not seem to work. Looks like you should run `composer install` first.');
+}
+
+// check arguments
+$src = [];
+foreach($argv as $k => $arg) {
+	if ($k == 0) {
+		continue;
+	}
+	if ($arg[0] == '-') {
+		$arg = explode('=', $arg);
+		switch($arg[0]) {
+			// TODO allow baseUrl to be set via arg
+			case '-h':
+			case '--help':
+				echo "jssearch index builder\n";
+				echo "----------------------\n\n";
+				echo "by Carsten Brandt <mail@cebe.cc>\n\n";
+				usage();
+				break;
+			default:
+				error("Unknown argument " . $arg[0], "usage");
+		}
+	} else {
+		$src[] = $arg;
+	}
+}
+
+if (empty($src)) {
+	error("You have to give an input directory.", "usage");
+}
+
+$indexer = new \cebe\jssearch\Indexer();
+
+foreach($src as $dir) {
+	echo "Processing $dir\n";
+	$files = findFiles($dir);
+
+	if (empty($files)) {
+		echo "No files where found in $dir.\n";
+	} else {
+		$indexer->indexFiles($files, $dir);
+	}
+}
+
+$js = $indexer->exportJs();
+file_put_contents('jssearch.index.js', $js);
+
+
+// functions
+
+/**
+ * Display usage information
+ */
+function usage() {
+	global $argv;
+	$cmd = $argv[0];
+	echo <<<EOF
+Usage:
+    $cmd [src-directory]
+
+    --help    shows this usage information.
+
+    creates and jssearch.index.js file in the current directory.
+
+EOF;
+	exit(1);
+}
+
+/**
+ * Send custom error message to stderr
+ * @param $message string
+ * @param $callback mixed called before script exit
+ * @return void
+ */
+function error($message, $callback = null) {
+	$fe = fopen("php://stderr", "w");
+	fwrite($fe, "Error: " . $message . "\n");
+
+	if (is_callable($callback)) {
+		call_user_func($callback);
+	}
+
+	exit(1);
+}
+
+function findFiles($dir, $ext = '.html')
+{
+	if (!is_dir($dir)) {
+		error("$dir is not a directory.");
+	}
+	$dir = rtrim($dir, DIRECTORY_SEPARATOR);
+	$list = [];
+	$handle = opendir($dir);
+	if ($handle === false) {
+		error('Unable to open directory: ' . $dir);
+	}
+	while (($file = readdir($handle)) !== false) {
+		if ($file === '.' || $file === '..') {
+			continue;
+		}
+		$path = $dir . DIRECTORY_SEPARATOR . $file;
+		if (is_file($path)) {
+			if (substr($file, -($l = strlen($ext)), $l) === $ext) {
+				$list[] = $path;
+			}
+		} else {
+			$list = array_merge($list, findFiles($path, $ext));
+		}
+	}
+	closedir($handle);
+
+	return $list;
+}

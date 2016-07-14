@@ -1,0 +1,56 @@
+.owl-carousel.owl-carousel-registration .owl-nav .disabled {
+  display: none !important;
+}
+.owl-carousel.owl-carousel-registration .owl-prev {
+  float: left;
+  margin-left: 0px !important;
+}
+.owl-carousel.owl-carousel-registration .owl-next {
+  float: right;
+  margin-right: 0px !important;
+}
+.owl-carousel.owl-carousel-registration {
+  padding-bottom: 25px;
+}
+.owl-carousel.owl-carousel-registration .lead {
+  padding-top: 10px;
+  opacity: 0.4;
+}
+.owl-carousel.owl-carousel-registration .lead-small {
+  font-size: 14px;
+}
+.modal .owl-carousel.owl-carousel-registration .btn {
+  width: 100% !important;
+  max-width: none;
+  min-height: 0px;
+  height: 40px;
+}
+.modal .owl-carousel.owl-carousel-registration .dropdown-menu {
+  max-height: 90px !important;
+  min-height: 90px !important;
+  padding: 0px !important;
+}
+.modal .owl-carousel.owl-carousel-registration .owl-stage-outer {
+  padding-bottom: 25px;
+}
+
+#account-register-form .modal-body .lead, #modalSecondModal .modal-content .lead{
+	opacity:0.5 !important;
+}
+
+.blockErrorsRegister {
+  color:red;
+  text-align: center;
+}
+
+.blockErrors {
+  width: 100%;
+  display:none;
+  text-align: center;
+  margin-top: -44px;
+}
+
+.custom-right-arrow {
+  margin: 14px;
+  font-size: 19px !important;
+}

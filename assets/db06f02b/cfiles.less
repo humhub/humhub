@@ -1,0 +1,175 @@
+.overflow-ellipsis {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px;
+    direction: ltr;
+    cursor: pointer;
+}
+
+.panel .panel-body .files-action-menu {
+    .btn {
+        width: 100%;
+        padding: 8px 16px !important;
+        font-size: 1em !important;
+        font-weight: normal !important;
+    }
+
+    .btn-default {
+        &:hover {
+            background-color: #e6e6e6 !important;
+        }
+    }
+
+    .btn-success {
+        &:hover {
+            background-color: #89cc5e !important;
+        }
+    }
+
+    .btn-danger {
+        &:hover {
+            background-color: #ff6f6f !important;
+        }
+    }
+
+    .btn-primary {
+        &:hover {
+            background-color: #286090 !important;
+        }
+    }
+
+    .btn-group {
+        width: 100%;
+
+        .split-toggle {
+            width: auto !important;
+            float: right !important;
+            border-radius: 0px 3px 3px 0px;
+
+            &:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+                border-radius: 0px 3px 3px 0px;
+            }
+        }
+
+        & > .split-button {
+            width: auto !important;
+            overflow: hidden;
+            display: block;
+            float: none !important;
+            border-radius: 3px 0px 0px 3px;
+
+            &:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+                border-radius: 3px 0px 0px 3px;
+            }
+        }
+    }
+
+
+    .dropdown-menu {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+
+        li {
+            padding: 0;
+            border: none;
+            border-radius: 0px;
+
+            &:first-child {
+                padding: 0;
+                margin: 0;
+                border-radius: 3px 3px 0px 0px;
+
+                .btn {
+                    border-radius: 3px 3px 0px 0px;
+                }
+            }
+
+            &:last-child {
+                padding: 0;
+                margin: 0;
+                border-radius: 0px 0px 3px 3px;
+
+                .btn {
+                    border-radius: 0px 0px 3px 3px;
+                }
+            }
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0px;
+        }
+    }
+}
+
+.filedelete-button {
+    cursor: pointer;
+}
+
+.filemove-button {
+    cursor: pointer;
+}
+
+.downloadzipped-button {
+    cursor: pointer;
+}
+
+.selectedOnly {
+    display: none;
+}
+
+.table-responsive td .title, .table-responsive td .timestamp, .table-responsive td .creator, .table-responsive td .size {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap;
+}
+
+.table-responsive td .title {
+    max-width: 150px;
+}
+
+@media (max-width: 419px) {
+    .hidden-xxs {
+        display: none !important;
+    }
+}
+
+@media (min-width: 420px) {
+    .table-responsive td .title {
+        max-width: 160px;
+    }
+}
+
+@media (min-width: 768px) {
+    .table-responsive td .title {
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 992px) {
+    .table-responsive td .title {
+        max-width: 450px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .table-responsive td .title {
+        max-width: 600px;
+    }
+}

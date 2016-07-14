@@ -1,0 +1,205 @@
+Syntax highlighting with language autodetection in PHP.
+
+-------------------------------------------------------------------------------
+
+Author(s):
+	Geert Bergman <geert@scrivo.nl>
+	
+Contributer(s):
+	Carsten Brandt <mail@cebe.cc>
+	Daniel Lynge
+	Daniel Gómez Pan <pana_1990@hotmail.com>
+
+-------------------------------------------------------------------------------
+
+highlight.js (the reference project)
+
+Core developers (in order of appearance):
+
+	Ivan Sagalaev (original author) <maniac@softwaremaniacs.org>
+	Jeremy Hull <sourdrums@gmail.com>
+	Oleg Efimov <efimovov@gmail.com>
+
+-------------------------------------------------------------------------------
+
+Language and style definitions (copied from the highlight.js project)
+
+	Aahan Krish <geekpanth3r@gmail.com>
+	Adam Joseph Cook <adam.joseph.cook@gmail.com>
+	Alberto Gimeno <gimenete@gmail.com>
+	Aleksandar Ruzicic <aleksandar@ruzicic.info>
+	Alexander Makarov <sam@rmcreative.ru>
+	Alexander Marenin <great_muchacho@mail.ru>
+	Alexander Myadzel <myadzel@gmail.com>
+	Alexis Hénaut <alexis@henaut.net>
+	Andrew Farmer <ahfarmer@gmail.com>
+	Andrew Fedorov <dmmdrs@mail.ru>
+	Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+	Angel G. Olloqui <angelgarcia.mail@gmail.com>
+	Anthony Scemama <scemama@irsamc.ups-tlse.fr>
+	Anton Kochkov <anton.kochkov@gmail.com>
+	Anton Kovalyov <anton@kovalyov.net>
+	Antono Vasiljev <self@antono.info>
+	Arthur Bikmullin <devolonter@gmail.com>
+	Benjamin Auder <benjamin.auder@gmail.com>
+	Benjamin Pannell <contact@sierrasoftworks.com>
+	Bram de Haan <info@atelierbramdehaan.nl>
+	Brent Bradbury <brent@brentium.com>
+	Brian Beck <exogen@gmail.com>
+	Brian Quistorff <bquistorff@gmail.com>
+	Bruno Dias <bruno.r.dias@gmail.com>
+	Bryant Williams <b.n.williams@gmail.com>
+	Carlo Kok <ck@remobjects.com>
+	Casey Duncan <casey.duncan@gmail.com>
+	Cédric Néhémie <cedric.nehemie@gmail.com>
+	Cedric Sohrauer <sohrauer@googlemail.com>
+	Chris Eidhof <chris@eidhof.nl>
+	Chris Kiehl <audionautic@gmail.com>
+	Christophe de Dinechin <christophe@taodyne.com>
+	Christopher Kaster <ikasoki@gmail.com>
+	Damian Mee <mee.damian@gmail.com>
+	Damien White <damien.white@visoftinc.com>
+	Dan Allen <dan.j.allen@gmail.com>
+	Daniel Kvasnicka <dkvasnicka@vendavo.com>
+	Daniel Rosenwasser <DanielRosenwasser@users.noreply.github.com>
+	Dan Panzarella <alsoelp@gmail.com>
+	Dan Tao <daniel.tao@gmail.com>
+	David Anson <david@dlaa.me>
+	David Mohundro <david@mohundro.com>
+	Denis Bardadym <bardadymchik@gmail.com>
+	Dennis Titze <dennis.titze@gmail.com>
+	Dirk Kirsten <dk@basex.org>
+	Dmitri Roudakov <dmitri@roudakov.ru>
+	Dmitry Kovega <arhibot@gmail.com>
+	Dmitry Medvinsky <me@dmedvinsky.name>
+	Dmytrii Nagirniak <dnagir@gmail.com>
+	Domen Kožar <domen@dev.si>
+	Dotan Dimet <dotan@corky.net>
+	Dr. Drang <drdrang@gmail.com>
+	Edwin Dalorzo <edwin@dalorzo.org>
+	Eric Knibbe <eric@lassosoft.com>
+	Erik Osheim <d_m@plastic-idolatry.com>
+	Erik Paluka <erik.paluka@gmail.com>
+	Eugene Nizhibitsky <nizhibitsky@gmail.com>
+	Evgeny Stepanischev <imbolk@gmail.com>
+	Flaviu Tamas <tamas.flaviu@gmail.com>
+	Guillaume Gomez <guillaume1.gomez@gmail.com>
+	Guillaume Laforge <glaforge@gmail.com>
+	Gu Yiling <justice360@gmail.com>
+	Hakan Özler <ozler.hakan@gmail.com>
+	Heiko August <post@auge8472.de>
+	Henrik Feldt <henrik@haf.se>
+	Igor Kalnitsky <igor@kalnitsky.org>
+	Ilya Baryshev <baryshev@gmail.com>
+	Ilya Vassilevsky <vassilevsky@gmail.com>
+	innocenat <innocenat@gmail.com>
+	Jan Berkel <jan.berkel@gmail.com>
+	Janis Voigtländer <janis.voigtlaender@gmail.com>
+	Jan T. Sott <git@idleberg.com>
+	Jason Diamond <jason@diamond.name>
+	Jason Jacobson <jason.a.jacobson@gmail.com>
+	Jason Tate <adminz@web-cms-designs.com>
+	Jay Strybis <jay.strybis@gmail.com>
+	Jeff Escalante <hello@jenius.me>
+	Jen Evers-Corvina <jen@sevvie.net>
+	Joe Cheng <joe@rstudio.org>
+	John Crepezzi <john.crepezzi@gmail.com>
+	Jonas Follesø <jonas@follesoe.no>
+	Jonathan Suever <suever@gmail.com>
+	Jon Evans <jon@craftyjon.com>
+	Jose Molina Colmenero <gaudy41@gmail.com>
+	Josh Adams <josh@isotope11.com>
+	JP Verkamp <me@jverkamp.com>
+	Jun Yang <yangjvn@126.com>
+	Kassio Borges <kassioborgesm@gmail.com>
+	Kelley van Evert <kelleyvanevert@gmail.com>
+	Kenneth Fuglsang <kfuglsang@gmail.com>
+	Kenta Sato <bicycle1885@gmail.com>
+	Kirk Kimmel <kimmel.k.programmer@gmail.com>
+	Konstantin Evdokimenko <qewerty@gmail.com>
+	Kristoffer Gronlund <kgronlund@suse.com>
+	Kurt Emch <kurt@kurtemch.com>
+	Ladislav Prskavec: <ladislav@prskavec.net>
+	Loren Segal <lsegal@soen.ca>
+	Louis Barranqueiro <louis.barranqueiro@gmail.com>
+	Lucas Mazza <lucastmazza@gmail.com>
+	Lucas Werkmeister <mail@lucaswerkmeister.de>
+	Luigi Maselli <grigio.org@gmail.com>
+	Luke Holder <lukemh@gmail.com>
+	MajestiC <majestic2k@gmail.com>
+	Manh Tuan <junookyo@gmail.com>
+	Marc Fornos <marc.fornos@gmail.com>
+	Martin Dilling-Hansen <martindlling@gmail.com>
+	Matt Diephouse <matt@diephouse.com>
+	Maxim Dikun <dikmax@gmail.com>
+	Max Mikhailov <seven.phases.max@gmail.com>
+	Mehdi Dogguy <mehdi@dogguy.org>
+	Michael Allen <Michael.Allen@benefitfocus.com>
+	Michal Gabrukiewicz <mgabru@gmail.com>
+	Mickaël Delahaye <mickael.delahaye@gmail.com>
+	Mick MacCallum <micksmaccallum@gmail.com>
+	mucaho <mkucko@gmail.com>
+	MY Sun <simonmysun@gmail.com>
+	Nate Cook <natecook@gmail.com>
+	Nathan Grigg <nathan@nathanamy.org>
+	Nicholas Blumhardt <nblumhardt@nblumhardt.com>
+	Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
+	Nic West <nic@letolab.com>
+	Nikita Ledyaev <lenikita@yandex.ru>
+	Nikolay Lisienko <info@neor.ru>
+	Nikolay Zakharov <nikolay.desh@gmail.com>
+	noformnocontent <i@noformnocontent.com>
+	Oleg Volchkov <oleg@volchkov.net>
+	Panu Horsmalahti <panu.horsmalahti@iki.fi>
+	Pascal Hurni <phi@ruby-reactive.org>
+	Pedro Oliveira <kanytu@gmail.com>
+	Peter Leonov <gojpeg@gmail.com>
+	Peter Piwowarski <oldlaptop654@aol.com>
+	Philippe Charrière <ph.charriere@gmail.com>
+	Poren Chiang <ren.chiang@gmail.com>
+	pumbur <pumbur@pumbur.net>
+	Radek Liska <radekliska@gmail.com>
+	Raivo Laanemets <raivo@infdot.com>
+	Ralf Bitter <rabit@revigniter.com>
+	Robin Ward <robin.ward@gmail.com>
+	Roman Shmatov <romanshmatov@gmail.com>
+	Ruslan Keba <rukeba@gmail.com>
+	Samuel Reed <sam@bitmex.com>
+	Seongwon Lee <dlimpid@gmail.com>
+	Sergey Baranov <segyrn@yandex.ru>
+	Sergey Ignatov <sergey@ignatov.spb.su>
+	Sergey Mashkov <cy6erGn0m@gmail.com>
+	Sergey Tikhomirov <me@stikhomirov.com>
+	Sergey Vidyuk <svidyuk@gmail.com>
+	Shuen-Huei Guan <drake.guan@gmail.com>
+	Simon Madine <simon@angryrobotzombie.com>
+	Søren Enevoldsen <senevoldsen90@gmail.com>
+	Stefan Bechert <stefan.bechert@gmx.net>
+	Stephan Kountso <steplg@gmail.com>
+	Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
+	Taneli Vatanen <taneli.vatanen@gmail.com>
+	Taufik Nurrohman <latitudu.latitudu@gmail.com>
+	Thomas Applencourt <thomas.applencourt@irsamc.ups-tlse.fr>
+	Tim Schumacher <tim@datenknoten.me>
+	Travis Odom <travis.a.odom@gmail.com>
+	Trey Shugart <treshugart@gmail.com>
+	Troy Kershaw <hello@troykershaw.com>
+	Tsuyusato Kitsune <make.just.on@gmail.com>
+	Vadimtro <vadimtro@yahoo.com>
+	Vah <vahtenberg@gmail.com>
+	Valerii Hiora <valerii.hiora@gmail.com>
+	Vasily Mikhailitchenko <vaskas@programica.ru>
+	Vasily Polovnyov <vast@whiteants.net>
+	Victor Karamzin <Victor.Karamzin@enterra-inc.com>
+	Vincent Zurczak <vzurczak@linagora.com>
+	Vladimir Epifanov <voldmar@voldmar.ru>
+	Vladimir Ermakov <vooon341@mail.ru>
+	Vladimir Gubarkov <xonixx@gmail.com>
+	Vladimir Moskva <vladmos@gmail.com>
+	Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
+	Yoshihide Jimbo <yjimbo@gmail.com>
+	Yuri Ivanov <ivanov@supersoft.ru>
+	Yury Selivanov <yselivanov@gmail.com>
+	Zaripov Yura <yur4ik7@ukr.net>
+	Zaven Muradyan <megalivoithos@gmail.com>
+	Zena Treep <zena.treep@gmail.com>

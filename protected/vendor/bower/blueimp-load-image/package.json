@@ -1,0 +1,46 @@
+{
+  "name": "blueimp-load-image",
+  "version": "2.6.1",
+  "main": "index.js",
+  "title": "JavaScript Load Image",
+  "description": "JavaScript Load Image is a library to load images provided as File or Blob objects or via URL. It returns an optionally scaled and/or cropped HTML img or canvas element. It also provides a method to parse image meta data to extract Exif tags and thumbnails and to restore the complete image header after resizing.",
+  "keywords": [
+    "javascript",
+    "load",
+    "loading",
+    "image",
+    "file",
+    "blob",
+    "url",
+    "scale",
+    "crop",
+    "img",
+    "canvas",
+    "meta",
+    "exif",
+    "thumbnail",
+    "resizing"
+  ],
+  "homepage": "https://github.com/blueimp/JavaScript-Load-Image",
+  "author": {
+    "name": "Sebastian Tschan",
+    "url": "https://blueimp.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/blueimp/JavaScript-Load-Image.git"
+  },
+  "devDependencies": {
+    "mocha-phantomjs": "4.0.1",
+    "standard": "6.0.7",
+    "uglify-js": "2.6.1"
+  },
+  "scripts": {
+    "test": "standard *.js js/*.js test/*.js && mocha-phantomjs test/index.html",
+    "build": "cd js && uglifyjs load-image.js load-image-orientation.js load-image-meta.js load-image-exif.js load-image-exif-map.js -c -m -o load-image.all.min.js --source-map load-image.all.min.js.map",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A js",
+    "postversion": "git push --tags origin master master:gh-pages && npm publish"
+  },
+  "license": "MIT"
+}

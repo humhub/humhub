@@ -1,0 +1,408 @@
+/*
+HumHub QuestionAnswer Module Style CSS
+*/
+
+.btn-like{
+	margin-top:5px;
+	border-radius:100px;
+}
+
+.btn-like:active, .btn-like.active, .btn-like:hover, .btn-like:focus{
+	background-color:#fdc835 !important;
+	color:#fff !important;
+}
+
+.btn-like .fa{
+	padding:5px 4px !important;
+	border-radius:100px;
+	font-size:20px;
+}
+
+.qanda-banner {
+  margin-bottom: 20px;
+}
+
+.qanda-banner .image-upload-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.qanda-banner .img-profile-header-background-qanda {
+  width: 100%;
+}
+
+.qanda-banner .profile-user-photo-container {
+  width: 140px;
+  height: 140px;
+}
+
+.qanda-banner .profile-user-photo-container .profile-user-photo {
+  width: 140px;
+  height: 140px;
+}
+
+.vote_control .btn-xs:nth-child(1) {
+  margin-bottom: 3px;
+}
+
+.qanda-panel {
+  margin-top: 57px;
+}
+
+.qanda-panel.qanda-panel-question {
+  margin-top: 0px;
+}
+
+.qanda-header-tabs {
+  margin-top: -49px;
+}
+
+.vote_control .btn:active, .btn.active {
+  box-shadow: none;
+}
+
+.vote_control .fa {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.vote_control .text-center {
+  margin-top: 5px;
+}
+
+.qanda-form input, .qanda-form textarea {
+  border: 2px solid #EDEDED;
+  box-shadow: none;
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #555;
+  vertical-align: middle;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  margin-bottom: 10px;
+}
+
+.qanda-form .panel-body h1 {
+  font-size: 24px;
+}
+
+.qanda-form textarea {
+  height: auto;
+}
+
+.qanda-form .buttons input {
+  background: @colorCTA;
+  color: white;
+  height: 50px;
+  font-size: 14px;
+  border-radius: @radius;
+  font-weight: 800;
+  margin-top: 20px;
+}
+
+.qanda-form .panel-body {
+  padding: 30px;
+}
+
+.qanda-panel {
+  padding: 0px 20px 20px 15px;
+}
+
+.qanda-panel-question {
+  border: 2px solid lighten(@colorCommunity, 30%);
+  box-shadow: none;
+}
+
+.qanda-panel .display-name {
+  color: @colorPrimary;
+}
+
+.qanda-panel .qanda-button {
+  margin-left: 10px;
+  margin-top: 10px;
+  color: @colorPrimary;
+}
+
+.qanda-comments-panel {
+  border: none;
+  background-color: none;
+  padding: 4px;
+  border-radius: @radius;
+  margin-left: 30px;
+}
+
+.qanda-comments-panel .qanda-button {
+  margin-top: 0px;
+}
+
+.qanda-details-padding {
+  padding: 10px 0px 10px 0px;
+}
+
+.qanda-profile {
+  padding: 5px;
+  background-color: @colorPrimaryDark;
+  color: #fff;
+  border-radius: @radius;
+}
+
+.qanda-profile .profile-size-sm {
+  margin-right: 5px;
+}
+
+.qanda-profile .user-title {
+  line-height: 1.2;
+  max-width: 150px;
+  max-height: 40px;
+  overflow-y: auto;
+}
+
+.panel-answer {
+  padding: 20px;
+  background-color: #eee;
+}
+
+.panel-answer .panel-body {
+  padding: 0px;
+}
+
+.panel-answer .panel-heading {
+  background: none;
+  padding-top: 0px;
+}
+
+.panel-answer .btn {
+  margin-top: 10px !important;
+}
+
+.grid-view table.items th {
+  background: none;
+  background: @colorPrimaryDark;
+}
+
+.grid-view table.items tr.selected {
+  background: lighten(@colorPrimaryLight, 30%);
+}
+
+ul.yiiPager .selected a {
+  background: @colorPrimaryDark;
+  border: 1px solid @colorPrimaryDark;
+}
+
+ul.yiiPager a:link, ul.yiiPager a:visited {
+  border: 1px solid @colorPrimaryDark;
+  font-weight: bold;
+  color: @colorPrimaryDark;
+  padding: 3px 6px;
+  text-decoration: none;
+  margin-right: 2px;
+}
+
+ul.yiiPager .selected a:visited {
+  color: white;
+}
+
+ul.yiiPager .selected a {
+  color: white;
+}
+
+.pager li > a:hover, .pager li > a:focus {
+  background: darken(@colorPrimaryDark, 5%);
+  color: @colorPrimaryLight;
+}
+
+.pager .next > a, .pager .next > span {
+  margin-left: 3px;
+}
+
+#comment-comment-form {
+  margin-top: 5px;
+}
+
+#comment-comment-form .btn-info {
+  width: 100%;
+}
+
+.hidden-comment-form, .hidden-comment-form-answer {
+  .linktransition;
+  opacity: 0;
+  height: 0px;
+  overflow: hidden;
+}
+
+#answer-answer-form .btn {
+  width: 100%;
+}
+
+.qanda-profile-timestamp {
+  margin-bottom: 5px;
+}
+
+//
+// Q&A Module Typeahead search
+// --------------------------------------------------
+
+#qanda-search .form-control:focus {
+  border-color: @colorInfo !important;
+}
+
+.twitter-typeahead {
+  width: 80%;
+  margin: 20px 0;
+}
+
+.twitter-typeahead .form-control {
+  width: 100%;
+}
+
+.twitter-typeahead::after {
+  font-family: 'FontAwesome';
+  content: "\f002" !important;
+  margin-top: -35px;
+  z-index: 1000;
+  position: absolute;
+  right: 20px;
+  opacity: 0.4;
+  font-size: 20px;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  height: 40px;
+  padding: 5px 12px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {
+  width: 100%;
+  margin: 12px 0;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+.tt-menu p {
+  margin: 20px 0px;
+}
+
+.tt-menu .btn {
+  margin: 15px 0px 10px 0px;
+}
+
+.tt-suggestion {
+  padding: 5px 20px;
+  font-size: 18px;
+  line-height: 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #22bcb8;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #22bcb8;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  transform: translate(-300px, 0) scale(4);
+  font-size: 23px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+.modal .panel-body .fileinput-button, .modal .panel-body .btn-info {
+  height: 35px;
+  margin-top: 10px;
+}
+
+#modalAskNewQuestion #contentForm_answersText {
+  height: auto !important;
+}
+
+#modalAskNewQuestion .modal-file-upload {
+  margin-top: 5px;
+}
+
+.logErrors {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+@media(max-width: 768px) {
+	.typeahead{
+		font-size:18px;
+	}
+
+  .twitter-typeahead {
+    width: 100%;
+  }
+}
+
+@media(max-width: 558px) {
+	.typeahead{
+		font-size:16px;
+	}
+}
+
+.scrollSearchData {
+  max-height: 200px;
+  overflow-y: auto;
+}

@@ -1,0 +1,242 @@
+/*
+HumHub Chat Module Style CSS
+*/
+
+/* Chat Notification Sidebar */
+.no-padding{
+    padding:0px;
+}
+
+.sticky-chat {
+    background: #1895a4;
+    color: white;
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.form-group-send{
+    height:50px;
+}
+
+.mes img.mes-attachment{
+    padding-left: 40px;
+    margin-top: 5px;
+}
+
+.mes-body{
+    padding-left:40px;
+    margin-top:-10px;
+}
+
+.mes-body .editable-container.editable-inline, .mes-body .editable-input{
+    width:100% !important;
+}
+
+.mes-body .editable-container.editable-inline .control-group{
+    width:80% !important;
+}
+
+.mes-time-other{
+    margin-right:40px;
+}
+
+.panel-activities {
+    padding-top: 15px;
+}
+
+.sticky-chat .fa {
+    margin-right: 10px;
+}
+
+.panel-activities #activityStream .activity-entry .fa {
+    margin-right: 5px;
+    color: #1895a4;
+    vertical-align: middle;
+}
+
+/* Main Chat Window */
+#messages {
+    height: 400px;
+    border: 2px solid #009ee7 !important;
+    overflow-y: auto;
+}
+
+#messages.form-control {
+    padding: 6px 4px;
+}
+
+.input_text {
+    border: 2px solid #009ee7;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50px;
+    font-size: 10px;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.upload-img {
+    width: 30px;
+}
+
+.block-upload {
+    position: absolute !important;
+    top: -20px;
+    right: 10px;
+}
+
+.block-smile {
+    position: relative !important;
+    top: -40px;
+    right: 70px;
+    cursor: pointer;
+    position: relative !important;
+    cursor: pointer;
+    float: right;
+    right: 10px;
+}
+
+.block-smile img {
+    width: 30px;
+}
+
+.icons {
+    top: -108px;
+    left: -65px;
+}
+
+.popover-emoticons {
+    width: 156px;
+    height: 101px;
+}
+
+.edit-icon {
+    cursor: pointer;
+}
+
+.mes:hover {
+    background: #EEE;
+    border-radius: 5px;
+}
+
+.mention {
+    text-decoration: underline;
+    color: brown;
+    cursor: pointer;
+}
+
+.mes {
+    color: #22bcb8;
+    padding: 4px 10px 4px 4px;
+    min-height: 44px;
+    margin: 2px 0px;
+}
+
+.mes .profile-img-navbar {
+    float: left;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+.mes .mention {
+    color: #3d427f;
+    font-weight: bold;
+}
+
+.mes .edit-mes {
+    width: 30px;
+    height: 10px;
+    margin-right:10px;
+}
+
+.mes .edit-mes .edit-icon {
+    padding: 2px;
+}
+
+.mes .mes-time {
+    color: #bebebe;
+    font-size: 12px;
+}
+
+.mes span{
+    word-wrap:break-word;
+}
+
+.message-edit, .message-default {
+    color: #555;
+}
+
+.message-edit img {
+    width: 30px;
+}
+
+.message-default img {
+    width: 30px;
+}
+
+.chat-message {
+    padding-left: 60px;
+}
+
+.chat-message .profile-img-navbar {
+    margin-top: -80px;
+    z-index: 100;
+    position: relative;
+    float: left;
+}
+
+.chat-disabled .textoverlay-wrapper{
+    width:100%;
+}
+
+.chat-disabled ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #009ee7 !important;
+}
+.chat-disabled :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:   #009ee7 !important;
+   opacity:  1;
+}
+.chat-disabled ::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:   #009ee7 !important;
+   opacity:  1;
+}
+.chat-disabled :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:   #009ee7 !important;
+}
+
+.attribution-link{
+	text-align:center;
+	opacity:0.5;
+	padding-bottom:30px;
+	font-size:12px;
+}
+
+@media (max-width: 767px) {
+    .mes-time {
+        float: left !important;
+    }
+
+    .mes-body{
+        margin-top:0px;
+    }
+}

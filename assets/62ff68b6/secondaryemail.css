@@ -1,0 +1,73 @@
+/*
+HumHub Secondary Email Module Style CSS
+*/
+
+
+.alert-message {
+    opacity: 0;
+    position: fixed;
+    top: 0px;
+    width:100%;
+    background: #3d427f !important;
+    z-index: 99999;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 0px;
+    min-width:320px;
+    border-color: inherit !important;
+    border-radius: 0px !important;
+}
+
+.alert-message a{
+    color:#fff;
+    text-decoration:underline;
+    opacity:0.6
+}
+
+.alert-message a:hover{
+    color:#fff;
+    text-decoration:underline;
+    opacity:0.8;
+}
+
+.alert-message .close {
+    position: relative;
+    float:right;
+    margin-top:-20px;
+    opacity:0.5;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 1px 0 #000;
+}
+
+@media(max-width: 936px) {
+    .topbar-alert-margin {
+        margin-top: 71px !important;
+    }
+
+    .topbar-alert-body{
+        padding-top: 140px;
+    }
+}
+
+@media(max-width: 495px) {
+    .topbar-alert-margin {
+        margin-top: 91px !important;
+    }
+
+    .topbar-alert-body{
+        padding-top: 160px;
+    }
+}
+
+@media(max-width: 354px) {
+    .topbar-alert-margin {
+        margin-top: 111px !important;
+    }
+
+    .topbar-alert-body{
+        padding-top: 180px;
+    }
+}

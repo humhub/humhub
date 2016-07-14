@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/_bootstrap.php';
+
+$consoleConfig = [
+    'controllerMap' => [
+        'installer' => 'humhub\modules\installer\commands\InstallController'
+    ],
+    'components' => [
+        'urlManager' => [
+            'baseUrl' => 'http://localhost:8080',
+            'hostInfo' => 'http://localhost:8080',
+        ]
+    ]
+];
+
+$config = yii\helpers\ArrayHelper::merge(       
+                // Common HumHub Config
+                require(YII_APP_BASE_PATH . '/humhub/config/common.php'),
+                // Console HumHub Config
+                require(YII_APP_BASE_PATH . '/humhub/config/console.php'),
+                // Test Config
+                require(__DIR__ . '/../config/config.php'),
+                // Console Test Config
+                $consoleConfig
+);
+
+
+$application = new humhub\components\console\Application($config);
+$application->params['installed'] = false;
+
+$exitCode = $application->run();
+exit($exitCode);

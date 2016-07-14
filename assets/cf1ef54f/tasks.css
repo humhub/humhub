@@ -1,0 +1,79 @@
+.task {
+    padding-top: 6px;
+    padding-left: 3px;
+    margin-top: 0px !important;
+    margin-bottom: 0px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #eee;
+}
+
+.task-entry {
+    padding-top: 6px;
+    padding-left: 8px;
+    border-radius: 3px;
+    margin-right: 50px;
+    margin-top: 0px !important;
+    border: 1px solid #ddd;
+}
+
+.task .task-check {
+    font-size: 24px;
+    font-weight: normal;
+    color: #dadada;
+    width: 24px;
+    cursor: pointer;
+}
+
+.task .task-controls {
+    font-size: 12px;
+    margin-right: 10px;
+    border-right: 1px solid #eee;
+    padding-right: 10px;
+}
+
+.task .task-controls.end {
+    font-size: 12px;
+    margin-right: 0px;
+    border-right: none;
+    padding-right: 0px;
+}
+
+.task .task-controls .fa {
+    font-size: 14px;
+    margin-right: 5px;
+    margin-top: 4px;
+}
+
+.task .task-controls a {
+    color: #999;
+}
+
+.task .task-controls a:hover {
+    color: #3b4854;
+}
+
+.task .task-title {
+    margin: 2px 7px 0 7px;
+}
+
+.task-completed, .task-completed a {
+    color: #bebebe !important;
+    text-decoration: line-through;
+}
+
+.show-completed-tasks-link {
+    margin-left: 15px;
+    color: #bebebe !important;
+}
+
+.task-completed-controls {
+    opacity: 0.3;
+}
+
+.panel-mytasks {
+    display: block !important;
+}
+
+#completed-tasks .task:last-child {
+    border: none;
+}

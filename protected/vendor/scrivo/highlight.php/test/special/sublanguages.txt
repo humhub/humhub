@@ -1,0 +1,5 @@
+<? echo 'php'; /* ?>
+<body>
+<script>function tf (x) { return typeof x; }</script>
+</body>
+<? end of comment */ ?>

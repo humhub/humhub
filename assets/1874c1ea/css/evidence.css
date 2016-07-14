@@ -1,0 +1,292 @@
+/*
+HumHub Evidence Module Style CSS
+*/
+
+.fa{
+	vertical-align: middle;
+}
+
+.fa-margin-right{
+	margin-right:5px;
+}
+
+h4.date-range{
+	font-size:16px;
+	margin-top:30px;
+}
+
+.evidence-buttons-top{
+	margin-top:15px;
+}
+
+.evidence-buttons-bottom{
+	margin-top:40px;
+	margin-bottom:40px;
+}
+
+.panel.panel-contribution{
+	margin-top:30px;
+}
+
+.panel.panel-contribution .panel-heading {
+	font-weight: 600;
+	background-color: #1895a4;
+	color: #fff !important;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	padding: 5px 10px;
+}
+
+.panel.panel-contribution .panel-heading .fa{
+	margin-top:-5px;
+}
+
+.panel.panel-contribution .panel-heading small {
+	opacity: 0.5;
+}
+
+.panel.panel-contribution table th {
+	font-size: 14px;
+}
+
+.daterange .form-control {
+	min-width: 200px;
+	width: auto;
+	margin-right: 3px;
+	float: left;
+	height: 36px;
+}
+
+table thead th {
+	background-color: #1895a4;
+	color: #fff;
+}
+
+table thead th.th-select{
+	width:100px;
+}
+
+.calendar-table thead th{
+	border-radius: 0 !important;
+}
+
+.table-responsive {
+	margin-top: 15px;
+}
+
+.grid-view table.items {
+	margin-bottom: 20px;
+}
+
+.grid-view table.items th {
+	font-size: 1.2em !important;
+}
+
+.grid-view table.items td {
+	font-size: 1em;
+	text-align: center;
+}
+
+.grid-view table.items.preview-evidence td.text-left{
+	text-align:left;
+}
+
+.grid-view table.items.preview-evidence td.text-left .fa{
+	margin-top:-3px;
+}
+
+.grid-view table.items.preview-evidence td{
+	font-size:14px;
+	padding:20px;
+}
+
+.grid-view table.items.preview-evidence .evidence, .grid-view table.items.preview-evidence .supervisor-notes{
+	width:350px;
+}
+
+.grid-view table .table-subheading td {
+	background-color: #1895a4;
+}
+
+.block-item {
+	border: 1px solid #000;
+	width: 441px;
+	margin: 0 auto;
+	margin-bottom: 9px;
+	padding: 10px;
+}
+
+.grid-view-loading {
+	background: url(loading.gif) no-repeat;
+}
+
+.grid-view {
+	padding: 15px 0;
+}
+
+.grid-view table.items {
+	background: white;
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px #D0E3EF solid;
+}
+
+.grid-view table.items th, .grid-view table.items td {
+	font-size: 0.9em;
+	border: 1px white solid;
+	padding: 0.3em;
+}
+
+.grid-view table.items th {
+	color: white;
+	background-color: #1895a4;
+	text-align: center;
+}
+
+.grid-view table.items th a {
+	color: #EEE;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.grid-view table.items th a:hover {
+	color: #FFF;
+}
+
+.grid-view table.items th a.asc {
+	background: url(up.gif) right center no-repeat;
+	padding-right: 10px;
+}
+
+.grid-view table.items th a.desc {
+	background: url(down.gif) right center no-repeat;
+	padding-right: 10px;
+}
+
+.grid-view table.items tr.even {
+	background: #F8F8F8;
+}
+
+.grid-view table.items tr.odd {
+	background: #E5F1F4;
+}
+
+.grid-view table.items tr.selected {
+	background: #EEE;
+}
+
+.grid-view table.items tr:hover.selected {
+	background: #EEE;
+}
+
+.grid-view table.items tbody tr:hover {
+	background: #EEE;
+}
+
+.grid-view .link-column img {
+	border: 0;
+}
+
+.grid-view .button-column {
+	text-align: center;
+	width: 60px;
+}
+
+.grid-view .button-column img {
+	border: 0;
+}
+
+.grid-view .checkbox-column {
+	width: 15px;
+}
+
+.grid-view .summary {
+	margin: 0 0 5px 0;
+	text-align: right;
+}
+
+.grid-view .pager {
+	margin: 5px 0 0 0;
+	text-align: right;
+}
+
+.grid-view .empty {
+	font-style: italic;
+}
+
+.grid-view .filters input, .grid-view .filters select {
+	width: 100%;
+	border: 1px solid #ccc;
+}
+
+.modal-header-margin-bottom{
+	margin-bottom:30px;
+}
+
+.form-select-multiple{
+	width: 100%;
+	border-radius: 5px;
+	border:2px solid #CCC;
+}
+
+.form-select-multiple option{
+	font-size:14px;
+	padding:5px;
+}
+
+.form-select-multiple option:active, .form-select-multiple option:focus, .form-select-multiple option:checked:after{
+	background-color:#ccc !important;
+}
+
+.modal-simple .btn{
+	height:auto;
+}
+
+.displayErrors {
+	position: relative;
+	text-align: center;
+	color:red;
+}
+
+.displayErrors > p{
+	margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+	.evidence-buttons .col-xs-12 {
+		text-align: center;
+		padding-bottom: 5px;
+	}
+
+	.evidence-panel .btn-default {
+		margin-bottom: 10px;
+		float:left;
+		margin-right:5px;
+	}
+
+	.evidence-panel{
+		margin-bottom:50px;
+	}
+}
+
+tr:nth-child(even) {background: #F8F8F8}
+tr:nth-child(odd) {background: #E5F1F4}
+
+.loadExportSelect {
+	height: 131px;
+	overflow: auto;
+}
+
+.loadExportSelect li{
+	font-size:15px;
+}
+
+.list-group-item{
+	margin:5px;
+	border-radius:5px;
+	border:none !important;
+}
+
+.list-group-item.active, li.list-group-item:hover {
+	background: #dddddd !important;
+}

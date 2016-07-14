@@ -1,0 +1,1 @@
+var x = '<p>this should <b>not</b> be highlighted as <em>HTML</em>';

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<phpunit bootstrap="vendor/autoload.php" colors="true" strict="true">
+    <testsuites>
+        <testsuite name="phpDocumentor">
+            <directory>./tests/unit/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/phpDocumentor</directory>
+        </whitelist>
+    </filter>
+    <listeners>
+        <listener class="Mockery\Adapter\Phpunit\TestListener"
+            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"></listener>
+    </listeners>
+</phpunit>

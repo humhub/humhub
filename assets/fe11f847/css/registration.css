@@ -1,0 +1,225 @@
+/*
+HumHub Registration Module Style CSS
+*/
+
+.no-padding{
+		padding:0px;
+	}
+	
+	.no-margin{
+		margin:0px;
+	}
+
+    .grid-view table tbody tr {
+        margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; 
+    }
+
+    .gets {
+        border:1px solid black;
+        height:100px;
+        background: red;
+        position: relative;
+    }
+
+    .table-scrollable {
+            overflow-x: hidden; 
+            overflow-y: scroll; 
+            height: 120px; 
+            width: 100%;
+            display:block;
+    }
+
+    .table=scrollable .fa {
+            margin-right:10px;
+    }
+	
+	.table-responsive{
+		border:none;
+	}
+
+    .form-registration-items input {
+            margin-right: 10px; 
+            padding-top: 6px;
+            padding-bottom: 6px;
+            height: auto;
+            width:auto;
+            float:left;
+			margin-bottom:5px;
+    }
+
+    .form-registration-items .checkbox, .checkbox-required {
+            margin-right: 20px;
+    }
+
+    .form-registration-items .checkbox.pull-right {
+            float:right;
+            margin-top:0px;
+            margin-bottom:0px;
+    }
+
+    .form-registration-items .controls {
+            margin-top:10px;
+    }
+	
+	.form-registration-items .btn-sm{
+		padding: 8px 8px;
+	}
+
+    .ui-sortable {
+            cursor:pointer;
+    }
+
+    .ui-sortable .close {
+            padding: 3px 5px;
+            font-size: 11px;
+            opacity:1;
+            margin-right:10px;
+    }
+
+    .ui-sortable .dragdrop {
+            margin-right:10px;
+    }
+
+    .errorSummary {
+            color:#dc4226;
+    }
+
+    .errorSummary ul {
+            padding-left: 0px;
+            list-style: none;
+    }
+
+    .hr-spacer {
+            margin:30px 0px;
+    }
+
+	.selectpicker-tags .bootstrap-select{
+		width:auto;
+		max-width:250px;
+		margin-right: 10px;
+		height:auto;
+	}
+	
+	.selectpicker-tags .bootstrap-select .dropdown-toggle{
+		font-size: 12px;
+		padding: 5px 10px 0px;
+		height:auto;
+		white-space:normal;
+		line-height:1;
+	}
+	
+	.selectpicker-tags .bootstrap-select .dropdown-toggle .filter-option{
+		padding-bottom:0px !important;
+	}
+	
+	.bootstrap-select.btn-group .dropdown-toggle .caret {
+		top:16px;
+	}
+	
+	.selectpicker-tags .bootstrap-select .dropdown-menu.open{
+		z-index:100000;
+	}
+	
+	.selectpicker-tags .bootstrap-select.btn-group .dropdown-toggle .filter-option {
+		padding: 4px 0px 7px 0px;
+	}
+
+    .ui-sortable .label-success{
+		margin-right:3px;
+	}
+
+    .form-registration-items .apst-field{
+        max-width:250px;
+        margin-right:10px;
+        margin-bottom:5px;
+    }
+
+    .modal .btn-danger{
+        height: 18px !important;
+        padding-top: 2px;
+        opacity:1;
+      }
+
+	.form-registration-items #editAPST .input-group{
+        width:85%;
+        margin-bottom:5px;
+        float:left;
+    }
+
+    #editAPST .input-group input, #editAPST .input-group .btn{
+        height:auto;
+    }
+
+    #editAPST .apst-clear{
+        padding: 10px 20px;
+        color:#22bcb8
+    }
+
+    #editAPST .table-responsive{
+        max-height:300px;
+        overflow-y:auto;
+    }
+
+    #editAPST .modal-footer{
+        padding-bottom:20px;
+    }
+
+    #editAPST .apst-controls .btn{
+        height:auto;
+        width:auto;
+        background-color:#bbb;
+        color:#fff !important;
+    }
+
+    #editAPST .modal-footer .btn{
+        height:auto;
+        width:auto;
+    }
+
+    #editAPST .apst-field {
+        width: 100%;
+    }
+
+    @media (max-width: 767px) {
+        .form-registration-items .checkbox.pull-right{
+                float:left !important;
+                margin-top:10px !important;
+                margin-bottom:10px;
+                width:100%;
+        }
+
+    }
+
+    .subject_close {
+        color: red;
+        margin-left: 5px;
+        font-size: 12px;
+    }
+
+
+    .apsts_file{
+        text-decoration: underline;
+        color:blue;
+        cursor: pointer;
+    }
+
+    .apst-field input[type=text] {
+        background-color:#fff !important;
+    }
+
+    .file_edit {
+        margin-left: 15px;
+        float : left;
+        color : #22bcb8;
+        display:none;
+    }
+
+    tr.ui-sortable:hover .file_edit {
+        display: block;
+    }
+
+    .errorBlock {
+        margin: -10px 0px 15px 0px;
+        text-align: center;
+    }
+

@@ -57,7 +57,7 @@ function HashTable(obj) {
         }
     }
 
-    this.setItem = function(key, value) {
+    this.setItem = function (key, value) {
         var previous = undefined;
         if (this.hasItem(key)) {
             previous = this.items[key];
@@ -69,15 +69,15 @@ function HashTable(obj) {
         return previous;
     }
 
-    this.getItem = function(key) {
+    this.getItem = function (key) {
         return this.hasItem(key) ? this.items[key] : undefined;
     }
 
-    this.hasItem = function(key) {
+    this.hasItem = function (key) {
         return this.items.hasOwnProperty(key);
     }
 
-    this.removeItem = function(key) {
+    this.removeItem = function (key) {
         if (this.hasItem(key)) {
             previous = this.items[key];
             this.length--;
@@ -89,7 +89,7 @@ function HashTable(obj) {
         }
     }
 
-    this.keys = function() {
+    this.keys = function () {
         var keys = [];
         for (var k in this.items) {
             if (this.hasItem(k)) {
@@ -99,7 +99,7 @@ function HashTable(obj) {
         return keys;
     }
 
-    this.values = function() {
+    this.values = function () {
         var values = [];
         for (var k in this.items) {
             if (this.hasItem(k)) {
@@ -109,7 +109,7 @@ function HashTable(obj) {
         return values;
     }
 
-    this.each = function(fn) {
+    this.each = function (fn) {
         for (var k in this.items) {
             if (this.hasItem(k)) {
                 fn(k, this.items[k]);
@@ -117,7 +117,7 @@ function HashTable(obj) {
         }
     }
 
-    this.clear = function() {
+    this.clear = function () {
         this.items = {}
         this.length = 0;
     }
@@ -136,24 +136,49 @@ function setModalLoader() {
 }
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     /* Ensures after hide modal content is removed. */
-    $('#globalModal').on('hidden.bs.modal', function(e) {
+    $('#globalModal').on('hidden.bs.modal', function (e) {
         $(this).removeData('bs.modal');
 
         // just close modal and reset modal content to default (shows the loader)
         $(this).html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></div>');
     })
 
+    // set Modal handler to all modal links
+    setModalHandler();
+
+    initPlugins();
+
 });
 
-// call this after every ajax loading
-$(document).ajaxComplete(function(event, xhr, settings) {
+function setModalHandler() {
+
+    // unbind all previously-attached events
+    $("a[data-target='#globalModal']").unbind();
+
+    $(document).off('click.humhub');
+    $(document).on('click.humhub', "a[data-target='#globalModal']", function (ev) {
+        ev.preventDefault();
+        var options = {
+            'show' : true,
+            'backdrop': $(this).data('backdrop')
+        }
+        $("#globalModal").modal(options);
+        var target = $(this).attr("href");
+        // load the url ansd show modal on success
+        $("#globalModal").load(target, function () {
+            // animate options
+        });
+    });
+}
+
+function initPlugins() {
 
     // show Tooltips on elements inside the views, which have the class 'tt'
     $('.tt').tooltip({
-        html: true,
+        html: false,
         container: 'body'
     });
 
@@ -163,28 +188,42 @@ $(document).ajaxComplete(function(event, xhr, settings) {
     // activate placeholder text for older browsers (specially IE)
     $('input, textarea').placeholder();
 
+    // Replace the standard checkbox and radio buttons
+    $('body').find(':checkbox, :radio').flatelements();
+    $('a[data-loader="modal"], button[data-loader="modal"]').loader();
+}
+
+// call this after every ajax loading
+$(document).ajaxComplete(function (event, xhr, settings) {
+
+    initPlugins();
+
+    // set Modal handler to all modal links
+    setModalHandler();
+
 });
 
-$('#globalModal').on('shown.bs.modal', function(e) {
+$('#globalModal').on('shown.bs.modal', function (e) {
     // reduce the standard modal width
     $('.modal-dialog').css('width', '300px');
 })
 
 
-$(document).on('show.bs.modal', '.modal', function(event) {
+$(document).on('show.bs.modal', '.modal', function (event) {
     $(this).appendTo($('body'));
 });
-$(document).on('shown.bs.modal', '.modal.in', function(event) {
+$(document).on('shown.bs.modal', '.modal.in', function (event) {
     setModalsAndBackdropsOrder();
 });
-$(document).on('hidden.bs.modal', '.modal', function(event) {
+$(document).on('hidden.bs.modal', '.modal', function (event) {
     setModalsAndBackdropsOrder();
 });
+
 
 
 function setModalsAndBackdropsOrder() {
     var modalZIndex = 1040;
-    $('.modal.in').each(function(index) {
+    $('.modal.in').each(function (index) {
         var $modal = $(this);
         modalZIndex++;
         $modal.css('zIndex', modalZIndex);
@@ -192,3 +231,115 @@ function setModalsAndBackdropsOrder() {
     });
     $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
 }
+
+//////////////////////////////////////////////////////////////////////////
+////////////////////////// TIME-FORMATTING ///////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+// Get favourites
+$.fn.format = function (options) {
+
+    // get the id from the invoking element
+    var _id = $(this).attr("id");
+
+
+    //*************** Private Functions ****************//
+
+    var setTimeFormat = function () {
+
+        // save value from textinput into a variable
+        var _value = $("#" + _id).val();
+
+        if (_value != "") {
+
+            // by this type, set the value to hours until the value is 23
+            if (options.type == "daytime") {
+
+                // set only hours
+                if (_value <= 23) {
+
+                    // find the right value
+                    for (var j = 1; j < 24; j++) {
+                        if (_value == j) {
+
+                            // set the right time format
+                            _value = j + ":00";
+
+                        }
+                    }
+                }
+
+                // set only minutes
+                if (_value > 23 && _value <= 59) {
+                    _value = "0:" + _value;
+                }
+
+            }
+
+
+            // divide in hours and minutes by a string length of 3
+            if (_value >= 60 && _value < 1000) {
+                _value = _value.substr(0, 1) + ":" + _value.substr(1, 2);
+            }
+
+            // divide in hours and minutes by a string length of 4
+            if (_value >= 1000 && _value < 10000) {
+                _value = _value.substr(0, 2) + ":" + _value.substr(2, 3);
+            }
+
+            // if the value is "0" and that isn't allowed, empty the string
+            if (options.zero == false && _value == "0:00") {
+                _value = "";
+            }
+
+            var str = _value;
+            var res = str.split(":");
+
+            if (_value.length < 5) {
+                if (res[0] < 10) {
+                    _value = "0" + res[0] + ":" + res[1];
+                }
+            }
+
+
+            // provide the well formated value
+            return _value;
+
+        }
+    }
+
+
+    //*************** Event Handler ****************//
+
+    $("#" + _id).focusout(function () {
+
+        // set time format
+        if (options.type == "euro") {
+            $("#" + _id).val(setEuroFormat());
+        } else {
+            $("#" + _id).val(setTimeFormat());
+        }
+
+    })
+
+}
+
+function htmlEncode(value) {
+    //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+    //then grab the encoded contents back out.  The div never exists on the page.
+    return $('<div/>').text(value).html();
+}
+
+function htmlDecode(value) {
+    return $('<div/>').html(value).text();
+}
+
+
+
+
+
+
+
+
+

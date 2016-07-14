@@ -1,0 +1,152 @@
+.directory-list * {
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 1.5em;
+}
+
+.directory-list {
+    border: 1px solid #808080;
+    color: #333333;
+    padding: 4px;
+    overflow: auto;
+    width: auto;
+    height: 320px;
+    margin-bottom: 1.5em;
+}
+
+.directory-list ul,.directory-list li {
+    padding: 0;
+    margin: 0;
+    display: block;
+    background: none;
+    list-style: none;
+}
+
+.directory-list ul {
+    background: url(directorylist/directory_last.png) no-repeat 0 -8px;
+}
+
+.directory-list ul ul {
+    padding-left: 16px;
+    background: url(directorylist/directory.png) repeat-y 0 0;
+}
+
+.directory-list li:last-child>ul {
+    background: none;
+}
+
+.directory-list li.last-child>ul {
+    background: none;
+}
+
+.directory-list  li {
+    background: url(directorylist/directory_join.png) no-repeat 0 -8px;
+}
+
+.directory-list  li.last-child {
+    background-image: url(directorylist/directory_last-child.png);
+}
+
+.directory-list  li:last-child {
+    background-image: url(directorylist/directory_last-child.png);
+}
+
+.directory-list li.hassub {
+    background-image: url(directorylist/directory_join_hassub.png);
+}
+
+.directory-list li.hassub.expand {
+    background-image: url(directorylist/directory_join_hassub_expand.png);
+}
+
+.directory-list li.last-child.hassub {
+    background-image: url(directorylist/directory_last-child_hassub.png);
+}
+
+.directory-list li:last-child.hassub {
+    background-image: url(directorylist/directory_last-child_hassub.png);
+}
+
+.directory-list li.last-child.hassub.expand {
+    background-image:
+        url(directorylist/directory_last-child_hassub_expand.png);
+}
+
+.directory-list li:last-child.hassub.expand {
+    background-image:
+        url(directorylist/directory_last-child_hassub_expand.png);
+}
+
+* html .directory-list ul {
+    background-image: none !important;
+}
+
+* html .directory-list li {
+    background-image: none !important;
+}
+
+* html .directory-list li.hassub {
+    background-image: url(directorylist/directory_hassub.png) !important;
+    background-position: 3px 0;
+}
+
+* html .directory-list li.expand {
+    background-image: url(directorylist/directory_exand.png) !important;
+    background-position: 3px 0;
+}
+
+.directory-list div,.directory-list span,.directory-list a {
+    display: inline-block;
+    height: 1.5em;
+    padding: 0 4px 0 39px;
+    margin: 0;
+    background: url(directorylist/folder.png) no-repeat 16px 0;
+    text-decoration: none;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.directory-list div {
+    color: #000000;
+    padding-left: 23px;
+    background-position: 3px 0;
+    background-image: url(directorylist/drive.png);
+}
+
+.directory-list li>span,.directory-list>div {
+    cursor: pointer;
+}
+
+.directory-list .selectable.selectedFolder {
+    background-color: #EBEBEB !important;
+    border-left: 3px solid #6FDBE8 !important;
+}
+
+.directory-list a {
+    background-image: url(directorylist/page_white.png);
+}
+
+.directory-list a {
+    background-image: url(directorylist/page_white.png);
+}
+
+.directory-list a[type^='image/'] {
+    background-image: url(directorylist/page_white_picture.png);
+}
+
+.directory-list a[type^='text/'] {
+    background-image: url(directorylist/page_white_text.png);
+}
+
+.directory-list a[type='text/html'] {
+    background-image: url(directorylist/page_white_code.png);
+}
+
+.directory-list a[type='application/zip'],.directory-list a[type='application/x-gzip']
+    {
+    background-image: url(directorylist/page_white_compressed.png);
+}
+
+.directory-list a[type='application/x-httpd-php'] {
+    background-image: url(directorylist/page_white_php.png);
+}
