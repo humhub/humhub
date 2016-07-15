@@ -247,7 +247,7 @@ class ConfigController extends Controller
 
                 $userModel->status = User::STATUS_ENABLED;
                 $userModel->username = "david1986";
-                $userModel->email = "david.roberts@humhub.com";
+                $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
                 $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
                 $userModel->last_activity_email = new \yii\db\Expression('NOW()');
@@ -274,7 +274,7 @@ class ConfigController extends Controller
 
                 $userModel2->status = User::STATUS_ENABLED;
                 $userModel2->username = "sara1989";
-                $userModel2->email = "sara.schuster@humhub.com";
+                $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
                 $userModel2->tags = "Yoga, Travel, English, German, French";
                 $userModel2->last_activity_email = new \yii\db\Expression('NOW()');
