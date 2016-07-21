@@ -9,4 +9,6 @@ return array (
   'Group' => 'Группа',
   'Remove' => 'Удалить',
   'never' => 'никогда',
+    'Approve' => '',
+    'Reject' => '',
 );

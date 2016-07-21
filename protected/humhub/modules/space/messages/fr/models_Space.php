@@ -22,6 +22,7 @@ return [
     'Created By' => 'Créé par',
     'Description' => 'Description',
     'Join Policy' => 'Conditions d\'adhésion',
+    'Default Content Visibility' => '',
     'Name' => 'Nom',
     'Owner' => 'Propriétaire',
     'Status' => 'Statut',

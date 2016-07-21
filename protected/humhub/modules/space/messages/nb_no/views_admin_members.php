@@ -26,4 +26,6 @@ return [
     'Group' => '',
     'Remove' => '',
     'never' => '',
+    'Approve' => '',
+    'Reject' => '',
 ];

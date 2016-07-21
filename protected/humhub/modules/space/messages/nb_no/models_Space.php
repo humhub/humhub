@@ -22,6 +22,7 @@ return [
     'Created By' => '',
     'Description' => '',
     'Join Policy' => '',
+    'Default Content Visibility' => '',
     'Name' => '',
     'Owner' => '',
     'Status' => '',

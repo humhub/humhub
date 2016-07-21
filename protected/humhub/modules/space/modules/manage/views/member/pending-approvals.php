@@ -33,10 +33,10 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                             return;
                         },
                         'delete' => function($url, $model) use($space) {
-                            return Html::a('Reject', $space->createUrl('reject-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
+                            return Html::a(Yii::t('SpaceModule.views_admin_members', 'Reject'), $space->createUrl('reject-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
                         },
                                 'update' => function($url, $model) use($space) {
-                            return Html::a('Approve', $space->createUrl('approve-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
+                            return Html::a(Yii::t('SpaceModule.views_admin_members', 'Approve'), $space->createUrl('approve-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
                         },
                             ],
                         ],

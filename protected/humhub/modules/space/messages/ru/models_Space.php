@@ -5,6 +5,7 @@ return array (
   'Created By' => 'Создано',
   'Description' => 'Описание',
   'Join Policy' => 'Полномочия',
+    'Default Content Visibility' => '',
   'Name' => 'Имя',
   'Owner' => 'Владелец',
   'Status' => 'Статус',

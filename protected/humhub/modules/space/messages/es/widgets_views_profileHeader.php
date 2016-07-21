@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Close' => '',
+    'Close' => 'Cerrar',
     '<strong>Something</strong> went wrong' => '<strong>Algo</strong> fue mal',
     'Followers' => 'Seguidores',
     'Members' => 'Miembros',

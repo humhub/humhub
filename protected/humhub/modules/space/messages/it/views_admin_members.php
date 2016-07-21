@@ -26,4 +26,6 @@ return [
     '<strong>Pending</strong> approvals' => '<strong>Approvazioni</strong> in sospeso',
     '<strong>Pending</strong> invitations' => '<strong>Inviti</strong> in sospeso',
     'never' => 'mai',
+    'Approve' => '',
+    'Reject' => '',
 ];

@@ -26,4 +26,6 @@ return [
     '<strong>Pending</strong> approvals' => '<strong>Akceptacje</strong> w toku',
     '<strong>Pending</strong> invitations' => '<strong>Zaproszenia</strong> w toku',
     'never' => 'nigdy',
+    'Approve' => '',
+    'Reject' => '',
 ];

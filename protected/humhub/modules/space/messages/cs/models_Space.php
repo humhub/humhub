@@ -22,6 +22,7 @@ return [
     'Created By' => 'Vytvořil(a)',
     'Description' => 'Popis',
     'Join Policy' => 'Jak se lze stát členem?',
+    'Default Content Visibility' => '',
     'Name' => 'Jméno skupiny',
     'Owner' => 'Vlastník',
     'Status' => 'Stav',

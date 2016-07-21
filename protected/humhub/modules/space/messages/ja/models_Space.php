@@ -22,6 +22,7 @@ return [
     'Created By' => '作成者',
     'Description' => '説明',
     'Join Policy' => 'ポリシーに参加',
+    'Default Content Visibility' => '',
     'Name' => '名前',
     'Owner' => '所有者',
     'Status' => 'ステータス',

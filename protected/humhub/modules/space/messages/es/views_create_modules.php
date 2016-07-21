@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add <strong>Modules</strong>' => '',
-    'Next' => '',
+    'Add <strong>Modules</strong>' => 'Añadir <strong>Módulos</strong>',
+    'Next' => 'Siguiente',
 ];
