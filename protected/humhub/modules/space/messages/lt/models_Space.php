@@ -22,6 +22,7 @@ return [
     'Created By' => 'Sukurta (kieno)',
     'Description' => 'Apibūdinimas',
     'Join Policy' => 'Prisijungimo politika',
+    'Default Content Visibility' => '',
     'Name' => 'Vardas',
     'Owner' => 'Savininkas',
     'Status' => 'Būsena',

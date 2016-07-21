@@ -5,6 +5,7 @@ return array (
   'Created By' => 'Oprettet af',
   'Description' => 'Beskrivelse',
   'Join Policy' => 'Deltagelses Politik',
+    'Default Content Visibility' => '',
   'Name' => 'Navn',
   'Owner' => 'Ejer',
   'Status' => 'Status',

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Choose if new content should be public or private by default' => '',
+    'Choose if new content should be public or private by default' => 'Indica si el contenido nuevo debe ser por defecto público o privado',
     'Archive' => 'Archivo',
     'Choose the kind of membership you want to provide for this workspace.' => 'Elige el tipo de suscripción que quieres dar a este espacio.',
     'Choose the security level for this workspace to define the visibleness.' => 'Elige el nivel de seguridad para este espacio para definir la visibilidad.',

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<b>You are not member of this space and there is no public content, yet!</b>' => '',
+    '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>No eres miembro del espacio y no hay contenido público para mostrarte</b>',
     '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>¡Este espacio está aun vacio!</b><br/>Empieza por escribir algo aqui...',
 ];

@@ -22,6 +22,7 @@ return [
     'Created By' => 'ایجادشده توسط',
     'Description' => 'توضیحات',
     'Join Policy' => 'سیاست پیوستن',
+    'Default Content Visibility' => '',
     'Name' => 'نام',
     'Owner' => 'دارنده',
     'Status' => 'وضعیت',

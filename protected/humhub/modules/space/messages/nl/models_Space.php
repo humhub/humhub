@@ -22,6 +22,7 @@ return [
     'Created By' => 'Gemaakt door',
     'Description' => 'Beschrijving',
     'Join Policy' => 'Policy om lid te worden',
+    'Default Content Visibility' => '',
     'Name' => 'Naam',
     'Owner' => 'Eigenaar',
     'Status' => 'Status',

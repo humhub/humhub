@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Basic' => '',
-    'Delete' => '',
-    'Security' => '',
+    'Basic' => 'General',
+    'Delete' => 'Eliminar',
+    'Security' => 'Seguridad',
 ];

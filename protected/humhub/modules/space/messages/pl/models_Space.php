@@ -5,6 +5,7 @@ return array (
   'Created By' => 'Utworzona przez',
   'Description' => 'Opis',
   'Join Policy' => 'Polityka dołączania',
+    'Default Content Visibility' => '',
   'Name' => 'Nazwa',
   'Owner' => 'Właściciel',
   'Status' => 'Status',

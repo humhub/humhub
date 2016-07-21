@@ -22,6 +22,7 @@ return [
     'Created By' => 'Creat per',
     'Description' => 'Descripció',
     'Join Policy' => 'Políticia d\'admissió ',
+    'Default Content Visibility' => '',
     'Name' => 'Nom',
     'Owner' => 'Propietari',
     'Status' => 'Estat',

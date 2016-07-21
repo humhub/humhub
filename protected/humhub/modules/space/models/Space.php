@@ -113,6 +113,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'website' => Yii::t('SpaceModule.models_Space', 'Website URL (optional)'),
             'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.models_Space', 'Visibility'),
+            'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default Content Visibility'),
             'status' => Yii::t('SpaceModule.models_Space', 'Status'),
             'tags' => Yii::t('SpaceModule.models_Space', 'Tags'),
             'created_at' => Yii::t('SpaceModule.models_Space', 'Created At'),

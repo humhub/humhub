@@ -5,6 +5,7 @@ return array (
   'Created By' => 'Oluşturan',
   'Description' => 'Açıklama',
   'Join Policy' => 'Politikaya Katıl',
+    'Default Content Visibility' => '',
   'Name' => 'İsim',
   'Owner' => 'Sahibi',
   'Status' => 'Durum',

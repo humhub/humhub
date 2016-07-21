@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Members</strong>' => '',
+    '<strong>Members</strong>' => '<strong>Miembros</strong>',
 ];

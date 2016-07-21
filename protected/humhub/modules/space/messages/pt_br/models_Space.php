@@ -22,6 +22,7 @@ return [
     'Created By' => 'Criado por',
     'Description' => 'Descrição',
     'Join Policy' => 'Política de acesso',
+    'Default Content Visibility' => '',
     'Name' => 'Nome',
     'Owner' => 'Dono',
     'Status' => 'Status',

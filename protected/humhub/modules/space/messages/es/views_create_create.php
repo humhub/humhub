@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
-    'Next' => '',
+    'Color' => 'Color',
+    'Next' => 'Siguiente',
     '<strong>Create</strong> new space' => '<strong>Crear</strong> nuevo espacio',
     'Advanced access settings' => 'Ajustes avanzados de acceso',
     'space description' => 'descripción del espacio',

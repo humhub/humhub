@@ -22,6 +22,7 @@ return [
     'Created By' => '创建人',
     'Description' => '描述',
     'Join Policy' => '加入政策',
+    'Default Content Visibility' => '',
     'Name' => '名字',
     'Owner' => '拥有者',
     'Status' => '状态',
