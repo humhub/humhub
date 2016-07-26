@@ -1,6 +1,7 @@
 <?php
 
-    use yii\helpers\Html;
+use yii\helpers\Html;
+
 ?>
 <div class="panel panel-default">
     <div
@@ -9,7 +10,6 @@
     <div class="panel-body">
 
         <?php $firstClass = "active"; ?>
-
 
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
@@ -29,7 +29,7 @@
                 $firstClass = ""; ?>" id="profile-category-<?php echo $category->id; ?>">
                     <form class="form-horizontal" role="form">
                         <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label
                                     class="col-sm-3 control-label"><?php echo Html::encode(Yii::t($field->getTranslationCategory(), $field->title)); ?></label>
 
