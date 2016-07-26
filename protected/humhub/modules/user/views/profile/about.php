@@ -1,30 +1,23 @@
 <?php
-
 use yii\helpers\Html;
-
 ?>
 <div class="panel panel-default">
     <div
         class="panel-heading"><?php echo Yii::t('UserModule.views_profile_about', '<strong>About</strong> this user'); ?></div>
-
     <div class="panel-body">
-
         <?php $firstClass = "active"; ?>
-
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
-                <li class="<?php echo $firstClass;
-                $firstClass = ""; ?>"><a href="#profile-category-<?php echo $category->id; ?>"
-                                         data-toggle="tab"><?php echo Html::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
+                <li class="<?php echo $firstClass;  ?>">
+                    <a href="#profile-category-<?php echo $category->id; ?>" data-toggle="tab"><?php echo Html::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
                 </li>
-            <?php endforeach; ?>
+            <?php
+                $firstClass = "";
+            endforeach; ?>
         </ul>
-
         <?php $firstClass = "active"; ?>
-
         <div class="tab-content">
             <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
-
                 <div class="tab-pane <?php echo $firstClass;
                 $firstClass = ""; ?>" id="profile-category-<?php echo $category->id; ?>">
                     <form class="form-horizontal" role="form">
@@ -79,15 +72,10 @@ use yii\helpers\Html;
                                     </div>
                                 <?php } ?>
                             </div>
-
                         <?php endforeach; ?>
-
                     </form>
                 </div>
             <?php endforeach; ?>
         </div>
-
     </div>
-
-
 </div>
