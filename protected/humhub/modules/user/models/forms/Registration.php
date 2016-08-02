@@ -204,11 +204,17 @@ class Registration extends HForm
      */
     public function validate()
     {
-
         // Ensure Models
         $this->setModels();
 
-        return parent::validate();
+        // Remove optional group assignment before validation
+        // GroupUser assignment is optional and will be validated on save
+        $groupUser = $this->models['GroupUser'];
+        unset($this->models['GroupUser']);
+        $status = parent::validate();
+        $this->models['GroupUser'] = $groupUser;
+
+        return $status;
     }
 
     /**
@@ -241,8 +247,10 @@ class Registration extends HForm
             $this->models['Profile']->user_id = $this->models['User']->id;
             $this->models['Profile']->save();
 
-            $this->models['GroupUser']->user_id = $this->models['User']->id;
-            $this->models['GroupUser']->save();
+            if ($this->models['GroupUser']->validate()) {
+                $this->models['GroupUser']->user_id = $this->models['User']->id;
+                $this->models['GroupUser']->save();
+            }
 
             if ($this->enablePasswordForm) {
                 // Save User Password
