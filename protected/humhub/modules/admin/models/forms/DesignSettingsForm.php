@@ -113,6 +113,7 @@ class DesignSettingsForm extends \yii\base\Model
         $settingsManager = Yii::$app->settings;
 
         $settingsManager->set('theme', $this->theme);
+        \humhub\components\Theme::setColorVariables($this->theme);
         $settingsManager->set('paginationSize', $this->paginationSize);
         $settingsManager->set('displayNameFormat', $this->displayName);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
