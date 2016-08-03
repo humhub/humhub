@@ -188,7 +188,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
             'last_login' => Yii::t('UserModule.models_User', 'Last Login'),
             'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
-            
         ];
     }
 
@@ -393,11 +392,16 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function afterSave($insert, $changedAttributes)
     {
+        // Make sure we get an direct User model instance
+        // (e.g. not UserEditForm) for search rebuild
+        $user = User::findOne(['id' => $this->id]);
+
         if ($this->status == User::STATUS_ENABLED) {
-            Yii::$app->search->update($this);
+            Yii::$app->search->update($user);
         } else {
-            Yii::$app->search->delete($this);
+            Yii::$app->search->delete($user);
         }
+
         if ($insert) {
             if ($this->status == User::STATUS_ENABLED) {
                 $this->setUpApproved();
@@ -408,7 +412,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         if (Yii::$app->user->id == $this->id) {
-            Yii::$app->user->setIdentity($this);
+            Yii::$app->user->setIdentity($user);
         }
         return parent::afterSave($insert, $changedAttributes);
     }
