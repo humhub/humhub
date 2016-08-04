@@ -37,6 +37,11 @@ class DatabaseForm extends \yii\base\Model
      * @var string database name
      */
     public $database;
+    
+    /**
+     * @var string database port
+     */
+    public $port;
 
     /**
      * @inheritdoc
@@ -59,6 +64,7 @@ class DatabaseForm extends \yii\base\Model
             'username' => Yii::t('InstallerModule.forms_DatabaseForm', 'Username'),
             'password' => Yii::t('InstallerModule.forms_DatabaseForm', 'Password'),
             'database' => Yii::t('InstallerModule.forms_DatabaseForm', 'Name of Database'),
+            'database' => Yii::t('InstallerModule.forms_DatabaseForm', 'port of Database'),
         );
     }
 
