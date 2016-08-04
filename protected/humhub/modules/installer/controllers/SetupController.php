@@ -66,7 +66,7 @@ class SetupController extends Controller
         $model = new DatabaseForm();
         if (isset($config['params']['installer']['db']['installer_hostname']))
             $model->hostname = $config['params']['installer']['db']['installer_hostname'];
-
+        
         if (isset($config['params']['installer']['db']['installer_database']))
             $model->database = $config['params']['installer']['db']['installer_database'];
 
@@ -75,9 +75,12 @@ class SetupController extends Controller
 
         if (isset($config['components']['db']['password']))
             $model->password = self::PASSWORD_PLACEHOLDER;
+            
+        if (isset($config['params']['installer']['db']['port']))
+            $model->port = $config['params']['installer']['db']['port'];
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $connectionString = "mysql:host=" . $model->hostname . ";dbname=" . $model->database;
+            $connectionString = "mysql:host=" . $model->hostname . ";port=" . $model->port. ";dbname=" . $model->database;
 
             $password = $model->password;
             if ($password == self::PASSWORD_PLACEHOLDER)
