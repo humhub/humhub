@@ -1,5 +1,9 @@
 <?php
+
 use yii\helpers\Html;
+use humhub\widgets\RichText;
+use humhub\modules\user\models\fieldtype\MarkdownEditor;
+use humhub\widgets\MarkdownView;
 ?>
 <div class="panel panel-default">
     <div
@@ -8,69 +12,42 @@ use yii\helpers\Html;
         <?php $firstClass = "active"; ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
-                <li class="<?php echo $firstClass;  ?>">
+                <li class="<?php echo $firstClass; ?>">
                     <a href="#profile-category-<?php echo $category->id; ?>" data-toggle="tab"><?php echo Html::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
                 </li>
-            <?php
+                <?php
                 $firstClass = "";
-            endforeach; ?>
+            endforeach;
+            ?>
         </ul>
         <?php $firstClass = "active"; ?>
         <div class="tab-content">
             <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
-                <div class="tab-pane <?php echo $firstClass;
-                $firstClass = ""; ?>" id="profile-category-<?php echo $category->id; ?>">
+                <div class="tab-pane <?php
+                echo $firstClass;
+                $firstClass = "";
+                ?>" id="profile-category-<?php echo $category->id; ?>">
                     <form class="form-horizontal" role="form">
                         <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
                             <div class="form-group">
-                                <label
-                                    class="col-sm-3 control-label"><?php echo Html::encode(Yii::t($field->getTranslationCategory(), $field->title)); ?></label>
-
-
-                                <?php
-
-                                $fieldType = $field->field_type_class;
-                                //print_r($field);
-                                if (strtolower($field->title) == 'about') {
-
-                                    ?>
+                                <label class="col-sm-3 control-label">
+                                    <?php echo Html::encode(Yii::t($field->getTranslationCategory(), $field->title)); ?>
+                                </label>
+                                <?php if (strtolower($field->title) == 'about'): ?>
                                     <div class="col-sm-9">
-                                        <?php
-
-                                        if (strpos($fieldType, 'Markdown') !== false) {
-                                            $briefText = \yii\helpers\Markdown::process($field->getUserValue($user, false));
-                                            ?>
-                                            <p class="form-control-static"
-                                               style="min-height: 0 !important;padding-top:0;"><?php echo $briefText; ?></p>
-                                        <?php } else {
-                                            ?>
-                                            <p class="form-control-static"><?php echo humhub\widgets\RichText::widget(['text' => $field->getUserValue($user, true)]); ?></p>
-                                            <?php
-                                        }
-                                        ?>
+                                        <p class="form-control-static"><?php echo RichText::widget(['text' => $field->getUserValue($user, true)]); ?></p>
                                     </div>
-                                    <?php
-
-                                } else {
-
-                                    ?>
+                                <?php else: ?>
                                     <div class="col-sm-9">
-
-                                        <?php
-
-                                        if (strpos($fieldType, 'Markdown') !== false) {
-                                            $briefText = \yii\helpers\Markdown::process($field->getUserValue($user, false));
-                                            ?>
-                                            <p class="form-control-static"
-                                               style="min-height: 0 !important;padding-top:0;"><?php echo $briefText; ?></p>
-                                        <?php } else {
-                                            ?>
-                                            <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>                                            <?php
-                                        }
-                                        ?>
-
+                                        <?php if ($field->field_type_class == MarkdownEditor::className()): ?>
+                                            <p class="form-control-static" style="min-height: 0 !important;padding-top:0;">
+                                                <?= MarkdownView::widget(['markdown' => $field->getUserValue($user, false)]); ?>
+                                            </p>
+                                        <?php else: ?>
+                                            <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>                     
+                                        <?php endif; ?>
                                     </div>
-                                <?php } ?>
+                                <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
                     </form>

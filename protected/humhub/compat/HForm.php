@@ -20,7 +20,7 @@ class HForm extends \yii\base\Component
 
     const EVENT_BEFORE_VALIDATE = 'beforeValidate';
     const EVENT_AFTER_VALIDATE = 'afterValidate';
-    
+
     public $showErrorSummary;
     protected $form;
     public $primaryModel = null;
@@ -64,7 +64,7 @@ class HForm extends \yii\base\Component
     {
         $hasErrors = false;
         $this->trigger(self::EVENT_BEFORE_VALIDATE);
-        
+
         if ($this->primaryModel !== null) {
             if (!$this->primaryModel->validate()) {
                 $hasErrors = true;
@@ -76,7 +76,7 @@ class HForm extends \yii\base\Component
                 $hasErrors = true;
             }
         }
-        
+
         $this->trigger(self::EVENT_AFTER_VALIDATE);
         return !$hasErrors;
     }
@@ -196,16 +196,16 @@ class HForm extends \yii\base\Component
             if (isset($definition['id'])) {
                 $options['id'] = $definition['id'];
             }
-            
+
             if (isset($definition['readonly']) && $definition['readonly']) {
                 $options['readOnly'] = true;
                 $options['disabled'] = true;
             }
-            
+
             if (isset($definition['value'])) {
                 $options['value'] = $definition['value'];
             }
-            
+
             if (isset($definition['prompt']) && $definition['prompt']) {
                 $options['prompt'] = $definition['prompt'];
             }
@@ -213,14 +213,13 @@ class HForm extends \yii\base\Component
                 $options['label'] = $definition['label'];
             }
             if (isset($definition['type'])) {
-                switch($definition['type']) {
+                switch ($definition['type']) {
                     case 'text':
                         return $this->form->field($model, $name)->textInput($options);
                     case 'multiselectdropdown':
                         $options['class'] = 'form-control multiselect_dropdown';
                         $options['multiple'] = 'multiple';
                         return $this->form->field($model, $name)->listBox($definition['items'], $options);
-                        //return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                     case 'dropdownlist':
                         return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                     case 'checkbox':
@@ -239,19 +238,19 @@ class HForm extends \yii\base\Component
                         if (isset($definition['format'])) {
                             $format = $definition['format'];
                         }
-                        
+
                         $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
-                        
+
                         return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
-                            'dateFormat' => $format, 
-                            'clientOptions' => ['changeYear' => true, 'yearRange' => $yearRange, 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 
-                            'options' => ['class' => 'form-control']]);
+                                    'dateFormat' => $format,
+                                    'clientOptions' => ['changeYear' => true, 'yearRange' => $yearRange, 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])],
+                                    'options' => ['class' => 'form-control']]);
                     case 'markdown':
                         $options['id'] = $name;
-                        $returnField   = $this->form->field($model, $name)->textarea($options);
-                        $returnField . = \humhub\widgets\MarkdownEditor::widget(array('fieldId' => $name));
+                        $returnField = $this->form->field($model, $name)->textarea($options);
+                        $returnField .= \humhub\widgets\MarkdownEditor::widget(array('fieldId' => $name));
                         return $returnField;
-                     default:
+                    default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
             } else {
