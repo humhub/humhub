@@ -137,7 +137,7 @@ class Module extends \yii\base\Module
      * @param string $relativePath
      * @return string
      */
-    private function isPublished($relativePath)
+    public function isPublished($relativePath)
     {
         $path = $this->getAssetPath();
         $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
