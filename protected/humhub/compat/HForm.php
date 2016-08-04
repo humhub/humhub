@@ -246,6 +246,11 @@ class HForm extends \yii\base\Component
                             'dateFormat' => $format, 
                             'clientOptions' => ['changeYear' => true, 'yearRange' => $yearRange, 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])], 
                             'options' => ['class' => 'form-control']]);
+                    case 'markdown':
+                        $options['id'] = $name;
+                        $returnField   = $this->form->field($model, $name)->textarea($options);
+                        $returnField . = \humhub\widgets\MarkdownEditor::widget(array('fieldId' => $name));
+                        return $returnField;
                      default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
