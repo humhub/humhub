@@ -64,7 +64,7 @@ class DatabaseForm extends \yii\base\Model
             'username' => Yii::t('InstallerModule.forms_DatabaseForm', 'Username'),
             'password' => Yii::t('InstallerModule.forms_DatabaseForm', 'Password'),
             'database' => Yii::t('InstallerModule.forms_DatabaseForm', 'Name of Database'),
-            'database' => Yii::t('InstallerModule.forms_DatabaseForm', 'port of Database'),
+            'port' => Yii::t('InstallerModule.forms_DatabaseForm', 'port of Database'),
         );
     }
 
