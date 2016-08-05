@@ -309,6 +309,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         $baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
         $userCollection = $this->getLdap()->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
 
+        $authClient = null;
+
         $ids = [];
         foreach ($userCollection as $attributes) {
             $authClient = new static;
