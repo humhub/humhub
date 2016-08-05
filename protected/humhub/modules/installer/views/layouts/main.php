@@ -32,6 +32,7 @@ AppAsset::register($this);
         <div class="logo">
             <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
                 <img src="<?php echo Yii::getAlias("@web/resources/installer"); ?>/humhub-logo.png" alt="Logo">
+                v1.1
             </a>
         </div>
 
