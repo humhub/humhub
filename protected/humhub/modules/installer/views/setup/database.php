@@ -47,6 +47,7 @@ use yii\helpers\Html;
         </div>
         <hr/>
         <div class="form-group">
+            <?php $model->port='3306'; ?>
             <?php echo $form->labelEx($model, 'port'); ?>
             <?php echo $form->textField($model, 'port', array('class' => 'form-control')); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'Port.'); ?></p>
