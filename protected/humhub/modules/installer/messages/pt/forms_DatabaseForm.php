@@ -4,4 +4,5 @@ return array (
   'Name of Database' => '',
   'Password' => 'Palavra-passe',
   'Username' => 'Nome de utilizador',
+    'Port' => 'Porta',
 );

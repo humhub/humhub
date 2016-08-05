@@ -26,4 +26,5 @@ return [
     'The name of the database you want to run HumHub in.' => '',
     'Your MySQL password.' => '',
     'Your MySQL username' => '',
+    'Porta' => '',
 ];
