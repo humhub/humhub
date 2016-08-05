@@ -45,7 +45,13 @@ use yii\helpers\Html;
             <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'The name of the database you want to run HumHub in.'); ?></p>
             <?php echo $form->error($model, 'database'); ?>
         </div>
-
+        <hr/>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'port'); ?>
+            <?php echo $form->textField($model, 'port', array('class' => 'form-control')); ?>
+            <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'Port.'); ?></p>
+            <?php echo $form->error($model, 'port'); ?>
+        </div>
         <?php if ($errorMessage) { ?>
             <div class="alert alert-danger">
                 <strong><?php echo Yii::t('InstallerModule.views_setup_database', 'Ohh, something went wrong!'); ?></strong><br/>
