@@ -90,6 +90,18 @@ abstract class BaseSettingsManager extends Component
     }
 
     /**
+     * Returns the value of setting without any caching
+     * 
+     * @param string $name the name of setting
+     * @return string the setting value or null when not exists
+     */
+    public function getUncached($name, $default = null)
+    {
+        $record = $this->find()->andWhere(['name' => $name])->one();
+        return ($record !== null) ? $record->value : $default;
+    }
+
+    /**
      * Deletes setting
      * 
      * @param string $name
