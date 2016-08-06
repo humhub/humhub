@@ -18,7 +18,7 @@
  */
 return [
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'Рекомендуется использовать TLS/SSL шифрование на реальных проектах, чтобы защититься от передачи паролей в открытом виде.',
-    'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Задает фильтр, который должен применяться при попытке входа. %uid заменяет имя пользователя во время логина. Например: &quot;(sAMAccountName=%s)&quot; или &quot;(uid=%s)&quot;',
+    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Задает фильтр, который должен применяться при попытке входа. %s заменяет имя пользователя во время логина. Например: &quot;(sAMAccountName=%s)&quot; или &quot;(uid=%s)&quot;',
     'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => 'LDAP Атрибут для E-Mail адреса. По умолчанию: &quotmail&quot;',
     'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'LDAP Атрибут для Логина. Пример: & quotuid & Quot; или & Quot; sAMAccountName&quot;',
     'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Ограничить доступ к пользователям с указанными критериями. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',

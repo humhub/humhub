@@ -43,7 +43,7 @@ use humhub\models\Setting;
     <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'The default base DN used for searching for accounts.'); ?></p>
 
     <?php echo $form->field($model, 'loginFilter')->textInput(['readonly' => Setting::IsFixed('auth.ldap.loginFilter', 'user')]); ?>
-    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;'); ?></p>
+    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;'); ?></p>
 
     <?php echo $form->field($model, 'userFilter')->textInput(['readonly' => Setting::IsFixed('auth.ldap.userFilter', 'user')]); ?>
     <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_authentication_ldap', 'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;'); ?></p>

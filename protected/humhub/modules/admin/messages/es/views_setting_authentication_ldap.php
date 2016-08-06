@@ -19,7 +19,7 @@
 return [
     'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'Una conexión TLS/SSL es altamente recomendada en entornos de producción para evitar que las contraseñas se transmitan en texto claro.',
-    'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Define el filtro que aplicar cuando se intenta iniciar sesión. %uid reemplaza el nombre de usuario en la acción de iniciar sesión. Ejemplo: quot;(sAMAccountName=%s)&quot; o &quot;(uid=%s)&quot;',
+    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Define el filtro que aplicar cuando se intenta iniciar sesión. %s reemplaza el nombre de usuario en la acción de iniciar sesión. Ejemplo: quot;(sAMAccountName=%s)&quot; o &quot;(uid=%s)&quot;',
     'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'Atributo LDAP para el nombre de usuario. Ejemplo: &quotuid&quot; o &quot;sAMAccountName&quot;',
     'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limita el acceso a usuarios que cumplan estos criterios. Ejemplo: &quot(objectClass=posixAccount)&quot; o &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',
     'Save' => 'Guardar',
