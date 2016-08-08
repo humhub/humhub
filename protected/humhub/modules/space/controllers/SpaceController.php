@@ -60,6 +60,13 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $space = $this->getSpace();
 
+        if (!$space->isMember()) {
+            $defaultPageUrl = \humhub\modules\space\widgets\Menu::getGuestsDefaultPageUrl($space);
+            if ($defaultPageUrl != null) {
+                return $this->redirect($defaultPageUrl);
+            }
+        }
+
         $defaultPageUrl = \humhub\modules\space\widgets\Menu::getDefaultPageUrl($space);
         if ($defaultPageUrl != null) {
             return $this->redirect($defaultPageUrl);
