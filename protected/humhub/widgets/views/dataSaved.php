@@ -9,7 +9,9 @@
         /* animate the flash message */
         $('.data-saved').hide();
         $('.data-saved').fadeIn('slow', function() {
-            $('.data-saved').delay(1000).fadeOut('slow');
+            $('.data-saved').delay(1000).fadeOut('slow', function() {
+                $(this).remove();
+            });
         });
 
     </script>
