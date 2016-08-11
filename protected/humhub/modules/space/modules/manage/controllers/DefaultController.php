@@ -41,6 +41,7 @@ class DefaultController extends Controller
         $space = \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace::findOne(['id' => $this->contentContainer->id]);
         $space->scenario = 'edit';
         $space->indexUrl = Yii::$app->getModule('space')->settings->space()->get('indexUrl');
+        $space->indexGuestUrl = Yii::$app->getModule('space')->settings->space()->get('indexGuestUrl');
         
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
