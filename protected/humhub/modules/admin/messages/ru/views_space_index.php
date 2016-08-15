@@ -23,4 +23,5 @@ return [
     'Actions' => 'Действия',
     'Overview' => 'Обзор',
     'Settings' => 'Настройки',
+    'Spaces' => 'Пространства'
 ];

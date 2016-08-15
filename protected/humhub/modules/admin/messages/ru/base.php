@@ -19,9 +19,9 @@ return array (
   'Proxy' => 'Прокси',
   'Security' => 'Безопасность',
   'Self test' => '',
-  'Spaces' => 'Пространств',
+  'Spaces' => 'Пространства',
   'Statistics' => 'Статистика',
-  'User posts' => '',
+  'User posts' => 'Посты пользователей',
   'Userprofiles' => 'Профиль пользователя',
   'Users' => 'Пользователи',
 );
