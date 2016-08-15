@@ -63,12 +63,13 @@ class Profile extends \yii\db\ActiveRecord
     {
         $rules = [
             [['user_id'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id'], 'integer']
         ];
 
         foreach (ProfileField::find()->all() as $profileField) {
             $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
         }
+        
         return $rules;
     }
 
@@ -88,18 +89,21 @@ class Profile extends \yii\db\ActiveRecord
             $syncAttributes = \humhub\modules\user\authclient\AuthClientHelpers::getSyncAttributesByUser($this->user);
         }
 
-
-        $fields = array();
         foreach (ProfileField::find()->all() as $profileField) {
-            $scenarios['editAdmin'][] = $profileField->internal_name;
+            // Some fields consist of multiple field definitions (e.g. Birthday)
+            foreach($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
+                $scenarios['editAdmin'][] = $fieldName;
 
-            if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
-                $scenarios['editProfile'][] = $profileField->internal_name;
-            }
-            if ($profileField->show_at_registration) {
-                $scenarios['registration'][] = $profileField->internal_name;
+                if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
+                    $scenarios['editProfile'][] = $fieldName;
+                }
+                
+                if ($profileField->show_at_registration) {
+                    $scenarios['registration'][] = $fieldName;
+                }
             }
         }
+  
         return $scenarios;
     }
 

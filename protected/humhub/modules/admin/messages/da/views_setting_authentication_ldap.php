@@ -18,7 +18,7 @@
  */
 return [
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'En TLS/SSL er kraftig foretrukket i produktionsmiljøer for at modvirke adgangskoder fra at blive sendt i ren tekst.',
-    'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definerer filteret for at anvende, når der er forsøgt på at logge ind. %uid udskrifter brugernavnet ved login. Eksempel: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
+    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definerer filteret for at anvende, når der er forsøgt på at logge ind. %s udskrifter brugernavnet ved login. Eksempel: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
     'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => 'LDAP Attribut for E-Mail adresse. Standard: &quotmail&quot;',
     'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'LDAP Attribut for Brugernavn. Eksempel: &quotuid&quot; or &quot;sAMAccountName&quot;',
     'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Begræns adgangen for brugere, der opfylder disse kriterier. Eksempel: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',

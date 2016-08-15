@@ -8,7 +8,7 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.1.0-beta.1',
+    'version' => '1.1.0-beta.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
     'sourceLanguage' => 'en',
@@ -84,6 +84,7 @@ $config = [
             ],
         ],
         'assetManager' => [
+            'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
         ],
         'view' => [
@@ -192,6 +193,9 @@ $config = [
         ],
         // Allowed languages limitation (optional)
         'allowedLanguages' => [],
+        'tour' => [
+            'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
+        ],
     ]
 ];
 

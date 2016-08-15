@@ -34,12 +34,10 @@ class Members extends Widget
      */
     public function run()
     {
-        $memberQuery = $this->space->getMemberships();
-        $memberQuery->joinWith('user');
-        $memberQuery->limit($this->maxMembers);
-        $memberQuery->where(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);
+        $query = \humhub\modules\space\models\Membership::getSpaceMembersQuery($this->space);
+        $query->limit($this->maxMembers);
 
-        return $this->render('members', ['space' => $this->space, 'maxMembers' => $this->maxMembers, 'members' => $memberQuery->all()]);
+        return $this->render('members', ['space' => $this->space, 'maxMembers' => $this->maxMembers, 'users' => $query->all()]);
     }
 
 }

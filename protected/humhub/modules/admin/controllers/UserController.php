@@ -82,6 +82,11 @@ class UserController extends Controller
                     'class' => 'form-control',
                     'maxlength' => 100,
                 ],
+                'groupSelection' => [
+                    'id' => 'user_edit_groups',
+                    'type' => 'multiselectdropdown',
+                    'items' => UserEditForm::getGroupItems()
+                ],
                 'status' => [
                     'type' => 'dropdownlist',
                     'class' => 'form-control',
@@ -90,11 +95,6 @@ class UserController extends Controller
                         User::STATUS_DISABLED => Yii::t('AdminModule.controllers_UserController', 'Disabled'),
                         User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.controllers_UserController', 'Unapproved'),
                     ],
-                ],
-                'groupSelection' => [
-                    'id' => 'user_edit_groups',
-                    'type' => 'multiselectdropdown',
-                    'items' => UserEditForm::getGroupItems()
                 ]
             ],
         ];

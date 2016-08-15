@@ -21,7 +21,7 @@ return array (
   'Login' => 'Inici de sessió',
   'Logout' => 'Sortir',
   'Menu' => 'Menú',
-  'Module is not on this content container enabled!' => '',
+  'Module is not enabled on this content container!' => '',
   'My profile' => 'El meu perfil',
   'New profile image' => 'Nova imatge de perfil',
   'Next' => 'Següent',

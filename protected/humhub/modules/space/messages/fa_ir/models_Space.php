@@ -17,11 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Color' => '',
-    'Homepage' => '',
+    'Administrators' => '',
+    'Default content visibility' => '',
+    'Members' => '',
+    'Moderators' => '',
+    'Users' => '',
+    'Color' => 'رنگ',
     'Created At' => 'ایجادشده در',
     'Created By' => 'ایجادشده توسط',
     'Description' => 'توضیحات',
+    'Homepage' => 'صفحه خانه',
     'Join Policy' => 'سیاست پیوستن',
     'Name' => 'نام',
     'Owner' => 'دارنده',

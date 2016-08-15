@@ -60,6 +60,13 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $space = $this->getSpace();
 
+        if (!$space->isMember()) {
+            $defaultPageUrl = \humhub\modules\space\widgets\Menu::getGuestsDefaultPageUrl($space);
+            if ($defaultPageUrl != null) {
+                return $this->redirect($defaultPageUrl);
+            }
+        }
+
         $defaultPageUrl = \humhub\modules\space\widgets\Menu::getDefaultPageUrl($space);
         if ($defaultPageUrl != null) {
             return $this->redirect($defaultPageUrl);
@@ -75,7 +82,15 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionHome()
     {
-        return $this->render('home', ['space' => $this->contentContainer]);
+        $space = $this->contentContainer;
+        $canCreatePosts = $space->permissionManager->can(new \humhub\modules\post\permissions\CreatePost());
+        $isMember = $space->isMember();
+
+        return $this->render('home', [
+                    'space' => $space,
+                    'canCreatePosts' => $canCreatePosts,
+                    'isMember' => $isMember
+        ]);
     }
 
     /**

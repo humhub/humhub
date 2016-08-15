@@ -63,7 +63,9 @@ $.fn.spacepicker = function (options) {
         // simulate focus out
         $('#space_input_field').focusout(function () {
             $('#space_tags').removeClass('focus');
-        })
+        });
+        
+        $('body').append($('#spacepicker'));
     }
 
     function restoreSpaceTags(html) {
@@ -138,7 +140,7 @@ $.fn.spacepicker = function (options) {
 
             // set spacepicker position in bottom of the space input
             $('#spacepicker').css({
-                position: "fixed",
+                position: "absolute",
                 top: $('#space_input_field').offset().top + 30,
                 left: $('#space_input_field').offset().left + 2
             })

@@ -12,7 +12,6 @@ use Yii;
 use humhub\libs\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\user\libs\Ldap;
 
 /**
  * SettingController
@@ -29,8 +28,6 @@ class SettingController extends Controller
     {
         $this->setActionTitles([
             'basic' => Yii::t('AdminModule.base', 'Basic'),
-            'authentication' => Yii::t('AdminModule.base', 'Authentication'),
-            'authentication-ldap' => Yii::t('AdminModule.base', 'Authentication'),
             'caching' => Yii::t('AdminModule.base', 'Caching'),
             'statistic' => Yii::t('AdminModule.base', 'Statistics'),
             'mailing' => Yii::t('AdminModule.base', 'Mailing'),
@@ -84,64 +81,6 @@ class SettingController extends Controller
     }
 
     /**
-     * Returns a List of Users
-     */
-    public function actionAuthentication()
-    {
-        $form = new \humhub\modules\admin\models\forms\AuthenticationSettingsForm;
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
-        }
-
-        // Build Group Dropdown
-        $groups = array();
-        $groups[''] = Yii::t('AdminModule.controllers_SettingController', 'None - shows dropdown in user registration.');
-        foreach (\humhub\modules\user\models\Group::find()->all() as $group) {
-            if (!$group->is_admin_group) {
-                $groups[$group->id] = $group->name;
-            }
-        }
-
-        return $this->render('authentication', array('model' => $form, 'groups' => $groups));
-    }
-
-    public function actionAuthenticationLdap()
-    {
-        $form = new \humhub\modules\admin\models\forms\AuthenticationLdapSettingsForm;
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
-            return $this->redirect(['/admin/setting/authentication-ldap']);
-        }
-
-        $enabled = false;
-        $userCount = 0;
-        $errorMessage = "";
-
-        if (Yii::$app->getModule('user')->settings->get('auth.ldap.enabled')) {
-            $enabled = true;
-            try {
-                $ldapAuthClient = new \humhub\modules\user\authclient\ZendLdapClient();
-                $ldap = $ldapAuthClient->getLdap();
-                $userCount = $ldap->count(
-                        Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter'), Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'), \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB
-                );
-            } catch (\Zend\Ldap\Exception\LdapException $ex) {
-                $errorMessage = $ex->getMessage();
-            } catch (\Exception $ex) {
-                $errorMessage = $ex->getMessage();
-            }
-        }
-
-        return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
-    }
-
-    public function actionLdapRefresh()
-    {
-        Ldap::getInstance()->refreshUsers();
-        return $this->redirect(['/admin/setting/authentication-ldap']);
-    }
-
-    /**
      * Caching Options
      */
     public function actionCaching()
@@ -149,7 +88,7 @@ class SettingController extends Controller
         $form = new \humhub\modules\admin\models\forms\CacheSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
-
+            Yii::$app->assetManager->clear();
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }

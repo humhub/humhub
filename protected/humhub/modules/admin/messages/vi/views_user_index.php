@@ -22,6 +22,7 @@ return [
     'Group Manager' => '',
     'Last login' => '',
     'Overview' => '',
+    'Send invite' => '',
     'Settings' => '',
     'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
     'Users' => '',

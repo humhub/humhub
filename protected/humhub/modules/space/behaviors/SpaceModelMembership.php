@@ -204,16 +204,13 @@ class SpaceModelMembership extends Behavior
 
         $userInvite = Invite::findOne(['email' => $email]);
         // No invite yet
-        if ($userInvite == null) {
+         if ($userInvite == null) {
             // Invite EXTERNAL user
             $userInvite = new Invite();
             $userInvite->email = $email;
             $userInvite->source = Invite::SOURCE_INVITE;
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
-            $userInvite->save();
-            $userInvite->sendInviteMail();
-
             // There is a pending registration
             // Steal it und send mail again
             // Unfortunately there a no multiple workspace invites supported
@@ -221,10 +218,14 @@ class SpaceModelMembership extends Behavior
         } else {
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
-            $userInvite->save();
-            $userInvite->sendInviteMail();
         }
-        return true;
+        
+        if($userInvite->validate() && $userInvite->save()) {
+            $userInvite->sendInviteMail();
+            return true;
+        } 
+        
+        return false;
     }
 
     /**

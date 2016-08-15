@@ -9,6 +9,7 @@
 namespace humhub\components\behaviors;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use humhub\models\Setting;
 
@@ -26,6 +27,13 @@ class AccessControl extends \yii\base\ActionFilter
      * @var array
      */
     public $guestAllowedActions = [];
+
+    /**
+     * Rules for access to controller
+     *
+     * @var array
+     */
+    public $rules = [];
 
     /**
      * Only allow admins access to this controller
@@ -51,7 +59,7 @@ class AccessControl extends \yii\base\ActionFilter
             Yii::$app->response->redirect(['/user/auth/login']);
             return false;
         }
-
+        
         if (Yii::$app->user->isGuest) {
             if (!$this->loggedInOnly && !$this->adminOnly) {
                 return true;
@@ -59,7 +67,11 @@ class AccessControl extends \yii\base\ActionFilter
             if (in_array($action->id, $this->guestAllowedActions) && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
                 return true;
             }
-
+            if (!empty($this->rules) && !empty($this->guestAllowedActions)) {
+                if (in_array($action->id, $this->guestAllowedActions)){
+                    return true;
+                }
+            }
             Yii::$app->user->loginRequired();
             return false;
         }
@@ -68,9 +80,27 @@ class AccessControl extends \yii\base\ActionFilter
             $this->forbidden();
         }
 
+        if (!empty($this->rules)) {
+            $action = Yii::$app->controller->action->id;
+            $userGroups = ArrayHelper::getColumn(ArrayHelper::toArray($identity->groups), 'name');
+            $userGroups = array_map('strtolower', $userGroups);
+            foreach ($this->rules as $rule){
+                if (!empty($rule['groups'])){
+                    $allowedGroups = array_map('strtolower', $rule['groups']);
+                    foreach ($allowedGroups as $allowedGroup){
+                        if(in_array($allowedGroup, $userGroups) && in_array($action, $rule['actions'])){
+                            return true;
+                        }
+                    }
+                }
+            }
+            $this->forbidden();
+        }
+
         if ($this->loggedInOnly) {
             return true;
         }
+       
         return false;
     }
 

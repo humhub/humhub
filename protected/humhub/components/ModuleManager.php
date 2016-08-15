@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
+use yii\helpers\FileHelper;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\models\ModuleEnabled;
 
@@ -295,9 +296,9 @@ class ModuleManager extends \yii\base\Component
             }
 
             $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
-            if (!@rename($module->getBasePath(), $backupFolderName)) {
-                throw new Exception("Could not move module to backup folder!" . $backupFolderName);
-            }
+            $moduleBasePath = $module->getBasePath();
+            FileHelper::copyDirectory($moduleBasePath, $backupFolderName);
+            FileHelper::removeDirectory($moduleBasePath);
         } else {
             //TODO: Delete directory
         }

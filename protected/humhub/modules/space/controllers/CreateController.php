@@ -49,16 +49,16 @@ class CreateController extends Controller
     /**
      * Creates a new Space
      */
-    public function actionCreate()
+    public function actionCreate($visibility = null)
     {
         // User cannot create spaces (public or private)
-        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
+        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace)) {
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
 
         $model = $this->createSpaceModel();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->actionModules($model->id);
         }
 
@@ -69,8 +69,13 @@ class CreateController extends Controller
         if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
             $visibilityOptions[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Members only)');
         }
-        if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
+        if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace)) {
             $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
+        }
+
+        // allow setting pre-selected visibility
+        if ($visibility !== null && isset($visibilityOptions[$visibility])) {
+            $model->visibility = $visibility;
         }
 
         $joinPolicyOptions = [
@@ -90,11 +95,7 @@ class CreateController extends Controller
         $space = Space::find()->where(['id' => $space_id])->one();
 
         if (count($space->getAvailableModules()) == 0) {
-
-            $model = new \humhub\modules\space\models\forms\InviteForm();
-            $model->space = $space;
-
-            return $this->renderAjax('invite', ['spaceId' => $space->id, 'model' => $model, 'space' => $space]);
+            return $this->actionInvite($space);
         } else {
             return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
         }
@@ -103,10 +104,9 @@ class CreateController extends Controller
     /**
      * Invite user
      */
-    public function actionInvite()
+    public function actionInvite($space = null)
     {
-
-        $space = Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one();
+        $space = ($space == null) ? Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one() : $space;
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;

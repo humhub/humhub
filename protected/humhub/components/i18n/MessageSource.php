@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -32,7 +32,7 @@ class MessageSource extends \yii\i18n\PhpMessageSource
 
     protected function getConfigMessageFilePath($category, $language)
     {
-        return Yii::getAlias("@config/messages" . "/$language/" . $category . '.php');
+        return Yii::getAlias(Yii::$app->i18n->messageOverwritePath . "/$language/" . $category . '.php');
     }
 
     /**
@@ -42,7 +42,7 @@ class MessageSource extends \yii\i18n\PhpMessageSource
      */
     protected function loadMessages($category, $language)
     {
-        
+
         $messageFile = $this->getMessageFilePath($category, $language);
         $messages = $this->loadMessagesFromFile($messageFile);
 
@@ -55,7 +55,7 @@ class MessageSource extends \yii\i18n\PhpMessageSource
         } elseif ($messages === null && $configMessages !== null) {
             $messages = $configMessages;
         }
-        
+
         $fallbackLanguage = substr($language, 0, 2);
         if ($fallbackLanguage != $language) {
             $fallbackMessageFile = $this->getMessageFilePath($category, $fallbackLanguage);

@@ -21,7 +21,7 @@ return array (
   'Login' => '',
   'Logout' => 'Αποσύνδεση',
   'Menu' => 'Μενού',
-  'Module is not on this content container enabled!' => '',
+  'Module is not enabled on this content container!' => '',
   'My profile' => 'Το προφίλ μου',
   'New profile image' => 'Νέα εικόνα προφίλ',
   'Next' => '',

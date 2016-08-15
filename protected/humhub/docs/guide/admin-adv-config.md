@@ -31,7 +31,7 @@ You can overwrite the default HumHub / Yii configuration in the folder `/protect
 
 ## Configurations
 
-# Language
+### Language
 
 
 **Restrict Languages:**
@@ -72,9 +72,3 @@ return array (
   'What\'s on your mind?' => 'Wie geht es dir heute?',
 );
 ```
-
-# Further available params
-
-The following params are available to ch
-
- - **moduleAutoloadPaths** - Can be used to change the path of your modules folder

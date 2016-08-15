@@ -3,7 +3,7 @@ Installation
 
 ## Preparation
 
-Create an MySQL Database, e.g.:
+Create a MySQL Database, e.g.:
 
 ```sql
 CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -11,40 +11,41 @@ GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_cha
 FLUSH PRIVILEGES;
 ```
 
-> Note: Do not forget to change the `humhub_dbuser` and `password_changeme`!
+> Note: Do not forget to change the `humhub_dbuser` and `password_changeme` placeholders!
 
 ## Get HumHub
 
 ### Via: Download Package
 
 The easiest way to get HumHub is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
+This package already includes all external dependencies and doesn't require a composer update.
 After the download is completed, just extract the package into the htdocs folder of your webserver.
 
 ### Via: Git/Composer
 
-To be able to install a branch retrieved by git you'll have to run a composer update to download all external dependencies.
+To be able to install a branch retrieved by git, you'll have to run a composer update to download external dependencies.
 
-- Clone Git Repository
+ - Clone Git Repository:
 
 ```
 git clone https://github.com/humhub/humhub.git
 ```
 
-- Switch to stable branch (recommended)
+ - Switch to stable branch (recommended):
 
 ```
 git checkout stable
 ```
 
-- Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
-- Navigate to your HumHub webroot and fetch dependencies
+ - Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
+ - Navigate to your HumHub webroot and fetch dependencies:
 
 ```
 php composer.phar global require "fxp/composer-asset-plugin:~1.1.1"
-composer update
+php composer.phar update
 ```
 
-> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](http://localhost/codebase/doku/guide-admin-updating.html#gitcomposer-based-installations))
+> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](admin-updating.html#gitcomposer-based-installations))
 
 ## Setting up
 
@@ -70,7 +71,7 @@ Make the following files executable:
 
 ### Start Installer
 
-Open installation in your browser (e.g. [http://localhost/humhub](http://localhost/humhub))
+Open the installation guide in your browser (e.g. [http://localhost/humhub](http://localhost/humhub))
 
 
 ## Fine Tuning
@@ -85,8 +86,8 @@ By default the PHP Mail Transport is used. <http://php.net/manual/en/mail.setup.
 
 ### Enable Url Rewriting (Optional)
 
-1. Rename **.htaccess.dist ** to **.htaccess**
-2. Modify local configuration (protected/config/common.php)
+Rename **.htaccess.dist ** to **.htaccess**
+Modify the local configuration (protected/config/common.php):
 
 ```php
 <?php
@@ -116,7 +117,7 @@ Example Tab:
 
 ### Disable Errors / Debugging
 
-- Modify *index.php* in humhub root directory
+ - Modify *index.php* in your humhub root directory
      
 ```php
 // comment out the following two lines when deployed to production
@@ -124,4 +125,4 @@ Example Tab:
 // defined('YII_ENV') or define('YII_ENV', 'dev');
 ```
 
-- Delete *index-test.php* in humhub root directory if exists
+ - Delete *index-test.php* in your humhub root directory if exists

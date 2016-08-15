@@ -125,6 +125,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
+            'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default content visibility'),
         );
     }
 
@@ -194,10 +195,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function beforeDelete()
     {
-        foreach (Setting::findAll(['space_id' => $this->id]) as $spaceSetting) {
-            $spaceSetting->delete();
-        }
-
         foreach ($this->getAvailableModules() as $moduleId => $module) {
             if ($this->isModuleEnabled($moduleId)) {
                 $this->disableModule($moduleId);
@@ -489,11 +486,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function getUserGroups()
     {
         $groups = [
-            self::USERGROUP_OWNER => 'Owner',
-            self::USERGROUP_ADMIN => 'Administrators',
-            self::USERGROUP_MODERATOR => 'Moderators',
-            self::USERGROUP_MEMBER => 'Members',
-            self::USERGROUP_USER => 'Users'
+            self::USERGROUP_OWNER => Yii::t('SpaceModule.models_Space', 'Owner'),
+            self::USERGROUP_ADMIN => Yii::t('SpaceModule.models_Space', 'Administrators'),
+            self::USERGROUP_MODERATOR => Yii::t('SpaceModule.models_Space', 'Moderators'),
+            self::USERGROUP_MEMBER => Yii::t('SpaceModule.models_Space', 'Members'),
+            self::USERGROUP_USER => Yii::t('SpaceModule.models_Space', 'Users')
         ];
 
         // Add guest groups if enabled

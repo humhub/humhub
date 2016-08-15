@@ -173,19 +173,21 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'id' => 'ID',
             'guid' => 'Guid',
             'wall_id' => 'Wall ID',
-            'status' => 'Status',
-            'username' => 'Username',
-            'email' => 'Email',
-            'auth_mode' => 'Auth Mode',
-            'tags' => 'Tags',
-            'language' => 'Language',
-            'last_activity_email' => 'Last Activity Email',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-            'last_login' => 'Last Login',
-            'visibility' => 'Visibility',
+            'status' => Yii::t('UserModule.models_User', 'Status'),
+            'username' => Yii::t('UserModule.models_User', 'Username'),
+            'email' => Yii::t('UserModule.models_User', 'Email'),
+            'profile.firstname' => Yii::t('UserModule.models_User', 'Firstname'),
+            'profile.lastname' => Yii::t('UserModule.models_User', 'Lastname'),
+            'auth_mode' => Yii::t('UserModule.models_User', 'Auth Mode'),
+            'tags' => Yii::t('UserModule.models_User', 'Tags'),
+            'language' => Yii::t('UserModule.models_User', 'Language'),
+            'last_activity_email' => Yii::t('UserModule.models_User', 'Last Activity Email'),
+            'created_at' => Yii::t('UserModule.models_User', 'Created at'),
+            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
+            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
+            'last_login' => Yii::t('UserModule.models_User', 'Last Login'),
+            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
         ];
     }
 
@@ -245,7 +247,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all GroupUser relations of this user as AcriveQuery
+     * Returns all GroupUser relations of this user as ActiveQuery
      * @return type
      */
     public function getGroupUsers()
@@ -254,8 +256,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all Group relations of this user as AcriveQuery
-     * @return AcriveQuery
+     * Returns all Group relations of this user as ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroups()
     {
@@ -272,8 +274,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all GroupUser relations this user is a manager of as AcriveQuery.
-     * @return AcriveQuery
+     * Returns all GroupUser relations this user is a manager of as ActiveQuery.
+     * @return ActiveQuery
      */
     public function getManagerGroupsUser()
     {
@@ -281,8 +283,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all Groups this user is a maanger of as AcriveQuery.
-     * @return AcriveQuery
+     * Returns all Groups this user is a maanger of as ActiveQuery.
+     * @return ActiveQuery
      */
     public function getManagerGroups()
     {
@@ -292,9 +294,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Returns all user this user is related as friend as AcriveQuery.
+     * Returns all user this user is related as friend as ActiveQuery.
      * Returns null if the friendship module is deactivated.
-     * @return AcriveQuery
+     * @return ActiveQuery
      */
     public function getFriends()
     {
@@ -390,11 +392,16 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function afterSave($insert, $changedAttributes)
     {
+        // Make sure we get an direct User model instance
+        // (e.g. not UserEditForm) for search rebuild
+        $user = User::findOne(['id' => $this->id]);
+
         if ($this->status == User::STATUS_ENABLED) {
-            Yii::$app->search->update($this);
+            Yii::$app->search->update($user);
         } else {
-            Yii::$app->search->delete($this);
+            Yii::$app->search->delete($user);
         }
+
         if ($insert) {
             if ($this->status == User::STATUS_ENABLED) {
                 $this->setUpApproved();
@@ -405,7 +412,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         if (Yii::$app->user->id == $this->id) {
-            Yii::$app->user->setIdentity($this);
+            Yii::$app->user->setIdentity($user);
         }
         return parent::afterSave($insert, $changedAttributes);
     }

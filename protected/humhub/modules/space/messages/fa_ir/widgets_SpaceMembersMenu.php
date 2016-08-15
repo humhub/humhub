@@ -2,6 +2,6 @@
 return array (
   'Members' => 'اعضا',
   'Owner' => 'دارنده',
-  'Pending Approvals' => '',
-  'Pending Invites' => '',
+  'Pending Approvals' => 'در انتظار تاييد',
+  'Pending Invites' => 'در انتظار دعوت',
 );
