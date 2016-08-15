@@ -1,6 +1,6 @@
 <?php
 return array (
   'Directory' => 'Каталог',
-  'Members' => 'Участников',
+  'Members' => 'Участники',
   'Send invite' => 'Отправить приглашение',
 );
