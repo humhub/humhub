@@ -8,7 +8,7 @@ return array (
   'Email' => 'E-Mail Adresse',
   'Firstname' => 'Vorname',
   'Language' => 'Sprache',
-  'Last Activity Email' => '',
+  'Last Activity Email' => 'Letzte Aktivität (Email)',
   'Last Login' => 'Zuletzt angemeldet am',
   'Lastname' => 'Nachname',
   'Manager' => 'Manager',
