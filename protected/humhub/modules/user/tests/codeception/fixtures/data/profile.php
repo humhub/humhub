@@ -20,5 +20,6 @@
 return [
     ['user_id' => 1, 'firstname' => 'Admin', 'lastname' => 'Tester'],
     ['user_id' => 2, 'firstname' => 'Peter', 'lastname' => 'Tester'],
-    ['user_id' => 3, 'firstname' => 'Sara', 'lastname' => 'Tester']
+    ['user_id' => 3, 'firstname' => 'Sara', 'lastname' => 'Tester'],
+    ['user_id' => 4, 'firstname' => 'Andreas', 'lastname' => 'Tester']
 ];

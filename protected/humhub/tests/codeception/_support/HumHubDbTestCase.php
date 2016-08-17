@@ -3,6 +3,7 @@
 namespace tests\codeception\_support;
 
 use Yii;
+use Codeception\TestCase\Test;
 
 /**
  * Inherited Methods
@@ -23,8 +24,11 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
 {
     protected function setUp()
     {
-        parent::setUp();
+        Test::setUp();
+        $this->mockApplication();
         $this->initModules();
+        $this->unloadFixtures();
+        $this->loadFixtures();
     }
     
     /**
@@ -36,5 +40,38 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
         if(!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
         }
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function fixtures()
+    {
+        $result = [];
+
+        $cfg = \Codeception\Configuration::config();
+        if (isset($cfg['fixtures'])) {
+            foreach ($cfg['fixtures'] as $fixtureTable => $fixtureClass) {
+                if ($fixtureClass === 'default') {
+                    $result = array_merge($result, $this->getDefaultFixtures());
+                } else {
+                    $result[$fixtureTable] = ['class' => $fixtureClass];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    protected function getDefaultFixtures()
+    {
+        return [
+            'user' => ['class' => \tests\codeception\fixtures\UserFixture::className()],
+            'profile' => ['class' => \tests\codeception\fixtures\ProfileFixture::className()],
+            'settings' => ['class' => \tests\codeception\fixtures\SettingFixture::className()],
+            'space' => [ 'class' => \tests\codeception\fixtures\SpaceFixture::className()],
+            'space_membership' => [ 'class' => \tests\codeception\fixtures\SpaceMembershipFixture::className()],
+            'contentcontainer' => [ 'class' => \tests\codeception\fixtures\ContentContainerFixture::className()],
+        ];
     }
 }
