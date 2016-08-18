@@ -82,6 +82,8 @@ class Post extends ContentActiveRecord implements Searchable
         // Handle mentioned users
         \humhub\modules\user\models\Mentioning::parse($this, $this->message);
 
+        HashtagPost::addTag($this);
+
         return true;
     }
 
@@ -132,4 +134,11 @@ class Post extends ContentActiveRecord implements Searchable
         return $attributes;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHashtags()
+    {
+        return $this->hasMany(HashtagPost::className(), ['post_id' => 'id']);
+    }
 }

@@ -8,6 +8,8 @@
 
 namespace humhub\modules\search\controllers;
 
+use humhub\modules\post\models\HashtagPost;
+use humhub\modules\post\models\Post;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
@@ -51,6 +53,9 @@ class SearchController extends Controller
     public function actionIndex()
     {
         $keyword = Yii::$app->request->get('keyword', "");
+        if (isset($keyword[0]) && $keyword[0] == '#') {
+            return $this->redirect(['hashtag', 'q' => substr($keyword, 1)]);
+        }
         $scope = Yii::$app->request->get('scope', "");
         $page = (int)Yii::$app->request->get('page', 1);
         $limitSpaceGuids = Yii::$app->request->get('limitSpaceGuids', "");
@@ -97,6 +102,42 @@ class SearchController extends Controller
             'pagination' => $pagination,
             'totals' => $this->getTotals($keyword, $options),
             'limitSpaceGuids' => $limitSpaceGuids
+        ));
+    }
+
+    /**
+     * Hashtag search
+     */
+    public function actionHashtag()
+    {
+        $tag = Yii::$app->request->get('q', "");
+        $page = (int)Yii::$app->request->get('page', 1);
+        $pageSize = Yii::$app->request->get('per-page', "");
+
+        $posts_id = HashtagPost::find()->select('post_id')->where(['tag' => '#' . $tag])->all();
+
+        $posts_id = array_map(function ($value) {
+            return $value['post_id'];
+        }, $posts_id);
+        $posts = Post::find()->where(['id' => $posts_id])->orderBy('id DESC')->all();
+
+        $pagination = new \yii\data\Pagination;
+        $pagination->totalCount = count($posts);
+        $pagination->pageSize = Yii::$app->settings->get('paginationSize');
+
+        if ($pageSize) {
+            if ($page > 1) {
+                $offset = ($page - 1) * $pageSize;
+                $posts = array_slice($posts, $offset, $pageSize);
+            } else {
+                $posts = array_slice($posts, 0, $pageSize);
+            }
+        }
+
+        return $this->render('hashtag', array(
+            'keyword' => '#' . $tag,
+            'results' => $posts,
+            'pagination' => $pagination,
         ));
     }
 

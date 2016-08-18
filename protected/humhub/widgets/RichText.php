@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\Html;
 use humhub\models\UrlOembed;
 use humhub\libs\ParameterEvent;
+use yii\helpers\Url;
 
 /**
  * RichText dis
@@ -99,6 +100,9 @@ REGEXP;
         // create image tag for emojis
         $this->text = self::translateEmojis($this->text, ($this->minimal) ? false : true);
 
+        // create link tag for hashtags
+        $this->text = self::translateHashtags($this->text);
+
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
@@ -150,6 +154,16 @@ REGEXP;
             }
             return $hit[0];
         }, $text);
+    }
+
+    /**
+     * Replace hashtags from text to link tag
+     *
+     * @param string $text Contains the complete message
+     */
+    public static function translateHashtags($text)
+    {
+        return preg_replace('/#+(\w+)/u', '<a href="' . Url::to(['/search/search/hashtag']) . '?q=$1">$0</a>', $text);
     }
 
     /**

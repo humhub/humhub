@@ -16,6 +16,7 @@ return [
     ),
     'urlManagerRules' => [
         'search' => 'search/search/index',
-    ]    
+        'search/hashtag' => 'search/search/hashtag',
+    ]
 ];
 ?>
