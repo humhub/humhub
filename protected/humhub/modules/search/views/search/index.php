@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use humhub\modules\search\controllers\SearchController;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+
 ?>
 <div class="container">
     <div class="row">

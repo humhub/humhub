@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Url;
 
+\humhub\modules\stream\assets\StreamAsset::register($this);
+
 $contentId = (int) Yii::$app->request->getQueryParam('wallEntryId');
 $contentIdData = ($contentId != "") ? 'data-stream-contentid="'.$contentId.'"' : '' ;    
 

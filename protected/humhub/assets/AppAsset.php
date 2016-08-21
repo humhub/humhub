@@ -10,44 +10,33 @@ namespace humhub\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * The AppAsset assets are included in the core layout.
+ * This Assetbundle includes some core dependencies and the humhub core api.
+ */
 class AppAsset extends AssetBundle
 {
 
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/animate.min.css',
         'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
-        'resources/at/jquery.atwho.css',
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $js = [
         'js/ekko-lightbox-modified.js',
-        'js/modernizr.js',
-        'js/jquery.cookie.js',
+        //'js/modernizr.js', // In use???
         'js/jquery.highlight.min.js',
-        'js/jquery.autosize.min.js',
-        'js/wysihtml5-0.3.0.js',
-        'js/bootstrap3-wysihtml5.js',
-        'js/jquery.color-2.1.0.min.js',
-        'js/jquery.flatelements.js',
-        'js/jquery.loader.js',
+        //'js/wysihtml5-0.3.0.js',
+        //'js/bootstrap3-wysihtml5.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
-        'js/jquery.pjax.js',
-        'resources/at/jquery.caret.min.js',
-        'resources/at/jquery.atwho.min.js',
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
         'js/jquery.nicescroll.min.js',
-        'js/app.js',
-        'js/dist/humhub.all.js',
-       
     ];
-    
-    //TODO if !debug use humhub.all.min.js
     
     public $depends = [
         'yii\web\YiiAsset',
@@ -60,11 +49,20 @@ class AppAsset extends AssetBundle
         //'humhub\assets\JqueryNiceScrollAsset', 
         'humhub\assets\BluebirdAsset',
         'humhub\assets\JqueryTimeAgoAsset',
-        'humhub\assets\JqueryKnobAsset',
         'humhub\assets\JqueryWidgetAsset',
+        'humhub\assets\JqueryColorAsset', //TODO: only required for post/comment/stream
         'humhub\assets\JqueryPlaceholderAsset',
         'humhub\assets\FontAwesomeAsset',
         'humhub\assets\BlueimpFileUploadAsset',
+        'humhub\assets\JqueryHighlightAsset',
+        'humhub\assets\JqueryCookieAsset',
+        'humhub\assets\JqueryAutosizeAsset',
+        'humhub\assets\JqueryPjaxAsset',
+        'humhub\assets\AtJsAsset',
+        'humhub\assets\AnimateCssAsset',
+        
+        'humhub\assets\CoreApiAsset',
+        'humhub\modules\content\assets\ContentAsset'
     ];
 
 }

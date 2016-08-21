@@ -20,7 +20,7 @@ require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
 $config = yii\helpers\ArrayHelper::merge(
     // add more configurations here
-    (is_readable(__DIR__ . '/protected/config/dynamic.php')) ? require(__DIR__ . '/protected/config/dynamic.php') : [],
+    (is_readable(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php')) ? require(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php') : [],
     
     require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php')
 );

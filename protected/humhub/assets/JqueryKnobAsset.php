@@ -27,5 +27,7 @@ class JqueryKnobAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['dist/jquery.knob.min.js'];
+    
+    public $depends = ['humhub\assets\AppAsset'];
 
 }

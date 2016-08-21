@@ -11,9 +11,9 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * jquery-knob
+ * tabbed form asset
  * 
- * @author luke
+ * @author buddha
  */
 class TabbedFormAsset extends AssetBundle
 {

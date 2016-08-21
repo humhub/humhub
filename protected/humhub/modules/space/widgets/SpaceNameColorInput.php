@@ -2,7 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-use Yii;
 use humhub\components\Widget;
 
 /**

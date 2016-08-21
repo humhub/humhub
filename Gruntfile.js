@@ -1,6 +1,15 @@
 module.exports = function (grunt) {
 
+    var uglifyAssetcfg = {};
+    uglifyAssetcfg[grunt.option('to')] = grunt.option('from');
+
+    var cssMinAssetcfg = {};
+    cssMinAssetcfg[grunt.option('to')] = [grunt.option('from')];
+    
+    grunt.log.write(grunt.option('from'));
+
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         concat: {
             options: {
                 separator: ';',
@@ -24,6 +33,14 @@ module.exports = function (grunt) {
                 files: {
                     'js/dist/humhub.all.min.js': ['js/dist/humhub.all.js']
                 }
+            },
+            assets: {
+                files: uglifyAssetcfg
+            }
+        },
+        cssmin: {
+            target: {
+                files: cssMinAssetcfg
             }
         },
         less: {
@@ -38,6 +55,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
 

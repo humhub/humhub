@@ -37,6 +37,12 @@
         "bower-asset/select2" : "^4.0.2",
         "bower-asset/bluebird" : "^3.3.5",
         "bower-asset/select2-bootstrap-theme" : "0.1.0-beta.4",
+        "bower-asset/jquery.cookie": "^1.4.1",
+        "bower-asset/jquery-color": "^2.1.2",
+        "bower-asset/autosize": "1.*",
+        "bower-asset/jquery-pjax": "1.*",
+        "bower-asset/At.js": "0.5.0",
+        "bower-asset/animate.css": "*",
         "jonnyw/php-phantomjs": "4.*"
     },
     "require-dev": {

@@ -11,9 +11,9 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * jquery-knob
+ * select2 extension asset
  * 
- * @author luke
+ * @author buddha
  */
 class Select2ExtensionAsset extends AssetBundle
 {

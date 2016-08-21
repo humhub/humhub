@@ -1,3 +1,7 @@
+<?php 
+    \humhub\assets\JqueryKnobAsset::register($this);
+?>
+
 <div class="container">
     <div class="row">
         <div class="col-md-2">
