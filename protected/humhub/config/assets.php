@@ -4,12 +4,12 @@
  */
 
 // In the console environment, some path aliases may not exist. Please define these:
-Yii::setAlias('@webroot', __DIR__ . '/..');
+Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
 return [
     // Adjust command/callback for JavaScript files compressing:
-    'jsCompressor' => 'grunt uglify:assets  --from={from} --to={to} --mangle --compress',
+    'jsCompressor' => 'grunt uglify:assets  --from={from} --to={to} -d',
     // Adjust command/callback for CSS files compressing:
     'cssCompressor' => 'grunt cssmin --from={from} --to={to}',
     // The list of asset bundles to compress:
@@ -30,5 +30,10 @@ return [
     'assetManager' => [
         'basePath' => '@webroot/assets',
         'baseUrl' => '@web/assets',
+        'bundles' => [
+            'yii\bootstrap\BootstrapPluginAsset' => [
+                'js' => ['js/bootstrap.min.js']
+            ],
+        ]
     ],
 ];

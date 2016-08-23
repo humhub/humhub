@@ -8,90 +8,91 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('scripts', function(module, require, $) {
+humhub.initModule('scripts', function (module, require, $) {
     var _scripts = [];
-    
-    $(document).ready(function() {
-        $('script[src]').each(function() {
+
+    var init = function () {
+        $('script[src]').each(function () {
             addScript(cutTimestamp($(this).attr('src')));
         });
-    });
-    
-    var cutTimestamp = function(url) {
+    };
+
+    var cutTimestamp = function (url) {
         return url.split('?')[0];
     };
-    
-    var loadOnce = function(urls) {
+
+    var loadOnce = function (urls) {
         urls = $.isArray(urls) ? urls : [urls];
-            
+
         var promises = [];
-        $.each(urls, function(index, scriptUrl) {            
-            if(!containsScript(scriptUrl)) {
+        $.each(urls, function (index, scriptUrl) {
+            if (!containsScript(scriptUrl)) {
                 addScript(scriptUrl);
                 promises.push($.getScript(scriptUrl));
             }
         });
-            
-        promises.push($.Deferred(function( deferred ){
-            $( deferred.resolve );
+
+        promises.push($.Deferred(function (deferred) {
+            $(deferred.resolve);
         }));
-            
+
         return $.when.apply(null, promises);
     };
-    
-    var loadOnceSync = function(urls, callback) {
+
+    var loadOnceSync = function (urls, callback) {
         var deferred = new $.Deferred();
         var promise = deferred.promise();
-        $.each(urls, function(index, scriptUrl) {
-             if(!containsScript(scriptUrl)) {
+        $.each(urls, function (index, scriptUrl) {
+            if (!containsScript(scriptUrl)) {
                 // we need an immediately invoked function expression to capture
                 // the current value of the iteration 
-                (function(url) {
+                (function (url) {
                     // chaining the promises, 
                     // by assigning the new promise to the variable
                     // and returning a promise from the callback
-                    promise = promise.then(function() {
+                    promise = promise.then(function () {
                         addScript(url);
-                        return $.getScript(url).done(function(){});
+                        return $.getScript(url).done(function () {});
                     });
                 }(scriptUrl));
-             }
-         });
-         
-        promise.done(function() {
+            }
+        });
+
+        promise.done(function () {
             callback.apply();
         });
-        
-        promise.fail(function(arg) {
-           console.error('Failed loading scripts for: '+arg); 
-           //Call callback anyway
-           callback.apply();
+
+        promise.fail(function (arg) {
+            console.error('Failed loading scripts for: ' + arg);
+            //Call callback anyway
+            callback.apply();
         });
-        
+
         deferred.resolve();
     };
-    
-    var containsScript = function(url) {
+
+    var containsScript = function (url) {
         var result = false;
         url = cutTimestamp(url);
-        $.each(_scripts, function(index, scriptUrl) {
-            if(scriptUrl === url) {
+        $.each(_scripts, function (index, scriptUrl) {
+            if (scriptUrl === url) {
                 result = true;
                 return false; //leave each
             }
         });
         return result;
     };
-    
-    var addScript = function(url) {
+
+    var addScript = function (url) {
         url = cutTimestamp(url);
         _scripts.push(url);
     };
-    
+
     module.export({
         loadOnce: loadOnce,
         loadOnceSync: loadOnceSync,
         containsScript: containsScript,
-        addScript:addScript
+        addScript: addScript,
+        init: init
     });
 });

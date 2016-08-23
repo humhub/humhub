@@ -10,7 +10,7 @@ Build
 
 ## Assets
  - Yii asset management http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets
- - php yii asset asset.php humhub/config/assets-prod.php
+ - php yii asset humhub/config/assets.php humhub/config/assets-prod.php
 
 
 

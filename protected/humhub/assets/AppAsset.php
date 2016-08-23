@@ -33,9 +33,10 @@ class AppAsset extends AssetBundle
         //'js/bootstrap3-wysihtml5.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
+        'js/jquery.nicescroll.min.js',
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
-        'js/jquery.nicescroll.min.js',
+        
     ];
     
     public $depends = [

@@ -2,12 +2,11 @@ module.exports = function (grunt) {
 
     var uglifyAssetcfg = {};
     uglifyAssetcfg[grunt.option('to')] = grunt.option('from');
-
     var cssMinAssetcfg = {};
     cssMinAssetcfg[grunt.option('to')] = [grunt.option('from')];
     
     grunt.log.write(grunt.option('from'));
-
+    
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         concat: {
@@ -35,6 +34,14 @@ module.exports = function (grunt) {
                 }
             },
             assets: {
+                options: {
+                    preserveComments: /^!|@preserve|@license|@cc_on/i,
+                    //preserveComments: 'all',
+                   // ASCIIOnly: true,
+                    /*beautify: {
+                        "ascii_only": true
+                    },*/
+                },
                 files: uglifyAssetcfg
             }
         },
@@ -51,14 +58,13 @@ module.exports = function (grunt) {
             }
         }
     });
-
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
-
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['concat', 'uglify', 'clean']);
+        
 };
