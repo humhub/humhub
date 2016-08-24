@@ -16,6 +16,7 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "space".
@@ -368,9 +369,10 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      * See CController createUrl() for more details.
      *
      * @since 0.9
-     * @param type $route the URL route.
-     * @param type $params additional GET parameters.
-     * @param type $ampersand the token separating name-value pairs in the URL.
+     * @param string $route the URL route.
+     * @param array $params additional GET parameters.
+     * @param boolean|string $scheme whether to create an absolute URL and if it is a string, the scheme (http or https) to use.
+     * @return string
      */
     public function createUrl($route = null, $params = array(), $scheme = false)
     {
@@ -383,7 +385,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $params['sguid'] = $this->guid;
         }
 
-        return \yii\helpers\Url::toRoute($params, $scheme);
+        return Url::toRoute($params, $scheme);
     }
 
     /**
