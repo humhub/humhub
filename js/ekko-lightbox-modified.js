@@ -261,6 +261,9 @@
                     
                     // Don't resize for small devices
                     if(windowWidth < 700) {
+                        _this.lightbox_container.find('a').css('line-height', function() {
+                            return $(this).parent().height() + 'px';
+                          });
                         return _this;
                     } else {
                         return _this.resize((width < maxW) ? width : maxW);
