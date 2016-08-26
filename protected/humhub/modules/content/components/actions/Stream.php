@@ -26,10 +26,12 @@ class Stream extends \yii\base\Action
     /**
      * @event ActionEvent Event triggered before this action is run.
      * This can be used for example to customize [[activeQuery]] before it gets executed.
+     * @since 1.1.1
      */
     const EVENT_BEFORE_RUN = 'beforeRun';
     /**
      * @event ActionEvent Event triggered after this action is run.
+     * @since 1.1.1
      */
     const EVENT_AFTER_RUN = 'afterRun';
 
