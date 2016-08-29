@@ -10,9 +10,9 @@ namespace humhub\modules\content\components\actions;
 
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\models\Wall;
 use humhub\modules\content\models\WallEntry;
 use humhub\modules\user\models\User;
+use yii\base\ActionEvent;
 use yii\base\Exception;
 
 /**
@@ -23,6 +23,18 @@ use yii\base\Exception;
  */
 class Stream extends \yii\base\Action
 {
+    /**
+     * @event ActionEvent Event triggered before this action is run.
+     * This can be used for example to customize [[activeQuery]] before it gets executed.
+     * @since 1.1.1
+     */
+    const EVENT_BEFORE_RUN = 'beforeRun';
+    /**
+     * @event ActionEvent Event triggered after this action is run.
+     * @since 1.1.1
+     */
+    const EVENT_AFTER_RUN = 'afterRun';
+
 
     /**
      * Constants used for sorting
@@ -71,7 +83,7 @@ class Stream extends \yii\base\Action
      *
      * @var array
      */
-    public $filters = array();
+    public $filters = [];
 
     /**
      * @var \yii\db\ActiveQuery
@@ -84,7 +96,8 @@ class Stream extends \yii\base\Action
      *
      * @var User
      */
-    public $user = null;
+    public $user;
+
 
     public function init()
     {
@@ -92,7 +105,7 @@ class Stream extends \yii\base\Action
         $this->activeQuery = WallEntry::find();
 
         // If no user is set, take current if logged in
-        if (!Yii::$app->user->isGuest && $this->user == null) {
+        if ($this->user === null && !Yii::$app->user->isGuest) {
             $this->user = Yii::$app->user->getIdentity();
         }
 
@@ -139,7 +152,6 @@ class Stream extends \yii\base\Action
 
         $this->activeQuery->limit($this->limit);
         $this->activeQuery->andWhere(['user.status' => User::STATUS_ENABLED]);
-        $this->activeQuery->one();
 
         /**
          * Handle Stream Mode (Normal Stream or Activity Stream)
@@ -148,7 +160,7 @@ class Stream extends \yii\base\Action
             $this->activeQuery->andWhere(['content.object_model' => \humhub\modules\activity\models\Activity::className()]);
 
             // Dont show own activities
-            if ($this->user != null) {
+            if ($this->user !== null) {
                 $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
                 $this->activeQuery->andWhere('content.created_by != :userId', array(':userId' => $this->user->id));
             }
@@ -229,11 +241,10 @@ class Stream extends \yii\base\Action
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $this->init();
-        $wallEntries = $this->activeQuery->all();
+        $wallEntries = $this->getWallEntries();
 
         $output = "";
-        $generatedWallEntryIds = array();
+        $generatedWallEntryIds = [];
         $lastEntryId = "";
         foreach ($wallEntries as $wallEntry) {
 
@@ -265,4 +276,27 @@ class Stream extends \yii\base\Action
         ];
     }
 
+    /**
+     * This method is called right before `run()` is executed.
+     * You may override this method to do preparation work for the action run.
+     * If the method returns false, it will cancel the action.
+     *
+     * @return boolean whether to run the action.
+     */
+    protected function beforeRun()
+    {
+        $event = new ActionEvent($this);
+        $this->trigger(self::EVENT_BEFORE_RUN, $event);
+        return $event->isValid;
+    }
+
+    /**
+     * This method is called right after `run()` is executed.
+     * You may override this method to do post-processing work for the action run.
+     */
+    protected function afterRun()
+    {
+        $event = new ActionEvent($this);
+        $this->trigger(self::EVENT_AFTER_RUN, $event);
+    }
 }
