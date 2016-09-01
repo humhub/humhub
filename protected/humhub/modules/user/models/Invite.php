@@ -108,7 +108,7 @@ class Invite extends \yii\db\ActiveRecord
      */
     public function sendInviteMail()
     {
-
+        $module = Yii::$app->moduleManager->getModule('user');
         $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
 
         // User requested registration link by its self
@@ -127,8 +127,9 @@ class Invite extends \yii\db\ActiveRecord
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
 
-            // Switch to systems default language
-            Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+            if($module->sendInviteMailsInGlobalLanguage) {
+                Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+            }
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
@@ -153,7 +154,9 @@ class Invite extends \yii\db\ActiveRecord
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             // Switch to systems default language
-            Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+            if($module->sendInviteMailsInGlobalLanguage) {
+                Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+            }
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInvite',

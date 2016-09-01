@@ -20,6 +20,11 @@ class Module extends \humhub\components\Module
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\user\controllers';
+    
+    /**
+     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false) 
+     */
+    public $sendInviteMailsInGlobalLanguage = true;
 
     /**
      * @var boolean default state of remember me checkbox on login page
