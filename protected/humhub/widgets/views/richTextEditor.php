@@ -187,10 +187,12 @@ use yii\helpers\Url;
 
         // rebuild tag structure for webkit browsers
         html = html.replace('<div> <br></div>', '<div></div>');
+        html = html.replace('<div><br></div>', '<div></div>');
+
 
         // replace all div tags with br tags (webkit)
         html = html.replace(/\<div>/g, '<br>');
-
+        
         // replace all p tags with br tags (IE)
         html = html.replace(/\<p>/g, '<br>');
 
@@ -202,10 +204,10 @@ use yii\helpers\Url;
 
         // replace all <br> with new line break
         element.html(html.replace(/\<br\s*\>/g, '\n'));
-
+ 
         // return plain text without html tags
-        return element.text();
-
+        return element.text().trim();
+ 
     }
 
     /**

@@ -236,15 +236,17 @@
 
             img = new Image();
             if ((onLoadShowImage == null) || onLoadShowImage === true) {
-                var maxW = 700;
+                var windowWidth =  window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+                var maxW = (windowWidth < 700) ? windowWidth : 700;
+                var maxWVal = (windowWidth < 700) ? '100%' : 700+'px';
                 var maxH = 700;
                 img.onload = function () {
                     var image;
                     var width = img.width;
-                    //width = _this.checkImageDimensions(img.width);
                     var image = $('<img />');
                     image.attr('src', img.src);
-                    image.css('max-width', maxW+'px');
+                    image.css('max-width', maxWVal);
                     image.css('max-height', maxH+'px');
                     image.css('width', 'auto');
                     image.css('height', 'auto');
@@ -254,7 +256,19 @@
                     if (_this.modal_arrows) {
                         _this.modal_arrows.css('display', 'block');
                     }
-                    return _this.resize((width < maxW) ? width : maxW);
+                    
+                    var width = image.width();
+                    
+                    // Don't resize for small devices
+                    if(windowWidth < 700) {
+                        _this.lightbox_container.find('a').css('line-height', function() {
+                            return $(this).parent().height() + 'px';
+                          });
+                        return _this;
+                    } else {
+                        return _this.resize((width < maxW) ? width : maxW);
+                    }
+                    
                 };
                 img.onerror = function () {
                     return _this.error('Failed to load image: ' + src);
@@ -266,9 +280,6 @@
         resize: function (width) {
             var width_inc_padding;
             width_inc_padding = width + this.padding.left + this.padding.right;
-            //this.modal.find('.modal-content').css('width', width_inc_padding);
-            //this.modal.find('.modal-dialog').css('width', width_inc_padding + 20);
-            console.log('width: '+width+' incPadding: '+width_inc_padding);
             this.modal.find('.modal-content').animate({width: width_inc_padding}, 200);
             this.modal.find('.modal-dialog').animate({width: width_inc_padding + 20}, 200);
             this.lightbox_container.find('a').css('line-height', function() {

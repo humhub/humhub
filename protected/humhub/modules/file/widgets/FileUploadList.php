@@ -1,6 +1,8 @@
 <?php
 
 namespace humhub\modules\file\widgets;
+use humhub\components\ActiveRecord;
+use humhub\modules\file\models\File;
 
 /**
  * FileUploadListWidget works in combination of FileUploadButtonWidget and is
@@ -24,7 +26,7 @@ class FileUploadList extends \yii\base\Widget
     /**
      * If object is set, display also already uploaded files
      *
-     * @var HActiveRecord
+     * @var ActiveRecord
      */
     public $object = null;
 
@@ -36,7 +38,11 @@ class FileUploadList extends \yii\base\Widget
 
         $files = array();
         if ($this->object !== null) {
-            $files = \humhub\modules\file\models\File::getFilesOfObject($this->object);
+            if ($this->object->isNewRecord && $this->object->getRelation('content', false) !== null) {
+                $files = File::findAll(['guid' => array_map('trim', explode(',', $this->object->content->attachFileGuidsAfterSave))]);
+            } else {
+                $files = File::getFilesOfObject($this->object);
+            }
         }
 
         return $this->render('fileUploadList', array(
@@ -46,5 +52,3 @@ class FileUploadList extends \yii\base\Widget
     }
 
 }
-
-?>
