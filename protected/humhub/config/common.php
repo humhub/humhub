@@ -27,7 +27,7 @@ $config = [
                 [
                     'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:404', 'yii\web\HttpException:403'],
+                    'except' => ['yii\web\HttpException:404'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
