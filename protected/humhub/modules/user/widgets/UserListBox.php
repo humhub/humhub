@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\widgets;
 
+use Yii;
+
 /**
  * UserListBox returns the content of the user list modal
  * 
@@ -42,7 +44,19 @@ class UserListBox extends \yii\base\Widget
     /**
      * @var int displayed users per page
      */
-    public $pageSize = 8;
+    public $pageSize = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if ($this->pageSize === null) {
+            $this->pageSize = Yii::$app->getModule('user')->userListPaginationSize;
+        }
+
+        parent::init();
+    }
 
     /**
      * @inheritdoc
