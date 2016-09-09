@@ -73,14 +73,12 @@ $(function() {
                     } else {
                         $('#user-banner-image').attr('src', data.result.files.url + '&c=' + Math.random());
                         $('#user-banner-image').addClass('animated bounceIn');
+                        $('#banner-image-upload-edit-button').show();
+                        $('#deleteLinkPost_modal_bannerimagedelete').show();
                     }
 
                     $('#banner-image-upload-loader').hide();
                     $('#banner-image-upload-bar .progress-bar').css('width', '0%');
-                    $('#banner-image-upload-edit-button').show();
-                    $('#deleteLinkPost_modal_bannerimagedelete').show();
-
-
                 }
             }).bind('fileuploadstart', function(e) {
                 $('#banner-image-upload-loader').show();
