@@ -161,7 +161,7 @@ REGEXP;
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
-        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s|\.|")@', function($hit) use(&$buildAnchors) {
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function($hit) use(&$buildAnchors) {
             if ($hit[1] == 'u') {
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
