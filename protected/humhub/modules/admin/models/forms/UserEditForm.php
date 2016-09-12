@@ -76,6 +76,8 @@ class UserEditForm extends \humhub\modules\user\models\User
             }
         }
         
+        $this->groupSelection = ($this->groupSelection == null) ? [] : $this->groupSelection;
+        
         //Add all new selectedGroups to the given user
         foreach ($this->groupSelection as $groupId) {
             if (!$this->isCurrentlyMemberOf($groupId)) {

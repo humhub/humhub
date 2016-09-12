@@ -18,7 +18,7 @@
  */
 return [
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'TLS/SSL jest silnie faworyzowany w środowiskach produkcyjnych w celu zapobiegania przesyłaniu haseł jako czysty tekst.',
-    'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definiuje filtr do zatwierdzenia w czasie próby logowania. %uid zastępuje nazwę użytkownika w czasie akcji logowania. Przykład: &quot;(sAMAccountName=%s)&quot; lub &quot;(uid=%s)&quot;',
+    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definiuje filtr do zatwierdzenia w czasie próby logowania. %s zastępuje nazwę użytkownika w czasie akcji logowania. Przykład: &quot;(sAMAccountName=%s)&quot; lub &quot;(uid=%s)&quot;',
     'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => 'Atrybut LDAP dla adresu email. Domyślnie: &quotmail&quot;',
     'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'Atrybuty LDAP dla nazwy użytkownika. Przykład: &quotuid&quot; lub &quot;sAMAccountName&quot;',
     'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Ogranicza dostęp do użytkowników spełniających te kryteria. Przykład: &quot(objectClass=posixAccount)&quot; lub &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',

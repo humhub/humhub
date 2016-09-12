@@ -66,7 +66,21 @@ class InformationController extends Controller
      */
     public function actionCronjobs()
     {
-        return $this->render('cronjobs', array());
+
+        $currentUser = '';
+        if (function_exists('get_current_user')) {
+            $currentUser = get_current_user();
+        }
+
+        $lastRunHourly = Yii::$app->settings->getUncached('cronLastHourlyRun');
+        $lastRunDaily = Yii::$app->settings->getUncached('cronLastDailyRun');
+
+
+        return $this->render('cronjobs', [
+                    'lastRunHourly' => $lastRunHourly,
+                    'lastRunDaily' => $lastRunDaily,
+                    'currentUser' => $currentUser
+        ]);
     }
 
 }

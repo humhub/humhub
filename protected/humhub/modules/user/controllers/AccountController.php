@@ -267,37 +267,16 @@ class AccountController extends BaseAccountController
      */
     public function actionEmailing()
     {
-        $user = Yii::$app->user->getIdentity();
         $model = new \humhub\modules\user\models\forms\AccountEmailing();
-
-        $model->receive_email_activities = Yii::$app->getModule('activity')->settings->contentContainer($user)->get('receive_email_activities');
-        if ($model->receive_email_activities === null) {
-            // Use site default value
-            $model->receive_email_activities = Yii::$app->getModule('activity')->settings->get('receive_email_activities');
-        }
-
-        $model->receive_email_notifications = Yii::$app->getModule('notification')->settings->contentContainer($user)->get('receive_email_notifications');
-        if ($model->receive_email_notifications === null) {
-            // Use site default value
-            $model->receive_email_notifications = Yii::$app->getModule('notification')->settings->get('receive_email_notifications');
-        }
-
-        $model->enable_html5_desktop_notifications = Yii::$app->getModule('notification')->settings->contentContainer($user)->get('enable_html5_desktop_notifications');
-        if ($model->enable_html5_desktop_notifications === null) {
-            // Use site default value
-            $model->enable_html5_desktop_notifications = Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications');
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::$app->getModule('activity')->settings->contentContainer($user)->get('receive_email_activities', $model->receive_email_activities);
-            Yii::$app->getModule('notification')->settings->contentContainer($user)->get('receive_email_notifications', $model->receive_email_notifications);
-            Yii::$app->getModule('notification')->settings->contentContainer($user)->get('enable_html5_desktop_notifications', $model->enable_html5_desktop_notifications);
-
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
+        
         return $this->render('emailing', array('model' => $model));
     }
 
+    
     /**
      * Change Current Password
      *

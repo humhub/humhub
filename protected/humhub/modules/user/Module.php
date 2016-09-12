@@ -22,6 +22,11 @@ class Module extends \humhub\components\Module
     public $controllerNamespace = 'humhub\modules\user\controllers';
 
     /**
+     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false) 
+     */
+    public $sendInviteMailsInGlobalLanguage = true;
+
+    /**
      * @var boolean default state of remember me checkbox on login page
      */
     public $loginRememberMeDefault = true;
@@ -35,6 +40,17 @@ class Module extends \humhub\components\Module
      * @var string redirect url after logout (if not set, home url will be used)
      */
     public $logoutUrl = null;
+
+    /**
+     * @var string the default route for user profiles
+     */
+    public $profileDefaultRoute = null;
+
+    /**
+     * @var int the default pagination size of the user list lightbox
+     * @see widgets\UserListBox
+     */
+    public $userListPaginationSize = 8;
 
     /**
      * @inheritdoc

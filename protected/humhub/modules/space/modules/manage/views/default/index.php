@@ -21,11 +21,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
         <?php echo $form->field($model, 'description')->textarea(['rows' => 6]); ?>
 
-        <div class="row">
-            <div class="col-md-9">
-                <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
-            </div>
-        </div>
+        <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
 
         <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>

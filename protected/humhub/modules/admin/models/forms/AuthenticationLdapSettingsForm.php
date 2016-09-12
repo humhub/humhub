@@ -69,6 +69,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     {
         return array(
             array(['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255),
+            array(['usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'required'),
             array('encryption', 'in', 'range' => array('', 'ssl', 'tls')),
         );
     }

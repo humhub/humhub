@@ -1,43 +1,51 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 
 /**
- * UserSpacesWidget lists all public spaces of the user
+ * UserSpaces widget shows all users public and active spaces in sidebar.
  *
- * @package humhub.modules_core.user.widget
  * @since 0.5
  * @author Luke
  */
 class UserSpaces extends \yii\base\Widget
 {
 
+    /**
+     * @var \humhub\modules\user\models\User
+     */
     public $user;
 
+    /**
+     * @var int maximum spaces to display
+     */
+    public $maxSpaces = 30;
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
-        $showSpaces = 30;
+        $query = Membership::getUserSpaceQuery($this->user)
+                ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
+                ->andWhere(['space.status' => Space::STATUS_ENABLED]);
 
-        $spaces = array();
-        $i = 0;
+        $showMoreLink = ($query->count() > $this->maxSpaces);
 
-        foreach (Membership::GetUserSpaces($this->user->id) as $space) {
-            if ($space->visibility == Space::VISIBILITY_NONE)
-                continue;
-            if ($space->status != Space::STATUS_ENABLED)
-                continue;
-            $i++;
-
-            if ($i > $showSpaces)
-                break;
-
-            $spaces[] = $space;
-        }
-
-        return $this->render('userSpaces', array('spaces' => $spaces));
+        return $this->render('userSpaces', [
+                    'user' => $this->user,
+                    'spaces' => $query->limit($this->maxSpaces)->all(),
+                    'showMoreLink' => $showMoreLink,
+        ]);
     }
 
 }

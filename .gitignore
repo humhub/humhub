@@ -30,3 +30,6 @@ themes/*
 !themes/HumHub
 
 favicon.ico
+/.settings
+/.buildpath
+/.project

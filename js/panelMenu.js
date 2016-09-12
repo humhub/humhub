@@ -6,6 +6,7 @@ function togglePanelUp($id) {
         // Animation complete.
         $('#' + $id + ' .panel-collapse').hide();
         $('#' + $id + ' .panel-expand').show();
+        $('#' + $id).addClass('panel-collapsed');
 
         $.cookie('pm_' + $id, 'collapsed', 5*365);
     });
@@ -19,6 +20,7 @@ function togglePanelDown($id) {
         // Animation complete.
         $('#' + $id + ' .panel-expand').hide();
         $('#' + $id + ' .panel-collapse').show();
+        $('#' + $id).removeClass('panel-collapsed');
 
         $.cookie('pm_' + $id, 'expanded', 5*365);
     });
@@ -45,6 +47,7 @@ function checkPanelMenuCookie($id) {
         // change menu to 'collapsed' state
         $('#' + $id + ' .panel-collapse').hide();
         $('#' + $id + ' .panel-expand').show();
+        $('#' + $id).addClass('panel-collapsed');
 
     }
 }

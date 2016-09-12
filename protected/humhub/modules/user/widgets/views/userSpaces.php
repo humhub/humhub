@@ -1,15 +1,6 @@
 <?php
 
-/**
- * This View shows a list of all user spaces in sidebar.
- *
- * @property Array $spaces contains all spaces where the user is member. (Max. 30)
- *
- * @package humhub.modules_core.user
- * @since 0.5
- */
 use yii\helpers\Html;
-
 ?>
 <?php if (count($spaces) > 0) { ?>
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
@@ -23,7 +14,8 @@ use yii\helpers\Html;
 
         <div class="panel-body">
             <?php foreach ($spaces as $space): ?>
-                <?php echo \humhub\modules\space\widgets\Image::widget([
+                <?php
+                echo \humhub\modules\space\widgets\Image::widget([
                     'space' => $space,
                     'width' => 24,
                     'htmlOptions' => [
@@ -36,9 +28,15 @@ use yii\helpers\Html;
                         'data-placement' => 'top',
                         'title' => Html::encode($space->name),
                     ]
-                ]); ?>
+                ]);
+                ?>
             <?php endforeach; ?>
 
+            <?php if ($showMoreLink): ?>
+                <br>
+                <br>
+                <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'pull-right btn btn-sm btn-default', 'data-target' => '#globalModal']); ?>
+            <?php endif; ?>
         </div>
     </div>
 <?php } ?>

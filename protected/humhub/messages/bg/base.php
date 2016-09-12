@@ -21,7 +21,7 @@ return array (
   'Login' => 'Вход',
   'Logout' => 'Изход',
   'Menu' => 'Меню',
-  'Module is not on this content container enabled!' => '',
+  'Module is not enabled on this content container!' => '',
   'My profile' => 'Моят Профил',
   'New profile image' => 'Нова профилна картинка',
   'Next' => '',

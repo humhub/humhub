@@ -42,7 +42,7 @@ return [
     'Login' => '로그인',
     'Logout' => '로그아웃',
     'Menu' => '메뉴',
-    'Module is not on this content container enabled!' => '이 컨텐츠 컨테이너에는 모듈이 활성화되어 있지 않습니다!',
+    'Module is not enabled on this content container!' => '이 컨텐츠 컨테이너에는 모듈이 활성화되어 있지 않습니다!',
     'My profile' => '내 프로필',
     'New profile image' => '새 프로필 이미지',
     'Oooops...' => '오 이런...',

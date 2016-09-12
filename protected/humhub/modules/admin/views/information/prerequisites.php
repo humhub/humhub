@@ -9,5 +9,5 @@ use humhub\modules\admin\widgets\PrerequisitesList;
 <?= PrerequisitesList::widget(); ?>
 <br>
 
-<?php echo Html::a(Yii::t('AdminModule.views_setting_selftest', 'Re-Run tests'), Url::to(['self-test']), array('class' => 'btn btn-primary')); ?>
+<?php echo Html::a(Yii::t('AdminModule.views_setting_selftest', 'Re-Run tests'), Url::to(['prerequisites']), array('class' => 'btn btn-primary')); ?>
 

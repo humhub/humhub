@@ -77,6 +77,6 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
 
 <!-- show "Load More" button on mobile devices -->
 <div class="col-md-12 text-center visible-xs visible-sm">
-    <button id="btn-load-more" class="btn btn-primary btn-lg ">Load more</button>
+    <button id="btn-load-more" class="btn btn-primary btn-lg "><?php echo Yii::t('ContentModule.widgets_views_stream', 'Load more'); ?></button>
     <br/><br/>
 </div>

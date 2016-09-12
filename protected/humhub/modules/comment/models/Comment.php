@@ -18,7 +18,6 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $id
  * @property string $message
  * @property integer $object_id
- * @property integer $space_id
  * @property string $object_model
  * @property string $created_at
  * @property integer $created_by
@@ -49,8 +48,8 @@ class Comment extends ContentAddonActiveRecord
     public function rules()
     {
         return array(
-            array(['created_by', 'updated_by', 'space_id'], 'integer'),
-            array(['message', 'created_at', 'space_id', 'updated_at'], 'safe'),
+            array(['created_by', 'updated_by'], 'integer'),
+            array(['message', 'created_at', 'updated_at'], 'safe'),
         );
     }
 

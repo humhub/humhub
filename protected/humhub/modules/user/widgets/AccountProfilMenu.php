@@ -34,12 +34,14 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit'),
         ));
 
-        $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'Change Email'),
-            'url' => Url::toRoute(['/user/account/change-email']),
-            'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-email' || Yii::$app->controller->action->id == 'change-email-validate')),
-        ));
+        if (Yii::$app->user->canChangeEmail()) {
+            $this->addItem(array(
+                'label' => Yii::t('UserModule.base', 'Change Email'),
+                'url' => Url::toRoute(['/user/account/change-email']),
+                'sortOrder' => 200,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-email' || Yii::$app->controller->action->id == 'change-email-validate')),
+            ));
+        }
 
         if (Yii::$app->user->canChangePassword()) {
             $this->addItem(array(

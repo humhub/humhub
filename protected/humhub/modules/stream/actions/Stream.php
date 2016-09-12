@@ -13,6 +13,8 @@ use yii\base\Action;
 use yii\base\Exception;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
+use yii\base\ActionEvent;
+use yii\base\Exception;
 
 /**
  * Stream is the basic action for content streams.
@@ -22,6 +24,18 @@ use humhub\modules\user\models\User;
  */
 abstract class Stream extends Action
 {
+    /**
+     * @event ActionEvent Event triggered before this action is run.
+     * This can be used for example to customize [[activeQuery]] before it gets executed.
+     * @since 1.1.1
+     */
+    const EVENT_BEFORE_RUN = 'beforeRun';
+    /**
+     * @event ActionEvent Event triggered after this action is run.
+     * @since 1.1.1
+     */
+    const EVENT_AFTER_RUN = 'afterRun';
+
 
     /**
      * Constants used for sorting
@@ -70,7 +84,7 @@ abstract class Stream extends Action
      *
      * @var array
      */
-    public $filters = array();
+    public $filters = [];
 
     /**
      * @var \yii\db\ActiveQuery
@@ -83,7 +97,7 @@ abstract class Stream extends Action
      *
      * @var User
      */
-    public $user = null;
+    public $user;
 
     /**
      * @inheritdocs
@@ -93,7 +107,7 @@ abstract class Stream extends Action
         $this->activeQuery = Content::find();
 
         // If no user is set, take current if logged in
-        if (!Yii::$app->user->isGuest && $this->user == null) {
+        if ($this->user === null && !Yii::$app->user->isGuest) {
             $this->user = Yii::$app->user->getIdentity();
         }
 
@@ -138,7 +152,6 @@ abstract class Stream extends Action
 
         $this->activeQuery->limit($this->limit);
         $this->activeQuery->andWhere(['user.status' => User::STATUS_ENABLED]);
-        $this->activeQuery->one();
 
         /**
          * Handle Stream Mode (Normal Stream or Activity Stream)
@@ -147,7 +160,7 @@ abstract class Stream extends Action
             $this->activeQuery->andWhere(['content.object_model' => \humhub\modules\activity\models\Activity::className()]);
 
             // Dont show own activities
-            if ($this->user != null) {
+            if ($this->user !== null) {
                 $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
                 $this->activeQuery->andWhere('content.created_by != :userId', array(':userId' => $this->user->id));
             }
@@ -287,4 +300,27 @@ abstract class Stream extends Action
         return ($this->from == '' && $this->limit != 1);
     }
 
+    /**
+     * This method is called right before `run()` is executed.
+     * You may override this method to do preparation work for the action run.
+     * If the method returns false, it will cancel the action.
+     *
+     * @return boolean whether to run the action.
+     */
+    protected function beforeRun()
+    {
+        $event = new ActionEvent($this);
+        $this->trigger(self::EVENT_BEFORE_RUN, $event);
+        return $event->isValid;
+    }
+
+    /**
+     * This method is called right after `run()` is executed.
+     * You may override this method to do post-processing work for the action run.
+     */
+    protected function afterRun()
+    {
+        $event = new ActionEvent($this);
+        $this->trigger(self::EVENT_AFTER_RUN, $event);
+    }
 }

@@ -32,6 +32,7 @@ use humhub\modules\user\models\User;
 class AccountEmailing extends \yii\base\Model
 {
 
+    public $user;
     public $receive_email_activities;
     public $receive_email_notifications;
     public $enable_html5_desktop_notifications;
@@ -52,7 +53,7 @@ class AccountEmailing extends \yii\base\Model
             array('enable_html5_desktop_notifications', 'in', 'range' => array('0', '1')),
         );
     }
-
+    
     /**
      * Declares customized attribute labels.
      * If not declared here, an attribute would have a label that is
@@ -60,11 +61,62 @@ class AccountEmailing extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'receive_email_notifications' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send notifications?'),
             'receive_email_activities' => Yii::t('UserModule.forms_AccountEmailingForm', 'Send activities?'),
             'enable_html5_desktop_notifications' => Yii::t('UserModule.views_account_emailing', 'Receive desktop notifications when you are online.')
-        );
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->user = Yii::$app->user->getIdentity();
+        
+        $activityModule = Yii::$app->getModule('activity');
+        $notificationModule = Yii::$app->getModule('notification');
+        
+        // Initialize form values
+        $this->receive_email_activities = $this->getSettingValue($activityModule, 'receive_email_activities');
+        $this->receive_email_notifications = $this->getSettingValue($notificationModule, 'receive_email_notifications');
+        $this->enable_html5_desktop_notifications = $this->getSettingValue($notificationModule, 'enable_html5_desktop_notifications');
+    }
+    
+    /**
+     * Retrieves the setting of the given $module for the given $settingKey.
+     * If existing, this function will return the user specific setting else
+     * the default site setting.
+     * 
+     * @param Module $module Module object
+     * @param string $settingKey Setting key value
+     * @return boolean
+     */
+    private function getSettingValue($module, $settingKey)
+    {
+        
+        $result = $module->settings->contentContainer($this->user)->get($settingKey);
+        if ($result === null) {
+            // Use site default value
+            $result = $module->settings->get($settingKey);
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Saves the given email settings
+     */
+    public function save()
+    {
+        $activityModule = Yii::$app->getModule('activity');
+        $notificationModule = Yii::$app->getModule('notification');
+        
+        $activityModule->settings->contentContainer($this->user)->set('receive_email_activities', $this->receive_email_activities);
+        $notificationModule->settings->contentContainer($this->user)->set('receive_email_notifications', $this->receive_email_notifications);
+        $notificationModule->settings->contentContainer($this->user)->set('enable_html5_desktop_notifications', $this->enable_html5_desktop_notifications);
+        return true;
     }
 
 }

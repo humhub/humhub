@@ -25,7 +25,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
         </div>
 
         <hr>
-        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_delete', 'Delete'), array('class' => 'btn btn-danger')); ?>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_delete', 'Delete'), array('class' => 'btn btn-danger', 'data-ui-loader' => '')); ?>
 
         <?php CActiveForm::end(); ?>
     </div>

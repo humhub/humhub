@@ -96,9 +96,9 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      * 
      * @inheritdoc
      * 
-     * @param type $condition
-     * @param type $params
-     * @return type
+     * @param array|string $condition
+     * @param array $params
+     * @return $this
      */
     public function where($condition, $params = array())
     {

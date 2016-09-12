@@ -61,17 +61,20 @@ class RichText extends \humhub\components\Widget
         if ($this->encode) {
             $this->text = Html::encode($this->text);
         }
-
+        
         if (!$this->minimal) {
             $maxOembedCount = 3; // Maximum OEmbeds
             $oembedCount = 0; // OEmbeds used
             $that = $this;
 
-            $this->text = preg_replace_callback('/(https?:\/\/.*?)(\s|$)/i', function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
-
-                if ($that->edit) {
-                    return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
-                }
+            $pattern= <<<REGEXP
+                    /(?(R) # in case of recursion match parentheses
+				 \(((?>[^\s()]+)|(?R))*\)
+			|      # else match a link with title
+				(https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
+			)/x
+REGEXP;
+            $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
                 // Try use oembed
                 if ($maxOembedCount > $oembedCount) {
@@ -81,7 +84,7 @@ class RichText extends \humhub\components\Widget
                         return $oembed;
                     }
                 }
-                return Html::a($match[1], Html::decode($match[1]), array('target' => '_blank')) . $match[2];
+                return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
             }, $this->text);
             
             // mark emails
@@ -100,9 +103,10 @@ class RichText extends \humhub\components\Widget
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
 
+        $this->text = trim($this->text);
+        
         if (!$this->minimal) {
             $output = nl2br($this->text);
-            
         } else {
             $output = $this->text;
         }
@@ -157,7 +161,7 @@ class RichText extends \humhub\components\Widget
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
-        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|\s|\.|")@', function($hit) use(&$buildAnchors) {
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function($hit) use(&$buildAnchors) {
             if ($hit[1] == 'u') {
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {

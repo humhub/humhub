@@ -61,7 +61,7 @@ class Setting
      * @param string $moduleId
      * @return \yii\base\Module
      */
-    private function getModule($moduleId)
+    private static function getModule($moduleId)
     {
         $app = null;
         if ($moduleId === '' || $moduleId === 'base' || $moduleId === 'core') {

@@ -21,7 +21,7 @@ return array (
   'Login' => 'Giriş',
   'Logout' => 'Çıkış',
   'Menu' => 'Menü',
-  'Module is not on this content container enabled!' => 'Etkin içerik kabı üzerinde modül etkin değil!',
+  'Module is not enabled on this content container!' => 'Etkin içerik kabı üzerinde modül etkin değil!',
   'My profile' => 'Profilim',
   'New profile image' => 'Yeni profil resmi',
   'Next' => 'İleri',

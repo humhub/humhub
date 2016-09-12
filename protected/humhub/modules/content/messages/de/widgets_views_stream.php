@@ -7,6 +7,7 @@ return array (
   'Filter' => 'Filter',
   'Include archived posts' => 'Archivierte Beiträge einbeziehen',
   'Last update' => 'Letzte Aktualisierung',
+  'Load more' => 'Mehr laden',
   'No matches with your selected filters!' => 'Die ausgewählten Filterkriterien ergaben keine Übereinstimmung!',
   'Nothing here yet!' => 'Derzeit keine Inhalte!',
   'Only private posts' => 'Nur private Beiträge',

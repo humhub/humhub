@@ -110,12 +110,15 @@ function resetProfileImage(json) {
 
     if (json.type == 'profile') {
         $('.space-profile-image-' + json.space_id).attr('src', json.defaultUrl);
-
         $('.space-profile-acronym-' + json.space_id).removeClass('hidden');
         $('.space-profile-image-' + json.space_id).addClass('hidden');
-
+        $('#deleteLinkPost_modal_profileimagedelete').hide();
+        $('#profile-image-upload-edit-button').hide();
+        
     } else if (json.type == "banner") {
         $('#space-banner-image').attr('src', json.defaultUrl);
+        $('#deleteLinkPost_modal_bannerimagedelete').hide();
+        $('#banner-image-upload-edit-button').hide();
     }
 
     $('.image-upload-buttons').hide();

@@ -21,7 +21,7 @@ return array (
   'Login' => 'Log ind',
   'Logout' => 'Log ud',
   'Menu' => 'Menu',
-  'Module is not on this content container enabled!' => 'Modulet er ikke aktiveret i denne indholdscontainer!',
+  'Module is not enabled on this content container!' => 'Modulet er ikke aktiveret i denne indholdscontainer!',
   'My profile' => 'Min profil',
   'New profile image' => 'Nyt profilbillede',
   'Next' => 'Næste',

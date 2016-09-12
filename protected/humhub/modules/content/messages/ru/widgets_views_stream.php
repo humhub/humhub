@@ -15,4 +15,5 @@ return array (
   'Posts with links' => 'Сообщения с ссылками',
   'Sorting' => 'Сортировка',
   'Where I´m involved' => 'В которых я участвую',
+  'Load more' => 'Показать еще'
 );

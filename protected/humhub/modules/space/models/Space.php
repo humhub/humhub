@@ -16,6 +16,7 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "space".
@@ -124,6 +125,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
+            'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default content visibility'),
         );
     }
 
@@ -366,9 +368,10 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      * See CController createUrl() for more details.
      *
      * @since 0.9
-     * @param type $route the URL route.
-     * @param type $params additional GET parameters.
-     * @param type $ampersand the token separating name-value pairs in the URL.
+     * @param string $route the URL route.
+     * @param array $params additional GET parameters.
+     * @param boolean|string $scheme whether to create an absolute URL and if it is a string, the scheme (http or https) to use.
+     * @return string
      */
     public function createUrl($route = null, $params = array(), $scheme = false)
     {
@@ -381,7 +384,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $params['sguid'] = $this->guid;
         }
 
-        return \yii\helpers\Url::toRoute($params, $scheme);
+        return Url::toRoute($params, $scheme);
     }
 
     /**
@@ -484,11 +487,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function getUserGroups()
     {
         $groups = [
-            self::USERGROUP_OWNER => 'Owner',
-            self::USERGROUP_ADMIN => 'Administrators',
-            self::USERGROUP_MODERATOR => 'Moderators',
-            self::USERGROUP_MEMBER => 'Members',
-            self::USERGROUP_USER => 'Users'
+            self::USERGROUP_OWNER => Yii::t('SpaceModule.models_Space', 'Owner'),
+            self::USERGROUP_ADMIN => Yii::t('SpaceModule.models_Space', 'Administrators'),
+            self::USERGROUP_MODERATOR => Yii::t('SpaceModule.models_Space', 'Moderators'),
+            self::USERGROUP_MEMBER => Yii::t('SpaceModule.models_Space', 'Members'),
+            self::USERGROUP_USER => Yii::t('SpaceModule.models_Space', 'Users')
         ];
 
         // Add guest groups if enabled

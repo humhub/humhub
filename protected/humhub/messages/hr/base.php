@@ -38,7 +38,7 @@ return [
     'Login' => '',
     'Logout' => '',
     'Menu' => '',
-    'Module is not on this content container enabled!' => '',
+    'Module is not enabled on this content container!' => '',
     'My profile' => '',
     'New profile image' => '',
     'Next' => '',

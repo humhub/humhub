@@ -21,7 +21,7 @@ return array (
   'Login' => 'Masuk',
   'Logout' => 'Keluar',
   'Menu' => 'Menu',
-  'Module is not on this content container enabled!' => '@@',
+  'Module is not enabled on this content container!' => '@@',
   'My profile' => 'Profil saya',
   'New profile image' => 'Gambar profil baru',
   'Next' => '',

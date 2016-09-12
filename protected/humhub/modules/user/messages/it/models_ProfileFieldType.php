@@ -2,8 +2,8 @@
 return array (
   'Birthday' => 'Compleanno',
   'Country' => 'Paese',
-  'Date' => '',
-  'Datetime' => 'Data',
+  'Date' => 'Data',
+  'Datetime' => 'Data/ora',
   'Number' => 'Numero',
   'Select List' => 'Seleziona lista',
   'Text' => 'Testo',

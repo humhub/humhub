@@ -33,7 +33,7 @@ class AccountTopMenu extends BaseMenu
         $this->addItem(array(
             'label' => Yii::t('base', 'My profile'),
             'icon' => '<i class="fa fa-user"></i>',
-            'url' => $user->createUrl('/user/profile'),
+            'url' => $user->createUrl('/user/profile/home'),
             'sortOrder' => 100,
         ));
         $this->addItem(array(
