@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerController;
 
@@ -54,6 +55,13 @@ $container = $object->content->container;
                 <h4 class="media-heading"><a
                         href="<?php echo $user->getUrl(); ?>"><?php echo Html::encode($user->displayName); ?></a>
                     <small>
+
+                        <!-- show profile name -->
+                        <?php if (!Yii::$app->controller instanceof ContentContainerController && $container instanceof User && $container->id != $user->id): ?>
+                            <i class="fa fa-caret-right" aria-hidden="true"></i>
+                            <strong><a href="<?php echo $container->getUrl(); ?>"><?php echo Html::encode($container->displayName); ?></a></strong>&nbsp;
+                        <?php endif; ?>
+
                         <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $object->content->created_at]); ?>
 
                         <?php if ($object->content->created_at !== $object->content->updated_at && $object->content->updated_at != ''): ?>
