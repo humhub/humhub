@@ -29,4 +29,12 @@ class BaseClient extends \yii\authclient\BaseClient
      */
     const EVENT_CREATE_USER = 'create';
 
+    /**
+     * @inheritdoc
+     */
+    protected function initUserAttributes()
+    {
+        
+    }
+
 }

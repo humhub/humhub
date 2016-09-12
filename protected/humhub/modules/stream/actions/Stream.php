@@ -234,20 +234,12 @@ abstract class Stream extends Action
 
         $output['content'] = [];
         foreach ($this->activeQuery->all() as $content) {
-            $output['content'][$content->id] = $this->getContentResultEntry($content);
+            $output['content'][$content->id] = static::getContentResultEntry($content);
         }
         $output['total'] = count($output['content']);
-        $output['is_last'] = ($output['total'] < $this->activeQuery->limit);
+        $output['isLast'] = ($output['total'] < $this->activeQuery->limit);
+        $output['contentOrder'] = array_keys($output['content']);
 
-        // BEGIN: TEMPORARY until JS Rewrite
-        $output['output'] = '';
-        foreach ($output['content'] as $i => $c) {
-            $output['output'] .= $c['output'];
-            $output['lastContentId'] = $i;
-            $output['contentIds'][] = $i;
-        }
-        $output['counter'] = $output['total'];
-        // END: Temporary
 
         return $output;
     }
@@ -259,7 +251,7 @@ abstract class Stream extends Action
      * @param Content $content the content
      * @return array
      */
-    protected function getContentResultEntry(Content $content)
+    public static function getContentResultEntry(Content $content)
     {
         $result = [];
 
@@ -270,14 +262,13 @@ abstract class Stream extends Action
         }
         $underlyingObject->populateRelation('content', $content);
 
-        $result['output'] = $this->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
+        $result['output'] = Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
             'entry' => $content,
             'user' => $underlyingObject->content->createdBy,
-            'mode' => $this->mode,
             'object' => $underlyingObject,
             'content' => $underlyingObject->getWallOut()
                 ], true);
-
+        
         $result['sticked'] = (boolean) $content->sticked;
         $result['archived'] = (boolean) $content->archived;
         $result['guid'] = $content->guid;

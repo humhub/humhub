@@ -137,7 +137,7 @@ class WallCreateContentForm extends Widget
         // Store List of attached Files to add them after Save
         $record->content->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
         if ($record->validate() && $record->save()) {
-            return array('wallEntryId' => $record->content->getFirstWallEntryId());
+            return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);
         }
 
         return array('errors' => $record->getErrors());

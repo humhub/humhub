@@ -208,7 +208,7 @@ humhub.initModule('stream', function (module, require, $) {
                     that.lastEntryLoaded = true;
                     $('#btn-load-more').hide();
                 } else {
-                    that.lastEntryLoaded = response.is_last;
+                    that.lastEntryLoaded = response.isLast;
                     that.appendEntries(response);
                 }
 
@@ -241,11 +241,19 @@ humhub.initModule('stream', function (module, require, $) {
             return $lastEntry.data(DATA_STREAM_CONTENTID);
         }
     };
+    
+    Stream.prototype.prependEntry = function (response) {
+        return this.$content.prepend(response.output);
+    };    
+
+    Stream.prototype.appendEntry = function (response) {
+        return this.$content.append(response.output);
+    };
 
     Stream.prototype.appendEntries = function (response) {
         var that = this;
         var result = '';
-        $.each(response.contentIds, function (i, key) {
+        $.each(response.contentOrder, function (i, key) {
             var $entry = that.getEntry(key);
             if ($entry.length) {
                 $entry.remove();

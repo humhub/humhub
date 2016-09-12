@@ -48,7 +48,7 @@ class ContentContainerStream extends Stream
             $stickedQuery->andWhere(['content.sticked' => 1]);
             $stickedCount = $stickedQuery->count();
 
-            // Increase query result limit to ensure there are also  not sticked entries
+            // Increase query result limit to ensure there are also not sticked entries
             $this->activeQuery->limit += $stickedCount;
 
             // Modify order - sticked content first

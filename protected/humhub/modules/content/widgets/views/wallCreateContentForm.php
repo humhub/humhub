@@ -191,7 +191,7 @@ use humhub\modules\space\models\Space;
     function handleResponse(response) {
         if (!response.errors) {
             // application.modules_core.wall function
-            currentStream.prependEntry(response.wallEntryId);
+            humhub.modules.stream.getStream().appendEntry(response);
 
             // Reset Form (Empty State)
             jQuery('.contentForm_options').hide();
