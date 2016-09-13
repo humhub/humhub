@@ -69,7 +69,7 @@ class ProfileHeader extends \yii\base\Widget
             $countFriends = Friendship::getFriendsQuery($this->user)->count();
         }
 
-        $countFollowing = $this->user->getFollowingCount(User::className()) + $this->user->getFollowingCount(Space::className());
+        $countFollowing = $this->user->getFollowingCount(User::className());
 
         $countUserSpaces = Membership::getUserSpaceQuery($this->user)
                 ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])

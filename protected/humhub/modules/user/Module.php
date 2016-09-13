@@ -20,7 +20,7 @@ class Module extends \humhub\components\Module
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\user\controllers';
-    
+
     /**
      * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false) 
      */
@@ -45,6 +45,12 @@ class Module extends \humhub\components\Module
      * @var string the default route for user profiles
      */
     public $profileDefaultRoute = null;
+
+    /**
+     * @var int the default pagination size of the user list lightbox
+     * @see widgets\UserListBox
+     */
+    public $userListPaginationSize = 8;
 
     /**
      * @inheritdoc
