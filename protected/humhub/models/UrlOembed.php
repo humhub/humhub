@@ -182,7 +182,7 @@ class UrlOembed extends \yii\db\ActiveRecord
                 curl_setopt($curl, CURLOPT_PROXYUSERNAME, Yii::$app->settings->get('proxy.user'));
             }
             if (defined('CURLOPT_PROXYPASSWORD')) {
-                curl_setopt($curl, CURLOPT_PROXYPASSWORD, Yii::$app->settings->get('proxy.pass'));
+                curl_setopt($curl, CURLOPT_PROXYPASSWORD, Yii::$app->settings->get('proxy.password'));
             }
             if (defined('CURLOPT_NOPROXY')) {
                 curl_setopt($curl, CURLOPT_NOPROXY, Yii::$app->settings->get('proxy.noproxy'));
