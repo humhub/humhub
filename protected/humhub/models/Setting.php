@@ -149,7 +149,7 @@ class Setting extends \yii\db\ActiveRecord
         } elseif ($name == 'user' && $moduleId == 'proxy') {
             return array('proxy.user', 'base');
         } elseif ($name == 'pass' && $moduleId == 'proxy') {
-            return array('proxy.pass', 'base');
+            return array('proxy.password', 'base');
         } elseif ($name == 'noproxy' && $moduleId == 'proxy') {
             return array('proxy.noproxy', 'base');
         }
