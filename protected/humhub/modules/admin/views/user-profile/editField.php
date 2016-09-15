@@ -47,7 +47,7 @@ use yii\helpers\Url;
         // Show Current Selected
         showTypeSettings = $("#profilefield-field_type_class").val();
         showTypeSettings = showTypeSettings.replace(/[\\]/g, '_');
-        console.log(showTypeSettings);
+
         $("." + showTypeSettings).show();
     });
 

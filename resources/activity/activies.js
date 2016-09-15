@@ -5,7 +5,6 @@ function activityShowItem(activityId) {
 
     $.getJSON(activityInfoUrl.replace('-id-', activityId), function (data) {
         if (data.success) {
-            console.log(data);
             if (typeof mainStream !== "undefined" && data['wallEntryId'] != 0) {
                 mainStream.showItem(data['wallEntryId']);
             } else {

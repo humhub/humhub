@@ -232,8 +232,6 @@ $.fn.spacepicker = function (options) {
                     // build <li> entry
                     var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + _guid + '\', \'' + _image + '\', \'' + _title + '\');">' + json[i].image + ' ' + _title + '</a></li>';
 
-                    console.log(str);
-
                     // append the entry to the <ul> list
                     $('#spacepicker').append(str);
 

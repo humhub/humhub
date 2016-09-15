@@ -164,17 +164,6 @@ use yii\helpers\Url;
         });
     }
 
-    /*
-     function escapeHtml(str) {
-     return String(str)
-     .replace(/&/g, "&amp;")
-     .replace(/</g, "&lt;")
-     .replace(/>/g, "&gt;")
-     .replace(/"/g, "&quot;")
-     .replace(/'/g, "&#039;")
-     .replace(/\//g, "&#x2F;")
-     }
-     */
     /**
      * Convert contenteditable div content into plain text
      * @param element jQuery contenteditable div element

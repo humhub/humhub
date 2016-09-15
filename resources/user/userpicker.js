@@ -239,8 +239,6 @@ $.fn.userpicker = function (options) {
         if(options['userRole']) {
             data['userRole'] = options['userRole'];
         }
-        
-        console.log(data);
 
         jQuery.getJSON(options.searchUrl.replace('-keywordPlaceholder-', keyword), data, function (json) {
 
