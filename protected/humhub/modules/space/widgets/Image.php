@@ -33,13 +33,13 @@ class Image extends Widget
      */
     public function run()
     {
-
-
         if (!$this->height) {
             $this->height = $this->width;
         }
 
-        $this->linkOptions['href'] = $this->space->getUrl();
+        if (!isset($this->linkOptions['href'])) {
+            $this->linkOptions['href'] = $this->space->getUrl();
+        }
 
         if ($this->space->color != null) {
             $color = Html::encode($this->space->color);
