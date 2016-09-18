@@ -13,7 +13,6 @@ Bundled Software / Libaries
 * jQuery Cookie Plugin - https://github.com/carhartl/jquery-cookie
 * jQuery Knob - http://anthonyterrien.com/knob/
 * Twitter Bootstrap - http://getbootstrap.com/
-* Bootstrap-datepicker.js - http://www.eyecon.ro/bootstrap-datepicker
 * Lightbox for Bootstrap 3 - https://github.com/ashleydw/lightbox
 * Modernizr - http://modernizr.com/
 * HTML5 Shiv - https://github.com/aFarkas/html5shiv

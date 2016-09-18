@@ -36,9 +36,8 @@ You can overwrite the default HumHub / Yii configuration in the folder `/protect
 
 **Restrict Languages:**
 
-All available languages are configured within the main HumHub confiuration **humhub/config/common.php**. 
-It is possible to restrict the allowed languages of a HumHub instance by the following setting within
-the web or common config:
+The allowed languages of your project can be configured within the **humhub/config/common.php** configuration. 
+It is possible to restrict the allowed languages of your HumHub installation by means of the following configuration:
 
 ```php
 return [
@@ -48,11 +47,9 @@ return [
 ];
 ```
 
-This setting will only allow the selection of german and french.
-
 **Overwrite Default Texts:**
 
-To overwrite the default text for a language you have to define a new message file with the following path:
+To overwrite the default text for a language, you have to define a new message file with the following path pattern:
 
 ```
 config/messages/<language>/<Module_ID>.<messagefile>.php

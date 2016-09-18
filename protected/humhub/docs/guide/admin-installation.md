@@ -17,13 +17,13 @@ FLUSH PRIVILEGES;
 
 ### Via: Download Package
 
-The easiest way to get HumHub is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
+The easiest way to get HumHub, is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
 This package already includes all external dependencies and doesn't require a composer update.
-After the download is completed, just extract the package into the htdocs folder of your webserver.
+After the download completed, just extract the package into the htdocs folder of your webserver.
 
 ### Via: Git/Composer
 
-To be able to install a branch retrieved by git, you'll have to run a composer update to download external dependencies.
+In order to be able to install a branch fetched by git, you'll have to run a composer update to download external dependencies.
 
  - Clone Git Repository:
 
@@ -62,7 +62,7 @@ Make the following files executable:
  - /protected/yii
  - /protected/yii.bat
 
-**Make sure following directories are not accessible throu webserver!**
+**Make sure the following directories are not accessible through the webserver!**
 
 (These folders are protected by default with ".htaccess")
 
