@@ -18,7 +18,6 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
 
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias("@web"); ?>/css/bootstrap.min.css"/>
-        <link type="text/css" href="<?php echo Yii::getAlias("@web"); ?>/css/animate.min.css" rel="stylesheet"/>
         <?php $this->head() ?>
 
         <!-- start: render additional head (css and js files) -->
