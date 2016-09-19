@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-
 ?>
 
 <script type="text/javascript">
@@ -11,7 +10,7 @@ use yii\helpers\Url;
         //The original form input element will be hidden
         var $formInput = $('#<?php echo $id; ?>').hide();
         var placeholder = $formInput.attr('placeholder');
-        
+
         var $editableContent = $('#<?php echo $id; ?>_contenteditable');
 
         if (!$editableContent.length) {
@@ -48,13 +47,13 @@ use yii\helpers\Url;
             callbacks: {
                 matcher: function (flag, subtext, should_start_with_space) {
                     var match, regexp;
-                    regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']*$)/); 
+                    regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']*$)/);
                     match = regexp.exec(subtext);
-                    
+
                     if (match && typeof match[2] !== 'undefined') {
                         return match[2];
                     }
-                    
+
                     return null;
                 },
                 remote_filter: function (query, callback) {
@@ -70,10 +69,10 @@ use yii\helpers\Url;
                         // set plugin settings for showing results
                         this.setting.highlight_first = true;
                         this.setting.tpl = "<li data-value='@${name}'>${image} ${name}</li>",
-                            // load data
-                            $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
-                                callback(data);
-                            });
+                                // load data
+                                $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
+                                    callback(data);
+                                });
 
                         // reset query count
                         query.length = 0;
@@ -92,7 +91,7 @@ use yii\helpers\Url;
 
         //it seems atwho detatches the original element so we have to do a requery
         $editableContent = $('#<?php echo $id; ?>_contenteditable');
-        
+
         // remove placeholder text
         $editableContent.on('focus', function () {
             if ($(this).hasClass('atwho-placeholder')) {
@@ -112,6 +111,7 @@ use yii\helpers\Url;
 
             // disable standard behavior
             event.preventDefault();
+            event.stopImmediatePropagation();
 
             // create variable for clipboard content
             var text = "";
@@ -125,7 +125,7 @@ use yii\helpers\Url;
             }
 
             // create jQuery object and paste content
-            var $result = $('<div></div>').append(text);
+            var $result = $('<div></div>').append(escapeHtml(text));
             // set plain text at current cursor position
             insertTextAtCursor($result.text());
 
@@ -141,11 +141,28 @@ use yii\helpers\Url;
         }).on("inserted.atwho", function (event, $li) {
             // set attribute for showing search hint
             $(this).attr('data-query', '0');
-        }).on('clear', function(evt) {
-             $(this).html(placeholder);
-             $(this).addClass('atwho-placeholder');
+        }).on('clear', function (evt) {
+            $(this).html(placeholder);
+            $(this).addClass('atwho-placeholder');
         });
     });
+
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
+            return entityMap[s];
+        });
+    }
 
     /**
      * Convert contenteditable div content into plain text
@@ -192,7 +209,7 @@ use yii\helpers\Url;
 
         // replace all div tags with br tags (webkit)
         html = html.replace(/\<div>/g, '<br>');
-        
+
         // replace all p tags with br tags (IE)
         html = html.replace(/\<p>/g, '<br>');
 
@@ -204,10 +221,10 @@ use yii\helpers\Url;
 
         // replace all <br> with new line break
         element.html(html.replace(/\<br\s*\>/g, '\n'));
- 
+
         // return plain text without html tags
         return element.text().trim();
- 
+
     }
 
     /**
@@ -217,18 +234,19 @@ use yii\helpers\Url;
     function insertTextAtCursor(text) {
         var lastNode;
         var sel = window.getSelection();
+
         var range = sel.getRangeAt(0);
         range.deleteContents();
-        
+
         //Remove leading line-breaks and spaces
         text = text.replace(/^(?:\r\n|\r|\n)/g, '').trim();
-        
+
         //We insert the lines reversed since we don't have to align the range
         var lines = text.split(/(?:\r\n|\r|\n)/g).reverse();
-        
-        $.each(lines, function(i, line) {
+
+        $.each(lines, function (i, line) {
             //Prevent break after last line
-            if(i !== 0) {
+            if (i !== 0) {
                 var br = document.createElement("br");
                 range.insertNode(br);
             }
@@ -236,24 +254,24 @@ use yii\helpers\Url;
             //Insert new node
             var newNode = document.createTextNode(line.trim());
             range.insertNode(newNode);
-            
+
             //Insert leading spaces as textnodes
             var leadingSpaces = line.match(/^\s+/);
-            if(leadingSpaces) {
+            if (leadingSpaces) {
                 var spaceCount = leadingSpaces[0].length;
-                while(spaceCount > 0) {
+                while (spaceCount > 0) {
                     var spaceNode = document.createTextNode("\u00a0");
                     range.insertNode(spaceNode);
                     spaceCount--;
                 }
             }
-            
+
             //The last node is the first node since we insert reversed
-            if(i === 0) {
+            if (i === 0) {
                 lastNode = newNode;
             }
         });
-        
+
         //Align range
         range.setStartAfter(lastNode);
         range.setEndAfter(lastNode);

@@ -24,12 +24,10 @@ function parseHtml(htmlString) {
 
         if (currentLoadedJavaScripts.hasItem(js)) {
             // Remove Script Tag
-            //console.log("Ignore load of : "+js);
             htmlString = htmlString.replace(match[0], "");
 
         } else {
             // Let Script Tag
-            //console.log("First load of: "+js);
             currentLoadedJavaScripts.setItem(js, 1);
 
         }
