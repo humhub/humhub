@@ -32,6 +32,9 @@ $default = [
             'scriptUrl' => 'index-test.php',
         ],
     ],
+    'params' => [
+        'allowedLanguages' => ['en']
+    ]
 ];
 
 return yii\helpers\ArrayHelper::merge(

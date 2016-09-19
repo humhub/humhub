@@ -20,5 +20,5 @@ return array(
     array('name' => 'cache.expireTime', 'value' => '3600', 'module_id' => 'base'),
     array('name' => 'installationId', 'value' => '99846c45e9b9b0962238986a6fed519a', 'module_id' => 'admin'),
     array('name' => 'theme', 'value' => 'HumHub', 'module_id' => 'base'),
-    array('name' => 'tour', 'value' => '1', 'module_id' => 'base')
+    array('name' => 'tour', 'value' => '1', 'module_id' => 'base'),
 );

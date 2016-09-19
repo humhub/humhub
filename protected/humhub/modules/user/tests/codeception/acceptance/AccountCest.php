@@ -55,8 +55,16 @@ class AccountCest
         $I->expectTo('see the notification settings form');
         $I->see('Send notifications?');
         $I->see('Send activities?');
+        $I->selectOption('AccountEmailing[receive_email_notifications]', 'Never');
+        $I->selectOption('AccountEmailing[receive_email_activities]', 'Never');
+        $I->click('.regular-checkbox-box');
         
         $I->click('Save');
-        $I->waitForElementVisible('.data-saved', 5);
+        
+        // Refresh page
+        $I->amOnPage('index-test.php?r=user%2Faccount%2Femailing');
+        $I->click('Notifications'); //Notification tab
+        $I->seeOptionIsSelected('AccountEmailing[receive_email_notifications]', 'Never');
+        $I->seeOptionIsSelected('AccountEmailing[receive_email_activities]', 'Never');
     }
 }

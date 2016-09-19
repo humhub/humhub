@@ -72,6 +72,7 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
             'space' => [ 'class' => \tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => [ 'class' => \tests\codeception\fixtures\SpaceMembershipFixture::className()],
             'contentcontainer' => [ 'class' => \tests\codeception\fixtures\ContentContainerFixture::className()],
+            'notification' => [ 'class' => \tests\codeception\fixtures\NotificationFixture::className()],
         ];
     }
 }
