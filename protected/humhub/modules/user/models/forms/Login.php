@@ -56,6 +56,18 @@ class Login extends Model
         
         parent::init();
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'username' => Yii::t('UserModule.views_auth_login', 'username or email'),
+            'password' => Yii::t('UserModule.views_auth_login', 'password'),
+            'rememberMe' => Yii::t('UserModule.views_auth_login', 'Remember me'),
+        );
+    }
 
     /**
      * Validation

@@ -2,7 +2,7 @@
 return array (
   'Birthday' => 'تولد',
   'Country' => 'کشور',
-  'Date' => '',
+  'Date' => 'تاريخ',
   'Datetime' => 'زمان ملاقات',
   'Number' => 'شماره',
   'Select List' => 'انتخاب لیست',

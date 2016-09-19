@@ -24,12 +24,10 @@ function parseHtml(htmlString) {
 
         if (currentLoadedJavaScripts.hasItem(js)) {
             // Remove Script Tag
-            //console.log("Ignore load of : "+js);
             htmlString = htmlString.replace(match[0], "");
 
         } else {
             // Let Script Tag
-            //console.log("First load of: "+js);
             currentLoadedJavaScripts.setItem(js, 1);
 
         }
@@ -135,6 +133,11 @@ $.fn.modal.Constructor.prototype.enforceFocus = function () {
      if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('hexInput')) {
         return true;
      }
+     
+      var $parent = $(e.target.parentNode);
+     if($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
+         return true;
+     }
 
      if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
         that.$element.focus();
@@ -164,7 +167,7 @@ $(document).ready(function () {
 
     initPlugins();
 
-    $('a[data-ui-loader], button[data-ui-loader]').on('click', function () {
+    $(document).on('click', 'a[data-ui-loader], button[data-ui-loader]', function () {
         var $this = $(this);
         
         if($this.find('.loader').length) {

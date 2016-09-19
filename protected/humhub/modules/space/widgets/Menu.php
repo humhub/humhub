@@ -89,6 +89,28 @@ class Menu extends \humhub\widgets\BaseMenu
         return null;
     }
 
+    /**
+     * Returns space default / homepage
+     * 
+     * @return string|null the url to redirect or null for default home
+     */
+    public static function getGuestsDefaultPageUrl($space)
+    {
+        $settings = Yii::$app->getModule('space')->settings;
+
+        $indexUrl = $settings->contentContainer($space)->get('indexGuestUrl');
+        if ($indexUrl !== null) {
+            $pages = static::getAvailablePages();
+            if (isset($pages[$indexUrl])) {
+                return $indexUrl;
+            } else {
+                //Either the module was deactivated or url changed
+                $indexUrl = $settings->contentContainer($space)->delete('indexGuestUrl');
+            }
+        }
+        return null;
+    }
+
 }
 
 ?>

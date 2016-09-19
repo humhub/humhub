@@ -27,7 +27,7 @@ return [
     'Deny' => '',
     'It looks like you may have taken the wrong turn.' => '',
     'Login' => '',
-    'Module is not on this content container enabled!' => '',
+    'Module is not enabled on this content container!' => '',
     'Next' => '',
     'Ok' => '',
     'Oooops...' => '',

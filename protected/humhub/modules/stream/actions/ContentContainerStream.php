@@ -38,7 +38,11 @@ class ContentContainerStream extends Stream
 
         // Limit to public posts when no member
         if (!$this->contentContainer->canAccessPrivateContent($this->user)) {
-            $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC . " OR content.created_by = :userId", [':userId' => $this->user->id]);
+            if (!Yii::$app->user->isGuest) {
+                $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC . " OR content.created_by = :userId", [':userId' => $this->user->id]);
+            } else {
+                $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC);
+            }
         }
 
         // Add all sticked contents to initial request

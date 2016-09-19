@@ -63,7 +63,9 @@ $.fn.spacepicker = function (options) {
         // simulate focus out
         $('#space_input_field').focusout(function () {
             $('#space_tags').removeClass('focus');
-        })
+        });
+        
+        $('body').append($('#spacepicker'));
     }
 
     function restoreSpaceTags(html) {
@@ -138,7 +140,7 @@ $.fn.spacepicker = function (options) {
 
             // set spacepicker position in bottom of the space input
             $('#spacepicker').css({
-                position: "fixed",
+                position: "absolute",
                 top: $('#space_input_field').offset().top + 30,
                 left: $('#space_input_field').offset().left + 2
             })
@@ -229,8 +231,6 @@ $.fn.spacepicker = function (options) {
 
                     // build <li> entry
                     var str = '<li><a tabindex="-1" href="javascript:addSpaceTag(\'' + _guid + '\', \'' + _image + '\', \'' + _title + '\');">' + json[i].image + ' ' + _title + '</a></li>';
-
-                    console.log(str);
 
                     // append the entry to the <ul> list
                     $('#spacepicker').append(str);

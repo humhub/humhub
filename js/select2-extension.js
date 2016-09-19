@@ -1,9 +1,7 @@
 //This file contains style alignments for the select2 multi dropdown js framework.
-$(document).ready(function () {
-    $.fn.select2.defaults = {};
-
-//We have to overwrite the the result gui after every change
-    $('.multiselect_dropdown').select2({}).on('change', function () {
+var checkForMultiSelectDropDowns = function() {
+    //We have to overwrite the the result gui after every change
+    $('.multiselect_dropdown').select2({width: '100%'}).on('change', function () {
         $(this).trigger('update');
     }).on('select2:open', function () {
         $(this).data('isOpen', true);
@@ -26,11 +24,16 @@ $(document).ready(function () {
     });
 
 //Since the focusout of the ontainer is called when the dropdown is opened we have to use this focusout
-    $(document).on('focusout', '.select2-search__field', function () {
+    $(document).off('focusout', '.select2-search__field').on('focusout', '.select2-search__field', function () {
         if (!$(this).closest('.select2-container').prev('.multiselect_dropdown').data('isOpen')) {
             $(this).closest('.select2-selection').removeClass('select2-selection--focus');
         }
     });
 
     $('.multiselect_dropdown').trigger('update');
+}
+
+$(document).ready(function () {
+    $.fn.select2.defaults = {};
+    checkForMultiSelectDropDowns();
 });

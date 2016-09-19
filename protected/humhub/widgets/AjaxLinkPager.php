@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -16,7 +16,6 @@ use yii\web\JsExpression;
  * AjaxLinkPager
  * 
  * @inheritdoc
- *
  * @author luke
  */
 class AjaxLinkPager extends \humhub\widgets\LinkPager
@@ -36,6 +35,9 @@ class AjaxLinkPager extends \humhub\widgets\LinkPager
      */
     public $jsSuccess = 'function(html){ $("#globalModal").html(html); }';
 
+    /**
+     * @inheritdoc
+     */
     protected function renderPageButton($label, $page, $class, $disabled, $active)
     {
         $options = ['class' => $class === '' ? null : $class];

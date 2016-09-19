@@ -8,9 +8,9 @@ return array (
   'If you\'re already a member, please login with your username/email and password.' => 'اگر عضو هستید لطفا با نام کاربری/ایمیل و گذرواژه‌ی خود واردشوید.',
   'Login' => 'ورود',
   'Register' => 'ثبت‌نام',
-  'Remember me' => '',
+  'Remember me' => 'مرا به خواطر داشته باش!',
   'Sign in' => 'ورود',
   'email' => 'ایمیل',
   'password' => 'گذرواژه',
-  'username or email' => 'نام کاربری یا ایمیل',
+  'username or email' => 'نام كاربري',
 );

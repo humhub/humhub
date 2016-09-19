@@ -2,7 +2,9 @@
 
 namespace humhub\modules\stream\widgets;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
+use yii\base\Exception;
 use yii\helpers\Url;
 
 /**
@@ -16,7 +18,7 @@ class StreamViewer extends \yii\base\Widget
     /**
      * Optional content container if this stream belongs to one
      *
-     * @var HActiveRecordContentContainer
+     * @var ContentContainerActiveRecord
      */
     public $contentContainer;
 
@@ -26,6 +28,14 @@ class StreamViewer extends \yii\base\Widget
      * @var string
      */
     public $streamAction = "";
+
+    /**
+     * Additional Params to add to Stream Action URL
+     *
+     * @var array
+     * @since 1.1
+     */
+    public $streamActionParams = [];
 
     /**
      * Show default wall filters
@@ -67,13 +77,14 @@ class StreamViewer extends \yii\base\Widget
      */
     public $messageStreamEmptyCss = "";
 
+
     /**
      * Inits the Wall Stream Widget
      */
     public function init()
     {
         if ($this->streamAction == "") {
-            throw new \yii\web\HttpException(500, 'You need to set the streamAction attribute to use this widget!');
+            throw new Exception('You need to set the streamAction attribute to use this widget!');
         }
 
         // Add default Filters
@@ -88,10 +99,7 @@ class StreamViewer extends \yii\base\Widget
             $this->filters['filter_visibility_private'] = Yii::t('ContentModule.widgets_views_stream', 'Only private posts');
         }
 
-
-        /**
-         * Setup default messages
-         */
+        // Setup default messages
         if ($this->messageStreamEmpty == "") {
             $this->messageStreamEmpty = Yii::t('ContentModule.widgets_views_stream', 'Nothing here yet!');
         }
@@ -110,16 +118,16 @@ class StreamViewer extends \yii\base\Widget
      */
     protected function getStreamUrl()
     {
-        $params = [
-            $this->streamAction,
+        $params = array_merge([
             'mode' => \humhub\modules\stream\actions\Stream::MODE_NORMAL
-        ];
+        ], $this->streamActionParams);
 
         if ($this->contentContainer) {
             return $this->contentContainer->createUrl($this->streamAction, $params);
+        } else {
+            array_unshift($params, $this->streamAction);
+            return Url::to($params);
         }
-
-        return Url::to($params);
     }
 
     /**
@@ -127,9 +135,7 @@ class StreamViewer extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('stream', array('streamUrl' => $this->getStreamUrl(), 'showFilters' => $this->showFilters, 'filters' => $this->filters));
+        return $this->render('stream', ['streamUrl' => $this->getStreamUrl(), 'showFilters' => $this->showFilters, 'filters' => $this->filters]);
     }
 
 }
-
-?>

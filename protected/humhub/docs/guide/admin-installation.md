@@ -17,13 +17,13 @@ FLUSH PRIVILEGES;
 
 ### Via: Download Package
 
-The easiest way to get HumHub is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
+The easiest way to get HumHub, is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
 This package already includes all external dependencies and doesn't require a composer update.
-After the download is completed, just extract the package into the htdocs folder of your webserver.
+After the download completed, just extract the package into the htdocs folder of your webserver.
 
 ### Via: Git/Composer
 
-To be able to install a branch retrieved by git, you'll have to run a composer update to download external dependencies.
+In order to be able to install a branch fetched by git, you'll have to run a composer update to download external dependencies.
 
  - Clone Git Repository:
 
@@ -42,10 +42,10 @@ git checkout stable
 
 ```
 php composer.phar global require "fxp/composer-asset-plugin:~1.1.1"
-composer update
+php composer.phar update
 ```
 
-> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](http://localhost/codebase/doku/guide-admin-updating.html#gitcomposer-based-installations))
+> Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](admin-updating.html#gitcomposer-based-installations))
 
 ## Setting up
 
@@ -62,7 +62,7 @@ Make the following files executable:
  - /protected/yii
  - /protected/yii.bat
 
-**Make sure following directories are not accessible throu webserver!**
+**Make sure the following directories are not accessible through the webserver!**
 
 (These folders are protected by default with ".htaccess")
 

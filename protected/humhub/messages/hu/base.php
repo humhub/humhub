@@ -25,7 +25,7 @@ return [
     'Default' => '',
     'Deny' => '',
     'It looks like you may have taken the wrong turn.' => '',
-    'Module is not on this content container enabled!' => '',
+    'Module is not enabled on this content container!' => '',
     'New profile image' => '',
     'Next' => '',
     'Ok' => '',

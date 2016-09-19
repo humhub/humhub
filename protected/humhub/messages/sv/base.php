@@ -21,7 +21,7 @@ return array (
   'Login' => '',
   'Logout' => 'Logga ut',
   'Menu' => 'Meny',
-  'Module is not on this content container enabled!' => '',
+  'Module is not enabled on this content container!' => '',
   'My profile' => 'Min profil',
   'New profile image' => 'Ny profil bild',
   'Next' => '',

@@ -5,6 +5,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\admin\widgets\SpaceGridView;
 ?>
 
+<h4><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></h4>
 <div class="help-block">
     <?php echo Yii::t('AdminModule.views_space_index', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>

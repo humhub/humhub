@@ -86,6 +86,17 @@ class DbDateValidator extends \yii\validators\DateValidator
         
         return '';
     }
+    
+    /**
+     * Parses a date and optionally a time if timeAttribute is specified.
+     * 
+     * @param string $value
+     * @return int timestamp in utc
+     */
+    public static function parseDateTime($value, $timeValue = null)
+    {
+        return (new self())->parseDateTimeValue($value, $timeValue);
+    }
 
     /**
      * Parses a date and optionally a time if timeAttribute is specified.

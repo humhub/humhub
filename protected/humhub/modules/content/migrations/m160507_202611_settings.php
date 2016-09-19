@@ -11,9 +11,9 @@ class m160507_202611_settings extends Migration
     {
         $this->createTable('contentcontainer_setting', [
             'id' => Schema::TYPE_PK,
-            'module_id' => Schema::TYPE_STRING . ' NOT NULL',
+            'module_id' => $this->string(50)->notNull(),
             'contentcontainer_id' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'name' => $this->string(50)->notNull(),
             'value' => Schema::TYPE_TEXT . ' NOT NULL',
         ]);
         $this->createIndex('settings-unique', 'contentcontainer_setting', ['module_id', 'contentcontainer_id', 'name'], true);

@@ -12,7 +12,7 @@ Facebook
 
 In order to use Facebook OAuth you must register your application at <https://developers.facebook.com/apps>.
 
-Add following block to your configuration (protected/config/common.php):
+Add the following block to your configuration (protected/config/common.php):
 
 ```php
 return [

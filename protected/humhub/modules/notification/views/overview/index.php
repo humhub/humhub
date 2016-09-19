@@ -4,10 +4,10 @@ use yii\widgets\ActiveForm;
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-8 layout-content-container">
+        <div class="col-md-9 layout-content-container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?= Yii::t('NotificationModule.views_overview_index', 'Notification Overview'); ?>
+                    <?= Yii::t('NotificationModule.views_overview_index', '<strong>Notification</strong> Overview'); ?>
                     <a id="notification_overview_markseen" href="#" class="pull-right heading-link" >
                         <b><?= Yii::t('NotificationModule.views_overview_index', 'Mark all as seen'); ?></b>
                     </a> 
@@ -27,15 +27,17 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
         </div>
-        <div class="col-md-4 layout-sidebar-container">
+        <div class="col-md-3 layout-sidebar-container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?>
+                    <strong><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></strong>
                 </div>
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
-                    <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
-                    <button class="btn btn-info btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
+                    <div style="padding-left: 5px;">
+                        <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
+                    </div>
+                    <button class="btn btn-primary btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>

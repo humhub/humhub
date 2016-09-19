@@ -19,3 +19,6 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('#requestMembershipButton').replaceWith('<?php echo \humhub\modules\space\widgets\MembershipButton::widget(['space' => $space]) ?>');
+</script>

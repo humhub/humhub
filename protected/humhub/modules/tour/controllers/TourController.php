@@ -44,7 +44,7 @@ class TourController extends \humhub\components\Controller
         // get section parameter from completed tour
         $section = Yii::$app->request->get('section');
 
-        if (!in_array($section, array('interface', 'administration', 'profile', 'spaces')))
+        if (!in_array($section, Yii::$app->params['tour']['acceptableNames']))
             return;
 
         // set tour status to seen for current user

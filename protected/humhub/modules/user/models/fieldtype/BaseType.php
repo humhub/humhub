@@ -10,6 +10,7 @@ namespace humhub\modules\user\models\fieldtype;
 
 use Yii;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\fieldtype;
 
 /**
  * ProfileFieldType is the base class for all Profile Field Types.
@@ -82,6 +83,7 @@ class BaseType extends \yii\base\Model
             DateTime::className() => Yii::t('UserModule.models_ProfileFieldType', 'Datetime'),
             Birthday::className() => Yii::t('UserModule.models_ProfileFieldType', 'Birthday'),
             CountrySelect::className() => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
+            MarkdownEditor::className() => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
                 ), $this->fieldTypes);
         return $fieldTypes;
     }

@@ -142,7 +142,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
         // Fix LDAP Attributes
         foreach ($attributes as $name => $value) {
-            if (is_array($value) && count($value) == 1) {
+            if (is_array($value) && count($value) == 1 && $name != 'memberof') {
                 $normalized[$name] = $value[0];
             } else {
                 $normalized[$name] = $value;
@@ -223,10 +223,19 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     protected function getUserDn()
     {
-        // ToDo: Search user even by e-mail address
+        $userName = $this->login->username;
+
+        // Translate given e-mail to username
+        if (strpos($userName, '@') !== false) {
+            $user = User::findOne(['email' => $userName]);
+            if ($user !== null) {
+                $userName = $user->username;
+            }
+        }
+
         try {
-            $this->getLdap()->bind($this->login->username, $this->login->password);
-            return $this->getLdap()->getCanonicalAccountName($this->login->username, Ldap::ACCTNAME_FORM_DN);
+            $this->getLdap()->bind($userName, $this->login->password);
+            return $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
         } catch (LdapException $ex) {
             // User not found in LDAP
         }
@@ -299,6 +308,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         $userFilter = Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter');
         $baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
         $userCollection = $this->getLdap()->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
+
+        $authClient = null;
 
         $ids = [];
         foreach ($userCollection as $attributes) {

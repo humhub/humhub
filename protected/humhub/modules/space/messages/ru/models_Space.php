@@ -17,11 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Homepage' => 'Начальная страница',
+    'Administrators' => '',
+    'Default content visibility' => '',
+    'Members' => '',
+    'Moderators' => '',
+    'Users' => '',
     'Color' => 'Цвет',
     'Created At' => 'Создано в',
     'Created By' => 'Создано',
     'Description' => 'Описание',
+    'Homepage' => 'Начальная страница',
     'Join Policy' => 'Регистрационная политика',
     'Name' => 'Имя',
     'Owner' => 'Владелец',

@@ -19,7 +19,7 @@ class LoginCest
         $I->amGoingTo('try to login with empty credentials');
         $loginPage->login('', '');
         $I->expectTo('see validations errors');
-        $I->see('Username cannot be blank.');
+        $I->see('username or email cannot be blank.');
         $I->see('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');

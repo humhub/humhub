@@ -10,7 +10,6 @@ namespace humhub\modules\content\components;
 
 use Yii;
 use humhub\components\Module;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Base Module with ContentContainer support.
@@ -48,7 +47,7 @@ class ContentContainerModule extends Module
      * Checks whether the module is enabled the given content container class.
      * 
      * @param string $class the class of content container
-     * @return bollean 
+     * @return boolean
      */
     public function hasContentContainerType($class)
     {

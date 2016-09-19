@@ -22,6 +22,9 @@ Requirements
 * Apache XSendfile
 
 ### Packages for Debian/Ubuntu users
+
+#### For PHP 5.x
+
 * imagemagick
 * php5-curl
 * php5-mysql
@@ -32,3 +35,18 @@ Requirements
 * php-apc		(optional)
 * php5-memcached	(optional)
 * libapache2-mod-xsendfile (optional)
+
+#### For PHP 7.0 on Ubuntu
+
+* imagemagick
+* php7.0-curl
+* php7.0-mbstring
+* php7.0-mysql
+* php7.0-gd
+* php7.0-cli
+* php7.0-intl
+* php7.0-ldap		(optional)
+* php7.0-opcache	(optional)
+* php-memcache	(optional)
+* libapache2-mod-xsendfile (optional)
+

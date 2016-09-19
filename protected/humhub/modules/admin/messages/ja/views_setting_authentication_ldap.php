@@ -19,7 +19,7 @@
 return [
     'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'パスワードは平文で送信されることから情報漏洩を防止するために、運用環境ではTLS / SSL化する事が強く推奨されます。',
-    'Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'ログインした時に適用するフィルタを定義します。 %uid はログインアクションにユーザ名を置き換えます。例：&quot;(sAMAccountName=%s)&quot; または &quot;(uid=%s)&quot;',
+    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'ログインした時に適用するフィルタを定義します。 %s はログインアクションにユーザ名を置き換えます。例：&quot;(sAMAccountName=%s)&quot; または &quot;(uid=%s)&quot;',
     'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'ユーザー名のLDAP属性。例：&quotuid&quot; または &quot;sAMAccountName&quot;',
     'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'この基準を満たすユーザーへのアクセスを制限します。例：&quot(objectClass=posixAccount)&quot; または &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',
     'Save' => '保存',

@@ -191,7 +191,7 @@ class Text extends BaseType
         $value = $user->profile->$internalName;
 
         if (!$raw && $this->validator == self::VALIDATOR_EMAIL) {
-            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value);
+            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), 'mailto:' . $value);
         } elseif (!$raw && $this->validator == self::VALIDATOR_URL) {
             return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value, array('target' => '_blank'));
         }
