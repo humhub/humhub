@@ -80,6 +80,21 @@ class AcceptanceTester extends \Codeception\Actor
         $this->executeJS('$("'.$selector.'").click();');
     }
     
+    public function jsFillField($selector, $value)
+    {
+        $this->executeJS('$("'.$selector.'").val("'.$value.'");');
+    }
+    
+    public function jsShow($selector)
+    {
+        $this->executeJS('$("'.$selector.'").show();');
+    }
+    
+    public function jsAttr($selector, $attr, $val)
+    {
+        $this->executeJS('$("'.$selector.'").attr("'.$attr.'", "'.$val.'");');
+    }
+    
     public function scrollToTop()
     {
         $this->executeJS('window.scrollTo(0,0);');
