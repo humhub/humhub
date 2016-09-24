@@ -1,0 +1,20 @@
+<?php
+return array (
+  '<strong>Space</strong> followers' => '',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Negalima ištrinti vartotojo, kuriam priklauso erdvė! Erdvės pavadinimas: {spaceName}',
+  'Default' => '',
+  'Everyone can enter' => 'Dalyvauti gali visi',
+  'Invite and request' => 'Pakviesti',
+  'No spaces found.' => '',
+  'Only by invite' => 'Tik su pakvietimu',
+  'Private' => '',
+  'Private (Invisible)' => 'Privatus (Nematomas)',
+  'Public' => 'Višas',
+  'Public (Members & Guests)' => 'Viešas (Nariai ir svečiai)',
+  'Public (Members only)' => 'Viešas (Tik nariai)',
+  'Public (Registered users only)' => 'Viešas (Tik registruoti nariai)',
+  'Public (Visible)' => 'Viešas (Matomas)',
+  'Settings' => 'Nustatymai',
+  'Space' => '',
+  'Visible for all (members and guests)' => 'Matomas visiems (nariams ir svečiams)',
+);

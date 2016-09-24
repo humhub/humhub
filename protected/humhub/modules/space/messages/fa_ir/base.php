@@ -1,0 +1,20 @@
+<?php
+return array (
+  '<strong>Space</strong> followers' => '<strong>دنبال كنندگان</strong>',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'امکان حذف کاربری که دارنده‌ی انجمن است وجود ندارد! نام انجمن: {spaceName}',
+  'Default' => 'پيش فرض',
+  'Everyone can enter' => 'همه می‌توانند وارد شوند',
+  'Invite and request' => 'دعوت و درخواست',
+  'No spaces found.' => 'هيچ انجمني يافت نشد',
+  'Only by invite' => 'فقط با دعوت',
+  'Private' => 'خصوصي',
+  'Private (Invisible)' => 'خصوصی (پنهان)',
+  'Public' => 'عمومی',
+  'Public (Members & Guests)' => 'عمومی (اعضا و مهمانان)',
+  'Public (Members only)' => 'عمومی (فقط اعضا)',
+  'Public (Registered users only)' => 'عمومی (فقط کاربران ثبت‌نام‌شده)',
+  'Public (Visible)' => 'عمومی (قابل مشاهده)',
+  'Settings' => 'تنطیمات',
+  'Space' => 'انجمن',
+  'Visible for all (members and guests)' => 'قابل نمایش برای همه (اعضا و مهمانان)',
+);

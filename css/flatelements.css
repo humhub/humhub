@@ -117,7 +117,7 @@
     display: inline-block;
     position: relative;
     float: left;
-    margin: 0 5px 5px 0;
+    margin-right: 5px;
 }
 
 .regular-checkbox:checked + .regular-checkbox-box {
@@ -182,4 +182,12 @@
     color: #99a1a7;
     border: 2px solid #ccc;
     margin-right: 5px;
+}
+
+.chk_rdo .form-group {
+    margin-bottom: 0px;
+}
+
+.chk_rdo .form-group label {
+    margin-bottom: 0px;
 }

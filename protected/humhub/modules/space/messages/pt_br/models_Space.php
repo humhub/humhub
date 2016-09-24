@@ -1,0 +1,23 @@
+<?php
+return array (
+  'Administrators' => 'Administradores',
+  'Color' => 'Cor',
+  'Created At' => 'Criado em',
+  'Created By' => 'Criado por',
+  'Default content visibility' => '',
+  'Description' => 'Descrição',
+  'Homepage' => '',
+  'Join Policy' => 'Política de acesso',
+  'Members' => 'Membros',
+  'Moderators' => 'Moderadores',
+  'Name' => 'Nome',
+  'Owner' => 'Dono',
+  'Status' => 'Status',
+  'Tags' => 'Tags',
+  'Updated At' => 'Modificado em',
+  'Updated by' => 'Modificado por',
+  'Users' => 'Usuários',
+  'Visibility' => 'Visibilidade',
+  'You cannot create private visible spaces!' => 'Você não pode criar espaços visíveis privados!',
+  'You cannot create public visible spaces!' => 'Você não pode criar espaços públicos visíveis!',
+);

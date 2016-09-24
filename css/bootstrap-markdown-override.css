@@ -1,0 +1,35 @@
+.md-editor { 
+    border-radius: 3px;
+    border-width: 2px;
+}
+
+.md-editor.active {
+    outline: 0px none;
+    box-shadow: none;
+}
+
+.md-editor > textarea {
+    min-height: 100px;
+    padding: 10px; 
+    font-family: inherit;
+    color: #555555;
+    font-size: 14px;
+    background: #fff !important;
+    border-top: none;
+    border-bottom: none;
+}
+
+.md-editor textarea {
+    padding:10px;    
+}
+
+.md-editor > textarea:focus {
+     border: 0;
+     outline: 0;
+     box-shadow: none;
+ }
+ 
+ .md-preview {
+     padding-right:10px;
+     padding-left:10px;
+ }

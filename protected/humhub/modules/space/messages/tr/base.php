@@ -1,0 +1,20 @@
+<?php
+return array (
+  '<strong>Space</strong> followers' => '<strong>Mekan</strong> takipçileri',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Mekan sahibi bir kullanıcı silinemedi! Mekanın adı: {spaceName}',
+  'Default' => 'Standart',
+  'Everyone can enter' => 'Herkes girebilir',
+  'Invite and request' => 'Davet et ve İstek yolla',
+  'No spaces found.' => 'Mekan bulunamadı.',
+  'Only by invite' => 'Sadece davelliler',
+  'Private' => 'Gizli',
+  'Private (Invisible)' => 'Özel (Görünmez)',
+  'Public' => 'Herkes',
+  'Public (Members & Guests)' => 'Genel (Üyeler & Misafir)',
+  'Public (Members only)' => 'Genel (Üyeler için)',
+  'Public (Registered users only)' => 'Genel (Sadece kayıtlı kullanıcılar)',
+  'Public (Visible)' => 'Genel (Görünür)',
+  'Settings' => 'Ayarlar',
+  'Space' => 'Mekan',
+  'Visible for all (members and guests)' => 'Tümü görebilir (Üye ve Misafir)',
+);

@@ -1,0 +1,20 @@
+<?php
+return array (
+  '<strong>Space</strong> followers' => '',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nelze smazat uživatele, který je vlastníkem prostoru! Prostor: {spaceName}',
+  'Default' => 'Výchozí',
+  'Everyone can enter' => 'Každý se může přidat',
+  'Invite and request' => 'Pozváním nebo požádáním',
+  'No spaces found.' => '',
+  'Only by invite' => 'Jen pozváním',
+  'Private' => '',
+  'Private (Invisible)' => 'Neveřejné (skryté)',
+  'Public' => 'Veřejné',
+  'Public (Members & Guests)' => '',
+  'Public (Members only)' => '',
+  'Public (Registered users only)' => '',
+  'Public (Visible)' => 'Veřejné (viditelné)',
+  'Settings' => 'Nastavení',
+  'Space' => '',
+  'Visible for all (members and guests)' => '',
+);

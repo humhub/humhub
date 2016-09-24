@@ -1,0 +1,75 @@
+{
+    "name": "humhub/humhub",
+    "description": "HumHub - The flexible Open Source Social Network Kit for Collaboration",
+    "keywords": ["humhub", "yii2", "framework"],
+    "homepage": "http://www.humhub.com/",
+    "type": "project",
+    "license": "AGPL-3.0",
+    "support": {
+        "issues": "https://github.com/humhub/humhub/issues?state=open",
+        "forum": "http://community.humhub.com",
+        "wiki": "http://community.humhub.com",
+        "irc": "irc://irc.freenode.net/humhub",
+        "source": "https://github.com/humhub/humhub"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "~2.0.4",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-authclient": "~2.0.0",
+        "raoul2000/yii2-jcrop-widget": "*",
+        "cebe/markdown": "1.0.2",
+        "yiisoft/yii2-jui": "~2.0.0",
+        "zendframework/zend-http": "*",
+        "jbroadway/urlify": "^1.0",
+        "nqxcode/zendsearch": "^2.0",
+        "xj/yii2-jplayer-widget": "*",
+        "zendframework/zend-ldap": "^2.5",
+        "bower-asset/jquery-timeago": "1.4.*",
+        "bower-asset/jquery-nicescroll": "3.6.*",
+        "bower-asset/jquery-knob": "1.2.*",
+        "bower-asset/jquery-placeholder": "^2.3.0",
+        "bower-asset/blueimp-file-upload": "9.11.*",
+        "bower-asset/fontawesome": "^4.3.0",
+        "bower-asset/bootstrap-markdown": "2.10.*",
+        "bower-asset/select2" : "^4.0.2",
+        "bower-asset/select2-bootstrap-theme" : "0.1.0-beta.4"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "~2.0.0",
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "yiisoft/yii2-apidoc": "~2.0.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "vendor-dir": "protected/vendor"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "protected/runtime": "0777",
+                    "assets": "0777",
+                    "protected/yii": "0755",
+                    "protected/modules": "0755"
+                }
+            ],
+            "generateCookieValidationKey": [
+                "protected/config/web.php"
+            ]
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "protected/vendor/npm",
+            "bower-asset-library": "protected/vendor/bower"
+        }
+    }
+}

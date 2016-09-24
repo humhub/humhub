@@ -1,0 +1,9 @@
+{
+    "id": "friendship",
+    "name": "Friendship System",
+    "description": "Friendship Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

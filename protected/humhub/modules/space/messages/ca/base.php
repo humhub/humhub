@@ -1,0 +1,20 @@
+<?php
+return array (
+  '<strong>Space</strong> followers' => '',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'No pots eliminar membres que siguin administradors! Nom de l\'espai: {spaceName}',
+  'Default' => '',
+  'Everyone can enter' => 'Tothom hi pot entrar',
+  'Invite and request' => 'Invitació i sol·licitud',
+  'No spaces found.' => '',
+  'Only by invite' => 'Només per invitació',
+  'Private' => '',
+  'Private (Invisible)' => 'Privat (Invisible)',
+  'Public' => 'Públic',
+  'Public (Members & Guests)' => '',
+  'Public (Members only)' => '',
+  'Public (Registered users only)' => '',
+  'Public (Visible)' => 'Públic (visible)',
+  'Settings' => 'Configuració',
+  'Space' => '',
+  'Visible for all (members and guests)' => '',
+);

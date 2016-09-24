@@ -22,3 +22,12 @@ uploads/profile_image/banner/*
 nbproject
 .idea/*
 .gitmodules
+/composer.lock
+
+themes/*
+!themes/HumHub
+
+favicon.ico
+/.settings
+/.buildpath
+/.project

@@ -1,2 +1,0 @@
-<?php $this->widget('application.modules_core.post.widgets.PostFormWidget', array('contentContainer' => $this->getUser())); ?>
-<?php $this->widget('application.modules_core.wall.widgets.WallStreamWidget', array('contentContainer' => $this->getUser())); ?>
