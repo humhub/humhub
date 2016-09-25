@@ -31,4 +31,5 @@ return [
     'Server Timezone' => 'Временная зона сервера',
     'Show introduction tour for new users' => 'Показывать приветственный тур для новых пользователей',
     'Show user profile post form on dashboard' => 'Показать поле для ввода сообщений на главной странице',
+    'Horizontal scrolling images on a mobile device' => 'Горизонтальная прокрутка изображений на мобильном устройстве',
 ];

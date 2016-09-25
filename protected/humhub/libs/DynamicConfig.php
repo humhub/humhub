@@ -157,6 +157,8 @@ class DynamicConfig extends \yii\base\Object
         $config['components']['mailer'] = $mail;
         $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Yii::$app->settings->get('theme')));
         $config['params']['config_created_at'] = time();
+        
+        $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 
         self::save($config);
     }

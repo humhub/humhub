@@ -18,6 +18,12 @@ $jsLoadWall .= "mainStream = s;\n";
 $jsLoadWall .= "$('#btn-load-more').click(function() { currentStream.loadMore(); })\n";
 $this->registerJs($jsLoadWall, View::POS_READY);
 
+if(Yii::$app->settings->get('horImageScrollOnMobile'))
+$this->registerJs(new \yii\web\JsExpression("
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+        $('#wallStream').addClass('mobile');
+    }"), View::POS_READY);
+
 $defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
 $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultStreamSort : 'c');
 ?>

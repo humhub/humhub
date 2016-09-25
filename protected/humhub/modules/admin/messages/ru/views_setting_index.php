@@ -25,5 +25,6 @@ return [
     'Delete' => 'Удалить',
     'E.g. http://example.com/humhub' => 'например, http://example.com/humhub',
     'Save' => 'Сохранить',
+    'Wall entry layout' => 'Отображение записи на стене',
     'You\'re using no logo at the moment. Upload your logo now.' => 'На данный момент вы не используете логотип. Загрузить логотип сейчас.',
 ];
