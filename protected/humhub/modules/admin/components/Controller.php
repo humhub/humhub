@@ -20,11 +20,12 @@ class Controller extends \humhub\components\Controller
 
     public $subLayout = "@humhub/modules/admin/views/layouts/main";
 
-    public function init() {
+    public function init()
+    {
         $this->appendPageTitle(\Yii::t('AdminModule.base', 'Administration'));
         return parent::init();
     }
-    
+
     public function behaviors()
     {
         return [
@@ -34,4 +35,5 @@ class Controller extends \humhub\components\Controller
             ]
         ];
     }
+
 }

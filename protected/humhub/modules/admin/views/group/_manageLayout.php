@@ -21,7 +21,7 @@ use yii\helpers\Url;
     <?php if ($group->is_admin_group) : ?>
         <div class="pull-right"><span class="label label-danger"><?php echo Yii::t('AdminModule.group', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
     <?php endif; ?>
-    <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(); ?>
+    <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(['group' => $group]); ?>
 <?php endif; ?>
 
 <?php echo $content; ?>
