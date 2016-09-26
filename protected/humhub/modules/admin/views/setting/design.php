@@ -32,6 +32,10 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
         'php:d/m/Y' => Yii::t('AdminModule.views_setting_design', 'Fixed format (mm/dd/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
     ?>
+    <strong><?php echo Yii::t('AdminModule.views_setting_index', 'Wall entry layout'); ?></strong>
+    <br>
+    <br>
+    <?php echo $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
 
     <?php echo $form->field($model, 'logo')->fileInput(['id' => 'logo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
 
