@@ -71,8 +71,8 @@ class AuthClientHelpers
                 $auth->delete();
                 $auth = null;
             }
-            
-            
+
+
             if ($auth === null) {
                 $auth = new \humhub\modules\user\models\Auth([
                     'user_id' => $user->id,
@@ -128,7 +128,9 @@ class AuthClientHelpers
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
                     }
                 } else {
-                    $user->profile->setAttribute($attributeName, '');
+                    if ($user->profile->hasAttribute($attributeName)) {
+                        $user->profile->setAttribute($attributeName, '');
+                    }
                 }
             }
 
