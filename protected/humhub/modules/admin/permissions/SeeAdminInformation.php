@@ -26,7 +26,7 @@ class SeeAdminInformation extends BaseAdminPermission
     {
         parent::__construct($config);
         $this->title = \Yii::t('AdminModule.permissions', 'Access Admin Information');
-        $this->description = \Yii::t('AdminModule.permissions', 'Can access the \'Administration -> Information \' section.');
+        $this->description = \Yii::t('AdminModule.permissions', 'Can access the \'Administration -> Information\' section.');
     }
 
 }
