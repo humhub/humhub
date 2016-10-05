@@ -23,6 +23,7 @@ modules:
         WebDriver:
             url: http://localhost/codebase/humhub/v1.1-dev/index.php
             browser: phantomjs
+            window_size: maximize
             restart: true
         #PhpBrowser:
 # PLEASE ADJUST IT TO THE ACTUAL ENTRY POINT WITHOUT PATH INFO

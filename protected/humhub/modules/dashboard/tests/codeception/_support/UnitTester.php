@@ -16,7 +16,7 @@ namespace dashboard;
  *
  * @SuppressWarnings(PHPMD)
 */
-class UnitTester extends \UnitTester
+class UnitTester extends \Codeception\Actor
 {
     use _generated\UnitTesterActions;
 

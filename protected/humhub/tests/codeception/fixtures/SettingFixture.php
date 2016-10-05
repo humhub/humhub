@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace tests\codeception\fixtures;
+namespace humhub\tests\codeception\fixtures;
 
 use yii\test\ActiveFixture;
 

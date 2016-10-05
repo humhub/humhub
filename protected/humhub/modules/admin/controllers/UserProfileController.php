@@ -28,11 +28,23 @@ class UserProfileController extends Controller
     /**
      * @inheritdoc
      */
+    public $adminOnly = false;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
         $this->subLayout = '@admin/views/layouts/user';
         return parent::init();
+    }
+
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' =>  \humhub\modules\admin\permissions\ManageUsers::className()]
+        ];
     }
 
     /**

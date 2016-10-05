@@ -16,9 +16,10 @@ use tests\codeception\_pages\LoginPage;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class FunctionalTester extends \Codeception\Actor
 {
+
     use _generated\FunctionalTesterActions;
 
     public function amAdmin()
@@ -27,19 +28,51 @@ class FunctionalTester extends \Codeception\Actor
         $this->see('Dashboard');
         $this->see('Administration');
     }
-    
-    public function amUser($user = null, $password = null)
+
+    function setGroupPermission($groupId, $permission, $state = 1)
     {
-        $user = ($user != null) ? $user : 'User1';
-        $password = ($password != null) ? $password : '123qwe';
-        LoginPage::openBy($this)->login($user, $password);
-        $this->see('Dashboard');
+        $groupPermission = new humhub\modules\user\models\GroupPermission();
+        $groupPermission->permission_id = $permission->id;
+        $groupPermission->group_id = $groupId;
+        $groupPermission->module_id = $permission->moduleId;
+        $groupPermission->class = $permission->className();
+        $groupPermission->state = $state;
+        $groupPermission->save();
+        \Yii::$app->user->getPermissionManager()->clear();
     }
-    
-    public function logout($user = null, $password = null)
+
+    public function amUser($user = null, $password = null, $logout = false)
     {
-        $this->getModule('Yii2')->sendAjaxPostRequest('index-test.php?r=user%2Fauth%2Flogout');
-        $this->wait(1);
-        LoginPage::openBy($this);
+        if ($logout) {
+            $this->logout();
+        }
+
+        if ($user == null) {
+            $this->amUser1();
+        } else {
+            LoginPage::openBy($this)->login($user, $password);
+            $this->see('Dashboard');
+        }
     }
+
+    public function amUser1($logout = false)
+    {
+        $this->amUser('User1', '123qwe', $logout);
+    }
+
+    public function amUser2($logout = false)
+    {
+        $this->amUser('User2', '123qwe', $logout);
+    }
+
+    public function amUser3($logout = false)
+    {
+        $this->amUser('User3', '123qwe', $logout);
+    }
+
+    public function logout()
+    {
+        \Yii::$app->user->logout(true);
+    }
+
 }

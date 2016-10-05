@@ -10,6 +10,8 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * SpaceController provides global space administration.
@@ -22,6 +24,11 @@ class SpaceController extends Controller
     /**
      * @inheritdoc
      */
+    public $adminOnly = false;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/space';
@@ -29,18 +36,32 @@ class SpaceController extends Controller
         return parent::init();
     }
 
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' => [
+                    ManageSpaces::className(),
+                    ManageSettings::className()
+                ]],
+        ];
+    }
+
     /**
      * Shows all available spaces
      */
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\admin\models\SpaceSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can(new ManageSpaces())) {
+            $searchModel = new \humhub\modules\admin\models\SpaceSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', array(
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel
-        ));
+            return $this->render('index', array(
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel
+            ));
+        } else if (Yii::$app->user->can(new ManageSettings())) {
+            $this->redirect(['settings']);
+        }
     }
 
     /**

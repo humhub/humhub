@@ -65,11 +65,15 @@ class FixtureHelper extends Module
     public function fixtures()
     {
         return [
-            'user' => ['class' => \tests\codeception\fixtures\UserFixture::className()],
-            'settings' => ['class' => \tests\codeception\fixtures\SettingFixture::className()],
-            'space' => [ 'class' => \tests\codeception\fixtures\SpaceFixture::className()],
-            'space_membership' => [ 'class' => \tests\codeception\fixtures\SpaceMembershipFixture::className()],
-            'contentcontainer' => [ 'class' => \tests\codeception\fixtures\ContentContainerFixture::className()],
+            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFixture::className()],
+            'profile' => ['class' => \humhub\modules\user\tests\codeception\fixtures\ProfileFixture::className()],
+            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
+            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
+            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
+            'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
+            'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
+            'contentcontainer' => [ 'class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::className()],
+            'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
         ];
     }
 }

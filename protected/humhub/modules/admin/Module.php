@@ -46,6 +46,27 @@ class Module extends \humhub\components\Module
     {
         return Yii::t('AdminModule.base', 'Admin');
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if ($contentContainer instanceof \humhub\modules\space\models\Space) {
+            return [];
+        } elseif ($contentContainer instanceof User) {
+            return [];
+        }
+
+        return [
+            new permissions\ManageModules(),
+            new permissions\ManageSettings(),
+            new permissions\SeeAdminInformation(),
+            new permissions\ManageUsers(),
+            new permissions\ManageGroups(),
+            new permissions\ManageSpaces(),
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -54,8 +75,7 @@ class Module extends \humhub\components\Module
     {
         if(Yii::$app->user->isAdmin()) {
             return [
-                'humhub\modules\user\notifications\Followed',
-                'humhub\modules\user\notifications\Mentioned'
+                'humhub\modules\user\notifications\NewVersionAvailable'
             ];
         } 
         return [];

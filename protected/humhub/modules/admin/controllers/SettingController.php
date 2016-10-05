@@ -24,6 +24,11 @@ class SettingController extends Controller
     /**
      * @inheritdoc
      */
+    public $adminOnly = false;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->setActionTitles([
@@ -43,6 +48,13 @@ class SettingController extends Controller
         ]);
         $this->subLayout = '@admin/views/layouts/setting';
         return parent::init();
+    }
+
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
+        ];
     }
 
     public function actionIndex()

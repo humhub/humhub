@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\components;
 
 use Yii;
@@ -20,11 +21,8 @@ class Controller extends \yii\web\Controller
 {
 
     public $subLayout;
-
     public $pageTitle;
-
     public $actionTitlesMap = [];
-    
     public $prependActionTitles = true;
 
     public function renderAjaxContent($content)
@@ -47,8 +45,17 @@ class Controller extends \yii\web\Controller
     public function htmlRedirect($url = "")
     {
         return $this->renderPartial('@humhub/views/htmlRedirect.php', array(
-            'url' => Url::to($url)
+                    'url' => Url::to($url)
         ));
+    }
+
+    /**
+     * @throws ForbiddenHttpException
+     * @since 1.2
+     */
+    protected function forbidden()
+    {
+        throw new \yii\web\ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
     }
 
     /**
@@ -67,13 +74,13 @@ class Controller extends \yii\web\Controller
     {
         if (parent::beforeAction($action)) {
             if (array_key_exists($this->action->id, $this->actionTitlesMap)) {
-                if($this->prependActionTitles) {
+                if ($this->prependActionTitles) {
                     $this->prependPageTitle($this->actionTitlesMap[$this->action->id]);
                 } else {
                     $this->appendPageTitle($this->actionTitlesMap[$this->action->id]);
                 }
             }
-            if (! empty($this->pageTitle)) {
+            if (!empty($this->pageTitle)) {
                 $this->getView()->pageTitle = $this->pageTitle;
             }
             return true;
@@ -124,4 +131,5 @@ class Controller extends \yii\web\Controller
         $this->actionTitlesMap = is_array($map) ? $map : [];
         $this->prependActionTitles = $prependActionTitles;
     }
+
 }

@@ -20,11 +20,23 @@ use humhub\modules\admin\components\Controller;
 class LoggingController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
+
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         $this->subLayout = '@admin/views/layouts/information';
         return parent::init();
+    }
+
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()]
+        ];
     }
 
     public function actionIndex()

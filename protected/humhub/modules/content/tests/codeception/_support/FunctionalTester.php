@@ -16,7 +16,7 @@ namespace content;
  *
  * @SuppressWarnings(PHPMD)
 */
-class FunctionalTester extends \Codeception\Actor
+class FunctionalTester extends \FunctionalTester
 {
     use _generated\FunctionalTesterActions;
     

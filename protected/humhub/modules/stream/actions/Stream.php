@@ -10,7 +10,6 @@ namespace humhub\modules\stream\actions;
 
 use Yii;
 use yii\base\Action;
-use yii\base\Exception;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use yii\base\ActionEvent;

@@ -7,13 +7,11 @@ class m160205_204010_foreign_keys extends Migration
 {
     public function up()
     {
-        $this->addForeignKey('fk_comment-space_id', 'comment', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_comment-created_by', 'comment', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
-        $this->dropForeignKey('fk_comment-space_id', 'comment');
         $this->dropForeignKey('fk_comment-created_by', 'comment');
 
         return true;

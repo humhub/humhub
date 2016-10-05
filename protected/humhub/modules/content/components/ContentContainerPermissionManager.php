@@ -26,7 +26,7 @@ class ContentContainerPermissionManager extends PermissionManager
     /**
      * @inheritdoc
      */
-    public function can(BasePermission $permission)
+    public function verify(BasePermission $permission)
     {
         $groupId = $this->contentContainer->getUserGroup();
         if ($this->getGroupState($groupId, $permission) == BasePermission::STATE_ALLOW) {

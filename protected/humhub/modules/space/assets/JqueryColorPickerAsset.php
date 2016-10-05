@@ -23,7 +23,7 @@ class JqueryColorPickerAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@web/resources/space/colorpicker';
+    public $sourcePath = '@webroot/resources/space/colorpicker';
 
     /**
      * @inheritdoc

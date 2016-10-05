@@ -8,6 +8,7 @@
 
 namespace humhub\modules\stream\actions;
 
+use Yii;
 use humhub\modules\content\models\Content;
 
 /**

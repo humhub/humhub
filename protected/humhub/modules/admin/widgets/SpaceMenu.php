@@ -10,7 +10,8 @@ namespace humhub\modules\admin\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * Space Administration Menu
@@ -30,12 +31,14 @@ class SpaceMenu extends \humhub\widgets\BaseMenu
             'url' => Url::toRoute(['/admin/space/index']),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space' && Yii::$app->controller->action->id == 'index'),
+            'isVisible' => Yii::$app->user->can(new ManageSpaces())
         ));
         $this->addItem(array(
             'label' => Yii::t('AdminModule.views_space_index', 'Settings'),
             'url' => Url::toRoute(['/admin/space/settings']),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space' && Yii::$app->controller->action->id == 'settings'),
+            'isVisible' => Yii::$app->user->can(new ManageSettings())
         ));
 
         parent::init();

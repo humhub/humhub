@@ -195,6 +195,7 @@ $config = [
         ],
         // Allowed languages limitation (optional)
         'allowedLanguages' => [],
+        'defaultPermissions' => [],
         'tour' => [
             'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
         ],

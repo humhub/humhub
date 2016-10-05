@@ -179,6 +179,21 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         $this->permissionManager->contentContainer = $this;
         return $this->permissionManager;
     }
+    
+    /**
+     * Shortcut for getPermisisonManager()->can().
+     * 
+     * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
+     * 
+     * @param mixed $permission
+     * @see PermissionManager::can()
+     * @return boolean
+     * @since 1.2
+     */
+    public function can($permission, $params = [], $allowCaching = true)
+    {
+        return $this->getPermissionManager()->can($permission, $params, $allowCaching);
+    }
 
     /**
      * Returns current users group

@@ -15,8 +15,10 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Group;
 use humhub\modules\admin\models\forms\UserEditForm;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * User management
@@ -26,6 +28,11 @@ use humhub\modules\admin\models\forms\UserEditForm;
 class UserController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
+
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
@@ -33,17 +40,34 @@ class UserController extends Controller
         return parent::init();
     }
 
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' => [
+                    ManageUsers::className(),
+                    ManageGroups::className()
+                ]],
+            ['permissions' => ManageSettings::className(), 'actions' => ['index']]
+        ];
+    }
+
     /**
      * Returns a List of Users
      */
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\admin\models\UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('index', array(
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel
-        ));
+        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
+            $searchModel = new \humhub\modules\admin\models\UserSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            return $this->render('index', array(
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel
+            ));
+        } else if (Yii::$app->user->can(new ManageSettings())) {
+            $this->redirect(['/admin/authentication']);
+        } else {
+            $this->forbidden();
+        }
     }
 
     /**
@@ -55,7 +79,7 @@ class UserController extends Controller
     {
         $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
         $user->initGroupSelection();
-        
+
         if ($user == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
         }
@@ -85,7 +109,8 @@ class UserController extends Controller
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
                     'type' => 'multiselectdropdown',
-                    'items' => UserEditForm::getGroupItems()
+                    'items' => UserEditForm::getGroupItems(),
+                    'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())
                 ],
                 'status' => [
                     'type' => 'dropdownlist',

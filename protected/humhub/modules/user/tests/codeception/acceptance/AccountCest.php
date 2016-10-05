@@ -19,19 +19,21 @@ class AccountCest
         $I->amGoingTo('fill the basic settings form');
         
         $I->fillField('#accountsettings-tags', 'Tester, Actor');
-        $I->selectOption('#accountsettings-language', 'Deutsch');
+        #$I->selectOption('#accountsettings-language', 'Deutsch');
         $I->click('Save');
         
-        
+        /*
         $I->expectTo('see the german translation');
         $I->see('Sprache');
         $I->see('Speichern');
         $I->click('Save');
         $I->waitForElementVisible('.data-saved', 5);
+         * 
         
         $I->selectOption('#accountsettings-language', 'English(US)');
         $I->click('Save');
         $I->waitForElementVisible('.data-saved', 5);
+        */
         
         $I->wait(3);
         $I->amOnProfile();

@@ -24,14 +24,15 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-
+        $canEditSettings = Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings());
+        
         $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'General'),
             'url' => Url::toRoute('/admin/setting/index'),
             'icon' => '<i class="fa fa-cogs"></i>',
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'basic'),
-            'isVisible' => Yii::$app->user->isAdmin(),
+            'isVisible' => $canEditSettings
         ));
         
         $this->addItem(array(
@@ -40,7 +41,7 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
             'icon' => '<i class="fa fa-magic"></i>',
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'design'),
-            'isVisible' => Yii::$app->user->isAdmin(),
+            'isVisible' => $canEditSettings
         ));
 
         $this->addItem(array(
@@ -49,7 +50,7 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
             'icon' => '<i class="fa fa-envelope"></i>',
             'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'mailing' || Yii::$app->controller->action->id == 'mailing-server')),
-            'isVisible' => Yii::$app->user->isAdmin(),
+            'isVisible' => $canEditSettings
         ));
 
         $this->addItem(array(
@@ -57,7 +58,7 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
             'url' => Url::toRoute('/admin/setting/advanced'),
             'icon' => '<i class="fa fa-lock"></i>',
             'sortOrder' => 1000,
-            'isVisible' => Yii::$app->user->isAdmin(),
+            'isVisible' => $canEditSettings
         ));
 
         parent::init();

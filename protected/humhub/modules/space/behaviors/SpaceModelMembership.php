@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Invite;
+use humhub\modules\admin\permissions\ManageSpaces;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
@@ -70,7 +71,7 @@ class SpaceModelMembership extends Behavior
     }
 
     /**
-     * Checks if given Userid is Admin of this Space.
+     * Checks if given Userid is Admin of this Space or has the permission to manage spaces.
      *
      * If no UserId is given, current UserId will be used
      *
@@ -80,19 +81,23 @@ class SpaceModelMembership extends Behavior
     public function isAdmin($userId = "")
     {
 
-        if ($userId == 0)
+        if ($userId == 0) {
             $userId = Yii::$app->user->id;
+        }
 
-        if (Yii::$app->user->isAdmin())
+        if (Yii::$app->user->can(new ManageSpaces())) {
             return true;
+        }
 
-        if ($this->isSpaceOwner($userId))
+        if ($this->isSpaceOwner($userId)) {
             return true;
+        }
 
         $membership = $this->getMembership($userId);
 
-        if ($membership !== null && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER)
+        if ($membership !== null && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER) {
             return true;
+        }
 
         return false;
     }

@@ -120,17 +120,45 @@ class BasePermission extends \yii\base\Object
     }
 
     /**
-     * Returns the default state of the permission
+     * Returns the default state of the permission.
+     * The defaultState is either defined by setting $defaultState attribute
+     * or by overwriting the $defaultState by means of the configuration param 'defaultPermissions'.
+     * 
+     * If the $defaultState is set to denied, we can grant the permission for specific groups by defining
+     * the $defaultAllowedGroups array.
      * 
      * @return int the default state
      */
     public function getDefaultState($groupId)
     {
-        if ($this->defaultState == self::STATE_ALLOW) {
+        $configuredState = $this->getConfiguredState($groupId);
+        
+        if($configuredState != null) {
+            return $configuredState;
+        } else if ($this->defaultState == self::STATE_ALLOW) {
             return self::STATE_ALLOW;
+        } else {        
+            return (int) (in_array($groupId, $this->defaultAllowedGroups));
         }
-
-        return (int) (in_array($groupId, $this->defaultAllowedGroups));
+    }
+    
+    /**
+     * Returns the default state set in the configration params 'defaultPermissions'.
+     * This method returns null in case the default state for this permission or group is not set in
+     * the configuration.
+     * 
+     * @param type $groupId
+     * @return type
+     * @since 1.2
+     */
+    protected function getConfiguredState($groupId)
+    {   
+        if(isset(Yii::$app->params['defaultPermissions'][self::className()]) 
+                && isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
+            return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
+        }
+        
+        return null;
     }
 
     /**

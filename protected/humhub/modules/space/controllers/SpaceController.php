@@ -36,7 +36,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         return [
             'acl' => [
                 'class' => \humhub\components\behaviors\AccessControl::className(),
-                'guestAllowedActions' => ['index', 'stream']
+                'guestAllowedActions' => ['index', 'stream'],
             ]
         ];
     }

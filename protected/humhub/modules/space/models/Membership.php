@@ -10,6 +10,7 @@ namespace humhub\modules\space\models;
 
 use Yii;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\user\models\User;
 
 /**
  * This is the model class for table "space_membership".

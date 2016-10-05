@@ -19,21 +19,100 @@ use humhub\modules\user\models\GroupPermission;
  */
 class PermissionManager extends \yii\base\Component
 {
+    
+    /**
+     * User identity.
+     * @var \humhub\modules\user\models\User 
+     */
+    public $subject;
 
+    /**
+     * Cached Permission array.
+     * @var array 
+     */
     protected $permissions = null;
+    
+    /**
+     * Permission access cache.
+     * @var array 
+     */
+    protected $_access = [];
 
-    public function can(BasePermission $permission)
+    /**
+     * Verifies a given $permission or $permission array for a permission subject.
+     * 
+     * If $params['all'] is set to true and a $permission array is given all given permissions
+     * has to be verified successfully otherwise (default) only one permission test has to pass.
+     * 
+     * @param type $permission
+     * @param type $params
+     * @param type $allowCaching
+     * @return boolean
+     */
+    public function can($permission, $params = [], $allowCaching = true)
     {
-        $groups = Yii::$app->user->getIdentity()->groups;
+        if(is_array($permission)) {
+            $verifyAll = isset($params['all']) ? $params['all'] : false; 
+            foreach($permission as $current) {
+                $can = $this->can($current, $params, $allowCaching);
+                if($can && !$verifyAll) {
+                    return true;
+                } else if(!$can && $verifyAll) {
+                    return false;
+                }
+            }
+            return false;
+        } else if($allowCaching) {
+            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
+            $key = $permission::className();
+            if(!isset($this->_access[$key])) {
+                $this->_access[$key] = $this->verify($permission);
+            } 
+            return $this->_access[$key];
+        } else {
+            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
+            return $this->verify($permission);
+        }
+    }
+    
+    /**
+     * Verifies a single permission for a permission subject.
+     * 
+     * @param BasePermission $permission
+     * @return boolean
+     */
+    protected function verify(BasePermission $permission)
+    {
+        $groups = $this->getSubject()->groups;
         if ($this->getGroupState($groups, $permission) == BasePermission::STATE_ALLOW) {
             return true;
         }
-
+        
         return false;
+    }
+    
+    /**
+     * Returns the permission subject.
+     * If the permission objects $subject property is not set this method returns the currently 
+     * logged in user identity.
+     * 
+     * @return \humhub\modules\user\models\User
+     */
+    protected function getSubject()
+    {
+        return ($this->subject != null) ? $this->subject : Yii::$app->user->getIdentity();
+    }
+    
+    /**
+     * Clears access cache
+     */
+    public function clear()
+    {
+        $this->_access = [];
     }
 
     /**
-     * Sets the state for a group
+     * Sets the state for a given groupId.
      * 
      * @param string $groupId
      * @param BasePermission $permission
@@ -221,7 +300,7 @@ class PermissionManager extends \yii\base\Component
                 'moduleId' => $permission->moduleId,
                 'permissionId' => $permission->id,
                 'states' => [
-                    BasePermission::STATE_DEFAULT => BasePermission::getLabelForState('') . ' - ' . BasePermission::getLabelForState($permission->getDefaultState($groupId)),
+                    BasePermission::STATE_DEFAULT => BasePermission::getLabelForState(BasePermission::STATE_DEFAULT) . ' - ' . BasePermission::getLabelForState($permission->getDefaultState($groupId)),
                     BasePermission::STATE_DENY => BasePermission::getLabelForState(BasePermission::STATE_DENY),
                     BasePermission::STATE_ALLOW => BasePermission::getLabelForState(BasePermission::STATE_ALLOW),
                 ],
@@ -231,5 +310,4 @@ class PermissionManager extends \yii\base\Component
         }
         return $permissions;
     }
-
 }

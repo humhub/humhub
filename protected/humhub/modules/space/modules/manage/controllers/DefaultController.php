@@ -11,7 +11,6 @@ namespace humhub\modules\space\modules\manage\controllers;
 use Yii;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
-use humhub\modules\space\models\SpacePages;
 
 /**
  * Default space admin action

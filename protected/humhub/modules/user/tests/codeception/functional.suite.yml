@@ -11,7 +11,7 @@ modules:
       - Filesystem
       - Yii2
       - tests\codeception\_support\TestHelper
-      - tests\codeception\_support\FixtureHelper
+      - tests\codeception\_support\DynamicFixtureHelper
       - tests\codeception\_support\HumHubHelper
     config:
         Yii2:

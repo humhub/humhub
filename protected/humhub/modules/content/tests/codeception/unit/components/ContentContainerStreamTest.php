@@ -3,35 +3,18 @@
 namespace tests\codeception\unit\modules\content\components;
 
 use Yii;
-use yii\codeception\DbTestCase;
+use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
-use tests\codeception\fixtures\UserFixture;
-use tests\codeception\fixtures\ContentContainerFixture;
-use tests\codeception\fixtures\SpaceFixture;
-use tests\codeception\fixtures\SpaceMembershipFixture;
 use humhub\modules\post\models\Post;
-use humhub\modules\user\models\User;
+
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\actions\ContentContainerStream;
 
-class ContentContainerStreamTest extends DbTestCase
+class ContentContainerStreamTest extends HumHubDbTestCase
 {
 
     use Specify;
-
-    /**
-     * @inheritdoc
-     */
-    public function fixtures()
-    {
-        return [
-            'user' => [ 'class' => UserFixture::className()],
-            'space' => [ 'class' => SpaceFixture::className()],
-            'space_membership' => [ 'class' => SpaceMembershipFixture::className()],
-            'contentcontainer' => [ 'class' => ContentContainerFixture::className()],
-        ];
-    }
 
     public function testPrivateContent()
     {
@@ -97,15 +80,9 @@ class ContentContainerStreamTest extends DbTestCase
         $action->limit = $limit;
 
         $wallEntries = $action->activeQuery->all();
+
         $wallEntryIds = array_map(create_function('$entry', 'return $entry->id;'), $wallEntries);
 
         return $wallEntryIds;
     }
-
-    private function becomeUser($userName)
-    {
-        $user = User::findOne(['username' => $userName]);
-        Yii::$app->user->switchIdentity($user);
-    }
-
 }

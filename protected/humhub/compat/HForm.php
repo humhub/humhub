@@ -177,6 +177,10 @@ class HForm extends \yii\base\Component
 
     public function renderField($name, $definition, $forms)
     {
+        if (isset($definition['isVisible']) && !$definition['isVisible'] ) {
+            return;
+        }
+
         $output = "";
 
         // Determine Model

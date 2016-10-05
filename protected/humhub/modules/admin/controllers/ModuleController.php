@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\OnlineModuleManager;
@@ -24,12 +23,26 @@ use humhub\modules\space\models\Space;
  */
 class ModuleController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
 
     private $_onlineModuleManager = null;
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
         return parent::init();
+    }
+    
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\admin\permissions\ManageModules::className()]
+        ];
     }
     
     public function actionIndex()

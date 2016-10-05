@@ -163,6 +163,16 @@ class Group extends \yii\db\ActiveRecord
     {
         return self::findOne(['is_admin_group' => '1']);
     }
+    
+    public static function getAdminGroupId()
+    {
+        $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
+        if($adminGroupId == null) {
+            $adminGroupId = self::getAdminGroup()->id;
+            Yii::$app->getModule('user')->settings->set('group.adminGroupId', $adminGroupId);
+        }
+        return $adminGroupId;
+    }
 
     /**
      * Returns all user which are defined as manager in this group as ActiveQuery.

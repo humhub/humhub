@@ -11,7 +11,7 @@ humhub\assets\Select2ExtensionAsset::register($this);
 <div class="clearfix">
     <div class="panel-body">
         <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), 
-                Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+                Url::to(['index']), array('class' => 'btn btn-default pull-right', 'data-ui-loader' => '')); ?>
         <h4 class="pull-left"><?= Yii::t('AdminModule.views_user_edit', 'Edit user: {name}', ['name' => $user->displayName]); ?></h4>
   
     </div>

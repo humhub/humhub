@@ -19,6 +19,14 @@ $testConfig = [
           ],
          */
         ],
+        'user' => [
+            'enableAutoLogin' => false
+        ],
+        // Default ErrorAction results in 'Unable to resolve the request "error/index" exception
+        'errorHandler' => [
+            'errorAction' => null,
+            'maxSourceLines' => 20,
+        ],
     ],
 ];
 

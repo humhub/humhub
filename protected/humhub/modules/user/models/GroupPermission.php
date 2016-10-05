@@ -22,6 +22,12 @@ class GroupPermission extends \yii\db\ActiveRecord
     {
         return 'group_permission';
     }
+    
+    public function init()
+    {
+        parent::init();
+        $this->class = static::className();
+    }
 
     /**
      * @inheritdoc

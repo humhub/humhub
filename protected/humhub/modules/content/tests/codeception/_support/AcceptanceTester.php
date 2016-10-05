@@ -16,7 +16,7 @@ namespace content;
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceTester extends \Codeception\Actor
+class AcceptanceTester extends \AcceptanceTester
 {
     use content\_generated\AcceptanceTesterActions;
 

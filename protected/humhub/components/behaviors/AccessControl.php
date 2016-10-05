@@ -11,11 +11,40 @@ namespace humhub\components\behaviors;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
-use humhub\models\Setting;
 
 /**
- * AccessControl provides a very basic controller access protection
+ * AccessControl provides basic controller access protection
  *
+ * Here are some examples access control settings:
+ * 
+ * Allow guest access for action 'info'
+ * 
+ * ```
+ * [
+ *      'acl' => [
+ *          'class' => \humhub\components\behaviors\AccessControl::className(),
+ *          'guestAllowedActions' => ['info']
+ *      ]
+ * ]
+ * ```
+ * 
+ * Allow access by pemission rule:
+ * 
+ * ```
+ * [
+ *      'acl' => [
+ *          'class' => \humhub\components\behaviors\AccessControl::className(),
+ *          'rules' => [
+ *              [
+ *                  'groups' => [
+ *                      'humhub\modules\xy\permissions\MyAccessPermssion'
+ *                  ]
+ *              ]
+ *          ]
+ *      ]
+ * ]
+ * ```
+ * 
  * @author luke
  */
 class AccessControl extends \yii\base\ActionFilter
@@ -48,60 +77,177 @@ class AccessControl extends \yii\base\ActionFilter
     public $loggedInOnly = true;
 
     /**
+     * User groups cache;
+     */
+    private $_usergroupNames = null;
+
+    /**
      * @inheritdoc
      */
     public function beforeAction($action)
     {
-
         $identity = Yii::$app->user->getIdentity();
-        if($identity != null && !$identity->isActive()) {
-            Yii::$app->user->logout();
-            Yii::$app->response->redirect(['/user/auth/login']);
-            return false;
+
+        if ($identity != null && !$identity->isActive()) {
+            return $this->handleInactiveUser();
         }
-        
-        if (Yii::$app->user->isGuest) {
-            if (!$this->loggedInOnly && !$this->adminOnly) {
-                return true;
+
+        if (Yii::$app->user->isGuest && !$this->adminOnly) {
+            return $this->handleGuestAccess($action);
+        }
+
+        if($this->adminOnly && !Yii::$app->user->isAdmin()) {
+            if($this->getControllerSpace() == null || !$this->getControllerSpace()->isAdmin()) {
+                $this->forbidden();
             }
-            if (in_array($action->id, $this->guestAllowedActions) && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
-                return true;
-            }
-            if (!empty($this->rules) && !empty($this->guestAllowedActions)) {
-                if (in_array($action->id, $this->guestAllowedActions)){
+        }
+
+        if ($this->checkRules()) {
+            return true;
+        }
+
+        return $this->loggedInOnly;
+    }
+
+    /**
+     * Denys access for non active users by performing a logout.
+     * @return boolean always false
+     */
+    protected function handleInactiveUser()
+    {
+        Yii::$app->user->logout();
+        Yii::$app->response->redirect(['/user/auth/login']);
+        return false;
+    }
+
+    /**
+     * Checks access for guest users.
+     * 
+     * Guests users are allowed to access an action if either the $loggedInOnly and $adminOnly flags are
+     * set to false or the given controller action is contained in $guestAllowedActions.
+     * 
+     * @return boolean
+     */
+    protected function handleGuestAccess($action)
+    {
+        if (!$this->loggedInOnly && !$this->adminOnly) {
+            return true;
+        }
+
+        if (in_array($action->id, $this->guestAllowedActions) && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
+            return true;
+        }
+
+        Yii::$app->user->loginRequired();
+        return false;
+    }
+
+    /**
+     * Checks group and permission rules.
+     * @return boolean
+     */
+    protected function checkRules()
+    {
+        if (!empty($this->rules)) {
+            foreach ($this->rules as $rule) {
+                if ($this->checkGroupRule($rule) || $this->checkPermissionRule($rule)) {
                     return true;
                 }
             }
-            Yii::$app->user->loginRequired();
-            return false;
-        }
-
-        if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
             $this->forbidden();
         }
+        return true;
+    }
 
-        if (!empty($this->rules)) {
+    /**
+     * Checks permission rules.
+     * 
+     * @param type $rule
+     * @return boolean
+     */
+    protected function checkPermissionRule($rule)
+    {
+        if (!empty($rule['permissions'])) {
+            if (!$this->checkRuleAction($rule)) {
+                return false;
+            }
+
+            $permissionArr = (!is_array($rule['permissions'])) ? [$rule['permissions']] : $rule['permissions'];
+            $params = isset($rule['params']) ? $rule['params'] : [];
+
+            if ($this->isContentContainerController()) {
+                return $this->owner->contentContainer->can($permissionArr, $params) || Yii::$app->user->can($permissionArr, $params);
+            }
+
+            return Yii::$app->user->can($permissionArr, $params);
+        }
+        return false;
+    }
+
+    protected function isContentContainerController()
+    {
+        return $this->owner instanceof \humhub\modules\content\components\ContentContainerController;
+    }
+
+    private function getControllerSpace()
+    {
+        if ($this->isContentContainerController()) {
+            return $this->owner->getSpace();
+        }
+        return null;
+    }
+
+    /**
+     * Checks the the current controller actions against the allowed rule action.
+     * If the rule does not contain any action settings, the rule is allowed for all controller actions.
+     * 
+     * @param array $rule
+     * @return boolean true if current action is allowed
+     */
+    private function checkRuleAction($rule)
+    {
+        if (!empty($rule['actions'])) {
             $action = Yii::$app->controller->action->id;
-            $userGroups = ArrayHelper::getColumn(ArrayHelper::toArray($identity->groups), 'name');
-            $userGroups = array_map('strtolower', $userGroups);
-            foreach ($this->rules as $rule){
-                if (!empty($rule['groups'])){
-                    $allowedGroups = array_map('strtolower', $rule['groups']);
-                    foreach ($allowedGroups as $allowedGroup){
-                        if(in_array($allowedGroup, $userGroups) && in_array($action, $rule['actions'])){
-                            return true;
-                        }
-                    }
+            return in_array($action, $rule['actions']);
+        }
+        return true;
+    }
+
+    /**
+     * Checks specific group access by group names.
+     * 
+     * @param type $rule
+     * @return boolean
+     */
+    protected function checkGroupRule($rule)
+    {
+        if (!empty($rule['groups'])) {
+            $userGroups = $this->getUserGroupNames();
+            $isAllowedAction = $this->checkRuleAction($rule);
+            $allowedGroups = array_map('strtolower', $rule['groups']);
+            foreach ($allowedGroups as $allowedGroup) {
+                if (in_array($allowedGroup, $userGroups) && $isAllowedAction) {
+                    return true;
                 }
             }
-            $this->forbidden();
+        }
+        return false;
+    }
+
+    /**
+     * Returns an array of strings with all user groups of the current user.
+     * 
+     * @return type
+     */
+    private function getUserGroupNames()
+    {
+        if ($this->_userGroupNames == null) {
+            $identity = Yii::$app->user->getIdentity();
+            $this->_userGroupNames = ArrayHelper::getColumn(ArrayHelper::toArray($identity->groups), 'name');
+            $this->_userGroupNames = array_map('strtolower', $this->_userGroupNames);
         }
 
-        if ($this->loggedInOnly) {
-            return true;
-        }
-       
-        return false;
+        return $this->_userGroupNames;
     }
 
     /**

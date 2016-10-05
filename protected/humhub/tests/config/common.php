@@ -5,7 +5,7 @@ return [
         'db' => [
             'dsn' => 'mysql:host=localhost;dbname=humhub_test',
             'username' => 'root',
-            'password' => '...',
+            'password' => '12manyhacks',
             'charset' => 'utf8',
         ], 
         'view' => 
@@ -18,6 +18,7 @@ return [
             ),
         ],
     'params' => [
+        'installed' => true,
         'moduleAutoloadPaths' => ['D:/codebase/humhub/modules'],
     ]
 ];

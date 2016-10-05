@@ -27,6 +27,12 @@ class BaseMenu extends \yii\base\Widget
      * @var string type of the navigation, optional for identifing.
      */
     public $type = "";
+    
+    /**
+     * @var string dom element id
+     * @since 1.2
+     */
+    public $id;
 
     /**
      * Template of the navigation

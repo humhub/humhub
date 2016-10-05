@@ -10,7 +10,6 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use humhub\modules\admin\components\Controller;
-use humhub\components\behaviors\AccessControl;
 
 /**
  * ApprovalController handels new user approvals
@@ -21,6 +20,11 @@ class AuthenticationController extends Controller
     /**
      * @inheritdoc
      */
+    public $adminOnly = false;
+    
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->setActionTitles([
@@ -28,20 +32,15 @@ class AuthenticationController extends Controller
             'authentication' => Yii::t('AdminModule.base', 'Authentication'),
             'authentication-ldap' => Yii::t('AdminModule.base', 'Authentication')
         ]);
-        
+
         $this->subLayout = '@admin/views/layouts/user';
         return parent::init();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public static function getAcessRules()
     {
         return [
-            'acl' => [
-                'class' => AccessControl::className(),
-            ]
+            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
         ];
     }
 
@@ -96,6 +95,7 @@ class AuthenticationController extends Controller
 
         return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
     }
+
 }
 
 ?>

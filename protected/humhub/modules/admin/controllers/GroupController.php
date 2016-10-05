@@ -23,11 +23,23 @@ use humhub\modules\admin\models\forms\AddGroupMemberForm;
 class GroupController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
+
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Groups'));
         return parent::init();
+    }
+
+    public static function getAcessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\admin\permissions\ManageGroups::className()]
+        ];
     }
 
     /**

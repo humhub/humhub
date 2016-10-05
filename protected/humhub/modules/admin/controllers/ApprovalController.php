@@ -15,7 +15,6 @@ use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\admin\components\Controller;
-use humhub\components\behaviors\AccessControl;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 
 /**
@@ -23,6 +22,10 @@ use humhub\modules\admin\models\forms\ApproveUserForm;
  */
 class ApprovalController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
 
     public function init()
     {
@@ -30,16 +33,14 @@ class ApprovalController extends Controller
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
         return parent::init();
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    
+    public static function getAcessRules()
     {
         return [
-            'acl' => [
-                'class' => AccessControl::className(),
-            ]
+            ['permissions' => [
+                    ManageUsers::className(),
+                    ManageGroups::className()
+            ]]
         ];
     }
 

@@ -71,8 +71,7 @@ class AcceptanceTester extends \Codeception\Actor
         $user = ($user != null) ? $user : 'User1';
         $password = ($password != null) ? $password : '123qwe';
         $this->login($user, $password);
-        $this->wait(5);
-        $this->seeElement('#wallStream');
+        $this->waitForElementVisible('#wallStream');
     }
 
     public function login($user, $password)
@@ -89,14 +88,13 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function clickAccountDropDown()
     {
-        $this->click('#account-dropdown-link');
+        $this->jsClick('#account-dropdown-link');
         $this->wait(2);
     }
 
     public function amOnProfile()
     {
-        $this->clickAccountDropDown();
-        $this->click('My profile');
+        return tests\codeception\_pages\ProfilePage::openBy($this);
     }
     
     public function amOnUser1Profile()

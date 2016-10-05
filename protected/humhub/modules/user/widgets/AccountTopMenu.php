@@ -43,7 +43,7 @@ class AccountTopMenu extends BaseMenu
             'sortOrder' => 200,
         ));
 
-        if (Yii::$app->user->isAdmin()) {
+        if (\humhub\modules\admin\widgets\AdminMenu::canAccess()) {
             $this->addItem(array(
                 'label' => '---',
                 'url' => '#',
@@ -73,5 +73,4 @@ class AccountTopMenu extends BaseMenu
 
         parent::init();
     }
-
 }

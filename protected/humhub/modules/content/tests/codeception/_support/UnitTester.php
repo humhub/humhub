@@ -16,7 +16,7 @@ namespace content;
  *
  * @SuppressWarnings(PHPMD)
 */
-class UnitTester extends \Codeception\Actor
+class UnitTester extends \UnitTester
 {
     use _generated\UnitTesterActions;
 

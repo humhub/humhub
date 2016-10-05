@@ -18,7 +18,17 @@ use yii\web\HttpException;
  */
 class Controller extends \humhub\modules\content\components\ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public $hideSidebar = true;
 
+    /**
+     * Can be overwritten by subclasses to allow non space admins
+     * @var type 
+     */
+    protected $adminOnly = true;
+    
     /**
      * @inheritdoc
      */
@@ -27,22 +37,14 @@ class Controller extends \humhub\modules\content\components\ContentContainerCont
         return [
             'acl' => [
                 'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => $this->adminOnly,
+                'rules' => $this->getAccessRules()
             ]
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
-    public $hideSidebar = true;
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        $this->adminOnly();
-        return parent::beforeAction($action);
+    
+    protected function getAccessRules() {
+        return [];
     }
 
     /**
