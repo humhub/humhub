@@ -26,7 +26,7 @@ class ManageUsers extends BaseAdminPermission
     {
         parent::__construct($config);
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Users');
-        $this->description = \Yii::t('AdminModule.permissions', 'Can manage users within the \'Administration -> Users -> Users Tab\' (create/edit/delete).');
+        $this->description = \Yii::t('AdminModule.permissions', 'Can manage users and user profiles.');
     }
 
 }
