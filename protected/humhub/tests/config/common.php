@@ -22,6 +22,5 @@ return [
         ],
     'params' => [
         'installed' => true,
-        'moduleAutoloadPaths' => ['D:/codebase/humhub/modules'],
     ]
 ];
