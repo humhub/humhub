@@ -22,7 +22,7 @@ class DashboardStreamTest extends HumHubDbTestCase
      */
     public function testUserFollow()
     {
-        $this->becomeUser('User2');
+        $this->becomeUser('User1');
 
         $post1 = new Post();
         $post1->message = "Private Post";
@@ -103,7 +103,7 @@ class DashboardStreamTest extends HumHubDbTestCase
         
         $this->assertEquals($this->getStreamActionIds(2), array($w2, $w1));
 
-        $this->becomeUser('User2');
+        $this->becomeUser('User3');
         $ids = $this->getStreamActionIds(2);
         $this->assertFalse(in_array($w1, $ids));
         $this->assertFalse(in_array($w2, $ids));

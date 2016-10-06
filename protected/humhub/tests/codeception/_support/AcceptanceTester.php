@@ -63,7 +63,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     public function amUser($user = null, $password = null, $logout = false)
-    {
+    { 
         if ($logout) {
             $this->logout();
         }
@@ -71,7 +71,7 @@ class AcceptanceTester extends \Codeception\Actor
         $user = ($user != null) ? $user : 'User1';
         $password = ($password != null) ? $password : '123qwe';
         $this->login($user, $password);
-        $this->waitForElementVisible('#wallStream');
+        $this->waitForElementVisible('#wallStream', 30);
     }
 
     public function login($user, $password)

@@ -3,7 +3,7 @@
 return [
     'fixtures' => [
         'default',
-        'post' => 'humhub\modules\post\tests\codeception\fixtures\PostFixture'
+        'content' => 'humhub\modules\content\tests\codeception\fixtures\ContentFixture'
     ],
 ];
 

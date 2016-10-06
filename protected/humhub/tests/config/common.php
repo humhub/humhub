@@ -4,16 +4,19 @@ return [
     'components' => [
         'db' => [
             'dsn' => 'mysql:host=localhost;dbname=humhub_test',
-            'username' => 'root',
-            'password' => '12manyhacks',
+            'username' => 'travis',
+            'password' => '',
             'charset' => 'utf8',
+            'attributes'=>[
+                PDO::ATTR_PERSISTENT => true
+            ]
         ], 
         'view' => 
             array (
               'theme' => 
                     array (
                       'name' => 'HumHub',
-                      'basePath' => 'D:/codebase/humhub/v1.2-dev/themes/HumHub',
+                      'basePath' => '@humhub/themes/HumHub',
                     ),
             ),
         ],
