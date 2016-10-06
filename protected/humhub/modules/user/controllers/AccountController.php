@@ -111,7 +111,11 @@ class AccountController extends BaseAccountController
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
             $user->save();
-
+           
+            $this->redirect(['edit-settings', 'saved' => true]);
+        }
+        
+        if(Yii::$app->request->get('saved')) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
         }
 
