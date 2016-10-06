@@ -18,7 +18,7 @@
  */
 return [
     'Administrators' => '',
-    'Default content visibility' => '',
+    'Default content visibility' => 'Видимость контента по умолчанию',
     'Members' => '',
     'Moderators' => '',
     'Users' => '',
