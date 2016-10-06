@@ -72,6 +72,7 @@ class AcceptanceTester extends \Codeception\Actor
         $password = ($password != null) ? $password : '123qwe';
         $this->login($user, $password);
         $this->waitForElementVisible('#wallStream', 30);
+        $this->wait(2);
     }
 
     public function login($user, $password)
