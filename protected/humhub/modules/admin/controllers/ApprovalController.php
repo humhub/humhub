@@ -16,6 +16,8 @@ use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ApproveUserForm;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\ManageGroups;
 
 /**
  * ApprovalController handels new user approvals
