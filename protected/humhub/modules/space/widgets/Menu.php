@@ -16,7 +16,7 @@ use humhub\modules\space\models\Space;
  */
 class Menu extends \humhub\widgets\BaseMenu
 {
-
+    /** @var Space */
     public $space;
     public $template = "@humhub/widgets/views/leftNavigation";
 

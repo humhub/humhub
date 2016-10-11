@@ -26,6 +26,7 @@ use humhub\modules\content\models\Wall;
  *      - getProfileImage()
  *      - getUrl()
  *
+ * @property integer $id
  * @since 1.0
  * @author Luke
  */
