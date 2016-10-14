@@ -70,9 +70,9 @@ AppAsset::register($this);
               href="<?php echo Yii::getAlias("@web"); ?>/ico/favicon-96x96.png">
         <link rel="icon" type="image/png" sizes="16x16"
               href="<?php echo Yii::getAlias("@web"); ?>/ico/favicon-16x16.png">
-        <link rel="manifest" href="/manifest.json">
+        <link rel="manifest" href="<?php echo Yii::getAlias("@web"); ?>/ico/manifest.json">
         <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="msapplication-TileImage" content="<?php echo Yii::getAlias("@web"); ?>/ico/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="<?= Yii::$app->charset ?>">
         <!-- end: Favicon and Touch Icons -->

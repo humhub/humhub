@@ -21,6 +21,7 @@ use humhub\modules\content\models\ContentContainer;
  *      - getProfileImage()
  *      - getUrl()
  *
+ * @property integer $id
  * @since 1.0
  * @author Luke
  */

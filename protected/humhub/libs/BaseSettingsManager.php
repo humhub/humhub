@@ -67,6 +67,11 @@ abstract class BaseSettingsManager extends Component
             $record = $this->createRecord();
             $record->name = $name;
         }
+        
+        if (is_bool($value)) {
+            $value = (int) $value;
+        }
+        
         $record->value = (string) $value;
         if (!$record->save()) {
             throw new \yii\base\Exception("Could not store setting! (" . print_r($record->getErrors(), 1) . ")");
@@ -176,6 +181,16 @@ abstract class BaseSettingsManager extends Component
     {
         $modelClass = $this->modelClass;
         return $modelClass::find()->andWhere(['module_id' => $this->moduleId]);
+    }
+
+    /**
+     * Deletes all stored settings
+     */
+    public function deleteAll()
+    {
+        foreach ($this->find()->all() as $setting) {
+            $this->delete($setting->name);
+        }
     }
 
 }
