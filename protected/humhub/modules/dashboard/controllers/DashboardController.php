@@ -8,9 +8,8 @@
 
 namespace humhub\modules\dashboard\controllers;
 
-use Yii;
 use humhub\components\Controller;
-use humhub\models\Setting;
+use Yii;
 
 class DashboardController extends Controller
 {
@@ -57,11 +56,12 @@ class DashboardController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
-            return $this->render('index_guest', array());
+            return $this->render('index_guest', []);
         } else {
-            return $this->render('index', array(
-                        'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
-            ));
+            return $this->render('index', [
+                'showProfilePostForm' => Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm'),
+                'contentContainer' => Yii::$app->user->getIdentity()
+            ]);
         }
     }
 
