@@ -27,8 +27,6 @@ class MailSettingMenu extends \humhub\widgets\BaseMenu
      */
     public function init()
     {
-        $groupId = Yii::$app->request->get('id');
-
         $this->addItem(array(
             'label' => Yii::t('AdminModule.views_setting_mailing', 'General'),
             'url' => Url::toRoute(['/admin/setting/mailing']),

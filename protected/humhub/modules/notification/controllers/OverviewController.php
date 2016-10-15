@@ -40,7 +40,6 @@ class OverviewController extends Controller
     public function actionIndex()
     {
         $pageSize = 10;
-        $session = Yii::$app->session;
         $notifications = [];
 
         $filterForm = new FilterForm();

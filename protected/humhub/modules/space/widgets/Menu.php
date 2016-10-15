@@ -83,7 +83,7 @@ class Menu extends \humhub\widgets\BaseMenu
                 return $indexUrl;
             } else {
                 //Either the module was deactivated or url changed
-                $indexUrl = $settings->contentContainer($space)->delete('indexUrl');
+                $settings->contentContainer($space)->delete('indexUrl');
             }
         }
         return null;
@@ -105,7 +105,7 @@ class Menu extends \humhub\widgets\BaseMenu
                 return $indexUrl;
             } else {
                 //Either the module was deactivated or url changed
-                $indexUrl = $settings->contentContainer($space)->delete('indexGuestUrl');
+                $settings->contentContainer($space)->delete('indexGuestUrl');
             }
         }
         return null;
