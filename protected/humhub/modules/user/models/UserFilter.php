@@ -55,7 +55,7 @@ class UserFilter extends User
             return UserPicker::asJSON($users, $permission);
         }
 
-        $friends = self::getFriendsByFilter($keywords, $maxResults);
+        $friends = $this->getFriendsByFilter($keywords, $maxResults);
         
         //Create userinfo json with with set 'disabled' field if the user is not permitted
         $jsonResult = UserPicker::asJSON($friends, $permission);
