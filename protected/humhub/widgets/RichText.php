@@ -78,7 +78,7 @@ REGEXP;
 
                 // Try use oembed
                 if ($maxOembedCount > $oembedCount) {
-                    $oembed = UrlOembed::GetOembed($match[0]);
+                    $oembed = UrlOembed::GetOEmbed($match[0]);
                     if ($oembed) {
                         $oembedCount++;
                         return $oembed;

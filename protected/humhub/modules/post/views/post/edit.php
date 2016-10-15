@@ -12,7 +12,7 @@ use yii\helpers\Url;
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input"
          contenteditable="true"><?php echo \humhub\widgets\RichText::widget(['text' => $post->message, 'edit' => true]); ?></div>
 
-    <?php echo $form->field($post, 'message')->label(false)->textArea(array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
+    <?php echo $form->field($post, 'message')->label(false)->textarea(array('class' => 'form-control', 'id' => 'post_input_' . $post->id, 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'))); ?>
 
     <?= \humhub\widgets\RichTextEditor::widget(['id' => 'post_input_' . $post->id, 'inputContent' => $post->message, 'record' => $post]); ?>
 

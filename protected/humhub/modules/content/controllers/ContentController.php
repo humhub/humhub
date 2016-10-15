@@ -51,7 +51,7 @@ class ContentController extends Controller
         $model = Yii::$app->request->get('model');
         $id = (int) Yii::$app->request->get('id');
 
-        $contentObj = Content::get($model, $id);
+        $contentObj = Content::Get($model, $id);
 
         if ($contentObj !== null && $contentObj->content->canEdit() && $contentObj->delete()) {
             $json = [
