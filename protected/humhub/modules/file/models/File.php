@@ -12,7 +12,7 @@ use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
 use yii\base\Exception;
-use humhub\models\Setting;
+
 use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;

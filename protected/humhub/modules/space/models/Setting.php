@@ -9,7 +9,7 @@
 namespace humhub\modules\space\models;
 
 use Yii;
-use humhub\modules\space\models\Space;
+
 
 /**
  * Space settings compatiblity layer class

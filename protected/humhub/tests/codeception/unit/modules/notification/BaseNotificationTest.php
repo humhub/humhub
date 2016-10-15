@@ -2,9 +2,7 @@
 
 namespace tests\codeception\unit\modules\notification;
 
-use Yii;
 use yii\codeception\DbTestCase;
-use humhub\modules\activity\components\BaseActivity;
 use tests\codeception\unit\modules\notification\data\TestNotification;
 
 class BaseNotificationTest extends DbTestCase

@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use Yii;
+
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 

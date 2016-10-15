@@ -1,8 +1,8 @@
 <?php
 
-use yii\widgets\ActiveForm;
+
 use yii\bootstrap\Html;
-use yii\helpers\Url;
+
 
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">

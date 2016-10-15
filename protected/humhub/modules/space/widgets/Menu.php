@@ -3,7 +3,7 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use \yii\base\Widget;
+
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 

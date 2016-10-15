@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use humhub\models\Setting;
+
 ?>
 
 <div class="modal-dialog modal-dialog-small animated fadeIn">

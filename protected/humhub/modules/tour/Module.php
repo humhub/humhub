@@ -4,7 +4,7 @@ namespace humhub\modules\tour;
 
 use Yii;
 use humhub\modules\tour\widgets\Dashboard;
-use humhub\models\Setting;
+
 
 /**
  * This module shows an introduction tour for new users

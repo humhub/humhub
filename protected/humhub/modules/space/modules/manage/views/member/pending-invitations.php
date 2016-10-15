@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Url;
+
 use yii\helpers\Html;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;

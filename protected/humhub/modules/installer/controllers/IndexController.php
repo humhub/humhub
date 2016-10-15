@@ -8,11 +8,9 @@
 
 namespace humhub\modules\installer\controllers;
 
-use Yii;
+
 use humhub\components\Controller;
-use humhub\modules\user\models\Group;
-use humhub\modules\user\models\User;
-use yii\helpers\Url;
+
 
 /**
  * Index Controller shows a simple welcome page.

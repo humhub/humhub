@@ -2,9 +2,7 @@
 
 namespace tests\codeception\unit\modules\activity;
 
-use Yii;
 use yii\codeception\DbTestCase;
-use humhub\modules\activity\components\BaseActivity;
 use tests\codeception\unit\modules\activity\data\TestActivity;
 
 class BaseActivityTest extends DbTestCase

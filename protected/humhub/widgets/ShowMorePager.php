@@ -10,7 +10,7 @@ namespace humhub\widgets;
 
 use Yii;
 use yii\helpers\Html;
-use humhub\widgets\AjaxButton;
+
 use yii\web\JsExpression;
 
 /**

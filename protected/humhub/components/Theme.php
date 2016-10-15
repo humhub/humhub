@@ -11,7 +11,7 @@ namespace humhub\components;
 use Yii;
 use yii\helpers\FileHelper;
 use humhub\libs\ThemeHelper;
-use humhub\models\Setting;
+
 
 /**
  * @inheritdoc

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\models\Setting;
+
 ?>
 
 <?php echo $content; ?>

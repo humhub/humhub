@@ -9,7 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use yii\helpers\Url;
+
 use yii\web\HttpException;
 use yii\authclient\ClientInterface;
 use humhub\components\Controller;

@@ -9,7 +9,7 @@
 namespace humhub\modules\directory\controllers;
 
 use Yii;
-use yii\helpers\Url;
+
 use humhub\modules\directory\widgets\Sidebar;
 
 /**

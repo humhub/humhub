@@ -12,9 +12,9 @@ use ZipArchive;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
-use humhub\models\Setting;
+
 use humhub\libs\CURLHelper;
-use humhub\modules\admin\libs\HumHubAPI;
+
 
 /**
  * Handles remote module installation, updates and module listing

@@ -12,7 +12,7 @@ use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
-use humhub\modules\space\models\Setting;
+
 
 /**
  * SpaceController is the main controller for spaces.

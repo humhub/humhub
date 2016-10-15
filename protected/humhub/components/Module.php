@@ -9,8 +9,8 @@
 namespace humhub\components;
 
 use Yii;
-use humhub\models\ModuleEnabled;
-use yii\base\Exception;
+
+
 use yii\helpers\Json;
 
 /**

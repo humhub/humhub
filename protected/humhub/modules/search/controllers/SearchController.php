@@ -12,7 +12,7 @@ use Yii;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\models\Setting;
+
 use humhub\modules\space\widgets\Image;
 
 /**

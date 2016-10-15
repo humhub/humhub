@@ -18,7 +18,7 @@ use humhub\modules\post\models\Post;
 use humhub\modules\dashboard\components\actions\DashboardStream;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\modules\activity\models\Activity;
+
 use humhub\modules\content\models\Content;
 
 class DashboardStreamTest extends DbTestCase

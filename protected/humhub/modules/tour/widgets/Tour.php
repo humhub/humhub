@@ -3,7 +3,7 @@
 namespace humhub\modules\tour\widgets;
 
 use Yii;
-use humhub\models\Setting;
+
 
 /**
  * Will show the introduction tour

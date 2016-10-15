@@ -20,8 +20,6 @@
 
 namespace humhub\widgets;
 
-use Yii;
-
 /**
  * StackWidget is a widget which can hold a set of subwidgets.
  *

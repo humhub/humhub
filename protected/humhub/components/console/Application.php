@@ -9,7 +9,6 @@
 namespace humhub\components\console;
 
 use Yii;
-use humhub\models\Setting;
 
 /**
  * Description of Application

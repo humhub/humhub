@@ -2,9 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-use Yii;
-use \yii\base\Widget;
-
 /**
  * This widget will added to the sidebar, when on admin area
  *

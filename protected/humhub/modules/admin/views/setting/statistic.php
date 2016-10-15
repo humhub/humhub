@@ -2,8 +2,8 @@
 
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
-use humhub\models\Setting;
-use yii\helpers\Url;
+
+
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 

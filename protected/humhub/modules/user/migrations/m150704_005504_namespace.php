@@ -1,9 +1,9 @@
 <?php
 
-use yii\db\Schema;
+
 use humhub\components\Migration;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Follow;
+
 
 class m150704_005504_namespace extends Migration
 {

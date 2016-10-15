@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Schema;
-use yii\db\Migration;
+
 
 class m151010_124437_group_permissions extends \humhub\components\Migration
 {

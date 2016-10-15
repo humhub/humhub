@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\installer\controllers\ConfigController;
+
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Html;
 ?>
