@@ -41,7 +41,7 @@ class Helpers
         $textlength = mb_strlen($text);
         if ($textlength > $length) {
             $text = self::substru($text, 0, $textlength - ($textlength - $length));
-            $text = $text . "...";
+            $text .= '...';
         }
         $text = str_replace("<br />", "", $text);
 
@@ -85,29 +85,22 @@ class Helpers
      * */
     public static function getFormattedTime($sekunden)
     {
-
-        $negative = false;
-        $minus = "";
+        $minus = '';
         if ($sekunden < 0) {
-            $negative = true;
-            $sekunden = $sekunden * (-1);
-            $minus = "-";
+            $sekunden *= -1;
+            $minus = '-';
         }
 
         $minuten = bcdiv($sekunden, '60', 0);
-        $sekunden = bcmod($sekunden, '60');
 
         $stunden = bcdiv($minuten, '60', 0);
         $minuten = bcmod($minuten, '60');
 
         if ($minuten < 10) {
-            $minuten = "0" . $minuten;
+            $minuten = '0' . $minuten;
         }
 
-        $tage = bcdiv($stunden, '24', 0);
         $stunden = bcmod($stunden, '24');
-
-
 
         return $minus . $stunden . ':' . $minuten;
     }

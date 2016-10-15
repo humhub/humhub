@@ -172,7 +172,7 @@ class ModuleController extends Controller
             $results = array();
             foreach ($modules as $module) {
                 if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
-                    array_push($results, $module);
+                    $results[] = $module;
                 }
             }
             $modules = $results;

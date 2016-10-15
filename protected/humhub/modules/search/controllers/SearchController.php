@@ -133,10 +133,7 @@ class SearchController extends Controller
         $totals = array();
 
         // Unset unnecessary search options
-        unset($options['model']);
-        unset($options['type']);
-        unset($options['page']);
-        unset($options['pageSize']);
+        unset($options['model'], $options['type'], $options['page'], $options['pageSize']);
 
         $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => User::className()]));
         $totals[self::SCOPE_USER] = $searchResultSetCount->total;

@@ -151,11 +151,11 @@ class BaseStack extends \yii\base\Widget
         if (!isset($options['sortOrder']))
             $options['sortOrder'] = 100;
 
-        array_push($this->widgets, array(
+        $this->widgets[] = array(
             $className,
             $params,
             $options
-        ));
+        );
     }
 
 }
