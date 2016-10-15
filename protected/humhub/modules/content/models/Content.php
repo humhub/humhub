@@ -135,7 +135,7 @@ class Content extends \humhub\components\ActiveRecord
      * @param string $className Class Name of the Content
      * @param int $id Primary Key
      */
-    static function Get($className, $id)
+    public static function Get($className, $id)
     {
         $content = self::findOne(['object_model' => $className, 'object_id' => $id]);
         if ($content != null) {
