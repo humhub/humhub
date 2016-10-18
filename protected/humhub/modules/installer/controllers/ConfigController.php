@@ -14,8 +14,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Group;
-use yii\helpers\Url;
-use humhub\models\Setting;
 
 /**
  * ConfigController allows inital configuration of humhub.

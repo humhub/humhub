@@ -9,7 +9,6 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\models\User;

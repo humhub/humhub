@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Schema;
+
 use humhub\components\Migration;
 use humhub\modules\comment\models\Comment;
 

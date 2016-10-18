@@ -1,8 +1,8 @@
 <?php
 
-use yii\db\Schema;
+
 use yii\db\Migration;
-use humhub\models\Setting;
+
 
 class m150322_195619_allowedExt2Text extends Migration
 {

@@ -1,10 +1,10 @@
 <?php
 
-use yii\db\Schema;
+
 use humhub\components\Migration;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
-use humhub\modules\like\models\Like;
+
 
 class m150703_130157_migrate extends Migration
 {

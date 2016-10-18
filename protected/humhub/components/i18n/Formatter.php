@@ -9,7 +9,7 @@
 namespace humhub\components\i18n;
 
 use Yii;
-use humhub\models\Setting;
+
 
 /**
  * @inheritdoc

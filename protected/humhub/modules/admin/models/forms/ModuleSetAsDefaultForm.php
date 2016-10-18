@@ -2,7 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use Yii;
+
 
 /**
  * GroupForm is used to modify group settings

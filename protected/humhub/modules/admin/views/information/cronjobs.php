@@ -1,9 +1,3 @@
-<?php
-
-use yii\helpers\Html;
-use humhub\models\Setting;
-?>
-
 <p>
     <strong>Status:</strong><br/>
     <?php

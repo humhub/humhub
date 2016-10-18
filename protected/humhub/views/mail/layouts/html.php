@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\models\Setting;
+
 ?>
 
 <?php $this->beginPage() ?>

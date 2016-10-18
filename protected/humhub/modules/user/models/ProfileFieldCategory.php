@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models;
 
-use Yii;
+
 
 /**
  * This is the model class for table "profile_field_category".

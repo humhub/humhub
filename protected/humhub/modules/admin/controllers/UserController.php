@@ -15,7 +15,7 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Group;
+
 use humhub\modules\admin\models\forms\UserEditForm;
 
 /**

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\search\widgets;
 
-use Yii;
+
 
 /**
  * SearchMenu Widget for TopMenu

@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Schema;
+
 use yii\db\Migration;
 
 class m150924_154635_user_invite_add_first_lastname extends Migration

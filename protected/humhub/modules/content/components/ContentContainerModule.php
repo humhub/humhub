@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\components;
 
-use Yii;
+
 use humhub\components\Module;
 
 /**

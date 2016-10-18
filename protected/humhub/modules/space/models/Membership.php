@@ -6,7 +6,7 @@ use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\WallEntry;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\comment\models\Comment;
+
 
 /**
  * This is the model class for table "space_membership".

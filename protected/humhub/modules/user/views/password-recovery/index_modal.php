@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use yii\helpers\Html;
+
 use yii\helpers\Url;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">

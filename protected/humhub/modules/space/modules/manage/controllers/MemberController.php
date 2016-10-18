@@ -9,15 +9,15 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use yii\data\ArrayDataProvider;
+
+
 use yii\web\HttpException;
-use humhub\modules\space\models\Space;
+
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
-use humhub\libs\BasePermission;
+
 
 /**
  * Member Controller

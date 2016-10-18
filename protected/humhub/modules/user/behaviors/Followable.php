@@ -22,7 +22,7 @@ namespace humhub\modules\user\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
+
 use humhub\modules\user\models\Follow;
 
 /**

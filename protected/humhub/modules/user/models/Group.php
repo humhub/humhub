@@ -10,7 +10,7 @@ namespace humhub\modules\user\models;
 
 use Yii;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
+
 
 /**
  * This is the model class for table "group".

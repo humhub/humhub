@@ -1,10 +1,10 @@
 <?php
 
-use yii\db\Schema;
+
 use humhub\components\Migration;
 use humhub\modules\notification\models\Notification;
 use yii\db\Expression;
-use yii\db\Query;
+
 
 class m150703_033650_namespace extends Migration
 {

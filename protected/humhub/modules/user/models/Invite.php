@@ -138,7 +138,6 @@ class Invite extends \yii\db\ActiveRecord
                 'token' => $this->token,
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
-                'token' => $this->token,
                 'space' => $this->space,
                 'registrationUrl' => $registrationUrl
             ]);

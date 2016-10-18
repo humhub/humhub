@@ -11,7 +11,6 @@ namespace humhub\components\behaviors;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
-use humhub\models\Setting;
 
 /**
  * AccessControl provides a very basic controller access protection

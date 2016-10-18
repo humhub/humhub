@@ -3,7 +3,6 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use humhub\models\Setting;
 use humhub\components\Widget;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;

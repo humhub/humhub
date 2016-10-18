@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\models;
 
-use Yii;
+
 use humhub\components\ActiveRecord;
 
 /**

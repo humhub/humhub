@@ -9,7 +9,7 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use \yii\base\Widget;
+
 
 /**
  * The Admin Navigation for spaces

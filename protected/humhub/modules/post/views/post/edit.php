@@ -1,8 +1,7 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use yii\helpers\Url;
+
 
 ?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">

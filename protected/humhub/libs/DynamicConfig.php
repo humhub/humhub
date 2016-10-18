@@ -10,8 +10,7 @@ namespace humhub\libs;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use humhub\libs\ThemeHelper;
-use humhub\models\Setting;
+
 
 /**
  * DynamicConfig provides access to the dynamic configuration file.

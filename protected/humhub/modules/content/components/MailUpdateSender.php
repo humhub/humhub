@@ -10,7 +10,7 @@ namespace humhub\modules\content\components;
 
 use Yii;
 use yii\helpers\Console;
-use humhub\models\Setting;
+
 use humhub\modules\user\models\User;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\activity\components\BaseActivity;

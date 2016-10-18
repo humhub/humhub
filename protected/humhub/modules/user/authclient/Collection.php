@@ -11,7 +11,6 @@ namespace humhub\modules\user\authclient;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidParamException;
-use humhub\models\Setting;
 
 /**
  * Extended AuthClient collection with event support

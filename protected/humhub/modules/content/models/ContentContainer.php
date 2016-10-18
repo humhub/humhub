@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\models;
 
-use Yii;
+
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 

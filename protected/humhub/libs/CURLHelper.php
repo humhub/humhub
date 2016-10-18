@@ -9,7 +9,7 @@
 namespace humhub\libs;
 
 use Yii;
-use humhub\models\Setting;
+
 
 /**
  * CURLHelper

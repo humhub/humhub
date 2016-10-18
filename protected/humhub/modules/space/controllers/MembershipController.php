@@ -9,12 +9,12 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use yii\helpers\Url;
+
 use yii\web\HttpException;
-use humhub\modules\user\models\User;
+
 use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\space\models\Space;
-use humhub\models\Setting;
+
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\user\widgets\UserListBox;

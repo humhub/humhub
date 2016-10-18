@@ -10,7 +10,7 @@ namespace humhub\libs;
 
 use DateTime;
 use DateTimeZone;
-use Yii;
+
 
 /**
  * TimezoneHelpers

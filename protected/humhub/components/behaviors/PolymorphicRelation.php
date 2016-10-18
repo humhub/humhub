@@ -9,7 +9,7 @@
 namespace humhub\components\behaviors;
 
 use Yii;
-use yii\db\ActiveRecord;
+
 use yii\base\Behavior;
 
 /**

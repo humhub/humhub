@@ -2,7 +2,7 @@
 /* @var $this \humhub\components\View */
 /* @var $currentSpace \humhub\modules\space\models\Space */
 
-use yii\helpers\Url;
+
 use yii\helpers\Html;
 
 if ($space->isAdmin()) {
