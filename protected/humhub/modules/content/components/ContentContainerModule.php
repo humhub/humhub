@@ -130,7 +130,7 @@ class ContentContainerModule extends Module
      */
     public function disableContentContainer(ContentContainerActiveRecord $container)
     {
-        
+        $this->settings->contentContainer($container)->deleteAll();
     }
 
     /**

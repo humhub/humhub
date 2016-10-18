@@ -25,6 +25,7 @@ class DesignSettingsForm extends \yii\base\Model
     public $spaceOrder;
     public $logo;
     public $dateInputDisplayFormat;
+    public $horImageScrollOnMobile;
 
     /**
      * @inheritdoc
@@ -40,6 +41,7 @@ class DesignSettingsForm extends \yii\base\Model
         $this->displayName = $settingsManager->get('displayNameFormat');
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
+        $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
     }
 
     /**
@@ -56,6 +58,7 @@ class DesignSettingsForm extends \yii\base\Model
             array('paginationSize', 'integer', 'max' => 200, 'min' => 1),
             array('theme', 'in', 'range' => $themes),
             array(['displayName', 'spaceOrder'], 'safe'),
+            array(['horImageScrollOnMobile'], 'boolean'),
             array('logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => 3 * 1024 * 1024),
             array('logo', 'dimensionValidation', 'skipOnError' => true),
             array('dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']),
@@ -74,6 +77,7 @@ class DesignSettingsForm extends \yii\base\Model
             'spaceOrder' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Dropdown space order'),
             'logo' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Logo upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Date input format'),
+            'horImageScrollOnMobile' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Horizontal scrolling images on a mobile device'),
         );
     }
 
@@ -118,6 +122,7 @@ class DesignSettingsForm extends \yii\base\Model
         $settingsManager->set('displayNameFormat', $this->displayName);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
+        $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
 
         if ($this->logo) {
             $logoImage = new \humhub\libs\LogoImage();
