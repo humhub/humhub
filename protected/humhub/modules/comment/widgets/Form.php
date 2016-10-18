@@ -42,7 +42,6 @@ class Form extends \yii\base\Widget
         
         $modelName = $this->object->content->object_model;
         $modelId = $this->object->content->object_id;
-        $id = $modelName . "_" . $modelId;
 
         return $this->render('form', array(
                     'modelName' => $modelName,

@@ -86,7 +86,6 @@ class DropDownGridColumn extends DataColumn
             $i++;
         }
 
-        $options = [];
         if (is_array($this->dropDownOptions)) {
             $options = $this->dropDownOptions;
         } else {

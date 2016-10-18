@@ -49,7 +49,7 @@ class SettingsBehavior extends Behavior
      */
     public function setSetting($name, $value, $moduleId = "")
     {
-        $value = $this->getModule($moduleId)->settings->contentContainer($this->owner)->set($name, $value);
+        $this->getModule($moduleId)->settings->contentContainer($this->owner)->set($name, $value);
     }
 
     /**

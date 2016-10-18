@@ -43,7 +43,6 @@ class MailUpdateSender extends \yii\base\Component
     public static function processCron($controller)
     {
         // Detect the mailing interval we're in
-        $interval = 0;
         if (Yii::$app->controller->action->id == 'hourly') {
             $interval = self::INTERVAL_HOURY;
         } elseif (Yii::$app->controller->action->id == 'daily') {
