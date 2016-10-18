@@ -138,6 +138,7 @@ class UserController extends Controller
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Become this user'),
                 'class' => 'btn btn-danger',
+                'isVisible' => $this->canBecomeUser($user)
             ),
             'delete' => array(
                 'type' => 'submit',
@@ -158,7 +159,7 @@ class UserController extends Controller
         }
 
         // This feature is used primary for testing, maybe remove this in future
-        if ($form->submitted('become')) {
+        if ($form->submitted('become') && $this->canBecomeUser($user)) {
 
             Yii::$app->user->switchIdentity($form->models['User']);
             return $this->redirect(Url::toRoute("/"));
@@ -169,6 +170,12 @@ class UserController extends Controller
         }
 
         return $this->render('edit', array('hForm' => $form, 'user' => $user));
+    }
+    
+    public function canBecomeUser($user) {
+        return Yii::$app->user->isAdmin() 
+                && $user->id != Yii::$app->user->getIdentity()->id
+                && !$user->isSystemAdmin();
     }
 
     public function actionAdd()
