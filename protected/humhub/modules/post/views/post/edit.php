@@ -1,12 +1,11 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use yii\helpers\Url;
+
 
 ?>
 <div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
-    <?php $form = CActiveForm::begin(['id' => 'post-edit-form_'+$post->id]); ?>
+    <?php $form = CActiveForm::begin(['id' => 'post-edit-form_' . $post->id]); ?>
     
     <!-- create contenteditable div for HEditorWidget to place the data -->
     <div id="post_input_<?php echo $post->id; ?>_contenteditable" class="form-control atwho-input"

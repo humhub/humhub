@@ -37,7 +37,6 @@ class LogoImage
     public function getUrl()
     {
         $cacheId = 0;
-        $path = "";
 
         // Workaround for absolute urls in console applications (Cron)
         if (Yii::$app->request->isConsoleRequest) {

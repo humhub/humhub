@@ -14,7 +14,7 @@ use humhub\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
-use humhub\modules\user\models\Auth;
+
 
 /**
  * Password Recovery

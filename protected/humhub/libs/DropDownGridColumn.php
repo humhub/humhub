@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use Yii;
+
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 
@@ -86,7 +86,6 @@ class DropDownGridColumn extends DataColumn
             $i++;
         }
 
-        $options = [];
         if (is_array($this->dropDownOptions)) {
             $options = $this->dropDownOptions;
         } else {

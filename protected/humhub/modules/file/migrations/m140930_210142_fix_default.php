@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Schema;
+
 use yii\db\Migration;
 
 class m140930_210142_fix_default extends Migration

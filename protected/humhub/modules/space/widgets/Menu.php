@@ -3,7 +3,7 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use \yii\base\Widget;
+
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 
@@ -16,7 +16,7 @@ use humhub\modules\space\models\Space;
  */
 class Menu extends \humhub\widgets\BaseMenu
 {
-
+    /** @var Space */
     public $space;
     public $template = "@humhub/widgets/views/leftNavigation";
 
@@ -83,7 +83,7 @@ class Menu extends \humhub\widgets\BaseMenu
                 return $indexUrl;
             } else {
                 //Either the module was deactivated or url changed
-                $indexUrl = $settings->contentContainer($space)->delete('indexUrl');
+                $settings->contentContainer($space)->delete('indexUrl');
             }
         }
         return null;
@@ -105,7 +105,7 @@ class Menu extends \humhub\widgets\BaseMenu
                 return $indexUrl;
             } else {
                 //Either the module was deactivated or url changed
-                $indexUrl = $settings->contentContainer($space)->delete('indexGuestUrl');
+                $settings->contentContainer($space)->delete('indexGuestUrl');
             }
         }
         return null;

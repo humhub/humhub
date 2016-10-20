@@ -9,12 +9,11 @@
 namespace humhub\commands;
 
 use Yii;
-use yii\console\Controller;
-use yii\console\Exception;
+
+
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
-use yii\helpers\VarDumper;
-use yii\i18n\GettextPoFile;
+
 
 /**
  * Extracts messages to be translated from source files.

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use humhub\assets\AppAsset;
-use humhub\models\Setting;
+
 
 /* @var $this \yii\web\View */
 /* @var $content string */

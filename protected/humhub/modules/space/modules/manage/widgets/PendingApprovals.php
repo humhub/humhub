@@ -8,7 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-use Yii;
+
 use \yii\base\Widget;
 
 /**

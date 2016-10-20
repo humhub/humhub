@@ -9,7 +9,7 @@
 namespace humhub\modules\admin;
 
 use Yii;
-use humhub\models\Setting;
+
 
 /**
  * @package humhub.modules_core.admin

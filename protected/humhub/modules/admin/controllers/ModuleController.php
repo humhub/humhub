@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use yii\helpers\Url;
+
 use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\OnlineModuleManager;
@@ -172,7 +172,7 @@ class ModuleController extends Controller
             $results = array();
             foreach ($modules as $module) {
                 if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
-                    array_push($results, $module);
+                    $results[] = $module;
                 }
             }
             $modules = $results;

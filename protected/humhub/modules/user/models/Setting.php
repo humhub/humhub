@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
-use humhub\modules\user\models\User;
+
 
 /**
  * User settings compatiblity layer class

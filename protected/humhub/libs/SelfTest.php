@@ -233,6 +233,20 @@ class SelfTest
             );
         }
 
+        $title = 'PHP - PDO Mysql Extension';
+        if (extension_loaded('pdo_mysql')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PDO Mysql Extension'
+            );
+        }
+
         // Checks Writeable Config
         /*
           $title = 'Permissions - Config';

@@ -11,11 +11,7 @@ namespace humhub\modules\content;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\MailUpdateSender;
-use humhub\modules\user\models\User;
-use humhub\commands\CronController;
-use humhub\models\Setting;
-use yii\helpers\Console;
-use yii\base\Exception;
+
 
 /**
  * Events provides callbacks to handle events.

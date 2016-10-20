@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\components;
 
-use Yii;
+
 use humhub\components\Module;
 
 /**
@@ -130,7 +130,7 @@ class ContentContainerModule extends Module
      */
     public function disableContentContainer(ContentContainerActiveRecord $container)
     {
-        
+        $this->settings->contentContainer($container)->deleteAll();
     }
 
     /**

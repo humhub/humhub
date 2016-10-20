@@ -123,7 +123,7 @@ class SetupController extends Controller
         @ini_set('max_execution_time', 0);
 
         // Migrate Up Database
-        $result = \humhub\commands\MigrateController::webMigrateAll();
+        \humhub\commands\MigrateController::webMigrateAll();
 
         DynamicConfig::rewrite();
 

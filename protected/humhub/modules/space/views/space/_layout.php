@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var \humhub\modules\space\models\Space $space
+ * @var string $content
+ */
+
 $space = $this->context->contentContainer;
 ?>
 <div class="container space-layout-container">
@@ -16,11 +21,17 @@ $space = $this->context->contentContainer;
 
         <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
             <div class="col-md-10 layout-content-container">
-                <?php echo $content; ?>
+                <?= \humhub\modules\space\widgets\SpaceContent::widget([
+                    'contentContainer' => $space,
+                    'content' => $content
+                ]) ?>
             </div>
         <?php else: ?>
             <div class="col-md-7 layout-content-container">
-                <?php echo $content; ?>
+                <?= \humhub\modules\space\widgets\SpaceContent::widget([
+                    'contentContainer' => $space,
+                    'content' => $content
+                ]) ?>
             </div>
             <div class="col-md-3 layout-sidebar-container">
                 <?php

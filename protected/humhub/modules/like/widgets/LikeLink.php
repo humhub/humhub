@@ -65,10 +65,10 @@ class LikeLink extends \yii\base\Widget
             }
         }
 
-        for ($i = 0; $i < count($likes); $i++) {
+        for ($i = 0, $likesCount = count($likes); $i < $likesCount; $i++) {
 
             // if only one user likes
-            if (count($likes) == 1) {
+            if ($likesCount == 1) {
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
@@ -85,7 +85,7 @@ class LikeLink extends \yii\base\Widget
                 // check if exists more user as limited
                 if ($i == $maxUser) {
                     // output with the number of not rendered users
-                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', array('{count}' => (intval(count($likes) - $maxUser))));
+                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', array('{count}' => (int)(count($likes) - $maxUser)));
 
                     // stop the loop
                     break;

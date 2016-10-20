@@ -1,6 +1,6 @@
 <?php
 
-use humhub\models\Setting;
+
 ?>
 <div class="panel panel-default" id="user-statistics-panel">
 

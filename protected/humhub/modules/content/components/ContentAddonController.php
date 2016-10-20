@@ -10,8 +10,7 @@ namespace humhub\modules\content\components;
 
 use Yii;
 use yii\web\HttpException;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+
 
 /**
  * ContentAddonController is a base controller for ContentAddons.

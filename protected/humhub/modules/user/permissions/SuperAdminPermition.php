@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\permissions;
 
-use Yii;
-use humhub\modules\user\models\User;
+
+
 
 /**
  * ViewAboutPage Permission

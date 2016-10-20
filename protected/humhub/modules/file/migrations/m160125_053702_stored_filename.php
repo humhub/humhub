@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Schema;
+
 use yii\db\Migration;
 
 class m160125_053702_stored_filename extends Migration

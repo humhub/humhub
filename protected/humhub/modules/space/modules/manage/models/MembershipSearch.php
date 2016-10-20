@@ -8,7 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
-use Yii;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\space\models\Membership;

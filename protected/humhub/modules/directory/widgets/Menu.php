@@ -10,7 +10,7 @@ namespace humhub\modules\directory\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\user\models\Group;
+
 use humhub\modules\directory\models\User;
 
 /**

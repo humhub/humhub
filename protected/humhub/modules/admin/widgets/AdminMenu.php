@@ -10,7 +10,6 @@ namespace humhub\modules\admin\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
 
 /**
  * Description of AdminMenu

@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use humhub\models\Setting;
+
 ?>
 
 <div class="panel panel-default" id="spaces-statistics-panel">

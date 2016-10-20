@@ -4,7 +4,7 @@ namespace humhub\modules\user\controllers;
 
 use Yii;
 use yii\web\Controller;
-use humhub\modules\user\models\UserFilter;
+
 
 /**
  * Search Controller provides action for searching users.

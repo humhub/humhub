@@ -3,7 +3,6 @@
 namespace humhub\models;
 
 use Yii;
-use humhub\models\Setting;
 
 
 /**

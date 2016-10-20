@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Schema;
+
 use yii\db\Migration;
 use humhub\modules\content\permissions\CreatePublicContent;
 

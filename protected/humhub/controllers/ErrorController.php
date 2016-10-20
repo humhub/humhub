@@ -10,7 +10,7 @@ namespace humhub\controllers;
 
 use Yii;
 use humhub\components\Controller;
-use humhub\models\Setting;
+
 use yii\web\HttpException;
 use yii\base\UserException;
 

@@ -8,13 +8,13 @@
 
 namespace humhub\modules\friendship\controllers;
 
-use Yii;
+
 use yii\data\ActiveDataProvider;
-use humhub\modules\user\models\User;
+
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\models\SettingsForm;
-use humhub\models\Setting;
+
 
 /**
  * Membership Manage Controller

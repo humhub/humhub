@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
+
 ?>
 <?php foreach ($this->context->getItems() as $item) : ?>
     <li class="visible-md visible-lg <?php if ($item['isActive']): ?>active<?php endif; ?> <?php

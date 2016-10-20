@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\modules\user\models\User;
+
 ?>
 <div class="panel panel-default groups">
 

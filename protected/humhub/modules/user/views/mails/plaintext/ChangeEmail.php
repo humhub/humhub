@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\models\Setting;
 ?>
 <?php echo strip_tags(Yii::t('UserModule.views_mails_ChangeEmail', '<strong>Confirm</strong></strong> your new email address')); ?>
 

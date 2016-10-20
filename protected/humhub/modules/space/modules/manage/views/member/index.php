@@ -16,9 +16,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
 
             <?php
             $groups = $space->getUserGroups();
-            unset($groups[Space::USERGROUP_OWNER]);
-            unset($groups[Space::USERGROUP_GUEST]);
-            unset($groups[Space::USERGROUP_USER]);
+            unset($groups[Space::USERGROUP_OWNER], $groups[Space::USERGROUP_GUEST], $groups[Space::USERGROUP_USER]);
 
             echo GridView::widget([
                 'dataProvider' => $dataProvider,

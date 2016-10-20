@@ -57,7 +57,7 @@ class UrlValidator extends Validator
         }
 
         // Add number to taken url
-        for ($i = 0; $i <= count($existingSpaceUrls); $i++) {
+        for ($i = 0, $existingSpaceUrlsCount = count($existingSpaceUrls); $i <= $existingSpaceUrlsCount; $i++) {
             $tryUrl = $url . ($i + 2);
             if (!in_array($tryUrl, $existingSpaceUrls)) {
                 return $tryUrl;

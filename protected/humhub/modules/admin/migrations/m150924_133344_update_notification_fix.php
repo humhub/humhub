@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Schema;
+
 use humhub\components\Migration;
 
 class m150924_133344_update_notification_fix extends Migration

@@ -11,7 +11,7 @@ namespace humhub\modules\admin\libs;
 use Yii;
 use yii\helpers\Json;
 use humhub\libs\CURLHelper;
-use humhub\models\Setting;
+
 
 /**
  * HumHubAPI provides access to humhub.com for fetching available modules or latest version.

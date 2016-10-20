@@ -2,9 +2,6 @@
 
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
-use humhub\models\Setting;
-use yii\helpers\Url;
-use humhub\modules\user\models\User;
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 

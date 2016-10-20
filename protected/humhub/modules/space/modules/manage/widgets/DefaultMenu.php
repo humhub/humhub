@@ -9,8 +9,7 @@
 namespace humhub\modules\space\modules\manage\widgets;
 
 use Yii;
-use yii\helpers\Url;
-use humhub\models\Setting;
+
 
 /**
  * Space Administration Menu

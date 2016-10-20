@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use Yii;
+
 
 /**
  * @inheritdoc

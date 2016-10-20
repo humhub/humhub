@@ -21,8 +21,8 @@ namespace humhub\modules\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
-use humhub\modules\user\models\Follow;
+
+
 use humhub\modules\space\models\Space;
 use yii\web\HttpException;
 use humhub\components\Controller;

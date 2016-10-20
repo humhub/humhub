@@ -8,7 +8,7 @@
 
 namespace humhub\modules\friendship\models;
 
-use Yii;
+
 use humhub\modules\user\models\User;
 
 /**
