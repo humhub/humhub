@@ -10,7 +10,6 @@ namespace humhub\modules\content\components;
 
 use Yii;
 use yii\helpers\Console;
-use humhub\models\Setting;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\activity\components\BaseActivity;
@@ -69,7 +68,7 @@ class MailUpdateSender extends \yii\base\Component
                 $mailsSent++;
             }
 
-            Console::updateProgress(++$processed, $totalUsers);
+            Console::updateProgress( ++$processed, $totalUsers);
         }
 
         Console::endProgress(true);
@@ -100,6 +99,9 @@ class MailUpdateSender extends \yii\base\Component
         if ($activities['html'] !== '' || $notifications['html'] !== '') {
 
             try {
+                // TODO: find cleaner solution...
+                Yii::$app->view->params['showUnsubscribe'] = true;
+                
                 $mail = Yii::$app->mailer->compose([
                     'html' => '@humhub/modules/content/views/mails/Update',
                     'text' => '@humhub/modules/content/views/mails/plaintext/Update'
