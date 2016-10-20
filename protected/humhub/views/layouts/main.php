@@ -82,7 +82,7 @@ AppAsset::register($this);
     <body>
         <?php $this->beginBody() ?>
         <?php echo \humhub\widgets\JSConfig::widget(); ?>
-        
+
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar">
             <div class="container">
@@ -127,31 +127,12 @@ AppAsset::register($this);
         </div>
         <!-- end: second top navigation bar -->
 
-        <!-- start: show content (and check, if exists a sublayout -->
-        <?php if (isset($this->context->subLayout) && $this->context->subLayout != "") : ?>
-            <?php echo $this->render($this->context->subLayout, array('content' => $content)); ?>
-        <?php else: ?>
-            <?php echo $content; ?>
-        <?php endif; ?>
-        <!-- end: show content -->
-
+        <?= $content; ?>
         <?= \humhub\widgets\LayoutAddons::widget(); ?>
-        <?php
-        /*echo \humhub\widgets\Modal::widget([
-            'id' => 'globalModal'
-        ]);*/
-        ?>
-        <?php
-        /*echo \humhub\widgets\Modal::widget([
-            'id' => 'globalModalConfirm',
-            'size' => 'extra-small',
-            'centerText' => true,
-            'animation' => 'pulse',
-            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-primary"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
-        ]);*/
-        ?>
 
         <?php $this->endBody() ?>
+
     </body>
+
 </html>
 <?php $this->endPage() ?>

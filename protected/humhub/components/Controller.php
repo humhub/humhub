@@ -13,23 +13,65 @@ use yii\helpers\Url;
 use humhub\models\Setting;
 
 /**
- * Description of Controller
+ * Base Controller 
  *
+ * @inheritdoc
  * @author luke
  */
 class Controller extends \yii\web\Controller
 {
 
-    public $subLayout;
+    /**
+     * @var null|string the name of the sub layout to be applied to this controller's views.
+     * This property mainly affects the behavior of [[render()]].
+     */
+    public $subLayout = null;
+
+    /**
+     * @var string title of the rendered page 
+     */
     public $pageTitle;
+
+    /**
+     * @var array page titles
+     */
     public $actionTitlesMap = [];
+
+    /**
+     * @var boolean append page title 
+     */
     public $prependActionTitles = true;
 
+    /**
+     * @inheritdoc
+     */
     public function renderAjaxContent($content)
     {
         return $this->getView()->renderAjaxContent($content, $this);
     }
 
+    /**
+     * Renders a static string by applying the layouts (sublayout + layout.
+     * 
+     * @param string $content the static string being rendered
+     * @return string the rendering result of the layout with the given static string as the `$content` variable.
+     * If the layout is disabled, the string will be returned back.
+     * 
+     * @since 1.2
+     */
+    public function renderContent($content)
+    {
+        // Apply Sublayout if provided
+        if ($this->subLayout !== null) {
+            $content = $this->getView()->render($this->subLayout . '.php', ['content' => $content], $this);
+        }
+
+        return parent::renderContent($content);
+    }
+
+    /**
+     * Only allow post requests
+     */
     public function forcePostRequest()
     {
         if (\Yii::$app->request->method != 'POST') {
@@ -91,7 +133,7 @@ class Controller extends \yii\web\Controller
     /**
      * Append a page title.
      *
-     * @param string $title            
+     * @param string $title
      */
     public function appendPageTitle($title)
     {
@@ -101,7 +143,7 @@ class Controller extends \yii\web\Controller
     /**
      * Prepend a page title.
      *
-     * @param string $title            
+     * @param string $title
      */
     public function prependPageTitle($title)
     {
@@ -111,7 +153,7 @@ class Controller extends \yii\web\Controller
     /**
      * Set the page title.
      *
-     * @param string $title            
+     * @param string $title
      */
     public function setPageTitle($title)
     {
