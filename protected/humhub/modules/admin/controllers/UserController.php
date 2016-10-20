@@ -136,7 +136,7 @@ class UserController extends Controller
         if ($form->submitted('become')) {
 
             Yii::$app->user->switchIdentity($form->models['User']);
-            return $this->redirect(Url::toRoute("/"));
+            return $this->redirect(Url::home());
         }
 
         if ($form->submitted('delete')) {
