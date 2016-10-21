@@ -59,8 +59,7 @@ function HashTable(obj) {
         var previous = undefined;
         if (this.hasItem(key)) {
             previous = this.items[key];
-        }
-        else {
+        } else {
             this.length++;
         }
         this.items[key] = value;
@@ -81,8 +80,7 @@ function HashTable(obj) {
             this.length--;
             delete this.items[key];
             return previous;
-        }
-        else {
+        } else {
             return undefined;
         }
     }
@@ -128,21 +126,21 @@ function HashTable(obj) {
  *
  */
 $.fn.modal.Constructor.prototype.enforceFocus = function () {
-  var that = this;
-  $(document).on('focusin.modal', function (e) {
-     if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('hexInput')) {
-        return true;
-     }
-     
-      var $parent = $(e.target.parentNode);
-     if($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
-         return true;
-     }
+    var that = this;
+    $(document).on('focusin.modal', function (e) {
+        if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('hexInput')) {
+            return true;
+        }
 
-     if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
-        that.$element.focus();
-     }
-  });
+        var $parent = $(e.target.parentNode);
+        if ($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
+            return true;
+        }
+
+        if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+            that.$element.focus();
+        }
+    });
 };
 
 function setModalLoader() {
@@ -167,37 +165,44 @@ $(document).ready(function () {
 
     initPlugins();
 
-    $(document).on('click', 'a[data-ui-loader], button[data-ui-loader]', function () {
+    $(document).on('click', 'a[data-ui-loader], button[data-ui-loader]', function (evt) {
         var $this = $(this);
-        
-        if($this.find('.loader').length) {
+
+        var $loader = $this.find('.loader').length > 0;
+
+        // Prevent multiple mouse clicks, if originalEvent is present its a real mouse event otherwise its script triggered
+        // This is a workaround since yii version 2.0.10 changed the activeForm submission from $form.submit() to data.submitObject.trigger("click");
+        // which triggers this handler twice. Here we get sure not to block the script triggered submission.
+        if ($loader && evt.originalEvent) {
             return false;
+        } else if ($loader) {
+            $loader;
         }
-        
+
         //Adopt current color for the loader animation
         var color = $this.css('color') || '#ffffff';
-        var $loader = $('<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>');
-        
+        $loader = $('<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>');
+
         //Align bouncer animation color and size
         $loader.find('.sk-bounce1, .sk-bounce2, .sk-bounce3')
                 .addClass('disabled')
-                .css( {'background-color': color, 'width': '10px', 'height': '10px'});
-        
+                .css({'background-color': color, 'width': '10px', 'height': '10px'});
+
         //The loader does have some margin we have to hide
         $this.css('overflow', 'hidden');
         $this.addClass('disabled');
-        
+
         //Prevent the container from resizing
         $this.css('min-width', this.getBoundingClientRect().width);
         $this.data('text', $this.text());
         $this.html($loader);
     });
-    
-    $(document).on('afterValidate', function(evt, messages, errors) {
-        if(errors.length) {
-            $('[data-ui-loader]').each(function() {
+
+    $(document).on('afterValidate', function (evt, messages, errors) {
+        if (errors.length) {
+            $('[data-ui-loader]').each(function () {
                 var $this = $(this);
-                if($this.find('.loader').length) {
+                if ($this.find('.loader').length) {
                     $this.html($this.data('text'));
                     $this.removeClass('disabled');
                 }
