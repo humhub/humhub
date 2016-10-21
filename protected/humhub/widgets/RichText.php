@@ -99,7 +99,7 @@ REGEXP;
         // create image tag for emojis
         $this->text = self::translateEmojis($this->text, ($this->minimal) ? false : true);
 
-        $this->text = self::translateUrl($this->text);
+        $this->text = self::translateDomainName($this->text);
 
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
@@ -192,9 +192,9 @@ REGEXP;
      * @param string $text Contains the complete message
      * @return string
      */
-    public static function translateUrl($text)
+    public static function translateDomainName($text)
     {
-        return preg_replace_callback('/(https?:\/\/[\w\d.]+)/i', function ($matches) {
+        return preg_replace_callback('/[-a-z0-9]+\.+[a-z]{2,6}/i', function ($matches) {
             $url = $matches[1];
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 $replacement = Html::a(Html::encode($url), $url);
