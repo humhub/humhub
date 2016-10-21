@@ -6,3 +6,4 @@ HumHub Change Log
 - Enh: Moved HumHub browser icons to HumHub theme (luke-)
 - Enh: Moved support css/js for older IE version into own AssetBundles (luke-)
 - Enh: Moved CSRF Tag output to View renderHeader (luke-)
+- Enh: Moved LayoutAddons widget from main layout to View endBody() method (luke-)

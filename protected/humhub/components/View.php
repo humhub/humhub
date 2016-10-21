@@ -115,7 +115,16 @@ class View extends \yii\web\View
      */
     protected function renderHeadHtml()
     {
-        return (Yii::$app->request->isAjax) ? Html::csrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
+        return (!Yii::$app->request->isAjax) ? Html::csrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function endBody()
+    {
+        // Add Layout Addons
+        return \humhub\widgets\LayoutAddons::widget() . parent::endBody();
     }
 
 }

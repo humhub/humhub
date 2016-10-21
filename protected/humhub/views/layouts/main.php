@@ -14,7 +14,6 @@
         <?php $this->head() ?>
         <?= $this->render('head'); ?>
     </head>
-
     <body>
         <?php $this->beginBody() ?>
 
@@ -61,10 +60,8 @@
         <!-- end: second top navigation bar -->
 
         <?= $content; ?>
-        <?= \humhub\widgets\LayoutAddons::widget(); ?>
 
         <?php $this->endBody() ?>
     </body>
-
 </html>
 <?php $this->endPage() ?>
