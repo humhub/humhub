@@ -24,20 +24,10 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <?php $this->head() ?>
 
-        <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-
-        <!--[if lt IE 9]>
-        <script src="<?php echo Yii::getAlias("@web"); ?>/js/html5shiv.js"></script>
-        <link id="ie-style" href="<?php echo Yii::getAlias("@web"); ?>/css/ie.css" rel="stylesheet">
-        <![endif]-->
-        <!--[if IE 9]>
-        <link id="ie9style" href="<?php echo Yii::getAlias("@web"); ?>/css/ie9.css" rel="stylesheet">
-        <![endif]-->
-
         <!-- start: render additional head (css and js files) -->
         <?php echo $this->render('head'); ?>
         <!-- end: render additional head -->
-        
+
         <meta charset="<?= Yii::$app->charset ?>">
     </head>
 

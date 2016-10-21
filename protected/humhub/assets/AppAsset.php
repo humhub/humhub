@@ -17,14 +17,33 @@ use yii\web\AssetBundle;
 class AppAsset extends AssetBundle
 {
 
+    /**
+     * @inheritdoc
+     */
     public $basePath = '@webroot';
+
+    /**
+     * @inheritdoc
+     */
     public $baseUrl = '@web';
+
+    /**
+     * @inheritdoc
+     */
     public $css = [
         'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
     ];
+
+    /**
+     * @inheritdoc
+     */
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/ekko-lightbox-modified.js',
         //'js/modernizr.js', // In use???
@@ -36,9 +55,11 @@ class AppAsset extends AssetBundle
         'js/jquery.nicescroll.min.js',
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
-        
     ];
-    
+
+    /**
+     * @inheritdoc
+     */
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
@@ -61,9 +82,10 @@ class AppAsset extends AssetBundle
         'humhub\assets\JqueryPjaxAsset',
         'humhub\assets\AtJsAsset',
         'humhub\assets\AnimateCssAsset',
-        
         'humhub\assets\CoreApiAsset',
-        'humhub\modules\content\assets\ContentAsset'
+        'humhub\modules\content\assets\ContentAsset',
+        'humhub\assets\IE9FixesAsset',
+        'humhub\assets\IEFixesAsset',
     ];
 
 }
