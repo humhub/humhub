@@ -62,7 +62,7 @@ use yii\helpers\Url;
             <strong>Encryption Options</strong>
             <div class="checkbox">
                 <label>
-                    <?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.allowSelfSignedCerts'))); ?>
+                    <?php echo $form->checkBox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.allowSelfSignedCerts'))); ?>
                     <?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
                 </label>
             </div>

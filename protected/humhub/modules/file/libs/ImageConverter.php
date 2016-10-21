@@ -242,8 +242,8 @@ class ImageConverter
                     $cropH = (float) ($sourceHeight - $cropY);
 
                     // crop the middle part of the image to fit proportions
-                    $crop = ImageCreateTrueColor($cropW, $cropH);
-                    ImageCopy(
+                    $crop = imagecreatetruecolor($cropW, $cropH);
+                    imagecopy(
                             $crop, $gdImage, 0, 0, (int) ($cropX / 2), (int) ($cropY / 2), $cropW, $cropH
                     );
 

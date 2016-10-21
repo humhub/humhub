@@ -17,7 +17,7 @@ use humhub\modules\user\models\User;
         <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, when other users comment or like your posts.'); ?>
     </div>
 
-    <?php echo $form->field($model, 'receive_email_notifications')->dropdownList([User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
+    <?php echo $form->field($model, 'receive_email_notifications')->dropDownList([User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
         User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),
         User::RECEIVE_EMAIL_ALWAYS => Yii::t('UserModule.views_account_emailing', 'Always')])->label(false); ?>
 
@@ -29,7 +29,7 @@ use humhub\modules\user\models\User;
         <?php echo Yii::t('UserModule.views_account_emailing', 'Get an email, for every activity of other users you follow or work together in a workspace.'); ?>
     </div>
     
-    <?php echo $form->field($model, 'receive_email_activities')->dropdownList([
+    <?php echo $form->field($model, 'receive_email_activities')->dropDownList([
         User::RECEIVE_EMAIL_NEVER => Yii::t('UserModule.views_account_emailing', 'Never'),
         User::RECEIVE_EMAIL_DAILY_SUMMARY => Yii::t('UserModule.views_account_emailing', 'Daily summary'),
         User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('UserModule.views_account_emailing', 'When I´m offline'),

@@ -11,7 +11,7 @@ function initLikeModule() {
     // Handle Click on a Like Button
     $('.likeAnchor').on("click", function (event) {
         event.preventDefault();
-        likeContainerDiv = $(this).closest(".likeLinkContainer");
+        var likeContainerDiv = $(this).closest(".likeLinkContainer");
 
         $.ajax({
             dataType: "json",

@@ -244,7 +244,7 @@ class UserPicker extends \yii\base\Widget
             }
             return $result;
         } else {
-            return self::createJsonUserInfo($users, $permission, $priority);
+            return self::createJSONUserInfo($users, $permission, $priority);
         }
     }
 

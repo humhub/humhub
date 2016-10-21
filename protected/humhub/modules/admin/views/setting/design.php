@@ -18,16 +18,16 @@ $this->registerJsFile('@web/resources/admin/uploadLogo.js');
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
 
-    <?php echo $form->field($model, 'theme')->dropdownList($themes); ?>
+    <?php echo $form->field($model, 'theme')->dropDownList($themes); ?>
 
     <?php echo $form->field($model, 'paginationSize'); ?>
 
-    <?php echo $form->field($model, 'displayName')->dropdownList(['{username}' => Yii::t('AdminModule.views_setting_design', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.views_setting_design', 'Firstname Lastname (e.g. John Doe)')]); ?>
+    <?php echo $form->field($model, 'displayName')->dropDownList(['{username}' => Yii::t('AdminModule.views_setting_design', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.views_setting_design', 'Firstname Lastname (e.g. John Doe)')]); ?>
 
-    <?php echo $form->field($model, 'spaceOrder')->dropdownList(['0' => Yii::t('AdminModule.views_setting_design', 'Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design', 'Last visit')]); ?>
+    <?php echo $form->field($model, 'spaceOrder')->dropDownList(['0' => Yii::t('AdminModule.views_setting_design', 'Alphabetical'), '1' => Yii::t('AdminModule.views_setting_design', 'Last visit')]); ?>
 
     <?php
-    echo $form->field($model, 'dateInputDisplayFormat')->dropdownList([
+    echo $form->field($model, 'dateInputDisplayFormat')->dropDownList([
         '' => Yii::t('AdminModule.views_setting_design', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
         'php:d/m/Y' => Yii::t('AdminModule.views_setting_design', 'Fixed format (mm/dd/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
