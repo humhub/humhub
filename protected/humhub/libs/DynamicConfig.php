@@ -127,20 +127,27 @@ class DynamicConfig extends \yii\base\Object
         if (Yii::$app->settings->get('mailer.transportType') == 'smtp') {
             $mail['transport']['class'] = 'Swift_SmtpTransport';
 
-            if (Yii::$app->settings->get('mailer.hostname'))
+            if (Yii::$app->settings->get('mailer.hostname')) {
                 $mail['transport']['host'] = Yii::$app->settings->get('mailer.hostname');
+            }
 
-            if (Yii::$app->settings->get('mailer.username'))
+            if (Yii::$app->settings->get('mailer.username')) {
                 $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');
+            } else if(!Yii::$app->settings->get('mailer.password')) {
+                $mail['transport']['authMode'] = 'null';
+            }
 
-            if (Yii::$app->settings->get('mailer.password'))
+            if (Yii::$app->settings->get('mailer.password')) {
                 $mail['transport']['password'] = Yii::$app->settings->get('mailer.password');
+            }
 
-            if (Yii::$app->settings->get('mailer.encryption'))
+            if (Yii::$app->settings->get('mailer.encryption')) {
                 $mail['transport']['encryption'] = Yii::$app->settings->get('mailer.encryption');
+            }
 
-            if (Yii::$app->settings->get('mailer.port'))
+            if (Yii::$app->settings->get('mailer.port')) {
                 $mail['transport']['port'] = Yii::$app->settings->get('mailer.port');
+            }
 
             /*
               if (Yii::$app->settings->get('mailer.allowSelfSignedCerts')) {
