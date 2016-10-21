@@ -55,7 +55,7 @@ use yii\bootstrap\ActiveForm;
                         <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br/><br/>
                         <div class="form-group">
-                            <?php echo $form->field($model, 'inviteExternal')->textArea(['rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses'), 'id' => 'email_invite'])->label(false); ?>
+                            <?php echo $form->field($model, 'inviteExternal')->textarea(['rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses'), 'id' => 'email_invite'])->label(false); ?>
                         </div>
                     </div>
                 <?php endif; ?>

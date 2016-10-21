@@ -13,7 +13,7 @@ use humhub\widgets\AjaxButton;
     <?php echo Html::hiddenInput('contentModel', $modelName); ?>
     <?php echo Html::hiddenInput('contentId', $modelId); ?>
 
-    <?php echo Html::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
+    <?php echo Html::textarea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
 
     <?php echo humhub\widgets\RichTextEditor::widget(['id' => 'newCommentForm_' . $id]); ?>
 

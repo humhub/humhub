@@ -41,7 +41,7 @@ class CActiveForm extends \yii\widgets\ActiveForm
 
     public function textArea($model, $attribute, $htmlOptions = array())
     {
-        return CHtml::activeTextArea($model, $attribute, $htmlOptions);
+        return CHtml::activeTextarea($model, $attribute, $htmlOptions);
     }
 
     public function checkBox($model, $attribute, $htmlOptions = array())
