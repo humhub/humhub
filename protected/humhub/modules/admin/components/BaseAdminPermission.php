@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\admin\components;
 
 use humhub\modules\user\models\Group;
@@ -23,6 +29,9 @@ class BaseAdminPermission extends \humhub\libs\BasePermission
      */
     protected $defaultState = self::STATE_DENY;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->fixedGroups[] = Group::getAdminGroupId();
