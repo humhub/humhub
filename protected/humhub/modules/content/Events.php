@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\MailUpdateSender;
 
+
 /**
  * Events provides callbacks to handle events.
  * 

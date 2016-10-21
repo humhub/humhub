@@ -11,7 +11,7 @@ namespace humhub\modules\tour\controllers;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
-use yii\helpers\Url;
+
 
 /**
  * TourController

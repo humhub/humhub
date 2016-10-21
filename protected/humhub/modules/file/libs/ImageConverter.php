@@ -10,7 +10,7 @@ namespace humhub\modules\file\libs;
 
 use Yii;
 use yii\base\Exception;
-use humhub\components\SettingsManager;
+
 
 /**
  * ImageConverter provides a simple interface for converting or resizing images.

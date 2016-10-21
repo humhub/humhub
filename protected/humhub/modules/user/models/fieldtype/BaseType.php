@@ -10,7 +10,6 @@ namespace humhub\modules\user\models\fieldtype;
 
 use Yii;
 use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\fieldtype;
 
 /**
  * ProfileFieldType is the base class for all Profile Field Types.

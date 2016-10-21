@@ -10,7 +10,7 @@ namespace humhub\modules\admin\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
+
 
 /**
  * Group Administration Menu

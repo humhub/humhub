@@ -2,8 +2,6 @@
 
 namespace humhub\modules\user\models;
 
-use Yii;
-
 /**
  * This is the model class for table "user_auth".
  *

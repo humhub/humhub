@@ -5,10 +5,9 @@ namespace humhub\modules\user\models\forms;
 use Yii;
 use yii\base\Model;
 use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\models\User;
+
 use humhub\modules\user\libs\Ldap;
-use humhub\models\Setting;
-use yii\db\Expression;
+
 
 /**
  * LoginForm is the model behind the login form.

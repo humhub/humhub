@@ -15,6 +15,7 @@ use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\space\models\Setting;
 
+
 /**
  * SpaceController is the main controller for spaces.
  *

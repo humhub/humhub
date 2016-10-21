@@ -20,7 +20,7 @@
 
 namespace humhub\models\forms;
 
-use Yii;
+
 use yii\base\Model;
 
 /**

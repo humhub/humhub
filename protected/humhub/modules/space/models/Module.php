@@ -3,7 +3,7 @@
 namespace humhub\modules\space\models;
 
 use Yii;
-use humhub\modules\space\models\Space;
+
 
 /**
  * This is the model class for table "space_module".

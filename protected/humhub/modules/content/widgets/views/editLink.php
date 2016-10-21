@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Url;
+
 use yii\web\JsExpression;
 
 /* @var $this humhub\components\View */

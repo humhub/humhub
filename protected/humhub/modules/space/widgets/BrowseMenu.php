@@ -3,7 +3,6 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use \yii\base\Widget;
 
 /**
  * The Main Navigation for a space. It includes the Modules the Stream

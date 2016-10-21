@@ -8,9 +8,9 @@
 
 namespace humhub\components;
 
-use Yii;
+
 use yii\helpers\Url;
-use humhub\models\Setting;
+
 
 /**
  * Base Controller 

@@ -15,6 +15,7 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
+
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -162,7 +163,7 @@ class UserController extends Controller
         if ($form->submitted('become') && $this->canBecomeUser($user)) {
 
             Yii::$app->user->switchIdentity($form->models['User']);
-            return $this->redirect(Url::toRoute("/"));
+            return $this->redirect(Url::home());
         }
 
         if ($form->submitted('delete')) {

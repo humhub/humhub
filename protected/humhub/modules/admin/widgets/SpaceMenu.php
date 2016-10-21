@@ -13,6 +13,7 @@ use yii\helpers\Url;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageSettings;
 
+
 /**
  * Space Administration Menu
  *

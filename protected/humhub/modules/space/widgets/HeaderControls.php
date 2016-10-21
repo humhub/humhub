@@ -2,8 +2,8 @@
 
 namespace humhub\modules\space\widgets;
 
-use Yii;
-use \yii\base\Widget;
+
+
 
 /**
  * SpaceHeaderControlsWidget

@@ -128,8 +128,6 @@ class Events extends \yii\base\Object
      */
     public static function onHourlyCron($event)
     {
-        $controller = $event->sender;
-
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof authclient\interfaces\AutoSyncUsers) {
                 /**

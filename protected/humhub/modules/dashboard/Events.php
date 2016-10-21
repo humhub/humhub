@@ -10,7 +10,7 @@ namespace humhub\modules\dashboard;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
+
 use humhub\modules\dashboard\widgets\ShareWidget;
 
 /**

@@ -10,7 +10,6 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\models\Setting;
 use humhub\widgets\BaseMenu;
 
 /**

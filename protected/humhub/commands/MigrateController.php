@@ -9,8 +9,7 @@
 namespace humhub\commands;
 
 use Yii;
-use yii\console\Controller;
-use yii\helpers\Console;
+
 
 /**
  * Manages application migrations.

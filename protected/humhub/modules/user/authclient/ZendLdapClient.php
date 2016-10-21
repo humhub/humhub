@@ -12,10 +12,10 @@ use Yii;
 use Zend\Ldap\Ldap;
 use Zend\Ldap\Node;
 use Zend\Ldap\Exception\LdapException;
-use humhub\models\Setting;
+
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\authclient\AuthClientHelpers;
+
 
 /**
  * LDAP Authentication

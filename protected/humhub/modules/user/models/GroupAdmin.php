@@ -2,8 +2,8 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Group;
+
+
 
 /**
  * This is the model class for table "group_admin".

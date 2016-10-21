@@ -1,9 +1,6 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
-use yii\helpers\Url;
+
 ?>
 
 <!-- add Tooltip to link -->

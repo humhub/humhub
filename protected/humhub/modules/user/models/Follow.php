@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models;
 
-use Yii;
+
 use humhub\modules\activity\models\Activity;
 
 /**

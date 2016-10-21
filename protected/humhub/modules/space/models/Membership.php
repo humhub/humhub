@@ -11,6 +11,9 @@ namespace humhub\modules\space\models;
 use Yii;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\user\models\User;
+use humhub\modules\content\models\WallEntry;
+use humhub\modules\activity\models\Activity;
+
 
 /**
  * This is the model class for table "space_membership".

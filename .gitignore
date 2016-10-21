@@ -33,3 +33,4 @@ favicon.ico
 /.settings
 /.buildpath
 /.project
+/protected/vendor/

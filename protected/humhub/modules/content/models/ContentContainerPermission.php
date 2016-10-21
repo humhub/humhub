@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\models;
 
-use Yii;
+
 
 /**
  * This is the model class for table "contentcontainer_permission".

@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\models\Setting;
+
 ?>
 
 <?php $this->beginPage() ?>
@@ -653,7 +653,6 @@ use humhub\models\Setting;
 
             <!-- END EMAIL CONTENT -->
 
-
             <!--START FOOTER LAYOUT-->
             <tr>
                 <td valign="top">
@@ -669,7 +668,6 @@ use humhub\models\Setting;
 
                                     <tr>
                                         <td valign="top">
-
 
                                             <!-- start footer -->
                                             <table width="560" align="center" border="0" cellspacing="0" cellpadding="0"
@@ -691,6 +689,14 @@ use humhub\models\Setting;
                                                             <tr>
                                                                 <td align="center" valign="top"
                                                                     style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
+                         
+                                                                    <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
+                                                                        <span style="text-decoration: none; color: #a3a2a2;">
+                                                                            <a href="<?= Url::to(['/user/account/emailing'], true) ?>" style="text-decoration: none; color: #a3a2a2;"><?= Yii::t('base', 'Unsubscribe') ?></a>
+                                                                            • 
+                                                                        </span> 
+                                                                    <?php endif; ?>
+
                                                                     <span style="text-decoration: none; color: #a3a2a2;">Powered by <a
                                                                             href="http://www.humhub.org"
                                                                             style="text-decoration: none; color: #a3a2a2;">HumHub</a> </span>

@@ -2,7 +2,7 @@
 
 use humhub\compat\CHtml;
 use yii\helpers\Html;
-use humhub\models\Setting;
+
 ?>
 <div>
     <?php echo Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', array("{count}" => $pagination->totalCount)); ?>

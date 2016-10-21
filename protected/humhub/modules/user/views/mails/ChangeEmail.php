@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\models\Setting;
 ?>
 <tr>
     <td align="center" valign="top"   class="fix-box">

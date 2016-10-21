@@ -11,7 +11,6 @@ namespace humhub\modules\user\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
@@ -32,18 +31,12 @@ class AuthController extends Controller
     /**
      * @inheritdoc
      */
-    public $subLayout = "_layout";
-
-    /**
-     * @inheritdoc
-     */
     public function actions()
     {
         return [
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-                
             ],
             'external' => [
                 'class' => 'yii\authclient\AuthAction',

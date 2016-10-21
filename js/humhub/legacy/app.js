@@ -168,29 +168,7 @@ $(document).ready(function () {
     initPlugins();
 
     $(document).on('click', 'a[data-ui-loader], button[data-ui-loader]', function () {
-        var $this = $(this);
-        
-        if($this.find('.loader').length) {
-            return false;
-        }
-        
-        //Adopt current color for the loader animation
-        var color = $this.css('color') || '#ffffff';
-        var $loader = $('<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>');
-        
-        //Align bouncer animation color and size
-        $loader.find('.sk-bounce1, .sk-bounce2, .sk-bounce3')
-                .addClass('disabled')
-                .css( {'background-color': color, 'width': '10px', 'height': '10px'});
-        
-        //The loader does have some margin we have to hide
-        $this.css('overflow', 'hidden');
-        $this.addClass('disabled');
-        
-        //Prevent the container from resizing
-        $this.css('min-width', this.getBoundingClientRect().width);
-        $this.data('text', $this.text());
-        $this.html($loader);
+
     });
     
     $(document).on('afterValidate', function(evt, messages, errors) {

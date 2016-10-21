@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-use yii\helpers\Url;
+
 use humhub\modules\admin\components\Controller;
 
 /**

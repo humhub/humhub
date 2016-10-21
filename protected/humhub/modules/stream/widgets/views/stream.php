@@ -1,13 +1,15 @@
 <?php
+
 use yii\helpers\Url;
+use yii\web\View;
 
 \humhub\modules\stream\assets\StreamAsset::register($this);
 
 $contentId = (int) Yii::$app->request->getQueryParam('wallEntryId');
-$contentIdData = ($contentId != "") ? 'data-stream-contentid="'.$contentId.'"' : '' ;    
+$contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '"' : '';
 
-if(Yii::$app->settings->get('horImageScrollOnMobile'))
-$this->registerJs(new \yii\web\JsExpression("
+if (Yii::$app->settings->get('horImageScrollOnMobile'))
+    $this->registerJs(new \yii\web\JsExpression("
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
         $('#wallStream').addClass('mobile');
     }"), View::POS_READY);
@@ -23,13 +25,13 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
-                <?php foreach ($filters as $filterId => $filterTitle): ?>
+    <?php foreach ($filters as $filterId => $filterTitle): ?>
                     <li>
                         <a href="#" class="wallFilter" id="<?php echo $filterId; ?>">
                             <i class="fa fa-square-o"></i> <?php echo $filterTitle; ?>
                         </a>
                     </li>
-                <?php endforeach; ?>
+    <?php endforeach; ?>
             </ul>
         </li>
         <li class="dropdown">
@@ -49,20 +51,20 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
 <div id="wallStream" data-stream="<?= $streamUrl ?>" <?= $contentIdData ?> 
      data-action-component="humhub.modules.stream.Stream" 
      data-content-delete-url="<?= Url::to(['/content/content/delete']) ?>">
-    
+
     <!-- DIV for a normal wall stream -->
     <div class="s2_stream" style="display:none">
         <div class="back_button_holder" style="display:none">
             <a href="#" class="singleBackLink btn btn-primary"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
         </div>
         <div class="s2_streamContent"></div>
-        <?php echo \humhub\widgets\LoaderWidget::widget(['cssClass' => 'streamLoader']); ?>
+<?php echo \humhub\widgets\LoaderWidget::widget(['cssClass' => 'streamLoader']); ?>
 
         <div class="emptyStreamMessage" style="display:none;">
             <div class="<?php echo $this->context->messageStreamEmptyCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
-                        <?php echo $this->context->messageStreamEmpty; ?>
+<?php echo $this->context->messageStreamEmpty; ?>
                     </div>
                 </div>
             </div>
@@ -71,7 +73,7 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
             <div class="placeholder <?php echo $this->context->messageStreamEmptyWithFiltersCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
-                        <?php echo $this->context->messageStreamEmptyWithFilters; ?>
+<?php echo $this->context->messageStreamEmptyWithFilters; ?>
                     </div>
                 </div>
             </div>

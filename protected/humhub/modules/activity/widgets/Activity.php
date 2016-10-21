@@ -63,7 +63,6 @@ class Activity extends \yii\base\Widget
 
 
         // Dertermine View
-        $view = "";
         if ($this->activity->module == "") {
             $view = '@humhub/modules/activity/views/activities/' . $this->activity->type;
         } else {

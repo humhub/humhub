@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-use humhub\models\Setting;
+
 ?>
 <div class="panel panel-default panel-tour" id="getting-started-panel">
     <?php

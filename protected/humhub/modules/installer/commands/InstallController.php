@@ -11,10 +11,10 @@ namespace humhub\modules\installer\commands;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
-use humhub\models\Setting;
+
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
-use humhub\modules\space\models\Space;
+
 use humhub\modules\user\models\Group;
 
 /**

@@ -85,8 +85,8 @@ class DashboardStream extends Stream
                 $usersFriends = (new Query())
                         ->select(["ufrc.id"])
                         ->from('user ufr')
-                        ->leftJoin('user_friendship recv', 'ufr.id=recv.friend_user_id AND recv.user_id=' . intval($this->user->id))
-                        ->leftJoin('user_friendship snd', 'ufr.id=snd.user_id AND snd.friend_user_id=' . intval($this->user->id))
+                        ->leftJoin('user_friendship recv', 'ufr.id=recv.friend_user_id AND recv.user_id=' . (int)$this->user->id)
+                        ->leftJoin('user_friendship snd', 'ufr.id=snd.user_id AND snd.friend_user_id=' . (int)$this->user->id)
                         ->leftJoin('contentcontainer ufrc', 'ufr.id=ufrc.pk AND ufrc.class=:userClass')
                         ->where('recv.id IS NOT NULL AND snd.id IS NOT NULL AND ufrc.id IS NOT NULL');
                 $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($usersFriends)[0];
