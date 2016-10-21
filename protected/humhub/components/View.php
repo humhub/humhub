@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Yii;
+use yii\helpers\Html;
 
 /**
  * @inheritdoc
@@ -107,6 +108,14 @@ class View extends \yii\web\View
         }
 
         return $url;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderHeadHtml()
+    {
+        return (Yii::$app->request->isAjax) ? Html::csrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
     }
 
 }

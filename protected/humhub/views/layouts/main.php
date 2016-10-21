@@ -1,38 +1,23 @@
 <?php
-
-use yii\helpers\Html;
-use humhub\assets\AppAsset;
-
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::register($this);
+\humhub\assets\AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= Yii::$app->language ?>">
     <head>
-        <!-- start: Meta -->
-        <meta charset="utf-8">
         <title><?php echo $this->pageTitle; ?></title>
-        <!-- end: Meta -->
-
-        <!-- start: Mobile Specific -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-        <!-- end: Mobile Specific -->
-        <?= Html::csrfMetaTags() ?>
-        <?php $this->head() ?>
-
-        <!-- start: render additional head (css and js files) -->
-        <?php echo $this->render('head'); ?>
-        <!-- end: render additional head -->
-
         <meta charset="<?= Yii::$app->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <?php $this->head() ?>
+        <?= $this->render('head'); ?>
     </head>
 
     <body>
         <?php $this->beginBody() ?>
+
         <?php echo \humhub\widgets\JSConfig::widget(); ?>
 
         <!-- start: first top navigation bar -->
@@ -53,9 +38,7 @@ AppAsset::register($this);
                     ]]);
                     ?>
                 </div>
-
             </div>
-
         </div>
         <!-- end: first top navigation bar -->
 
@@ -81,7 +64,6 @@ AppAsset::register($this);
         <?= \humhub\widgets\LayoutAddons::widget(); ?>
 
         <?php $this->endBody() ?>
-
     </body>
 
 </html>
