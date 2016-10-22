@@ -176,7 +176,7 @@ $(document).ready(function () {
         if ($loader && evt.originalEvent) {
             return false;
         } else if ($loader) {
-            $loader;
+            return;
         }
 
         //Adopt current color for the loader animation
