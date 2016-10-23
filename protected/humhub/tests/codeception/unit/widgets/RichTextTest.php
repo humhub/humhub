@@ -18,10 +18,32 @@ class RichTextTest extends TestCase
         );
 
         $output = RichText::widget([
+            'text' => 'apple.com for more info'
+        ]);
+        $this->assertEquals(
+            '<a href="http://apple.com" target="_blank">apple.com</a> for more info',
+            $output
+        );
+    }
+
+    public function testTranslateDomainForNonExistingDomain()
+    {
+        $output = RichText::widget([
             'text' => 'Visit non-existing-host.com for more info'
         ]);
         $this->assertEquals(
             'Visit non-existing-host.com for more info',
+            $output
+        );
+    }
+
+    public function testTranslateDomainNameWithUrl()
+    {
+        $output = RichText::widget([
+            'text' => 'Visit http://apple.com for more info'
+        ]);
+        $this->assertEquals(
+            'Visit <a href="http://apple.com" target="_blank">http://apple.com</a> for more info',
             $output
         );
     }

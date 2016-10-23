@@ -194,8 +194,8 @@ REGEXP;
      */
     public static function translateDomainName($text)
     {
-        return preg_replace_callback('/[-a-z0-9]+\.+[a-z]{2,6}/i', function ($matches) {
-            $host = $matches[0];
+        return preg_replace_callback('/(\s|^)([-a-z0-9]+\.+[a-z]{2,6})/i', function ($matches) {
+            $host = $matches[2];
 
             $cacheKey = "translate_host:{$host}";
             $ip = \Yii::$app->cache->get($cacheKey);
@@ -209,7 +209,7 @@ REGEXP;
             } else {
                 $replacement = Html::a(Html::encode($host), "http://{$host}", ['target' => '_blank']);
             }
-            return $replacement;
+            return $matches[1] . $replacement;
         }, $text);
     }
 }
