@@ -187,7 +187,7 @@ REGEXP;
     }
 
     /**
-     * Replace url with links.
+     * Replace domain names with links.
      *
      * @param string $text Contains the complete message
      * @return string
@@ -195,13 +195,21 @@ REGEXP;
     public static function translateDomainName($text)
     {
         return preg_replace_callback('/[-a-z0-9]+\.+[a-z]{2,6}/i', function ($matches) {
-            $url = $matches[1];
-            if (filter_var($url, FILTER_VALIDATE_URL)) {
-                $replacement = Html::a(Html::encode($url), $url);
+            $host = $matches[0];
+
+            $cacheKey = "translate_host:{$host}";
+            $ip = \Yii::$app->cache->get($cacheKey);
+            if ($ip === false) {
+                $ip = gethostbyname($host);
+                \Yii::$app->cache->set($cacheKey, $ip, Yii::$app->settings->get('cache.expireTime'));
+            }
+
+            if ($ip === $host) {
+                $replacement = $host;
             } else {
-                $replacement = $matches[0];
+                $replacement = Html::a(Html::encode($host), "http://{$host}", ['target' => '_blank']);
             }
             return $replacement;
-        }, $text, 0);
+        }, $text);
     }
 }

@@ -13,7 +13,15 @@ class RichTextTest extends TestCase
             'text' => 'Visit apple.com for more info'
         ]);
         $this->assertEquals(
-            'Visit <a href="http://apple.com" target="_blank">http://apple.com</a> for more info',
+            'Visit <a href="http://apple.com" target="_blank">apple.com</a> for more info',
+            $output
+        );
+
+        $output = RichText::widget([
+            'text' => 'Visit non-existing-host.com for more info'
+        ]);
+        $this->assertEquals(
+            'Visit non-existing-host.com for more info',
             $output
         );
     }
