@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search</strong>' => '',
-    'Back' => '',
-    'Choose language:' => '',
-    'Language' => '',
-    'Login' => '',
+    '<strong>Search</strong>' => '<strong>Procurar</strong>',
+    'Back' => 'Voltar',
+    'Choose language:' => 'Escolher idioma',
+    'Language' => 'Idioma',
+    'Login' => 'Entrar',
     'Could not find requested module!' => '@@O módulo requisitado não pôde ser encontrado!@@',
     'Invalid request.' => '@@Requisição Inválida@@',
     'Keyword:' => '@@Palavra-chave:@@',
