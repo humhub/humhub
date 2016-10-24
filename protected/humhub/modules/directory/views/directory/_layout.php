@@ -12,7 +12,7 @@ use humhub\modules\directory\widgets\Sidebar;
             <?= Menu::widget(); ?>
         </div>
         <div class="col-md-7">
-            <?php echo $content; ?>
+            <?= $content; ?>
         </div>
         <div class="col-md-3">
             <?= Sidebar::widget(); ?>
