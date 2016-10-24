@@ -199,6 +199,7 @@ $config = [
         'tour' => [
             'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
         ],
+        'enablePjax' => false,
     ]
 ];
 

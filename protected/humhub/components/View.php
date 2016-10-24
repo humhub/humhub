@@ -65,9 +65,10 @@ class View extends \yii\web\View
         $this->beginPage();
         $this->head();
         $this->beginBody();
-        echo $content;
         $this->endBody();
         $this->endPage(true);
+
+        echo $content;
 
         return ob_get_clean();
     }
@@ -123,6 +124,10 @@ class View extends \yii\web\View
      */
     public function endBody()
     {
+        if (Yii::$app->request->isAjax) {
+            return parent::endBody();
+        }
+        
         // Add Layout Addons
         return \humhub\widgets\LayoutAddons::widget() . parent::endBody();
     }

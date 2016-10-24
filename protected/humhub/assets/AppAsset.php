@@ -79,11 +79,11 @@ class AppAsset extends AssetBundle
         'humhub\assets\JqueryHighlightAsset',
         'humhub\assets\JqueryCookieAsset',
         'humhub\assets\JqueryAutosizeAsset',
-        'humhub\assets\JqueryPjaxAsset',
         'humhub\assets\AtJsAsset',
         'humhub\assets\AnimateCssAsset',
         'humhub\assets\CoreApiAsset',
         'humhub\modules\content\assets\ContentAsset',
+        'humhub\assets\NProgressAsset',
         'humhub\assets\IE9FixesAsset',
         'humhub\assets\IEFixesAsset',
     ];

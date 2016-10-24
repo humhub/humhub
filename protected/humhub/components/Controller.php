@@ -8,9 +8,9 @@
 
 namespace humhub\components;
 
-
+use Yii;
 use yii\helpers\Url;
-
+use yii\helpers\Html;
 
 /**
  * Base Controller 
@@ -61,12 +61,24 @@ class Controller extends \yii\web\Controller
      */
     public function renderContent($content)
     {
+
         // Apply Sublayout if provided
         if ($this->subLayout !== null) {
             $content = $this->getView()->render($this->subLayout . '.php', ['content' => $content], $this);
         }
 
-        return parent::renderContent($content);
+        // Return Pjax Snippet
+        if (Yii::$app->request->isPjax) {
+            return $this->renderAjaxContent($content);
+        }
+
+
+        $layoutFile = $this->findLayoutFile($this->getView());
+        if ($layoutFile !== false) {
+            return $this->getView()->renderFile($layoutFile, ['content' => Html::tag('div', $content, ['id' => 'layout-content'])], $this);
+        } else {
+            return $content;
+        }
     }
 
     /**
@@ -172,6 +184,20 @@ class Controller extends \yii\web\Controller
     {
         $this->actionTitlesMap = is_array($map) ? $map : [];
         $this->prependActionTitles = $prependActionTitles;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function redirect($url, $statusCode = 302)
+    {
+        if (Yii::$app->request->isPjax) {
+            Yii::$app->response->statusCode = $statusCode;
+            Yii::$app->response->headers->add('X-PJAX-REDIRECT-URL', Url::to($url));
+            return;
+        }
+
+        return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
     }
 
 }

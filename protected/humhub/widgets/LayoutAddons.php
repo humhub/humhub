@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use Yii;
+
 /**
  * LayoutAddons are inserted at the end of all layouts (standard or login).
  *
@@ -25,6 +27,11 @@ class LayoutAddons extends BaseStack
         $this->addWidget(GlobalModal::className());
         $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
         $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
+
+        if (Yii::$app->params['enablePjax']) {
+            $this->addWidget(Pjax::className());
+        }
+
         parent::init();
     }
 

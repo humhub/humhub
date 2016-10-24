@@ -9,7 +9,6 @@
 namespace humhub\modules\directory\controllers;
 
 use Yii;
-
 use humhub\modules\directory\widgets\Sidebar;
 
 /**
@@ -23,6 +22,9 @@ use humhub\modules\directory\widgets\Sidebar;
 class DirectoryController extends \humhub\modules\directory\components\Controller
 {
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->setActionTitles([
