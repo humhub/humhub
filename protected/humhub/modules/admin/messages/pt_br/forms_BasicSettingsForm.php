@@ -5,7 +5,7 @@ return array (
   'Default language' => 'Idioma padrão',
   'Default space' => 'Espaço padrão',
   'Default stream content order' => 'Orden padrão do stream',
-  'Enable user friendship system' => '',
+  'Enable user friendship system' => 'Habilitar interface simplificada para o usuário.',
   'Invalid space' => 'Espaço inválido',
   'Logo upload' => 'Enviar logomarca',
   'Name of the application' => 'Nome da aplicação',

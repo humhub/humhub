@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Could not load category.' => '',
-  'Delete' => '',
+  'Could not load category.' => 'Kunne ikke laste kategori.',
+  'Delete' => 'Slett',
   'Save' => 'Lagre',
-  'You can only delete empty categories!' => '',
+  'You can only delete empty categories!' => 'Du kan kun slette tomme kategorier!',
 );

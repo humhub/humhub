@@ -1,6 +1,6 @@
 <?php
 return array (
-  'End guide' => '',
+  'End guide' => 'Beëindig tour',
   'Next »' => 'Volgende »',
   '« Prev' => '« Vorige',
 );
