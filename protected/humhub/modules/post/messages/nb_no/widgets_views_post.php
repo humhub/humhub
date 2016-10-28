@@ -1,5 +1,5 @@
 <?php
 return array (
   'Collapse' => 'Trekk sammen',
-  'Read full post...' => '',
+  'Read full post...' => 'Les hele innlegget...',
 );

@@ -40,17 +40,17 @@ class Birthday extends Date
     public function getFormDefinition($definition = array())
     {
         return parent::getFormDefinition([
-            get_class($this) => [
-                    'type' => 'form',
-                    'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
-                    'elements' => [
-                        'defaultHideAge' => [
-                        'type' => 'checkbox',
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
-                        'class' => 'form-control',
-                    ],
-                ]
-            ]
+                    get_class($this) => [
+                        'type' => 'form',
+                        'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
+                        'elements' => [
+                            'defaultHideAge' => [
+                                'type' => 'checkbox',
+                                'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
+                                'class' => 'form-control',
+                            ],
+                        ]
+                    ]
         ]);
     }
 
@@ -89,7 +89,13 @@ class Birthday extends Date
     {
 
         $rules[] = [$this->profileField->internal_name . "_hide_year", 'in', 'range' => [0, 1]];
-        $rules[] = [$this->profileField->internal_name, \humhub\components\validators\PastDateValidator::className()];
+        $rules[] = [$this->profileField->internal_name,
+            \humhub\libs\DbDateValidator::className(),
+            'format' => Yii::$app->formatter->dateInputFormat,
+            'convertToFormat' => null,
+            'max' => time(),
+            'tooBig' => Yii::t('base', 'The date has to be in the past.')
+        ];
         return parent::getFieldRules($rules);
     }
 
@@ -103,7 +109,7 @@ class Birthday extends Date
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
-                'yearRange' => (date('Y') - 100) . ":". date('Y')
+                'yearRange' => (date('Y') - 100) . ":" . date('Y')
             ],
             $this->profileField->internal_name . "_hide_year" => [
                 'type' => 'checkbox',

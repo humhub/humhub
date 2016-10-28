@@ -2,6 +2,6 @@
 return array (
   'Members' => 'Leden',
   'Owner' => 'Eigenaar',
-  'Pending Approvals' => '',
-  'Pending Invites' => '',
+  'Pending Approvals' => 'Wachtende verzoeken',
+  'Pending Invites' => 'Wachtende uitnodigingen',
 );

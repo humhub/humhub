@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Invite' => '',
+  'Invite' => 'Inviter',
 );

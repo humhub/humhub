@@ -9,21 +9,35 @@
 namespace humhub\components\validators;
 
 use Yii;
+use yii\validators\DateValidator;
+
 /**
- * Description of PastDateValidator
- *
+ * PastDateValidator ensurs the date is in the past
+ * 
+ * @deprecated since version 1.1.2
  * @author buddha
  */
-class PastDateValidator extends AbstractDateValidator
-{   
+class PastDateValidator extends \yii\validators\DbDateValidator
+{
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
+        parent::init();
         $this->message = Yii::t('base', 'The date has to be in the past.');
     }
-    
-    public function dateValidation($dateTS)
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAttribute($model, $attribute)
     {
-        return $dateTS >  time();
+        $timestamp = $this->parseDateValue($model->$attribute);
+        if ($timestamp !== false && $timestamp > time()) {
+            $this->addError($model, $attribute, $this->message);
+        }
     }
+
 }

@@ -11,9 +11,11 @@ namespace humhub\modules\user\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
+use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
+use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
  * AuthController handles login and logout
@@ -43,7 +45,7 @@ class AuthController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
             ],
             'external' => [
-                'class' => 'yii\authclient\AuthAction',
+                'class' => AuthAction::className(),
                 'successCallback' => [$this, 'onAuthSuccess'],
             ],
         ];
@@ -113,6 +115,11 @@ class AuthController extends Controller
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
         if ($user !== null) {
             return $this->login($user, $authClient);
+        }
+
+        if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
+            return $this->redirect(['/user/auth/login']);
         }
 
         // Check if E-Mail is given
