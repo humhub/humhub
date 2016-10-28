@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Something</strong> went wrong' => '',
+  '<strong>Something</strong> went wrong' => '<strong>Noe</strong> gikk galt',
   'Close' => 'Lukk',
-  'Followers' => '',
-  'Members' => '',
-  'Ok' => '',
-  'Posts' => '',
+  'Followers' => 'Følgere',
+  'Members' => 'Medlemmer',
+  'Ok' => 'Ok',
+  'Posts' => 'Innlegg',
 );

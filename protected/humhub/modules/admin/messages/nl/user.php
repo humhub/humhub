@@ -1,13 +1,13 @@
 <?php
 return array (
-  '<strong>Information</strong>' => '',
-  '<strong>Settings</strong> and Configuration' => '',
-  '<strong>User</strong> administration' => '',
-  'Add new group' => '',
-  'Back to overview' => '',
+  '<strong>Information</strong>' => '<strong>Informatie</strong>',
+  '<strong>Settings</strong> and Configuration' => '<strong>Instellingen</strong> en configuratie',
+  '<strong>User</strong> administration' => '<strong>Gebruiker</strong> administratie',
+  'Add new group' => 'Nieuwe groep toevoegen',
+  'Back to overview' => 'Terug naar overzicht',
   'Groups' => 'Groepen',
-  'Manage group: {groupName}' => '',
+  'Manage group: {groupName}' => 'Beheer groep: {groupName}',
   'Overview' => 'Overzicht',
-  'Pending approvals' => '',
-  'Profiles' => '',
+  'Pending approvals' => 'Wachtende goedkeuringen',
+  'Profiles' => 'Profielen',
 );

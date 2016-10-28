@@ -2,5 +2,5 @@
 return array (
   'Directory' => 'Overzicht',
   'Members' => 'Leden',
-  'Send invite' => '',
+  'Send invite' => 'Uitnodiging versturen',
 );
