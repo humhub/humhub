@@ -128,7 +128,7 @@ function HashTable(obj) {
 $.fn.modal.Constructor.prototype.enforceFocus = function () {
     var that = this;
     $(document).on('focusin.modal', function (e) {
-        if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('hexInput')) {
+        if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('select2-search__field') || $(e.target).hasClass('hexInput')  ) {
             return true;
         }
 
