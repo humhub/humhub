@@ -24,24 +24,10 @@ use humhub\compat\CActiveForm;
         'object' => $post
     ));
     ?>
-
-        <?php
-        echo \humhub\widgets\AjaxButton::widget([
-            'label' => Yii::t('PostModule.views_edit', 'Save'),
-            'ajaxOptions' => [
-                'type' => 'POST',
-                'beforeSend' => new yii\web\JsExpression('function(html){  $("#post_input_' . $post->id . '_contenteditable").hide(); showLoader("' . $post->id . '"); }'),
-                'success' => new yii\web\JsExpression('function(html){ $(".wall_' . $post->getUniqueId() . '").replaceWith(html); }'),
-                'statusCode' => ['400' => new yii\web\JsExpression('function(xhr) { $("#post_edit_'. $post->id.'").replaceWith(xhr.responseText); }')],
-                'url' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
-            ],
-            'htmlOptions' => [
-                'class' => 'btn btn-default btn-sm btn-comment-submit',
-                'id' => 'post_edit_post_' . $post->id,
-                'type' => 'submit'
-            ]
-        ]);
-        ?>
+        <button type="submit" class="btn btn-default btn-sm btn-comment-submit" data-action-click="editSubmit" data-action-url="<?= $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]) ?>">
+            <?= Yii::t('PostModule.views_edit', 'Save') ?>
+        </button>
+       
 
     </div>
 

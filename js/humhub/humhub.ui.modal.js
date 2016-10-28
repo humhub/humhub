@@ -17,14 +17,26 @@
  */
 humhub.initModule('ui.modal', function (module, require, $) {
     var object = require('util').object;
-    var additions = require('additions');
-    var config = humhub.config.getModuleConfig('ui.modal');
+    var additions = require('ui.additions');
+    var config = require('config').module(module);
+    
+    var loader = require('ui.loader');
+    
+    module.initOnPjaxLoad = false;
+    
     //Keeps track of all initialized modals
     var modals = [];
 
-    var TMPL_MODAL_CONTAINER = '<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>';
-    var TMPL_MODAL_HEADER = '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>';
-    var TMPL_MODAL_BODY = '<div class="modal-body"></div>';
+
+    /**
+     * Template for the modal splitted into different parts. Those can be overwritten my changing or overwriting module.template.
+     */
+    var template = {
+        container : '<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
+        header : '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
+        body: '<div class="modal-body"></div>',
+    }
+    
     var ERROR_DEFAULT_TITLE = 'Error';
     var ERROR_DEFAULT_MESSAGE = 'An unknown error occured!';
 
@@ -50,7 +62,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.createModal = function (id) {
-        this.$modal = $(TMPL_MODAL_CONTAINER).attr('id', id);
+        this.$modal = $(module.template.container).attr('id', id);
         $('body').append(this.$modal);
     };
 
@@ -97,7 +109,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.reset = function () {
-        this.setBody('<div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
+        loader.set(this.$body);
         this.isFilled = false;
     };
 
@@ -241,7 +253,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
     Modal.prototype.setTitle = function (title) {
         var $header = this.getHeader();
         if (!$header.length) {
-            this.getContent().prepend($(TMPL_MODAL_HEADER));
+            this.getContent().prepend($(module.template.header));
             $header = this.getHeader();
         }
         $header.find('.modal-title').html(title);
@@ -255,7 +267,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
     Modal.prototype.setBody = function (content) {
         var $body = this.getBody();
         if (!$body.length) {
-            this.getContent().append($(TMPL_MODAL_BODY));
+            this.getContent().append($(module.template.body));
             $body = this.getBody();
         }
         $body.html(content);
@@ -277,13 +289,14 @@ humhub.initModule('ui.modal', function (module, require, $) {
         return this.$modal.find('.modal-body');
     };
     
-    var ConfirmModal = function(id, cfg) {
+    var ConfirmModal = function(id) {
         Modal.call(this, id);
     };
     
     object.inherits(ConfirmModal, Modal);
     
     ConfirmModal.prototype.open = function(cfg) {
+        cfg = cfg || {};
         this.clear();
         cfg['header'] = cfg['header'] || config['defaultConfirmHeader'];
         cfg['body'] = cfg['body'] || config['defaultConfirmBody'];
@@ -323,8 +336,6 @@ humhub.initModule('ui.modal', function (module, require, $) {
                 cfg['cancel'](evt);
             });
         }
-        
-        
     };
     
     module.export({
@@ -335,6 +346,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
                 module.globalConfirm.open(cfg);
             };
         },
-        Modal: Modal
+        Modal: Modal,
+        template: template
     });
 });

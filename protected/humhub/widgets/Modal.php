@@ -101,6 +101,7 @@ class Modal extends Widget
      * @var type 
      */
     public $initialLoader;
+    
     public function run()
     {
         $dialogClass = 'modal-dialog';

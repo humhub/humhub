@@ -12,10 +12,24 @@ Build
  - npm update (in humhub root)
  - npm install grunt --save-dev
 
-
 ## Assets
- - Yii asset management http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets
- - php yii asset humhub/config/assets.php humhub/config/assets-prod.php
+
+HumHub uses the Yii's build in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
+HumHub will only use the compressed assets if operated in [production mode](admin-installation.md#disable-errors-debugging), otherwise
+all assets are included seperatly.
+
+The compressed production assets are build by calling:
+
+```
+yii asset humhub/config/assets.php humhub/config/assets-prod.php
+```
+
+This will create the following files:
+
+ - /humhub/js/all-*.js - compressed js file with all core libraries
+ - /humhub/css/all-*.css - compressed css files with all core stylesheets
+
+More information is available on http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets
 
 ### Grunt Tasks
  - watch

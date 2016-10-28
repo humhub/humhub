@@ -2,6 +2,8 @@
 
 Here you will learn how you can adapt existing modules to working fine with actually versions.
 
+## Migrate from 1.1 to 1.2
+
 ## Migrate from 1.0 to 1.1
 
 - Dropped unused space attribute "website"

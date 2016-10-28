@@ -5,7 +5,18 @@ use yii\web\View;
 
 \humhub\modules\stream\assets\StreamAsset::register($this);
 
-$contentId = (int) Yii::$app->request->getQueryParam('wallEntryId');
+$this->registerJsConfig([
+   'stream' => [
+       'text' => [
+           'info.archive.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully archived.'),
+           'info.unarchive.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully unarchived.'),
+           'info.stick.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully sticked.'),
+           'info.unstick.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully unsticked.'),
+       ]
+   ] 
+]);
+
+$contentId = (int) Yii::$app->request->getQueryParam('contentId');
 $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '"' : '';
 
 if (Yii::$app->settings->get('horImageScrollOnMobile'))
@@ -49,16 +60,15 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
 
 <!-- Stream content -->
 <div id="wallStream" data-stream="<?= $streamUrl ?>" <?= $contentIdData ?> 
-     data-action-component="humhub.modules.stream.Stream" 
+     data-action-component="stream.WallStream" 
      data-content-delete-url="<?= Url::to(['/content/content/delete']) ?>">
 
     <!-- DIV for a normal wall stream -->
-    <div class="s2_stream" style="display:none">
+    <div class="s2_stream">
         <div class="back_button_holder" style="display:none">
             <a href="#" class="singleBackLink btn btn-primary"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
         </div>
-        <div class="s2_streamContent"></div>
-<?php echo \humhub\widgets\LoaderWidget::widget(['cssClass' => 'streamLoader']); ?>
+        <div class="s2_streamContent" data-stream-content></div>
 
         <div class="emptyStreamMessage" style="display:none;">
             <div class="<?php echo $this->context->messageStreamEmptyCss; ?>">

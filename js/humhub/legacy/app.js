@@ -166,23 +166,6 @@ $(document).ready(function () {
     setModalHandler();
 
     initPlugins();
-
-    $(document).on('click', 'a[data-ui-loader], button[data-ui-loader]', function () {
-
-    });
-    
-    $(document).on('afterValidate', function(evt, messages, errors) {
-        if(errors.length) {
-            $('[data-ui-loader]').each(function() {
-                var $this = $(this);
-                if($this.find('.loader').length) {
-                    $this.html($this.data('text'));
-                    $this.removeClass('disabled');
-                }
-            });
-        }
-    });
-
 });
 
 function setModalHandler() {

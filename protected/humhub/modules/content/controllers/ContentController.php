@@ -97,7 +97,6 @@ class ContentController extends Controller
             $content->archive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
         return $json;
@@ -123,7 +122,6 @@ class ContentController extends Controller
             $content->unarchive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
         return $json;
@@ -149,7 +147,7 @@ class ContentController extends Controller
                 $content->stick();
 
                 $json['success'] = true;
-                $json['wallEntryIds'] = $content->getWallEntryIds();
+                $json['contentId'] = $content->id;
             } else {
                 $json['errorMessage'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
             }
@@ -178,7 +176,6 @@ class ContentController extends Controller
         if ($content !== null && $content->canStick()) {
             $content->unstick();
             $json['success'] = true;
-            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
         return $json;

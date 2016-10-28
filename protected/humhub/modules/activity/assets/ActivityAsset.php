@@ -6,21 +6,21 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\stream\assets;
+namespace humhub\modules\activity\assets;
 
 use yii\web\AssetBundle;
 
-class StreamAsset extends AssetBundle
+class ActivityAsset extends AssetBundle
 {
 
-    public $sourcePath = '@humhub/modules/stream/assets';
+    public $sourcePath = '@activity/assets';
     public $css = [];
     public $js = [
-        'js/humhub.stream.js',
+        'js/humhub.activity.js'
     ];
     
     public $depends = [
-        'humhub\modules\content\assets\ContentAsset'
+        'humhub\assets\CoreApiAsset'
     ];
 
 }

@@ -57,6 +57,12 @@ abstract class Stream extends Action
      * @var string
      */
     public $mode;
+    
+    /**
+     * Used to load single content entries.
+     * @since 1.2
+     */
+    public $contentId;
 
     /**
      * First wall entry id to deliver
@@ -112,6 +118,8 @@ abstract class Stream extends Action
 
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
+            $this->contentId = Yii::$app->getRequest()->get('id');
+            
             $from = Yii::$app->getRequest()->get('from', 0);
             if ($from != 0) {
                 $this->from = (int) $from;
@@ -131,10 +139,12 @@ abstract class Stream extends Action
             if ($limit != "" && $limit <= self::MAX_LIMIT) {
                 $this->limit = $limit;
             }
+            
             $mode = Yii::$app->getRequest()->get('mode', '');
             if ($mode != "" && ($mode == self::MODE_ACTIVITY || $mode == self::MODE_NORMAL)) {
                 $this->mode = $mode;
             }
+            
             foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
                 $this->filters[] = trim($filter);
             }
@@ -165,6 +175,11 @@ abstract class Stream extends Action
             }
         } else {
             $this->activeQuery->andWhere(['!=', 'content.object_model', \humhub\modules\activity\models\Activity::className()]);
+        }
+        
+        if($this->contentId) {
+            $this->activeQuery->andWhere(['content.id' => $this->contentId]);
+            return;
         }
 
         /**

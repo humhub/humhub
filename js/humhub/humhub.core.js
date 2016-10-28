@@ -14,11 +14,24 @@ var humhub = humhub || (function($) {
     var modules = {};
     
     /**
+     * Flat array with all registered modules.
+     * @type Array
+     */
+    var moduleArr = [];
+    
+    /**
      * Used to collect modules added while initial page load. 
      * These modules will be intitialized after the document is ready.
      * @type Array
      */
     var initialModules = [];
+    
+    /**
+     * Contains all modules which needs to be reinitialized after a pjax reload
+     * @type Array
+     */
+    var pjaxInitModules = [];
+    
     
     /**
      * Is set wehen document is ready
@@ -27,7 +40,8 @@ var humhub = humhub || (function($) {
     var initialized = false;
     
     /**
-     * Adds an module to the namespace. And initializes either after dom is ready.
+     * Adds a module to the namespace. And initializes after dom is ready.
+     * 
      * The id can be provided either as 
      * 
      * - full namespace humhub.modules.ui.modal
@@ -81,6 +95,14 @@ var humhub = humhub || (function($) {
         var instance = resolveNameSpace(id, true);
         instance.id = 'humhub.modules.'+_cutModulePrefix(id);
         instance.require = require;
+        instance.initOnPjaxLoad = true;
+        instance.config = require('config').module(instance);
+        instance.isModule = true;
+           
+        instance.text = function($key) {
+            return instance.config['text'][$key];
+        };
+        
         instance.export = function(exports) {
             $.extend(instance, exports);
         };
@@ -92,10 +114,17 @@ var humhub = humhub || (function($) {
             console.error('Error while creating module: '+id, err);
         }
         
+        moduleArr.push(instance);
+        
+        if(instance.init && instance.initOnPjaxLoad) {
+            pjaxInitModules.push(instance);
+        }
+        
         //Initialize the module when document is ready
         if(!initialized) {
             initialModules.push(instance);
         } else {
+            addModuleLogger(instance);
             instance.init();
         }
     };
@@ -148,25 +177,29 @@ var humhub = humhub || (function($) {
             });
             return result;
         } catch(e) {
-            //TODO: handle could not resolve type/namespace error
-            return;
+            var log = require('log') || console;
+            log.error('Error while resolving namespace: '+typePathe, e);
         }
     };
     
-     /**
+    /**
      * Config implementation
      */
-    
-    var config = {
+    var config = modules['config'] = {
+        id : 'config',
+        
         get : function(module, key, defaultVal) {
             if(arguments.length === 1) {
-                return this.getModuleConfig(module);
+                return this.module(module);
             } else if(_isDefined(key)) {
-                var result = this.getModuleConfig(module)[key];
+                var result = this.module(module)[key];
                 return (_isDefined(result)) ? result : defaultVal;
             }
         },
-        getModuleConfig: function(module) {
+        
+        module: function(module) {
+            module = (module.id) ? module.id : module;
+            module = _cutModulePrefix(module);
             if(!this[module]) {
                 this[module] = {};
             }
@@ -185,10 +218,26 @@ var humhub = humhub || (function($) {
                     that.set(moduleKey, config);
                 });
             }else if(arguments.length === 2) {
-                $.extend(this.getModuleConfig(moduleId), key);
+                $.extend(this.module(moduleId), key);
             } else if(arguments.length === 3) {
-                this.getModuleConfig(moduleId)[key] = value;
+                this.module(moduleId)[key] = value;
             }
+        }
+    };
+    
+    var event = modules['event'] = {
+        events : $({}),
+        on : function(event, selector, data, handler) {
+            this.events.on(event , selector, data, handler);
+            return this;
+        },
+        trigger : function(eventType, extraParameters) {
+            this.events.trigger(eventType, extraParameters);
+            return this;
+        },
+        one : function(event, selector, data, handler) {
+            this.events.one(event , selector, data, handler);
+            return this;
         }
     };
     
@@ -233,18 +282,43 @@ var humhub = humhub || (function($) {
         return typeof obj !== 'undefined';
     };
     
+    var addModuleLogger = function(module, log) {
+        log = log || require('log');
+        module.log = log.module(module);
+    }
+    
     //Initialize all initial modules
     $(document).ready(function() {
+        var log = require('log');
+        
+        $.each(moduleArr, function(i, module) {
+            addModuleLogger(module, log);
+        });
+        
         $.each(initialModules, function(i, module) {
+           event.trigger('humhub:beforeInitModule', module);
            if(module.init) {
                try {
+                    event.trigger(module.id)
                     module.init();
                } catch(err) {
-                   console.error('Could not initialize module: '+module.id, err);
+                   log.error('Could not initialize module: '+module.id, err);
                }
            } 
-           initialized = true;
-           console.log('Module initialized: '+module.id);
+           event.trigger('humhub:afterInitModule', module);
+           log.debug('Module initialized: '+module.id);
+        });
+        
+        event.trigger('humhub:afterInit');
+        
+        initialized = true;
+    });
+    
+    event.on('humhub:modules:client:pjax:afterPageLoad', function (evt) {
+        $.each(pjaxInitModules, function(i, module) {
+            if(module.initOnPjaxLoad) {
+                module.init();
+            }
         });
     });
     
@@ -253,6 +327,7 @@ var humhub = humhub || (function($) {
     return {
         initModule: initModule,
         modules: modules,
-        config: config
+        config: config,
+        event: event,
     };
 })($);

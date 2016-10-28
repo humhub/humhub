@@ -2,6 +2,14 @@
 
 Here you will learn how you can adapt existing themes to working fine with actually versions.
 
+## Migrate to 1.2
+
+### Stream
+
+Set data-stream attributes for stream
+
+### Status Bar
+
 ## Migrate to 1.1
 
 - Make sure to update your themed less file with the latest version.

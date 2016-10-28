@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use yii\base\Widget;
+use Yii;
 
 /**
  * AjaxButton is an replacement for Yii1 CHtml::AjaxButton
@@ -17,9 +18,39 @@ use yii\base\Widget;
  */
 class JSConfig extends Widget
 {
+
     public function run()
     {
-        return $this->render('jsConfig');
+        $this->getView()->registerJsConfig(
+            [
+                'action' => [
+                    'text' => [
+                        'actionHandlerNotFound' => Yii::t('base', 'An error occured while handling your last action. (Handler not found).'),
+                    ]
+                ],
+                'ui.modal' => [
+                    'defaultConfirmHeader' => Yii::t('base', '<strong>Confirm</strong> Action'),
+                    'defaultConfirmBody' => Yii::t('base', 'Do you really want to perform this Action?'),
+                    'defaultConfirmText' => Yii::t('base', 'Confirm'),
+                    'defaultCancelText' => Yii::t('base', 'Cancel')
+                ],
+                'log' => [
+                    'traceLevel' => (YII_DEBUG) ? 'DEBUG' : 'INFO',
+                    'text' => [
+                        'default.error' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
+                        '0' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
+                        '403' => Yii::t('base', 'You are not allowed to run this action.'),
+                        '500' => Yii::t('base', 'An unexpected server error occured. If this keeps happening, please contact a site administrator.')
+                    ]
+                ],
+                'ui.status' => [
+                    'showMore' => Yii::$app->user->isAdmin() || YII_DEBUG,
+                    'text' => [
+                        'showMore' => Yii::t('base', 'Show more'),
+                        'showLess' => Yii::t('base', 'Show less')
+                    ]
+                ]
+        ]);
     }
 
 }

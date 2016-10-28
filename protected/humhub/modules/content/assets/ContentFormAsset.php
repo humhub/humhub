@@ -6,30 +6,23 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\assets;
+namespace humhub\modules\content\assets;
 
 use yii\web\AssetBundle;
 
-/**
- * tabbed form asset
- * 
- * @author buddha
- */
-class TabbedFormAsset extends AssetBundle
+class ContentFormAsset extends AssetBundle
 {
-    
+
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = ['js/humhub/humhub.ui.tabbedForm.js'];
+    public $sourcePath = '@content/assets';
+    public $css = [];
+    public $js = [
+        'js/humhub.content.form.js'
+    ];
     
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];
-    
+
 }

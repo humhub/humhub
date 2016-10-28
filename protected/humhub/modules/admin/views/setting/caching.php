@@ -20,7 +20,6 @@ use humhub\models\Setting;
 <div class="form-group">
     <?php echo $form->labelEx($model, 'expireTime'); ?>
     <?php echo $form->textField($model, 'expireTime', array('class' => 'form-control', 'readonly' => Setting::IsFixed('cache.expireTime'))); ?>
-    <br>
 </div>
 
 <hr>

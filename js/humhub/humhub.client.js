@@ -5,32 +5,17 @@
 humhub.initModule('client', function (module, require, $) {
     var object = require('util').object;
 
-    var init = function () {
-        /*$.ajaxPrefilter('html', function(options, originalOptions, jqXHR) {
-         debugger;
-         console.log(options);
-         var pjaxHandler = options.success;
-         options.success = function(result, textStatus, xhr) {
-         console.log(result);
-         pjaxHandler(result, textStatus, xhr);
-         };
-         options.error = function(err) {
-         debugger;
-         };
-         });
-         
-         $.pjax.defaults.maxCacheLength = 0;
-         $('a.dashboard').on('click', function(evt) {
-         debugger;
-         evt.preventDefault();
-         $.pjax({url:$(this).attr('href'), container: '#main-content', maxCacheLength:0, timeout:2000});
-         });*/
-    }
     /**
      * Response Wrapper Object for easily accessing common data
      */
-    var Response = function (data) {
-        $.extend(this, data);
+    var Response = function (data, dataType) {
+        if(!dataType || dataType === 'json') {        
+            $.extend(this, data);
+        } else if(dataType) {
+            this[dataType] = data;
+        } else {
+            this.data = data;
+        }
     };
 
     /**
@@ -88,7 +73,8 @@ humhub.initModule('client', function (module, require, $) {
         $form = object.isString($form) ? $($form) : $form;
         cfg.type = $form.attr('method') || 'post';
         cfg.data = $form.serialize();
-        ajax($form.attr('action'), cfg);
+        var url = cfg['url'] || $form.attr('action');
+        return ajax(url, cfg);
     };
 
     var post = function (path, cfg) {
@@ -97,28 +83,39 @@ humhub.initModule('client', function (module, require, $) {
         cfg.method = 'POST';
         return ajax(path, cfg);
     };
+    
+    var get = function (path, cfg) {
+        var cfg = cfg || {};
+        cfg.type = 'GET';
+        cfg.method = 'GET';
+        return ajax(path, cfg);
+    };
 
     var ajax = function (path, cfg) {
+        if(object.isFunction(cfg)) {
+            cfg = {'success' : cfg};
+        }
+        
         var promise = new Promise(function (resolve, reject) {
             cfg = cfg || {};
 
             //Wrap the actual error handler with our own and call 
             var errorHandler = cfg.error;
-            var error = function (xhr, textStatus, errorThrown, data, status) {
+            var error = function (xhr, textStatus, errorThrown, data) {
                 //Textstatus = "timeout", "error", "abort", "parsererror", "application"
                 if (errorHandler && object.isFunction(errorHandler)) {
                     var response = new Response();
-                    response.setAjaxError(xhr, errorThrown, textStatus, data, status);
+                    response.setAjaxError(xhr, errorThrown, textStatus, data, xhr.status);
                     errorHandler(response);
                 }
-                reject(xhr, textStatus, errorThrown, data, status);
+                reject({'textStatus': textStatus, 'response': xhr.responseJSON, 'error': errorThrown, 'data': data, 'status': xhr.status});
             };
 
             var successHandler = cfg.success;
-            var success = function (json, textStatus, xhr) {
-                var response = new Response(json);
+            var success = function (data, textStatus, xhr) {
+                var response = new Response(data, cfg.dataType);
                 if (response.isError()) { //Application errors
-                    return error(xhr, "application", response.getErrors(), json, response.getStatus());
+                    return error(xhr, "application", response.getErrors(), data, response.getStatus());
                 } else if (successHandler) {
                     response.textStatus = textStatus;
                     response.xhr = xhr;
@@ -129,7 +126,7 @@ humhub.initModule('client', function (module, require, $) {
                 
                 promise.then(function() {
                     // If content with <link> tags are inserted in resolve, the ajaxComplete handler in yii.js
-                    // makes shure redundant stylesheets are removed.
+                    // makes sure redundant stylesheets are removed. Here we get sure it is called after inserting the response.
                     $(document).trigger('ajaxComplete');
                 });
                 
@@ -152,8 +149,8 @@ humhub.initModule('client', function (module, require, $) {
     module.export({
         ajax: ajax,
         post: post,
-        submit: submit,
-        init: init
+        get: get,
+        submit: submit
     });
 });
 

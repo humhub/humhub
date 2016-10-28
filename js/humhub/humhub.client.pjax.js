@@ -1,10 +1,12 @@
 humhub.initModule('client.pjax', function (module, require, $) {
-    var object = require('util').object;
+    var event = require('event');
+
+    module.initOnPjaxLoad = false;
 
     var init = function () {
         pjaxRedirectFix();
-        installLoader();
-    }
+        module.installLoader();
+    };
 
     var pjaxRedirectFix = function () {
         var pjaxXhr;
@@ -18,8 +20,18 @@ humhub.initModule('client.pjax', function (module, require, $) {
             }
         });
 
+        $(document).on("pjax:success", function (evt, data, status, xhr, options) {
+            event.trigger('humhub:modules:client:pjax:afterPageLoad', {
+                'originalEvent': evt,
+                'data': data,
+                'status': status,
+                'xhr': xhr,
+                'options': options
+            });
+        });
+
         $.ajaxPrefilter('html', function (options, originalOptions, jqXHR) {
-            orgErrorHandler = options.error;
+            var orgErrorHandler = options.error;
             options.error = function (xhr, textStatus, errorThrown) {
                 var redirect = (xhr.status >= 301 && xhr.status <= 303)
                 if (redirect && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') != "") {
@@ -31,19 +43,20 @@ humhub.initModule('client.pjax', function (module, require, $) {
                 }
             }
         });
-    }
+    };
 
     var installLoader = function () {
         NProgress.configure({showSpinner: false});
         NProgress.configure({template: '<div class="bar" role="bar"></div>'});
 
-        jQuery(document).on('pjax:start', function () {
+        $(document).on('pjax:start', function () {
             NProgress.start();
         });
-        jQuery(document).on('pjax:end', function () {
+        
+        $(document).on('pjax:end', function () {
             NProgress.done();
         });
-    }
+    };
 
     module.export({
         init: init,

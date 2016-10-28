@@ -89,8 +89,10 @@ $container = $object->content->container;
                 <?php endif; ?>
                 <?php echo $content; ?>
             </div>
-
-            <?php echo \humhub\modules\content\widgets\WallEntryAddons::widget(['object' => $object]); ?>
+            <div class="clearfix">
+                <span class="entry-loader"></span>
+                <?php echo \humhub\modules\content\widgets\WallEntryAddons::widget(['object' => $object]); ?>
+            </div>
         </div>
 
 

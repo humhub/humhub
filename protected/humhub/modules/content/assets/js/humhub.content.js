@@ -7,8 +7,9 @@
 humhub.initModule('content', function(module, require, $) {
     var client = require('client');
     var object = require('util').object;
-    var actions = require('actions');
+    var actions = require('action');
     var Component = actions.Component;
+    var event = require('event');
     
     var DATA_CONTENT_KEY = "content-key";
     var DATA_CONTENT_EDIT_URL = "content-edit-url";
@@ -18,6 +19,10 @@ humhub.initModule('content', function(module, require, $) {
     
     var Content = function(container) {
         Component.call(this, container);
+    };
+    
+    Content.getNodeByKey = function(key) {
+        return $('[data-content-key="'+key+'"]');
     };
     
     object.inherits(Content, Component);
@@ -30,6 +35,7 @@ humhub.initModule('content', function(module, require, $) {
         return this.$.data(DATA_CONTENT_KEY);
     };
     
+    //TODO: return promise
     Content.prototype.create = function (addContentHandler) {
         //Note that this Content won't have an id, so the backend will create an instance
         if(this.hasAction('create')) {
@@ -39,6 +45,7 @@ humhub.initModule('content', function(module, require, $) {
         this.edit(addContentHandler);
     };
     
+    //TODO: return promise
     Content.prototype.edit = function (successHandler) {
         if(!this.hasAction('edit')) {
             return;
@@ -91,12 +98,13 @@ humhub.initModule('content', function(module, require, $) {
             },
             error: function(errResponse) {
                 modal.error(errResponse);
-                console.log('Error occured while editing content: '+errResponse.getFirstError());
+                console.error('Error occured while editing content: '+errResponse.getFirstError());
                 //Todo: handle error
             }
         });
     };
     
+    //TODO: return promise
     Content.prototype.delete = function () {
         if(!this.hasAction('delete')) {
             return;
@@ -127,10 +135,14 @@ humhub.initModule('content', function(module, require, $) {
     
     Content.prototype.remove = function() {
         var that = this;
-        this.$.animate({ height: 'toggle', opacity: 'toggle' }, 'fast', function() {
-            that.$.remove();
-            //TODO: fire global event
+        return new Promise(function(resolve, reject) {
+            that.$.animate({ height: 'toggle', opacity: 'toggle' }, 'fast', function() {
+                that.$.remove();
+                event.trigger('humhub:modules:content:afterRemove', that);
+                resolve(that);
+            });
         });
+        
     };
     
     module.export({

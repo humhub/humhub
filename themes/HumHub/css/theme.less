@@ -3030,8 +3030,92 @@ img.bounceIn {
   background: lighten(@info, 25%) !important;
 }
 
-
 #nprogress .bar {
     height:2px;
     background: @info;
+}
+
+
+//
+// Statusbar
+// --------------------------------------------------
+
+#status-bar {
+    
+}
+
+.status-bar-body {
+    color: white; 
+    position: fixed; 
+    width: 100%; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    text-align: center; 
+    padding: 20px;
+    z-index: 9999999; 
+    bottom: 0px; 
+    display: block;
+    line-height:20px;
+}
+
+.status-bar-close {
+    color:white;
+    fonfont-weight:bold;
+    font-size:21px;
+    cursor: pointer;
+}
+
+.status-bar-close:hover {
+    color:white;
+}
+
+.status-bar-close i {
+    vertical-align:top !important;
+    padding-top:3px;
+}
+
+.status-bar-content i {
+    margin-right:10px;
+    font-size:21px;
+    vertical-align:middle;
+}
+
+.status-bar-content .showMore {
+    color: @info;
+    margin-left:10px;
+    font-size:0.7em;
+    cursor:pointer;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.status-bar-content .status-bar-details {
+    text-align:left;
+    font-size:0.7em;
+    margin-top:20px;
+    max-height:200px;
+    overflow:auto;
+}
+
+.status-bar-content span {
+    vertical-align:middle;
+}
+
+.status-bar-content i.error, .status-bar-content i.fatal {
+    color:@danger;
+}
+
+.status-bar-content i.warning {
+    color:@warning;
+}
+
+.status-bar-content i.info, .status-bar-content i.debug {
+    color:@info;
+}
+
+.status-bar-content i.success {
+    color:#85CA2B;
+}
+
+.entry-loader {
+    float:right;
 }
