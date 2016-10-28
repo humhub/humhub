@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use humhub\libs\DynamicConfig;
 
 /**
  * AuthenticationSettingsForm
@@ -54,7 +55,6 @@ class AuthenticationSettingsForm extends \yii\base\Model
             array('defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\modules\user\models\Group::className()),
             array('defaultUserProfileVisibility', 'in', 'range' => [1, 2]),
             array('defaultUserIdleTimeoutSec', 'integer', 'min' => 20),
-            array('defaultUserIdleTimeoutSec', 'string', 'max' => 10)
         );
     }
 
@@ -93,6 +93,8 @@ class AuthenticationSettingsForm extends \yii\base\Model
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
         }
+
+        DynamicConfig::rewrite();
         return true;
     }
 
