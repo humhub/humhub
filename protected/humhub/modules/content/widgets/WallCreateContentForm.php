@@ -119,7 +119,6 @@ class WallCreateContentForm extends Widget
             $visibility = Content::VISIBILITY_PRIVATE;
         }
         $record->content->visibility = $visibility;
-        
         $record->content->container = $contentContainer;
 
         // Handle Notify User Features of ContentFormWidget
@@ -133,10 +132,9 @@ class WallCreateContentForm extends Widget
                 }
             }
         }
-
-        // Store List of attached Files to add them after Save
-        $record->content->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
+        
         if ($record->validate() && $record->save()) {
+            $record->fileManager->attach(Yii::$app->request->post('fileList'));
             return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);
         }
 

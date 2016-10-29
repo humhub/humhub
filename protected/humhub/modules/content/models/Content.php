@@ -38,14 +38,6 @@ class Content extends \humhub\components\ActiveRecord
 {
 
     /**
-     * A string contains a list of file guids which should be attached
-     * to this content after creations.
-     *
-     * @var String
-     */
-    public $attachFileGuidsAfterSave;
-
-    /**
      * A array of user objects which should informed about this new content.
      *
      * @var Array User
@@ -199,8 +191,6 @@ class Content extends \humhub\components\ActiveRecord
                 $activity->create();
             }
         }
-
-        \humhub\modules\file\models\File::attachPrecreated($this->getPolymorphicRelation(), $this->attachFileGuidsAfterSave);
 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -467,10 +457,10 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function canEdit($user = null)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
-        
+
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
         }

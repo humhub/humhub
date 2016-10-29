@@ -10,14 +10,21 @@ namespace humhub\components;
 
 use Yii;
 use humhub\modules\user\models\User;
+use humhub\modules\file\components\FileManager;
 
 /**
  * Description of ActiveRecord
  *
+ * @property FileManager $fileManager
  * @author luke
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+
+    /**
+     * @var \humhub\modules\file\components\FileManager
+     */
+    private $_fileManager;
 
     /**
      * @inheritdoc
@@ -71,6 +78,20 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    /**
+     * Returns the file manager for this record
+     * 
+     * @return FileManager the file manager instance
+     */
+    public function getFileManager()
+    {
+        if ($this->_fileManager === null) {
+            $this->_fileManager = new FileManager(['record' => $this]);
+        }
+
+        return $this->_fileManager;
     }
 
 }

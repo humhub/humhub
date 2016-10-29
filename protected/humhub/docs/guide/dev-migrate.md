@@ -4,6 +4,19 @@ Here you will learn how you can adapt existing modules to working fine with actu
 
 ## Migrate from 1.1 to 1.2
 
+### File module changes
+
+Please refer the new [File Handling](dev-files.md) documentation section for more details regarding the new file management API.
+
+- Removed Content models 'attachFileGuidsAfterSave' attribute and handling
+- Deprecated methods
+    - \humhub\modules\file\models\File::attachPrecreated
+	- \humhub\modules\file\models\File::getFilesOfObject
+	- \humhub\modules\file\models\File::getStoredFilePath
+	- \humhub\modules\file\models\File::getPreviewImageUrl
+	- \humhub\modules\file\models\File::attachPrecreated
+
+
 ## Migrate from 1.0 to 1.1
 
 - Dropped unused space attribute "website"

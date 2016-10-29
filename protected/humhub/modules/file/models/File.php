@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,8 +11,6 @@ namespace humhub\modules\file\models;
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
-use yii\base\Exception;
-
 use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -37,37 +35,23 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @package humhub.modules_core.file.models
  * @since 0.5
  */
-class File extends \humhub\components\ActiveRecord
+class File extends FileCompat
 {
 
-    // Configuration
-    protected $folder_uploads = "file";
-
     /**
-     * Uploaded File or File Content
-     *
-     * @var UploadedFile
+     * @var UploadedFile the uploaded file
      */
     private $uploadedFile = null;
 
     /**
-     * New content of the file
-     *
-     * @var string
+     * @var string file content 
      */
     public $newFileContent = null;
 
     /**
-     * Returns all files belongs to a given HActiveRecord Object.
-     * @todo Add chaching
-     *
-     * @param \yii\db\ActiveRecord $object
-     * @return array of File instances
+     * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
      */
-    public static function getFilesOfObject(\yii\db\ActiveRecord $object)
-    {
-        return self::findAll(array('object_id' => $object->getPrimaryKey(), 'object_model' => $object->className()));
-    }
+    private $_store = null;
 
     /**
      * @return string the associated database table name
@@ -94,6 +78,9 @@ class File extends \humhub\components\ActiveRecord
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -107,6 +94,9 @@ class File extends \humhub\components\ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         $this->sanitizeFilename();
@@ -118,68 +108,28 @@ class File extends \humhub\components\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeDelete()
     {
-        $path = $this->getPath();
-
-        // Make really sure, that we dont delete something else :-)
-        if ($this->guid != "" && $this->folder_uploads != "" && is_dir($path)) {
-            $files = glob($path . DIRECTORY_SEPARATOR . "*");
-            foreach ($files as $file) {
-                if (is_file($file)) {
-                    unlink($file);
-                }
-            }
-            rmdir($path);
-        }
-
+        $this->store->delete();
         return parent::beforeDelete();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
-        // Set new uploaded file
+        // Set file(content) if provided
         if ($this->uploadedFile !== null && $this->uploadedFile instanceof UploadedFile) {
-            $newFilename = $this->getStoredFilePath();
-            if (is_uploaded_file($this->uploadedFile->tempName)) {
-                move_uploaded_file($this->uploadedFile->tempName, $newFilename);
-                @chmod($newFilename, 0744);
-            }
-
-            /**
-             * For uploaded jpeg files convert them again - to handle special
-             * exif attributes (e.g. orientation)
-             */
-            if ($this->uploadedFile->type == 'image/jpeg') {
-                ImageConverter::TransformToJpeg($newFilename, $newFilename);
-            }
-        }
-
-        // Set file by given contents
-        if ($this->newFileContent != null) {
-            $newFilename = $this->getStoredFilePath();
-            file_put_contents($newFilename, $this->newFileContent);
-            @chmod($newFilename, 0744);
+            $this->store->set($this->uploadedFile);
+        } elseif ($this->newFileContent != null) {
+            $this->store->setContent($this->newFileContent);
         }
 
         return parent::afterSave($insert, $changedAttributes);
-    }
-
-    /**
-     * Returns the Path of the File
-     */
-    public function getPath()
-    {
-        $path = Yii::getAlias('@webroot') .
-                DIRECTORY_SEPARATOR . "uploads" .
-                DIRECTORY_SEPARATOR . $this->folder_uploads .
-                DIRECTORY_SEPARATOR . $this->guid;
-
-        if (!is_dir($path)) {
-            mkdir($path);
-        }
-
-        return $path;
     }
 
     /**
@@ -220,26 +170,6 @@ class File extends \humhub\components\ActiveRecord
         return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
     }
 
-    /**
-     * Returns the file and path to the stored file
-     */
-    public function getStoredFilePath($suffix = '')
-    {
-        /*
-        // Fallback for older versions
-        $oldFile = $this->getPath() . DIRECTORY_SEPARATOR . $this->getFilename($suffix);
-        if (file_exists($oldFile)) {
-            return $oldFile;
-        }
-        *
-        */
-
-        $suffix = preg_replace("/[^a-z0-9_]/i", "", $suffix);
-
-        $file = ($suffix == '') ? 'file' : $suffix;
-        return $this->getPath() . DIRECTORY_SEPARATOR . $file;
-    }
-
     public function getMimeBaseType()
     {
         if ($this->mime_type != "") {
@@ -260,39 +190,11 @@ class File extends \humhub\components\ActiveRecord
         return "";
     }
 
-    public function getPreviewImageUrl($maxWidth = 1000, $maxHeight = 1000)
-    {
-        $suffix = 'pi_' . $maxWidth . "x" . $maxHeight;
-
-        $originalFilename = $this->getStoredFilePath();
-        $previewFilename = $this->getStoredFilePath($suffix);
-
-        // already generated
-        if (is_file($previewFilename)) {
-            return $this->getUrl($suffix);
-        }
-
-        // Check file exists & has valid mime type
-        if ($this->getMimeBaseType() != "image" || !is_file($originalFilename)) {
-            return "";
-        }
-
-        $imageInfo = @getimagesize($originalFilename);
-
-        // Check if we got any dimensions - invalid image
-        if (!isset($imageInfo[0]) || !isset($imageInfo[1])) {
-            return "";
-        }
-
-        // Check if image type is supported
-        if ($imageInfo[2] != IMAGETYPE_PNG && $imageInfo[2] != IMAGETYPE_JPEG && $imageInfo[2] != IMAGETYPE_GIF) {
-            return "";
-        }
-
-        ImageConverter::Resize($originalFilename, $previewFilename, array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
-        return $this->getUrl($suffix);
-    }
-
+    /**
+     * Returns the extension of the uploaded file
+     * 
+     * @return string the extension
+     */
     public function getExtension()
     {
         $fileParts = pathinfo($this->file_name);
@@ -327,10 +229,10 @@ class File extends \humhub\components\ActiveRecord
     public function canDelete($userId = "")
     {
         $object = $this->getPolymorphicRelation();
-        if($object != null) {
+        if ($object != null) {
             if ($object instanceof ContentAddonActiveRecord) {
                 return $object->canWrite($userId);
-            }  else if ($object instanceof ContentActiveRecord) {
+            } else if ($object instanceof ContentActiveRecord) {
                 return $object->content->canWrite($userId);
             }
         }
@@ -347,6 +249,11 @@ class File extends \humhub\components\ActiveRecord
         return false;
     }
 
+    /**
+     * Sets uploaded file to this file model
+     * 
+     * @param UploadedFile $uploadedFile
+     */
     public function setUploadedFile(UploadedFile $uploadedFile)
     {
         $this->file_name = $uploadedFile->name;
@@ -397,34 +304,8 @@ class File extends \humhub\components\ActiveRecord
             $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::$app->formatter->asSize(Yii::$app->getModule('file')->settings->get('maxFileSize')))));
         }
         // check if the file can be processed with php image manipulation tools in case it is an image
-        if(isset($this->uploadedFile) && in_array($this->uploadedFile->type, [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)]) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
+        if (isset($this->uploadedFile) && in_array($this->uploadedFile->type, [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)]) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
             $this->addError($attribute, Yii::t('FileModule.models_File', 'Image dimensions are too big to be processed with current server memory limit!'));
-        }
-    }
-
-    /**
-     * Attaches a given list of files to an record (HActiveRecord).
-     * This is used when uploading files before the record is created yet.
-     *
-     * @param \yii\db\ActiveRecord $object is a HActiveRecord
-     * @param string $files is a comma seperated list of newly uploaded file guids
-     */
-    public static function attachPrecreated($object, $files)
-    {
-        if (!$object instanceof \yii\db\ActiveRecord) {
-            throw new Exception('Invalid object given - require instance of \yii\db\ActiveRecord!');
-        }
-
-        // Attach Files
-        foreach (explode(",", $files) as $fileGuid) {
-            $file = self::findOne(['guid' => trim($fileGuid)]);
-            if ($file != null && $file->object_model == "") {
-                $file->object_model = $object->className();
-                $file->object_id = $object->getPrimaryKey();
-                if (!$file->save()) {
-                    throw new Exception("Could not save precreated file!");
-                }
-            }
         }
     }
 
@@ -444,6 +325,31 @@ class File extends \humhub\components\ActiveRecord
         $info['thumbnailUrl'] = $this->getPreviewImageUrl(200, 200);
 
         return $info;
+    }
+
+    /**
+     * Checks if this file record is assigned and used by record
+     * 
+     * @return boolean is whether in use or not
+     */
+    public function isAssigned()
+    {
+        return ($this->object_model != "");
+    }
+
+    /**
+     * Returns the StorageManager
+     * 
+     * @return \humhub\modules\file\components\StorageManager
+     */
+    public function getStore()
+    {
+        if ($this->_store === null) {
+            $this->_store = new \humhub\modules\file\components\StorageManager();
+            $this->_store->setFile($this);
+        }
+
+        return $this->_store;
     }
 
 }

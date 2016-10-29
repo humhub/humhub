@@ -10,20 +10,12 @@ $object = $this->context->object;
 
     <!-- Show Images as Thumbnails -->
     <div class="post-files" id="post-files-<?php echo $object->getUniqueId(); ?>">
-        <?php foreach ($files as $file) : ?>
-            <?php if ($file->getMimeBaseType() == "image") : ?>
-                <?php
-                //Note: We need to add "#.jpeg" to the full url for image  detection of ekko lightbox.
-                ?>
-                <a data-toggle="lightbox" data-gallery="<?php
-                if (count($files) > 1) {
-                    echo "gallery-" . $object->getUniqueId();
-                }
-                ?>" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
-                    <img src='<?php echo $file->getPreviewImageUrl($maxPreviewImageWidth ? $maxPreviewImageWidth : 200, $maxPreviewImageHeight ? $maxPreviewImageHeight : 200); ?>'>
+        <?php foreach ($files as $file): ?>
+            <?php if ($previewImage->applyFile($file)): ?>
+                <a data-toggle="lightbox" data-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" href="<?= $file->getUrl(); ?>#.jpeg" data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                    <img src='<?= $previewImage->getUrl(); ?>'>
                 </a>
             <?php endif; ?>
-
         <?php endforeach; ?>
     </div>
 
