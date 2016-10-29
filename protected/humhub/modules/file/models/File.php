@@ -322,7 +322,10 @@ class File extends FileCompat
         $info['mimeBaseType'] = $this->getMimeBaseType();
         $info['mimeSubType'] = $this->getMimeSubType();
         $info['url'] = $this->getUrl("", false);
-        $info['thumbnailUrl'] = $this->getPreviewImageUrl(200, 200);
+
+        $previewImage = new \humhub\modules\file\converter\PreviewImage();
+        $previewImage->applyFile($this);
+        $info['thumbnailUrl'] = $previewImage->getUrl();
 
         return $info;
     }

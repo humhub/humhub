@@ -77,11 +77,11 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         if (Yii::$app->user->isGuest) {
             throw new HttpException(403, 'Guests can not comment.');
         }
-        
+
         if (!Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
             throw new HttpException(403, 'You are not allowed to comment.');
         }
-        
+
         $message = Yii::$app->request->post('message');
         $files = Yii::$app->request->post('fileList');
 
@@ -95,17 +95,16 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         $comment->object_model = $this->parentContent->className();
         $comment->object_id = $this->parentContent->getPrimaryKey();
         $comment->save();
-
-        \humhub\modules\file\models\File::attachPrecreated($comment, $files);
+        $comment->fileManager->attach($files);
 
         // Reload comment to get populated created_at field
         $comment->refresh();
 
         return $this->renderAjaxContent(
-            \humhub\modules\comment\widgets\Comment::widget([
-                'comment' => $comment,
-                'justEdited' => true
-            ])
+                        \humhub\modules\comment\widgets\Comment::widget([
+                            'comment' => $comment,
+                            'justEdited' => true
+                        ])
         );
     }
 
