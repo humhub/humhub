@@ -63,12 +63,6 @@ use humhub\models\Setting;
 
 </div>
 
-<div class="form-group">
-    <?php echo $form->labelEx($model, 'showFilesWidgetBlacklist'); ?>
-    <?php echo $form->textField($model, 'showFilesWidgetBlacklist', array('class' => 'form-control')); ?>
-    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Comma separated list. Leave empty to show file list for all objects on wall.') ?></p>
-</div>
-
 <hr>
 
 <?php echo CHtml::submitButton(Yii::t('AdminModule.views_setting_file', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>

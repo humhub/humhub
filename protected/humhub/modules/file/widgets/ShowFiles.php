@@ -38,14 +38,11 @@ class ShowFiles extends \yii\base\Widget
             }
         }
 
-        $blacklisted_objects = explode(',', Yii::$app->getModule('file')->settings->get('showFilesWidgetBlacklist'));
-        if (!in_array(get_class($this->object), $blacklisted_objects)) {
-            return $this->render('showFiles', [
-                        'files' => $this->object->fileManager->find()->all(),
-                        'previewImage' => new \humhub\modules\file\converter\PreviewImage(),
-                        'hideImageFileInfo' => Yii::$app->getModule('file')->settings->get('hideImageFileInfo')
-            ]);
-        }
+        return $this->render('showFiles', [
+                    'files' => $this->object->fileManager->find()->all(),
+                    'previewImage' => new \humhub\modules\file\converter\PreviewImage(),
+                    'hideImageFileInfo' => Yii::$app->getModule('file')->settings->get('hideImageFileInfo')
+        ]);
     }
 
 }
