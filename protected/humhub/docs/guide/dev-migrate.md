@@ -20,6 +20,7 @@ Please refer the new [File Handling](dev-files.md) documentation section for mor
 	- \humhub\modules\file\models\File::getMimeBaseType
 	- \humhub\modules\file\models\File::getMimeSubType
 - Removed configuration option 'showFilesWidgetBlacklist' use WallEntry showFiles attribute instead.
+- File models title attributes is not longer automatically populated with the filename when empty
 
 
 ## Migrate from 1.0 to 1.1

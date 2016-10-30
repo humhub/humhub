@@ -32,7 +32,9 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property string $updated_at
  * @property integer $updated_by
  *
- * @package humhub.modules_core.file.models
+ * Following properties are optional and for module depended use:
+ * - title
+ * 
  * @since 0.5
  */
 class File extends FileCompat
@@ -67,14 +69,11 @@ class File extends FileCompat
     public function rules()
     {
         return array(
-            array(['created_by', 'updated_by', 'size'], 'integer'),
-            array(['guid'], 'string', 'max' => 45),
             array(['mime_type'], 'string', 'max' => 150),
             array('file_name', 'validateExtension'),
             array('file_name', 'validateSize'),
             array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
             array(['file_name', 'title'], 'string', 'max' => 255),
-            array(['created_at', 'updated_at'], 'safe'),
         );
     }
 
@@ -100,11 +99,6 @@ class File extends FileCompat
     public function beforeSave($insert)
     {
         $this->sanitizeFilename();
-
-        if ($this->title == "") {
-            $this->title = $this->file_name;
-        }
-
         return parent::beforeSave($insert);
     }
 
@@ -133,27 +127,34 @@ class File extends FileCompat
     }
 
     /**
-     * Returns the Url of the File
-     *
-     * @param string $suffix
+     * Returns the url to this file
+     * 
+     * Available params (see also: DownloadAction)
+     * - variant: the requested file variant 
+     * - download: force download option (default: false)
+     * 
+     * @param array $params the params
      * @param boolean $absolute
-     * @return string
+     * @return string the url to the file download
      */
-    public function getUrl($suffix = "", $absolute = true)
+    public function getUrl($params = [], $absolute = true)
     {
-        $params = array();
-        $params['guid'] = $this->guid;
-        if ($suffix) {
-            $params['suffix'] = $suffix;
+        // Handle old 'suffix' attribute for HumHub prior 1.1 versions
+        if (is_string($params)) {
+            $suffix = $params;
+            $params = [];
+            if ($suffix != '') {
+                $params['variant'] = suffix;
+            }
         }
 
+        $params['guid'] = $this->guid;
         array_unshift($params, '/file/file/download');
-
         return Url::to($params, $absolute);
     }
 
     /**
-     * Returns the extension of the uploaded file
+     * Returns the extension of the file_name
      * 
      * @return string the extension
      */
