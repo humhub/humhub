@@ -31,17 +31,18 @@ class FileManager extends Component
      * Attach files to record.
      * This is required when uploaded before the related content is saved.
      * 
-     * @param string|array $files of File records or comma separeted list of file guids
+     * @param string|array|File $files of File records or comma separeted list of file guids or single File record
      * @param boolean $steal steal when already assigned to other record
      */
     public function attach($files, $steal = false)
     {
         if (is_string($files)) {
             $files = array_map('trim', explode(',', $files));
+        } elseif ($files instanceof File) {
+            $files = [$files];
         }
 
         foreach ($files as $file) {
-
             if (is_string($file) && $file != '') {
                 $file = File::findOne(['guid' => $file]);
             }
