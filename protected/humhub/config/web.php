@@ -9,6 +9,9 @@ $config = [
         'request' => [
             'class' => 'humhub\components\Request',
         ],
+        'response' => [
+            'class' => 'humhub\components\Response',
+        ],
         'user' => [
             'class' => 'humhub\modules\user\components\User',
             'identityClass' => 'humhub\modules\user\models\User',
