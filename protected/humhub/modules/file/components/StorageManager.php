@@ -11,6 +11,7 @@ namespace humhub\modules\file\components;
 use Yii;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
+use humhub\modules\file\libs\FileHelper;
 
 /**
  * StorageManager for File records
@@ -42,10 +43,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     protected $file;
 
     /**
-     * Returns the complete file path to the stored file (variant).
-     * 
-     * @param string $variant optional the variant string
-     * @return string the complete file path
+     * @inheritdoc
      */
     public function get($variant = null)
     {
@@ -57,10 +55,21 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     }
 
     /**
-     * Adds or overwrites the file by given UploadedFile in store
-     * 
-     * @param \Zend\Validator\File\UploadFile $uploadedFile
-     * @param string $variant the variant identifier
+     * @inheritdoc
+     */
+    public function getVariants()
+    {
+        $variants = [];
+        foreach (scandir($this->getPath()) as $file) {
+            if (!in_array($file, [$this->originalFileName, '.', '..'])) {
+                $variants[] = $file;
+            }
+        }
+        return $variants;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function set(\yii\web\UploadedFile $file, $variant = null)
     {
@@ -79,10 +88,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     }
 
     /**
-     * Adds or overwrites the file content by given string in store
-     * 
-     * @param string $content the new file data
-     * @param string $variant the variant identifier
+     * @inheritdoc
      */
     public function setContent($content, $variant = null)
     {
@@ -91,9 +97,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     }
 
     /**
-     * Deletes a stored file (-variant)
-     * 
-     * If not variant is given, also all file variants will be deleted
+     * @inheritdoc
      */
     public function delete($variant = null)
     {
