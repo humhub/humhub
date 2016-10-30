@@ -91,4 +91,59 @@ class FileCompat extends \humhub\components\ActiveRecord
         return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
     }
 
+    /**
+     * Returns an array with informations about the file
+     * 
+     * @deprecated since version 1.2
+     * @return type
+     */
+    public function getInfoArray()
+    {
+        $info = [];
+
+        $info['error'] = false;
+        $info['guid'] = $this->guid;
+        $info['name'] = $this->file_name;
+        $info['title'] = $this->title;
+        $info['size'] = $this->size;
+        $info['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($this->getExtension());
+        $info['mimeBaseType'] = $this->getMimeBaseType();
+        $info['mimeSubType'] = $this->getMimeSubType();
+        $info['url'] = $this->getUrl("", false);
+
+        $previewImage = new \humhub\modules\file\converter\PreviewImage();
+        $previewImage->applyFile($this);
+        $info['thumbnailUrl'] = $previewImage->getUrl();
+
+        return $info;
+    }
+
+    /**
+     * @deprecated since version 1.2
+     * @return string
+     */
+    public function getMimeBaseType()
+    {
+        if ($this->mime_type != "") {
+            list($baseType, $subType) = explode('/', $this->mime_type);
+            return $baseType;
+        }
+
+        return "";
+    }
+
+    /**
+     * @deprecated since version 1.2
+     * @return string
+     */
+    public function getMimeSubType()
+    {
+        if ($this->mime_type != "") {
+            list($baseType, $subType) = explode('/', $this->mime_type);
+            return $subType;
+        }
+
+        return "";
+    }
+
 }

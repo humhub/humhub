@@ -152,26 +152,6 @@ class File extends FileCompat
         return Url::to($params, $absolute);
     }
 
-    public function getMimeBaseType()
-    {
-        if ($this->mime_type != "") {
-            list($baseType, $subType) = explode('/', $this->mime_type);
-            return $baseType;
-        }
-
-        return "";
-    }
-
-    public function getMimeSubType()
-    {
-        if ($this->mime_type != "") {
-            list($baseType, $subType) = explode('/', $this->mime_type);
-            return $subType;
-        }
-
-        return "";
-    }
-
     /**
      * Returns the extension of the uploaded file
      * 
@@ -289,27 +269,6 @@ class File extends FileCompat
         if (isset($this->uploadedFile) && in_array($this->uploadedFile->type, [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)]) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
             $this->addError($attribute, Yii::t('FileModule.models_File', 'Image dimensions are too big to be processed with current server memory limit!'));
         }
-    }
-
-    public function getInfoArray()
-    {
-        $info = [];
-
-        $info['error'] = false;
-        $info['guid'] = $this->guid;
-        $info['name'] = $this->file_name;
-        $info['title'] = $this->title;
-        $info['size'] = $this->size;
-        $info['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($this->getExtension());
-        $info['mimeBaseType'] = $this->getMimeBaseType();
-        $info['mimeSubType'] = $this->getMimeSubType();
-        $info['url'] = $this->getUrl("", false);
-
-        $previewImage = new \humhub\modules\file\converter\PreviewImage();
-        $previewImage->applyFile($this);
-        $info['thumbnailUrl'] = $previewImage->getUrl();
-
-        return $info;
     }
 
     /**

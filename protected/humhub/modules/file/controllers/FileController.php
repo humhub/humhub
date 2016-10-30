@@ -121,8 +121,7 @@ class FileController extends \humhub\components\Controller
             $output['title'] = $file->title;
             $output['size'] = $file->size;
             $output['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($file->getExtension());
-            $output['mimeBaseType'] = $file->getMimeBaseType();
-            $output['mimeSubType'] = $file->getMimeSubType();
+            $output['mimeType'] = $file->mime_type;
             $output['url'] = $file->getUrl("", false);
 
             $previewImage = new \humhub\modules\file\converter\PreviewImage();

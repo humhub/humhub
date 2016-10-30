@@ -2,7 +2,7 @@
 var newFile = "";
 
 function initMarkdownEditor(elementId) {
-    
+
     $("body").append($("#markdownEditor_dialogs_"+elementId).html());
 
     $("#" + elementId).markdown({
@@ -19,11 +19,11 @@ function initMarkdownEditor(elementId) {
                                 addLinkModal = $('#addLinkModal_'+elementId);
                                 linkTitleField = addLinkModal.find('.linkTitle');
                                 linkTargetField = addLinkModal.find('.linkTarget');
-                                
-                                
+
+
                                 addLinkModal.find(".close").off('click');
-                                
-                                
+
+
                                 addLinkModal.modal('show');
 
                                 linkTitleField.val(e.getSelection().text);
@@ -60,10 +60,10 @@ function initMarkdownEditor(elementId) {
                                 addFileModal.modal('show');
                                 addFileModal.find(".uploadForm").show();
                                 addFileModal.find(".uploadProgress").hide();
-                                
+
                                 addFileModal.on('hide.bs.modal', function(ee) {
                                     if (newFile != "") {
-                                        if (newFile.mimeBaseType == "image") {
+                                        if (newFile.mimeType.substring(0,6) == "image/") {
                                             chunk = "![" + newFile.name + "](file-guid-" + newFile.guid + ")";
                                         } else {
                                             chunk = "[" + newFile.name + "](file-guid-" + newFile.guid + ")";
@@ -113,8 +113,8 @@ function initMarkdownEditor(elementId) {
         },
         progressall: function(e, data) {
             newFile = "";
-            addFileModal = $('#addFileModal_'+elementId);            
-            
+            addFileModal = $('#addFileModal_'+elementId);
+
             var progress = parseInt(data.loaded / data.total * 100, 10);
             addFileModal.find(".uploadForm").hide();
             addFileModal.find(".uploadProgress").show();

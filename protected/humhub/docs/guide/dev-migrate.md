@@ -16,6 +16,9 @@ Please refer the new [File Handling](dev-files.md) documentation section for mor
 	- \humhub\modules\file\models\File::getPreviewImageUrl
 	- \humhub\modules\file\models\File::attachPrecreated
 	- \humhub\modules\file\models\File::getFilename
+	- \humhub\modules\file\models\File::getInfoArray
+	- \humhub\modules\file\models\File::getMimeBaseType
+	- \humhub\modules\file\models\File::getMimeSubType
 - Removed configuration option 'showFilesWidgetBlacklist' use WallEntry showFiles attribute instead.
 
 
