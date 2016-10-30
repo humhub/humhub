@@ -34,7 +34,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     /**
      * @var integer file mode 
      */
-    public $chmod = 0744;
+    public $fileMode = 0744;
 
     /**
      * @var File
@@ -57,25 +57,6 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     }
 
     /**
-     * Returns the path where the files of this file are located
-     * 
-     * @return string the path
-     */
-    protected function getPath()
-    {
-        if ($this->file->guid == '') {
-            throw new \Exception('File GUID empty!');
-        }
-
-        $path = Yii::getAlias($this->path) . DIRECTORY_SEPARATOR . $this->file->guid;
-        if (!is_dir($path)) {
-            mkdir($path);
-        }
-
-        return $path;
-    }
-
-    /**
      * Adds or overwrites the file by given UploadedFile in store
      * 
      * @param \Zend\Validator\File\UploadFile $uploadedFile
@@ -85,7 +66,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     {
         if (is_uploaded_file($file->tempName)) {
             move_uploaded_file($file->tempName, $this->get($variant));
-            @chmod($this->get($variant), 0744);
+            @chmod($this->get($variant), $this->fileMode);
         }
 
         /**
@@ -106,7 +87,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     public function setContent($content, $variant = null)
     {
         file_put_contents($this->get($variant), $this->content);
-        @chmod($this->get($variant), $this->chmod);
+        @chmod($this->get($variant), $this->fileMode);
     }
 
     /**
@@ -140,6 +121,25 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     public function setFile(File $file)
     {
         $this->file = $file;
+    }
+
+    /**
+     * Returns the path where the files of this file are located
+     * 
+     * @return string the path
+     */
+    protected function getPath()
+    {
+        if ($this->file->guid == '') {
+            throw new \Exception('File GUID empty!');
+        }
+
+        $path = Yii::getAlias($this->path) . DIRECTORY_SEPARATOR . $this->file->guid;
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
+
+        return $path;
     }
 
 }
