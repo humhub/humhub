@@ -11,10 +11,11 @@ namespace humhub\modules\file\controllers;
 use Yii;
 use yii\web\HttpException;
 use yii\web\UploadedFile;
-use yii\helpers\FileHelper;
-use humhub\modules\file\models\File;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\file\actions\DownloadAction;
+use humhub\modules\file\models\File;
 
 /**
  * UploadController provides uploading functions for files
@@ -31,9 +32,21 @@ class FileController extends \humhub\components\Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['download']
             ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'download' => [
+                'class' => DownloadAction::className(),
+            ],
         ];
     }
 
@@ -127,60 +140,6 @@ class FileController extends \humhub\components\Controller
         $output['thumbnailUrl'] = "";
 
         return $output;
-    }
-
-    /**
-     * Downloads a file
-     */
-    public function actionDownload()
-    {
-        // GUID of file
-        $guid = Yii::$app->request->get('guid');
-        // Force Download Flag
-        $download = Yii::$app->request->get('download', 0);
-        // Optional suffix of file (e.g. scaled variant of image)
-        $suffix = Yii::$app->request->get('suffix', null);
-
-        $file = File::findOne(['guid' => $guid]);
-
-        if ($file == null) {
-            throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
-        }
-        if (!$file->canRead()) {
-            throw new HttpException(401, Yii::t('FileModule.controllers_FileController', 'Insufficient permissions!'));
-        }
-
-        $filePath = $file->store->get($suffix);
-
-        if (!file_exists($filePath)) {
-            throw new HttpException(404, Yii::t('FileModule.controllers_FileController', 'Could not find requested file!'));
-        }
-
-        $options = [
-            'inline' => false,
-            'mimeType' => FileHelper::getMimeTypeByExtension($file->getFilename($suffix))
-        ];
-
-        if ($download != 1 && in_array($options['mimeType'], Yii::$app->getModule('file')->inlineMimeTypes)) {
-            $options['inline'] = true;
-        }
-
-        if (!Yii::$app->getModule('file')->settings->get('useXSendfile')) {
-            Yii::$app->response->sendFile($filePath, $file->getFilename($suffix), $options);
-        } else {
-
-            if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') === 0) {
-                // set nginx specific X-Sendfile header name
-                $options['xHeader'] = 'X-Accel-Redirect';
-                // make path relative to docroot
-                $docroot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
-                if (substr($filePath, 0, strlen($docroot)) == $docroot) {
-                    $filePath = substr($filePath, strlen($docroot));
-                }
-            }
-
-            Yii::$app->response->xSendFile($filePath, $file->getFilename($suffix), $options);
-        }
     }
 
     public function actionDelete()
