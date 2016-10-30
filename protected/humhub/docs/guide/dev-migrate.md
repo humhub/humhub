@@ -15,6 +15,7 @@ Please refer the new [File Handling](dev-files.md) documentation section for mor
 	- \humhub\modules\file\models\File::getStoredFilePath
 	- \humhub\modules\file\models\File::getPreviewImageUrl
 	- \humhub\modules\file\models\File::attachPrecreated
+	- \humhub\modules\file\models\File::getFilename
 - Removed configuration option 'showFilesWidgetBlacklist' use WallEntry showFiles attribute instead.
 
 

@@ -70,8 +70,8 @@ class File extends FileCompat
             array(['created_by', 'updated_by', 'size'], 'integer'),
             array(['guid'], 'string', 'max' => 45),
             array(['mime_type'], 'string', 'max' => 150),
-            array('filename', 'validateExtension'),
-            array('filename', 'validateSize'),
+            array('file_name', 'validateExtension'),
+            array('file_name', 'validateSize'),
             array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
             array(['file_name', 'title'], 'string', 'max' => 255),
             array(['created_at', 'updated_at'], 'safe'),
@@ -150,24 +150,6 @@ class File extends FileCompat
         array_unshift($params, '/file/file/download');
 
         return Url::to($params, $absolute);
-    }
-
-    /**
-     * Returns the filename
-     *
-     * @param string $suffix
-     * @return string
-     */
-    public function getFilename($suffix = "")
-    {
-        // without prefix
-        if ($suffix == "") {
-            return $this->file_name;
-        }
-
-        $fileParts = pathinfo($this->file_name);
-
-        return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
     }
 
     public function getMimeBaseType()

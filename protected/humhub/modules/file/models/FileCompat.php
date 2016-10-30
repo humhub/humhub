@@ -72,4 +72,23 @@ class FileCompat extends \humhub\components\ActiveRecord
         $object->fileManager->attach($files);
     }
 
+    /**
+     * Returns the filename
+     *
+     * @deprecated since version 1.2
+     * @param string $suffix
+     * @return string
+     */
+    public function getFilename($suffix = "")
+    {
+        // without prefix
+        if ($suffix == "") {
+            return $this->file_name;
+        }
+
+        $fileParts = pathinfo($this->file_name);
+
+        return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
+    }
+
 }
