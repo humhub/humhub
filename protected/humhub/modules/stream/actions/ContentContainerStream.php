@@ -47,7 +47,7 @@ class ContentContainerStream extends Stream
         }
 
         // Add all sticked contents to initial request
-        if ($this->isInitialRequest()) {
+        if ($this->isInitialRequest() || $this->isSingleContentQuery()) {
             // Get number of sticked contents
             $stickedQuery = clone $this->activeQuery;
             $stickedQuery->andWhere(['content.sticked' => 1]);

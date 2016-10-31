@@ -90,7 +90,7 @@ $container = $object->content->container;
                 <?php echo $content; ?>
             </div>
             <div class="clearfix">
-                <span class="entry-loader"></span>
+                <span class="stream-entry-loader"></span>
                 <?php echo \humhub\modules\content\widgets\WallEntryAddons::widget(['object' => $object]); ?>
             </div>
         </div>

@@ -12,7 +12,6 @@ humhub.initModule('stream', function (module, require, $) {
     var Component = require('action').Component;
     var loader = require('ui.loader');
     var event = require('event');
-    var log = require('log').module(module);
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -27,13 +26,6 @@ humhub.initModule('stream', function (module, require, $) {
     var STREAM_LOAD_COUNT = 4;
 
     /**
-     * Set on the stream root node to identify a stream. The value of this data
-     * attribute contains the stream url for loading new entries.
-     * @type String
-     */
-    var DATA_STREAM_SELECTOR = '[data-stream]';
-
-    /**
      * Number of stream entries loaded with each request (except initial request)
      * @type Number
      */
@@ -44,6 +36,14 @@ humhub.initModule('stream', function (module, require, $) {
      * @type String
      */
     var DATA_STREAM_ENTRY_SELECTOR = '[data-stream-entry]';
+
+    /**
+     * The data-stream attribute of the stream root contains the stream url used for loading
+     * stream entries.
+     * 
+     * @type String
+     */
+    var DATA_STREAM_URL = 'stream';
 
     /**
      * If a data-stream-contentid is set on the stream root only one entry will
@@ -60,10 +60,16 @@ humhub.initModule('stream', function (module, require, $) {
     var DATA_STREAM_ENTRY_ID_SELECTOR = 'content-key';
 
 
+    var FILTER_INCLUDE_ARCHIVED = 'entry_archived';
+
     var streams = {};
 
     /**
-     * Represents an stream entry within a stream.
+     * Represents a stream entry within a stream.
+     * You can receive a StreamEntry instance by calling
+     * 
+     * var entry = humhub.modules.stream.getStream().entry($myEntryContentId);
+     * 
      * @param {type} id
      * @returns {undefined}
      */
@@ -78,12 +84,18 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     StreamEntry.prototype.delete = function () {
+        // Search for a nestet content component or call default content delete
         var content = this.getContentComponent();
-        if (content && content.delete) {
-            content.delete();
-        } else {
-            StreamEntry._super.delete.call(this);
-        }
+        var promise = (content && content.delete) ? content.delete()
+                : StreamEntry._super.delete.call(this);
+
+        promise.then(function ($confirm) {
+            if ($confirm) {
+                module.log.success('success.delete');
+            }
+        }).catch(function (err) {
+            module.log.error(err, true);
+        });
     };
 
     StreamEntry.prototype.getContentComponent = function () {
@@ -92,26 +104,35 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     StreamEntry.prototype.reload = function () {
-        return getStream().reloadEntry(this);
+        return this.stream().reloadEntry(this);
+    };
+
+    StreamEntry.prototype.replaceContent = function (html) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var $content = that.getContent();
+            var $oldContent = $content.clone();
+            $content.replaceWith(html);
+            that.$.data('oldContent', $oldContent);
+            resolve(that);
+        });
     };
 
     StreamEntry.prototype.edit = function (evt) {
         var that = this;
-        this.loader();
-        client.get(evt.url, {
+
+        client.get(evt, {
             dataType: 'html',
-            success: function (response) {
-                var $content = that.$.find('.content:first');
-                var $oldContent = $content.clone();
-                $content.replaceWith(response.html);
-                that.$.data('oldContent', $oldContent);
-                that.$.find('input[type="text"], textarea, [contenteditable="true"]').first().focus();
-                that.unsetLoader();
-            },
-            error: function(e) {
-                //TODO: handle error
-                that.unsetLoader();
+            beforeSend: function () {
+                that.loader();
             }
+        }).then(function (response) {
+            that.replaceContent(response.html);
+            that.$.find('input[type="text"], textarea, [contenteditable="true"]').first().focus();
+        }).catch(function (e) {
+            module.log.error(e, true);
+        }).finally(function () {
+            that.loader(false);
         });
 
         // Listen to click events outside of the stream entry and cancel edit.
@@ -127,10 +148,37 @@ humhub.initModule('stream', function (module, require, $) {
         });
     };
 
-    StreamEntry.prototype.loader = function (selector) {
-        //selector = selector || '.content:first';
-        selector = selector || '.entry-loader';
-        loader.set(this.$.find(selector), {
+    /**
+     * Edit submit action event.
+     * 
+     * @param {type} evt
+     * @returns {undefined}
+     */
+    StreamEntry.prototype.editSubmit = function (evt) {
+        var that = this;
+        client.submit(evt, {
+            url: evt.url,
+            dataType: 'html',
+            beforeSend: function () {
+                that.loader();
+            }
+        }).then(function (response) {
+            that.$.html(response.html);
+            module.log.success('success.edit');
+            that.highlight();
+        }).catch(function (e) {
+            module.log.error(e, true);
+            that.loader(false);
+        });
+    };
+
+    StreamEntry.prototype.loader = function ($show) {
+        var $loader = this.$.find('.stream-entry-loader');
+        if ($show === false) {
+            return loader.reset($loader);
+        }
+
+        loader.set($loader, {
             'position': 'left',
             'size': '8px',
             'css': {
@@ -138,45 +186,67 @@ humhub.initModule('stream', function (module, require, $) {
             }
         });
     };
-    
-    StreamEntry.prototype.unsetLoader = function (selector) {
-        //selector = selector || '.content:first';
-        selector = selector || '.entry-loader';
-        loader.reset(this.$.find(selector));
+
+    StreamEntry.prototype.getContent = function () {
+        return this.$.find('.content:first');
     };
 
-    StreamEntry.prototype.editSubmit = function (evt) {
-        var that = this;
-        client.submit(evt.$form, {
-            url: evt.url,
-            dataType: 'html',
-            beforeSend: function () {
-                //that.loader('.content_edit:first');
-                that.loader();
-            },
-            success: function (response) {
-                that.$.html(response.html);
-            }
+    StreamEntry.prototype.highlight = function () {
+        var $content = this.getContent();
+        $content.addClass('highlight');
+        $content.delay(200).animate({backgroundColor: 'transparent'}, 1000, function () {
+            $content.removeClass('highlight');
+            $content.css('backgroundColor', '');
         });
     };
 
     StreamEntry.prototype.stick = function (evt) {
         var that = this;
         this.loader();
-        var stream = that.getStream();
-        client.post(evt.url).done(function (data) {
+        var stream = this.stream();
+        client.post(evt.url, evt).then(function (data) {
             if (data.success) {
                 that.remove().then(function () {
                     stream.loadEntry(that.getKey(), {'prepend': true});
                 });
+                module.log.success('success.stick');
+            } else if (data.info) {
+                module.log.info(data.info, true);
+            } else {
+                module.log.error(data.error, true);
             }
+        }, evt).catch(function (e) {
+            module.log.error(e, true);
+        }).finally(function () {
+            that.loader(false);
         });
     };
 
+    StreamEntry.prototype.replace = function (newEntry) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var $newEntry = $(newEntry).hide();
+            that.$.fadeOut(function () {
+                that.$.replaceWith($newEntry);
+                // Sinc the response does not only include the node itself we have to search it.
+                that.$ = $newEntry.find(DATA_STREAM_ENTRY_SELECTOR)
+                        .addBack(DATA_STREAM_ENTRY_SELECTOR);
+                $newEntry.fadeIn(resolve);
+            });
+
+        });
+    };
+
+
     StreamEntry.prototype.unstick = function (evt) {
+        var that = this;
         this.loader();
-        client.post(evt.url).done(function (data) {
-            module.init();
+        client.post(evt.url).then(function (data) {
+            that.stream().init();
+            module.log.success('success.unstick');
+        }).catch(function (e) {
+            module.log.error(e, true);
+            that.loader(false);
         });
     };
 
@@ -185,12 +255,22 @@ humhub.initModule('stream', function (module, require, $) {
         this.loader();
         client.post(evt.url).then(function (response) {
             if (response.success) {
-                that.reload().then(function () {
-                    log.info(module.text('info.archive.success'), true);
-                });
+                // Either just remove entry or reload it in case the stream includes arhcived entries
+                if (that.stream().hasFilter(FILTER_INCLUDE_ARCHIVED)) {
+                    that.reload().then(function () {
+                        module.log.success('success.archive', true);
+                    });
+                } else {
+                    that.remove().then(function () {
+                        module.log.success('success.archive', true);
+                    })
+                }
+            } else {
+                module.log.error(response, true);
             }
         }).catch(function (e) {
-            log.error(e, true);
+            module.log.error(e, true);
+            that.loader(false);
         });
     };
 
@@ -200,15 +280,16 @@ humhub.initModule('stream', function (module, require, $) {
         client.post(evt.url).then(function (response) {
             if (response.success) {
                 that.reload().then(function () {
-                    log.info(module.text('info.unarchive.success'), true);
+                    module.log.success('success.unarchive', true);
                 });
             }
         }).catch(function (e) {
-            log.error('Unexpected error', e, true);
+            module.log.error('Unexpected error', e, true);
+            that.loader(false);
         });
     };
 
-    StreamEntry.prototype.getStream = function () {
+    StreamEntry.prototype.stream = function () {
         // Just return the parent stream component.
         return this.parent();
     };
@@ -231,13 +312,11 @@ humhub.initModule('stream', function (module, require, $) {
         this.$stream = this.$;
 
         //Cache some stream relevant data/nodes
-        this.url = this.$.data('stream');
-        this.$loader = this.$stream.find(this.cfg['loaderSelector']);
-        this.$content = this.$stream.find(this.cfg['contentSelector']);
+        this.url = this.$.data(DATA_STREAM_URL);
+        this.$content = this.$.find(this.cfg['contentSelector']);
         this.$filter = this.cfg['filterPanel'];
 
         //TODO: make this configurable
-        this.filters = [];
         this.sort = "c";
     };
 
@@ -279,7 +358,7 @@ humhub.initModule('stream', function (module, require, $) {
      */
     Stream.prototype.init = function () {
         this.clear();
-        this.$stream.show();
+        this.$.show();
 
         if (this.isShowSingleEntry()) {
             this.loadEntry(this.contentId);
@@ -291,6 +370,13 @@ humhub.initModule('stream', function (module, require, $) {
                 initPlugins();
             });
         }
+
+        var that = this;
+        this.$.on('click', '.singleBackLink', function () {
+            that.contentId = undefined;
+            that.init();
+            $(this).hide();
+        });
 
         return this;
     };
@@ -304,7 +390,7 @@ humhub.initModule('stream', function (module, require, $) {
         this.lastEntryLoaded = false;
         this.loading = false;
         this.$content.empty();
-        this.$stream.hide();
+        this.$.hide();
         //this.$.find(".s2_single").hide();
         this.hideLoader();
         this.$filter.hide();
@@ -340,10 +426,10 @@ humhub.initModule('stream', function (module, require, $) {
     Stream.prototype.reloadEntry = function (entry) {
         var that = this;
         return new Promise(function (resolve, reject) {
-            entry = (object.isString(entry)) ? that.getEntry(entry) : entry;
+            entry = (object.isString(entry)) ? that.entry(entry) : entry;
 
             if (!entry) {
-                log.warn('Attempt to reload non existing entry');
+                module.log.warn('Attempt to reload non existing entry');
                 return reject();
             }
 
@@ -353,11 +439,7 @@ humhub.initModule('stream', function (module, require, $) {
                     entry.remove();
                     resolve(entry);
                 } else {
-                    entry.$.fadeOut();
-                    entry.$.replaceWith($entryNode);
-                    $entryNode.fadeIn(function () {
-                        resolve(entry);
-                    });
+                    entry.replace($entryNode).then(resolve);
                 }
 
             }, reject);
@@ -398,9 +480,11 @@ humhub.initModule('stream', function (module, require, $) {
                 if (!cfg['contentId'] && object.isEmpty(response.content)) {
                     that.lastEntryLoaded = true;
                     that.$.trigger('humhub:modules:stream:lastEntryLoaded');
-                } else {
+                } else if (!cfg['contentId']) {
                     that.lastEntryLoaded = response.isLast;
-                    $result = that.addEntries(response, cfg['prepend']);
+                    $result = that.addEntries(response, cfg);
+                } else {
+                    $result = that.addEntries(response, cfg);
                 }
 
                 that.loading = false;
@@ -430,9 +514,10 @@ humhub.initModule('stream', function (module, require, $) {
 
         cfg['prepend'] = object.isDefined(cfg['prepend']) ? cfg['prepend'] : false;
         return cfg;
-    }
+    };
 
     Stream.prototype.showLoader = function () {
+        loader.remove(this.$content);
         loader.append(this.$content);
     };
 
@@ -458,7 +543,7 @@ humhub.initModule('stream', function (module, require, $) {
      * @returns {unresolved}
      */
     Stream.prototype.getLastContentId = function () {
-        var $lastEntry = this.$stream.find(DATA_STREAM_ENTRY_SELECTOR).last();
+        var $lastEntry = this.$.find(DATA_STREAM_ENTRY_SELECTOR).last();
         if ($lastEntry.length) {
             return $lastEntry.data(DATA_STREAM_ENTRY_ID_SELECTOR);
         }
@@ -487,7 +572,7 @@ humhub.initModule('stream', function (module, require, $) {
         var that = this;
         var result = '';
         $.each(response.contentOrder, function (i, key) {
-            var $entry = that.getEntry(key);
+            var $entry = that.entry(key);
             if ($entry.length) {
                 $entry.remove();
             }
@@ -573,7 +658,8 @@ humhub.initModule('stream', function (module, require, $) {
      * @returns {boolean}
      */
     Stream.prototype.hasFilter = function () {
-        return this.filters.length > 0;
+        var filters = this.$.data('filters') || [];
+        return filters.length > 0;
     };
 
     /**
@@ -582,7 +668,7 @@ humhub.initModule('stream', function (module, require, $) {
      */
     Stream.prototype.getFilterString = function () {
         var result = '';
-        $.each(this.filters, function (i, filter) {
+        $.each(this.$.data('filters'), function (i, filter) {
             result += filter + ',';
         });
 
@@ -596,9 +682,12 @@ humhub.initModule('stream', function (module, require, $) {
      * @returns {undefined}
      */
     Stream.prototype.setFilter = function (filterId) {
-        if (this.filters.indexOf(filterId) < 0) {
-            this.filters.push(filterId);
+        var filters = this.$.data('filters') || [];
+        if (filters.indexOf(filterId) < 0) {
+            filters.push(filterId);
         }
+        this.$.data('filters', filters);
+        return this;
     };
 
     /**
@@ -608,10 +697,13 @@ humhub.initModule('stream', function (module, require, $) {
      * @returns {undefined}
      */
     Stream.prototype.unsetFilter = function (filterId) {
-        var index = this.filters.indexOf(filterId);
+        var filters = this.$.data('filters') || [];
+        var index = filters.indexOf(filterId);
         if (index > -1) {
-            this.filters.splice(index, 1);
+            filters.splice(index, 1);
         }
+        this.$.data('filters', filters);
+        return this;
     };
 
     /**
@@ -619,7 +711,7 @@ humhub.initModule('stream', function (module, require, $) {
      * @param {type} key
      * @returns {humhub_stream_L5.StreamEntry}
      */
-    Stream.prototype.getEntry = function (key) {
+    Stream.prototype.entry = function (key) {
         return new this.cfg.streamEntryClass(this.$.find(DATA_STREAM_ENTRY_SELECTOR + '[data-content-key="' + key + '"]'));
     };
 
@@ -665,19 +757,6 @@ humhub.initModule('stream', function (module, require, $) {
 
     object.inherits(WallStream, Stream);
 
-    var getStream = function ($selector) {
-        $selector = $selector || DATA_WALL_STREAM_SELECTOR;
-        if (!streams[$selector]) {
-            var $stream = (!$selector) ? $(DATA_WALL_STREAM_SELECTOR) : $($selector).first();
-            return streams[$selector] = $stream.length ? new WallStream($stream) : undefined;
-        }
-        return streams[$selector];
-    };
-
-    var getEntry = function (id) {
-        return module.getStream().getEntry(id);
-    };
-
     /**
      * Initializes wall stream
      * @returns {undefined}
@@ -686,9 +765,19 @@ humhub.initModule('stream', function (module, require, $) {
         streams = {};
 
         var stream = getStream();
+
         if (!stream) {
             console.log('Non-Stream Page!');
             return;
+        } else {
+            _initWallStream(stream);
+            _initFilterNav();
+        }
+    };
+
+    var _initWallStream = function (stream) {
+        if (!stream) {
+            stream = getStream();
         }
 
         stream.init();
@@ -711,7 +800,6 @@ humhub.initModule('stream', function (module, require, $) {
             }
 
             /* 
-             
              This can be used to trace the currently visible entries
              
              var lastKey;
@@ -737,17 +825,9 @@ humhub.initModule('stream', function (module, require, $) {
              }
              */
         });
-
-        stream.$.on('click', '.singleBackLink', function () {
-            stream.contentId = undefined;
-            stream.init();
-            $(this).hide();
-        });
-
-        initFilterNav();
     };
 
-    var initFilterNav = function () {
+    var _initFilterNav = function () {
         $(".wallFilter").click(function () {
             var $filter = $(this);
             var checkboxi = $filter.children("i");
@@ -782,6 +862,19 @@ humhub.initModule('stream', function (module, require, $) {
         });
     };
 
+    var getStream = function ($selector) {
+        $selector = $selector || DATA_WALL_STREAM_SELECTOR;
+        if (!streams[$selector]) {
+            var $stream = (!$selector) ? $(DATA_WALL_STREAM_SELECTOR) : $($selector).first();
+            return streams[$selector] = $stream.length ? new WallStream($stream) : undefined;
+        }
+        return streams[$selector];
+    };
+
+    var getEntry = function (id) {
+        return module.getStream().entry(id);
+    };
+
     module.export({
         StreamEntry: StreamEntry,
         Stream: Stream,
@@ -790,15 +883,4 @@ humhub.initModule('stream', function (module, require, $) {
         getEntry: getEntry,
         init: init
     });
-});
-
-/*
- module.StreamItem.prototype.highlightContent = function () {
- var $content = this.getContent();
- $content.addClass('highlight');
- $content.delay(200).animate({backgroundColor: 'transparent'}, 1000, function () {
- $content.removeClass('highlight');
- $content.css('backgroundColor', '');
- });
- };
- */    
+});   

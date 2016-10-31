@@ -18,9 +18,6 @@ $this->registerJsVar('activityInfoUrl', $infoUrl);
                 class="placeholder"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', 'There are no activities yet.'); ?></div>
         </div>
         <ul id="activityContents" class="media-list activities" data-stream-content>
-            <li id="activityLoader" class="streamLoader">
-                <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
-            </li>
         </ul>
 
     </div>

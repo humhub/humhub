@@ -40,21 +40,19 @@ humhub.initModule('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.submit = function (evt) {
-        $("#contentFormError").hide();
-        $("#contentFormError li").remove();
-        $(".contentForm_options .btn").hide();
-        $("#postform-loader").removeClass("hidden");
-
+        this.$.find("#contentFormError, .preferences, .fileinput-button").fadeOut();
+        this.$.find("#contentFormError li").remove();
+        
         var that = this;
-        client.submit(this.getForm(), {url: evt.url}).then(function (response) {
+        client.submit(this.getForm(), {url: evt.url}, evt).then(function (response) {
             if (!response.errors) {
                 event.trigger('humhub:modules:content:newEntry', response.output);
                 that.resetForm();
             } else {
                 that.handleError(response);
             }
-            $('.contentForm_options .btn').show();
-            $('#postform-loader').addClass('hidden');
+            that.$.find(".preferences, .fileinput-button").show();
+            $('.contentForm_options .preferences, .fileinput-button').show();
         });
     };
 
@@ -107,7 +105,7 @@ humhub.initModule('content.form', function (module, require, $) {
         } else {
             this.setPrivateVisibility();
         }
-    }
+    };
     
     CreateForm.prototype.setDefaultVisibility = function() {
         if (config['defaultVisibility']) {
@@ -121,18 +119,18 @@ humhub.initModule('content.form', function (module, require, $) {
         $('#contentForm_visibility').prop("checked", true);
         $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>'+config['text']['makePrivate']);
         $('.label-public').removeClass('hidden');
-    }
+    };
     
     CreateForm.prototype.setPrivateVisibility = function() {
         $('#contentForm_visibility').prop("checked", false);
         $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>'+config['text']['makePublic']);
         $('.label-public').addClass('hidden');
-    }
+    };
 
     CreateForm.prototype.notifyUser = function() {
         $('#notifyUserContainer').removeClass('hidden');
         $('#notifyUserInput_tag_input_field').focus();
-    }
+    };
 
     var init = function () {
         instance = new CreateForm();

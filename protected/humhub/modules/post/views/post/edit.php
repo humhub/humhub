@@ -24,7 +24,7 @@ use humhub\compat\CActiveForm;
         'object' => $post
     ));
     ?>
-        <button type="submit" class="btn btn-default btn-sm btn-comment-submit" data-action-click="editSubmit" data-action-url="<?= $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]) ?>">
+        <button type="submit" class="btn btn-default btn-sm btn-comment-submit" data-ui-loader data-action-click="editSubmit" data-action-url="<?= $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]) ?>">
             <?= Yii::t('PostModule.views_edit', 'Save') ?>
         </button>
        
@@ -42,13 +42,3 @@ use humhub\compat\CActiveForm;
 
     <?php CActiveForm::end(); ?>
 </div>
-
-<script type="text/javascript">
-
-    // show loader during ajax call
-    function showLoader(post_id) {
-        $('#post_edit_' + post_id).html('<div class="loader" style="padding: 15px 0;"><div class="sk-spinner sk-spinner-three-bounce" style="margin:0;"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div>');
-    }
-
-
-</script>

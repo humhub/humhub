@@ -14,7 +14,7 @@ Build
 
 ## Assets
 
-HumHub uses the Yii's build in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
+HumHub uses Yii's build in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
 HumHub will only use the compressed assets if operated in [production mode](admin-installation.md#disable-errors-debugging), otherwise
 all assets are included seperatly.
 

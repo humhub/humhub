@@ -23,7 +23,7 @@ humhub.initModule('ui.status', function (module, require, $) {
         closeAfter = closeAfter || AUTOCLOSE_DELAY;
         this._trigger('<i class="fa fa-info-circle info"></i><span>' + msg + '</span>', undefined, closeAfter);
     };
-    
+
     StatusBar.prototype.success = function (msg, closeAfter) {
         closeAfter = closeAfter || AUTOCLOSE_DELAY;
         this._trigger('<i class="fa fa-check-circle success"></i><span>' + msg + '</span>', undefined, closeAfter);
@@ -60,7 +60,7 @@ humhub.initModule('ui.status', function (module, require, $) {
         var $closeButton = $('<a class="status-bar-close pull-right" style="">×</a>');
 
         if (error && module.config['showMore']) {
-            this._addShowMoreButton($content, error);
+            this._addShowMore($content, error);
         }
 
         $closeButton.on('click', function () {
@@ -71,40 +71,54 @@ humhub.initModule('ui.status', function (module, require, $) {
         return this;
     };
 
-    StatusBar.prototype._addShowMoreButton = function ($content, error) {
-        var $showMore = $('<a class="showMore"><i class="fa fa-angle-up"></i></a>');
-        $showMore.on('click', function () {
-            var $details = $content.find('.status-bar-details');
-            if($details.length) {
-                $details.stop().slideToggle('fast', function() {
-                    $details.remove();
-                });
-                
-                $showMore.find('i').attr('class', 'fa fa-angle-up');
-            } else {
-                $details = $('<div class="status-bar-details" style="display:none;"><pre>' + getErrorMessage(error) + '</pre><div>'); 
-                $content.append($details);
-                $details.slideToggle('fast');
-                $showMore.find('i').attr('class', 'fa fa-angle-down');
-            }
-        });
-        $content.append($showMore);
+    StatusBar.prototype._addShowMore = function ($content, error) {
+        var proxy = $.proxy(this.toggle, this, error);
+        $('<a class="showMore"><i class="fa fa-angle-up"></i></a>').on('click', proxy).appendTo($content);
+        this.$.find('.status-bar-content span').on('click', proxy).css('cursor', 'pointer');
+    };
+
+    StatusBar.prototype.toggle = function (error) {
+        var $content = this.$.find(SELECTOR_CONTENT);
+        var $showMore = this.$.find('.showMore');
+        var $details = $content.find('.status-bar-details');
+        if ($details.length) {
+            $details.stop().slideToggle('fast', function () {
+                $details.remove();
+            });
+
+            $showMore.find('i').attr('class', 'fa fa-angle-up');
+        } else {
+            $details = $('<div class="status-bar-details" style="display:none;"><pre>' + getErrorMessage(error) + '</pre><div>');
+            $content.append($details);
+            $details.slideToggle('fast');
+            $showMore.find('i').attr('class', 'fa fa-angle-down');
+        }
     };
 
     var getErrorMessage = function (error) {
+        if (!error) {
+            return;
+        }
+
         try {
-            if (!error) {
-                return;
-            } else if (object.isString(error)) {
+            if (object.isString(error)) {
                 return error;
             } else if (error instanceof Error) {
                 var result = error.toString();
-                if(error.stack) {
+                if (error.stack) {
                     result += error.stack;
                 }
                 return result;
             } else {
-                return JSON.stringify(error, null, 4);
+                if (error.error instanceof Error) {
+                    error.stack = (error.error.stack) ? error.error.stack : undefined;
+                    error.error = error.error.message;
+                }
+                try {
+                    return JSON.stringify(error, null, 4);
+                } catch(e) {
+                    return error.toString();
+                }
             }
         } catch (e) {
             log.error(e);
@@ -137,8 +151,8 @@ humhub.initModule('ui.status', function (module, require, $) {
         var that = this;
         var $body = this.$.find(SELECTOR_BODY);
         var height = $body.innerHeight();
-        
-        $body.stop().animate({bottom: -height, opacity:0}, 500, function () {
+
+        $body.stop().animate({bottom: -height, opacity: 0}, 500, function () {
             that.$.hide();
             $body.css('bottom', '0');
             if (callback) {
@@ -184,6 +198,6 @@ humhub.initModule('ui.status', function (module, require, $) {
         error: function (msg, error, closeAfter) {
             module.statusBar.error(msg, error, closeAfter);
         }
-        
+
     });
 });

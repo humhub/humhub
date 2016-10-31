@@ -19,11 +19,7 @@ use humhub\modules\space\models\Space;
 
 <div class="panel panel-default">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" data-action-param="{defaultVisibility: <?= $defaultVisibility ?>}">
-        <?php echo Html::beginForm('', 'POST'); ?>
-
-        <ul id="contentFormError">
-        </ul>
-
+        <?php echo Html::beginForm($submitUrl, 'POST'); ?>
         <?php echo $form; ?>
 
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
@@ -52,15 +48,15 @@ use humhub\modules\space\models\Space;
         echo Html::hiddenInput("containerClass", get_class($contentContainer));
         ?>
 
+        <ul id="contentFormError">
+        </ul>
+        
         <div class="contentForm_options">
 
             <hr>
 
             <div class="btn_container">
-
-                <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'postform-loader', 'cssClass' => 'loader-postform hidden']); ?>
-
-                <button id="post_submit_button" data-action-click="submit" data-action-url="<?= $submitUrl ?>" class="btn btn-info">
+                <button id="post_submit_button" data-action-click="submit" data-ui-loader class="btn btn-info">
                     <?= $submitButtonText ?>
                 </button>
  
