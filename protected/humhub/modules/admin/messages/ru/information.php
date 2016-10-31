@@ -18,8 +18,8 @@
  */
 return [
     'About HumHub' => 'О HumHub',
-    'CronJobs' => '',
+    'CronJobs' => 'Задания cron',
     'Database' => 'База данных',
-    'Logging' => 'Логирование',
+    'Logging' => 'Аудит',
     'Prerequisites' => 'Проверка требований',
 ];
